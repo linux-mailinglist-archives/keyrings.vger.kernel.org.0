@@ -2,185 +2,154 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 862EC71A004
-	for <lists+keyrings@lfdr.de>; Thu,  1 Jun 2023 16:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D51CC71F29C
+	for <lists+keyrings@lfdr.de>; Thu,  1 Jun 2023 21:05:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233834AbjFAOaA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 1 Jun 2023 10:30:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47432 "EHLO
+        id S230471AbjFATFV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 1 Jun 2023 15:05:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234334AbjFAO3w (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Jun 2023 10:29:52 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29ED998;
-        Thu,  1 Jun 2023 07:29:51 -0700 (PDT)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 351ESGQA002486;
-        Thu, 1 Jun 2023 14:29:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : cc : date : in-reply-to : references : content-type
- : mime-version : content-transfer-encoding; s=pp1;
- bh=CcPfCzY8208PdCOnE1aO6P15WOICSUETE+4+BuarsJ4=;
- b=glePTwE33g12AqTcQp4b5bnMaxXtrd5xg2kPD1vJknFsnN2IIsVVBRHlJvun7/jKDi9Z
- hWWMlfMXTk0j1gTbo1iBvWVL/Y6cPX00ORLM8ywqcXOz6dZSCNovDBKy4Y2D6CBiEFOO
- 3imgXNaWcdgUEOvUY0VpdavdJAI2hGtxsfkY/8r/1/S8R++jMP+7ybT3IklCtE3+I/Qh
- 2zfAU5TeB1VJU0+Qraacmr8CeQ4R1wZrd9ykrpQPb12jZ/H1lZLLmbBAhQkDYXS3xWL6
- bYtaQYZMzyFDap6YeMcsjhKnslMsagN8LedS0BUekyOv75K6CK31kjgCGho9F4K9uxQF 4Q== 
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qxw4fg0wg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 01 Jun 2023 14:29:30 +0000
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-        by ppma05wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 351C6hSo012658;
-        Thu, 1 Jun 2023 14:29:30 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([9.208.129.120])
-        by ppma05wdc.us.ibm.com (PPS) with ESMTPS id 3qu9g625tr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 01 Jun 2023 14:29:29 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-        by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 351ETSAT57737500
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 1 Jun 2023 14:29:28 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 8577358067;
-        Thu,  1 Jun 2023 14:29:28 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4E82A5805D;
-        Thu,  1 Jun 2023 14:29:28 +0000 (GMT)
-Received: from rhel-laptop.ibm.com (unknown [9.61.58.163])
-        by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-        Thu,  1 Jun 2023 14:29:28 +0000 (GMT)
-Message-ID: <9a752cf0b1e1d6f4ee2744fa3979f323b863dbbd.camel@linux.vnet.ibm.com>
-Subject: Re: [PATCH 1/4] block:sed-opal: SED Opal keystore
-From:   Greg Joyce <gjoyce@linux.vnet.ibm.com>
-Reply-To: gjoyce@linux.vnet.ibm.com
-To:     Jarkko Sakkinen <jarkko@kernel.org>, linux-block@vger.kernel.org
-Cc:     linuxppc-dev@lists.ozlabs.org, jonathan.derrick@linux.dev,
-        brking@linux.vnet.ibm.com, msuchanek@suse.de, mpe@ellerman.id.au,
-        axboe@kernel.dk, akpm@linux-foundation.org,
-        linux-efi@vger.kernel.org, keyrings@vger.kernel.org,
-        me@benboeckel.net, elliott@hpe.com, andonnel@au1.ibm.com
-Date:   Thu, 01 Jun 2023 09:29:28 -0500
-In-Reply-To: <CSIYR76Z8U02.30IIQJ49LMY05@suppilovahvero>
-References: <20230505194402.2079010-1-gjoyce@linux.vnet.ibm.com>
-         <20230505194402.2079010-2-gjoyce@linux.vnet.ibm.com>
-         <CSIYR76Z8U02.30IIQJ49LMY05@suppilovahvero>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: DlyEBDRksE0zBECYKv0_QIgClff7ChD6
-X-Proofpoint-ORIG-GUID: DlyEBDRksE0zBECYKv0_QIgClff7ChD6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-01_08,2023-05-31_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
- lowpriorityscore=0 priorityscore=1501 bulkscore=0 mlxscore=0
- mlxlogscore=984 clxscore=1011 adultscore=0 phishscore=0 malwarescore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2304280000 definitions=main-2306010124
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229724AbjFATFV (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Jun 2023 15:05:21 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B070184;
+        Thu,  1 Jun 2023 12:05:18 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-97458c97333so47458466b.2;
+        Thu, 01 Jun 2023 12:05:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20221208; t=1685646317; x=1688238317;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yn6AtAHnk/JRQ6tg3VOO2xTr5zdu98dQLt73x2iUz/8=;
+        b=CkNIYWFGXToMiQhfilezgCUI14q4U1K908IlgaVRn/rx+3Ygct3nZUeXPOJXo9v/cY
+         bK5gUpgEJPH1jpOgpkX3DqbGcRcCXpTQaTfTmVByIYopKHGqbgRFGqt9V6V/maAjXY87
+         vTPT1C1rZ2/yyVk+doBLHfa/EeEHbzu6MgtrpKNFtMabwRqQbKKsemEUU8dnuUbYb73l
+         kHyQWdVbUNpOeOgxOJjpYpNC+rU4Gl4/XOUuWFsTh5c5/CxyQ9nPUpbXhIrWqUrTxxhc
+         UMGpjRmc3dAHG4ZSaJlt+SOn2YfzhFeiuznIFrGwceiWJ4kG+qsykmTQ2UvpoBP21Nhf
+         XlIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685646317; x=1688238317;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yn6AtAHnk/JRQ6tg3VOO2xTr5zdu98dQLt73x2iUz/8=;
+        b=MFhbBDOc7fDe3SyhfceDvrvyDHO4lRjOQgCAocJSP9GwEAoB7KeTfGUmYIaFx3tyZg
+         miWgZALAhaXqL4SAQaThU9fzFooMQs9tyF87im3bT0i3YTn64PJODv1gOC3UPsFRLE2u
+         pPGe2hVWT04hMBnJ4vVeKzyDn49iFJi5yV+hsL3zAqI7nWcwsRuNHzlL75HjR/ZgZG6r
+         0KWL3Q8k/e+hDtOsSkBVlWBFeyXI/xq3XnLnoPMJ5rDbRXWRJVSEE/Clho/GNvVVbaVq
+         REg15tRPqj+oAJYctGCnxusCEvRNn+16bZi5JOz5Pp0C89qeuMotICdPeAi3rdMtN+RP
+         fqMw==
+X-Gm-Message-State: AC+VfDyw63jAP/t/8H1a5hJG5flNxQyy7vOC7yW65So6KDILdYFKp7Bh
+        iD5JsQIhyk6PZ8zTxNnMf4aeFl9dWf4DEA==
+X-Google-Smtp-Source: ACHHUZ6sPBq1F5986rglI1DSySnxtczgNgLz6KrKanHQAMXYm7dpG2q3r6n3t+iZpQw7PKXLF6ps8A==
+X-Received: by 2002:a17:907:9806:b0:96a:9b5b:5d80 with SMTP id ji6-20020a170907980600b0096a9b5b5d80mr8935321ejc.13.1685646316531;
+        Thu, 01 Jun 2023 12:05:16 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:810a:9640:26a8:d56e:8fdf:f926:4676])
+        by smtp.gmail.com with ESMTPSA id k17-20020a170906681100b0096f7105b3a6sm10827323ejr.189.2023.06.01.12.05.15
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 01 Jun 2023 12:05:16 -0700 (PDT)
+From:   Franziska Naepelt <franziska.naepelt@googlemail.com>
+X-Google-Original-From: Franziska Naepelt <franziska.naepelt@gmail.com>
+To:     keyrings@vger.kernel.org
+Cc:     dhowells@redhat.com, dwmw2@infradead.org,
+        linux-kernel@vger.kernel.org,
+        Franziska Naepelt <franziska.naepelt@gmail.com>
+Subject: [PATCH] certs/extract-cert: Fix checkpatch issues
+Date:   Thu,  1 Jun 2023 21:05:08 +0200
+Message-Id: <20230601190508.56610-1-franziska.naepelt@gmail.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2023-05-11 at 01:50 +0300, Jarkko Sakkinen wrote:
-> On Fri May 5, 2023 at 10:43 PM EEST,  wrote:
-> > From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-> > 
-> > Add read and write functions that allow SED Opal keys to stored
-> > in a permanent keystore.
-> 
-> Please be more verbose starting from "Self-Encrypting Drive (SED)",
-> instead of just "SED", and take time to explain what these keys are.
+The following issues are fixed:
+- WARNING: Missing or malformed SPDX-License-Identifier tag
+- WARNING: Prefer __noreturn over __attribute__((noreturn))
+- ERROR: trailing statements should be on next line
+- WARNING: braces {} are not necessary for single statement blocks
+- ERROR: space required before the open parenthesis '('
+- ERROR: code indent should use tabs where possible
+- WARNING: please, no spaces at the start of a line
+- WARNING: Missing a blank line after declarations
 
-A further elaboration of SED and the keys will be in the next patchset.
+Signed-off-by: Franziska Naepelt <franziska.naepelt@gmail.com>
+---
+ certs/extract-cert.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-> 
-> > Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-> > Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
-> > ---
-> >  block/Makefile               |  2 +-
-> >  block/sed-opal-key.c         | 24 ++++++++++++++++++++++++
-> >  include/linux/sed-opal-key.h | 15 +++++++++++++++
-> >  3 files changed, 40 insertions(+), 1 deletion(-)
-> >  create mode 100644 block/sed-opal-key.c
-> >  create mode 100644 include/linux/sed-opal-key.h
-> > 
-> > diff --git a/block/Makefile b/block/Makefile
-> > index 4e01bb71ad6e..464a9f209552 100644
-> > --- a/block/Makefile
-> > +++ b/block/Makefile
-> > @@ -35,7 +35,7 @@ obj-$(CONFIG_BLK_DEV_ZONED)	+= blk-zoned.o
-> >  obj-$(CONFIG_BLK_WBT)		+= blk-wbt.o
-> >  obj-$(CONFIG_BLK_DEBUG_FS)	+= blk-mq-debugfs.o
-> >  obj-$(CONFIG_BLK_DEBUG_FS_ZONED)+= blk-mq-debugfs-zoned.o
-> > -obj-$(CONFIG_BLK_SED_OPAL)	+= sed-opal.o
-> > +obj-$(CONFIG_BLK_SED_OPAL)	+= sed-opal.o sed-opal-key.o
-> >  obj-$(CONFIG_BLK_PM)		+= blk-pm.o
-> >  obj-$(CONFIG_BLK_INLINE_ENCRYPTION)	+= blk-crypto.o blk-
-> > crypto-profile.o \
-> >  					   blk-crypto-sysfs.o
-> > diff --git a/block/sed-opal-key.c b/block/sed-opal-key.c
-> > new file mode 100644
-> > index 000000000000..16f380164c44
-> > --- /dev/null
-> > +++ b/block/sed-opal-key.c
-> > @@ -0,0 +1,24 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +/*
-> > + * SED key operations.
-> > + *
-> > + * Copyright (C) 2022 IBM Corporation
-> > + *
-> > + * These are the accessor functions (read/write) for SED Opal
-> > + * keys. Specific keystores can provide overrides.
-> > + *
-> > + */
-> > +
-> > +#include <linux/kernel.h>
-> > +#include <linux/errno.h>
-> > +#include <linux/sed-opal-key.h>
-> > +
-> > +int __weak sed_read_key(char *keyname, char *key, u_int *keylen)
-> > +{
-> > +	return -EOPNOTSUPP;
-> > +}
-> > +
-> > +int __weak sed_write_key(char *keyname, char *key, u_int keylen)
-> > +{
-> > +	return -EOPNOTSUPP;
-> > +}
-> > diff --git a/include/linux/sed-opal-key.h b/include/linux/sed-opal-
-> > key.h
-> > new file mode 100644
-> > index 000000000000..c9b1447986d8
-> > --- /dev/null
-> > +++ b/include/linux/sed-opal-key.h
-> > @@ -0,0 +1,15 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +/*
-> > + * SED key operations.
-> > + *
-> > + * Copyright (C) 2022 IBM Corporation
-> > + *
-> > + * These are the accessor functions (read/write) for SED Opal
-> > + * keys. Specific keystores can provide overrides.
-> > + *
-> > + */
-> > +
-> > +#include <linux/kernel.h>
-> > +
-> > +int sed_read_key(char *keyname, char *key, u_int *keylen);
-> > +int sed_write_key(char *keyname, char *key, u_int keylen);
-> > -- 
-> > gjoyce@linux.vnet.ibm.com
-> 
-> BR, Jarkko
+diff --git a/certs/extract-cert.c b/certs/extract-cert.c
+index 70e9ec89d87d..dd76fb0f7f8d 100644
+--- a/certs/extract-cert.c
++++ b/certs/extract-cert.c
+@@ -1,3 +1,4 @@
++// SPDX-License-Identifier: LGPL-2.1
+ /* Extract X.509 certificate in DER form from PKCS#11 or PEM.
+  *
+  * Copyright © 2014-2015 Red Hat, Inc. All Rights Reserved.
+@@ -32,7 +33,7 @@
+
+ #define PKEY_ID_PKCS7 2
+
+-static __attribute__((noreturn))
++static __noreturn
+ void format(void)
+ {
+ 	fprintf(stderr,
+@@ -63,7 +64,8 @@ static void drain_openssl_errors(void)
+
+ 	if (ERR_peek_error() == 0)
+ 		return;
+-	while (ERR_get_error_line(&file, &line)) {}
++	while (ERR_get_error_line(&file, &line))
++		;
+ }
+
+ #define ERR(cond, fmt, ...)				\
+@@ -73,7 +75,7 @@ static void drain_openssl_errors(void)
+ 		if (__cond) {				\
+ 			err(1, fmt, ## __VA_ARGS__);	\
+ 		}					\
+-	} while(0)
++	} while (0)
+
+ static const char *key_pass;
+ static BIO *wb;
+@@ -107,7 +109,7 @@ int main(int argc, char **argv)
+ 	if (verbose_env && strchr(verbose_env, '1'))
+ 		verbose = true;
+
+-        key_pass = getenv("KBUILD_SIGN_PIN");
++	key_pass = getenv("KBUILD_SIGN_PIN");
+
+ 	if (argc != 3)
+ 		format();
+@@ -118,6 +120,7 @@ int main(int argc, char **argv)
+ 	if (!cert_src[0]) {
+ 		/* Invoked with no input; create empty file */
+ 		FILE *f = fopen(cert_dst, "wb");
++
+ 		ERR(!f, "%s", cert_dst);
+ 		fclose(f);
+ 		exit(0);
+@@ -155,6 +158,7 @@ int main(int argc, char **argv)
+ 			x509 = PEM_read_bio_X509(b, NULL, NULL, NULL);
+ 			if (wb && !x509) {
+ 				unsigned long err = ERR_peek_last_error();
++
+ 				if (ERR_GET_LIB(err) == ERR_LIB_PEM &&
+ 				    ERR_GET_REASON(err) == PEM_R_NO_START_LINE) {
+ 					ERR_clear_error();
+
+base-commit: 7877cb91f1081754a1487c144d85dc0d2e2e7fc4
+--
+2.39.2 (Apple Git-143)
 
