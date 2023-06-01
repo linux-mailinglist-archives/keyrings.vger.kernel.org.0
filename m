@@ -2,68 +2,99 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D51CC71F29C
-	for <lists+keyrings@lfdr.de>; Thu,  1 Jun 2023 21:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2989D71F452
+	for <lists+keyrings@lfdr.de>; Thu,  1 Jun 2023 23:00:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230471AbjFATFV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 1 Jun 2023 15:05:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53712 "EHLO
+        id S231303AbjFAVAp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 1 Jun 2023 17:00:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229724AbjFATFV (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Jun 2023 15:05:21 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B070184;
-        Thu,  1 Jun 2023 12:05:18 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-97458c97333so47458466b.2;
-        Thu, 01 Jun 2023 12:05:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1685646317; x=1688238317;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yn6AtAHnk/JRQ6tg3VOO2xTr5zdu98dQLt73x2iUz/8=;
-        b=CkNIYWFGXToMiQhfilezgCUI14q4U1K908IlgaVRn/rx+3Ygct3nZUeXPOJXo9v/cY
-         bK5gUpgEJPH1jpOgpkX3DqbGcRcCXpTQaTfTmVByIYopKHGqbgRFGqt9V6V/maAjXY87
-         vTPT1C1rZ2/yyVk+doBLHfa/EeEHbzu6MgtrpKNFtMabwRqQbKKsemEUU8dnuUbYb73l
-         kHyQWdVbUNpOeOgxOJjpYpNC+rU4Gl4/XOUuWFsTh5c5/CxyQ9nPUpbXhIrWqUrTxxhc
-         UMGpjRmc3dAHG4ZSaJlt+SOn2YfzhFeiuznIFrGwceiWJ4kG+qsykmTQ2UvpoBP21Nhf
-         XlIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685646317; x=1688238317;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yn6AtAHnk/JRQ6tg3VOO2xTr5zdu98dQLt73x2iUz/8=;
-        b=MFhbBDOc7fDe3SyhfceDvrvyDHO4lRjOQgCAocJSP9GwEAoB7KeTfGUmYIaFx3tyZg
-         miWgZALAhaXqL4SAQaThU9fzFooMQs9tyF87im3bT0i3YTn64PJODv1gOC3UPsFRLE2u
-         pPGe2hVWT04hMBnJ4vVeKzyDn49iFJi5yV+hsL3zAqI7nWcwsRuNHzlL75HjR/ZgZG6r
-         0KWL3Q8k/e+hDtOsSkBVlWBFeyXI/xq3XnLnoPMJ5rDbRXWRJVSEE/Clho/GNvVVbaVq
-         REg15tRPqj+oAJYctGCnxusCEvRNn+16bZi5JOz5Pp0C89qeuMotICdPeAi3rdMtN+RP
-         fqMw==
-X-Gm-Message-State: AC+VfDyw63jAP/t/8H1a5hJG5flNxQyy7vOC7yW65So6KDILdYFKp7Bh
-        iD5JsQIhyk6PZ8zTxNnMf4aeFl9dWf4DEA==
-X-Google-Smtp-Source: ACHHUZ6sPBq1F5986rglI1DSySnxtczgNgLz6KrKanHQAMXYm7dpG2q3r6n3t+iZpQw7PKXLF6ps8A==
-X-Received: by 2002:a17:907:9806:b0:96a:9b5b:5d80 with SMTP id ji6-20020a170907980600b0096a9b5b5d80mr8935321ejc.13.1685646316531;
-        Thu, 01 Jun 2023 12:05:16 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:810a:9640:26a8:d56e:8fdf:f926:4676])
-        by smtp.gmail.com with ESMTPSA id k17-20020a170906681100b0096f7105b3a6sm10827323ejr.189.2023.06.01.12.05.15
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 01 Jun 2023 12:05:16 -0700 (PDT)
-From:   Franziska Naepelt <franziska.naepelt@googlemail.com>
-X-Google-Original-From: Franziska Naepelt <franziska.naepelt@gmail.com>
-To:     keyrings@vger.kernel.org
-Cc:     dhowells@redhat.com, dwmw2@infradead.org,
-        linux-kernel@vger.kernel.org,
-        Franziska Naepelt <franziska.naepelt@gmail.com>
-Subject: [PATCH] certs/extract-cert: Fix checkpatch issues
-Date:   Thu,  1 Jun 2023 21:05:08 +0200
-Message-Id: <20230601190508.56610-1-franziska.naepelt@gmail.com>
-X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+        with ESMTP id S229866AbjFAVAo (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Jun 2023 17:00:44 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0BDCB3;
+        Thu,  1 Jun 2023 14:00:42 -0700 (PDT)
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 351Kr83v026695;
+        Thu, 1 Jun 2023 21:00:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=f5x0/rJos9gwvHYQA7IE2LGxiRmwdpLZcGH5jW2WHfo=;
+ b=btXPeQEICBBLmEWOhCgPFOH4l+6zPjE+E13XFC9Tz92C+OkcvfGDK0ClaRjUGbrxJZ9X
+ Ajxq5pKK2+H3UJeO1/tXuvHuGSFKGif4sHD6v6qUjPZD3d3HEHq9Zo2hi0Ilwb4ae8ak
+ zh0Pkdl7nhnfv2/1FhC3AD0M6+5h1Jd0JHi4AgEuiOg2EndWRsTFJ8zePsMranCFAtDX
+ oG9lpfDomlRAHH4JCnxYmxVhzCoPyW2eCCuRLMJ667dlyb9mXfYcLA3qVmtufUHUAAj8
+ Apr5WCPd7jKa9yu0NJwBujIcR3BFZrmvJclA4+A0rWUSZawOWQas44T2ZMNNzU/S56c4 lA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qy2rv05kq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 01 Jun 2023 21:00:13 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 351KrLjY027711;
+        Thu, 1 Jun 2023 21:00:12 GMT
+Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qy2rv05j4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 01 Jun 2023 21:00:12 +0000
+Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
+        by ppma03dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 351FfL7C017372;
+        Thu, 1 Jun 2023 21:00:10 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([9.208.130.99])
+        by ppma03dal.us.ibm.com (PPS) with ESMTPS id 3qu9g5ac14-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 01 Jun 2023 21:00:10 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+        by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 351L084i31523462
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 1 Jun 2023 21:00:09 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id CDD7658067;
+        Thu,  1 Jun 2023 21:00:08 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 2842A58063;
+        Thu,  1 Jun 2023 21:00:07 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+        by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+        Thu,  1 Jun 2023 21:00:07 +0000 (GMT)
+Message-ID: <fd161de5-61ce-94bf-96cf-65965115f981@linux.ibm.com>
+Date:   Thu, 1 Jun 2023 17:00:02 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v5 2/2] KEYS: asymmetric: Copy sig and digest in
+ public_key_verify_signature()
+Content-Language: en-US
+To:     Roberto Sassu <roberto.sassu@huaweicloud.com>, dhowells@redhat.com,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        ebiggers@kernel.org
+Cc:     linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
+References: <20221227142740.2807136-1-roberto.sassu@huaweicloud.com>
+ <20221227142740.2807136-3-roberto.sassu@huaweicloud.com>
+From:   Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20221227142740.2807136-3-roberto.sassu@huaweicloud.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: c9Sbz3X_pkw-aUsteyk-p_sfXxfvsNe5
+X-Proofpoint-ORIG-GUID: CG_mh8o8SpS0AnCLrMfMk75Yx0y4ZAKd
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-01_08,2023-05-31_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
+ spamscore=0 bulkscore=0 priorityscore=1501 phishscore=0 adultscore=0
+ impostorscore=0 clxscore=1011 lowpriorityscore=0 mlxlogscore=999
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2304280000 definitions=main-2306010177
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H5,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,85 +102,118 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The following issues are fixed:
-- WARNING: Missing or malformed SPDX-License-Identifier tag
-- WARNING: Prefer __noreturn over __attribute__((noreturn))
-- ERROR: trailing statements should be on next line
-- WARNING: braces {} are not necessary for single statement blocks
-- ERROR: space required before the open parenthesis '('
-- ERROR: code indent should use tabs where possible
-- WARNING: please, no spaces at the start of a line
-- WARNING: Missing a blank line after declarations
 
-Signed-off-by: Franziska Naepelt <franziska.naepelt@gmail.com>
----
- certs/extract-cert.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/certs/extract-cert.c b/certs/extract-cert.c
-index 70e9ec89d87d..dd76fb0f7f8d 100644
---- a/certs/extract-cert.c
-+++ b/certs/extract-cert.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: LGPL-2.1
- /* Extract X.509 certificate in DER form from PKCS#11 or PEM.
-  *
-  * Copyright © 2014-2015 Red Hat, Inc. All Rights Reserved.
-@@ -32,7 +33,7 @@
+On 12/27/22 09:27, Roberto Sassu wrote:
+> From: Roberto Sassu <roberto.sassu@huawei.com>
+> 
+> Commit ac4e97abce9b8 ("scatterlist: sg_set_buf() argument must be in linear
+> mapping") checks that both the signature and the digest reside in the
+> linear mapping area.
+> 
+> However, more recently commit ba14a194a434c ("fork: Add generic vmalloced
+> stack support") made it possible to move the stack in the vmalloc area,
+> which is not contiguous, and thus not suitable for sg_set_buf() which needs
+> adjacent pages.
+> 
+> Always make a copy of the signature and digest in the same buffer used to
+> store the key and its parameters, and pass them to sg_init_one(). Prefer it
+> to conditionally doing the copy if necessary, to keep the code simple. The
+> buffer allocated with kmalloc() is in the linear mapping area.
+> 
+> Cc: stable@vger.kernel.org # 4.9.x
+> Fixes: ba14a194a434 ("fork: Add generic vmalloced stack support")
+> Link: https://lore.kernel.org/linux-integrity/Y4pIpxbjBdajymBJ@sol.localdomain/
+> Suggested-by: Eric Biggers <ebiggers@kernel.org>
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> Reviewed-by: Eric Biggers <ebiggers@google.com>
 
- #define PKEY_ID_PKCS7 2
+I just ran into an issue with OpenBMC on ARM where EVM ECDSA signature verification failed due to invalid hashes being passed to the ECDSA signature verification algorithm. This patch here resolved the issue.
 
--static __attribute__((noreturn))
-+static __noreturn
- void format(void)
- {
- 	fprintf(stderr,
-@@ -63,7 +64,8 @@ static void drain_openssl_errors(void)
+Tested-by: Stefan Berger <stefanb@linux.ibm.com>
 
- 	if (ERR_peek_error() == 0)
- 		return;
--	while (ERR_get_error_line(&file, &line)) {}
-+	while (ERR_get_error_line(&file, &line))
-+		;
- }
 
- #define ERR(cond, fmt, ...)				\
-@@ -73,7 +75,7 @@ static void drain_openssl_errors(void)
- 		if (__cond) {				\
- 			err(1, fmt, ## __VA_ARGS__);	\
- 		}					\
--	} while(0)
-+	} while (0)
 
- static const char *key_pass;
- static BIO *wb;
-@@ -107,7 +109,7 @@ int main(int argc, char **argv)
- 	if (verbose_env && strchr(verbose_env, '1'))
- 		verbose = true;
-
--        key_pass = getenv("KBUILD_SIGN_PIN");
-+	key_pass = getenv("KBUILD_SIGN_PIN");
-
- 	if (argc != 3)
- 		format();
-@@ -118,6 +120,7 @@ int main(int argc, char **argv)
- 	if (!cert_src[0]) {
- 		/* Invoked with no input; create empty file */
- 		FILE *f = fopen(cert_dst, "wb");
-+
- 		ERR(!f, "%s", cert_dst);
- 		fclose(f);
- 		exit(0);
-@@ -155,6 +158,7 @@ int main(int argc, char **argv)
- 			x509 = PEM_read_bio_X509(b, NULL, NULL, NULL);
- 			if (wb && !x509) {
- 				unsigned long err = ERR_peek_last_error();
-+
- 				if (ERR_GET_LIB(err) == ERR_LIB_PEM &&
- 				    ERR_GET_REASON(err) == PEM_R_NO_START_LINE) {
- 					ERR_clear_error();
-
-base-commit: 7877cb91f1081754a1487c144d85dc0d2e2e7fc4
---
-2.39.2 (Apple Git-143)
-
+> ---
+>   crypto/asymmetric_keys/public_key.c | 38 ++++++++++++++++-------------
+>   1 file changed, 21 insertions(+), 17 deletions(-)
+> 
+> diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+> index 2f8352e88860..49a3f7c01149 100644
+> --- a/crypto/asymmetric_keys/public_key.c
+> +++ b/crypto/asymmetric_keys/public_key.c
+> @@ -360,9 +360,10 @@ int public_key_verify_signature(const struct public_key *pkey,
+>   	struct crypto_wait cwait;
+>   	struct crypto_akcipher *tfm;
+>   	struct akcipher_request *req;
+> -	struct scatterlist src_sg[2];
+> +	struct scatterlist src_sg;
+>   	char alg_name[CRYPTO_MAX_ALG_NAME];
+> -	char *key, *ptr;
+> +	char *buf, *ptr;
+> +	size_t buf_len;
+>   	int ret;
+>   
+>   	pr_devel("==>%s()\n", __func__);
+> @@ -400,34 +401,37 @@ int public_key_verify_signature(const struct public_key *pkey,
+>   	if (!req)
+>   		goto error_free_tfm;
+>   
+> -	key = kmalloc(pkey->keylen + sizeof(u32) * 2 + pkey->paramlen,
+> -		      GFP_KERNEL);
+> -	if (!key)
+> +	buf_len = max_t(size_t, pkey->keylen + sizeof(u32) * 2 + pkey->paramlen,
+> +			sig->s_size + sig->digest_size);
+> +
+> +	buf = kmalloc(buf_len, GFP_KERNEL);
+> +	if (!buf)
+>   		goto error_free_req;
+>   
+> -	memcpy(key, pkey->key, pkey->keylen);
+> -	ptr = key + pkey->keylen;
+> +	memcpy(buf, pkey->key, pkey->keylen);
+> +	ptr = buf + pkey->keylen;
+>   	ptr = pkey_pack_u32(ptr, pkey->algo);
+>   	ptr = pkey_pack_u32(ptr, pkey->paramlen);
+>   	memcpy(ptr, pkey->params, pkey->paramlen);
+>   
+>   	if (pkey->key_is_private)
+> -		ret = crypto_akcipher_set_priv_key(tfm, key, pkey->keylen);
+> +		ret = crypto_akcipher_set_priv_key(tfm, buf, pkey->keylen);
+>   	else
+> -		ret = crypto_akcipher_set_pub_key(tfm, key, pkey->keylen);
+> +		ret = crypto_akcipher_set_pub_key(tfm, buf, pkey->keylen);
+>   	if (ret)
+> -		goto error_free_key;
+> +		goto error_free_buf;
+>   
+>   	if (strcmp(pkey->pkey_algo, "sm2") == 0 && sig->data_size) {
+>   		ret = cert_sig_digest_update(sig, tfm);
+>   		if (ret)
+> -			goto error_free_key;
+> +			goto error_free_buf;
+>   	}
+>   
+> -	sg_init_table(src_sg, 2);
+> -	sg_set_buf(&src_sg[0], sig->s, sig->s_size);
+> -	sg_set_buf(&src_sg[1], sig->digest, sig->digest_size);
+> -	akcipher_request_set_crypt(req, src_sg, NULL, sig->s_size,
+> +	memcpy(buf, sig->s, sig->s_size);
+> +	memcpy(buf + sig->s_size, sig->digest, sig->digest_size);
+> +
+> +	sg_init_one(&src_sg, buf, sig->s_size + sig->digest_size);
+> +	akcipher_request_set_crypt(req, &src_sg, NULL, sig->s_size,
+>   				   sig->digest_size);
+>   	crypto_init_wait(&cwait);
+>   	akcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
+> @@ -435,8 +439,8 @@ int public_key_verify_signature(const struct public_key *pkey,
+>   				      crypto_req_done, &cwait);
+>   	ret = crypto_wait_req(crypto_akcipher_verify(req), &cwait);
+>   
+> -error_free_key:
+> -	kfree(key);
+> +error_free_buf:
+> +	kfree(buf);
+>   error_free_req:
+>   	akcipher_request_free(req);
+>   error_free_tfm:
