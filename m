@@ -2,474 +2,122 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E02E171F61B
-	for <lists+keyrings@lfdr.de>; Fri,  2 Jun 2023 00:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9114571F862
+	for <lists+keyrings@lfdr.de>; Fri,  2 Jun 2023 04:28:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232579AbjFAWiB (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 1 Jun 2023 18:38:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49972 "EHLO
+        id S233301AbjFBC2A (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 1 Jun 2023 22:28:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229542AbjFAWiA (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Jun 2023 18:38:00 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBC3D137;
-        Thu,  1 Jun 2023 15:37:58 -0700 (PDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 351MXb5l020030;
-        Thu, 1 Jun 2023 22:37:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=EfnFuxZjlOSYiQPbj17zco2tgyYM37DKcL7hgMjAjhE=;
- b=cVWm3Ep57LPyNV5Hv/D8JVkRy8nGEBX1vW9mNguXTpscHOjXUGBfrGkZNtNNdzPH7jfB
- peFHIlfEB50Q8EaFqgVuXlbjPkcdlnrgY3H9bUleJhFGSDCLS9vIt5Y0/b3sB7T3HWl7
- udoE9A68BjyDarCNG6OlyxiFsYUwkr1/4RLA6FZy9M21Rtswv8kvEEJH7DEPQ2aRryaf
- cq0dYSC7uK5l6A/jojOQbJVIY+SPZU0CGqJtt3KTHqD56MPpeCWQCkv/lP2kNbjKfUw4
- R9gHtoo1kdXr8UPXiNFsN59ApdG3178B46SX04vTZ2r0j3S89HDzd8xzoKJzNe0UBSRf lg== 
-Received: from ppma03dal.us.ibm.com (b.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.11])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3qy47w036h-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 01 Jun 2023 22:37:48 +0000
-Received: from pps.filterd (ppma03dal.us.ibm.com [127.0.0.1])
-        by ppma03dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 351G5SXm017488;
-        Thu, 1 Jun 2023 22:37:48 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([9.208.130.99])
-        by ppma03dal.us.ibm.com (PPS) with ESMTPS id 3qu9g5af8r-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 01 Jun 2023 22:37:48 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-        by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 351Mbkb738273722
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 1 Jun 2023 22:37:47 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id CE8DC58064;
-        Thu,  1 Jun 2023 22:37:46 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 97AEF58069;
-        Thu,  1 Jun 2023 22:37:46 +0000 (GMT)
-Received: from rhel-laptop.ibm.com (unknown [9.61.58.163])
-        by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-        Thu,  1 Jun 2023 22:37:46 +0000 (GMT)
-From:   gjoyce@linux.vnet.ibm.com
-To:     linux-block@vger.kernel.org
-Cc:     linuxppc-dev@lists.ozlabs.org, jonathan.derrick@linux.dev,
-        brking@linux.vnet.ibm.com, msuchanek@suse.de, mpe@ellerman.id.au,
-        nayna@linux.ibm.com, axboe@kernel.dk, akpm@linux-foundation.org,
-        gjoyce@linux.vnet.ibm.com, keyrings@vger.kernel.org
-Subject: [PATCH v4 RESEND 3/3] block: sed-opal: keyring support for SED keys
-Date:   Thu,  1 Jun 2023 17:37:45 -0500
-Message-Id: <20230601223745.2136203-4-gjoyce@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20230601223745.2136203-1-gjoyce@linux.vnet.ibm.com>
-References: <20230601223745.2136203-1-gjoyce@linux.vnet.ibm.com>
+        with ESMTP id S229781AbjFBC17 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Jun 2023 22:27:59 -0400
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9915E184;
+        Thu,  1 Jun 2023 19:27:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1685672878; x=1717208878;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=IQBY6CSkF8HVOgom8PLO7+N9vZQlh9ITh/b+24j0gaw=;
+  b=OBaO2K0sT5WUJ6xpLrIEUoWljkhh7rf2/BCOeFG/PkOs8AlDrl8kkOs/
+   xbFEmf0lYiL4yYdH0RciLcS7E/flSOMAjjidZnrD9r8J4mgK4x+ceve1k
+   B2EJeMWYeDbmWAEyC2AMKXB/R4nOP++pGO2G+/7LGNsgQhBbScHmkvL3j
+   xQm6kAe7seTY91nyEj2h0NjceWDaPbGPr8+R33TAgUv2JsUyjFqHYEBU3
+   IAn72TM0r4XbovbzZfTkmlMGpUPhBaRzRNkzJfQcMA3FSHNg9WbgcPLym
+   HNDDs/51k7s24oXHOH/NCFK7e5E+OzNQVfVLPc0d0HjmH2QymknHKdHdX
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="335360372"
+X-IronPort-AV: E=Sophos;i="6.00,211,1681196400"; 
+   d="scan'208";a="335360372"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 19:27:57 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="881872738"
+X-IronPort-AV: E=Sophos;i="6.00,211,1681196400"; 
+   d="scan'208";a="881872738"
+Received: from lkp-server01.sh.intel.com (HELO fb1ced2c09fb) ([10.239.97.150])
+  by orsmga005.jf.intel.com with ESMTP; 01 Jun 2023 19:27:55 -0700
+Received: from kbuild by fb1ced2c09fb with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1q4uWB-0002vu-0K;
+        Fri, 02 Jun 2023 02:27:55 +0000
+Date:   Fri, 2 Jun 2023 10:27:53 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Franziska Naepelt <franziska.naepelt@googlemail.com>,
+        keyrings@vger.kernel.org
+Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+        dhowells@redhat.com, dwmw2@infradead.org,
+        linux-kernel@vger.kernel.org,
+        Franziska Naepelt <franziska.naepelt@gmail.com>
+Subject: Re: [PATCH] certs/extract-cert: Fix checkpatch issues
+Message-ID: <202306021040.UTvXfH5J-lkp@intel.com>
+References: <20230601190508.56610-1-franziska.naepelt@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: IJcoqBLBCodSqEsdyidzduY-JlLAsq5d
-X-Proofpoint-GUID: IJcoqBLBCodSqEsdyidzduY-JlLAsq5d
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
- definitions=2023-06-01_08,2023-05-31_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- lowpriorityscore=0 impostorscore=0 mlxlogscore=999 priorityscore=1501
- spamscore=0 phishscore=0 clxscore=1015 mlxscore=0 adultscore=0
- suspectscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2304280000 definitions=main-2306010194
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230601190508.56610-1-franziska.naepelt@gmail.com>
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+Hi Franziska,
 
-Extend the SED block driver so it can alternatively
-obtain a key from a sed-opal kernel keyring. The SED
-ioctls will indicate the source of the key, either
-directly in the ioctl data or from the keyring.
+kernel test robot noticed the following build errors:
 
-This allows the use of SED commands in scripts such as
-udev scripts so that drives may be automatically unlocked
-as they become available.
+[auto build test ERROR on 7877cb91f1081754a1487c144d85dc0d2e2e7fc4]
 
-Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
----
- block/Kconfig                 |   2 +
- block/sed-opal.c              | 174 +++++++++++++++++++++++++++++++++-
- include/linux/sed-opal.h      |   3 +
- include/uapi/linux/sed-opal.h |   8 +-
- 4 files changed, 184 insertions(+), 3 deletions(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Franziska-Naepelt/certs-extract-cert-Fix-checkpatch-issues/20230602-030657
+base:   7877cb91f1081754a1487c144d85dc0d2e2e7fc4
+patch link:    https://lore.kernel.org/r/20230601190508.56610-1-franziska.naepelt%40gmail.com
+patch subject: [PATCH] certs/extract-cert: Fix checkpatch issues
+config: mips-buildonly-randconfig-r002-20230602 (https://download.01.org/0day-ci/archive/20230602/202306021040.UTvXfH5J-lkp@intel.com/config)
+compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project 4faf3aaf28226a4e950c103a14f6fc1d1fdabb1b)
+reproduce (this is a W=1 build):
+        mkdir -p ~/bin
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # install mips cross compiling tool for clang build
+        # apt-get install binutils-mipsel-linux-gnu
+        # https://github.com/intel-lab-lkp/linux/commit/7fdfaec7a3c9f58676a5892e679d8bca319abd8a
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Franziska-Naepelt/certs-extract-cert-Fix-checkpatch-issues/20230602-030657
+        git checkout 7fdfaec7a3c9f58676a5892e679d8bca319abd8a
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang ~/bin/make.cross W=1 O=build_dir ARCH=mips olddefconfig
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=clang ~/bin/make.cross W=1 O=build_dir ARCH=mips SHELL=/bin/bash
 
-diff --git a/block/Kconfig b/block/Kconfig
-index 941b2dca70db..76b23114fdeb 100644
---- a/block/Kconfig
-+++ b/block/Kconfig
-@@ -180,6 +180,8 @@ config BLK_DEBUG_FS_ZONED
- 
- config BLK_SED_OPAL
- 	bool "Logic for interfacing with Opal enabled SEDs"
-+	depends on KEYS
-+	select PSERIES_PLPKS if PPC_PSERIES
- 	help
- 	Builds Logic for interfacing with Opal enabled controllers.
- 	Enabling this option enables users to setup/unlock/lock
-diff --git a/block/sed-opal.c b/block/sed-opal.c
-index 5b277eaabbc7..7f5f235a9048 100644
---- a/block/sed-opal.c
-+++ b/block/sed-opal.c
-@@ -20,6 +20,9 @@
- #include <linux/sed-opal.h>
- #include <linux/string.h>
- #include <linux/kdev_t.h>
-+#include <linux/key.h>
-+#include <linux/key-type.h>
-+#include <keys/user-type.h>
- 
- #include "opal_proto.h"
- 
-@@ -29,6 +32,8 @@
- /* Number of bytes needed by cmd_finalize. */
- #define CMD_FINALIZE_BYTES_NEEDED 7
- 
-+static struct key *sed_opal_keyring;
-+
- struct opal_step {
- 	int (*fn)(struct opal_dev *dev, void *data);
- 	void *data;
-@@ -265,6 +270,101 @@ static void print_buffer(const u8 *ptr, u32 length)
- #endif
- }
- 
-+/*
-+ * Allocate/update a SED Opal key and add it to the SED Opal keyring.
-+ */
-+static int update_sed_opal_key(const char *desc, u_char *key_data, int keylen)
-+{
-+	key_ref_t kr;
-+
-+	if (!sed_opal_keyring)
-+		return -ENOKEY;
-+
-+	kr = key_create_or_update(make_key_ref(sed_opal_keyring, true), "user",
-+				  desc, (const void *)key_data, keylen,
-+				  KEY_USR_VIEW | KEY_USR_SEARCH | KEY_USR_WRITE,
-+				  KEY_ALLOC_NOT_IN_QUOTA | KEY_ALLOC_BUILT_IN |
-+					KEY_ALLOC_BYPASS_RESTRICTION);
-+	if (IS_ERR(kr)) {
-+		pr_err("Error adding SED key (%ld)\n", PTR_ERR(kr));
-+		return PTR_ERR(kr);
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * Read a SED Opal key from the SED Opal keyring.
-+ */
-+static int read_sed_opal_key(const char *key_name, u_char *buffer, int buflen)
-+{
-+	int ret;
-+	key_ref_t kref;
-+	struct key *key;
-+
-+	if (!sed_opal_keyring)
-+		return -ENOKEY;
-+
-+	kref = keyring_search(make_key_ref(sed_opal_keyring, true),
-+			      &key_type_user, key_name, true);
-+
-+	if (IS_ERR(kref))
-+		ret = PTR_ERR(kref);
-+
-+	key = key_ref_to_ptr(kref);
-+	down_read(&key->sem);
-+	ret = key_validate(key);
-+	if (ret == 0) {
-+		if (buflen > key->datalen)
-+			buflen = key->datalen;
-+
-+		ret = key->type->read(key, (char *)buffer, buflen);
-+	}
-+	up_read(&key->sem);
-+
-+	key_ref_put(kref);
-+
-+	return ret;
-+}
-+
-+static int opal_get_key(struct opal_dev *dev, struct opal_key *key)
-+{
-+	int ret = 0;
-+
-+	switch (key->key_type) {
-+	case OPAL_INCLUDED:
-+		/* the key is ready to use */
-+		break;
-+	case OPAL_KEYRING:
-+		/* the key is in the keyring */
-+		ret = read_sed_opal_key(OPAL_AUTH_KEY, key->key, OPAL_KEY_MAX);
-+		if (ret > 0) {
-+			if (ret > U8_MAX) {
-+				ret = -ENOSPC;
-+				goto error;
-+			}
-+			key->key_len = ret;
-+			key->key_type = OPAL_INCLUDED;
-+		}
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		break;
-+	}
-+	if (ret < 0)
-+		goto error;
-+
-+	/* must have a PEK by now or it's an error */
-+	if (key->key_type != OPAL_INCLUDED || key->key_len == 0) {
-+		ret = -EINVAL;
-+		goto error;
-+	}
-+	return 0;
-+error:
-+	pr_debug("Error getting password: %d\n", ret);
-+	return ret;
-+}
-+
- static bool check_tper(const void *data)
- {
- 	const struct d0_tper_features *tper = data;
-@@ -2271,6 +2371,9 @@ static int opal_secure_erase_locking_range(struct opal_dev *dev,
- 	};
- 	int ret;
- 
-+	ret = opal_get_key(dev, &opal_session->opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, erase_steps, ARRAY_SIZE(erase_steps));
-@@ -2304,6 +2407,9 @@ static int opal_revertlsp(struct opal_dev *dev, struct opal_revert_lsp *rev)
- 	};
- 	int ret;
- 
-+	ret = opal_get_key(dev, &rev->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, steps, ARRAY_SIZE(steps));
-@@ -2322,6 +2428,9 @@ static int opal_erase_locking_range(struct opal_dev *dev,
- 	};
- 	int ret;
- 
-+	ret = opal_get_key(dev, &opal_session->opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, erase_steps, ARRAY_SIZE(erase_steps));
-@@ -2350,6 +2459,9 @@ static int opal_enable_disable_shadow_mbr(struct opal_dev *dev,
- 	    opal_mbr->enable_disable != OPAL_MBR_DISABLE)
- 		return -EINVAL;
- 
-+	ret = opal_get_key(dev, &opal_mbr->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, mbr_steps, ARRAY_SIZE(mbr_steps));
-@@ -2375,6 +2487,9 @@ static int opal_set_mbr_done(struct opal_dev *dev,
- 	    mbr_done->done_flag != OPAL_MBR_NOT_DONE)
- 		return -EINVAL;
- 
-+	ret = opal_get_key(dev, &mbr_done->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, mbr_steps, ARRAY_SIZE(mbr_steps));
-@@ -2396,6 +2511,9 @@ static int opal_write_shadow_mbr(struct opal_dev *dev,
- 	if (info->size == 0)
- 		return 0;
- 
-+	ret = opal_get_key(dev, &info->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, mbr_steps, ARRAY_SIZE(mbr_steps));
-@@ -2452,6 +2570,9 @@ static int opal_add_user_to_lr(struct opal_dev *dev,
- 		return -EINVAL;
- 	}
- 
-+	ret = opal_get_key(dev, &lk_unlk->session.opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, steps, ARRAY_SIZE(steps));
-@@ -2474,6 +2595,10 @@ static int opal_reverttper(struct opal_dev *dev, struct opal_key *opal, bool psi
- 
- 	int ret;
- 
-+	ret = opal_get_key(dev, opal);
-+
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	if (psid)
-@@ -2574,6 +2699,9 @@ static int opal_lock_unlock(struct opal_dev *dev,
- 	if (lk_unlk->session.who > OPAL_USER9)
- 		return -EINVAL;
- 
-+	ret = opal_get_key(dev, &lk_unlk->session.opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	opal_lock_check_for_saved_key(dev, lk_unlk);
- 	ret = __opal_lock_unlock(dev, lk_unlk);
-@@ -2597,6 +2725,9 @@ static int opal_take_ownership(struct opal_dev *dev, struct opal_key *opal)
- 	if (!dev)
- 		return -ENODEV;
- 
-+	ret = opal_get_key(dev, opal);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, owner_steps, ARRAY_SIZE(owner_steps));
-@@ -2619,6 +2750,9 @@ static int opal_activate_lsp(struct opal_dev *dev,
- 	if (!opal_lr_act->num_lrs || opal_lr_act->num_lrs > OPAL_MAX_LRS)
- 		return -EINVAL;
- 
-+	ret = opal_get_key(dev, &opal_lr_act->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, active_steps, ARRAY_SIZE(active_steps));
-@@ -2637,6 +2771,9 @@ static int opal_setup_locking_range(struct opal_dev *dev,
- 	};
- 	int ret;
- 
-+	ret = opal_get_key(dev, &opal_lrs->session.opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, lr_steps, ARRAY_SIZE(lr_steps));
-@@ -2663,6 +2800,14 @@ static int opal_set_new_pw(struct opal_dev *dev, struct opal_new_pw *opal_pw)
- 	ret = execute_steps(dev, pw_steps, ARRAY_SIZE(pw_steps));
- 	mutex_unlock(&dev->dev_lock);
- 
-+	if (ret)
-+		return ret;
-+
-+	/* update keyring with new password */
-+	ret = update_sed_opal_key(OPAL_AUTH_KEY,
-+				  opal_pw->new_user_pw.opal_key.key,
-+				  opal_pw->new_user_pw.opal_key.key_len);
-+
- 	return ret;
- }
- 
-@@ -2683,6 +2828,9 @@ static int opal_activate_user(struct opal_dev *dev,
- 		return -EINVAL;
- 	}
- 
-+	ret = opal_get_key(dev, &opal_session->opal_key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 	ret = execute_steps(dev, act_steps, ARRAY_SIZE(act_steps));
-@@ -2769,6 +2917,9 @@ static int opal_generic_read_write_table(struct opal_dev *dev,
- {
- 	int ret, bit_set;
- 
-+	ret = opal_get_key(dev, &rw_tbl->key);
-+	if (ret)
-+		return ret;
- 	mutex_lock(&dev->dev_lock);
- 	setup_opal_dev(dev);
- 
-@@ -2817,9 +2968,9 @@ int sed_ioctl(struct opal_dev *dev, unsigned int cmd, void __user *arg)
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EACCES;
- 	if (!dev)
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 	if (!(dev->flags & OPAL_FL_SUPPORTED))
--		return -ENOTSUPP;
-+		return -EOPNOTSUPP;
- 
- 	if (cmd & IOC_IN) {
- 		p = memdup_user(arg, _IOC_SIZE(cmd));
-@@ -2895,3 +3046,22 @@ int sed_ioctl(struct opal_dev *dev, unsigned int cmd, void __user *arg)
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(sed_ioctl);
-+
-+static int __init sed_opal_init(void)
-+{
-+	struct key *kr;
-+
-+	kr = keyring_alloc(".sed_opal",
-+			   GLOBAL_ROOT_UID, GLOBAL_ROOT_GID, current_cred(),
-+			   (KEY_POS_ALL & ~KEY_POS_SETATTR) | KEY_USR_VIEW |
-+			   KEY_USR_READ | KEY_USR_SEARCH | KEY_USR_WRITE,
-+			   KEY_ALLOC_NOT_IN_QUOTA,
-+			   NULL, NULL);
-+	if (IS_ERR(kr))
-+		return PTR_ERR(kr);
-+
-+	sed_opal_keyring = kr;
-+
-+	return 0;
-+}
-+late_initcall(sed_opal_init);
-diff --git a/include/linux/sed-opal.h b/include/linux/sed-opal.h
-index bf2f9d7e11eb..bd5f4fe7156d 100644
---- a/include/linux/sed-opal.h
-+++ b/include/linux/sed-opal.h
-@@ -25,6 +25,9 @@ bool opal_unlock_from_suspend(struct opal_dev *dev);
- struct opal_dev *init_opal_dev(void *data, sec_send_recv *send_recv);
- int sed_ioctl(struct opal_dev *dev, unsigned int cmd, void __user *ioctl_ptr);
- 
-+#define	OPAL_AUTH_KEY           "opal-boot-pin"
-+#define	OPAL_AUTH_KEY_PREV      "opal-boot-pin-prev"
-+
- static inline bool is_sed_ioctl(unsigned int cmd)
- {
- 	switch (cmd) {
-diff --git a/include/uapi/linux/sed-opal.h b/include/uapi/linux/sed-opal.h
-index 720725f1c42a..bd285801e678 100644
---- a/include/uapi/linux/sed-opal.h
-+++ b/include/uapi/linux/sed-opal.h
-@@ -49,10 +49,16 @@ enum opal_lock_flags {
- 	OPAL_SAVE_FOR_LOCK = 0x01,
- };
- 
-+enum opal_key_type {
-+	OPAL_INCLUDED = 0,	/* key[] is the key */
-+	OPAL_KEYRING,		/* key is in keyring */
-+};
-+
- struct opal_key {
- 	__u8 lr;
- 	__u8 key_len;
--	__u8 __align[6];
-+	__u8 key_type;
-+	__u8 __align[5];
- 	__u8 key[OPAL_KEY_MAX];
- };
- 
+If you fix the issue, kindly add following tag where applicable
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202306021040.UTvXfH5J-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> certs/extract-cert.c:36:8: error: unknown type name '__noreturn'
+   static __noreturn
+          ^
+   1 error generated.
+
+
+vim +/__noreturn +36 certs/extract-cert.c
+
+    35	
+  > 36	static __noreturn
+    37	void format(void)
+    38	{
+    39		fprintf(stderr,
+    40			"Usage: extract-cert <source> <dest>\n");
+    41		exit(2);
+    42	}
+    43	
+
 -- 
-gjoyce@linux.vnet.ibm.com
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
