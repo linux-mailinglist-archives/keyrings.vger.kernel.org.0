@@ -2,124 +2,155 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FCB671F8BC
-	for <lists+keyrings@lfdr.de>; Fri,  2 Jun 2023 05:10:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D147C71FCE1
+	for <lists+keyrings@lfdr.de>; Fri,  2 Jun 2023 11:00:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233286AbjFBDKG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 1 Jun 2023 23:10:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56582 "EHLO
+        id S232404AbjFBJAJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 2 Jun 2023 05:00:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229868AbjFBDKF (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 1 Jun 2023 23:10:05 -0400
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBD141A7;
-        Thu,  1 Jun 2023 20:10:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1685675403; x=1717211403;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6n29GT5zDRIzg7PRY9i2i6FcdkwF+KLEldJ1Q1w68bU=;
-  b=MquP8uUyVWscG7l9Na7wbNqO5TlRdJQR6u63NzkGzTTJlpBmWs4dcsGF
-   AXToozqlEP8leMJal0HtEFcroKsFk797mGfMPHCR6m3XMcKrLoqIuY9rU
-   niLHq8QhfNy2BnWRAvdCDmH5ckrsRC6qTJUENVgLdr0kLiSCkWxK8FSE2
-   Y/B2Yo80Lr+HXL10Sxky/Nzl40P/MhPE+Z1jSqva8wRw23qimThfs/C5Q
-   bI4atKT0kR1lvQ7YmCQ8Unz/mwycKTe91nCRZpe+VaH8/GqvmAqpyCkQa
-   Q0iXp4jpVSCyCXZtchsgFJLo9EvonaOiHr/YPrdNOyfR0vR8z9CKWpxZk
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="353246159"
-X-IronPort-AV: E=Sophos;i="6.00,211,1681196400"; 
-   d="scan'208";a="353246159"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jun 2023 20:10:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10728"; a="954284982"
-X-IronPort-AV: E=Sophos;i="6.00,211,1681196400"; 
-   d="scan'208";a="954284982"
-Received: from lkp-server01.sh.intel.com (HELO d1d49124694e) ([10.239.97.150])
-  by fmsmga006.fm.intel.com with ESMTP; 01 Jun 2023 20:10:00 -0700
-Received: from kbuild by d1d49124694e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1q4vAu-00001l-0w;
-        Fri, 02 Jun 2023 03:10:00 +0000
-Date:   Fri, 2 Jun 2023 11:09:20 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Franziska Naepelt <franziska.naepelt@googlemail.com>,
-        keyrings@vger.kernel.org
-Cc:     oe-kbuild-all@lists.linux.dev, dhowells@redhat.com,
-        dwmw2@infradead.org, linux-kernel@vger.kernel.org,
-        Franziska Naepelt <franziska.naepelt@gmail.com>
-Subject: Re: [PATCH] certs/extract-cert: Fix checkpatch issues
-Message-ID: <202306021102.zQU95cMI-lkp@intel.com>
+        with ESMTP id S234055AbjFBI71 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 2 Jun 2023 04:59:27 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80B979D;
+        Fri,  2 Jun 2023 01:59:26 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-96f7bf29550so259022866b.3;
+        Fri, 02 Jun 2023 01:59:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20221208; t=1685696365; x=1688288365;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9zc7ZoC9ufmLZ0HTptACDG80Bv4ZTW0gU28aBqMAQ28=;
+        b=noQ6iT+Zr7wBbvSQToDpSqgpxhB3F8DQ7YA2XsULplVfVp5R5YqmY3FHk8ovcsM6kn
+         8lcvp9nUS4S2lAtbpJl+W3yn94WW7lSoeA4WLurw2tQWOaVSUw5Tu3FuinKhnn3ms0nf
+         Abpz0OrT8dsy3dQ2kbcSlDoTJHo0wsJ4GuP3onbVggM6cbG7AAYa+YN3knINEHsQvjwi
+         JLrSwmwT8Ze+iRo4PPzEkEdxzDcA1lK2QuRbWRDmaUBtA7vlIm6UPIzfWX3/IzG/qvIZ
+         zERj6Bksr/WSc1QqwTTebH3AOjgskL/eaw6xW/K1T7G4BxRK/fekA7CD53kV4xW3YfUd
+         5clw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685696365; x=1688288365;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9zc7ZoC9ufmLZ0HTptACDG80Bv4ZTW0gU28aBqMAQ28=;
+        b=TUnddiv8NmRlpx+jxZLADNmYb/2ScGcfG31i7mMnsPXezZuHLGgT5WmWg3AguX35ie
+         Zizhc1QVI1ALThtptNw6knvmnkzwCU6GKs/S5apHuHuCIbGgMRuGSKirMySraM6WVR+a
+         2Kj27ppkUhnVY5Ftt+Rk6ujm1hehiGaYeYskOj7UGLPvw+PAGb6Me1s6AyU+y8BtgPq+
+         FseonMfTeNBo+u/9zIRkgNI9Dl6bMaafucjpbjKd3lWtpe/ew5JuhZuMDp/m/JYzkL8k
+         WVLIYluXjtUJPgOAyMlauI2O8LgX78pPYHsWi0cDRHnYPkokaOIYnKuXLx+7Q/Chnm0t
+         R1MQ==
+X-Gm-Message-State: AC+VfDyGJE8NYLY9aqFXBMI+jsiOFtbpbczOMlioCu+yazPvo93m/bJw
+        F0cj1S3L866HVbXq+XrV7VLwTv+0qsy5CQ==
+X-Google-Smtp-Source: ACHHUZ5q3F2cuL5N7k8iK3ccGd51LClShaNU7udy3ltAjd77ypwS7BCN4QBAnUMxrGtMgg6BRbwqJA==
+X-Received: by 2002:a17:907:2d08:b0:96f:f807:6af5 with SMTP id gs8-20020a1709072d0800b0096ff8076af5mr10701027ejc.39.1685696364694;
+        Fri, 02 Jun 2023 01:59:24 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:810a:9640:26a8:7ce9:cf23:e2e1:1e2e])
+        by smtp.gmail.com with ESMTPSA id h27-20020a1709062ddb00b00965cfc209d5sm505722eji.8.2023.06.02.01.59.23
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 02 Jun 2023 01:59:24 -0700 (PDT)
+From:   Franziska Naepelt <franziska.naepelt@googlemail.com>
+X-Google-Original-From: Franziska Naepelt <franziska.naepelt@gmail.com>
+To:     keyrings@vger.kernel.org
+Cc:     dhowells@redhat.com, dwmw2@infradead.org,
+        linux-kernel@vger.kernel.org,
+        Franziska Naepelt <franziska.naepelt@gmail.com>,
+        kernel test robot <lkp@intel.com>
+Subject: [PATCH v2] certs/extract-cert: Fix checkpatch issues
+Date:   Fri,  2 Jun 2023 10:59:02 +0200
+Message-Id: <20230602085902.59006-1-franziska.naepelt@gmail.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+In-Reply-To: <20230601190508.56610-1-franziska.naepelt@gmail.com>
 References: <20230601190508.56610-1-franziska.naepelt@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230601190508.56610-1-franziska.naepelt@gmail.com>
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Franziska,
+The following issues are fixed:
+- WARNING: Missing or malformed SPDX-License-Identifier tag
+- ERROR: trailing statements should be on next line
+- WARNING: braces {} are not necessary for single statement blocks
+- ERROR: space required before the open parenthesis '('
+- ERROR: code indent should use tabs where possible
+- WARNING: please, no spaces at the start of a line
+- WARNING: Missing a blank line after declarations
 
-kernel test robot noticed the following build errors:
+Closes: https://lore.kernel.org/oe-kbuild-all/202306021040.UTvXfH5J-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202306021102.zQU95cMI-lkp@intel.com/
 
-[auto build test ERROR on 7877cb91f1081754a1487c144d85dc0d2e2e7fc4]
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Franziska Naepelt <franziska.naepelt@gmail.com>
+---
+v2:
+ - revert noreturn changes to fix build issues
+---
+ certs/extract-cert.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Franziska-Naepelt/certs-extract-cert-Fix-checkpatch-issues/20230602-030657
-base:   7877cb91f1081754a1487c144d85dc0d2e2e7fc4
-patch link:    https://lore.kernel.org/r/20230601190508.56610-1-franziska.naepelt%40gmail.com
-patch subject: [PATCH] certs/extract-cert: Fix checkpatch issues
-config: arm-randconfig-r046-20230531 (https://download.01.org/0day-ci/archive/20230602/202306021102.zQU95cMI-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 12.3.0
-reproduce (this is a W=1 build):
-        mkdir -p ~/bin
-        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
-        chmod +x ~/bin/make.cross
-        # https://github.com/intel-lab-lkp/linux/commit/7fdfaec7a3c9f58676a5892e679d8bca319abd8a
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Franziska-Naepelt/certs-extract-cert-Fix-checkpatch-issues/20230602-030657
-        git checkout 7fdfaec7a3c9f58676a5892e679d8bca319abd8a
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=arm olddefconfig
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.3.0 ~/bin/make.cross W=1 O=build_dir ARCH=arm SHELL=/bin/bash
+diff --git a/certs/extract-cert.c b/certs/extract-cert.c
+index 70e9ec89d87d..96c0728bf4d1 100644
+--- a/certs/extract-cert.c
++++ b/certs/extract-cert.c
+@@ -1,3 +1,4 @@
++// SPDX-License-Identifier: LGPL-2.1
+ /* Extract X.509 certificate in DER form from PKCS#11 or PEM.
+  *
+  * Copyright © 2014-2015 Red Hat, Inc. All Rights Reserved.
+@@ -63,7 +64,8 @@ static void drain_openssl_errors(void)
 
-If you fix the issue, kindly add following tag where applicable
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202306021102.zQU95cMI-lkp@intel.com/
+ 	if (ERR_peek_error() == 0)
+ 		return;
+-	while (ERR_get_error_line(&file, &line)) {}
++	while (ERR_get_error_line(&file, &line))
++		;
+ }
 
-All error/warnings (new ones prefixed by >>):
+ #define ERR(cond, fmt, ...)				\
+@@ -73,7 +75,7 @@ static void drain_openssl_errors(void)
+ 		if (__cond) {				\
+ 			err(1, fmt, ## __VA_ARGS__);	\
+ 		}					\
+-	} while(0)
++	} while (0)
 
->> certs/extract-cert.c:36:18: error: expected ';' before 'void'
-      36 | static __noreturn
-         |                  ^
-         |                  ;
-      37 | void format(void)
-         | ~~~~              
->> certs/extract-cert.c:37:6: warning: no previous prototype for 'format' [-Wmissing-prototypes]
-      37 | void format(void)
-         |      ^~~~~~
+ static const char *key_pass;
+ static BIO *wb;
+@@ -107,7 +109,7 @@ int main(int argc, char **argv)
+ 	if (verbose_env && strchr(verbose_env, '1'))
+ 		verbose = true;
 
+-        key_pass = getenv("KBUILD_SIGN_PIN");
++	key_pass = getenv("KBUILD_SIGN_PIN");
 
-vim +36 certs/extract-cert.c
+ 	if (argc != 3)
+ 		format();
+@@ -118,6 +120,7 @@ int main(int argc, char **argv)
+ 	if (!cert_src[0]) {
+ 		/* Invoked with no input; create empty file */
+ 		FILE *f = fopen(cert_dst, "wb");
++
+ 		ERR(!f, "%s", cert_dst);
+ 		fclose(f);
+ 		exit(0);
+@@ -155,6 +158,7 @@ int main(int argc, char **argv)
+ 			x509 = PEM_read_bio_X509(b, NULL, NULL, NULL);
+ 			if (wb && !x509) {
+ 				unsigned long err = ERR_peek_last_error();
++
+ 				if (ERR_GET_LIB(err) == ERR_LIB_PEM &&
+ 				    ERR_GET_REASON(err) == PEM_R_NO_START_LINE) {
+ 					ERR_clear_error();
 
-    35	
-  > 36	static __noreturn
-  > 37	void format(void)
-    38	{
-    39		fprintf(stderr,
-    40			"Usage: extract-cert <source> <dest>\n");
-    41		exit(2);
-    42	}
-    43	
+base-commit: 7877cb91f1081754a1487c144d85dc0d2e2e7fc4
+--
+2.39.2 (Apple Git-143)
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
