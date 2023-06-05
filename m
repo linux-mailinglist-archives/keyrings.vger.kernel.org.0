@@ -2,83 +2,119 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98808722B3B
-	for <lists+keyrings@lfdr.de>; Mon,  5 Jun 2023 17:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB42472320A
+	for <lists+keyrings@lfdr.de>; Mon,  5 Jun 2023 23:15:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234408AbjFEPgc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 5 Jun 2023 11:36:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40792 "EHLO
+        id S231407AbjFEVPA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 5 Jun 2023 17:15:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234322AbjFEPgb (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 5 Jun 2023 11:36:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C641F7;
-        Mon,  5 Jun 2023 08:36:25 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 25B0462720;
-        Mon,  5 Jun 2023 15:36:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 68998C4339B;
-        Mon,  5 Jun 2023 15:36:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685979384;
-        bh=YdamecFINNCEd7qN4wE3PtBR9T5k9xrbpuFxPFkqLHI=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=RMPY3LwpOCY/mrT9wYDvGsqbAzDaHm7CJni6fiO+keKHR+t1lU3wddmZo3zJE88N0
-         f37FVWCFdUAd4d6YyVWvelhsHEuCKBgwwh+LN8Ypu1rB8MTWfwX8Ow5IMA+NqcvmXR
-         4NqzTgdu2D8lS7AJ1cywCNZ+0CEbicumUnHhniMgThBlyKTgf0FiymizXeHS4co4GU
-         5emHEBNnyZSSDHiBISOAo3iKJ7PvcqNxFjiKO55Fu1Ku94gWzDgoNvg3PHqTio8DY4
-         V2486cTNYseo3PYmVQVDD/8ku/Pg4TzLoYqlEq/xnGGKAR95ALxt/+hgm1H+/LS1sg
-         JBlJnorf5jHeQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 4C461E87231;
-        Mon,  5 Jun 2023 15:36:24 +0000 (UTC)
-Subject: Re: [GIT PULL] Asymmetric keys fix for v6.4-rc5
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <4d7e38ff5bbc496cb794b50e1c5c83bcd2317e69.camel@huaweicloud.com>
-References: <4d7e38ff5bbc496cb794b50e1c5c83bcd2317e69.camel@huaweicloud.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <4d7e38ff5bbc496cb794b50e1c5c83bcd2317e69.camel@huaweicloud.com>
-X-PR-Tracked-Remote: https://github.com/robertosassu/linux.git tags/asym-keys-fix-for-linus-v6.4-rc5
-X-PR-Tracked-Commit-Id: c3d03e8e35e005e1a614e51bb59053eeb5857f76
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: f8dba31b0a826e691949cd4fdfa5c30defaac8c5
-Message-Id: <168597938430.2179.8103170042142681716.pr-tracker-bot@kernel.org>
-Date:   Mon, 05 Jun 2023 15:36:24 +0000
-To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Eric Biggers <ebiggers@kernel.org>,
-        Stefan Berger <stefanb@linux.ibm.com>, dhowells@redhat.com,
-        herbert@gondor.apana.org.au, davem@davemloft.net,
-        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S231873AbjFEVOd (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 5 Jun 2023 17:14:33 -0400
+Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14C0DF9
+        for <keyrings@vger.kernel.org>; Mon,  5 Jun 2023 14:14:32 -0700 (PDT)
+Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-64ff1f11054so850848b3a.1
+        for <keyrings@vger.kernel.org>; Mon, 05 Jun 2023 14:14:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1685999671; x=1688591671;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Oqx+vgT1KOd/rG0v+EGrhyHZcbzQJ8RW6j/ejKPzyV0=;
+        b=j8g3UuzxdgTGjVV1y3R5vC/zbawUoqd0GHOEGH735oclZN5uylfFW29k3ALNqymkKO
+         zOI9IJNptXyqvXhuDUohGo6+XB+iqAPTdpS8xnzQbyN9ZzCJb2V48dzwfhNnt29AVlKP
+         VLFoQVZ/RzXJ4vShqVQv27MswBglmWDfKZPdwKBYEJDj+Bem9CeQfIxfrgTssr6LpEO1
+         NWES731IZKMXHlB1inaKp40+GtlmXq369msNQea0Zdy1Az6CPeljXQoJWOQ1BrI3+n99
+         B7Jqj4uJoFy0784kDvEhQTE8TUuagtZ+Pp9TRXRtSLou5H05oXjMmV83/lNRGEwjJYGs
+         gAGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685999671; x=1688591671;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Oqx+vgT1KOd/rG0v+EGrhyHZcbzQJ8RW6j/ejKPzyV0=;
+        b=DaeERYgb5ldNOXSvR92gy6LrRpp6fH6Z4thA6ubQ4DqIBn/+93wED7xcV7SmA1gCr8
+         +k2HFS0iO+rpqQSx2tfLoM4saA885freohx54fqj1RVKr34wkG+m7kejisKoeTdJyTO0
+         1OsHNI6K8wv99+gtwT9sgmnMiaZ+j29eKlQE3iD+wMYYoIW8uCvHsZOp0zIQWR6O5Kn/
+         6u+rY81JhI0ebLz4SMi/cOT4u+WPy3su2ehqYDHTvpgXzFApD9empjJC8ZyHdllHRlWT
+         3Zw6NIZQXxCqFJc/Ocu/IXd8W4/hT+NrcuFmg+f/sZZwzr+YzPz8dsK5fDdpKYbOiDUp
+         ccJA==
+X-Gm-Message-State: AC+VfDz00chZbVj7PBjGmbI/4P/BudJY3PjRhpeUFHzO3aScV6kFSYGX
+        SX6G0+TKcuOJQNBeW5CQzqeJfw==
+X-Google-Smtp-Source: ACHHUZ7F4+qQ0Ki8xUwZZjZ6tfxl9MU00ff9sZzRn2/+Pmuj5tNT2z/CfpIZyNw6H1APR47vxOd/1A==
+X-Received: by 2002:a05:6a00:139a:b0:656:39af:5137 with SMTP id t26-20020a056a00139a00b0065639af5137mr6836048pfg.0.1685999671519;
+        Mon, 05 Jun 2023 14:14:31 -0700 (PDT)
+Received: from ?IPV6:2620:10d:c085:21c1::173f? ([2620:10d:c090:400::5:ffbc])
+        by smtp.gmail.com with ESMTPSA id a6-20020aa78646000000b0064d4d11b8bfsm5604697pfo.59.2023.06.05.14.14.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Jun 2023 14:14:30 -0700 (PDT)
+Message-ID: <e340332d-ef64-9fa9-b4d6-927a3c271730@kernel.dk>
+Date:   Mon, 5 Jun 2023 15:14:28 -0600
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v4 RESEND 0/3] sed-opal: keyrings, discovery, revert, key
+ store
+Content-Language: en-US
+To:     gjoyce@linux.vnet.ibm.com, linux-block@vger.kernel.org
+Cc:     linuxppc-dev@lists.ozlabs.org, jonathan.derrick@linux.dev,
+        brking@linux.vnet.ibm.com, msuchanek@suse.de, mpe@ellerman.id.au,
+        nayna@linux.ibm.com, akpm@linux-foundation.org,
+        keyrings@vger.kernel.org
+References: <20230601223745.2136203-1-gjoyce@linux.vnet.ibm.com>
+From:   Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <20230601223745.2136203-1-gjoyce@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The pull request you sent on Fri, 02 Jun 2023 16:41:04 +0200:
+On 6/1/23 4:37 PM, gjoyce@linux.vnet.ibm.com wrote:
+> From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> 
+> This patchset has gone through numerous rounds of review and
+> all comments/suggetions have been addressed. I believe that
+> this patchset is ready for inclusion.
+> 
+> TCG SED Opal is a specification from The Trusted Computing Group
+> that allows self encrypting storage devices (SED) to be locked at
+> power on and require an authentication key to unlock the drive.
+> 
+> The current SED Opal implementation in the block driver
+> requires that authentication keys be provided in an ioctl
+> so that they can be presented to the underlying SED
+> capable drive. Currently, the key is typically entered by
+> a user with an application like sedutil or sedcli. While
+> this process works, it does not lend itself to automation
+> like unlock by a udev rule.
+> 
+> The SED block driver has been extended so it can alternatively
+> obtain a key from a sed-opal kernel keyring. The SED ioctls
+> will indicate the source of the key, either directly in the
+> ioctl data or from the keyring.
+> 
+> Two new SED ioctls have also been added. These are:
+>   1) IOC_OPAL_REVERT_LSP to revert LSP state
+>   2) IOC_OPAL_DISCOVERY to discover drive capabilities/state
+> 
+> change log v4:
+>         - rebase to 6.3-rc7
+> 	- replaced "255" magic number with U8_MAX
 
-> https://github.com/robertosassu/linux.git tags/asym-keys-fix-for-linus-v6.4-rc5
+None of this applies for for-6.5/block, and I'm a little puzzled
+as to why you'd rebase to an old kernel rather than a 6.4-rc at
+least?
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/f8dba31b0a826e691949cd4fdfa5c30defaac8c5
-
-Thank you!
+Please resend one that is current.
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Jens Axboe
+
+
