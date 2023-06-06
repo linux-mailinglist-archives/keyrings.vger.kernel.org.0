@@ -2,90 +2,63 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3D31724211
-	for <lists+keyrings@lfdr.de>; Tue,  6 Jun 2023 14:28:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87F0072425D
+	for <lists+keyrings@lfdr.de>; Tue,  6 Jun 2023 14:39:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235629AbjFFM27 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 6 Jun 2023 08:28:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59744 "EHLO
+        id S236630AbjFFMjO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 6 Jun 2023 08:39:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229835AbjFFM26 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 6 Jun 2023 08:28:58 -0400
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73A4610C6;
-        Tue,  6 Jun 2023 05:28:57 -0700 (PDT)
-Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-256712e2be3so5215523a91.2;
-        Tue, 06 Jun 2023 05:28:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686054537; x=1688646537;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jbiTAIYeS++2LppYqgSVrfeOsxiqOUBI8osgLm56Dv0=;
-        b=FnE/Zamn77Vig5Yr2oqA5unkxfY5m6dJ56sq36UqQwKjl6qVm7ITyij6rcc4e/Xfk4
-         mvYnf6OnND+mFNhZ7GoyPesjK0uKogvOjjwyKFiccKwO68VslhSHPk2cENpqhCaUMSNf
-         volx8teW26nHO5vIXBfJJgrvtzfdvFuc8OtwiFRgYuu2SXYO5QH13GRnzBWwg8iW5pcS
-         3JDVCCgzDjIPhWLDH+I3+cmDAnJIYa9GTsoKE+MIlEgepraHSLYjE4d3bIT4pUpwpBaS
-         zhfLXHzxI8VWcwNT6/a3xVwlw1wf9QmszrLfMZRmQ91JIxBgC0qnqEgcy2Q2uxV0BIXW
-         Ymkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686054537; x=1688646537;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jbiTAIYeS++2LppYqgSVrfeOsxiqOUBI8osgLm56Dv0=;
-        b=QkdOGLXDlHHfquf0HG88dOuWrqZ27kUP+U5lJcWzLVw0sSiKGTzhLgWDvYUdpY1ckQ
-         ZHt3wpUzRJVE6jUmVKcLyCtNGXPUeP6XLNNrSEf3O4OI+7cGGB+T8s2I8M63MX5WGRWs
-         1BE4RDoZU1a+GPkSoP66osood5NaW+3X+6xXTjQv2TF4J1sivAqQ0xEm5qASQ0cJyJxh
-         0ADIMyJENI8U0Z4Dj2Kv3oCy9Kt1F9GifvwZBZ5o7mLm6qxmAee4bClfsCebehQy3mFr
-         dxT6wL3OstqKC6f79R/3ckz10xX+Ybw7HdNd0GyZUg9LHAJYI+PIFyPAiw5WzQQaGBAo
-         brhQ==
-X-Gm-Message-State: AC+VfDxOmilegN2llgkHhQrj7TqQlaMrHsGS+MtSkwG/7qaI3kIcdtZL
-        mrqqGQEffHnBN3XotEqhbP8=
-X-Google-Smtp-Source: ACHHUZ5sC3Omwc1R9R2oXPq0XI1qpnOev0hSECau3himiunIJyVu8ZNRdiH50H85OmdAZCN1CkxmDA==
-X-Received: by 2002:a17:90a:ac10:b0:24e:4b1c:74d2 with SMTP id o16-20020a17090aac1000b0024e4b1c74d2mr1989660pjq.32.1686054536842;
-        Tue, 06 Jun 2023 05:28:56 -0700 (PDT)
-Received: from debian.me (subs02-180-214-232-93.three.co.id. [180.214.232.93])
-        by smtp.gmail.com with ESMTPSA id 8-20020a17090a018800b002565d52a781sm10003076pjc.40.2023.06.06.05.28.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jun 2023 05:28:56 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id 16921106A3A; Tue,  6 Jun 2023 19:28:53 +0700 (WIB)
-Date:   Tue, 6 Jun 2023 19:28:52 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Franziska Naepelt <franziska.naepelt@googlemail.com>,
-        keyrings@vger.kernel.org
-Cc:     dhowells@redhat.com, dwmw2@infradead.org,
-        linux-kernel@vger.kernel.org,
-        Franziska Naepelt <franziska.naepelt@gmail.com>,
-        kernel test robot <lkp@intel.com>,
-        Linux SPDX Licenses <linux-spdx@vger.kernel.org>,
-        Linux Kernel Janitors <kernel-janitors@vger.kernel.org>
+        with ESMTP id S236424AbjFFMjM (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 6 Jun 2023 08:39:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ED4910C7;
+        Tue,  6 Jun 2023 05:38:56 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6F956631F3;
+        Tue,  6 Jun 2023 12:38:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 282FEC433D2;
+        Tue,  6 Jun 2023 12:38:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686055134;
+        bh=GoKJVxcYM3YHiySYtc2j/jW2j5w+mMQPpCOboxsRxPU=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=lGSHh/YDw8plsHo5wOZlj1EQxELfL3PTQh/WV07BbL0uFWdlM0JEF46/CcGnwVQ/K
+         LqYJt6fZrlaXq7IH+yBgXQ7rtwgN5KISl+/h+Fb26wxGcc2CmF9oxWQNVOVTrBElf3
+         RU6Run6x5zS9vvMTkbM6oBaNGSl8Ssm/HUiDQAa9SjhnBJRWyo9oCSJKHAH/P4Jlh9
+         kaBLG/8GZiVyzzo4/q7QaBXiIuv2BABcu42KuLVmbg7knjYQQpr6HGJOIUlAXouNyD
+         E+xVSuCF4hCrZD/oHpfKU47NhWwRZoMie/6uiozSzsALHCfNOCtx92aEqRbd79IcQM
+         rpQ/HisXAdQ7A==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Tue, 06 Jun 2023 15:38:50 +0300
+Message-Id: <CT5KNU3BZ71L.2S88IEDDT5AD9@suppilovahvero>
+Cc:     <dhowells@redhat.com>, <dwmw2@infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        "Franziska Naepelt" <franziska.naepelt@gmail.com>,
+        "kernel test robot" <lkp@intel.com>
 Subject: Re: [PATCH v2] certs/extract-cert: Fix checkpatch issues
-Message-ID: <ZH8mhIrjyBvTF4oZ@debian.me>
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Franziska Naepelt" <franziska.naepelt@googlemail.com>,
+        <keyrings@vger.kernel.org>
+X-Mailer: aerc 0.15.2-33-gedd4752268b2
 References: <20230601190508.56610-1-franziska.naepelt@gmail.com>
  <20230602085902.59006-1-franziska.naepelt@gmail.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="+OePT+3E67BsBt+t"
-Content-Disposition: inline
 In-Reply-To: <20230602085902.59006-1-franziska.naepelt@gmail.com>
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-
---+OePT+3E67BsBt+t
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, Jun 02, 2023 at 10:59:02AM +0200, Franziska Naepelt wrote:
+On Fri Jun 2, 2023 at 11:59 AM EEST, Franziska Naepelt wrote:
 > The following issues are fixed:
 > - WARNING: Missing or malformed SPDX-License-Identifier tag
 > - ERROR: trailing statements should be on next line
@@ -94,40 +67,89 @@ On Fri, Jun 02, 2023 at 10:59:02AM +0200, Franziska Naepelt wrote:
 > - ERROR: code indent should use tabs where possible
 > - WARNING: please, no spaces at the start of a line
 > - WARNING: Missing a blank line after declarations
+>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202306021040.UTvXfH5J-lkp@i=
+ntel.com/
+> Closes: https://lore.kernel.org/oe-kbuild-all/202306021102.zQU95cMI-lkp@i=
+ntel.com/
+>
 
-Again, write the patch description in imperative mood (e.g. "Do foo").
+Remove the empty line.
 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Franziska Naepelt <franziska.naepelt@gmail.com>
+
+Fixes tag?
+
+> ---
+> v2:
+>  - revert noreturn changes to fix build issues
+> ---
+>  certs/extract-cert.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+>
+> diff --git a/certs/extract-cert.c b/certs/extract-cert.c
+> index 70e9ec89d87d..96c0728bf4d1 100644
+> --- a/certs/extract-cert.c
+> +++ b/certs/extract-cert.c
+> @@ -1,3 +1,4 @@
 > +// SPDX-License-Identifier: LGPL-2.1
 >  /* Extract X.509 certificate in DER form from PKCS#11 or PEM.
 >   *
 >   * Copyright =C2=A9 2014-2015 Red Hat, Inc. All Rights Reserved.
+> @@ -63,7 +64,8 @@ static void drain_openssl_errors(void)
+>
+>  	if (ERR_peek_error() =3D=3D 0)
+>  		return;
+> -	while (ERR_get_error_line(&file, &line)) {}
+> +	while (ERR_get_error_line(&file, &line))
+> +		;
+>  }
+>
+>  #define ERR(cond, fmt, ...)				\
+> @@ -73,7 +75,7 @@ static void drain_openssl_errors(void)
+>  		if (__cond) {				\
+>  			err(1, fmt, ## __VA_ARGS__);	\
+>  		}					\
+> -	} while(0)
+> +	} while (0)
+>
+>  static const char *key_pass;
+>  static BIO *wb;
+> @@ -107,7 +109,7 @@ int main(int argc, char **argv)
+>  	if (verbose_env && strchr(verbose_env, '1'))
+>  		verbose =3D true;
+>
+> -        key_pass =3D getenv("KBUILD_SIGN_PIN");
+> +	key_pass =3D getenv("KBUILD_SIGN_PIN");
+>
+>  	if (argc !=3D 3)
+>  		format();
+> @@ -118,6 +120,7 @@ int main(int argc, char **argv)
+>  	if (!cert_src[0]) {
+>  		/* Invoked with no input; create empty file */
+>  		FILE *f =3D fopen(cert_dst, "wb");
+> +
+>  		ERR(!f, "%s", cert_dst);
+>  		fclose(f);
+>  		exit(0);
+> @@ -155,6 +158,7 @@ int main(int argc, char **argv)
+>  			x509 =3D PEM_read_bio_X509(b, NULL, NULL, NULL);
+>  			if (wb && !x509) {
+>  				unsigned long err =3D ERR_peek_last_error();
+> +
+>  				if (ERR_GET_LIB(err) =3D=3D ERR_LIB_PEM &&
+>  				    ERR_GET_REASON(err) =3D=3D PEM_R_NO_START_LINE) {
+>  					ERR_clear_error();
+>
+> base-commit: 7877cb91f1081754a1487c144d85dc0d2e2e7fc4
+> --
+> 2.39.2 (Apple Git-143)
 
-Nope.
+IMHO should be split to separate commits with fixes tags for
+trackability sake.
 
-The license boilerplate says LGPL 2.1 or any later version, so the
-corresponding SPDX tag should have been:
+My guess is that fixes tag is missing because this commit is
+bundling a pile of stuff.
 
-```
-// SPDX-License-Identifier: LGPL-2.1-or-later
-```
-
-And please also delete the boilerplate and separate this SPDX conversion
-into its own patch.
-
-Thanks.
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---+OePT+3E67BsBt+t
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZH8mhAAKCRD2uYlJVVFO
-o+2GAQDDLgr8oszJB+8rAWiEsN6nJLAcdRgzDbzCRdRvu/jzkQD/YhWHhyg4B6BZ
-V1cTo1nnDJXZBlVj3cbYz+7f9fVqZgo=
-=87Gb
------END PGP SIGNATURE-----
-
---+OePT+3E67BsBt+t--
+BR, Jarkko
