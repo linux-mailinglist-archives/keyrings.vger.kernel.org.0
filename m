@@ -2,99 +2,113 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 170D0723510
-	for <lists+keyrings@lfdr.de>; Tue,  6 Jun 2023 04:09:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C06A1724065
+	for <lists+keyrings@lfdr.de>; Tue,  6 Jun 2023 13:04:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231268AbjFFCJh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 5 Jun 2023 22:09:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46846 "EHLO
+        id S235886AbjFFLDu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 6 Jun 2023 07:03:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230472AbjFFCJh (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 5 Jun 2023 22:09:37 -0400
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32D96114;
-        Mon,  5 Jun 2023 19:09:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1686017374;
-        bh=892MxsEj+fA8J2c25vw4Ei7wKOHzFB9/P90RLEWrmyM=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=qKi01xOQlRQZlhcv9xTctxlgReNwDUyhCTz4/MSF/XCgPUq2eD+b3I8xuD1J7WX61
-         HBhDM1JUOv4Qf6kFO5qnBbIVFsFSHmLDyuTOO4NybVSufmXHiMDmE++Ehd8wgsCojf
-         PlcUKADHZkSxtmQ+pn8PxTRp9um21ssX4me6QpfU=
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 99AF81286698;
-        Mon,  5 Jun 2023 22:09:34 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id xfdQDF7Q92in; Mon,  5 Jun 2023 22:09:34 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1686017374;
-        bh=892MxsEj+fA8J2c25vw4Ei7wKOHzFB9/P90RLEWrmyM=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=qKi01xOQlRQZlhcv9xTctxlgReNwDUyhCTz4/MSF/XCgPUq2eD+b3I8xuD1J7WX61
-         HBhDM1JUOv4Qf6kFO5qnBbIVFsFSHmLDyuTOO4NybVSufmXHiMDmE++Ehd8wgsCojf
-         PlcUKADHZkSxtmQ+pn8PxTRp9um21ssX4me6QpfU=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id CF90B128603A;
-        Mon,  5 Jun 2023 22:09:33 -0400 (EDT)
-Message-ID: <be5c726340a32914d0f79b38b015c0a8ea4a7780.camel@HansenPartnership.com>
-Subject: Re: [PATCH v4 06/13] tpm: add buffer function to point to returned
- parameters
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Stefan Berger <stefanb@linux.ibm.com>,
-        linux-integrity@vger.kernel.org
-Cc:     keyrings@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 05 Jun 2023 22:09:30 -0400
-In-Reply-To: <CSCLXUWIMPCG.D6K372YA1HMK@suppilovahvero>
-References: <20230403214003.32093-1-James.Bottomley@HansenPartnership.com>
-         <20230403214003.32093-7-James.Bottomley@HansenPartnership.com>
-         <d5c86f6f-6854-c649-d2a9-8090cc7d74cd@linux.ibm.com>
-         <CSCLXUWIMPCG.D6K372YA1HMK@suppilovahvero>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+        with ESMTP id S236669AbjFFLDH (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 6 Jun 2023 07:03:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2016319B3;
+        Tue,  6 Jun 2023 04:00:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 882826280D;
+        Tue,  6 Jun 2023 11:00:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D95C433A1;
+        Tue,  6 Jun 2023 11:00:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1686049219;
+        bh=FJZBvU9mZ929InzbREOPQybjQtP4GSxypUKiLaiGPYY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=f8YppWGM9pkCcQiw8BokRT2JY3X69vuGpmvJMhjP7v+Li0/uaE71ySscWjIpuV4RK
+         AhoN9TUo3jQwzL677mAtiESDt/zi+B7hK8acfqOVU7toT0lPBZ6ZTbE8rAC7Qru+7w
+         Wfffy+NLgnq8GzQJSBe8lBylVcGAbZdNjhFbKUdl1xQn9JD8FU9OQa0EZFg3/HeiJ5
+         j6BqlGeR+vNLo2nINfnlZ3o9q5CeXDbQGNeBFcsnEjUBInrraE3iVbxBLIfbcN8qtH
+         w0aeW0AUbZTwPHkcZEio7sxGoGumfZq9jkJi1Vc/KY9RusvNRYnDssU/50OOTXFz45
+         jE4m/lBQ2hP5g==
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2b1c30a1653so32320511fa.2;
+        Tue, 06 Jun 2023 04:00:18 -0700 (PDT)
+X-Gm-Message-State: AC+VfDwf+WejIx8A98qzFziX1i7ixfFrpJ1tUJMMD0ZtxtncUwIvlGgg
+        vVQ+Zp7RYCNatw36xwBVFIn9uGYLUEi30dG3MjQ=
+X-Google-Smtp-Source: ACHHUZ563CmkIVh5K78BzyBEHDhqyYmtPZjw56PYzfIh3cc6Z/kEJrshyqqwF2nJo0HFFVkgYROpAOqSLHtjsHRwShg=
+X-Received: by 2002:a2e:b16f:0:b0:2ad:99dd:de07 with SMTP id
+ a15-20020a2eb16f000000b002ad99ddde07mr985836ljm.16.1686049216890; Tue, 06 Jun
+ 2023 04:00:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <4d7e38ff5bbc496cb794b50e1c5c83bcd2317e69.camel@huaweicloud.com>
+ <CAHk-=wj4S0t5RnJQmF_wYwv+oMTKggwdLnrA9D1uMNKq4H4byw@mail.gmail.com>
+ <CAHk-=wgCUzRNTg4fC8DF=UFnznK0M=mNUBDcsnLt7D4+HP2_1Q@mail.gmail.com> <ZH2hgrV6po9dkxi+@gondor.apana.org.au>
+In-Reply-To: <ZH2hgrV6po9dkxi+@gondor.apana.org.au>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 6 Jun 2023 13:00:05 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXFvpcKVQ2askwh-ahDRyjtN8MerjDJJBBMiTBZ1CSfZ9w@mail.gmail.com>
+Message-ID: <CAMj1kXFvpcKVQ2askwh-ahDRyjtN8MerjDJJBBMiTBZ1CSfZ9w@mail.gmail.com>
+Subject: Re: [GIT PULL] Asymmetric keys fix for v6.4-rc5
+To:     Herbert Xu <herbert@gondor.apana.org.au>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Roberto Sassu <roberto.sassu@huaweicloud.com>,
+        David Howells <dhowells@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Stefan Berger <stefanb@linux.ibm.com>, davem@davemloft.net,
+        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 2023-05-03 at 14:31 +0300, Jarkko Sakkinen wrote:
-> On Tue May 2, 2023 at 5:09 PM EEST, Stefan Berger wrote:
-> > 
-> > 
-> > On 4/3/23 17:39, James Bottomley wrote:
-> > > Introducing encryption sessions changes where the return
-> > > parameters
-> 
-> s/Introducing/Introduce/
-> 
-> Commit messages should always be in the imperative form.
+On Mon, 5 Jun 2023 at 10:49, Herbert Xu <herbert@gondor.apana.org.au> wrote:
+>
+> On Fri, Jun 02, 2023 at 08:02:23PM -0400, Linus Torvalds wrote:
+> >
+> > I absolutely abhor the crypto interfaces. They all seem designed for
+> > that "external DMA engine" case that seems so horrendously pointless
+> > and slow.  In practice so few of them are that, and we have all those
+> > optimized routines for doing it all on the CPU - but have in the
+> > meantime wasted all that time and effort into copying everything,
+> > turning simple buffers into sg-bufs etc etc. The amount of indirection
+> > and "set this state in the state machine" is just nasty, and this
+> > seems to all be a prime example of it all. With some of it then
+> > randomly going through some kthread too.
+>
+> You're right.  Originally SG lists were used as the majority of
+> our input came from network packets, in the form of skb's.  They
+> are easily translated into SG lists.  This is still somewhat the
+> case for parts of the Crypto API (e.g., skcipher and ahash).
+>
+> However, for akcipher the only user of the underlying API is the
+> file in question so I absolutely agree that forcing it to go through
+> an SG list is just wrong.
+>
+> I'll change the underlying akcipher interface to take pointers
+> instead and hide the SG list stuff (along with the copying) inside
+> API.
+>
 
-"Introducing" in this sentence is a gerund (verb used as a noun); it
-can't be changed to an imperative because it's not being used as a
-direct verb in the sentence (that honour goes to "changes", which also
-can't be made imperative because the gerund is the subject).  I can
-reword it like this if you want the sentence to begin with an
-imperative (and get rid of the gerund before Linus bites my head off
-again for using obscure grammatical constructions):
+Could we do the same for the compression API? This is a major pain as
+well, and results (on my 128-core workstation) in 32 MiB permanently
+tied up in scratch buffers in the scomp-to-acomp adaptation layer
+because most of the underlying implementations are compression
+libraries operating on plain virtual addresses, and so the
+scatterlists needs to be copied into a buffer and back to perform the
+actual transformation.
 
-"Replace all instances of &buf.data[TPM_HEADER_SIZE] with a new
-function tpm_buf_parameters() because encryption sessions change
-where the return parameters are located in the buffer since if a
-return session is present they're 4 bytes beyond the header with those
-4 bytes giving the parameter length.  If there is no return session,
-then they're in the usual place immediately after the header."
-
-James
-
-
+The only user user of the async compression interface is zswap, but it
+blocks on the completion so it is actually synchronous as well.
