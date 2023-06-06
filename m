@@ -2,105 +2,128 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34D507246CC
-	for <lists+keyrings@lfdr.de>; Tue,  6 Jun 2023 16:51:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01E1B7247A9
+	for <lists+keyrings@lfdr.de>; Tue,  6 Jun 2023 17:25:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238278AbjFFOvd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 6 Jun 2023 10:51:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52370 "EHLO
+        id S238599AbjFFPZz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 6 Jun 2023 11:25:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238405AbjFFOvT (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 6 Jun 2023 10:51:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 188B8172C;
-        Tue,  6 Jun 2023 07:51:15 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D5E66348F;
-        Tue,  6 Jun 2023 14:51:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1D2C433EF;
-        Tue,  6 Jun 2023 14:51:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686063074;
-        bh=nfqOrjU8YRBzYZiLUr/vnc22t/tHDv39YnrTW/1MP5A=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=iB9nsuxVxWHVvdY0/JHlwVIYsWD9VFHeair/EbUwpuTkIOxqpf1RIo7cX1G+D9dZ7
-         hmZB456oL67+hgnuiA/CVjQ/xF8gLKCtfm0gxC3pYbP867oNSE4D5Vft8Qs7y6yNu2
-         rHpGt3J+/w/LmNRqS5ysLIYxCu/8wqDOwWBT4owdlCBx263u+KsUzllvENM0Qv1oxv
-         qUhMnqAietjxVR08RvuZ/qYjnVjvAX//1dvQhVBSBhejRKAwXVEuXqTRGhp0WMUMaY
-         DN5sx1oP5C+OUqDMKFnYmdj3ZzLar4VC/2TMZihmmb5l+8pjBjp17gEsCl72/56yTA
-         qobBoutoqIn0A==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Tue, 06 Jun 2023 17:51:09 +0300
-Message-Id: <CT5NH4XXIYQF.5XXJE6JA5FZP@suppilovahvero>
-Cc:     "Franziska Naepelt" <franziska.naepelt@googlemail.com>,
-        <keyrings@vger.kernel.org>, <dhowells@redhat.com>,
-        <dwmw2@infradead.org>, <linux-kernel@vger.kernel.org>,
-        "Franziska Naepelt" <franziska.naepelt@gmail.com>,
-        "kernel test robot" <lkp@intel.com>,
-        "Linux SPDX Licenses" <linux-spdx@vger.kernel.org>,
-        "Linux Kernel Janitors" <kernel-janitors@vger.kernel.org>
+        with ESMTP id S237600AbjFFPZs (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 6 Jun 2023 11:25:48 -0400
+Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A423310EC
+        for <keyrings@vger.kernel.org>; Tue,  6 Jun 2023 08:25:31 -0700 (PDT)
+Received: by mail-wr1-x436.google.com with SMTP id ffacd0b85a97d-30d181952a2so4277256f8f.0
+        for <keyrings@vger.kernel.org>; Tue, 06 Jun 2023 08:25:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686065130; x=1688657130;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UiHvTF7p879q1ILr7hgDEXzbZvWSzHtMlq0hydh7W3k=;
+        b=CqIMA73fM0X3IVdH3xrjtP+g3e+zkRiMdnUsUvnFBKpynzb36zZj/Q+bhGUr5iGUi+
+         2f/rKH9jeIGnoHg24E29EQoN2Z/4rhf7B08qfHadmNnGhawsQLJ/SJZvjcqNQ3a3qt43
+         WoK+W/jAjnPSVRH2IR7cQWvmfbKK1cnDtTGaD7Q7zAqGjKJ18TdTieePA/+jjl2E6D1J
+         f0elddqgltusyNbJ9jTkxlpWOeea8kTO3FeVKjC65/uwOPQs6WTYM7ccgaG8U+PI8UCr
+         Z7/e6IbU7PuUJTnWCPJ4QO1foO7+jyBlp7EefArkfTmUZFvZDpXUnkB0CG/KP7/qQD+X
+         310Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686065130; x=1688657130;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UiHvTF7p879q1ILr7hgDEXzbZvWSzHtMlq0hydh7W3k=;
+        b=ktxJenyqA7DZT0uUke2bIdDi4zzYFoFejJZ7EvkCAQL5zmwL1f5oaO7E9lT3SpPn1U
+         b7xfRc8CxpzCt4/Rdq6INaWQFLCyQZewlHOZh9rFvquxnkXqMAs1S62/G8qV3O+btCmG
+         AMdU2ZyILDBoTv8ZC6bS+vTeLxBOSWzM40JGwr9ed2j0fsaTScBD9oOAlxJYTVBRIj5u
+         BUc2lDzDYJ7nYB+dqQ767GRCrD/ZqJ5p1lOJz5dIke4WX9GLcXzcC2RerSWe7TubDgvK
+         reu8SKl8blAgs9taIRribKHnhQdzDGaBrOFI/zj0bDIwvR+0CeZqbXzcGNl9fIH2Z/xc
+         G2kw==
+X-Gm-Message-State: AC+VfDx16ZnG/uWIA8yNg2w02Mu+l+UODWWvWQ8sBtVJEmnpEQQaCn02
+        R2OM5Cozto2JbhGdc99ZB+9L6A==
+X-Google-Smtp-Source: ACHHUZ6+uUbiLSg37Fr4lw5YxwQQe2ir3TXqeHmzYQuDDvgaNJQWbV2XhNoXOY1kXr0PgBb3MU6TFg==
+X-Received: by 2002:a5d:5186:0:b0:309:38af:d300 with SMTP id k6-20020a5d5186000000b0030938afd300mr2068482wrv.33.1686065130119;
+        Tue, 06 Jun 2023 08:25:30 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id b14-20020a5d40ce000000b002e5ff05765esm13085127wrq.73.2023.06.06.08.25.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jun 2023 08:25:27 -0700 (PDT)
+Date:   Tue, 6 Jun 2023 18:25:24 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     Bagas Sanjaya <bagasdotme@gmail.com>,
+        Franziska Naepelt <franziska.naepelt@googlemail.com>,
+        keyrings@vger.kernel.org, dhowells@redhat.com, dwmw2@infradead.org,
+        linux-kernel@vger.kernel.org,
+        Franziska Naepelt <franziska.naepelt@gmail.com>,
+        kernel test robot <lkp@intel.com>,
+        Linux SPDX Licenses <linux-spdx@vger.kernel.org>,
+        Linux Kernel Janitors <kernel-janitors@vger.kernel.org>
 Subject: Re: [PATCH v2] certs/extract-cert: Fix checkpatch issues
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Dan Carpenter" <dan.carpenter@linaro.org>,
-        "Bagas Sanjaya" <bagasdotme@gmail.com>
-X-Mailer: aerc 0.15.2-33-gedd4752268b2
+Message-ID: <e44d03cf-9993-483c-b3d4-6185f5c028cc@kadam.mountain>
 References: <20230601190508.56610-1-franziska.naepelt@gmail.com>
  <20230602085902.59006-1-franziska.naepelt@gmail.com>
  <ZH8mhIrjyBvTF4oZ@debian.me>
  <e39efb7f-5d8f-4433-83b3-8eea8a6c0486@kadam.mountain>
-In-Reply-To: <e39efb7f-5d8f-4433-83b3-8eea8a6c0486@kadam.mountain>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+ <CT5NH4XXIYQF.5XXJE6JA5FZP@suppilovahvero>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CT5NH4XXIYQF.5XXJE6JA5FZP@suppilovahvero>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue Jun 6, 2023 at 4:38 PM EEST, Dan Carpenter wrote:
-> On Tue, Jun 06, 2023 at 07:28:52PM +0700, Bagas Sanjaya wrote:
-> > On Fri, Jun 02, 2023 at 10:59:02AM +0200, Franziska Naepelt wrote:
-> > > The following issues are fixed:
-> > > - WARNING: Missing or malformed SPDX-License-Identifier tag
-> > > - ERROR: trailing statements should be on next line
-> > > - WARNING: braces {} are not necessary for single statement blocks
-> > > - ERROR: space required before the open parenthesis '('
-> > > - ERROR: code indent should use tabs where possible
-> > > - WARNING: please, no spaces at the start of a line
-> > > - WARNING: Missing a blank line after declarations
-> >=20
-> > Again, write the patch description in imperative mood (e.g. "Do foo").
-> >=20
->
-> Why do you care about imperative tense?  Imperative tense doesn't
-> matter.  What matters is that you can understand the issue and how it
-> looks like to the user.  I was working with a group of foreign students
-> and it was painful to see the contortions that they went through to make
-> a commit message imperative.  It's like saying "Bake a cake", "Ok, now
-> bake it while juggling."  The cake ends up worse.  And the commit
-> message end up worse when we force nonsense rules like this.
+On Tue, Jun 06, 2023 at 05:51:09PM +0300, Jarkko Sakkinen wrote:
+> On Tue Jun 6, 2023 at 4:38 PM EEST, Dan Carpenter wrote:
+> > On Tue, Jun 06, 2023 at 07:28:52PM +0700, Bagas Sanjaya wrote:
+> > > On Fri, Jun 02, 2023 at 10:59:02AM +0200, Franziska Naepelt wrote:
+> > > > The following issues are fixed:
+> > > > - WARNING: Missing or malformed SPDX-License-Identifier tag
+> > > > - ERROR: trailing statements should be on next line
+> > > > - WARNING: braces {} are not necessary for single statement blocks
+> > > > - ERROR: space required before the open parenthesis '('
+> > > > - ERROR: code indent should use tabs where possible
+> > > > - WARNING: please, no spaces at the start of a line
+> > > > - WARNING: Missing a blank line after declarations
+> > > 
+> > > Again, write the patch description in imperative mood (e.g. "Do foo").
+> > > 
+> >
+> > Why do you care about imperative tense?  Imperative tense doesn't
+> > matter.  What matters is that you can understand the issue and how it
+> > looks like to the user.  I was working with a group of foreign students
+> > and it was painful to see the contortions that they went through to make
+> > a commit message imperative.  It's like saying "Bake a cake", "Ok, now
+> > bake it while juggling."  The cake ends up worse.  And the commit
+> > message end up worse when we force nonsense rules like this.
+> 
+> How about a simple and stupid reason?
+> 
+> Usually I write commit message without caring about this. Then I rewrite
+> the commit message and 9/10 it gets shorter. Based on empirical
+> experience, imperative form has minimum amount of extra words.
+> 
 
-How about a simple and stupid reason?
+I'm looking through the git log to see if it's true the imperative tense
+commit message are shorter and better and neither one of those things is
+obvious to me.
 
-Usually I write commit message without caring about this. Then I rewrite
-the commit message and 9/10 it gets shorter. Based on empirical
-experience, imperative form has minimum amount of extra words.
+This patch had an imperative subject already so it was already kind of
+imperative.  Does every sentence have to be imperative or can you just
+add a "Fix it." to the end?
 
-I came up with this convention first when submitting patches to x86, and
-over time it has started to make sense to me.
+I don't want to belittle the challenges you face around the English
+language but I think students were less fluent than you are.  So maybe
+imperative tense works for you but it definitely made their commit
+messages far worse.
 
-Especially for multi patch sets too verbose language tends to be super
-tiring for non-native English speaker. One should optimize the language
-in those: say *exactly* what is needed, and not more. If this not the
-case, I tend to move these patch sets very last in my queue.
+regards,
+dan carpenter
 
-It's not a "punishment". It's more like that I really have to take the
-time to read the prose...
-
-BR, Jarkko
