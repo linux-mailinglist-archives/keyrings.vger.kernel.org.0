@@ -2,113 +2,132 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C06A1724065
-	for <lists+keyrings@lfdr.de>; Tue,  6 Jun 2023 13:04:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3D31724211
+	for <lists+keyrings@lfdr.de>; Tue,  6 Jun 2023 14:28:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235886AbjFFLDu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 6 Jun 2023 07:03:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41484 "EHLO
+        id S235629AbjFFM27 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 6 Jun 2023 08:28:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236669AbjFFLDH (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 6 Jun 2023 07:03:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2016319B3;
-        Tue,  6 Jun 2023 04:00:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 882826280D;
-        Tue,  6 Jun 2023 11:00:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D95C433A1;
-        Tue,  6 Jun 2023 11:00:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686049219;
-        bh=FJZBvU9mZ929InzbREOPQybjQtP4GSxypUKiLaiGPYY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=f8YppWGM9pkCcQiw8BokRT2JY3X69vuGpmvJMhjP7v+Li0/uaE71ySscWjIpuV4RK
-         AhoN9TUo3jQwzL677mAtiESDt/zi+B7hK8acfqOVU7toT0lPBZ6ZTbE8rAC7Qru+7w
-         Wfffy+NLgnq8GzQJSBe8lBylVcGAbZdNjhFbKUdl1xQn9JD8FU9OQa0EZFg3/HeiJ5
-         j6BqlGeR+vNLo2nINfnlZ3o9q5CeXDbQGNeBFcsnEjUBInrraE3iVbxBLIfbcN8qtH
-         w0aeW0AUbZTwPHkcZEio7sxGoGumfZq9jkJi1Vc/KY9RusvNRYnDssU/50OOTXFz45
-         jE4m/lBQ2hP5g==
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2b1c30a1653so32320511fa.2;
-        Tue, 06 Jun 2023 04:00:18 -0700 (PDT)
-X-Gm-Message-State: AC+VfDwf+WejIx8A98qzFziX1i7ixfFrpJ1tUJMMD0ZtxtncUwIvlGgg
-        vVQ+Zp7RYCNatw36xwBVFIn9uGYLUEi30dG3MjQ=
-X-Google-Smtp-Source: ACHHUZ563CmkIVh5K78BzyBEHDhqyYmtPZjw56PYzfIh3cc6Z/kEJrshyqqwF2nJo0HFFVkgYROpAOqSLHtjsHRwShg=
-X-Received: by 2002:a2e:b16f:0:b0:2ad:99dd:de07 with SMTP id
- a15-20020a2eb16f000000b002ad99ddde07mr985836ljm.16.1686049216890; Tue, 06 Jun
- 2023 04:00:16 -0700 (PDT)
+        with ESMTP id S229835AbjFFM26 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 6 Jun 2023 08:28:58 -0400
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73A4610C6;
+        Tue,  6 Jun 2023 05:28:57 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-256712e2be3so5215523a91.2;
+        Tue, 06 Jun 2023 05:28:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686054537; x=1688646537;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jbiTAIYeS++2LppYqgSVrfeOsxiqOUBI8osgLm56Dv0=;
+        b=FnE/Zamn77Vig5Yr2oqA5unkxfY5m6dJ56sq36UqQwKjl6qVm7ITyij6rcc4e/Xfk4
+         mvYnf6OnND+mFNhZ7GoyPesjK0uKogvOjjwyKFiccKwO68VslhSHPk2cENpqhCaUMSNf
+         volx8teW26nHO5vIXBfJJgrvtzfdvFuc8OtwiFRgYuu2SXYO5QH13GRnzBWwg8iW5pcS
+         3JDVCCgzDjIPhWLDH+I3+cmDAnJIYa9GTsoKE+MIlEgepraHSLYjE4d3bIT4pUpwpBaS
+         zhfLXHzxI8VWcwNT6/a3xVwlw1wf9QmszrLfMZRmQ91JIxBgC0qnqEgcy2Q2uxV0BIXW
+         Ymkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686054537; x=1688646537;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jbiTAIYeS++2LppYqgSVrfeOsxiqOUBI8osgLm56Dv0=;
+        b=QkdOGLXDlHHfquf0HG88dOuWrqZ27kUP+U5lJcWzLVw0sSiKGTzhLgWDvYUdpY1ckQ
+         ZHt3wpUzRJVE6jUmVKcLyCtNGXPUeP6XLNNrSEf3O4OI+7cGGB+T8s2I8M63MX5WGRWs
+         1BE4RDoZU1a+GPkSoP66osood5NaW+3X+6xXTjQv2TF4J1sivAqQ0xEm5qASQ0cJyJxh
+         0ADIMyJENI8U0Z4Dj2Kv3oCy9Kt1F9GifvwZBZ5o7mLm6qxmAee4bClfsCebehQy3mFr
+         dxT6wL3OstqKC6f79R/3ckz10xX+Ybw7HdNd0GyZUg9LHAJYI+PIFyPAiw5WzQQaGBAo
+         brhQ==
+X-Gm-Message-State: AC+VfDxOmilegN2llgkHhQrj7TqQlaMrHsGS+MtSkwG/7qaI3kIcdtZL
+        mrqqGQEffHnBN3XotEqhbP8=
+X-Google-Smtp-Source: ACHHUZ5sC3Omwc1R9R2oXPq0XI1qpnOev0hSECau3himiunIJyVu8ZNRdiH50H85OmdAZCN1CkxmDA==
+X-Received: by 2002:a17:90a:ac10:b0:24e:4b1c:74d2 with SMTP id o16-20020a17090aac1000b0024e4b1c74d2mr1989660pjq.32.1686054536842;
+        Tue, 06 Jun 2023 05:28:56 -0700 (PDT)
+Received: from debian.me (subs02-180-214-232-93.three.co.id. [180.214.232.93])
+        by smtp.gmail.com with ESMTPSA id 8-20020a17090a018800b002565d52a781sm10003076pjc.40.2023.06.06.05.28.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Jun 2023 05:28:56 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 16921106A3A; Tue,  6 Jun 2023 19:28:53 +0700 (WIB)
+Date:   Tue, 6 Jun 2023 19:28:52 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Franziska Naepelt <franziska.naepelt@googlemail.com>,
+        keyrings@vger.kernel.org
+Cc:     dhowells@redhat.com, dwmw2@infradead.org,
+        linux-kernel@vger.kernel.org,
+        Franziska Naepelt <franziska.naepelt@gmail.com>,
+        kernel test robot <lkp@intel.com>,
+        Linux SPDX Licenses <linux-spdx@vger.kernel.org>,
+        Linux Kernel Janitors <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH v2] certs/extract-cert: Fix checkpatch issues
+Message-ID: <ZH8mhIrjyBvTF4oZ@debian.me>
+References: <20230601190508.56610-1-franziska.naepelt@gmail.com>
+ <20230602085902.59006-1-franziska.naepelt@gmail.com>
 MIME-Version: 1.0
-References: <4d7e38ff5bbc496cb794b50e1c5c83bcd2317e69.camel@huaweicloud.com>
- <CAHk-=wj4S0t5RnJQmF_wYwv+oMTKggwdLnrA9D1uMNKq4H4byw@mail.gmail.com>
- <CAHk-=wgCUzRNTg4fC8DF=UFnznK0M=mNUBDcsnLt7D4+HP2_1Q@mail.gmail.com> <ZH2hgrV6po9dkxi+@gondor.apana.org.au>
-In-Reply-To: <ZH2hgrV6po9dkxi+@gondor.apana.org.au>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Tue, 6 Jun 2023 13:00:05 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFvpcKVQ2askwh-ahDRyjtN8MerjDJJBBMiTBZ1CSfZ9w@mail.gmail.com>
-Message-ID: <CAMj1kXFvpcKVQ2askwh-ahDRyjtN8MerjDJJBBMiTBZ1CSfZ9w@mail.gmail.com>
-Subject: Re: [GIT PULL] Asymmetric keys fix for v6.4-rc5
-To:     Herbert Xu <herbert@gondor.apana.org.au>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Roberto Sassu <roberto.sassu@huaweicloud.com>,
-        David Howells <dhowells@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Eric Biggers <ebiggers@kernel.org>,
-        Stefan Berger <stefanb@linux.ibm.com>, davem@davemloft.net,
-        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="+OePT+3E67BsBt+t"
+Content-Disposition: inline
+In-Reply-To: <20230602085902.59006-1-franziska.naepelt@gmail.com>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 5 Jun 2023 at 10:49, Herbert Xu <herbert@gondor.apana.org.au> wrote:
->
-> On Fri, Jun 02, 2023 at 08:02:23PM -0400, Linus Torvalds wrote:
-> >
-> > I absolutely abhor the crypto interfaces. They all seem designed for
-> > that "external DMA engine" case that seems so horrendously pointless
-> > and slow.  In practice so few of them are that, and we have all those
-> > optimized routines for doing it all on the CPU - but have in the
-> > meantime wasted all that time and effort into copying everything,
-> > turning simple buffers into sg-bufs etc etc. The amount of indirection
-> > and "set this state in the state machine" is just nasty, and this
-> > seems to all be a prime example of it all. With some of it then
-> > randomly going through some kthread too.
->
-> You're right.  Originally SG lists were used as the majority of
-> our input came from network packets, in the form of skb's.  They
-> are easily translated into SG lists.  This is still somewhat the
-> case for parts of the Crypto API (e.g., skcipher and ahash).
->
-> However, for akcipher the only user of the underlying API is the
-> file in question so I absolutely agree that forcing it to go through
-> an SG list is just wrong.
->
-> I'll change the underlying akcipher interface to take pointers
-> instead and hide the SG list stuff (along with the copying) inside
-> API.
->
 
-Could we do the same for the compression API? This is a major pain as
-well, and results (on my 128-core workstation) in 32 MiB permanently
-tied up in scratch buffers in the scomp-to-acomp adaptation layer
-because most of the underlying implementations are compression
-libraries operating on plain virtual addresses, and so the
-scatterlists needs to be copied into a buffer and back to perform the
-actual transformation.
+--+OePT+3E67BsBt+t
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-The only user user of the async compression interface is zswap, but it
-blocks on the completion so it is actually synchronous as well.
+On Fri, Jun 02, 2023 at 10:59:02AM +0200, Franziska Naepelt wrote:
+> The following issues are fixed:
+> - WARNING: Missing or malformed SPDX-License-Identifier tag
+> - ERROR: trailing statements should be on next line
+> - WARNING: braces {} are not necessary for single statement blocks
+> - ERROR: space required before the open parenthesis '('
+> - ERROR: code indent should use tabs where possible
+> - WARNING: please, no spaces at the start of a line
+> - WARNING: Missing a blank line after declarations
+
+Again, write the patch description in imperative mood (e.g. "Do foo").
+
+> +// SPDX-License-Identifier: LGPL-2.1
+>  /* Extract X.509 certificate in DER form from PKCS#11 or PEM.
+>   *
+>   * Copyright =C2=A9 2014-2015 Red Hat, Inc. All Rights Reserved.
+
+Nope.
+
+The license boilerplate says LGPL 2.1 or any later version, so the
+corresponding SPDX tag should have been:
+
+```
+// SPDX-License-Identifier: LGPL-2.1-or-later
+```
+
+And please also delete the boilerplate and separate this SPDX conversion
+into its own patch.
+
+Thanks.
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--+OePT+3E67BsBt+t
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZH8mhAAKCRD2uYlJVVFO
+o+2GAQDDLgr8oszJB+8rAWiEsN6nJLAcdRgzDbzCRdRvu/jzkQD/YhWHhyg4B6BZ
+V1cTo1nnDJXZBlVj3cbYz+7f9fVqZgo=
+=87Gb
+-----END PGP SIGNATURE-----
+
+--+OePT+3E67BsBt+t--
