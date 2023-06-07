@@ -2,126 +2,93 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A294724EF7
-	for <lists+keyrings@lfdr.de>; Tue,  6 Jun 2023 23:43:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D46FC7257F7
+	for <lists+keyrings@lfdr.de>; Wed,  7 Jun 2023 10:37:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239760AbjFFVn4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 6 Jun 2023 17:43:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46514 "EHLO
+        id S235169AbjFGIht (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 7 Jun 2023 04:37:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234403AbjFFVnz (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 6 Jun 2023 17:43:55 -0400
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73BDBA7;
-        Tue,  6 Jun 2023 14:43:54 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id 7EBC75C00FE;
-        Tue,  6 Jun 2023 17:43:51 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Tue, 06 Jun 2023 17:43:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
-         h=cc:cc:content-transfer-encoding:content-type:content-type
-        :date:date:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to;
-         s=fm2; t=1686087831; x=1686174231; bh=Cj7jNwhxEUWz3YGh46Ym6JKeV
-        BhfBtfYbafJNC47oEc=; b=EV6cSfJN/+e3O6NPk2xHDyMT0iYg1wsYBZhxSjecy
-        necIJN0wcdKSXBrum8wXN/IV131ScLJdjTJzUcID3c0Vmzf8ed7H6EB+aM8RdoZr
-        0H4Rq36LU/FXSjS9pvR5RfT+wEIN/mrwGqdZ66w0BZaNWyPMwFRTLipHexRg3K9F
-        qxNfTFqfCutTh8yRGWCQzpei/2pp2DaXle8MKtlYMqpZJjD0ZPDhBuS+D69acFAf
-        3Re5bzAzetDHSwmBXREc76FkrVAse5aLlFZ8dP+Kt7b1csZlB1p61RmbyDb8NphK
-        m2CbsuwR6nwLI+x0LudylpBCVNIn6vfoTptRVWJc0TorA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-        1686087831; x=1686174231; bh=Cj7jNwhxEUWz3YGh46Ym6JKeVBhfBtfYbaf
-        JNC47oEc=; b=bsCXGcDKILNgxPxyfhGhZOgD2Ku0A24dQgt+FCCKwsjnAmTcPsY
-        RpzPykyxZbJzUHfT9KESssrWnaCaL1aiZd5w66Ac+cWl4BZSESnY2W3t43ojopTK
-        R4G/+7GWonDsHu2a1dLQwxaa6RjYbZn9A1k2TH15fX571hmjLM3O7ZIQh3ZAsRMz
-        7p2pneFyn/7azJ2O9hSP/r/Xa4fzS7SusL8P4hf7mxgR/PMOn6L9f94GBb67VRk4
-        sNvoP5yap146P8HTZ1AZnYoAJ3ROTIJsVATcJdhqkrnQRD7uHnsEWvsIAYzaP5GX
-        vLQKMBdKMegrYFPS4nKZfdrYTRmwG+PQXTQ==
-X-ME-Sender: <xms:l6h_ZB-4reFOSFf3a2L0Jr1oKB0xLuCt8naNMFgYi2LC3HifdZnB6w>
-    <xme:l6h_ZFtb7RAkk3d9I8wuXI0_o6OQlC3xo8syjugZDCDPzNeJp4IFUMa4EFBw77OYy
-    nwKL11HG9xGSYjqVao>
-X-ME-Received: <xmr:l6h_ZPD_Z45mDs7vkq46FfGDnhh2H_np6lOeD_M0bhBIll0I6tNMBkGoPCIH6YGNCGz_vR-NEuVXA4PWQOXA-6NupPrnOM2mJ3IX>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrgedtuddgudeiiecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtugfgjggfsehtkeertddtreejnecuhfhrohhmpeeu
-    vghnuceuohgvtghkvghluceomhgvsegsvghnsghovggtkhgvlhdrnhgvtheqnecuggftrf
-    grthhtvghrnhepudekvdejteeuudffveffhfelfefgjeehffefhffhgeeiieduveehfeej
-    ffetveefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epmhgvsegsvghnsghovggtkhgvlhdrnhgvth
-X-ME-Proxy: <xmx:l6h_ZFcFXWg4DzmX1yFfdukFl9HMQpQlUs-N4jO1Iul-wPgpDTYq5w>
-    <xmx:l6h_ZGM035zFSDaoF1VoqiAC3rGBreVDrlGp6acY4ppU1c7R5JKpJw>
-    <xmx:l6h_ZHncRPrMU1ywF1JVrgPIZTYLUqDs9X0lMvprq7e5HZJQL2ehvw>
-    <xmx:l6h_ZHGlVwAWYNImAeT8mnjoQrrKetjPkHbIteN7YfAO2z-vTA798Q>
-Feedback-ID: iffc1478b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 6 Jun 2023 17:43:50 -0400 (EDT)
-Date:   Tue, 6 Jun 2023 17:43:50 -0400
-From:   Ben Boeckel <me@benboeckel.net>
-To:     Dan Carpenter <dan.carpenter@linaro.org>
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Franziska Naepelt <franziska.naepelt@googlemail.com>,
-        keyrings@vger.kernel.org, dhowells@redhat.com, dwmw2@infradead.org,
-        linux-kernel@vger.kernel.org,
-        Franziska Naepelt <franziska.naepelt@gmail.com>,
-        kernel test robot <lkp@intel.com>,
-        Linux SPDX Licenses <linux-spdx@vger.kernel.org>,
-        Linux Kernel Janitors <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH v2] certs/extract-cert: Fix checkpatch issues
-Message-ID: <20230606214350.GA142397@farprobe>
-References: <20230601190508.56610-1-franziska.naepelt@gmail.com>
- <20230602085902.59006-1-franziska.naepelt@gmail.com>
- <ZH8mhIrjyBvTF4oZ@debian.me>
- <e39efb7f-5d8f-4433-83b3-8eea8a6c0486@kadam.mountain>
- <CT5NH4XXIYQF.5XXJE6JA5FZP@suppilovahvero>
- <e44d03cf-9993-483c-b3d4-6185f5c028cc@kadam.mountain>
+        with ESMTP id S232094AbjFGIhr (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 7 Jun 2023 04:37:47 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C1A2E7E
+        for <keyrings@vger.kernel.org>; Wed,  7 Jun 2023 01:37:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1686127017;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=CGNGuZdb3YfUa/RgZYBAS20b4KQ6QaroF4WQ7qei7lo=;
+        b=MJL+9cX+Ecf4Fw5mGY9v5Iv2pGnQn2wwDmj3i5kSTUEgK8GB+zoFlTf99qu5WlRfWmHzdi
+        R15f4GT4KYfhiYeEtb/olU68mzccHh3zwQAk6pMrbE/hiOHk4+cQFBfklWQUB3gVykgvrn
+        wX9Mf67h91fqVsA7ZCuyG9hL/H8aZoI=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-321-GM9I-4gjMCKvH9c3tuCwwQ-1; Wed, 07 Jun 2023 04:36:54 -0400
+X-MC-Unique: GM9I-4gjMCKvH9c3tuCwwQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9674D3801FF5;
+        Wed,  7 Jun 2023 08:36:53 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.182])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 10C6EC1603B;
+        Wed,  7 Jun 2023 08:36:49 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20230530232914.3689712-3-mcgrof@kernel.org>
+References: <20230530232914.3689712-3-mcgrof@kernel.org> <20230530232914.3689712-1-mcgrof@kernel.org>
+To:     Luis Chamberlain <mcgrof@kernel.org>
+Cc:     dhowells@redhat.com, keescook@chromium.org, yzaikin@google.com,
+        jarkko@kernel.org, paul@paul-moore.com, jmorris@namei.org,
+        serge@hallyn.com, j.granados@samsung.com, brauner@kernel.org,
+        ebiederm@xmission.com, patches@lists.linux.dev,
+        linux-fsdevel@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] sysctl: move security keys sysctl registration to its own file
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e44d03cf-9993-483c-b3d4-6185f5c028cc@kadam.mountain>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2003476.1686127009.1@warthog.procyon.org.uk>
+Date:   Wed, 07 Jun 2023 09:36:49 +0100
+Message-ID: <2003477.1686127009@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Jun 06, 2023 at 18:25:24 +0300, Dan Carpenter wrote:
-> I'm looking through the git log to see if it's true the imperative tense
-> commit message are shorter and better and neither one of those things is
-> obvious to me.
+Luis Chamberlain <mcgrof@kernel.org> wrote:
+
+> The security keys sysctls are already declared on its own file,
+> just move the sysctl registration to its own file to help avoid
+> merge conflicts on sysctls.c, and help with clearing up sysctl.c
+> further.
 > 
-> This patch had an imperative subject already so it was already kind of
-> imperative.  Does every sentence have to be imperative or can you just
-> add a "Fix it." to the end?
+> This creates a small penalty of 23 bytes:
+> 
+> ./scripts/bloat-o-meter vmlinux.1 vmlinux.2
+> add/remove: 2/0 grow/shrink: 0/1 up/down: 49/-26 (23)
+> Function                                     old     new   delta
+> init_security_keys_sysctls                     -      33     +33
+> __pfx_init_security_keys_sysctls               -      16     +16
+> sysctl_init_bases                             85      59     -26
+> Total: Before=21256937, After=21256960, chg +0.00%
+> 
+> But soon we'll be saving tons of bytes anyway, as we modify the
+> sysctl registrations to use ARRAY_SIZE and so we get rid of all the
+> empty array elements so let's just clean this up now.
+> 
+> Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 
-I don't know about the length argument, but it feels like it reads
-better when skimming summaries with the imperative mood. The way I think
-about it is that the subject should complete the phrase:
+Acked-by: David Howells <dhowells@redhat.com>
 
-    When applied, this patch will…
-
-The body then gives more context and description as necessary. I don't
-really worry so much about the mood/tense/whatever in the body except
-that I try to use the present tense for anything the patch is doing and
-past for any historical context. I understand that kernel maintainers
-may care a lot more about it though.
-
-Basically, a patch, on its own, does nothing (just like a recipe). It is
-only when it is applied that anything actually happens. I read it as
-"`git apply`, please $summary".
-
---Ben
