@@ -2,53 +2,79 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 240B5728792
-	for <lists+keyrings@lfdr.de>; Thu,  8 Jun 2023 21:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 236337288AB
+	for <lists+keyrings@lfdr.de>; Thu,  8 Jun 2023 21:34:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233824AbjFHTDg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 8 Jun 2023 15:03:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54986 "EHLO
+        id S235941AbjFHTeo (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 8 Jun 2023 15:34:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230473AbjFHTDf (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 8 Jun 2023 15:03:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9654C2D40;
-        Thu,  8 Jun 2023 12:03:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 254686507B;
-        Thu,  8 Jun 2023 19:03:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F27C4339B;
-        Thu,  8 Jun 2023 19:03:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1686251013;
-        bh=fC0K5XEsiAEtCYe6c/b+fAKdV1mDbn4jxwJGLimbRjA=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=hZcTUAf5R6C1sSEJXXnXaIKTPLjyoHTCeSddhBpG8K2adUc7ad2Jl21kLO6Pq7QmB
-         YJg5zZmKst3c6KRC9CXmLjOkhp7P1LEr/cGVznT8YxQg+CKgD/y9hUWcABb/Ujz9K0
-         Y4liPSJuonKXgra9EnRbD8P/IB8dOyAmuaX7UYMglg7P9uLb7TJj+15E2S4HM45bIA
-         A4bTeN95B8n3gHl+F7AR+31x/Hmf4mM6uq0ZS97Rbj7nbj2ylP38eUxTv7cTLHd5J1
-         KERlOSEolYzCMlBsurWJYyowmoyyKA7r5jL689+BU7zWdPdVpAE2hhXiEHmbCCl0pJ
-         U1fKG0GXcQ7/Q==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Thu, 08 Jun 2023 22:03:30 +0300
-Message-Id: <CT7I3FSMNR0V.8DOJ8GZ6LPDK@suppilovahvero>
-Cc:     <keyrings@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] keys: Fix linking a duplicate key to a keyring's
- assoc_array
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "David Howells" <dhowells@redhat.com>,
-        "Petr Pavlu" <petr.pavlu@suse.com>
-X-Mailer: aerc 0.14.0
-References: <20230323130412.32097-1-petr.pavlu@suse.com>
- <2413881.1686233574@warthog.procyon.org.uk>
-In-Reply-To: <2413881.1686233574@warthog.procyon.org.uk>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        with ESMTP id S229678AbjFHTen (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 8 Jun 2023 15:34:43 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F10411FFA;
+        Thu,  8 Jun 2023 12:34:42 -0700 (PDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 358JWcKV027478;
+        Thu, 8 Jun 2023 19:34:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=6iDW1kX4q82sjHfPDMuszudpwL6b3DfvJyHTBZ4tFww=;
+ b=Ap+OGTXl6ICJxxWpD6ASHMSUzpQAjC2mod8HTo2SePvvNM0VpCTb5uiiuaKWFdOz3XRs
+ eLWC+VVJ2G1Rk6C/Vak4BJvKTwO86ejG95OTgMw7/bcCZa76euRjy9VkjSEU/il0LJ/M
+ RGvEvRV5a8ptXuh1+DtMEB5vrNalfHaI45gdvu6dWhXAId0w7GcUOZGJCd2E+tnd9ZQo
+ 7cpjmx1oM7MPYdMt9WXYl1Lvkr3FM67U38WEp8/B98vJOeBlQti4/oqZLL4YmG6tpwLq
+ F8qSb/+piDGa2oRmx62bNUtBvL4qQF3OGwEsXj+nMqVqZg1MmtIKm7X53bREQNEqShXh Ow== 
+Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3r3n7tr2dc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 08 Jun 2023 19:34:30 +0000
+Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
+        by ppma05wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 358HIijO008334;
+        Thu, 8 Jun 2023 19:26:44 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([9.208.129.114])
+        by ppma05wdc.us.ibm.com (PPS) with ESMTPS id 3r2a78a6y5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 08 Jun 2023 19:26:44 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+        by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 358JQhm240108322
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 8 Jun 2023 19:26:43 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 472B15805D;
+        Thu,  8 Jun 2023 19:26:43 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 198A858055;
+        Thu,  8 Jun 2023 19:26:43 +0000 (GMT)
+Received: from rhel-laptop.ibm.com (unknown [9.61.61.30])
+        by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+        Thu,  8 Jun 2023 19:26:43 +0000 (GMT)
+From:   gjoyce@linux.vnet.ibm.com
+To:     linux-block@vger.kernel.org
+Cc:     linuxppc-dev@lists.ozlabs.org, jonathan.derrick@linux.dev,
+        brking@linux.vnet.ibm.com, msuchanek@suse.de, mpe@ellerman.id.au,
+        nayna@linux.ibm.com, axboe@kernel.dk, akpm@linux-foundation.org,
+        gjoyce@linux.vnet.ibm.com, keyrings@vger.kernel.org
+Subject: [PATCH v5 0/3] sed-opal: keyrings, discovery, revert, key store
+Date:   Thu,  8 Jun 2023 14:26:39 -0500
+Message-Id: <20230608192642.516566-1-gjoyce@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: DKNj3BRFOGbSdiTI6htYECpLX7teCiKB
+X-Proofpoint-GUID: DKNj3BRFOGbSdiTI6htYECpLX7teCiKB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-06-08_14,2023-06-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
+ lowpriorityscore=0 mlxlogscore=912 phishscore=0 impostorscore=0
+ priorityscore=1501 mlxscore=0 spamscore=0 suspectscore=0 clxscore=1015
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2305260000 definitions=main-2306080170
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,59 +82,68 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu Jun 8, 2023 at 5:12 PM EEST, David Howells wrote:
-> Apologies for missing this patch.
->
-> Petr Pavlu <petr.pavlu@suse.com> wrote:
->
-> > * Back on the first task, function construct_alloc_key() first runs
-> >   __key_link_begin() to determine an assoc_array_edit operation to
-> >   insert a new key. Index keys in the array are compared exactly as-is,
-> >   using keyring_compare_object(). The operation finds that "abcdef" is
-> >   not yet present in the destination keyring.
->
-> Good catch, but I think it's probably the wrong solution.
->
-> keyring_compare_object() needs to use the ->cmp() function from the key t=
-ype.
->
-> It's not just request_key() that might have a problem, but also key_link(=
-).
->
-> There are also asymmetric keys which match against multiple criteria - th=
-ough
-> I'm fine with just matching the main description there (the important bit
-> being to maintain the integrity of the tree inside assoc_array).
->
-> I wonder, should I scrap the assoc_array approach and go to each keyring =
-being
-> a linked-list?  It's slower, but a lot easier to manage - and more forgiv=
-ing
-> of problems.
->
-> 	struct key_ptr {
-> 		struct list_head	link;
-> 		struct key		*key;
-> 		unsigned long		key_hash;
-> 	};
->
-> I'm also wondering if I should remove the key type from the matching crit=
-eria
-> - i.e. there can only be one key with any particular description in a rin=
-g at
-> once, regardless of type.  Unfortunately, this is may be a UAPI breaker
-> somewhere.
->
-> Any thoughts?
+From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
 
-If the amount of items stays at most in hundreds (or actually even like
-few thousand items), there's very little gain of having the complexity
-of associative array. In most cases it probably shoots back in many
-ways.
+Patchset rebased to for-6.5/block
 
-I've been thinking this for a long time but have thought that since it
-has been there, there must be good reasons to have it.
+This patchset has gone through numerous rounds of review and
+all comments/suggetions have been addressed. I believe that
+this patchset is ready for inclusion.
 
-So yeah, definitely +1 for scraping assoc array.
+TCG SED Opal is a specification from The Trusted Computing Group
+that allows self encrypting storage devices (SED) to be locked at
+power on and require an authentication key to unlock the drive.
 
-BR, Jarkko
+The current SED Opal implementation in the block driver
+requires that authentication keys be provided in an ioctl
+so that they can be presented to the underlying SED
+capable drive. Currently, the key is typically entered by
+a user with an application like sedutil or sedcli. While
+this process works, it does not lend itself to automation
+like unlock by a udev rule.
+
+The SED block driver has been extended so it can alternatively
+obtain a key from a sed-opal kernel keyring. The SED ioctls
+will indicate the source of the key, either directly in the
+ioctl data or from the keyring.
+
+Two new SED ioctls have also been added. These are:
+  1) IOC_OPAL_REVERT_LSP to revert LSP state
+  2) IOC_OPAL_DISCOVERY to discover drive capabilities/state
+
+change log v5:
+        - rebase to for-6.5/block
+
+change log v4:
+        - rebase to 6.3-rc7
+        - replaced "255" magic number with U8_MAX
+
+change log:
+        - rebase to 6.x
+        - added latest reviews
+        - removed platform functions for persistent key storage
+        - replaced key update logic with key_create_or_update()
+        - minor bracing and padding changes
+        - add error returns
+        - opal_key structure is application provided but kernel
+          verified
+        - added brief description of TCG SED Opal
+
+
+Greg Joyce (3):
+  block: sed-opal: Implement IOC_OPAL_DISCOVERY
+  block: sed-opal: Implement IOC_OPAL_REVERT_LSP
+  block: sed-opal: keyring support for SED keys
+
+ block/Kconfig                 |   2 +
+ block/opal_proto.h            |   4 +
+ block/sed-opal.c              | 252 +++++++++++++++++++++++++++++++++-
+ include/linux/sed-opal.h      |   5 +
+ include/uapi/linux/sed-opal.h |  25 +++-
+ 5 files changed, 282 insertions(+), 6 deletions(-)
+
+
+base-commit: 1341c7d2ccf42ed91aea80b8579d35bc1ea381e2
+-- 
+gjoyce@linux.vnet.ibm.com
+
