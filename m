@@ -2,162 +2,133 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FD14729611
-	for <lists+keyrings@lfdr.de>; Fri,  9 Jun 2023 11:58:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4C20729C1C
+	for <lists+keyrings@lfdr.de>; Fri,  9 Jun 2023 16:01:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241045AbjFIJ57 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 9 Jun 2023 05:57:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45692 "EHLO
+        id S239459AbjFIOBn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 9 Jun 2023 10:01:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230051AbjFIJ5e (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 9 Jun 2023 05:57:34 -0400
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2048.outbound.protection.outlook.com [40.107.21.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 084EA1725;
-        Fri,  9 Jun 2023 02:49:12 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=KESo7C2R3zf72fy85ktXooc/ZsCPH8sc4voLuLJ/CP5aVT+80kp5QqJ9BlZDgQkdOfRW/6YYK/aJhWbm1j4nN8nrLiRk7qMl60b0X0KBz/zv7mtFb0kr5ONcd8r64MIThKgfZdFKFZx9Ocr1ZD9jNPhPK4TF+DoA36G7qxFASsMAiXrpuBoseGrIK33tG9fKwm612MDcMjhyyG34dNNMq07qvnZgL1BTsFpytl19LNfVqsrFYKMPZ18GjfN7bj3hqJF/A5iz8QWkucGpKDefIerrjaHv3XsxIuMH6DjHrbENUMSp+VucPTtNxiynyWshKk8XEfOGKnDsVhqD1SJKkA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=weihhgV2kBZcOiLMt+rPmXjO2vjqwwl4dsYJBeSRdlw=;
- b=V9puRsWubhDPgvLlEJSy5S8S/O4obhNqvuILH7FuEO+BiHp0KAS7yyinxzMIAH4vL7r917KR1QYc5yY5lAMS0I9k4m02m3LPByOsbxRAfkPkyNTLovbnX6YDI/5LbwOs4BYTXpMh21AkTzTv3Xt0BoZYsFRPP5ZBwRzjTohzKV3ILcjz5IEMIpdPDY5KHb6kpC+wgLZ4AgmTHXz1p8ESIxyygsl6vTUoaR8ZP7Vn38qJ4dR2+oDz8swhguwilHHEhRyTi3YCY/elr9HffVQKH+xmMZ2dt4gfdGPJ/ZKFAiTfgY/RvX2+b7GYdwGentzXpvlLXUWDrmDnVkKbDbvPUg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
- dkim=pass header.d=suse.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=weihhgV2kBZcOiLMt+rPmXjO2vjqwwl4dsYJBeSRdlw=;
- b=NqZVE/wct+60P2ZaMFWma6kEdH4yi5n7nlpt1M8/jHae9EdBklTDqRAzzL7vHMSVjzoGlaEarJTV9EvVXZvvvYM3UPsNdBuxiLtJZc39MPAjq8ueVbdk3kDMtdFoUAXGb1vyoc3jKMniVOdrOq+kkkS4mHutY5Md/cG7BFJZWZ61D4I43Rwg4TiZAyQB3VKK0uNM2D20we8XZQO6UWufzk4926SDZMtSgxZOWIATAUX8jLGXrYqNkqxVYE/6lVDTBtMOPYPTiDFprj3rHNIOfodklqK2zUX0RfKF8WcK9X8/5Lsud4xc4VAB5BjONCqWWgADFedGpNpqzIfr9MwFYw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=suse.com;
-Received: from AM0PR0402MB3395.eurprd04.prod.outlook.com
- (2603:10a6:208:1a::16) by DBBPR04MB7770.eurprd04.prod.outlook.com
- (2603:10a6:10:1ed::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6455.38; Fri, 9 Jun
- 2023 09:49:08 +0000
-Received: from AM0PR0402MB3395.eurprd04.prod.outlook.com
- ([fe80::551e:9fcf:5b65:ca5b]) by AM0PR0402MB3395.eurprd04.prod.outlook.com
- ([fe80::551e:9fcf:5b65:ca5b%2]) with mapi id 15.20.6455.028; Fri, 9 Jun 2023
- 09:49:09 +0000
-Message-ID: <db70b460-ae5f-5a8b-bab9-aae45ebc87d1@suse.com>
-Date:   Fri, 9 Jun 2023 11:49:07 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [PATCH] keys: Fix linking a duplicate key to a keyring's
- assoc_array
-Content-Language: en-US
-To:     David Howells <dhowells@redhat.com>
-Cc:     jarkko@kernel.org, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230323130412.32097-1-petr.pavlu@suse.com>
- <2413881.1686233574@warthog.procyon.org.uk>
-From:   Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <2413881.1686233574@warthog.procyon.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR3P281CA0028.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:1c::19) To AM0PR0402MB3395.eurprd04.prod.outlook.com
- (2603:10a6:208:1a::16)
+        with ESMTP id S238747AbjFIOBk (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 9 Jun 2023 10:01:40 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF4633586
+        for <keyrings@vger.kernel.org>; Fri,  9 Jun 2023 07:01:38 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3f7f4819256so13764895e9.1
+        for <keyrings@vger.kernel.org>; Fri, 09 Jun 2023 07:01:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1686319297; x=1688911297;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3dMKLfxyfO6GRRSI5mpAvE1qLvloyaEdkSgeCZ5iq4U=;
+        b=efajulzotRym0OO0p2vBcircrcKWduJ7YSzbFR3qQjOSgZWpb0Qdz/SNKCWOh2A/r2
+         yuqugaKknpK0cVzFHNnCL871IVsouSLd//AMkWGTmcWrMkFyPBln0uQNq48HOFFcohA0
+         UvRgyNbS7//k8MKCtxeTBP/vglxeQcSK7PESRjA1rkuE/vi2QV+yequ/qNvIaOPcqyAZ
+         Ahuo7FryBnT7Fnq1s3gz9cFcOeKXR3aN0mz62KAd5teBCBd7lOtzyJW20IyHFusi0HWu
+         HF4RWMN0eG3bwzlUC5RjPBB/AlSFKLc5vO+6yWmszPtGQNuKYeGOSfwIGsW2E+4GBCJ0
+         WpMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686319297; x=1688911297;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3dMKLfxyfO6GRRSI5mpAvE1qLvloyaEdkSgeCZ5iq4U=;
+        b=DR8dMkG/e8tDNF44AsJ4TuJgp4cgXU9rf2vLf64LlqCu6QONANNw0ofepCslzNlifk
+         BYxsdZ2vIMdv1Lj+J1TSvWLvGHAgrX6W/Kv3h804JzzFneAc2luZdmVN4sYIt3Sguf33
+         GwV5YObpIQCt8rCZRwuGnXMdncTiuRMZuN0Qv5fSy0/CeauZh7lsUtSw3SA1lLBRSNmp
+         hdzQm7bTsZqT5TcNVBOBATriA6wI+atybG9goUv6X9e+DbODjiBmab+ArNboVKh0lsrb
+         RTTJ5gUwnT0TevI1zTJgig+gdlGgdGQiIqswv5qy08FIdQ1Xj9I2SM5XtnfUxl/F50kJ
+         o41w==
+X-Gm-Message-State: AC+VfDyWN7IYNccX892DlNBs/aw/G1mhBereSZGg8XH6Fwztp2/dSadT
+        AnmsyKeU09633dgiz2c24dS1Sg==
+X-Google-Smtp-Source: ACHHUZ5IGHDLRT/F8ZiBNtbhtA6enQaJjbrsANjPa9s/JYdZAAOsgVsifgcve4BhUYpVZxJAkggcKQ==
+X-Received: by 2002:a1c:7c0a:0:b0:3f4:2492:a91f with SMTP id x10-20020a1c7c0a000000b003f42492a91fmr1046811wmc.27.1686319297138;
+        Fri, 09 Jun 2023 07:01:37 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id f13-20020a056000036d00b0030aefa3a957sm4568403wrf.28.2023.06.09.07.01.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jun 2023 07:01:35 -0700 (PDT)
+Date:   Fri, 9 Jun 2023 17:01:31 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     Bagas Sanjaya <bagasdotme@gmail.com>,
+        Franziska Naepelt <franziska.naepelt@googlemail.com>,
+        keyrings@vger.kernel.org, dhowells@redhat.com, dwmw2@infradead.org,
+        linux-kernel@vger.kernel.org,
+        Franziska Naepelt <franziska.naepelt@gmail.com>,
+        kernel test robot <lkp@intel.com>,
+        Linux SPDX Licenses <linux-spdx@vger.kernel.org>,
+        Linux Kernel Janitors <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH v2] certs/extract-cert: Fix checkpatch issues
+Message-ID: <c464c4ee-038c-47bf-857a-b11a89680e82@kadam.mountain>
+References: <20230601190508.56610-1-franziska.naepelt@gmail.com>
+ <20230602085902.59006-1-franziska.naepelt@gmail.com>
+ <ZH8mhIrjyBvTF4oZ@debian.me>
+ <e39efb7f-5d8f-4433-83b3-8eea8a6c0486@kadam.mountain>
+ <CT5NH4XXIYQF.5XXJE6JA5FZP@suppilovahvero>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR0402MB3395:EE_|DBBPR04MB7770:EE_
-X-MS-Office365-Filtering-Correlation-Id: 32f610fa-1358-4e81-1253-08db68cec55c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ShR7NqA6YTjlIx7GbCEjcBo2jQXaGgZZLlF4dbmTaGXLGgF3vtxB5866/4pFgXwrWSeLFOfu9138zorbE6ltTKIHgtLqn4ieVJ+ezKOrBfrj/iI+ZBGH/G6X/mrARxohZckp47G2RkEBKvJVKRooBEfMygev16rznrEB+70FvVPGtDBR1O8yQPNBgj+ymVplsdgcNMsW7isARtSlWGUZK7HVAa9mHU5CGbTCyH+lIAu1f/HRGoIdF/aYu0TGf4PH43Si78ELbX0357kQWlIVmSl9I+pKXpQTXjbpYjrW2sZrmhSSjFmeX0UE19lyBxse3rAQAe8SQZsRjdLPqryDIA3Ef93Cm6q8+5zo3X6ZCLmOZL6b5yZuL2isvD3gDMmXYGksgJ5kzs1d7uEAQnfFc2knwnQ1BxeR9xcH3UHqJz79tTOvzrQwBzCyAXXKX5CqBU25tOt/UdjKYFJxwHhZjukbOYtczEIjj1Av1GzxVBADMVr5OrUPMk6/ssjJAjVFjMbM3Lfoo6i6WaE4efvLDbCFrksyXVY/DmjooaElAzHsFfPqa/8TmU1wGQj9mRYM2t9bC6jpuM4wdpjw1v3YFKPlwVDCV/fOPBLPRqqChmQWHcrtfBALey7/JnJ70a3wiyaOTvCZ4JAUL4qbFIhG1A==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3395.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(136003)(346002)(39860400002)(366004)(376002)(396003)(451199021)(478600001)(8676002)(8936002)(316002)(6916009)(66946007)(41300700001)(4326008)(66556008)(66476007)(2616005)(38100700002)(186003)(83380400001)(6486002)(6506007)(26005)(6512007)(55236004)(53546011)(31696002)(86362001)(44832011)(5660300002)(2906002)(36756003)(31686004)(66899021)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bEUwYWpFZ0EzS3FYMUJzMG5IWGVHeTFsNjJ1NnNyZ2pGemV5ZmlJWFZDSXg2?=
- =?utf-8?B?NmFyQjVvcjViS1pYbm4vRTFUWjN3YkxENkFYb2FaUHRPZE54U21iK0tMS0lF?=
- =?utf-8?B?TzBNMVFaMUtnaytKdXZUeWtvTHBrUVI4UWs0L09INVdjb1dBeWM1RHFNbnQx?=
- =?utf-8?B?OVhGbmJZUy9tb3p0RndIUDc3eHRiVnRneCtVU1pFcTI0dytlaXUwc3pMY1JX?=
- =?utf-8?B?UVFzczZJNXNLcHdvaG5KTnZhQ0VVYUJlRXBCZ2hOMGVlWk82enVRTGxTSkY5?=
- =?utf-8?B?ZzlVQTVSeFpWWW14aFBib1UwN1NMSmZhLzlReENCMGRVTTdxZ2FsaFZ6anJa?=
- =?utf-8?B?QUtJbDVYZkVtNWRoL3VxMmprNnhDMFJOMGdxd0k2aExVZWQyZE9sUWYyZG83?=
- =?utf-8?B?d1B6TUpmdUVwdUluVEJEYytBOXp4UmM0WElFRjk1QVRacEROdkN1MkxUWWN0?=
- =?utf-8?B?TS9MSkYxbXJzTk91bjlEeUU4R1NtRlZ4WW1HTGN6RVhTK25vdUVxNzRhUHFW?=
- =?utf-8?B?MWJJaFAxUWkvWCtTZ2UySGwvZkRtQmV6ZkNPdkorVjJDUmpERkdJeG90Sita?=
- =?utf-8?B?Rmd5dVFjNVdXTGNRRExyaU5Ia1JqWmx0em9JZVVzOWllQ1VzUVJ2ZEZBS3Q5?=
- =?utf-8?B?ZGoxTkpaSmpoSlYrcVNSbjVUbFd2R1gxdk1YNHp2SEU3ZUx2VzdWRDdFclBG?=
- =?utf-8?B?UzNJaTMyN2QwTHhBaE5UZ0RZMWhOU0dTNllCTzdEbzF2Z29WWDJnejVVdi83?=
- =?utf-8?B?d2RIV1RsODFjSDRXMnFkK2F6ZXp5K2xyQUJnQ2ZoNGgwa2Fmei9BTDgydXFJ?=
- =?utf-8?B?SEF0TUVjT0ZJVkdxZ05tRDNDZXZxekNVTTRnZm10UFR4aHJTZEJlZS9iQXM1?=
- =?utf-8?B?NEdoN01IVDk4ZzBUUkw3QU5NV08rUkdxV2NMT3N5MlMzVU9zWFpITTNPak9s?=
- =?utf-8?B?TnliM0lwQ2lHaWhERUNCUGZ4RmlHWGtWdTNEb3Z4Vm5GbURhWTFySDYzaVBN?=
- =?utf-8?B?MWU1b3ViU0hRN0FTRUZMOHpYSjN2dkNER0NBTG81c0tyMXhHeS85Wk14VS9T?=
- =?utf-8?B?SGlRQ3VQNUFqK0FFLzRmNlVjWFpMM0xGenYwR3hGdWZIMk5nazZ4QW41UzIy?=
- =?utf-8?B?RWpSalNTZVlMZ2ZSM21XTGwwYU5IVnU5WTNLMWlLalI1SFBzYWcxTWFMMkh1?=
- =?utf-8?B?QlpnL29rWFFJWmduaTJ5bkRCTkRmcjRVbUN2dUZlWUhYd1ZtUEJVVEZoMGY5?=
- =?utf-8?B?SFVWcGpkSVJvcUwyOXNtK2YyTFdleG9sam9MbE43eW1taUpuMlpoMHoyODdz?=
- =?utf-8?B?dlo2MHJxbzJxZGZQYWdYQkt6ekRlb3VudGt3YW9vU21LNHRIMHZEakkvUFla?=
- =?utf-8?B?VXlKcE9KVjh6UHhLVVhrYlFqWnNGSjR4a1F4SzhrN09oQS9FbDhyRk1yYTRs?=
- =?utf-8?B?UE9XK2dDd3NsbVRucGQrOWxtMm56RGpFQ1dISzRrYlJKM01QajhJT2JCdkNh?=
- =?utf-8?B?bkdUa0tLYWRhQk5CS3Q4UFVsME4yUXdWOGdWVUttRDJibGZJeXExRUlaUTRQ?=
- =?utf-8?B?MFQxRDFCcWozekdiYmFlL3I3bkVqaExtdnk0SmJrVnp5Um5pUm41U3NSNU1i?=
- =?utf-8?B?VHZraXRZNzNiSWlBL2JOOCt4VlR1YytINlM4bEhMWmx6WUpvL1JSZHIrR3NK?=
- =?utf-8?B?bkFQUko2ZW0xZGhBOXhaVWRocmQ5SDlHQ2liWllKQ2ZYYWhZNEN5ZXlUTDlU?=
- =?utf-8?B?ODNqbkE3M3dBWDY4ck0ycGtnRFdqWUgxQ0xWUWUza1JRQkJXazY0WTkyUUVq?=
- =?utf-8?B?NmtiVEl4OE9vVXVoS3Mxb0VGMVVkRnkrdSs4OW1XVithSUdjd3pCOG5uVHFk?=
- =?utf-8?B?MVMrT2hrZ0RPMVpZVUFoMERMR2Z5NmFUR3Z1TlJjMFJVeHFvUFp4ZnMvVFRM?=
- =?utf-8?B?VWprNWtoVllNZHpFOEdUSmhxUjJjbllIMlV3ZEtaVWQ5eGQ0TlNuUjVxVUFC?=
- =?utf-8?B?eHNBMm16RGNFVHoxbHJWQ2c5N04rWTlBQ05WODNEZUJjcHI5WWRZZzA4dWxs?=
- =?utf-8?B?dVRSMmxnakR4enQ4YUZqR2hjVm92ZTdjTzVmRTR4SGtweHlPSVB0YXZqSWRD?=
- =?utf-8?Q?epZmov4/+a8G4sYDZpteKgThA?=
-X-OriginatorOrg: suse.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 32f610fa-1358-4e81-1253-08db68cec55c
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR0402MB3395.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jun 2023 09:49:08.9907
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T8qSPX7nnUN6TjecXfDZX4TN5g+eo5sm3fCDn14qkXKa8qgp9o6eAj+qgofQ8qSPtnasDHNxNwMCWhNbIzdUFA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7770
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CT5NH4XXIYQF.5XXJE6JA5FZP@suppilovahvero>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 6/8/23 16:12, David Howells wrote:
-> Petr Pavlu <petr.pavlu@suse.com> wrote:
-> 
->> * Back on the first task, function construct_alloc_key() first runs
->>   __key_link_begin() to determine an assoc_array_edit operation to
->>   insert a new key. Index keys in the array are compared exactly as-is,
->>   using keyring_compare_object(). The operation finds that "abcdef" is
->>   not yet present in the destination keyring.
-> 
-> Good catch, but I think it's probably the wrong solution.
-> 
-> keyring_compare_object() needs to use the ->cmp() function from the key type.
-> 
-> It's not just request_key() that might have a problem, but also key_link().
+On Tue, Jun 06, 2023 at 05:51:09PM +0300, Jarkko Sakkinen wrote:
+> It's not a "punishment". It's more like that I really have to take the
+> time to read the prose...
 
-The way I view the current design is that it kind of consists of two
-layers. Lower-level functions key_create(), key_link(), key_move(), etc.
-are built directly on top of assoc_array, use the exact comparison and
-benefit from the assoc_array speed.
+The thing about imperative tense is that it was used as a punishment on
+me once five years ago.  I wrote a quite bad commit message and a senior
+maintainer told me to re-write it properly and I realized that it was
+true.  My commit message was bad.  So I wrote a proper commit message.
+And then he yelled at me, "Can't you follow simple directions and write
+it in imperative tense like the documentation says?  Are you a
+shithead?"
 
-Higher-level function request_key() then provides a callout
-functionality and offers an option to do approximate search if a needed
-key is already present. This gives a trade-off to potentially reduce
-a number of callouts but on the other hand requires a linear search over
-the underlying keyrings/assoc_arrays.
+So then I swore I would never talk to him again or to anyone who
+enforced the imperative tense rule.  That has only happened once in the
+intervening years.  I told the maintainer, "Fine.  Re-write the commit
+message however you like and give me Reported-by credit."  This was a
+cheeky response and it made the maintainer enraged.  I guess he thought
+that my boss would force me to fix the bug or something?  I felt bad for
+the Intel developer who had to fix my bug instead because I knew that
+the maintainer was going to be super angry if he gave me reported-by
+credit so I had put him in a bind.  I almost re-wrote the commit message
+so that he wouldn't have to deal with that.  Maybe this is how mothers
+feel when they try to take abuse from an angry husband instead of
+letting their kids suffer.  But I am a bad mother and I left.
 
-The patch tries to only provide a point fix where the request-key logic
-in construct_alloc_key() wrongly interacted with the approximate
-matching option. If my understanding of the current design is correct
-then I think key_link() shouldn't require any change in this regard.
+My boss would never have forced me to deal with that.  When he left for
+a different company he said, "Dan, I'm transitioning and XXX is taking
+over me and I have told him all your weirdness so he is prepared."  And
+it was a huge comfort to me because I know what my weakness are.
 
-Just wanted to add this point, I can't really comment on whether the
-whole thing should be designed differently in the first place.
+You people on this thread all seem super nice.  And you're right that we
+should always try to be improve every aspect of our craft.
 
-Thanks,
-Petr
+When Jarkko talked about people who write too long commit messages, I
+thought about one developer in particular who writes too long commit
+messages.  He writes in imperative tense.  He takes everything so
+seriously and he's never seen a rule without following it.  His patches
+are always right.  People have told him that his commit messages are bad
+and too long and those people are right.  But they need to shut up.  The
+good things that he does and the bad things that he does are all part of
+the same package.  He can't change and I don't want him to feel anything
+but welcome.
+
+It's hard to be a good kernel developer without being at least slightly
+obsessive.  Both developers and maintainers are that way.  And I deal
+with a lot of people and accomodating maintainers you disagree with is
+part of the job.
+
+So long as everyone is kind to each other.  That's the main thing.
+
+regards,
+dan carpenter
