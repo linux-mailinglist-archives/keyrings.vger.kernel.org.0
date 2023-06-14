@@ -2,114 +2,71 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7D4172E7DE
-	for <lists+keyrings@lfdr.de>; Tue, 13 Jun 2023 18:09:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07D9D72F285
+	for <lists+keyrings@lfdr.de>; Wed, 14 Jun 2023 04:19:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241540AbjFMQIM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 13 Jun 2023 12:08:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40130 "EHLO
+        id S242217AbjFNCTN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 13 Jun 2023 22:19:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240627AbjFMQIG (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 13 Jun 2023 12:08:06 -0400
-Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC8461981;
-        Tue, 13 Jun 2023 09:08:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1686672486; x=1718208486;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=UMXii+5rBuoMAs0WL8DNFNbC1KKA1KhEPyGQS0o9/ak=;
-  b=GNyjnvNEzdVq5wdedMC/ElxZC96HJIhVsVgxlJqwPL2cHdvRPpjs/oRf
-   5ewKxrtOb+xm+ADdyKMD0rbNWE7UDe77wWc33LKG7S+5Pe2xC+xJvEVqb
-   0xzz7e7J6gogpDZFChQ8NNVoLDGvFmT3iHLCGzXzgfTLA/m2xqzgxs64v
-   Q=;
-X-IronPort-AV: E=Sophos;i="6.00,240,1681171200"; 
-   d="scan'208";a="136747801"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-pdx-2b-m6i4x-f323d91c.us-west-2.amazon.com) ([10.43.8.2])
-  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 16:08:03 +0000
-Received: from EX19MTAUWA002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
-        by email-inbound-relay-pdx-2b-m6i4x-f323d91c.us-west-2.amazon.com (Postfix) with ESMTPS id A8F1A414A5;
-        Tue, 13 Jun 2023 16:08:01 +0000 (UTC)
-Received: from EX19MTAUWA001.ant.amazon.com (10.250.64.218) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Tue, 13 Jun 2023 16:07:53 +0000
-Received: from dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (10.15.1.225)
- by mail-relay.amazon.com (10.250.64.204) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Tue, 13 Jun 2023 16:07:53 +0000
-Received: by dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (Postfix, from userid 23907357)
-        id F01C6960E; Tue, 13 Jun 2023 16:07:52 +0000 (UTC)
-From:   Mahmoud Adam <mngyadam@amazon.com>
-To:     <dhowells@redhat.com>
-CC:     <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
-        <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Mahmoud Adam <mngyadam@amazon.com>
-Subject: [PATCH] KEYS: use kfree_sensitive with key
-Date:   Tue, 13 Jun 2023 16:07:23 +0000
-Message-ID: <20230613160723.61729-1-mngyadam@amazon.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S242221AbjFNCTI (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 13 Jun 2023 22:19:08 -0400
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38BFA1BD2;
+        Tue, 13 Jun 2023 19:18:39 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045168;MF=jiapeng.chong@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0Vl4LWPN_1686709107;
+Received: from localhost(mailfrom:jiapeng.chong@linux.alibaba.com fp:SMTPD_---0Vl4LWPN_1686709107)
+          by smtp.aliyun-inc.com;
+          Wed, 14 Jun 2023 10:18:36 +0800
+From:   Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+To:     jejb@linux.ibm.com
+Cc:     jarkko@kernel.org, zohar@linux.ibm.com, dhowells@redhat.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        Abaci Robot <abaci@linux.alibaba.com>
+Subject: [PATCH] security: keys: Modify mismatched function name
+Date:   Wed, 14 Jun 2023 10:18:25 +0800
+Message-Id: <20230614021825.64333-1-jiapeng.chong@linux.alibaba.com>
+X-Mailer: git-send-email 2.20.1.7.g153144c
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,URIBL_BLOCKED,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-key member might contain private part of the key, so better use
-kfree_sensitive to free it
+No functional modification involved.
 
-Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
+security/keys/trusted-keys/trusted_tpm2.c:203: warning: expecting prototype for tpm_buf_append_auth(). Prototype was for tpm2_buf_append_auth() instead.
+
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=5524
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 ---
- crypto/asymmetric_keys/public_key.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ security/keys/trusted-keys/trusted_tpm2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
-index eca5671ad3f2..006ae170a16f 100644
---- a/crypto/asymmetric_keys/public_key.c
-+++ b/crypto/asymmetric_keys/public_key.c
-@@ -43,7 +43,7 @@ static void public_key_describe(const struct key *asymmetric_key,
- void public_key_free(struct public_key *key)
- {
- 	if (key) {
--		kfree(key->key);
-+		kfree_sensitive(key->key);
- 		kfree(key->params);
- 		kfree(key);
- 	}
-@@ -218,7 +218,7 @@ static int software_key_query(const struct kernel_pkey_params *params,
- 	ret = 0;
+diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+index 2b2c8eb258d5..bc700f85f80b 100644
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -186,7 +186,7 @@ int tpm2_key_priv(void *context, size_t hdrlen,
+ }
  
- error_free_key:
--	kfree(key);
-+	kfree_sensitive(key);
- error_free_tfm:
- 	crypto_free_akcipher(tfm);
- 	pr_devel("<==%s() = %d\n", __func__, ret);
-@@ -303,7 +303,7 @@ static int software_key_eds_op(struct kernel_pkey_params *params,
- 		ret = req->dst_len;
- 
- error_free_key:
--	kfree(key);
-+	kfree_sensitive(key);
- error_free_req:
- 	akcipher_request_free(req);
- error_free_tfm:
-@@ -456,7 +456,7 @@ int public_key_verify_signature(const struct public_key *pkey,
- 	ret = crypto_wait_req(crypto_akcipher_verify(req), &cwait);
- 
- error_free_key:
--	kfree(key);
-+	kfree_sensitive(key);
- error_free_req:
- 	akcipher_request_free(req);
- error_free_tfm:
+ /**
+- * tpm_buf_append_auth() - append TPMS_AUTH_COMMAND to the buffer.
++ * tpm2_buf_append_auth() - append TPMS_AUTH_COMMAND to the buffer.
+  *
+  * @buf: an allocated tpm_buf instance
+  * @session_handle: session handle
 -- 
-2.40.1
+2.20.1.7.g153144c
 
