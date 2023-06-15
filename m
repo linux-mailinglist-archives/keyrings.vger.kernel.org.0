@@ -2,61 +2,117 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6A2E73133C
-	for <lists+keyrings@lfdr.de>; Thu, 15 Jun 2023 11:10:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5596273145A
+	for <lists+keyrings@lfdr.de>; Thu, 15 Jun 2023 11:46:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240422AbjFOJKf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 15 Jun 2023 05:10:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47842 "EHLO
+        id S236411AbjFOJqJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 15 Jun 2023 05:46:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245504AbjFOJJz (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 15 Jun 2023 05:09:55 -0400
-Received: from 167-179-156-38.a7b39c.syd.nbn.aussiebb.net (167-179-156-38.a7b39c.syd.nbn.aussiebb.net [167.179.156.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF8B730CB;
-        Thu, 15 Jun 2023 02:09:14 -0700 (PDT)
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-        id 1q9iyU-003G7R-4O; Thu, 15 Jun 2023 17:09:03 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 15 Jun 2023 17:09:02 +0800
-Date:   Thu, 15 Jun 2023 17:09:02 +0800
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     "Adam, Mahmoud" <mngyadam@amazon.de>
-Cc:     Mahmoud Adam <mngyadam@amazon.com>,
-        "dhowells@redhat.com" <dhowells@redhat.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] KEYS: use kfree_sensitive with key
-Message-ID: <ZIrVLk73ulTPzOGq@gondor.apana.org.au>
-References: <20230613160723.61729-1-mngyadam@amazon.com>
- <ZImNO0AijmNriZuL@gondor.apana.org.au>
- <CB10C1D8-BA86-4E1B-B9B7-FDF6AFD3E089@amazon.de>
+        with ESMTP id S238768AbjFOJqI (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 15 Jun 2023 05:46:08 -0400
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E71A1A3;
+        Thu, 15 Jun 2023 02:46:06 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045170;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0VlA7p6M_1686822362;
+Received: from 30.240.108.67(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0VlA7p6M_1686822362)
+          by smtp.aliyun-inc.com;
+          Thu, 15 Jun 2023 17:46:03 +0800
+Message-ID: <c8c1ee02-0490-8bea-1fda-324de29ab565@linux.alibaba.com>
+Date:   Thu, 15 Jun 2023 17:46:00 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CB10C1D8-BA86-4E1B-B9B7-FDF6AFD3E089@amazon.de>
-X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_00,HELO_DYNAMIC_IPADDR2,
-        PDS_RDNS_DYNAMIC_FP,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS,TVD_RCVD_IP,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.10.0
+Subject: Re: [PATCH] sign-file: simplify main function implementation
+Content-Language: en-US
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20230525084343.56824-1-tianjia.zhang@linux.alibaba.com>
+ <CT8AWM6PDMMX.RAF5C6RS1P95@suppilovahvero>
+From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+In-Reply-To: <CT8AWM6PDMMX.RAF5C6RS1P95@suppilovahvero>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-10.0 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Jun 14, 2023 at 01:32:51PM +0000, Adam, Mahmoud wrote:
->
-> I think this holds for the other lines as well, I can use pkey->key_is_private to check for them also
+Hi Jarkko,
 
-That might be going a bit overboard.
+On 6/10/23 1:38 AM, Jarkko Sakkinen wrote:
+> On Thu May 25, 2023 at 11:43 AM EEST, Tianjia Zhang wrote:
+>> use_signed_attrs is an unnecessary variable, deleting this variable
+>> can simplify the code.
+>>
+>> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+>> ---
+>>   scripts/sign-file.c | 12 ++----------
+>>   1 file changed, 2 insertions(+), 10 deletions(-)
+>>
+>> diff --git a/scripts/sign-file.c b/scripts/sign-file.c
+>> index 94267cf72197..377d586762f9 100644
+>> --- a/scripts/sign-file.c
+>> +++ b/scripts/sign-file.c
+>> @@ -224,7 +224,6 @@ int main(int argc, char **argv)
+>>   	bool raw_sig = false;
+>>   	unsigned char buf[4096];
+>>   	unsigned long module_size, sig_size;
+>> -	unsigned int use_signed_attrs;
+>>   	const EVP_MD *digest_algo;
+>>   	EVP_PKEY *private_key;
+>>   #ifndef USE_PKCS7
+>> @@ -242,12 +241,6 @@ int main(int argc, char **argv)
+>>   
+>>   	key_pass = getenv("KBUILD_SIGN_PIN");
+>>   
+>> -#ifndef USE_PKCS7
+>> -	use_signed_attrs = CMS_NOATTR;
+>> -#else
+>> -	use_signed_attrs = PKCS7_NOATTR;
+>> -#endif
+>> -
+>>   	do {
+>>   		opt = getopt(argc, argv, "sdpk");
+>>   		switch (opt) {
+>> @@ -340,8 +333,7 @@ int main(int argc, char **argv)
+>>   
+>>   		ERR(!CMS_add1_signer(cms, x509, private_key, digest_algo,
+>>   				     CMS_NOCERTS | CMS_BINARY |
+>> -				     CMS_NOSMIMECAP | use_keyid |
+>> -				     use_signed_attrs),
+>> +				     CMS_NOSMIMECAP | CMS_NOATTR | use_keyid),
+>>   		    "CMS_add1_signer");
+>>   		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) < 0,
+>>   		    "CMS_final");
+>> @@ -349,7 +341,7 @@ int main(int argc, char **argv)
+>>   #else
+>>   		pkcs7 = PKCS7_sign(x509, private_key, NULL, bm,
+>>   				   PKCS7_NOCERTS | PKCS7_BINARY |
+>> -				   PKCS7_DETACHED | use_signed_attrs);
+>> +				   PKCS7_DETACHED | PKCS7_NOATTR);
+>>   		ERR(!pkcs7, "PKCS7_sign");
+>>   #endif
+>>   
+>> -- 
+>> 2.24.3 (Apple Git-128)
+> 
+> I'm sorry but I don't see how this makes our lives better.
+> 
+> If, however, this was part of a larger patch, it might make sense, if
+> there was a real functional change concerning the same code blocks.
+> 
+> BR, Jarkko
 
-So if the key is definitely public, then use kfree.  If we don't
-know what it is (i.e., public or private), then just use kfree_sensitive.
+As you might expect, this is a stand-alone patch and there are no other
+changes attached to it.
 
-Thanks,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Best regards,
+Tianjia
