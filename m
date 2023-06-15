@@ -2,117 +2,93 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5596273145A
-	for <lists+keyrings@lfdr.de>; Thu, 15 Jun 2023 11:46:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAF1073152E
+	for <lists+keyrings@lfdr.de>; Thu, 15 Jun 2023 12:26:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236411AbjFOJqJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 15 Jun 2023 05:46:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45370 "EHLO
+        id S240513AbjFOK0a (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 15 Jun 2023 06:26:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238768AbjFOJqI (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 15 Jun 2023 05:46:08 -0400
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E71A1A3;
-        Thu, 15 Jun 2023 02:46:06 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045170;MF=tianjia.zhang@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0VlA7p6M_1686822362;
-Received: from 30.240.108.67(mailfrom:tianjia.zhang@linux.alibaba.com fp:SMTPD_---0VlA7p6M_1686822362)
-          by smtp.aliyun-inc.com;
-          Thu, 15 Jun 2023 17:46:03 +0800
-Message-ID: <c8c1ee02-0490-8bea-1fda-324de29ab565@linux.alibaba.com>
-Date:   Thu, 15 Jun 2023 17:46:00 +0800
+        with ESMTP id S240481AbjFOK03 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 15 Jun 2023 06:26:29 -0400
+Received: from 167-179-156-38.a7b39c.syd.nbn.aussiebb.net (167-179-156-38.a7b39c.syd.nbn.aussiebb.net [167.179.156.38])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E70C123;
+        Thu, 15 Jun 2023 03:26:26 -0700 (PDT)
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+        id 1q9kB4-003Hle-09; Thu, 15 Jun 2023 18:26:07 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 15 Jun 2023 18:26:05 +0800
+Date:   Thu, 15 Jun 2023 18:26:05 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     David Howells <dhowells@redhat.com>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Roberto Sassu <roberto.sassu@huaweicloud.com>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Stefan Berger <stefanb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>, dmitry.kasatkin@gmail.com,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>, keyrings@vger.kernel.org,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>
+Subject: [v2 PATCH 0/5] crypto: Add akcipher interface without SGs
+Message-ID: <ZIrnPcPj9Zbq51jK@gondor.apana.org.au>
+References: <ZIg4b8kAeW7x/oM1@gondor.apana.org.au>
+ <570802.1686660808@warthog.procyon.org.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.10.0
-Subject: Re: [PATCH] sign-file: simplify main function implementation
-Content-Language: en-US
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20230525084343.56824-1-tianjia.zhang@linux.alibaba.com>
- <CT8AWM6PDMMX.RAF5C6RS1P95@suppilovahvero>
-From:   Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-In-Reply-To: <CT8AWM6PDMMX.RAF5C6RS1P95@suppilovahvero>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-10.0 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <570802.1686660808@warthog.procyon.org.uk>
+X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_00,HELO_DYNAMIC_IPADDR2,
+        PDS_RDNS_DYNAMIC_FP,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS,TVD_RCVD_IP,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Jarkko,
+v2 changes:
 
-On 6/10/23 1:38 AM, Jarkko Sakkinen wrote:
-> On Thu May 25, 2023 at 11:43 AM EEST, Tianjia Zhang wrote:
->> use_signed_attrs is an unnecessary variable, deleting this variable
->> can simplify the code.
->>
->> Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
->> ---
->>   scripts/sign-file.c | 12 ++----------
->>   1 file changed, 2 insertions(+), 10 deletions(-)
->>
->> diff --git a/scripts/sign-file.c b/scripts/sign-file.c
->> index 94267cf72197..377d586762f9 100644
->> --- a/scripts/sign-file.c
->> +++ b/scripts/sign-file.c
->> @@ -224,7 +224,6 @@ int main(int argc, char **argv)
->>   	bool raw_sig = false;
->>   	unsigned char buf[4096];
->>   	unsigned long module_size, sig_size;
->> -	unsigned int use_signed_attrs;
->>   	const EVP_MD *digest_algo;
->>   	EVP_PKEY *private_key;
->>   #ifndef USE_PKCS7
->> @@ -242,12 +241,6 @@ int main(int argc, char **argv)
->>   
->>   	key_pass = getenv("KBUILD_SIGN_PIN");
->>   
->> -#ifndef USE_PKCS7
->> -	use_signed_attrs = CMS_NOATTR;
->> -#else
->> -	use_signed_attrs = PKCS7_NOATTR;
->> -#endif
->> -
->>   	do {
->>   		opt = getopt(argc, argv, "sdpk");
->>   		switch (opt) {
->> @@ -340,8 +333,7 @@ int main(int argc, char **argv)
->>   
->>   		ERR(!CMS_add1_signer(cms, x509, private_key, digest_algo,
->>   				     CMS_NOCERTS | CMS_BINARY |
->> -				     CMS_NOSMIMECAP | use_keyid |
->> -				     use_signed_attrs),
->> +				     CMS_NOSMIMECAP | CMS_NOATTR | use_keyid),
->>   		    "CMS_add1_signer");
->>   		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) < 0,
->>   		    "CMS_final");
->> @@ -349,7 +341,7 @@ int main(int argc, char **argv)
->>   #else
->>   		pkcs7 = PKCS7_sign(x509, private_key, NULL, bm,
->>   				   PKCS7_NOCERTS | PKCS7_BINARY |
->> -				   PKCS7_DETACHED | use_signed_attrs);
->> +				   PKCS7_DETACHED | PKCS7_NOATTR);
->>   		ERR(!pkcs7, "PKCS7_sign");
->>   #endif
->>   
->> -- 
->> 2.24.3 (Apple Git-128)
-> 
-> I'm sorry but I don't see how this makes our lives better.
-> 
-> If, however, this was part of a larger patch, it might make sense, if
-> there was a real functional change concerning the same code blocks.
-> 
-> BR, Jarkko
+- Rename dsa to sig.
+- Add braces around else clause.
 
-As you might expect, this is a stand-alone patch and there are no other
-changes attached to it.
+The crypto akcipher interface has exactly one user, the keyring
+subsystem.  That user only deals with kernel pointers, not SG lists.
+Therefore the use of SG lists in the akcipher interface is
+completely pointless.
 
-Best regards,
-Tianjia
+As there is only one user, changing it isn't that hard.  This
+patch series is a first step in that direction.  It introduces
+a new interface for encryption and decryption without SG lists:
+
+int crypto_akcipher_sync_encrypt(struct crypto_akcipher *tfm,
+				 const void *src, unsigned int slen,
+				 void *dst, unsigned int dlen);
+
+int crypto_akcipher_sync_decrypt(struct crypto_akcipher *tfm,
+				 const void *src, unsigned int slen,
+				 void *dst, unsigned int dlen);
+
+I've decided to split out signing and verification because most
+(all but one) of our signature algorithms do not support encryption
+or decryption.  These can now be accessed through the sig interface:
+
+int crypto_sig_sign(struct crypto_sig *tfm,
+		    const void *src, unsigned int slen,
+		    void *dst, unsigned int dlen);
+
+int crypto_sig_verify(struct crypto_sig *tfm,
+		      const void *src, unsigned int slen,
+		      const void *digest, unsigned int dlen);
+
+The keyring system has been converted to this interface.
+
+The next step would be to convert the code within the Crypto API so
+that SG lists are not used at all on the software path.  This
+would eliminate the unnecessary copying that currently happens.
+
+Thanks,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
