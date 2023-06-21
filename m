@@ -2,54 +2,42 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 374E973821E
-	for <lists+keyrings@lfdr.de>; Wed, 21 Jun 2023 13:12:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22BF4737FF3
+	for <lists+keyrings@lfdr.de>; Wed, 21 Jun 2023 13:09:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231739AbjFUJ4L (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 21 Jun 2023 05:56:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52128 "EHLO
+        id S231643AbjFUKuF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 21 Jun 2023 06:50:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231752AbjFUJ4K (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 21 Jun 2023 05:56:10 -0400
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9A089B;
-        Wed, 21 Jun 2023 02:56:08 -0700 (PDT)
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2b477e9d396so47609651fa.3;
-        Wed, 21 Jun 2023 02:56:08 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687341367; x=1689933367;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7QfqFAs+LUbqWKQg3CDgDFj/Ai/EFvoPAUEVH6zEuh0=;
-        b=RwawYWuTKJn64CRDe1NcFPPtAeUHodvFBD5epWUqqbkQqAWvS64peIcriBCCT6Rxvf
-         VVL+eIEeKbAmT14URvYpdcknGiLqjzVhGbJShDfg7kMjc4KPBDadW5ivGhmnxXku/G37
-         Y8H+MP3dnv004WodMe7MAQN3cCuRLxrbLHTXgvHSpRkciW8+h7lCGTw4zFL16TmFn+Pc
-         Z2TBUPmjVywBWaEbdoeNb9BJ+9K+qWCR/fduJaYeb7pDb+0Xbp9FnWqLC+nTUkvPKbwV
-         PFAgYx9uoG+w5mdcyWNvOZFaPbloKR05Cbf6fclHSo+jALMug2ZK3vBsEa7VwlEk9tOO
-         JLJQ==
-X-Gm-Message-State: AC+VfDxTZDpe2t8kPROKzxs2wcnUqn/oTex+3diNNImPZnvivljUTVPJ
-        s09IUcTzBWaE70RAHKAvTII=
-X-Google-Smtp-Source: ACHHUZ4GQBsPStePkHDKNlzEaMWr+Bp+ebV1Ur4N9HjkC8j8Qd1kDy/CWY6Orh1D9sVCHniBDQ4DcQ==
-X-Received: by 2002:a2e:9846:0:b0:2b4:737c:e316 with SMTP id e6-20020a2e9846000000b002b4737ce316mr7027828ljj.14.1687341366842;
-        Wed, 21 Jun 2023 02:56:06 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
-        by smtp.gmail.com with ESMTPSA id m20-20020a7bca54000000b003f80e81705asm4477120wml.45.2023.06.21.02.56.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Jun 2023 02:56:06 -0700 (PDT)
-Message-ID: <36fae2b0-4cd2-58b5-cc12-9abdd5ce235b@kernel.org>
-Date:   Wed, 21 Jun 2023 11:56:03 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 08/11] sysctl: Add size to register_sysctl_init
-To:     Joel Granados <j.granados@samsung.com>, mcgrof@kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
+        with ESMTP id S232507AbjFUKtj (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 21 Jun 2023 06:49:39 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6497A19BE;
+        Wed, 21 Jun 2023 03:48:06 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DA992614F7;
+        Wed, 21 Jun 2023 10:48:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D79BC433C8;
+        Wed, 21 Jun 2023 10:48:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1687344485;
+        bh=vQW8SpknqhfYsLd//ycoQUF1XEoKmVOh7WQXK7qiNdI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=T3axtBl09Uj+gGhVy84WdPlv59/aPeu632cEchdYe8a/k5iJl0+IXsbF+vopEWDYq
+         NwenFITRTKDLMCVF8CzPXY6p9Hti1Q2TT7eK4GXO8pT0fRmZYBTPxe1ckDw7AxLZe2
+         wT9Wmou6gxTC0sVGsza4KPz7hQ7x6JjyXWzC0NK4=
+Date:   Wed, 21 Jun 2023 12:47:58 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Joel Granados <j.granados@samsung.com>
+Cc:     mcgrof@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
         Theodore Ts'o <tytso@mit.edu>,
         "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
         Juergen Gross <jgross@suse.com>,
         Stefano Stabellini <sstabellini@kernel.org>,
         Benjamin LaHaise <bcrl@kvack.org>,
@@ -83,8 +71,8 @@ To:     Joel Granados <j.granados@samsung.com>, mcgrof@kernel.org,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Paul Moore <paul@paul-moore.com>,
         James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>
-Cc:     "H. Peter Anvin" <hpa@zytor.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
         Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
         Amir Goldstein <amir73il@gmail.com>,
         John Fastabend <john.fastabend@gmail.com>,
@@ -109,36 +97,42 @@ Cc:     "H. Peter Anvin" <hpa@zytor.com>,
         linux-mm@kvack.org, bpf@vger.kernel.org, kexec@lists.infradead.org,
         linux-trace-kernel@vger.kernel.org, keyrings@vger.kernel.org,
         linux-security-module@vger.kernel.org
+Subject: Re: [PATCH 08/11] sysctl: Add size to register_sysctl_init
+Message-ID: <2023062150-outbound-quiet-2609@gregkh>
 References: <20230621091000.424843-1-j.granados@samsung.com>
  <CGME20230621091037eucas1p188e11d8064526a5a0549217d5a419647@eucas1p1.samsung.com>
  <20230621091000.424843-9-j.granados@samsung.com>
-Content-Language: en-US
-From:   Jiri Slaby <jirislaby@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20230621091000.424843-9-j.granados@samsung.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 21. 06. 23, 11:09, Joel Granados wrote:
-> In order to remove the end element from the ctl_table struct arrays, we
-> explicitly define the size when registering the targes. We add a size
-> argument to the register_sysctl_init call and pass an ARRAY_SIZE for all
-> the callers.
+On Wed, Jun 21, 2023 at 11:09:57AM +0200, Joel Granados wrote:
+>  static int __init random_sysctls_init(void)
+>  {
+> -	register_sysctl_init("kernel/random", random_table);
+> +	register_sysctl_init("kernel/random", random_table,
+> +			     ARRAY_SIZE(random_table));
 
-Hi, I am missing here (or in 00/00) _why_ you are doing that. Is it by a 
-chance those saved 9k? I hope not.
+As mentioned before, why not just do:
+
+#define register_sysctl_init(string, table)	\
+	__register_sysctl_init(string, table, ARRAY_SIZE(table);
+
+or something like that?
+
+That way no callers need to change AND you prevent the size from ever
+being incorrect?
 
 thanks,
--- 
-js
-suse labs
 
+greg k-h
