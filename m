@@ -2,145 +2,105 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE4D073A370
-	for <lists+keyrings@lfdr.de>; Thu, 22 Jun 2023 16:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1EA773ABC6
+	for <lists+keyrings@lfdr.de>; Thu, 22 Jun 2023 23:46:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230272AbjFVOpG (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 22 Jun 2023 10:45:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49474 "EHLO
+        id S229969AbjFVVq2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 22 Jun 2023 17:46:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231895AbjFVOoY (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 22 Jun 2023 10:44:24 -0400
-Received: from frasgout12.his.huawei.com (unknown [14.137.139.154])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BEB52708;
-        Thu, 22 Jun 2023 07:44:00 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.227])
-        by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4Qn2qB6Gy2z9xFr8;
-        Thu, 22 Jun 2023 22:31:02 +0800 (CST)
-Received: from roberto-ThinkStation-P620 (unknown [10.204.63.22])
-        by APP1 (Coremail) with SMTP id LxC2BwDHTQngXZRkeCaRAw--.29682S2;
-        Thu, 22 Jun 2023 15:42:54 +0100 (CET)
-Message-ID: <eb31920bd00e2c921b0aa6ebed8745cb0130b0e1.camel@huaweicloud.com>
-Subject: [QUESTION] Full user space process isolation?
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     Oleg Nesterov <oleg@redhat.com>, Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Kees Cook <keescook@chromium.org>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        David Howells <dhowells@redhat.com>,
-        LuisChamberlain <mcgrof@kernel.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Petr Tesarik <petrtesarik@huaweicloud.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>, Tejun Heo <tj@kernel.org>
-Cc:     linux-mm@kvack.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-hardening@vger.kernel.org
-Date:   Thu, 22 Jun 2023 16:42:37 +0200
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5-0ubuntu1 
+        with ESMTP id S229978AbjFVVq1 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 22 Jun 2023 17:46:27 -0400
+Received: from mail-wm1-x344.google.com (mail-wm1-x344.google.com [IPv6:2a00:1450:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85A781FEF
+        for <keyrings@vger.kernel.org>; Thu, 22 Jun 2023 14:46:26 -0700 (PDT)
+Received: by mail-wm1-x344.google.com with SMTP id 5b1f17b1804b1-3fa0253b9e7so284555e9.1
+        for <keyrings@vger.kernel.org>; Thu, 22 Jun 2023 14:46:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1687470385; x=1690062385;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=CvZVAaGyJmecUZBTpejMmVlm5h9pZX7crIszrkFIDi8=;
+        b=XY0La2o3Lpjb06Lqs21X7rO8uhkpay1UUIyyqT4Wk8+PqMYJZhb4Rx+gIdriLR0RBz
+         i7EG2vvUm81p0+EHoh7Z2uz4xzr0H5Z7yPesxJ2cL78VZOl9xGkChqfLuAg7woXW5JJo
+         /DXLc+YSCkvp0f4FTZB5HzZWvK7vPRw7kP5wC0+RvSQbgZpGoEjTzDewsWI0xAZMval4
+         MxHqPMAptZpZbimzRy/nbtlEMHnq97gwFllyoqEwHbENbXa0vZIB+eHKcNWHfHnt4r9W
+         eid3dRUGnL2g+aKB0TIW6ques9RYNitXO6R689rUA7SUOFzPL7U1xHHOANg5f1nqkahD
+         BwRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687470385; x=1690062385;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CvZVAaGyJmecUZBTpejMmVlm5h9pZX7crIszrkFIDi8=;
+        b=FwAY80NI8Qseww6JBEvNJTMglLVLZRraBwAz/YWXLy4Uw/Cm4/bVb2mKlOhhZ4Qx0p
+         BjDCTmD6ZGs2c0Ez0fSKv5yhYs+qT2yQoRj49K4mZvh0YsSDW+JapWSiWi2fJC+sLmJq
+         /U0loXkhAn9CMFbhWkTJ2y+ac6YkFMs3FgoNPMrs5Es/f2Q5+IlM/oDDT9kK8Eyfmuhl
+         cOGWQX2vjrOp6nBIO9XH8hkHSdPkJHOUDK19UeNrIcfXHufBT8Yup+h7y6Wa3kie0zaI
+         k3uEvrl23U7wMcr+pH1LQEzST/r3UgJQhEkov8I9KiaeyxBCObpykMqSQMemm2dCvi6R
+         BVeg==
+X-Gm-Message-State: AC+VfDwLpCIxo6ktlC6ayB6p+f4p2fMicSOUM+13yY1foDwI/OWIUYaW
+        EPwls9NyNeTbPEgsLm+URCUEx07H5YxzN4SqcYM=
+X-Google-Smtp-Source: ACHHUZ665nGdt2P3B/tk8QkCqVi3Czf1Fx4yNsFmEmZTD33ucBl5ML/OM1KauQyRE8rHiBCNHyPWzQQg44/YApgyTn8=
+X-Received: by 2002:a1c:cc07:0:b0:3f7:c92:57a0 with SMTP id
+ h7-20020a1ccc07000000b003f70c9257a0mr17939605wmb.14.1687470384732; Thu, 22
+ Jun 2023 14:46:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: LxC2BwDHTQngXZRkeCaRAw--.29682S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tr4xtw1rXFyUGF4UJF13urg_yoW8Zw1fpF
-        9akFZ8GFn5GF429as7Wr48J3yrurZ3Xay3Gr9rKry3X34Y9Fy2yry3t3WrXF1DKrsY9a4j
-        vwsxtrWjya1DZa7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUkK14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-        1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-        6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-        4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-        I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-        4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
-        c2xKxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
-        v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkG
-        c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
-        0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6rW3Jr0E3s1lIxAIcVC2z280aVAFwI0_Jr0_
-        Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7
-        UUUUU==
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAQBF1jj4sbAQABs3
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
-        PDS_RDNS_DYNAMIC_FP,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Received: by 2002:a05:6f02:704:b0:51:f0d4:ca9e with HTTP; Thu, 22 Jun 2023
+ 14:46:24 -0700 (PDT)
+From:   Regions Bank <infounitt03@gmail.com>
+Date:   Thu, 22 Jun 2023 22:46:24 +0100
+Message-ID: <CAOhLnSGZqv41xyh0Xhv+CnbUece-GdjyJj3wcM+v4=M24zEJpg@mail.gmail.com>
+Subject: Emergency reply me
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.9 required=5.0 tests=BAYES_50,DEAR_SOMETHING,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:344 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4997]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [infounitt03[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [infounitt03[at]gmail.com]
+        *  2.0 DEAR_SOMETHING BODY: Contains 'Dear (something)'
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi everyone
+Dear Sir/Ma,
 
-I briefly discussed this topic at LSS NA 2023, but I wanted to have an
-opinion from a broader audience.
+We understand that you are very much aware that you have delayed the
+process of this fund transfer. Be that as it may, you also should
+embrace whatever comes out of this process, because you have exceeded
+the time limit. We expect you to take prompt action to resolve this
+within the next week.
 
+Best Regards,
 
-In short:
-
-I wanted to execute some kernel workloads in a fully isolated user
-space process, started from a binary statically linked with klibc,
-connected to the kernel only through a pipe.
-
-I also wanted that, for the root user, tampering with that process is
-as hard as if the same code runs in kernel space.
-
-I would use the fully isolated process to parse and convert unsupported
-data formats to a supported one, after the kernel verified the
-authenticity of the original format (that already exists and cannot
-change).
-
-Preventing tampering of the process ensures that the conversion goes as
-expected. Also, the integrity of the binary needs to be verified.
-
-
-List of wished data formats:
-
-PGP: verify the authenticity of RPM/DEB/... headers
-RPM/DEB/... headers: extract reference file checksums for
-                    (kernel-based) file integrity check (e.g. with IMA)
-
-
-Alternative #1:
-
-Write the parsers to run in kernel space. That was rejected due to
-security and scalability concerns. If that changed, please let me know.
-
-
-Alternative #2:
-
-Linux distributions could provide what the kernel supports. However,
-from personal experience, the effort seems orders of magnitude higher
-than just writing a tiny component to support the original format. And
-there is no guarantee that all Linux distributions will do it.
-
-
-Full process isolation could be achieved in this way:
-
-process -> outside: set seccomp strict profile at process creation
-                    so that the process can only read/write/close the
-                    pipe and exit, no other system calls are allowed
-
-outside -> process: deny ptrace/kill with the process as target
-
-Anything else?
-
-
-The only risk I see is that a new feature allowing to interact with
-another process is added to the kernel, without the ptrace permission
-being asked.
-
-With the restrictions above, can we say that the code inside the
-process is as safe (against tampering) to execute as if it runs in
-kernel space?
-
-Thanks
-
-Roberto
-
+Mrs. Kate Daneila
+Head of Strategic Planning
+Regions Bank
+Address: 1900 Fifth Avenue North
+Birmingham, Alabama 35203
