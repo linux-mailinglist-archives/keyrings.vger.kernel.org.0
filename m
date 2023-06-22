@@ -2,158 +2,116 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE6F973965D
-	for <lists+keyrings@lfdr.de>; Thu, 22 Jun 2023 06:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B7C173A132
+	for <lists+keyrings@lfdr.de>; Thu, 22 Jun 2023 14:49:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbjFVEZY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 22 Jun 2023 00:25:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42520 "EHLO
+        id S229733AbjFVMtk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 22 Jun 2023 08:49:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjFVEZW (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 22 Jun 2023 00:25:22 -0400
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D79AE65;
-        Wed, 21 Jun 2023 21:25:21 -0700 (PDT)
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-4f86bc35f13so6761493e87.1;
-        Wed, 21 Jun 2023 21:25:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687407919; x=1689999919;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=A5vC2aRsA2WDjAiqv/C0BR7ctU6hTo76uwUZaC8vGUs=;
-        b=e6F8fko4BYJFHTF4on103Lcgb1pv1rWWncx67Q87nXomutGCc2pmjmtRcq+HHAh9Zz
-         ZpOfpKMXjZ5A5GK/V4Sj7hoEWTtlUshbuobnWXs1v9qjH0mVTHjn5E44xfF6ArK+GHG2
-         4LAGMtr4Du0kfH+s229E70KmOTZTdNq62TY2nkwIL1IStpIehH05Zz/AmUx3xc792l8P
-         6QuGTft1UDM9RqGhdh4w1/BVGz9bFyuhmbKL/JuXXrtncgCplVAoow4MOdDTEDwM3twO
-         vGB5w82asHvBwBUmHTlsPRwj9V2Td0xiZXyNK1FdyXhszsP+kSUr3hHKh/Xwx/pGw+ey
-         CnDQ==
-X-Gm-Message-State: AC+VfDzQ7XoMC5Kzk1ecAIBAUosvB073D3vZJXRekIjTD2rU/ey6Gyo4
-        UD6ac+JRZ6jlvILL8Yzbo6k=
-X-Google-Smtp-Source: ACHHUZ6mLLpZ2jzgBbisqW8BsQ34AJIZtXtyRLGlK/Pv18m3vLOsDnG3vORq9yee5CR+W4060ihrFA==
-X-Received: by 2002:a05:6512:313c:b0:4f9:566f:1aab with SMTP id p28-20020a056512313c00b004f9566f1aabmr3597524lfd.29.1687407919067;
-        Wed, 21 Jun 2023 21:25:19 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
-        by smtp.gmail.com with ESMTPSA id y7-20020a1c4b07000000b003f17848673fsm6553494wma.27.2023.06.21.21.25.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Jun 2023 21:25:18 -0700 (PDT)
-Message-ID: <68038b83-3221-e351-909c-7f2722b612df@kernel.org>
-Date:   Thu, 22 Jun 2023 06:25:15 +0200
+        with ESMTP id S229437AbjFVMtk (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 22 Jun 2023 08:49:40 -0400
+Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C562193;
+        Thu, 22 Jun 2023 05:49:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1687438180; x=1718974180;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=NlzD/CvLWWdttX4UrB2Vhmi3xDeUykPh+lPbouFV1UY=;
+  b=LHS2OFrFefCXSV/Vv1idO/jtFrbP5/OwlrmMohZS5l1rzZlJ+x+W0Ix9
+   2UIdm1wVzcSvfaiscVV2y/mbf/q2x23Vdm+okZv2S7nEwFdPoRGVg8rha
+   3YWat2HbJSYPZ2Cwy+5e5g846UBnuZbZvoRXxXYeuj+znTa8A1a0tBqQy
+   w=;
+X-IronPort-AV: E=Sophos;i="6.00,263,1681171200"; 
+   d="scan'208";a="656430713"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-iad-1a-m6i4x-54a853e6.us-east-1.amazon.com) ([10.25.36.214])
+  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2023 12:49:33 +0000
+Received: from EX19MTAUEA001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
+        by email-inbound-relay-iad-1a-m6i4x-54a853e6.us-east-1.amazon.com (Postfix) with ESMTPS id 2039F45F4A;
+        Thu, 22 Jun 2023 12:49:30 +0000 (UTC)
+Received: from EX19MTAUEC001.ant.amazon.com (10.252.135.222) by
+ EX19MTAUEA001.ant.amazon.com (10.252.134.203) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Thu, 22 Jun 2023 12:49:29 +0000
+Received: from dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (10.15.1.225)
+ by mail-relay.amazon.com (10.252.135.200) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Thu, 22 Jun 2023 12:49:29 +0000
+Received: by dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (Postfix, from userid 23907357)
+        id 0C35E2016; Thu, 22 Jun 2023 12:49:29 +0000 (UTC)
+From:   Mahmoud Adam <mngyadam@amazon.com>
+To:     <dhowells@redhat.com>
+CC:     <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Mahmoud Adam <mngyadam@amazon.com>
+Subject: [PATCH v3] KEYS: use kfree_sensitive with key
+Date:   Thu, 22 Jun 2023 12:47:22 +0000
+Message-ID: <20230622124719.93393-1-mngyadam@amazon.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH 08/11] sysctl: Add size to register_sysctl_init
-Content-Language: en-US
-To:     Joel Granados <j.granados@samsung.com>
-Cc:     mcgrof@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        Theodore Ts'o <tytso@mit.edu>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Benjamin LaHaise <bcrl@kvack.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>, Jan Kara <jack@suse.cz>,
-        Kees Cook <keescook@chromium.org>,
-        Iurii Zaikin <yzaikin@google.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Balbir Singh <bsingharora@gmail.com>,
-        Eric Biederman <ebiederm@xmission.com>,
-        "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-        Anil S Keshavamurthy <anil.s.keshavamurthy@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>, Petr Mladek <pmladek@suse.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Muchun Song <muchun.song@linux.dev>,
-        Naoya Horiguchi <naoya.horiguchi@nec.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        David Howells <dhowells@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        Amir Goldstein <amir73il@gmail.com>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Martin KaFai Lau <martin.lau@linux.dev>,
-        Song Liu <song@kernel.org>, Yonghong Song <yhs@fb.com>,
-        KP Singh <kpsingh@kernel.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Waiman Long <longman@redhat.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        John Ogness <john.ogness@linutronix.de>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Valentin Schneider <vschneid@redhat.com>,
-        Andy Lutomirski <luto@amacapital.net>,
-        Will Drewry <wad@chromium.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Miaohe Lin <linmiaohe@huawei.com>,
-        linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linux-aio@kvack.org, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org, bpf@vger.kernel.org, kexec@lists.infradead.org,
-        linux-trace-kernel@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org
-References: <20230621091000.424843-1-j.granados@samsung.com>
- <CGME20230621091037eucas1p188e11d8064526a5a0549217d5a419647@eucas1p1.samsung.com>
- <20230621091000.424843-9-j.granados@samsung.com>
- <36fae2b0-4cd2-58b5-cc12-9abdd5ce235b@kernel.org>
- <20230621131147.c3jegl4hgjplcrpu@localhost>
-From:   Jiri Slaby <jirislaby@kernel.org>
-In-Reply-To: <20230621131147.c3jegl4hgjplcrpu@localhost>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 21. 06. 23, 15:11, Joel Granados wrote:
-> On Wed, Jun 21, 2023 at 11:56:03AM +0200, Jiri Slaby wrote:
->> On 21. 06. 23, 11:09, Joel Granados wrote:
->>> In order to remove the end element from the ctl_table struct arrays, we
->>> explicitly define the size when registering the targes. We add a size
->>> argument to the register_sysctl_init call and pass an ARRAY_SIZE for all
->>> the callers.
->>
->> Hi, I am missing here (or in 00/00) _why_ you are doing that. Is it by a
-> Not sure what happened. I used the kernels get_maintainers.pl script
-> together with git-send-email. These are my settings:
-> 
-> "
-> tocmd ="`pwd`/scripts/get_maintainer.pl --nogit --nogit-fallback --norolestats --m --nol --nor"
-> cccmd ="`pwd`/scripts/get_maintainer.pl --nogit --nogit-fallback --norolestats --l --r --nom"
-> "
-> 
-> Could it be that there is an error in MAINTAINERS?
+key might contain private part of the key, so better use
+kfree_sensitive to free it
+---
+v1: conflicts with c3d03e8e35e0:
+KEYS: asymmetric: Copy sig and digest in public_key_verify_signature()
+kfree_sensitive the buf variable also because it might has private
+part
 
-Sorry, I don't see what you are asking about. I was asking about 
-motivation behind the series. That is a must in commit logs.
+ crypto/asymmetric_keys/public_key.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-thanks,
--- 
-js
-suse labs
+diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+index 50c933f86b21..170f06982381 100644
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -43,7 +43,7 @@ static void public_key_describe(const struct key *asymmetric_key,
+ void public_key_free(struct public_key *key)
+ {
+ 	if (key) {
+-		kfree(key->key);
++		kfree_sensitive(key->key);
+ 		kfree(key->params);
+ 		kfree(key);
+ 	}
+@@ -218,7 +218,7 @@ static int software_key_query(const struct kernel_pkey_params *params,
+ 	ret = 0;
 
+ error_free_key:
+-	kfree(key);
++	kfree_sensitive(key);
+ error_free_tfm:
+ 	crypto_free_akcipher(tfm);
+ 	pr_devel("<==%s() = %d\n", __func__, ret);
+@@ -303,7 +303,7 @@ static int software_key_eds_op(struct kernel_pkey_params *params,
+ 		ret = req->dst_len;
+
+ error_free_key:
+-	kfree(key);
++	kfree_sensitive(key);
+ error_free_req:
+ 	akcipher_request_free(req);
+ error_free_tfm:
+@@ -460,7 +460,7 @@ int public_key_verify_signature(const struct public_key *pkey,
+ 	ret = crypto_wait_req(crypto_akcipher_verify(req), &cwait);
+
+ error_free_buf:
+-	kfree(buf);
++	kfree_sensitive(buf);
+ error_free_req:
+ 	akcipher_request_free(req);
+ error_free_tfm:
+--
+2.40.1
