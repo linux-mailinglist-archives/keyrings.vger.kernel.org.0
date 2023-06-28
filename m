@@ -2,46 +2,71 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75DE0741819
-	for <lists+keyrings@lfdr.de>; Wed, 28 Jun 2023 20:35:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDD60741947
+	for <lists+keyrings@lfdr.de>; Wed, 28 Jun 2023 22:10:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231294AbjF1SfS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 28 Jun 2023 14:35:18 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:35229 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229645AbjF1SfS (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 28 Jun 2023 14:35:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1687977268;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=NE1gN9jyC/m2Xo9jc/p/eHR4s7D3nJPtsR0MfSzL5G4=;
-        b=S7SP/zEAE56xpe4fIUJ4y6xJN0l6DczJ8Tqm/vzxfz1shZgeSqHv7NIplB7wsCUuWYiWpx
-        E7f2GkkVPEsYJAnMxwn5RGBxxOPeocq42pfVGsxQ6tUjWGwZrqebmQ0OeLc+TwSSu/h95g
-        rnaQqUVdNTNZpfhb9EHp/5QW8Kpn1p4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-499-JCjyi9g9N22iu2r4b1mgSg-1; Wed, 28 Jun 2023 14:34:23 -0400
-X-MC-Unique: JCjyi9g9N22iu2r4b1mgSg-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 452E7101A54E;
-        Wed, 28 Jun 2023 18:34:23 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.4])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 048E940C6F5A;
-        Wed, 28 Jun 2023 18:34:21 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <CAHk-=wi5D7drbmMrdA+8rMGGvA-R1fUK3ZqZ=r1ccNMiDT8atA@mail.gmail.com>
-References: <CAHk-=wi5D7drbmMrdA+8rMGGvA-R1fUK3ZqZ=r1ccNMiDT8atA@mail.gmail.com> <ZIg4b8kAeW7x/oM1@gondor.apana.org.au> <570802.1686660808@warthog.procyon.org.uk> <ZIrnPcPj9Zbq51jK@gondor.apana.org.au> <CAMj1kXHcDrL5YexGjwvHHY0UE1ES-KG=68ZJr7U=Ub5gzbaePg@mail.gmail.com> <ZJlf6VoKRf+OZJEo@gondor.apana.org.au> <CAMj1kXHQKN+mkXavvR1A57nXWpDBTiqZ+H3T65CSkJN0NmjfrQ@mail.gmail.com> <ZJlk2GkN8rp093q9@gondor.apana.org.au> <20230628062120.GA7546@sol.localdomain> <CAMj1kXEki6pK+6Gm-oHLVU3t=GzF8Kfz9QebTMKQcwtuqCsUgw@mail.gmail.com> <20230628173346.GA6052@sol.localdomain> <CAMj1kXGBrNZ6-WCGH7Bbw_T_2Og8JGErZPdLHLQVB58z+vrZ8A@mail.gmail.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     dhowells@redhat.com, Ard Biesheuvel <ardb@kernel.org>,
+        id S230304AbjF1UKZ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 28 Jun 2023 16:10:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60278 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231966AbjF1UKW (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 28 Jun 2023 16:10:22 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD3E91FE7
+        for <keyrings@vger.kernel.org>; Wed, 28 Jun 2023 13:10:21 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-991fee3a6b1so27179566b.0
+        for <keyrings@vger.kernel.org>; Wed, 28 Jun 2023 13:10:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1687983020; x=1690575020;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=qSvBLBYpZuuz4eEfb9EgOEcdzuOPHgtqP5O4l7UwFR4=;
+        b=OV1AlVjyMN0qrciURfDjBYW+KkQ5Hch4eZ/Tpys8dZK2Co50OkgVr2OdpsZl5ozDt2
+         kKgt5ZBqcO/AOUlr6fcGWmCRPjyPXqoU9ZZVbrzLZepF1xmB0/GLc4s2SuJvcBE6BruM
+         6Ig0wq8khqJxCMMrMFrRyrljX4bj3aacjEnW0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1687983020; x=1690575020;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qSvBLBYpZuuz4eEfb9EgOEcdzuOPHgtqP5O4l7UwFR4=;
+        b=Gs0kwIH1FinXcWkDK2w/tFOVF9jlgrZt4AtcvDjvgnMMVHrNxX/drl/oOJmBnZ4eJD
+         grBeTjX8Xje+6AaBGwYH0+z/a9jINGqYdyTDkOTA9NcoDOnOPS6wlxle6IwlV04j2fo+
+         6zXgYrgdr81rCIhfF2fjuq1/Suf+0Gm0MqS8H1plyyeLZUV+Y9xw3wL3n3tkHoz4ZHsB
+         WX7DW5ExnVmhzdyqFdOilcPXEv9+tezg8w6jTL2BiO9FK8EcFTfevYleetTXf3Hq9vej
+         eANInxGyUo+z4Yp2CLjixwmr6Wq3hs+e0gn5AXU2KTPPczPhomv8jkYsvuedPxGWn/n+
+         50xw==
+X-Gm-Message-State: AC+VfDwH8/FwTQyRrjm7yhZY3WvpTrtBzWGE3IX16F+ZRU5DN5YXqIqX
+        44qOQQqf6OZWfCZn6DbZV9ID3tG2ty5P8Kpmm0fNZBYX
+X-Google-Smtp-Source: ACHHUZ4xuRcGiOsmwppta3PpeAioD72FDMv4PxaC7cRSQMZSQokwMS0tIcjWpIk1ksTYL+0OLtN9Bg==
+X-Received: by 2002:a17:907:80c:b0:974:1d8b:ca5f with SMTP id wv12-20020a170907080c00b009741d8bca5fmr31868732ejb.9.1687983019928;
+        Wed, 28 Jun 2023 13:10:19 -0700 (PDT)
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com. [209.85.208.50])
+        by smtp.gmail.com with ESMTPSA id e8-20020a1709062c0800b009786c8249d6sm6101798ejh.175.2023.06.28.13.10.18
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 Jun 2023 13:10:19 -0700 (PDT)
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-51d885b0256so6295456a12.2
+        for <keyrings@vger.kernel.org>; Wed, 28 Jun 2023 13:10:18 -0700 (PDT)
+X-Received: by 2002:a05:6402:148e:b0:51d:7fa6:62ca with SMTP id
+ e14-20020a056402148e00b0051d7fa662camr10124675edv.14.1687983018674; Wed, 28
+ Jun 2023 13:10:18 -0700 (PDT)
+MIME-Version: 1.0
+References: <ZIg4b8kAeW7x/oM1@gondor.apana.org.au> <570802.1686660808@warthog.procyon.org.uk>
+ <ZIrnPcPj9Zbq51jK@gondor.apana.org.au> <CAMj1kXHcDrL5YexGjwvHHY0UE1ES-KG=68ZJr7U=Ub5gzbaePg@mail.gmail.com>
+ <ZJlf6VoKRf+OZJEo@gondor.apana.org.au> <CAMj1kXHQKN+mkXavvR1A57nXWpDBTiqZ+H3T65CSkJN0NmjfrQ@mail.gmail.com>
+ <ZJlk2GkN8rp093q9@gondor.apana.org.au> <20230628062120.GA7546@sol.localdomain>
+ <CAMj1kXEki6pK+6Gm-oHLVU3t=GzF8Kfz9QebTMKQcwtuqCsUgw@mail.gmail.com>
+ <20230628173346.GA6052@sol.localdomain> <CAMj1kXGBrNZ6-WCGH7Bbw_T_2Og8JGErZPdLHLQVB58z+vrZ8A@mail.gmail.com>
+ <CAHk-=wi5D7drbmMrdA+8rMGGvA-R1fUK3ZqZ=r1ccNMiDT8atA@mail.gmail.com> <3695542.1687977261@warthog.procyon.org.uk>
+In-Reply-To: <3695542.1687977261@warthog.procyon.org.uk>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed, 28 Jun 2023 13:10:02 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wg2-sXtHKGTsKfcMXLkvHRDiU1nQBYwB8sLo3jXfzq+cw@mail.gmail.com>
+Message-ID: <CAHk-=wg2-sXtHKGTsKfcMXLkvHRDiU1nQBYwB8sLo3jXfzq+cw@mail.gmail.com>
+Subject: Re: [v2 PATCH 0/5] crypto: Add akcipher interface without SGs
+To:     David Howells <dhowells@redhat.com>
+Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Eric Biggers <ebiggers@kernel.org>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Roberto Sassu <roberto.sassu@huaweicloud.com>,
@@ -49,19 +74,29 @@ Cc:     dhowells@redhat.com, Ard Biesheuvel <ardb@kernel.org>,
         Mimi Zohar <zohar@linux.ibm.com>, dmitry.kasatkin@gmail.com,
         Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
         Linux Crypto Mailing List <linux-crypto@vger.kernel.org>
-Subject: Re: [v2 PATCH 0/5] crypto: Add akcipher interface without SGs
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3695541.1687977261.1@warthog.procyon.org.uk>
-Date:   Wed, 28 Jun 2023 19:34:21 +0100
-Message-ID: <3695542.1687977261@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-What about something like the Intel on-die accelerators (e.g. IAA and QAT)?  I
-think they can do async compression.
+On Wed, 28 Jun 2023 at 11:34, David Howells <dhowells@redhat.com> wrote:
+>
+> What about something like the Intel on-die accelerators (e.g. IAA and QAT)?  I
+> think they can do async compression.
 
-David
+I'm sure they can. And for some made-up benchmark it might even help.
+Do people use it in real life?
 
+The *big* wins come from being able to do compression/encryption
+inline, when you don't need to do double-buffering etc.
+
+Anything else is completely broken, imnsho. Once you need to
+double-buffer your IO, you've already lost the whole point.
+
+           Linus
