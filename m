@@ -2,182 +2,146 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78A7C745691
-	for <lists+keyrings@lfdr.de>; Mon,  3 Jul 2023 09:58:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CDD1745E5C
+	for <lists+keyrings@lfdr.de>; Mon,  3 Jul 2023 16:18:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229644AbjGCH6s convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Mon, 3 Jul 2023 03:58:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45326 "EHLO
+        id S229719AbjGCOSR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 3 Jul 2023 10:18:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229597AbjGCH6r (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 3 Jul 2023 03:58:47 -0400
-Received: from frasgout11.his.huawei.com (unknown [14.137.139.23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E495FC5;
-        Mon,  3 Jul 2023 00:58:45 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.229])
-        by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4QvdLq4WnHz9v7fY;
-        Mon,  3 Jul 2023 15:47:47 +0800 (CST)
-Received: from [127.0.0.1] (unknown [10.204.63.22])
-        by APP2 (Coremail) with SMTP id GxC2BwAn40mEf6JkCswABA--.50195S2;
-        Mon, 03 Jul 2023 08:58:11 +0100 (CET)
-Message-ID: <0870d82571d1075433a2b81b2953cf8b4afcd415.camel@huaweicloud.com>
-Subject: Re: [QUESTION] Full user space process isolation?
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     "Dr. Greg" <greg@enjellic.com>
-Cc:     "Serge E. Hallyn" <serge@hallyn.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Kees Cook <keescook@chromium.org>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        David Howells <dhowells@redhat.com>,
-        LuisChamberlain <mcgrof@kernel.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Petr Tesarik <petrtesarik@huaweicloud.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tejun Heo <tj@kernel.org>, linux-mm@kvack.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-hardening@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>
-Date:   Mon, 03 Jul 2023 09:57:53 +0200
-In-Reply-To: <20230702175542.GA25867@wind.enjellic.com>
-References: <eb31920bd00e2c921b0aa6ebed8745cb0130b0e1.camel@huaweicloud.com>
-         <20230629021000.GA368825@mail.hallyn.com>
-         <14599d8216f1b7520ff5f6cfb27377fa79709f13.camel@huaweicloud.com>
-         <20230702175542.GA25867@wind.enjellic.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.44.4-0ubuntu1 
+        with ESMTP id S229656AbjGCOSQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 3 Jul 2023 10:18:16 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63486E60
+        for <keyrings@vger.kernel.org>; Mon,  3 Jul 2023 07:18:14 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-307d20548adso5005470f8f.0
+        for <keyrings@vger.kernel.org>; Mon, 03 Jul 2023 07:18:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1688393893; x=1690985893;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=k7CiJPEXfB/mPmolwvUH6t7dx6TKSOIIJmAn9VAkdqw=;
+        b=BT3omfXSB3tnc4/9PQPsSKSw7cx/qjf/1NXY1wt3Q4TvbbFW5ekgxa0mQcUZPMjfeV
+         nM8RiwzvvoyJ8YKGKT5FlbFzg6VWUe1ppRtzVXStYS92HDR9bLci298+IUiKjgbWycmj
+         357oGZdMtDCWBYAB3AC5EYdouPZuszAUAOjyrrzu4g4lQyE137pUUFAat5oP7luo0Ffd
+         jeAu+K0XLk+mez5brGbWDwfh7yPI0sxUcG5bCkgcHR9FchvUxSe8xNCRVHoDfY3ZvY60
+         eDIevhPL5HNFOTVeUEmDvudJGjbpjklwSJ4RYoBNeujQKVpYijBpMHecavNIWLClwfUB
+         qzoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1688393893; x=1690985893;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k7CiJPEXfB/mPmolwvUH6t7dx6TKSOIIJmAn9VAkdqw=;
+        b=BnDeeT8T/PocoD74G/esxKH1Zy6nmli6lC1UQ3aMBXvZi4jH5wbXFQazAmw6QSb4di
+         NbF/ZFbXIAoUswo0SB6u5+Gh9muNKjzqWkdW0T8S1aNm07ZRXZajVM/l/o94Zx+u8biA
+         5xaUS9yD0hMiOA7YmrwFfq9eqHYzgAOrZ+ODx9/XPAGgp7TzvVjF/DA65T0zDnxGijXe
+         SOytUO3W7nI9epysE5JSSa6GQS3UzSjpDWEw35dyDnWami550S2EkRtSf8jPPQVV3WdX
+         5h5YL0ypDfQE/luIz1KdNDRX2kP0TwT+uB9sf+VzfeSCx0HrNKYo6pu5rwfn3he7N810
+         RMvA==
+X-Gm-Message-State: ABy/qLYGwifvH8eb9G5YMrkTSvhqziOlKoBg99gm6tmyZHWD7PaSD9vy
+        vK0Ng5tq9qNMYc26UfZV6v2edQ==
+X-Google-Smtp-Source: APBJJlEfnqKOoSS2ucE8MaIOcLJR/x7mdTN0VM771Waqqjt25CgAaEUgofxqr6Xluv6cSjS6uVAUEA==
+X-Received: by 2002:a5d:4f86:0:b0:30f:c42e:3299 with SMTP id d6-20020a5d4f86000000b0030fc42e3299mr7758185wru.60.1688393892860;
+        Mon, 03 Jul 2023 07:18:12 -0700 (PDT)
+Received: from localhost ([102.36.222.112])
+        by smtp.gmail.com with ESMTPSA id q10-20020adfdfca000000b003141e629cb6sm9813243wrn.101.2023.07.03.07.18.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Jul 2023 07:18:11 -0700 (PDT)
+Date:   Mon, 3 Jul 2023 17:18:08 +0300
+From:   Dan Carpenter <dan.carpenter@linaro.org>
+To:     Herbert Xu <herbert@gondor.apana.org.au>
+Cc:     David Howells <dhowells@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] KEYS: asymmetric: Fix error codes
+Message-ID: <c5e34c6a-da1e-4585-98c4-14701b0e093e@moroto.mountain>
 MIME-Version: 1.0
-X-CM-TRANSID: GxC2BwAn40mEf6JkCswABA--.50195S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxuFy5GF17Wryxtr15XFWrXwb_yoWrJF43pF
-        W3tFW3Gr4ktF13Ar4vqw48WFWft395JFy7Xrnaq34rJwn0vr1kCr1Iy3WruFyUGrWftw1j
-        vayjy343Jr1DZFDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUkK14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-        1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-        6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-        4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-        I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-        4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
-        c2xKxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
-        v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkG
-        c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
-        0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6rW3Jr0E3s1lIxAIcVC2z280aVAFwI0_Jr0_
-        Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbJ73D
-        UUUUU==
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAHBF1jj4uvGgACsM
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
-        PDS_RDNS_DYNAMIC_FP,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sun, 2023-07-02 at 12:55 -0500, Dr. Greg wrote:
-> On Thu, Jun 29, 2023 at 10:11:26AM +0200, Roberto Sassu wrote:
-> 
-> Good morning, I hope the weekend is going well for everyone, greetings
-> to Roberto and everyone copied.
-> 
-> > On Wed, 2023-06-28 at 21:10 -0500, Serge E. Hallyn wrote:
-> > > On Thu, Jun 22, 2023 at 04:42:37PM +0200, Roberto Sassu wrote:
-> > > > Hi everyone
-> > > > 
-> > > > I briefly discussed this topic at LSS NA 2023, but I wanted to have an
-> > > > opinion from a broader audience.
-> > > > 
-> > > > In short:
-> > > > 
-> > > > I wanted to execute some kernel workloads in a fully isolated user
-> > > > space process, started from a binary statically linked with klibc,
-> > > > connected to the kernel only through a pipe.
-> > > > 
-> > > > I also wanted that, for the root user, tampering with that process is
-> > > > as hard as if the same code runs in kernel space.
-> > > > 
-> > > > I would use the fully isolated process to parse and convert unsupported
-> > > > data formats to a supported one, after the kernel verified the
-> > > 
-> > > Can you give some examples here of supported and unsupported data
-> > > formats?  ext2 is supported, but we sadly don't trust the sb parser
-> > > to read a an ext2fs coming from unknown source.  So I'm not quite
-> > > clear what problem you're trying to solve.
-> > 
-> > + eBPF guys (as I'm talking about eBPF)
-> 
-> If the week goes well, we will be submitting the second version of our
-> TSEM LSM for review.  It incorporates a significant number of changes
-> and enhancements, based on both initial review comments, and
-> importantly, feedback from our collaborators in the critical
-> infrastructure community.
-> 
-> Just as a levelset.  TSEM provides kernel infrastructure to implement
-> security controls based on either deterministic or machine learning
-> models.  Quixote is the userspace infrastructure that enables use of
-> the TSEM kernel infrastructure.
-> 
-> Based on your description Roberto, TSEM may be of assistance in
-> addressesing your issues at two different levels.
-> 
-> First with respect to protection of an isolated workload.
-> 
-> TSEM is inherently workload based, given that it is based on an
-> architecture that implements security modeling namespaces that a
-> process heirarchy can be placed into.  This reduces model complexity
-> and provides the implementation of very specific and targeted security
-> controls based on the needs of a proposed workload.
-> 
-> The security controls are prospective rather than retrospective,
-> ie. TSEM will pro-actively block any security behaviors that are not
-> in a security model that has been defined for the workload.
-> 
-> For example, with respect to the concerns you had previously mentioned
-> about ptrace.  If the security model definition does not include a
-> security state coefficient for a ptrace_traceme security event, it
-> will be disallowed, regardless of what goes on with respect to kernel
-> development, modulo of course the ptrace_traceme LSM hook being
-> discontinued.
+These error paths should return the appropriate error codes instead of
+returning success.
 
-Hi Greg
+Fixes: 63ba4d67594a ("KEYS: asymmetric: Use new crypto interface without scatterlists")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ crypto/asymmetric_keys/public_key.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-thanks for your insights.
-
-The policy is quite simple:
-
-
-     r/w  ^                             kernel space
-----------|-----------------------------------------
-          v (pipe)                        user space
- +-----------------+       +-----------------------+
- | trustworthy UMD |---X---| rest of the processes |
- +-----------------+       +-----------------------+
-
-The question was more, is the LSM infrastructure complete enough that
-the X can be really enforced?
-
-Could there be other implicit information flows that the LSM
-infrastructure is not able/does not yet mediate, that could break the
-policy above?
-
-I guess TSEM could be for more elaborated security models, but in this
-case the policy is quite straithforward. Also, your TSEM would be as
-limited as mine by the LSM hooks available.
-
-Thanks
-
-Roberto
+diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+index e787598cb3f7..773e159dbbcb 100644
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -185,8 +185,10 @@ static int software_key_query(const struct kernel_pkey_params *params,
+ 
+ 	if (issig) {
+ 		sig = crypto_alloc_sig(alg_name, 0, 0);
+-		if (IS_ERR(sig))
++		if (IS_ERR(sig)) {
++			ret = PTR_ERR(sig);
+ 			goto error_free_key;
++		}
+ 
+ 		if (pkey->key_is_private)
+ 			ret = crypto_sig_set_privkey(sig, key, pkey->keylen);
+@@ -208,8 +210,10 @@ static int software_key_query(const struct kernel_pkey_params *params,
+ 		}
+ 	} else {
+ 		tfm = crypto_alloc_akcipher(alg_name, 0, 0);
+-		if (IS_ERR(tfm))
++		if (IS_ERR(tfm)) {
++			ret = PTR_ERR(tfm);
+ 			goto error_free_key;
++		}
+ 
+ 		if (pkey->key_is_private)
+ 			ret = crypto_akcipher_set_priv_key(tfm, key, pkey->keylen);
+@@ -300,8 +304,10 @@ static int software_key_eds_op(struct kernel_pkey_params *params,
+ 
+ 	if (issig) {
+ 		sig = crypto_alloc_sig(alg_name, 0, 0);
+-		if (IS_ERR(sig))
++		if (IS_ERR(sig)) {
++			ret = PTR_ERR(sig);
+ 			goto error_free_key;
++		}
+ 
+ 		if (pkey->key_is_private)
+ 			ret = crypto_sig_set_privkey(sig, key, pkey->keylen);
+@@ -313,8 +319,10 @@ static int software_key_eds_op(struct kernel_pkey_params *params,
+ 		ksz = crypto_sig_maxsize(sig);
+ 	} else {
+ 		tfm = crypto_alloc_akcipher(alg_name, 0, 0);
+-		if (IS_ERR(tfm))
++		if (IS_ERR(tfm)) {
++			ret = PTR_ERR(tfm);
+ 			goto error_free_key;
++		}
+ 
+ 		if (pkey->key_is_private)
+ 			ret = crypto_akcipher_set_priv_key(tfm, key, pkey->keylen);
+@@ -411,8 +419,10 @@ int public_key_verify_signature(const struct public_key *pkey,
+ 
+ 	key = kmalloc(pkey->keylen + sizeof(u32) * 2 + pkey->paramlen,
+ 		      GFP_KERNEL);
+-	if (!key)
++	if (!key) {
++		ret = -ENOMEM;
+ 		goto error_free_tfm;
++	}
+ 
+ 	memcpy(key, pkey->key, pkey->keylen);
+ 	ptr = key + pkey->keylen;
+-- 
+2.39.2
 
