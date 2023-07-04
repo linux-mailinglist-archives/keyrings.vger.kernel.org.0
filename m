@@ -2,112 +2,145 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D98E7462B2
-	for <lists+keyrings@lfdr.de>; Mon,  3 Jul 2023 20:47:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1B47747523
+	for <lists+keyrings@lfdr.de>; Tue,  4 Jul 2023 17:19:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230052AbjGCSrf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 3 Jul 2023 14:47:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59178 "EHLO
+        id S231833AbjGDPTC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 4 Jul 2023 11:19:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230106AbjGCSre (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 3 Jul 2023 14:47:34 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 426D6E6A
-        for <keyrings@vger.kernel.org>; Mon,  3 Jul 2023 11:47:32 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6682909acadso2394813b3a.3
-        for <keyrings@vger.kernel.org>; Mon, 03 Jul 2023 11:47:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1688410052; x=1691002052;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kN9o72g+S+fr453o45UGKHe2553NpYDOTlk2hs27c8U=;
-        b=b9iCvxxHye8HsmgiBQdPV5wB3f1FHMfAOiUqp/E9CmOP7x6AhyW5/oynel97W2sEmn
-         FvScJKeTY17iuoxKWd3fJHBDoV3jQ5VhDZhAiDH7gJxV6cBYtNcXXCFvQiJuShNtQGJA
-         4z03TR4FvqYVUbHwqT8AyLfVintdaAK9d5apw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688410052; x=1691002052;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kN9o72g+S+fr453o45UGKHe2553NpYDOTlk2hs27c8U=;
-        b=V0gipltjhpjwAZaJ/h/uEltpX4KD2MGi5tFL7fs6OrkzzNcV7NvGg+5Bn/fkAB83T1
-         VShYMS/UrG/rMnjufhi5bicEAtaWIADOEe+043H0Fv8YCUUORHw93/He3KPa8b3Pr0zP
-         X0thzdKQli/p2CXKkjPveCa5LnlthUF+LFVIQ1N52jrIkmlqrIGhNKqByMCsgrL5A//4
-         uuJyN4bK8d5c9LMRHV34SW2uHCcjX3fGLE2gn4wFpp0qYelktacojDQrb18vqUTJIn1h
-         chz9iEdMx1sAiCH84lFDAgVXuuW76i4vUKBRxl+JdNa4g7505dZgCGcmijyLY065nl4R
-         3Huw==
-X-Gm-Message-State: AC+VfDwrPW9UT+UEVrvSxJUXkAhjKRZmnokEB8fgZrR0IdLRvbRVNIIl
-        UOW3J8lVZ3a4YlIvfUdozSOZxOBD5lz9+T8pFOg=
-X-Google-Smtp-Source: ACHHUZ7Uw6JIzie0IqBbLm1Jpta+I6oauYqzRMNr4YquzVcV9CbMBRcoIqPoHfkBX5hGG4i8DnEZeA==
-X-Received: by 2002:a05:6a20:6a0f:b0:126:f64b:668e with SMTP id p15-20020a056a206a0f00b00126f64b668emr11925154pzk.5.1688410051738;
-        Mon, 03 Jul 2023 11:47:31 -0700 (PDT)
-Received: from www.outflux.net (198-0-35-241-static.hfc.comcastbusiness.net. [198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id jf5-20020a170903268500b001b7eeffbdbfsm14742165plb.261.2023.07.03.11.47.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Jul 2023 11:47:31 -0700 (PDT)
-Date:   Mon, 3 Jul 2023 11:47:30 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Jann Horn <jannh@google.com>
-Cc:     Roberto Sassu <roberto.sassu@huaweicloud.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Paul Moore <paul@paul-moore.com>,
+        with ESMTP id S231784AbjGDPTA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 4 Jul 2023 11:19:00 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BD6010EC;
+        Tue,  4 Jul 2023 08:18:47 -0700 (PDT)
+Received: from frapeml500002.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4QwRFJ3CTLz67cSL;
+        Tue,  4 Jul 2023 23:15:48 +0800 (CST)
+Received: from [10.45.151.231] (10.45.151.231) by
+ frapeml500002.china.huawei.com (7.182.85.205) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Tue, 4 Jul 2023 17:18:44 +0200
+Message-ID: <17702e7f-479a-22b8-70d9-56e418c8120b@huawei.com>
+Date:   Tue, 4 Jul 2023 17:18:43 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Subject: Re: [QUESTION] Full user space process isolation?
+To:     Roberto Sassu <roberto.sassu@huaweicloud.com>,
+        Jann Horn <jannh@google.com>
+CC:     Oleg Nesterov <oleg@redhat.com>, Paul Moore <paul@paul-moore.com>,
         James Morris <jmorris@namei.org>,
         "Serge E. Hallyn" <serge@hallyn.com>,
         Stephen Smalley <stephen.smalley.work@gmail.com>,
         Eric Paris <eparis@parisplace.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Mimi Zohar <zohar@linux.ibm.com>,
+        Kees Cook <keescook@chromium.org>,
         Casey Schaufler <casey@schaufler-ca.com>,
         David Howells <dhowells@redhat.com>,
         LuisChamberlain <mcgrof@kernel.org>,
         Eric Biederman <ebiederm@xmission.com>,
-        Petr Tesarik <petrtesarik@huaweicloud.com>,
         Christoph Hellwig <hch@infradead.org>,
         Petr Mladek <pmladek@suse.com>,
         Peter Zijlstra <peterz@infradead.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Tejun Heo <tj@kernel.org>, linux-mm@kvack.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [QUESTION] Full user space process isolation?
-Message-ID: <202307031140.D52C63D46@keescook>
+        Tejun Heo <tj@kernel.org>, <linux-mm@kvack.org>,
+        <linux-security-module@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <keyrings@vger.kernel.org>,
+        <linux-integrity@vger.kernel.org>,
+        <linux-hardening@vger.kernel.org>
 References: <eb31920bd00e2c921b0aa6ebed8745cb0130b0e1.camel@huaweicloud.com>
  <CAG48ez2oRPBdbfoNxGcV85CXFx1Su+dmhoWXE6rWsXui6_OTPg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAG48ez2oRPBdbfoNxGcV85CXFx1Su+dmhoWXE6rWsXui6_OTPg@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+ <ab8e68962feba9f16ed0a715d46ed003da61cfe8.camel@huaweicloud.com>
+Content-Language: en-US
+From:   Petr Tesarik <petr.tesarik.ext@huawei.com>
+In-Reply-To: <ab8e68962feba9f16ed0a715d46ed003da61cfe8.camel@huaweicloud.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.45.151.231]
+X-ClientProxiedBy: frapeml100004.china.huawei.com (7.182.85.167) To
+ frapeml500002.china.huawei.com (7.182.85.205)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Jul 03, 2023 at 05:06:42PM +0200, Jann Horn wrote:
-> But I'm not convinced that it makes sense to try to draw a security
-> boundary between fully-privileged root (with the ability to mount
-> things and configure swap and so on) and the kernel - my understanding
-> is that some kernel subsystems don't treat root-to-kernel privilege
-> escalation issues as security bugs that have to be fixed.
+On 7/3/2023 5:28 PM, Roberto Sassu wrote:
+> On Mon, 2023-07-03 at 17:06 +0200, Jann Horn wrote:
+>> On Thu, Jun 22, 2023 at 4:45 PM Roberto Sassu
+>> <roberto.sassu@huaweicloud.com> wrote:
+>>> I wanted to execute some kernel workloads in a fully isolated user
+>>> space process, started from a binary statically linked with klibc,
+>>> connected to the kernel only through a pipe.
+>>
+>> FWIW, the kernel has some infrastructure for this already, see
+>> CONFIG_USERMODE_DRIVER and kernel/usermode_driver.c, with a usage
+>> example in net/bpfilter/.
+> 
+> Thanks, I actually took that code to make a generic UMD management
+> library, that can be used by all use cases:
+> 
+> https://lore.kernel.org/linux-kernel/20230317145240.363908-1-roberto.sassu@huaweicloud.com/
+> 
+>>> I also wanted that, for the root user, tampering with that process is
+>>> as hard as if the same code runs in kernel space.
+>>
+>> I believe that actually making it that hard would probably mean that
+>> you'd have to ensure that the process doesn't use swap (in other
+>> words, it would have to run with all memory locked), because root can
+>> choose where swapped pages are stored. Other than that, if you mark it
+>> as a kthread so that no ptrace access is allowed, you can probably get
+>> pretty close. But if you do anything like that, please leave some way
+>> (like a kernel build config option or such) to enable debugging for
+>> these processes.
+> 
+> I didn't think about the swapping part... thanks!
+> 
+> Ok to enable debugging with a config option.
+> 
+>> But I'm not convinced that it makes sense to try to draw a security
+>> boundary between fully-privileged root (with the ability to mount
+>> things and configure swap and so on) and the kernel - my understanding
+>> is that some kernel subsystems don't treat root-to-kernel privilege
+>> escalation issues as security bugs that have to be fixed.
+> 
+> Yes, that is unfortunately true, and in that case the trustworthy UMD
+> would not make things worse. On the other hand, on systems where that
+> separation is defined, the advantage would be to run more exploitable
+> code in user space, leaving the kernel safe.
+> 
+> I'm thinking about all the cases where the code had to be included in
+> the kernel to run at the same privilege level, but would not use any of
+> the kernel facilities (e.g. parsers).
 
-There are certainly arguments to be made about this, but efforts continue
-to provide a separation between full-cap uid 0 and kernel memory. LSMs
-like Lockdown, IMA, and LoadPin, for example, seek to close these gaps,
-and systems are designed with this bright line existing between kernel
-and root (e.g. Chrome OS). I'm sure there are gaps in attack surface
-coverage, but since work continues on this kind of hardening, I'd hate
-to knowingly create new attack surface. Providing uid 0 with kernel
-memory access should continue to be mediated by at least Lockdown, and
-if there are gaps in coverage, let's get them recorded[1] to be fixed.
+Thanks for reminding me of kexec-tools. The complete image for booting a
+new kernel was originally prepared in user space. With kernel lockdown,
+all this code had to move into the kernel, adding a new syscall and lots
+of complexity to build purgatory code, etc. Yet, this new implementation
+in the kernel does not offer all features of kexec-tools, so both code
+bases continue to exist and are happily diverging...
 
--Kees
+> If the boundary is extended to user space, some of these components
+> could be moved away from the kernel, and the functionality would be the
+> same without decreasing the security.
 
-[1] https://github.com/KSPP/linux/issues
+All right, AFAICS your idea is limited to relatively simple cases for
+now. I mean, allowing kexec-tools to run in user space is not easily
+possible when UID 0 is not trusted, because kexec needs to open various
+files and make various other syscalls, which would require a complex LSM
+policy. It looks technically possible to write one, but then the big
+question is if it would be simpler to review and maintain than adding
+more kexec-tools features to the kernel.
 
--- 
-Kees Cook
+Anyway, I can sense a general desire to run less code in the most
+privileged system environment. Robert's proposal is one of few that go
+in this direction. What are the alternatives?
+
+Petr T
+
