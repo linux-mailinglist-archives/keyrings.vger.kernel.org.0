@@ -2,31 +2,32 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A22A97477C1
-	for <lists+keyrings@lfdr.de>; Tue,  4 Jul 2023 19:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65D867499FC
+	for <lists+keyrings@lfdr.de>; Thu,  6 Jul 2023 12:55:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231491AbjGDR2p (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 4 Jul 2023 13:28:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40822 "EHLO
+        id S232273AbjGFKzW (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 6 Jul 2023 06:55:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231370AbjGDR2p (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 4 Jul 2023 13:28:45 -0400
+        with ESMTP id S231981AbjGFKys (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 6 Jul 2023 06:54:48 -0400
 Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 131B110D7;
-        Tue,  4 Jul 2023 10:28:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6E4E51FD2;
+        Thu,  6 Jul 2023 03:54:36 -0700 (PDT)
 Received: from wind.enjellic.com (localhost [127.0.0.1])
-        by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 364HQt86009384;
-        Tue, 4 Jul 2023 12:26:55 -0500
+        by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 366Ar6jE026309;
+        Thu, 6 Jul 2023 05:53:06 -0500
 Received: (from greg@localhost)
-        by wind.enjellic.com (8.15.2/8.15.2/Submit) id 364HQrPS009383;
-        Tue, 4 Jul 2023 12:26:53 -0500
-Date:   Tue, 4 Jul 2023 12:26:53 -0500
+        by wind.enjellic.com (8.15.2/8.15.2/Submit) id 366Ar4Ro026307;
+        Thu, 6 Jul 2023 05:53:04 -0500
+Date:   Thu, 6 Jul 2023 05:53:04 -0500
 From:   "Dr. Greg" <greg@enjellic.com>
-To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
-Cc:     "Serge E. Hallyn" <serge@hallyn.com>,
-        Oleg Nesterov <oleg@redhat.com>,
+To:     Petr Tesarik <petr.tesarik.ext@huawei.com>
+Cc:     Roberto Sassu <roberto.sassu@huaweicloud.com>,
+        Jann Horn <jannh@google.com>, Oleg Nesterov <oleg@redhat.com>,
         Paul Moore <paul@paul-moore.com>,
         James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
         Stephen Smalley <stephen.smalley.work@gmail.com>,
         Eric Paris <eparis@parisplace.org>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -36,7 +37,6 @@ Cc:     "Serge E. Hallyn" <serge@hallyn.com>,
         David Howells <dhowells@redhat.com>,
         LuisChamberlain <mcgrof@kernel.org>,
         Eric Biederman <ebiederm@xmission.com>,
-        Petr Tesarik <petrtesarik@huaweicloud.com>,
         Christoph Hellwig <hch@infradead.org>,
         Petr Mladek <pmladek@suse.com>,
         Peter Zijlstra <peterz@infradead.org>,
@@ -44,20 +44,17 @@ Cc:     "Serge E. Hallyn" <serge@hallyn.com>,
         Tejun Heo <tj@kernel.org>, linux-mm@kvack.org,
         linux-security-module@vger.kernel.org,
         linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-integrity@vger.kernel.org, linux-hardening@vger.kernel.org,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>
+        linux-integrity@vger.kernel.org, linux-hardening@vger.kernel.org
 Subject: Re: [QUESTION] Full user space process isolation?
-Message-ID: <20230704172653.GA8804@wind.enjellic.com>
+Message-ID: <20230706105304.GA26175@wind.enjellic.com>
 Reply-To: "Dr. Greg" <greg@enjellic.com>
-References: <eb31920bd00e2c921b0aa6ebed8745cb0130b0e1.camel@huaweicloud.com> <20230629021000.GA368825@mail.hallyn.com> <14599d8216f1b7520ff5f6cfb27377fa79709f13.camel@huaweicloud.com> <20230702175542.GA25867@wind.enjellic.com> <0870d82571d1075433a2b81b2953cf8b4afcd415.camel@huaweicloud.com>
+References: <eb31920bd00e2c921b0aa6ebed8745cb0130b0e1.camel@huaweicloud.com> <CAG48ez2oRPBdbfoNxGcV85CXFx1Su+dmhoWXE6rWsXui6_OTPg@mail.gmail.com> <ab8e68962feba9f16ed0a715d46ed003da61cfe8.camel@huaweicloud.com> <17702e7f-479a-22b8-70d9-56e418c8120b@huawei.com>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0870d82571d1075433a2b81b2953cf8b4afcd415.camel@huaweicloud.com>
+In-Reply-To: <17702e7f-479a-22b8-70d9-56e418c8120b@huawei.com>
 User-Agent: Mutt/1.4i
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Tue, 04 Jul 2023 12:26:55 -0500 (CDT)
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Thu, 06 Jul 2023 05:53:06 -0500 (CDT)
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
         SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
@@ -67,164 +64,165 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Jul 03, 2023 at 09:57:53AM +0200, Roberto Sassu wrote:
+On Tue, Jul 04, 2023 at 05:18:43PM +0200, Petr Tesarik wrote:
 
-> On Sun, 2023-07-02 at 12:55 -0500, Dr. Greg wrote:
-> > On Thu, Jun 29, 2023 at 10:11:26AM +0200, Roberto Sassu wrote:
-> > 
-> > Good morning, I hope the weekend is going well for everyone, greetings
-> > to Roberto and everyone copied.
-> > 
-> > > On Wed, 2023-06-28 at 21:10 -0500, Serge E. Hallyn wrote:
-> > > > On Thu, Jun 22, 2023 at 04:42:37PM +0200, Roberto Sassu wrote:
-> > > > > Hi everyone
-> > > > > 
-> > > > > I briefly discussed this topic at LSS NA 2023, but I wanted to have an
-> > > > > opinion from a broader audience.
-> > > > > 
-> > > > > In short:
-> > > > > 
-> > > > > I wanted to execute some kernel workloads in a fully isolated user
-> > > > > space process, started from a binary statically linked with klibc,
-> > > > > connected to the kernel only through a pipe.
-> > > > > 
-> > > > > I also wanted that, for the root user, tampering with that process is
-> > > > > as hard as if the same code runs in kernel space.
-> > > > > 
-> > > > > I would use the fully isolated process to parse and convert unsupported
-> > > > > data formats to a supported one, after the kernel verified the
-> > > > 
-> > > > Can you give some examples here of supported and unsupported data
-> > > > formats?  ext2 is supported, but we sadly don't trust the sb parser
-> > > > to read a an ext2fs coming from unknown source.  So I'm not quite
-> > > > clear what problem you're trying to solve.
-> > > 
-> > > + eBPF guys (as I'm talking about eBPF)
-> > 
-> > If the week goes well, we will be submitting the second version of our
-> > TSEM LSM for review.  It incorporates a significant number of changes
-> > and enhancements, based on both initial review comments, and
-> > importantly, feedback from our collaborators in the critical
-> > infrastructure community.
-> > 
-> > Just as a levelset.  TSEM provides kernel infrastructure to implement
-> > security controls based on either deterministic or machine learning
-> > models.  Quixote is the userspace infrastructure that enables use of
-> > the TSEM kernel infrastructure.
-> > 
-> > Based on your description Roberto, TSEM may be of assistance in
-> > addressesing your issues at two different levels.
-> > 
-> > First with respect to protection of an isolated workload.
-> > 
-> > TSEM is inherently workload based, given that it is based on an
-> > architecture that implements security modeling namespaces that a
-> > process heirarchy can be placed into.  This reduces model complexity
-> > and provides the implementation of very specific and targeted security
-> > controls based on the needs of a proposed workload.
-> > 
-> > The security controls are prospective rather than retrospective,
-> > ie. TSEM will pro-actively block any security behaviors that are not
-> > in a security model that has been defined for the workload.
-> > 
-> > For example, with respect to the concerns you had previously mentioned
-> > about ptrace.  If the security model definition does not include a
-> > security state coefficient for a ptrace_traceme security event, it
-> > will be disallowed, regardless of what goes on with respect to kernel
-> > development, modulo of course the ptrace_traceme LSM hook being
-> > discontinued.
+Good morning, I hope the week is going well for everyone.
 
-> Hi Greg
-
-Hi, I hope your day is going well.
-
-> thanks for your insights.
-
-Such as they were, the price was right... :-)
-
-> The policy is quite simple:
+> On 7/3/2023 5:28 PM, Roberto Sassu wrote:
+> > On Mon, 2023-07-03 at 17:06 +0200, Jann Horn wrote:
+> >> On Thu, Jun 22, 2023 at 4:45???PM Roberto Sassu
+> >> <roberto.sassu@huaweicloud.com> wrote:
+> >>> I wanted to execute some kernel workloads in a fully isolated user
+> >>> space process, started from a binary statically linked with klibc,
+> >>> connected to the kernel only through a pipe.
+> >>
+> >> FWIW, the kernel has some infrastructure for this already, see
+> >> CONFIG_USERMODE_DRIVER and kernel/usermode_driver.c, with a usage
+> >> example in net/bpfilter/.
+> > 
+> > Thanks, I actually took that code to make a generic UMD management
+> > library, that can be used by all use cases:
+> > 
+> > https://lore.kernel.org/linux-kernel/20230317145240.363908-1-roberto.sassu@huaweicloud.com/
+> > 
+> >>> I also wanted that, for the root user, tampering with that process is
+> >>> as hard as if the same code runs in kernel space.
+> >>
+> >> I believe that actually making it that hard would probably mean that
+> >> you'd have to ensure that the process doesn't use swap (in other
+> >> words, it would have to run with all memory locked), because root can
+> >> choose where swapped pages are stored. Other than that, if you mark it
+> >> as a kthread so that no ptrace access is allowed, you can probably get
+> >> pretty close. But if you do anything like that, please leave some way
+> >> (like a kernel build config option or such) to enable debugging for
+> >> these processes.
+> > 
+> > I didn't think about the swapping part... thanks!
+> > 
+> > Ok to enable debugging with a config option.
+> > 
+> >> But I'm not convinced that it makes sense to try to draw a security
+> >> boundary between fully-privileged root (with the ability to mount
+> >> things and configure swap and so on) and the kernel - my understanding
+> >> is that some kernel subsystems don't treat root-to-kernel privilege
+> >> escalation issues as security bugs that have to be fixed.
+> > 
+> > Yes, that is unfortunately true, and in that case the trustworthy UMD
+> > would not make things worse. On the other hand, on systems where that
+> > separation is defined, the advantage would be to run more exploitable
+> > code in user space, leaving the kernel safe.
+> > 
+> > I'm thinking about all the cases where the code had to be included in
+> > the kernel to run at the same privilege level, but would not use any of
+> > the kernel facilities (e.g. parsers).
 > 
+> Thanks for reminding me of kexec-tools. The complete image for booting a
+> new kernel was originally prepared in user space. With kernel lockdown,
+> all this code had to move into the kernel, adding a new syscall and lots
+> of complexity to build purgatory code, etc. Yet, this new implementation
+> in the kernel does not offer all features of kexec-tools, so both code
+> bases continue to exist and are happily diverging...
 > 
->      r/w  ^                             kernel space
-> ----------|-----------------------------------------
->           v (pipe)                        user space
->  +-----------------+       +-----------------------+
->  | trustworthy UMD |---X---| rest of the processes |
->  +-----------------+       +-----------------------+
-> 
-> The question was more, is the LSM infrastructure complete enough that
-> the X can be really enforced?
-> 
-> Could there be other implicit information flows that the LSM
-> infrastructure is not able/does not yet mediate, that could break the
-> policy above?
+> > If the boundary is extended to user space, some of these components
+> > could be moved away from the kernel, and the functionality would be the
+> > same without decreasing the security.
 
-When we initiated the Quixote project, to bring security modeling and
-machine learning based security policy to the kernel, the predicate
-assumed was that the LSM hooks represented the complete basis set of
-information that was required to define the security state of a
-system.
+> All right, AFAICS your idea is limited to relatively simple cases
+> for now. I mean, allowing kexec-tools to run in user space is not
+> easily possible when UID 0 is not trusted, because kexec needs to
+> open various files and make various other syscalls, which would
+> require a complex LSM policy. It looks technically possible to write
+> one, but then the big question is if it would be simpler to review
+> and maintain than adding more kexec-tools features to the kernel.
 
-If the current LSM hooks are insufficient in number or lack being
-fully descriptive in character, the LSM by definition, cannot fully
-protect a platform.
+You either need to develop and maintain a complex system-wide LSM
+policy or you need a security model that is specifically tuned and
+then scoped to the needs of the workload running on behalf of the
+kernel as a UID=0 userspace process.
 
-I see that Casey replied downthread and indicated he thought the LSM
-hooks were sufficient to model the necessary security threats,
-obviously good news for both your work and ours.
+As I noted in my e-mail to Roberto, our TSEM LSM brings forward the
+ability to do both, as a useful side effect of the need to limit model
+complexity when the objective is to have a single functional
+description of the security state of a system.
 
-Just as a note of clarification.
+> Anyway, I can sense a general desire to run less code in the most
+> privileged system environment. Robert's proposal is one of few that
+> go in this direction. What are the alternatives?
 
-Casey indicated that the LSM supported labeled networking would be of
-assistance in your model, but my assumption from your diagram, is that
-the dashed line with the X in it, implies that there is to be NO
-information flow allowed between the sandboxed UMD process and the
-rest of the processes running on the system.
+As I noted above, TSEM brings the ability to provide highly specific
+and narrowly scoped security policy to a process heirarchy
+ie. workload.
 
-This would be in contrast to the line representing some type of
-limited network or pipe connectivity, with appropriate security
-controls or labeling on the traffic, is this a correct assumption?
+However, regardless of the technology applied, in order to pursue
+Roberto's UMD model of having a uid=0 process run tasks on behalf of
+the kernel, there would seem to be a need to define what the security
+objectives are.
 
-It would seem like there would need to be two classes of security
-guarantees in place for your model.  First, the fact that the
-trustworthy UMD cannot be forced to commit some action that was not
-intended for it, and second, that the surrounding system can be
-trusted to not try and exert nefarious influence on the UMD.
+From the outside looking in, there would seem to be a need to address
+two primary issues:
 
-Wouldn't the second requirement necessitate that the UMD operate with
-some form of attestation as to the character of the surrounding
-system?
+1: Trust/constrain what the UMD process can do.
 
-Other than the fact that Intel chose to not make the technology
-sufficiently ubiquitous, it would seem that SGX would be tailor made
-for this.
+2: Constrain what the system at large can do to the UMD process.
 
-> I guess TSEM could be for more elaborated security models, but in
-> this case the policy is quite straithforward. Also, your TSEM would
-> be as limited as mine by the LSM hooks available.
+As we have seen before, requirement 1 implies a definition of what it
+means for a process to be 'trusted'.
 
-TSEM isn't about elaborate, it is about defining the notion of
-workload specific security models.  A TMA running a security model,
-that acts only on file digests accessed by files with uid=0, would
-roughly implement IMA, with appraisal essentially for 'free'.
+In the absence of formal verification, which appears to be a
+non-starter in practice, this would seem to imply defining a standard
+for the allowed security behavior of the UMD workload.
 
-With respect to this discussion, one of the points that I was trying
-to make is that if you make the need to parse file digests from .rpms
-and .debs go away, the need for the highly protected UMD goes away as
-well.
+From our perspective, with TSEM, we define 'trusted' for a workload to
+mean that it has not requested a security behavior inconsistent with
+what the workload has been unit tested to.  If a process does this, its
+ability to execute additional security behaviors is curtailed.
 
-TSEM, with a signed security model processed by a trust orchestrator,
-implements that model, along with an invariant representation of the
-state of the system.
+With respect to requirement two.
 
-In fact, we have micro-controller based TMA's that pull their security
-models over a CAT1.M network connection, completely external to the OS
-being modeled, which is probably as much isolation as is
-possible... :-)
+Here is the ASCII art diagram of Roberto's proposed system:
 
-> Thanks
-> 
-> Roberto
+     r/w  ^                             kernel space
+----------|-----------------------------------------
+          v (pipe)                        user space
+ +-----------------+       +-----------------------+
+ | trustworthy UMD |---X---| rest of the processes |
+ +-----------------+       +-----------------------+
+
+Casey noted that he believed the Linux LSM had sufficient coverage to
+provide the necessary security controls for this model.  He
+specifically mentioned that it had support for network traffic
+controls and labeling.
+
+I haven't seen a reply from Roberto to my e-mail questioning what the
+following means:
+
+---X---
+
+But I get the sense that it means that any other process in userspace
+couldn't have any impact, or I assume visibility, into what the UID=0
+process is doing on behalf of the kernel.  I don't think it means that
+there is supposed to be some type of highly controlled traffic between
+the UMD and other processes.
+
+We will see what comments Roberto has on this.
+
+This arguably may be the most difficult requirement to meet if our
+interpretation of this requirement is correct, particularly so if this
+involves a confidentiality requirement, perhaps a bit less so if there
+is only a requirement of integrity of execution.
+
+As I mentioned in a previous e-mail, depending on the requirements,
+issue 2 starts to look a lot like protected enclave technologies such
+as SGX.  As history has shown, providing a protected execution
+environment, against the rest of the system, is a somewhat formidable
+undertaking, with probably a requirement for hardware support if SGX
+and/or TDX are any examples.
+
+So, I believe that TSEM brings useful technology to the table, but
+regardless of technology, it would seem there is a need to
+specifically define the security requirements for the UMD model.
+
+> Petr T
 
 Have a good day.
 
