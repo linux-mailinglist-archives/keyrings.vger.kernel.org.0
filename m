@@ -2,64 +2,77 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A70A674AAEA
-	for <lists+keyrings@lfdr.de>; Fri,  7 Jul 2023 08:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 976FE74AB83
+	for <lists+keyrings@lfdr.de>; Fri,  7 Jul 2023 09:04:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229642AbjGGGCD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 7 Jul 2023 02:02:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57436 "EHLO
+        id S232201AbjGGHEW convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Fri, 7 Jul 2023 03:04:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229778AbjGGGCC (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 7 Jul 2023 02:02:02 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6F401FC8
-        for <keyrings@vger.kernel.org>; Thu,  6 Jul 2023 23:01:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1688709678;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=RW78yBHBVifbb508B+Nr2a052QJ90AYozIpUCk7W+5k=;
-        b=L2bdXd64Hw98iLVeTfZD4nsaZqAk6fYGj7W1flKCUw71lGu3HlSiuUDSUnGC4gFJ6EKY2O
-        6owXU6K9yQ7ujK+qOBMK9YEqswJOBu1h7/MUD6TNhEMPXinya+qfUc7ZPjacsZzEUSHnR1
-        rQlELpBZruQy3JTUg70q1EtYwAgOMtk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-62-L8ycMmuaOm6Y_LdlEWrHkA-1; Fri, 07 Jul 2023 02:01:11 -0400
-X-MC-Unique: L8ycMmuaOm6Y_LdlEWrHkA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 7F6E7803B25;
-        Fri,  7 Jul 2023 06:01:10 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.195])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id B2F484087C6B;
-        Fri,  7 Jul 2023 06:01:09 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <c5e34c6a-da1e-4585-98c4-14701b0e093e@moroto.mountain>
-References: <c5e34c6a-da1e-4585-98c4-14701b0e093e@moroto.mountain>
-To:     Dan Carpenter <dan.carpenter@linaro.org>
-Cc:     dhowells@redhat.com, Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] KEYS: asymmetric: Fix error codes
+        with ESMTP id S232097AbjGGHEQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 7 Jul 2023 03:04:16 -0400
+Received: from frasgout11.his.huawei.com (ecs-14-137-139-23.compute.hwclouds-dns.com [14.137.139.23])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 269401709;
+        Fri,  7 Jul 2023 00:04:13 -0700 (PDT)
+Received: from mail02.huawei.com (unknown [172.18.147.228])
+        by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4Qy3xy4Zzrz9xqdN;
+        Fri,  7 Jul 2023 14:53:10 +0800 (CST)
+Received: from [127.0.0.1] (unknown [10.204.63.22])
+        by APP1 (Coremail) with SMTP id LxC2BwBHrumsuKdkc9w3BA--.59443S2;
+        Fri, 07 Jul 2023 08:03:29 +0100 (CET)
+Message-ID: <46a2328ab35907970dcd9a7240cd9072abeb66b2.camel@huaweicloud.com>
+Subject: Re: [RFC][PATCH 00/10] KEYS: Introduce user asymmetric keys and
+ signatures
+From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
+To:     Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc:     dhowells@redhat.com, dwmw2@infradead.org,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        jarkko@kernel.org, song@kernel.org, jolsa@kernel.org,
+        ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+        martin.lau@linux.dev, yhs@fb.com, john.fastabend@gmail.com,
+        kpsingh@kernel.org, sdf@google.com, haoluo@google.com,
+        rostedt@goodmis.org, mhiramat@kernel.org, mykolal@fb.com,
+        shuah@kernel.org, linux-kernel@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        bpf@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, pbrobinson@gmail.com,
+        zbyszek@in.waw.pl, zohar@linux.ibm.com,
+        linux-integrity@vger.kernel.org, paul@paul-moore.com,
+        linux-security-module@vger.kernel.org, wiktor@metacode.biz,
+        devel@lists.sequoia-pgp.org, gnupg-devel@gnupg.org,
+        ebiggers@kernel.org, Jason@zx2c4.com, mail@maciej.szmigiero.name,
+        antony@vennard.ch, konstantin@linuxfoundation.org,
+        James.Bottomley@hansenpartnership.com,
+        Roberto Sassu <roberto.sassu@huawei.com>
+Date:   Fri, 07 Jul 2023 09:03:05 +0200
+In-Reply-To: <20230706232709.t6imkh3q234b3dlm@macbook-pro-8.dhcp.thefacebook.com>
+References: <20230706144225.1046544-1-roberto.sassu@huaweicloud.com>
+         <20230706232709.t6imkh3q234b3dlm@macbook-pro-8.dhcp.thefacebook.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.44.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2210839.1688709669.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date:   Fri, 07 Jul 2023 07:01:09 +0100
-Message-ID: <2210840.1688709669@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+X-CM-TRANSID: LxC2BwBHrumsuKdkc9w3BA--.59443S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxArW5Jr48KFWrWw43tw17Awb_yoW5ZFWrpF
+        WrKayrArykJwnxJa4ktw40gayft3y8J3W3KwnxKrWrCwn0gryayr4xKF4rur9akr1kWr10
+        vrZ5A343Gwn5AaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUk0b4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+        xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxV
+        AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+        x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+        0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij
+        64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
+        8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26rWY6r4UJwCIc40Y0x0EwIxGrwCI42IY
+        6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6x
+        AIw20EY4v20xvaj40_WFyUJVCq3wCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv
+        6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUFYFCUUUUU
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQALBF1jj4-hwgAAsT
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
+        PDS_RDNS_DYNAMIC_FP,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,15 +80,89 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@linaro.org> wrote:
+On Thu, 2023-07-06 at 16:27 -0700, Alexei Starovoitov wrote:
+> On Thu, Jul 06, 2023 at 04:42:13PM +0200, Roberto Sassu wrote:
+> > From: Roberto Sassu <roberto.sassu@huawei.com>
+> > 
+> > Define a new TLV-based format for keys and signatures, aiming to store and
+> > use in the kernel the crypto material from other unsupported formats
+> > (e.g. PGP).
+> > 
+> > TLV fields have been defined to fill the corresponding kernel structures
+> > public_key, public_key_signature and key_preparsed_payload.
+> > 
+> > Keys:
+> >                 struct public_key {     struct key_preparsed_payload {
+> > KEY_PUB       -->  void *key;
+> >                    u32 keylen;         --> prep->payload.data[asym_crypto]
+> > KEY_ALGO      -->  const char *pkey_algo;
+> > KEY_KID0
+> > KEY_KID1                               --> prep->payload.data[asym_key_ids]
+> > KEY_KID2  
+> > KEY_DESC                               --> prep->description
+> > 
+> > 
+> > Signatures:
+> >                 struct public_key_signature {
+> > SIG_S         -->  u8 *s;
+> >                    u32 s_size;
+> > SIG_KEY_ALGO  -->  const char *pkey_algo;
+> > SIG_HASH_ALGO -->  const char *hash_algo;
+> >                    u32 digest_size;
+> > SIG_ENC       -->  const char *encoding;   
+> > SIG_KID0
+> > SIG_KID1      -->  struct asymmetric_key_id *auth_ids[3];
+> > SIG_KID2  
+> > 
+> > 
+> > For keys, since the format conversion has to be done in user space, user
+> > space is assumed to be trusted, in this proposal. Without this assumption,
+> > a malicious conversion tool could make a user load to the kernel a
+> > different key than the one expected.
+> > 
+> > That should not be a particular problem for keys that are embedded in the
+> > kernel image and loaded at boot, since the conversion happens in a trusted
+> > environment such as the building infrastructure of the Linux distribution
+> > vendor.
+> > 
+> > In the other cases, such as enrolling a key through the Machine Owner Key
+> > (MOK) mechanism, the user is responsible to ensure that the crypto material
+> > carried in the original format remains the same after the conversion.
+> > 
+> > For signatures, assuming the strength of the crypto algorithms, altering
+> > the crypto material is simply a Denial-of-Service (DoS), as data can be
+> > validated only with the right signature.
+> > 
+> > 
+> > This patch set also offers the following contributions:
+> > 
+> > - An API similar to the PKCS#7 one, to verify the authenticity of system
+> >   data through user asymmetric keys and signatures
+> > 
+> > - A mechanism to store a keyring blob in the kernel image and to extract
+> >   and load the keys at system boot
+> >   
+> > - eBPF binding, so that data authenticity verification with user asymmetric
+> >   keys and signatures can be carried out also with eBPF programs
+> 
+> Nack to bpf bits.
 
-> These error paths should return the appropriate error codes instead of
-> returning success.
-> =
+Sure, no problem. Will remove them in the next iteration.
 
-> Fixes: 63ba4d67594a ("KEYS: asymmetric: Use new crypto interface without=
- scatterlists")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> You've convinced us that bpf_verify_pkcs7_signature() is what you need.
+> Yet, 9 month later there are no users of it and you came back with this new
+> bpf_verify_uasym_signature() helper that practically not much different.
+> 
+> Instead of brand new "public key info" format sign your rpms via
+> existing pkcs7 mechanism and verify with bpf_verify_pkcs7_signature().
 
-Reviewed-by: David Howells <dhowells@redhat.com>
+Asking Linux distribution vendors to execute gpg in their kernel build,
+or asking them to revisit their PKI, rebuild all their packages, and
+adapting all their tools dealing with the current mechanism?
+
+Which solution do you think it is better?
+
+Thanks
+
+Roberto
 
