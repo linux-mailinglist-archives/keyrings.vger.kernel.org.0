@@ -2,77 +2,95 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66FA274C137
-	for <lists+keyrings@lfdr.de>; Sun,  9 Jul 2023 08:12:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25D2F74CFC2
+	for <lists+keyrings@lfdr.de>; Mon, 10 Jul 2023 10:20:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233122AbjGIGMI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 9 Jul 2023 02:12:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57136 "EHLO
+        id S229624AbjGJIUn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 10 Jul 2023 04:20:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229490AbjGIGMI (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 9 Jul 2023 02:12:08 -0400
-Received: from mail-oo1-xc30.google.com (mail-oo1-xc30.google.com [IPv6:2607:f8b0:4864:20::c30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92545FF
-        for <keyrings@vger.kernel.org>; Sat,  8 Jul 2023 23:12:06 -0700 (PDT)
-Received: by mail-oo1-xc30.google.com with SMTP id 006d021491bc7-5634d8d1db0so2611374eaf.0
-        for <keyrings@vger.kernel.org>; Sat, 08 Jul 2023 23:12:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688883126; x=1691475126;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qNVI/u+vlE2iSYnBudk/aivP1bgPbzvxDOvNGrnVEw8=;
-        b=YZqlccB5BAn+Od7tZ2z8hTwbJDlJRiu9vgyF1mFcBEEZ4NMtscFAFWB00MQ3cHiXVM
-         Vv4laBVLJ5cfesGn3CQF4Y3MiCJbC2VS3z9lMe/jnZrGGOKYhlKAPWfUegOYhjRJXe8w
-         9VhzPp2Mv6zEVMQ/x0sd1hQ8z1kVO93ES7u10kTQWFT3E98IjaS6x3YNzKWS9b7y4GVc
-         +vqtSvKVz5xJ0tiGXVKh2MZfe3ybBc7u+lhxjoqRFSaeicx3sptIaTOebbU5ann6Ep7i
-         j4Q0HIgPN8kcEm2tRCYa5g9MLKKfnbyj9XrA4+ivCJIz1OAn48RetzHwbquU0gTL1nv+
-         /6hA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688883126; x=1691475126;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qNVI/u+vlE2iSYnBudk/aivP1bgPbzvxDOvNGrnVEw8=;
-        b=RWkKa1W7IqFuGBTVBG0lD5FBxE+1ig/kxCmv1tFGXPaXGw2DHcBtX6t/7AGV0pN2lq
-         gOI9ehdxl6j1ALrohpWOOTBXDyR3HVuqsajI0+PxIoWMH3B8IpcpyBXqWxiG/CnvQEj6
-         Wg7cRZP1+L+Xgmbw7Reo7HR2I2dVafrj6cuxj0DlFWwgh36T6+UWJ6i3nknVXxi9b95r
-         K006/sMbH08fNLPcQFgAP7ecGvwcWsOcPXzpfcvEsaSbM66TDGgoBAjCAZF4UeWK4jzB
-         5QSzRZzrUdUsZtB/PXAp7gFsFEm4sdDADDoEjpgIk0nIa87uOUR3F4rhS9uM+ZnDzRVe
-         KJ7w==
-X-Gm-Message-State: ABy/qLYye98coAtnJdORjsG0MNglunQ5bQqBlskYOhamD9o4WnQYYYEi
-        rgNzq7ly1RoOLXFUAbqDG2/if4vP03EWrmLdbx8=
-X-Google-Smtp-Source: APBJJlE4GMQIpElKusnhsC3j2JbMeno2beSk2Z2pHuezjspje+6jsl43BdnZRBKyeXOetGei85gKJ2s6z2yA10+FGiI=
-X-Received: by 2002:a4a:e83c:0:b0:55e:5c65:c6cd with SMTP id
- d28-20020a4ae83c000000b0055e5c65c6cdmr7014719ood.6.1688883125859; Sat, 08 Jul
- 2023 23:12:05 -0700 (PDT)
+        with ESMTP id S231607AbjGJIUX (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 10 Jul 2023 04:20:23 -0400
+X-Greylist: delayed 579 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 10 Jul 2023 01:20:22 PDT
+Received: from mail.ipomocprawna.pl (mail.ipomocprawna.pl [94.177.230.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 698EEE1
+        for <keyrings@vger.kernel.org>; Mon, 10 Jul 2023 01:20:22 -0700 (PDT)
+Received: by mail.ipomocprawna.pl (Postfix, from userid 1002)
+        id 3BEEF82772; Mon, 10 Jul 2023 10:10:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ipomocprawna.pl;
+        s=mail; t=1688976633;
+        bh=PSgK39E8Y8uuAuzZgkv3QwpS9h+YIcPQJlHDaGSRl5A=;
+        h=Date:From:To:Subject:From;
+        b=IbQt6CqOPDJyKcabG5N0sSR+9HO5PvTdJH5EkgSUyNdn3i64W9y1IJHgSITsASBRd
+         9zYG967EPr7UQ8o6Wgg5rcqn6GwabWQpVqkvAyYU+8SasdjjdhQzu0fzj0A+NisIwc
+         2bv9eill4ww+Ouln5nMg+kM6sfZZLnzHrIPhHUeazCdWP2GuV4wKhTazpqeMo68PNI
+         2YTrn03Rl/pNFJgRaeuPKlUeRCOYzxueNHNExNRJlPVZ85gTbY6C7Y5cn8m584csc4
+         mP/BDQrebRFGEzLtC1tMICYHOXSVW9qu0KBN+KPn0+lZve3FhA0ayUXT0376FZAuEn
+         DctFAOZbCRLWw==
+Received: by mail.ipomocprawna.pl for <keyrings@vger.kernel.org>; Mon, 10 Jul 2023 08:10:21 GMT
+Message-ID: <20230710084500-0.1.19.3g1d.0.ie4mmdieo8@ipomocprawna.pl>
+Date:   Mon, 10 Jul 2023 08:10:21 GMT
+From:   "Adam Hoksa" <adam.hoksa@ipomocprawna.pl>
+To:     <keyrings@vger.kernel.org>
+Subject: Wsparcie Kancelarii prawno-podatkowe
+X-Mailer: mail.ipomocprawna.pl
 MIME-Version: 1.0
-Received: by 2002:a05:6358:18b:b0:122:db4b:7f79 with HTTP; Sat, 8 Jul 2023
- 23:12:05 -0700 (PDT)
-Reply-To: ninacoulibaly03@hotmail.com
-From:   nina coulibaly <ninacoulibaly.info@gmail.com>
-Date:   Sun, 9 Jul 2023 06:12:05 +0000
-Message-ID: <CABAHEt5mrn8ccxrkeqBDF5s=3rcuoJXBOD1nnfUp+5jH_QMwBg@mail.gmail.com>
-Subject: from nina coulibaly
-To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
+        *      DNSWL was blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [94.177.230.50 listed in list.dnswl.org]
+        * -0.0 BAYES_40 BODY: Bayes spam probability is 20 to 40%
+        *      [score: 0.3590]
+        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
+        *      blocklist
+        *      [URIs: ipomocprawna.pl]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [94.177.230.50 listed in zen.spamhaus.org]
+        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
+        *      blocklist
+        *      [URIs: ipomocprawna.pl]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Dear,
+Dzie=C5=84 dobry,
 
-I am interested to invest with you in your  country with total trust
-and I hope you will give me total support, sincerity and commitment.
-Please get back to me as soon as possible so that I can give you my
-proposed details of funding and others.
+chcia=C5=82bym zaprosi=C4=87 Pa=C5=84stwa do rozmowy o wsp=C3=B3=C5=82pra=
+cy z nasz=C4=85 Kancelari=C4=85 Prawn=C4=85.
 
-Best Regards.
+Skuteczna pomoc z zakresu strategii konkurencyjnej, negocjacji um=C3=B3w,=
+ czy optymalizacji podatkowej pomo=C5=BCe Pa=C5=84stwu uzyska=C4=87 zysko=
+wniejsze warunki prawno-biznesowe dla prowadzonych operacji.
 
-Mrs Nina Coulibaly
+Dzi=C4=99ki wieloletniemu do=C5=9Bwiadczeniu w Pa=C5=84stwa bran=C5=BCy o=
+raz efektywnym dzia=C5=82aniom specjalist=C3=B3w nasi Klienci zyskuj=C4=85=
+ wymierne korzy=C5=9Bci po zastosowaniu rekomendowanych przez nas rozwi=C4=
+=85za=C5=84.
+
+Z przyjemno=C5=9Bci=C4=85 przedstawi=C4=99, co mo=C5=BCemy dla Pa=C5=84st=
+wa zrobi=C4=87. Mog=C4=99 zadzwoni=C4=87?
+
+
+Pozdrawiam
+Adam Hoksa
