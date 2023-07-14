@@ -2,35 +2,34 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8731575359B
-	for <lists+keyrings@lfdr.de>; Fri, 14 Jul 2023 10:51:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DF3A7535B7
+	for <lists+keyrings@lfdr.de>; Fri, 14 Jul 2023 10:53:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235610AbjGNIvH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 14 Jul 2023 04:51:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56450 "EHLO
+        id S235808AbjGNIxL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 14 Jul 2023 04:53:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235612AbjGNIvF (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Jul 2023 04:51:05 -0400
+        with ESMTP id S235727AbjGNIw4 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Jul 2023 04:52:56 -0400
 Received: from 167-179-156-38.a7b39c.syd.nbn.aussiebb.net (167-179-156-38.a7b39c.syd.nbn.aussiebb.net [167.179.156.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1796F26B2;
-        Fri, 14 Jul 2023 01:51:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B443C1FC8;
+        Fri, 14 Jul 2023 01:52:55 -0700 (PDT)
 Received: from gwarestrin.arnor.me.apana.org.au ([192.168.103.7])
         by fornost.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-        id 1qKEVn-001RdR-BA; Fri, 14 Jul 2023 18:50:52 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 14 Jul 2023 18:50:44 +1000
-Date:   Fri, 14 Jul 2023 18:50:44 +1000
+        id 1qKEXd-001Rdy-Ls; Fri, 14 Jul 2023 18:52:46 +1000
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 14 Jul 2023 18:52:38 +1000
+Date:   Fri, 14 Jul 2023 18:52:38 +1000
 From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Gaosheng Cui <cuigaosheng1@huawei.com>
+To:     Mahmoud Adam <mngyadam@amazon.com>
 Cc:     dhowells@redhat.com, davem@davemloft.net, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org
-Subject: Re: [PATCH -next] verify_pefile: fix kernel-doc warnings in
- verify_pefile
-Message-ID: <ZLEMZNemwIGlVRo3@gondor.apana.org.au>
-References: <20230619132424.80587-1-cuigaosheng1@huawei.com>
+        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] KEYS: use kfree_sensitive with key
+Message-ID: <ZLEM1gNhynPTgsLq@gondor.apana.org.au>
+References: <20230622124719.93393-1-mngyadam@amazon.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230619132424.80587-1-cuigaosheng1@huawei.com>
+In-Reply-To: <20230622124719.93393-1-mngyadam@amazon.com>
 X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_00,HELO_DYNAMIC_IPADDR2,
         RCVD_IN_DNSWL_BLOCKED,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS,TVD_RCVD_IP,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
@@ -42,19 +41,17 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Jun 19, 2023 at 09:24:24PM +0800, Gaosheng Cui wrote:
-> Fix kernel-doc warnings in verify_pefile:
-> 
-> crypto/asymmetric_keys/verify_pefile.c:423: warning: Excess function
-> parameter 'trust_keys' description in 'verify_pefile_signature'
-> 
-> crypto/asymmetric_keys/verify_pefile.c:423: warning: Function parameter
-> or member 'trusted_keys' not described in 'verify_pefile_signature'
-> 
-> Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+On Thu, Jun 22, 2023 at 12:47:22PM +0000, Mahmoud Adam wrote:
+> key might contain private part of the key, so better use
+> kfree_sensitive to free it
 > ---
->  crypto/asymmetric_keys/verify_pefile.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> v1: conflicts with c3d03e8e35e0:
+> KEYS: asymmetric: Copy sig and digest in public_key_verify_signature()
+> kfree_sensitive the buf variable also because it might has private
+> part
+> 
+>  crypto/asymmetric_keys/public_key.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 
 Patch applied.  Thanks.
 -- 
