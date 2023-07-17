@@ -2,109 +2,119 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6730C7544D6
-	for <lists+keyrings@lfdr.de>; Sat, 15 Jul 2023 00:11:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7981C756376
+	for <lists+keyrings@lfdr.de>; Mon, 17 Jul 2023 14:56:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229611AbjGNWL3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 14 Jul 2023 18:11:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55068 "EHLO
+        id S229732AbjGQM4j (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 17 Jul 2023 08:56:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbjGNWL0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 14 Jul 2023 18:11:26 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 756222119;
-        Fri, 14 Jul 2023 15:11:25 -0700 (PDT)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36EMAvVo012480;
-        Fri, 14 Jul 2023 22:11:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=SQtXSWqZKG/jgTIl3JTvr+1VdFnyCE0/YsCTU8vPORQ=;
- b=oHYen5KDsTfPD0FX7E1DZUaHB/ow2N97tEo2egapVeLDkRdJ7Kb9bjhjzDPW8cae1BIm
- k2Dzc8EdqDdcpRbkNsTX+fptDkuhFC750SqtiHxakrft3vgaI5coSr7k2BqyZMEW2wgH
- ky7h3phG+uiFKcOppPrIrvEVF0CSZmGZ5biQkdJMtWViJ4ZnNHqEOxJSlJ7nMFUxa4Yd
- cXcmAwT6wm4iWsqCUosQngHFr3xvjPe8lQpOjwwK0yFCCI2IpXuZqtUvqSH3G3UVhjBb
- tX8u8xieC9gAfuoWOuIQi/EhvH2WoybkpjC+meFQxEwP8ANPHM6QgM0ox5PD4ASQ+QpR cQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rue4wh0qa-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 14 Jul 2023 22:11:15 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 36EM1022007496;
-        Fri, 14 Jul 2023 22:11:14 GMT
-Received: from ppma05wdc.us.ibm.com (1b.90.2fa9.ip4.static.sl-reverse.com [169.47.144.27])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3rue4wh0pw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 14 Jul 2023 22:11:14 +0000
-Received: from pps.filterd (ppma05wdc.us.ibm.com [127.0.0.1])
-        by ppma05wdc.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 36EKJumu002964;
-        Fri, 14 Jul 2023 22:11:13 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([9.208.130.102])
-        by ppma05wdc.us.ibm.com (PPS) with ESMTPS id 3rtqjknn1w-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 14 Jul 2023 22:11:13 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-        by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 36EMBDgL13369916
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 14 Jul 2023 22:11:13 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 06D2F5805C;
-        Fri, 14 Jul 2023 22:11:13 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 885835805A;
-        Fri, 14 Jul 2023 22:11:12 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.61.79.213])
-        by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-        Fri, 14 Jul 2023 22:11:12 +0000 (GMT)
-Message-ID: <d622f47e5446f71571170ef72be43ea0a89e5d48.camel@linux.ibm.com>
-Subject: Re: [PATCH] certs: Reference revocation list for all keyrings
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Eric Snowberg <eric.snowberg@oracle.com>, dhowells@redhat.com,
-        jarkko@kernel.org, dwmw2@infradead.org
-Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kanth.ghatraju@oracle.com, konrad.wilk@oracle.com
-Date:   Fri, 14 Jul 2023 18:11:12 -0400
-In-Reply-To: <20230117171506.3888602-1-eric.snowberg@oracle.com>
-References: <20230117171506.3888602-1-eric.snowberg@oracle.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: oGJZk1B8EOumB9thbJUq1cHoQm5DppP8
-X-Proofpoint-ORIG-GUID: HtactTUtKfJ0xnOJm69Hdb5fIYasUXa6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-14_10,2023-07-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 lowpriorityscore=0 adultscore=0 spamscore=0 mlxscore=0
- suspectscore=0 mlxlogscore=999 impostorscore=0 phishscore=0 clxscore=1011
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2307140202
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229935AbjGQM4g (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 17 Jul 2023 08:56:36 -0400
+Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A724B19A8;
+        Mon, 17 Jul 2023 05:56:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1689598568; x=1721134568;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6fIrxn0+T/UT77ovNwjs4GlglBbK1dzH+ora1KGfoUw=;
+  b=jlAm9MvaR5RA4UisvBmcadCDym3Dzh+PSKNIikjOL8FvEy7z5VMIhMG8
+   qPtv3svgkKiEAbQdTWweSsfCix53glwYrnLAjCnHU7ksmnmwVygTFPUvI
+   gnnNwNelILJGepYT5dkEkwk1taCFMn2zA2fI73I0kaAUFRFue8iHxdn2e
+   4=;
+X-IronPort-AV: E=Sophos;i="6.01,211,1684800000"; 
+   d="scan'208";a="227224119"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-iad-1a-m6i4x-366646a6.us-east-1.amazon.com) ([10.25.36.214])
+  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2023 12:55:51 +0000
+Received: from EX19MTAUWB001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
+        by email-inbound-relay-iad-1a-m6i4x-366646a6.us-east-1.amazon.com (Postfix) with ESMTPS id 52530A42D5;
+        Mon, 17 Jul 2023 12:55:39 +0000 (UTC)
+Received: from EX19MTAUWA001.ant.amazon.com (10.250.64.204) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Mon, 17 Jul 2023 12:55:36 +0000
+Received: from EX19MTAUWA001.ant.amazon.com (10.250.64.204) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.30; Mon, 17 Jul 2023 12:55:36 +0000
+Received: from dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (10.15.1.225)
+ by mail-relay.amazon.com (10.250.64.204) with Microsoft SMTP Server id
+ 15.2.1118.30 via Frontend Transport; Mon, 17 Jul 2023 12:55:36 +0000
+Received: by dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (Postfix, from userid 23907357)
+        id BECC0DCC; Mon, 17 Jul 2023 12:55:35 +0000 (UTC)
+From:   Mahmoud Adam <mngyadam@amazon.com>
+To:     <dhowells@redhat.com>
+CC:     <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Mahmoud Adam <mngyadam@amazon.com>
+Subject: [PATCH v4] KEYS: use kfree_sensitive with key
+Date:   Mon, 17 Jul 2023 12:55:09 +0000
+Message-ID: <20230717125509.105015-1-mngyadam@amazon.com>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2023-01-17 at 12:15 -0500, Eric Snowberg wrote:
-> Systems booted with shim have a Forbidden Signature Database called mokx.
-> During boot, hashes and certs contained within the mokx are loaded into the
-> blacklist keyring.  When calling verify_pkcs7_message_sig the contents of
-> the blacklist keyring (or revocation list) are referenced when validating
-> keys on the platform keyring. Currently, when validating against the
-> secondary or builtin keyrings, the revocation list is not referenced.  Move
-> up the check to allow the revocation list to be used with all keyrings,
-> including the secondary and builtin, allowing the system owner to take
-> corrective action should a vulnerability be found within keys contained
-> within either keyring.
-> 
-> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+key might contain private part of the key, so better use
+kfree_sensitive to free it
 
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
+---
+ crypto/asymmetric_keys/public_key.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+index 773e159dbbcb..abeecb8329b3 100644
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -42,7 +42,7 @@ static void public_key_describe(const struct key *asymmetric_key,
+ void public_key_free(struct public_key *key)
+ {
+ 	if (key) {
+-		kfree(key->key);
++		kfree_sensitive(key->key);
+ 		kfree(key->params);
+ 		kfree(key);
+ 	}
+@@ -263,7 +263,7 @@ static int software_key_query(const struct kernel_pkey_params *params,
+ 	else
+ 		crypto_free_akcipher(tfm);
+ error_free_key:
+-	kfree(key);
++	kfree_sensitive(key);
+ 	pr_devel("<==%s() = %d\n", __func__, ret);
+ 	return ret;
+ }
+@@ -369,7 +369,7 @@ static int software_key_eds_op(struct kernel_pkey_params *params,
+ 	else
+ 		crypto_free_akcipher(tfm);
+ error_free_key:
+-	kfree(key);
++	kfree_sensitive(key);
+ 	pr_devel("<==%s() = %d\n", __func__, ret);
+ 	return ret;
+ }
+@@ -441,7 +441,7 @@ int public_key_verify_signature(const struct public_key *pkey,
+ 				sig->digest, sig->digest_size);
+ 
+ error_free_key:
+-	kfree(key);
++	kfree_sensitive(key);
+ error_free_tfm:
+ 	crypto_free_sig(tfm);
+ 	pr_devel("<==%s() = %d\n", __func__, ret);
+-- 
+2.40.1
 
