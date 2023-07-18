@@ -2,119 +2,91 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7981C756376
-	for <lists+keyrings@lfdr.de>; Mon, 17 Jul 2023 14:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46A68758101
+	for <lists+keyrings@lfdr.de>; Tue, 18 Jul 2023 17:33:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229732AbjGQM4j (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 17 Jul 2023 08:56:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37640 "EHLO
+        id S233251AbjGRPd3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 18 Jul 2023 11:33:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229935AbjGQM4g (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 17 Jul 2023 08:56:36 -0400
-Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A724B19A8;
-        Mon, 17 Jul 2023 05:56:07 -0700 (PDT)
+        with ESMTP id S233222AbjGRPd1 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 18 Jul 2023 11:33:27 -0400
+Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com [IPv6:2607:f8b0:4864:20::e35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A3C91BD7;
+        Tue, 18 Jul 2023 08:33:01 -0700 (PDT)
+Received: by mail-vs1-xe35.google.com with SMTP id ada2fe7eead31-443571eda4dso1817855137.2;
+        Tue, 18 Jul 2023 08:33:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1689598568; x=1721134568;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=6fIrxn0+T/UT77ovNwjs4GlglBbK1dzH+ora1KGfoUw=;
-  b=jlAm9MvaR5RA4UisvBmcadCDym3Dzh+PSKNIikjOL8FvEy7z5VMIhMG8
-   qPtv3svgkKiEAbQdTWweSsfCix53glwYrnLAjCnHU7ksmnmwVygTFPUvI
-   gnnNwNelILJGepYT5dkEkwk1taCFMn2zA2fI73I0kaAUFRFue8iHxdn2e
-   4=;
-X-IronPort-AV: E=Sophos;i="6.01,211,1684800000"; 
-   d="scan'208";a="227224119"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-iad-1a-m6i4x-366646a6.us-east-1.amazon.com) ([10.25.36.214])
-  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2023 12:55:51 +0000
-Received: from EX19MTAUWB001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
-        by email-inbound-relay-iad-1a-m6i4x-366646a6.us-east-1.amazon.com (Postfix) with ESMTPS id 52530A42D5;
-        Mon, 17 Jul 2023 12:55:39 +0000 (UTC)
-Received: from EX19MTAUWA001.ant.amazon.com (10.250.64.204) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Mon, 17 Jul 2023 12:55:36 +0000
-Received: from EX19MTAUWA001.ant.amazon.com (10.250.64.204) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Mon, 17 Jul 2023 12:55:36 +0000
-Received: from dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (10.15.1.225)
- by mail-relay.amazon.com (10.250.64.204) with Microsoft SMTP Server id
- 15.2.1118.30 via Frontend Transport; Mon, 17 Jul 2023 12:55:36 +0000
-Received: by dev-dsk-mngyadam-1c-a2602c62.eu-west-1.amazon.com (Postfix, from userid 23907357)
-        id BECC0DCC; Mon, 17 Jul 2023 12:55:35 +0000 (UTC)
-From:   Mahmoud Adam <mngyadam@amazon.com>
-To:     <dhowells@redhat.com>
-CC:     <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
-        <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, Mahmoud Adam <mngyadam@amazon.com>
-Subject: [PATCH v4] KEYS: use kfree_sensitive with key
-Date:   Mon, 17 Jul 2023 12:55:09 +0000
-Message-ID: <20230717125509.105015-1-mngyadam@amazon.com>
-X-Mailer: git-send-email 2.40.1
+        d=googlemail.com; s=20221208; t=1689694363; x=1692286363;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jFG0v+zWj5Us2ybIpEvaX66lFIHyK6OlaRxVcde7KSc=;
+        b=R6LcQTBoQIabOw7L5lHt5phv0vDyNHm77UTipCuTD42Ayw1TnYZUoOyqq0hc3bqzj6
+         DGEV0R3Mqrv8ospCkIBjX2hdqApO2SH+9YbrEparhmmisveiM9GB7QiP4gfOS0BKVoKn
+         Z4z1+nJklvGNP5Ieo2EKojw1fg9WT5S4s32YUi0vJpPp4uZYGJoudXCV1uoxBCF+nVu9
+         JFLumNwSQn+DFA0AY8HYqYDlLnck2pBVi1PDpnWik60kbCNfUhCpyeP7aptRMOOmiVbV
+         7PVwBU4iVONMax780WJXgIJkx82uVtaa2HG4vUywJRGzMm7otUAUGtKAsRTC+36yDb06
+         z+hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689694363; x=1692286363;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jFG0v+zWj5Us2ybIpEvaX66lFIHyK6OlaRxVcde7KSc=;
+        b=KjWdC4hr2HCe4aDsDQgv7/EyzWiShWnn1BHEWVxag9QIWUZK2/WDktS5UBa0twXLrI
+         Voq7gtpbG7tSMtBnr6GKlgFNX0BbRBwdU1zuDryXxil6ozsdbhhTn4gYTlCpEDhddEA5
+         5NqISme6YUFw8Vk23HYSOj9Gfj56UYIXGmudzpqsFgtPO2R+YCxOnRmCULJwusAseiNa
+         XcTU2Vijwlzg7ek4dyuWNsUzksNN2zMIIefXTAziiL7tokysG+oyK27ffRGnHDMPLs2d
+         02dp1udBxHCG9U0Luizbvl5aoTsKJyXNboO6C8oTc92WzRHyIjUeamA6aVbbbq4+/zCb
+         rJQQ==
+X-Gm-Message-State: ABy/qLaTzJnwlclX+S+Ddd9Eha/gqGQMpkS9rBuaM9Gk1Lw+mMOTXIGS
+        g12akjzq5j00vWfezjuUGoaXyeguSGCNbNXPM6Q=
+X-Google-Smtp-Source: APBJJlG7xhqmpvxA2a+d/nPoPsxZ8VwdP+RJ8Vg09AHQMV/eROqDtj8rPx+KlPXhR4ivwS61JGW5IvVwcNOD+PjnkvE=
+X-Received: by 2002:a05:6102:4ba:b0:444:ca59:57a6 with SMTP id
+ r26-20020a05610204ba00b00444ca5957a6mr8743768vsa.8.1689694363020; Tue, 18 Jul
+ 2023 08:32:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
+Date:   Tue, 18 Jul 2023 17:32:32 +0200
+Message-ID: <CAJ2a_Dd-piQ51dqptuhJ8pXm+4HrFAcdbA-ESd8YwNO3qHnJrA@mail.gmail.com>
+Subject: Re: [PATCH] security: keys: perform capable check only on privileged operations
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     SElinux list <selinux@vger.kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        Linux kernel mailing list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-key might contain private part of the key, so better use
-kfree_sensitive to free it
+On Wed, 2023-05-21 at 02:04 +0300, Jarkko Sakkinen wrote:
+> On Thu, 2023-05-25 at 17:25 -0400, Paul Moore wrote:
+> > > A minor inconvenience is the number of needed arguments (and the
+> > > actual code after inlining should be the same to the inner scope in
+> > > the end).
+> >
+> > Well, lucky for you, Jarkko and David maintain the keys code, not me,
+> > and Jarkko seems to like your patch just fine :)
+> >
+> > Jarkko, I assume you'll be taking this via the keys tree?
+>
+> I just picked it and mirrored to linux-next.
+>
+> I think it is super important change because it tones down the human
+> error (a little bit at least). You could say improves user experience
+> kind of I guess :-)
+>
+> BR, Jarkko
 
-Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
----
- crypto/asymmetric_keys/public_key.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Kindly ping; I do not see this patch applied anywhere.
 
-diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
-index 773e159dbbcb..abeecb8329b3 100644
---- a/crypto/asymmetric_keys/public_key.c
-+++ b/crypto/asymmetric_keys/public_key.c
-@@ -42,7 +42,7 @@ static void public_key_describe(const struct key *asymmetric_key,
- void public_key_free(struct public_key *key)
- {
- 	if (key) {
--		kfree(key->key);
-+		kfree_sensitive(key->key);
- 		kfree(key->params);
- 		kfree(key);
- 	}
-@@ -263,7 +263,7 @@ static int software_key_query(const struct kernel_pkey_params *params,
- 	else
- 		crypto_free_akcipher(tfm);
- error_free_key:
--	kfree(key);
-+	kfree_sensitive(key);
- 	pr_devel("<==%s() = %d\n", __func__, ret);
- 	return ret;
- }
-@@ -369,7 +369,7 @@ static int software_key_eds_op(struct kernel_pkey_params *params,
- 	else
- 		crypto_free_akcipher(tfm);
- error_free_key:
--	kfree(key);
-+	kfree_sensitive(key);
- 	pr_devel("<==%s() = %d\n", __func__, ret);
- 	return ret;
- }
-@@ -441,7 +441,7 @@ int public_key_verify_signature(const struct public_key *pkey,
- 				sig->digest, sig->digest_size);
- 
- error_free_key:
--	kfree(key);
-+	kfree_sensitive(key);
- error_free_tfm:
- 	crypto_free_sig(tfm);
- 	pr_devel("<==%s() = %d\n", __func__, ret);
--- 
-2.40.1
-
+Regards,
+       Christian
