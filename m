@@ -2,73 +2,72 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F25A275D950
-	for <lists+keyrings@lfdr.de>; Sat, 22 Jul 2023 05:09:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1083A75DDD6
+	for <lists+keyrings@lfdr.de>; Sat, 22 Jul 2023 19:32:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229981AbjGVDJ1 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 21 Jul 2023 23:09:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38136 "EHLO
+        id S229572AbjGVRcT (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 22 Jul 2023 13:32:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229503AbjGVDJ0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 21 Jul 2023 23:09:26 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 181FF3A9C;
-        Fri, 21 Jul 2023 20:09:23 -0700 (PDT)
-Received: from canpemm500007.china.huawei.com (unknown [172.30.72.57])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4R7BFt3Stkz18LhY;
-        Sat, 22 Jul 2023 11:08:34 +0800 (CST)
-Received: from localhost (10.174.179.215) by canpemm500007.china.huawei.com
- (7.192.104.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Sat, 22 Jul
- 2023 11:09:21 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <dhowells@redhat.com>, <jarkko@kernel.org>, <paul@paul-moore.com>,
-        <jmorris@namei.org>, <serge@hallyn.com>
-CC:     <keyrings@vger.kernel.org>,
-        <linux-security-module@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next] keys: Remove unused extern declaration iterate_over_keyring()
-Date:   Sat, 22 Jul 2023 11:08:32 +0800
-Message-ID: <20230722030832.33680-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        with ESMTP id S229646AbjGVRcS (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 22 Jul 2023 13:32:18 -0400
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 316561BFC
+        for <keyrings@vger.kernel.org>; Sat, 22 Jul 2023 10:32:18 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1b8ad356fe4so18902535ad.2
+        for <keyrings@vger.kernel.org>; Sat, 22 Jul 2023 10:32:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690047137; x=1690651937;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=XwQ9KTk0AvNg4YEGpLO6Mzd1tQ0NGTk2GH4qBYSzWYc=;
+        b=MTZfTuwR/x/8JAbLLhYJUlBZiQtXJQXKMGVFuFjZXNwTmm68tEw1ebK+T1qJBEPIUz
+         ceM/kz3qJG2zNIaqkoEMDtGEo5OpWU0uNqPG/CoSjO/bfV2ayL33nvVy6x4bOrO0ISli
+         acyU2M715VkEqyHpnTWNKLux+GfieKgDUvJaEqd4j3D85g7fUIaH2CT/9sk8TI+sDbqU
+         TKITTy6d+/Smx6L78QN0KmKqrE4p94p3Os1Idm0CJwhqnIo7A2Al9t+6TgZfoqzbMgbv
+         UGY+llS5jMPT7BD8BRqAMruJDNuJSwotFfw3GxmsepQbd6zoKOnLA/DF4z65rCgxpxe3
+         kCFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690047137; x=1690651937;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XwQ9KTk0AvNg4YEGpLO6Mzd1tQ0NGTk2GH4qBYSzWYc=;
+        b=RZ7lCaKQjr+2kAUusvNHToSfZYMxXYACag6TB+iWN5TLr0novtmyWaD5zgFNhdeF6Z
+         X9JLIL26KdtSXRQ+Z4dHWvTfSwzGS9fce1YqXUnK0Pb+9IqsdIYkd3SVgxSAoDzqp3GR
+         eFkmuw7/Ewf+rDpbf81ar2t+vEA+ufUZVtmoWjzDrUx60wK32x1ePF6Juk65+3zZVMbE
+         WDSb0a6Dv13QIKUBMfhJRQiEoNTrjnapZK4e7x3PQdth/I6ypDmzg5t+veubs8CoS/1z
+         DbCmw3SzIqnU25xWp67Tcf+Xf5TXAt3i0LhLhtNiTEM35n26FeBCD69/AOTS6DlImBjn
+         9T+g==
+X-Gm-Message-State: ABy/qLbgIgqaKP0wAAPYywXIkpz3laqJDf1P+Fy71kvdkV2A1AGpobu+
+        jW0TKIdtHKDKEdQnGKJSWAKyF6kDK10p5RJffGc=
+X-Google-Smtp-Source: APBJJlFo3oTRudH6iPejGC/vkL1JrK1YzjDvKL4cCDt9m/lN+gZLead+wSNE2U8+3+dQA/5Zs1BJMCSKFQsI3lISst8=
+X-Received: by 2002:a17:902:74c2:b0:1bb:8c24:8396 with SMTP id
+ f2-20020a17090274c200b001bb8c248396mr1236007plt.52.1690047137645; Sat, 22 Jul
+ 2023 10:32:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.174.179.215]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- canpemm500007.china.huawei.com (7.192.104.62)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6a20:556:b0:130:f967:83dc with HTTP; Sat, 22 Jul 2023
+ 10:32:17 -0700 (PDT)
+Reply-To: mrsvl06@gmail.com
+From:   Veronica Lee <barr.freemanukoh@gmail.com>
+Date:   Sat, 22 Jul 2023 19:32:17 +0200
+Message-ID: <CAB6WZPqrD+a2Kkm0ByL0O8x=GuX29YZ1gu9Hyn_kHVrGaiyDhw@mail.gmail.com>
+Subject: re
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Since commit b2a4df200d57 ("KEYS: Expand the capacity of a keyring")
-this is never used, so can be removed.
-
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- security/keys/internal.h | 4 ----
- 1 file changed, 4 deletions(-)
-
-diff --git a/security/keys/internal.h b/security/keys/internal.h
-index 3c1e7122076b..95a82eec1816 100644
---- a/security/keys/internal.h
-+++ b/security/keys/internal.h
-@@ -112,10 +112,6 @@ extern key_ref_t find_key_to_update(key_ref_t keyring_ref,
- extern struct key *keyring_search_instkey(struct key *keyring,
- 					  key_serial_t target_id);
- 
--extern int iterate_over_keyring(const struct key *keyring,
--				int (*func)(const struct key *key, void *data),
--				void *data);
--
- struct keyring_search_context {
- 	struct keyring_index_key index_key;
- 	const struct cred	*cred;
--- 
-2.34.1
-
+16nXnNeV150g15nXp9eZ16jXmSwg15DXoNeZINek15XXoNeUINeQ15zXmdeaINec157XmdeT16Ig
+16nXkdeo16bXldeg15kg15zXl9ec15XXpyDXkNeZ16rXmiDXkNecINeq15TXodehINec15TXqdeZ
+15Eg15zXpNeo15jXmdedDQo=
