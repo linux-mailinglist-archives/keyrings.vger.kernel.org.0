@@ -2,53 +2,53 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BC74767583
-	for <lists+keyrings@lfdr.de>; Fri, 28 Jul 2023 20:34:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 676347675E3
+	for <lists+keyrings@lfdr.de>; Fri, 28 Jul 2023 20:56:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230342AbjG1Seu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 28 Jul 2023 14:34:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45114 "EHLO
+        id S234466AbjG1S4B (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 28 Jul 2023 14:56:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236932AbjG1Sda (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 28 Jul 2023 14:33:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21E964488;
-        Fri, 28 Jul 2023 11:33:29 -0700 (PDT)
+        with ESMTP id S231370AbjG1S4B (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 28 Jul 2023 14:56:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82E10136;
+        Fri, 28 Jul 2023 11:56:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F12B621B1;
-        Fri, 28 Jul 2023 18:33:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8285C433C7;
-        Fri, 28 Jul 2023 18:33:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 20A72621D8;
+        Fri, 28 Jul 2023 18:56:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB12C433C7;
+        Fri, 28 Jul 2023 18:55:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690569208;
-        bh=+48uYUbulAYjXZZuYUhEs0ufhSocbE0poGoccmjKNF4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=F2Haz54WQ4HPZugo6nR/APznE3S+XjikZ+ePFVADT+ds6YRAJuSy9ymsiltWGolR1
-         zxy9oRcdGoDhacFCiqWVe3Mxh6I7xVk/LfqYokDY6DcenTf6NPnUp6/6FFpStuC1uO
-         h7f8RfdbPdJgqDec8OuQGc6Y+4PxUsVBkazjX257dWxJ+8sQTpH4CdrLQaTc8SXjbz
-         oBNncB5n6uKYszJtVoeN+rQIKNdTV7jbq8z4t+8dbGHD18S5/r8L2MTnK/Htdih85n
-         00cr3PwCkPfOpKH02TP/DXvPuC+Q3MGR/TxIMn44R6FaQno2U4n5WExxSn6tp4dqRu
-         O2rl87cpvSqWA==
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        David Howells <dhowells@redhat.com>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Subject: [GIT PULL] tpmdd changes for v6.5-rc4
-Date:   Fri, 28 Jul 2023 18:33:22 +0000
-Message-Id: <20230728183322.16359-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.39.2
-MIME-Version: 1.0
-Content-Type: text/plain; charset=y
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        s=k20201202; t=1690570559;
+        bh=kI1goGCrLoOL8qtgWRb7MFq8HMKUcy/Bz1v8hFNZkbw=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=XwEjnXvrwD3Qg6ntVE8VWD+Wn0n0VcXPKPvdK9tVh06Cb4Vmio1wwyLzxcJkKLW8K
+         HrHrrihALkuvm/VY6+HVl+7/S3/durGm8XPutadLplRp4Jm+8dhvSnUXa0FSgLYcfl
+         CrlJ1ZcFSKNYXIIy6ZiouX/iYLPVtr8TtFwxkjGijwoOFfQIoKJ6dJf0udg2Fqvnxe
+         V8LxzD2SHi/LokzKU1WL18DlVbP4/7HuG5hGvJ2av12Mc3NvMYe1EpXPA0RWDVqZqU
+         L+9XXHSaKWTeXhkHebUpvv1ehxHIcFJYxd4MQhmbI6Fbv30KT8sVQNEtqWqejwqiue
+         p4TLaL67z9Q/g==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Fri, 28 Jul 2023 18:55:56 +0000
+Message-Id: <CUE18VURE744.1E29WQ8EU666G@seitikki>
+Cc:     <keyrings@vger.kernel.org>,
+        <linux-security-module@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 -next] keys: Remove unused extern declarations
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "YueHaibing" <yuehaibing@huawei.com>, <dhowells@redhat.com>,
+        <paul@paul-moore.com>, <jmorris@namei.org>, <serge@hallyn.com>
+X-Mailer: aerc 0.14.0
+References: <20230724144717.23660-1-yuehaibing@huawei.com>
+In-Reply-To: <20230724144717.23660-1-yuehaibing@huawei.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -57,40 +57,44 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-  Merge tag 'net-6.5-rc4' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net (2023-07-27 12:27:37 -0700)
+On Mon Jul 24, 2023 at 2:47 PM UTC, YueHaibing wrote:
+> Since commit b2a4df200d57 ("KEYS: Expand the capacity of a keyring")
+> iterate_over_keyring() is never used, so can be removed.
+>
+> And commit b5f545c880a2 ("[PATCH] keys: Permit running process to instant=
+iate keys")
+> left behind keyring_search_instkey().
+>
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-are available in the Git repository at:
+Please use the fixes tag properly.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-v6.5-rc4
+> ---
+> v2: Also remove keyring_search_instkey()
+> ---
+>  security/keys/internal.h | 7 -------
+>  1 file changed, 7 deletions(-)
+>
+> diff --git a/security/keys/internal.h b/security/keys/internal.h
+> index 3c1e7122076b..471cf36dedc0 100644
+> --- a/security/keys/internal.h
+> +++ b/security/keys/internal.h
+> @@ -109,13 +109,6 @@ extern void __key_link_end(struct key *keyring,
+>  extern key_ref_t find_key_to_update(key_ref_t keyring_ref,
+>  				    const struct keyring_index_key *index_key);
+> =20
+> -extern struct key *keyring_search_instkey(struct key *keyring,
+> -					  key_serial_t target_id);
+> -
+> -extern int iterate_over_keyring(const struct key *keyring,
+> -				int (*func)(const struct key *key, void *data),
+> -				void *data);
+> -
+>  struct keyring_search_context {
+>  	struct keyring_index_key index_key;
+>  	const struct cred	*cred;
+> --=20
+> 2.34.1
 
-for you to fetch changes up to 513253f8c293c0c8bd46d09d337fc892bf8f9f48:
-
-  tpm_tis: Explicitly check for error code (2023-07-28 18:13:39 +0000)
-
-----------------------------------------------------------------
-Hi,
-
-I picked three small scale updates from my 'master' branch, which I think
-would improve the quality of the release.
 
 BR, Jarkko
-
-----------------------------------------------------------------
-Alexander Steffen (1):
-      tpm_tis: Explicitly check for error code
-
-Christian Göttsche (1):
-      security: keys: perform capable check only on privileged operations
-
-Uwe Kleine-König (1):
-      tpm: Switch i2c drivers back to use .probe()
-
- drivers/char/tpm/st33zp24/i2c.c     |  2 +-
- drivers/char/tpm/tpm_i2c_atmel.c    |  2 +-
- drivers/char/tpm/tpm_i2c_infineon.c |  2 +-
- drivers/char/tpm/tpm_i2c_nuvoton.c  |  2 +-
- drivers/char/tpm/tpm_tis_core.c     |  9 +++++++--
- drivers/char/tpm/tpm_tis_i2c.c      |  2 +-
- drivers/char/tpm/tpm_tis_i2c_cr50.c |  2 +-
- security/keys/keyctl.c              | 11 ++++++++---
- 8 files changed, 21 insertions(+), 11 deletions(-)
