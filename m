@@ -2,62 +2,43 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADBA2767979
-	for <lists+keyrings@lfdr.de>; Sat, 29 Jul 2023 02:27:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C973E767B91
+	for <lists+keyrings@lfdr.de>; Sat, 29 Jul 2023 04:40:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235992AbjG2A1J (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 28 Jul 2023 20:27:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52438 "EHLO
+        id S233367AbjG2Ck4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 28 Jul 2023 22:40:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232604AbjG2A1J (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 28 Jul 2023 20:27:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9937B2680;
-        Fri, 28 Jul 2023 17:27:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D6126221B;
-        Sat, 29 Jul 2023 00:27:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8269DC433C7;
-        Sat, 29 Jul 2023 00:27:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690590427;
-        bh=vf6eqh+hSbOXZ3cuyP/fJ3KKwC+CL5pgf5FhKK74odg=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=GC0L/qOEANg6FkerGDtCauy/cOKxaNuVgydkmCmcx069785084iccxV7qyHaR3sGC
-         nL1Etcve8Ed3LlnoTxHFqY/vTXYNzGzXuZe45v8M9nScj8wWji2mZMjCHW4eCmJSe2
-         rwhq+wtviH1++ry+377D96gofw6KBOW38eyEYlslOO/nI1Psik4stAJUeYSYlxo72H
-         ARJi9be1KsF0dZt3VpnOikYdKEUun0LfTfaBiuiVf8yJdoqmvWcG03xeqPARCO13QC
-         yt5gqJuSgXAlLIrNAHSoTdb4+JGr7OziCAJzGY+nE1+w+dkuBdf82ycOgTu6qXxNiu
-         xxTdQ7h1XElNw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 6FB5BC39562;
-        Sat, 29 Jul 2023 00:27:07 +0000 (UTC)
-Subject: Re: [GIT PULL] tpmdd changes for v6.5-rc4
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20230728183322.16359-1-jarkko@kernel.org>
-References: <20230728183322.16359-1-jarkko@kernel.org>
-X-PR-Tracked-List-Id: <linux-integrity.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20230728183322.16359-1-jarkko@kernel.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-v6.5-rc4
-X-PR-Tracked-Commit-Id: 513253f8c293c0c8bd46d09d337fc892bf8f9f48
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 2b17e90d3f92f394a6dea9243aac70a5aa0d0c57
-Message-Id: <169059042744.2110.8212659249499335251.pr-tracker-bot@kernel.org>
-Date:   Sat, 29 Jul 2023 00:27:07 +0000
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        David Howells <dhowells@redhat.com>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, Lino Sanfilippo <l.sanfilippo@kunbus.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        with ESMTP id S231783AbjG2Ckt (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 28 Jul 2023 22:40:49 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EFCF1711;
+        Fri, 28 Jul 2023 19:40:47 -0700 (PDT)
+Received: from canpemm500007.china.huawei.com (unknown [172.30.72.54])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RCTHS3N5wzrRh6;
+        Sat, 29 Jul 2023 10:39:48 +0800 (CST)
+Received: from localhost (10.174.179.215) by canpemm500007.china.huawei.com
+ (7.192.104.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Sat, 29 Jul
+ 2023 10:40:45 +0800
+From:   Yue Haibing <yuehaibing@huawei.com>
+To:     <dhowells@redhat.com>, <jarkko@kernel.org>, <paul@paul-moore.com>,
+        <jmorris@namei.org>, <serge@hallyn.com>, <yuehaibing@huawei.com>
+CC:     <keyrings@vger.kernel.org>,
+        <linux-security-module@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v3 -next] keys: Remove unused extern declarations
+Date:   Sat, 29 Jul 2023 10:40:26 +0800
+Message-ID: <20230729024026.32228-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.174.179.215]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ canpemm500007.china.huawei.com (7.192.104.62)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -66,15 +47,42 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The pull request you sent on Fri, 28 Jul 2023 18:33:22 +0000:
+From: YueHaibing <yuehaibing@huawei.com>
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-v6.5-rc4
+Since commit b2a4df200d57 ("KEYS: Expand the capacity of a keyring")
+iterate_over_keyring() is never used, so can be removed.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/2b17e90d3f92f394a6dea9243aac70a5aa0d0c57
+And commit b5f545c880a2 ("[PATCH] keys: Permit running process to instantiate keys")
+left behind keyring_search_instkey().
 
-Thank you!
+Fixes: b2a4df200d57 ("KEYS: Expand the capacity of a keyring")
+Fixes: b5f545c880a2 ("[PATCH] keys: Permit running process to instantiate keys")
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+v3: Add Fixes tag
+v2: Also remove keyring_search_instkey()
+---
+ security/keys/internal.h | 7 -------
+ 1 file changed, 7 deletions(-)
 
+diff --git a/security/keys/internal.h b/security/keys/internal.h
+index 3c1e7122076b..471cf36dedc0 100644
+--- a/security/keys/internal.h
++++ b/security/keys/internal.h
+@@ -109,13 +109,6 @@ extern void __key_link_end(struct key *keyring,
+ extern key_ref_t find_key_to_update(key_ref_t keyring_ref,
+ 				    const struct keyring_index_key *index_key);
+ 
+-extern struct key *keyring_search_instkey(struct key *keyring,
+-					  key_serial_t target_id);
+-
+-extern int iterate_over_keyring(const struct key *keyring,
+-				int (*func)(const struct key *key, void *data),
+-				void *data);
+-
+ struct keyring_search_context {
+ 	struct keyring_index_key index_key;
+ 	const struct cred	*cred;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.34.1
+
