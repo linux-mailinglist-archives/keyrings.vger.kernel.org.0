@@ -2,87 +2,99 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C973E767B91
-	for <lists+keyrings@lfdr.de>; Sat, 29 Jul 2023 04:40:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90DFD767B8E
+	for <lists+keyrings@lfdr.de>; Sat, 29 Jul 2023 04:40:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233367AbjG2Ck4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 28 Jul 2023 22:40:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39012 "EHLO
+        id S232077AbjG2Ckr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 28 Jul 2023 22:40:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231783AbjG2Ckt (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 28 Jul 2023 22:40:49 -0400
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EFCF1711;
-        Fri, 28 Jul 2023 19:40:47 -0700 (PDT)
-Received: from canpemm500007.china.huawei.com (unknown [172.30.72.54])
-        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4RCTHS3N5wzrRh6;
-        Sat, 29 Jul 2023 10:39:48 +0800 (CST)
-Received: from localhost (10.174.179.215) by canpemm500007.china.huawei.com
- (7.192.104.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Sat, 29 Jul
- 2023 10:40:45 +0800
-From:   Yue Haibing <yuehaibing@huawei.com>
-To:     <dhowells@redhat.com>, <jarkko@kernel.org>, <paul@paul-moore.com>,
-        <jmorris@namei.org>, <serge@hallyn.com>, <yuehaibing@huawei.com>
+        with ESMTP id S230219AbjG2Ckq (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 28 Jul 2023 22:40:46 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3D6446B9;
+        Fri, 28 Jul 2023 19:40:44 -0700 (PDT)
+Received: from canpemm500007.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4RCTDY6131zNmYJ;
+        Sat, 29 Jul 2023 10:37:17 +0800 (CST)
+Received: from [10.174.179.215] (10.174.179.215) by
+ canpemm500007.china.huawei.com (7.192.104.62) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.27; Sat, 29 Jul 2023 10:40:41 +0800
+Subject: Re: [PATCH v2 -next] keys: Remove unused extern declarations
+To:     Jarkko Sakkinen <jarkko@kernel.org>, <dhowells@redhat.com>,
+        <paul@paul-moore.com>, <jmorris@namei.org>, <serge@hallyn.com>
 CC:     <keyrings@vger.kernel.org>,
         <linux-security-module@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3 -next] keys: Remove unused extern declarations
-Date:   Sat, 29 Jul 2023 10:40:26 +0800
-Message-ID: <20230729024026.32228-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+References: <20230724144717.23660-1-yuehaibing@huawei.com>
+ <CUE18VURE744.1E29WQ8EU666G@seitikki>
+From:   YueHaibing <yuehaibing@huawei.com>
+Message-ID: <a6826fc1-3319-9ca6-4c25-61703424f052@huawei.com>
+Date:   Sat, 29 Jul 2023 10:40:40 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <CUE18VURE744.1E29WQ8EU666G@seitikki>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.174.179.215]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
  canpemm500007.china.huawei.com (7.192.104.62)
 X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
+On 2023/7/29 2:55, Jarkko Sakkinen wrote:
+> On Mon Jul 24, 2023 at 2:47 PM UTC, YueHaibing wrote:
+>> Since commit b2a4df200d57 ("KEYS: Expand the capacity of a keyring")
+>> iterate_over_keyring() is never used, so can be removed.
+>>
+>> And commit b5f545c880a2 ("[PATCH] keys: Permit running process to instantiate keys")
+>> left behind keyring_search_instkey().
+>>
+>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> 
+> Please use the fixes tag properly.
 
-Since commit b2a4df200d57 ("KEYS: Expand the capacity of a keyring")
-iterate_over_keyring() is never used, so can be removed.
-
-And commit b5f545c880a2 ("[PATCH] keys: Permit running process to instantiate keys")
-left behind keyring_search_instkey().
-
-Fixes: b2a4df200d57 ("KEYS: Expand the capacity of a keyring")
-Fixes: b5f545c880a2 ("[PATCH] keys: Permit running process to instantiate keys")
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
-v3: Add Fixes tag
-v2: Also remove keyring_search_instkey()
----
- security/keys/internal.h | 7 -------
- 1 file changed, 7 deletions(-)
-
-diff --git a/security/keys/internal.h b/security/keys/internal.h
-index 3c1e7122076b..471cf36dedc0 100644
---- a/security/keys/internal.h
-+++ b/security/keys/internal.h
-@@ -109,13 +109,6 @@ extern void __key_link_end(struct key *keyring,
- extern key_ref_t find_key_to_update(key_ref_t keyring_ref,
- 				    const struct keyring_index_key *index_key);
- 
--extern struct key *keyring_search_instkey(struct key *keyring,
--					  key_serial_t target_id);
--
--extern int iterate_over_keyring(const struct key *keyring,
--				int (*func)(const struct key *key, void *data),
--				void *data);
--
- struct keyring_search_context {
- 	struct keyring_index_key index_key;
- 	const struct cred	*cred;
--- 
-2.34.1
-
+OK， will add fixes tag in v3.
+> 
+>> ---
+>> v2: Also remove keyring_search_instkey()
+>> ---
+>>  security/keys/internal.h | 7 -------
+>>  1 file changed, 7 deletions(-)
+>>
+>> diff --git a/security/keys/internal.h b/security/keys/internal.h
+>> index 3c1e7122076b..471cf36dedc0 100644
+>> --- a/security/keys/internal.h
+>> +++ b/security/keys/internal.h
+>> @@ -109,13 +109,6 @@ extern void __key_link_end(struct key *keyring,
+>>  extern key_ref_t find_key_to_update(key_ref_t keyring_ref,
+>>  				    const struct keyring_index_key *index_key);
+>>  
+>> -extern struct key *keyring_search_instkey(struct key *keyring,
+>> -					  key_serial_t target_id);
+>> -
+>> -extern int iterate_over_keyring(const struct key *keyring,
+>> -				int (*func)(const struct key *key, void *data),
+>> -				void *data);
+>> -
+>>  struct keyring_search_context {
+>>  	struct keyring_index_key index_key;
+>>  	const struct cred	*cred;
+>> -- 
+>> 2.34.1
+> 
+> 
+> BR, Jarkko
+> .
+> 
