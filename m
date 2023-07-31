@@ -2,73 +2,70 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26A7C769C9D
-	for <lists+keyrings@lfdr.de>; Mon, 31 Jul 2023 18:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCFF1769D11
+	for <lists+keyrings@lfdr.de>; Mon, 31 Jul 2023 18:45:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232647AbjGaQdp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 31 Jul 2023 12:33:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37180 "EHLO
+        id S233392AbjGaQp6 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 31 Jul 2023 12:45:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232682AbjGaQdm (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 31 Jul 2023 12:33:42 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB9D419B0
-        for <keyrings@vger.kernel.org>; Mon, 31 Jul 2023 09:33:36 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-3fe0e132352so1105e9.0
-        for <keyrings@vger.kernel.org>; Mon, 31 Jul 2023 09:33:36 -0700 (PDT)
+        with ESMTP id S232996AbjGaQpw (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 31 Jul 2023 12:45:52 -0400
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 176D61728
+        for <keyrings@vger.kernel.org>; Mon, 31 Jul 2023 09:45:50 -0700 (PDT)
+Received: by mail-wm1-x32d.google.com with SMTP id 5b1f17b1804b1-3fe0e132352so2515e9.0
+        for <keyrings@vger.kernel.org>; Mon, 31 Jul 2023 09:45:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1690821215; x=1691426015;
+        d=google.com; s=20221208; t=1690821948; x=1691426748;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cuWATRET77tyb1uo8IPo90xACV32fUCq2guhUdmEFls=;
-        b=Tdg2MKQqHhluls/uCjqroj+MH+TUAoR1i0qc/ajQ8wWZdqmcHcbjP5CMcNqdZJ9GPz
-         y/3dy8uy3dAYcMFthHLGlpmt7hok6t5YchQg3nqIOryvlxcWoGqoJJYhSW+4zFVoEuHX
-         MHQquMb8bjj6X8tmfEcyxqIudzu5FqvcBA8q42vM2L4D8oO/ZrX+qafYWVrC1X6+jVGn
-         ofRImATJqqmenIBWk2ACmz4Mfdc6zuku/HNRDKMeRa5Ae/QTbENrG1GoBIxpuqSGKQon
-         LgEhCxjz1Punm9aVHSExvRsWLwq3klE2BtG/ADCzScmZ5mL74lSz8P+fU/kftyhS9o0v
-         PZKw==
+        bh=wQzQUdiSOA8VvEKYMDGz6s+mzA6mySlLioGv/IsCNj4=;
+        b=AxI8bncJvaugk9IFd0D9XMWnIwJpgtDCs04XAEOvs3unLxxTIHzloJOqon8M7dfE1w
+         KUn9G5L91BvVCIykV2sJArlGRJgI1IFhsH9li3oB7UeQYSSOkptXMhDEVYToji277qXV
+         wK+vC3ePUKQfMiXj6c71xWNq0vwuePMwEsC63a5cM2ZiYmm+cVWdR8aXysiW6v5rU+LE
+         JImqnVw5LN3GhrMQnQeYKP7gVXsTCO5CIV+nqkY83d6xe06V3KCjwPCeiUx04wfA93Js
+         BItWrSfwI4XE+GXx6R0EhXcIsusT1LYouW644KzRpxiMCWvLgcP2rH4cOQ+K9uLQWIW+
+         OAJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690821215; x=1691426015;
+        d=1e100.net; s=20221208; t=1690821948; x=1691426748;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cuWATRET77tyb1uo8IPo90xACV32fUCq2guhUdmEFls=;
-        b=EpbkDR1JcTGwM1yGfqT0xbL41+ou9xGAf0BpquVLnJu3dSnSLqgWg23UvxaHC0mgYk
-         V7G9i0nNn0bbLqVhOmGOWxs59JUaYABhCi44SZRad4Ym+pDnoqO618MdFp3uh4mnlW/Z
-         yJWe5pzf6rw0O4qibX9EqGh9G4sPH3+E37trSTJWUseKmOnXRJ7BtOEEqYZYBwXinlT9
-         P8eyLo8a8TW5s/xMcFwSOlph388p8dI35jQSRMc1KMQPLXIb/pSA73PPlU/d+ZCcKyie
-         7s48oq7y+eB0+y4FsvaxcQZhYn4hxhApyqB5oqyikqNpAZG9K1Vk6hhxQwuamZuyo702
-         8hwQ==
-X-Gm-Message-State: ABy/qLZSAYtg616DaGX9R5bEX0B7UOTgc6kxxKwFaKSUGPOnYtUZSDXR
-        eLpX/hvxSjie02AFuyc9ZKA1LshUCCJfmF4A+pZwCA==
-X-Google-Smtp-Source: APBJJlG9N8QU9egW8mkno1wAm32nx+rrXKs4+cxx9edfMDm2d5Dnl47NavsjDU3KvuNODbh6H8N+hHNjuXp8MgG9Lhk=
-X-Received: by 2002:a05:600c:68a:b0:3f1:70d1:21a6 with SMTP id
- a10-20020a05600c068a00b003f170d121a6mr158278wmn.0.1690821214889; Mon, 31 Jul
- 2023 09:33:34 -0700 (PDT)
+        bh=wQzQUdiSOA8VvEKYMDGz6s+mzA6mySlLioGv/IsCNj4=;
+        b=CWlVlOtrb6Weabrg6i9POOCB0VMYi4lDHxl6gYJNqazqy6mYaAaTisqg1W+/RTXmeA
+         FZ8mkHJPJUeTtaJVvbASmBNLNnPr60tGL2MMhQB93eCvOPdVOotwXlWV3rGHHIIP3vQp
+         qbTo4pdmdy6C7YByzGjVpsgoJVuLcHG3wJC4QkyQV9DQKWlLW9LQBFuync+uz4IVEuya
+         70hHzuHmVCpmzsyAzDAa5cXd7COmZjMhg3wIQJ++vQ+FY24HiYkN02ToM1Xc28oJ7vnu
+         wYQqjdtPdDVEO4Sq2Htxr3R2crwd0B0gMmP4WBw4M0OiZKGaN6hS8DoOr3pC6jhBILkS
+         7hdg==
+X-Gm-Message-State: ABy/qLYNug1vEFM05z4NNLGQcokM2ELKv8qvJ7h9F9py+GQizVzuzmJh
+        dKp+t+iOgkh5dYTx0WB9PKLaxVJzjM5NGmr9vccOwQ==
+X-Google-Smtp-Source: APBJJlGL4ckDiyTn2m00tO5oVOOX8flfvRabDyK6Jum/HR2op6l2KaR8wvSPMi1vQ+7qxO5rsgOMG+xiEkaYZy4h57U=
+X-Received: by 2002:a05:600c:4202:b0:3f7:3e85:36a with SMTP id
+ x2-20020a05600c420200b003f73e85036amr137325wmh.7.1690821948388; Mon, 31 Jul
+ 2023 09:45:48 -0700 (PDT)
 MIME-Version: 1.0
 References: <169057265210.180586.7950140104251236598.stgit@dwillia2-xfh.jf.intel.com>
- <169057265801.180586.10867293237672839356.stgit@dwillia2-xfh.jf.intel.com>
-In-Reply-To: <169057265801.180586.10867293237672839356.stgit@dwillia2-xfh.jf.intel.com>
+ <169057267580.180586.15710177655506555147.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <169057267580.180586.15710177655506555147.stgit@dwillia2-xfh.jf.intel.com>
 From:   Peter Gonda <pgonda@google.com>
-Date:   Mon, 31 Jul 2023 10:33:23 -0600
-Message-ID: <CAMkAt6ot9zyUL9Ub-qYq+d9v-6rTft4ea2mUxp3o1s3GVFq7nw@mail.gmail.com>
-Subject: Re: [PATCH 1/4] keys: Introduce tsm keys
+Date:   Mon, 31 Jul 2023 10:45:36 -0600
+Message-ID: <CAMkAt6r=r_utT6sd_LD-2rO-GpH4zd1D04p04P8WF51BKX-JMg@mail.gmail.com>
+Subject: Re: [PATCH 4/4] virt: sevguest: Add TSM key support for SNP_{GET, GET_EXT}_REPORT
 To:     Dan Williams <dan.j.williams@intel.com>
-Cc:     dhowells@redhat.com,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Dionna Amalie Glaze <dionnaglaze@google.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Samuel Ortiz <sameo@rivosinc.com>, peterz@infradead.org,
+Cc:     dhowells@redhat.com, Borislav Petkov <bp@alien8.de>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Dionna Glaze <dionnaglaze@google.com>,
+        Brijesh Singh <brijesh.singh@amd.com>, peterz@infradead.org,
         linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
         x86@kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
         autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -80,208 +77,177 @@ X-Mailing-List: keyrings@vger.kernel.org
 On Fri, Jul 28, 2023 at 1:31=E2=80=AFPM Dan Williams <dan.j.williams@intel.=
 com> wrote:
 >
-> One of the common operations of a TSM (Trusted Security Module) is to
-> provide a way for a TVM (confidential computing guest execution
-> environment) to take a measurement of its run state and use that with a
-> key-exchange protocol to establish a shared secret with a third-party /
-> remote attestation agent. The concept is common across TSMs, but the
-> implementations are unfortunately vendor specific. While the industry
-> grapples with a common definition of this attestation format [1], Linux
-> need not make this problem worse by defining a new ABI per TSM that
-> wants to perform a similar operation. The current momentum has been to
-> invent new ioctl-ABI per TSM per function which at best is an abdication
-> of the kernel's responsibility to make common infrastructure concepts
-> share common ABI.
+> The sevguest driver was a first mover in the confidential computing
+> space. As a first mover that afforded some leeway to build the driver
+> without concern for common infrastructure.
 >
-> The proposal, targeted to conceptually work with TDX, SEV, COVE if not
-> more, is to define a new key type that produces a TSM common blob format
-> and moves the vendor specificity inside that envelope. The common Linux
-> definition is:
+> Now that sevguest is no longer a singleton [1] the common operation of
+> building and transmitting attestation report blobs can / should be made
+> common. In this model the so called "TSM-provider" implementations can
+> share a common envelope ABI even if the contents of that envelope remain
+> vendor-specific. When / if the industry agrees on an attestation record
+> format, that definition can also fit in the same ABI. In the meantime
+> the kernel's maintenance burden is reduced and collaboration on the
+> commons is increased.
 >
->     "<hex encoded pubkey> <blob descriptor> <hex encoded attestation blob=
->"
->
-> This approach later allows for the standardization of the attestation
-> blob format without needing to change the Linux ABI. TSM specific
-> options are encoded in the frontend request format where the options
-> like SEV:vmpl (privilege level) can be specified and TSMs that do not
-> support them can decide to ignore them or fail if they are specified.
-> For now, "privlevel=3D" and "format=3D" are the only implemented options.
->
-> Example of establishing a tsm key and dumping the provider-specific
-> report:
+> Convert sevguest to use TSM keys to retrieve the blobs that the
+> SNP_{GET,GET_EXT}_REPORT ioctls produce. The flow for retrieving the
+> SNP_GET_REPORT blob via the keyctl utility would be:
 >
 >     dd if=3D/dev/urandom of=3Dpubkey bs=3D1 count=3D64
 >     keyctl add tsm tsm_test "auth $(xxd -p -c 0 < pubkey) privlevel=3D2" =
 @u
->     keyctl print 280877394 | awk '{ print $3 }' | xxd -p -c 0 -r | hexdum=
-p -C
+>     keyctl print $key_id | awk '{ print $3 }' | xxd -p -c 0 -r | hexdump =
+-C
+>
+> ...while the SNP_GET_EXT_REPORT flow adds the "format=3Dextended" option
+> to the request flow:
+>
+>     keyctl add tsm tsm_test "auth $(xxd -p -c 0 < pubkey) privlevel=3D2 f=
+ormat=3Dextended" @u
+>
+> The output format from 'keyctl print' is:
+>
+>     <pubkey blob> <auth blob desc[:format]> <auth blob>
+>
+> ...where the blobs are hex encoded and the descriptor string is either
+> "sev" or "sev:extended" in this case.
+>
+> Note, the Keys subsystem frontend for the functionality that
+> SNP_GET_DERIVED_KEY represents is saved for follow-on work that likely
+> needs to become a new trusted-keys type. The old ioctls can be lazily
+> deprecated, the main motivation of this effort is to stop the
+> proliferation of new ioctls, and to increase cross-vendor colloboration.
 
-What is the purpose of this report? What does it prove to whom? I'm a
-bit confused because it doesn't seem like there is an ability for a
-remote party to participate in a challenge and response to introduce
-any freshness into this protocol.
-
-Also shouldn't the report have a little more context into the key we
-are signing? For instance what type of public key is this? And what is
-its purpose? In your example this isn't even a valid public key.
+collaboration
 
 >
-> Now, this patch ends up being a fairly simple custom-key format because
-> most of the follow-on work that happens after publishing a TSM-wrapped
-> public-key is performed by userspace. The TSM key is just one step in
-> establishing a shared secret that can be used to unlock other keys. For
-> example a user-key could be populated with the resulting shared secret
-> and that could be used as a master-key for an encrypted-key
-> (security/keys/encrypted-keys/encrypted.c).
->
-> While the discussion that led to this proposal hinted at a new
-> trusted-key (security/keys/trusted-keys/trusted_core.c) type rooted in
-> the TSM [2], more work is needed to fetch a secret from the TSM
-> directly. The trusted-key core expects a pre-established secure channel
-> to seal and unseal secrets locally. For that reason a "tsm" flavor
-> trusted-key is saved for follow on work. That will likely starting as a
-> wrapper around SNP_GET_DERIVED_KEY.
+> Note, only compile-tested.
 >
 > Link: http://lore.kernel.org/r/64961c3baf8ce_142af829436@dwillia2-xfh.jf.=
 intel.com.notmuch [1]
-> Link: http://lore.kernel.org/r/CAAH4kHYLETfPk-sMD-QSJd0fJ7Qnt04FBwFuEkpne=
-hB5U7D_yw@mail.gmail.com [2]
-> Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.co=
-m>
-> Tested-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.i=
-ntel.com>
-> Cc: David Howells <dhowells@redhat.com>
-> Cc: Jarkko Sakkinen <jarkko@kernel.org>
-> Cc: Dionna Amalie Glaze <dionnaglaze@google.com>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Samuel Ortiz <sameo@rivosinc.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Tom Lendacky <thomas.lendacky@amd.com>
+> Cc: Dionna Glaze <dionnaglaze@google.com>
+> Cc: Brijesh Singh <brijesh.singh@amd.com>
 > Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 > ---
->  include/keys/tsm.h     |   71 ++++++++++++
->  security/keys/Kconfig  |   12 ++
->  security/keys/Makefile |    1
->  security/keys/tsm.c    |  282 ++++++++++++++++++++++++++++++++++++++++++=
+>  drivers/virt/coco/sev-guest/Kconfig     |    2 +
+>  drivers/virt/coco/sev-guest/sev-guest.c |   87 +++++++++++++++++++++++++=
 ++++++
->  4 files changed, 366 insertions(+)
->  create mode 100644 include/keys/tsm.h
->  create mode 100644 security/keys/tsm.c
+>  2 files changed, 89 insertions(+)
 >
-> diff --git a/include/keys/tsm.h b/include/keys/tsm.h
-> new file mode 100644
-> index 000000000000..61a81017d8f5
-> --- /dev/null
-> +++ b/include/keys/tsm.h
-> @@ -0,0 +1,71 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef __TSM_H
-> +#define __TSM_H
+> diff --git a/drivers/virt/coco/sev-guest/Kconfig b/drivers/virt/coco/sev-=
+guest/Kconfig
+> index da2d7ca531f0..bce43d4639ce 100644
+> --- a/drivers/virt/coco/sev-guest/Kconfig
+> +++ b/drivers/virt/coco/sev-guest/Kconfig
+> @@ -2,9 +2,11 @@ config SEV_GUEST
+>         tristate "AMD SEV Guest driver"
+>         default m
+>         depends on AMD_MEM_ENCRYPT
+> +       depends on KEYS
+>         select CRYPTO
+>         select CRYPTO_AEAD2
+>         select CRYPTO_GCM
+> +       select TSM_KEYS
+>         help
+>           SEV-SNP firmware provides the guest a mechanism to communicate =
+with
+>           the PSP without risk from a malicious hypervisor who wishes to =
+read,
+> diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/=
+sev-guest/sev-guest.c
+> index f48c4764a7a2..2bdca268272d 100644
+> --- a/drivers/virt/coco/sev-guest/sev-guest.c
+> +++ b/drivers/virt/coco/sev-guest/sev-guest.c
+> @@ -21,6 +21,7 @@
+>  #include <linux/psp-sev.h>
+>  #include <uapi/linux/sev-guest.h>
+>  #include <uapi/linux/psp-sev.h>
+> +#include <keys/tsm.h>
+>
+>  #include <asm/svm.h>
+>  #include <asm/sev.h>
+> @@ -769,6 +770,84 @@ static u8 *get_vmpck(int id, struct snp_secrets_page=
+_layout *layout, u32 **seqno
+>         return key;
+>  }
+>
+> +static int sev_auth_new(struct tsm_key_payload *t, void *provider_data)
+> +{
+> +       struct snp_guest_dev *snp_dev =3D provider_data;
+> +       const int report_size =3D SZ_16K;
+> +       const int ext_size =3D
+> +               PAGE_ALIGN_DOWN(TSM_DATA_MAX - report_size - sizeof(*t));
+> +       int ret;
 > +
-> +#include <linux/types.h>
-> +#include <linux/module.h>
-> +
-> +/*
-> + * @TSM_DATA_MAX: a reasonable max with enough space for known attestati=
-on
-> + * report formats. This mirrors the trusted/encrypted key blob max size.
-> + */
-> +#define TSM_DATA_MAX 32767
-> +#define TSM_PUBKEY_MAX 64
-> +#define TSM_FORMAT_MAX 16
-> +
-> +/**
-> + * DOC: TSM Keys
-> + *
-> + * Trusted Security Module Keys are a common provider of blobs that
-> + * facilitate key-exchange between a TVM (confidential computing guest)
-> + * and an attestation service. A TSM key combines a user-defined blob
+> +       if (t->pubkey_len !=3D 64)
+> +               return -EINVAL;
 
-Are we limited to only doing key-exchanges between guests and
-attestation services? What if some user would like to handle the
-attestation verification without a service?
+Magic number?
 
-> + * (likely a public-key for a key-exchance protocol) with a signed
-
-key-exchange
-
-> + * attestation report. That combined blob is then used to obtain
-> + * secrets provided by an agent that can validate the attestation
-> + * report.
-> + *
-> + * A full implementation uses a tsm key to, for example, establish a
-
-Should 'TSM' be capitalized everywhere? Or does it not matter?
-
-> + * shared secret and then use that communication channel to instantiate
-> + * other keys. The expectation is that the requester of the tsm key
-> + * knows a priori the key-exchange protocol associated with the
-> + * 'pubkey'.
-
-Can we instead be very specific about what protocols and cryptography
-are being used?
-
-> + *
-> + * The attestation report format is TSM provider specific, when / if a
-
-I'm confused about the TSM terminology and what a TSM provider is. Is
-TSM the confidential compute framework of the vendor? So for Intel
-this is TDX, and the TSM provider is the SEAM module?
-
-> + * standard materializes it is only a change to the auth_blob_desc
-> + * member of 'struct tsm_key_payload', to convey that common format.
-> + */
-> +
-> +/**
-> + * struct tsm_key_payload - generic payload for vendor TSM blobs
-> + * @privlevel: optional privilege level to associate with @pubkey
-> + * @pubkey_len: how much of @pubkey is valid
-> + * @pubkey: the public key-exchange blob to include in the attestation r=
-eport
-> + * @auth_blob_desc: base ascii descriptor of @auth_blob
-> + * @auth_blob_format: for TSMs with multiple formats, extend @auth_blob_=
-desc
-> + * @auth_blob_len: TSM provider length of the array it publishes in @aut=
-h_blob
-> + * @auth_blob: TSM specific attestation report blob
-> + */
-> +struct tsm_key_payload {
-> +       int privlevel;
-> +       size_t pubkey_len;
-> +       u8 pubkey[TSM_PUBKEY_MAX];
-> +       const char *auth_blob_desc;
-> +       char auth_blob_format[TSM_FORMAT_MAX];
-> +       size_t auth_blob_len;
-> +       u8 *auth_blob;
-> +};
-
-How is freshness incorporated into the key exchange protocol? Wouldn't
-we need to do a challenge response between each remote party that we
-need to attest the provenance of @pubkey too?
+We only support asymmetric keys with public keys exactly equal to 64
+bytes? Is that only p256? SNP uses p384 can we atleast allow that
+curve too? But why not let userspace what key type they want to use?
 
 > +
-> +/*
-> + * tsm_parse - parse the tsm request data
-> + *
-> + * input format: "auth <hex pubkey data> [options]"
-> + *
-> + * Checks for options and parses a hex blob of data to be wrapped by the
-> + * TSM attestation format.
-> + *
-> + * options:
-> + *     privlevel=3D integer for selecting the privelege level of the
+> +       if (t->auth_blob_format[0] &&
+> +           strcmp(t->auth_blob_format, "extended") !=3D 0)
+> +               return -EINVAL;
+> +
+> +       if (t->auth_blob_format[0]) {
+> +               u8 *buf __free(kvfree) =3D
+> +                       kvzalloc(report_size + ext_size, GFP_KERNEL);
+> +
+> +               struct snp_ext_report_req req =3D {
+> +                       .data =3D { .vmpl =3D t->privlevel },
+> +                       .certs_address =3D (__u64)buf + report_size,
+> +                       .certs_len =3D ext_size,
+> +               };
+> +               memcpy(&req.data.user_data, t->pubkey, 64);
 
-privilege
+Again without any freshness from the remote party, of what use is this
+attestation report?
 
-> + *                request, if the platform TSM supports that concept. To
-> + *                date only SEV accepts this option. Default 0.
+> +
+> +               struct snp_guest_request_ioctl input =3D {
+> +                       .msg_version =3D 1,
+> +                       .req_data =3D (__u64) &req,
+> +                       .resp_data =3D (__u64) buf,
+> +               };
+> +
+> +               ret =3D get_ext_report(snp_dev, &input, SNP_KARG);
+> +               if (ret)
+> +                       return ret;
+> +
+> +               no_free_ptr(buf);
+> +               t->auth_blob =3D buf;
+> +               t->auth_blob_len =3D report_size + ext_size;
+> +               t->auth_blob_desc =3D "sev";
+> +       } else {
+> +               u8 *buf __free(kvfree) =3D kvzalloc(report_size, GFP_KERN=
+EL);
+> +
+> +               struct snp_report_req req =3D {
+> +                       .vmpl =3D t->privlevel,
+> +               };
+> +               memcpy(&req.user_data, t->pubkey, 64);
+> +
+> +               struct snp_guest_request_ioctl input =3D {
+> +                       .msg_version =3D 1,
+> +                       .req_data =3D (__u64) &req,
+> +                       .resp_data =3D (__u64) buf,
+> +               };
+> +
+> +               ret =3D get_report(snp_dev, &input, SNP_KARG);
+> +               if (ret)
+> +                       return ret;
+> +
+> +               no_free_ptr(buf);
+> +               t->auth_blob =3D buf;
+> +               t->auth_blob_len =3D report_size;
+> +               t->auth_blob_desc =3D "sev";
+> +       }
 
-SEV-SNP or just SNP? Plain SEV or SEV-ES doesn't actually support this
-interface at all.
-
-
-> + *     format=3D    string modifier for the format, if the platform TSM
-> + *                supports multiple formats. To date only SEV accepts an
-> + *                "extended" argument. Default "".
-> + *
-> + * On success returns 0, otherwise -EINVAL.
-> + */
+Can we reduce the code duplication between the branches here?
