@@ -2,66 +2,51 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8FE376BCEA
-	for <lists+keyrings@lfdr.de>; Tue,  1 Aug 2023 20:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEB9976BD02
+	for <lists+keyrings@lfdr.de>; Tue,  1 Aug 2023 20:53:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231851AbjHAStK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 1 Aug 2023 14:49:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60000 "EHLO
+        id S229746AbjHASxw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 1 Aug 2023 14:53:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232208AbjHAStC (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 1 Aug 2023 14:49:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAE0E26A3;
-        Tue,  1 Aug 2023 11:48:57 -0700 (PDT)
+        with ESMTP id S229690AbjHASxw (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 1 Aug 2023 14:53:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12A59FF;
+        Tue,  1 Aug 2023 11:53:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E1BF61698;
-        Tue,  1 Aug 2023 18:48:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D028DC433CB;
-        Tue,  1 Aug 2023 18:48:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A42A361694;
+        Tue,  1 Aug 2023 18:53:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D6DC433C7;
+        Tue,  1 Aug 2023 18:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690915736;
-        bh=0HZwjU+YwyOL/+JNyvbdqU/UfX43VMTCczQcWWYyUnM=;
+        s=k20201202; t=1690916030;
+        bh=6zOLPCS72gmJFXlHaooAjRFMkSKhQVfBRJ8FIz5BjQs=;
         h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-        b=ijhk/2lZcW6Mly0MWh9MSwWTRR4WGp9hgUMjgI6qQy9OK5ljw6/L9S0YzrfFKJ/No
-         IuRXT2Q0+sxmZmyUfkv7usR2QBN0Q6URdw1t2YbemybspFuoacZCit4BhoSkY6XjmY
-         i45WzvXecMJEXNuHE7yLekR+P3dOGLUXiUAez+4J2bQ2A9ameQl7zV+LgyzA0R0BmD
-         TWt7pFpJ1aZhrfMiLIypQoJkpSfVNxAXJkVVx0cHaQaQCNhNzGVF38u5+sY4q5nn1r
-         RfctOrsqzjWXo6lTSFMvc9FgYKjSDeyWGsSjKB9BQcezXG7fVlR8ims/C1UP/lEYuc
-         gMmF9rmz8xGSg==
+        b=Ca3WQYX+pX+wPq9kUL+s3+DzalW+RL3Sm1au+IVAhbxqW1yrTeM+l0pgF4R4EfYQK
+         ufERbQjsOKpI34RbqqbK86azss7Z0WilP8Aszu+1jdcKU648vSlooDXMsptiZ1kgnw
+         Zy8MD+nACOdsKqqOqgy2ezv0z6rL+XdCIVI825vTBr1jIpCtaKHMHz86WYYSMtR0AT
+         0Lf40jBsFpAGMXpF6W4Xxkss59XNsWzYkfAo6pTmfN9bubFUKBDE+Ne3Jh1Jwsg2DT
+         eDe8F+9FypbiTR3IdztsJ/XFSlhGA53IwxhpdrrO+The5iB2TgIqm3NkfT8BSI3zPR
+         wz89GYtjxXtFg==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date:   Tue, 01 Aug 2023 21:48:50 +0300
-Message-Id: <CUHFLMO6MJBP.1AHYJWGAEEEKT@suppilovahvero>
-To:     "Huang, Kai" <kai.huang@intel.com>,
-        "Williams, Dan J" <dan.j.williams@intel.com>,
-        "dhowells@redhat.com" <dhowells@redhat.com>
-Cc:     "sameo@rivosinc.com" <sameo@rivosinc.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "sathyanarayanan.kuppuswamy@linux.intel.com" 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
-        "dionnaglaze@google.com" <dionnaglaze@google.com>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "brijesh.singh@amd.com" <brijesh.singh@amd.com>,
-        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-        "x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH 0/4] keys: Introduce a keys frontend for attestation
- reports
+Date:   Tue, 01 Aug 2023 21:53:46 +0300
+Message-Id: <CUHFPELPS4E8.3SLQHDV1V8JWK@suppilovahvero>
+To:     "Eric Biggers" <ebiggers@kernel.org>, <fsverity@lists.linux.dev>
+Cc:     <keyrings@vger.kernel.org>,
+        "Victor Hsieh" <victorhsieh@google.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] fsverity: skip PKCS#7 parser when keyring is empty
 From:   "Jarkko Sakkinen" <jarkko@kernel.org>
 X-Mailer: aerc 0.14.0
-References: <169057265210.180586.7950140104251236598.stgit@dwillia2-xfh.jf.intel.com> <CUE22P5RYPH3.1K05T2OCK1CN1@seitikki> <64c41aa5ba9ac_a88b29494@dwillia2-xfh.jf.intel.com.notmuch> <CUG9XAK3RNFF.GWCYLXSTWX5E@seitikki> <3ba03a0d0eafc6622eee9e485bd89d22778a7592.camel@intel.com>
-In-Reply-To: <3ba03a0d0eafc6622eee9e485bd89d22778a7592.camel@intel.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+References: <20230801050714.28974-1-ebiggers@kernel.org>
+In-Reply-To: <20230801050714.28974-1-ebiggers@kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -70,25 +55,65 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue Aug 1, 2023 at 1:41 AM EEST, Huang, Kai wrote:
-> On Mon, 2023-07-31 at 10:09 +0000, Jarkko Sakkinen wrote:
-> > > This facility is different, it is just aiming to unify this attestati=
-on
-> > > report flow. It scales to any driver that can provide the ->auth_new(=
-)
-> > > operation. I have the sev-guest conversion in this set, and Sathya ha=
-s
-> > > tested this with tdx-guest. I am hoping Samuel can evaluate it for
-> > > cove-guest or whatever that driver ends up being called.
-> >=20
-> > What about SGX without TDX?
+On Tue Aug 1, 2023 at 8:07 AM EEST, Eric Biggers wrote:
+> From: Eric Biggers <ebiggers@google.com>
 >
-> SGX attestation is completely among userspace enclaves, and the existing =
-SGX
-> userspace stack has fully adopted what is needed to do attestation.  Why =
-do we
-> need to cover SGX?
+> If an fsverity builtin signature is given for a file but the
+> ".fs-verity" keyring is empty, there's no real reason to run the PKCS#7
+> parser.  Skip this to avoid the PKCS#7 attack surface when builtin
+> signature support is configured into the kernel but is not being used.
+>
+> This is a hardening improvement, not a fix per se, but I've added
+> Fixes and Cc stable to get it out to more users.
+>
+> Fixes: 432434c9f8e1 ("fs-verity: support builtin file signatures")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
+> ---
+>  fs/verity/signature.c | 24 ++++++++++++++++++++----
+>  1 file changed, 20 insertions(+), 4 deletions(-)
+>
+> diff --git a/fs/verity/signature.c b/fs/verity/signature.c
+> index b95acae64eac6..f6668d92d8151 100644
+> --- a/fs/verity/signature.c
+> +++ b/fs/verity/signature.c
+> @@ -70,10 +70,26 @@ int fsverity_verify_signature(const struct fsverity_i=
+nfo *vi,
+>  	d->digest_size =3D cpu_to_le16(hash_alg->digest_size);
+>  	memcpy(d->digest, vi->file_digest, hash_alg->digest_size);
+> =20
+> -	err =3D verify_pkcs7_signature(d, sizeof(*d) + hash_alg->digest_size,
+> -				     signature, sig_size, fsverity_keyring,
+> -				     VERIFYING_UNSPECIFIED_SIGNATURE,
+> -				     NULL, NULL);
+> +	if (fsverity_keyring->keys.nr_leaves_on_tree =3D=3D 0) {
+> +		/*
+> +		 * The ".fs-verity" keyring is empty, due to builtin signatures
+> +		 * being supported by the kernel but not actually being used.
+> +		 * In this case, verify_pkcs7_signature() would always return an
+> +		 * error, usually ENOKEY.  It could also be EBADMSG if the
+> +		 * PKCS#7 is malformed, but that isn't very important to
+> +		 * distinguish.  So, just skip to ENOKEY to avoid the attack
+> +		 * surface of the PKCS#7 parser, which would otherwise be
+> +		 * reachable by any task able to execute FS_IOC_ENABLE_VERITY.
+> +		 */
+> +		err =3D -ENOKEY;
+> +	} else {
+> +		err =3D verify_pkcs7_signature(d,
+> +					     sizeof(*d) + hash_alg->digest_size,
+> +					     signature, sig_size,
+> +					     fsverity_keyring,
+> +					     VERIFYING_UNSPECIFIED_SIGNATURE,
+> +					     NULL, NULL);
+> +	}
+>  	kfree(d);
+> =20
+>  	if (err) {
+>
+> base-commit: 456ae5fe9b448f44ebe98b391a3bae9c75df465e
+> --=20
+> 2.41.0
 
-I have no answer to that. I'm merely trying to understand what this is.
+Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
 
 BR, Jarkko
