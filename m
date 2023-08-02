@@ -2,62 +2,77 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FC6376C401
-	for <lists+keyrings@lfdr.de>; Wed,  2 Aug 2023 06:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2204F76C408
+	for <lists+keyrings@lfdr.de>; Wed,  2 Aug 2023 06:20:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230116AbjHBEPu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 2 Aug 2023 00:15:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47526 "EHLO
+        id S229545AbjHBET5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 2 Aug 2023 00:19:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229657AbjHBEPt (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 2 Aug 2023 00:15:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6B0FED;
-        Tue,  1 Aug 2023 21:15:48 -0700 (PDT)
+        with ESMTP id S229499AbjHBET4 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 2 Aug 2023 00:19:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D62BE11D
+        for <keyrings@vger.kernel.org>; Tue,  1 Aug 2023 21:19:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4460A61789;
-        Wed,  2 Aug 2023 04:15:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FE0C433CC;
-        Wed,  2 Aug 2023 04:15:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B52A6175C
+        for <keyrings@vger.kernel.org>; Wed,  2 Aug 2023 04:19:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 202CEC433C7;
+        Wed,  2 Aug 2023 04:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690949747;
-        bh=qVu2h+90Sr9xTEFTCM5T6XS4B1BUEaWCYaE9ful83Bg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nCZKIym2/Jx5XI1zKv4mYtoXLKPWqdTnJx9IdZMfvZtPy7D0rd3W2X3v4Ksa28AUe
-         EHvM7Q8c898oh3vY2mVdnxMlpz7st7bs99MzmR38gz84Arz+G72o6AlYaSfRTFD9Se
-         pSg8fDonEN2lR8/+2H6eKFA76p1zwIL5J9JNDdSIcEKc1yCv4qCwRKZXwkf5Q/xAmW
-         4OEIPspMIaU0z7aZuAOx78a09zWmsgEUzZ0pz6kbBu3TfFA372AKNWbkgKa3pY7LCM
-         RIgh8z1fzfBnsrm9DE1APXRmSSj+wdWeGUMaTkBLEzxJsVF5uYBs+KVlSrz8djVo9L
-         D/fI/X+2w9x6A==
-Date:   Tue, 1 Aug 2023 21:15:45 -0700
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Victor Hsieh <victorhsieh@google.com>
-Cc:     fsverity@lists.linux.dev, keyrings@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] fsverity: skip PKCS#7 parser when keyring is empty
-Message-ID: <20230802041545.GA1543@sol.localdomain>
-References: <20230801050714.28974-1-ebiggers@kernel.org>
- <CAFCauYMrQf4TJJ+8atPrsihDa9+nKb5zn-rCKqB3081d8ZvZoA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFCauYMrQf4TJJ+8atPrsihDa9+nKb5zn-rCKqB3081d8ZvZoA@mail.gmail.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        s=k20201202; t=1690949994;
+        bh=qcjiWP2ZXvUNV/2aZaK7THgTv/X54Rn1v+OBCth4puY=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=Pco1a4Kj/4VH3PEHvs8NRKmFaMFnG2RF0/Mf9kt/xWOHa8E7oV6GTLQyssrt+yh+r
+         rZGe2w7bn6orMTGr+UjdEK2ELuQCzq+XyxLTYXWuYCdQvNgAClL7xngo0+bHeQklSU
+         OXcbctdJyEtx81kVidYYu0fZ0La/OZfgpG+QVRH/ZEChgcgewyVZLwqNx1JpCtwUoA
+         Lw4loBnRmawCSXsGnfrfyqP4jcRpqxl/xFWBhOoMSKxJ2F/E7OaTCQuwbRZPdOuS8K
+         IKmWXm9OvbW1ODYmiQH3j/vDJAlklxGZ/dfHoklCQ86PK4/Vhd3PzdTEjonjN+UPUM
+         v9aVOiULObJBQ==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Wed, 02 Aug 2023 07:19:50 +0300
+Message-Id: <CUHRQTQP50HI.MZCFN3TZUZ58@suppilovahvero>
+Cc:     <dhowells@redhat.com>, <keyrings@vger.kernel.org>
+Subject: Re: [PATCH] key: Make key_sysctls static
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Ben Boeckel" <me@benboeckel.net>,
+        "GUO Zihua" <guozihua@huawei.com>
+X-Mailer: aerc 0.14.0
+References: <20230802021542.13473-1-guozihua@huawei.com>
+ <ZMnBCW7vlvvic/N7@farprobe>
+In-Reply-To: <ZMnBCW7vlvvic/N7@farprobe>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Aug 01, 2023 at 09:07:44AM -0700, Victor Hsieh wrote:
-> Should the whole use of "d" be moved into the else block?
+On Wed Aug 2, 2023 at 5:35 AM EEST, Ben Boeckel wrote:
+> On Wed, Aug 02, 2023 at 10:15:42 +0800, GUO Zihua wrote:
+> > key_sysctls is not used outside the file. Make it static
+> >=20
+> > Signed-off-by: GUO Zihua <guozihua@huawei.com>
+>
+> Previously submitted:
+>
+>     https://lore.kernel.org/keyrings/20230611113210.182652-1-trix@redhat.=
+com/T/#u
+>
+> --Ben
 
-In v2, changed to use an early return instead.
+Oops, sorry, applied:
 
-- Eric
+https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/log/=
+?h=3Dnext
+
+BR, Jarkko
+
