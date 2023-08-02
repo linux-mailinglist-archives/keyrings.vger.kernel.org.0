@@ -2,54 +2,83 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C5E676C74F
-	for <lists+keyrings@lfdr.de>; Wed,  2 Aug 2023 09:46:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 403D376CD33
+	for <lists+keyrings@lfdr.de>; Wed,  2 Aug 2023 14:43:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233558AbjHBHqJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 2 Aug 2023 03:46:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44770 "EHLO
+        id S234604AbjHBMnL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 2 Aug 2023 08:43:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233079AbjHBHph (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 2 Aug 2023 03:45:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BD1C1BF0;
-        Wed,  2 Aug 2023 00:43:12 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        with ESMTP id S234587AbjHBMnK (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 2 Aug 2023 08:43:10 -0400
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2C442722;
+        Wed,  2 Aug 2023 05:42:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1690980111;
+        bh=OVp9/5eXr90ixhPTEpgp22DDNgheas8aSJabvLl6ZBc=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=wYfpWYWZtLtDmi4p2IyLnx+xqeaHzaQudIjkJwIUIxiRaQpjrZ35/sbaEkKvH5Z+e
+         3Y5arjwM9mWrkKn95lfLoVubYX8mtVZf9aN+8yGEuEE4I7jg4QXYOvu5DvlvXgtZW8
+         02+KFkY9yagBAn+CTxacejwVEfCaAvbvVnvQBWCk=
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id C4E0A128006A;
+        Wed,  2 Aug 2023 08:41:51 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id JV7x_JQ4eBds; Wed,  2 Aug 2023 08:41:51 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1690980111;
+        bh=OVp9/5eXr90ixhPTEpgp22DDNgheas8aSJabvLl6ZBc=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=wYfpWYWZtLtDmi4p2IyLnx+xqeaHzaQudIjkJwIUIxiRaQpjrZ35/sbaEkKvH5Z+e
+         3Y5arjwM9mWrkKn95lfLoVubYX8mtVZf9aN+8yGEuEE4I7jg4QXYOvu5DvlvXgtZW8
+         02+KFkY9yagBAn+CTxacejwVEfCaAvbvVnvQBWCk=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C62D66185C;
-        Wed,  2 Aug 2023 07:43:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82271C433CA;
-        Wed,  2 Aug 2023 07:43:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690962191;
-        bh=uliLFqbyfAo8ZWX8SKLjPrgv/IXg23iwEndg0QZY4NE=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=BBV4dJjCqOVG5TcNj0S/19UTgWEwPQmIUTarzCPUbgVhaALhKERTC0cYDc+r0xaLy
-         IC4n2ymPEsesVEKYK78KfLCJozVt4XNCYvASWYdZCVcini0GY8qVDbpvaM7OsYRxC+
-         7v90t9YDyV0EBdFkYNKUyOXKRQWqG1JL3APDJe5Dmk6QoOZIg91zohVYlz+6pSfuuJ
-         Dkn94uDQTaBMdy1ThqVrpM0XR23HKdY8vsQWXYfFRInEWGE5VJYcu4jEQYYoOSu5bZ
-         3BLFiuTdiZm5cE//ujN+IimL0uisdPWLnV4zUfwjdXKkujOVvc/CnLBuN0TVkKrRNd
-         8xgimMD7NETWA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 02 Aug 2023 10:43:06 +0300
-Message-Id: <CUHW2GFPQ5KC.3SOJM5AMOZ9T0@suppilovahvero>
-Cc:     <fsverity@lists.linux.dev>, <keyrings@vger.kernel.org>,
-        "Victor Hsieh" <victorhsieh@google.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] fsverity: skip PKCS#7 parser when keyring is empty
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Eric Biggers" <ebiggers@kernel.org>
-X-Mailer: aerc 0.14.0
-References: <20230802041503.11530-1-ebiggers@kernel.org>
- <CUHRWHU485NB.19OIDMLF4WY5G@suppilovahvero>
- <20230802043158.GC1543@sol.localdomain>
-In-Reply-To: <20230802043158.GC1543@sol.localdomain>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id EECA01280255;
+        Wed,  2 Aug 2023 08:41:49 -0400 (EDT)
+Message-ID: <5a76c56a10f6512d0613577a412d2644945dbe77.camel@HansenPartnership.com>
+Subject: Re: [PATCH 0/4] keys: Introduce a keys frontend for attestation
+ reports
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     "Huang, Kai" <kai.huang@intel.com>,
+        "Williams, Dan J" <dan.j.williams@intel.com>,
+        "dhowells@redhat.com" <dhowells@redhat.com>
+Cc:     "sameo@rivosinc.com" <sameo@rivosinc.com>,
+        "jarkko@kernel.org" <jarkko@kernel.org>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "sathyanarayanan.kuppuswamy@linux.intel.com" 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+        "dionnaglaze@google.com" <dionnaglaze@google.com>,
+        "brijesh.singh@amd.com" <brijesh.singh@amd.com>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Date:   Wed, 02 Aug 2023 08:41:47 -0400
+In-Reply-To: <070e2386c99137b59bea114032d22664dd7272f8.camel@intel.com>
+References: <169057265210.180586.7950140104251236598.stgit@dwillia2-xfh.jf.intel.com>
+         <a507ef3302d3afff58d82528ee17e82df1f21de0.camel@HansenPartnership.com>
+         <64c5ed6eb4ca1_a88b2942a@dwillia2-xfh.jf.intel.com.notmuch>
+         <c6576d1682b576ba47556478a98f397ed518a177.camel@HansenPartnership.com>
+         <6dec442c64faf2fecd21bcc77e4a6350e88948b9.camel@intel.com>
+         <55cec220f20c497925f46074fc70eeccccff61c9.camel@HansenPartnership.com>
+         <ebedf39723d465923413b0ab2b50fe6c78aab64b.camel@HansenPartnership.com>
+         <070e2386c99137b59bea114032d22664dd7272f8.camel@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,84 +86,115 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed Aug 2, 2023 at 7:31 AM EEST, Eric Biggers wrote:
-> On Wed, Aug 02, 2023 at 07:27:15AM +0300, Jarkko Sakkinen wrote:
-> > On Wed Aug 2, 2023 at 7:15 AM EEST, Eric Biggers wrote:
-> > > From: Eric Biggers <ebiggers@google.com>
-> > >
-> > > If an fsverity builtin signature is given for a file but the
-> > > ".fs-verity" keyring is empty, there's no real reason to run the PKCS=
-#7
-> > > parser.  Skip this to avoid the PKCS#7 attack surface when builtin
-> > > signature support is configured into the kernel but is not being used=
-.
-> > >
-> > > This is a hardening improvement, not a fix per se, but I've added
-> > > Fixes and Cc stable to get it out to more users.
-> > >
-> > > Fixes: 432434c9f8e1 ("fs-verity: support builtin file signatures")
-> > > Cc: stable@vger.kernel.org
-> > > Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > Signed-off-by: Eric Biggers <ebiggers@google.com>
-> > > ---
-> > >
-> > > v2: check keyring and return early before allocating formatted digest
-> > >
-> > >  fs/verity/signature.c | 15 +++++++++++++++
-> > >  1 file changed, 15 insertions(+)
-> > >
-> > > diff --git a/fs/verity/signature.c b/fs/verity/signature.c
-> > > index b95acae64eac6..8f474702aa249 100644
-> > > --- a/fs/verity/signature.c
-> > > +++ b/fs/verity/signature.c
-> > > @@ -62,6 +62,21 @@ int fsverity_verify_signature(const struct fsverit=
-y_info *vi,
-> > >  		return 0;
-> > >  	}
-> > > =20
-> > > +	if (fsverity_keyring->keys.nr_leaves_on_tree =3D=3D 0) {
-> > > +		/*
-> > > +		 * The ".fs-verity" keyring is empty, due to builtin signatures
-> > > +		 * being supported by the kernel but not actually being used.
-> > > +		 * In this case, verify_pkcs7_signature() would always return an
-> > > +		 * error, usually ENOKEY.  It could also be EBADMSG if the
-> > > +		 * PKCS#7 is malformed, but that isn't very important to
-> > > +		 * distinguish.  So, just skip to ENOKEY to avoid the attack
-> > > +		 * surface of the PKCS#7 parser, which would otherwise be
-> > > +		 * reachable by any task able to execute FS_IOC_ENABLE_VERITY.
-> > > +		 */
-> > > +		fsverity_err(inode, "fs-verity keyring is empty");
-> > > +		return -ENOKEY;
-> > > +	}
-> > > +
-> > >  	d =3D kzalloc(sizeof(*d) + hash_alg->digest_size, GFP_KERNEL);
-> > >  	if (!d)
-> > >  		return -ENOMEM;
-> > >
-> > > base-commit: 456ae5fe9b448f44ebe98b391a3bae9c75df465e
-> > > --=20
-> > > 2.41.0
-> >=20
-> > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> >=20
-> > applied
-> >=20
-> > BR, Jarkko
->
-> Hi Jarkko, thanks for the review!
->
-> I actually intended to take this through the fsverity tree.  Is that okay=
-?
->
-> BTW, we could actually make this change to verify_pkcs7_signature() itsel=
-f.
-> I wasn't sure it would be appropriate for all callers, though.  Any thoug=
-hts?
+On Wed, 2023-08-02 at 00:10 +0000, Huang, Kai wrote:
+> On Tue, 2023-08-01 at 08:30 -0400, James Bottomley wrote:
+> > On Tue, 2023-08-01 at 08:03 -0400, James Bottomley wrote:
+> > > On Tue, 2023-08-01 at 11:45 +0000, Huang, Kai wrote:
+> > > [...]
+> > > > 
+> > > > Sorry perhaps a dumb question to ask:
+> > > > 
+> > > > As it has been adequately put, the remote verifiable report
+> > > > normally contains a nonce.  For instance, it can be a per-
+> > > > session or per-request nonce from the remote verification
+> > > > service to the confidential VM.  
+> > > > 
+> > > > IIUC, exposing attestation report via /sysfs means many
+> > > > processes (in the confidential VM) can potentially see the
+> > > > report and the nonce. My question is whether such nonce should
+> > > > be considered as a secret thus should be only visible to the
+> > > > process which is responsible for talking to the remote
+> > > > verification service? 
+> > > > Using IOCTL seems can avoid such exposure.
+> > > 
+> > > OK, so the nonce seems to be a considerably misunderstood piece
+> > > of this (and not just by you), so I'll try to go over carefully
+> > > what it is and why.  The problem we have in pretty much any
+> > > signature based attestation evidence scheme is when I, the
+> > > attesting party, present the signed evidence to you, the relying
+> > > part, how do you know I got it today from the system in question
+> > > not five days ago when I happen to have engineered the correct
+> > > conditions?  The solution to this currency problem is to
+> > > incorporate a challenge supplied by the relying party (called a
+> > > nonce) into the signature.  The nonce must be unpredictable
+> > > enough that the attesting party can't guess it beforehand and it
+> > > must be unique so that the attesting party can't go through its
+> > > records and find an attestation signature with the same
+> > > nonce and supply that instead.
+> > > 
+> > > This property of unpredictability and uniqueness is usually
+> > > satisfied simply by sending a random number.  However, as you can
+> > > also see, since the nonce is supplied by the relying party to the
+> > > attesting party, it eventually gets known to both, so can't be a
+> > > secret to one or the other.  Because of the unpredictability
+> > > requirement, it's generally frowned on to have nonces based on
+> > > anything other than random numbers, because that might lead to
+> > > predictability.
+> 
+> Thanks for explaining!
+> 
+> So in other words, in general nonce shouldn't be a secret due to it's
+> unpredictability, thus using /sysfs to expose attestation report
+> should be OK?
 
-It is OK for me. I just wanted make sure that I don't get yelled let's
-say month from now, why I haven't picked it already. That's why the
-"more eager" approach :-)
+There's no reason I can think of it should be secret (well, except
+security through obscurity in case someone is monitoring for a replay).
 
-I'll drop it from my master branch today.
+> > I suppose there is a situation where you use the nonce to bind
+> > other details of the attesting party.  For instance, in
+> > confidential computing, the parties often exchange secrets after
+> > successful attestation.  To do this, the attesting party generates
+> > an ephemeral public key.  It then communicates the key binding by
+> > constructing a new nonce as
+> > 
+> > <new nonce> = hash( <relying party nonce> || <public key> )
+> > 
+> > and using that new nonce in the attestation report signature.
+> 
+> This looks like taking advantage of the attestation flow to carry
+> additional info that can be communicated _after_ attestation is done.
 
-BR, Jarkko
+Well, no, the <new nonce> must be part of the attestation report.
+
+>   Not sure the benefit?  For instance, shouldn't we normally use
+> symmetric key for exchanging secrets after attestation?
+
+Yes, but how do you get the symmetric key?  A pre-chosen symmetric key
+would have to be in the enclave as an existing secret, which can't be
+done if you have to provision secrets.  The way around this is to use a
+key agreement to generate a symmetric key on the fly.  The problem,
+when you are doing things like Diffie Hellman Ephemeral (DHE) to give
+you this transport encryption key is that of endpoint verification. 
+You can provision a public certificate in the enclave to verify the
+remote (so a malicious remote can't inject false secrets), but the
+remote needs some assurance that it has established communication with
+the correct local (otherwise it would give up its secrets to anyone). 
+A binding of the local public DHE key to the attestation report can do
+this. 
+
+> > So the relying party can also reconstruct the new nonce (if it
+> > knows the key) and verify that it has a current attestation report
+> > *and* that the attesting party wants secrets encrypted to <public
+> > key>.  This scheme does rely on the fact that the thing generating
+> > the attestation signature must only send reports to the owner of
+> > the enclave, so that untrusted third parties, like the host owner,
+> > can't generate a report with their own nonce and thus fake out the
+> > key exchange.
+> 
+> Sorry I am not sure I am following this.
+
+If you use an attestation report for binding, you have to be sure no
+third party could generate the report and give a false binding.
+
+For instance, this isn't true of a TPM2_Quote because anyone who can
+get into the tss group can generate one.
+
+James
+
+
+>   For TDX only the confidential VM can put the nonce to the report
+> (because the specific instruction to get the local-verifiable report
+> out from firmware can only be made from the confidential VM).
+> Not sure other vendors' implementations though.
+> 
+
