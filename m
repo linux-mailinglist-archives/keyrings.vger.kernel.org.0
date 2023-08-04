@@ -2,118 +2,117 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02F017705CE
-	for <lists+keyrings@lfdr.de>; Fri,  4 Aug 2023 18:20:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29880770618
+	for <lists+keyrings@lfdr.de>; Fri,  4 Aug 2023 18:34:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229683AbjHDQUb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 4 Aug 2023 12:20:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36516 "EHLO
+        id S229819AbjHDQeR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 4 Aug 2023 12:34:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229673AbjHDQU3 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 4 Aug 2023 12:20:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BADDDB2
-        for <keyrings@vger.kernel.org>; Fri,  4 Aug 2023 09:19:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691165979;
-        h=from:from:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:in-reply-to:in-reply-to:  references:references;
-        bh=Onl29uqYKQczYTkd1xGh14ew9gorV8noJaPJyrbKPr0=;
-        b=iWvYqIwxVq4UcF1a3G2oZPoGKpqsJmDKkMbKrJejZUUK7k7eBACGltnd5S4M8P0Zqb3x7P
-        Kw7nqfvrjPA2SUKQFQtUiPlzVuHf87gfIT+RZx1TnE2sXP/HH4lnYM0uXJ/5c4JDGndRgo
-        KdImHhSc/Qf0xG3vC2CqRYBHEIC8VbI=
-Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-625-K9vtuh7SNyya7lbxdn1nIw-1; Fri, 04 Aug 2023 12:19:36 -0400
-X-MC-Unique: K9vtuh7SNyya7lbxdn1nIw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F0888280D59E;
-        Fri,  4 Aug 2023 16:19:34 +0000 (UTC)
-Received: from redhat.com (unknown [10.42.28.105])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id A59A9200A7CA;
-        Fri,  4 Aug 2023 16:19:32 +0000 (UTC)
-Date:   Fri, 4 Aug 2023 17:19:30 +0100
-From:   Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-To:     "Huang, Kai" <kai.huang@intel.com>
-Cc:     "Williams, Dan J" <dan.j.williams@intel.com>,
-        "James.Bottomley@HansenPartnership.com" 
-        <James.Bottomley@hansenpartnership.com>,
-        "dhowells@redhat.com" <dhowells@redhat.com>,
-        "sameo@rivosinc.com" <sameo@rivosinc.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "jarkko@kernel.org" <jarkko@kernel.org>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-        "sathyanarayanan.kuppuswamy@linux.intel.com" 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
-        "dionnaglaze@google.com" <dionnaglaze@google.com>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "brijesh.singh@amd.com" <brijesh.singh@amd.com>,
-        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
-        "x86@kernel.org" <x86@kernel.org>
-Subject: Re: [PATCH 0/4] keys: Introduce a keys frontend for attestation
- reports
-Message-ID: <ZM0lEvYJ+5IgybLT@redhat.com>
-Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
-References: <169057265210.180586.7950140104251236598.stgit@dwillia2-xfh.jf.intel.com>
- <a507ef3302d3afff58d82528ee17e82df1f21de0.camel@HansenPartnership.com>
- <64c5ed6eb4ca1_a88b2942a@dwillia2-xfh.jf.intel.com.notmuch>
- <c6576d1682b576ba47556478a98f397ed518a177.camel@HansenPartnership.com>
- <6dec442c64faf2fecd21bcc77e4a6350e88948b9.camel@intel.com>
+        with ESMTP id S229800AbjHDQeQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 4 Aug 2023 12:34:16 -0400
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 134F7B2
+        for <keyrings@vger.kernel.org>; Fri,  4 Aug 2023 09:34:15 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-3fe2d620d17so109435e9.0
+        for <keyrings@vger.kernel.org>; Fri, 04 Aug 2023 09:34:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1691166853; x=1691771653;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=iGi4XR/XiNGHXh0Do308MZzOF1T6uCKkf5XCj+VVIgM=;
+        b=w4JbRCmCeXyYZbgatosbC1xc36AV6HL9HjJ9LrLcB3GUtjTl7t3im+4tPeU3Vx9uhc
+         Ntdq49YvfpItVbRNaFCzV2Cx0YbVodMnw9ugoixhLuWeu+Kbh1DtE54tuG0vnzpe1vco
+         nNtcsJtFVU4hMwoYtmsS2I+Czqw7AVRdl9va6b4Zc+tPaoHsXzbia4Plqa4qGdqrRfsV
+         fXNGh7XcxB/RVPEkp9AOswAF4fEaVBIepuKT14H4TcI0vcgPwKpwIq2mlsw4FE0+YJv1
+         G/AgkijT7KSOyChAD6kdCjf0MFb9Sc4P5Fzy+507qzqXBgTo3HE07Ib6kYqJyzNcuYj1
+         q43g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691166853; x=1691771653;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iGi4XR/XiNGHXh0Do308MZzOF1T6uCKkf5XCj+VVIgM=;
+        b=TC/DI3LDXHtCg4DyzJI6BOy13J1xvRwebqbDT4FgulHScN81n3uVkp2ZJQf4UjjQWd
+         Uz3ZGV7BXvXrZqt7ikZAkQ7XVEwboDXW6fyPE679PSYB8DlB+tbOJ+jlLiHdbEtassZM
+         PA/srX68CAqY2Iv8a0643DeQi+LWl7qI3yCY40TPXt7DhnxkamItUJb9eVXTO/bzDqRq
+         w/1e2Zc9tJP1SY8CUDXYeIe2qXy815U/QQOvwGCLYE8ON5pltMEIM6ijlspo4gjm568f
+         I2VappOrO0/CYpPhrzkQbNeKP5hhYwt8TQK4qPJYrq2XGVo3Hzb9vbA+rn0FrQplqt0A
+         MRWw==
+X-Gm-Message-State: AOJu0Yx3aTkNwxApfnvlmmWN322nJ7sSaesg7isn9Mag9PtykJJAQVm0
+        AmHDj2C4b2NU5XJjmbLSqnVk0has+IoQqginQshLPQ==
+X-Google-Smtp-Source: AGHT+IGAdKeZqRvkKRomTSzriDgFXuHClhG6kUDwMC0cJbQcMZKnRfXz4LZDu/jT8ZwYE3RaXiaPloSO6rSe4VpedCY=
+X-Received: by 2002:a05:600c:3ba9:b0:3f4:fb7:48d4 with SMTP id
+ n41-20020a05600c3ba900b003f40fb748d4mr81305wms.3.1691166853428; Fri, 04 Aug
+ 2023 09:34:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <6dec442c64faf2fecd21bcc77e4a6350e88948b9.camel@intel.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+References: <169057265210.180586.7950140104251236598.stgit@dwillia2-xfh.jf.intel.com>
+ <169057265801.180586.10867293237672839356.stgit@dwillia2-xfh.jf.intel.com>
+ <CAMkAt6ot9zyUL9Ub-qYq+d9v-6rTft4ea2mUxp3o1s3GVFq7nw@mail.gmail.com>
+ <64c7f3df475d5_51ad02943f@dwillia2-xfh.jf.intel.com.notmuch>
+ <CAMkAt6p9yEM7A5B9TyZsVTH=X=UQ3Z9wfYDg9etuc806mNdOiQ@mail.gmail.com> <64c80077d7144_51ad02941@dwillia2-xfh.jf.intel.com.notmuch>
+In-Reply-To: <64c80077d7144_51ad02941@dwillia2-xfh.jf.intel.com.notmuch>
+From:   Peter Gonda <pgonda@google.com>
+Date:   Fri, 4 Aug 2023 10:34:01 -0600
+Message-ID: <CAMkAt6pPCJ0YsWaL692heDCUYjF9KCBq3PNiPK2LyBd=wD0+ig@mail.gmail.com>
+Subject: Re: [PATCH 1/4] keys: Introduce tsm keys
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     dhowells@redhat.com,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Dionna Amalie Glaze <dionnaglaze@google.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Samuel Ortiz <sameo@rivosinc.com>, peterz@infradead.org,
+        linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Aug 01, 2023 at 11:45:12AM +0000, Huang, Kai wrote:
-> The IOCTL vs /sysfs isn't discussed.
-> 
-> For instance, after rough thinking, why is the IOCTL better than below approach
-> using /sysfs?
-> 
-> echo <REPORTDATA> > /sys/kernel/coco/tdx/attest/reportdata
-> cat /sys/kernel/coco/tdx/attest/tdreport
-> 
-> Each "echo <REPORTDATA>" to '/sys/.../reportdata' triggers the driver to call
-> TDCALL to get the TDREPORT, which is available at '/sys/.../tdreport'.
+> > >
+> > > > > + * shared secret and then use that communication channel to instantiate
+> > > > > + * other keys. The expectation is that the requester of the tsm key
+> > > > > + * knows a priori the key-exchange protocol associated with the
+> > > > > + * 'pubkey'.
+> > > >
+> > > > Can we instead be very specific about what protocols and cryptography
+> > > > are being used?
+> > >
+> > > Again this is a contract to which the kernel is not a party. The
+> > > requester knows the significance of the user-data, and it knows where to
+> > > send the combined user-data plus quote to provision further secrets.
+> > >
+> > > Not that I like that arrangement, but the kernel is not enabled by these
+> > > TSM implementations to know much more than "user-data in", "report out".
+> >
+> > Can you explain why using this key API is better than the ioctl
+> > version? Is there an overhead to adding keys?
+>
+> Setting aside that folks that have been involved in the Keyring
+> subsystem a lot longer than I are not keen on this usage [1], I expect
+> the overhead is negligible. Keys are already used in RPC scenarios and
+> can be destroyed immediately after being instantiated and read.
 
-What would you suggest as behaviour with multiple processes writing
-into 'reportdata' and trying to read from 'tdreport' in parallel ?
-Splitting input and output across separate files removes any
-transactional relationship between input and output. This approach
-feels like it could easily result in buggy behaviour from concurrent
-application usage, which would not be an issue with ioctl()
+OK the overhead is negligible. But why is this any better?
 
-Also note, there needs to be scope for more than 1 input and 1 output
-data items. For SNP guests, the VMPL is a input, and if fetching a
-VMPL 0 report from under SVSM [1], an optional service GUID is needed.
-With SVSM, there are three distinct output data blobs - attestation
-report, services manifest and certificate data.
+To me this seems strictly worse to me as a user since I have much less
+input into the hardware attestation which is one of the primary
+benefits of confidential compute. I don't want the kernel limiting
+what cryptographic algorithm I use, or limiting attestation reports to
+signing pubkeys.
 
-With regards,
-Daniel
+I understand having a proliferation of similar drivers may not be
+ideal but given the hardware lift required to make confidential
+compute happen will we really see too many?
 
-[1] https://www.amd.com/system/files/TechDocs/58019_1.00.pdf
--- 
-|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
-|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
-|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
-
+>
+> [1]: http://lore.kernel.org/r/c6576d1682b576ba47556478a98f397ed518a177.camel@HansenPartnership.com
