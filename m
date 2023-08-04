@@ -2,145 +2,118 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19E7076FFCA
-	for <lists+keyrings@lfdr.de>; Fri,  4 Aug 2023 13:57:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 02F017705CE
+	for <lists+keyrings@lfdr.de>; Fri,  4 Aug 2023 18:20:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229537AbjHDL5p (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 4 Aug 2023 07:57:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52310 "EHLO
+        id S229683AbjHDQUb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 4 Aug 2023 12:20:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjHDL5p (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 4 Aug 2023 07:57:45 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 104FFB1;
-        Fri,  4 Aug 2023 04:57:43 -0700 (PDT)
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 374BkQ2G024137;
-        Fri, 4 Aug 2023 11:57:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=byQd/e8jN/kbPxwrbt6oRtBnv6y+f/qK8WxI9qlnir8=;
- b=ChhJtqI6ThDJSvDMc3XC1jYS39HjNXgCIb6qJpYDmRNxv1uop/mFS2pcoUH5jzZloDc9
- g6CJcu53s0Jvo8uN1WUgf5pVGpOekcAZIeeLX+Ej7pPHNRrLq9b0nb1yseUbRW7R3jbE
- WBE8+5VT075gaGgNK5RX0uY2u5KeS1evdCz7qJVyf+lmByo9BU0K2QMJvTmFv3EeJQb0
- 0az4kJWi6bUUsL8qOlnwIcQe5ZqgpURm8sNAWnCmX0YBndxTlmmDiWTPVnQn+NCOG6ls
- /KXP81kV/ugRbFQBxzO9mbvhh8hLSFbi5EJap8nG60XGaCaXxGxCkaEq6qZ7156u7fBG 4A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s90h6ge6d-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 04 Aug 2023 11:57:15 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 374BkrKv025374;
-        Fri, 4 Aug 2023 11:57:15 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3s90h6ge65-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 04 Aug 2023 11:57:15 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-        by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 374BsG0t027822;
-        Fri, 4 Aug 2023 11:57:14 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-        by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3s8kp2w9bt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 04 Aug 2023 11:57:14 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-        by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 374BvDUY19202554
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 4 Aug 2023 11:57:13 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 7D5F25804B;
-        Fri,  4 Aug 2023 11:57:13 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2B31F58065;
-        Fri,  4 Aug 2023 11:57:12 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.61.12.187])
-        by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-        Fri,  4 Aug 2023 11:57:12 +0000 (GMT)
-Message-ID: <84ddd923b49acb18946c1ecf5d773bcdadbea5c8.camel@linux.ibm.com>
-Subject: Re: [PATCH -next] trusted-keys: Fix kernel-doc warnings in
- trusted-keys
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Paul Moore <paul@paul-moore.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Cc:     Gaosheng Cui <cuigaosheng1@huawei.com>, jarkko@kernel.org,
-        dhowells@redhat.com, jejb@linux.ibm.com, jmorris@namei.org,
-        serge@hallyn.com, linux-integrity@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Date:   Fri, 04 Aug 2023 07:57:10 -0400
-In-Reply-To: <CAHC9VhRQBOfdcYO5QLRgVGdbqLFrogXeVD3FT2cETmLhP5uz3A@mail.gmail.com>
-References: <20230621074623.498647-1-cuigaosheng1@huawei.com>
-         <CAHC9VhQzZYg1HH_Q6OYytkp-uYOmCAnpzHb9tiRA-YC0VNha9A@mail.gmail.com>
-         <CAHC9VhQaWM=eC98ezfKmOA6sd9wzxQ0PFp5EysUKLZFEt=yB=A@mail.gmail.com>
-         <CAHC9VhTibk2tFPt7ZjFL9ps9NO6_sCQwXtbF1pQCXO+jGhshpg@mail.gmail.com>
-         <31a5aed2f075b69705142ff6f558e8cd8ccb9cd8.camel@linux.ibm.com>
-         <CAHC9VhRQBOfdcYO5QLRgVGdbqLFrogXeVD3FT2cETmLhP5uz3A@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: H-MXVBczj5cDs_ruQzBUyyH3tMpI9D-K
-X-Proofpoint-ORIG-GUID: KwepT0wnPBLx0hIIEDHT-Im1f8L_68ok
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-08-04_10,2023-08-03_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 spamscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0
- bulkscore=0 phishscore=0 malwarescore=0 clxscore=1011 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2306200000 definitions=main-2308040102
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229673AbjHDQU3 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 4 Aug 2023 12:20:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BADDDB2
+        for <keyrings@vger.kernel.org>; Fri,  4 Aug 2023 09:19:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1691165979;
+        h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:in-reply-to:in-reply-to:  references:references;
+        bh=Onl29uqYKQczYTkd1xGh14ew9gorV8noJaPJyrbKPr0=;
+        b=iWvYqIwxVq4UcF1a3G2oZPoGKpqsJmDKkMbKrJejZUUK7k7eBACGltnd5S4M8P0Zqb3x7P
+        Kw7nqfvrjPA2SUKQFQtUiPlzVuHf87gfIT+RZx1TnE2sXP/HH4lnYM0uXJ/5c4JDGndRgo
+        KdImHhSc/Qf0xG3vC2CqRYBHEIC8VbI=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-625-K9vtuh7SNyya7lbxdn1nIw-1; Fri, 04 Aug 2023 12:19:36 -0400
+X-MC-Unique: K9vtuh7SNyya7lbxdn1nIw-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F0888280D59E;
+        Fri,  4 Aug 2023 16:19:34 +0000 (UTC)
+Received: from redhat.com (unknown [10.42.28.105])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id A59A9200A7CA;
+        Fri,  4 Aug 2023 16:19:32 +0000 (UTC)
+Date:   Fri, 4 Aug 2023 17:19:30 +0100
+From:   Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+To:     "Huang, Kai" <kai.huang@intel.com>
+Cc:     "Williams, Dan J" <dan.j.williams@intel.com>,
+        "James.Bottomley@HansenPartnership.com" 
+        <James.Bottomley@hansenpartnership.com>,
+        "dhowells@redhat.com" <dhowells@redhat.com>,
+        "sameo@rivosinc.com" <sameo@rivosinc.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "jarkko@kernel.org" <jarkko@kernel.org>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "sathyanarayanan.kuppuswamy@linux.intel.com" 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+        "dionnaglaze@google.com" <dionnaglaze@google.com>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "brijesh.singh@amd.com" <brijesh.singh@amd.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH 0/4] keys: Introduce a keys frontend for attestation
+ reports
+Message-ID: <ZM0lEvYJ+5IgybLT@redhat.com>
+Reply-To: Daniel =?utf-8?B?UC4gQmVycmFuZ8Op?= <berrange@redhat.com>
+References: <169057265210.180586.7950140104251236598.stgit@dwillia2-xfh.jf.intel.com>
+ <a507ef3302d3afff58d82528ee17e82df1f21de0.camel@HansenPartnership.com>
+ <64c5ed6eb4ca1_a88b2942a@dwillia2-xfh.jf.intel.com.notmuch>
+ <c6576d1682b576ba47556478a98f397ed518a177.camel@HansenPartnership.com>
+ <6dec442c64faf2fecd21bcc77e4a6350e88948b9.camel@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <6dec442c64faf2fecd21bcc77e4a6350e88948b9.camel@intel.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2023-08-03 at 19:20 -0400, Paul Moore wrote:
-> On Thu, Aug 3, 2023 at 6:21 PM Mimi Zohar <zohar@linux.ibm.com> wrote:
-> >
-> > On Thu, 2023-08-03 at 18:00 -0400, Paul Moore wrote:
-> > > On Tue, Jul 25, 2023 at 4:49 PM Paul Moore <paul@paul-moore.com> wrote:
-> > > > On Wed, Jun 21, 2023 at 9:33 AM Paul Moore <paul@paul-moore.com> wrote:
-> > > > > On Wed, Jun 21, 2023 at 3:46 AM Gaosheng Cui <cuigaosheng1@huawei.com> wrote:
-> > > > > >
-> > > > > > Fix kernel-doc warnings in trusted-keys:
-> > > > > >
-> > > > > > security/keys/trusted-keys/trusted_tpm2.c:203: warning: expecting
-> > > > > > prototype for tpm_buf_append_auth(). Prototype was for
-> > > > > > tpm2_buf_append_auth() instead.
-> > > > > >
-> > > > > > Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-> > > > > > ---
-> > > > > >  security/keys/trusted-keys/trusted_tpm2.c | 2 +-
-> > > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > >
-> > > > > Reviewed-by: Paul Moore <paul@paul-moore.com>
-> > > >
-> > > > Jarkko, David, can one of you pick this up into your tree?
-> > >
-> > > Guys, this patch is both trivial and obviously correct, please pick it
-> > > up so it can go up during the next merge window.
-> >
-> > Paul, either Jarkko or I can queue a trusted-keys patch.  As this isn't
-> > on the top of Jarkko's radar, I'll queue it.
+On Tue, Aug 01, 2023 at 11:45:12AM +0000, Huang, Kai wrote:
+> The IOCTL vs /sysfs isn't discussed.
 > 
-> Ah ha!  I was working under the assumption that everything under
-> security/keys/ was David and Jarko's responsibility, but now that I'm
-> looking at MAINTAINERS I see that isn't the case.  In fact it looks
-> like there are five (!) different "subsystems" under security/keys/
-> ... I don't currently know enough about the different divisions there,
-> but it seems like we might want to see if we can do some consolidation
-> ...
+> For instance, after rough thinking, why is the IOCTL better than below approach
+> using /sysfs?
 > 
-> Anyway, thanks for picking this up Mimi.
+> echo <REPORTDATA> > /sys/kernel/coco/tdx/attest/reportdata
+> cat /sys/kernel/coco/tdx/attest/tdreport
+> 
+> Each "echo <REPORTDATA>" to '/sys/.../reportdata' triggers the driver to call
+> TDCALL to get the TDREPORT, which is available at '/sys/.../tdreport'.
 
-Thanks, Steven.  "6c95d71bad61 tracing: Fix kernel-doc warnings in
-trace_seq.c " is in Linus' tree.
+What would you suggest as behaviour with multiple processes writing
+into 'reportdata' and trying to read from 'tdreport' in parallel ?
+Splitting input and output across separate files removes any
+transactional relationship between input and output. This approach
+feels like it could easily result in buggy behaviour from concurrent
+application usage, which would not be an issue with ioctl()
 
-Mimi
+Also note, there needs to be scope for more than 1 input and 1 output
+data items. For SNP guests, the VMPL is a input, and if fetching a
+VMPL 0 report from under SVSM [1], an optional service GUID is needed.
+With SVSM, there are three distinct output data blobs - attestation
+report, services manifest and certificate data.
+
+With regards,
+Daniel
+
+[1] https://www.amd.com/system/files/TechDocs/58019_1.00.pdf
+-- 
+|: https://berrange.com      -o-    https://www.flickr.com/photos/dberrange :|
+|: https://libvirt.org         -o-            https://fstop138.berrange.com :|
+|: https://entangle-photo.org    -o-    https://www.instagram.com/dberrange :|
 
