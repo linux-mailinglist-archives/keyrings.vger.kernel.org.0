@@ -2,73 +2,133 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C42DE770E25
-	for <lists+keyrings@lfdr.de>; Sat,  5 Aug 2023 08:38:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5683E770F67
+	for <lists+keyrings@lfdr.de>; Sat,  5 Aug 2023 13:05:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229718AbjHEGiO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 5 Aug 2023 02:38:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37506 "EHLO
+        id S229899AbjHELFd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 5 Aug 2023 07:05:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjHEGiN (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 5 Aug 2023 02:38:13 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57799FC
-        for <keyrings@vger.kernel.org>; Fri,  4 Aug 2023 23:38:12 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-522c9d388d2so3419211a12.3
-        for <keyrings@vger.kernel.org>; Fri, 04 Aug 2023 23:38:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691217491; x=1691822291;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Fyaf0OHfvWgaqfRiwRufcy49gz6rXRNyNLf1qH0Ffk0=;
-        b=jUUF0VxzcK5rFrjriYlTBcgXU2JhOz1cB15uSuSugt2AnmgeXCelrolP+ZIlitbw66
-         uMJVsChSqproIC4pbLQtVYqYQo1+q7JjldF05ceHXKoYxt1OJiEipZp2a4AL3j55pJAG
-         T8BR9WzLsH0NWZfmaGHsYvBJCBkx1NkcIUhfKsobmlfMqQgvwZWgC7bniuZHL/H8uUaw
-         rlaWHY6F9HCQL3nLDt1inxyQYwZDghZCnRp063PInaJ+7ilK0oYP0v0N1Urhz2bf8/3O
-         OBjUCn3cy77W4YgeKmzEn+hcUDBGB/g5KtCPerrN6Qs63gfQfybUhc6Xox8KJWH2lXmC
-         wYmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691217491; x=1691822291;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fyaf0OHfvWgaqfRiwRufcy49gz6rXRNyNLf1qH0Ffk0=;
-        b=Me9DVKYno6OOTsueSIfilXMK2NVUqwJEXKpTCRQBc8xNSZ7GoVje063kR61QB9Y4V0
-         VKPiw8ThkenEWdAMnaBEN/xydpkhFrh5k8MKn9JjAN8qcKfrvRFvCgIO7FunpUvCPtf5
-         9//NYo60aZpMo0FJytk6e0paVhOp7/Ff+NZKbGtW2zldc6ENyqcH3DLrjUnRMM5zzc9S
-         6YCRjrldG1HjcEab0iZ6lVle8fWuznJVhzezqw2Sf7ackDRsm6gFtShwik4B5KOwTnHr
-         mzs8yxbTlZ6vdGF8KIBONNWttJsRwvl3nHP0OgUyzkb3+xAX/TnAu7x/6mq2on6x9fXa
-         4QfA==
-X-Gm-Message-State: AOJu0Yy+JkNTcnaje59liYpsuvoV0jPeq+6lKIqEZmjcr6YJx/11IEXw
-        ce1M6PH2GxouInuoIwgJ1bcdBzoMtq+1UgNPFuQ=
-X-Google-Smtp-Source: AGHT+IErx2QyibtDAj1UZpZ7CF6crMnGUbJDagC0oYAcFWx4VM1B6ZvWOGpX2eDWeMssO6sDd8ygeopDUr2DtVdRxuI=
-X-Received: by 2002:aa7:ccd2:0:b0:522:45db:48e1 with SMTP id
- y18-20020aa7ccd2000000b0052245db48e1mr2862070edt.31.1691217490643; Fri, 04
- Aug 2023 23:38:10 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a05:7412:6629:b0:df:940:19b1 with HTTP; Fri, 4 Aug 2023
- 23:38:10 -0700 (PDT)
-Reply-To: bintu37999@gmail.com
-From:   Bintu Felicia <bimmtu@gmail.com>
-Date:   Sat, 5 Aug 2023 07:38:10 +0100
-Message-ID: <CAAF5RuyAstj_aNt4=9isuh=YJOE4tHO7zqgAKyrdD3b0X1u+hw@mail.gmail.com>
-Subject: HELLO...,
-To:     undisclosed-recipients:;
+        with ESMTP id S229511AbjHELFc (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 5 Aug 2023 07:05:32 -0400
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC42A4215;
+        Sat,  5 Aug 2023 04:05:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1691233529;
+        bh=Kp0V8XoBe7ftnnqF+Zb6Xx7gGt4oeSLO48BmsQvQNRs=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=dattdD7Q5Ya4ttLlIDRS/BH6AZTqW2rycXm2dneWDDiaOu5g3QRxb4S7iaAvJwjuR
+         kNZ7BGvX1b+bsz1sit2Bp/THSHZPNVb0g+/j3tW31IHbCoIwYk7V0zdUEzh5GcI+tV
+         PzbvV7HFjW1+ANgwQWrftApsoIDUPPhrFupl9Rf0=
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 6BFD11286B03;
+        Sat,  5 Aug 2023 07:05:29 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id HtRUkobKztqP; Sat,  5 Aug 2023 07:05:29 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1691233529;
+        bh=Kp0V8XoBe7ftnnqF+Zb6Xx7gGt4oeSLO48BmsQvQNRs=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=dattdD7Q5Ya4ttLlIDRS/BH6AZTqW2rycXm2dneWDDiaOu5g3QRxb4S7iaAvJwjuR
+         kNZ7BGvX1b+bsz1sit2Bp/THSHZPNVb0g+/j3tW31IHbCoIwYk7V0zdUEzh5GcI+tV
+         PzbvV7HFjW1+ANgwQWrftApsoIDUPPhrFupl9Rf0=
+Received: from [IPv6:2601:5c4:4302:c21::a774] (unknown [IPv6:2601:5c4:4302:c21::a774])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id D1D221286B02;
+        Sat,  5 Aug 2023 07:05:27 -0400 (EDT)
+Message-ID: <a8e491304c28f74d9c8a61de4790e0584c40a19e.camel@HansenPartnership.com>
+Subject: Re: [PATCH 0/4] keys: Introduce a keys frontend for attestation
+ reports
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     "Daniel P." =?ISO-8859-1?Q?Berrang=E9?= <berrange@redhat.com>,
+        "Huang, Kai" <kai.huang@intel.com>
+Cc:     "Williams, Dan J" <dan.j.williams@intel.com>,
+        "dhowells@redhat.com" <dhowells@redhat.com>,
+        "sameo@rivosinc.com" <sameo@rivosinc.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "jarkko@kernel.org" <jarkko@kernel.org>,
+        "bp@alien8.de" <bp@alien8.de>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "sathyanarayanan.kuppuswamy@linux.intel.com" 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+        "dionnaglaze@google.com" <dionnaglaze@google.com>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "brijesh.singh@amd.com" <brijesh.singh@amd.com>,
+        "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+        "x86@kernel.org" <x86@kernel.org>
+Date:   Sat, 05 Aug 2023 07:05:25 -0400
+In-Reply-To: <ZM0lEvYJ+5IgybLT@redhat.com>
+References: <169057265210.180586.7950140104251236598.stgit@dwillia2-xfh.jf.intel.com>
+         <a507ef3302d3afff58d82528ee17e82df1f21de0.camel@HansenPartnership.com>
+         <64c5ed6eb4ca1_a88b2942a@dwillia2-xfh.jf.intel.com.notmuch>
+         <c6576d1682b576ba47556478a98f397ed518a177.camel@HansenPartnership.com>
+         <6dec442c64faf2fecd21bcc77e4a6350e88948b9.camel@intel.com>
+         <ZM0lEvYJ+5IgybLT@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS,UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+User-Agent: Evolution 3.42.4 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-How are you today? I hope you are fine. My name is Miss
-Bintu Felicia . l am single looking for honest and nice
-person whom i can partner with . I don't care about
-your color, ethnicity, Status or Sex. Upon your reply to
-this mail I will tell you more about myself and send you
-more of my picture .I am sending you this beautiful mail
-with a wish for much happiness
+On Fri, 2023-08-04 at 17:19 +0100, Daniel P. Berrangé wrote:
+> On Tue, Aug 01, 2023 at 11:45:12AM +0000, Huang, Kai wrote:
+> > The IOCTL vs /sysfs isn't discussed.
+> > 
+> > For instance, after rough thinking, why is the IOCTL better than
+> > below approach
+> > using /sysfs?
+> > 
+> > echo <REPORTDATA> > /sys/kernel/coco/tdx/attest/reportdata
+> > cat /sys/kernel/coco/tdx/attest/tdreport
+> > 
+> > Each "echo <REPORTDATA>" to '/sys/.../reportdata' triggers the
+> > driver to call
+> > TDCALL to get the TDREPORT, which is available at
+> > '/sys/.../tdreport'.
+> 
+> What would you suggest as behaviour with multiple processes writing
+> into 'reportdata' and trying to read from 'tdreport' in parallel ?
+> Splitting input and output across separate files removes any
+> transactional relationship between input and output. This approach
+> feels like it could easily result in buggy behaviour from concurrent
+> application usage, which would not be an issue with ioctl()
+
+What's the use case where there are multiple outstanding reports?  The
+only use case I've currently seen is single external relying party
+requesting a report with a challenge.
+
+> Also note, there needs to be scope for more than 1 input and 1 output
+> data items. For SNP guests, the VMPL is a input, and if fetching a
+> VMPL 0 report from under SVSM [1], an optional service GUID is
+> needed. With SVSM, there are three distinct output data blobs -
+> attestation report, services manifest and certificate data.
+
+That's quite simple isn't it?  All the possible additional input
+parameters appear as files.  If you don't echo anything into them, they
+take the default values.  There's usually a single parameter that
+causes the transaction to start (usually the nonce) and the transaction
+takes the current values from all the files.
+
+I'm not saying sysfs can substitute for all the transactionality of
+ioctl, but in this case where everything is low volume and single
+threaded it seems a reasonable choice.  For a more volume based
+transactional approach, something more configfs like would work better,
+so is there a use case for that?
+
+James
+
