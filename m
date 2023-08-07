@@ -2,76 +2,120 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E24B977305B
-	for <lists+keyrings@lfdr.de>; Mon,  7 Aug 2023 22:35:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F231773196
+	for <lists+keyrings@lfdr.de>; Mon,  7 Aug 2023 23:47:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229538AbjHGUfa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 7 Aug 2023 16:35:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33994 "EHLO
+        id S229581AbjHGVrk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 7 Aug 2023 17:47:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229688AbjHGUf3 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 7 Aug 2023 16:35:29 -0400
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A8FC10D8
-        for <keyrings@vger.kernel.org>; Mon,  7 Aug 2023 13:35:28 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-bc379e4c1cbso5360108276.2
-        for <keyrings@vger.kernel.org>; Mon, 07 Aug 2023 13:35:28 -0700 (PDT)
+        with ESMTP id S229498AbjHGVrk (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 7 Aug 2023 17:47:40 -0400
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25E881FC7
+        for <keyrings@vger.kernel.org>; Mon,  7 Aug 2023 14:47:09 -0700 (PDT)
+Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3a76cbd4bbfso3899305b6e.3
+        for <keyrings@vger.kernel.org>; Mon, 07 Aug 2023 14:47:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691440527; x=1692045327;
-        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YgsQjPYSA4x9EUAST26pLIMgzwk5/fmUNEDBBVE+P4A=;
-        b=WGuPu7g6E23RXr1v5LnKJEwl5/NhLHAEmhF1044iAo3zlPa7q/dCiC92JtWaTvN7LN
-         bVXSSjM+IWwdQf1AGsnUhtt0TLD2CCmfvj8Sjsh3wWo6GyC8KlsMejMvV9iNlMpUx9m1
-         e/eijDs1mEJFLO2TJBkN14g3t0J7/HRjYHt6jGqkdngI9wph52Q3ogRxNMdKAtzxeg25
-         XcWL+ONayv2a0pAGg3swXgiokEXA9gilyRGOhIKTk6x9SVYmEuPxsePgRyIfDvwxlOgo
-         +P+p48B+fjlmlUQjs4uiEbdAC7avrSnparZrobMq0G7U0aWx0KuTlGpL6KaJ4cD3tzP0
-         zoPA==
+        d=paul-moore.com; s=google; t=1691444808; x=1692049608;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KSz5PVzqt7CmpPxza5f2Q+P+IvWh7hQl7DHAoSvt6MM=;
+        b=TJnqnhrgU8PXGDgjVamGFgK7WOorgF6pv2x4ZtnZoTvfAidZQO5+DIiHIxnFCcAOAu
+         tS7oSGw4GPC0JF7tRyiVW7JkDonI1eqwPQmbYIHNMB88MPDzIZBzFdAPv64PmmqjVqy/
+         xMd0vPeDtt3kyJ/B1mIV3LeX/sKjGD+taAJaTdK/49CIPdzV9MG4DAKt2RKMN1RBI9SH
+         MCIzGB9R9ub+Ntky+vBlJnePjr9tlCOgBV5EJfF+tIWacv+UsHHbys2GFDL34I1IwGhz
+         z8/AD9ipOY50UpLO5TCtUuPhy+9gw/UuMvtLzNHcwpD3n99gWuWZtkBQBQU2dub0tEWG
+         03sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691440527; x=1692045327;
-        h=to:subject:message-id:date:from:sender:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YgsQjPYSA4x9EUAST26pLIMgzwk5/fmUNEDBBVE+P4A=;
-        b=RURLIOgM7ZuScqqNrxEjzCGLHkzvp5GvEy0e7gaDZt1+sN0EJCtcbnGhU8ic9RIYSt
-         ZThriV+xO7gLetOjvpLztYgzUfL6rxajUNNdbMZIqhgZag8G7byJ2u5yOr+83whIIvLn
-         ADZ9F3hUqwotDOtEnIzIOcnpL9GRuvcwckOcoMCFf75bNdYwBgK6WpUYjng1aDzyagAf
-         cKg6xjQjA3vvYzJtnJKRK7jlW8s8ivd9wqXy863mESyGQida8uZCh/RXMh9/lp0nZm/h
-         vlvPQwVAnUi6zDieJ/WFrNVzYlR/Fhj7BVonhh1V3n/rbWPbaussp4O7UaLJxkfaLBM7
-         1VKA==
-X-Gm-Message-State: AOJu0YwJl2u6+Nm5kqwOrVHH+X/ZIoB+Ym3vj+4BA3EP9moW00mRfUVt
-        VqWzuJGPh61t/cTIlg+EjyKjEs/VAcFyqkmcgS0=
-X-Google-Smtp-Source: AGHT+IH6RhdoplRqECcY8mUnEMQB3kKUONmBVdu9pLDcOmWR/5QFK305l7kYojCsuoKgbwfz4sV69GprXYw/1zMEwFI=
-X-Received: by 2002:a0d:dfd8:0:b0:56c:e706:2e04 with SMTP id
- i207-20020a0ddfd8000000b0056ce7062e04mr12209481ywe.0.1691440527025; Mon, 07
- Aug 2023 13:35:27 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1691444808; x=1692049608;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KSz5PVzqt7CmpPxza5f2Q+P+IvWh7hQl7DHAoSvt6MM=;
+        b=F1/HwY2OBhK8nHCUUBUYHmmZYTT9VGqh81jaPKYTbP5Juhv3DBPxA37tLOBa+tdlJ0
+         yqoiOpoBgXzwLAQaFdefxlc9NTVaT+0nIhQiIPJ/2XHTxljyQ7ygeEwV7ldLkNdbjTKR
+         MhpEW2jLac13nLm42WtLlNLvht0BMIEtQYxe1q92C1AHdnrY+Ijjltq6X8pfFH2Z0ihR
+         ntbQdT5Xon9z71VaHbr4LSink4tf6HZlGZoB/xdZu6mKq2KAp1wgXDg1Sit53CFtCWBi
+         +as2H0e0S01cDL4XVIVoWStmVBY+l0vNizdyVcOB+Nm/Q7jqEuAMndKE70CWpRNrvPx4
+         GWLw==
+X-Gm-Message-State: AOJu0YzlB7qNtEI95wh2WfSUuRjrFY7u6ahjgBJ+9QXFcKuLG25EqhDz
+        o6PlZ8U05b5280ABcHJtbr5/AbcnOqSxzTmhtLoz
+X-Google-Smtp-Source: AGHT+IFwSDKlOGWgqvs4YaQVopmHIzWi/qN8dtjMIK1xfa/ev+Mu5Odk1TFjShesKmhrlSjajMtsNg5jyS1S6i4B8Y0=
+X-Received: by 2002:a05:6358:4303:b0:131:127d:4b59 with SMTP id
+ r3-20020a056358430300b00131127d4b59mr7295326rwc.23.1691444808247; Mon, 07 Aug
+ 2023 14:46:48 -0700 (PDT)
 MIME-Version: 1.0
-Sender: lw466553@gmail.com
-Received: by 2002:a05:7108:160f:b0:326:a9e:5940 with HTTP; Mon, 7 Aug 2023
- 13:35:26 -0700 (PDT)
-From:   Dr Lisa Williams <lw4666555@gmail.com>
-Date:   Mon, 7 Aug 2023 13:35:26 -0700
-X-Google-Sender-Auth: 0G1lXpJv-q7nK9NDmCu4G39nQek
-Message-ID: <CAPHeqezXrZjPmETqsqybz9ND0xuLHy7Yn1jh0fx-tfjmjnpqCg@mail.gmail.com>
-Subject: Hi,
-To:     undisclosed-recipients:;
+References: <20230729024026.32228-1-yuehaibing@huawei.com>
+In-Reply-To: <20230729024026.32228-1-yuehaibing@huawei.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Mon, 7 Aug 2023 17:46:35 -0400
+Message-ID: <CAHC9VhRW0Jt0pitVx1cw-zJGWfTmvTU4RSmOFKANYJA7CeEF7g@mail.gmail.com>
+Subject: Re: [PATCH v3 -next] keys: Remove unused extern declarations
+To:     Yue Haibing <yuehaibing@huawei.com>
+Cc:     dhowells@redhat.com, jarkko@kernel.org, jmorris@namei.org,
+        serge@hallyn.com, keyrings@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi,
+On Fri, Jul 28, 2023 at 10:40=E2=80=AFPM Yue Haibing <yuehaibing@huawei.com=
+> wrote:
+>
+> From: YueHaibing <yuehaibing@huawei.com>
+>
+> Since commit b2a4df200d57 ("KEYS: Expand the capacity of a keyring")
+> iterate_over_keyring() is never used, so can be removed.
+>
+> And commit b5f545c880a2 ("[PATCH] keys: Permit running process to instant=
+iate keys")
+> left behind keyring_search_instkey().
+>
+> Fixes: b2a4df200d57 ("KEYS: Expand the capacity of a keyring")
+> Fixes: b5f545c880a2 ("[PATCH] keys: Permit running process to instantiate=
+ keys")
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> ---
+> v3: Add Fixes tag
+> v2: Also remove keyring_search_instkey()
+> ---
+>  security/keys/internal.h | 7 -------
+>  1 file changed, 7 deletions(-)
 
-My name is Dr. Lisa Williams, from the United States, currently living
-in the United Kingdom.
+Reviewed-by: Paul Moore <paul@paul-moore.com>
 
-I hope you consider my friend request. I will share some of my photos
-and more details about me when I get your reply.
+> diff --git a/security/keys/internal.h b/security/keys/internal.h
+> index 3c1e7122076b..471cf36dedc0 100644
+> --- a/security/keys/internal.h
+> +++ b/security/keys/internal.h
+> @@ -109,13 +109,6 @@ extern void __key_link_end(struct key *keyring,
+>  extern key_ref_t find_key_to_update(key_ref_t keyring_ref,
+>                                     const struct keyring_index_key *index=
+_key);
+>
+> -extern struct key *keyring_search_instkey(struct key *keyring,
+> -                                         key_serial_t target_id);
+> -
+> -extern int iterate_over_keyring(const struct key *keyring,
+> -                               int (*func)(const struct key *key, void *=
+data),
+> -                               void *data);
+> -
+>  struct keyring_search_context {
+>         struct keyring_index_key index_key;
+>         const struct cred       *cred;
+> --
+> 2.34.1
 
-With love
-Lisa
+--=20
+paul-moore.com
