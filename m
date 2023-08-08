@@ -2,70 +2,78 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0FB57740A2
-	for <lists+keyrings@lfdr.de>; Tue,  8 Aug 2023 19:06:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 243FD7742F1
+	for <lists+keyrings@lfdr.de>; Tue,  8 Aug 2023 19:52:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233721AbjHHRGr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 8 Aug 2023 13:06:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51474 "EHLO
+        id S234954AbjHHRwk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 8 Aug 2023 13:52:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229671AbjHHRGM (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 8 Aug 2023 13:06:12 -0400
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F32A62722
-        for <keyrings@vger.kernel.org>; Tue,  8 Aug 2023 09:02:35 -0700 (PDT)
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-6bd0425ad4fso788748a34.2
-        for <keyrings@vger.kernel.org>; Tue, 08 Aug 2023 09:02:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1691510459; x=1692115259;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o4QCyZoKdu40FBvi48BdsqXq5s8H3SxUopDt1IBpNKc=;
-        b=xldrnoLRTejfSPZdmhUGRuxTYxyO7VguR9rvZYihd5nEm5nHit6BTR5e2p9ppAafTU
-         Z59bqQ90/N7LzdH7Fqvj34Gj5BJQM4qstEL++DqZYhn0a3CZtMYvM891PJDPp/Vh3jnZ
-         WDMlxj9njCHYSEzHde+Wai7Fhv3hggxBco39I+KD0M/FgCkBYEThjQe8AMmAbCeO5WDy
-         cKP6SpYHhv+jRom6opN/JCdlvkvD3TtAWP9Ku0yHoEX5426VMYpqy1ftdOTmarTkfCOX
-         7CXvaumRCtwEkzzc8c6356DiTEpvgvnziFhxiU5oLZgrkrUMJbh4fAS6bKmhEKeAuSvw
-         K6Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691510459; x=1692115259;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=o4QCyZoKdu40FBvi48BdsqXq5s8H3SxUopDt1IBpNKc=;
-        b=VyLzu//xDde8ltfWVZh+tr6VEfSnoAbfFYrbVJ5xhZsuoeLcYJEOwTwqSvD79DCpxK
-         UaY0D0zsCHOmhzq9MXoXaPlim/4DFFushMqM7+Pz+KcFx5ISUL5WvTlxCbZgG0/sqLUb
-         KGAwuA19+LZnbMKFhbxnLO5j9Fpo8CL4O8UY5aLgocKqsuxsufDodJuujZkzjBeqoouY
-         LIt3+CVhRF75x9C4luY8jrwqWBO7Bpdr0J2kIP9y0YaTZ6VslkgBABh9hWCxmdof/tt5
-         aXAutQ44Bf5z3wmZfPVWo0GkYk1yIwxZh0P3gQwVcb93/1teID6Kcha03hiBY86UjAn3
-         dGrg==
-X-Gm-Message-State: AOJu0YziGohBEk9lbjBEDj/FafQH70FCRFen0LPM7MqOZqnZG6uVQX/w
-        aXdwMrm2dXyTffBjBZjN9Hl9eu0nHqfjMWAx2Htevk54p3j2J9oo3UM=
-X-Google-Smtp-Source: AGHT+IGNtfLXTIuMMWsLFIjckcjz0+W3BmhlMZ76WJBndpCHZ6yz0xZe8vd3WQsh7yBXJ2vHpUOh/8Bab44/TT3nh6Y=
-X-Received: by 2002:a05:620a:24c2:b0:75e:bf7e:e17e with SMTP id
- m2-20020a05620a24c200b0075ebf7ee17emr15490100qkn.6.1691485652273; Tue, 08 Aug
- 2023 02:07:32 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230803123515.4018838-1-jens.wiklander@linaro.org> <CAFA6WYMzBJTNUxh6b-y=a_NND8FX65YjEP4i-HPS4tQ-Qfm+0w@mail.gmail.com>
-In-Reply-To: <CAFA6WYMzBJTNUxh6b-y=a_NND8FX65YjEP4i-HPS4tQ-Qfm+0w@mail.gmail.com>
-From:   Jens Wiklander <jens.wiklander@linaro.org>
-Date:   Tue, 8 Aug 2023 11:07:21 +0200
-Message-ID: <CAHUa44ET3Oqc4Yq8E4ouAjn5dF9ygxoXyWh0sjFF_vPoooxrnA@mail.gmail.com>
-Subject: Re: [PATCH] KEYS: trusted: tee: use tee_shm_register_alloc_buf()
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, op-tee@lists.trustedfirmware.org,
-        James Bottomley <jejb@linux.ibm.com>,
+        with ESMTP id S235183AbjHHRwH (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 8 Aug 2023 13:52:07 -0400
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CC802896F;
+        Tue,  8 Aug 2023 09:23:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1691504369;
+        bh=poyLOOXWBA22ReX6TU4sKLUgi72y6OnbdZ5oyCnzL4w=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=DR16pcYdRIWTSz9tSKoB+8+8cI9v2i296sL7DLP/vXDTsE7n2n+sH6L9NEAzhEg+Z
+         9fdqA5kv2xfU5UtZc5DmXGPIw1dtYxgBzrC2PHGikamulkPCH/3RCKSz2FDJ9XVJ3X
+         YgenFZ7HXrC9B08S+6DmLYe58merKLH2ghAGqk9Y=
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id EA5741281F27;
+        Tue,  8 Aug 2023 10:19:29 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id kqDt_1ATYm6R; Tue,  8 Aug 2023 10:19:29 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+        d=hansenpartnership.com; s=20151216; t=1691504369;
+        bh=poyLOOXWBA22ReX6TU4sKLUgi72y6OnbdZ5oyCnzL4w=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+        b=DR16pcYdRIWTSz9tSKoB+8+8cI9v2i296sL7DLP/vXDTsE7n2n+sH6L9NEAzhEg+Z
+         9fdqA5kv2xfU5UtZc5DmXGPIw1dtYxgBzrC2PHGikamulkPCH/3RCKSz2FDJ9XVJ3X
+         YgenFZ7HXrC9B08S+6DmLYe58merKLH2ghAGqk9Y=
+Received: from [IPv6:2601:5c4:4302:c21::a774] (unknown [IPv6:2601:5c4:4302:c21::a774])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 66D3B1281F25;
+        Tue,  8 Aug 2023 10:19:28 -0400 (EDT)
+Message-ID: <c7d6e953a4b36014ea0c7406531b24bb29d6127e.camel@HansenPartnership.com>
+Subject: Re: [PATCH 0/4] keys: Introduce a keys frontend for attestation
+ reports
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Dan Williams <dan.j.williams@intel.com>, dhowells@redhat.com
+Cc:     Brijesh Singh <brijesh.singh@amd.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Dionna Amalie Glaze <dionnaglaze@google.com>,
+        Borislav Petkov <bp@alien8.de>,
         Jarkko Sakkinen <jarkko@kernel.org>,
-        Mimi Zohar <zohar@linux.ibm.com>
+        Samuel Ortiz <sameo@rivosinc.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+Date:   Tue, 08 Aug 2023 10:19:22 -0400
+In-Reply-To: <64d17f5728fbc_5ea6e2943f@dwillia2-xfh.jf.intel.com.notmuch>
+References: <169057265210.180586.7950140104251236598.stgit@dwillia2-xfh.jf.intel.com>
+         <a507ef3302d3afff58d82528ee17e82df1f21de0.camel@HansenPartnership.com>
+         <64c5ed6eb4ca1_a88b2942a@dwillia2-xfh.jf.intel.com.notmuch>
+         <c6576d1682b576ba47556478a98f397ed518a177.camel@HansenPartnership.com>
+         <64cdb5f25c56_2138e294f1@dwillia2-xfh.jf.intel.com.notmuch>
+         <1180481830431165d49c5e64b92b81c396ebc9b1.camel@HansenPartnership.com>
+         <64d17f5728fbc_5ea6e2943f@dwillia2-xfh.jf.intel.com.notmuch>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no autolearn_force=no
+User-Agent: Evolution 3.42.4 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,245 +81,157 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Sumit,
+On Mon, 2023-08-07 at 16:33 -0700, Dan Williams wrote:
+> James Bottomley wrote:
+> > On Fri, 2023-08-04 at 19:37 -0700, Dan Williams wrote:
+> > > James Bottomley wrote:
+> > > [..]
+> > > > > This report interface on the other hand just needs a single
+> > > > > ABI to retrieve all these vendor formats (until industry
+> > > > > standardization steps in) and it needs to be flexible (within
+> > > > > reason) for all the TSM-specific options to be conveyed. I do
+> > > > > not trust my ioctl ABI minefield avoidance skills to get that
+> > > > > right. Key blob instantiation feels up to the task.
+> > > > 
+> > > > To repeat: there's nothing keylike about it.
+> > > 
+> > > From that perspective there's nothing keylike about user-keys
+> > > either.
+> > 
+> > Whataboutism may be popular in politics at the moment, but it
+> > shouldn't be a justification for API abuse: Just because you might
+> > be able to argue something else is an abuse of an API doesn't give
+> > you the right to abuse it further.
+> 
+> That appears to be the disagreement, that the "user" key type is an
+> abuse of the keyctl subsystem. Is that the general consensus that it
+> was added as a mistake that is not be repeated?
 
-On Mon, Aug 7, 2023 at 9:58=E2=80=AFAM Sumit Garg <sumit.garg@linaro.org> w=
-rote:
->
-> Hi Jens,
->
-> On Thu, 3 Aug 2023 at 18:05, Jens Wiklander <jens.wiklander@linaro.org> w=
-rote:
-> >
-> > Prior to this patch was trusted_tee_seal() and trusted_tee_get_random()
-> > relying on tee_shm_register_kernel_buf() to share memory with the TEE.
-> > Depending on the memory allocation pattern the pages holding the
-> > registered buffers overlap with other buffers also shared with the TEE.
-> >
->
-> The overlap here is due to the fact that we are registering two array
-> members of the same struct. This overlap can be removed by registering
-> the overall structure at once. But that sounds unnecessary data
-> structure type sharing with trusted keys TA.
->
-> > The OP-TEE driver using the old SMC based ABI permits overlapping share=
-d
-> > buffers, but with the new FF-A based ABI each physical page may only
-> > be registered once.
->
-> Would it be possible for OP-TEE FF-A ABI to check if a page is already
-> registered?
+I didn't say anything about your assertion, just that you seemed to be
+trying to argue it.  However, if you look at the properties of keys:
 
-No, there's no such ABI in the FF-A specification.
+https://www.kernel.org/doc/html/v5.0/security/keys/core.html
 
-> If it is then just return success with appropriate page
-> offset.
+You'll see that none of them really applies to the case you're trying
+to add.
 
-It's more complicated than that. What if only there's a partial registratio=
-n?
+> Otherwise there is significant amount of thought that has gone into
+> keyctl including quotas, permissions, and instantiation flows.
+> 
+> 
+> > > Those are just blobs that userspace gets to define how they are
+> > > used and the keyring is just a transport. I also think that this
+> > > interface *is* key-like in that it is used in the flow of
+> > > requesting other key material. The ability to set policy on who
+> > > can request and instantiate these pre-requisite reports can be
+> > > controlled by request-key policy.
+> > 
+> > I thought we agreed back here:
+> > 
+> > https://lore.kernel.org/linux-coco/64c5ed6eb4ca1_a88b2942a@dwillia2-xfh.jf.intel.com.notmuch/
+> > 
+> > That it ended up as "just a transport interface".  Has something
+> > changed that?
+> 
+> This feedback cast doubt on the assumption that attestation reports
+> are infrequently generated:
+> 
+> http://lore.kernel.org/r/CAAH4kHbsFbzL=0gn71qq1-1kL398jiS2rd3as1qUFnLTCB5mHQ@mail.gmail.com
 
-> As otherwise this sounds like an unnecessary restriction for
-> users. I don't think the problem is only particular to the trusted
-> keys driver but can be reproduced for user-space clients as well.
+Well, I just read attestation would be called more than once at boot. 
+That doesn't necessarily require a concurrent interface.
 
-Indeed, we're dealing with it by using a temporary buffer in the client lib=
-.
+> Now, the kernel is within its rights to weigh in on that question
+> with an ABI that is awkward for that use case, or it can decide up
+> front that sysfs is not built for transactions.
 
->
-> >
-> > Fix this problem by allocating a temporary page aligned shared memory
-> > buffer to be used as a bounce buffer for the needed data buffers.
-> >
-> > Since TEE trusted keys doesn't depend on registered shared memory
-> > support any longer remove that explicit dependency when opening a
-> > context to the TEE.
-> >
-> > Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
-> > ---
-> >  security/keys/trusted-keys/trusted_tee.c | 68 +++++++++++++-----------
-> >  1 file changed, 36 insertions(+), 32 deletions(-)
-> >
-> > diff --git a/security/keys/trusted-keys/trusted_tee.c b/security/keys/t=
-rusted-keys/trusted_tee.c
-> > index ac3e270ade69..3085343c489a 100644
-> > --- a/security/keys/trusted-keys/trusted_tee.c
-> > +++ b/security/keys/trusted-keys/trusted_tee.c
-> > @@ -8,6 +8,7 @@
-> >
-> >  #include <linux/err.h>
-> >  #include <linux/key-type.h>
-> > +#include <linux/minmax.h>
-> >  #include <linux/module.h>
-> >  #include <linux/slab.h>
-> >  #include <linux/string.h>
-> > @@ -65,38 +66,37 @@ static int trusted_tee_seal(struct trusted_key_payl=
-oad *p, char *datablob)
-> >         int ret;
-> >         struct tee_ioctl_invoke_arg inv_arg;
-> >         struct tee_param param[4];
-> > -       struct tee_shm *reg_shm_in =3D NULL, *reg_shm_out =3D NULL;
-> > +       struct tee_shm *shm;
-> > +       uint8_t *buf;
-> >
-> >         memset(&inv_arg, 0, sizeof(inv_arg));
-> >         memset(&param, 0, sizeof(param));
-> >
-> > -       reg_shm_in =3D tee_shm_register_kernel_buf(pvt_data.ctx, p->key=
-,
-> > -                                                p->key_len);
-> > -       if (IS_ERR(reg_shm_in)) {
-> > -               dev_err(pvt_data.dev, "key shm register failed\n");
-> > -               return PTR_ERR(reg_shm_in);
-> > +       shm =3D tee_shm_alloc_kernel_buf(pvt_data.ctx,
-> > +                                      p->key_len + sizeof(p->blob));
-> > +       if (IS_ERR(shm)) {
-> > +               dev_err(pvt_data.dev, "key shm alloc failed\n");
-> > +               return PTR_ERR(shm);
-> >         }
-> > -
-> > -       reg_shm_out =3D tee_shm_register_kernel_buf(pvt_data.ctx, p->bl=
-ob,
-> > -                                                 sizeof(p->blob));
-> > -       if (IS_ERR(reg_shm_out)) {
-> > -               dev_err(pvt_data.dev, "blob shm register failed\n");
-> > -               ret =3D PTR_ERR(reg_shm_out);
-> > +       buf =3D tee_shm_get_va(shm, 0);
-> > +       if (IS_ERR(buf)) {
-> > +               ret =3D PTR_ERR(buf);
-> >                 goto out;
-> >         }
-> > +       memcpy(buf, p->key, p->key_len);
->
-> These memcpy()'s here and below are undue overheads if we change to
-> tee_shm_alloc_kernel_buf().
+I thought pretty much everyone agreed sysfs isn't really transactional.
+However, if the frequency of use of this is low enough, CC attestation
+doesn't need to be transactional either.  All you need is the ability
+to look at the inputs and outputs and to specify new ones if required.
+Sysfs works for this provided two entities don't want to supply inputs
+at the same time.
 
-There's a bit of overhead when entering and exiting the secure world
-too, just to save and restore registers. Anyway, trusted_tee_seal()
-doesn't together with FF-A without this patch.
+> > [...]
+> > > > Sneaking it in as a one-off is the wrong way to proceed
+> > > > on something like this.
+> > > 
+> > > Where is the sneaking in cc'ing all the relevant maintainers of
+> > > the keyring subsystem and their mailing list? Yes, please add
+> > > others to the cc. 
+> > 
+> > I was thinking more using the term pubkey in the text about
+> > something that is more like a nonce:
+> > 
+> > https://lore.kernel.org/linux-coco/169057265801.180586.10867293237672839356.stgit@dwillia2-xfh.jf.intel.com/
+> > 
+> > That looked to me designed to convince the casual observer that
+> > keys were involved.
+> 
+> Ok, I see where you were going, at the same time I was trusting
+> keyrings@ community to ask about that detail and was unaware of any
+> advocacy against new key types.
 
-Thanks,
-Jens
+I'm not advocating against new key types.  I'm saying what you're
+proposing is simply a data transport layer and, as such, has no
+properties that really make it a key type.
 
->
-> -Sumit
->
-> >
-> >         inv_arg.func =3D TA_CMD_SEAL;
-> >         inv_arg.session =3D pvt_data.session_id;
-> >         inv_arg.num_params =3D 4;
-> >
-> >         param[0].attr =3D TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INPUT;
-> > -       param[0].u.memref.shm =3D reg_shm_in;
-> > +       param[0].u.memref.shm =3D shm;
-> >         param[0].u.memref.size =3D p->key_len;
-> >         param[0].u.memref.shm_offs =3D 0;
-> >         param[1].attr =3D TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_OUTPUT;
-> > -       param[1].u.memref.shm =3D reg_shm_out;
-> > +       param[1].u.memref.shm =3D shm;
-> >         param[1].u.memref.size =3D sizeof(p->blob);
-> > -       param[1].u.memref.shm_offs =3D 0;
-> > +       param[1].u.memref.shm_offs =3D p->key_len;
-> >
-> >         ret =3D tee_client_invoke_func(pvt_data.ctx, &inv_arg, param);
-> >         if ((ret < 0) || (inv_arg.ret !=3D 0)) {
-> > @@ -104,14 +104,13 @@ static int trusted_tee_seal(struct trusted_key_pa=
-yload *p, char *datablob)
-> >                         inv_arg.ret);
-> >                 ret =3D -EFAULT;
-> >         } else {
-> > +               memcpy(p->blob, buf + p->key_len,
-> > +                      min(param[1].u.memref.size, sizeof(p->blob)));
-> >                 p->blob_len =3D param[1].u.memref.size;
-> >         }
-> >
-> >  out:
-> > -       if (reg_shm_out)
-> > -               tee_shm_free(reg_shm_out);
-> > -       if (reg_shm_in)
-> > -               tee_shm_free(reg_shm_in);
-> > +       tee_shm_free(shm);
-> >
-> >         return ret;
-> >  }
-> > @@ -166,11 +165,9 @@ static int trusted_tee_unseal(struct trusted_key_p=
-ayload *p, char *datablob)
-> >                 p->key_len =3D param[1].u.memref.size;
-> >         }
-> >
-> > +       tee_shm_free(reg_shm_out);
-> >  out:
-> > -       if (reg_shm_out)
-> > -               tee_shm_free(reg_shm_out);
-> > -       if (reg_shm_in)
-> > -               tee_shm_free(reg_shm_in);
-> > +       tee_shm_free(reg_shm_in);
-> >
-> >         return ret;
-> >  }
-> > @@ -183,15 +180,21 @@ static int trusted_tee_get_random(unsigned char *=
-key, size_t key_len)
-> >         int ret;
-> >         struct tee_ioctl_invoke_arg inv_arg;
-> >         struct tee_param param[4];
-> > -       struct tee_shm *reg_shm =3D NULL;
-> > +       struct tee_shm *shm;
-> > +       void *buf;
-> >
-> >         memset(&inv_arg, 0, sizeof(inv_arg));
-> >         memset(&param, 0, sizeof(param));
-> >
-> > -       reg_shm =3D tee_shm_register_kernel_buf(pvt_data.ctx, key, key_=
-len);
-> > -       if (IS_ERR(reg_shm)) {
-> > -               dev_err(pvt_data.dev, "key shm register failed\n");
-> > -               return PTR_ERR(reg_shm);
-> > +       shm =3D tee_shm_alloc_kernel_buf(pvt_data.ctx, key_len);
-> > +       if (IS_ERR(shm)) {
-> > +               dev_err(pvt_data.dev, "key shm alloc failed\n");
-> > +               return PTR_ERR(shm);
-> > +       }
-> > +       buf =3D tee_shm_get_va(shm, 0);
-> > +       if (IS_ERR(buf)) {
-> > +               ret =3D PTR_ERR(buf);
-> > +               goto out;
-> >         }
-> >
-> >         inv_arg.func =3D TA_CMD_GET_RANDOM;
-> > @@ -199,7 +202,7 @@ static int trusted_tee_get_random(unsigned char *ke=
-y, size_t key_len)
-> >         inv_arg.num_params =3D 4;
-> >
-> >         param[0].attr =3D TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_OUTPUT;
-> > -       param[0].u.memref.shm =3D reg_shm;
-> > +       param[0].u.memref.shm =3D shm;
-> >         param[0].u.memref.size =3D key_len;
-> >         param[0].u.memref.shm_offs =3D 0;
-> >
-> > @@ -209,18 +212,19 @@ static int trusted_tee_get_random(unsigned char *=
-key, size_t key_len)
-> >                         inv_arg.ret);
-> >                 ret =3D -EFAULT;
-> >         } else {
-> > +               memcpy(key, buf, min(param[0].u.memref.size, key_len));
-> >                 ret =3D param[0].u.memref.size;
-> >         }
-> >
-> > -       tee_shm_free(reg_shm);
-> > +out:
-> > +       tee_shm_free(shm);
-> >
-> >         return ret;
-> >  }
-> >
-> >  static int optee_ctx_match(struct tee_ioctl_version_data *ver, const v=
-oid *data)
-> >  {
-> > -       if (ver->impl_id =3D=3D TEE_IMPL_ID_OPTEE &&
-> > -           ver->gen_caps & TEE_GEN_CAP_REG_MEM)
-> > +       if (ver->impl_id =3D=3D TEE_IMPL_ID_OPTEE)
-> >                 return 1;
-> >         else
-> >                 return 0;
-> > --
-> > 2.34.1
-> >
+> > > The question for me at this point is whether a new:
+> > > 
+> > >         /dev/tsmX
+> > > 
+> > > ...ABI is worth inventing, or if a key-type is sufficient. To
+> > > Peter's concern, this key-type imposes no restrictions over what
+> > > sevguest already allows. New options are easy to add to the key
+> > > instantiation interface and I expect different vendors are likely
+> > > to develop workalike functionality to keep option proliferation
+> > > to a minimum. Unlike ioctl() there does not need to be as careful
+> > > planning about the binary format of the input payload for per
+> > > vendor options. Just add more tokens to the instantiation
+> > > command-line.
+> > 
+> > I still think this is pretty much an arbitrary transport interface.
+> > The question of how frequently it is used and how transactional it
+> > has to be depend on the use cases (which I think would bear further
+> > examination).  What you mostly want to do is create a transaction
+> > by adding parameters individually, kick it off and then read a set
+> > of results back.  Because the format of the inputs and outputs is
+> > highly specific to the architecture, the kernel shouldn't really be
+> > doing any inspection or modification.  For low volume single
+> > threaded use, this can easily be done by sysfs.  For high volume
+> > multi-threaded use, something like configfs or a generic keyctl
+> > like object transport interface would be more appropriate. 
+> > However, if you think the latter, it should still be proposed as a
+> > new generic kernel to userspace transactional transport mechanism.
+> 
+> Perhaps we can get more detail about the proposed high-volume use
+> case: Dionna, Peter?
+
+Well, that's why I asked for use cases.  I have one which is very low
+volume and single threaded.  I'm not sure what use case you have since
+you never outlined it and I see hints from Red Hat that they worry
+about concurrency.  So it's interface design 101: collect the use cases
+first.
+
+> I think the minimum bar for ABI success here is that options are not
+> added without touching a common file that everyone can agree what the
+> option is, no more drivers/virt/coco/$vendor ABI isolation. If
+> concepts like VMPL and RTMR are going to have cross-vendor workalike
+> functionality one day then the kernel community picks one name for
+> shared concepts. The other criteria for success is that the frontend
+> needs no change when standardization arrives, assuming all vendors
+> get their optionality into that spec definition.
+
+I don't think RTMR would ever be cross vendor.  It's sort of a cut down
+TPM with a limited number of PCRs.  Even Intel seems to be admitting
+this when they justified putting a vTPM into TDX at the OC3 Q and A
+session (no tools currently work with RTMRs and the TPM ecosystem is
+fairly solid, so using a vTPM instead of RTMRs gives us an industry
+standard workflow).
+
+James
+
+
+> keyring lessened my workload with how it can accept ascii token
+> options whereas ioctl() needs more upfront thought.
+
