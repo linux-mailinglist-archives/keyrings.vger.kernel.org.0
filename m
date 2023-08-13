@@ -2,36 +2,36 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFDBB77A963
-	for <lists+keyrings@lfdr.de>; Sun, 13 Aug 2023 18:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E0577A9E7
+	for <lists+keyrings@lfdr.de>; Sun, 13 Aug 2023 18:24:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233051AbjHMQMd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 13 Aug 2023 12:12:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47532 "EHLO
+        id S234102AbjHMQX4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 13 Aug 2023 12:23:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233341AbjHMQMN (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 13 Aug 2023 12:12:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5C173C25;
-        Sun, 13 Aug 2023 09:11:44 -0700 (PDT)
+        with ESMTP id S233648AbjHMQXd (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 13 Aug 2023 12:23:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C706C1FD9;
+        Sun, 13 Aug 2023 09:14:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 47E5A6145D;
-        Sun, 13 Aug 2023 16:11:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6FEC433C7;
-        Sun, 13 Aug 2023 16:11:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 25A4663C0A;
+        Sun, 13 Aug 2023 16:13:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA34C433C9;
+        Sun, 13 Aug 2023 16:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691943085;
-        bh=Zvp3Nq6KF4YB6ZDyjWlB1Q4kdCiyKAN1xY3t2kgKPRs=;
+        s=k20201202; t=1691943191;
+        bh=CR2SSSmj6nOlFJfAO7XRG8O83A8MQtaAU8AR9iFYMUc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JPhz1AgKvKeOg5EASR11/Wui+AarZ1kHJVPac6DdmSwV/1ERl4rTIiCIdTum1zMB0
-         XLS3QDVGX3YP2KB3jy550/1y29QRLwBL/15+I2vxjhqLsqZfa7HmH1BKBYp6/Mrjhh
-         crWoehqJtHizQp2nPUkwMRLhYOYmTgYxEoRDVBvP0yd1atl5F1OHnYNghFqHgRsoeX
-         Z3+jG/nqJic9eoOvZjZe5gs35nH5yceUMj5PNK3PATF4CufMfhvCE28dEJJ1tJlhem
-         AMoWPRGt98utTLRUhdJCTpqZjdNPYkdoKNbo9q393LgmC0YIuLAT5nNj6j/TLIfr/x
-         79LZxH4EyjeIw==
+        b=Q/QjKi18FBsI74q2XpJMhmwVU2eXBnn+0yyFD2eFu4H08+1GvcBhewHb5wZFiJXrl
+         3KuipkzX0F2XCY1704kpd8ZMA0Dp/wOA8X4QNXtPfTruLukQN+ovBnRftPIDtQ+Awh
+         kJ9x7+0lgfbXYTV2t51HgOBfElMmrrHO67+KXdV9M5Be2KqGmlkALzm9SP8SQP2H1T
+         0kZEWwHPB6/zezg+LVEN5i61P46iM0dZTRCMG2un7jmD4lXD0LJvkPaIXM+fbYXr9R
+         RG8mCTOHEdN9TIQCSYZpkj/2h6aLm2N8VJmZmTuScaNOiq4VE9n/NAgJEIgxqxZ0Fj
+         KhpZoLBhAqkog==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
@@ -39,20 +39,20 @@ Cc:     =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
         Sasha Levin <sashal@kernel.org>, dhowells@redhat.com,
         paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
         keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 24/25] security: keys: perform capable check only on privileged operations
-Date:   Sun, 13 Aug 2023 12:09:35 -0400
-Message-Id: <20230813160936.1082758-24-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 14/14] security: keys: perform capable check only on privileged operations
+Date:   Sun, 13 Aug 2023 12:12:02 -0400
+Message-Id: <20230813161202.1086004-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230813160936.1082758-1-sashal@kernel.org>
-References: <20230813160936.1082758-1-sashal@kernel.org>
+In-Reply-To: <20230813161202.1086004-1-sashal@kernel.org>
+References: <20230813161202.1086004-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.190
+X-stable-base: Linux 5.4.253
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,10 +81,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
-index 61a614c21b9b6..e3ffaf5ad6394 100644
+index edde63a63007f..f42968f349584 100644
 --- a/security/keys/keyctl.c
 +++ b/security/keys/keyctl.c
-@@ -980,14 +980,19 @@ long keyctl_chown_key(key_serial_t id, uid_t user, gid_t group)
+@@ -977,14 +977,19 @@ long keyctl_chown_key(key_serial_t id, uid_t user, gid_t group)
  	ret = -EACCES;
  	down_write(&key->sem);
  
@@ -106,15 +106,15 @@ index 61a614c21b9b6..e3ffaf5ad6394 100644
  			goto error_put;
  	}
  
-@@ -1088,7 +1093,7 @@ long keyctl_setperm_key(key_serial_t id, key_perm_t perm)
+@@ -1084,7 +1089,7 @@ long keyctl_setperm_key(key_serial_t id, key_perm_t perm)
  	down_write(&key->sem);
  
  	/* if we're not the sysadmin, we can only change a key that we own */
 -	if (capable(CAP_SYS_ADMIN) || uid_eq(key->uid, current_fsuid())) {
 +	if (uid_eq(key->uid, current_fsuid()) || capable(CAP_SYS_ADMIN)) {
  		key->perm = perm;
- 		notify_key(key, NOTIFY_KEY_SETATTR, 0);
  		ret = 0;
+ 	}
 -- 
 2.40.1
 
