@@ -2,36 +2,36 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8093677A8A1
-	for <lists+keyrings@lfdr.de>; Sun, 13 Aug 2023 18:04:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD4F477A93E
+	for <lists+keyrings@lfdr.de>; Sun, 13 Aug 2023 18:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230511AbjHMQEg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 13 Aug 2023 12:04:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37704 "EHLO
+        id S233016AbjHMQL2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 13 Aug 2023 12:11:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230495AbjHMQEb (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 13 Aug 2023 12:04:31 -0400
+        with ESMTP id S232720AbjHMQLJ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 13 Aug 2023 12:11:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B1E2716;
-        Sun, 13 Aug 2023 09:04:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32E951FED;
+        Sun, 13 Aug 2023 09:10:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 42C8C636D1;
-        Sun, 13 Aug 2023 16:04:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A88D7C433C8;
-        Sun, 13 Aug 2023 16:04:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F9FF638F2;
+        Sun, 13 Aug 2023 16:09:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389CAC433CA;
+        Sun, 13 Aug 2023 16:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691942648;
-        bh=AOFa6nHidY35DBALYVYlIq6TSFVSdmD1W6QaWkneK+8=;
+        s=k20201202; t=1691942945;
+        bh=byBtyMSEcVy9fCJCXD84sq6qK3N7Tx1LxDYNBpl4YL4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=onb3Rkfrh7gWFNKSwognGACGKlaZgM7tAM2m+KgzQTfq8L1M18RHhFvSQYU6PcbgN
-         8Tfcg+mYovNaHXAs/DGW4kLu+atXAoLgfVHRN7hnANmvtMtdTEn6DoJI4vlsrFllnl
-         weDrU5q7u7WcF/7szIio+Xd7MpwgAbF44RhgcFPaTUqNBI+d8r3hnY/6q5UoZ589dg
-         g3kgyCc6BJK3pmVUde0MmoU3/UlPY0rQNr8eqBE9NSUd+WbEX05C9u3GbUMFVydxXk
-         vblVzNi1rLS11a7tKW5ClV6FZxabDXJuAEGDoJtsHtpSyAskODeshVrTPZc5+2F+kI
-         z1b3IzacuzOLw==
+        b=tNeK3MGlQzW5brf5mnoAvFkDteRvT2UHWIy53qHFjObbIIQKmz1QhxIB6RNYZmirY
+         /Wr2GPJQLQ67OnWEf4fydwkao1+DEa8N5AiMIo12a+d1ycJYH0dH986IMbT+BwlLK0
+         kQriw+6aaOT3KRVFybmXIKXhQxOC7mvy1LT9ak6O7d1I0MI8PL+HyMIAzxYnksmDT6
+         einVTRXULdOLg20i87uRxdOlfivxWXmOQHwsKq85+wVDFoH6uirIJNW6mIIxFwtK9e
+         PQq304cjnt9KZgg21390Yw18URvvbKUr0xwU1ayVN3M4SqNIzsxBYTcQ/0UKoPdx4x
+         Mo9v56f7GslZw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
@@ -39,17 +39,17 @@ Cc:     =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
         Sasha Levin <sashal@kernel.org>, dhowells@redhat.com,
         paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
         keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 46/47] security: keys: perform capable check only on privileged operations
-Date:   Sun, 13 Aug 2023 11:59:41 -0400
-Message-Id: <20230813160006.1073695-46-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 30/31] security: keys: perform capable check only on privileged operations
+Date:   Sun, 13 Aug 2023 12:06:03 -0400
+Message-Id: <20230813160605.1080385-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230813160006.1073695-1-sashal@kernel.org>
-References: <20230813160006.1073695-1-sashal@kernel.org>
+In-Reply-To: <20230813160605.1080385-1-sashal@kernel.org>
+References: <20230813160605.1080385-1-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.45
+X-stable-base: Linux 5.15.126
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -81,7 +81,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 8 insertions(+), 3 deletions(-)
 
 diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
-index d54f73c558f72..19be69fa4d052 100644
+index 96a92a645216d..cfb5000876922 100644
 --- a/security/keys/keyctl.c
 +++ b/security/keys/keyctl.c
 @@ -980,14 +980,19 @@ long keyctl_chown_key(key_serial_t id, uid_t user, gid_t group)
