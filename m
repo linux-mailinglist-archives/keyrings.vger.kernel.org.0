@@ -2,119 +2,119 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FECE77A9B4
-	for <lists+keyrings@lfdr.de>; Sun, 13 Aug 2023 18:17:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD4E077CC01
+	for <lists+keyrings@lfdr.de>; Tue, 15 Aug 2023 13:49:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233228AbjHMQR3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 13 Aug 2023 12:17:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53200 "EHLO
+        id S236859AbjHOLsa (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 15 Aug 2023 07:48:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233941AbjHMQRM (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 13 Aug 2023 12:17:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FD3746A5;
-        Sun, 13 Aug 2023 09:16:37 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CE99D6147A;
-        Sun, 13 Aug 2023 16:15:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D3FC433C8;
-        Sun, 13 Aug 2023 16:15:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691943323;
-        bh=rG8JSyPjzAmsL4ZWf3kMhTAviAKjtsf2MvznkOQWWaA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DrMwoLqJyS4GUaMVu/elOG+Px6XcZgCXeWfi0OFZyZdj26aBKVshgJElmrQ1mrEgC
-         XSLSbyi0cw2S8I37f8+A29ZNyAEaBy9uy3y/kXFIYF4ikVTNWvF/aSjfUoBD6+D5EM
-         RNelCq0iN3HXqsOviy1EGlVHvgJbvt6V26mXWLlS9+vPkq4rzz8zZdNMq8rU+Y9Q3n
-         U2eVmi8ruKF5WF3hDb3G+zuEnRG0YH6kZ5rNFzP/Cn/SLloT03QxccrVKs7YwOqbS7
-         srnY1sMjaksxFfdKNCRO2qOb9lFMBpzVFmxCazlCg4yRYJhqaV4qLoWeon19o8LYMr
-         z/opW2U/gM/UQ==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, dhowells@redhat.com,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 9/9] security: keys: perform capable check only on privileged operations
-Date:   Sun, 13 Aug 2023 12:14:27 -0400
-Message-Id: <20230813161427.1089101-9-sashal@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230813161427.1089101-1-sashal@kernel.org>
-References: <20230813161427.1089101-1-sashal@kernel.org>
+        with ESMTP id S236883AbjHOLsG (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 15 Aug 2023 07:48:06 -0400
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [85.215.255.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58BF110E
+        for <keyrings@vger.kernel.org>; Tue, 15 Aug 2023 04:48:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1692099005; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=N/tMZQXGF94jY4PM/7LwlDMaYaSPAE+Uvk36HIabKvBc22ejafm7henAJmdrHtBaj8
+    V+gZm54BOrdAaZvDctZ6TCUf1zOzHpS9oTKyQKuZN82BWCRo4iRzOoRG98a4EauwjYFg
+    2Tv5GmURapsAi0OMHXTZ19yDuuHI6CjPviL+f9AjXQm5MvB+awckzo5OkobzZmaPiWp5
+    H967VbhjI476QiCEpryJwhpx2qeGxTodDA+AD+qDbZp+NB7rjI8oO1pnFAubtQ2MUf7G
+    yxg/fE6KGSRVSqO5k+MEjQ0HA+tRI4wbVijYcxj68R2MdAF1EAwLA7G6bdJoS9hpxVbA
+    AWPg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1692099005;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=0fArIV/skXXqwvM6vu5sx+WDXinHkC9gAI6MI712b8g=;
+    b=Y62S1fBOzIHkg+kxAoN6IHHxgov9CS3gVAd02EFgHuSSaR4MNtLWG+DABqCJ0/O2pw
+    BSLaid1ipLhFm75/D6N6ufqgA/xUbwrR3JgXhXZvGuMNIvzrbI6YqYXxmtN2eVbVrXlO
+    k6KLLPDvwMo7TVi818I8fPh6mCYy4btqp6ZIkqwRi5rhWNULLeFvtq/Wyhpxw+38SYis
+    l9Q25XY0BTeBbJjZpRiYSkgumPqYMp+hdeO6ETuUa+ei9emqeGjzaQKSViCvlvMammU7
+    jH7GQX6Rud1Pq5hiNn8eq/o5P6ITLr4U+nbXBhPBOysxsYx05Fm/9QPx/jBB29ksDfI4
+    7x+w==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1692099005;
+    s=strato-dkim-0002; d=thson.de;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=0fArIV/skXXqwvM6vu5sx+WDXinHkC9gAI6MI712b8g=;
+    b=QHwwvnr6dCsvZilLvr2M0jFuHnyZyhHTa2DDyq3bgAj5EpiFzxVRI0AOrmsZcgQp2k
+    cBXuK0WV/2Bxt94FUoDdoZAIQ1ca9t0JItUaBzocB6s0krI2E7YMZXzhyYAVZw75gcdj
+    rZrr8M2fa3v1sBdIFCVSzBMu5BB7gYBEyQzv6BaBBkK42m0QdQ2M7MmIE2TqPQzUbVQZ
+    14LNF+rslo5i4GCkEX3w3+paUqYlMlMMQ2ExFSj0T9EgwFKgaeOCnIwiAUx8F4uXKOq1
+    qvxFvMVgLLWwAvpsZpl6dPxQJLJnSXIZ/RNFFDz0yCgWLZTIE7rTNV+FWoPszVB6FREM
+    5oqg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1692099005;
+    s=strato-dkim-0003; d=thson.de;
+    h=Message-ID:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=0fArIV/skXXqwvM6vu5sx+WDXinHkC9gAI6MI712b8g=;
+    b=9GOt/JgphwB1P22CbzR7UHsC72OJx4YSCFTYhsKaYus/t2EiGqzVFV0YbIgamjzsPe
+    9R2FAcpIkuJ5fu7jlyCw==
+X-RZG-AUTH: ":PHkGeUmrW+uCZmxs998QJRUX30nOwJd7nOD9sw/xoau6coP/7eWf7ZtI5bftmbs="
+Received: from USER-PC.adm.ds.fhnw.ch
+    by smtp.strato.de (RZmta 49.6.6 AUTH)
+    with ESMTPSA id jd2f5az7FBU3Des
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Tue, 15 Aug 2023 13:30:03 +0200 (CEST)
+From:   Thore Sommer <public@thson.de>
+To:     dhowells@redhat.com, herbert@gondor.apana.org.au,
+        davem@davemloft.net
+Cc:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Thore Sommer <public@thson.de>
+Subject: [PATCH] X.509: if signature is unsupported skip validation
+Date:   Tue, 15 Aug 2023 14:29:42 +0300
+Message-ID: <20230815112942.392572-1-public@thson.de>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.322
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-From: Christian Göttsche <cgzones@googlemail.com>
+When the hash algorithm for the signature is not available the digest size
+is 0 and the signature in the certificate is marked as unsupported.
 
-[ Upstream commit 2d7f105edbb3b2be5ffa4d833abbf9b6965e9ce7 ]
+When validating a self-signed certificate, this needs to be checked,
+because otherwise trying to validate the signature will fail with an
+warning:
 
-If the current task fails the check for the queried capability via
-`capable(CAP_SYS_ADMIN)` LSMs like SELinux generate a denial message.
-Issuing such denial messages unnecessarily can lead to a policy author
-granting more privileges to a subject than needed to silence them.
+Loading compiled-in X.509 certificates
+WARNING: CPU: 0 PID: 1 at crypto/rsa-pkcs1pad.c:537 \
+pkcs1pad_verify+0x46/0x12c
+...
+Problem loading in-kernel X.509 certificate (-22)
 
-Reorder CAP_SYS_ADMIN checks after the check whether the operation is
-actually privileged.
-
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thore Sommer <public@thson.de>
 ---
- security/keys/keyctl.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ crypto/asymmetric_keys/x509_public_key.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
-index 9394d72a77e80..9e52a3e0fc672 100644
---- a/security/keys/keyctl.c
-+++ b/security/keys/keyctl.c
-@@ -922,14 +922,19 @@ long keyctl_chown_key(key_serial_t id, uid_t user, gid_t group)
- 	ret = -EACCES;
- 	down_write(&key->sem);
- 
--	if (!capable(CAP_SYS_ADMIN)) {
-+	{
-+		bool is_privileged_op = false;
-+
- 		/* only the sysadmin can chown a key to some other UID */
- 		if (user != (uid_t) -1 && !uid_eq(key->uid, uid))
--			goto error_put;
-+			is_privileged_op = true;
- 
- 		/* only the sysadmin can set the key's GID to a group other
- 		 * than one of those that the current process subscribes to */
- 		if (group != (gid_t) -1 && !gid_eq(gid, key->gid) && !in_group_p(gid))
-+			is_privileged_op = true;
-+
-+		if (is_privileged_op && !capable(CAP_SYS_ADMIN))
- 			goto error_put;
+diff --git a/crypto/asymmetric_keys/x509_public_key.c b/crypto/asymmetric_keys/x509_public_key.c
+index 6fdfc82e23a8..7c71db3ac23d 100644
+--- a/crypto/asymmetric_keys/x509_public_key.c
++++ b/crypto/asymmetric_keys/x509_public_key.c
+@@ -130,6 +130,11 @@ int x509_check_for_self_signed(struct x509_certificate *cert)
+ 			goto out;
  	}
  
-@@ -1029,7 +1034,7 @@ long keyctl_setperm_key(key_serial_t id, key_perm_t perm)
- 	down_write(&key->sem);
- 
- 	/* if we're not the sysadmin, we can only change a key that we own */
--	if (capable(CAP_SYS_ADMIN) || uid_eq(key->uid, current_fsuid())) {
-+	if (uid_eq(key->uid, current_fsuid()) || capable(CAP_SYS_ADMIN)) {
- 		key->perm = perm;
- 		ret = 0;
- 	}
++	if (cert->unsupported_sig) {
++		ret = 0;
++		goto out;
++	}
++
+ 	ret = public_key_verify_signature(cert->pub, cert->sig);
+ 	if (ret < 0) {
+ 		if (ret == -ENOPKG) {
 -- 
-2.40.1
+2.41.0
 
