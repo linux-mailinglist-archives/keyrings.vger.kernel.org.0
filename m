@@ -2,106 +2,65 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A6C877F04B
-	for <lists+keyrings@lfdr.de>; Thu, 17 Aug 2023 07:46:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDAA277F17C
+	for <lists+keyrings@lfdr.de>; Thu, 17 Aug 2023 09:52:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348130AbjHQFqD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 17 Aug 2023 01:46:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47126 "EHLO
+        id S1348625AbjHQHvn (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 17 Aug 2023 03:51:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348140AbjHQFpw (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 17 Aug 2023 01:45:52 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CBC31990;
-        Wed, 16 Aug 2023 22:45:51 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id A82B41F895;
-        Thu, 17 Aug 2023 05:45:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1692251149; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ybx2UjRN5K63ZivO4yR3n43B2OIui/ORZp64WM14s8g=;
-        b=KNjaMq+ivyYiOLMTJOvgr1iLLadHsr7ix9dMlAJvM9xIz/1slfT0QDt7KnrdalK5Mll9fv
-        n9hV8HaMblCsCLoAzqJdpaGyf8YXn/5pbgRKxgvF1B3VDON39Q3ngnjp2d6BH8pZfF/0Ky
-        UBdWwF9NyXKQHl31+elpY4BnICKFhS8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1692251149;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ybx2UjRN5K63ZivO4yR3n43B2OIui/ORZp64WM14s8g=;
-        b=jRsC/3SYkZpHkFP7oTxiHs5YMeUoBVDmXUDmzUj/7UUN2hGbYyZf6qQhQ24qfnjO1BAZw/
-        PL950fWyYk6bpaAQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6387513909;
-        Thu, 17 Aug 2023 05:45:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id ou3HEw203WRcCQAAMHmgww
-        (envelope-from <hare@suse.de>); Thu, 17 Aug 2023 05:45:49 +0000
-Message-ID: <14376b9c-2536-4826-0ecb-f926ab36d5f0@suse.de>
-Date:   Thu, 17 Aug 2023 07:45:48 +0200
+        with ESMTP id S1346365AbjHQHvM (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 17 Aug 2023 03:51:12 -0400
+X-Greylist: delayed 579 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 17 Aug 2023 00:51:11 PDT
+Received: from mail.melynllyn.pl (mail.melynllyn.pl [51.75.66.60])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18C6310C0
+        for <keyrings@vger.kernel.org>; Thu, 17 Aug 2023 00:51:10 -0700 (PDT)
+Received: by mail.melynllyn.pl (Postfix, from userid 1002)
+        id 32250A2CB1; Thu, 17 Aug 2023 07:40:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=melynllyn.pl; s=mail;
+        t=1692258057; bh=YRRXO3jEu97VPQQgC6v1VliieJbhUvx3UFrtvEDC9os=;
+        h=Date:From:To:Subject:From;
+        b=lf7gWRQ1SvXDGS5iKrRZhhl9pIlD3iIsQ2iQNmHzn3hA6c0l8sZ6k+341wKdXD7cG
+         eNidyaP9mHtkEsCE2qW+jGdEKD2jV36OxtIz2lRUo3AIOgI/ulf/fcrCId8sFYRByA
+         sCyBKZXYfgdAsi6pbrb1Kb7a9fHhYrn4aV9ReCacvwEWT+DN9bhzyU4uUtNhphUXJz
+         PaQFcxHM9r8BN9xBmInd5AnPOwCygx3BEllRzp/lZFbpgHGpcsxq2uQi1n3M08S47t
+         RwJIafnHYEYIvK8TPlW6r/hIsQX/0B0buvSMd7yLGNuX0YUOZs5travjP0IpxVlLPG
+         RaFqiS9Mtwmrw==
+Received: by mail.melynllyn.pl for <keyrings@vger.kernel.org>; Thu, 17 Aug 2023 07:40:39 GMT
+Message-ID: <20230817064500-0.1.cs.1iud1.0.vrar6xa673@melynllyn.pl>
+Date:   Thu, 17 Aug 2023 07:40:39 GMT
+From:   "Urszula Wasiak" <urszula.wasiak@melynllyn.pl>
+To:     <keyrings@vger.kernel.org>
+Subject: Faktoring
+X-Mailer: mail.melynllyn.pl
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH v7 3/3 RESEND] powerpc/pseries: PLPKS SED Opal keystore
- support
-Content-Language: en-US
-To:     gjoyce@linux.vnet.ibm.com, linux-block@vger.kernel.org
-Cc:     linuxppc-dev@lists.ozlabs.org, jonathan.derrick@linux.dev,
-        brking@linux.vnet.ibm.com, msuchanek@suse.de, mpe@ellerman.id.au,
-        nayna@linux.ibm.com, axboe@kernel.dk, akpm@linux-foundation.org,
-        keyrings@vger.kernel.org, okozina@redhat.com, dkeefe@redhat.com
-References: <20230721211949.3437598-1-gjoyce@linux.vnet.ibm.com>
- <20230721211949.3437598-4-gjoyce@linux.vnet.ibm.com>
-From:   Hannes Reinecke <hare@suse.de>
-In-Reply-To: <20230721211949.3437598-4-gjoyce@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=1.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_BL_SPAMCOP_NET,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 7/21/23 23:19, gjoyce@linux.vnet.ibm.com wrote:
-> From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-> 
-> Define operations for SED Opal to read/write keys
-> from POWER LPAR Platform KeyStore(PLPKS). This allows
-> non-volatile storage of SED Opal keys.
-> 
-> Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-> Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
-> ---
->   arch/powerpc/platforms/pseries/Kconfig        |   6 +
->   arch/powerpc/platforms/pseries/Makefile       |   1 +
->   .../powerpc/platforms/pseries/plpks_sed_ops.c | 114 ++++++++++++++++++
->   block/Kconfig                                 |   1 +
->   4 files changed, 122 insertions(+)
->   create mode 100644 arch/powerpc/platforms/pseries/plpks_sed_ops.c
-> 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
+Dzie=C5=84 dobry,
 
-Cheers,
+rozwa=C5=BCali Pa=C5=84stwo wyb=C3=B3r finansowania, kt=C3=B3re spe=C5=82=
+ni potrzeby firmy, zapewniaj=C4=85c natychmiastowy dost=C4=99p do got=C3=B3=
+wki, bez zb=C4=99dnych przestoj=C3=B3w?=20
 
-Hannes
--- 
-Dr. Hannes Reinecke                Kernel Storage Architect
-hare@suse.de                              +49 911 74053 688
-SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), Geschäftsführer: Ivo Totev, Andrew
-Myers, Andrew McDonald, Martje Boudien Moerman
+Przygotowali=C5=9Bmy rozwi=C4=85zania faktoringowe dopasowane do Pa=C5=84=
+stwa bran=C5=BCy i wielko=C5=9Bci firmy, dzi=C4=99ki kt=C3=B3rym, nie mus=
+z=C4=85 Pa=C5=84stwo martwi=C4=87 si=C4=99 o niewyp=C5=82acalno=C5=9B=C4=87=
+ kontrahent=C3=B3w, poniewa=C5=BC transakcje s=C4=85 zabezpieczone i posi=
+adaj=C4=85 gwarancj=C4=99 sp=C5=82aty.=20
 
+Chc=C4=85 Pa=C5=84stwo przeanalizowa=C4=87 dost=C4=99pne opcje?
+
+
+Pozdrawiam
+Urszula Wasiak
