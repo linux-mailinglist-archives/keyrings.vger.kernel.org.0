@@ -2,145 +2,174 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5187177FEEE
-	for <lists+keyrings@lfdr.de>; Thu, 17 Aug 2023 22:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 451EF780ED1
+	for <lists+keyrings@lfdr.de>; Fri, 18 Aug 2023 17:14:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243157AbjHQUUJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 17 Aug 2023 16:20:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33732 "EHLO
+        id S240875AbjHRPNh (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 18 Aug 2023 11:13:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345854AbjHQUTn (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 17 Aug 2023 16:19:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DDE5359C;
-        Thu, 17 Aug 2023 13:19:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2058563036;
-        Thu, 17 Aug 2023 20:19:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15F4C433C7;
-        Thu, 17 Aug 2023 20:19:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692303581;
-        bh=iMf2k4nTwKFBthKBVaGzMKaPqXWT9IOPKgKnd4BzqjY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=TyEDhq5CPlrq0hhaapkmPTDUQ7x5K7LNM9h1XUK2NoxspiSXD6mv6WyZzvGd6ueTQ
-         aIcX3SCtQjjvNC+zwsNBZKRiSd+M8yig7hs0HgsHwjfeouMOEZbt1y8BfTRs8hTg8/
-         FvjVqVQS0s74XYLm+elhrOYmTEo8DS91FPkaRiYydWzgXk6sJlg+8U6bXyi2iLkj/B
-         a1l1Ig2BZ8DoODRiYc5VcQGfUe6Ry23QfpwL1nzEvlHEw91qSM16lcOapSUvPNczvR
-         Xm14YmbXlOFW9BEPsIg/sxAIkElQKOB5ewcDfAby4mXKM8gIbRSRKht4QvfGHq6Ja5
-         VwHlg53H4v4PA==
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        David Howells <dhowells@redhat.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Eric Snowberg <eric.snowberg@oracle.com>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org
-Subject: [GIT PULL] tpmdd changes for v6.6
-Date:   Thu, 17 Aug 2023 20:19:35 +0000
-Message-Id: <20230817201935.31399-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.39.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S1378082AbjHRPN3 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 18 Aug 2023 11:13:29 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23E3035A1;
+        Fri, 18 Aug 2023 08:13:28 -0700 (PDT)
+Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37IEqorR012483;
+        Fri, 18 Aug 2023 15:13:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : reply-to : to : cc : date : in-reply-to : references : content-type
+ : mime-version : content-transfer-encoding; s=pp1;
+ bh=8h4zR/PmlOXLOh62i2/d1IwWmmQUDQiqemDALncI/7I=;
+ b=UHUoqQKhmemCloOoIvoSAZ96I3jeaaL+bCp4TUEf8L6M2gUEv03YStrbUxvFw4xQ+N24
+ pJXA/tObzOyukRDflSMVmcvVKHaZkO3yqxJXclo2M0zn4jikAA6L2x1UuvNHsjv0/7qj
+ YoIoqRR1+uLoOQ4F2NSVtp7+I9wFNwt31R4Yu5a3nP/GGME/Q+nBMEG5xbFw+wejxfAr
+ MtHaYtMuKoTFyWoKnbpw3YL+srNtpdzOZWfoQfFv691Vcf/3q5W1vynd0nmq8bhsrxzj
+ FAglYZFK+9W/A6Zq4TZ6HTumVwrDTLaXbHr5UStql8muJBm0xlqV8g0/6EfMgGCH8HPd Gw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sjasygmm8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 18 Aug 2023 15:12:59 +0000
+Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 37IExWX6004564;
+        Fri, 18 Aug 2023 15:12:59 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sjasygmm0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 18 Aug 2023 15:12:59 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+        by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37IDkkeo007871;
+        Fri, 18 Aug 2023 15:12:58 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+        by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3senwkyss4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 18 Aug 2023 15:12:58 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+        by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37IFCwxO7143978
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 18 Aug 2023 15:12:58 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 63C9A5805A;
+        Fri, 18 Aug 2023 15:12:58 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id BFC9B5805D;
+        Fri, 18 Aug 2023 15:12:57 +0000 (GMT)
+Received: from rhel-laptop.ibm.com (unknown [9.61.60.97])
+        by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+        Fri, 18 Aug 2023 15:12:57 +0000 (GMT)
+Message-ID: <0d768e42d671b2ff84ff10bc3f84531f15a5c57c.camel@linux.vnet.ibm.com>
+Subject: Re: [PATCH v7 1/3 RESEND] block:sed-opal: SED Opal keystore
+From:   Greg Joyce <gjoyce@linux.vnet.ibm.com>
+Reply-To: gjoyce@linux.vnet.ibm.com
+To:     Hannes Reinecke <hare@suse.de>, linux-block@vger.kernel.org
+Cc:     linuxppc-dev@lists.ozlabs.org, jonathan.derrick@linux.dev,
+        brking@linux.vnet.ibm.com, msuchanek@suse.de, mpe@ellerman.id.au,
+        nayna@linux.ibm.com, axboe@kernel.dk, akpm@linux-foundation.org,
+        keyrings@vger.kernel.org, okozina@redhat.com, dkeefe@redhat.com
+Date:   Fri, 18 Aug 2023 10:12:57 -0500
+In-Reply-To: <997311ee-a63b-75ea-dedc-78ed2f90b322@suse.de>
+References: <20230721211949.3437598-1-gjoyce@linux.vnet.ibm.com>
+         <20230721211949.3437598-2-gjoyce@linux.vnet.ibm.com>
+         <997311ee-a63b-75ea-dedc-78ed2f90b322@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: yNeQjn14sXgQ7XuwyB1a9nMwdPHPfiHA
+X-Proofpoint-ORIG-GUID: FLNOAWhQXsVjZYPAQMFl-x8uoNJ_kM2K
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-18_18,2023-08-18_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ mlxlogscore=944 suspectscore=0 adultscore=0 priorityscore=1501 bulkscore=0
+ malwarescore=0 lowpriorityscore=0 clxscore=1011 phishscore=0 spamscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308180137
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-  Merge tag 'nfsd-6.5-4' of git://git.kernel.org/pub/scm/linux/kernel/git/cel/linux (2023-08-17 16:38:48 +0200)
+On Thu, 2023-08-17 at 07:42 +0200, Hannes Reinecke wrote:
+> On 7/21/23 23:19, gjoyce@linux.vnet.ibm.com wrote:
+> > From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> > 
+> > Add read and write functions that allow SED Opal keys to stored
+> > in a permanent keystore.
+> > 
+> Probably state that these are dummy functions only.
+> 
+> > Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> > Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
+> > ---
+> >   block/Makefile               |  2 +-
+> >   block/sed-opal-key.c         | 24 ++++++++++++++++++++++++
+> >   include/linux/sed-opal-key.h | 15 +++++++++++++++
+> >   3 files changed, 40 insertions(+), 1 deletion(-)
+> >   create mode 100644 block/sed-opal-key.c
+> >   create mode 100644 include/linux/sed-opal-key.h
+> > 
+> > diff --git a/block/Makefile b/block/Makefile
+> > index 46ada9dc8bbf..ea07d80402a6 100644
+> > --- a/block/Makefile
+> > +++ b/block/Makefile
+> > @@ -34,7 +34,7 @@ obj-$(CONFIG_BLK_DEV_ZONED)	+= blk-zoned.o
+> >   obj-$(CONFIG_BLK_WBT)		+= blk-wbt.o
+> >   obj-$(CONFIG_BLK_DEBUG_FS)	+= blk-mq-debugfs.o
+> >   obj-$(CONFIG_BLK_DEBUG_FS_ZONED)+= blk-mq-debugfs-zoned.o
+> > -obj-$(CONFIG_BLK_SED_OPAL)	+= sed-opal.o
+> > +obj-$(CONFIG_BLK_SED_OPAL)	+= sed-opal.o sed-opal-key.o
+> >   obj-$(CONFIG_BLK_PM)		+= blk-pm.o
+> >   obj-$(CONFIG_BLK_INLINE_ENCRYPTION)	+= blk-crypto.o blk-
+> > crypto-profile.o \
+> >   					   blk-crypto-sysfs.o
+> > diff --git a/block/sed-opal-key.c b/block/sed-opal-key.c
+> > new file mode 100644
+> > index 000000000000..16f380164c44
+> > --- /dev/null
+> > +++ b/block/sed-opal-key.c
+> > @@ -0,0 +1,24 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +/*
+> > + * SED key operations.
+> > + *
+> > + * Copyright (C) 2022 IBM Corporation
+> > + *
+> > + * These are the accessor functions (read/write) for SED Opal
+> > + * keys. Specific keystores can provide overrides.
+> > + *
+> > + */
+> > +
+> > +#include <linux/kernel.h>
+> > +#include <linux/errno.h>
+> > +#include <linux/sed-opal-key.h>
+> > +
+> > +int __weak sed_read_key(char *keyname, char *key, u_int *keylen)
+> > +{
+> > +	return -EOPNOTSUPP;
+> > +}
+> > +
+> > +int __weak sed_write_key(char *keyname, char *key, u_int keylen)
+> > +{
+> > +	return -EOPNOTSUPP;
+> > +}
+> 
+> Hmm. We do have security/keys, which is using a 'struct key' for
+> their operations.
+> Why don't you leverage that structure?
+> 
+> Cheers,
+> 
+> Hannes
 
-are available in the Git repository at:
+Thanks for the review Hannes. Are you referring to struct key in
+linux/key.h? If so, that may a bit heavy for just specifying key data
+and key length.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-v6.6
+-Greg
 
-for you to fetch changes up to 218a2680624cba1611e3dfc7d9b646d240e5f855:
-
-  certs: Reference revocation list for all keyrings (2023-08-17 20:12:41 +0000)
-
-----------------------------------------------------------------
-Hi,
-
-Contents:
-
-- Restrict linking of keys to .ima and .evm keyrings based on
-  digitalSignature attribute in the certificate.
-- PowerVM: load machine owner keys into the .machine [1] keyring.
-- PowerVM: load module signing keys into the secondary trusted keyring
-  (keys blessed by the vendor).
-- tpm_tis_spi: half-duplex transfer mode
-- tpm_tis: retry corrupted transfers
-- Apply revocation list (.mokx) to an all system keyrings (e.g. .machine
-  keyring).
-
-[1] https://blogs.oracle.com/linux/post/the-machine-keyring
-
-BR, Jarkko
-
-----------------------------------------------------------------
-Alexander Steffen (3):
-      tpm_tis: Move CRC check to generic send routine
-      tpm_tis: Use responseRetry to recover from data transfer errors
-      tpm_tis: Resend command to recover from data transfer errors
-
-Azeem Shaikh (1):
-      KEYS: Replace all non-returning strlcpy with strscpy
-
-Colin Ian King (1):
-      tpm: remove redundant variable len
-
-Eric Snowberg (3):
-      KEYS: DigitalSignature link restriction
-      integrity: Enforce digitalSignature usage in the ima and evm keyrings
-      certs: Reference revocation list for all keyrings
-
-Jarkko Sakkinen (1):
-      tpm_tis: Revert "tpm_tis: Disable interrupts on ThinkPad T490s"
-
-Krishna Yarlagadda (1):
-      tpm_tis_spi: Add hardware wait polling
-
-Li Zetao (1):
-      tpm/tpm_tis_synquacer: Use module_platform_driver macro to simplify the code
-
-Nayna Jain (6):
-      integrity: PowerVM support for loading CA keys on machine keyring
-      integrity: ignore keys failing CA restrictions on non-UEFI platform
-      integrity: remove global variable from machine_keyring.c
-      integrity: check whether imputed trust is enabled
-      integrity: PowerVM machine keyring enablement
-      integrity: PowerVM support for loading third party code signing keys
-
- Documentation/admin-guide/kernel-parameters.txt    |  7 ++
- certs/system_keyring.c                             | 91 +++++++++++++++++++--
- crypto/asymmetric_keys/restrict.c                  | 44 ++++++++++
- drivers/char/tpm/eventlog/tpm1.c                   |  3 +-
- drivers/char/tpm/tpm_tis.c                         | 93 +---------------------
- drivers/char/tpm/tpm_tis_core.c                    | 60 ++++++++++----
- drivers/char/tpm/tpm_tis_core.h                    |  1 +
- drivers/char/tpm/tpm_tis_spi_main.c                | 91 ++++++++++++++++++++-
- drivers/char/tpm/tpm_tis_synquacer.c               | 18 +----
- include/crypto/public_key.h                        | 12 +++
- include/keys/system_keyring.h                      | 14 ++++
- security/integrity/Kconfig                         |  4 +-
- security/integrity/digsig.c                        |  6 +-
- security/integrity/evm/Kconfig                     |  3 +-
- security/integrity/ima/Kconfig                     |  3 +-
- security/integrity/integrity.h                     |  5 +-
- .../integrity/platform_certs/keyring_handler.c     | 19 ++++-
- .../integrity/platform_certs/keyring_handler.h     | 10 +++
- security/integrity/platform_certs/load_powerpc.c   | 34 ++++++++
- .../integrity/platform_certs/machine_keyring.c     | 22 ++++-
- security/keys/request_key_auth.c                   |  2 +-
- 21 files changed, 394 insertions(+), 148 deletions(-)
