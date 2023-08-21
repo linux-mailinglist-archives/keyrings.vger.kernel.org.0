@@ -2,59 +2,61 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84DA57824C3
-	for <lists+keyrings@lfdr.de>; Mon, 21 Aug 2023 09:45:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43C9C78254F
+	for <lists+keyrings@lfdr.de>; Mon, 21 Aug 2023 10:21:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233825AbjHUHp0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 21 Aug 2023 03:45:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59854 "EHLO
+        id S233940AbjHUIVw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 21 Aug 2023 04:21:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232672AbjHUHpZ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Aug 2023 03:45:25 -0400
-Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC69BB1
-        for <keyrings@vger.kernel.org>; Mon, 21 Aug 2023 00:45:23 -0700 (PDT)
-Received: by mail-qk1-x731.google.com with SMTP id af79cd13be357-76d83954c40so215039985a.1
-        for <keyrings@vger.kernel.org>; Mon, 21 Aug 2023 00:45:23 -0700 (PDT)
+        with ESMTP id S233939AbjHUIVv (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 21 Aug 2023 04:21:51 -0400
+Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com [IPv6:2607:f8b0:4864:20::e30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7743BF
+        for <keyrings@vger.kernel.org>; Mon, 21 Aug 2023 01:21:48 -0700 (PDT)
+Received: by mail-vs1-xe30.google.com with SMTP id ada2fe7eead31-4477b141804so987804137.3
+        for <keyrings@vger.kernel.org>; Mon, 21 Aug 2023 01:21:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692603923; x=1693208723;
+        d=linaro.org; s=google; t=1692606108; x=1693210908;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JK+yH/rjX097n6VnxgC5Oh8q9usgRZGP6z2ZxHD6mi0=;
-        b=aqqyJpqUfZnZmrKqZo0iwFsvG/Uu+B9mH2ab7fhc33MCE5+5RxMv5NNxsDVMWHd1PH
-         bxO16oKHQ5xjGWYXpQh3pE8O95wu/Fn19HqU7acvWp0SvluZ6KgjrywLxfYZG3caoLoh
-         5Qy/u18g4xvGfDuDIuJK64BvtdjcoEPqvU/9DWDkDd7in+O9YG//IB7lKpitkprMchxX
-         dreHtIZZ2ygQ3C4DgPML5Jb0cpBoNnPabrZ++8JvlQnCgF6FL/8h9AXjv/G5tH20Uomi
-         CR3tiAbwfe5+X51+q5t+mFmdGGRXtuwN/hc7vRNUe4xwtMbVq5ibsAmBYUZKUzz95rx8
-         W3LQ==
+        bh=Dal7qUCVaoYplLAJ6diY8MBMZJHT6q6J2xawaGqTb2Y=;
+        b=lGeDXAoKxU9Dl1Ws/07RazE+kVEr1lg12i4mxHfWfuKEDTXmNj84CBiBah8umC6VOH
+         MxA339LtU+1z4MActkft8MYh8f//O6zRc/RvjbAv3S8wmXyLj+AI4uRDRcjrHpKUNqwH
+         es0Hf7vyv9AaHmcksPeHOdErHjwH8MEOUOV5izFpY33SV9EScHDmtb9DQC6uzIi30I/f
+         iTmj8JCe2z/ToBle0GgHO0c1L/+yGxB8g+2O9TnUAoLLVuKf7ZajbWZv6PWXhnhtRqbC
+         zs4e/VM5d7NUNxeobRhO1CTj67nyZzYfD2NAeQ9z6AAr38/VXDSrsLbQitku15qGHDgi
+         yX9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692603923; x=1693208723;
+        d=1e100.net; s=20221208; t=1692606108; x=1693210908;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JK+yH/rjX097n6VnxgC5Oh8q9usgRZGP6z2ZxHD6mi0=;
-        b=DdKon6myHhN82L2xaJn6Oy5JLuDP4UUp9YKGbDm0IRgOCWLZ2hwodXxuBj4Kma8XHa
-         XQW6HyUhapC2lnQbynzT1WtMOtvd9KRGRBCJAFH6PKe+8AwaV0P5ee/QyZP0LRMDjHBA
-         kCJlVfKXBnIYZueliFEcFH9EmFG6RYJGYx8CDJTt8wVVsRzHcCeabDu1YARybWCR+FJj
-         3MJdbnFA5YkINj4lDSHKV9V77ntv/lDNxN1Ni7/pXImxwk5pdCKW5B7Hqzxs0yiXgx0f
-         gSdBhzVzi4da4nDvkWLjUIWvzwOEUMYGCCxmfX6zRpzGwj/M1Tp34CinRwIMQqV5RaN1
-         7eXQ==
-X-Gm-Message-State: AOJu0YyBBQtrvMktChrLf8qkhUABuLB/YtIFhT0qBchJhjgOKKHWzzrZ
-        X5/PKCMgCd5L1MQBQPHMDeF8WimrHQw4p4zY1ZLJuA==
-X-Google-Smtp-Source: AGHT+IGVlgFx9K9waiPvbwRrHpMYHKMZ2VemCxLlgNtmSeBlncdCaxZFI7YUAdvU/XWYBMQQCzhZKPNp6O2snOVfzY0=
-X-Received: by 2002:a0c:f00f:0:b0:63f:63b2:624a with SMTP id
- z15-20020a0cf00f000000b0063f63b2624amr6284553qvk.48.1692603922677; Mon, 21
- Aug 2023 00:45:22 -0700 (PDT)
+        bh=Dal7qUCVaoYplLAJ6diY8MBMZJHT6q6J2xawaGqTb2Y=;
+        b=VDAaVoY8jvWSNZcBZcONSO5QSe/cq/NTHqs1XpVopg9372ypN/B5WFmheDb3syzf8Z
+         IEgffNJGGjNNQS6meyH+V2BDzoydQdi66ptLje+E6NxKBQV/t/V2svLZOFRvsX4PGw23
+         GV4yg9hB8V3N1ICnP7PZOhdCm5bizGAs76AJQdoAXQawLvGA0DPkQshvrxAp8sP/0l9k
+         LP/gkwVJ2DjpHLiEFVOsghLvGF2bX8C+0wK7pafsfLIllawUTGBkLQr8A2OMRXzByowi
+         QZLCRQGNCUZNNLx7ZY61J+qDGUfuzWdG/hnUlZ1T4jDMR/ih2urKj4Z1SDamfBDN+Cjn
+         hHYg==
+X-Gm-Message-State: AOJu0YzQFG3j8M7A3HzHjQt8WsJKmmWFsHFd1t5skG+tJ+6k9F2UQYmR
+        FS30BZqubSO1bRLFlyWJX7+WU7C0VPBH6NXYyboTdA==
+X-Google-Smtp-Source: AGHT+IFB20g0y6GSAv/nFSWbPQ4lMazycqwRDUDNbs4MO/OSsDAjH3Kqr0vWxuGaeUvulYXUcWsEr4UnLfG9EC0pATc=
+X-Received: by 2002:a67:fd59:0:b0:44d:4160:4f8a with SMTP id
+ g25-20020a67fd59000000b0044d41604f8amr2577805vsr.12.1692606107933; Mon, 21
+ Aug 2023 01:21:47 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230803123515.4018838-1-jens.wiklander@linaro.org>
  <CAFA6WYMzBJTNUxh6b-y=a_NND8FX65YjEP4i-HPS4tQ-Qfm+0w@mail.gmail.com> <CAHUa44ET3Oqc4Yq8E4ouAjn5dF9ygxoXyWh0sjFF_vPoooxrnA@mail.gmail.com>
 In-Reply-To: <CAHUa44ET3Oqc4Yq8E4ouAjn5dF9ygxoXyWh0sjFF_vPoooxrnA@mail.gmail.com>
-From:   Jens Wiklander <jens.wiklander@linaro.org>
-Date:   Mon, 21 Aug 2023 09:45:11 +0200
-Message-ID: <CAHUa44HpkxDPgdh1B_bFOVPSOETk3F_ZicdnhmuVOux+5fd7sA@mail.gmail.com>
+From:   Sumit Garg <sumit.garg@linaro.org>
+Date:   Mon, 21 Aug 2023 13:51:36 +0530
+Message-ID: <CAFA6WYMxAUeGVoDU6tHLD_j9FKz7O0D=eby+OsAE_GA1gXGGuw@mail.gmail.com>
 Subject: Re: [PATCH] KEYS: trusted: tee: use tee_shm_register_alloc_buf()
-To:     Sumit Garg <sumit.garg@linaro.org>
+To:     Jens Wiklander <jens.wiklander@linaro.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Achin Gupta <achin.gupta@arm.com>
 Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
         linux-security-module@vger.kernel.org,
         linux-kernel@vger.kernel.org, op-tee@lists.trustedfirmware.org,
@@ -72,10 +74,10 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi,
++ Sudeep, Achin
 
-On Tue, Aug 8, 2023 at 11:07=E2=80=AFAM Jens Wiklander
-<jens.wiklander@linaro.org> wrote:
+On Tue, 8 Aug 2023 at 14:37, Jens Wiklander <jens.wiklander@linaro.org> wro=
+te:
 >
 > Hi Sumit,
 >
@@ -110,6 +112,21 @@ red
 > > registered?
 >
 > No, there's no such ABI in the FF-A specification.
+
+It should at least provide us a unique return code that this page is
+already registered with, right?
+
+Sudeep, Achin,
+
+The problem we are discussing here is related to limitations put by
+FF-A ABI on registered memory. As you may know the client doesn't
+always have to share page aligned buffers. But rather it is possible
+to share sub page buffers across multiple shared memory registration
+invocations.
+
+Does FF-A ABI provide a way to support that? Or can we extend the current A=
+BI?
+
 >
 > > If it is then just return success with appropriate page
 > > offset.
@@ -117,6 +134,9 @@ red
 > It's more complicated than that. What if only there's a partial registrat=
 ion?
 >
+
+I suppose "struct tee_shm" gives us enough room to deal with page offset.
+
 > > As otherwise this sounds like an unnecessary restriction for
 > > users. I don't think the problem is only particular to the trusted
 > > keys driver but can be reproduced for user-space clients as well.
@@ -124,6 +144,15 @@ ion?
 > Indeed, we're dealing with it by using a temporary buffer in the client l=
 ib.
 >
+
+It looks like we are talking about this [1] here. It is not a TRUE
+zero copy but rather a workaround to support FF-A ABI limitation. We
+should fix it if we really need to support TEEC_RegisterSharedMemory()
+in its true sense.
+
+[1] https://github.com/OP-TEE/optee_client/commit/562dadc726b8ecbde98168659=
+3a0d7f8ffb4757b
+
 > >
 > > >
 > > > Fix this problem by allocating a temporary page aligned shared memory
@@ -197,83 +226,12 @@ blob,
 > too, just to save and restore registers. Anyway, trusted_tee_seal()
 > doesn't together with FF-A without this patch.
 
-By the way, without this patch the kernel fails with:
-[   12.642071] trusted-key-tee
-optee-ta-f04a0fe7-1f5d-4b9b-abf7-619b85b4ce8c: blob shm register
-failed
-[   12.642576] Unable to handle kernel paging request at virtual
-address fffffffffffffff3
-[   12.642668] Mem abort info:
-[   12.642701]   ESR =3D 0x0000000096000004
-[   12.642764]   EC =3D 0x25: DABT (current EL), IL =3D 32 bits
-[   12.642821]   SET =3D 0, FnV =3D 0
-[   12.642864]   EA =3D 0, S1PTW =3D 0
-[   12.642910]   FSC =3D 0x04: level 0 translation fault
-[   12.642960] Data abort info:
-[   12.643006]   ISV =3D 0, ISS =3D 0x00000004
-[   12.643049]   CM =3D 0, WnR =3D 0
-[   12.643104] swapper pgtable: 4k pages, 48-bit VAs, pgdp=3D0000000043bfb0=
-00
-[   12.643197] [fffffffffffffff3] pgd=3D0000000000000000, p4d=3D00000000000=
-00000
-[   12.643654] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-[   12.643821] Modules linked in:
-[   12.647781] CPU: 0 PID: 134 Comm: keyctl Not tainted 6.4.0 #1
-[   12.647990] Hardware name: linux,dummy-virt (DT)
-[   12.648146] pstate: 63400009 (nZCv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=
-=3D--)
-[   12.648280] pc : tee_shm_put+0x1c/0x180
-[   12.648715] lr : tee_shm_free+0x10/0x1c
-[   12.648773] sp : ffff80000aa33aa0
-[   12.648822] x29: ffff80000aa33aa0 x28: ffff0000002b7900 x27: ffff80000a2=
-f7750
-[   12.648980] x26: ffff80000aa33cf8 x25: ffff80000a2f76f0 x24: 00000000000=
-00020
-[   12.649088] x23: ffff80000a6b2000 x22: 00000000fffffff3 x21: fffffffffff=
-ffff3
-[   12.649199] x20: fffffffffffffff3 x19: fffffffffffffff3 x18: fffffffffff=
-fffff
-[   12.649307] x17: 62203a6338656334 x16: 623538623931362d x15: 376662612d6=
-23962
-[   12.649414] x14: 342d643566312d37 x13: ffff80000a271ac8 x12: 00000000000=
-00363
-[   12.649523] x11: 0000000000000121 x10: ffff80000a2c9ac8 x9 : ffff80000a2=
-71ac8
-[   12.649667] x8 : 00000000ffffefff x7 : ffff80000a2c9ac8 x6 : 00000000000=
-00000
-[   12.649797] x5 : ffff000041ea0c48 x4 : 0000000000000000 x3 : 00000000000=
-00000
-[   12.649912] x2 : 0000000000000000 x1 : 0000000000000000 x0 : fffffffffff=
-ffff3
-[   12.650074] Call trace:
-[   12.650212]  tee_shm_put+0x1c/0x180
-[   12.650361]  tee_shm_free+0x10/0x1c
-[   12.650437]  trusted_tee_seal+0xf4/0x17c
-[   12.650503]  trusted_instantiate+0x16c/0x1fc
-[   12.650564]  __key_instantiate_and_link+0x60/0x1f8
-[   12.650629]  __key_create_or_update+0x2a4/0x460
-[   12.650691]  key_create_or_update+0x14/0x20
-[   12.650757]  __arm64_sys_add_key+0xe4/0x244
-[   12.650822]  invoke_syscall+0x48/0x114
-[   12.650886]  el0_svc_common.constprop.0+0x44/0xf4
-[   12.650958]  do_el0_svc+0x3c/0xa8
-[   12.651015]  el0_svc+0x2c/0x84
-[   12.651074]  el0t_64_sync_handler+0xbc/0x138
-[   12.651144]  el0t_64_sync+0x190/0x194
-[   12.651341] Code: a90153f3 aa0003f4 aa0003f3 a9025bf5 (f8438680)
-[   12.651654] ---[ end trace 0000000000000000 ]---
-Segmentation fault
 
-So clearly something needs to be done since there's a bug in the error path=
-.
+I would rather suggest we add a workaround to
+tee_shm_register_kernel_buf() in a similar manner as we did for the
+user-space client library.
 
-I'm not overly concerned about the overhead with memcpy(), since we're
-using relatively small buffers. Kernel clients using large buffers
-will need a different approach, for example by using page-aligned
-buffers.
-
-Thanks,
-Jens
+-Sumit
 
 >
 > Thanks,
