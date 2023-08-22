@@ -2,215 +2,121 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 849AD783EB9
-	for <lists+keyrings@lfdr.de>; Tue, 22 Aug 2023 13:29:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C3A0783F6D
+	for <lists+keyrings@lfdr.de>; Tue, 22 Aug 2023 13:37:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234698AbjHVL3u (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 22 Aug 2023 07:29:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34662 "EHLO
+        id S235048AbjHVLhe (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 22 Aug 2023 07:37:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234178AbjHVL3u (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Aug 2023 07:29:50 -0400
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60630CCA
-        for <keyrings@vger.kernel.org>; Tue, 22 Aug 2023 04:29:48 -0700 (PDT)
-Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-68a56401b9aso1237697b3a.1
-        for <keyrings@vger.kernel.org>; Tue, 22 Aug 2023 04:29:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692703788; x=1693308588;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=szLSlXd58emzvGh8mLFeeSOG7azUQ2dbDCLE1VrpSi8=;
-        b=MNVyX++Pi1Qqq5D2G2XGu2193X1/nJCr3llMVnAasCgdp1Y3KXWhDwOas9WrhPkgiR
-         kYsBD/GDVik/F40EF2Kaqm1YlN9AcZDK7m+JxHbGyBUI3vvmNNQ8P+z27boXH5ke3726
-         CrUoYxIwGiIx+9ZZpJdiZBGjIkTQulITi8+m97rj+IaFZhmgWyqb9KDF59MobvT+jwaT
-         BDLQLAI3+OPuCA5uxSZVD1Zm4eMvbkViwSaEuZ5/NB04eVSIhHwhA9ITC5aTVeLm6C2+
-         1YlPwIecnhWEqcuYr3qAsXecLa73yey8c46Yl5N/kKOUBA99nV/TSRUPJBiDI8prFg44
-         b8GQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692703788; x=1693308588;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=szLSlXd58emzvGh8mLFeeSOG7azUQ2dbDCLE1VrpSi8=;
-        b=V1Kmk2yMIrCmkZokEFD3cJHQMSAOncvCz2pqhj3bivdhhx+8gXm9lsQcjNoNF16ufH
-         i73k4Fm5YdFIwtTWYJKMTNhkNJ/oQkfrabjccdMdH+zr9j0v4l28xfBo/ii2aXmYUVKF
-         y2iXRdS/8dxcmgDM9ZddxAtakp1wrcJHtLtCQCFPBbR5GpsBMez9C8n0QHXGZ07KC4FU
-         ZN5jfCBKbtS6bCBg0jTcmYEECt/cbh/mdGfonU3B2P76gcfiVG2PnjIX6s1JJyxqTzZO
-         vVGwZUH+z+bYPp8pF7A5mGTpfZjbHCc7N5IsSfRQk2orJatDQNG8B+P+MOLSHFhESotq
-         cDNQ==
-X-Gm-Message-State: AOJu0Yx7K/7pSfcY00O/kE7UO7zhsC9o+2Q094uFRBJDaza6/MAai/+i
-        1nAR4BN7MkX76lyU3Q7UiKpfiA==
-X-Google-Smtp-Source: AGHT+IFLudj39a+9uK4O+uYImTS+YlROqQRgNV0sWtoLRFSsiWqKOuO3x1yGdd17axNIUd9KOE8JJw==
-X-Received: by 2002:a05:6a00:1a88:b0:686:2b60:3348 with SMTP id e8-20020a056a001a8800b006862b603348mr7632147pfv.21.1692703787790;
-        Tue, 22 Aug 2023 04:29:47 -0700 (PDT)
-Received: from sumit-X1.. ([223.178.211.170])
-        by smtp.gmail.com with ESMTPSA id k26-20020aa792da000000b006878cc942f1sm7657984pfa.54.2023.08.22.04.29.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Aug 2023 04:29:47 -0700 (PDT)
-From:   Sumit Garg <sumit.garg@linaro.org>
-To:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org
-Cc:     jarkko@kernel.org, jejb@linux.ibm.com, zohar@linux.ibm.com,
-        jens.wiklander@linaro.org, sudeep.holla@arm.com,
-        achin.gupta@arm.com, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Sumit Garg <sumit.garg@linaro.org>
-Subject: [PATCH] KEYS: trusted: tee: Refactor register SHM usage
-Date:   Tue, 22 Aug 2023 16:59:33 +0530
-Message-Id: <20230822112933.1550062-1-sumit.garg@linaro.org>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S235042AbjHVLhe (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Aug 2023 07:37:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D50BAE48;
+        Tue, 22 Aug 2023 04:37:08 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AAC8E63947;
+        Tue, 22 Aug 2023 11:36:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3CCC433C8;
+        Tue, 22 Aug 2023 11:36:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692704173;
+        bh=rtbXAUHs4eziMmqAG9tW4y9vxZhlvZFdLM9Z/foEZug=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=EDbYlHNxkQvnIgXHHwZUzfHhFuPWA8J+/4gl+kTKaFXiXznllm41HHn/cBiVQ4wGq
+         0sZem5c9Pef0mAeRoDT/Pq4f+n4TBKOsVwKHWH9ztOKVL2rYTv+rlKc7LmEi9a0J76
+         5LfGdmmWn5OkVfojGLsmDJajwyQPPCgrUvu3MHQfGtpA0uwXcqS6LnFU1VBr3q7fT/
+         68O/qc8PIf+sI9u35db6yjMEq+GBVAfdGISESQPAfE3pwTF0TwVox0eCmw1tg9Rb5k
+         /oGu8xzstIAzullMVOWwFXAo9a/GL0VVQ4s0omJB841W/s+uynnlEZzomH+vqqWrjL
+         yoGRt9Bk4cPgw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Tue, 22 Aug 2023 14:36:10 +0300
+Message-Id: <CUZ1JSW865LV.2LMR3F0UJSRWZ@suppilovahvero>
+Cc:     <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] X.509: if signature is unsupported skip validation
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Thore Sommer" <public@thson.de>, <dhowells@redhat.com>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>
+X-Mailer: aerc 0.14.0
+References: <20230815112942.392572-1-public@thson.de>
+ <CUU9O4ZKMDAV.20Q9VINXK6DI0@suppilovahvero>
+ <03cfdcc9-716f-4690-b400-c8da59ca1ef6@thson.de>
+In-Reply-To: <03cfdcc9-716f-4690-b400-c8da59ca1ef6@thson.de>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The OP-TEE driver using the old SMC based ABI permits overlapping shared
-buffers, but with the new FF-A based ABI each physical page may only
-be registered once.
+On Mon Aug 21, 2023 at 1:30 PM EEST, Thore Sommer wrote:
+> On 16.08.23 23:54, Jarkko Sakkinen wrote:
+> > On Tue Aug 15, 2023 at 2:29 PM EEST, Thore Sommer wrote:
+> >> When the hash algorithm for the signature is not available the digest =
+size
+> >> is 0 and the signature in the certificate is marked as unsupported.
+> >>
+> >> When validating a self-signed certificate, this needs to be checked,
+> >> because otherwise trying to validate the signature will fail with an
+> >> warning:
+> >>
+> >> Loading compiled-in X.509 certificates
+> >> WARNING: CPU: 0 PID: 1 at crypto/rsa-pkcs1pad.c:537 \
+> >> pkcs1pad_verify+0x46/0x12c
+> >> ...
+> >> Problem loading in-kernel X.509 certificate (-22)
+> >>
+> >> Signed-off-by: Thore Sommer <public@thson.de>
+> >> ---
+> >>   crypto/asymmetric_keys/x509_public_key.c | 5 +++++
+> >>   1 file changed, 5 insertions(+)
+> >>
+> >> diff --git a/crypto/asymmetric_keys/x509_public_key.c b/crypto/asymmet=
+ric_keys/x509_public_key.c
+> >> index 6fdfc82e23a8..7c71db3ac23d 100644
+> >> --- a/crypto/asymmetric_keys/x509_public_key.c
+> >> +++ b/crypto/asymmetric_keys/x509_public_key.c
+> >> @@ -130,6 +130,11 @@ int x509_check_for_self_signed(struct x509_certif=
+icate *cert)
+> >>   			goto out;
+> >>   	}
+> >>  =20
+> >> +	if (cert->unsupported_sig) {
+> >> +		ret =3D 0;
+> >> +		goto out;
+> >> +	}
+> >> +
+> >>   	ret =3D public_key_verify_signature(cert->pub, cert->sig);
+> >>   	if (ret < 0) {
+> >>   		if (ret =3D=3D -ENOPKG) {
+> >> --=20
+> >> 2.41.0
+> >=20
+> > Should have:
+> >=20
+> > Cc: stable@vger.kernel.org # v4.7+
+> > Fixes: 6c2dc5ae4ab7 ("X.509: Extract signature digest and make self-sig=
+ned cert checks earlier")
+> >=20
+> > BR, Jarkko
+>
+> Hi Jarkko,
+>
+> should I resend it with the stable mailing list in CC or will it be=20
+> added when a maintainer includes the change?
 
-As the key and blob buffer are allocated adjancently, there is no need
-for redundant register shared memory invocation. Also, it is incompatibile
-with FF-A based ABI limitation. So refactor register shared memory
-implementation to use only single invocation to register both key and blob
-buffers.
+AFAIK the correct tags, and automation takes care of the rest.
 
-Fixes: 4615e5a34b95 ("optee: add FF-A support")
-Reported-by: Jens Wiklander <jens.wiklander@linaro.org>
-Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
----
- security/keys/trusted-keys/trusted_tee.c | 64 ++++++++----------------
- 1 file changed, 20 insertions(+), 44 deletions(-)
+If there is a merge conflict to some stable branch, the bots will call
+back to you :-)
 
-diff --git a/security/keys/trusted-keys/trusted_tee.c b/security/keys/trusted-keys/trusted_tee.c
-index ac3e270ade69..aa3d477de6db 100644
---- a/security/keys/trusted-keys/trusted_tee.c
-+++ b/security/keys/trusted-keys/trusted_tee.c
-@@ -65,24 +65,16 @@ static int trusted_tee_seal(struct trusted_key_payload *p, char *datablob)
- 	int ret;
- 	struct tee_ioctl_invoke_arg inv_arg;
- 	struct tee_param param[4];
--	struct tee_shm *reg_shm_in = NULL, *reg_shm_out = NULL;
-+	struct tee_shm *reg_shm = NULL;
- 
- 	memset(&inv_arg, 0, sizeof(inv_arg));
- 	memset(&param, 0, sizeof(param));
- 
--	reg_shm_in = tee_shm_register_kernel_buf(pvt_data.ctx, p->key,
--						 p->key_len);
--	if (IS_ERR(reg_shm_in)) {
--		dev_err(pvt_data.dev, "key shm register failed\n");
--		return PTR_ERR(reg_shm_in);
--	}
--
--	reg_shm_out = tee_shm_register_kernel_buf(pvt_data.ctx, p->blob,
--						  sizeof(p->blob));
--	if (IS_ERR(reg_shm_out)) {
--		dev_err(pvt_data.dev, "blob shm register failed\n");
--		ret = PTR_ERR(reg_shm_out);
--		goto out;
-+	reg_shm = tee_shm_register_kernel_buf(pvt_data.ctx, p->key,
-+					      sizeof(p->key) + sizeof(p->blob));
-+	if (IS_ERR(reg_shm)) {
-+		dev_err(pvt_data.dev, "shm register failed\n");
-+		return PTR_ERR(reg_shm);
- 	}
- 
- 	inv_arg.func = TA_CMD_SEAL;
-@@ -90,13 +82,13 @@ static int trusted_tee_seal(struct trusted_key_payload *p, char *datablob)
- 	inv_arg.num_params = 4;
- 
- 	param[0].attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INPUT;
--	param[0].u.memref.shm = reg_shm_in;
-+	param[0].u.memref.shm = reg_shm;
- 	param[0].u.memref.size = p->key_len;
- 	param[0].u.memref.shm_offs = 0;
- 	param[1].attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_OUTPUT;
--	param[1].u.memref.shm = reg_shm_out;
-+	param[1].u.memref.shm = reg_shm;
- 	param[1].u.memref.size = sizeof(p->blob);
--	param[1].u.memref.shm_offs = 0;
-+	param[1].u.memref.shm_offs = sizeof(p->key);
- 
- 	ret = tee_client_invoke_func(pvt_data.ctx, &inv_arg, param);
- 	if ((ret < 0) || (inv_arg.ret != 0)) {
-@@ -107,11 +99,7 @@ static int trusted_tee_seal(struct trusted_key_payload *p, char *datablob)
- 		p->blob_len = param[1].u.memref.size;
- 	}
- 
--out:
--	if (reg_shm_out)
--		tee_shm_free(reg_shm_out);
--	if (reg_shm_in)
--		tee_shm_free(reg_shm_in);
-+	tee_shm_free(reg_shm);
- 
- 	return ret;
- }
-@@ -124,24 +112,16 @@ static int trusted_tee_unseal(struct trusted_key_payload *p, char *datablob)
- 	int ret;
- 	struct tee_ioctl_invoke_arg inv_arg;
- 	struct tee_param param[4];
--	struct tee_shm *reg_shm_in = NULL, *reg_shm_out = NULL;
-+	struct tee_shm *reg_shm = NULL;
- 
- 	memset(&inv_arg, 0, sizeof(inv_arg));
- 	memset(&param, 0, sizeof(param));
- 
--	reg_shm_in = tee_shm_register_kernel_buf(pvt_data.ctx, p->blob,
--						 p->blob_len);
--	if (IS_ERR(reg_shm_in)) {
--		dev_err(pvt_data.dev, "blob shm register failed\n");
--		return PTR_ERR(reg_shm_in);
--	}
--
--	reg_shm_out = tee_shm_register_kernel_buf(pvt_data.ctx, p->key,
--						  sizeof(p->key));
--	if (IS_ERR(reg_shm_out)) {
--		dev_err(pvt_data.dev, "key shm register failed\n");
--		ret = PTR_ERR(reg_shm_out);
--		goto out;
-+	reg_shm = tee_shm_register_kernel_buf(pvt_data.ctx, p->key,
-+					      sizeof(p->key) + sizeof(p->blob));
-+	if (IS_ERR(reg_shm)) {
-+		dev_err(pvt_data.dev, "shm register failed\n");
-+		return PTR_ERR(reg_shm);
- 	}
- 
- 	inv_arg.func = TA_CMD_UNSEAL;
-@@ -149,11 +129,11 @@ static int trusted_tee_unseal(struct trusted_key_payload *p, char *datablob)
- 	inv_arg.num_params = 4;
- 
- 	param[0].attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INPUT;
--	param[0].u.memref.shm = reg_shm_in;
-+	param[0].u.memref.shm = reg_shm;
- 	param[0].u.memref.size = p->blob_len;
--	param[0].u.memref.shm_offs = 0;
-+	param[0].u.memref.shm_offs = sizeof(p->key);
- 	param[1].attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_OUTPUT;
--	param[1].u.memref.shm = reg_shm_out;
-+	param[1].u.memref.shm = reg_shm;
- 	param[1].u.memref.size = sizeof(p->key);
- 	param[1].u.memref.shm_offs = 0;
- 
-@@ -166,11 +146,7 @@ static int trusted_tee_unseal(struct trusted_key_payload *p, char *datablob)
- 		p->key_len = param[1].u.memref.size;
- 	}
- 
--out:
--	if (reg_shm_out)
--		tee_shm_free(reg_shm_out);
--	if (reg_shm_in)
--		tee_shm_free(reg_shm_in);
-+	tee_shm_free(reg_shm);
- 
- 	return ret;
- }
--- 
-2.34.1
-
+BR, Jarkko
