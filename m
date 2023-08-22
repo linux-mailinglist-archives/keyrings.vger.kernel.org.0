@@ -2,69 +2,59 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F7B678414B
-	for <lists+keyrings@lfdr.de>; Tue, 22 Aug 2023 14:56:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B4127841FB
+	for <lists+keyrings@lfdr.de>; Tue, 22 Aug 2023 15:25:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235826AbjHVM4C (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 22 Aug 2023 08:56:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47666 "EHLO
+        id S232088AbjHVNZr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 22 Aug 2023 09:25:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235869AbjHVM4B (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Aug 2023 08:56:01 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FFDACD6
-        for <keyrings@vger.kernel.org>; Tue, 22 Aug 2023 05:55:59 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-50087d47d4dso1823806e87.1
-        for <keyrings@vger.kernel.org>; Tue, 22 Aug 2023 05:55:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692708957; x=1693313757;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3KoBISRC3A8VLVGCVV3tR+5wTWoeEGilZejzXYvgBsw=;
-        b=klsqRMhpdt6ISIYJ5BIId/pjYf4AJhUg8yoLERaflRX7km1el7e1Yj7IDwYT80ZlBC
-         I3mIqF60sgKckN7MPyYZTlWgIFqMpZVcHNnL96kgrSdqphWzWvwTqbvNsa3if+r/9Kj3
-         RRAEBABne5eIaRv9G+4O6jcBaxfKEDoS5yjyuMUg+z9fFGygp/XD1vP4IqR8XlaoLy5T
-         Ww7JqjqAjMrV8zsEDuZYMmMhtgDGPoGKBXWt4ce05noLWA2RvnWmwj6wsP0dRhMBnB99
-         kIlEuBEH8xFuar2+TCgALctxvhcQue7PxbJacjfoRWVmLH+/xLwBSnRBpiqcjrUtOFTj
-         CWmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692708957; x=1693313757;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3KoBISRC3A8VLVGCVV3tR+5wTWoeEGilZejzXYvgBsw=;
-        b=Q6esovsRQzzS+qFTt4Z/VnGdt+CtiUNeVMzH6jsHvum8vty8gHuzvXXvoWl8AgU5mW
-         9Bk7LbI311IImmeqU19qTDbgf/7Xw73/1VhYdbPH25uC5jOMqTzyxDVxS6KhUySTJqRd
-         iINS/MUQbXe72uLcUE4wFe4QBfswzMXqEBQhCQu9/qVPC/3YaKeP1CGNOmOY/3c9yX9O
-         T1UnjfnoBsXSIkxhISQPH+DKq5cKXNeQ7xQRlkivBwcXcFXM2WmmC/VBip1UqqHRiMFu
-         UJg53BSWIr6yp09auLaC1lrq0e5sf/83hiC8OvQFalObkVoR2iGyW3hjXFAqdPXrHbbe
-         AyYg==
-X-Gm-Message-State: AOJu0Yz5h5MEDvM8AvTaJO93gUAtTLjUdob1xDiU0eVCH32WEKDpK9I2
-        32GU3Up2fV2IpOqcrC9JEFmPcw==
-X-Google-Smtp-Source: AGHT+IFNBk+xnnpO2QNBmcgZSn1n7BzTLOXF8Qc/I/E/+r68TpKnLhsmXBDnYmr83wQR1A3UgKlg5w==
-X-Received: by 2002:a05:6512:1192:b0:4fc:265d:fc62 with SMTP id g18-20020a056512119200b004fc265dfc62mr9122363lfr.18.1692708957360;
-        Tue, 22 Aug 2023 05:55:57 -0700 (PDT)
-Received: from rayden (h-46-59-78-111.A175.priv.bahnhof.se. [46.59.78.111])
-        by smtp.gmail.com with ESMTPSA id p6-20020a19f006000000b004fdb913af80sm2185580lfc.209.2023.08.22.05.55.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Aug 2023 05:55:56 -0700 (PDT)
-Date:   Tue, 22 Aug 2023 14:55:55 +0200
-From:   Jens Wiklander <jens.wiklander@linaro.org>
-To:     Sumit Garg <sumit.garg@linaro.org>
-Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        jarkko@kernel.org, jejb@linux.ibm.com, zohar@linux.ibm.com,
-        sudeep.holla@arm.com, achin.gupta@arm.com,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] KEYS: trusted: tee: Refactor register SHM usage
-Message-ID: <20230822125555.GA82256@rayden>
-References: <20230822112933.1550062-1-sumit.garg@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230822112933.1550062-1-sumit.garg@linaro.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        with ESMTP id S236108AbjHVNZq (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 22 Aug 2023 09:25:46 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E55F0BE;
+        Tue, 22 Aug 2023 06:25:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 77A1A61083;
+        Tue, 22 Aug 2023 13:25:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55180C433C8;
+        Tue, 22 Aug 2023 13:25:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692710741;
+        bh=dafa/FkbagFfW/Wg2rtYYk5Ab81iW7YdXDqOrQLAT4I=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=hFZThr2ocn7V7tRa0MewY+oDcibf1WdD0I6t9e1cQaJOMfIYBBnmTZhsVTdDLTYLO
+         w+XVfdNRrmyDiscucZCzYR1F00DOIxPUhlBWhIjbJdyIKw5Kts3UuPSVBZ210WuiTG
+         mwlpE+kOC+dHsKUvA3hZh0QPTn3Gq16lJyLbcby2jz2TwQm6Bar7Fl+qllNQMlIABr
+         kpaazCpPqSGBWp76JDC2gxh/jFHq9dFo0WkrrwndllADwxhlYkcXiI5SxxYm0wJ7qV
+         vP5KefSxtriiTs0liOCgA/58y+SsZH1eXhNv8fBs2YoJQkPBQsGzFS8D+R6BcsZdCJ
+         AGlqWXVCxMClw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Tue, 22 Aug 2023 16:25:37 +0300
+Message-Id: <CUZ3VLLQO2NT.27JTWARP7V32B@suppilovahvero>
+Cc:     <linuxppc-dev@lists.ozlabs.org>, <jonathan.derrick@linux.dev>,
+        <brking@linux.vnet.ibm.com>, <msuchanek@suse.de>,
+        <mpe@ellerman.id.au>, <nayna@linux.ibm.com>, <axboe@kernel.dk>,
+        <akpm@linux-foundation.org>, <keyrings@vger.kernel.org>,
+        <okozina@redhat.com>, <dkeefe@redhat.com>
+Subject: Re: [PATCH v5 0/3 RESEND] sed-opal: keyrings, discovery, revert,
+ key store
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     <gjoyce@linux.vnet.ibm.com>, <linux-block@vger.kernel.org>
+X-Mailer: aerc 0.14.0
+References: <20230721211534.3437070-1-gjoyce@linux.vnet.ibm.com>
+ <46cda90a12da4639d1e65ce82ae342df05b7afc2.camel@linux.vnet.ibm.com>
+ <CUU9DZ1YEZVF.16X1CD7ES1RXD@suppilovahvero>
+ <a232e46bb7b364a6ef7d77aef853d0ddda4e3f2a.camel@linux.vnet.ibm.com>
+In-Reply-To: <a232e46bb7b364a6ef7d77aef853d0ddda4e3f2a.camel@linux.vnet.ibm.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,155 +62,106 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Aug 22, 2023 at 04:59:33PM +0530, Sumit Garg wrote:
-> The OP-TEE driver using the old SMC based ABI permits overlapping shared
-> buffers, but with the new FF-A based ABI each physical page may only
-> be registered once.
-> 
-> As the key and blob buffer are allocated adjancently, there is no need
-> for redundant register shared memory invocation. Also, it is incompatibile
-> with FF-A based ABI limitation. So refactor register shared memory
-> implementation to use only single invocation to register both key and blob
-> buffers.
-> 
-> Fixes: 4615e5a34b95 ("optee: add FF-A support")
-> Reported-by: Jens Wiklander <jens.wiklander@linaro.org>
-> Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-> ---
->  security/keys/trusted-keys/trusted_tee.c | 64 ++++++++----------------
->  1 file changed, 20 insertions(+), 44 deletions(-)
-> 
-> diff --git a/security/keys/trusted-keys/trusted_tee.c b/security/keys/trusted-keys/trusted_tee.c
-> index ac3e270ade69..aa3d477de6db 100644
-> --- a/security/keys/trusted-keys/trusted_tee.c
-> +++ b/security/keys/trusted-keys/trusted_tee.c
-> @@ -65,24 +65,16 @@ static int trusted_tee_seal(struct trusted_key_payload *p, char *datablob)
->  	int ret;
->  	struct tee_ioctl_invoke_arg inv_arg;
->  	struct tee_param param[4];
-> -	struct tee_shm *reg_shm_in = NULL, *reg_shm_out = NULL;
-> +	struct tee_shm *reg_shm = NULL;
->  
->  	memset(&inv_arg, 0, sizeof(inv_arg));
->  	memset(&param, 0, sizeof(param));
->  
-> -	reg_shm_in = tee_shm_register_kernel_buf(pvt_data.ctx, p->key,
-> -						 p->key_len);
-> -	if (IS_ERR(reg_shm_in)) {
-> -		dev_err(pvt_data.dev, "key shm register failed\n");
-> -		return PTR_ERR(reg_shm_in);
-> -	}
-> -
-> -	reg_shm_out = tee_shm_register_kernel_buf(pvt_data.ctx, p->blob,
-> -						  sizeof(p->blob));
-> -	if (IS_ERR(reg_shm_out)) {
-> -		dev_err(pvt_data.dev, "blob shm register failed\n");
-> -		ret = PTR_ERR(reg_shm_out);
-> -		goto out;
-> +	reg_shm = tee_shm_register_kernel_buf(pvt_data.ctx, p->key,
-> +					      sizeof(p->key) + sizeof(p->blob));
+On Mon Aug 21, 2023 at 6:26 PM EEST, Greg Joyce wrote:
+> On Wed, 2023-08-16 at 23:41 +0300, Jarkko Sakkinen wrote:
+> > On Wed Aug 16, 2023 at 10:45 PM EEST, Greg Joyce wrote:
+> > > It's been almost 4 weeks since the last resend and there haven't
+> > > been
+> > > any comments. Is there anything that needs to be changed for
+> > > acceptance?
+> > >=20
+> > > Thanks for your input.
+> > >=20
+> > > Greg
+> > >=20
+> > > On Fri, 2023-07-21 at 16:15 -0500, gjoyce@linux.vnet.ibm.com wrote:
+> > > > From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> > > >=20
+> > > > This patchset has gone through numerous rounds of review and
+> > > > all comments/suggetions have been addressed. The reviews have
+> > > > covered all relevant areas including reviews by block and keyring
+> > > > developers as well as the SED Opal maintainer. The last
+> > > > patchset submission has not solicited any responses in the
+> > > > six weeks since it was last distributed. The changes are
+> > > > generally useful and ready for inclusion.
+> > > >=20
+> > > > TCG SED Opal is a specification from The Trusted Computing Group
+> > > > that allows self encrypting storage devices (SED) to be locked at
+> > > > power on and require an authentication key to unlock the drive.
+> > > >=20
+> > > > The current SED Opal implementation in the block driver
+> > > > requires that authentication keys be provided in an ioctl
+> > > > so that they can be presented to the underlying SED
+> > > > capable drive. Currently, the key is typically entered by
+> > > > a user with an application like sedutil or sedcli. While
+> > > > this process works, it does not lend itself to automation
+> > > > like unlock by a udev rule.
+> > > >=20
+> > > > The SED block driver has been extended so it can alternatively
+> > > > obtain a key from a sed-opal kernel keyring. The SED ioctls
+> > > > will indicate the source of the key, either directly in the
+> > > > ioctl data or from the keyring.
+> > > >=20
+> > > > Two new SED ioctls have also been added. These are:
+> > > >   1) IOC_OPAL_REVERT_LSP to revert LSP state
+> > > >   2) IOC_OPAL_DISCOVERY to discover drive capabilities/state
+> > > >=20
+> > > > change log v5:
+> > > >         - rebase to for-6.5/block
+> > > >=20
+> > > > change log v4:
+> > > >         - rebase to 6.3-rc7
+> > > >         - replaced "255" magic number with U8_MAX
+> > > >=20
+> > > > change log:
+> > > >         - rebase to 6.x
+> > > >         - added latest reviews
+> > > >         - removed platform functions for persistent key storage
+> > > >         - replaced key update logic with key_create_or_update()
+> > > >         - minor bracing and padding changes
+> > > >         - add error returns
+> > > >         - opal_key structure is application provided but kernel
+> > > >           verified
+> > > >         - added brief description of TCG SED Opal
+> > > >=20
+> > > >=20
+> > > > Greg Joyce (3):
+> > > >   block: sed-opal: Implement IOC_OPAL_DISCOVERY
+> > > >   block: sed-opal: Implement IOC_OPAL_REVERT_LSP
+> > > >   block: sed-opal: keyring support for SED keys
+> > > >=20
+> > > >  block/Kconfig                 |   2 +
+> > > >  block/opal_proto.h            |   4 +
+> > > >  block/sed-opal.c              | 252
+> > > > +++++++++++++++++++++++++++++++++-
+> > > >  include/linux/sed-opal.h      |   5 +
+> > > >  include/uapi/linux/sed-opal.h |  25 +++-
+> > > >  5 files changed, 282 insertions(+), 6 deletions(-)
+> > > >=20
+> > > >=20
+> > > > base-commit: 1341c7d2ccf42ed91aea80b8579d35bc1ea381e2
+> >=20
+> > I can give because it looks good to me to all patches:
+> >=20
+> > Acked-by: Jarkko Sakkinen <jarkko@kernel.org>
+> >=20
+> > ... but should not probably go to my tree.
+> >=20
+> > BR, Jarkko
+>
+> Thanks for the ack Jarkko. Any thoughts on which tree it should go to?
 
-This is somewhat fragile. What if struct trusted_key_payload has a small
-unexpected change in layout?
+I get from "scripts/get_maintainer.pl block/sed-opal.c | wl-copy"
 
-Thanks,
-Jens
+Jonathan Derrick <jonathan.derrick@linux.dev> (supporter:SECURE ENCRYPTING =
+DEVICE (SED) OPAL DRIVER)
+Jens Axboe <axboe@kernel.dk> (maintainer:BLOCK LAYER)
+linux-block@vger.kernel.org (open list:SECURE ENCRYPTING DEVICE (SED) OPAL =
+DRIVER)
+linux-kernel@vger.kernel.org (open list)
 
-> +	if (IS_ERR(reg_shm)) {
-> +		dev_err(pvt_data.dev, "shm register failed\n");
-> +		return PTR_ERR(reg_shm);
->  	}
->  
->  	inv_arg.func = TA_CMD_SEAL;
-> @@ -90,13 +82,13 @@ static int trusted_tee_seal(struct trusted_key_payload *p, char *datablob)
->  	inv_arg.num_params = 4;
->  
->  	param[0].attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INPUT;
-> -	param[0].u.memref.shm = reg_shm_in;
-> +	param[0].u.memref.shm = reg_shm;
->  	param[0].u.memref.size = p->key_len;
->  	param[0].u.memref.shm_offs = 0;
->  	param[1].attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_OUTPUT;
-> -	param[1].u.memref.shm = reg_shm_out;
-> +	param[1].u.memref.shm = reg_shm;
->  	param[1].u.memref.size = sizeof(p->blob);
-> -	param[1].u.memref.shm_offs = 0;
-> +	param[1].u.memref.shm_offs = sizeof(p->key);
->  
->  	ret = tee_client_invoke_func(pvt_data.ctx, &inv_arg, param);
->  	if ((ret < 0) || (inv_arg.ret != 0)) {
-> @@ -107,11 +99,7 @@ static int trusted_tee_seal(struct trusted_key_payload *p, char *datablob)
->  		p->blob_len = param[1].u.memref.size;
->  	}
->  
-> -out:
-> -	if (reg_shm_out)
-> -		tee_shm_free(reg_shm_out);
-> -	if (reg_shm_in)
-> -		tee_shm_free(reg_shm_in);
-> +	tee_shm_free(reg_shm);
->  
->  	return ret;
->  }
-> @@ -124,24 +112,16 @@ static int trusted_tee_unseal(struct trusted_key_payload *p, char *datablob)
->  	int ret;
->  	struct tee_ioctl_invoke_arg inv_arg;
->  	struct tee_param param[4];
-> -	struct tee_shm *reg_shm_in = NULL, *reg_shm_out = NULL;
-> +	struct tee_shm *reg_shm = NULL;
->  
->  	memset(&inv_arg, 0, sizeof(inv_arg));
->  	memset(&param, 0, sizeof(param));
->  
-> -	reg_shm_in = tee_shm_register_kernel_buf(pvt_data.ctx, p->blob,
-> -						 p->blob_len);
-> -	if (IS_ERR(reg_shm_in)) {
-> -		dev_err(pvt_data.dev, "blob shm register failed\n");
-> -		return PTR_ERR(reg_shm_in);
-> -	}
-> -
-> -	reg_shm_out = tee_shm_register_kernel_buf(pvt_data.ctx, p->key,
-> -						  sizeof(p->key));
-> -	if (IS_ERR(reg_shm_out)) {
-> -		dev_err(pvt_data.dev, "key shm register failed\n");
-> -		ret = PTR_ERR(reg_shm_out);
-> -		goto out;
-> +	reg_shm = tee_shm_register_kernel_buf(pvt_data.ctx, p->key,
-> +					      sizeof(p->key) + sizeof(p->blob));
-> +	if (IS_ERR(reg_shm)) {
-> +		dev_err(pvt_data.dev, "shm register failed\n");
-> +		return PTR_ERR(reg_shm);
->  	}
->  
->  	inv_arg.func = TA_CMD_UNSEAL;
-> @@ -149,11 +129,11 @@ static int trusted_tee_unseal(struct trusted_key_payload *p, char *datablob)
->  	inv_arg.num_params = 4;
->  
->  	param[0].attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INPUT;
-> -	param[0].u.memref.shm = reg_shm_in;
-> +	param[0].u.memref.shm = reg_shm;
->  	param[0].u.memref.size = p->blob_len;
-> -	param[0].u.memref.shm_offs = 0;
-> +	param[0].u.memref.shm_offs = sizeof(p->key);
->  	param[1].attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_OUTPUT;
-> -	param[1].u.memref.shm = reg_shm_out;
-> +	param[1].u.memref.shm = reg_shm;
->  	param[1].u.memref.size = sizeof(p->key);
->  	param[1].u.memref.shm_offs = 0;
->  
-> @@ -166,11 +146,7 @@ static int trusted_tee_unseal(struct trusted_key_payload *p, char *datablob)
->  		p->key_len = param[1].u.memref.size;
->  	}
->  
-> -out:
-> -	if (reg_shm_out)
-> -		tee_shm_free(reg_shm_out);
-> -	if (reg_shm_in)
-> -		tee_shm_free(reg_shm_in);
-> +	tee_shm_free(reg_shm);
->  
->  	return ret;
->  }
-> -- 
-> 2.34.1
-> 
+You should probably add the corresponding maintainers and linux-block to
+the loop. I suggest to send a new version of the patch set with my ack's
+added to the patches.
+
+BR, Jarkko
