@@ -2,34 +2,59 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29B2478855A
-	for <lists+keyrings@lfdr.de>; Fri, 25 Aug 2023 13:05:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 889A17894D9
+	for <lists+keyrings@lfdr.de>; Sat, 26 Aug 2023 10:38:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239618AbjHYLFX (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 25 Aug 2023 07:05:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56246 "EHLO
+        id S229550AbjHZIiR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 26 Aug 2023 04:38:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242916AbjHYLFQ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 25 Aug 2023 07:05:16 -0400
+        with ESMTP id S231818AbjHZIiC (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 26 Aug 2023 04:38:02 -0400
 Received: from 167-179-156-38.a7b39c.syd.nbn.aussiebb.net (167-179-156-38.a7b39c.syd.nbn.aussiebb.net [167.179.156.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E41C919BA;
-        Fri, 25 Aug 2023 04:05:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C53A4213A;
+        Sat, 26 Aug 2023 01:37:56 -0700 (PDT)
 Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
         by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-        id 1qZUcd-007iZ5-EO; Fri, 25 Aug 2023 19:05:00 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 25 Aug 2023 19:05:00 +0800
-Date:   Fri, 25 Aug 2023 19:05:00 +0800
+        id 1qZomd-007ymm-Rh; Sat, 26 Aug 2023 16:36:40 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 26 Aug 2023 16:36:41 +0800
+Date:   Sat, 26 Aug 2023 16:36:41 +0800
 From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Thore Sommer <public@thson.de>
-Cc:     dhowells@redhat.com, davem@davemloft.net, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] X.509: if signature is unsupported skip validation
-Message-ID: <ZOiK3Cn6mn6b63x+@gondor.apana.org.au>
-References: <20230815112942.392572-1-public@thson.de>
+To:     kernel test robot <lkp@intel.com>
+Cc:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Eric Biggers <ebiggers@kernel.org>,
+        "Theodore Y.Ts'o" <tytso@mit.edu>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        linux-fscrypt@vger.kernel.org, Richard Weinberger <richard@nod.at>,
+        linux-mtd@lists.infradead.org,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        linux-bluetooth@vger.kernel.org, Ilya Dryomov <idryomov@gmail.com>,
+        Xiubo Li <xiubli@redhat.com>, Jeff Layton <jlayton@kernel.org>,
+        ceph-devel@vger.kernel.org,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-wireless@vger.kernel.org,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Mat Martineau <martineau@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        Neil Brown <neilb@suse.de>, linux-nfs@vger.kernel.org,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        linux-inte@web.codeaurora.org, grity@vger.kernel.org,
+        "Jason A.Donenfeld" <Jason@zx2c4.com>,
+        Ayush Sawal <ayush.sawal@chelsio.com>, llvm@lists.linux.dev,
+        oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org
+Subject: [PATCH] KEYS: Include linux/errno.h in linux/verification.h
+Message-ID: <ZOm5mX0+oUGzO3xh@gondor.apana.org.au>
+References: <E1qYl9s-006vDm-IW@formenos.hmeau.com>
+ <202308261414.HKw1Mrip-lkp@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230815112942.392572-1-public@thson.de>
+In-Reply-To: <202308261414.HKw1Mrip-lkp@intel.com>
 X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_00,HELO_DYNAMIC_IPADDR2,
         PDS_RDNS_DYNAMIC_FP,RCVD_IN_DNSWL_BLOCKED,RDNS_DYNAMIC,SPF_HELO_NONE,
         SPF_PASS,TVD_RCVD_IP autolearn=no autolearn_force=no version=3.4.6
@@ -40,26 +65,34 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Aug 15, 2023 at 02:29:42PM +0300, Thore Sommer wrote:
-> When the hash algorithm for the signature is not available the digest size
-> is 0 and the signature in the certificate is marked as unsupported.
+On Sat, Aug 26, 2023 at 02:58:48PM +0800, kernel test robot wrote:
+>
+> All errors (new ones prefixed by >>):
 > 
-> When validating a self-signed certificate, this needs to be checked,
-> because otherwise trying to validate the signature will fail with an
-> warning:
-> 
-> Loading compiled-in X.509 certificates
-> WARNING: CPU: 0 PID: 1 at crypto/rsa-pkcs1pad.c:537 \
-> pkcs1pad_verify+0x46/0x12c
-> ...
-> Problem loading in-kernel X.509 certificate (-22)
-> 
-> Signed-off-by: Thore Sommer <public@thson.de>
-> ---
->  crypto/asymmetric_keys/x509_public_key.c | 5 +++++
->  1 file changed, 5 insertions(+)
+>    In file included from fs/ubifs/auth.c:12:
+> >> include/linux/verification.h:23:11: error: use of undeclared identifier 'EINVAL'
 
-Patch applied.  Thanks.
+---8<---
+Add inclusion of linux/errno.h as otherwise the reference to EINVAL
+may be invalid.
+
+Fixes: f3cf4134c5c6 ("bpf: Add bpf_lookup_*_key() and bpf_key_put() kfuncs")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202308261414.HKw1Mrip-lkp@intel.com/
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+
+diff --git a/include/linux/verification.h b/include/linux/verification.h
+index f34e50ebcf60..cb2d47f28091 100644
+--- a/include/linux/verification.h
++++ b/include/linux/verification.h
+@@ -8,6 +8,7 @@
+ #ifndef _LINUX_VERIFICATION_H
+ #define _LINUX_VERIFICATION_H
+ 
++#include <linux/errno.h>
+ #include <linux/types.h>
+ 
+ /*
 -- 
 Email: Herbert Xu <herbert@gondor.apana.org.au>
 Home Page: http://gondor.apana.org.au/~herbert/
