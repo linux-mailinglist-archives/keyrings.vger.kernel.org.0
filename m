@@ -2,91 +2,193 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5837E790DC8
-	for <lists+keyrings@lfdr.de>; Sun,  3 Sep 2023 21:40:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96B9979183C
+	for <lists+keyrings@lfdr.de>; Mon,  4 Sep 2023 15:35:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233459AbjICTkC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 3 Sep 2023 15:40:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60444 "EHLO
+        id S231962AbjIDNfL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 4 Sep 2023 09:35:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232584AbjICTkC (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 3 Sep 2023 15:40:02 -0400
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB3C994
-        for <keyrings@vger.kernel.org>; Sun,  3 Sep 2023 12:39:58 -0700 (PDT)
-Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-31f2f43d5a0so698896f8f.1
-        for <keyrings@vger.kernel.org>; Sun, 03 Sep 2023 12:39:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693769997; x=1694374797; darn=vger.kernel.org;
-        h=reply-to:date:from:to:subject:content-description
-         :content-transfer-encoding:mime-version:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v0CQhxFPixHFd1Efr5gk68vD9XypjiOct/BzdYlXpMQ=;
-        b=T11IszA4873lnkn9aDdsdQdFZ5cUG1B166RBLzcNmA13K6IAXNh/8c/Dbaa2YFxOiR
-         9pct5hFe5M0zZPQHHsNVkSR27cHKNmHX9pSNIgtvTLJawoe1aU6/rL4yGRTeu9uHoRO7
-         ZgwOkoZoWJpXSBLXfHnFJ1LSkHP3UzK8Nm3pLGZRbNvgy8psUotZKUM2xnZYjT+zl2Ve
-         RwcddWOy5/yRBkEeZmg79YhF45uUp7qPok/RPEYnviLuKAFgFH7nMC0xPxKFA0Ma8Qrj
-         CVc94xOWgKo41GJxH9yTYApIAk0S8OOEeaULzXuurgpNT0DvAiEGSmRlzEndpaNK/Nwr
-         aoOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693769997; x=1694374797;
-        h=reply-to:date:from:to:subject:content-description
-         :content-transfer-encoding:mime-version:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v0CQhxFPixHFd1Efr5gk68vD9XypjiOct/BzdYlXpMQ=;
-        b=Ts5zbK7YWTzgl7jDyo1I8007sWNZgtI0lxJWVjqmCxcjVaYIQg+vyFmVhM5qhq1fXP
-         DVupOsiM86P/yRsTYaZhsmJAZPqckmx36a9oMtC8J4qvrHW1jnb6CGgx+47tHz4peMxU
-         xSy5cfxM6aQacQAGA5IRHj0e1f0RlzKj5lnEcv/8kXQ6w821B0WyWItqYwcraRDm4rzZ
-         PM7m7JSjy2ew/INmr0xmKRUEoPJueRxWCzQDv2gKb1BUbVLkUa+NbyYVTkyGYlhsAtMw
-         +40mACcUO6K0r+udyE3NyiTfAcpnYF6eBV89KAuA97PV2nrcMhB3YNIqg89OaX8QKpyO
-         84qA==
-X-Gm-Message-State: AOJu0YyMKSIW6fgTOl9pWdzA4ojFAs0Rbs0eGaTFA93lbppRAUY73xKC
-        7o5bD3kNe9uZCiUspGuUto08aRtFJ15UwA==
-X-Google-Smtp-Source: AGHT+IFF1kIaTupYLuqNWBoj0mRKih8WbpXDj9BYHWLdxcijX4cofCUyR6AdH7stESGEyLzt2lmuxg==
-X-Received: by 2002:adf:e485:0:b0:31a:d7fc:28f with SMTP id i5-20020adfe485000000b0031ad7fc028fmr6376330wrm.19.1693769997045;
-        Sun, 03 Sep 2023 12:39:57 -0700 (PDT)
-Received: from [10.29.137.43] ([105.113.64.43])
-        by smtp.gmail.com with ESMTPSA id p15-20020a5d68cf000000b0031416362e23sm12587395wrw.3.2023.09.03.12.39.55
-        for <keyrings@vger.kernel.org>
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Sun, 03 Sep 2023 12:39:56 -0700 (PDT)
-Message-ID: <64f4e10c.5d0a0220.c0fd9.7ab3@mx.google.com>
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S230201AbjIDNfL (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 4 Sep 2023 09:35:11 -0400
+Received: from frasgout12.his.huawei.com (unknown [14.137.139.154])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59898CD7;
+        Mon,  4 Sep 2023 06:35:07 -0700 (PDT)
+Received: from mail02.huawei.com (unknown [172.18.147.228])
+        by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4RfTlp3Qxxz9xGZC;
+        Mon,  4 Sep 2023 21:20:38 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.204.63.22])
+        by APP1 (Coremail) with SMTP id LxC2BwDHerrf3PVkUqceAg--.16511S2;
+        Mon, 04 Sep 2023 14:34:37 +0100 (CET)
+From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
+To:     viro@zeniv.linux.org.uk, brauner@kernel.org,
+        chuck.lever@oracle.com, jlayton@kernel.org, neilb@suse.de,
+        kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com,
+        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        dhowells@redhat.com, jarkko@kernel.org,
+        stephen.smalley.work@gmail.com, eparis@parisplace.org,
+        casey@schaufler-ca.com
+Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-nfs@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        selinux@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
+Subject: [PATCH v3 00/25] security: Move IMA and EVM to the LSM infrastructure
+Date:   Mon,  4 Sep 2023 15:33:50 +0200
+Message-Id: <20230904133415.1799503-1-roberto.sassu@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: FROM LEGAL DEPARTMENT, THIS IS DEADLNE
-To:     keyrings@vger.kernel.org
-From:   "LEGAL  DEPT. X" <akamadavidson@gmail.com>
-Date:   Sun, 03 Sep 2023 12:39:51 -0700
-Reply-To: info658@daum.net
-X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,HK_SCAM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,SUBJ_ALL_CAPS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: LxC2BwDHerrf3PVkUqceAg--.16511S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxKF4xKr18uw15CrWrAr47Arb_yoW7ZFWUpF
+        sIga15JrykJFy7WrWfAF4xuF4SgFWrWrWUJrsxGry0y3Z0yr1FqFWjyryrury5GFW8Xr1v
+        q3W2v398ur1qvFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+        xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
+        AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+        x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+        0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IY
+        c2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s
+        026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF
+        0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0x
+        vE42xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2
+        jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UAkuxUUUUU=
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQAKBF1jj5OBUQABs8
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,KHOP_HELO_FCRDNS,
+        RDNS_DYNAMIC,SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-With Due Respected Sir,
-Noted  this   why is like this   people  attacks  good things and trying di=
-storting image of good ones and bank. if your compensation  payment-of two =
-millions dollars if is Not reality here   I will not be contacting you, you=
-r funds is reality if you complete the legal needed-full things  here count=
- us your funds will be release to you by online account in next 48 hours  t=
-hrough your local bank which you will do the transfer by yourself or we  he=
-lp and transfer it, Respected my self again now if you are not interested t=
-o complete this transaction with good mind let me know this will be cancel =
-and the funds will be confiscator, we  are not forking you or beg to take y=
-our compensation funds of two millions dollars that belong to you,
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-Ged Ward
-Online Processing Officer
-email   info658@daum.net
+IMA and EVM are not effectively LSMs, especially due the fact that in the
+past they could not provide a security blob while there is another LSM
+active.
 
-Thank
-MRS.AKAMA  DAVDSON
-LEGAL OFFICER
+That changed in the recent years, the LSM stacking feature now makes it
+possible to stack together multiple LSMs, and allows them to provide a
+security blob for most kernel objects. While the LSM stacking feature has
+some limitations being worked out, it is already suitable to make IMA and
+EVM as LSMs.
+
+In short, while this patch set is big, it does not make any functional
+change to IMA and EVM. IMA and EVM functions are called by the LSM
+infrastructure in the same places as before (except ima_post_path_mknod()),
+rather being hardcoded calls, and the inode metadata pointer is directly
+stored in the inode security blob rather than in a separate rbtree.
+
+More specifically, patches 1-11 make IMA and EVM functions suitable to
+be registered to the LSM infrastructure, by aligning function parameters.
+
+Patches 12-20 add new LSM hooks in the same places where IMA and EVM
+functions are called, if there is no LSM hook already.
+
+Patches 21-24 do the bulk of the work, remove hardcoded calls to IMA, EVM
+and integrity functions, register those functions in the LSM
+infrastructure, and let the latter call them. In addition, they also
+reserve one slot for EVM to supply an xattr with the inode_init_security
+hook.
+
+Finally, patch 25 removes the rbtree used to bind metadata to the inodes,
+and instead reserves a space in the inode security blob to store the
+pointer to metadata. This also brings performance improvements due to
+retrieving metadata in constant time, as opposed to logarithmic.
+
+The patch set applies on top of lsm/next, commit 8e4672d6f902 ("lsm:
+constify the 'file' parameter in security_binder_transfer_file()")
+
+Changelog:
+
+v2:
+ - Add description for newly introduced LSM hooks (suggested by Casey)
+ - Clarify in the description of security_file_pre_free() that actions can
+   be performed while the file is still open
+
+v1:
+ - Drop 'evm: Complete description of evm_inode_setattr()', 'fs: Fix
+   description of vfs_tmpfile()' and 'security: Introduce LSM_ORDER_LAST',
+   they were sent separately (suggested by Christian Brauner)
+ - Replace dentry with file descriptor parameter for
+   security_inode_post_create_tmpfile()
+ - Introduce mode_stripped and pass it as mode argument to
+   security_path_mknod() and security_path_post_mknod()
+ - Use goto in do_mknodat() and __vfs_removexattr_locked() (suggested by
+   Mimi)
+ - Replace __lsm_ro_after_init with __ro_after_init
+ - Modify short description of security_inode_post_create_tmpfile() and
+   security_inode_post_set_acl() (suggested by Stefan)
+ - Move security_inode_post_setattr() just after security_inode_setattr()
+   (suggested by Mimi)
+ - Modify short description of security_key_post_create_or_update()
+   (suggested by Mimi)
+ - Add back exported functions ima_file_check() and
+   evm_inode_init_security() respectively to ima.h and evm.h (reported by
+   kernel robot)
+ - Remove extern from prototype declarations and fix style issues
+ - Remove unnecessary include of linux/lsm_hooks.h in ima_main.c and
+   ima_appraise.c
+
+Roberto Sassu (25):
+  ima: Align ima_inode_post_setattr() definition with LSM infrastructure
+  ima: Align ima_post_path_mknod() definition with LSM infrastructure
+  ima: Align ima_post_create_tmpfile() definition with LSM
+    infrastructure
+  ima: Align ima_file_mprotect() definition with LSM infrastructure
+  ima: Align ima_inode_setxattr() definition with LSM infrastructure
+  ima: Align ima_inode_removexattr() definition with LSM infrastructure
+  ima: Align ima_post_read_file() definition with LSM infrastructure
+  evm: Align evm_inode_post_setattr() definition with LSM infrastructure
+  evm: Align evm_inode_setxattr() definition with LSM infrastructure
+  evm: Align evm_inode_post_setxattr() definition with LSM
+    infrastructure
+  security: Align inode_setattr hook definition with EVM
+  security: Introduce inode_post_setattr hook
+  security: Introduce inode_post_removexattr hook
+  security: Introduce file_post_open hook
+  security: Introduce file_pre_free_security hook
+  security: Introduce path_post_mknod hook
+  security: Introduce inode_post_create_tmpfile hook
+  security: Introduce inode_post_set_acl hook
+  security: Introduce inode_post_remove_acl hook
+  security: Introduce key_post_create_or_update hook
+  ima: Move to LSM infrastructure
+  ima: Move IMA-Appraisal to LSM infrastructure
+  evm: Move to LSM infrastructure
+  integrity: Move integrity functions to the LSM infrastructure
+  integrity: Switch from rbtree to LSM-managed blob for
+    integrity_iint_cache
+
+ fs/attr.c                             |   5 +-
+ fs/file_table.c                       |   3 +-
+ fs/namei.c                            |  18 +-
+ fs/nfsd/vfs.c                         |   3 +-
+ fs/open.c                             |   1 -
+ fs/posix_acl.c                        |   5 +-
+ fs/xattr.c                            |   9 +-
+ include/linux/evm.h                   | 103 ----------
+ include/linux/ima.h                   | 136 -------------
+ include/linux/integrity.h             |  26 ---
+ include/linux/lsm_hook_defs.h         |  21 +-
+ include/linux/security.h              |  65 +++++++
+ security/integrity/evm/evm_main.c     | 104 ++++++++--
+ security/integrity/iint.c             |  92 +++------
+ security/integrity/ima/ima.h          |  11 ++
+ security/integrity/ima/ima_appraise.c |  37 +++-
+ security/integrity/ima/ima_main.c     |  76 ++++++--
+ security/integrity/integrity.h        |  44 ++++-
+ security/keys/key.c                   |  10 +-
+ security/security.c                   | 265 ++++++++++++++++----------
+ security/selinux/hooks.c              |   3 +-
+ security/smack/smack_lsm.c            |   4 +-
+ 22 files changed, 540 insertions(+), 501 deletions(-)
+
+-- 
+2.34.1
+
