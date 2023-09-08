@@ -2,161 +2,157 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AED36793D42
-	for <lists+keyrings@lfdr.de>; Wed,  6 Sep 2023 14:59:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63C167986E4
+	for <lists+keyrings@lfdr.de>; Fri,  8 Sep 2023 14:14:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233001AbjIFM7J (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 6 Sep 2023 08:59:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40812 "EHLO
+        id S231624AbjIHMOg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 8 Sep 2023 08:14:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231217AbjIFM7I (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 6 Sep 2023 08:59:08 -0400
+        with ESMTP id S229713AbjIHMOg (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 8 Sep 2023 08:14:36 -0400
 Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E78F6171C;
-        Wed,  6 Sep 2023 05:59:02 -0700 (PDT)
-Received: from [192.168.1.103] (178.176.74.104) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Wed, 6 Sep 2023
- 15:58:58 +0300
-Subject: Re: [PATCH] certs: Add the ability to add only CA certificates to the
- secondary trusted keyring
-To:     Denis Glazkov <d.glazkov@omp.ru>
-CC:     David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EB921BC5;
+        Fri,  8 Sep 2023 05:14:31 -0700 (PDT)
+Received: from msexch01.omp.ru (10.188.4.12) by msexch02.omp.ru (10.188.4.13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Fri, 8 Sep 2023
+ 15:14:25 +0300
+Received: from msexch01.omp.ru ([fe80::4020:d881:621a:6b6b]) by
+ msexch01.omp.ru ([fe80::4020:d881:621a:6b6b%5]) with mapi id 15.02.0986.014;
+ Fri, 8 Sep 2023 15:14:25 +0300
+From:   Denis Glazkov <d.glazkov@omp.ru>
+To:     Sergey Shtylyov <s.shtylyov@omp.ru>
+CC:     Denis Glazkov <d.glazkov@omp.ru>,
+        "dhowells@redhat.com" <dhowells@redhat.com>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>,
         "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20230906113211.82362-1-d.glazkov@omp.ru>
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <f5a1d856-0482-a2c3-0e62-3ca911ce3dd2@omp.ru>
-Date:   Wed, 6 Sep 2023 15:58:58 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
-MIME-Version: 1.0
-In-Reply-To: <20230906113211.82362-1-d.glazkov@omp.ru>
-Content-Type: text/plain; charset="utf-8"
+Subject: [PATCH v2] certs: Add option to disallow non-CA certificates in
+ secondary trusted keying
+Thread-Topic: [PATCH v2] certs: Add option to disallow non-CA certificates in
+ secondary trusted keying
+Thread-Index: AQHZ4k4BzqaMvMEYP0mVw3ughXalxQ==
+Date:   Fri, 8 Sep 2023 12:14:25 +0000
+Message-ID: <20230908121330.4076-1-d.glazkov@omp.ru>
+References: <f5a1d856-0482-a2c3-0e62-3ca911ce3dd2@omp.ru>
+In-Reply-To: <f5a1d856-0482-a2c3-0e62-3ca911ce3dd2@omp.ru>
+Accept-Language: ru-RU, en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [178.176.74.104]
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.59, Database issued on: 09/06/2023 12:39:25
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 59
-X-KSE-AntiSpam-Info: Lua profiles 179691 [Sep 06 2023]
-X-KSE-AntiSpam-Info: Version: 5.9.59.0
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 530 530 ecb1547b3f72d1df4c71c0b60e67ba6b4aea5432
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {relay has no DNS name}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.74.104 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;178.176.74.104:7.1.2;omp.ru:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: {rdns complete}
-X-KSE-AntiSpam-Info: {fromrtbl complete}
-X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.74.104
-X-KSE-AntiSpam-Info: Rate: 59
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=none header.from=omp.ru;spf=none
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 09/06/2023 12:43:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 9/6/2023 11:30:00 AM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-Spam-Status: No, score=-0.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.188.4.40]
+x-kse-serverinfo: msexch02.omp.ru, 9
+x-kse-attachmentfiltering-interceptor-info: protection disabled
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: Clean, bases: 7/15/2023 3:35:00 AM
+x-kse-bulkmessagesfiltering-scan-result: sender external
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <3039DAFBA7E16F4FBD26143DC4E2FCD5@omp.ru>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 9/6/23 2:32 PM, Denis Glazkov wrote:
-
-> When building a chain of trust for IMA certificates issued from
-
-   It's a shame I forgot what IMA stands for... and even Google doesn't
-give any suitable value...
-
-> intermediate certificates using a secondary trusted keying, there
-> is no way to restrict the addition of IMA certificates to trusted
-> certificates, since any certificate signed by an built-in or
-> secondary trusted certificate can be added to the secondary
-> trusted keying.
-> 
-> With root privileges, an attacker can load a certificate intended
-> for IMA into the trusted certificates and sign the kernel modules
-> with the corresponding private key. This allows an attacker to
-> load untrusted modules into kernel space.
-> 
-> This patch adds the configuration that once enabled, only
-> certificates that meet the following requirements can be added
-> to the secondary trusted keying:
-> 
-> 1. The certificate is a CA.
-
-   Oh, and I also forgot what CA stands for... :-/
-
-> 2. The certificate must be used for verifying a CA's signatures.
-> 3. The certificate must not be used for digital signatures.
-> 
-> Signed-off-by: Denis Glazkov <d.glazkov@omp.ru>
-[...]
-
-> diff --git a/certs/system_keyring.c b/certs/system_keyring.c
-> index 9de610bf1f4b..8d45c19ba92e 100644
-> --- a/certs/system_keyring.c
-> +++ b/certs/system_keyring.c
-> @@ -90,6 +90,10 @@ int restrict_link_by_builtin_and_secondary_trusted(
->  	const union key_payload *payload,
->  	struct key *restrict_key)
->  {
-> +#ifdef CONFIG_SECONDARY_TRUSTED_KEYRING_FOR_CA_CERTIFICATES_ONLY
-> +	struct public_key *pub;
-> +#endif
-
-   Mhm, why this is not a part of the *if* block in the next hunk?
-You don't use this variable outside that block...
-
-[...]
-> @@ -99,6 +103,23 @@ int restrict_link_by_builtin_and_secondary_trusted(
->  		/* Allow the builtin keyring to be added to the secondary */
->  		return 0;
->  
-> +#ifdef CONFIG_SECONDARY_TRUSTED_KEYRING_FOR_CA_CERTIFICATES_ONLY
-> +	if (dest_keyring == secondary_trusted_keys) {
-> +		if (type != &key_type_asymmetric)
-> +			return -EOPNOTSUPP;
-> +
-> +		pub = payload->data[asym_crypto];
-
-   I'm not seeing this index declared in Linus' repo...
-
-> +		if (!pub)
-> +			return -ENOPKG;
-> +		if (!test_bit(KEY_EFLAG_CA, &pub->key_eflags))
-> +			return -EPERM;
-> +		if (!test_bit(KEY_EFLAG_KEYCERTSIGN, &pub->key_eflags))
-> +			return -EPERM;
-> +		if (test_bit(KEY_EFLAG_DIGITALSIG, &pub->key_eflags))
-> +			return -EPERM;
-> +	}
-> +#endif
-> +
->  	return restrict_link_by_signature(dest_keyring, type, payload,
->  					  secondary_trusted_keys);
->  }
-
-MBR, Sergey
+VGhlIExpbnV4IGtlcm5lbCBoYXMgYW4gSU1BIChJbnRlZ3JpdHkgTWVhc3VyZW1lbnQgQXJjaGl0
+ZWN0dXJlKQ0Kc3Vic3lzdGVtIHRvIGNoZWNrIHRoZSBpbnRlZ3JpdHkgb2YgdGhlIGZpbGUgc3lz
+dGVtIGJhc2VkIG9uIGRpZ2l0YWwNCnNpZ25hdHVyZXMuIElNQSB1c2VzIGNlcnRpZmljYXRlcyBp
+biBgLmltYWAga2V5aW5nIHRvIGNoZWNrIGludGVncml0eS4NCg0KT25seSBjZXJ0aWZpY2F0ZXMg
+aXNzdWVkIGJ5IG9uZSBvZiB0aGUgdHJ1c3RlZCBDQSAoQ2VydGlmaWNhdGUgQXV0aG9yaXR5KQ0K
+Y2VydGlmaWNhdGVzIGNhbiBiZSBhZGRlZCB0byB0aGUgYC5pbWFgIGtleWluZy4NCg0KVGhlIExp
+bnV4IGtlcm5lbCBub3cgaGFzIGEgc2Vjb25kYXJ5IHRydXN0ZWQga2V5aW5nIHRvIHdoaWNoIHRy
+dXN0ZWQNCmNlcnRpZmljYXRlcyBmcm9tIHVzZXIgc3BhY2UgY2FuIGJlIGFkZGVkIGlmIHlvdSBo
+YXZlIHN1cGVydXNlcg0KcHJpdmlsZWdlcy4gUHJldmlvdXNseSwgYWxsIHRydXN0ZWQgY2VydGlm
+aWNhdGVzIHdlcmUgaW4gdGhlIGJ1aWx0LWluDQp0cnVzdGVkIGtleWluZywgd2hpY2ggY291bGQg
+bm90IGJlIG1vZGlmaWVkIGZyb20gdXNlciBzcGFjZS4NClRydXN0ZWQgY2VydGlmaWNhdGVzIHdl
+cmUgcGxhY2VkIGluIHRoZSBidWlsdC1pbiB0cnVzdGVkIGtleWluZyBhdA0Ka2VybmVsIGNvbXBp
+bGUgdGltZS4NCg0KVGhlIHNlY29uZGFyeSB0cnVzdGVkIGtleWluZyBpcyBkZXNpZ25lZCBzbyB0
+aGF0IGFueSBjZXJ0aWZpY2F0ZXMgdGhhdA0KYXJlIHNpZ25lZCBieSBvbmUgb2YgdGhlIHRydXN0
+ZWQgQ0EgY2VydGlmaWNhdGVzIGluIHRoZSBidWlsdC1pbiBvcg0Kc2Vjb25kYXJ5IHRydXN0ZWQg
+a2V5cmluZyBjYW4gYmUgYWRkZWQgdG8gaXQuDQoNCkxldCdzIGltYWdpbmUgdGhhdCB3ZSBoYXZl
+IHRoZSBmb2xsb3dpbmcgY2VydGlmaWNhdGUgdHJ1c3QgY2hhaW46DQoNCiAgICAgICAgICAgICDi
+lIzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilKzilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilJANCiAgICAgICAgICAgICDilIIg
+ICAgICAgICAgICAgICAgICAgICAgICAgICDilIIgICAgIOKUjOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUkCAgICAgICDilIINCiAgICAgICAgICAgICDilIIgICAgICAgICAgICAgICAgICAgICAgICAg
+ICDilIIgICAgIOKUgiAgICAgICDilIIgICAgICAg4pSCDQrilIzilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilrzilIDilIDilIDilIDilIDilIDilIDilIDilJAgICAg4pSM4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pa84pSA4pSA4pSA4pSA4pSA4pa8
+4pSA4pSA4pSA4pSA4pSQICDilIIg4pSM4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA
+4pSQDQrilIIuYnVpbHRpbl90cnVzdGVkX2tleXPilILil4TilIDilIDilIDilKQuc2Vjb25kYXJ5
+X3RydXN0ZWRfa2V5cyDilJzilIDilIDilJgg4pSCICAgLmltYSAgICDilIINCuKUnOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+pCAgICDilJzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilKQgICAg4pSc4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSkDQrilIIgICAgIFJvb3QgQ0EgQ2VydCAgICDilIItLS0tLeKWuiBJbnRlcm1l
+ZGlhdGUgQ0EgQ2VydCAg4pSCLS0tLS3ilrogSU1BIENlcnQg4pSCDQrilJTilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilJggICAg
+4pSU4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSYICAgIOKUlOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUmA0KDQogICAgICAgICAgICAgICAgSXNzdWVzICAgICAgICAgICAgICAgICAgUmVzdHJp
+Y3RlZCBieQ0KICAgICAgICAgICAgLS0tLS0tLS0tLS0tLeKWuiAgICAgICAgICAgICDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilroNCg0KU2luY2UgdGhlIElNQSBj
+ZXJ0aWZpY2F0ZSBpcyBzaWduZWQgYnkgYSBDQSBjZXJ0aWZpY2F0ZSBmcm9tIGEgc2Vjb25kYXJ5
+DQp0cnVzdGVkIGtleWluZywgYW4gYXR0YWNrZXIgd2l0aCBzdXBlcnVzZXIgcHJpdmlsZWdlcyB3
+aWxsIGJlIGFibGUgdG8NCmFkZCB0aGUgSU1BIGNlcnRpZmljYXRlIHRvIHRoZSBzZWNvbmRhcnkg
+dHJ1c3RlZCBrZXlpbmcuIFRoYXQgaXMsIHRoZSBJTUENCmNlcnRpZmljYXRlIHdpbGwgYmVjb21l
+IHRydXN0ZWQuDQoNClNpbmNlLCB3aXRoIGBDT05GSUdfTU9EVUxFX1NJR2Agb3B0aW9uIGVuYWJs
+ZWQsIG1vZHVsZXMgY2FuIG9ubHkgYmUNCmxvYWRlZCBpbnRvIGtlcm5lbCBzcGFjZSBpZiB0aGV5
+IGFyZSBzaWduZWQgd2l0aCBvbmUgb2YgdGhlIHRydXN0ZWQNCmNlcnRpZmljYXRlcywgYW4gYXR0
+YWNrZXIgY291bGQgc2lnbiB1bnRydXN0ZWQga2VybmVsIG1vZHVsZXMgd2l0aA0KdGhlIHByaXZh
+dGUga2V5IGNvcnJlc3BvbmRpbmcgdG8gdGhlIElNQSBjZXJ0aWZpY2F0ZSBhbmQgc3VjY2Vzc2Z1
+bGx5DQpsb2FkIHRoZSB1bnRydXN0ZWQgbW9kdWxlcyBpbnRvIGtlcm5lbCBzcGFjZS4NCg0KVGhp
+cyBwYXRjaCBhZGRzIHRoZSBjb25maWd1cmF0aW9uIHRoYXQgb25jZSBlbmFibGVkLCBvbmx5DQpj
+ZXJ0aWZpY2F0ZXMgdGhhdCBtZWV0IHRoZSBmb2xsb3dpbmcgcmVxdWlyZW1lbnRzIGNhbiBiZSBh
+ZGRlZA0KdG8gdGhlIHNlY29uZGFyeSB0cnVzdGVkIGtleWluZzoNCg0KMS4gVGhlIGNlcnRpZmlj
+YXRlIGlzIGEgQ0EgKENlcnRpZmljYXRlIEF1dGhvcml0eSkNCjIuIFRoZSBjZXJ0aWZpY2F0ZSBt
+dXN0IGJlIHVzZWQgZm9yIHZlcmlmeWluZyBhIENBJ3Mgc2lnbmF0dXJlcw0KMy4gVGhlIGNlcnRp
+ZmljYXRlIG11c3Qgbm90IGJlIHVzZWQgZm9yIGRpZ2l0YWwgc2lnbmF0dXJlcw0KDQpTaWduZWQt
+b2ZmLWJ5OiBEZW5pcyBHbGF6a292IDxkLmdsYXprb3ZAb21wLnJ1Pg0KLS0tDQp2MSAtPiB2MjoN
+CiAtIFJlYmFzZSB0aGUgcGF0Y2ggZnJvbSBgbGludXgtbmV4dGAgdG8gdGhlIG1haW4gYGxpbnV4
+YCByZXBvIG1hc3RlciBicmFuY2gNCiAtIE1ha2UgdGhlIGNvbW1pdCBtZXNzYWdlIG1vcmUgZGV0
+YWlsZWQNCiAtIE1vdmUgdGhlIHZhcmlhYmxlIGRlY2xhcmF0aW9uIHRvIHRoZSBgaWZgIGJsb2Nr
+DQogLSBSZXBsYWNlIGAjaWZkZWZgIHdpdGggYElTX0VOQUJMRURgIG1hY3JvDQotLS0NCiBjZXJ0
+cy9LY29uZmlnICAgICAgICAgIHwgIDkgKysrKysrKysrDQogY2VydHMvc3lzdGVtX2tleXJpbmcu
+YyB8IDE2ICsrKysrKysrKysrKysrKysNCiAyIGZpbGVzIGNoYW5nZWQsIDI1IGluc2VydGlvbnMo
+KykNCg0KZGlmZiAtLWdpdCBhL2NlcnRzL0tjb25maWcgYi9jZXJ0cy9LY29uZmlnDQppbmRleCAx
+ZjEwOWIwNzA4NzcuLjRhNGRjOGFhYjg5MiAxMDA2NDQNCi0tLSBhL2NlcnRzL0tjb25maWcNCisr
+KyBiL2NlcnRzL0tjb25maWcNCkBAIC05MCw2ICs5MCwxNSBAQCBjb25maWcgU0VDT05EQVJZX1RS
+VVNURURfS0VZUklORw0KIAkgIHRob3NlIGtleXMgYXJlIG5vdCBibGFja2xpc3RlZCBhbmQgYXJl
+IHZvdWNoZWQgZm9yIGJ5IGEga2V5IGJ1aWx0DQogCSAgaW50byB0aGUga2VybmVsIG9yIGFscmVh
+ZHkgaW4gdGhlIHNlY29uZGFyeSB0cnVzdGVkIGtleXJpbmcuDQogDQorY29uZmlnIFNFQ09OREFS
+WV9UUlVTVEVEX0tFWVJJTkdfRk9SX0NBX0NFUlRJRklDQVRFU19PTkxZDQorCWJvb2wgIkFsbG93
+IG9ubHkgQ0EgY2VydGlmaWNhdGVzIHRvIGJlIGFkZGVkIHRvIHRoZSBzZWNvbmRhcnkgdHJ1c3Rl
+ZCBrZXlyaW5nIg0KKwlkZXBlbmRzIG9uIFNFQ09OREFSWV9UUlVTVEVEX0tFWVJJTkcNCisJaGVs
+cA0KKwkgIElmIHNldCwgb25seSBDQSBjZXJ0aWZpY2F0ZXMgY2FuIGJlIGFkZGVkIHRvIHRoZSBz
+ZWNvbmRhcnkgdHJ1c3RlZCBrZXlyaW5nLg0KKwkgIEFuIGFjY2VwdGFibGUgQ0EgY2VydGlmaWNh
+dGUgbXVzdCBpbmNsdWRlIHRoZSBga2V5Q2VydFNpZ25gIHZhbHVlIGluDQorCSAgdGhlIGBrZXlV
+c2FnZWAgZmllbGQuIENBIGNlcnRpZmljYXRlcyB0aGF0IGluY2x1ZGUgdGhlIGBkaWdpdGFsU2ln
+bmF0dXJlYA0KKwkgIHZhbHVlIGluIHRoZSBga2V5VXNhZ2VgIGZpZWxkIHdpbGwgbm90IGJlIGFj
+Y2VwdGVkLg0KKw0KIGNvbmZpZyBTWVNURU1fQkxBQ0tMSVNUX0tFWVJJTkcNCiAJYm9vbCAiUHJv
+dmlkZSBzeXN0ZW0td2lkZSByaW5nIG9mIGJsYWNrbGlzdGVkIGtleXMiDQogCWRlcGVuZHMgb24g
+S0VZUw0KZGlmZiAtLWdpdCBhL2NlcnRzL3N5c3RlbV9rZXlyaW5nLmMgYi9jZXJ0cy9zeXN0ZW1f
+a2V5cmluZy5jDQppbmRleCA5ZGU2MTBiZjFmNGIuLmVlMTQ0NDczNzRlNyAxMDA2NDQNCi0tLSBh
+L2NlcnRzL3N5c3RlbV9rZXlyaW5nLmMNCisrKyBiL2NlcnRzL3N5c3RlbV9rZXlyaW5nLmMNCkBA
+IC05OSw2ICs5OSwyMiBAQCBpbnQgcmVzdHJpY3RfbGlua19ieV9idWlsdGluX2FuZF9zZWNvbmRh
+cnlfdHJ1c3RlZCgNCiAJCS8qIEFsbG93IHRoZSBidWlsdGluIGtleXJpbmcgdG8gYmUgYWRkZWQg
+dG8gdGhlIHNlY29uZGFyeSAqLw0KIAkJcmV0dXJuIDA7DQogDQorCWlmIChJU19FTkFCTEVEKENP
+TkZJR19TRUNPTkRBUllfVFJVU1RFRF9LRVlSSU5HX0ZPUl9DQV9DRVJUSUZJQ0FURVNfT05MWSkg
+JiYNCisJICAgIGRlc3Rfa2V5cmluZyA9PSBzZWNvbmRhcnlfdHJ1c3RlZF9rZXlzKSB7DQorCQlj
+b25zdCBzdHJ1Y3QgcHVibGljX2tleSAqcHViID0gcGF5bG9hZC0+ZGF0YVthc3ltX2NyeXB0b107
+DQorDQorCQlpZiAodHlwZSAhPSAma2V5X3R5cGVfYXN5bW1ldHJpYykNCisJCQlyZXR1cm4gLUVP
+UE5PVFNVUFA7DQorCQlpZiAoIXB1YikNCisJCQlyZXR1cm4gLUVOT1BLRzsNCisJCWlmICghdGVz
+dF9iaXQoS0VZX0VGTEFHX0NBLCAmcHViLT5rZXlfZWZsYWdzKSkNCisJCQlyZXR1cm4gLUVQRVJN
+Ow0KKwkJaWYgKCF0ZXN0X2JpdChLRVlfRUZMQUdfS0VZQ0VSVFNJR04sICZwdWItPmtleV9lZmxh
+Z3MpKQ0KKwkJCXJldHVybiAtRVBFUk07DQorCQlpZiAodGVzdF9iaXQoS0VZX0VGTEFHX0RJR0lU
+QUxTSUcsICZwdWItPmtleV9lZmxhZ3MpKQ0KKwkJCXJldHVybiAtRVBFUk07DQorCX0NCisNCiAJ
+cmV0dXJuIHJlc3RyaWN0X2xpbmtfYnlfc2lnbmF0dXJlKGRlc3Rfa2V5cmluZywgdHlwZSwgcGF5
+bG9hZCwNCiAJCQkJCSAgc2Vjb25kYXJ5X3RydXN0ZWRfa2V5cyk7DQogfQ0KLS0gDQoyLjM0LjEN
+Cg==
