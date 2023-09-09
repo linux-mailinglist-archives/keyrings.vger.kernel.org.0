@@ -2,105 +2,107 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1B1E799A35
-	for <lists+keyrings@lfdr.de>; Sat,  9 Sep 2023 19:15:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64769799A50
+	for <lists+keyrings@lfdr.de>; Sat,  9 Sep 2023 19:58:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235940AbjIIRP4 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sat, 9 Sep 2023 13:15:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45428 "EHLO
+        id S233630AbjIIR6n (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sat, 9 Sep 2023 13:58:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230504AbjIIRPz (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sat, 9 Sep 2023 13:15:55 -0400
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D63F49C;
-        Sat,  9 Sep 2023 10:15:50 -0700 (PDT)
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-d7eed15ad69so2913959276.1;
-        Sat, 09 Sep 2023 10:15:50 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694279750; x=1694884550;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XUYhXiAroV4hg8ozsfWDxDiqQmJJcr1xhZd/suVLTSc=;
-        b=bZLcy4FhVSyZxkeY3Jv9oCxuwJFcp3zTJf8EYW5iwBQ8nq95FhhaKTIma3WUntlLDM
-         2/OhCrOpZO2MHJY7/oxYiDeKGlBx69zhz78Qm+oeVdsK7HM3gYhuWFJRY3VJepeRSZu8
-         s/augKAE6+J6QLILkSfGHTpE1433DMBmBUriQH23tDsX4HQPneGfXS8UzPJ2zqNMFN2L
-         7p+cLAz6fz0NKkdQ/1k7RJIeRjxt40kNXWgOtJJ1I19G9CfrFHR8P65vFl0Jzp06Oedz
-         NMKZzM2E7B0CHSvG/oBjPKi/42+RiY8o8bywPB2KXnm6+HSqZLwDfb0AqN81VFiAgi1O
-         tJMA==
-X-Gm-Message-State: AOJu0Yw/I3min1SfaYviIq+zr078oPepPvSons79giOEiu2q4spSYoQa
-        NpmMdrPyGBwq9PU205mYfnebeMkg5bNlgg==
-X-Google-Smtp-Source: AGHT+IGHnOYFmpPB1GY+y3R3jPVjrcxXv0ELMunv7ZefBzCz3E3uQgJKgXqVZgzzA1G3H3PRDVK9jQ==
-X-Received: by 2002:a05:6902:704:b0:d7e:7916:b41d with SMTP id k4-20020a056902070400b00d7e7916b41dmr7157976ybt.13.1694279749974;
-        Sat, 09 Sep 2023 10:15:49 -0700 (PDT)
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com. [209.85.128.176])
-        by smtp.gmail.com with ESMTPSA id s104-20020a25aa71000000b00d7fcdc8e17dsm887072ybi.37.2023.09.09.10.15.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 09 Sep 2023 10:15:49 -0700 (PDT)
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-59b50b4556eso20444477b3.1;
-        Sat, 09 Sep 2023 10:15:49 -0700 (PDT)
-X-Received: by 2002:a0d:ebc4:0:b0:589:fbfe:fff1 with SMTP id
- u187-20020a0debc4000000b00589fbfefff1mr5703734ywe.10.1694279748861; Sat, 09
- Sep 2023 10:15:48 -0700 (PDT)
-MIME-Version: 1.0
+        with ESMTP id S232831AbjIIR6m (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sat, 9 Sep 2023 13:58:42 -0400
+Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAFC01B0;
+        Sat,  9 Sep 2023 10:58:38 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.west.internal (Postfix) with ESMTP id 7A6203200915;
+        Sat,  9 Sep 2023 13:58:35 -0400 (EDT)
+Received: from imap49 ([10.202.2.99])
+  by compute6.internal (MEProxy); Sat, 09 Sep 2023 13:58:36 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jfarr.cc; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm3; t=1694282315; x=1694368715; bh=kz
+        fQfbD4H0h1eVP4XE03NxUwAQnVnu2GWtpn9ElctzI=; b=iQHRGv7n2P0Iu0lgUu
+        q1VaaMYEWNb3Yljns1enh64TgG2naQ4FGTdscA4l4/WZ6T882PoG41gjfGWu4tbQ
+        tbIVAdzqu24XwI7xBvUTvvaWW5mzbYABvw5uGGFwbHyW91BzYObAAauyDLYr15Ji
+        VdmfK8wOzQti/Gvg3+spltK5uY45UUZ0deNMblo2Wn4vcu/aC4w73BhMJLo/bABT
+        W0S/9VGLNCg6BdC3h8h8AcrfEvng8GtHKlEGhXmbviMlAvk+uydXIbjU6DAGyfq8
+        9biylLJx7bLpCP4dWpd/nLPIYBEpNy/yTJnW0JRO80oIetKtXaGdolHC0XaqepCS
+        Vz9A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1694282315; x=1694368715; bh=kzfQfbD4H0h1e
+        VP4XE03NxUwAQnVnu2GWtpn9ElctzI=; b=OG8L8gGqmb+H6oqbYvA8drV2fIeG1
+        3mX+xmlqNLJonvpBcA53CV2RsDpVvOV6HcIV9GGfwMUGpEgh93PDre9mXPNRO3PS
+        YIsLU+T4CgEe5D5WT1Yhs1qxl29gn4AmHEEFjRoNWcfPkeJS01as9j+O8WC+ovC1
+        BfZb1CkMUzczJSblw5KVbRlsdYKRoR1nox8SdKSRvatLicew9SuZwsHMPsFJXVY4
+        pi7TbRYS9wTW0c2kFdDTh+cu1dPcDZux1yKT8fkRBl87ifaOb2/BL/pJ05JP5Z/j
+        YpGLYy3JKslPOBth7JGPub71UOiHAV45Vdj1JRQN7UXTrLR947zKl7i3g==
+X-ME-Sender: <xms:SrL8ZPsQAt5YXtlr3Egoccj8k3Wcua0m7I8fRt228As_N7ncroYV_g>
+    <xme:SrL8ZAfZfPvwY40c_cMmGOJgXuVevNVqp4sJYF13Obhz8Y1zc0vceN9gljCW3SsYr
+    m9MzuNeNdisSFsf9l4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudehledguddukecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enfghrlhcuvffnffculdduhedmnecujfgurhepofgfggfkjghffffhvfevufgtsehttder
+    tderredtnecuhfhrohhmpedflfgrnhcujfgvnhgurhhikhcuhfgrrhhrfdcuoehkvghrnh
+    gvlhesjhhfrghrrhdrtggtqeenucggtffrrghtthgvrhhnpeffffeufefhiedvfeehgeev
+    ffffffduvdduhfefjeekgeeviefhuddvgeekvddvhfenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkvghrnhgvlhesjhhfrghrrhdrtggt
+X-ME-Proxy: <xmx:SrL8ZCwK-VrOTsm5ia085m9jcCKunKhxCP2iImHIZoZTPQdUsiBffQ>
+    <xmx:SrL8ZONIoEgYxO6ljafhdqFQYbwchY_ZvlCnKgykNghrbYLgRcI7RQ>
+    <xmx:SrL8ZP--QjUWDMIV__rsPbGkRVOb_Dshc-AIXD4xlAIU4E2or-FmGQ>
+    <xmx:S7L8ZA0PY8dT4Ik5njquLVDDPTnOXzyJMOoTkdaW3tR3ITeN5apa1A>
+Feedback-ID: i0fc947c4:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 1516015A0091; Sat,  9 Sep 2023 13:58:33 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-711-g440737448e-fm-20230828.001-g44073744
+Mime-Version: 1.0
+Message-Id: <5c94f7f4-697f-4388-9243-009c0c2d745f@app.fastmail.com>
+In-Reply-To: <CAMw=ZnT-Ck-Y4i-MZAf99U5nzgDaj-q8UPRH_c00JgGMtUy_QA@mail.gmail.com>
 References: <20230909161851.223627-1-kernel@jfarr.cc>
-In-Reply-To: <20230909161851.223627-1-kernel@jfarr.cc>
-From:   Luca Boccassi <bluca@debian.org>
-Date:   Sat, 9 Sep 2023 18:15:37 +0100
-X-Gmail-Original-Message-ID: <CAMw=ZnT-Ck-Y4i-MZAf99U5nzgDaj-q8UPRH_c00JgGMtUy_QA@mail.gmail.com>
-Message-ID: <CAMw=ZnT-Ck-Y4i-MZAf99U5nzgDaj-q8UPRH_c00JgGMtUy_QA@mail.gmail.com>
-Subject: Re: [PATCH 0/1] x86/kexec: UKI support
-To:     Jan Hendrik Farr <kernel@jfarr.cc>
+ <CAMw=ZnT-Ck-Y4i-MZAf99U5nzgDaj-q8UPRH_c00JgGMtUy_QA@mail.gmail.com>
+Date:   Sat, 09 Sep 2023 19:57:09 +0200
+From:   "Jan Hendrik Farr" <kernel@jfarr.cc>
+To:     "Luca Boccassi" <bluca@debian.org>
 Cc:     linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
         x86@kernel.org, tglx@linutronix.de, dhowells@redhat.com,
         vgoyal@redhat.com, keyrings@vger.kernel.org,
         akpm@linux-foundation.org, bhe@redhat.com, bhelgaas@google.com,
         lennart@poettering.net, systemd-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Subject: Re: [PATCH 0/1] x86/kexec: UKI support
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sat, 9 Sept 2023 at 17:19, Jan Hendrik Farr <kernel@jfarr.cc> wrote:
->
-> Hello,
->
-> this patch implements UKI support for kexec_file_load. It will require support
-> in the kexec-tools userspace utility. For testing purposes the following can be used:
-> https://github.com/Cydox/kexec-test/
->
-> There has been discussion on this topic in an issue on GitHub that is linked below
-> for reference.
->
->
-> Some links:
-> - Related discussion: https://github.com/systemd/systemd/issues/28538
-> - Documentation of UKIs: https://uapi-group.org/specifications/specs/unified_kernel_image/
->
-> Jan Hendrik Farr (1):
->   x86/kexec: UKI support
+> - the cmdline section is actually optional, just like it's optional to
+> pass it on a traditional kexec load, so it should be used if present,
+> but skipped if not
 
-Hi,
+Should be an easy fix.
 
-Thanks for working on this, it looks super useful and at Microsoft we
-are definitely interested in it, as we rely heavily on kexec and we
-are looking to switch to UKIs.
+This should be updated in the UKI documentation as for other optional sections it's explicitly marked. I assumed that in the case of an empty cmdline the section would still be included but empty. Or is that semantically different: empty .cmdline section -> no cmdline allowed, no .cmdline section -> user can specify cmdline in bootloader?
 
-I had a quick look, two comments:
+> - the dtb section also is optional but supported, and given kexec
+> supports loading a new dtb I think this change should support it too
+> immediately.  Moreover, we are adding support for multiple DTBs in a
+> single UKI (by simply having multiple .dtb sections, and picking the
+> one that matches the firmware), as a stretch goal would be nice to
+> support that too, but it can also come later
 
-- the cmdline section is actually optional, just like it's optional to
-pass it on a traditional kexec load, so it should be used if present,
-but skipped if not
-- the dtb section also is optional but supported, and given kexec
-supports loading a new dtb I think this change should support it too
-immediately. Moreover, we are adding support for multiple DTBs in a
-single UKI (by simply having multiple .dtb sections, and picking the
-one that matches the firmware), as a stretch goal would be nice to
-support that too, but it can also come later
-- also what would it take to support arm64, which is the other major UEFI arch?
+As far as I know dtb is not supported by kexec_file_load at all at the moment. Maybe someone here knows more about this. I'll look into it.
+
+> - also what would it take to support arm64, which is the other major UEFI arch?
+
+I'm not familiar with UEFI on arm64, but I can certainly look into it. I assume it's not gonna be that difficult.
