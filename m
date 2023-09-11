@@ -2,150 +2,123 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 606F879C3E9
-	for <lists+keyrings@lfdr.de>; Tue, 12 Sep 2023 05:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 666FB79C3A0
+	for <lists+keyrings@lfdr.de>; Tue, 12 Sep 2023 05:04:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242595AbjILDRl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 11 Sep 2023 23:17:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43844 "EHLO
+        id S239889AbjILDEL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 11 Sep 2023 23:04:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242447AbjILDR2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 11 Sep 2023 23:17:28 -0400
+        with ESMTP id S241362AbjILDD7 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 11 Sep 2023 23:03:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C06A7107C72;
-        Mon, 11 Sep 2023 19:07:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B82C433B8;
-        Mon, 11 Sep 2023 21:15:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EDC1F9F5A;
+        Mon, 11 Sep 2023 18:37:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2359C116A9;
+        Mon, 11 Sep 2023 22:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694466934;
-        bh=jKcBqdin2tQkw/Q1r5bXfoLHC2ns8OLx8oid/0xcnhI=;
+        s=k20201202; t=1694469695;
+        bh=t0v/8DwhZ2XTEQS0bqVLXsYjSFysr5rhj5sH1kGkl+U=;
         h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=U0qjagxpMzedehK9Rnp94FOB5NGS96dvp8x4TnNeUL0sRX4Z3sceopbVWxG+fOY/W
-         5E5/UDNHg6Y62UYTfllgBH2y2VCmrR/l17pA0SKoDc88LYupqdeF6T3jV79xZFkEN4
-         u+bGTtOuSkvHrNMs42+oItei4kulqAzGJUZDdRvSHn2VvZC3HxaSBJXP5SIrW7+cAN
-         34jhVL0dMLKxF+DLxH8igFbxdSELhrRD9mHE+b6XsXzdoAZck6XUm8vjM5450Bpb5S
-         2O32TFHVMKUbTjXcDMeGdi447ptRwnzVaLcAf5hEUZvOY5XqGnQMb+dCOu4eNb1BYR
-         /WNqpkA1yMqag==
+        b=Jqu8WLZlx+u3A+ZjgZ4w+1ZrSjel5diyioaKxfCD3EU4XjjB2m/aNRfzgYqQuUCmO
+         hNRXEjBrfRAV8+ZFgysEQt3/HLfNMErWaCdVpTGeYgwNreWYltqqDDf7rq41cntP0W
+         imp1fr8hgHnuu4othbADNuOgzJgb7YPbleLcAen5LQRUWNXz1P9QfWof9QDLU5B+uS
+         S3B1NVPN3ieNkEFr6+lmY3qWgIhKHZHsrKls42c8YqkevUmzbRPeXOp32QAkslaNRX
+         P7PjG0CH64wEI5u0QrXzYO/kSKQ3Xxob7bbvsGHYvsPJFyEJqW3ugQ6iNTjjWLSRj2
+         A1cXjKiQ7b+Kg==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date:   Tue, 12 Sep 2023 00:15:30 +0300
-Message-Id: <CVGEE9ODRR8I.1RIVO2MVE2UAX@suppilovahvero>
-Cc:     "dhowells@redhat.com" <dhowells@redhat.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] certs: Add option to disallow non-CA certificates in
- secondary trusted keying
+Date:   Tue, 12 Sep 2023 01:01:31 +0300
+Message-Id: <CVGFDI2VELSN.2E98O6TF5TZ0E@suppilovahvero>
+Cc:     <mic@linux.microsoft.com>, <kanth.ghatraju@oracle.com>,
+        <konrad.wilk@oracle.com>, <linux-integrity@vger.kernel.org>,
+        <keyrings@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] certs: Restrict blacklist updates to the secondary
+ trusted keyring
 From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Denis Glazkov" <d.glazkov@omp.ru>,
-        "Sergey Shtylyov" <s.shtylyov@omp.ru>
+To:     "Eric Snowberg" <eric.snowberg@oracle.com>, <zohar@linux.ibm.com>,
+        <dhowells@redhat.com>, <dwmw2@infradead.org>
 X-Mailer: aerc 0.14.0
-References: <f5a1d856-0482-a2c3-0e62-3ca911ce3dd2@omp.ru>
- <20230908121330.4076-1-d.glazkov@omp.ru>
-In-Reply-To: <20230908121330.4076-1-d.glazkov@omp.ru>
+References: <20230908213428.731513-1-eric.snowberg@oracle.com>
+In-Reply-To: <20230908213428.731513-1-eric.snowberg@oracle.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri Sep 8, 2023 at 3:14 PM EEST, Denis Glazkov wrote:
-> The Linux kernel has an IMA (Integrity Measurement Architecture)
-> subsystem to check the integrity of the file system based on digital
-> signatures. IMA uses certificates in `.ima` keying to check integrity.
+On Sat Sep 9, 2023 at 12:34 AM EEST, Eric Snowberg wrote:
+> Currently root can dynamically update the blacklist keyring if the hash
+> being added is signed and vouched for by the builtin trusted keyring.
+> Currently keys in the secondary trusted keyring can not be used.
 >
-> Only certificates issued by one of the trusted CA (Certificate Authority)
-> certificates can be added to the `.ima` keying.
+> Keys within the secondary trusted keyring carry the same capabilities as
+> the builtin trusted keyring.  Relax the current restriction for updating
+> the .blacklist keyring and allow the secondary to also be referenced as
+> a trust source.  Since the machine keyring is linked to the secondary
+> trusted keyring, any key within it may also be used.
 >
-> The Linux kernel now has a secondary trusted keying to which trusted
-> certificates from user space can be added if you have superuser
-> privileges. Previously, all trusted certificates were in the built-in
-> trusted keying, which could not be modified from user space.
-> Trusted certificates were placed in the built-in trusted keying at
-> kernel compile time.
+> An example use case for this is IMA appraisal.  Now that IMA both
+> references the blacklist keyring and allows the machine owner to add
+> custom IMA CA certs via the machine keyring, this adds the additional
+> capability for the machine owner to also do revocations on a running
+> system.
 >
-> The secondary trusted keying is designed so that any certificates that
-> are signed by one of the trusted CA certificates in the built-in or
-> secondary trusted keyring can be added to it.
+> IMA appraisal usage example to add a revocation for /usr/foo:
 >
-> Let's imagine that we have the following certificate trust chain:
+> sha256sum /bin/foo | awk '{printf "bin:" $1}' > hash.txt
 >
->              =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=90
->              =E2=94=82                           =E2=94=82     =E2=94=8C=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90   =
-    =E2=94=82
->              =E2=94=82                           =E2=94=82     =E2=94=82 =
-      =E2=94=82       =E2=94=82
-> =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90    =E2=94=8C=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90=
-  =E2=94=82 =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90
-> =E2=94=82.builtin_trusted_keys=E2=94=82=E2=97=84=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=A4.secondary_trusted_keys =E2=94=9C=E2=94=80=E2=94=80=E2=94=98 =
-=E2=94=82   .ima    =E2=94=82
-> =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4    =E2=94=9C=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4=
-    =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4
-> =E2=94=82     Root CA Cert    =E2=94=82-----=E2=96=BA Intermediate CA Cer=
-t  =E2=94=82-----=E2=96=BA IMA Cert =E2=94=82
-> =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98    =E2=94=94=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98=
-    =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98
+> openssl smime -sign -in hash.txt -inkey machine-private-key.pem \
+>        -signer machine-certificate.pem -noattr -binary -outform DER \
+>        -out hash.p7s
 >
->                 Issues                  Restricted by
->             -------------=E2=96=BA             =E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=96=BA
+> keyctl padd blacklist "$(< hash.txt)" %:.blacklist < hash.p7s
 >
-> Since the IMA certificate is signed by a CA certificate from a secondary
-> trusted keying, an attacker with superuser privileges will be able to
-> add the IMA certificate to the secondary trusted keying. That is, the IMA
-> certificate will become trusted.
+> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+> ---
+>  certs/Kconfig     | 2 +-
+>  certs/blacklist.c | 4 ++--
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 >
-> Since, with `CONFIG_MODULE_SIG` option enabled, modules can only be
-> loaded into kernel space if they are signed with one of the trusted
-> certificates, an attacker could sign untrusted kernel modules with
-> the private key corresponding to the IMA certificate and successfully
-> load the untrusted modules into kernel space.
->
-> This patch adds the configuration that once enabled, only
-> certificates that meet the following requirements can be added
-> to the secondary trusted keying:
->
-> 1. The certificate is a CA (Certificate Authority)
-> 2. The certificate must be used for verifying a CA's signatures
-> 3. The certificate must not be used for digital signatures
->
-> Signed-off-by: Denis Glazkov <d.glazkov@omp.ru>
+> diff --git a/certs/Kconfig b/certs/Kconfig
+> index 1f109b070877..23dc87c52aff 100644
+> --- a/certs/Kconfig
+> +++ b/certs/Kconfig
+> @@ -134,7 +134,7 @@ config SYSTEM_BLACKLIST_AUTH_UPDATE
+>  	depends on SYSTEM_DATA_VERIFICATION
+>  	help
+>  	  If set, provide the ability to load new blacklist keys at run time if
+> -	  they are signed and vouched by a certificate from the builtin trusted
+> +	  they are signed and vouched by a certificate from the secondary trust=
+ed
+>  	  keyring.  The PKCS#7 signature of the description is set in the key
+>  	  payload.  Blacklist keys cannot be removed.
+> =20
+> diff --git a/certs/blacklist.c b/certs/blacklist.c
+> index 675dd7a8f07a..0b346048ae2d 100644
+> --- a/certs/blacklist.c
+> +++ b/certs/blacklist.c
+> @@ -102,12 +102,12 @@ static int blacklist_key_instantiate(struct key *ke=
+y,
+> =20
+>  #ifdef CONFIG_SYSTEM_BLACKLIST_AUTH_UPDATE
+>  	/*
+> -	 * Verifies the description's PKCS#7 signature against the builtin
+> +	 * Verifies the description's PKCS#7 signature against the secondary
+>  	 * trusted keyring.
+>  	 */
+>  	err =3D verify_pkcs7_signature(key->description,
+>  			strlen(key->description), prep->data, prep->datalen,
+> -			NULL, VERIFYING_UNSPECIFIED_SIGNATURE, NULL, NULL);
+> +			VERIFY_USE_SECONDARY_KEYRING, VERIFYING_UNSPECIFIED_SIGNATURE, NULL, =
+NULL);
+>  	if (err)
+>  		return err;
+>  #else
+> --=20
+> 2.39.3
 
-s/keying/keyring/ (multiple)
-
-Have you considered instead making mod_verify_sig() more robust?
-Obviously this would mean making selection of keys in
-verify_pkcs7_signature() more robust (see the documentation of
-'trusted_keys').
-
-The this would be also less niche feature to pick for distributors
-if it was just concerning module loading, and have associated config
-flag over there.
+What if a live system in the wild assumes the old policy? I feel that
+this is "sort of" breaking backwards compatibility but please prove me
+wrong.
 
 BR, Jarkko
