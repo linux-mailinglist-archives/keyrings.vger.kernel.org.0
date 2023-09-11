@@ -2,83 +2,78 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FB1D79A1D4
-	for <lists+keyrings@lfdr.de>; Mon, 11 Sep 2023 05:24:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EE2079A2CF
+	for <lists+keyrings@lfdr.de>; Mon, 11 Sep 2023 07:26:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232580AbjIKDY3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 10 Sep 2023 23:24:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49970 "EHLO
+        id S233901AbjIKF0Z (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 11 Sep 2023 01:26:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230169AbjIKDY2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 10 Sep 2023 23:24:28 -0400
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E09A21724;
-        Sun, 10 Sep 2023 20:23:56 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id AB8615C0055;
-        Sun, 10 Sep 2023 23:23:53 -0400 (EDT)
-Received: from imap49 ([10.202.2.99])
-  by compute6.internal (MEProxy); Sun, 10 Sep 2023 23:23:53 -0400
+        with ESMTP id S229446AbjIKF0Y (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 11 Sep 2023 01:26:24 -0400
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E920C1AD;
+        Sun, 10 Sep 2023 22:26:17 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.nyi.internal (Postfix) with ESMTP id 2BFCC5C00CB;
+        Mon, 11 Sep 2023 01:26:17 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Mon, 11 Sep 2023 01:26:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jfarr.cc; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1694402633; x=1694489033; bh=zp
-        vxo3GJwex0j26UspefQuRFPKYsD8Stn98KJVqfyzc=; b=VIdmGYrLMN3WRPf0Jo
-        1Dd4gp/R3o3LSUrAibupVlELwksJpqfO3u81gHRdrW4hy1WrDg38YGv7lHFWNQ1q
-        cxVe+vGlKqPTtZHtuMaomKJxARzWUkqeqWbiC8asjcFklvjf6JvRuxRj2qgj2a77
-        PLpITOshGTj4g4Gx9aCHL6nqQ8Qde2GJKhKazlMsHsXDPxdbMXzYgzu0NFITwZv5
-        Vlm7b+ikEqFhzPc3qCCWhbliUvylwBbTto2Cx44x5L9hAUSHmsQBQhlZdYxeWxvK
-        yqxBe6dnx9jaTW4Q0GVIyTajjULgcHDTKiRGWJIq2IUzECa4f88rHCl0dL/PQUEH
-        3flQ==
+        :cc:content-transfer-encoding:content-type:date:date:from:from
+        :in-reply-to:message-id:mime-version:reply-to:sender:subject
+        :subject:to:to; s=fm3; t=1694409977; x=1694496377; bh=ISzuE6kxyu
+        373zUFLIZaIlGGdyfh0Ff0EwyJx2kMvEo=; b=iBWyvEFUzLaLY8nJsiWoG4pLSo
+        aY6eYkWwkRDrk9DYsEItfexzuVp83R+eQB5tKees5KmO4yqj+SVELB8487RQWhnO
+        YCfoWdy0vs7N56B/uOUJCTZuXNnKR3NRntved5jkApldNJBys3aTYwwioq67ZcQp
+        GpCkD0JVHzlYmD86Hj7EcfeGHvt4UizUvzrAukyOUlZHCJDG4w6iUu77cd2C2YDU
+        KIHDVQZW+OY29gxpj+WPLIhgw/8JMADGdyYdOzvrF3AZ6QtKi1F8h5+PnTQfkzop
+        BHjjbEdYBQga0wzQK8CL6ac0SqV2MtikGtG9my7bKbWUavxoY/w5mIWdYEIQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:date:date:feedback-id:feedback-id:from:from
+        :in-reply-to:message-id:mime-version:reply-to:sender:subject
         :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1694402633; x=1694489033; bh=zpvxo3GJwex0j
-        26UspefQuRFPKYsD8Stn98KJVqfyzc=; b=YkDRsX6e1551vocQmwYYdLGLzqH8/
-        05AQhUP0pJ85vunzUoL+YzEbqwyh25nbPRxKJYYaK62MDXY/NInCREokNxh0C5l1
-        dQU+kYij1GXyCKdzOHcgYJ6Z3pGLRRChn/NMEp0J4tTgC+ZfigAgniVewgKQit+W
-        nubfDDtrauZCefZ+HULFVkx4Acay6rxXogvAmIe3BEYMbGR5J5+ninyCslKA0o0A
-        lCQ5axRwmFyCWW4T6FJTteWo91HkM9Re7m76QuGRrjl0F047Fedv/ZlzwWgismC0
-        HDcxXdNzzMYUOCMvwCeEHsdBi7mgmqp5Eun0s9+/33pggY/1QU4h9zQzw==
-X-ME-Sender: <xms:SYj-ZPeb2fd0_mPtNDY2ko9GEihz487EkZxP-goRakBS66-5JgvKDw>
-    <xme:SYj-ZFNucUtp3uH4ByJBkky5s9ZOHfuOkrwsz7VbZsRcxLr7Oww21mt25jJOuoA9u
-    iHz0RX87gNfIZQGbD0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudeifedgieelucetufdoteggodetrfdotf
+        :x-sasl-enc; s=fm1; t=1694409977; x=1694496377; bh=ISzuE6kxyu373
+        zUFLIZaIlGGdyfh0Ff0EwyJx2kMvEo=; b=YqBLTd/3IdgVhZlUK3o+UtZOhwbMP
+        ejbsYMhTrfD5hSNo9/m4t/LlCp4ky9kbAUiNH8SwIGyvefgFJAzzeu8RsZ3bVLlw
+        CnpUf3DMWAxFLfH8HbubovtbNHNvkU4he80miP3Xg5Ln6BsRpY2t48Ng5Dy7Hhuz
+        9/ukIjRAGuAuFQlh/7WLl4KN0Dw/0NgvRFT0vgkF69SsNjdTYVpLcx+uzWINnl9Q
+        sCqTDgHlm1niGbIud/gn5iBGTh3Aid33t25SGqTGfDZdu0tzTMfsIdP6E0T6EhMn
+        PjZ4YS5Z6Kazj8p80W89FeQnFji1o23AKzsAr61k8PEjgZV9As8fSGzuw==
+X-ME-Sender: <xms:-KT-ZKAtKW2KiLqBE75ukSWS9M9oUlAknLhDl4rJhZItBl4t91FQew>
+    <xme:-KT-ZEhJ_JCNWJTjJmeG3aWP76ABG-K_i3I5AHXzWsonmx-sjXCuYjnfzLRJnNROO
+    bE4djA9t8_UOpL_1pE>
+X-ME-Received: <xmr:-KT-ZNk7Alvkx1Eki4UYeupMBNR1QqLQG83Z7O8FVKc_bz6m6e93VLXcCVlqKeOodWKMghMq8YKr_4xVN6rJz9xRKwwS>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudeifedgleefucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    gfrhhlucfvnfffucdludehmdenucfjughrpefofgggkfgjfhffhffvvefutgesthdtredt
-    reertdenucfhrhhomhepfdflrghnucfjvghnughrihhkucfhrghrrhdfuceokhgvrhhnvg
-    hlsehjfhgrrhhrrdgttgeqnecuggftrfgrthhtvghrnhepffffueefhfeivdefheegveff
-    ffffuddvudfhfeejkeegveeihfduvdegkedvvdfhnecuvehluhhsthgvrhfuihiivgeptd
-    enucfrrghrrghmpehmrghilhhfrhhomhepkhgvrhhnvghlsehjfhgrrhhrrdgttg
-X-ME-Proxy: <xmx:SYj-ZIjjTq7HJ1YFixPBSsDC_HESqghduvok1BRy1apofG_R8P275g>
-    <xmx:SYj-ZA99Rg5QTuvVG9JxUz2-eU8bup6Kn556nCh8xijM6VSFI8j7BQ>
-    <xmx:SYj-ZLt9dvBdt4Ey0sVJTJ0WD_bsNTzX-L2wAHewnm1LnPVq0uYS7g>
-    <xmx:SYj-ZJL_wJQxaomig2nR4_6SNKIUGMbBRdrRYBY9bdqAmoOgsfmUYA>
+    uceurghilhhouhhtmecufedttdenucgfrhhlucfvnfffucdluddtmdenucfjughrpefhvf
+    evufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeflrghnucfjvghnughrihhkucfh
+    rghrrhcuoehkvghrnhgvlhesjhhfrghrrhdrtggtqeenucggtffrrghtthgvrhhnpeduge
+    dvlefhtdelvefghfdugfetieeikeekjeeugeduhfdthffgfeefhfffhfdvveenucffohhm
+    rghinhepghhithhhuhgsrdgtohhmpdhurghpihdqghhrohhuphdrohhrghenucevlhhush
+    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkvghrnhgvlhesjhhf
+    rghrrhdrtggt
+X-ME-Proxy: <xmx:-KT-ZIzdp2A_ugGqsQaf1fCHp_CCMpw407p9kxQK-nlq-kquVF_lkA>
+    <xmx:-KT-ZPTg2NnQC48NGHMGWKmuUuXUSTVlgU5HJic3y1yWoKYwb4b5NQ>
+    <xmx:-KT-ZDacSRUX1id5a0De2mFiXq9aR4IBIfggRIoZADv4rrTvjccv4g>
+    <xmx:-aT-ZHYo90HgkSbKaVqUJ8NKIqH1zUb4BNOUXmmWuTZA7yN5SE1CSQ>
 Feedback-ID: i0fc947c4:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 2B31B15A0091; Sun, 10 Sep 2023 23:23:53 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-711-g440737448e-fm-20230828.001-g44073744
-Mime-Version: 1.0
-Message-Id: <a0e1848a-4411-4a1a-82a9-5cb0080a8323@app.fastmail.com>
-In-Reply-To: <CAMw=ZnShMzqH_yiXCS0-O+yR0RZs7+sSm0rqSYwpoygcYdg6hA@mail.gmail.com>
-References: <20230909161851.223627-1-kernel@jfarr.cc>
- <CAMw=ZnT-Ck-Y4i-MZAf99U5nzgDaj-q8UPRH_c00JgGMtUy_QA@mail.gmail.com>
- <5c94f7f4-697f-4388-9243-009c0c2d745f@app.fastmail.com>
- <CAMw=ZnShMzqH_yiXCS0-O+yR0RZs7+sSm0rqSYwpoygcYdg6hA@mail.gmail.com>
-Date:   Mon, 11 Sep 2023 05:23:29 +0200
-From:   "Jan Hendrik Farr" <kernel@jfarr.cc>
-To:     "Luca Boccassi" <bluca@debian.org>
-Cc:     linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-        x86@kernel.org, tglx@linutronix.de, dhowells@redhat.com,
-        vgoyal@redhat.com, keyrings@vger.kernel.org,
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 11 Sep 2023 01:26:14 -0400 (EDT)
+From:   Jan Hendrik Farr <kernel@jfarr.cc>
+To:     linux-kernel@vger.kernel.org
+Cc:     kexec@lists.infradead.org, x86@kernel.org, tglx@linutronix.de,
+        dhowells@redhat.com, vgoyal@redhat.com, keyrings@vger.kernel.org,
         akpm@linux-foundation.org, bhe@redhat.com, bhelgaas@google.com,
-        lennart@poettering.net
-Subject: Re: [PATCH 0/1] x86/kexec: UKI support
-Content-Type: text/plain
+        bluca@debian.org, lennart@poettering.net,
+        Jan Hendrik Farr <kernel@jfarr.cc>
+Subject: [PATCH v2 0/2] x86/kexec: UKI Support
+Date:   Mon, 11 Sep 2023 07:25:33 +0200
+Message-Id: <20230911052535.335770-1-kernel@jfarr.cc>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
@@ -89,23 +84,55 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
->> > - the dtb section also is optional but supported, and given kexec
->> > supports loading a new dtb I think this change should support it too
->> > immediately.  Moreover, we are adding support for multiple DTBs in a
->> > single UKI (by simply having multiple .dtb sections, and picking the
->> > one that matches the firmware), as a stretch goal would be nice to
->> > support that too, but it can also come later
->>
->> As far as I know dtb is not supported by kexec_file_load at all at the moment. Maybe someone here knows more about this. I'll look into it.
->
-> Not sure about the specific syscalls, but I definitely use kexec
-> --load --dtb on arm64 with existing released versions of
-> kernel/tooling
+Hello,
 
-Ok, it looks like this is supported and should be doable (on arm64, not for x86). When I was looking around the source code yesterday I forgot that my LSP had indexed the kernel for x86 and not arm64.
+this patch (v2) implements UKI support for kexec_file_load. It will require
+support in the kexec-tools userspace utility. For testing purposes the
+following can be used: https://github.com/Cydox/kexec-test/
 
->> > - also what would it take to support arm64, which is the other major UEFI arch?
->>
->> I'm not familiar with UEFI on arm64, but I can certainly look into it. I assume it's not gonna be that difficult.
+Creating UKIs for testing can be done with ukify (included in systemd),
+sbctl, and mkinitcpio, etc.
 
-I'll work on a separate patch for UKI support on arm64 (with .dtb section support). I think it's best to keep this x86 patch separate from that. I have a v2 patch for x86 put together with the small fix for the optional .cmdline section + a few other tweaks that I'll submit shortly.
+There has been discussion on this topic in an issue on GitHub that is linked
+below for reference.
+
+Changes for v2:
+- .cmdline section is now optional
+- moving pefile_parse_binary is now in a separate commit for clarity
+- parse_pefile.c is now in /lib instead of arch/x86/kernel (not sure if
+  this is the best location, but it definetly shouldn't have been in an
+  architecture specific location)
+- parse_pefile.h is now in include/kernel instead of architecture
+  specific location
+- if initrd or cmdline is manually supplied EPERM is returned instead of
+  being silently ignored
+- formatting tweaks
+
+
+Some links:
+- Related discussion: https://github.com/systemd/systemd/issues/28538
+- Documentation of UKIs: https://uapi-group.org/specifications/specs/unified_kernel_image/
+
+Jan Hendrik Farr (2):
+  move pefile_parse_binary to its own file
+  x86/kexec: UKI support
+
+ arch/x86/include/asm/kexec-uki.h       |   7 ++
+ arch/x86/kernel/Makefile               |   1 +
+ arch/x86/kernel/kexec-uki.c            | 126 +++++++++++++++++++++++++
+ arch/x86/kernel/machine_kexec_64.c     |   2 +
+ crypto/asymmetric_keys/mscode_parser.c |   2 +-
+ crypto/asymmetric_keys/verify_pefile.c | 110 +++------------------
+ crypto/asymmetric_keys/verify_pefile.h |  16 ----
+ include/linux/parse_pefile.h           |  32 +++++++
+ lib/Makefile                           |   3 +
+ lib/parse_pefile.c                     | 109 +++++++++++++++++++++
+ 10 files changed, 292 insertions(+), 116 deletions(-)
+ create mode 100644 arch/x86/include/asm/kexec-uki.h
+ create mode 100644 arch/x86/kernel/kexec-uki.c
+ create mode 100644 include/linux/parse_pefile.h
+ create mode 100644 lib/parse_pefile.c
+
+-- 
+2.40.1
+
