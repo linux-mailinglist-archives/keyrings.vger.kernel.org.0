@@ -2,132 +2,150 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C64E79C16E
-	for <lists+keyrings@lfdr.de>; Tue, 12 Sep 2023 03:11:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 606F879C3E9
+	for <lists+keyrings@lfdr.de>; Tue, 12 Sep 2023 05:17:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233507AbjILBLr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 11 Sep 2023 21:11:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57750 "EHLO
+        id S242595AbjILDRl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 11 Sep 2023 23:17:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233120AbjILBLe (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 11 Sep 2023 21:11:34 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C173DE9C61;
-        Mon, 11 Sep 2023 17:05:53 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-500b66f8b27so8676359e87.3;
-        Mon, 11 Sep 2023 17:05:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694477079; x=1695081879; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iJwIMS70R7O4xotSYAbycvkE7LIixxz2BRpxlkaoOuQ=;
-        b=C8BV1JRqYxqHAChV3nFK1KomnNYklmGkbaEoMZYJTAsAImfDBPVRq4k6SQAQyJCZkX
-         T+rgQjinDmWeI8atE7x3y0Aq50ZPUS+MLXAx63ZaLrgS4eyGJv+s7ovfLFNMNIGrmF+h
-         3lpnewbNJ/kZsc4bOvOJNxXr1t95CoFur8UIlgaFd0pZT2ipLkksxGuVz9uS72M5D2KG
-         hwRwBJMaITd2yevT/K5jbZa2iHsvB3FUdbga+QvrPPCSoly95fnfP8vYO2e0S5MgiO5n
-         PDqPi8xqSFAMnSUlp6FcjQLcx8rtFUupVKy05Mw+9YwTQRbW4IL1bLxdTniafv7gqtGI
-         QR9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694477079; x=1695081879;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iJwIMS70R7O4xotSYAbycvkE7LIixxz2BRpxlkaoOuQ=;
-        b=v5pKfZn2HuLx3t/wI2mspUQSAJiW+MjZRLaNBD/SusYSUrIbDggO8OMMErvms3S3/V
-         juXUuj/CkQ6pusZ65oMiU+NDRhEjhDOAYTajOHhZ1bfZusXwbZkHOD6WcP0zVYkyutpe
-         reS82Cz1XesjZ4HAoh9AzrsWCKH/id+DGAvWDIzvxYBZ9rh86Cylm6yXE5YEF/hXJ5CL
-         GQ1OzZcekQE0SA/q3ubp9QH04urXyLzivsT722+dEk+H08VDuIh0ks0vvuC9dtAg4sDE
-         iFsmh6p8ICfI8HTCtB+CcWs9eMtV5bY9yTJPdP2k9/KsJSXUHbZ5pSoEOtrTzQwPaocy
-         MYVw==
-X-Gm-Message-State: AOJu0YySNZifylj1F2xFeKAsQM+IoRnDk/JVGT6QFz8od9pzNFdPDDn0
-        +5ZErLDLqitm/ShUczpAafa0S3TR+apbGv2SUEbpyjiI87Faig==
-X-Google-Smtp-Source: AGHT+IFf2hqEyBFntRVpYOdqr6T6TV+V1ehJ8cSgQpPXcwsMJ4j+xNm6xYRtTw0/JaZaMQZr0SNrgfCVx6jkQoSCZXk=
-X-Received: by 2002:a17:906:1d9:b0:9a5:a44a:86f3 with SMTP id
- 25-20020a17090601d900b009a5a44a86f3mr9128275ejj.25.1694474448340; Mon, 11 Sep
- 2023 16:20:48 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230909161851.223627-1-kernel@jfarr.cc> <CVGFE6FRWFHR.DVG9NUQID4EA@suppilovahvero>
-In-Reply-To: <CVGFE6FRWFHR.DVG9NUQID4EA@suppilovahvero>
-From:   Neal Gompa <ngompa13@gmail.com>
-Date:   Mon, 11 Sep 2023 19:20:12 -0400
-Message-ID: <CAEg-Je9GF5S+QcsspM_CzDSxzCN8h2eRp7BbctC1x7-rH8j68g@mail.gmail.com>
-Subject: Re: [systemd-devel] [PATCH 0/1] x86/kexec: UKI support
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     Jan Hendrik Farr <kernel@jfarr.cc>, linux-kernel@vger.kernel.org,
-        systemd-devel@lists.freedesktop.org, x86@kernel.org,
-        kexec@lists.infradead.org, dhowells@redhat.com,
-        keyrings@vger.kernel.org, bluca@debian.org, bhelgaas@google.com,
-        tglx@linutronix.de, akpm@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
+        with ESMTP id S242447AbjILDR2 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 11 Sep 2023 23:17:28 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C06A7107C72;
+        Mon, 11 Sep 2023 19:07:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B82C433B8;
+        Mon, 11 Sep 2023 21:15:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694466934;
+        bh=jKcBqdin2tQkw/Q1r5bXfoLHC2ns8OLx8oid/0xcnhI=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=U0qjagxpMzedehK9Rnp94FOB5NGS96dvp8x4TnNeUL0sRX4Z3sceopbVWxG+fOY/W
+         5E5/UDNHg6Y62UYTfllgBH2y2VCmrR/l17pA0SKoDc88LYupqdeF6T3jV79xZFkEN4
+         u+bGTtOuSkvHrNMs42+oItei4kulqAzGJUZDdRvSHn2VvZC3HxaSBJXP5SIrW7+cAN
+         34jhVL0dMLKxF+DLxH8igFbxdSELhrRD9mHE+b6XsXzdoAZck6XUm8vjM5450Bpb5S
+         2O32TFHVMKUbTjXcDMeGdi447ptRwnzVaLcAf5hEUZvOY5XqGnQMb+dCOu4eNb1BYR
+         /WNqpkA1yMqag==
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
+Content-Type: text/plain; charset=UTF-8
+Date:   Tue, 12 Sep 2023 00:15:30 +0300
+Message-Id: <CVGEE9ODRR8I.1RIVO2MVE2UAX@suppilovahvero>
+Cc:     "dhowells@redhat.com" <dhowells@redhat.com>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] certs: Add option to disallow non-CA certificates in
+ secondary trusted keying
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Denis Glazkov" <d.glazkov@omp.ru>,
+        "Sergey Shtylyov" <s.shtylyov@omp.ru>
+X-Mailer: aerc 0.14.0
+References: <f5a1d856-0482-a2c3-0e62-3ca911ce3dd2@omp.ru>
+ <20230908121330.4076-1-d.glazkov@omp.ru>
+In-Reply-To: <20230908121330.4076-1-d.glazkov@omp.ru>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, Sep 11, 2023 at 7:15=E2=80=AFPM Jarkko Sakkinen <jarkko@kernel.org>=
- wrote:
+On Fri Sep 8, 2023 at 3:14 PM EEST, Denis Glazkov wrote:
+> The Linux kernel has an IMA (Integrity Measurement Architecture)
+> subsystem to check the integrity of the file system based on digital
+> signatures. IMA uses certificates in `.ima` keying to check integrity.
 >
-> On Sat Sep 9, 2023 at 7:18 PM EEST, Jan Hendrik Farr wrote:
-> > Hello,
-> >
-> > this patch implements UKI support for kexec_file_load. It will require =
-support
-> > in the kexec-tools userspace utility. For testing purposes the followin=
-g can be used:
-> > https://github.com/Cydox/kexec-test/
-> >
-> > There has been discussion on this topic in an issue on GitHub that is l=
-inked below
-> > for reference.
-> >
-> >
-> > Some links:
-> > - Related discussion: https://github.com/systemd/systemd/issues/28538
-> > - Documentation of UKIs: https://uapi-group.org/specifications/specs/un=
-ified_kernel_image/
-> >
-> > Jan Hendrik Farr (1):
-> >   x86/kexec: UKI support
-> >
-> >  arch/x86/include/asm/kexec-uki.h       |   7 ++
-> >  arch/x86/include/asm/parse_pefile.h    |  32 +++++++
-> >  arch/x86/kernel/Makefile               |   2 +
-> >  arch/x86/kernel/kexec-uki.c            | 113 +++++++++++++++++++++++++
-> >  arch/x86/kernel/machine_kexec_64.c     |   2 +
-> >  arch/x86/kernel/parse_pefile.c         | 110 ++++++++++++++++++++++++
-> >  crypto/asymmetric_keys/mscode_parser.c |   2 +-
-> >  crypto/asymmetric_keys/verify_pefile.c | 110 +++---------------------
-> >  crypto/asymmetric_keys/verify_pefile.h |  16 ----
-> >  9 files changed, 278 insertions(+), 116 deletions(-)
-> >  create mode 100644 arch/x86/include/asm/kexec-uki.h
-> >  create mode 100644 arch/x86/include/asm/parse_pefile.h
-> >  create mode 100644 arch/x86/kernel/kexec-uki.c
-> >  create mode 100644 arch/x86/kernel/parse_pefile.c
-> >
-> > --
-> > 2.40.1
+> Only certificates issued by one of the trusted CA (Certificate Authority)
+> certificates can be added to the `.ima` keying.
 >
-> What the heck is UKI?
+> The Linux kernel now has a secondary trusted keying to which trusted
+> certificates from user space can be added if you have superuser
+> privileges. Previously, all trusted certificates were in the built-in
+> trusted keying, which could not be modified from user space.
+> Trusted certificates were placed in the built-in trusted keying at
+> kernel compile time.
+>
+> The secondary trusted keying is designed so that any certificates that
+> are signed by one of the trusted CA certificates in the built-in or
+> secondary trusted keyring can be added to it.
+>
+> Let's imagine that we have the following certificate trust chain:
+>
+>              =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=90
+>              =E2=94=82                           =E2=94=82     =E2=94=8C=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90   =
+    =E2=94=82
+>              =E2=94=82                           =E2=94=82     =E2=94=82 =
+      =E2=94=82       =E2=94=82
+> =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90    =E2=94=8C=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90=
+  =E2=94=82 =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90
+> =E2=94=82.builtin_trusted_keys=E2=94=82=E2=97=84=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=A4.secondary_trusted_keys =E2=94=9C=E2=94=80=E2=94=80=E2=94=98 =
+=E2=94=82   .ima    =E2=94=82
+> =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4    =E2=94=9C=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4=
+    =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4
+> =E2=94=82     Root CA Cert    =E2=94=82-----=E2=96=BA Intermediate CA Cer=
+t  =E2=94=82-----=E2=96=BA IMA Cert =E2=94=82
+> =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98    =E2=94=94=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98=
+    =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98
+>
+>                 Issues                  Restricted by
+>             -------------=E2=96=BA             =E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=96=BA
+>
+> Since the IMA certificate is signed by a CA certificate from a secondary
+> trusted keying, an attacker with superuser privileges will be able to
+> add the IMA certificate to the secondary trusted keying. That is, the IMA
+> certificate will become trusted.
+>
+> Since, with `CONFIG_MODULE_SIG` option enabled, modules can only be
+> loaded into kernel space if they are signed with one of the trusted
+> certificates, an attacker could sign untrusted kernel modules with
+> the private key corresponding to the IMA certificate and successfully
+> load the untrusted modules into kernel space.
+>
+> This patch adds the configuration that once enabled, only
+> certificates that meet the following requirements can be added
+> to the secondary trusted keying:
+>
+> 1. The certificate is a CA (Certificate Authority)
+> 2. The certificate must be used for verifying a CA's signatures
+> 3. The certificate must not be used for digital signatures
+>
+> Signed-off-by: Denis Glazkov <d.glazkov@omp.ru>
 
-Unified Kernel Images. More details available here:
-https://uapi-group.org/specifications/specs/unified_kernel_image/
+s/keying/keyring/ (multiple)
 
-It's a way of creating initramfs-style images as fully generic,
-reproducible images that can be built server-side.
+Have you considered instead making mod_verify_sig() more robust?
+Obviously this would mean making selection of keys in
+verify_pkcs7_signature() more robust (see the documentation of
+'trusted_keys').
 
-It is a requirement for creating locked down Linux devices for
-appliances that can be tamper-resistant too.
+The this would be also less niche feature to pick for distributors
+if it was just concerning module loading, and have associated config
+flag over there.
 
-
-
-
---
-=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
-=BC=81/ Always, there's only one truth!
+BR, Jarkko
