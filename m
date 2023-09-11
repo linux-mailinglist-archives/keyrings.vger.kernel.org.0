@@ -2,116 +2,96 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D45979C102
-	for <lists+keyrings@lfdr.de>; Tue, 12 Sep 2023 02:21:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAFD079C11A
+	for <lists+keyrings@lfdr.de>; Tue, 12 Sep 2023 02:28:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237056AbjIKWJg (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 11 Sep 2023 18:09:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48632 "EHLO
+        id S230008AbjILA2f (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 11 Sep 2023 20:28:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236526AbjIKKu3 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 11 Sep 2023 06:50:29 -0400
+        with ESMTP id S229889AbjILA2e (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 11 Sep 2023 20:28:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11675E9;
-        Mon, 11 Sep 2023 03:50:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD08AC433C9;
-        Mon, 11 Sep 2023 10:50:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08568469A;
+        Mon, 11 Sep 2023 17:28:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C53C116AA;
+        Mon, 11 Sep 2023 22:02:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694429424;
-        bh=5eCOHpwInPjQA6NxPDr5kZtgwrG8Hy+L9RSiIjoYzXQ=;
+        s=k20201202; t=1694469749;
+        bh=BPQ6dr22xKZeaU3Kgfesl8AdYcWadqw/YEcuDpmDST4=;
         h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=I63fO3Oped5CcoSGIlghzn65dDLDS3AgXMOjiToNZvSUdrhpid8dA2fwnZ3L0uvuQ
-         vRO43uNZPPKAjLBYaxKuEpPRCi/DBPQ5JahZ+/xplfXgFn+m6+K1DVaoMVszFQn7e3
-         c/7ShNyPjBTDlCTah8S2O9CnI6mNmrRR5K25WKyBtu4HXfsGlCg1Nmd2cAEeAGJtqk
-         +Xaszsx6GIBzt4dpxcFYC1VW/aJEKgOxHSFW2mvoY/oVjBtFiZDYuvh56WBy8I8ZL6
-         aLRIobdGSMWYlt8ZweMRDuHBYUhcsbpwXJ23mEyEwkNhh06xFKUyD5SbyXxtBFA6QG
-         oJalfh9jeUlHA==
+        b=N5GwXa+SDYrhEIk4TuMtZ7tTjNdzDnsTrHuml88ub+VqXsSBsN2OjmWvPuZBZ4UWP
+         Mo49LFkDV40SawEe1+qf9LrZFe2/UVm2Y3OAcZPB8mWpNvFAcyBv04yeQul4kPWO9X
+         oG9Fgvw400MHs8NRjIuBih87jiOL752wxzGUr0Q75CZiY3EWwNOgqkWPYm/yVFsVXc
+         dvtv3gz7NSqvABf8ilXAYQPtk+lRYTgqBosEks/u89WYpaP+zysbbOJaMRdxWEogpn
+         1hqlYlgt6t2JcOKR8cvXXltniUzh+izqSBl3VsajRTS94b7/l+7asMGhXiD26IsRRg
+         erZQgH3kXmONw==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 11 Sep 2023 13:50:18 +0300
-Message-Id: <CVG13KLCIT1X.1MQT6HYAYFRAU@suppilovahvero>
-Cc:     <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-nfs@vger.kernel.org>, <linux-integrity@vger.kernel.org>,
-        <linux-security-module@vger.kernel.org>,
-        <keyrings@vger.kernel.org>, <selinux@vger.kernel.org>,
-        "Roberto Sassu" <roberto.sassu@huawei.com>,
-        "Stefan Berger" <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v2 11/25] security: Align inode_setattr hook definition
- with EVM
+Date:   Tue, 12 Sep 2023 01:02:24 +0300
+Message-Id: <CVGFE6FRWFHR.DVG9NUQID4EA@suppilovahvero>
+Cc:     <kexec@lists.infradead.org>, <x86@kernel.org>,
+        <tglx@linutronix.de>, <dhowells@redhat.com>, <vgoyal@redhat.com>,
+        <keyrings@vger.kernel.org>, <akpm@linux-foundation.org>,
+        <bhe@redhat.com>, <bhelgaas@google.com>, <lennart@poettering.net>,
+        <bluca@debian.org>, <systemd-devel@lists.freedesktop.org>
+Subject: Re: [PATCH 0/1] x86/kexec: UKI support
 From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Casey Schaufler" <casey@schaufler-ca.com>,
-        "Roberto Sassu" <roberto.sassu@huaweicloud.com>,
-        <viro@zeniv.linux.org.uk>, <brauner@kernel.org>,
-        <chuck.lever@oracle.com>, <jlayton@kernel.org>, <neilb@suse.de>,
-        <kolga@netapp.com>, <Dai.Ngo@oracle.com>, <tom@talpey.com>,
-        <zohar@linux.ibm.com>, <dmitry.kasatkin@gmail.com>,
-        <paul@paul-moore.com>, <jmorris@namei.org>, <serge@hallyn.com>,
-        <dhowells@redhat.com>, <stephen.smalley.work@gmail.com>,
-        <eparis@parisplace.org>
+To:     "Jan Hendrik Farr" <kernel@jfarr.cc>,
+        <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.14.0
-References: <20230831104136.903180-1-roberto.sassu@huaweicloud.com>
- <20230831104136.903180-12-roberto.sassu@huaweicloud.com>
- <CVAFV92MONCH.257Y9YQ3OEU4B@suppilovahvero>
- <19943e35-2e7c-d27a-1a5d-189eea439dfd@schaufler-ca.com>
-In-Reply-To: <19943e35-2e7c-d27a-1a5d-189eea439dfd@schaufler-ca.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230909161851.223627-1-kernel@jfarr.cc>
+In-Reply-To: <20230909161851.223627-1-kernel@jfarr.cc>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HTML_MESSAGE,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        UNPARSEABLE_RELAY autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue Sep 5, 2023 at 6:56 PM EEST, Casey Schaufler wrote:
-> On 9/4/2023 2:08 PM, Jarkko Sakkinen wrote:
-> > On Thu Aug 31, 2023 at 1:41 PM EEST, Roberto Sassu wrote:
-> >> From: Roberto Sassu <roberto.sassu@huawei.com>
-> >>
-> >> Add the idmap parameter to the definition, so that evm_inode_setattr()=
- can
-> >> be registered as this hook implementation.
-> >>
-> >> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> >> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-> >> Acked-by: Casey Schaufler <casey@schaufler-ca.com>
-> >> ---
-> >>  include/linux/lsm_hook_defs.h | 3 ++-
-> >>  security/security.c           | 2 +-
-> >>  security/selinux/hooks.c      | 3 ++-
-> >>  security/smack/smack_lsm.c    | 4 +++-
-> >>  4 files changed, 8 insertions(+), 4 deletions(-)
-> >>
-> >> diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_de=
-fs.h
-> >> index 4bdddb52a8fe..fdf075a6b1bb 100644
-> >> --- a/include/linux/lsm_hook_defs.h
-> >> +++ b/include/linux/lsm_hook_defs.h
-> >> @@ -134,7 +134,8 @@ LSM_HOOK(int, 0, inode_readlink, struct dentry *de=
-ntry)
-> >>  LSM_HOOK(int, 0, inode_follow_link, struct dentry *dentry, struct ino=
-de *inode,
-> >>  	 bool rcu)
-> >>  LSM_HOOK(int, 0, inode_permission, struct inode *inode, int mask)
-> >> -LSM_HOOK(int, 0, inode_setattr, struct dentry *dentry, struct iattr *=
-attr)
-> >> +LSM_HOOK(int, 0, inode_setattr, struct mnt_idmap *idmap, struct dentr=
-y *dentry,
-> >> +	 struct iattr *attr)
-> > LSM_HOOK(int, 0, inode_setattr, struct mnt_idmap *idmap, struct dentry =
-*dentry, struct iattr *attr)
-> >
-> > Only 99 characters, i.e. breaking into two lines is not necessary.
+On Sat Sep 9, 2023 at 7:18 PM EEST, Jan Hendrik Farr wrote:
+> Hello,
 >
-> We're keeping the LSM code in the ancient 80 character format.
-> Until we get some fresh, young maintainers involved who can convince
-> us that line wrapped 80 character terminals are kewl we're sticking
-> with what we know.
+> this patch implements UKI support for kexec_file_load. It will require su=
+pport
+> in the kexec-tools userspace utility. For testing purposes the following =
+can be used:
+> https://github.com/Cydox/kexec-test/
 >
-> 	https://lwn.net/Articles/822168/
+> There has been discussion on this topic in an issue on GitHub that is lin=
+ked below
+> for reference.
+>
+>
+> Some links:
+> - Related discussion: https://github.com/systemd/systemd/issues/28538
+> - Documentation of UKIs: https://uapi-group.org/specifications/specs/unif=
+ied_kernel_image/
+>
+> Jan Hendrik Farr (1):
+>   x86/kexec: UKI support
+>
+>  arch/x86/include/asm/kexec-uki.h       |   7 ++
+>  arch/x86/include/asm/parse_pefile.h    |  32 +++++++
+>  arch/x86/kernel/Makefile               |   2 +
+>  arch/x86/kernel/kexec-uki.c            | 113 +++++++++++++++++++++++++
+>  arch/x86/kernel/machine_kexec_64.c     |   2 +
+>  arch/x86/kernel/parse_pefile.c         | 110 ++++++++++++++++++++++++
+>  crypto/asymmetric_keys/mscode_parser.c |   2 +-
+>  crypto/asymmetric_keys/verify_pefile.c | 110 +++---------------------
+>  crypto/asymmetric_keys/verify_pefile.h |  16 ----
+>  9 files changed, 278 insertions(+), 116 deletions(-)
+>  create mode 100644 arch/x86/include/asm/kexec-uki.h
+>  create mode 100644 arch/x86/include/asm/parse_pefile.h
+>  create mode 100644 arch/x86/kernel/kexec-uki.c
+>  create mode 100644 arch/x86/kernel/parse_pefile.c
+>
+> --=20
+> 2.40.1
 
-Pretty artificial counter-example tbh :-) Even with Rust people tend to
-stick one character variable names for trivial integer indices.
+What the heck is UKI?
 
 BR, Jarkko
