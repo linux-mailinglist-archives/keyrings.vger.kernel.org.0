@@ -2,198 +2,181 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0A5079B1C1
-	for <lists+keyrings@lfdr.de>; Tue, 12 Sep 2023 01:57:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4FC679AD98
+	for <lists+keyrings@lfdr.de>; Tue, 12 Sep 2023 01:40:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240249AbjIKWJx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 11 Sep 2023 18:09:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42010 "EHLO
+        id S239479AbjIKWJ2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 11 Sep 2023 18:09:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236383AbjIKKcW (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 11 Sep 2023 06:32:22 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B736E5F;
-        Mon, 11 Sep 2023 03:32:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F4FC433C7;
-        Mon, 11 Sep 2023 10:32:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694428336;
-        bh=NxlAgdm0zBlYQHGHYk0vtHQiaU9QKg+ESRgOgI623QA=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=YPRP152AYRqv5SeEqG2TuzRr1x/m+fO7cpvR0iJom99pBq3WtSTzem7asxaeCIOiW
-         F4fdOOx0PKr1+kqKegAMJTDs1mk2xBUpZ6j0hXL4kThf7PdV2mINHs2l3DVIRwB1Ig
-         +/bx2ApTF8w9Yl5RPIIVNymDA9D0St3XrQ1YGG3bOEy+m845bowZZz03NcoxwDfZcU
-         PY1Pi3XcSq0XAfQdAEnIj/+0RytcIMw/OkEkJxXVLHr0fAGcJXFsFvUlyYWKKZ9a8a
-         l5bcQrdTAv6s3sqwir8369BhcVy8BEvq8LXWA2ZxiOFgcrVq2OYRzALNDk2e28f1oF
-         g5oh1VYx8KEQg==
+        with ESMTP id S237987AbjIKN3a (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 11 Sep 2023 09:29:30 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A76012A;
+        Mon, 11 Sep 2023 06:29:25 -0700 (PDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 38BD4wkg031453;
+        Mon, 11 Sep 2023 13:29:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=OHZCttcORDHOzgF/QX+R50Q6BNXzK/GZ2AIbEecuhtk=;
+ b=qfs1ElmOtJBt4rgKxde9Ak8dx3N3nk5SCaMs23SbhTcCU/nw+bCRiwgJqCoNnu8pJ+Wx
+ a635Y8ZLx4jb3uj2KY/2wY1UoQgSu3TH6CcegsoJo3IHPhFv+wnsFpfpvL5SoRtsUWlF
+ 0qleH8QHCez7sd9DOR/MSFHqIprE2YAZ3vTOhqZIPMr351eiv/JgrZxUPIEmcs8G1jRR
+ 4ZiEZJoRrl1VQj5f43mML4Ddpb3ksOgLGQBeyc9o2mW5LIc2klj2vC/U1SbPi4T4f2gy
+ vVP6P0jX0XZ4ZRkdGD3eOCpjYDvJMWHt7//Kj/Qj4IANR+RESvFbIdBeWSlv28Ny+CpF Dw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t23fb10r5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 11 Sep 2023 13:29:11 +0000
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 38BDCtEB016977;
+        Mon, 11 Sep 2023 13:29:10 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3t23fb10qv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 11 Sep 2023 13:29:10 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+        by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 38BDHHjO002755;
+        Mon, 11 Sep 2023 13:29:09 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+        by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3t14hkjkgx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 11 Sep 2023 13:29:09 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+        by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 38BDT9sp57409910
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 11 Sep 2023 13:29:09 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 683DA58055;
+        Mon, 11 Sep 2023 13:29:09 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 726F35804B;
+        Mon, 11 Sep 2023 13:29:08 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.61.190.181])
+        by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+        Mon, 11 Sep 2023 13:29:08 +0000 (GMT)
+Message-ID: <097a0413b27ed9792dc598ff184730bcf6ae8fcf.camel@linux.ibm.com>
+Subject: Re: [PATCH] certs: Restrict blacklist updates to the secondary
+ trusted keyring
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Eric Snowberg <eric.snowberg@oracle.com>, jarkko@kernel.org,
+        dhowells@redhat.com, dwmw2@infradead.org
+Cc:     mic@linux.microsoft.com, kanth.ghatraju@oracle.com,
+        konrad.wilk@oracle.com, linux-integrity@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 11 Sep 2023 09:29:07 -0400
+In-Reply-To: <20230908213428.731513-1-eric.snowberg@oracle.com>
+References: <20230908213428.731513-1-eric.snowberg@oracle.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 11 Sep 2023 13:32:12 +0300
-Message-Id: <CVG0PQ1NV1XZ.1R2BD85Z1M3FO@suppilovahvero>
-Cc:     <linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>,
-        "Jens Wiklander" <jens.wiklander@linaro.org>, <jejb@linux.ibm.com>,
-        <zohar@linux.ibm.com>, <sudeep.holla@arm.com>,
-        <achin.gupta@arm.com>, <linux-security-module@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] KEYS: trusted: tee: Refactor register SHM usage
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Sumit Garg" <sumit.garg@linaro.org>
-X-Mailer: aerc 0.14.0
-References: <20230822112933.1550062-1-sumit.garg@linaro.org>
- <20230822125555.GA82256@rayden>
- <CAFA6WYPy=yxGg1HbT+ipWJFpxiJeUGK6BSgMhtRPd=zmKef-cw@mail.gmail.com>
- <CAHUa44G9jCeHcRq=AZeieaTPWN_tpOVKeJNY=777QAh-bw1QNg@mail.gmail.com>
- <CAFA6WYPY70iYCmQhzCkATGinqK_C1i4SEZzTdv4yDwntpGNzew@mail.gmail.com>
- <CAHUa44H5eG6N0M_aAiWsYJorWVt4pYEZPWXgOJHgXAYVmR=cww@mail.gmail.com>
- <CAFA6WYNAifDVZy-pLSTJWonGTJBECijsTFw4OQdqToW3u6Lj_Q@mail.gmail.com>
-In-Reply-To: <CAFA6WYNAifDVZy-pLSTJWonGTJBECijsTFw4OQdqToW3u6Lj_Q@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 6yi0Q1cR-ekjGl6kAeMMU9adjH6TLfdr
+X-Proofpoint-GUID: q6rxkGZ4mzIlJGDiIwNC4aA9lpDDv0ng
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-09-11_07,2023-09-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
+ spamscore=0 lowpriorityscore=0 impostorscore=0 mlxlogscore=999
+ suspectscore=0 priorityscore=1501 malwarescore=0 bulkscore=0 clxscore=1011
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2309110119
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue Sep 5, 2023 at 2:04 PM EEST, Sumit Garg wrote:
-> Hi Jarkko,
->
-> On Wed, 23 Aug 2023 at 19:58, Jens Wiklander <jens.wiklander@linaro.org> =
-wrote:
-> >
-> > On Wed, Aug 23, 2023 at 3:04=E2=80=AFPM Sumit Garg <sumit.garg@linaro.o=
-rg> wrote:
-> > >
-> > > On Wed, 23 Aug 2023 at 13:32, Jens Wiklander <jens.wiklander@linaro.o=
-rg> wrote:
-> > > >
-> > > > On Wed, Aug 23, 2023 at 8:55=E2=80=AFAM Sumit Garg <sumit.garg@lina=
-ro.org> wrote:
-> > > > >
-> > > > > On Tue, 22 Aug 2023 at 18:25, Jens Wiklander <jens.wiklander@lina=
-ro.org> wrote:
-> > > > > >
-> > > > > > On Tue, Aug 22, 2023 at 04:59:33PM +0530, Sumit Garg wrote:
-> > > > > > > The OP-TEE driver using the old SMC based ABI permits overlap=
-ping shared
-> > > > > > > buffers, but with the new FF-A based ABI each physical page m=
-ay only
-> > > > > > > be registered once.
-> > > > > > >
-> > > > > > > As the key and blob buffer are allocated adjancently, there i=
-s no need
-> > > > > > > for redundant register shared memory invocation. Also, it is =
-incompatibile
-> > > > > > > with FF-A based ABI limitation. So refactor register shared m=
-emory
-> > > > > > > implementation to use only single invocation to register both=
- key and blob
-> > > > > > > buffers.
-> > > > > > >
-> > > > > > > Fixes: 4615e5a34b95 ("optee: add FF-A support")
-> > > > > > > Reported-by: Jens Wiklander <jens.wiklander@linaro.org>
-> > > > > > > Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-> > > > > > > ---
-> > > > > > >  security/keys/trusted-keys/trusted_tee.c | 64 ++++++++------=
-----------
-> > > > > > >  1 file changed, 20 insertions(+), 44 deletions(-)
-> > > > > > >
-> > > > > > > diff --git a/security/keys/trusted-keys/trusted_tee.c b/secur=
-ity/keys/trusted-keys/trusted_tee.c
-> > > > > > > index ac3e270ade69..aa3d477de6db 100644
-> > > > > > > --- a/security/keys/trusted-keys/trusted_tee.c
-> > > > > > > +++ b/security/keys/trusted-keys/trusted_tee.c
-> > > > > > > @@ -65,24 +65,16 @@ static int trusted_tee_seal(struct truste=
-d_key_payload *p, char *datablob)
-> > > > > > >       int ret;
-> > > > > > >       struct tee_ioctl_invoke_arg inv_arg;
-> > > > > > >       struct tee_param param[4];
-> > > > > > > -     struct tee_shm *reg_shm_in =3D NULL, *reg_shm_out =3D N=
-ULL;
-> > > > > > > +     struct tee_shm *reg_shm =3D NULL;
-> > > > > > >
-> > > > > > >       memset(&inv_arg, 0, sizeof(inv_arg));
-> > > > > > >       memset(&param, 0, sizeof(param));
-> > > > > > >
-> > > > > > > -     reg_shm_in =3D tee_shm_register_kernel_buf(pvt_data.ctx=
-, p->key,
-> > > > > > > -                                              p->key_len);
-> > > > > > > -     if (IS_ERR(reg_shm_in)) {
-> > > > > > > -             dev_err(pvt_data.dev, "key shm register failed\=
-n");
-> > > > > > > -             return PTR_ERR(reg_shm_in);
-> > > > > > > -     }
-> > > > > > > -
-> > > > > > > -     reg_shm_out =3D tee_shm_register_kernel_buf(pvt_data.ct=
-x, p->blob,
-> > > > > > > -                                               sizeof(p->blo=
-b));
-> > > > > > > -     if (IS_ERR(reg_shm_out)) {
-> > > > > > > -             dev_err(pvt_data.dev, "blob shm register failed=
-\n");
-> > > > > > > -             ret =3D PTR_ERR(reg_shm_out);
-> > > > > > > -             goto out;
-> > > > > > > +     reg_shm =3D tee_shm_register_kernel_buf(pvt_data.ctx, p=
-->key,
-> > > > > > > +                                           sizeof(p->key) + =
-sizeof(p->blob));
-> > > > > >
-> > > > > > This is somewhat fragile. What if struct trusted_key_payload ha=
-s a small
-> > > > > > unexpected change in layout?
-> > > > >
-> > > > > key and blob buffers are just two adjacent fixed sized byte array=
-s. So
-> > > > > I am not worried here as long as they stay adjacent (which has be=
-en
-> > > > > the case since trusted keys were introduced in the kernel).
-> > > >
-> > > > Yeah, that was my point, but fine if you don't believe it's an issu=
-e.
-> > > >
-> > >
-> > > Does it resolve the issue with FFA ABI for you? It would be good to
-> > > have your Tested-by tag.
-> >
-> > It does:
-> > Tested-by: Jens Wiklander <jens.wiklander@linaro.org>
-> > Reviewed-by: Jens Wiklander <jens.wiklander@linaro.org>
-> >
->
-> Can you help pick up this fix for v6.6 kernel release?
+Hi Eric,
 
-I pushed it and also added the missing stable tag:
+On Fri, 2023-09-08 at 17:34 -0400, Eric Snowberg wrote:
+> Currently root can dynamically update the blacklist keyring if the hash
+> being added is signed and vouched for by the builtin trusted keyring.
+> Currently keys in the secondary trusted keyring can not be used.
+> 
+> Keys within the secondary trusted keyring carry the same capabilities as
+> the builtin trusted keyring.  Relax the current restriction for updating
+> the .blacklist keyring and allow the secondary to also be referenced as
+> a trust source.  Since the machine keyring is linked to the secondary
+> trusted keyring, any key within it may also be used.
+> 
+> An example use case for this is IMA appraisal.  Now that IMA both
+> references the blacklist keyring and allows the machine owner to add
+> custom IMA CA certs via the machine keyring, this adds the additional
+> capability for the machine owner to also do revocations on a running
+> system.
+> 
+> IMA appraisal usage example to add a revocation for /usr/foo:
+> 
+> sha256sum /bin/foo | awk '{printf "bin:" $1}' > hash.txt
+> 
+> openssl smime -sign -in hash.txt -inkey machine-private-key.pem \
+>        -signer machine-certificate.pem -noattr -binary -outform DER \
+>        -out hash.p7s
+> 
+> keyctl padd blacklist "$(< hash.txt)" %:.blacklist < hash.p7s
+> 
+> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
 
-commit 1037d6ec29cdfaaec5277c194b0278eb0a30c3f8 (HEAD -> master, origin/mas=
-ter, origin/HEAD)
-Author: Sumit Garg <sumit.garg@linaro.org>
-Date:   Tue Aug 22 16:59:33 2023 +0530
+The secondary keyring may include both CA and code signing keys.  With
+this change any key loaded onto the secondary keyring may blacklist a
+hash.  Wouldn't it make more sense to limit blacklisting
+certificates/hashes to at least CA keys? 
 
-    KEYS: trusted: tee: Refactor register SHM usage
+> ---
+>  certs/Kconfig     | 2 +-
+>  certs/blacklist.c | 4 ++--
+>  2 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/certs/Kconfig b/certs/Kconfig
+> index 1f109b070877..23dc87c52aff 100644
+> --- a/certs/Kconfig
+> +++ b/certs/Kconfig
+> @@ -134,7 +134,7 @@ config SYSTEM_BLACKLIST_AUTH_UPDATE
+>  	depends on SYSTEM_DATA_VERIFICATION
+>  	help
+>  	  If set, provide the ability to load new blacklist keys at run time if
+> -	  they are signed and vouched by a certificate from the builtin trusted
+> +	  they are signed and vouched by a certificate from the secondary trusted
 
-    The OP-TEE driver using the old SMC based ABI permits overlapping share=
-d
-    buffers, but with the new FF-A based ABI each physical page may only
-    be registered once.
+If CONFIG_SECONDARY_TRUSTED_KEYRING is not enabled, it falls back to
+the builtin keyring.  Please update the comment accordingly.
 
-    As the key and blob buffer are allocated adjancently, there is no need
-    for redundant register shared memory invocation. Also, it is incompatib=
-ile
-    with FF-A based ABI limitation. So refactor register shared memory
-    implementation to use only single invocation to register both key and b=
-lob
-    buffers.
+>  	  keyring.  The PKCS#7 signature of the description is set in the key
+>  	  payload.  Blacklist keys cannot be removed.
+>  
+> diff --git a/certs/blacklist.c b/certs/blacklist.c
+> index 675dd7a8f07a..0b346048ae2d 100644
+> --- a/certs/blacklist.c
+> +++ b/certs/blacklist.c
+> @@ -102,12 +102,12 @@ static int blacklist_key_instantiate(struct key *key,
+>  
+>  #ifdef CONFIG_SYSTEM_BLACKLIST_AUTH_UPDATE
+>  	/*
+> -	 * Verifies the description's PKCS#7 signature against the builtin
+> +	 * Verifies the description's PKCS#7 signature against the secondary
+>  	 * trusted keyring.
+>  	 */
 
-    [jarkko: Added cc to stable.]
-    Cc: stable@vger.kernel.org # v5.16+
-    Fixes: 4615e5a34b95 ("optee: add FF-A support")
-    Reported-by: Jens Wiklander <jens.wiklander@linaro.org>
-    Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
-    Tested-by: Jens Wiklander <jens.wiklander@linaro.org>
-    Reviewed-by: Jens Wiklander <jens.wiklander@linaro.org>
-    Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+And similarly here ...
 
+>  	err = verify_pkcs7_signature(key->description,
+>  			strlen(key->description), prep->data, prep->datalen,
+> -			NULL, VERIFYING_UNSPECIFIED_SIGNATURE, NULL, NULL);
+> +			VERIFY_USE_SECONDARY_KEYRING, VERIFYING_UNSPECIFIED_SIGNATURE, NULL, NULL);
+>  	if (err)
+>  		return err;
+>  #else
 
-BR, Jarkko
+-- 
+thanks,
+
+Mimi
+
