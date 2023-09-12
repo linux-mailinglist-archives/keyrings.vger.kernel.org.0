@@ -2,70 +2,94 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DFBC79D9EA
-	for <lists+keyrings@lfdr.de>; Tue, 12 Sep 2023 22:11:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BC8479DA42
+	for <lists+keyrings@lfdr.de>; Tue, 12 Sep 2023 22:49:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233568AbjILULS (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 12 Sep 2023 16:11:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43220 "EHLO
+        id S233632AbjILUt7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 12 Sep 2023 16:49:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230090AbjILULO (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 12 Sep 2023 16:11:14 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D30FFE4B;
-        Tue, 12 Sep 2023 13:11:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F064FC433C8;
-        Tue, 12 Sep 2023 20:11:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694549470;
-        bh=zEtpSUcyobk+lbPFKZijlz8Od7DLQbjQyAKeH7BGqcA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Sz/YndxbP/+PswTEiyOMUM81J2IQjCBzNqfvjKYOSjSSXUrEw2C88N2ieX4cIV+uS
-         6UyT5x3lLHPgfrulCKGDDDsq2A2koNE6+6wjHuxeKhfYqbD8j6agmPNOrYDCtTDAMg
-         4oRF8vilzAQOwWq01LlZL5aaAMVWL8fLX4OtpGllS7EV+GP+OU9oDX2d5r97pLnbR2
-         wVb+3iUmIX+5G3k8paCt2bb9Zd/HNS+JTVXAQCvd9rA1cHKFg6ve2BTJrWZx5ZM7b5
-         A2SVI1Xa3eASevzyj0kBmVVI7Rx/RQIAhOE6HcZ05BNVoMt44zTd5F0qJW/dPshF+v
-         9emtYOf3Yaiwg==
-From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        David Howells <dhowells@redhat.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        "Justin M . Forbes" <jforbes@fedoraproject.org>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org
-Subject: [GIT PULL] tpmdd changes for v6.6-rc2
-Date:   Tue, 12 Sep 2023 23:11:01 +0300
-Message-Id: <20230912201102.1012306-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.39.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        with ESMTP id S233149AbjILUt7 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 12 Sep 2023 16:49:59 -0400
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B1D4199;
+        Tue, 12 Sep 2023 13:49:55 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.west.internal (Postfix) with ESMTP id 382963200954;
+        Tue, 12 Sep 2023 16:49:52 -0400 (EDT)
+Received: from imap49 ([10.202.2.99])
+  by compute6.internal (MEProxy); Tue, 12 Sep 2023 16:49:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jfarr.cc; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm3; t=1694551791; x=1694638191; bh=Dv
+        Cb/EIqO1JW+sf1gb8MGaN948NTLFayPCF4KFvH4ug=; b=Zpx+QAadIrfUHY6wVf
+        Vbrmm+MyjRvASW54gJcsA4hetbwWutRn6RWvOYtQRSUNwQ43lX7KZmZAqH37v2Ec
+        s9cTHkc9DXu8CBHnwdP396U9JG+pttZBPKdInHKslhwJnr8tMfMTKmCwJnSJY7Bq
+        6LpzGVeui1dwYFi1JOhlK8d9dRo0ck//FXc+Z6hePBH5+bN8gwOYE50vc4vrGhJi
+        TpBxq1kGFNl+YGqr1CiNtQggBUoTtwtbhFm+z7Agq+lM0kdkYY6RPm+J6I3N6Y9D
+        2WzVnlY1MA/rtnsrmy+2Bd7/gym1Wedx7PMbovMb2+HEJ253s1OnOhZbx930niVC
+        /IeA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1694551791; x=1694638191; bh=DvCb/EIqO1JW+
+        sf1gb8MGaN948NTLFayPCF4KFvH4ug=; b=af0d3cR5qR8XnTHMukkyjpBqXXsT6
+        B4OevtfhK74VrrdbQ+hVH0NoHRr6btQDyyHYeiejpjGmlIsVSG04GJhedLAEjjB/
+        1wGuDYJ7Jnd3rCYIdloAfKMrveOVZOwbcKKYLfj16ULAXvNdMOLv66RsyjWSVWYL
+        uphPRk3H3eBgog+jAT8CPs712Tm8s9SnxUsjjNxamggWQB262Hwh0YAh0a3cmwO+
+        YGckqd1tPnOj7GNDY/VH/MWnfsRRkok501kKVYLu3KwVMtlI/vsNUYvlk+chzxJa
+        mWutR1tSkb/x+6yAX68wP4KeGpCKbk39bvgCZPwbjbrtwlw5lE/0pW1fQ==
+X-ME-Sender: <xms:7s4AZUIIgzxTfkP56niPL64dW72pnyqCkFl3_LeeAoz89hzAzUnm3Q>
+    <xme:7s4AZULsA54M3zA-gh3GPX1ubmtfYzfRhlDSSNqa_V8-oAR1koUybcnnMW8OF-rPX
+    4EXMK8KsAso3E2Jpyw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudeiiedgudehgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enfghrlhcuvffnffculdduhedmnecujfgurhepofgfggfkjghffffhvfevufgtsehttder
+    tderredtnecuhfhrohhmpedflfgrnhcujfgvnhgurhhikhcuhfgrrhhrfdcuoehkvghrnh
+    gvlhesjhhfrghrrhdrtggtqeenucggtffrrghtthgvrhhnpeffffeufefhiedvfeehgeev
+    ffffffduvdduhfefjeekgeeviefhuddvgeekvddvhfenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkvghrnhgvlhesjhhfrghrrhdrtggt
+X-ME-Proxy: <xmx:784AZUs8J84shFswdgIaQytbAaAMsI1MsHcSnJYEZBOwS7rkv-N7xw>
+    <xmx:784AZRZ65-owIok0-iFbhw14Ca6bXCaevSyXoxC6QfukkSzWpbIz7A>
+    <xmx:784AZbaDyti8-a4W676AmJSQSGG1-Tr7uAkq0CZrIdZeY54_hRQs5g>
+    <xmx:784AZYRvUR9LOJCU7v--icna8kQXS0CyPwWJuLIu8Mv8RKXkNm77dg>
+Feedback-ID: i0fc947c4:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id DFC7A15A0091; Tue, 12 Sep 2023 16:49:50 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-745-g95dd7bea33-fm-20230905.001-g95dd7bea
+Mime-Version: 1.0
+Message-Id: <1c342231-7672-450e-b945-e57cd17b4ae7@app.fastmail.com>
+In-Reply-To: <CVH6NGLENMPH.271W6X80061M@suppilovahvero>
+References: <20230909161851.223627-1-kernel@jfarr.cc>
+ <CVGFE6FRWFHR.DVG9NUQID4EA@suppilovahvero>
+ <1d974586-1bf7-42e8-9dae-e5e41a3dbc9f@app.fastmail.com>
+ <CVGVCYUGNKAI.1WYRZGI9HYDMC@suppilovahvero>
+ <9580df76-c143-4077-8a39-b1fcc0ed37bd@app.fastmail.com>
+ <CVH4GZXQFZ1F.2V5BIZNSKQ1FA@suppilovahvero>
+ <5a67051d-eb21-4a96-acc4-40f829a59e23@app.fastmail.com>
+ <CVH6NGLENMPH.271W6X80061M@suppilovahvero>
+Date:   Tue, 12 Sep 2023 22:49:00 +0200
+From:   "Jan Hendrik Farr" <kernel@jfarr.cc>
+To:     "Jarkko Sakkinen" <jarkko@kernel.org>, linux-kernel@vger.kernel.org
+Cc:     kexec@lists.infradead.org, x86@kernel.org, tglx@linutronix.de,
+        dhowells@redhat.com, vgoyal@redhat.com, keyrings@vger.kernel.org,
+        akpm@linux-foundation.org, "Baoquan He" <bhe@redhat.com>,
+        bhelgaas@google.com, lennart@poettering.net,
+        "Luca Boccassi" <bluca@debian.org>
+Subject: Re: [PATCH 0/1] x86/kexec: UKI support
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-  Merge tag 'for-6.6-rc1-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux (2023-09-12 11:28:00 -0700)
 
-are available in the Git repository at:
+> These are sort of "tautological" arguments. There must be some
+> objective reasons why this architecture was chosen instead of
+> other (i.e. using what already pre-exists).
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-v6.6-rc2
-
-for you to fetch changes up to ea72883a3bf11fb09dd1ad4f8328cc040263881a:
-
-  tpm: Fix typo in tpmrm class definition (2023-09-12 23:07:37 +0300)
-
-----------------------------------------------------------------
-Hi,
-
-This pull request contains a critical fix for my previous pull request.
-
-BR, Jarkko
-
-----------------------------------------------------------------
-Justin M. Forbes (1):
-      tpm: Fix typo in tpmrm class definition
-
- drivers/char/tpm/tpm-chip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I think I misunderstood you in my earlier reply. I do not understand in what way you think my arguments are tautological. Can you elaborate?
