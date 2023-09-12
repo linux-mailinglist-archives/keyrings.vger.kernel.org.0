@@ -2,94 +2,113 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C5FA79CE6E
-	for <lists+keyrings@lfdr.de>; Tue, 12 Sep 2023 12:35:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65B6279CE81
+	for <lists+keyrings@lfdr.de>; Tue, 12 Sep 2023 12:38:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234385AbjILKfR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 12 Sep 2023 06:35:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38340 "EHLO
+        id S233868AbjILKiL (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 12 Sep 2023 06:38:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234435AbjILKdQ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 12 Sep 2023 06:33:16 -0400
+        with ESMTP id S234297AbjILKh7 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 12 Sep 2023 06:37:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB5C1199C;
-        Tue, 12 Sep 2023 03:33:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3DE0C433C8;
-        Tue, 12 Sep 2023 10:33:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E385171B;
+        Tue, 12 Sep 2023 03:37:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEDECC433C8;
+        Tue, 12 Sep 2023 10:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694514792;
-        bh=G6tVIRokXJPGvWKTOTzEY6bZMaPMLiU8C0XfnDPSZEo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Q70e/AuK1dlDgyzk41Krdj9+9w+iAK60hbwst/thT3/E+V0KBqHGq1bFVgnz1Y5tE
-         BNcZP8gyWxZmWST7xvNT50QLa1ma63GmiAsqDWy8g7fdExd57pqsnNBpEGG5y1CZZ4
-         2heJ6mtCFwi67ozo4eMk4t6tHr94WJ0+E7dwbUXTNqGn7j9LaJoii57znlFVGsSLTr
-         CalxdbClCdh/LrVxIBFE7zWni43Mp/BcEIcZiCJ88jtqnZd7S+8SJsueC3Lp4b40+d
-         +fJZjQLcQazODhw0TaBJUbAqaBJzs0VoOyrGVHiL5tqKRbPbbB7mhVtMICse6Raz7p
-         hKI6oYLR2eDCg==
+        s=k20201202; t=1694515072;
+        bh=dxP4B+yMelLzCrvZ7SL2av9sUsV6Kpduc789X1rtOVc=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=EPXRQ9TdnHqdeF5sFt3tTrzUsBlm6Q/olAvgVQ2rMTpPetLVuUzhQPUKSQ1so1hLG
+         v9Vc1UxTq77QYGhGTxQsi9yfa9vTh+zty9gpG9qa1da0L0j1EEWZmMFnkEUpOBxt4U
+         p2YHCVwvVxaufhJs5g/rYd/KgunZc9g8F6kXGnMnEPiL3zYvaneh/+kIk5g9krGA0+
+         lI2jHl6f1lvPHzMkR5hOIIeHfiuIg88fzcQoTCngedWKSoHfTCf/cEUCfojyASNPFt
+         /bn9KlFLocBmIK9pmIJis366CIhYuRIoEmk1qvF+DS5Q2U8AQn06PeGmnGB6kUbSXT
+         eGtLs4oOfee+w==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date:   Tue, 12 Sep 2023 13:33:07 +0300
-Message-Id: <CVGVCYUGNKAI.1WYRZGI9HYDMC@suppilovahvero>
+Date:   Tue, 12 Sep 2023 13:37:47 +0300
+Message-Id: <CVGVGJIQPIZ2.WN97L6BV5S97@suppilovahvero>
+Cc:     "Jan Hendrik Farr" <kernel@jfarr.cc>,
+        <linux-kernel@vger.kernel.org>,
+        <systemd-devel@lists.freedesktop.org>, <x86@kernel.org>,
+        <kexec@lists.infradead.org>, <dhowells@redhat.com>,
+        <keyrings@vger.kernel.org>, <bluca@debian.org>,
+        <bhelgaas@google.com>, <tglx@linutronix.de>,
+        <akpm@linux-foundation.org>
+Subject: Re: [systemd-devel] [PATCH 0/1] x86/kexec: UKI support
 From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Jan Hendrik Farr" <kernel@jfarr.cc>,
-        <linux-kernel@vger.kernel.org>
-Cc:     <kexec@lists.infradead.org>, <x86@kernel.org>,
-        <tglx@linutronix.de>, <dhowells@redhat.com>, <vgoyal@redhat.com>,
-        <keyrings@vger.kernel.org>, <akpm@linux-foundation.org>,
-        <bhe@redhat.com>, <bhelgaas@google.com>, <lennart@poettering.net>,
-        "Luca Boccassi" <bluca@debian.org>
-Subject: Re: [PATCH 0/1] x86/kexec: UKI support
+To:     "Neal Gompa" <ngompa13@gmail.com>
 X-Mailer: aerc 0.14.0
 References: <20230909161851.223627-1-kernel@jfarr.cc>
  <CVGFE6FRWFHR.DVG9NUQID4EA@suppilovahvero>
- <1d974586-1bf7-42e8-9dae-e5e41a3dbc9f@app.fastmail.com>
-In-Reply-To: <1d974586-1bf7-42e8-9dae-e5e41a3dbc9f@app.fastmail.com>
+ <CAEg-Je9GF5S+QcsspM_CzDSxzCN8h2eRp7BbctC1x7-rH8j68g@mail.gmail.com>
+In-Reply-To: <CAEg-Je9GF5S+QcsspM_CzDSxzCN8h2eRp7BbctC1x7-rH8j68g@mail.gmail.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue Sep 12, 2023 at 1:54 AM EEST, Jan Hendrik Farr wrote:
+On Tue Sep 12, 2023 at 2:20 AM EEST, Neal Gompa wrote: > On Mon, Sep 11, 20=
+23 at 7:15=E2=80=AFPM Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> > On Sat Sep 9, 2023 at 7:18 PM EEST, Jan Hendrik Farr wrote:
+> > > Hello,
+> > >
+> > > this patch implements UKI support for kexec_file_load. It will requir=
+e support
+> > > in the kexec-tools userspace utility. For testing purposes the follow=
+ing can be used:
+> > > https://github.com/Cydox/kexec-test/
+> > >
+> > > There has been discussion on this topic in an issue on GitHub that is=
+ linked below
+> > > for reference.
+> > >
+> > >
+> > > Some links:
+> > > - Related discussion: https://github.com/systemd/systemd/issues/28538
+> > > - Documentation of UKIs: https://uapi-group.org/specifications/specs/=
+unified_kernel_image/
+> > >
+> > > Jan Hendrik Farr (1):
+> > >   x86/kexec: UKI support
+> > >
+> > >  arch/x86/include/asm/kexec-uki.h       |   7 ++
+> > >  arch/x86/include/asm/parse_pefile.h    |  32 +++++++
+> > >  arch/x86/kernel/Makefile               |   2 +
+> > >  arch/x86/kernel/kexec-uki.c            | 113 +++++++++++++++++++++++=
+++
+> > >  arch/x86/kernel/machine_kexec_64.c     |   2 +
+> > >  arch/x86/kernel/parse_pefile.c         | 110 +++++++++++++++++++++++=
++
+> > >  crypto/asymmetric_keys/mscode_parser.c |   2 +-
+> > >  crypto/asymmetric_keys/verify_pefile.c | 110 +++--------------------=
+-
+> > >  crypto/asymmetric_keys/verify_pefile.h |  16 ----
+> > >  9 files changed, 278 insertions(+), 116 deletions(-)
+> > >  create mode 100644 arch/x86/include/asm/kexec-uki.h
+> > >  create mode 100644 arch/x86/include/asm/parse_pefile.h
+> > >  create mode 100644 arch/x86/kernel/kexec-uki.c
+> > >  create mode 100644 arch/x86/kernel/parse_pefile.c
+> > >
+> > > --
+> > > 2.40.1
+> >
 > > What the heck is UKI?
 >
-> UKI (Unified Kernel Image) is the kernel image + initrd + cmdline (+
-> some other optional stuff) all packaged up together as one EFI
-> application.
+> Unified Kernel Images. More details available here:
+> https://uapi-group.org/specifications/specs/unified_kernel_image/
 >
-> This EFI application can then be launched directly by the UEFI without
-> the need for any additional stuff (or by systemd-boot). It's all self
-> contained. One benefit is that this is a convenient way to distribute
-> kernels all in one file. Another benefit is that the whole combination
-> of kernel image, initrd, and cmdline can all be signed together so
-> only that particular combination can be executed if you are using
-> secure boot.
+> It's a way of creating initramfs-style images as fully generic,
+> reproducible images that can be built server-side.
 
-Is this also for generic purpose distributions? I mean it is not
-uncommon having to tweak the command-line in a workstation.
+You can build today a kernel with these compiled in:
 
-> The format itself is rather simple. It's just a PE file (as required
-> by the UEFI spec) that contains a small stub application in the .text,
-> .data, etc sections that is responsible for invoking the contained
-> kernel and initrd with the contained cmdline. The kernel image is
-> placed into a .kernel section, the initrd into a .initrd section, and
-> the cmdline into a .cmdline section in the PE executable.
+1. EFI stub
+2. initeramfs
+3. cmdline
 
-How does this interact with the existing EFI stub support in linux?
-
-> If we want to kexec a UKI we could obviously just have userspace pick
-> it apart and kexec it like normal. However in lockdown mode this will
-> only work if you sign the kernel image that is contained inside the
-> UKI. The problem with that is that anybody can then grab that signed
-> kernel and launch it with any initrd or cmdline. So instead this patch
-> makes the kernel do the work instead. The kernel verifies the
-> signature on the entire UKI and then passes its components on to the
-> normal kexec bzimage loader.
->
-> Useful Links:
-> UKI format documentation: https://uapi-group.org/specifications/specs/uni=
-fied_kernel_image/
-> Arch wiki: https://wiki.archlinux.org/title/Unified_kernel_image
-> Fedora UKI support: https://fedoraproject.org/wiki/Changes/Unified_Kernel=
-_Support_Phase_1
+Why another way (and label 'UKI') for a pre-existing feature?
 
 BR, Jarkko
