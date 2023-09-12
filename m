@@ -2,111 +2,119 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 891CE79C282
-	for <lists+keyrings@lfdr.de>; Tue, 12 Sep 2023 04:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6022079C358
+	for <lists+keyrings@lfdr.de>; Tue, 12 Sep 2023 04:53:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236087AbjILCPc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 11 Sep 2023 22:15:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56288 "EHLO
+        id S240869AbjILCxm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 11 Sep 2023 22:53:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235848AbjILCPF (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 11 Sep 2023 22:15:05 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DB6710BF69
-        for <keyrings@vger.kernel.org>; Mon, 11 Sep 2023 16:27:23 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1c3aa44c0faso3510025ad.1
-        for <keyrings@vger.kernel.org>; Mon, 11 Sep 2023 16:27:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1694474750; x=1695079550; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iiUitO1C45IpsjxwGwdvQemaaRHBGSkxcQvlW7NOoGw=;
-        b=izAhBemTJbrC/JJ/qwOcT46I25zQW4ATRjIiir6WCPCvvP66YO2T9Gx7GRFY+Vugie
-         nLf2FdzUui5wLz1dNLudEp+JxTZCWeQWBffMMwyfLe82X031cPlaEcKawpDQu0PWGZ95
-         6gBCdDSy4dbWD+57uekmIDQopNO+qVORc9r1I1XoieK3TEBJyNIt4zRUYSAsKN35q+hQ
-         xRzXG7FvT30grsB55EAfM6evaqzNJRHds7Rnyh7tjcwqPmduqHZAhiSAq6HhLi2tIKW+
-         U684//3iOF6otbImtxLJBjyMVgiJQ0vHCpbDkpv1kfgTj1/I7WQPzDg/xaNb44BJVZLc
-         8fmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694474750; x=1695079550;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iiUitO1C45IpsjxwGwdvQemaaRHBGSkxcQvlW7NOoGw=;
-        b=Q9RqLnU+am29Qa4vlnRnsa55EfsqRzrOFTkn/nI/r0HdZDXMlUUEb68WW0aDm/Qv21
-         JCwMQFiNRV6Tazgi47goaVseXcmRaj/PMX+8fU9V1T4kZG457/GUDOtZTohP4OkGv+Rq
-         v9vh++dsf3qB/92lZdcBHRVz4qvzp52Jx+Nz+t1YGXFs/HC7S9Rzcn12YBYLIitwd6O0
-         UN9ANHo4thiYouXBQVnwTg/HeYhme2uKTh5XWwFJUHRH6h97M0lJK9aXzg2yIPnpYFl1
-         oeDQGlnlNB3qjaG8Zh7kJg5eAAleSAEcCEQ5v9K39MuRw5rOmySSmCMhSbd4BAUZM2uB
-         Q6dw==
-X-Gm-Message-State: AOJu0YxnGYeb4u7jIZMJvAaTDdePFrwYkMLBhb+MrFyZ4+BHCybK5mnJ
-        if6UUxNxWRmkAbHeMOQHic2mnLG+cSUVPBObcWrEXA==
-X-Google-Smtp-Source: AGHT+IEIG7J/4uQXyapv3ec696MJuuJpu5Z5SUZiYUFG6GJOQa+L0fXAy+FH7WO2a2Nx/sq9gGkHJA==
-X-Received: by 2002:a17:90a:3ea5:b0:268:ca63:e412 with SMTP id k34-20020a17090a3ea500b00268ca63e412mr10497992pjc.4.1694470755891;
-        Mon, 11 Sep 2023 15:19:15 -0700 (PDT)
-Received: from [192.168.1.136] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id rj14-20020a17090b3e8e00b00268032f6a64sm7850906pjb.25.2023.09.11.15.19.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Sep 2023 15:19:15 -0700 (PDT)
-Message-ID: <1a8f8c46-a048-4bd7-90f1-e5378b81968b@kernel.dk>
-Date:   Mon, 11 Sep 2023 16:19:13 -0600
+        with ESMTP id S240874AbjILCxh (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 11 Sep 2023 22:53:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EDCE67BB08
+        for <keyrings@vger.kernel.org>; Mon, 11 Sep 2023 18:21:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1694481662;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=LndbGk9Tq34zPmQVev5k5AT8KIrme9LRtl6RtbBDZn0=;
+        b=DOrjxGCbLxJqx3fx7aiXiLZkIhz3x91eTs4xHiMMLOJ7QS6tqod2n6jTFE2mXmrqt4JeE0
+        7oEF6vk1+dm+o19zium0az8yqupy6u1AKX4tzXek0eJrfZmbZFYvyVur9QvEJPlFAtZbwN
+        hapPu0YSqelZ43IkaLT0wn6ApAi2KvQ=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-270-GpelxvecNu62UxAy92gbag-1; Mon, 11 Sep 2023 21:03:21 -0400
+X-MC-Unique: GpelxvecNu62UxAy92gbag-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 66B788A437D;
+        Tue, 12 Sep 2023 01:03:20 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.25])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 6D2E44407D;
+        Tue, 12 Sep 2023 01:03:19 +0000 (UTC)
+Date:   Tue, 12 Sep 2023 09:03:16 +0800
+From:   Baoquan He <bhe@redhat.com>
+To:     Jan Hendrik Farr <kernel@jfarr.cc>
+Cc:     linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+        x86@kernel.org, tglx@linutronix.de, dhowells@redhat.com,
+        vgoyal@redhat.com, keyrings@vger.kernel.org,
+        akpm@linux-foundation.org, bhelgaas@google.com, bluca@debian.org,
+        lennart@poettering.net, prudo@redhat.com
+Subject: Re: [PATCH v2 0/2] x86/kexec: UKI Support
+Message-ID: <ZP+41JvEFjsnEG19@MiWiFi-R3L-srv>
+References: <20230911052535.335770-1-kernel@jfarr.cc>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/3 RESEND] generic and PowerPC SED Opal keystore
-Content-Language: en-US
-To:     gjoyce@linux.vnet.ibm.com, linux-block@vger.kernel.org,
-        jarkko@kernel.org
-Cc:     linuxppc-dev@lists.ozlabs.org, jonathan.derrick@linux.dev,
-        brking@linux.vnet.ibm.com, msuchanek@suse.de, mpe@ellerman.id.au,
-        nayna@linux.ibm.com, akpm@linux-foundation.org,
-        keyrings@vger.kernel.org
-References: <20230908153056.3503975-1-gjoyce@linux.vnet.ibm.com>
-From:   Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20230908153056.3503975-1-gjoyce@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230911052535.335770-1-kernel@jfarr.cc>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 9/8/23 9:30 AM, gjoyce@linux.vnet.ibm.com wrote:
-> From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-> 
-> This patchset extends the capabilites incorporated into for-6.6/block
-> (https://git.kernel.dk/cgit/linux/commit/?h=for-6.6/block&id=3bfeb61256643281ac4be5b8a57e9d9da3db4335) by allowing the SED Opal key to be seeded into
-> the keyring from a secure permanent keystore.
-> 
-> It has gone through numerous rounds of review and all comments/suggetions
-> have been addressed. The reviews have covered all relevant areas including
-> reviews by block and keyring developers as well as the SED Opal
-> maintainer. The last patchset submission has not solicited any responses
-> in the six weeks since it was last distributed. The changes are
-> generally useful and ready for inclusion.
-> 
-> TCG SED Opal is a specification from The Trusted Computing Group
-> that allows self encrypting storage devices (SED) to be locked at
-> power on and require an authentication key to unlock the drive.
-> 
-> Generic functions have been defined for accessing SED Opal keys.
-> The generic functions are defined as weak so that they may be superseded
-> by keystore specific versions.
-> 
-> PowerPC/pseries versions of these functions provide read/write access
-> to SED Opal keys in the PLPKS keystore.
-> 
-> The SED block driver has been modified to read the SED Opal
-> keystore to populate a key in the SED Opal keyring. Changes to the
-> SED Opal key will be written to the SED Opal keystore.
+Add Philipp to CC as he is also investigating UKI
 
-Applied for 6.7, thanks.
+On 09/11/23 at 07:25am, Jan Hendrik Farr wrote:
+> Hello,
+> 
+> this patch (v2) implements UKI support for kexec_file_load. It will require
+> support in the kexec-tools userspace utility. For testing purposes the
+> following can be used: https://github.com/Cydox/kexec-test/
+> 
+> Creating UKIs for testing can be done with ukify (included in systemd),
+> sbctl, and mkinitcpio, etc.
 
--- 
-Jens Axboe
+This is awesome work, Jan, thanks.
 
+By the way, could you provide detailed steps about how to test this
+patchset so that people interested can give it a shot?
+
+> 
+> There has been discussion on this topic in an issue on GitHub that is linked
+> below for reference.
+> 
+> Changes for v2:
+> - .cmdline section is now optional
+> - moving pefile_parse_binary is now in a separate commit for clarity
+> - parse_pefile.c is now in /lib instead of arch/x86/kernel (not sure if
+>   this is the best location, but it definetly shouldn't have been in an
+>   architecture specific location)
+> - parse_pefile.h is now in include/kernel instead of architecture
+>   specific location
+> - if initrd or cmdline is manually supplied EPERM is returned instead of
+>   being silently ignored
+> - formatting tweaks
+> 
+> 
+> Some links:
+> - Related discussion: https://github.com/systemd/systemd/issues/28538
+> - Documentation of UKIs: https://uapi-group.org/specifications/specs/unified_kernel_image/
+> 
+> Jan Hendrik Farr (2):
+>   move pefile_parse_binary to its own file
+>   x86/kexec: UKI support
+> 
+>  arch/x86/include/asm/kexec-uki.h       |   7 ++
+>  arch/x86/kernel/Makefile               |   1 +
+>  arch/x86/kernel/kexec-uki.c            | 126 +++++++++++++++++++++++++
+>  arch/x86/kernel/machine_kexec_64.c     |   2 +
+>  crypto/asymmetric_keys/mscode_parser.c |   2 +-
+>  crypto/asymmetric_keys/verify_pefile.c | 110 +++------------------
+>  crypto/asymmetric_keys/verify_pefile.h |  16 ----
+>  include/linux/parse_pefile.h           |  32 +++++++
+>  lib/Makefile                           |   3 +
+>  lib/parse_pefile.c                     | 109 +++++++++++++++++++++
+>  10 files changed, 292 insertions(+), 116 deletions(-)
+>  create mode 100644 arch/x86/include/asm/kexec-uki.h
+>  create mode 100644 arch/x86/kernel/kexec-uki.c
+>  create mode 100644 include/linux/parse_pefile.h
+>  create mode 100644 lib/parse_pefile.c
+> 
+> -- 
+> 2.40.1
+> 
 
