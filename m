@@ -2,111 +2,99 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B13679D982
-	for <lists+keyrings@lfdr.de>; Tue, 12 Sep 2023 21:25:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0953A79D9A9
+	for <lists+keyrings@lfdr.de>; Tue, 12 Sep 2023 21:39:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229781AbjILTZy (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 12 Sep 2023 15:25:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46252 "EHLO
+        id S231186AbjILTjk (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 12 Sep 2023 15:39:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbjILTZy (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 12 Sep 2023 15:25:54 -0400
+        with ESMTP id S230443AbjILTjj (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 12 Sep 2023 15:39:39 -0400
 Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F59318D;
-        Tue, 12 Sep 2023 12:25:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74180115;
+        Tue, 12 Sep 2023 12:39:35 -0700 (PDT)
 Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.west.internal (Postfix) with ESMTP id BA6703200956;
-        Tue, 12 Sep 2023 15:25:48 -0400 (EDT)
+        by mailout.west.internal (Postfix) with ESMTP id DEFD1320094B;
+        Tue, 12 Sep 2023 15:39:33 -0400 (EDT)
 Received: from imap49 ([10.202.2.99])
-  by compute6.internal (MEProxy); Tue, 12 Sep 2023 15:25:49 -0400
+  by compute6.internal (MEProxy); Tue, 12 Sep 2023 15:39:35 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jfarr.cc; h=cc
         :cc:content-type:content-type:date:date:from:from:in-reply-to
         :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1694546748; x=1694633148; bh=BE
-        7ZXCk/MgLEHu3BSEJ2Y4XEXWqdUk+ZioNphLesHsw=; b=UDK3s7zu7EHyZsX2vX
-        xqiLdTCWRefqAkBTHumQBvPbQkZjroWSZ0ngXVjXozeSH/zFdd380QoEWR4QnK7U
-        f7504j75XUfMBIB+U3M2MVC4ljvq9Hyad4R0cFMM6wgAZ57VX6NLaV9VduXu4EdQ
-        rgQDze29GljtyiQx0o+4AtGzhf0gXJ8L7Qm91fow0xVoXBjGFz57eKbM6412xclK
-        zzdpFeZyi4xquBvJrcLAmzEPSN8mR0x4/iIYt9OVWcbIFSwsekTVbvcY2nrnmEIv
-        GA1nlA/hCJqp1IAdg1r3xCJFJzlts7EFoWuW3un7BtfyZ7k7AcG+fuPB/E1EpHau
-        vS7g==
+        :subject:subject:to:to; s=fm3; t=1694547573; x=1694633973; bh=WZ
+        CYP04/rhzJgnLDaE8CVzEzQ+KEpBf0K8M9Awn51FM=; b=gzusCR1YNNT7KRI9Vc
+        sF4bCGobnkVW0Acata+GcerwRPUYPPia8ymGuTtX/A7/uG7CQssVqM9sRGc02ulR
+        VMasWRSt9xyKGxJBa7A7zktZRP5Iiuzn0nvxjItkRJscqxMfiIpSvePW1qULzCOz
+        ZyAcXmcImHGsAbkLtMfIrHuQnoq2rAS85bLI2NP/2ZS3zvV6fJ8SVB/r0n8GTzrc
+        Go1mga9SQrsBW6tH1o9dk8X1wtzq3GxCfrwZU0POZkMfres7fvN4agAE/Bfy15aD
+        U4qvQeAL+m6/uryW9DPOlQJoWRsT06IpVnpOdMc8HLA2mQzv8dRcti1LcPHXXW00
+        hN1g==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
         messagingengine.com; h=cc:cc:content-type:content-type:date:date
         :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
         :message-id:mime-version:references:reply-to:sender:subject
         :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1694546748; x=1694633148; bh=BE7ZXCk/MgLEH
-        u3BSEJ2Y4XEXWqdUk+ZioNphLesHsw=; b=WJqa+DcAYYxqkqAHnCPQL/MFgJImg
-        tM5pbmtr+rNbi77so+6ipb7ZwZCW9vAUKQaMYQXjcZvoI9tl2QVrRzu1YyG4wE9A
-        P5X3yPJ5i6SoaTw3oo9Qsgj5rPNlItBg20KLzS2JEZuwPEn2F7kL5p/qZIArA4Z5
-        8muY65Vr/pR5qkAo0ackeHoL47tbPanR7D/hML+6IRwy9BQAombG1QdPxH95HrCf
-        90Z0eJcAf3lPtTkf7SJPJp9XNVbZ8vnB8sI9DVgfSvnuRayn6htRMfZnjW87vNeb
-        a8+uXviIBRE8IrDQBOh7+Z8nECSt57frLfevEsVYOqgIj27y4KMxuXIDw==
-X-ME-Sender: <xms:O7sAZTWp7IhGHfdd6sg5zODCBTeRSVsM3Aj1b9BqNcyNtIjoI5d9Iw>
-    <xme:O7sAZbnFmydoMpUyUU2caSJ33qu_A7XCtXXFi5ti0hQCZjrB4QYlMEzOpe6uiEKke
-    Qh-1TTCIsYOn5jZp8c>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudeiiedgudefjecutefuodetggdotefrod
+        :x-sasl-enc; s=fm1; t=1694547573; x=1694633973; bh=WZCYP04/rhzJg
+        nLDaE8CVzEzQ+KEpBf0K8M9Awn51FM=; b=W8bVmm6YVwzExgShMlOZOEl48v/1M
+        6gnGKe0/ANZKa3+2VhqvMHvU/oarCM9YBzjBVmB3jl5vV/bK1yW7sonkKJl1jznp
+        IXS4qVFvzWwHUVaS1lvdTTpTIqmy/RBBPk7GMx3IT6306iFfNJgeOvU13SxC5yAw
+        UH+yMESmV6EW/vuUF7LkdK8ULnKWtLANeVFgn7qdF4YJFoTu2fAAZk3rrBalFjRT
+        leO1xWmiXAea3SlgPVemDD26oVzS5O3Tyq7Z/SM5ie7huSJyCJy3wh+VftwyT7oC
+        2/uLgj1A3nc2Oi/gXh8x/xujrAuAbgENs/WLZ7809UH6BSp8NwbxEXKOA==
+X-ME-Sender: <xms:dL4AZVher48N1bwWnh44_w4_3KpCy--tISESEqV6B1igZ_pIHyp8qw>
+    <xme:dL4AZaBXhE0Idd8WDRp85m7yHAtQ1WlKmZiJ3YG0f5w1kIbFW5vc-3252Vz2KDL-U
+    ThLoWDdPfb7kn-diEk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudeiiedgudegtdcutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
     necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
     enfghrlhcuvffnffculdduhedmnecujfgurhepofgfggfkjghffffhvfevufgtsehttder
     tderredtnecuhfhrohhmpedflfgrnhcujfgvnhgurhhikhcuhfgrrhhrfdcuoehkvghrnh
-    gvlhesjhhfrghrrhdrtggtqeenucggtffrrghtthgvrhhnpedujefhffdvffeikedvkeef
-    ieeutdffteelgeetfffhkeffheeiheehvedtheetieenucffohhmrghinhepghhithhhuh
-    gsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhho
-    mhepkhgvrhhnvghlsehjfhgrrhhrrdgttg
-X-ME-Proxy: <xmx:O7sAZfa943x7N0B5bxibdM_v7XlESBQq6IIlrDja8WI83DZGzex_VA>
-    <xmx:O7sAZeVRToFt1MFB1LLYm_sFogZmf14F3YZHfcDqiew_YCIR4PESfA>
-    <xmx:O7sAZdlgTL2J9JTIyjSVmoM9XbSJZagPiqnUal1wmsq1-QgYH3IuHg>
-    <xmx:PLsAZWfb4Hv1plzRqnMrCQd0HGpyIRP-TwnINI7WWEIh1WywccHpiQ>
+    gvlhesjhhfrghrrhdrtggtqeenucggtffrrghtthgvrhhnpeffffeufefhiedvfeehgeev
+    ffffffduvdduhfefjeekgeeviefhuddvgeekvddvhfenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkvghrnhgvlhesjhhfrghrrhdrtggt
+X-ME-Proxy: <xmx:dL4AZVFn82aDVZ3ec_r23wCGXtAec5wyd6MXdhNyEOVjNz-E2kB0mg>
+    <xmx:dL4AZaQvBUb3aEIKN55pUPxd2xpJZ1Xzc-L5n1aEhggcXvUT-8GDuA>
+    <xmx:dL4AZSxldthPWcFEYAAjSeSC1n9rp2hsvfKpkrHtGs68R0b-IkA5kA>
+    <xmx:db4AZXqaMMtlSs20nFdfLY2_No1tbW5xWYyyLUMeMHlCyt6QXqVNtQ>
 Feedback-ID: i0fc947c4:Fastmail
 Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id B96D815A0091; Tue, 12 Sep 2023 15:25:47 -0400 (EDT)
+        id 8D09215A0091; Tue, 12 Sep 2023 15:39:32 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 User-Agent: Cyrus-JMAP/3.9.0-alpha0-745-g95dd7bea33-fm-20230905.001-g95dd7bea
 Mime-Version: 1.0
-Message-Id: <204f124d-c79d-4ad6-8f69-b7bb5f8d1ab6@app.fastmail.com>
-In-Reply-To: <ZP+41JvEFjsnEG19@MiWiFi-R3L-srv>
-References: <20230911052535.335770-1-kernel@jfarr.cc>
- <ZP+41JvEFjsnEG19@MiWiFi-R3L-srv>
-Date:   Tue, 12 Sep 2023 21:25:26 +0200
+Message-Id: <3cb7629f-9dd9-430a-86a0-5acb32882018@app.fastmail.com>
+In-Reply-To: <CVH6NGLENMPH.271W6X80061M@suppilovahvero>
+References: <20230909161851.223627-1-kernel@jfarr.cc>
+ <CVGFE6FRWFHR.DVG9NUQID4EA@suppilovahvero>
+ <1d974586-1bf7-42e8-9dae-e5e41a3dbc9f@app.fastmail.com>
+ <CVGVCYUGNKAI.1WYRZGI9HYDMC@suppilovahvero>
+ <9580df76-c143-4077-8a39-b1fcc0ed37bd@app.fastmail.com>
+ <CVH4GZXQFZ1F.2V5BIZNSKQ1FA@suppilovahvero>
+ <5a67051d-eb21-4a96-acc4-40f829a59e23@app.fastmail.com>
+ <CVH6NGLENMPH.271W6X80061M@suppilovahvero>
+Date:   Tue, 12 Sep 2023 21:38:59 +0200
 From:   "Jan Hendrik Farr" <kernel@jfarr.cc>
-To:     "Baoquan He" <bhe@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-        x86@kernel.org, tglx@linutronix.de, dhowells@redhat.com,
-        vgoyal@redhat.com, keyrings@vger.kernel.org,
-        akpm@linux-foundation.org, bhelgaas@google.com,
-        "Luca Boccassi" <bluca@debian.org>, lennart@poettering.net,
-        prudo@redhat.com
-Subject: Re: [PATCH v2 0/2] x86/kexec: UKI Support
+To:     "Jarkko Sakkinen" <jarkko@kernel.org>, linux-kernel@vger.kernel.org
+Cc:     kexec@lists.infradead.org, x86@kernel.org, tglx@linutronix.de,
+        dhowells@redhat.com, vgoyal@redhat.com, keyrings@vger.kernel.org,
+        akpm@linux-foundation.org, "Baoquan He" <bhe@redhat.com>,
+        bhelgaas@google.com, lennart@poettering.net,
+        "Luca Boccassi" <bluca@debian.org>
+Subject: Re: [PATCH 0/1] x86/kexec: UKI support
 Content-Type: text/plain
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-> By the way, could you provide detailed steps about how to test this
-> patchset so that people interested can give it a shot?
+> These are sort of "tautological" arguments. There must be some
+> objective reasons why this architecture was chosen instead of
+> other (i.e. using what already pre-exists).
 
-Sure.
+You mean like your argument that the same can already be achieved with the normal EFI stub and builin initrd/cmdline? ;)
 
-0. Build and run your kernel with my patches.
-1. You're gonna need a UKI to kexec. I personally use sbctl or ukify to create them.
+I think only reasons #4 and the last paragraph in me response relate to it being pre-existing. The other reasons are actual limitations with the normal EFI stub setup. Doesn't mean that they can't be overcome, but UKIs work.
 
-sbctl command example (assumes you have the cmdline you want saved in a file called cmdline):
-sudo sbctl bundle -k /boot/vmlinuz-6.5.2 -f /boot/initrd.img-6.5.2 -c ./cmdline -s ./uki.efi
+I'm not sure what the initial reasons where for coming up with this architecture were, I was not involved.
 
-ukify command example:
-sudo python3 ukify.py build --linux=/boot/vmlinuz-6.5.2 --initrd=/boot/initrd.img-6.5.2 --cmdline <cmdline as string or a filename>
-
-2. If you are running in lockdown mode you'll have to sign the UKI. You can use sbctl, pesign, or sbsign for example.
-3. Compile kexec-test (see links below). Simple "gcc main.c -o kexec-test" should work
-4. Do the kexec load: ./kexec-text <path to uki>
-(this is equivalent to "kexec -a -l <path to UKI>", however that currently complains about not recognizing the format)
-5. At this point it's useful to check if the loading succeeded with: "cat /sys/kernel/kexec_loaded" (should return "1")
-6. Do a kexec reboot. If you are running systemd, the best way is with: "systemctl kexec". Otherwise you can try "kexec -e", however this will not shut all your services down
-
-If anyone has problems please feel free to ask.
-
-Links:
-sbctl: https://github.com/Foxboron/sbctl
-ukify: https://github.com/systemd/systemd/tree/main/src/ukify
-kexec-test: https://github.com/Cydox/kexec-test/
+What I can tell you is that right now it is a format that has practical advantages and that there are generic mainstream distros looking to adopt it. So having the capability to kexec them is gonna come in handy.
