@@ -2,79 +2,343 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2C0479F165
-	for <lists+keyrings@lfdr.de>; Wed, 13 Sep 2023 20:52:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 686AE79F190
+	for <lists+keyrings@lfdr.de>; Wed, 13 Sep 2023 20:59:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229552AbjIMSwR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 13 Sep 2023 14:52:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49148 "EHLO
+        id S229886AbjIMS76 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 13 Sep 2023 14:59:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229886AbjIMSwQ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 13 Sep 2023 14:52:16 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10C5C1985
-        for <keyrings@vger.kernel.org>; Wed, 13 Sep 2023 11:52:12 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-9a648f9d8e3so23927666b.1
-        for <keyrings@vger.kernel.org>; Wed, 13 Sep 2023 11:52:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1694631130; x=1695235930; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=6Qj9Z1rQiOVRFuIxsKJDJyO2OoNyojeG35brwDaLZgQ=;
-        b=d5QJbEoRWpQ2nEetGEM2hXNIrWKepyH9sc02Igli9Z4bvlcITQXh4jZwq3ino2bEJg
-         J+2A7eiUQeTgEV72fi+ooGNvZsuGaAK3WI4ntzb/nIKbsPUcFDUAOS8tjQpG5BWuSZyt
-         kEGtw8f1YzU8zbMIfmWGu/V/gf5tbsETnu3V8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694631130; x=1695235930;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6Qj9Z1rQiOVRFuIxsKJDJyO2OoNyojeG35brwDaLZgQ=;
-        b=F7pAhUUmfGCmhVTvfcY7Oyp7Je5y83ETzFNt40ScGh1WjMdFZKJf+REgf7fjnJjSIg
-         IE5jiK783MdxSg8aC9bJSDmpOBQmTE3ixlwVglwnWXH9EKSviDQhPW3+vCxM5kaBEjm/
-         jL6PLwuPExCSsziCzGMacV/FF/3VGDnVJyN4OArwhpPlU2mr3KqZTIPhFzp0cjcnmW6a
-         INj+pAm9YpTvvmJL/1vDql7EB1aaMzG7Vvvgj8h6ay4mHddqcNIK5sZc70fehKEaq3uh
-         IXEs+0NF6TvJPfc6eJcenx6kIH7fA4h0stYqOxF8J4dpkKz9/DRMlodu6F5dhccA2xUu
-         emZg==
-X-Gm-Message-State: AOJu0Yz2mlCQrsTT54UcKpSKy84xdsjX1yAIK5Nz2bMsgXjnhQGMQC10
-        voxgMxN3HyxcntjtgPodBSCuBmlPl49k9XR6+5jD7gHZ
-X-Google-Smtp-Source: AGHT+IERwzXfoTU4kNMAm/THJnxW7Gi4QVcFVe70IY06ZXtYpDERH0wpDqgmffZI2yjg/UxVsfPQrg==
-X-Received: by 2002:a17:906:74c1:b0:994:4095:3abf with SMTP id z1-20020a17090674c100b0099440953abfmr2828120ejl.14.1694631130298;
-        Wed, 13 Sep 2023 11:52:10 -0700 (PDT)
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com. [209.85.208.45])
-        by smtp.gmail.com with ESMTPSA id cb22-20020a170906a45600b0099d804da2e9sm8788601ejb.225.2023.09.13.11.52.09
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Sep 2023 11:52:09 -0700 (PDT)
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-52a250aa012so77689a12.3
-        for <keyrings@vger.kernel.org>; Wed, 13 Sep 2023 11:52:09 -0700 (PDT)
-X-Received: by 2002:a17:907:761a:b0:9a2:185b:5376 with SMTP id
- jx26-20020a170907761a00b009a2185b5376mr2470433ejc.49.1694631129472; Wed, 13
- Sep 2023 11:52:09 -0700 (PDT)
+        with ESMTP id S231875AbjIMS75 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 13 Sep 2023 14:59:57 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5FD51989;
+        Wed, 13 Sep 2023 11:59:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E91C433C8;
+        Wed, 13 Sep 2023 18:59:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694631593;
+        bh=DKNkjrbrPTiQJ0/Wz14i5JkMI2mY5gJhF1NtO0f08L8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=iSONwJeLGx6wv2Ab+eZSgHx1Ek6LV2F0ENfPjMjwmXr3wJBxf+vBM/w7CtmKJk6s4
+         84AnzxdNZohGaaTf3rHnIRcMbY6whtCOKzLm/O6WP0h1Ml/CBheYV0kHLcdLxde6yv
+         C+VjdEhMzU8zlCxCnxzTz0pHSFFcwzwF/+1FzU74seFmlNzhk8b//yuhpQiLbe34l0
+         Wn48AuZloTm1a6WNuiAg0GZX5mxpy0UsyJN1K75i7kqBsN1gAB8dwmLhtrosQ8sehU
+         mDVx4AN0eaYji8eYihwP3dBqg3b1Uolx30GmAsD+L72skg0EAkwqKNfgV2yp2Y7I5k
+         IrA8TAOj7DddQ==
+Date:   Wed, 13 Sep 2023 11:59:51 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     gjoyce@linux.vnet.ibm.com
+Cc:     linux-block@vger.kernel.org, axboe@kernel.dk, jarkko@kernel.org,
+        nayna@linux.ibm.com, keyrings@vger.kernel.org,
+        jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com,
+        akpm@linux-foundation.org, msuchanek@suse.de,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v7 3/3 RESEND] powerpc/pseries: PLPKS SED Opal keystore
+ support
+Message-ID: <20230913185951.GA3643621@dev-arch.thelio-3990X>
+References: <20230908153056.3503975-1-gjoyce@linux.vnet.ibm.com>
+ <20230908153056.3503975-4-gjoyce@linux.vnet.ibm.com>
 MIME-Version: 1.0
-References: <20230912201102.1012306-1-jarkko@kernel.org>
-In-Reply-To: <20230912201102.1012306-1-jarkko@kernel.org>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 13 Sep 2023 11:51:52 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgLB9_z5TcvRKVsSk3BWPfkDeWN0pDMdEv=-hnrnTgX1Q@mail.gmail.com>
-Message-ID: <CAHk-=wgLB9_z5TcvRKVsSk3BWPfkDeWN0pDMdEv=-hnrnTgX1Q@mail.gmail.com>
-Subject: Re: [GIT PULL] tpmdd changes for v6.6-rc2
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-        David Howells <dhowells@redhat.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        "Justin M . Forbes" <jforbes@fedoraproject.org>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230908153056.3503975-4-gjoyce@linux.vnet.ibm.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 12 Sept 2023 at 13:11, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+Hi Greg,
+
+On Fri, Sep 08, 2023 at 10:30:56AM -0500, gjoyce@linux.vnet.ibm.com wrote:
+> From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
 >
-> This pull request contains a critical fix for my previous pull request.
+> Define operations for SED Opal to read/write keys
+> from POWER LPAR Platform KeyStore(PLPKS). This allows
+> non-volatile storage of SED Opal keys.
+>
+> Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
+> Reviewed-by: Hannes Reinecke <hare@suse.de>
 
-Please, less sarcasm and more actual helpful merge commit fodder, ok?
+After this change in -next as commit 9f2c7411ada9 ("powerpc/pseries:
+PLPKS SED Opal keystore support"), I see the following crash when
+booting some distribution configurations, such as OpenSUSE's [1] (the
+rootfs is available at [2] if necessary):
 
-              Linus
+$ qemu-system-ppc64 \
+    -display none \
+    -nodefaults \
+    -device ipmi-bmc-sim,id=bmc0 \
+    -device isa-ipmi-bt,bmc=bmc0,irq=10 \
+    -machine powernv \
+    -kernel arch/powerpc/boot/zImage.epapr \
+    -initrd ppc64le-rootfs.cpio \
+    -m 2G \
+    -serial mon:stdio
+...
+[    0.000000] Linux version 6.6.0-rc1-00004-g9f2c7411ada9 (nathan@dev-arch.thelio-3990X) (powerpc64-linux-gcc (GCC) 13.2.0, GNU ld (GNU Binutils) 2.41) #1 SMP Wed Sep 13 11:53:38 MST 2023
+...
+[    1.808911] ------------[ cut here ]------------
+[    1.810336] kernel BUG at arch/powerpc/kernel/syscall.c:34!
+[    1.810799] Oops: Exception in kernel mode, sig: 5 [#1]
+[    1.810985] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA PowerNV
+[    1.811191] Modules linked in:
+[    1.811483] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.6.0-rc1-00004-g9f2c7411ada9 #1
+[    1.811825] Hardware name: IBM PowerNV (emulated by qemu) POWER9 0x4e1202 opal:v7.0 PowerNV
+[    1.812133] NIP:  c00000000002c8c4 LR: c00000000000d620 CTR: c00000000000d4c0
+[    1.812335] REGS: c000000002deb7b0 TRAP: 0700   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
+[    1.812595] MSR:  9000000000029033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 20040004
+[    1.812930] CFAR: c00000000000d61c IRQMASK: 3
+[    1.812930] GPR00: c00000000000d620 c000000002deba50 c0000000015ef400 c000000002debe80
+[    1.812930] GPR04: 000000004800028d 0000000000000000 0000000000000000 0000000000000000
+[    1.812930] GPR08: 0000000079cd0000 0000000000000001 0000000000000000 0000000000000000
+[    1.812930] GPR12: 0000000000000000 c0000000028b0000 0000000000000000 0000000000000000
+[    1.812930] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.812930] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.812930] GPR24: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.812930] GPR28: 0000000000000000 000000004800028d c000000002debe80 c000000002debe10
+[    1.814858] NIP [c00000000002c8c4] system_call_exception+0x84/0x250
+[    1.815480] LR [c00000000000d620] system_call_common+0x160/0x2c4
+[    1.815772] Call Trace:
+[    1.815929] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
+[    1.816178] --- interrupt: c00 at plpar_hcall+0x38/0x60
+[    1.816330] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
+[    1.816518] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
+[    1.816740] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
+[    1.817039] IRQMASK: 0
+[    1.817039] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
+[    1.817039] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
+[    1.817039] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.817039] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
+[    1.817039] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.817039] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.817039] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
+[    1.817039] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
+[    1.818785] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
+[    1.818929] LR [c0000000000fb558] plpks_read_var+0x208/0x290
+[    1.819093] --- interrupt: c00
+[    1.819195] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
+[    1.819433] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
+[    1.819617] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
+[    1.819823] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
+[    1.820017] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
+[    1.820229] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
+[    1.820411] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
+[    1.820614] --- interrupt: c00 at plpar_hcall+0x38/0x60
+[    1.820755] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
+[    1.820940] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
+[    1.821157] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
+[    1.821444] IRQMASK: 0
+[    1.821444] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
+[    1.821444] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
+[    1.821444] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.821444] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
+[    1.821444] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.821444] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.821444] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
+[    1.821444] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
+[    1.823188] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
+[    1.823331] LR [c0000000000fb558] plpks_read_var+0x208/0x290
+[    1.823493] --- interrupt: c00
+[    1.823585] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
+[    1.823813] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
+[    1.823996] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
+[    1.824183] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
+[    1.824370] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
+[    1.824577] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
+[    1.824764] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
+[    1.824965] --- interrupt: c00 at plpar_hcall+0x38/0x60
+[    1.825105] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
+[    1.825290] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
+[    1.825505] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
+[    1.825795] IRQMASK: 0
+[    1.825795] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
+[    1.825795] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
+[    1.825795] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.825795] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
+[    1.825795] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.825795] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.825795] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
+[    1.825795] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
+[    1.827538] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
+[    1.827682] LR [c0000000000fb558] plpks_read_var+0x208/0x290
+[    1.827842] --- interrupt: c00
+[    1.827930] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
+[    1.828154] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
+[    1.828335] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
+[    1.828522] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
+[    1.828712] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
+[    1.828917] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
+[    1.829098] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
+[    1.829300] --- interrupt: c00 at plpar_hcall+0x38/0x60
+[    1.829443] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
+[    1.829627] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
+[    1.829841] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
+[    1.830127] IRQMASK: 0
+[    1.830127] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
+[    1.830127] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
+[    1.830127] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.830127] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
+[    1.830127] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.830127] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.830127] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
+[    1.830127] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
+[    1.831867] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
+[    1.832011] LR [c0000000000fb558] plpks_read_var+0x208/0x290
+[    1.832168] --- interrupt: c00
+[    1.832255] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
+[    1.832476] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
+[    1.832661] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
+[    1.832845] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
+[    1.833037] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
+[    1.833243] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
+[    1.833423] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
+[    1.833631] --- interrupt: c00 at plpar_hcall+0x38/0x60
+[    1.833778] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
+[    1.833964] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
+[    1.834179] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
+[    1.834466] IRQMASK: 0
+[    1.834466] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
+[    1.834466] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
+[    1.834466] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.834466] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
+[    1.834466] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.834466] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.834466] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
+[    1.834466] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
+[    1.836206] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
+[    1.836349] LR [c0000000000fb558] plpks_read_var+0x208/0x290
+[    1.836505] --- interrupt: c00
+[    1.836592] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
+[    1.836819] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
+[    1.837002] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
+[    1.837187] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
+[    1.837380] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
+[    1.837587] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
+[    1.837772] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
+[    1.837978] --- interrupt: c00 at plpar_hcall+0x38/0x60
+[    1.838117] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
+[    1.838305] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
+[    1.838521] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
+[    1.838803] IRQMASK: 0
+[    1.838803] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
+[    1.838803] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
+[    1.838803] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.838803] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
+[    1.838803] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.838803] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.838803] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
+[    1.838803] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
+[    1.840549] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
+[    1.840699] LR [c0000000000fb558] plpks_read_var+0x208/0x290
+[    1.840854] --- interrupt: c00
+[    1.840940] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
+[    1.841164] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
+[    1.841347] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
+[    1.841538] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
+[    1.841727] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
+[    1.841932] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
+[    1.842114] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
+[    1.842311] --- interrupt: c00 at plpar_hcall+0x38/0x60
+[    1.842453] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
+[    1.842638] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
+[    1.842856] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
+[    1.843143] IRQMASK: 0
+[    1.843143] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
+[    1.843143] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
+[    1.843143] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.843143] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
+[    1.843143] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.843143] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.843143] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
+[    1.843143] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
+[    1.844880] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
+[    1.845027] LR [c0000000000fb558] plpks_read_var+0x208/0x290
+[    1.845184] --- interrupt: c00
+[    1.845272] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
+[    1.845491] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
+[    1.845674] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
+[    1.845857] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
+[    1.846043] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
+[    1.846246] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
+[    1.846429] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
+[    1.846625] --- interrupt: c00 at plpar_hcall+0x38/0x60
+[    1.846775] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
+[    1.846965] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
+[    1.847178] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
+[    1.847457] IRQMASK: 0
+[    1.847457] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
+[    1.847457] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
+[    1.847457] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.847457] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
+[    1.847457] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.847457] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.847457] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
+[    1.847457] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
+[    1.849184] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
+[    1.849328] LR [c0000000000fb558] plpks_read_var+0x208/0x290
+[    1.849483] --- interrupt: c00
+[    1.849571] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
+[    1.849795] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
+[    1.849976] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
+[    1.850165] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
+[    1.850359] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
+[    1.850561] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
+[    1.850743] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
+[    1.850943] --- interrupt: c00 at plpar_hcall+0x38/0x60
+[    1.851082] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
+[    1.851264] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
+[    1.851480] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
+[    1.851762] IRQMASK: 0
+[    1.851762] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
+[    1.851762] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
+[    1.851762] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.851762] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
+[    1.851762] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.851762] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.851762] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
+[    1.851762] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
+[    1.853506] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
+[    1.853654] LR [c0000000000fb558] plpks_read_var+0x208/0x290
+[    1.853811] --- interrupt: c00
+[    1.853897] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
+[    1.854119] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
+[    1.854303] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
+[    1.854488] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
+[    1.854677] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
+[    1.854877] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
+[    1.855061] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
+[    1.855262] --- interrupt: c00 at plpar_hcall+0x38/0x60
+[    1.855404] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
+[    1.855587] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
+[    1.855805] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
+[    1.856090] IRQMASK: 0
+[    1.856090] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
+[    1.856090] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
+[    1.856090] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.856090] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
+[    1.856090] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.856090] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[    1.856090] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
+[    1.856090] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
+[    1.857848] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
+[    1.857992] LR [c0000000000fb558] plpks_read_var+0x208/0x290
+[    1.858148] --- interrupt: c00
+[    1.858325] Code: 7d41496a 39210020 60000000 39200000 0b090000 60000000 e93e0108 692a0002 794affe2 0b0a0000 69294000 792997e2 <0b090000> e93e0138 792907e0 0b090000
+[    1.859199] ---[ end trace 0000000000000000 ]---
+[    1.859407]
+[    2.859747] note: swapper/0[1] exited with irqs disabled
+[    2.862681] Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000005
+[    2.864206] ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000005 ]---
+
+IIRC, this occurs when running on a non-pseries machine, as I think this
+is a similar crash to commit a66de5283e16 ("powerpc/pseries: Fix plpks
+crash on non-pseries"), but I am not sure if that fix is appropriate or
+not here, hence just the report. If there is any additional information
+I can provide or patches I can test, I am more than happy to do so.
+
+[1]: https://github.com/openSUSE/kernel-source/raw/master/config/ppc64le/default
+[2]: https://github.com/ClangBuiltLinux/boot-utils/releases
+
+Cheers,
+Nathan
