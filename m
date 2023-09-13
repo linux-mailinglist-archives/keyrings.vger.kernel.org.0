@@ -2,150 +2,165 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6655579EA5B
-	for <lists+keyrings@lfdr.de>; Wed, 13 Sep 2023 16:02:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1206279EB55
+	for <lists+keyrings@lfdr.de>; Wed, 13 Sep 2023 16:43:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232734AbjIMOCH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 13 Sep 2023 10:02:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37904 "EHLO
+        id S241385AbjIMOnM (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 13 Sep 2023 10:43:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241170AbjIMOCB (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 13 Sep 2023 10:02:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A69B31BE2
-        for <keyrings@vger.kernel.org>; Wed, 13 Sep 2023 07:01:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1694613669;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=xS4/fTwaJzoinJru6fqZ1bq4iwGN/D53z+FVXXr+H7M=;
-        b=Mkb38tvedVPWLVvhtB9K/0ri8VmQshXCN//mFgHCO6+OBKF5X2Va0Q1lKk4cOkeS2ZKrch
-        YVZBSEB0v4WTXxJpiwDMbvETC9uyiV4Y1PhlTXROuT9bqLspvCJWABZ60/KwhVNp5zsUbZ
-        g/4wiJneEZm2tWE+T27zY5uNgG6NRuQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-539-TQukLfSvNPe2LCPAt8_LrA-1; Wed, 13 Sep 2023 10:01:03 -0400
-X-MC-Unique: TQukLfSvNPe2LCPAt8_LrA-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C4E27939A78;
-        Wed, 13 Sep 2023 14:00:48 +0000 (UTC)
-Received: from rotkaeppchen (unknown [10.39.192.155])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id B9BCF1008807;
-        Wed, 13 Sep 2023 14:00:46 +0000 (UTC)
-Date:   Wed, 13 Sep 2023 16:00:45 +0200
-From:   Philipp Rudo <prudo@redhat.com>
-To:     Jan Hendrik Farr <kernel@jfarr.cc>
+        with ESMTP id S232390AbjIMOnM (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 13 Sep 2023 10:43:12 -0400
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 694F09E;
+        Wed, 13 Sep 2023 07:43:08 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.west.internal (Postfix) with ESMTP id 2ADF33200124;
+        Wed, 13 Sep 2023 10:43:05 -0400 (EDT)
+Received: from imap49 ([10.202.2.99])
+  by compute6.internal (MEProxy); Wed, 13 Sep 2023 10:43:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jfarr.cc; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm1; t=1694616184; x=1694702584; bh=I6
+        KW7EN8WvVpcxWfprs/LJK5tndoIFl6DB/6pYFRPh0=; b=IsVydtLgKseG3i3ML8
+        4b/WocveJKvs59G51DXEWtVbu7hHrUwVUyOEyVRtn/2UyVUVUNi2dT/E4U9cODza
+        xkMIkOP1ZdPlWVLcFwIDXTVz7OGV5cwhEZM6v6fI4BnNrcKBZYNoJbQ0ChDyoTds
+        4I2+JjcJIUKsjGzIOkfs6lzsdVIzsBswI7jGtDxs+YF70JHZX1kLtwUmQBVPWRLg
+        HgipqwZTqTGY6p/YNlnCK1n60vjv5HV1XEb7xMKCBwQMMde5HWB1/96xrS5D+lph
+        +fgykQNo3DCHkbwEH58sgXUOPoErO2Hlz/QNMaePc9eT5MRUch6DD9rmPHHTsOj8
+        L1dg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1694616184; x=1694702584; bh=I6KW7EN8WvVpc
+        xWfprs/LJK5tndoIFl6DB/6pYFRPh0=; b=Vf0KujZYCawZbS+XrCdJUmeTAc7Gg
+        7ywQukNuFVgldRRrsbK9lrfuSoTVoi2WNPbE/BwDJmW+TGeexiSFAvFKOZn/3LOH
+        Tuit06RIOD5rVZzLQPHjL1l0DGQAgEloIr4lxLtcqeKM5YJnoZwnN3ZXabUK3gxY
+        VfE0zyKOymr9uOLxyMC/2UW2CL8cix20TLNr+7mSRfGXhK5Ko9parr5aQPVUaoG9
+        Of9CrdX75lqC8nga6LGXod8KEJUWQuqrQh6Y6OEagZwVrzt39kwfbd3uxTLQtxkh
+        flalktSwldhtrREIM0ri5vCtee5zcKMV7sfFCnanBQdI1iN0cq58x7PWg==
+X-ME-Sender: <xms:eMoBZd81D9U4PG1S6KuDuT32xq8PMoyJimrSqgXEuJxyKo33trJHnw>
+    <xme:eMoBZRtmarVCRCNVbulJfPtXuR0a-PoWjyiCAAw26Cy1H0jz97FBjIfBUOfsA0foP
+    RPV5_IU1_XMnSqh3b8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudeikedgkedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    gfrhhlucfvnfffucdluddtmdenucfjughrpefofgggkfgjfhffhffvvefutgesthdtredt
+    reertdenucfhrhhomhepfdflrghnucfjvghnughrihhkucfhrghrrhdfuceokhgvrhhnvg
+    hlsehjfhgrrhhrrdgttgeqnecuggftrfgrthhtvghrnhepfeeftdevveeihfetieduieeg
+    teeftedttedtheefgfektdffueeujefftefhleeunecuffhomhgrihhnpehurghpihdqgh
+    hrohhuphdrohhrghdpghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptden
+    ucfrrghrrghmpehmrghilhhfrhhomhepkhgvrhhnvghlsehjfhgrrhhrrdgttg
+X-ME-Proxy: <xmx:eMoBZbATTlioymGAWf1Fl-90l4ZJkWDsZPLfWpKGbJ_7U-Jum5-YOg>
+    <xmx:eMoBZRfuEcqcQxhFdajq8p0L8Nq_4oMSJ1DzLd323HZDTrN2O6ZoSg>
+    <xmx:eMoBZSPOAtE83vmeOskNNhRUI1tEMouXukMkSNCDAfEPlobsQo6WJw>
+    <xmx:eMoBZTEvlS-KDl4IqW3rE7EEl36sT1jSoPoxFPqonA_xDPlq8tIeJA>
+Feedback-ID: i0fc947c4:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 3428D15A0091; Wed, 13 Sep 2023 10:43:04 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-745-g95dd7bea33-fm-20230905.001-g95dd7bea
+Mime-Version: 1.0
+Message-Id: <63952cb0-5217-42a8-9b62-8be6d03f5844@app.fastmail.com>
+In-Reply-To: <20230913160045.40d377f9@rotkaeppchen>
+References: <20230911052535.335770-1-kernel@jfarr.cc>
+ <20230913160045.40d377f9@rotkaeppchen>
+Date:   Wed, 13 Sep 2023 16:42:33 +0200
+From:   "Jan Hendrik Farr" <kernel@jfarr.cc>
+To:     "Philipp Rudo" <prudo@redhat.com>
 Cc:     linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
         x86@kernel.org, tglx@linutronix.de, dhowells@redhat.com,
         vgoyal@redhat.com, keyrings@vger.kernel.org,
-        akpm@linux-foundation.org, bhe@redhat.com, bhelgaas@google.com,
-        bluca@debian.org, lennart@poettering.net
+        akpm@linux-foundation.org, "Baoquan He" <bhe@redhat.com>,
+        bhelgaas@google.com, "Luca Boccassi" <bluca@debian.org>,
+        lennart@poettering.net
 Subject: Re: [PATCH v2 0/2] x86/kexec: UKI Support
-Message-ID: <20230913160045.40d377f9@rotkaeppchen>
-In-Reply-To: <20230911052535.335770-1-kernel@jfarr.cc>
-References: <20230911052535.335770-1-kernel@jfarr.cc>
-Organization: Red Hat inc.
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Jan,
 
-All in all the code looks fine to me. Nevertheless I don't think UKI support
-should be added at the moment. This is because IMHO you basically reinterpret
-the kexec_file systemcall and thus add a new uapi to the kernel. Once
-introduced it is extremely hard to remove or change an uapi again. The problem
-I see is that the spec you based your work on is in such a poor shape that I
-don't feel comfortable to add any new uapi based on it.
 
-For example there are two definitions for the UKI which contradict each other.
-The dedicated one [1] you have cited earlier and the one in the BLS for type #2
-entries [2]. In [1] the .linux and .initrd sections are mandatory and the
-.osrel and .cmdline sections are optional while in [2] it is the other way
-round. Which definition should the kernel follow?
+On Wed, Sep 13, 2023, at 4:00 PM, Philipp Rudo wrote:
+> Hi Jan,
+>
+> All in all the code looks fine to me. Nevertheless I don't think UKI
+> support should be added at the moment. This is because IMHO you
+> basically reinterpret the kexec_file systemcall and thus add a new
+> uapi to the kernel. Once introduced it is extremely hard to remove or
+> change an uapi again. The problem I see is that the spec you based
+> your work on is in such a poor shape that I don't feel comfortable to
+> add any new uapi based on it.
+>
+> For example there are two definitions for the UKI which contradict
+> each other. The dedicated one [1] you have cited earlier and the one
+> in the BLS for type #2 entries [2]. In [1] the .linux and .initrd
+> sections are mandatory and the .osrel and .cmdline sections are
+> optional while in [2] it is the other way round. Which definition
+> should the kernel follow?
+>
+> Furthermore, I absolutely don't understand how the spec should be
+> read. All the spec does is defining some file formats. There is no
+> word about which component in the boot chain is supposed to handle
+> them and what exactly this component is supposed to do with it. But
+> that is crucial if we want to add UKI support for kexec as the kexec
+> systemcall will replace the stub. So we need to know what tasks the
+> stub is supposed to perform. Currently this is only some
+> implementation detail of the systemd-stub [3] that can change any
+> moment and I strongly oppose to base any uapi on it.
+>
 
-Furthermore, I absolutely don't understand how the spec should be read. All
-the spec does is defining some file formats. There is no word about which
-component in the boot chain is supposed to handle them and what exactly this
-component is supposed to do with it. But that is crucial if we want to add UKI
-support for kexec as the kexec systemcall will replace the stub. So we need to
-know what tasks the stub is supposed to perform. Currently this is only some
-implementation detail of the systemd-stub [3] that can change any moment and I
-strongly oppose to base any uapi on it.
 
-In the end the only benefit this series brings is to extend the signature
-checking on the whole UKI except of just the kernel image. Everything else can
-also be done in user space. Compared to the problems described above this is a
-very small gain for me.
 
-Until the spec got fixed I don't see a chance to add UKI support for kexec.
+I think I have to agree with you on this one.
 
-Thanks
-Philipp
+I kinda experienced this first hand. My initial patch required a kernel
+command line, because the spec in [1] didn't say it was optional. Then
+I got a response saying that it's actually optional. And the spec got
+changed in PR [2] (I have a WIP v3 that allows a manual cmdline if the
+.cmdline section is empty as explained by Lennart in [2] and now
+also in the spec since [3]). So there's already 2 changes in the spec
+in the last few days related to my patch. That shows that the spec is
+not stable.
+
+What's even worse IMO is that the reason given in [2] to change the spec
+is simply that systemd-stub has a different behavior than the spec and
+therefore the spec should be updated. At this point it's not really a
+specification but simply a flawed documentation of the behavior of systemd-
+stub / ukify.
+
+I also discovered that ukify treats the initrd as optional [4]. So is
+this the next change in the spec?
+
+In [5] Luca writes:
+> [...] we fully intend for the UKI format to be an open and stable
+> specification, that anybody can support and rely on.
+But that is unfortunately not where the format is at this point.
+
+What is annoying though is where this leaves a user that actually
+wants this feature. They can carry a patch or they might have to wait
+a long time.
+
+Can you indicate what it would take for the kernel community to consider
+this spec as stable enough?
+
+
+> In the end the only benefit this series brings is to extend the
+> signature checking on the whole UKI except of just the kernel image.
+> Everything else can also be done in user space. Compared to the
+> problems described above this is a very small gain for me.
+
+Correct. That is the benefit of pulling the UKI apart in the
+kernel. However having to sign the kernel inside the UKI defeats
+the whole point.
+
 
 [1] https://uapi-group.org/specifications/specs/unified_kernel_image/
-[2] https://uapi-group.org/specifications/specs/boot_loader_specification/#type-2-efi-unified-kernel-images
-[3] https://www.freedesktop.org/software/systemd/man/systemd-stub.html
-
-On Mon, 11 Sep 2023 07:25:33 +0200
-Jan Hendrik Farr <kernel@jfarr.cc> wrote:
-
-> Hello,
-> 
-> this patch (v2) implements UKI support for kexec_file_load. It will require
-> support in the kexec-tools userspace utility. For testing purposes the
-> following can be used: https://github.com/Cydox/kexec-test/
-> 
-> Creating UKIs for testing can be done with ukify (included in systemd),
-> sbctl, and mkinitcpio, etc.
-> 
-> There has been discussion on this topic in an issue on GitHub that is linked
-> below for reference.
-> 
-> Changes for v2:
-> - .cmdline section is now optional
-> - moving pefile_parse_binary is now in a separate commit for clarity
-> - parse_pefile.c is now in /lib instead of arch/x86/kernel (not sure if
->   this is the best location, but it definetly shouldn't have been in an
->   architecture specific location)
-> - parse_pefile.h is now in include/kernel instead of architecture
->   specific location
-> - if initrd or cmdline is manually supplied EPERM is returned instead of
->   being silently ignored
-> - formatting tweaks
-> 
-> 
-> Some links:
-> - Related discussion: https://github.com/systemd/systemd/issues/28538
-> - Documentation of UKIs: https://uapi-group.org/specifications/specs/unified_kernel_image/
-> 
-> Jan Hendrik Farr (2):
->   move pefile_parse_binary to its own file
->   x86/kexec: UKI support
-> 
->  arch/x86/include/asm/kexec-uki.h       |   7 ++
->  arch/x86/kernel/Makefile               |   1 +
->  arch/x86/kernel/kexec-uki.c            | 126 +++++++++++++++++++++++++
->  arch/x86/kernel/machine_kexec_64.c     |   2 +
->  crypto/asymmetric_keys/mscode_parser.c |   2 +-
->  crypto/asymmetric_keys/verify_pefile.c | 110 +++------------------
->  crypto/asymmetric_keys/verify_pefile.h |  16 ----
->  include/linux/parse_pefile.h           |  32 +++++++
->  lib/Makefile                           |   3 +
->  lib/parse_pefile.c                     | 109 +++++++++++++++++++++
->  10 files changed, 292 insertions(+), 116 deletions(-)
->  create mode 100644 arch/x86/include/asm/kexec-uki.h
->  create mode 100644 arch/x86/kernel/kexec-uki.c
->  create mode 100644 include/linux/parse_pefile.h
->  create mode 100644 lib/parse_pefile.c
-> 
-
+[2] https://github.com/uapi-group/specifications/pull/72
+[3] https://github.com/uapi-group/specifications/pull/73
+[4] https://github.com/uapi-group/specifications/issues/74
+[5] https://github.com/systemd/systemd/issues/28538
