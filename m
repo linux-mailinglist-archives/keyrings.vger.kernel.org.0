@@ -2,84 +2,182 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E05E579F272
-	for <lists+keyrings@lfdr.de>; Wed, 13 Sep 2023 21:54:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 253C579F325
+	for <lists+keyrings@lfdr.de>; Wed, 13 Sep 2023 22:49:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232643AbjIMTyw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 13 Sep 2023 15:54:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60032 "EHLO
+        id S232033AbjIMUt7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 13 Sep 2023 16:49:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232646AbjIMTys (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 13 Sep 2023 15:54:48 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DBEC1FD7;
-        Wed, 13 Sep 2023 12:54:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56210C433CB;
-        Wed, 13 Sep 2023 19:54:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694634879;
-        bh=R4NyGPjqTOJdveL4q6k73GTVhLrDaw0wxAJyW09foX4=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=OqouiPKUjT9AstBjsUBIOpRKceRHw08413u8/UAysGbyg6TikZyOhX8D6SZG8Im3i
-         tyVr3CX4TuXpKYh9Dzj7A7/6wnZM3XcHU4mz+glQvIRwOQntKPD5zZfk4GsCwgQC+y
-         vYtvoLrjs6TeYTkvZ/qou4SU3f7LvYqfKKWbYDIzc2vmaKbktwB846NY5MN40A5ory
-         WuUJMaSyr6I4pVkqz+eUHcIgKO/HaWXcd3C8oen7LEfqulB8Pzq1c6E+d7tZ0waVMI
-         lbfwN0GSgrpyCXj1yxqGSUcarGZ4x8aRr/mqqhlqalbE7YdBMIEtmIIs4v425EQGTQ
-         BS/aG2aVFEkOw==
-Mime-Version: 1.0
+        with ESMTP id S231724AbjIMUt6 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 13 Sep 2023 16:49:58 -0400
+Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F9E91BCB
+        for <keyrings@vger.kernel.org>; Wed, 13 Sep 2023 13:49:54 -0700 (PDT)
+Received: by mail-qv1-xf32.google.com with SMTP id 6a1803df08f44-6516a8e2167so1657546d6.2
+        for <keyrings@vger.kernel.org>; Wed, 13 Sep 2023 13:49:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1694638193; x=1695242993; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EFwFw82a57aBtQryliubY+OdXAAQrHVkDDwYmB6bvo8=;
+        b=MPOogQ5fjF6DKVQuBg8MKjkNwYRvl2f969VAUVkHe+miGM5eSsfUGMukaXP9BdZwPR
+         bqX4JKNGrJEyIw6kBb3uVa24PEfY2vMWi6W2scOiDAW3xTE93A3WyS4Damva0LMT+2sp
+         MBtjNCDbL7yotboXE5rXpjcqiNOZ6sDuGiAju0sQsMTqSfNzxAisUln1Oa/++YPwPlAE
+         CmTEpX9eN5UOXW5WLAYLjAqxRv7x0A3BAeo+KaeWQm4OmhGEJ2KrnPqpKOEYsFW/ZsvP
+         pZiyRD/QrrPO36p3MoMPeEp9h0A2nCwXHX0Ki28BDWYdBzqoEuF2Obb5Aw/TNNkHNUqS
+         jtnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694638193; x=1695242993;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EFwFw82a57aBtQryliubY+OdXAAQrHVkDDwYmB6bvo8=;
+        b=MdZJvtqQOdNUqYQ1yqIkdtV5zwkjPiXkm6XbalCU1rYEkGkefQP9GDYslbX9Eo1UMY
+         0NEaofGvXUQ/omLfXEdHS0zfu6cTtlGNV9uyWc5vBtTZuZsXd96UIXTokzByFvSNYNcW
+         QY/YT0L/46yvO0Wqh3EgkXN+WXno6+MHColyDI119DbRBh2akNPbW6foak8qYNMGAIO8
+         wCRxRLx99IJN6iinOpc0mJCB5cFy9axf06h3CAMwzLP1fFotiZOZLa9KsWYaaeb2fHkU
+         AGrFZBH7YP92fkNwdc2W62XtDmPvZgX2LQBp0i+TvVjjsX7pcbRoBuOce17xkV15pjEx
+         9LiQ==
+X-Gm-Message-State: AOJu0YzYNesuagFfIt/I7h1rW2rPUr/WeU/NgeE1v9YmPSgituY1UT/b
+        ZXTWUxh5Jiy2Ky60ZBVVzPubmRUlidLJuZfeuADcBg==
+X-Google-Smtp-Source: AGHT+IHyO+7qjdiOWvRrn0TL1tvmNTBKXt4WU5GdAv9X4AWVEJU+Ajo7u738qSi8gvalqluc4GkG9Xfyc7iZk8lZYKw=
+X-Received: by 2002:a05:6214:140e:b0:651:75a4:75b0 with SMTP id
+ pr14-20020a056214140e00b0065175a475b0mr3474295qvb.1.1694638193146; Wed, 13
+ Sep 2023 13:49:53 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230908153056.3503975-1-gjoyce@linux.vnet.ibm.com>
+ <20230908153056.3503975-2-gjoyce@linux.vnet.ibm.com> <20230913165612.GA2213586@dev-arch.thelio-3990X>
+In-Reply-To: <20230913165612.GA2213586@dev-arch.thelio-3990X>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Wed, 13 Sep 2023 13:49:39 -0700
+Message-ID: <CAKwvOdnbKA-DiWRorWMR93JPFX-OjUjO=SQXSRf4=DpwzvZ=pQ@mail.gmail.com>
+Subject: Re: [PATCH v7 1/3 RESEND] block:sed-opal: SED Opal keystore
+To:     Nathan Chancellor <nathan@kernel.org>, gjoyce@linux.vnet.ibm.com
+Cc:     linux-block@vger.kernel.org, axboe@kernel.dk, jarkko@kernel.org,
+        linuxppc-dev@lists.ozlabs.org, jonathan.derrick@linux.dev,
+        brking@linux.vnet.ibm.com, msuchanek@suse.de, mpe@ellerman.id.au,
+        nayna@linux.ibm.com, akpm@linux-foundation.org,
+        keyrings@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 13 Sep 2023 22:54:35 +0300
-Message-Id: <CVI1XE98FLQN.1S24GU1DJ89WY@suppilovahvero>
-Cc:     "Peter Huewe" <peterhuewe@gmx.de>,
-        "Jason Gunthorpe" <jgg@ziepe.ca>,
-        "David Howells" <dhowells@redhat.com>,
-        "Mimi Zohar" <zohar@linux.ibm.com>,
-        "Justin M . Forbes" <jforbes@fedoraproject.org>,
-        <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <keyrings@vger.kernel.org>
-Subject: Re: [GIT PULL] tpmdd changes for v6.6-rc2
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Linus Torvalds" <torvalds@linux-foundation.org>
-X-Mailer: aerc 0.14.0
-References: <20230912201102.1012306-1-jarkko@kernel.org>
- <CAHk-=wgLB9_z5TcvRKVsSk3BWPfkDeWN0pDMdEv=-hnrnTgX1Q@mail.gmail.com>
- <CVI1GKA044I2.2A5GRO80ABMNN@suppilovahvero>
- <CAHk-=wiS2rHdPe9qQ4Ahzy6t6hbG18ihsOjBYxn3Nr88yen52A@mail.gmail.com>
-In-Reply-To: <CAHk-=wiS2rHdPe9qQ4Ahzy6t6hbG18ihsOjBYxn3Nr88yen52A@mail.gmail.com>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed Sep 13, 2023 at 10:45 PM EEST, Linus Torvalds wrote:
-> On Wed, 13 Sept 2023 at 12:32, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+On Wed, Sep 13, 2023 at 9:56=E2=80=AFAM Nathan Chancellor <nathan@kernel.or=
+g> wrote:
+>
+> Hi Greg,
+>
+> On Fri, Sep 08, 2023 at 10:30:54AM -0500, gjoyce@linux.vnet.ibm.com wrote=
+:
+> > From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
 > >
-> > Ok, I'll make something more reasonable.
+> > Add read and write functions that allow SED Opal keys to stored
+> > in a permanent keystore.
+> >
+> > Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
+> > Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
+> > ---
+> >  block/Makefile               |  2 +-
+> >  block/sed-opal-key.c         | 24 ++++++++++++++++++++++++
+> >  include/linux/sed-opal-key.h | 15 +++++++++++++++
+> >  3 files changed, 40 insertions(+), 1 deletion(-)
+> >  create mode 100644 block/sed-opal-key.c
+> >  create mode 100644 include/linux/sed-opal-key.h
+> >
+> > diff --git a/block/Makefile b/block/Makefile
+> > index 46ada9dc8bbf..ea07d80402a6 100644
+> > --- a/block/Makefile
+> > +++ b/block/Makefile
+> > @@ -34,7 +34,7 @@ obj-$(CONFIG_BLK_DEV_ZONED) +=3D blk-zoned.o
+> >  obj-$(CONFIG_BLK_WBT)                +=3D blk-wbt.o
+> >  obj-$(CONFIG_BLK_DEBUG_FS)   +=3D blk-mq-debugfs.o
+> >  obj-$(CONFIG_BLK_DEBUG_FS_ZONED)+=3D blk-mq-debugfs-zoned.o
+> > -obj-$(CONFIG_BLK_SED_OPAL)   +=3D sed-opal.o
+> > +obj-$(CONFIG_BLK_SED_OPAL)   +=3D sed-opal.o sed-opal-key.o
+> >  obj-$(CONFIG_BLK_PM)         +=3D blk-pm.o
+> >  obj-$(CONFIG_BLK_INLINE_ENCRYPTION)  +=3D blk-crypto.o blk-crypto-prof=
+ile.o \
+> >                                          blk-crypto-sysfs.o
+> > diff --git a/block/sed-opal-key.c b/block/sed-opal-key.c
+> > new file mode 100644
+> > index 000000000000..16f380164c44
+> > --- /dev/null
+> > +++ b/block/sed-opal-key.c
+> > @@ -0,0 +1,24 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +/*
+> > + * SED key operations.
+> > + *
+> > + * Copyright (C) 2022 IBM Corporation
+> > + *
+> > + * These are the accessor functions (read/write) for SED Opal
+> > + * keys. Specific keystores can provide overrides.
+> > + *
+> > + */
+> > +
+> > +#include <linux/kernel.h>
+> > +#include <linux/errno.h>
+> > +#include <linux/sed-opal-key.h>
+> > +
+> > +int __weak sed_read_key(char *keyname, char *key, u_int *keylen)
+> > +{
+> > +     return -EOPNOTSUPP;
+> > +}
+> > +
+> > +int __weak sed_write_key(char *keyname, char *key, u_int keylen)
+> > +{
+> > +     return -EOPNOTSUPP;
+> > +}
 >
-> Well, I took the pull already, just saying "tpm fix".
+> This change causes a build failure for certain clang configurations due
+> to an unfortunate issue [1] with recordmcount, clang's integrated
+> assembler, and object files that contain a section with only weak
+> functions/symbols (in this case, the .text section in sed-opal-key.c),
+> resulting in
 >
-> I assume the only thing the typo actually causes is printk's with a
-> typo in it. Maybe some sysfs name will be wrong?
+>   Cannot find symbol for section 2: .text.
+>   block/sed-opal-key.o: failed
 >
-> That's the kind of information I would have _liked_ to see in the
-> merge message, but I didn't then delve into just where the class names
-> might actually be used.
+> when building this file.
+
+The definitions in
+block/sed-opal-key.c
+should be deleted. Instead, in
+include/linux/sed-opal-key.h
+CONFIG_PSERIES_PLPKS_SED should be used to define static inline
+versions when CONFIG_PSERIES_PLPKS_SED is not defined.
+
+#ifdef CONFIG_PSERIES_PLPKS_SED
+int sed_read_key(char *keyname, char *key, u_int *keylen);
+int sed_write_key(char *keyname, char *key, u_int keylen);
+#else
+static inline
+int sed_read_key(char *keyname, char *key, u_int *keylen) {
+  return -EOPNOTSUPP;
+}
+static inline
+int sed_write_key(char *keyname, char *key, u_int keylen);
+  return -EOPNOTSUPP;
+}
+#endif
+
 >
->                Linus
+> Is there any real reason to have a separate translation unit for these
+> two functions versus just having them living in sed-opal.c? Those two
+> object files share the same Kconfig dependency. I am happy to send a
+> patch if that is an acceptable approach.
+>
+> [1]: https://github.com/ClangBuiltLinux/linux/issues/981
+>
+> Cheers,
+> Nathan
+>
 
-Thanks for pointing this out because I also overlooked the whole fix,
-and based my conclusions just "git describe --contains", which pointed
-to my previous signed tag.
 
-I actually do QA (both x86 and aarch64 and slowly setting up also riscv)
-to my tree, and I did not understand how this could have leaked into a
-PR since TPM2 kselftest would have catched that.
-
-The original commit must have gone through some other maintainer tree
-since I do not see in any of my PR's. Anyway, I'll document next time
-better my PR because apparently not doing that can lead to toally false
-conclusions :-)
-
-Thanks for picking it up anyway.
-
-BR, Jarkko
+--=20
+Thanks,
+~Nick Desaulniers
