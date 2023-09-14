@@ -2,355 +2,255 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF45C79F975
-	for <lists+keyrings@lfdr.de>; Thu, 14 Sep 2023 06:13:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5B0F79FE7E
+	for <lists+keyrings@lfdr.de>; Thu, 14 Sep 2023 10:34:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234362AbjINENm (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 14 Sep 2023 00:13:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55424 "EHLO
+        id S236391AbjINIev (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 14 Sep 2023 04:34:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233817AbjINENm (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 14 Sep 2023 00:13:42 -0400
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C864F0;
-        Wed, 13 Sep 2023 21:13:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-        s=201909; t=1694664816;
-        bh=mIa+xQ5UYE5c60cHjFMYiCUJEh5cLxZQfAqfbvhrn9c=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=ITSQklnxpKTnew8ppb17v69JO27vVEzgDQLwekMjNPzZzWD15krtS1/+13sAmPYJa
-         V+7ym4B+JOZT6bz6nGS/7aqCd4emTPg0V4dTDRZ/SasyLZVXYUjSfUGw5HQNMAlLdC
-         UnKFmYLOiMMLctygF8pYrNDPYvxT0SorvNVvejHuwFI6xbGxXILIZfLHNSExwVGx2G
-         awyzmDvQ9D4fV8MsdDRQnyICRpVLGVr+GcREJH4KoCxwSDHUqsin8XpzUcvRIOyx0a
-         HwAIL1WRFTfnmTwnH/RV1gaFePETf1HED7Efuf2TgqP7WEwbw1yqirbyrPz1Rio8WU
-         Dla5ZRR55pw0Q==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4RmP7z2LQYz4x3v;
-        Thu, 14 Sep 2023 14:13:35 +1000 (AEST)
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Nathan Chancellor <nathan@kernel.org>, gjoyce@linux.vnet.ibm.com
-Cc:     axboe@kernel.dk, nayna@linux.ibm.com, linux-block@vger.kernel.org,
-        jarkko@kernel.org, keyrings@vger.kernel.org,
-        jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com,
-        akpm@linux-foundation.org, msuchanek@suse.de,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v7 3/3 RESEND] powerpc/pseries: PLPKS SED Opal keystore
- support
-In-Reply-To: <20230913185951.GA3643621@dev-arch.thelio-3990X>
-References: <20230908153056.3503975-1-gjoyce@linux.vnet.ibm.com>
- <20230908153056.3503975-4-gjoyce@linux.vnet.ibm.com>
- <20230913185951.GA3643621@dev-arch.thelio-3990X>
-Date:   Thu, 14 Sep 2023 14:13:32 +1000
-Message-ID: <877cot8k9f.fsf@mail.lhotse>
+        with ESMTP id S236387AbjINIeu (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 14 Sep 2023 04:34:50 -0400
+Received: from smtp-8faa.mail.infomaniak.ch (smtp-8faa.mail.infomaniak.ch [IPv6:2001:1600:4:17::8faa])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 564CC1FC0
+        for <keyrings@vger.kernel.org>; Thu, 14 Sep 2023 01:34:46 -0700 (PDT)
+Received: from smtp-3-0001.mail.infomaniak.ch (unknown [10.4.36.108])
+        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4RmVxJ4v4QzMqW3B;
+        Thu, 14 Sep 2023 08:34:44 +0000 (UTC)
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4RmVxF3g18zMppB1;
+        Thu, 14 Sep 2023 10:34:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
+        s=20191114; t=1694680484;
+        bh=Va+NlpX2Fn3CXeGKO0bJw1cjeZ8M1RUU583bKxbztGM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=JJDPXtN85mA0ECbgb/P6nSTAambq+SvK403uk3q2xR72YbZt3XpkR1akykmczbctQ
+         lb2SzJsIxSUbvsma+gz3o8zqZxYkuaZPtHjssiOp7wkjovGZ3DrPjyjrp0tXYRbp0z
+         KqF66IZrgTwUuJzQRHOPpJxUyFL8bEPr41l5FOBU=
+Date:   Thu, 14 Sep 2023 10:34:40 +0200
+From:   =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To:     Eric Snowberg <eric.snowberg@oracle.com>,
+        Paul Moore <paul@paul-moore.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>
+Cc:     Mimi Zohar <zohar@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Kanth Ghatraju <kanth.ghatraju@oracle.com>,
+        Konrad Wilk <konrad.wilk@oracle.com>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-security-module@vger.kernel.org
+Subject: Re: [PATCH] certs: Restrict blacklist updates to the secondary
+ trusted keyring
+Message-ID: <20230914.shah5al9Kaib@digikod.net>
+References: <20230911.chaeghaeJ4ei@digikod.net>
+ <CEA476C1-4CE5-4FFC-91D7-6061C8605B18@oracle.com>
+ <ba2f5560800608541e81fbdd28efa9875b35e491.camel@linux.ibm.com>
+ <932231F5-8050-4436-84B8-D7708DC43845@oracle.com>
+ <7335a4587233626a39ce9bc8a969957d7f43a34c.camel@linux.ibm.com>
+ <FD6FB139-F901-4E55-9705-E7B0023BDBA8@oracle.com>
+ <1149b6dbfdaabef3e48dc2852cc76aa11a6dd6b0.camel@linux.ibm.com>
+ <4A0505D0-2933-43BD-BEEA-94350BB22AE7@oracle.com>
+ <20230913.Ceifae7ievei@digikod.net>
+ <D0F16BFD-72EB-4BE2-BA3D-BAE1BCCDCB6F@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <D0F16BFD-72EB-4BE2-BA3D-BAE1BCCDCB6F@oracle.com>
+X-Infomaniak-Routing: alpha
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Nathan Chancellor <nathan@kernel.org> writes:
-> Hi Greg,
->
-> On Fri, Sep 08, 2023 at 10:30:56AM -0500, gjoyce@linux.vnet.ibm.com wrote:
->> From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
->>
->> Define operations for SED Opal to read/write keys
->> from POWER LPAR Platform KeyStore(PLPKS). This allows
->> non-volatile storage of SED Opal keys.
->>
->> Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
->> Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
->> Reviewed-by: Hannes Reinecke <hare@suse.de>
->
-> After this change in -next as commit 9f2c7411ada9 ("powerpc/pseries:
-> PLPKS SED Opal keystore support"), I see the following crash when
-> booting some distribution configurations, such as OpenSUSE's [1] (the
-> rootfs is available at [2] if necessary):
+CCing the LSM mailing list for this potential new LSM proposal:
 
-Thanks for testing Nathan.
-
-The code needs to check plpks_is_available() somewhere, before calling
-the plpks routines.
-
-cheers
-
-> $ qemu-system-ppc64 \
->     -display none \
->     -nodefaults \
->     -device ipmi-bmc-sim,id=bmc0 \
->     -device isa-ipmi-bt,bmc=bmc0,irq=10 \
->     -machine powernv \
->     -kernel arch/powerpc/boot/zImage.epapr \
->     -initrd ppc64le-rootfs.cpio \
->     -m 2G \
->     -serial mon:stdio
-> ...
-> [    0.000000] Linux version 6.6.0-rc1-00004-g9f2c7411ada9 (nathan@dev-arch.thelio-3990X) (powerpc64-linux-gcc (GCC) 13.2.0, GNU ld (GNU Binutils) 2.41) #1 SMP Wed Sep 13 11:53:38 MST 2023
-> ...
-> [    1.808911] ------------[ cut here ]------------
-> [    1.810336] kernel BUG at arch/powerpc/kernel/syscall.c:34!
-> [    1.810799] Oops: Exception in kernel mode, sig: 5 [#1]
-> [    1.810985] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA PowerNV
-> [    1.811191] Modules linked in:
-> [    1.811483] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.6.0-rc1-00004-g9f2c7411ada9 #1
-> [    1.811825] Hardware name: IBM PowerNV (emulated by qemu) POWER9 0x4e1202 opal:v7.0 PowerNV
-> [    1.812133] NIP:  c00000000002c8c4 LR: c00000000000d620 CTR: c00000000000d4c0
-> [    1.812335] REGS: c000000002deb7b0 TRAP: 0700   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
-> [    1.812595] MSR:  9000000000029033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 20040004
-> [    1.812930] CFAR: c00000000000d61c IRQMASK: 3
-> [    1.812930] GPR00: c00000000000d620 c000000002deba50 c0000000015ef400 c000000002debe80
-> [    1.812930] GPR04: 000000004800028d 0000000000000000 0000000000000000 0000000000000000
-> [    1.812930] GPR08: 0000000079cd0000 0000000000000001 0000000000000000 0000000000000000
-> [    1.812930] GPR12: 0000000000000000 c0000000028b0000 0000000000000000 0000000000000000
-> [    1.812930] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.812930] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.812930] GPR24: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.812930] GPR28: 0000000000000000 000000004800028d c000000002debe80 c000000002debe10
-> [    1.814858] NIP [c00000000002c8c4] system_call_exception+0x84/0x250
-> [    1.815480] LR [c00000000000d620] system_call_common+0x160/0x2c4
-> [    1.815772] Call Trace:
-> [    1.815929] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
-> [    1.816178] --- interrupt: c00 at plpar_hcall+0x38/0x60
-> [    1.816330] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
-> [    1.816518] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
-> [    1.816740] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
-> [    1.817039] IRQMASK: 0
-> [    1.817039] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
-> [    1.817039] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
-> [    1.817039] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.817039] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
-> [    1.817039] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.817039] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.817039] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
-> [    1.817039] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
-> [    1.818785] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
-> [    1.818929] LR [c0000000000fb558] plpks_read_var+0x208/0x290
-> [    1.819093] --- interrupt: c00
-> [    1.819195] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
-> [    1.819433] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
-> [    1.819617] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
-> [    1.819823] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
-> [    1.820017] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
-> [    1.820229] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
-> [    1.820411] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
-> [    1.820614] --- interrupt: c00 at plpar_hcall+0x38/0x60
-> [    1.820755] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
-> [    1.820940] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
-> [    1.821157] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
-> [    1.821444] IRQMASK: 0
-> [    1.821444] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
-> [    1.821444] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
-> [    1.821444] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.821444] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
-> [    1.821444] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.821444] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.821444] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
-> [    1.821444] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
-> [    1.823188] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
-> [    1.823331] LR [c0000000000fb558] plpks_read_var+0x208/0x290
-> [    1.823493] --- interrupt: c00
-> [    1.823585] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
-> [    1.823813] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
-> [    1.823996] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
-> [    1.824183] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
-> [    1.824370] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
-> [    1.824577] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
-> [    1.824764] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
-> [    1.824965] --- interrupt: c00 at plpar_hcall+0x38/0x60
-> [    1.825105] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
-> [    1.825290] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
-> [    1.825505] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
-> [    1.825795] IRQMASK: 0
-> [    1.825795] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
-> [    1.825795] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
-> [    1.825795] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.825795] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
-> [    1.825795] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.825795] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.825795] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
-> [    1.825795] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
-> [    1.827538] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
-> [    1.827682] LR [c0000000000fb558] plpks_read_var+0x208/0x290
-> [    1.827842] --- interrupt: c00
-> [    1.827930] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
-> [    1.828154] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
-> [    1.828335] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
-> [    1.828522] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
-> [    1.828712] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
-> [    1.828917] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
-> [    1.829098] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
-> [    1.829300] --- interrupt: c00 at plpar_hcall+0x38/0x60
-> [    1.829443] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
-> [    1.829627] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
-> [    1.829841] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
-> [    1.830127] IRQMASK: 0
-> [    1.830127] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
-> [    1.830127] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
-> [    1.830127] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.830127] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
-> [    1.830127] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.830127] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.830127] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
-> [    1.830127] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
-> [    1.831867] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
-> [    1.832011] LR [c0000000000fb558] plpks_read_var+0x208/0x290
-> [    1.832168] --- interrupt: c00
-> [    1.832255] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
-> [    1.832476] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
-> [    1.832661] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
-> [    1.832845] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
-> [    1.833037] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
-> [    1.833243] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
-> [    1.833423] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
-> [    1.833631] --- interrupt: c00 at plpar_hcall+0x38/0x60
-> [    1.833778] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
-> [    1.833964] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
-> [    1.834179] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
-> [    1.834466] IRQMASK: 0
-> [    1.834466] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
-> [    1.834466] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
-> [    1.834466] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.834466] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
-> [    1.834466] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.834466] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.834466] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
-> [    1.834466] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
-> [    1.836206] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
-> [    1.836349] LR [c0000000000fb558] plpks_read_var+0x208/0x290
-> [    1.836505] --- interrupt: c00
-> [    1.836592] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
-> [    1.836819] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
-> [    1.837002] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
-> [    1.837187] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
-> [    1.837380] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
-> [    1.837587] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
-> [    1.837772] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
-> [    1.837978] --- interrupt: c00 at plpar_hcall+0x38/0x60
-> [    1.838117] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
-> [    1.838305] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
-> [    1.838521] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
-> [    1.838803] IRQMASK: 0
-> [    1.838803] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
-> [    1.838803] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
-> [    1.838803] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.838803] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
-> [    1.838803] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.838803] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.838803] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
-> [    1.838803] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
-> [    1.840549] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
-> [    1.840699] LR [c0000000000fb558] plpks_read_var+0x208/0x290
-> [    1.840854] --- interrupt: c00
-> [    1.840940] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
-> [    1.841164] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
-> [    1.841347] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
-> [    1.841538] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
-> [    1.841727] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
-> [    1.841932] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
-> [    1.842114] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
-> [    1.842311] --- interrupt: c00 at plpar_hcall+0x38/0x60
-> [    1.842453] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
-> [    1.842638] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
-> [    1.842856] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
-> [    1.843143] IRQMASK: 0
-> [    1.843143] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
-> [    1.843143] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
-> [    1.843143] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.843143] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
-> [    1.843143] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.843143] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.843143] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
-> [    1.843143] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
-> [    1.844880] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
-> [    1.845027] LR [c0000000000fb558] plpks_read_var+0x208/0x290
-> [    1.845184] --- interrupt: c00
-> [    1.845272] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
-> [    1.845491] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
-> [    1.845674] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
-> [    1.845857] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
-> [    1.846043] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
-> [    1.846246] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
-> [    1.846429] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
-> [    1.846625] --- interrupt: c00 at plpar_hcall+0x38/0x60
-> [    1.846775] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
-> [    1.846965] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
-> [    1.847178] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
-> [    1.847457] IRQMASK: 0
-> [    1.847457] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
-> [    1.847457] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
-> [    1.847457] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.847457] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
-> [    1.847457] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.847457] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.847457] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
-> [    1.847457] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
-> [    1.849184] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
-> [    1.849328] LR [c0000000000fb558] plpks_read_var+0x208/0x290
-> [    1.849483] --- interrupt: c00
-> [    1.849571] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
-> [    1.849795] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
-> [    1.849976] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
-> [    1.850165] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
-> [    1.850359] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
-> [    1.850561] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
-> [    1.850743] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
-> [    1.850943] --- interrupt: c00 at plpar_hcall+0x38/0x60
-> [    1.851082] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
-> [    1.851264] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
-> [    1.851480] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
-> [    1.851762] IRQMASK: 0
-> [    1.851762] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
-> [    1.851762] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
-> [    1.851762] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.851762] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
-> [    1.851762] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.851762] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.851762] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
-> [    1.851762] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
-> [    1.853506] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
-> [    1.853654] LR [c0000000000fb558] plpks_read_var+0x208/0x290
-> [    1.853811] --- interrupt: c00
-> [    1.853897] [c000000002deb950] [c0000000000fb528] plpks_read_var+0x1d8/0x290 (unreliable)
-> [    1.854119] [c000000002deba10] [c0000000000fc1ac] sed_read_key+0x9c/0x170
-> [    1.854303] [c000000002debad0] [c0000000020541a8] sed_opal_init+0xac/0x174
-> [    1.854488] [c000000002debc50] [c000000000010ad0] do_one_initcall+0x80/0x3b0
-> [    1.854677] [c000000002debd30] [c000000002004860] kernel_init_freeable+0x338/0x3dc
-> [    1.854877] [c000000002debdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
-> [    1.855061] [c000000002debe50] [c00000000000d620] system_call_common+0x160/0x2c4
-> [    1.855262] --- interrupt: c00 at plpar_hcall+0x38/0x60
-> [    1.855404] NIP:  c0000000000e43f8 LR: c0000000000fb558 CTR: 0000000000000000
-> [    1.855587] REGS: c000000002debe80 TRAP: 0c00   Not tainted  (6.6.0-rc1-00004-g9f2c7411ada9)
-> [    1.855805] MSR:  900000000280b033 <SF,HV,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800028d  XER: 00000000
-> [    1.856090] IRQMASK: 0
-> [    1.856090] GPR00: 000000004800028d c000000002deb950 c0000000015ef400 0000000000000434
-> [    1.856090] GPR04: 00000000028eb190 0000000028ac6600 000000000000001d 0000000000000010
-> [    1.856090] GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.856090] GPR12: 0000000000000000 c0000000028b0000 c000000000011188 0000000000000000
-> [    1.856090] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.856090] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-> [    1.856090] GPR24: 0000000000000000 0000000000000000 0000000000000000 c000000028ac6600
-> [    1.856090] GPR28: 0000000000000010 c0000000028eb190 c000000028ac6600 c000000002deba30
-> [    1.857848] NIP [c0000000000e43f8] plpar_hcall+0x38/0x60
-> [    1.857992] LR [c0000000000fb558] plpks_read_var+0x208/0x290
-> [    1.858148] --- interrupt: c00
-> [    1.858325] Code: 7d41496a 39210020 60000000 39200000 0b090000 60000000 e93e0108 692a0002 794affe2 0b0a0000 69294000 792997e2 <0b090000> e93e0138 792907e0 0b090000
-> [    1.859199] ---[ end trace 0000000000000000 ]---
-> [    1.859407]
-> [    2.859747] note: swapper/0[1] exited with irqs disabled
-> [    2.862681] Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000005
-> [    2.864206] ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000005 ]---
->
-> IIRC, this occurs when running on a non-pseries machine, as I think this
-> is a similar crash to commit a66de5283e16 ("powerpc/pseries: Fix plpks
-> crash on non-pseries"), but I am not sure if that fix is appropriate or
-> not here, hence just the report. If there is any additional information
-> I can provide or patches I can test, I am more than happy to do so.
->
-> [1]: https://github.com/openSUSE/kernel-source/raw/master/config/ppc64le/default
-> [2]: https://github.com/ClangBuiltLinux/boot-utils/releases
->
-> Cheers,
-> Nathan
+On Wed, Sep 13, 2023 at 10:29:58PM +0000, Eric Snowberg wrote:
+> 
+> 
+> > On Sep 13, 2023, at 4:21 AM, Mickaël Salaün <mic@digikod.net> wrote:
+> > 
+> > On Wed, Sep 13, 2023 at 02:40:17AM +0000, Eric Snowberg wrote:
+> >> 
+> >> 
+> >>> On Sep 12, 2023, at 4:47 PM, Mimi Zohar <zohar@linux.ibm.com> wrote:
+> >>> 
+> >>> On Tue, 2023-09-12 at 17:11 +0000, Eric Snowberg wrote:
+> >>>> 
+> >>>>> On Sep 12, 2023, at 5:54 AM, Mimi Zohar <zohar@linux.ibm.com> wrote:
+> >>>>> 
+> >>>>> On Tue, 2023-09-12 at 02:00 +0000, Eric Snowberg wrote:
+> >>>>>> 
+> >>>>>>> On Sep 11, 2023, at 5:08 PM, Mimi Zohar <zohar@linux.ibm.com> wrote:
+> >>>>>>> 
+> >>>>>>> On Mon, 2023-09-11 at 22:17 +0000, Eric Snowberg wrote:
+> >>>>>>>> 
+> >>>>>>>>> On Sep 11, 2023, at 10:51 AM, Mickaël Salaün <mic@digikod.net> wrote:
+> >>>>>>>>> 
+> >>>>>>>>> On Mon, Sep 11, 2023 at 09:29:07AM -0400, Mimi Zohar wrote:
+> >>>>>>>>>> Hi Eric,
+> >>>>>>>>>> 
+> >>>>>>>>>> On Fri, 2023-09-08 at 17:34 -0400, Eric Snowberg wrote:
+> >>>>>>>>>>> Currently root can dynamically update the blacklist keyring if the hash
+> >>>>>>>>>>> being added is signed and vouched for by the builtin trusted keyring.
+> >>>>>>>>>>> Currently keys in the secondary trusted keyring can not be used.
+> >>>>>>>>>>> 
+> >>>>>>>>>>> Keys within the secondary trusted keyring carry the same capabilities as
+> >>>>>>>>>>> the builtin trusted keyring.  Relax the current restriction for updating
+> >>>>>>>>>>> the .blacklist keyring and allow the secondary to also be referenced as
+> >>>>>>>>>>> a trust source.  Since the machine keyring is linked to the secondary
+> >>>>>>>>>>> trusted keyring, any key within it may also be used.
+> >>>>>>>>>>> 
+> >>>>>>>>>>> An example use case for this is IMA appraisal.  Now that IMA both
+> >>>>>>>>>>> references the blacklist keyring and allows the machine owner to add
+> >>>>>>>>>>> custom IMA CA certs via the machine keyring, this adds the additional
+> >>>>>>>>>>> capability for the machine owner to also do revocations on a running
+> >>>>>>>>>>> system.
+> >>>>>>>>>>> 
+> >>>>>>>>>>> IMA appraisal usage example to add a revocation for /usr/foo:
+> >>>>>>>>>>> 
+> >>>>>>>>>>> sha256sum /bin/foo | awk '{printf "bin:" $1}' > hash.txt
+> >>>>>>>>>>> 
+> >>>>>>>>>>> openssl smime -sign -in hash.txt -inkey machine-private-key.pem \
+> >>>>>>>>>>>   -signer machine-certificate.pem -noattr -binary -outform DER \
+> >>>>>>>>>>>   -out hash.p7s
+> >>>>>>>>>>> 
+> >>>>>>>>>>> keyctl padd blacklist "$(< hash.txt)" %:.blacklist < hash.p7s
+> >>>>>>>>>>> 
+> >>>>>>>>>>> Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
+> >>>>>>>>>> 
+> >>>>>>>>>> The secondary keyring may include both CA and code signing keys.  With
+> >>>>>>>>>> this change any key loaded onto the secondary keyring may blacklist a
+> >>>>>>>>>> hash.  Wouldn't it make more sense to limit blacklisting
+> >>>>>>>>>> certificates/hashes to at least CA keys? 
+> >>>>>>>>> 
+> >>>>>>>>> Some operational constraints may limit what a CA can sign.
+> >>>>>>>> 
+> >>>>>>>> Agreed.  
+> >>>>>>>> 
+> >>>>>>>> Is there precedents for requiring this S/MIME to be signed by a CA? 
+> >>>>>>>> 
+> >>>>>>>>> This change is critical and should be tied to a dedicated kernel config
+> >>>>>>>>> (disabled by default), otherwise existing systems using this feature
+> >>>>>>>>> will have their threat model automatically changed without notice.
+> >>>>>>>> 
+> >>>>>>>> Today we have INTEGRITY_CA_MACHINE_KEYRING_MAX.  This can 
+> >>>>>>>> be enabled to enforce CA restrictions on the machine keyring.  Mimi, would 
+> >>>>>>>> this be a suitable solution for what you are after?
+> >>>>>>> 
+> >>>>>>> There needs to be some correlation between the file hashes being added
+> >>>>>>> to the blacklist and the certificate that signed them.  Without that
+> >>>>>>> correlation, any key on the secondary trusted keyring could add any
+> >>>>>>> file hashes it wants to the blacklist.
+> >>>>>> 
+> >>>>>> Today any key in the secondary trusted keyring can be used to validate a 
+> >>>>>> signed kernel module.  At a later time, if a new hash is added to the blacklist 
+> >>>>>> keyring to revoke loading a signed kernel module,  the ability to do the 
+> >>>>>> revocation with this additional change would be more restrictive than loading 
+> >>>>>> the original module.
+> >>>>> 
+> >>>>> A public key on the secondary keyring is used to verify code that it
+> >>>>> signed, but does not impact any other code. Allowing any public key on
+> >>>>> the secondary keyring to blacklist any file hash is giving it more
+> >>>>> privileges than it originally had.
+> >>>>> 
+> >>>>> This requirement isn't different than how Certificate Revocation List
+> >>>>> (CRL) work.  Not any CA can revoke a certificate.
+> >>>> 
+> >>>> In UEFI Secure Boot we have the Forbidden Signature Database (DBX).  
+> >>>> Root can update the DBX on a host.  The requirement placed on updating 
+> >>>> it is the new DBX entry must be signed by any key contained within the 
+> >>>> KEK.  Following a reboot, all DBX entries load into the .blacklist keyring.  
+> >>>> There is not a requirement similar to how CRL’s work here, any KEK key 
+> >>>> can be used.
+> >>>> 
+> >>>> With architectures booted through a shim there is the MOKX.  Similar to 
+> >>>> DBX, MOKX have the same capabilities, however they do not need to be 
+> >>>> signed by any key, the machine owner must show they have physical 
+> >>>> presence (and potentially a MOK password) for inclusion.  Again there 
+> >>>> is not a requirement similar to how CRL’s work here either.  The machine 
+> >>>> owner can decide what is included.
+> >>>> 
+> >>>> Today when a kernel is built, any number of keys may be included within 
+> >>>> the builtin trusted keyring.  The keys included in the kernel may not have 
+> >>>> a single usage field set or the CA bit set.  There are no requirements on 
+> >>>> how these keys get used later on.  Any key in the builtin trusted keyring 
+> >>>> can be used to sign a revocation that can be added to the blacklist keyring.  
+> >>>> Additionally, any key in the MOK can be used to sign this kernel and it will 
+> >>>> boot.  Before booting the kernel, MOK keys have more privileges than 
+> >>>> after the kernel is booted in some instances.
+> >>>> 
+> >>>> Today MOK keys can be loaded into the machine keyring.  These keys get 
+> >>>> linked to the secondary trusted keyring.  Currently key usage enforcement
+> >>>> is being applied to these keys behind some Kconfig options.  By default 
+> >>>> anything in the secondary has the same capabilities as the builtin trusted 
+> >>>> keyring.  What is challenging here with this request is the inconsistency 
+> >>>> between how everything else currently works. 
+> >>>> 
+> >>>> Root can not arbitrarily add things to the secondary trusted keyring.  These 
+> >>>> keys must be signed by something in either the machine or the builtin.  In 
+> >>>> this thread [1], Jarkko is saying CA based infrastructure should be a policy 
+> >>>> decision not to be enforced by the kernel. Wouldn’t this apply here as well?
+> >>>> 
+> >>>> 1. https://lore.kernel.org/lkml/CVGUFUEQVCHS.37OA20PNG9EVB@suppilovahvero/
+> >>> 
+> >>> Mickaël said, "This change is critical and should be tied to a
+> >>> dedicated kernel config
+> >>> (disabled by default), otherwise existing systems using this feature
+> >>> will have their threat model automatically changed without notice."
+> >> 
+> >> I was thinking he meant it is critical not to change the current behavior
+> >> by limiting blacklisting to only CA keys.  Not that it was critical to add
+> >> CA enforcement.  Maybe Mickaël can comment?
+> > 
+> > I meant that applying this patch as-is may change the threat model used
+> > by some users. Currently, only signed hashes vouched by the builtin
+> > trusted keyring are valid. If we extend this mechanism to the secondary
+> > trusted keyring without notice, this means that more certificates could
+> > vouch blacklisted hashes, which may include some certificates with an
+> > initial different usage.
+> > 
+> > See commit 4da8f8c8a1e0 ("dm verity: Add support for signature
+> > verification with 2nd keyring") that adds
+> > CONFIG_DM_VERITY_VERIFY_ROOTHASH_SIG_SECONDARY_KEYRING:
+> > https://lore.kernel.org/all/20201023170512.201124-1-mic@digikod.net/
+> 
+> Thanks for clarifying.  I’ll add something similar in v2.
+> 
+> >> 
+> >>> As a possible alternative I suggested limiting which file hashes the
+> >>> certs on the secondary (or machine) keyring could blacklist.
+> >> 
+> >> I’m not sure I completely understand your suggestion here.
+> >> Do you mean, verify the CA bit is set for secondary keys, but
+> >> ignore the bit for builtin?  And then only use those keys to add
+> >> hashes to the blacklist keyring?  If I have that right, what would 
+> >> be the justification for the change based on how things currently
+> >> get included in the blacklist keyring?  Thanks.
+> > 
+> > I'd like to be able to specify which kind of certificate can vouch for
+> > blacklisting hashes, and for other usages, but AFAIK this is not the
+> > path Linux has followed (e.g. unlike Windows). We only have the keyring
+> > to identify an usage, which is unfortunate. On the other side, this
+> > approach lets users manage their certificates without constraint, which
+> > is quite (too?) flexible.
+> 
+> Yes, it is very flexible. What I believe Mimi is after is having a way to 
+> track what cert actually vouched for each specific binary hash.  But this
+> information is not tracked, plus entries within it can come from various 
+> sources that are not signed (dbx, mokx, compiled in).  Also key usage is 
+> being ignored.
+> 
+> > A complementary approach would be to create an
+> > LSM (or a dedicated interface) to tie certificate properties to a set of
+> > kernel usages, while still letting users configure these constraints.
+> 
+> That is an interesting idea.  Would the other security maintainers be in 
+> support of such an approach?  Would a LSM be the correct interface?  
+> Some of the recent work I have done with introducing key usage and CA 
+> enforcement is difficult for a distro to pick up, since these changes can be 
+> viewed as a regression.  Each end-user has different signing procedures 
+> and policies, so making something work for everyone is difficult.  Letting the 
+> user configure these constraints would solve this problem.
+> 
