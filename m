@@ -2,125 +2,155 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95CE57A031F
-	for <lists+keyrings@lfdr.de>; Thu, 14 Sep 2023 13:58:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ACBF7A0375
+	for <lists+keyrings@lfdr.de>; Thu, 14 Sep 2023 14:13:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234198AbjINL60 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 14 Sep 2023 07:58:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57168 "EHLO
+        id S238278AbjINMNH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 14 Sep 2023 08:13:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233897AbjINL6Z (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 14 Sep 2023 07:58:25 -0400
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55DDACC3;
-        Thu, 14 Sep 2023 04:58:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-        s=201909; t=1694692696;
-        bh=aR6fTCLyqhpJ6CEcONiB2y5I3vOXAke0CMC6NhPXkeM=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=O/h09s6GFF9nHczPeQ67AdtmqzBhU+frGsT0ouLjV8HfR/7xwhP+gO33oBha3L4bD
-         ADkt1g18WAvAAT0Y/SRsKL0A2rJy4bYb5cVpj14YsQbj47Yw/JBTB2k/9I9PL01Zxt
-         lo91vDlMc6mFV1+fT56vL+8d1RtGqYvUk2Bvf8Y919BaP/qFfwIGnLG+GywIr2zcC6
-         /+eg8+TXlgo8zli2OEpKdI9VRWW7RB5jWLT+aFdThrw88+JwYBKMXy1JWO3zVH/ldE
-         tKhS84aTCeeWOKPTcFk0rQF077KOfR9C/v3+LJZiRmetVr6id6SnTpmgEwDzPkWIml
-         h0jjnsLFVMscA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4RmbS70gXPz4wxR;
-        Thu, 14 Sep 2023 21:58:14 +1000 (AEST)
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Michal =?utf-8?Q?Such=C3=A1nek?= <msuchanek@suse.de>
-Cc:     Nathan Chancellor <nathan@kernel.org>, gjoyce@linux.vnet.ibm.com,
-        axboe@kernel.dk, nayna@linux.ibm.com, linux-block@vger.kernel.org,
-        jarkko@kernel.org, keyrings@vger.kernel.org,
-        jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com,
-        akpm@linux-foundation.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v7 3/3 RESEND] powerpc/pseries: PLPKS SED Opal keystore
- support
-In-Reply-To: <20230914103400.GX8826@kitsune.suse.cz>
-References: <20230908153056.3503975-1-gjoyce@linux.vnet.ibm.com>
- <20230908153056.3503975-4-gjoyce@linux.vnet.ibm.com>
- <20230913185951.GA3643621@dev-arch.thelio-3990X>
- <877cot8k9f.fsf@mail.lhotse> <20230914103400.GX8826@kitsune.suse.cz>
-Date:   Thu, 14 Sep 2023 21:58:09 +1000
-Message-ID: <874jjx7yr2.fsf@mail.lhotse>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+        with ESMTP id S238119AbjINMNH (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 14 Sep 2023 08:13:07 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 144971BF4;
+        Thu, 14 Sep 2023 05:13:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309EBC433C7;
+        Thu, 14 Sep 2023 12:13:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694693582;
+        bh=RrzfH6UbrmAt6KmTCe5UqLl8JJkSJQZSUuFTonNvkh0=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=a4EmMNTfKpEzhz1VhakLJKRSXwaOcGp5rkN8Tpc5zNgAehu5Ty7hucgLpUnLaYAA6
+         IBT92FOnlRCVlF1wTIj7LdXT4xP3+PtQtFCrI9P0mTiCPC2ILho8tuis4hJfasnp/o
+         sCx6Sw0X4L5+fLOXMwNqTUolLgyudgo+U0WjvIgjP9n6sw1hu+RVbibennJnhRDwEv
+         l0NsBphimJ48ny85AsQfGMoMmDC3UdxoLgAsxVoulSeNsKgWj3e2F2jQx0kdRV2x9Z
+         /iAVk1TQPFKnuy6/JSR9GH6mQO2vFSWLHdNwL2xBpjEAPtRcVZ2ZQQThgh3gVR1RFv
+         Xzj81y4MchDTw==
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Thu, 14 Sep 2023 15:12:58 +0300
+Message-Id: <CVIMQI0YC3HN.1NUKBC7EF0M31@suppilovahvero>
+Cc:     "Jan Hendrik Farr" <kernel@jfarr.cc>,
+        <linux-kernel@vger.kernel.org>, <kexec@lists.infradead.org>,
+        <x86@kernel.org>, <tglx@linutronix.de>, <dhowells@redhat.com>,
+        <vgoyal@redhat.com>, <keyrings@vger.kernel.org>,
+        <akpm@linux-foundation.org>, "Baoquan He" <bhe@redhat.com>,
+        <bhelgaas@google.com>, "Luca Boccassi" <bluca@debian.org>
+Subject: Re: [PATCH 0/1] x86/kexec: UKI support
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Lennart Poettering" <mzxreary@0pointer.de>
+X-Mailer: aerc 0.14.0
+References: <20230909161851.223627-1-kernel@jfarr.cc>
+ <CVGFE6FRWFHR.DVG9NUQID4EA@suppilovahvero>
+ <1d974586-1bf7-42e8-9dae-e5e41a3dbc9f@app.fastmail.com>
+ <CVGVCYUGNKAI.1WYRZGI9HYDMC@suppilovahvero>
+ <9580df76-c143-4077-8a39-b1fcc0ed37bd@app.fastmail.com>
+ <CVH4GZXQFZ1F.2V5BIZNSKQ1FA@suppilovahvero>
+ <5a67051d-eb21-4a96-acc4-40f829a59e23@app.fastmail.com>
+ <CVH6NGLENMPH.271W6X80061M@suppilovahvero>
+ <1c342231-7672-450e-b945-e57cd17b4ae7@app.fastmail.com>
+ <CVHVCHYZT8KG.3L0IH30QYT0WH@suppilovahvero> <ZQLOLLbu0fh27LpQ@gardel-login>
+In-Reply-To: <ZQLOLLbu0fh27LpQ@gardel-login>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Michal Such=C3=A1nek <msuchanek@suse.de> writes:
-> Hello,
+On Thu Sep 14, 2023 at 12:11 PM EEST, Lennart Poettering wrote:
+> On Mi, 13.09.23 17:45, Jarkko Sakkinen (jarkko@kernel.org) wrote:
 >
-> On Thu, Sep 14, 2023 at 02:13:32PM +1000, Michael Ellerman wrote:
->> Nathan Chancellor <nathan@kernel.org> writes:
->> > Hi Greg,
->> >
->> > On Fri, Sep 08, 2023 at 10:30:56AM -0500, gjoyce@linux.vnet.ibm.com wr=
-ote:
->> >> From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
->> >>
->> >> Define operations for SED Opal to read/write keys
->> >> from POWER LPAR Platform KeyStore(PLPKS). This allows
->> >> non-volatile storage of SED Opal keys.
->> >>
->> >> Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
->> >> Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
->> >> Reviewed-by: Hannes Reinecke <hare@suse.de>
->> >
->> > After this change in -next as commit 9f2c7411ada9 ("powerpc/pseries:
->> > PLPKS SED Opal keystore support"), I see the following crash when
->> > booting some distribution configurations, such as OpenSUSE's [1] (the
->> > rootfs is available at [2] if necessary):
->>=20
->> Thanks for testing Nathan.
->>=20
->> The code needs to check plpks_is_available() somewhere, before calling
->> the plpks routines.
+> > On Tue Sep 12, 2023 at 11:49 PM EEST, Jan Hendrik Farr wrote:
+> > >
+> > > > These are sort of "tautological" arguments. There must be some
+> > > > objective reasons why this architecture was chosen instead of
+> > > > other (i.e. using what already pre-exists).
+> > >
+> > > I think I misunderstood you in my earlier reply. I do not understand
+> > > in what way you think my arguments are tautological. Can you
+> > > elaborate?
+> >
+> > current Linux kernel has these features *already* in
+> > place:
+> >
+> > 1. CONFIG_EFI_STUB
+> > 2. CONFIG_CMDLINE
+> > 3. CONFIG_INITRAMFS_SOURCE
+> > 4. Secure boot with MOK keys and .machine keyring to manage them.
+> >
+> > Given that every single feature in IKU does exists in some form
+> > in the Linux kernel, I think it is fair to ask why scrape away
+> > this all existing science and reinvent the wheel?
 >
-> would this fixup do it?
+> Nah, systemd-stub does considerably more than what you list above.
 >
-> I don't really see any other place to plug the check with the current
-> code structure.
-=20
-I think the plpks_sed code should call plpks_is_available() once at init
-time and cache the result.
+> 1. It measures the components of the UKI separately into PCR 11, 12,
+>    13, which makes the mesaurements predictable, and allows vendors to
+>    provide a signed PCR policy with can be used to unlock TPM2 secrets
+>    that ause a PolicyAuthorize policy. This is a fundamental
+>    improvement over mechanisms that bind to literal PCR values, since
+>    the "brittleness" goes away.
 
-Otherwise it's will be doing an extra hcall (in _plpks_get_config()) for
-every call, which would be wasteful.=20
+I guess this is an appropriate reference:
 
-cheers
+https://uapi-group.org/specifications/specs/linux_tpm_pcr_registry/
 
-> diff --git a/arch/powerpc/platforms/pseries/plpks_sed_ops.c b/arch/powerp=
-c/platforms/pseries/plpks_sed_ops.c
-> index c1d08075e850..f8038d998eae 100644
-> --- a/arch/powerpc/platforms/pseries/plpks_sed_ops.c
-> +++ b/arch/powerpc/platforms/pseries/plpks_sed_ops.c
-> @@ -64,6 +64,9 @@ int sed_read_key(char *keyname, char *key, u_int *keyle=
-n)
->  	int ret;
->  	u_int len;
->=20=20
-> +	if (!plpks_is_available())
-> +		return -ENODEV;
-> +
->  	plpks_init_var(&var, keyname);
->  	var.data =3D (u8 *)&data;
->  	var.datalen =3D sizeof(data);
-> @@ -89,6 +92,9 @@ int sed_write_key(char *keyname, char *key, u_int keyle=
-n)
->  	struct plpks_sed_object_data data;
->  	struct plpks_var_name vname;
->=20=20
-> +	if (!plpks_is_available())
-> +		return -ENODEV;
-> +
->  	plpks_init_var(&var, keyname);
->=20=20
->  	var.datalen =3D sizeof(struct plpks_sed_object_data);
-> --=20
-> 2.41.0
+I quickly checked what sort of use cases we have for PCRs in the
+kernel. I could spot one:
+
+https://www.kernel.org/doc/html/v6.5/security/keys/trusted-encrypted.html
+
+Generally, my only concern here is potential conflicts with user space
+extending the same PCRs as systemd does.
+
+Since this all is only used for boot phase I guess this should not be
+an issue, right?
+
+> 2. That said signed PCR policy is included in the UKI in another PE
+>    section, that is made available to userspace.
+> 3. If you like it brings a boot splash to screen before passing
+>    control off to the kernel, which is also contained
+> 4. It can contain a devicetree blob, which it will setup for the
+>    kernel it spawns
+> 5. There's a random seed maintained by systemd-stub in the ESP that is
+>    updated and passed to the kernel, which includes in in the pool.
+> 6. It picks up "credentials" (which are TPM protected, encrypted,
+>    authenticated supported by systemd) that can be used to securely
+>    parameterize the invoked system from the backing fs (i.e. the
+>    ESP). Similar it can pick up sysext images (which is another
+>    systemd thing, i.e. dm-verity protected, signed disk images which
+>    can extend the initrd and the host, by being overlayed on /usr).
+> 7. It picks up "add-ons" -- which are PE binaries that actually contain
+>    no code, but are SecureBoot signed/shim signed "mules" for carrying
+>    addition kernel cmdlines, devictree blobs (and maybe in future
+>    initrds) that allow some form of modularity in the UKI model.
+>
+> And there's more. This is just off the top of my head.
+>
+> Now, I can totally see you personally might not need any of this
+> stuff, fine, but a claim that this stuff is redundant is just bogus.
+
+Backing story was missing completely. Please add this reasoning to the
+patch set in some form (cover letter and possibly some patch
+descriptions). It is bogus without proper context, which is totally
+different than my personal use. The response that I received was more
+related to personal use.
+
+It took quite many emails to learn about PCR usage. IMHO that should
+have been told here so that we can then e.g. inspect possible conflicts
+etc.
+
+> Afaics all big distributions are preparing to providing UKIs
+> soonishly. It would be fantastic if kexec would just work with this
+> too, and the dissection would be done on the kernel side instead of
+> userspace.
+
+I don't see any existential reasons anymore not to include this to the
+mainline but it takes what it takes in terms of time span of course.
+
+>
+> Lennart
+>
+> --
+> Lennart Poettering, Berlin
+
+BR, Jarkko
