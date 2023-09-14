@@ -2,114 +2,141 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 273637A0DD9
-	for <lists+keyrings@lfdr.de>; Thu, 14 Sep 2023 21:10:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF23B7A0F6F
+	for <lists+keyrings@lfdr.de>; Thu, 14 Sep 2023 23:04:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238901AbjINTKr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 14 Sep 2023 15:10:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56764 "EHLO
+        id S229436AbjINVFD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 14 Sep 2023 17:05:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237837AbjINTKq (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 14 Sep 2023 15:10:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8DE3D1FD8
-        for <keyrings@vger.kernel.org>; Thu, 14 Sep 2023 12:09:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1694718597;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=G30aDEjWsGwHEBcRnJQg8/XZtFrP1rxiHjsXrhoF9jc=;
-        b=WYkmW0EXxGNrGD9sxpdcDwUUj+UIImoG+n1FHqOSOp4IriS+EteApfZZlOukbau2Qd5HQl
-        dS2CMgkg4OLXAZAmvNUMLxoOqCVHjOkmP4ihvcXqirnqcwmkz0bsyyNdA9AbU/y3KHlXvM
-        xR0Uy1tMyoXTMTJDfefLSfA43X9SCwU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-7-5-Yls00iPaSiIW2Kk2t_Kw-1; Thu, 14 Sep 2023 15:09:55 -0400
-X-MC-Unique: 5-Yls00iPaSiIW2Kk2t_Kw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 84833185A79B;
-        Thu, 14 Sep 2023 19:09:54 +0000 (UTC)
-Received: from rotkaeppchen (unknown [10.39.194.190])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5E22421B2413;
-        Thu, 14 Sep 2023 19:09:51 +0000 (UTC)
-Date:   Thu, 14 Sep 2023 21:09:46 +0200
-From:   Philipp Rudo <prudo@redhat.com>
-To:     "Jan Hendrik Farr" <kernel@jfarr.cc>
+        with ESMTP id S229848AbjINVFA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 14 Sep 2023 17:05:00 -0400
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6AE52704;
+        Thu, 14 Sep 2023 14:04:56 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id DF75D5C0244;
+        Thu, 14 Sep 2023 17:04:53 -0400 (EDT)
+Received: from imap49 ([10.202.2.99])
+  by compute6.internal (MEProxy); Thu, 14 Sep 2023 17:04:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jfarr.cc; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm1; t=1694725493; x=1694811893; bh=Q8
+        C93Gk0ScZhXMgVCWiaWrSwELvWnPJr1AijyyP5Y4I=; b=XWjyVE3DCe4iMswqXJ
+        esrgCVjVi5KmZXD6Lc1k/sQ8AQ2LvgvA8qYuIJb9AYqXXYIn3OJJlyMHAiiAYO3n
+        eOfBluBhCE1Cy3AFTZ8y9qiIC42NoFVtqHouPLTRbk0vZMxgduhXxAIihoivxqmL
+        CT8Pc4JIdqujm8ACii4V5Yr0jcZu/mIDVmqf47qs1z9IEtQpj18DaPUY/qlWeMgs
+        xFIRF540lpUhCtAKjjT5msjrbamE14o4IC/ibzGEt7gRmZieSozSuZXjPH+OKhGS
+        AxMg1HRH+MjQDermTbQRCrlsj2tk75JzmMJz1AO8F3QpbpWwj8mEYgMxx8dn2nxJ
+        Ijhg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1694725493; x=1694811893; bh=Q8C93Gk0ScZhX
+        MgVCWiaWrSwELvWnPJr1AijyyP5Y4I=; b=mBsewF8sV8xnObt4tQGPqBiS4mdM4
+        0r1KkYPvIE71sp+eRb6fN/ZKecV/HI4MrrjT0z0/1iv4uqrERN3rbJ5BAzPYY2rN
+        K02rYyS1Q02XXJZiP5JBnrVMrBoqM0dYMd1WpTxmQW2H/ZmcDGMj2Scgr0W5YuC5
+        +l+LfccrvdL8alf/wVYNJG6nQwzdE0oqlvhN/84MfF+Te7m3SIsQ/fhyYdXct/cj
+        F4ip+GaSV1GSZDKKSmJ+QjfkN0miVX49d5yRUB7KDL3G5phXm3SrwrF9SxlhTXjh
+        icdq3E/IRaCgolp9R//E/r/AVOyccesU8tWM0fb6sEOiaPYaTAsi+l+7g==
+X-ME-Sender: <xms:dXUDZWs_USnV_xkhdH8zmhPq0aAd4RKGuxW95sKRVhMQxkkleQzvSQ>
+    <xme:dXUDZbc-LB_bmHRIvgdWkSi5v17yiv0H5qLNTFTjrWFKYbBNAihsPXLVmmnxEPPB0
+    Ik5CyHpvy70i2uHUBA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudejtddgudehgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enfghrlhcuvffnffculdduhedmnecujfgurhepofgfggfkjghffffhvfevufgtsehttder
+    tderredtnecuhfhrohhmpedflfgrnhcujfgvnhgurhhikhcuhfgrrhhrfdcuoehkvghrnh
+    gvlhesjhhfrghrrhdrtggtqeenucggtffrrghtthgvrhhnpedujefhffdvffeikedvkeef
+    ieeutdffteelgeetfffhkeffheeiheehvedtheetieenucffohhmrghinhepghhithhhuh
+    gsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhho
+    mhepkhgvrhhnvghlsehjfhgrrhhrrdgttg
+X-ME-Proxy: <xmx:dXUDZRx2Q4BCN-PN8IriM9hElbF5IzORT1b6b99-40b-yMSNSKTXgQ>
+    <xmx:dXUDZRPeiaeLI_c0zl6kxWjYKmwTWZtU_-wZMagL2vemImgZV2TUUw>
+    <xmx:dXUDZW9kAKOyfEzUeR8xUY2UJiQcAUM5MJaIq3Tj3GqpjoMArkfPNQ>
+    <xmx:dXUDZX3wlBbJdMAmS6l5brjZqTkoNGU7LKttm1Q6qHZREdWzF1QWCw>
+Feedback-ID: i0fc947c4:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 0856E15A0092; Thu, 14 Sep 2023 17:04:53 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-745-g95dd7bea33-fm-20230905.001-g95dd7bea
+Mime-Version: 1.0
+Message-Id: <0e1984af-88ca-4908-a5ca-3191d96aa63f@app.fastmail.com>
+In-Reply-To: <20230914205149.51031bc9@rotkaeppchen>
+References: <20230911052535.335770-1-kernel@jfarr.cc>
+ <20230913160045.40d377f9@rotkaeppchen> <ZQLTJFb3S/xn5CWo@gardel-login>
+ <20230914205149.51031bc9@rotkaeppchen>
+Date:   Thu, 14 Sep 2023 23:04:32 +0200
+From:   "Jan Hendrik Farr" <kernel@jfarr.cc>
+To:     "Philipp Rudo" <prudo@redhat.com>,
+        "Lennart Poettering" <mzxreary@0pointer.de>
 Cc:     linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
         x86@kernel.org, tglx@linutronix.de, dhowells@redhat.com,
         vgoyal@redhat.com, keyrings@vger.kernel.org,
         akpm@linux-foundation.org, "Baoquan He" <bhe@redhat.com>,
-        bhelgaas@google.com, "Luca Boccassi" <bluca@debian.org>,
-        lennart@poettering.net
+        bhelgaas@google.com, "Luca Boccassi" <bluca@debian.org>
 Subject: Re: [PATCH v2 0/2] x86/kexec: UKI Support
-Message-ID: <20230914210946.25730571@rotkaeppchen>
-In-Reply-To: <63952cb0-5217-42a8-9b62-8be6d03f5844@app.fastmail.com>
-References: <20230911052535.335770-1-kernel@jfarr.cc>
-        <20230913160045.40d377f9@rotkaeppchen>
-        <63952cb0-5217-42a8-9b62-8be6d03f5844@app.fastmail.com>
-Organization: Red Hat inc.
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Jan,
+On Thu, Sep 14, 2023, at 8:51 PM, Philipp Rudo wrote:
+> [...]
+>
+> In this context I hope it is also clear to you that when more and more
+> people rely on the spec you need a more formal process when including
+> changes. Especially when the change might break the implementation of
+> others. So no more making the .cmdline optional and allowing it to be
+> overwritten all on the same day.
+>
+> Having that said, what does "local override" exactly mean? Does that
+> mean a distro can allow a user to freely choose the cmdline without
+> checking any signatures?
 
-On Wed, 13 Sep 2023 16:42:33 +0200
-"Jan Hendrik Farr" <kernel@jfarr.cc> wrote:
+The behavior of systemd-stub is to allow the bootloader (or whatever
+called sd-stub) supplied cmdline when there is no .cmdline section in
+the UKI. That's how I understand "local override" here. For WIP v3 of
+this patch the behavior is to use the cmdline supplied by userspace to
+the kexec_file_load syscall if no .cmdline section is in the UKI.
 
-> On Wed, Sep 13, 2023, at 4:00 PM, Philipp Rudo wrote:
+empty .cmdline section -> empty cmdline always passed to kernel
+.cmdline section -> use bootloader/user supplied cmdline (which would
+be empty by default)
 
-[...]
+This setup does not make sense for a locked down / secure system though.
 
-> In [5] Luca writes:
-> > [...] we fully intend for the UKI format to be an open and stable
-> > specification, that anybody can support and rely on.  
-> But that is unfortunately not where the format is at this point.
-> 
-> What is annoying though is where this leaves a user that actually
-> wants this feature. They can carry a patch or they might have to wait
-> a long time.
-> 
-> Can you indicate what it would take for the kernel community to consider
-> this spec as stable enough?
+Maybe the word "override" is not ideal. There is nothing actually being
+overridden as there is no cmdline in the UKI in the first place.
 
-I don't think there is a good answer to that question. In fact I
-believe if you ask 10 people from the community you will get 20+
-different answers.
+sd-stub also allows the bootloader supplied cmdline if not using secure
+boot. So maybe the kernel could allow user supplied cmdline if not in
+lockdown mode for kexec maybe? If not in lockdown mode somebody can just
+kexec an unsigned kernel + unsigned cmdline using the kexec_load syscall
+anyways. For this case the word "override" makes sense.
 
-My guess is that either (1) the spec is moved to some official standard
-committee where people spend decades to polish it before it makes it
-into the kernel or (2) there's a big flamewar on LKML until Linus had
-enough and passes his judgment on it. So definitely (2) ;-)
+The logic for all of this in sd-stub is in [1].
 
-Thanks
-Philipp
+> I.e. does that mean we can get rid of this
+>      https://github.com/systemd/systemd/issues/24539
 
-> 
-> 
-> > In the end the only benefit this series brings is to extend the
-> > signature checking on the whole UKI except of just the kernel image.
-> > Everything else can also be done in user space. Compared to the
-> > problems described above this is a very small gain for me.  
-> 
-> Correct. That is the benefit of pulling the UKI apart in the
-> kernel. However having to sign the kernel inside the UKI defeats
-> the whole point.
-> 
-> 
-> [1] https://uapi-group.org/specifications/specs/unified_kernel_image/
-> [2] https://github.com/uapi-group/specifications/pull/72
-> [3] https://github.com/uapi-group/specifications/pull/73
-> [4] https://github.com/uapi-group/specifications/issues/74
-> [5] https://github.com/systemd/systemd/issues/28538
-> 
+This is a different usecase IMO.
 
+
+>> Hence, seeing the spec as set in stone and as inherently low quality
+>> is the wrong way to see it I am sure. Instead, the goal here is to
+>> adjust the spec to make it work really nicely for *both* systemd and
+>> the kernel.
+>
+> Sorry, I never wanted to intend that the spec inherently low quality.
+> Just that it doesn't meat my expectations, yet. But that is fine. The
+> spec isn't even a year old and there's only a single implementation,
+> yet. So it's more documentation rather than a spec.
+
+Let's make it happen.
+
+
+[1] https://github.com/systemd/systemd/blob/5898cef22a35ceefa068d5f46929eced2baab0ed/src/boot/efi/stub.c#L140
