@@ -2,111 +2,90 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1CA279FFC3
-	for <lists+keyrings@lfdr.de>; Thu, 14 Sep 2023 11:11:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCBBD7A0018
+	for <lists+keyrings@lfdr.de>; Thu, 14 Sep 2023 11:32:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236649AbjINJLp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 14 Sep 2023 05:11:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54086 "EHLO
+        id S230137AbjINJca (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 14 Sep 2023 05:32:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236701AbjINJL0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 14 Sep 2023 05:11:26 -0400
-Received: from gardel.0pointer.net (gardel.0pointer.net [85.214.157.71])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E0471BF9;
-        Thu, 14 Sep 2023 02:11:10 -0700 (PDT)
-Received: from gardel-login.0pointer.net (gardel-mail [IPv6:2a01:238:43ed:c300:10c3:bcf3:3266:da74])
-        by gardel.0pointer.net (Postfix) with ESMTP id 41459E801F5;
-        Thu, 14 Sep 2023 11:11:09 +0200 (CEST)
+        with ESMTP id S235935AbjINJc2 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 14 Sep 2023 05:32:28 -0400
+X-Greylist: delayed 2603 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 14 Sep 2023 02:32:23 PDT
+Received: from gardel.0pointer.net (gardel.0pointer.net [IPv6:2a01:238:43ed:c300:10c3:bcf3:3266:da74])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AA281BF2;
+        Thu, 14 Sep 2023 02:32:23 -0700 (PDT)
+Received: from gardel-login.0pointer.net (gardel-mail [85.214.157.71])
+        by gardel.0pointer.net (Postfix) with ESMTP id 1A4E2E801F5;
+        Thu, 14 Sep 2023 11:32:21 +0200 (CEST)
 Received: by gardel-login.0pointer.net (Postfix, from userid 1000)
-        id C9E14160258; Thu, 14 Sep 2023 11:11:08 +0200 (CEST)
-Date:   Thu, 14 Sep 2023 11:11:08 +0200
+        id A2B45160258; Thu, 14 Sep 2023 11:32:20 +0200 (CEST)
+Date:   Thu, 14 Sep 2023 11:32:20 +0200
 From:   Lennart Poettering <mzxreary@0pointer.de>
-To:     Jarkko Sakkinen <jarkko@kernel.org>
+To:     Philipp Rudo <prudo@redhat.com>
 Cc:     Jan Hendrik Farr <kernel@jfarr.cc>, linux-kernel@vger.kernel.org,
         kexec@lists.infradead.org, x86@kernel.org, tglx@linutronix.de,
         dhowells@redhat.com, vgoyal@redhat.com, keyrings@vger.kernel.org,
-        akpm@linux-foundation.org, Baoquan He <bhe@redhat.com>,
-        bhelgaas@google.com, Luca Boccassi <bluca@debian.org>
-Subject: Re: [PATCH 0/1] x86/kexec: UKI support
-Message-ID: <ZQLOLLbu0fh27LpQ@gardel-login>
-References: <20230909161851.223627-1-kernel@jfarr.cc>
- <CVGFE6FRWFHR.DVG9NUQID4EA@suppilovahvero>
- <1d974586-1bf7-42e8-9dae-e5e41a3dbc9f@app.fastmail.com>
- <CVGVCYUGNKAI.1WYRZGI9HYDMC@suppilovahvero>
- <9580df76-c143-4077-8a39-b1fcc0ed37bd@app.fastmail.com>
- <CVH4GZXQFZ1F.2V5BIZNSKQ1FA@suppilovahvero>
- <5a67051d-eb21-4a96-acc4-40f829a59e23@app.fastmail.com>
- <CVH6NGLENMPH.271W6X80061M@suppilovahvero>
- <1c342231-7672-450e-b945-e57cd17b4ae7@app.fastmail.com>
- <CVHVCHYZT8KG.3L0IH30QYT0WH@suppilovahvero>
+        akpm@linux-foundation.org, bhe@redhat.com, bhelgaas@google.com,
+        bluca@debian.org
+Subject: Re: [PATCH v2 0/2] x86/kexec: UKI Support
+Message-ID: <ZQLTJFb3S/xn5CWo@gardel-login>
+References: <20230911052535.335770-1-kernel@jfarr.cc>
+ <20230913160045.40d377f9@rotkaeppchen>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CVHVCHYZT8KG.3L0IH30QYT0WH@suppilovahvero>
+In-Reply-To: <20230913160045.40d377f9@rotkaeppchen>
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mi, 13.09.23 17:45, Jarkko Sakkinen (jarkko@kernel.org) wrote:
+On Mi, 13.09.23 16:00, Philipp Rudo (prudo@redhat.com) wrote:
 
-> On Tue Sep 12, 2023 at 11:49 PM EEST, Jan Hendrik Farr wrote:
-> >
-> > > These are sort of "tautological" arguments. There must be some
-> > > objective reasons why this architecture was chosen instead of
-> > > other (i.e. using what already pre-exists).
-> >
-> > I think I misunderstood you in my earlier reply. I do not understand
-> > in what way you think my arguments are tautological. Can you
-> > elaborate?
+> For example there are two definitions for the UKI which contradict each other.
+> The dedicated one [1] you have cited earlier and the one in the BLS for type #2
+> entries [2]. In [1] the .linux and .initrd sections are mandatory and the
+> .osrel and .cmdline sections are optional while in [2] it is the other way
+> round. Which definition should the kernel follow?
 >
-> current Linux kernel has these features *already* in
-> place:
+> Furthermore, I absolutely don't understand how the spec should be read. All
+> the spec does is defining some file formats. There is no word about which
+> component in the boot chain is supposed to handle them and what exactly this
+> component is supposed to do with it. But that is crucial if we want to add UKI
+> support for kexec as the kexec systemcall will replace the stub. So we need to
+> know what tasks the stub is supposed to perform. Currently this is only some
+> implementation detail of the systemd-stub [3] that can change any moment and I
+> strongly oppose to base any uapi on it.
 >
-> 1. CONFIG_EFI_STUB
-> 2. CONFIG_CMDLINE
-> 3. CONFIG_INITRAMFS_SOURCE
-> 4. Secure boot with MOK keys and .machine keyring to manage them.
+> In the end the only benefit this series brings is to extend the signature
+> checking on the whole UKI except of just the kernel image. Everything else can
+> also be done in user space. Compared to the problems described above this is a
+> very small gain for me.
 >
-> Given that every single feature in IKU does exists in some form
-> in the Linux kernel, I think it is fair to ask why scrape away
-> this all existing science and reinvent the wheel?
+> Until the spec got fixed I don't see a chance to add UKI support for kexec.
 
-Nah, systemd-stub does considerably more than what you list above.
+So that spec is initially just a generalization of what
+systemd-stub/systemd-boot/ukify does. The descrepancies between the
+cited specs mostly come from the that generalization. If you want to
+enumerate kernels and order them the ".osrel" stuff for example is
+necessary, hence the boot loader spec really wants it. If you don't
+care about the boot loader spec though and just want to register the
+kernel UKI PE directly in BootXXX efi vars for example, then there's
+no need to include .osrel. That all said we should certainly make the
+two specs align better, and clarify the situation. Suggestions/patches
+more than welcome.
 
-1. It measures the components of the UKI separately into PCR 11, 12,
-   13, which makes the mesaurements predictable, and allows vendors to
-   provide a signed PCR policy with can be used to unlock TPM2 secrets
-   that ause a PolicyAuthorize policy. This is a fundamental
-   improvement over mechanisms that bind to literal PCR values, since
-   the "brittleness" goes away.
-2. That said signed PCR policy is included in the UKI in another PE
-   section, that is made available to userspace.
-3. If you like it brings a boot splash to screen before passing
-   control off to the kernel, which is also contained
-4. It can contain a devicetree blob, which it will setup for the
-   kernel it spawns
-5. There's a random seed maintained by systemd-stub in the ESP that is
-   updated and passed to the kernel, which includes in in the pool.
-6. It picks up "credentials" (which are TPM protected, encrypted,
-   authenticated supported by systemd) that can be used to securely
-   parameterize the invoked system from the backing fs (i.e. the
-   ESP). Similar it can pick up sysext images (which is another
-   systemd thing, i.e. dm-verity protected, signed disk images which
-   can extend the initrd and the host, by being overlayed on /usr).
-7. It picks up "add-ons" -- which are PE binaries that actually contain
-   no code, but are SecureBoot signed/shim signed "mules" for carrying
-   addition kernel cmdlines, devictree blobs (and maybe in future
-   initrds) that allow some form of modularity in the UKI model.
+Ultimately, I think a spec written as description with a single
+implementation in mind (i.e. systemd) is a generally a bad spec. Hence
+if kexec in the Linux kernel wants to add support for it, that'd be
+great but I'd see that as an opportunity to adjust the spec to the
+needs of the Linux kernel in this area, so that it reflects well more
+than just one backend implementation.
 
-And there's more. This is just off the top of my head.
-
-Now, I can totally see you personally might not need any of this
-stuff, fine, but a claim that this stuff is redundant is just bogus.
-
-Afaics all big distributions are preparing to providing UKIs
-soonishly. It would be fantastic if kexec would just work with this
-too, and the dissection would be done on the kernel side instead of
-userspace.
+Hence, seeing the spec as set in stone and as inherently low quality
+is the wrong way to see it I am sure. Instead, the goal here is to
+adjust the spec to make it work really nicely for *both* systemd and
+the kernel.
 
 Lennart
 
