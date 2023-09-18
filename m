@@ -2,67 +2,90 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C49997A4CF4
-	for <lists+keyrings@lfdr.de>; Mon, 18 Sep 2023 17:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FF5E7A4DFC
+	for <lists+keyrings@lfdr.de>; Mon, 18 Sep 2023 18:04:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229655AbjIRPoR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 18 Sep 2023 11:44:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36936 "EHLO
+        id S229473AbjIRQEu (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 18 Sep 2023 12:04:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229696AbjIRPoQ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 18 Sep 2023 11:44:16 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87BAD2D44
-        for <keyrings@vger.kernel.org>; Mon, 18 Sep 2023 08:40:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1695051385;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Vr7GWd2VoXZupzZUaxFhlqO+6Z35WiBMgeAjc66b/jQ=;
-        b=dCyjm5siOiajDnlWmcW+CCsfjVpAQykYL12mY8ax++zeqYT1KO0HK3Bj6rgEPHRvPUM4+b
-        w872mcAwdVmaCtobcC+h/vfcIkfUptkLxAn4VSKI7klVFtpJI/HbVS7jvnT0YYwmvG8dCV
-        rmH28Eo+zOvVMIy0lcUhfz5ZhxoJGz4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-370-sWxOBnh2MdiRMkc-uzAlkw-1; Mon, 18 Sep 2023 11:36:21 -0400
-X-MC-Unique: sWxOBnh2MdiRMkc-uzAlkw-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 07C4E3800EA0;
-        Mon, 18 Sep 2023 15:36:21 +0000 (UTC)
-Received: from rotkaeppchen (unknown [10.39.193.161])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id DB075492B16;
-        Mon, 18 Sep 2023 15:36:13 +0000 (UTC)
-Date:   Mon, 18 Sep 2023 17:36:07 +0200
-From:   Philipp Rudo <prudo@redhat.com>
-To:     "Jan Hendrik Farr" <kernel@jfarr.cc>
-Cc:     "Lennart Poettering" <mzxreary@0pointer.de>,
-        linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-        x86@kernel.org, tglx@linutronix.de, dhowells@redhat.com,
-        vgoyal@redhat.com, keyrings@vger.kernel.org,
-        akpm@linux-foundation.org, "Baoquan He" <bhe@redhat.com>,
-        bhelgaas@google.com, "Luca Boccassi" <bluca@debian.org>
-Subject: Re: [PATCH v2 0/2] x86/kexec: UKI Support
-Message-ID: <20230918173607.421d2616@rotkaeppchen>
-In-Reply-To: <0e1984af-88ca-4908-a5ca-3191d96aa63f@app.fastmail.com>
-References: <20230911052535.335770-1-kernel@jfarr.cc>
-        <20230913160045.40d377f9@rotkaeppchen>
-        <ZQLTJFb3S/xn5CWo@gardel-login>
-        <20230914205149.51031bc9@rotkaeppchen>
-        <0e1984af-88ca-4908-a5ca-3191d96aa63f@app.fastmail.com>
-Organization: Red Hat inc.
+        with ESMTP id S229994AbjIRQEn (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 18 Sep 2023 12:04:43 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9DB8171F
+        for <keyrings@vger.kernel.org>; Mon, 18 Sep 2023 08:56:56 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-502e7d66c1eso7289301e87.1
+        for <keyrings@vger.kernel.org>; Mon, 18 Sep 2023 08:56:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sigma-star.at; s=google; t=1695052410; x=1695657210; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VFchyKYZaSrX7EMCsBGCn2uZcmTzjow+NxNlenZjDxg=;
+        b=p2sVzqoKqr79ijqkmv3mBqywrDF+TWfOLl7G+eUPCXI0eknGVynqq3D377e9XqQ503
+         OewBmyVAbIY/9QQL281zexb7+/crraKsc9b7T/K0VBNItEKnwiHcVfLmDKqVqBzqF8l+
+         Eok0iVx2briVO2vz095CaLaGi1FaHElOZjtj3gyZq2KcTErdwn1t7ZhqIMX9/YxeqNqC
+         njzN8XsbetGTIa9DZ77G6xZ0Bw+0/FH/c+uEbXQZ0U1eAe75i7m+Z57oG4fIrtVVggxo
+         tvFwzU8uGSbt9qEPN7vDQshBhsb4ASupaZicwkxx4vqpeJVfUbAIUFCPpLY7jEEsjkMj
+         1XEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695052410; x=1695657210;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VFchyKYZaSrX7EMCsBGCn2uZcmTzjow+NxNlenZjDxg=;
+        b=ZJkVvBBdunzi+C1Y6BPT7TIn3bzx1dllJtqysYyhId0i1YuXczI7FGFi5t8xmDicv2
+         j0fBvdtiqokX1GEhWaFfb2rDmWA8k1wJjVZjnSBfA9zYDSbMgeGef6CrcWtbjQxNamzi
+         NfvNm/wkctKnxF1t9uzBJpHrync7siC6oBwMMFK7up2tiHuJSNcL1KPWDsX3VtwR88Cd
+         vi+Cn9VZu9K2tUfyhld1aM8lszpnwGaEO4ky1kV6IF9/tKlewzkiLBiCRfpyNsksz/62
+         QAdoogl0Qcq/OCHetuZAbys2bs/VNDGs44LWl52zcpcU1qUL6de/oVdyM4wGHQG8xy8e
+         W2lw==
+X-Gm-Message-State: AOJu0YxzMTWZFO21c2Ze24E0C0sMX+pVbC+tqhoV6Hw/nz0U5stEg0ml
+        1tJrz4y6MUsx9zh8L9cmvZgL8M/PUvytvrz29djp1A==
+X-Google-Smtp-Source: AGHT+IGZY9EAv9fq5jtqbWievBVWv5LiwqHR3LyOgh3sgu5FxK83H5apmVz53SdQ15aJu5RB2fhOsg==
+X-Received: by 2002:a05:6402:28ac:b0:530:8d55:9c69 with SMTP id eg44-20020a05640228ac00b005308d559c69mr8040854edb.11.1695046714597;
+        Mon, 18 Sep 2023 07:18:34 -0700 (PDT)
+Received: from localhost ([82.150.214.1])
+        by smtp.gmail.com with UTF8SMTPSA id f23-20020a056402161700b00525503fac84sm6031869edv.25.2023.09.18.07.18.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Sep 2023 07:18:34 -0700 (PDT)
+From:   David Gstir <david@sigma-star.at>
+To:     Mimi Zohar <zohar@linux.ibm.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     David Gstir <david@sigma-star.at>, Shawn Guo <shawnguo@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        sigma star Kernel Team <upstream+dcp@sigma-star.at>,
+        David Howells <dhowells@redhat.com>,
+        Li Yang <leoyang.li@nxp.com>, Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Tejun Heo <tj@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-security-module@vger.kernel.org
+Subject: [PATCH v3 0/3] DCP as trusted keys backend
+Date:   Mon, 18 Sep 2023 16:18:22 +0200
+Message-ID: <20230918141826.8139-1-david@sigma-star.at>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,72 +93,81 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Jan,
+This is a revival of the previous patch set submitted by Richard Weinberger:
+https://lore.kernel.org/linux-integrity/20210614201620.30451-1-richard@nod.at/
 
-On Thu, 14 Sep 2023 23:04:32 +0200
-"Jan Hendrik Farr" <kernel@jfarr.cc> wrote:
+v2 is here:
+https://lore.kernel.org/keyrings/20230912111115.24274-1-david@sigma-star.at/
 
-> On Thu, Sep 14, 2023, at 8:51 PM, Philipp Rudo wrote:
-> > [...]
-> >
-> > In this context I hope it is also clear to you that when more and more
-> > people rely on the spec you need a more formal process when including
-> > changes. Especially when the change might break the implementation of
-> > others. So no more making the .cmdline optional and allowing it to be
-> > overwritten all on the same day.
-> >
-> > Having that said, what does "local override" exactly mean? Does that
-> > mean a distro can allow a user to freely choose the cmdline without
-> > checking any signatures?  
-> 
-> The behavior of systemd-stub is to allow the bootloader (or whatever
-> called sd-stub) supplied cmdline when there is no .cmdline section in
-> the UKI. That's how I understand "local override" here. For WIP v3 of
-> this patch the behavior is to use the cmdline supplied by userspace to
-> the kexec_file_load syscall if no .cmdline section is in the UKI.
-> 
-> empty .cmdline section -> empty cmdline always passed to kernel
-> .cmdline section -> use bootloader/user supplied cmdline (which would
-> be empty by default)
-> 
-> This setup does not make sense for a locked down / secure system though.
-> 
-> Maybe the word "override" is not ideal. There is nothing actually being
-> overridden as there is no cmdline in the UKI in the first place.
-> 
-> sd-stub also allows the bootloader supplied cmdline if not using secure
-> boot. So maybe the kernel could allow user supplied cmdline if not in
-> lockdown mode for kexec maybe? If not in lockdown mode somebody can just
-> kexec an unsigned kernel + unsigned cmdline using the kexec_load syscall
-> anyways. For this case the word "override" makes sense.
-> 
-> The logic for all of this in sd-stub is in [1].
-> 
-> > I.e. does that mean we can get rid of this
-> >      https://github.com/systemd/systemd/issues/24539  
-> 
-> This is a different usecase IMO.
+v2 -> v3:
+- Addressed review comments from Jarkko Sakkinen
+v1 -> v2:
+- Revive and rebase to latest version
+- Include review comments from Ahmad Fatoum
 
-Yeah, I expected that. The whole question was meant to be rhetorical.
-The point I wanted to make was that when a spec uses terms like "local
-override" it needs to explain what it means.
+The Data CoProcessor (DCP) is an IP core built into many NXP SoCs such
+as i.mx6ull.
 
-Thanks
-Philipp
+Similar to the CAAM engine used in more powerful SoCs, DCP can AES-
+encrypt/decrypt user data using a unique, never-disclosed,
+device-specific key. Unlike CAAM though, it cannot directly wrap and
+unwrap blobs in hardware. As DCP offers only the bare minimum feature
+set and a blob mechanism needs aid from software. A blob in this case
+is a piece of sensitive data (e.g. a key) that is encrypted and
+authenticated using the device-specific key so that unwrapping can only
+be done on the hardware where the blob was wrapped.
 
-> >> Hence, seeing the spec as set in stone and as inherently low quality
-> >> is the wrong way to see it I am sure. Instead, the goal here is to
-> >> adjust the spec to make it work really nicely for *both* systemd and
-> >> the kernel.  
-> >
-> > Sorry, I never wanted to intend that the spec inherently low quality.
-> > Just that it doesn't meat my expectations, yet. But that is fine. The
-> > spec isn't even a year old and there's only a single implementation,
-> > yet. So it's more documentation rather than a spec.  
-> 
-> Let's make it happen.
-> 
-> 
-> [1] https://github.com/systemd/systemd/blob/5898cef22a35ceefa068d5f46929eced2baab0ed/src/boot/efi/stub.c#L140
-> 
+This patch series adds a DCP based, trusted-key backend and is similar
+in spirit to the one by Ahmad Fatoum [0] that does the same for CAAM.
+It is of interest for similar use cases as the CAAM patch set, but for
+lower end devices, where CAAM is not available.
+
+Because constructing and parsing the blob has to happen in software,
+we needed to decide on a blob format and chose the following:
+
+struct dcp_blob_fmt {
+	__u8 fmt_version;
+	__u8 blob_key[AES_KEYSIZE_128];
+	__u8 nonce[AES_KEYSIZE_128];
+	__le32 payload_len;
+	__u8 payload[];
+} __packed;
+
+The `fmt_version` is currently 1.
+
+The encrypted key is stored in the payload area. It is AES-128-GCM
+encrypted using `blob_key` and `nonce`, GCM auth tag is attached at
+the end of the payload (`payload_len` does not include the size of
+the auth tag).
+
+The `blob_key` itself is encrypted in AES-128-ECB mode by DCP using
+the OTP or UNIQUE device key. A new `blob_key` and `nonce` are generated
+randomly, when sealing/exporting the DCP blob.
+
+This patchset was tested with dm-crypt on an i.MX6ULL board.
+
+[0] https://lore.kernel.org/keyrings/20220513145705.2080323-1-a.fatoum@pengutronix.de/
+
+David Gstir (3):
+  crypto: mxs-dcp: Add support for hardware provided keys
+  KEYS: trusted: Introduce support for NXP DCP-based trusted keys
+  doc: trusted-encrypted: add DCP as new trust source
+
+ .../admin-guide/kernel-parameters.txt         |  13 +
+ .../security/keys/trusted-encrypted.rst       |  85 +++++
+ MAINTAINERS                                   |   9 +
+ drivers/crypto/mxs-dcp.c                      | 104 +++++-
+ include/keys/trusted_dcp.h                    |  11 +
+ include/soc/fsl/dcp.h                         |  17 +
+ security/keys/trusted-keys/Kconfig            |   9 +-
+ security/keys/trusted-keys/Makefile           |   2 +
+ security/keys/trusted-keys/trusted_core.c     |   6 +-
+ security/keys/trusted-keys/trusted_dcp.c      | 311 ++++++++++++++++++
+ 10 files changed, 554 insertions(+), 13 deletions(-)
+ create mode 100644 include/keys/trusted_dcp.h
+ create mode 100644 include/soc/fsl/dcp.h
+ create mode 100644 security/keys/trusted-keys/trusted_dcp.c
+
+-- 
+2.35.3
 
