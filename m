@@ -2,95 +2,67 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A6627A4D91
-	for <lists+keyrings@lfdr.de>; Mon, 18 Sep 2023 17:53:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C49997A4CF4
+	for <lists+keyrings@lfdr.de>; Mon, 18 Sep 2023 17:44:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229761AbjIRPxr (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 18 Sep 2023 11:53:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42058 "EHLO
+        id S229655AbjIRPoR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 18 Sep 2023 11:44:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229767AbjIRPxq (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 18 Sep 2023 11:53:46 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F64019AB
-        for <keyrings@vger.kernel.org>; Mon, 18 Sep 2023 08:52:22 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-9adb9fa7200so945231866b.0
-        for <keyrings@vger.kernel.org>; Mon, 18 Sep 2023 08:52:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1695052047; x=1695656847; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+qntkmutwprS+2oQeQzgmaP97TAaIsTbzLeg5qvDo3I=;
-        b=ScxBej160fGf1mU1N9WdbZqgRLX6jy7ipISMfFfJZgGjy9LVFumtXbr/v4/PI8ubeD
-         n0cFGBQWdqUEosduZ6p2vGHg8GjsgAp9i9aikoLx5CLbpX4GoUGFjD6JiM1p8NLA3Jmu
-         4J3QuaOXB5RpadZbbNSHObPygf35C3lHRum0YGELvuGONFp66lJSnt6H9OKUcXO+gJPQ
-         Y+9fcNnjnrhmatX+C/3sgPW8dzHzmUN6PIa3SfNjPJp7tBW8RX224TAzL98jmFm4BtYV
-         MlUChLFBc3UXMRfHWu4YW2FQfgIyK2dstvdG1unLZdWfo4nIBnSphhZxu/H+ttmQS/j2
-         bcOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695052047; x=1695656847;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+qntkmutwprS+2oQeQzgmaP97TAaIsTbzLeg5qvDo3I=;
-        b=LRUawoO/m8V8BEVEFudIYg1l510/p2zwLmk+/Hg5KNPfOB/gbcgTXmgwXJLHK2OOHe
-         ruybYw2KIxupypn5juX4mu278rwhh5uqp5atk6yvrkA/jCqwKcHfkrkpmHH1AyvbHcUh
-         NflnwCMnl4LvBLY8Rjz4F1eT7CzK1gOo4HrFm0THx8nWU5TuweOD03U9WMz5U3r/3dey
-         0/8F0eoBM6hzZkuSNcUCtM+teYqv/4zpYdTyBGdVAyF1duqYxwKS1VC37Ioa801pnnFN
-         8aNMslZ95usa+bUvvymFDEAYrFKgfbFq8nyfncigDUVOJbyAb9DU1qO36vz0MfAxHMQV
-         GXvw==
-X-Gm-Message-State: AOJu0YysDlAIz9ZiCZnF+lMIRHndasNxp+vIJSjzorABiJHiRpCZd1xE
-        FX0wWwvhJXYTfZZhZcfaURre+WAUgJ4pi2XhJghWfQ==
-X-Google-Smtp-Source: AGHT+IG2rNuc/qU7cun35uIs/6xu+f6PNjQcCosf7tlGzspNosTVVLVBRGNxbIq/UI3P0ddJC/NsSA==
-X-Received: by 2002:a17:907:3e91:b0:9aa:206d:b052 with SMTP id hs17-20020a1709073e9100b009aa206db052mr17366327ejc.27.1695046722736;
-        Mon, 18 Sep 2023 07:18:42 -0700 (PDT)
-Received: from localhost ([82.150.214.1])
-        by smtp.gmail.com with UTF8SMTPSA id g24-20020a170906199800b0099364d9f0e9sm6530301ejd.102.2023.09.18.07.18.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Sep 2023 07:18:42 -0700 (PDT)
-From:   David Gstir <david@sigma-star.at>
-To:     Mimi Zohar <zohar@linux.ibm.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     David Gstir <david@sigma-star.at>, Shawn Guo <shawnguo@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        sigma star Kernel Team <upstream+dcp@sigma-star.at>,
-        David Howells <dhowells@redhat.com>,
-        Li Yang <leoyang.li@nxp.com>, Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Tejun Heo <tj@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org,
-        linux-security-module@vger.kernel.org,
-        Richard Weinberger <richard@nod.at>,
-        David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Subject: [PATCH v3 3/3] doc: trusted-encrypted: add DCP as new trust source
-Date:   Mon, 18 Sep 2023 16:18:25 +0200
-Message-ID: <20230918141826.8139-4-david@sigma-star.at>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230918141826.8139-1-david@sigma-star.at>
-References: <20230918141826.8139-1-david@sigma-star.at>
+        with ESMTP id S229696AbjIRPoQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 18 Sep 2023 11:44:16 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87BAD2D44
+        for <keyrings@vger.kernel.org>; Mon, 18 Sep 2023 08:40:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1695051385;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Vr7GWd2VoXZupzZUaxFhlqO+6Z35WiBMgeAjc66b/jQ=;
+        b=dCyjm5siOiajDnlWmcW+CCsfjVpAQykYL12mY8ax++zeqYT1KO0HK3Bj6rgEPHRvPUM4+b
+        w872mcAwdVmaCtobcC+h/vfcIkfUptkLxAn4VSKI7klVFtpJI/HbVS7jvnT0YYwmvG8dCV
+        rmH28Eo+zOvVMIy0lcUhfz5ZhxoJGz4=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-370-sWxOBnh2MdiRMkc-uzAlkw-1; Mon, 18 Sep 2023 11:36:21 -0400
+X-MC-Unique: sWxOBnh2MdiRMkc-uzAlkw-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 07C4E3800EA0;
+        Mon, 18 Sep 2023 15:36:21 +0000 (UTC)
+Received: from rotkaeppchen (unknown [10.39.193.161])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id DB075492B16;
+        Mon, 18 Sep 2023 15:36:13 +0000 (UTC)
+Date:   Mon, 18 Sep 2023 17:36:07 +0200
+From:   Philipp Rudo <prudo@redhat.com>
+To:     "Jan Hendrik Farr" <kernel@jfarr.cc>
+Cc:     "Lennart Poettering" <mzxreary@0pointer.de>,
+        linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+        x86@kernel.org, tglx@linutronix.de, dhowells@redhat.com,
+        vgoyal@redhat.com, keyrings@vger.kernel.org,
+        akpm@linux-foundation.org, "Baoquan He" <bhe@redhat.com>,
+        bhelgaas@google.com, "Luca Boccassi" <bluca@debian.org>
+Subject: Re: [PATCH v2 0/2] x86/kexec: UKI Support
+Message-ID: <20230918173607.421d2616@rotkaeppchen>
+In-Reply-To: <0e1984af-88ca-4908-a5ca-3191d96aa63f@app.fastmail.com>
+References: <20230911052535.335770-1-kernel@jfarr.cc>
+        <20230913160045.40d377f9@rotkaeppchen>
+        <ZQLTJFb3S/xn5CWo@gardel-login>
+        <20230914205149.51031bc9@rotkaeppchen>
+        <0e1984af-88ca-4908-a5ca-3191d96aa63f@app.fastmail.com>
+Organization: Red Hat inc.
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -98,157 +70,72 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Update the documentation for trusted and encrypted KEYS with DCP as new
-trust source:
+Hi Jan,
 
-- Describe security properties of DCP trust source
-- Describe key usage
-- Document blob format
+On Thu, 14 Sep 2023 23:04:32 +0200
+"Jan Hendrik Farr" <kernel@jfarr.cc> wrote:
 
-Co-developed-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Signed-off-by: David Gstir <david@sigma-star.at>
----
- .../security/keys/trusted-encrypted.rst       | 85 +++++++++++++++++++
- 1 file changed, 85 insertions(+)
+> On Thu, Sep 14, 2023, at 8:51 PM, Philipp Rudo wrote:
+> > [...]
+> >
+> > In this context I hope it is also clear to you that when more and more
+> > people rely on the spec you need a more formal process when including
+> > changes. Especially when the change might break the implementation of
+> > others. So no more making the .cmdline optional and allowing it to be
+> > overwritten all on the same day.
+> >
+> > Having that said, what does "local override" exactly mean? Does that
+> > mean a distro can allow a user to freely choose the cmdline without
+> > checking any signatures?  
+> 
+> The behavior of systemd-stub is to allow the bootloader (or whatever
+> called sd-stub) supplied cmdline when there is no .cmdline section in
+> the UKI. That's how I understand "local override" here. For WIP v3 of
+> this patch the behavior is to use the cmdline supplied by userspace to
+> the kexec_file_load syscall if no .cmdline section is in the UKI.
+> 
+> empty .cmdline section -> empty cmdline always passed to kernel
+> .cmdline section -> use bootloader/user supplied cmdline (which would
+> be empty by default)
+> 
+> This setup does not make sense for a locked down / secure system though.
+> 
+> Maybe the word "override" is not ideal. There is nothing actually being
+> overridden as there is no cmdline in the UKI in the first place.
+> 
+> sd-stub also allows the bootloader supplied cmdline if not using secure
+> boot. So maybe the kernel could allow user supplied cmdline if not in
+> lockdown mode for kexec maybe? If not in lockdown mode somebody can just
+> kexec an unsigned kernel + unsigned cmdline using the kexec_load syscall
+> anyways. For this case the word "override" makes sense.
+> 
+> The logic for all of this in sd-stub is in [1].
+> 
+> > I.e. does that mean we can get rid of this
+> >      https://github.com/systemd/systemd/issues/24539  
+> 
+> This is a different usecase IMO.
 
-diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
-index 9bc9db8ec651..4452070afbe9 100644
---- a/Documentation/security/keys/trusted-encrypted.rst
-+++ b/Documentation/security/keys/trusted-encrypted.rst
-@@ -42,6 +42,14 @@ safe.
-          randomly generated and fused into each SoC at manufacturing time.
-          Otherwise, a common fixed test key is used instead.
- 
-+     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
-+
-+         Rooted to a one-time programmable key (OTP) that is generally burnt
-+         in the on-chip fuses and is accessible to the DCP encryption engine only.
-+         DCP provides two keys that can be used as root of trust: the OTP key
-+         and the UNIQUE key. Default is to use the UNIQUE key, but selecting
-+         the OTP key can be done via a module parameter (dcp_use_otp_key).
-+
-   *  Execution isolation
- 
-      (1) TPM
-@@ -57,6 +65,12 @@ safe.
- 
-          Fixed set of operations running in isolated execution environment.
- 
-+     (4) DCP
-+
-+         Fixed set of cryptographic operations running in isolated execution
-+         environment. Only basic blob key encryption is executed there.
-+         The actual key sealing/unsealing is done on main processor/kernel space.
-+
-   * Optional binding to platform integrity state
- 
-      (1) TPM
-@@ -79,6 +93,11 @@ safe.
-          Relies on the High Assurance Boot (HAB) mechanism of NXP SoCs
-          for platform integrity.
- 
-+     (4) DCP
-+
-+         Relies on Secure/Trusted boot process (called HAB by vendor) for
-+         platform integrity.
-+
-   *  Interfaces and APIs
- 
-      (1) TPM
-@@ -94,6 +113,11 @@ safe.
- 
-          Interface is specific to silicon vendor.
- 
-+     (4) DCP
-+
-+         Vendor-specific API that is implemented as part of the DCP crypto driver in
-+         ``drivers/crypto/mxs-dcp.c``.
-+
-   *  Threat model
- 
-      The strength and appropriateness of a particular trust source for a given
-@@ -129,6 +153,13 @@ selected trust source:
-      CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure the device
-      is probed.
- 
-+  *  DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
-+
-+     The DCP hardware device itself does not provide a dedicated RNG interface,
-+     so the kernel default RNG is used. SoCs with DCP like the i.MX6ULL do have
-+     a dedicated hardware RNG that is independent from DCP which can be enabled
-+     to back the kernel RNG.
-+
- Users may override this by specifying ``trusted.rng=kernel`` on the kernel
- command-line to override the used RNG with the kernel's random number pool.
- 
-@@ -231,6 +262,19 @@ Usage::
- CAAM-specific format.  The key length for new keys is always in bytes.
- Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
- 
-+Trusted Keys usage: DCP
-+-----------------------
-+
-+Usage::
-+
-+    keyctl add trusted name "new keylen" ring
-+    keyctl add trusted name "load hex_blob" ring
-+    keyctl print keyid
-+
-+"keyctl print" returns an ASCII hex copy of the sealed key, which is in format
-+specific to this DCP key-blob implementation.  The key length for new keys is
-+always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-+
- Encrypted Keys usage
- --------------------
- 
-@@ -426,3 +470,44 @@ string length.
- privkey is the binary representation of TPM2B_PUBLIC excluding the
- initial TPM2B header which can be reconstructed from the ASN.1 octed
- string length.
-+
-+DCP Blob Format
-+---------------
-+
-+The Data Co-Processor (DCP) provides hardware-bound AES keys using its
-+AES encryption engine only. It does not provide direct key sealing/unsealing.
-+To make DCP hardware encryption keys usable as trust source, we define
-+our own custom format that uses a hardware-bound key to secure the sealing
-+key stored in the key blob.
-+
-+Whenever a new trusted key using DCP is generated, we generate a random 128-bit
-+blob encryption key (BEK) and 128-bit nonce. The BEK and nonce are used to
-+encrypt the trusted key payload using AES-128-GCM.
-+
-+The BEK itself is encrypted using the hardware-bound key using the DCP's AES
-+encryption engine with AES-128-ECB. The encrypted BEK, generated nonce,
-+BEK-encrypted payload and authentication tag make up the blob format together
-+with a version number, payload length and authentication tag::
-+
-+    /*
-+     * struct dcp_blob_fmt - DCP BLOB format.
-+     *
-+     * @fmt_version: Format version, currently being %1
-+     * @blob_key: Random AES 128 key which is used to encrypt @payload,
-+     *            @blob_key itself is encrypted with OTP or UNIQUE device key in
-+     *            AES-128-ECB mode by DCP.
-+     * @nonce: Random nonce used for @payload encryption.
-+     * @payload_len: Length of the plain text @payload.
-+     * @payload: The payload itself, encrypted using AES-128-GCM and @blob_key,
-+     *           GCM auth tag of size AES_BLOCK_SIZE is attached at the end of it.
-+     *
-+     * The total size of a DCP BLOB is sizeof(struct dcp_blob_fmt) + @payload_len +
-+     * AES_BLOCK_SIZE.
-+     */
-+    struct dcp_blob_fmt {
-+            __u8 fmt_version;
-+            __u8 blob_key[AES_KEYSIZE_128];
-+            __u8 nonce[AES_KEYSIZE_128];
-+            __le32 payload_len;
-+            __u8 payload[];
-+    } __packed;
--- 
-2.35.3
+Yeah, I expected that. The whole question was meant to be rhetorical.
+The point I wanted to make was that when a spec uses terms like "local
+override" it needs to explain what it means.
+
+Thanks
+Philipp
+
+> >> Hence, seeing the spec as set in stone and as inherently low quality
+> >> is the wrong way to see it I am sure. Instead, the goal here is to
+> >> adjust the spec to make it work really nicely for *both* systemd and
+> >> the kernel.  
+> >
+> > Sorry, I never wanted to intend that the spec inherently low quality.
+> > Just that it doesn't meat my expectations, yet. But that is fine. The
+> > spec isn't even a year old and there's only a single implementation,
+> > yet. So it's more documentation rather than a spec.  
+> 
+> Let's make it happen.
+> 
+> 
+> [1] https://github.com/systemd/systemd/blob/5898cef22a35ceefa068d5f46929eced2baab0ed/src/boot/efi/stub.c#L140
+> 
 
