@@ -2,203 +2,221 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FE5B7A8F18
-	for <lists+keyrings@lfdr.de>; Thu, 21 Sep 2023 00:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C80D87A912B
+	for <lists+keyrings@lfdr.de>; Thu, 21 Sep 2023 05:15:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229451AbjITWCl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 20 Sep 2023 18:02:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48940 "EHLO
+        id S229472AbjIUDPf (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 20 Sep 2023 23:15:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjITWCl (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 20 Sep 2023 18:02:41 -0400
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBEBDC9;
-        Wed, 20 Sep 2023 15:02:34 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id 6DAC55C0064;
-        Wed, 20 Sep 2023 18:02:31 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Wed, 20 Sep 2023 18:02:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jfarr.cc; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1695247351; x=1695333751; bh=I6
-        UPNYQdv3Xjc3UL4AIR2FH2hUAbP58GDh15024AvlU=; b=OS0rrYIcBxSE/nnfdt
-        CNphdukv2JYmScLPGADJ5PPGKdyKp0qaImx3FRox3XgO79pGrhpc2yWbX34Wr9Np
-        88km6TIke7M1uo71MN+VTVlR/k66lmqCD+E7na2KfTbLJ/069+xyYT36cCluNgjk
-        qaXtQDjcAT1zGURWqVPczEB3RPI9/h0BuTwI8k876m5SyHpAy2s77ZjzEyi/sNHV
-        6wNYXCfSR+ckiE/IHuSCiLFyS2X0j7DJqyNJPTW97P10esRLA1hmY6j/MNQTpGdC
-        KFieegB5ahB9gLqvc0QiVitHC1L+HDu6m9553gAcxltAqbAX8BrF4YZyJA9bBEKB
-        t6YQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1695247351; x=1695333751; bh=I6UPNYQdv3Xjc
-        3UL4AIR2FH2hUAbP58GDh15024AvlU=; b=kj6pieMgIX1De+3ZpLOXPqXfsxs86
-        AXs9rp4cQ6mDKl36y9EpPFoaDIbXOoDnPHf159/XjC/HWSZbKrspr/uaq7f7Wdb5
-        REN+v6jhC4EZR8mGDT2wAWc9xct84wFwlEz8rBB71TfqRraXPdjwL4em2f8ie46k
-        2485bC0q2KQaVJzTTVBCiDX0rXOMCJIArl4iJh7Gs4IM6WQ7B8+hdE0to3zNsL9m
-        4Np0GttmAtdScl8AmH4tMvs9ESgRlJwqz4WelQb4eCtsBgOWk1I0TZy69VwpIpZb
-        6UNmEmQ4PSDIJec4fRNQXFLf0+xAYcG8eOzHEi0jGtm5T1E99ZPsZoJdg==
-X-ME-Sender: <xms:9msLZW25k2x86_AFSkp4-3uUh5uiaqzlG3ikSlSbFhcTlKyi5B57Yw>
-    <xme:9msLZZH977Ffek9HVsV3aHAeyOjUEv3_NcXC-lmhHJvNVnPJrD3U6i520oiHmpExA
-    av0haE9unQUyRz_jRc>
-X-ME-Received: <xmr:9msLZe6UC9h-9lspx_CD6KGaCrLedclyIdz0sBJkecz08fLJCMUwzd26qCfYQCZ-R--PPBwDzVk8anHqvMDXT9fyyw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudekgedgtdegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    gfrhhlucfvnfffucdluddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddt
-    tddvnecuhfhrohhmpeflrghnucfjvghnughrihhkucfhrghrrhcuoehkvghrnhgvlhesjh
-    hfrghrrhdrtggtqeenucggtffrrghtthgvrhhnpeeuvdekhfejjeevleeguedvieekudef
-    vdetgeefieeuiefhgeeiffehgeetfffggeenucffohhmrghinhepihhnfhhrrgguvggrug
-    drohhrghdpkhgvrhhnvghlrdhorhhgpdhgihhthhhusgdrtghomhdpuhgrphhiqdhgrhho
-    uhhprdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepkhgvrhhnvghlsehjfhgrrhhrrdgttg
-X-ME-Proxy: <xmx:9msLZX2pB1l3kmRhs6cAy3MdtWt11IkOurfkrDWMZiJ2iZDd0EbUfQ>
-    <xmx:9msLZZE8CaxEkJvqTRfRorUOEbdn3832DeRNzwt3NCS11ZxNgx0IIw>
-    <xmx:9msLZQ-s66D00MLPpgN92I-u38eW7KqCi_e-vwqjdIE1nV_8gKyqnQ>
-    <xmx:92sLZWeLCtIXBOwiG89kNjVp5f4puEsygZt_zjylA60e3TG4UFIbnQ>
-Feedback-ID: i01d149f8:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 20 Sep 2023 18:02:28 -0400 (EDT)
-Date:   Thu, 21 Sep 2023 00:02:25 +0200
-From:   Jan Hendrik Farr <kernel@jfarr.cc>
+        with ESMTP id S229459AbjIUDPd (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 20 Sep 2023 23:15:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC873ED
+        for <keyrings@vger.kernel.org>; Wed, 20 Sep 2023 20:14:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1695266082;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=icU0b2fTYif3b7hiacFBqJrLpjooJA9JwcaVPtcX+R4=;
+        b=XLqivT7OinepeOIvg8v9J/gsO0/Ww2AEA/uMj8JHKK21SyJvp4XP41RtZYLIJzMoZxpVz3
+        vgyb59VF7ax9StHYmki94atvspsd4NIlUK5//LnHvTAHqR21qT2vfhvVGnya7qvYnbZG4W
+        g7h2NBpTo48jOSx0MHBHKHI/WpYw9Y0=
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com
+ [209.85.166.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-455-ma0tiXbONaaponfZ302u5A-1; Wed, 20 Sep 2023 23:14:39 -0400
+X-MC-Unique: ma0tiXbONaaponfZ302u5A-1
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-760c7603014so12917139f.1
+        for <keyrings@vger.kernel.org>; Wed, 20 Sep 2023 20:14:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695266079; x=1695870879;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=icU0b2fTYif3b7hiacFBqJrLpjooJA9JwcaVPtcX+R4=;
+        b=Z2qHHrOGJESf+Pfv12OR/BwDGgVPNoG1GkqIcGRZ2NxFyyDg58i7tAsH5EjipT1q8m
+         WjuuwCSWuf0BKr3oqXI2oFmrO1ek0XSMpNYmj6SLl184kqJefKiwqy3hxbzvMWBs/GBo
+         qXVkNo6/D/z7lSsAW2w9zqx8FCPxbrG7KAD/TzeK7136M6oaPjYw+JizX8cZp2yiTntK
+         j5YsVUw+DFK/VgvRTOLVtqJYGcrfM9RR2c8S+woNhMUmMqH7eKEejmCeV3T0HYAdpCCc
+         ZOpjYBTTW+rV/FwUtIEISHEJO4DtesnOphk9VIMmwSkllV7aLmv3x7wccnJbZ4vCZilx
+         7teQ==
+X-Gm-Message-State: AOJu0Yy1uFRxyljLze/ylPRh7SOMdKhv9peJe3OKvNsU8lCHjK1rcrRf
+        DviSIzik8kGViMz0hXqRkBOM7nKA002IOXgQSrtSHFnrdEW/Jj3d6rcWo4ak5eruPlahsC+TfeK
+        lbNH2BSq6IRwB6LCd7hPE1RbvtwWspRD4X/U=
+X-Received: by 2002:a92:d58d:0:b0:34c:d535:9f9d with SMTP id a13-20020a92d58d000000b0034cd5359f9dmr5048344iln.1.1695266078961;
+        Wed, 20 Sep 2023 20:14:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHP7GStAvqGB/5GhwIzzOELlz1QhzOEFsbxIgXQOXMy8ZZRXSpVQz/bcYgkugR12E/YJD7Hhvffg9l7Ezww5x0=
+X-Received: by 2002:a92:d58d:0:b0:34c:d535:9f9d with SMTP id
+ a13-20020a92d58d000000b0034cd5359f9dmr5048326iln.1.1695266078650; Wed, 20 Sep
+ 2023 20:14:38 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230911052535.335770-1-kernel@jfarr.cc> <20230913160045.40d377f9@rotkaeppchen>
+ <63952cb0-5217-42a8-9b62-8be6d03f5844@app.fastmail.com> <CALu+AoTAUWWtx8yChQMKF9J5X_Qd8+x0hz0jzVwoOvAvh5VmHA@mail.gmail.com>
+ <CALu+AoRiok-bzM4OQbiix44O-PUgO2N6Yi+_qTOn4iWtk_u4cg@mail.gmail.com>
+ <CAMj1kXFkQ+T9OjK6NkKjfyR8gW4EZKFw5rEk0rgrzkHyK2BNXQ@mail.gmail.com>
+ <CALu+AoTwqL3y=NhojN2Sb=Ms33id9Nco9QU8JccFrJ_nza5jAQ@mail.gmail.com> <CALu+AoRZ0CHiu_LLoCNxecBtVgwFDkzytw9suv5n0et9j7dX5g@mail.gmail.com>
+In-Reply-To: <CALu+AoRZ0CHiu_LLoCNxecBtVgwFDkzytw9suv5n0et9j7dX5g@mail.gmail.com>
+From:   Dave Young <dyoung@redhat.com>
+Date:   Thu, 21 Sep 2023 11:14:18 +0800
+Message-ID: <CALu+AoQhvk53+LbsdRjYrPu7vkWGd4m6Qokqz4902jEm_KO+Xg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] x86/kexec: UKI Support
 To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Dave Young <dyoung@redhat.com>, Philipp Rudo <prudo@redhat.com>,
-        linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-        x86@kernel.org, tglx@linutronix.de, dhowells@redhat.com,
-        vgoyal@redhat.com, keyrings@vger.kernel.org,
+Cc:     Jan Hendrik Farr <kernel@jfarr.cc>,
+        Philipp Rudo <prudo@redhat.com>, linux-kernel@vger.kernel.org,
+        kexec@lists.infradead.org, x86@kernel.org, tglx@linutronix.de,
+        dhowells@redhat.com, vgoyal@redhat.com, keyrings@vger.kernel.org,
         akpm@linux-foundation.org, Baoquan He <bhe@redhat.com>,
         bhelgaas@google.com, Luca Boccassi <bluca@debian.org>,
         lennart@poettering.net, "Liu, Pingfan" <piliu@redhat.com>
-Subject: Re: [PATCH v2 0/2] x86/kexec: UKI Support
-Message-ID: <ZQtr8Y_isZP4nG96@desktop>
-References: <20230911052535.335770-1-kernel@jfarr.cc>
- <20230913160045.40d377f9@rotkaeppchen>
- <63952cb0-5217-42a8-9b62-8be6d03f5844@app.fastmail.com>
- <CALu+AoTAUWWtx8yChQMKF9J5X_Qd8+x0hz0jzVwoOvAvh5VmHA@mail.gmail.com>
- <CALu+AoRiok-bzM4OQbiix44O-PUgO2N6Yi+_qTOn4iWtk_u4cg@mail.gmail.com>
- <CAMj1kXFkQ+T9OjK6NkKjfyR8gW4EZKFw5rEk0rgrzkHyK2BNXQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXFkQ+T9OjK6NkKjfyR8gW4EZKFw5rEk0rgrzkHyK2BNXQ@mail.gmail.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Ard, Greetings from Delft
-
-
-On 20 10:50:31, Ard Biesheuvel wrote:
-> On Wed, 20 Sept 2023 at 08:40, Dave Young <dyoung@redhat.com> wrote:
-> >
-> > On Wed, 20 Sept 2023 at 15:43, Dave Young <dyoung@redhat.com> wrote:
-> > >
-> > > > > In the end the only benefit this series brings is to extend the
-> > > > > signature checking on the whole UKI except of just the kernel image.
-> > > > > Everything else can also be done in user space. Compared to the
-> > > > > problems described above this is a very small gain for me.
-> > > >
-> > > > Correct. That is the benefit of pulling the UKI apart in the
-> > > > kernel. However having to sign the kernel inside the UKI defeats
-> > > > the whole point.
-> > >
-> > >
-> > > Pingfan added the zboot load support in kexec-tools, I know that he is
-> > > trying to sign the zboot image and the inside kernel twice. So
-> > > probably there are some common areas which can be discussed.
-> > > Added Ard and Pingfan in cc.
-> > > http://lists.infradead.org/pipermail/kexec/2023-August/027674.html
-> > >
-> >
-> > Here is another thread of the initial try in kernel with a few more
-> > options eg. some fake efi service helpers.
-> > https://lore.kernel.org/linux-arm-kernel/ZBvKSis+dfnqa+Vz@piliu.users.ipa.redhat.com/T/#m42abb0ad3c10126b8b3bfae8a596deb707d6f76e
-> >
-> 
-> Currently, UKI's external interface is defined in terms of EFI
-> services, i.e., it is an executable PE/COFF binary that encapsulates
-> all the logic that performs the unpacking of the individual sections,
-> and loads the kernel as a PE/COFF binary as well (i.e., via
-> LoadImage/StartImage)
+On Wed, 20 Sept 2023 at 20:18, Dave Young <dyoung@redhat.com> wrote:
 >
-> As soon as we add support to Linux to unpack a UKI and boot the
-> encapsulated kernel using a boot protocol other than EFI, we are
-> painting ourselves into a corner, severely limiting the freedom of the
-> UKI effort to make changes to the interfaces that were implementation
-> details up to this point.
+> On Wed, 20 Sept 2023 at 20:07, Dave Young <dyoung@redhat.com> wrote:
+> >
+> > On Wed, 20 Sept 2023 at 18:50, Ard Biesheuvel <ardb@kernel.org> wrote:
+> > >
+> > > On Wed, 20 Sept 2023 at 08:40, Dave Young <dyoung@redhat.com> wrote:
+> > > >
+> > > > On Wed, 20 Sept 2023 at 15:43, Dave Young <dyoung@redhat.com> wrote:
+> > > > >
+> > > > > > > In the end the only benefit this series brings is to extend the
+> > > > > > > signature checking on the whole UKI except of just the kernel image.
+> > > > > > > Everything else can also be done in user space. Compared to the
+> > > > > > > problems described above this is a very small gain for me.
+> > > > > >
+> > > > > > Correct. That is the benefit of pulling the UKI apart in the
+> > > > > > kernel. However having to sign the kernel inside the UKI defeats
+> > > > > > the whole point.
+> > > > >
+> > > > >
+> > > > > Pingfan added the zboot load support in kexec-tools, I know that he is
+> > > > > trying to sign the zboot image and the inside kernel twice. So
+> > > > > probably there are some common areas which can be discussed.
+> > > > > Added Ard and Pingfan in cc.
+> > > > > http://lists.infradead.org/pipermail/kexec/2023-August/027674.html
+> > > > >
+> > > >
+> > > > Here is another thread of the initial try in kernel with a few more
+> > > > options eg. some fake efi service helpers.
+> > > > https://lore.kernel.org/linux-arm-kernel/ZBvKSis+dfnqa+Vz@piliu.users.ipa.redhat.com/T/#m42abb0ad3c10126b8b3bfae8a596deb707d6f76e
+> > > >
+> > >
+> >
+> > Ard, thanks for the comments.
+> >
+> > > Currently, UKI's external interface is defined in terms of EFI
+> > > services, i.e., it is an executable PE/COFF binary that encapsulates
+> > > all the logic that performs the unpacking of the individual sections,
+> > > and loads the kernel as a PE/COFF binary as well (i.e., via
+> > > LoadImage/StartImage)
+> > >
+> > > As soon as we add support to Linux to unpack a UKI and boot the
+> > > encapsulated kernel using a boot protocol other than EFI, we are
+> > > painting ourselves into a corner, severely limiting the freedom of the
+> > > UKI effort to make changes to the interfaces that were implementation
+> > > details up to this point.
+> >
+> > Agreed, it seems UKI is more flexible and complex than the zboot,
+> > we do need to carefully think about a better solution.
+> >
+> > >
+> > > It also means that UKI handling in kexec will need to be taught about
+> > > every individual architecture again, which is something we are trying
+> > > to avoid with EFI support in general. Breaking the abstraction like
+> > > this lets the cat out of the bag, and will add yet another variation
+> > > of kexec that we will need to support and maintain forever.
+> > >
+> > > So the only way to do this properly and portably is to implement the
+> > > minimal set of EFI boot services [0] that Linux actually needs to run
+> > > its EFI stub (which is mostly identical to the set that UKI relies on
+> > > afaict), and expose them to the kexec image as it is being loaded.
+> > > This is not as bad as it sounds - I have some Rust code that could be
+> > > used as an inspiration [1] and which could be reused and shared
+> > > between architectures.
+> >
+> > Great!
+> >
+> > >
+> > > This would also reduce/remove the need for a purgatory: loading a EFI
+> > > binary in this way would run it up to the point were it calls
+> > > ExitBootServices(), and the actual kexec would invoke the image as if
+> > > it was returning from ExitBootServices().
+> > >
+> > > The only fundamental problem here is the need to allocate large chunks
+> > > of physical memory, which would need some kind of CMA support, I
+> > > imagine?
+> >
+> > Hmm, I thought that your idea is to write the efi stub code in "purgatory"
+> > so kexec can jump to it while rebooting then it will be able to access the
+> > whole usable memory, but it seems you want an efi app run under linux
+> > and somehow provide services to kexec?  My EFI knowledge is incomplete
+> > and outdated,  If my understanding of your proposal is true how can it keep
+> > running after switching to the new kernel stub?
+>
+> Oops,  please ignore the quick reply and questioins, I apparently
+> forgot that this is the kexec loading
+> phase instead of the rebooting phase.  Yes as you said CMA might be
+> the only choice
+> for that proposal.
 
-While this was true at some point, it's not anymore. The intention is
-for UKIs to be a stable file format that can be used outside of
-systemd-stub. They are no longer just defined by their interface to
-UEFI. While the spec will need work it can be found at [1]. This patch
-depends on the UKI containing the linux bzimage, initrd, and cmdline in
-the sections with those names. We can depend on this in the future.
+Ok, refreshed my memory with a brief discussion with Pingfan.  My
+understanding of the flow is like below:
 
-There is some discussions around supporting more of the UKI features in
-the future (TPM PCR signatures, etc). See [2].
+1. kexec loads the UKI image itself without any parsing of the internal files.
+2. reboot|crash -> jump to the fake stub
+3. the stub parse the UKI internal kernel/initrd/cmdline
+4. boot into the new kernel
 
-> It also means that UKI handling in kexec will need to be taught about
-> every individual architecture again, which is something we are trying
-> to avoid with EFI support in general. Breaking the abstraction like
-> this lets the cat out of the bag, and will add yet another variation
-> of kexec that we will need to support and maintain forever.
+With above code flow, it is still not clear for me where do we need
+the large chunk
+of memory for the stub.
+in step 1 kexec loading does not need physical continuous big chunks as
+while jumping to the stub in step 2 the UKI image will be relocated again.
+the stub does need some page table setups but that is already done in current
+kexec code.
 
-Yes this would require more work for each architecture that wants to
-kexec UKIs (arm64 would be next).
+Other than the boot service implementation, another issue here from my mind is
+the memory map information should be passed to the stub use.  Taking x86 as an
+example kexec will pass the raw e820 table to 2nd kernel according to the x86
+boot protocol.  Now if we move to a chain load case, there will be similar
+requirement for the stub.
 
-However I think the support required would be way lower than all the
-other kexec loaders. I would suggest that this loader is actually really
-simple (check the code in the uki_load function in
-arch/x86/kernel/kexec-uki.c). All of the heavy lifting is actually done
-by the existing bzimage loader. The UKI loader just pulls appart the UKI
-and calls the existing bzimage loader, it's really simple. It's like an add-on
-to the current loader.
+Another thing is in case the stub can be more complex in the future, how can
+we debug it.  The boot service conout is not usable, and since graphic kms switc
+hing, I'm not sure the boot framebuffer will be usable as well.  Probably the
+only way is to add serial output support.  Anyway this is something could be
+hard to handle.
 
-> So the only way to do this properly and portably is to implement the
-> minimal set of EFI boot services [0] that Linux actually needs to run
-> its EFI stub (which is mostly identical to the set that UKI relies on
-> afaict), and expose them to the kexec image as it is being loaded.
-> This is not as bad as it sounds - I have some Rust code that could be
-> used as an inspiration [1] and which could be reused and shared
-> between architectures.
+>
+> >
+> > >
+> > > Maybe we should do a BoF at LPC to discuss this further?
+> >
+> > It does deserve more discussion, unfortunately I will not be able to join LPC,
+> > Philipp Rudo (cced) planned attend the conf, so I think you guys can
+> > discuss together with
+> > other people interested. I think I will watch the recordings or
+> > joining virtually if possible.
+> >
+> > >
+> > > [0] this is not as bad as it sounds: beyond a protocol database, a
+> > > heap allocator and a memory map, there is actually very little needed
+> > > to boot Linux via the EFI stub (although UKI needs
+> > > LoadImage/StartImage as well)
+> > >
+> > > [1] https://github.com/ardbiesheuvel/efilite
+> > >
 
-This would be a very cool thing in general though and would open a lot
-of possibilities. But how much support will this require? Soon people
-will want more than just the minimal set of EFI services for booting
-Linux. I do like this idea though and would probably be one of the
-people wanting more of the EFI services supported.
-
-> This would also reduce/remove the need for a purgatory: loading a EFI
-> binary in this way would run it up to the point were it calls
-> ExitBootServices(), and the actual kexec would invoke the image as if
-> it was returning from ExitBootServices().
-> 
-> The only fundamental problem here is the need to allocate large chunks
-> of physical memory, which would need some kind of CMA support, I
-> imagine?
-> 
-> Maybe we should do a BoF at LPC to discuss this further?
-
-I definetly won't be at LPC, is it possible to join virtually?
-
-> 
-> [0] this is not as bad as it sounds: beyond a protocol database, a
-> heap allocator and a memory map, there is actually very little needed
-> to boot Linux via the EFI stub (although UKI needs
-> LoadImage/StartImage as well)
-> 
-> [1] https://github.com/ardbiesheuvel/efilite
-
-
-[1] https://uapi-group.org/specifications/specs/unified_kernel_image/
-[2] https://github.com/systemd/systemd/issues/28538
