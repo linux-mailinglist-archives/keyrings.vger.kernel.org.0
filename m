@@ -2,52 +2,50 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E15A07ADD55
-	for <lists+keyrings@lfdr.de>; Mon, 25 Sep 2023 18:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C41C37ADD79
+	for <lists+keyrings@lfdr.de>; Mon, 25 Sep 2023 18:54:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229437AbjIYQnw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 25 Sep 2023 12:43:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44922 "EHLO
+        id S231393AbjIYQzA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 25 Sep 2023 12:55:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230230AbjIYQnw (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 25 Sep 2023 12:43:52 -0400
+        with ESMTP id S231343AbjIYQzA (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 25 Sep 2023 12:55:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09833EE;
-        Mon, 25 Sep 2023 09:43:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39D3C433C7;
-        Mon, 25 Sep 2023 16:43:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16E42EE;
+        Mon, 25 Sep 2023 09:54:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF6DC433C8;
+        Mon, 25 Sep 2023 16:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695660223;
-        bh=iptOd//4GXzFCwWM9L7SD9q66r8M+qbkCRBfCuZ7Lpk=;
-        h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-        b=Uvf/hphfDgJaZQyn421/HgoOCcUfj4eh11ZR8eHsjXR8AgyYeLMVz7vpkGE0/CnJa
-         G7MJ/WUDsM+rHitk9O2s31pM7V17eIhVWAiGffpXh2u5YB5mgSSRB+Y7CJJTmFt0iT
-         D8ZRphEtpfdkL3mW5IHg8/UOR4rBCxb8LrMsQeRno24Jw2qXjJ1tFihK2ZFHoyu4z+
-         +1Dy71DHUw5FkD2D01dmlJN+bhGmpeLYEb34paru+Qsvt+vFNgxFCQX4frsUIMMnI2
-         MvwBfc2D0hqmNsYgUfZjvlDTBXLQwUsVkI5Q+05rP3A8w8BAHBck/xY3Ayx5JpcvmC
-         h6cDJWho5QTcQ==
+        s=k20201202; t=1695660893;
+        bh=SyZT2A0CSmuW9Kq1aYtg9sgERqEPr88gupKNQgHSb2c=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=fkHWlzi9pmmigRvIWcuLohwLaC39obOuitaBHnwMBw0C7SWKSUkhWo7CbjagnyhJg
+         EGFpQcY7ss044NVRWoIQNeRHn7YTvigivtrXVIvu5lFRM6A+rBiKTDAECNjI/fy4yf
+         WYKX80igbTpFFa3+DRYeZHj0oFLkBmgDOOvLz6TjTE53HTYWSQGjWLbeE5mjXLOcoQ
+         PtwepnxjXg0nG9wPGoTnh9D8F5E372z+wvt1H9DsQET6kOE4nFFJBkBmFFnHh2jvFu
+         uH5+FIKfR8RsJkTxiBgkdb54d9xvHmukr6CPgYYqP39cs9l3wzo3LY1ez3YVTgczfb
+         U6CoYHs22x9Gw==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 25 Sep 2023 19:43:38 +0300
-Message-Id: <CVS5DQME8XMT.2DEPELDXBPGIX@suppilovahvero>
-Subject: Re: [systemd-devel] [PATCH 0/1] x86/kexec: UKI support
+Date:   Mon, 25 Sep 2023 19:54:50 +0300
+Message-Id: <CVS5MB3X82Q8.8KDB4346ROR5@suppilovahvero>
+Cc:     "dhowells@redhat.com" <dhowells@redhat.com>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] certs: Add option to disallow non-CA certificates in
+ secondary trusted keying
 From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Dimitri John Ledkov" <dimitri.ledkov@canonical.com>
-Cc:     "Neal Gompa" <ngompa13@gmail.com>,
-        <systemd-devel@lists.freedesktop.org>, <x86@kernel.org>,
-        <kexec@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <dhowells@redhat.com>, <keyrings@vger.kernel.org>,
-        <bhelgaas@google.com>, "Jan Hendrik Farr" <kernel@jfarr.cc>,
-        <tglx@linutronix.de>, <akpm@linux-foundation.org>,
-        <bluca@debian.org>
+To:     "Denis Glazkov" <d.glazkov@omp.ru>,
+        "Sergey Shtylyov" <s.shtylyov@omp.ru>
 X-Mailer: aerc 0.14.0
-References: <20230909161851.223627-1-kernel@jfarr.cc>
- <CVGFE6FRWFHR.DVG9NUQID4EA@suppilovahvero>
- <CAEg-Je9GF5S+QcsspM_CzDSxzCN8h2eRp7BbctC1x7-rH8j68g@mail.gmail.com>
- <CVGVGJIQPIZ2.WN97L6BV5S97@suppilovahvero>
- <CADWks+bRm9LnujBo1SiATDfC1sCNU0vvCy_r=YBpYLXcQrbQeA@mail.gmail.com>
-In-Reply-To: <CADWks+bRm9LnujBo1SiATDfC1sCNU0vvCy_r=YBpYLXcQrbQeA@mail.gmail.com>
+References: <f5a1d856-0482-a2c3-0e62-3ca911ce3dd2@omp.ru>
+ <20230908121330.4076-1-d.glazkov@omp.ru>
+ <CVGEE9ODRR8I.1RIVO2MVE2UAX@suppilovahvero>
+ <3bc6b569be0beff9f70d58b751088fd2cc798e93.camel@omp.ru>
+In-Reply-To: <3bc6b569be0beff9f70d58b751088fd2cc798e93.camel@omp.ru>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -57,128 +55,139 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon Sep 18, 2023 at 6:41 PM EEST, Dimitri John Ledkov wrote:
-> On Tue, 12 Sept 2023 at 11:38, Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> >
-> > On Tue Sep 12, 2023 at 2:20 AM EEST, Neal Gompa wrote: > On Mon, Sep 11=
-, 2023 at 7:15=E2=80=AFPM Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> > > > On Sat Sep 9, 2023 at 7:18 PM EEST, Jan Hendrik Farr wrote:
-> > > > > Hello,
-> > > > >
-> > > > > this patch implements UKI support for kexec_file_load. It will re=
-quire support
-> > > > > in the kexec-tools userspace utility. For testing purposes the fo=
-llowing can be used:
-> > > > > https://github.com/Cydox/kexec-test/
-> > > > >
-> > > > > There has been discussion on this topic in an issue on GitHub tha=
-t is linked below
-> > > > > for reference.
-> > > > >
-> > > > >
-> > > > > Some links:
-> > > > > - Related discussion: https://github.com/systemd/systemd/issues/2=
-8538
-> > > > > - Documentation of UKIs: https://uapi-group.org/specifications/sp=
-ecs/unified_kernel_image/
-> > > > >
-> > > > > Jan Hendrik Farr (1):
-> > > > >   x86/kexec: UKI support
-> > > > >
-> > > > >  arch/x86/include/asm/kexec-uki.h       |   7 ++
-> > > > >  arch/x86/include/asm/parse_pefile.h    |  32 +++++++
-> > > > >  arch/x86/kernel/Makefile               |   2 +
-> > > > >  arch/x86/kernel/kexec-uki.c            | 113 +++++++++++++++++++=
-++++++
-> > > > >  arch/x86/kernel/machine_kexec_64.c     |   2 +
-> > > > >  arch/x86/kernel/parse_pefile.c         | 110 +++++++++++++++++++=
-+++++
-> > > > >  crypto/asymmetric_keys/mscode_parser.c |   2 +-
-> > > > >  crypto/asymmetric_keys/verify_pefile.c | 110 +++----------------=
------
-> > > > >  crypto/asymmetric_keys/verify_pefile.h |  16 ----
-> > > > >  9 files changed, 278 insertions(+), 116 deletions(-)
-> > > > >  create mode 100644 arch/x86/include/asm/kexec-uki.h
-> > > > >  create mode 100644 arch/x86/include/asm/parse_pefile.h
-> > > > >  create mode 100644 arch/x86/kernel/kexec-uki.c
-> > > > >  create mode 100644 arch/x86/kernel/parse_pefile.c
-> > > > >
-> > > > > --
-> > > > > 2.40.1
-> > > >
-> > > > What the heck is UKI?
-> > >
-> > > Unified Kernel Images. More details available here:
-> > > https://uapi-group.org/specifications/specs/unified_kernel_image/
-> > >
-> > > It's a way of creating initramfs-style images as fully generic,
-> > > reproducible images that can be built server-side.
-> >
-> > You can build today a kernel with these compiled in:
-> >
-> > 1. EFI stub
-> > 2. initeramfs
-> > 3. cmdline
-> >
-> > Why another way (and label 'UKI') for a pre-existing feature?
-> >
+On Fri Sep 15, 2023 at 8:50 PM EEST, Denis Glazkov wrote:
+> On Tue, Sep 12 2023 at 01:15 AM +0300, Jarkko Sakkinen wrote:
+> > On Fri Sep 8, 2023 at 3:14 PM EEST, Denis Glazkov wrote:
+> > > The Linux kernel has an IMA (Integrity Measurement Architecture)
+> > > subsystem to check the integrity of the file system based on digital
+> > > signatures. IMA uses certificates in `.ima` keying to check integrity=
+.
+> > >=20
+> > > Only certificates issued by one of the trusted CA (Certificate Author=
+ity)
+> > > certificates can be added to the `.ima` keying.
+> > >=20
+> > > The Linux kernel now has a secondary trusted keying to which trusted
+> > > certificates from user space can be added if you have superuser
+> > > privileges. Previously, all trusted certificates were in the built-in
+> > > trusted keying, which could not be modified from user space.
+> > > Trusted certificates were placed in the built-in trusted keying at
+> > > kernel compile time.
+> > >=20
+> > > The secondary trusted keying is designed so that any certificates tha=
+t
+> > > are signed by one of the trusted CA certificates in the built-in or
+> > > secondary trusted keyring can be added to it.
+> > >=20
+> > > Let's imagine that we have the following certificate trust chain:
+> > >=20
+> > >              =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=90
+> > >              =E2=94=82                           =E2=94=82     =E2=94=
+=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90=
+       =E2=94=82
+> > >              =E2=94=82                           =E2=94=82     =E2=94=
+=82       =E2=94=82       =E2=94=82
+> > > =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90    =E2=94=
+=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=90  =E2=94=82 =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90
+> > > =E2=94=82.builtin_trusted_keys=E2=94=82=E2=97=84=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=A4.secondary_trusted_keys =E2=94=9C=E2=94=80=E2=94=80=E2=94=98=
+ =E2=94=82   .ima    =E2=94=82
+> > > =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4    =E2=94=
+=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=A4    =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4
+> > > =E2=94=82     Root CA Cert    =E2=94=82-----=E2=96=BA Intermediate CA=
+ Cert  =E2=94=82-----=E2=96=BA IMA Cert =E2=94=82
+> > > =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98    =E2=94=
+=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
+=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=98    =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98
+> > >=20
+> > >                 Issues                  Restricted by
+> > >             -------------=E2=96=BA             =E2=94=80=E2=94=80=E2=
+=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
+=80=E2=94=80=E2=94=80=E2=94=80=E2=96=BA
+> > >=20
+> > > Since the IMA certificate is signed by a CA certificate from a second=
+ary
+> > > trusted keying, an attacker with superuser privileges will be able to
+> > > add the IMA certificate to the secondary trusted keying. That is, the=
+ IMA
+> > > certificate will become trusted.
+> > >=20
+> > > Since, with `CONFIG_MODULE_SIG` option enabled, modules can only be
+> > > loaded into kernel space if they are signed with one of the trusted
+> > > certificates, an attacker could sign untrusted kernel modules with
+> > > the private key corresponding to the IMA certificate and successfully
+> > > load the untrusted modules into kernel space.
+> > >=20
+> > > This patch adds the configuration that once enabled, only
+> > > certificates that meet the following requirements can be added
+> > > to the secondary trusted keying:
+> > >=20
+> > > 1. The certificate is a CA (Certificate Authority)
+> > > 2. The certificate must be used for verifying a CA's signatures
+> > > 3. The certificate must not be used for digital signatures
+> > >=20
+> > > Signed-off-by: Denis Glazkov <d.glazkov@omp.ru>
+> >=20
+> > s/keying/keyring/ (multiple)
+> >=20
+> > Have you considered instead making mod_verify_sig() more robust?
+> > Obviously this would mean making selection of keys in
+> > verify_pkcs7_signature() more robust (see the documentation of
+> > 'trusted_keys').
+> >=20
+> > The this would be also less niche feature to pick for distributors
+> > if it was just concerning module loading, and have associated config
+> > flag over there.
+> >=20
+> > BR, Jarkko
 >
-> In Ubuntu, we have considered to use the existing kernel features
-> before going off to use UKI. Here are some of the reasons why we
-> didn't opt to use the kernel builtin things:
-> 1) we wanted to have ability to have TPM measured kernel commandline
-> performed before kernel is being executed, which is what sd-stub
-> provides us
-
-OK this does make a lot of sense.
-
-> 2) we wanted to have ability to update / regenerate initrd, without
-> rebuilding kernel. Thus whenever userspace in the initrd needs
-> updating, we can generate new initrd for existing kernel build, create
-> new kernel.efi, whilst using existing .linux / vmlinuz build. I don't
-> believe it is currently trivial to relink vmlinuz with builtin initrd.
-> 3) licensing wise it was not clear if initrd has to be GPLv2
-> compatible when linked inside vmlinuz, or if it can contain GPLv3 /
-> LGPLv3 userspace code - with UKI it is believed unambigiously true,
-> because vmlinuz boots by itself standalone and is compiled separately
-> of the UKI.
-
-Right UKI wraps kernel and kernel is a "leaf object".
-
-> 4) we wanted to have ability to override cmdline via kernel args
-> without secureboot, and use stock cmdline args under secureboot, to
-> allow debugging & production behaviour from a single signed kernel.efi
-> (that was custom development, and could be done in the stock vmlinuz
-> too).
-> 5) obvious mention, the intention here is to have TPM PCR measurements
-> and Secureboot signature for vmlinuz and initrd and cmdline and dtb.
-> There is otherwise no support for standalone signed initrd, cmdline,
-> dtb today. Nor does vendoring it into vmlinuz achieves this to the
-> same extent (and ease of predicting for sealing / resealing purposes).
-
-ok
-
-> 6) in Ubuntu kernel.efi also has sbat section for targeted revocations
-> (discussed separately elsewhere)
+> Jarkko, thank you for your suggestion.
 >
-> Overall, it is mostly about flexibility to be able to reuse the same
-> initrd against multiple kernel builds, or update use multiple initrd
-> against the same kernel build. This is imho the biggest issue with
-> using initrd built-into the vmlinuz itself.
-> Resource wise, the initrd passed in via kernel.efi can be freed, as
-> far as I understand. I don't know if the one built-into the vmlinuz is
-> freeable.
+> This patch was created not to solve only the problem of loading
+> untrusted kernel modules, but to make it possible to use a secondary
+> trusted keying only as a part of a chain of trust containing only
+> CA certificates with no digital signature capability.
 >
-> Improving design to do something else instead of UKI would be
-> welcomed. Or for example improving the zimg linus upstream format to
-> be a partial or a valid UKI would help as well. For example, building
-> the kernel built-in initrd as a .initrd section that is replacable
-> would be nice, or allowing to preload zimg with .dtb or .cmdline
-> sections would help, and appropriately improve the linux efi stab to
-> do measurements and loading of .dtb / .initrd from itself would be
-> nice. Because then all the benefits / requirements described above
-> could be made available out of the box and be trivially updatable. The
-> biggest one being splitting out things into sections that can be
-> updated with objcopy.
+> Let's imagine that tomorrow we have a new kernel feature, similar
+> to kernel modules in terms of its impact on system security, which
+> also uses trusted certificates for signature verification.
+>
+> If at this point we solve only the problem of loading untrusted
+> kernel modules, and not the problem of the entire trusted keys
+> system, we will need to add a new kernel option each time to solve
+> a similar problem for each new kernel feature that uses trusted
+> certificates.
+
+Ok, I guessed so but given what I read from commit message I had to ask :-)
+
+The description is very detailed and of good quality, and also what you
+say CONFIG_MODULE_SIG is just fine but for completeness it would be good
+to mention that purpose and goal is to fully close the gap with any
+possible feature that might go without CA certificates (*in addition*).
+
+> BR, Denis
 
 BR, Jarkko
