@@ -2,94 +2,125 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DCD87ADA2C
-	for <lists+keyrings@lfdr.de>; Mon, 25 Sep 2023 16:37:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA4817ADB40
+	for <lists+keyrings@lfdr.de>; Mon, 25 Sep 2023 17:22:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232278AbjIYOhb (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 25 Sep 2023 10:37:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56260 "EHLO
+        id S232482AbjIYPWj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 25 Sep 2023 11:22:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232308AbjIYOh3 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 25 Sep 2023 10:37:29 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2EBAFC
-        for <keyrings@vger.kernel.org>; Mon, 25 Sep 2023 07:36:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1695652596;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Tsz7HOe9ogY6gp1h+q1EOev48I4dzKMW2GN4NhayDsI=;
-        b=XVhqRQEfs5jyiZzE8VKodjtkb6S7lq9jzOzgRisOkEe8uYufHU63pAnJZcYTDBVilkasZZ
-        LlbfsFcbci++E99AS1+fgnIGq2UHL8IsX85STPmbcHq+HqDiPMBqqZMNuvsDNRBay8lnj4
-        B2T8U5YmZ5SshNbV7UgihqO1HxhZnz4=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-385-suMnaxO6PKiXCvJ3TLd1aA-1; Mon, 25 Sep 2023 10:36:33 -0400
-X-MC-Unique: suMnaxO6PKiXCvJ3TLd1aA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CC2271E441D3;
-        Mon, 25 Sep 2023 14:36:32 +0000 (UTC)
-Received: from rotkaeppchen (unknown [10.39.192.111])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 91A54C15BB8;
-        Mon, 25 Sep 2023 14:36:30 +0000 (UTC)
-Date:   Mon, 25 Sep 2023 16:36:28 +0200
-From:   Philipp Rudo <prudo@redhat.com>
-To:     Jan Hendrik Farr <kernel@jfarr.cc>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, Dave Young <dyoung@redhat.com>,
-        linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-        x86@kernel.org, tglx@linutronix.de, dhowells@redhat.com,
-        vgoyal@redhat.com, keyrings@vger.kernel.org,
-        akpm@linux-foundation.org, Baoquan He <bhe@redhat.com>,
-        bhelgaas@google.com, Luca Boccassi <bluca@debian.org>,
-        lennart@poettering.net, "Liu, Pingfan" <piliu@redhat.com>
-Subject: Re: [PATCH v2 0/2] x86/kexec: UKI Support
-Message-ID: <20230925163628.2c39a98e@rotkaeppchen>
-In-Reply-To: <ZQtr8Y_isZP4nG96@desktop>
-References: <20230911052535.335770-1-kernel@jfarr.cc>
-        <20230913160045.40d377f9@rotkaeppchen>
-        <63952cb0-5217-42a8-9b62-8be6d03f5844@app.fastmail.com>
-        <CALu+AoTAUWWtx8yChQMKF9J5X_Qd8+x0hz0jzVwoOvAvh5VmHA@mail.gmail.com>
-        <CALu+AoRiok-bzM4OQbiix44O-PUgO2N6Yi+_qTOn4iWtk_u4cg@mail.gmail.com>
-        <CAMj1kXFkQ+T9OjK6NkKjfyR8gW4EZKFw5rEk0rgrzkHyK2BNXQ@mail.gmail.com>
-        <ZQtr8Y_isZP4nG96@desktop>
-Organization: Red Hat inc.
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-X-Spam-Status: No, score=1.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-        SPF_NONE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+        with ESMTP id S232287AbjIYPWh (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 25 Sep 2023 11:22:37 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 838BB9C;
+        Mon, 25 Sep 2023 08:22:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F12DC433C8;
+        Mon, 25 Sep 2023 15:22:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695655351;
+        bh=OGt2FOw6lDFFBJRltNV7eb25Y3RCJfPYVc/8wsDj+lM=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=Kp0VVt1IVmvLWEfHcZ2kGDvXU/kqTSlU+zkPCXYtz6OOHZKhyu9V5NSp0G4CcW036
+         DQ9LCiRXD6Q490pl7u8169h7tTEUAz8V7ziRXZiOnxF5dDnpKDrQj68Gjg0adng4T5
+         EC3+inaGcrSbVlkKIJs09PWUwziCRokB4AboyUs2UgQ2pt7Zy2tOwb59ADnu4WpGap
+         yRdxENwoFnqspD1+SNBWaf1kvwgaAh2yycGM8qQMtVXclYdN2nIeGugErrwJvR4YEl
+         H9OHYREey3oOXKbuXZV2mFLTFooU8OLOf/hOR2Asgxbi05opItQVsGdjANQ69Zqjb3
+         L4QCoe2YqHFVQ==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Mon, 25 Sep 2023 18:22:22 +0300
+Message-Id: <CVS3NIJ8OO6Y.2C6GJ9OBR6COC@suppilovahvero>
+Cc:     "Shawn Guo" <shawnguo@kernel.org>,
+        "Jonathan Corbet" <corbet@lwn.net>,
+        "Sascha Hauer" <s.hauer@pengutronix.de>,
+        "Pengutronix Kernel Team" <kernel@pengutronix.de>,
+        "Fabio Estevam" <festevam@gmail.com>,
+        "NXP Linux Team" <linux-imx@nxp.com>,
+        "Ahmad Fatoum" <a.fatoum@pengutronix.de>,
+        "sigma star Kernel Team" <upstream+dcp@sigma-star.at>,
+        "David Howells" <dhowells@redhat.com>,
+        "Li Yang" <leoyang.li@nxp.com>, "Paul Moore" <paul@paul-moore.com>,
+        "James Morris" <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        "Randy Dunlap" <rdunlap@infradead.org>,
+        "Catalin Marinas" <catalin.marinas@arm.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        "Tejun Heo" <tj@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>,
+        <linux-crypto@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linuxppc-dev@lists.ozlabs.org>,
+        <linux-security-module@vger.kernel.org>,
+        "Richard Weinberger" <richard@nod.at>,
+        "David Oberhollenzer" <david.oberhollenzer@sigma-star.at>
+Subject: Re: [PATCH v3 1/3] crypto: mxs-dcp: Add support for hardware
+ provided keys
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "David Gstir" <david@sigma-star.at>,
+        "Mimi Zohar" <zohar@linux.ibm.com>,
+        "James Bottomley" <jejb@linux.ibm.com>,
+        "Herbert Xu" <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>
+X-Mailer: aerc 0.14.0
+References: <20230918141826.8139-1-david@sigma-star.at>
+ <20230918141826.8139-2-david@sigma-star.at>
+In-Reply-To: <20230918141826.8139-2-david@sigma-star.at>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Jan,
+On Mon Sep 18, 2023 at 5:18 PM EEST, David Gstir wrote:
+> DCP is capable to performing AES with hardware-bound keys.
+> These keys are not stored in main memory and are therefore not directly
+> accessible by the operating system.
+>
+> So instead of feeding the key into DCP, we need to place a
+> reference to such a key before initiating the crypto operation.
+> Keys are referenced by a one byte identifiers.
 
-On Thu, 21 Sep 2023 00:02:25 +0200
-Jan Hendrik Farr <kernel@jfarr.cc> wrote:
+Not sure what the action of feeding key into DCP even means if such
+action does not exists.
 
-[...]
+What you probably would want to describe here is how keys get created
+and how they are referenced by the kernel.
 
-> > Maybe we should do a BoF at LPC to discuss this further?  
-> 
-> I definetly won't be at LPC, is it possible to join virtually?
+For the "use" part please try to avoid academic paper style long
+expression starting with "we" pronomine.
 
-Yes, LPC will be hybrid again this year. Virtual access costs $50
-although you can apply for an 50% discount when you are a
-non-professional.
+So the above paragraph would normalize into "The keys inside DCP
+are referenced by one byte identifier". Here of course would be
+for the context nice to know what is this set of DCP keys. E.g.
+are total 256 keys or some subset?
 
-https://lpc.events/event/17/page/212-attend
+When using too much prose there can be surprsingly little digestable
+information, thus this nitpicking.
 
-Thanks
-Philipp
+> DCP supports 6 different keys: 4 slots in the secure memory area,
+> a one time programmable key which can be burnt via on-chip fuses
+> and an unique device key.
+>
+> Using these keys is restricted to in-kernel users that use them as buildi=
+ng
+> block for other crypto tools such as trusted keys. Allowing userspace
+> (e.g. via AF_ALG) to use these keys to crypt or decrypt data is a securit=
+y
+> risk, because there is no access control mechanism.
 
+Unless this patch has anything else than trusted keys this should not
+be an open-ended sentence. You want to say roughly that DCP hardware
+keys are implemented for the sake to implement trusted keys support,
+and exactly and only that.
+
+This description also lacks actions taken by the code changes below,
+which is really the beef of any commit description.
+
+BR, Jarkko
