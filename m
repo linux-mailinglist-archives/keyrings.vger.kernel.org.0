@@ -2,39 +2,67 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5DCC7AE99D
-	for <lists+keyrings@lfdr.de>; Tue, 26 Sep 2023 11:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64BFA7AEB27
+	for <lists+keyrings@lfdr.de>; Tue, 26 Sep 2023 13:15:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231843AbjIZJzP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 26 Sep 2023 05:55:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41580 "EHLO
+        id S230330AbjIZLPK convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+keyrings@lfdr.de>); Tue, 26 Sep 2023 07:15:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230037AbjIZJzM (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 26 Sep 2023 05:55:12 -0400
-X-Greylist: delayed 501 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 26 Sep 2023 02:55:05 PDT
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E486B3;
-        Tue, 26 Sep 2023 02:55:05 -0700 (PDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-         client-signature RSA-PSS (4096 bits) client-digest SHA256)
-        (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
-        by bmailout2.hostsharing.net (Postfix) with ESMTPS id 7A6762800BBE7;
-        Tue, 26 Sep 2023 11:46:40 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-        id 688211F230; Tue, 26 Sep 2023 11:46:40 +0200 (CEST)
-Message-Id: <be8ab09429d55c6cfc52ee0e43bf021ffb384152.1695720715.git.lukas@wunner.de>
-From:   Lukas Wunner <lukas@wunner.de>
-Date:   Tue, 26 Sep 2023 11:46:41 +0200
-Subject: [PATCH] X.509: Add missing IMPLICIT annotations to AKID ASN.1 module
-To:     David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     Vivek Goyal <vgoyal@redhat.com>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org
+        with ESMTP id S229507AbjIZLPJ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 26 Sep 2023 07:15:09 -0400
+Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E72EDE5;
+        Tue, 26 Sep 2023 04:15:01 -0700 (PDT)
+Received: from mail02.huawei.com (unknown [172.18.147.228])
+        by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4RvxbH6zKSz9v7cV;
+        Tue, 26 Sep 2023 18:59:55 +0800 (CST)
+Received: from [127.0.0.1] (unknown [10.204.63.22])
+        by APP1 (Coremail) with SMTP id LxC2BwDHH5ELvRJlT9ARAQ--.20978S2;
+        Tue, 26 Sep 2023 12:14:32 +0100 (CET)
+Message-ID: <66249824469de1edefd42b42f72cab17ea331d09.camel@huaweicloud.com>
+Subject: Re: [PATCH v3 12/25] security: Introduce inode_post_setattr hook
+From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
+To:     viro@zeniv.linux.org.uk, brauner@kernel.org,
+        chuck.lever@oracle.com, jlayton@kernel.org, neilb@suse.de,
+        kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com,
+        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        dhowells@redhat.com, jarkko@kernel.org,
+        stephen.smalley.work@gmail.com, eparis@parisplace.org,
+        casey@schaufler-ca.com
+Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-nfs@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        selinux@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
+Date:   Tue, 26 Sep 2023 13:14:17 +0200
+In-Reply-To: <20230904133415.1799503-13-roberto.sassu@huaweicloud.com>
+References: <20230904133415.1799503-1-roberto.sassu@huaweicloud.com>
+         <20230904133415.1799503-13-roberto.sassu@huaweicloud.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.44.4-0ubuntu2 
+MIME-Version: 1.0
+X-CM-TRANSID: LxC2BwDHH5ELvRJlT9ARAQ--.20978S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxCryrXF4ftryxWF4furW7Arb_yoWrCrWrpF
+        Wrt3WrCw4rGFW7Wrn5Ja17uanaga45WrW7XrWvgw1jyFn7tr17tF13K34UCr13GrW8Wr9F
+        q3ZFvrsxCwn8ZwUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUyEb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+        xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
+        AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+        x7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+        0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij
+        64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
+        8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE
+        2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
+        xK8VAvwI8IcIk0rVW3JVWrJr1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY
+        1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IUbHa0PUUUUU==
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQAMBF1jj5RUFAAAss
+X-CFilter-Loop: Reflected
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -42,97 +70,113 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The ASN.1 module in RFC 5280 appendix A.1 uses EXPLICIT TAGS whereas the
-one in appendix A.2 uses IMPLICIT TAGS.
+On Mon, 2023-09-04 at 15:34 +0200, Roberto Sassu wrote:
+> From: Roberto Sassu <roberto.sassu@huawei.com>
+> 
+> In preparation for moving IMA and EVM to the LSM infrastructure, introduce
+> the inode_post_setattr hook.
+> 
+> It is useful for EVM to recalculate the HMAC on modified file attributes
+> and other file metadata, after it verified the HMAC of current file
+> metadata with the inode_setattr hook.
+> 
+> LSMs should use the new hook instead of inode_setattr, when they need to
+> know that the operation was done successfully (not known in inode_setattr).
+> The new hook cannot return an error and cannot cause the operation to be
+> reverted.
+> 
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> ---
+>  fs/attr.c                     |  1 +
 
-The kernel's simplified asn1_compiler.c always uses EXPLICIT TAGS, hence
-definitions from appendix A.2 need to be annotated as IMPLICIT for the
-compiler to generate RFC-compliant code.
+Hi Christian, Al
 
-In particular, GeneralName is defined in appendix A.2:
+could you please review and ack patches 12-19, which touch the VFS?
 
-GeneralName ::= CHOICE {
-        otherName                       [0] OtherName,
-        ...
-        dNSName                         [2] IA5String,
-        x400Address                     [3] ORAddress,
-        directoryName                   [4] Name,
-        ...
-        }
+Thanks a lot!
 
-Because appendix A.2 uses IMPLICIT TAGS, the IA5String tag (0x16) of a
-dNSName is not rendered.  Instead, the string directly succeeds the
-[2] tag (0x82).
+Roberto
 
-Likewise, the SEQUENCE tag (0x30) of an OtherName is not rendered.
-Instead, only the constituents of the SEQUENCE are rendered:  An OID tag
-(0x06), a [0] tag (0xa0) and an ANY tag.  That's three consecutive tags
-instead of a single encompassing tag.
-
-The situation is different for x400Address and directoryName choices:
-They reference ORAddress and Name, which are defined in appendix A.1,
-therefore use EXPLICIT TAGS.
-
-The AKID ASN.1 module is missing several IMPLICIT annotations, hence
-isn't RFC-compliant.  In the unlikely event that an AKID contains other
-elements beside a directoryName, users may see parse errors.
-
-Add the missing annotations but do not tag this commit for stable as I
-am not aware of any issue reports.  Fixes are only eligible for stable
-if they're "obviously correct" and with ASN.1 there's no such thing.
-
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
----
-Found this while bringing up PCI device authentication, which involves
-validating the Subject Alternative Name in certificates.
-
-I double-checked all ASN.1 modules in the tree and this seems to be
-the only one affected by the issue.
-
- crypto/asymmetric_keys/x509_akid.asn1 | 24 +++++++++++++++++-------
- 1 file changed, 17 insertions(+), 7 deletions(-)
-
-diff --git a/crypto/asymmetric_keys/x509_akid.asn1 b/crypto/asymmetric_keys/x509_akid.asn1
-index 1a33231..c7818ff 100644
---- a/crypto/asymmetric_keys/x509_akid.asn1
-+++ b/crypto/asymmetric_keys/x509_akid.asn1
-@@ -14,15 +14,15 @@ CertificateSerialNumber ::= INTEGER ({ x509_akid_note_serial })
- GeneralNames ::= SEQUENCE OF GeneralName
- 
- GeneralName ::= CHOICE {
--	otherName			[0] ANY,
--	rfc822Name			[1] IA5String,
--	dNSName				[2] IA5String,
-+	otherName			[0] IMPLICIT OtherName,
-+	rfc822Name			[1] IMPLICIT IA5String,
-+	dNSName				[2] IMPLICIT IA5String,
- 	x400Address			[3] ANY,
- 	directoryName			[4] Name ({ x509_akid_note_name }),
--	ediPartyName			[5] ANY,
--	uniformResourceIdentifier	[6] IA5String,
--	iPAddress			[7] OCTET STRING,
--	registeredID			[8] OBJECT IDENTIFIER
-+	ediPartyName			[5] IMPLICIT EDIPartyName,
-+	uniformResourceIdentifier	[6] IMPLICIT IA5String,
-+	iPAddress			[7] IMPLICIT OCTET STRING,
-+	registeredID			[8] IMPLICIT OBJECT IDENTIFIER
- 	}
- 
- Name ::= SEQUENCE OF RelativeDistinguishedName
-@@ -33,3 +33,13 @@ AttributeValueAssertion ::= SEQUENCE {
- 	attributeType		OBJECT IDENTIFIER ({ x509_note_OID }),
- 	attributeValue		ANY ({ x509_extract_name_segment })
- 	}
-+
-+OtherName ::= SEQUENCE {
-+	type-id			OBJECT IDENTIFIER,
-+	value			[0] ANY
-+	}
-+
-+EDIPartyName ::= SEQUENCE {
-+	nameAssigner		[0] ANY OPTIONAL,
-+	partyName		[1] ANY
-+	}
--- 
-2.40.1
+>  include/linux/lsm_hook_defs.h |  2 ++
+>  include/linux/security.h      |  7 +++++++
+>  security/security.c           | 16 ++++++++++++++++
+>  4 files changed, 26 insertions(+)
+> 
+> diff --git a/fs/attr.c b/fs/attr.c
+> index 431f667726c7..3c309eb456c6 100644
+> --- a/fs/attr.c
+> +++ b/fs/attr.c
+> @@ -486,6 +486,7 @@ int notify_change(struct mnt_idmap *idmap, struct dentry *dentry,
+>  
+>  	if (!error) {
+>  		fsnotify_change(dentry, ia_valid);
+> +		security_inode_post_setattr(idmap, dentry, ia_valid);
+>  		ima_inode_post_setattr(idmap, dentry, ia_valid);
+>  		evm_inode_post_setattr(idmap, dentry, ia_valid);
+>  	}
+> diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+> index fdf075a6b1bb..995d30336cfa 100644
+> --- a/include/linux/lsm_hook_defs.h
+> +++ b/include/linux/lsm_hook_defs.h
+> @@ -136,6 +136,8 @@ LSM_HOOK(int, 0, inode_follow_link, struct dentry *dentry, struct inode *inode,
+>  LSM_HOOK(int, 0, inode_permission, struct inode *inode, int mask)
+>  LSM_HOOK(int, 0, inode_setattr, struct mnt_idmap *idmap, struct dentry *dentry,
+>  	 struct iattr *attr)
+> +LSM_HOOK(void, LSM_RET_VOID, inode_post_setattr, struct mnt_idmap *idmap,
+> +	 struct dentry *dentry, int ia_valid)
+>  LSM_HOOK(int, 0, inode_getattr, const struct path *path)
+>  LSM_HOOK(int, 0, inode_setxattr, struct mnt_idmap *idmap,
+>  	 struct dentry *dentry, const char *name, const void *value,
+> diff --git a/include/linux/security.h b/include/linux/security.h
+> index dcb3604ffab8..820899db5276 100644
+> --- a/include/linux/security.h
+> +++ b/include/linux/security.h
+> @@ -355,6 +355,8 @@ int security_inode_follow_link(struct dentry *dentry, struct inode *inode,
+>  int security_inode_permission(struct inode *inode, int mask);
+>  int security_inode_setattr(struct mnt_idmap *idmap,
+>  			   struct dentry *dentry, struct iattr *attr);
+> +void security_inode_post_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+> +				 int ia_valid);
+>  int security_inode_getattr(const struct path *path);
+>  int security_inode_setxattr(struct mnt_idmap *idmap,
+>  			    struct dentry *dentry, const char *name,
+> @@ -856,6 +858,11 @@ static inline int security_inode_setattr(struct mnt_idmap *idmap,
+>  	return 0;
+>  }
+>  
+> +static inline void
+> +security_inode_post_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+> +			    int ia_valid)
+> +{ }
+> +
+>  static inline int security_inode_getattr(const struct path *path)
+>  {
+>  	return 0;
+> diff --git a/security/security.c b/security/security.c
+> index 2b24d01cf181..764a6f28b3b9 100644
+> --- a/security/security.c
+> +++ b/security/security.c
+> @@ -2124,6 +2124,22 @@ int security_inode_setattr(struct mnt_idmap *idmap,
+>  }
+>  EXPORT_SYMBOL_GPL(security_inode_setattr);
+>  
+> +/**
+> + * security_inode_post_setattr() - Update the inode after a setattr operation
+> + * @idmap: idmap of the mount
+> + * @dentry: file
+> + * @ia_valid: file attributes set
+> + *
+> + * Update inode security field after successful setting file attributes.
+> + */
+> +void security_inode_post_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+> +				 int ia_valid)
+> +{
+> +	if (unlikely(IS_PRIVATE(d_backing_inode(dentry))))
+> +		return;
+> +	call_void_hook(inode_post_setattr, idmap, dentry, ia_valid);
+> +}
+> +
+>  /**
+>   * security_inode_getattr() - Check if getting file attributes is allowed
+>   * @path: file
 
