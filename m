@@ -2,192 +2,137 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C41C37ADD79
-	for <lists+keyrings@lfdr.de>; Mon, 25 Sep 2023 18:54:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5DCC7AE99D
+	for <lists+keyrings@lfdr.de>; Tue, 26 Sep 2023 11:55:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231393AbjIYQzA (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 25 Sep 2023 12:55:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53758 "EHLO
+        id S231843AbjIZJzP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 26 Sep 2023 05:55:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231343AbjIYQzA (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 25 Sep 2023 12:55:00 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16E42EE;
-        Mon, 25 Sep 2023 09:54:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF6DC433C8;
-        Mon, 25 Sep 2023 16:54:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695660893;
-        bh=SyZT2A0CSmuW9Kq1aYtg9sgERqEPr88gupKNQgHSb2c=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=fkHWlzi9pmmigRvIWcuLohwLaC39obOuitaBHnwMBw0C7SWKSUkhWo7CbjagnyhJg
-         EGFpQcY7ss044NVRWoIQNeRHn7YTvigivtrXVIvu5lFRM6A+rBiKTDAECNjI/fy4yf
-         WYKX80igbTpFFa3+DRYeZHj0oFLkBmgDOOvLz6TjTE53HTYWSQGjWLbeE5mjXLOcoQ
-         PtwepnxjXg0nG9wPGoTnh9D8F5E372z+wvt1H9DsQET6kOE4nFFJBkBmFFnHh2jvFu
-         uH5+FIKfR8RsJkTxiBgkdb54d9xvHmukr6CPgYYqP39cs9l3wzo3LY1ez3YVTgczfb
-         U6CoYHs22x9Gw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 25 Sep 2023 19:54:50 +0300
-Message-Id: <CVS5MB3X82Q8.8KDB4346ROR5@suppilovahvero>
-Cc:     "dhowells@redhat.com" <dhowells@redhat.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] certs: Add option to disallow non-CA certificates in
- secondary trusted keying
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Denis Glazkov" <d.glazkov@omp.ru>,
-        "Sergey Shtylyov" <s.shtylyov@omp.ru>
-X-Mailer: aerc 0.14.0
-References: <f5a1d856-0482-a2c3-0e62-3ca911ce3dd2@omp.ru>
- <20230908121330.4076-1-d.glazkov@omp.ru>
- <CVGEE9ODRR8I.1RIVO2MVE2UAX@suppilovahvero>
- <3bc6b569be0beff9f70d58b751088fd2cc798e93.camel@omp.ru>
-In-Reply-To: <3bc6b569be0beff9f70d58b751088fd2cc798e93.camel@omp.ru>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230037AbjIZJzM (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 26 Sep 2023 05:55:12 -0400
+X-Greylist: delayed 501 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 26 Sep 2023 02:55:05 PDT
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E486B3;
+        Tue, 26 Sep 2023 02:55:05 -0700 (PDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+         client-signature RSA-PSS (4096 bits) client-digest SHA256)
+        (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
+        by bmailout2.hostsharing.net (Postfix) with ESMTPS id 7A6762800BBE7;
+        Tue, 26 Sep 2023 11:46:40 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+        id 688211F230; Tue, 26 Sep 2023 11:46:40 +0200 (CEST)
+Message-Id: <be8ab09429d55c6cfc52ee0e43bf021ffb384152.1695720715.git.lukas@wunner.de>
+From:   Lukas Wunner <lukas@wunner.de>
+Date:   Tue, 26 Sep 2023 11:46:41 +0200
+Subject: [PATCH] X.509: Add missing IMPLICIT annotations to AKID ASN.1 module
+To:     David Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     Vivek Goyal <vgoyal@redhat.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Fri Sep 15, 2023 at 8:50 PM EEST, Denis Glazkov wrote:
-> On Tue, Sep 12 2023 at 01:15 AM +0300, Jarkko Sakkinen wrote:
-> > On Fri Sep 8, 2023 at 3:14 PM EEST, Denis Glazkov wrote:
-> > > The Linux kernel has an IMA (Integrity Measurement Architecture)
-> > > subsystem to check the integrity of the file system based on digital
-> > > signatures. IMA uses certificates in `.ima` keying to check integrity=
-.
-> > >=20
-> > > Only certificates issued by one of the trusted CA (Certificate Author=
-ity)
-> > > certificates can be added to the `.ima` keying.
-> > >=20
-> > > The Linux kernel now has a secondary trusted keying to which trusted
-> > > certificates from user space can be added if you have superuser
-> > > privileges. Previously, all trusted certificates were in the built-in
-> > > trusted keying, which could not be modified from user space.
-> > > Trusted certificates were placed in the built-in trusted keying at
-> > > kernel compile time.
-> > >=20
-> > > The secondary trusted keying is designed so that any certificates tha=
-t
-> > > are signed by one of the trusted CA certificates in the built-in or
-> > > secondary trusted keyring can be added to it.
-> > >=20
-> > > Let's imagine that we have the following certificate trust chain:
-> > >=20
-> > >              =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=90
-> > >              =E2=94=82                           =E2=94=82     =E2=94=
-=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90=
-       =E2=94=82
-> > >              =E2=94=82                           =E2=94=82     =E2=94=
-=82       =E2=94=82       =E2=94=82
-> > > =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90    =E2=94=
-=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=90  =E2=94=82 =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=B4=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90
-> > > =E2=94=82.builtin_trusted_keys=E2=94=82=E2=97=84=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=A4.secondary_trusted_keys =E2=94=9C=E2=94=80=E2=94=80=E2=94=98=
- =E2=94=82   .ima    =E2=94=82
-> > > =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4    =E2=94=
-=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=A4    =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4
-> > > =E2=94=82     Root CA Cert    =E2=94=82-----=E2=96=BA Intermediate CA=
- Cert  =E2=94=82-----=E2=96=BA IMA Cert =E2=94=82
-> > > =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98    =E2=94=
-=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=98    =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98
-> > >=20
-> > >                 Issues                  Restricted by
-> > >             -------------=E2=96=BA             =E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=96=BA
-> > >=20
-> > > Since the IMA certificate is signed by a CA certificate from a second=
-ary
-> > > trusted keying, an attacker with superuser privileges will be able to
-> > > add the IMA certificate to the secondary trusted keying. That is, the=
- IMA
-> > > certificate will become trusted.
-> > >=20
-> > > Since, with `CONFIG_MODULE_SIG` option enabled, modules can only be
-> > > loaded into kernel space if they are signed with one of the trusted
-> > > certificates, an attacker could sign untrusted kernel modules with
-> > > the private key corresponding to the IMA certificate and successfully
-> > > load the untrusted modules into kernel space.
-> > >=20
-> > > This patch adds the configuration that once enabled, only
-> > > certificates that meet the following requirements can be added
-> > > to the secondary trusted keying:
-> > >=20
-> > > 1. The certificate is a CA (Certificate Authority)
-> > > 2. The certificate must be used for verifying a CA's signatures
-> > > 3. The certificate must not be used for digital signatures
-> > >=20
-> > > Signed-off-by: Denis Glazkov <d.glazkov@omp.ru>
-> >=20
-> > s/keying/keyring/ (multiple)
-> >=20
-> > Have you considered instead making mod_verify_sig() more robust?
-> > Obviously this would mean making selection of keys in
-> > verify_pkcs7_signature() more robust (see the documentation of
-> > 'trusted_keys').
-> >=20
-> > The this would be also less niche feature to pick for distributors
-> > if it was just concerning module loading, and have associated config
-> > flag over there.
-> >=20
-> > BR, Jarkko
->
-> Jarkko, thank you for your suggestion.
->
-> This patch was created not to solve only the problem of loading
-> untrusted kernel modules, but to make it possible to use a secondary
-> trusted keying only as a part of a chain of trust containing only
-> CA certificates with no digital signature capability.
->
-> Let's imagine that tomorrow we have a new kernel feature, similar
-> to kernel modules in terms of its impact on system security, which
-> also uses trusted certificates for signature verification.
->
-> If at this point we solve only the problem of loading untrusted
-> kernel modules, and not the problem of the entire trusted keys
-> system, we will need to add a new kernel option each time to solve
-> a similar problem for each new kernel feature that uses trusted
-> certificates.
+The ASN.1 module in RFC 5280 appendix A.1 uses EXPLICIT TAGS whereas the
+one in appendix A.2 uses IMPLICIT TAGS.
 
-Ok, I guessed so but given what I read from commit message I had to ask :-)
+The kernel's simplified asn1_compiler.c always uses EXPLICIT TAGS, hence
+definitions from appendix A.2 need to be annotated as IMPLICIT for the
+compiler to generate RFC-compliant code.
 
-The description is very detailed and of good quality, and also what you
-say CONFIG_MODULE_SIG is just fine but for completeness it would be good
-to mention that purpose and goal is to fully close the gap with any
-possible feature that might go without CA certificates (*in addition*).
+In particular, GeneralName is defined in appendix A.2:
 
-> BR, Denis
+GeneralName ::= CHOICE {
+        otherName                       [0] OtherName,
+        ...
+        dNSName                         [2] IA5String,
+        x400Address                     [3] ORAddress,
+        directoryName                   [4] Name,
+        ...
+        }
 
-BR, Jarkko
+Because appendix A.2 uses IMPLICIT TAGS, the IA5String tag (0x16) of a
+dNSName is not rendered.  Instead, the string directly succeeds the
+[2] tag (0x82).
+
+Likewise, the SEQUENCE tag (0x30) of an OtherName is not rendered.
+Instead, only the constituents of the SEQUENCE are rendered:  An OID tag
+(0x06), a [0] tag (0xa0) and an ANY tag.  That's three consecutive tags
+instead of a single encompassing tag.
+
+The situation is different for x400Address and directoryName choices:
+They reference ORAddress and Name, which are defined in appendix A.1,
+therefore use EXPLICIT TAGS.
+
+The AKID ASN.1 module is missing several IMPLICIT annotations, hence
+isn't RFC-compliant.  In the unlikely event that an AKID contains other
+elements beside a directoryName, users may see parse errors.
+
+Add the missing annotations but do not tag this commit for stable as I
+am not aware of any issue reports.  Fixes are only eligible for stable
+if they're "obviously correct" and with ASN.1 there's no such thing.
+
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+---
+Found this while bringing up PCI device authentication, which involves
+validating the Subject Alternative Name in certificates.
+
+I double-checked all ASN.1 modules in the tree and this seems to be
+the only one affected by the issue.
+
+ crypto/asymmetric_keys/x509_akid.asn1 | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
+
+diff --git a/crypto/asymmetric_keys/x509_akid.asn1 b/crypto/asymmetric_keys/x509_akid.asn1
+index 1a33231..c7818ff 100644
+--- a/crypto/asymmetric_keys/x509_akid.asn1
++++ b/crypto/asymmetric_keys/x509_akid.asn1
+@@ -14,15 +14,15 @@ CertificateSerialNumber ::= INTEGER ({ x509_akid_note_serial })
+ GeneralNames ::= SEQUENCE OF GeneralName
+ 
+ GeneralName ::= CHOICE {
+-	otherName			[0] ANY,
+-	rfc822Name			[1] IA5String,
+-	dNSName				[2] IA5String,
++	otherName			[0] IMPLICIT OtherName,
++	rfc822Name			[1] IMPLICIT IA5String,
++	dNSName				[2] IMPLICIT IA5String,
+ 	x400Address			[3] ANY,
+ 	directoryName			[4] Name ({ x509_akid_note_name }),
+-	ediPartyName			[5] ANY,
+-	uniformResourceIdentifier	[6] IA5String,
+-	iPAddress			[7] OCTET STRING,
+-	registeredID			[8] OBJECT IDENTIFIER
++	ediPartyName			[5] IMPLICIT EDIPartyName,
++	uniformResourceIdentifier	[6] IMPLICIT IA5String,
++	iPAddress			[7] IMPLICIT OCTET STRING,
++	registeredID			[8] IMPLICIT OBJECT IDENTIFIER
+ 	}
+ 
+ Name ::= SEQUENCE OF RelativeDistinguishedName
+@@ -33,3 +33,13 @@ AttributeValueAssertion ::= SEQUENCE {
+ 	attributeType		OBJECT IDENTIFIER ({ x509_note_OID }),
+ 	attributeValue		ANY ({ x509_extract_name_segment })
+ 	}
++
++OtherName ::= SEQUENCE {
++	type-id			OBJECT IDENTIFIER,
++	value			[0] ANY
++	}
++
++EDIPartyName ::= SEQUENCE {
++	nameAssigner		[0] ANY OPTIONAL,
++	partyName		[1] ANY
++	}
+-- 
+2.40.1
+
