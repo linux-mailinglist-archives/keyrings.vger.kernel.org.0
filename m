@@ -2,215 +2,173 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3DDE7B0D75
-	for <lists+keyrings@lfdr.de>; Wed, 27 Sep 2023 22:31:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F1897B0F9C
+	for <lists+keyrings@lfdr.de>; Thu, 28 Sep 2023 01:46:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229595AbjI0UbH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 27 Sep 2023 16:31:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39208 "EHLO
+        id S229634AbjI0XqR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 27 Sep 2023 19:46:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjI0UbH (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 27 Sep 2023 16:31:07 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F7D9122
-        for <keyrings@vger.kernel.org>; Wed, 27 Sep 2023 13:31:04 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-3247d69ed2cso1538661f8f.0
-        for <keyrings@vger.kernel.org>; Wed, 27 Sep 2023 13:31:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1695846662; x=1696451462; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1bPQ4W+m4k6grk2QsqsO+u/OMm6oUavQe8VAaeMpNSM=;
-        b=BW6f9FnOowNXdemqNGSr9DVrx4990m1nUH2aWiyV2yZVmxNMyg/IXjg3rMvCOW+Qgh
-         scfMaWZuPPs+dwYHXD0oJYlLdmtB8+ltLCf4VZhNI1XFXuNajppg2oKNhvosn7JmKl3T
-         EU9dE2LKyj5r5MBo9uZJmwxkts8hSm+2Ga0WebP4qO0fTiS4miKG1WDy8WpyjLlGNJs6
-         DoI/lp/gnjnbeAXxAbu9qKvybTT30hp69fdy7jGCB4I23xT8i5taj7EA1zJWFq4yVJ7P
-         wzxY41RUbOvLvzYq7zsqB/hMPpidev2PkJR9RtALN+EbEegsVuZFb1+6JSFsgJ61pBBn
-         whaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695846662; x=1696451462;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1bPQ4W+m4k6grk2QsqsO+u/OMm6oUavQe8VAaeMpNSM=;
-        b=Afsiy3JzB2t4D68MlGwOUIfbFfwDCOv0dzSzcqA81Xzrq2Hky5SSa+lpGk6VdGNFsi
-         fKOMRJMS8U5l8qQb9scjUhCmsswG/UAjN7esQ1V8o52Du2YphVKTs3U4SnbMQBeo7wUV
-         wjLwJNgyf2240r6Qe7ZbnZRYcrtM1diEyi2hSlb68342vcFowBMTrVug77H+wkpE/vNH
-         yJp2VBKP63z1O+LAyXyXlDmfgHPxW794BSzFVJgWSik+PxZxXocf5z+6eE4bdCapr9B2
-         0d63oJ9a7mI2N90JYAh5BAQqjydanDFaael8niTVIMfLBMPSZzCvCPcn6prYaXXKnByb
-         kf1w==
-X-Gm-Message-State: AOJu0YwygO87MxMgwxezJDWo+DBMGntC8HywSuwYUCg8dQ8vpxPUIVUR
-        r22NRmEoKzbWTH/H4+OW08pwQ/KdkWKkmebQldjX+w==
-X-Google-Smtp-Source: AGHT+IGHhim/72mDyUSht5r5coAg+DnoIeszZ0PMJICln5voUh7kOaTJ+BemafS1Ina7CW/UDOHZ0LdSqDwwnM/oVG8=
-X-Received: by 2002:adf:ee4b:0:b0:31a:e972:3601 with SMTP id
- w11-20020adfee4b000000b0031ae9723601mr2637429wro.54.1695846662401; Wed, 27
- Sep 2023 13:31:02 -0700 (PDT)
+        with ESMTP id S229445AbjI0XqQ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 27 Sep 2023 19:46:16 -0400
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB9D4F4;
+        Wed, 27 Sep 2023 16:46:14 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id C2A775C25C4;
+        Wed, 27 Sep 2023 19:46:11 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Wed, 27 Sep 2023 19:46:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jfarr.cc; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm1; t=1695858371; x=1695944771; bh=G6
+        UCu/TfSXHA2VOhzGvLxdM7gLocfJLCtB0VrZapTnA=; b=gkrf6LLSJ4W6bIbZAg
+        RzRrvqvIMGENAZfJ2MuWXpjgmu3CDKFxyE+BUpA6eI0v3xoVi/7f82fM6Q8L1jyE
+        LuyTdQnTd4Z5C9oBPclRNfpOwVe2iuPmeAKumst+04vq4YaUT0Mkoz11P9D4I3BW
+        tKv1F8THI8SihsqqM6c8WLXpG32JuEjvxMiE8i2A+DYOuN3mTTpPuRjXOSgHyGp5
+        Q/E9/lxRTWLNuvrAVLGvn+XgXLP87DYLhgoBzhXvskZ7HoNFFFPdkN7KjT/NqwjD
+        kheq+mSyZZrd9CDjqPVbOlGteB1dFrZcaaaQKSQvTHGJgPOhHteExVIOZFPGBAYH
+        guTw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm2; t=1695858371; x=1695944771; bh=G6UCu/TfSXHA2
+        VOhzGvLxdM7gLocfJLCtB0VrZapTnA=; b=Hmm9fUuXDcXY0zLBnAEMqUgWwdkrA
+        rm5nPnXd8wmybWfO5FfyDR7VseP1xVciL1FmdrCIbhJRKZ1npjJKOpySufVgilJ+
+        vwAvpA70ByYJ+MYfT0v8uVhF6mL6M9+SVRM85ZKZrEu76LxDSbowR4Hn6+aOoCVF
+        FgP4zK5KVpZgNpkyX1+n/pcyCl5QbqC0CKflTmOr9HkiCY6MuMwPqJFoGRSlq3E5
+        mZs9v/uKVOCQbsDYjo0SCp7WzTFmB1eeyqkUuYRN1pgPO+5myu6m/Qwjxh9xEw1m
+        zdVM0T0joL1gdyL8WLzgufoRRJKU3IU2gICpoo8+gseEP36h7DU67lqjQ==
+X-ME-Sender: <xms:w74UZUGHeKWbHFUQ89FiZrSRFLRZgQ-TJf_NlDR79AgyrHqcNN9x-Q>
+    <xme:w74UZdUYuBN8owHxwAIabVQK0zonvgI4gL4fnFW2KXKp-mToXsCdEAEB6dU4Y5GdH
+    8wXITcsSbXJb7xpDJ8>
+X-ME-Received: <xmr:w74UZeJIbl2ZOqSzTq-XWIlwSFZdRHCcggijAa1m8saJbUhACg9mg9qXilOJrJjua3JJT_ZMjqlleeAGlWuW54N_Hg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvjedrtdehgddviecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
+    hrlhcuvffnffculdduhedmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    vdenucfhrhhomheplfgrnhcujfgvnhgurhhikhcuhfgrrhhruceokhgvrhhnvghlsehjfh
+    grrhhrrdgttgeqnecuggftrfgrthhtvghrnhepffefjeffveegjeduieevkedtieevfeeg
+    gffhffevueejfefhfeffvddvgfeivdehnecuffhomhgrihhnpehgihhthhhusgdrtghomh
+    enucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkvghr
+    nhgvlhesjhhfrghrrhdrtggt
+X-ME-Proxy: <xmx:w74UZWGAq05zu-YoceKhnkzl4U5tslkxAnBjpJegOjNxpcwLBoMDew>
+    <xmx:w74UZaWTDEhuxjVOt4aNPiS2RhoTYoTZeQuk1cd8ksjD09bFkUokRQ>
+    <xmx:w74UZZO3A61IEoE9FBL_xddZMINYhIenZVs51JsmrwM0RsMBDthseg>
+    <xmx:w74UZRMeebJ4ohThUUrTJUPsvLE1Mj2QR6myIGaKI0MsCML3ZWUvKw>
+Feedback-ID: i01d149f8:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 27 Sep 2023 19:46:08 -0400 (EDT)
+Date:   Thu, 28 Sep 2023 01:46:06 +0200
+From:   Jan Hendrik Farr <kernel@jfarr.cc>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Pingfan Liu <piliu@redhat.com>, Pingfan Liu <kernelfans@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
+        kexec@lists.infradead.org, Baoquan He <bhe@redhat.com>,
+        Dave Young <dyoung@redhat.com>,
+        Philipp Rudo <prudo@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, keyrings@vger.kernel.org,
+        Luca Boccassi <bluca@debian.org>, lennart@poettering.net,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, mjg59@google.com,
+        James.Bottomley@hansenpartnership.com
+Subject: Re: [PATCH 0/2] Sign the Image which is zboot's payload
+Message-ID: <ZRS-vnMyjZRKRLhT@desktop>
+References: <20230921133703.39042-1-kernelfans@gmail.com>
+ <ZQ0j6Es88aR8cjRv@desktop>
+ <CAF+s44R0ty0-aV+Amw2pL58YGa4JHt_y0WpiDMzehULPiC_aJw@mail.gmail.com>
+ <CAMj1kXF0rZ0Ej-+x__E9=Ca8Mesb+N+35etqiUzEMzhRR6trCg@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230908153056.3503975-1-gjoyce@linux.vnet.ibm.com>
- <20230908153056.3503975-2-gjoyce@linux.vnet.ibm.com> <20230913165612.GA2213586@dev-arch.thelio-3990X>
- <CAKwvOdnbKA-DiWRorWMR93JPFX-OjUjO=SQXSRf4=DpwzvZ=pQ@mail.gmail.com> <d07b66c55e957c78aff8ab9a6170747832cbc8c5.camel@linux.vnet.ibm.com>
-In-Reply-To: <d07b66c55e957c78aff8ab9a6170747832cbc8c5.camel@linux.vnet.ibm.com>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Wed, 27 Sep 2023 13:30:47 -0700
-Message-ID: <CAKwvOd=K_xNK71DpivVsyKOKWPo1XG78zGsAdZTWvj=tHmh2ZQ@mail.gmail.com>
-Subject: Re: [PATCH v7 1/3 RESEND] block:sed-opal: SED Opal keystore
-To:     gjoyce@linux.vnet.ibm.com
-Cc:     Nathan Chancellor <nathan@kernel.org>, linux-block@vger.kernel.org,
-        axboe@kernel.dk, jarkko@kernel.org, linuxppc-dev@lists.ozlabs.org,
-        jonathan.derrick@linux.dev, brking@linux.vnet.ibm.com,
-        msuchanek@suse.de, mpe@ellerman.id.au, nayna@linux.ibm.com,
-        akpm@linux-foundation.org, keyrings@vger.kernel.org,
-        llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXF0rZ0Ej-+x__E9=Ca8Mesb+N+35etqiUzEMzhRR6trCg@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Sep 27, 2023 at 1:26=E2=80=AFPM Greg Joyce <gjoyce@linux.vnet.ibm.c=
-om> wrote:
+On 25 08:55:46, Ard Biesheuvel wrote:
+> On Mon, 25 Sept 2023 at 03:01, Pingfan Liu <piliu@redhat.com> wrote:
 >
-> On Wed, 2023-09-13 at 13:49 -0700, Nick Desaulniers wrote:
-> > On Wed, Sep 13, 2023 at 9:56=E2=80=AFAM Nathan Chancellor <nathan@kerne=
-l.org>
-> > wrote:
-> > > Hi Greg,
+> [...]
+>
+> > > 4. How can we debug the stubs that are being invoked?
+> > > 5. Can we let the EFI binary know that this is a kexec and not a normal
+> > > bootup. Potentially systemd-stub would want to change how/if it does TPM
+> > > PCR measurements.
+> > > ...
 > > >
-> > > On Fri, Sep 08, 2023 at 10:30:54AM -0500, gjoyce@linux.vnet.ibm.com
-> > >  wrote:
-> > > > From: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-> > > >
-> > > > Add read and write functions that allow SED Opal keys to stored
-> > > > in a permanent keystore.
-> > > >
-> > > > Signed-off-by: Greg Joyce <gjoyce@linux.vnet.ibm.com>
-> > > > Reviewed-by: Jonathan Derrick <jonathan.derrick@linux.dev>
-> > > > ---
-> > > >  block/Makefile               |  2 +-
-> > > >  block/sed-opal-key.c         | 24 ++++++++++++++++++++++++
-> > > >  include/linux/sed-opal-key.h | 15 +++++++++++++++
-> > > >  3 files changed, 40 insertions(+), 1 deletion(-)
-> > > >  create mode 100644 block/sed-opal-key.c
-> > > >  create mode 100644 include/linux/sed-opal-key.h
-> > > >
-> > > > diff --git a/block/Makefile b/block/Makefile
-> > > > index 46ada9dc8bbf..ea07d80402a6 100644
-> > > > --- a/block/Makefile
-> > > > +++ b/block/Makefile
-> > > > @@ -34,7 +34,7 @@ obj-$(CONFIG_BLK_DEV_ZONED) +=3D blk-zoned.o
-> > > >  obj-$(CONFIG_BLK_WBT)                +=3D blk-wbt.o
-> > > >  obj-$(CONFIG_BLK_DEBUG_FS)   +=3D blk-mq-debugfs.o
-> > > >  obj-$(CONFIG_BLK_DEBUG_FS_ZONED)+=3D blk-mq-debugfs-zoned.o
-> > > > -obj-$(CONFIG_BLK_SED_OPAL)   +=3D sed-opal.o
-> > > > +obj-$(CONFIG_BLK_SED_OPAL)   +=3D sed-opal.o sed-opal-key.o
-> > > >  obj-$(CONFIG_BLK_PM)         +=3D blk-pm.o
-> > > >  obj-$(CONFIG_BLK_INLINE_ENCRYPTION)  +=3D blk-crypto.o blk-crypto-
-> > > > profile.o \
-> > > >                                          blk-crypto-sysfs.o
-> > > > diff --git a/block/sed-opal-key.c b/block/sed-opal-key.c
-> > > > new file mode 100644
-> > > > index 000000000000..16f380164c44
-> > > > --- /dev/null
-> > > > +++ b/block/sed-opal-key.c
-> > > > @@ -0,0 +1,24 @@
-> > > > +// SPDX-License-Identifier: GPL-2.0-only
-> > > > +/*
-> > > > + * SED key operations.
-> > > > + *
-> > > > + * Copyright (C) 2022 IBM Corporation
-> > > > + *
-> > > > + * These are the accessor functions (read/write) for SED Opal
-> > > > + * keys. Specific keystores can provide overrides.
-> > > > + *
-> > > > + */
-> > > > +
-> > > > +#include <linux/kernel.h>
-> > > > +#include <linux/errno.h>
-> > > > +#include <linux/sed-opal-key.h>
-> > > > +
-> > > > +int __weak sed_read_key(char *keyname, char *key, u_int *keylen)
-> > > > +{
-> > > > +     return -EOPNOTSUPP;
-> > > > +}
-> > > > +
-> > > > +int __weak sed_write_key(char *keyname, char *key, u_int keylen)
-> > > > +{
-> > > > +     return -EOPNOTSUPP;
-> > > > +}
-> > >
-> > > This change causes a build failure for certain clang configurations
-> > > due
-> > > to an unfortunate issue [1] with recordmcount, clang's integrated
-> > > assembler, and object files that contain a section with only weak
-> > > functions/symbols (in this case, the .text section in sed-opal-
-> > > key.c),
-> > > resulting in
-> > >
-> > >   Cannot find symbol for section 2: .text.
-> > >   block/sed-opal-key.o: failed
-> > >
-> > > when building this file.
 > >
-> > The definitions in
-> > block/sed-opal-key.c
-> > should be deleted. Instead, in
-> > include/linux/sed-opal-key.h
-> > CONFIG_PSERIES_PLPKS_SED should be used to define static inline
-> > versions when CONFIG_PSERIES_PLPKS_SED is not defined.
-> >
-> > #ifdef CONFIG_PSERIES_PLPKS_SED
-> > int sed_read_key(char *keyname, char *key, u_int *keylen);
-> > int sed_write_key(char *keyname, char *key, u_int keylen);
-> > #else
-> > static inline
-> > int sed_read_key(char *keyname, char *key, u_int *keylen) {
-> >   return -EOPNOTSUPP;
-> > }
-> > static inline
-> > int sed_write_key(char *keyname, char *key, u_int keylen);
-> >   return -EOPNOTSUPP;
-> > }
-> > #endif
->
-> This change will certainly work for pseries. The intent of the weak
-> functions was to allow a different unknown permanent keystore to be the
-> source for seeding SED Opal keys. It also kept platform specific code
-> out of the block directory.
->
-> I'm happy to switch to the approach above, if losing those two goals
-> isn't a concern.
+> 
+> Not sure whether this matters. The TPM logic is exposed via EFI
+> protocols, and the kernel could either expose them or not. If it does,
+> and we execute the EFI stub (sytemd-stub) code all the way through to
+> ExitBootServices() while executing in the old kernel, we could even
+> take PCR measurements and display them, giving us secure and measured
+> boot for kexec.
+> 
 
-Assuming those would have mutually exclusive KConfigs, then the
-pattern I describe would be preferred.
+I think we should definitely delay any of the measurements until
+ExitBootServices(). We don't wan't measurements of a kernel that is not
+running and might even get unloaded before being kexec'ed to make their
+way into the TPM.
 
->
+> > Besides these questions, I wonder whether a highly configured EDK2 can
+> > be used as the stub (ArmVirtQemuKernel.dsc can be the start point).
+> > But there should be efforts to exclude the drivers which have the MMIO
+> > access. I saw Ard is active in EDK2, maybe that is the reason why he
+> > did not pick up EDK2 to serve the stub.
 > >
-> > > Is there any real reason to have a separate translation unit for
-> > > these
-> > > two functions versus just having them living in sed-opal.c? Those
-> > > two
-> > > object files share the same Kconfig dependency. I am happy to send
-> > > a
-> > > patch if that is an acceptable approach.
-> > >
-> > > [1]: https://github.com/ClangBuiltLinux/linux/issues/981
-> > >
-> > > Cheers,
-> > > Nathan
-> > >
-> >
-> >
->
+> 
+> I don't think EDK2 is suitable for this - the code style is different,
+> the license is different and it is simply a lot of code.
+> 
+> What I would prefer is to define a subset of the EFI boot services
+> that we actually rely on, and perhaps even introduce some other
+> constraints on the EFI code, e.g., allow it to run unprivileged.
+> 
+> That way, kexec could execute the EFI stub as an ordinary user process
+> (to some extent), including allocations for the decompressed kernel,
+> initrd, etc. Finally, the only thing purgatory would need to do is
+> linearize the populated regions in the VA space and copy them to
+> physical memory.
+> 
+> This all sounds very high-level, and there may be some difficulties
+> down the road, but I think this deserves a proper look because it is
+> an appealing way to make EFI execution idempotent in the context of
+> kexec, and also reduces the arch-specific logic substantially.
 
+I just started work on a proof-of-concept implementation of this [1]. It's
+kinda unorganized and early right now though. Currently just testing with
+executing a bzimage with the normal EFI stub on x86. At this point it starts
+executing the EFI stub which checks efi_system_table->hdr.signature for the
+correct signature (which I have not set yet). That causes the EFI stub to
+exit. It does correctly call the exit function from my provided boot services
+table and the correct ExitStatus gets logged in dmesg. So it's able to call
+into my boot services correctly.
 
---=20
-Thanks,
-~Nick Desaulniers
+This is definitly the most low level code I've ever written though, so
+I'm just learning this stuff.
+
+Next I'll work on setting up a proper memory mapping for the EFI
+application.
+
+After that I'll work on implementing the needed boot services and
+protocols.
+
+[1] https://github.com/Cydox/linux/commits/kexec-uefi
+
+--
+
+Jan
