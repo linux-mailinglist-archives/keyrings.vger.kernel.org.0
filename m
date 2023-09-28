@@ -2,173 +2,202 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F1897B0F9C
-	for <lists+keyrings@lfdr.de>; Thu, 28 Sep 2023 01:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AFBB7B242C
+	for <lists+keyrings@lfdr.de>; Thu, 28 Sep 2023 19:41:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229634AbjI0XqR (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 27 Sep 2023 19:46:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39200 "EHLO
+        id S232032AbjI1RlV (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 28 Sep 2023 13:41:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjI0XqQ (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 27 Sep 2023 19:46:16 -0400
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB9D4F4;
-        Wed, 27 Sep 2023 16:46:14 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id C2A775C25C4;
-        Wed, 27 Sep 2023 19:46:11 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Wed, 27 Sep 2023 19:46:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jfarr.cc; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1695858371; x=1695944771; bh=G6
-        UCu/TfSXHA2VOhzGvLxdM7gLocfJLCtB0VrZapTnA=; b=gkrf6LLSJ4W6bIbZAg
-        RzRrvqvIMGENAZfJ2MuWXpjgmu3CDKFxyE+BUpA6eI0v3xoVi/7f82fM6Q8L1jyE
-        LuyTdQnTd4Z5C9oBPclRNfpOwVe2iuPmeAKumst+04vq4YaUT0Mkoz11P9D4I3BW
-        tKv1F8THI8SihsqqM6c8WLXpG32JuEjvxMiE8i2A+DYOuN3mTTpPuRjXOSgHyGp5
-        Q/E9/lxRTWLNuvrAVLGvn+XgXLP87DYLhgoBzhXvskZ7HoNFFFPdkN7KjT/NqwjD
-        kheq+mSyZZrd9CDjqPVbOlGteB1dFrZcaaaQKSQvTHGJgPOhHteExVIOZFPGBAYH
-        guTw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm2; t=1695858371; x=1695944771; bh=G6UCu/TfSXHA2
-        VOhzGvLxdM7gLocfJLCtB0VrZapTnA=; b=Hmm9fUuXDcXY0zLBnAEMqUgWwdkrA
-        rm5nPnXd8wmybWfO5FfyDR7VseP1xVciL1FmdrCIbhJRKZ1npjJKOpySufVgilJ+
-        vwAvpA70ByYJ+MYfT0v8uVhF6mL6M9+SVRM85ZKZrEu76LxDSbowR4Hn6+aOoCVF
-        FgP4zK5KVpZgNpkyX1+n/pcyCl5QbqC0CKflTmOr9HkiCY6MuMwPqJFoGRSlq3E5
-        mZs9v/uKVOCQbsDYjo0SCp7WzTFmB1eeyqkUuYRN1pgPO+5myu6m/Qwjxh9xEw1m
-        zdVM0T0joL1gdyL8WLzgufoRRJKU3IU2gICpoo8+gseEP36h7DU67lqjQ==
-X-ME-Sender: <xms:w74UZUGHeKWbHFUQ89FiZrSRFLRZgQ-TJf_NlDR79AgyrHqcNN9x-Q>
-    <xme:w74UZdUYuBN8owHxwAIabVQK0zonvgI4gL4fnFW2KXKp-mToXsCdEAEB6dU4Y5GdH
-    8wXITcsSbXJb7xpDJ8>
-X-ME-Received: <xmr:w74UZeJIbl2ZOqSzTq-XWIlwSFZdRHCcggijAa1m8saJbUhACg9mg9qXilOJrJjua3JJT_ZMjqlleeAGlWuW54N_Hg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvjedrtdehgddviecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfg
-    hrlhcuvffnffculdduhedmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
-    vdenucfhrhhomheplfgrnhcujfgvnhgurhhikhcuhfgrrhhruceokhgvrhhnvghlsehjfh
-    grrhhrrdgttgeqnecuggftrfgrthhtvghrnhepffefjeffveegjeduieevkedtieevfeeg
-    gffhffevueejfefhfeffvddvgfeivdehnecuffhomhgrihhnpehgihhthhhusgdrtghomh
-    enucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkvghr
-    nhgvlhesjhhfrghrrhdrtggt
-X-ME-Proxy: <xmx:w74UZWGAq05zu-YoceKhnkzl4U5tslkxAnBjpJegOjNxpcwLBoMDew>
-    <xmx:w74UZaWTDEhuxjVOt4aNPiS2RhoTYoTZeQuk1cd8ksjD09bFkUokRQ>
-    <xmx:w74UZZO3A61IEoE9FBL_xddZMINYhIenZVs51JsmrwM0RsMBDthseg>
-    <xmx:w74UZRMeebJ4ohThUUrTJUPsvLE1Mj2QR6myIGaKI0MsCML3ZWUvKw>
-Feedback-ID: i01d149f8:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 27 Sep 2023 19:46:08 -0400 (EDT)
-Date:   Thu, 28 Sep 2023 01:46:06 +0200
-From:   Jan Hendrik Farr <kernel@jfarr.cc>
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     Pingfan Liu <piliu@redhat.com>, Pingfan Liu <kernelfans@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-efi@vger.kernel.org,
-        kexec@lists.infradead.org, Baoquan He <bhe@redhat.com>,
-        Dave Young <dyoung@redhat.com>,
-        Philipp Rudo <prudo@redhat.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, keyrings@vger.kernel.org,
-        Luca Boccassi <bluca@debian.org>, lennart@poettering.net,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, mjg59@google.com,
-        James.Bottomley@hansenpartnership.com
-Subject: Re: [PATCH 0/2] Sign the Image which is zboot's payload
-Message-ID: <ZRS-vnMyjZRKRLhT@desktop>
-References: <20230921133703.39042-1-kernelfans@gmail.com>
- <ZQ0j6Es88aR8cjRv@desktop>
- <CAF+s44R0ty0-aV+Amw2pL58YGa4JHt_y0WpiDMzehULPiC_aJw@mail.gmail.com>
- <CAMj1kXF0rZ0Ej-+x__E9=Ca8Mesb+N+35etqiUzEMzhRR6trCg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXF0rZ0Ej-+x__E9=Ca8Mesb+N+35etqiUzEMzhRR6trCg@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S232102AbjI1RlT (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 28 Sep 2023 13:41:19 -0400
+X-Greylist: delayed 427 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 28 Sep 2023 10:41:17 PDT
+Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [IPv6:2a01:4f8:150:2161:1:b009:f236:0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03B7819D;
+        Thu, 28 Sep 2023 10:41:16 -0700 (PDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+         client-signature RSA-PSS (4096 bits) client-digest SHA256)
+        (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
+        by mailout3.hostsharing.net (Postfix) with ESMTPS id 5803810029AD0;
+        Thu, 28 Sep 2023 19:34:07 +0200 (CEST)
+Received: from localhost (unknown [89.246.108.87])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by h08.hostsharing.net (Postfix) with ESMTPSA id 0D11B60E0037;
+        Thu, 28 Sep 2023 19:34:07 +0200 (CEST)
+X-Mailbox-Line: From e3d7c94d89e09a6985ac2bf0a6d192b007f454bf Mon Sep 17 00:00:00 2001
+Message-Id: <e3d7c94d89e09a6985ac2bf0a6d192b007f454bf.1695921657.git.lukas@wunner.de>
+In-Reply-To: <cover.1695921656.git.lukas@wunner.de>
+References: <cover.1695921656.git.lukas@wunner.de>
+From:   Lukas Wunner <lukas@wunner.de>
+Date:   Thu, 28 Sep 2023 19:32:32 +0200
+Subject: [PATCH 01/12] X.509: Make certificate parser public
+To:     Bjorn Helgaas <helgaas@kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        <linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+        <linux-coco@lists.linux.dev>, <keyrings@vger.kernel.org>,
+        <linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>
+Cc:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        <linuxarm@huawei.com>, David Box <david.e.box@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        "Li, Ming" <ming4.li@intel.com>, Zhi Wang <zhi.a.wang@intel.com>,
+        Alistair Francis <alistair.francis@wdc.com>,
+        Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+        Alexey Kardashevskiy <aik@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Alexander Graf <graf@amazon.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On 25 08:55:46, Ard Biesheuvel wrote:
-> On Mon, 25 Sept 2023 at 03:01, Pingfan Liu <piliu@redhat.com> wrote:
->
-> [...]
->
-> > > 4. How can we debug the stubs that are being invoked?
-> > > 5. Can we let the EFI binary know that this is a kexec and not a normal
-> > > bootup. Potentially systemd-stub would want to change how/if it does TPM
-> > > PCR measurements.
-> > > ...
-> > >
-> >
-> 
-> Not sure whether this matters. The TPM logic is exposed via EFI
-> protocols, and the kernel could either expose them or not. If it does,
-> and we execute the EFI stub (sytemd-stub) code all the way through to
-> ExitBootServices() while executing in the old kernel, we could even
-> take PCR measurements and display them, giving us secure and measured
-> boot for kexec.
-> 
+The upcoming support for PCI device authentication with CMA-SPDM
+(PCIe r6.1 sec 6.31) requires validating the Subject Alternative Name
+in X.509 certificates.
 
-I think we should definitely delay any of the measurements until
-ExitBootServices(). We don't wan't measurements of a kernel that is not
-running and might even get unloaded before being kexec'ed to make their
-way into the TPM.
+High-level functions for X.509 parsing such as key_create_or_update()
+throw away the internal, low-level struct x509_certificate after
+extracting the struct public_key and public_key_signature from it.
+The Subject Alternative Name is thus inaccessible when using those
+functions.
 
-> > Besides these questions, I wonder whether a highly configured EDK2 can
-> > be used as the stub (ArmVirtQemuKernel.dsc can be the start point).
-> > But there should be efforts to exclude the drivers which have the MMIO
-> > access. I saw Ard is active in EDK2, maybe that is the reason why he
-> > did not pick up EDK2 to serve the stub.
-> >
-> 
-> I don't think EDK2 is suitable for this - the code style is different,
-> the license is different and it is simply a lot of code.
-> 
-> What I would prefer is to define a subset of the EFI boot services
-> that we actually rely on, and perhaps even introduce some other
-> constraints on the EFI code, e.g., allow it to run unprivileged.
-> 
-> That way, kexec could execute the EFI stub as an ordinary user process
-> (to some extent), including allocations for the decompressed kernel,
-> initrd, etc. Finally, the only thing purgatory would need to do is
-> linearize the populated regions in the VA space and copy them to
-> physical memory.
-> 
-> This all sounds very high-level, and there may be some difficulties
-> down the road, but I think this deserves a proper look because it is
-> an appealing way to make EFI execution idempotent in the context of
-> kexec, and also reduces the arch-specific logic substantially.
+Afford CMA-SPDM access to the Subject Alternative Name by making struct
+x509_certificate public, together with the functions for parsing an
+X.509 certificate into such a struct and freeing such a struct.
 
-I just started work on a proof-of-concept implementation of this [1]. It's
-kinda unorganized and early right now though. Currently just testing with
-executing a bzimage with the normal EFI stub on x86. At this point it starts
-executing the EFI stub which checks efi_system_table->hdr.signature for the
-correct signature (which I have not set yet). That causes the EFI stub to
-exit. It does correctly call the exit function from my provided boot services
-table and the correct ExitStatus gets logged in dmesg. So it's able to call
-into my boot services correctly.
+The private header file x509_parser.h previously included <linux/time.h>
+for the definition of time64_t.  That definition was since moved to
+<linux/time64.h> by commit 361a3bf00582 ("time64: Add time64.h header
+and define struct timespec64"), so adjust the #include directive as part
+of the move to the new public header file <keys/x509-parser.h>.
 
-This is definitly the most low level code I've ever written though, so
-I'm just learning this stuff.
+No functional change intended.
 
-Next I'll work on setting up a proper memory mapping for the EFI
-application.
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+---
+ crypto/asymmetric_keys/x509_parser.h | 37 +----------------------
+ include/keys/x509-parser.h           | 44 ++++++++++++++++++++++++++++
+ 2 files changed, 45 insertions(+), 36 deletions(-)
+ create mode 100644 include/keys/x509-parser.h
 
-After that I'll work on implementing the needed boot services and
-protocols.
+diff --git a/crypto/asymmetric_keys/x509_parser.h b/crypto/asymmetric_keys/x509_parser.h
+index a299c9c56f40..a7ef43c39002 100644
+--- a/crypto/asymmetric_keys/x509_parser.h
++++ b/crypto/asymmetric_keys/x509_parser.h
+@@ -5,40 +5,7 @@
+  * Written by David Howells (dhowells@redhat.com)
+  */
+ 
+-#include <linux/time.h>
+-#include <crypto/public_key.h>
+-#include <keys/asymmetric-type.h>
+-
+-struct x509_certificate {
+-	struct x509_certificate *next;
+-	struct x509_certificate *signer;	/* Certificate that signed this one */
+-	struct public_key *pub;			/* Public key details */
+-	struct public_key_signature *sig;	/* Signature parameters */
+-	char		*issuer;		/* Name of certificate issuer */
+-	char		*subject;		/* Name of certificate subject */
+-	struct asymmetric_key_id *id;		/* Issuer + Serial number */
+-	struct asymmetric_key_id *skid;		/* Subject + subjectKeyId (optional) */
+-	time64_t	valid_from;
+-	time64_t	valid_to;
+-	const void	*tbs;			/* Signed data */
+-	unsigned	tbs_size;		/* Size of signed data */
+-	unsigned	raw_sig_size;		/* Size of signature */
+-	const void	*raw_sig;		/* Signature data */
+-	const void	*raw_serial;		/* Raw serial number in ASN.1 */
+-	unsigned	raw_serial_size;
+-	unsigned	raw_issuer_size;
+-	const void	*raw_issuer;		/* Raw issuer name in ASN.1 */
+-	const void	*raw_subject;		/* Raw subject name in ASN.1 */
+-	unsigned	raw_subject_size;
+-	unsigned	raw_skid_size;
+-	const void	*raw_skid;		/* Raw subjectKeyId in ASN.1 */
+-	unsigned	index;
+-	bool		seen;			/* Infinite recursion prevention */
+-	bool		verified;
+-	bool		self_signed;		/* T if self-signed (check unsupported_sig too) */
+-	bool		unsupported_sig;	/* T if signature uses unsupported crypto */
+-	bool		blacklisted;
+-};
++#include <keys/x509-parser.h>
+ 
+ /*
+  * selftest.c
+@@ -52,8 +19,6 @@ static inline int fips_signature_selftest(void) { return 0; }
+ /*
+  * x509_cert_parser.c
+  */
+-extern void x509_free_certificate(struct x509_certificate *cert);
+-extern struct x509_certificate *x509_cert_parse(const void *data, size_t datalen);
+ extern int x509_decode_time(time64_t *_t,  size_t hdrlen,
+ 			    unsigned char tag,
+ 			    const unsigned char *value, size_t vlen);
+diff --git a/include/keys/x509-parser.h b/include/keys/x509-parser.h
+new file mode 100644
+index 000000000000..7c2ebc84791f
+--- /dev/null
++++ b/include/keys/x509-parser.h
+@@ -0,0 +1,44 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* X.509 certificate parser
++ *
++ * Copyright (C) 2012 Red Hat, Inc. All Rights Reserved.
++ * Written by David Howells (dhowells@redhat.com)
++ */
++
++#include <crypto/public_key.h>
++#include <keys/asymmetric-type.h>
++#include <linux/time64.h>
++
++struct x509_certificate {
++	struct x509_certificate *next;
++	struct x509_certificate *signer;	/* Certificate that signed this one */
++	struct public_key *pub;			/* Public key details */
++	struct public_key_signature *sig;	/* Signature parameters */
++	char		*issuer;		/* Name of certificate issuer */
++	char		*subject;		/* Name of certificate subject */
++	struct asymmetric_key_id *id;		/* Issuer + Serial number */
++	struct asymmetric_key_id *skid;		/* Subject + subjectKeyId (optional) */
++	time64_t	valid_from;
++	time64_t	valid_to;
++	const void	*tbs;			/* Signed data */
++	unsigned	tbs_size;		/* Size of signed data */
++	unsigned	raw_sig_size;		/* Size of signature */
++	const void	*raw_sig;		/* Signature data */
++	const void	*raw_serial;		/* Raw serial number in ASN.1 */
++	unsigned	raw_serial_size;
++	unsigned	raw_issuer_size;
++	const void	*raw_issuer;		/* Raw issuer name in ASN.1 */
++	const void	*raw_subject;		/* Raw subject name in ASN.1 */
++	unsigned	raw_subject_size;
++	unsigned	raw_skid_size;
++	const void	*raw_skid;		/* Raw subjectKeyId in ASN.1 */
++	unsigned	index;
++	bool		seen;			/* Infinite recursion prevention */
++	bool		verified;
++	bool		self_signed;		/* T if self-signed (check unsupported_sig too) */
++	bool		unsupported_sig;	/* T if signature uses unsupported crypto */
++	bool		blacklisted;
++};
++
++struct x509_certificate *x509_cert_parse(const void *data, size_t datalen);
++void x509_free_certificate(struct x509_certificate *cert);
+-- 
+2.40.1
 
-[1] https://github.com/Cydox/linux/commits/kexec-uefi
-
---
-
-Jan
