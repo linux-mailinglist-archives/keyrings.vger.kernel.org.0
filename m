@@ -2,168 +2,166 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7F3B7B5095
-	for <lists+keyrings@lfdr.de>; Mon,  2 Oct 2023 12:46:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C92A7B581F
+	for <lists+keyrings@lfdr.de>; Mon,  2 Oct 2023 18:56:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236437AbjJBKq5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 2 Oct 2023 06:46:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52680 "EHLO
+        id S237990AbjJBQpF (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 2 Oct 2023 12:45:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236429AbjJBKq4 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 2 Oct 2023 06:46:56 -0400
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E92C9D;
-        Mon,  2 Oct 2023 03:46:48 -0700 (PDT)
-Received: from msexch01.omp.ru (10.188.4.12) by msexch01.omp.ru (10.188.4.12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Mon, 2 Oct 2023
- 13:46:40 +0300
-Received: from msexch01.omp.ru ([fe80::4020:d881:621a:6b6b]) by
- msexch01.omp.ru ([fe80::4020:d881:621a:6b6b%5]) with mapi id 15.02.0986.014;
- Mon, 2 Oct 2023 13:46:40 +0300
-From:   Denis Glazkov <d.glazkov@omp.ru>
-To:     "jarkko@kernel.org" <jarkko@kernel.org>
-CC:     Denis Glazkov <d.glazkov@omp.ru>,
-        "dhowells@redhat.com" <dhowells@redhat.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Sergey Shtylyov" <s.shtylyov@omp.ru>
-Subject: [PATCH v3] certs: Add option to disallow non-CA certificates in
- secondary trusted keying
-Thread-Topic: [PATCH v3] certs: Add option to disallow non-CA certificates in
- secondary trusted keying
-Thread-Index: AQHZ9R25FRQFBB8VuUOFgsWwTdSR3g==
-Date:   Mon, 2 Oct 2023 10:46:40 +0000
-Message-ID: <20231002104525.7631-1-d.glazkov@omp.ru>
-References: <CVS5MB3X82Q8.8KDB4346ROR5@suppilovahvero>
-In-Reply-To: <CVS5MB3X82Q8.8KDB4346ROR5@suppilovahvero>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.188.4.40]
-x-kse-serverinfo: msexch01.omp.ru, 9
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: Clean, bases: 10/2/2023 6:03:00 AM
-x-kse-attachment-filter-triggered-rules: Clean
-x-kse-attachment-filter-triggered-filters: Clean
-x-kse-bulkmessagesfiltering-scan-result: InTheLimit
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <1D4C26ED0CC7E645B19392EB865D6784@omp.ru>
-Content-Transfer-Encoding: base64
+        with ESMTP id S237844AbjJBQpD (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 2 Oct 2023 12:45:03 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22A2A9B;
+        Mon,  2 Oct 2023 09:44:59 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RzmyS5506z6K6gc;
+        Tue,  3 Oct 2023 00:44:48 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Mon, 2 Oct
+ 2023 17:44:55 +0100
+Date:   Mon, 2 Oct 2023 17:44:54 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Lukas Wunner <lukas@wunner.de>
+CC:     Bjorn Helgaas <helgaas@kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        <linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+        <linux-coco@lists.linux.dev>, <keyrings@vger.kernel.org>,
+        <linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
+        <linuxarm@huawei.com>, David Box <david.e.box@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        "Li, Ming" <ming4.li@intel.com>, Zhi Wang <zhi.a.wang@intel.com>,
+        Alistair Francis <alistair.francis@wdc.com>,
+        Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+        Alexey Kardashevskiy <aik@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Alexander Graf <graf@amazon.com>
+Subject: Re: [PATCH 03/12] X.509: Move certificate length retrieval into new
+ helper
+Message-ID: <20231002174454.000025c5@Huawei.com>
+In-Reply-To: <16c06528d13b2c0081229a45cacd4b1b9cdff738.1695921657.git.lukas@wunner.de>
+References: <cover.1695921656.git.lukas@wunner.de>
+        <16c06528d13b2c0081229a45cacd4b1b9cdff738.1695921657.git.lukas@wunner.de>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100005.china.huawei.com (7.191.160.25) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-VGhlIExpbnV4IGtlcm5lbCBoYXMgYW4gSU1BIChJbnRlZ3JpdHkgTWVhc3VyZW1lbnQgQXJjaGl0
-ZWN0dXJlKQ0Kc3Vic3lzdGVtIHRvIGNoZWNrIHRoZSBpbnRlZ3JpdHkgb2YgdGhlIGZpbGUgc3lz
-dGVtIGJhc2VkIG9uIGRpZ2l0YWwNCnNpZ25hdHVyZXMuIElNQSB1c2VzIGNlcnRpZmljYXRlcyBp
-biBgLmltYWAga2V5aW5nIHRvIGNoZWNrIGludGVncml0eS4NCg0KT25seSBjZXJ0aWZpY2F0ZXMg
-aXNzdWVkIGJ5IG9uZSBvZiB0aGUgdHJ1c3RlZCBDQSAoQ2VydGlmaWNhdGUgQXV0aG9yaXR5KQ0K
-Y2VydGlmaWNhdGVzIGNhbiBiZSBhZGRlZCB0byB0aGUgYC5pbWFgIGtleWluZy4NCg0KVGhlIExp
-bnV4IGtlcm5lbCBub3cgaGFzIGEgc2Vjb25kYXJ5IHRydXN0ZWQga2V5aW5nIHRvIHdoaWNoIHRy
-dXN0ZWQNCmNlcnRpZmljYXRlcyBmcm9tIHVzZXIgc3BhY2UgY2FuIGJlIGFkZGVkIGlmIHlvdSBo
-YXZlIHN1cGVydXNlcg0KcHJpdmlsZWdlcy4gUHJldmlvdXNseSwgYWxsIHRydXN0ZWQgY2VydGlm
-aWNhdGVzIHdlcmUgaW4gdGhlIGJ1aWx0LWluDQp0cnVzdGVkIGtleWluZywgd2hpY2ggY291bGQg
-bm90IGJlIG1vZGlmaWVkIGZyb20gdXNlciBzcGFjZS4NClRydXN0ZWQgY2VydGlmaWNhdGVzIHdl
-cmUgcGxhY2VkIGluIHRoZSBidWlsdC1pbiB0cnVzdGVkIGtleWluZyBhdA0Ka2VybmVsIGNvbXBp
-bGUgdGltZS4NCg0KVGhlIHNlY29uZGFyeSB0cnVzdGVkIGtleWluZyBpcyBkZXNpZ25lZCBzbyB0
-aGF0IGFueSBjZXJ0aWZpY2F0ZXMgdGhhdA0KYXJlIHNpZ25lZCBieSBvbmUgb2YgdGhlIHRydXN0
-ZWQgQ0EgY2VydGlmaWNhdGVzIGluIHRoZSBidWlsdC1pbiBvcg0Kc2Vjb25kYXJ5IHRydXN0ZWQg
-a2V5cmluZyBjYW4gYmUgYWRkZWQgdG8gaXQuDQoNCkxldCdzIGltYWdpbmUgdGhhdCB3ZSBoYXZl
-IHRoZSBmb2xsb3dpbmcgY2VydGlmaWNhdGUgdHJ1c3QgY2hhaW46DQoNCiAgICAgICAgICAgICDi
-lIzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
-lIDilIDilIDilIDilIDilIDilIDilIDilIDilKzilIDilIDilIDilIDilIDilIDilIDilIDilIDi
-lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilJANCiAgICAgICAgICAgICDilIIg
-ICAgICAgICAgICAgICAgICAgICAgICAgICDilIIgICAgIOKUjOKUgOKUgOKUgOKUgOKUgOKUgOKU
-gOKUkCAgICAgICDilIINCiAgICAgICAgICAgICDilIIgICAgICAgICAgICAgICAgICAgICAgICAg
-ICDilIIgICAgIOKUgiAgICAgICDilIIgICAgICAg4pSCDQrilIzilIDilIDilIDilIDilIDilIDi
-lIDilIDilIDilIDilIDilIDilrzilIDilIDilIDilIDilIDilIDilIDilIDilJAgICAg4pSM4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pa84pSA4pSA4pSA4pSA4pSA4pa8
-4pSA4pSA4pSA4pSA4pSQICDilIIg4pSM4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA
-4pSQDQrilIIuYnVpbHRpbl90cnVzdGVkX2tleXPilILil4TilIDilIDilIDilKQuc2Vjb25kYXJ5
-X3RydXN0ZWRfa2V5cyDilJzilIDilIDilJgg4pSCICAgLmltYSAgICDilIINCuKUnOKUgOKUgOKU
-gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
-pCAgICDilJzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
-lIDilIDilIDilIDilIDilIDilIDilIDilKQgICAg4pSc4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSkDQrilIIgICAgIFJvb3QgQ0EgQ2VydCAgICDilIItLS0tLeKWuiBJbnRlcm1l
-ZGlhdGUgQ0EgQ2VydCAg4pSCLS0tLS3ilrogSU1BIENlcnQg4pSCDQrilJTilIDilIDilIDilIDi
-lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilJggICAg
-4pSU4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSYICAgIOKUlOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
-gOKUgOKUmA0KDQogICAgICAgICAgICAgICAgSXNzdWVzICAgICAgICAgICAgICAgICAgUmVzdHJp
-Y3RlZCBieQ0KICAgICAgICAgICAgLS0tLS0tLS0tLS0tLeKWuiAgICAgICAgICAgICDilIDilIDi
-lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilroNCg0KU2luY2UgdGhlIElNQSBj
-ZXJ0aWZpY2F0ZSBpcyBzaWduZWQgYnkgYSBDQSBjZXJ0aWZpY2F0ZSBmcm9tIGEgc2Vjb25kYXJ5
-DQp0cnVzdGVkIGtleWluZywgYW4gYXR0YWNrZXIgd2l0aCBzdXBlcnVzZXIgcHJpdmlsZWdlcyB3
-aWxsIGJlIGFibGUgdG8NCmFkZCB0aGUgSU1BIGNlcnRpZmljYXRlIHRvIHRoZSBzZWNvbmRhcnkg
-dHJ1c3RlZCBrZXlpbmcuIFRoYXQgaXMsIHRoZSBJTUENCmNlcnRpZmljYXRlIHdpbGwgYmVjb21l
-IHRydXN0ZWQuDQoNClNpbmNlLCB3aXRoIGBDT05GSUdfTU9EVUxFX1NJR2Agb3B0aW9uIGVuYWJs
-ZWQsIG1vZHVsZXMgY2FuIG9ubHkgYmUNCmxvYWRlZCBpbnRvIGtlcm5lbCBzcGFjZSBpZiB0aGV5
-IGFyZSBzaWduZWQgd2l0aCBvbmUgb2YgdGhlIHRydXN0ZWQNCmNlcnRpZmljYXRlcywgYW4gYXR0
-YWNrZXIgY291bGQgc2lnbiB1bnRydXN0ZWQga2VybmVsIG1vZHVsZXMgd2l0aA0KdGhlIHByaXZh
-dGUga2V5IGNvcnJlc3BvbmRpbmcgdG8gdGhlIElNQSBjZXJ0aWZpY2F0ZSBhbmQgc3VjY2Vzc2Z1
-bGx5DQpsb2FkIHRoZSB1bnRydXN0ZWQgbW9kdWxlcyBpbnRvIGtlcm5lbCBzcGFjZS4NCg0KVGhp
-cyBwYXRjaCB3YXMgY3JlYXRlZCBub3QgdG8gc29sdmUgb25seSB0aGUgcHJvYmxlbSBvZiBsb2Fk
-aW5nDQp1bnRydXN0ZWQga2VybmVsIG1vZHVsZXMsIGJ1dCB0byBtYWtlIGl0IHBvc3NpYmxlIHRv
-IHVzZSBhIHNlY29uZGFyeQ0KdHJ1c3RlZCBrZXlpbmcgb25seSBhcyBhIHBhcnQgb2YgYSBjaGFp
-biBvZiB0cnVzdCBjb250YWluaW5nIG9ubHkNCkNBIGNlcnRpZmljYXRlcyB3aXRoIG5vIGRpZ2l0
-YWwgc2lnbmF0dXJlIGNhcGFiaWxpdHkuIFRoaXMgd2lsbA0KaGVscCBhdm9pZCBzaW1pbGFyIHBy
-b2JsZW1zIHdoZW4gbmV3IGZlYXR1cmVzIGFwcGVhciBpbiB0aGUgbGludXgNCmtlcm5lbCB0aGF0
-IGFyZSBzaW1pbGFyIHRvIGtlcm5lbCBtb2R1bGVzIGluIHRlcm1zIG9mIHRoZWlyIGltcGFjdA0K
-b24gc3lzdGVtIHNlY3VyaXR5LCB3aGljaCB3aWxsIGFsc28gdXNlIHRydXN0ZWQgY2VydGlmaWNh
-dGVzIGZvcg0Kc2lnbmF0dXJlIHZlcmlmaWNhdGlvbi4NCg0KVGhpcyBwYXRjaCBhZGRzIHRoZSBj
-b25maWd1cmF0aW9uIHRoYXQgb25jZSBlbmFibGVkLCBvbmx5DQpjZXJ0aWZpY2F0ZXMgdGhhdCBt
-ZWV0IHRoZSBmb2xsb3dpbmcgcmVxdWlyZW1lbnRzIGNhbiBiZSBhZGRlZA0KdG8gdGhlIHNlY29u
-ZGFyeSB0cnVzdGVkIGtleWluZzoNCg0KMS4gVGhlIGNlcnRpZmljYXRlIGlzIGEgQ0EgKENlcnRp
-ZmljYXRlIEF1dGhvcml0eSkNCjIuIFRoZSBjZXJ0aWZpY2F0ZSBtdXN0IGJlIHVzZWQgZm9yIHZl
-cmlmeWluZyBhIENBJ3Mgc2lnbmF0dXJlcw0KMy4gVGhlIGNlcnRpZmljYXRlIG11c3Qgbm90IGJl
-IHVzZWQgZm9yIGRpZ2l0YWwgc2lnbmF0dXJlcw0KDQpTaWduZWQtb2ZmLWJ5OiBEZW5pcyBHbGF6
-a292IDxkLmdsYXprb3ZAb21wLnJ1Pg0KLS0tDQp2MSAtPiB2MjoNCiAtIFJlYmFzZSB0aGUgcGF0
-Y2ggZnJvbSBgbGludXgtbmV4dGAgdG8gdGhlIG1haW4gYGxpbnV4YCByZXBvIG1hc3RlciBicmFu
-Y2gNCiAtIE1ha2UgdGhlIGNvbW1pdCBtZXNzYWdlIG1vcmUgZGV0YWlsZWQNCiAtIE1vdmUgdGhl
-IHZhcmlhYmxlIGRlY2xhcmF0aW9uIHRvIHRoZSBgaWZgIGJsb2NrDQogLSBSZXBsYWNlIGAjaWZk
-ZWZgIHdpdGggYElTX0VOQUJMRURgIG1hY3JvDQoNCnYyIC0+IHYzOg0KIC0gQWRkIHRoZSBwdXJw
-b3NlIGFuZCBnb2FsIG9mIHRoZSBwYXRjaCB0byB0aGUgY29tbWl0IG1lc3NhZ2UNCi0tLQ0KIGNl
-cnRzL0tjb25maWcgICAgICAgICAgfCAgOSArKysrKysrKysNCiBjZXJ0cy9zeXN0ZW1fa2V5cmlu
-Zy5jIHwgMTYgKysrKysrKysrKysrKysrKw0KIDIgZmlsZXMgY2hhbmdlZCwgMjUgaW5zZXJ0aW9u
-cygrKQ0KDQpkaWZmIC0tZ2l0IGEvY2VydHMvS2NvbmZpZyBiL2NlcnRzL0tjb25maWcNCmluZGV4
-IDFmMTA5YjA3MDg3Ny4uNGE0ZGM4YWFiODkyIDEwMDY0NA0KLS0tIGEvY2VydHMvS2NvbmZpZw0K
-KysrIGIvY2VydHMvS2NvbmZpZw0KQEAgLTkwLDYgKzkwLDE1IEBAIGNvbmZpZyBTRUNPTkRBUllf
-VFJVU1RFRF9LRVlSSU5HDQogCSAgdGhvc2Uga2V5cyBhcmUgbm90IGJsYWNrbGlzdGVkIGFuZCBh
-cmUgdm91Y2hlZCBmb3IgYnkgYSBrZXkgYnVpbHQNCiAJICBpbnRvIHRoZSBrZXJuZWwgb3IgYWxy
-ZWFkeSBpbiB0aGUgc2Vjb25kYXJ5IHRydXN0ZWQga2V5cmluZy4NCiANCitjb25maWcgU0VDT05E
-QVJZX1RSVVNURURfS0VZUklOR19GT1JfQ0FfQ0VSVElGSUNBVEVTX09OTFkNCisJYm9vbCAiQWxs
-b3cgb25seSBDQSBjZXJ0aWZpY2F0ZXMgdG8gYmUgYWRkZWQgdG8gdGhlIHNlY29uZGFyeSB0cnVz
-dGVkIGtleXJpbmciDQorCWRlcGVuZHMgb24gU0VDT05EQVJZX1RSVVNURURfS0VZUklORw0KKwlo
-ZWxwDQorCSAgSWYgc2V0LCBvbmx5IENBIGNlcnRpZmljYXRlcyBjYW4gYmUgYWRkZWQgdG8gdGhl
-IHNlY29uZGFyeSB0cnVzdGVkIGtleXJpbmcuDQorCSAgQW4gYWNjZXB0YWJsZSBDQSBjZXJ0aWZp
-Y2F0ZSBtdXN0IGluY2x1ZGUgdGhlIGBrZXlDZXJ0U2lnbmAgdmFsdWUgaW4NCisJICB0aGUgYGtl
-eVVzYWdlYCBmaWVsZC4gQ0EgY2VydGlmaWNhdGVzIHRoYXQgaW5jbHVkZSB0aGUgYGRpZ2l0YWxT
-aWduYXR1cmVgDQorCSAgdmFsdWUgaW4gdGhlIGBrZXlVc2FnZWAgZmllbGQgd2lsbCBub3QgYmUg
-YWNjZXB0ZWQuDQorDQogY29uZmlnIFNZU1RFTV9CTEFDS0xJU1RfS0VZUklORw0KIAlib29sICJQ
-cm92aWRlIHN5c3RlbS13aWRlIHJpbmcgb2YgYmxhY2tsaXN0ZWQga2V5cyINCiAJZGVwZW5kcyBv
-biBLRVlTDQpkaWZmIC0tZ2l0IGEvY2VydHMvc3lzdGVtX2tleXJpbmcuYyBiL2NlcnRzL3N5c3Rl
-bV9rZXlyaW5nLmMNCmluZGV4IDlkZTYxMGJmMWY0Yi4uZWUxNDQ0NzM3NGU3IDEwMDY0NA0KLS0t
-IGEvY2VydHMvc3lzdGVtX2tleXJpbmcuYw0KKysrIGIvY2VydHMvc3lzdGVtX2tleXJpbmcuYw0K
-QEAgLTk5LDYgKzk5LDIyIEBAIGludCByZXN0cmljdF9saW5rX2J5X2J1aWx0aW5fYW5kX3NlY29u
-ZGFyeV90cnVzdGVkKA0KIAkJLyogQWxsb3cgdGhlIGJ1aWx0aW4ga2V5cmluZyB0byBiZSBhZGRl
-ZCB0byB0aGUgc2Vjb25kYXJ5ICovDQogCQlyZXR1cm4gMDsNCiANCisJaWYgKElTX0VOQUJMRUQo
-Q09ORklHX1NFQ09OREFSWV9UUlVTVEVEX0tFWVJJTkdfRk9SX0NBX0NFUlRJRklDQVRFU19PTkxZ
-KSAmJg0KKwkgICAgZGVzdF9rZXlyaW5nID09IHNlY29uZGFyeV90cnVzdGVkX2tleXMpIHsNCisJ
-CWNvbnN0IHN0cnVjdCBwdWJsaWNfa2V5ICpwdWIgPSBwYXlsb2FkLT5kYXRhW2FzeW1fY3J5cHRv
-XTsNCisNCisJCWlmICh0eXBlICE9ICZrZXlfdHlwZV9hc3ltbWV0cmljKQ0KKwkJCXJldHVybiAt
-RU9QTk9UU1VQUDsNCisJCWlmICghcHViKQ0KKwkJCXJldHVybiAtRU5PUEtHOw0KKwkJaWYgKCF0
-ZXN0X2JpdChLRVlfRUZMQUdfQ0EsICZwdWItPmtleV9lZmxhZ3MpKQ0KKwkJCXJldHVybiAtRVBF
-Uk07DQorCQlpZiAoIXRlc3RfYml0KEtFWV9FRkxBR19LRVlDRVJUU0lHTiwgJnB1Yi0+a2V5X2Vm
-bGFncykpDQorCQkJcmV0dXJuIC1FUEVSTTsNCisJCWlmICh0ZXN0X2JpdChLRVlfRUZMQUdfRElH
-SVRBTFNJRywgJnB1Yi0+a2V5X2VmbGFncykpDQorCQkJcmV0dXJuIC1FUEVSTTsNCisJfQ0KKw0K
-IAlyZXR1cm4gcmVzdHJpY3RfbGlua19ieV9zaWduYXR1cmUoZGVzdF9rZXlyaW5nLCB0eXBlLCBw
-YXlsb2FkLA0KIAkJCQkJICBzZWNvbmRhcnlfdHJ1c3RlZF9rZXlzKTsNCiB9DQotLSANCjIuMzQu
-MQ0K
+On Thu, 28 Sep 2023 19:32:32 +0200
+Lukas Wunner <lukas@wunner.de> wrote:
+
+> The upcoming in-kernel SPDM library (Security Protocol and Data Model,
+> https://www.dmtf.org/dsp/DSP0274) needs to retrieve the length from
+> ASN.1 DER-encoded X.509 certificates.
+> 
+> Such code already exists in x509_load_certificate_list(), so move it
+> into a new helper for reuse by SPDM.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+
+Good find :)  I vaguely remember carrying a hack for this so
+good to do something more general + save on the duplication.
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+
+> ---
+>  crypto/asymmetric_keys/x509_loader.c | 38 +++++++++++++++++++---------
+>  include/keys/asymmetric-type.h       |  2 ++
+>  2 files changed, 28 insertions(+), 12 deletions(-)
+> 
+> diff --git a/crypto/asymmetric_keys/x509_loader.c b/crypto/asymmetric_keys/x509_loader.c
+> index a41741326998..121460a0de46 100644
+> --- a/crypto/asymmetric_keys/x509_loader.c
+> +++ b/crypto/asymmetric_keys/x509_loader.c
+> @@ -4,28 +4,42 @@
+>  #include <linux/key.h>
+>  #include <keys/asymmetric-type.h>
+>  
+> +int x509_get_certificate_length(const u8 *p, unsigned long buflen)
+> +{
+> +	int plen;
+> +
+> +	/* Each cert begins with an ASN.1 SEQUENCE tag and must be more
+> +	 * than 256 bytes in size.
+> +	 */
+> +	if (buflen < 4)
+> +		return -EINVAL;
+> +
+> +	if (p[0] != 0x30 &&
+> +	    p[1] != 0x82)
+> +		return -EINVAL;
+> +
+> +	plen = (p[2] << 8) | p[3];
+> +	plen += 4;
+> +	if (plen > buflen)
+> +		return -EINVAL;
+> +
+> +	return plen;
+> +}
+> +EXPORT_SYMBOL_GPL(x509_get_certificate_length);
+> +
+>  int x509_load_certificate_list(const u8 cert_list[],
+>  			       const unsigned long list_size,
+>  			       const struct key *keyring)
+>  {
+>  	key_ref_t key;
+>  	const u8 *p, *end;
+> -	size_t plen;
+> +	int plen;
+>  
+>  	p = cert_list;
+>  	end = p + list_size;
+>  	while (p < end) {
+> -		/* Each cert begins with an ASN.1 SEQUENCE tag and must be more
+> -		 * than 256 bytes in size.
+> -		 */
+> -		if (end - p < 4)
+> -			goto dodgy_cert;
+> -		if (p[0] != 0x30 &&
+> -		    p[1] != 0x82)
+> -			goto dodgy_cert;
+> -		plen = (p[2] << 8) | p[3];
+> -		plen += 4;
+> -		if (plen > end - p)
+> +		plen = x509_get_certificate_length(p, end - p);
+> +		if (plen < 0)
+>  			goto dodgy_cert;
+>  
+>  		key = key_create_or_update(make_key_ref(keyring, 1),
+> diff --git a/include/keys/asymmetric-type.h b/include/keys/asymmetric-type.h
+> index 69a13e1e5b2e..6705cfde25b9 100644
+> --- a/include/keys/asymmetric-type.h
+> +++ b/include/keys/asymmetric-type.h
+> @@ -84,6 +84,8 @@ extern struct key *find_asymmetric_key(struct key *keyring,
+>  				       const struct asymmetric_key_id *id_2,
+>  				       bool partial);
+>  
+> +int x509_get_certificate_length(const u8 *p, unsigned long buflen);
+> +
+>  int x509_load_certificate_list(const u8 cert_list[], const unsigned long list_size,
+>  			       const struct key *keyring);
+>  
+
