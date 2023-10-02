@@ -2,183 +2,168 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC7687B4A66
-	for <lists+keyrings@lfdr.de>; Mon,  2 Oct 2023 02:01:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7F3B7B5095
+	for <lists+keyrings@lfdr.de>; Mon,  2 Oct 2023 12:46:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234707AbjJBABQ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 1 Oct 2023 20:01:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41230 "EHLO
+        id S236437AbjJBKq5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 2 Oct 2023 06:46:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229476AbjJBABP (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 1 Oct 2023 20:01:15 -0400
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E55ADC9
-        for <keyrings@vger.kernel.org>; Sun,  1 Oct 2023 17:01:11 -0700 (PDT)
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id E71C03F179
-        for <keyrings@vger.kernel.org>; Mon,  2 Oct 2023 00:01:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1696204867;
-        bh=lpqGdzs9z+5RSvDu12eox5UE/cn06VRPHpB8RQjruMU=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=Rw4pP/9Bo3LU9sZo4mF0iZQwt6Ssg92n68W+5+MaoWENcDrIP2Et5CxgWNw1ADjgd
-         pXHaogZx7wb68JslgKlU4/MkijQz3EzRHg+cFhkepu6hZhcChg5ifWTdx0hAVNtM1O
-         PfUGlmMuTTgSLTlQWW7aKKzmuc7POCvJPJiPRSY1N+dD8KfDEd9rp3F18PrZ/vVD8c
-         zej4LgznhWAeB45QcmvZgj3l+EiprAXDU3uv3fDxDh5/xw5ipykAvpallnNERxXIUo
-         Mqngx/kk8xmPjDrWsg7fo0rkPd/9bxLLHddf7TslQ59Ajxu3K89EjNfFgPXRQE9Agu
-         JLsYbuBE0meJw==
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-2777258e469so10519499a91.3
-        for <keyrings@vger.kernel.org>; Sun, 01 Oct 2023 17:01:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696204863; x=1696809663;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lpqGdzs9z+5RSvDu12eox5UE/cn06VRPHpB8RQjruMU=;
-        b=cVVvvcbDcxksetr/OyW68jnoteyeH4FylZysXi7Uua6m0OhxJLew0JHo/PoFxtiuEW
-         qfmXH8LBHgIBy6zyD5r2bDCdfhRKzF/0Rf98CcKhA3dwSzrE2Y4X9sYlFWGp0Ab9EZ/O
-         rEF7/fyIb5dwLzGg3OYH7fGbl5GIaV0fPCCYGgzVvprOCKnsk7n/F81oMAV5OAvv1+6x
-         KEcUSwkMkWTf93oCeCy8Y8VqpirGOV+sX1neICW9tfWQEJwRBWwV2s6Em5X51bUVxtYu
-         pgMt+YqjO6f+v4K73+5NYXyKnytlynWcrmgwF9BlNTzyK44lz+r0QXGdwHPTIAjlHc1D
-         CX5Q==
-X-Gm-Message-State: AOJu0Yz6QXM5WYbeN3lkhEB9xVuswmzf8/dQ+C2JwK5cdxvP5iOpdST+
-        KHt+FJeszEaXtiyKPtTVfhnRIDZsN/jrlHhhbP1e2rYyZY4fIeSF23UQ0fhp7yRbrc3XYUyFoVI
-        cPW9wYenkVqSeuXO9cDTxNLWnTVJGHZDoTZsZ
-X-Received: by 2002:a17:90b:4f42:b0:26d:3ad:7c83 with SMTP id pj2-20020a17090b4f4200b0026d03ad7c83mr7635538pjb.13.1696204862858;
-        Sun, 01 Oct 2023 17:01:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFYp9oZSBIYGvi+Uv05g/BFdWpX0L1+kEJFNOgU3pQcKkjj7d/QsbUfnWz9OP/gfBBh64sjIw==
-X-Received: by 2002:a17:90b:4f42:b0:26d:3ad:7c83 with SMTP id pj2-20020a17090b4f4200b0026d03ad7c83mr7635514pjb.13.1696204862468;
-        Sun, 01 Oct 2023 17:01:02 -0700 (PDT)
-Received: from localhost ([2001:67c:1560:8007::aac:c15c])
-        by smtp.gmail.com with ESMTPSA id 23-20020a17090a035700b002796494b98csm1971164pjf.37.2023.10.01.17.01.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Oct 2023 17:01:02 -0700 (PDT)
-From:   Dimitri John Ledkov <dimitri.ledkov@canonical.com>
-To:     David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] crypto: pkcs7: remove md4 md5 x.509 support
-Date:   Mon,  2 Oct 2023 00:57:15 +0100
-Message-Id: <20231001235716.588251-1-dimitri.ledkov@canonical.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S236429AbjJBKq4 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 2 Oct 2023 06:46:56 -0400
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E92C9D;
+        Mon,  2 Oct 2023 03:46:48 -0700 (PDT)
+Received: from msexch01.omp.ru (10.188.4.12) by msexch01.omp.ru (10.188.4.12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Mon, 2 Oct 2023
+ 13:46:40 +0300
+Received: from msexch01.omp.ru ([fe80::4020:d881:621a:6b6b]) by
+ msexch01.omp.ru ([fe80::4020:d881:621a:6b6b%5]) with mapi id 15.02.0986.014;
+ Mon, 2 Oct 2023 13:46:40 +0300
+From:   Denis Glazkov <d.glazkov@omp.ru>
+To:     "jarkko@kernel.org" <jarkko@kernel.org>
+CC:     Denis Glazkov <d.glazkov@omp.ru>,
+        "dhowells@redhat.com" <dhowells@redhat.com>,
+        "dwmw2@infradead.org" <dwmw2@infradead.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Sergey Shtylyov" <s.shtylyov@omp.ru>
+Subject: [PATCH v3] certs: Add option to disallow non-CA certificates in
+ secondary trusted keying
+Thread-Topic: [PATCH v3] certs: Add option to disallow non-CA certificates in
+ secondary trusted keying
+Thread-Index: AQHZ9R25FRQFBB8VuUOFgsWwTdSR3g==
+Date:   Mon, 2 Oct 2023 10:46:40 +0000
+Message-ID: <20231002104525.7631-1-d.glazkov@omp.ru>
+References: <CVS5MB3X82Q8.8KDB4346ROR5@suppilovahvero>
+In-Reply-To: <CVS5MB3X82Q8.8KDB4346ROR5@suppilovahvero>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.188.4.40]
+x-kse-serverinfo: msexch01.omp.ru, 9
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: Clean, bases: 10/2/2023 6:03:00 AM
+x-kse-attachment-filter-triggered-rules: Clean
+x-kse-attachment-filter-triggered-filters: Clean
+x-kse-bulkmessagesfiltering-scan-result: InTheLimit
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <1D4C26ED0CC7E645B19392EB865D6784@omp.ru>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Remove support for md4 md5 hash and signatures in x.509 certificate
-parsers, pkcs7 signature parser, authenticode parser.
-
-All of these are insecure or broken, and everyone has long time ago
-migrated to alternative hash implementations.
-
-Also remove md2 & md3 oids which have already didn't have support.
-
-This is also likely the last user of md4 in the kernel, and thus
-crypto/md4.c and related tests in tcrypt & testmgr can likely be
-removed. Other users such as cifs smbfs ext modpost sumversions have
-their own internal implementation as needed.
-
-Signed-off-by: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
----
- crypto/asymmetric_keys/mscode_parser.c    | 6 ------
- crypto/asymmetric_keys/pkcs7_parser.c     | 6 ------
- crypto/asymmetric_keys/x509_cert_parser.c | 6 ------
- include/linux/oid_registry.h              | 8 --------
- 4 files changed, 26 deletions(-)
-
-diff --git a/crypto/asymmetric_keys/mscode_parser.c b/crypto/asymmetric_keys/mscode_parser.c
-index 839591ad21..690405ebe7 100644
---- a/crypto/asymmetric_keys/mscode_parser.c
-+++ b/crypto/asymmetric_keys/mscode_parser.c
-@@ -75,12 +75,6 @@ int mscode_note_digest_algo(void *context, size_t hdrlen,
- 
- 	oid = look_up_OID(value, vlen);
- 	switch (oid) {
--	case OID_md4:
--		ctx->digest_algo = "md4";
--		break;
--	case OID_md5:
--		ctx->digest_algo = "md5";
--		break;
- 	case OID_sha1:
- 		ctx->digest_algo = "sha1";
- 		break;
-diff --git a/crypto/asymmetric_keys/pkcs7_parser.c b/crypto/asymmetric_keys/pkcs7_parser.c
-index 277482bb17..cf4caab962 100644
---- a/crypto/asymmetric_keys/pkcs7_parser.c
-+++ b/crypto/asymmetric_keys/pkcs7_parser.c
-@@ -227,12 +227,6 @@ int pkcs7_sig_note_digest_algo(void *context, size_t hdrlen,
- 	struct pkcs7_parse_context *ctx = context;
- 
- 	switch (ctx->last_oid) {
--	case OID_md4:
--		ctx->sinfo->sig->hash_algo = "md4";
--		break;
--	case OID_md5:
--		ctx->sinfo->sig->hash_algo = "md5";
--		break;
- 	case OID_sha1:
- 		ctx->sinfo->sig->hash_algo = "sha1";
- 		break;
-diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
-index 7a9b084e20..8d23a69890 100644
---- a/crypto/asymmetric_keys/x509_cert_parser.c
-+++ b/crypto/asymmetric_keys/x509_cert_parser.c
-@@ -195,15 +195,9 @@ int x509_note_sig_algo(void *context, size_t hdrlen, unsigned char tag,
- 	pr_debug("PubKey Algo: %u\n", ctx->last_oid);
- 
- 	switch (ctx->last_oid) {
--	case OID_md2WithRSAEncryption:
--	case OID_md3WithRSAEncryption:
- 	default:
- 		return -ENOPKG; /* Unsupported combination */
- 
--	case OID_md4WithRSAEncryption:
--		ctx->cert->sig->hash_algo = "md4";
--		goto rsa_pkcs1;
--
- 	case OID_sha1WithRSAEncryption:
- 		ctx->cert->sig->hash_algo = "sha1";
- 		goto rsa_pkcs1;
-diff --git a/include/linux/oid_registry.h b/include/linux/oid_registry.h
-index 0f4a890392..89fb4612b2 100644
---- a/include/linux/oid_registry.h
-+++ b/include/linux/oid_registry.h
-@@ -30,9 +30,6 @@ enum OID {
- 
- 	/* PKCS#1 {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-1(1)} */
- 	OID_rsaEncryption,		/* 1.2.840.113549.1.1.1 */
--	OID_md2WithRSAEncryption,	/* 1.2.840.113549.1.1.2 */
--	OID_md3WithRSAEncryption,	/* 1.2.840.113549.1.1.3 */
--	OID_md4WithRSAEncryption,	/* 1.2.840.113549.1.1.4 */
- 	OID_sha1WithRSAEncryption,	/* 1.2.840.113549.1.1.5 */
- 	OID_sha256WithRSAEncryption,	/* 1.2.840.113549.1.1.11 */
- 	OID_sha384WithRSAEncryption,	/* 1.2.840.113549.1.1.12 */
-@@ -49,11 +46,6 @@ enum OID {
- 	OID_smimeCapabilites,		/* 1.2.840.113549.1.9.15 */
- 	OID_smimeAuthenticatedAttrs,	/* 1.2.840.113549.1.9.16.2.11 */
- 
--	/* {iso(1) member-body(2) us(840) rsadsi(113549) digestAlgorithm(2)} */
--	OID_md2,			/* 1.2.840.113549.2.2 */
--	OID_md4,			/* 1.2.840.113549.2.4 */
--	OID_md5,			/* 1.2.840.113549.2.5 */
--
- 	OID_mskrb5,			/* 1.2.840.48018.1.2.2 */
- 	OID_krb5,			/* 1.2.840.113554.1.2.2 */
- 	OID_krb5u2u,			/* 1.2.840.113554.1.2.2.3 */
--- 
-2.34.1
-
+VGhlIExpbnV4IGtlcm5lbCBoYXMgYW4gSU1BIChJbnRlZ3JpdHkgTWVhc3VyZW1lbnQgQXJjaGl0
+ZWN0dXJlKQ0Kc3Vic3lzdGVtIHRvIGNoZWNrIHRoZSBpbnRlZ3JpdHkgb2YgdGhlIGZpbGUgc3lz
+dGVtIGJhc2VkIG9uIGRpZ2l0YWwNCnNpZ25hdHVyZXMuIElNQSB1c2VzIGNlcnRpZmljYXRlcyBp
+biBgLmltYWAga2V5aW5nIHRvIGNoZWNrIGludGVncml0eS4NCg0KT25seSBjZXJ0aWZpY2F0ZXMg
+aXNzdWVkIGJ5IG9uZSBvZiB0aGUgdHJ1c3RlZCBDQSAoQ2VydGlmaWNhdGUgQXV0aG9yaXR5KQ0K
+Y2VydGlmaWNhdGVzIGNhbiBiZSBhZGRlZCB0byB0aGUgYC5pbWFgIGtleWluZy4NCg0KVGhlIExp
+bnV4IGtlcm5lbCBub3cgaGFzIGEgc2Vjb25kYXJ5IHRydXN0ZWQga2V5aW5nIHRvIHdoaWNoIHRy
+dXN0ZWQNCmNlcnRpZmljYXRlcyBmcm9tIHVzZXIgc3BhY2UgY2FuIGJlIGFkZGVkIGlmIHlvdSBo
+YXZlIHN1cGVydXNlcg0KcHJpdmlsZWdlcy4gUHJldmlvdXNseSwgYWxsIHRydXN0ZWQgY2VydGlm
+aWNhdGVzIHdlcmUgaW4gdGhlIGJ1aWx0LWluDQp0cnVzdGVkIGtleWluZywgd2hpY2ggY291bGQg
+bm90IGJlIG1vZGlmaWVkIGZyb20gdXNlciBzcGFjZS4NClRydXN0ZWQgY2VydGlmaWNhdGVzIHdl
+cmUgcGxhY2VkIGluIHRoZSBidWlsdC1pbiB0cnVzdGVkIGtleWluZyBhdA0Ka2VybmVsIGNvbXBp
+bGUgdGltZS4NCg0KVGhlIHNlY29uZGFyeSB0cnVzdGVkIGtleWluZyBpcyBkZXNpZ25lZCBzbyB0
+aGF0IGFueSBjZXJ0aWZpY2F0ZXMgdGhhdA0KYXJlIHNpZ25lZCBieSBvbmUgb2YgdGhlIHRydXN0
+ZWQgQ0EgY2VydGlmaWNhdGVzIGluIHRoZSBidWlsdC1pbiBvcg0Kc2Vjb25kYXJ5IHRydXN0ZWQg
+a2V5cmluZyBjYW4gYmUgYWRkZWQgdG8gaXQuDQoNCkxldCdzIGltYWdpbmUgdGhhdCB3ZSBoYXZl
+IHRoZSBmb2xsb3dpbmcgY2VydGlmaWNhdGUgdHJ1c3QgY2hhaW46DQoNCiAgICAgICAgICAgICDi
+lIzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilKzilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilJANCiAgICAgICAgICAgICDilIIg
+ICAgICAgICAgICAgICAgICAgICAgICAgICDilIIgICAgIOKUjOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUkCAgICAgICDilIINCiAgICAgICAgICAgICDilIIgICAgICAgICAgICAgICAgICAgICAgICAg
+ICDilIIgICAgIOKUgiAgICAgICDilIIgICAgICAg4pSCDQrilIzilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilrzilIDilIDilIDilIDilIDilIDilIDilIDilJAgICAg4pSM4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pa84pSA4pSA4pSA4pSA4pSA4pa8
+4pSA4pSA4pSA4pSA4pSQICDilIIg4pSM4pSA4pSA4pSA4pSA4pSA4pS04pSA4pSA4pSA4pSA4pSA
+4pSQDQrilIIuYnVpbHRpbl90cnVzdGVkX2tleXPilILil4TilIDilIDilIDilKQuc2Vjb25kYXJ5
+X3RydXN0ZWRfa2V5cyDilJzilIDilIDilJgg4pSCICAgLmltYSAgICDilIINCuKUnOKUgOKUgOKU
+gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+pCAgICDilJzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilKQgICAg4pSc4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSkDQrilIIgICAgIFJvb3QgQ0EgQ2VydCAgICDilIItLS0tLeKWuiBJbnRlcm1l
+ZGlhdGUgQ0EgQ2VydCAg4pSCLS0tLS3ilrogSU1BIENlcnQg4pSCDQrilJTilIDilIDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilJggICAg
+4pSU4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
+4pSA4pSA4pSA4pSA4pSA4pSA4pSYICAgIOKUlOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKU
+gOKUgOKUmA0KDQogICAgICAgICAgICAgICAgSXNzdWVzICAgICAgICAgICAgICAgICAgUmVzdHJp
+Y3RlZCBieQ0KICAgICAgICAgICAgLS0tLS0tLS0tLS0tLeKWuiAgICAgICAgICAgICDilIDilIDi
+lIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilroNCg0KU2luY2UgdGhlIElNQSBj
+ZXJ0aWZpY2F0ZSBpcyBzaWduZWQgYnkgYSBDQSBjZXJ0aWZpY2F0ZSBmcm9tIGEgc2Vjb25kYXJ5
+DQp0cnVzdGVkIGtleWluZywgYW4gYXR0YWNrZXIgd2l0aCBzdXBlcnVzZXIgcHJpdmlsZWdlcyB3
+aWxsIGJlIGFibGUgdG8NCmFkZCB0aGUgSU1BIGNlcnRpZmljYXRlIHRvIHRoZSBzZWNvbmRhcnkg
+dHJ1c3RlZCBrZXlpbmcuIFRoYXQgaXMsIHRoZSBJTUENCmNlcnRpZmljYXRlIHdpbGwgYmVjb21l
+IHRydXN0ZWQuDQoNClNpbmNlLCB3aXRoIGBDT05GSUdfTU9EVUxFX1NJR2Agb3B0aW9uIGVuYWJs
+ZWQsIG1vZHVsZXMgY2FuIG9ubHkgYmUNCmxvYWRlZCBpbnRvIGtlcm5lbCBzcGFjZSBpZiB0aGV5
+IGFyZSBzaWduZWQgd2l0aCBvbmUgb2YgdGhlIHRydXN0ZWQNCmNlcnRpZmljYXRlcywgYW4gYXR0
+YWNrZXIgY291bGQgc2lnbiB1bnRydXN0ZWQga2VybmVsIG1vZHVsZXMgd2l0aA0KdGhlIHByaXZh
+dGUga2V5IGNvcnJlc3BvbmRpbmcgdG8gdGhlIElNQSBjZXJ0aWZpY2F0ZSBhbmQgc3VjY2Vzc2Z1
+bGx5DQpsb2FkIHRoZSB1bnRydXN0ZWQgbW9kdWxlcyBpbnRvIGtlcm5lbCBzcGFjZS4NCg0KVGhp
+cyBwYXRjaCB3YXMgY3JlYXRlZCBub3QgdG8gc29sdmUgb25seSB0aGUgcHJvYmxlbSBvZiBsb2Fk
+aW5nDQp1bnRydXN0ZWQga2VybmVsIG1vZHVsZXMsIGJ1dCB0byBtYWtlIGl0IHBvc3NpYmxlIHRv
+IHVzZSBhIHNlY29uZGFyeQ0KdHJ1c3RlZCBrZXlpbmcgb25seSBhcyBhIHBhcnQgb2YgYSBjaGFp
+biBvZiB0cnVzdCBjb250YWluaW5nIG9ubHkNCkNBIGNlcnRpZmljYXRlcyB3aXRoIG5vIGRpZ2l0
+YWwgc2lnbmF0dXJlIGNhcGFiaWxpdHkuIFRoaXMgd2lsbA0KaGVscCBhdm9pZCBzaW1pbGFyIHBy
+b2JsZW1zIHdoZW4gbmV3IGZlYXR1cmVzIGFwcGVhciBpbiB0aGUgbGludXgNCmtlcm5lbCB0aGF0
+IGFyZSBzaW1pbGFyIHRvIGtlcm5lbCBtb2R1bGVzIGluIHRlcm1zIG9mIHRoZWlyIGltcGFjdA0K
+b24gc3lzdGVtIHNlY3VyaXR5LCB3aGljaCB3aWxsIGFsc28gdXNlIHRydXN0ZWQgY2VydGlmaWNh
+dGVzIGZvcg0Kc2lnbmF0dXJlIHZlcmlmaWNhdGlvbi4NCg0KVGhpcyBwYXRjaCBhZGRzIHRoZSBj
+b25maWd1cmF0aW9uIHRoYXQgb25jZSBlbmFibGVkLCBvbmx5DQpjZXJ0aWZpY2F0ZXMgdGhhdCBt
+ZWV0IHRoZSBmb2xsb3dpbmcgcmVxdWlyZW1lbnRzIGNhbiBiZSBhZGRlZA0KdG8gdGhlIHNlY29u
+ZGFyeSB0cnVzdGVkIGtleWluZzoNCg0KMS4gVGhlIGNlcnRpZmljYXRlIGlzIGEgQ0EgKENlcnRp
+ZmljYXRlIEF1dGhvcml0eSkNCjIuIFRoZSBjZXJ0aWZpY2F0ZSBtdXN0IGJlIHVzZWQgZm9yIHZl
+cmlmeWluZyBhIENBJ3Mgc2lnbmF0dXJlcw0KMy4gVGhlIGNlcnRpZmljYXRlIG11c3Qgbm90IGJl
+IHVzZWQgZm9yIGRpZ2l0YWwgc2lnbmF0dXJlcw0KDQpTaWduZWQtb2ZmLWJ5OiBEZW5pcyBHbGF6
+a292IDxkLmdsYXprb3ZAb21wLnJ1Pg0KLS0tDQp2MSAtPiB2MjoNCiAtIFJlYmFzZSB0aGUgcGF0
+Y2ggZnJvbSBgbGludXgtbmV4dGAgdG8gdGhlIG1haW4gYGxpbnV4YCByZXBvIG1hc3RlciBicmFu
+Y2gNCiAtIE1ha2UgdGhlIGNvbW1pdCBtZXNzYWdlIG1vcmUgZGV0YWlsZWQNCiAtIE1vdmUgdGhl
+IHZhcmlhYmxlIGRlY2xhcmF0aW9uIHRvIHRoZSBgaWZgIGJsb2NrDQogLSBSZXBsYWNlIGAjaWZk
+ZWZgIHdpdGggYElTX0VOQUJMRURgIG1hY3JvDQoNCnYyIC0+IHYzOg0KIC0gQWRkIHRoZSBwdXJw
+b3NlIGFuZCBnb2FsIG9mIHRoZSBwYXRjaCB0byB0aGUgY29tbWl0IG1lc3NhZ2UNCi0tLQ0KIGNl
+cnRzL0tjb25maWcgICAgICAgICAgfCAgOSArKysrKysrKysNCiBjZXJ0cy9zeXN0ZW1fa2V5cmlu
+Zy5jIHwgMTYgKysrKysrKysrKysrKysrKw0KIDIgZmlsZXMgY2hhbmdlZCwgMjUgaW5zZXJ0aW9u
+cygrKQ0KDQpkaWZmIC0tZ2l0IGEvY2VydHMvS2NvbmZpZyBiL2NlcnRzL0tjb25maWcNCmluZGV4
+IDFmMTA5YjA3MDg3Ny4uNGE0ZGM4YWFiODkyIDEwMDY0NA0KLS0tIGEvY2VydHMvS2NvbmZpZw0K
+KysrIGIvY2VydHMvS2NvbmZpZw0KQEAgLTkwLDYgKzkwLDE1IEBAIGNvbmZpZyBTRUNPTkRBUllf
+VFJVU1RFRF9LRVlSSU5HDQogCSAgdGhvc2Uga2V5cyBhcmUgbm90IGJsYWNrbGlzdGVkIGFuZCBh
+cmUgdm91Y2hlZCBmb3IgYnkgYSBrZXkgYnVpbHQNCiAJICBpbnRvIHRoZSBrZXJuZWwgb3IgYWxy
+ZWFkeSBpbiB0aGUgc2Vjb25kYXJ5IHRydXN0ZWQga2V5cmluZy4NCiANCitjb25maWcgU0VDT05E
+QVJZX1RSVVNURURfS0VZUklOR19GT1JfQ0FfQ0VSVElGSUNBVEVTX09OTFkNCisJYm9vbCAiQWxs
+b3cgb25seSBDQSBjZXJ0aWZpY2F0ZXMgdG8gYmUgYWRkZWQgdG8gdGhlIHNlY29uZGFyeSB0cnVz
+dGVkIGtleXJpbmciDQorCWRlcGVuZHMgb24gU0VDT05EQVJZX1RSVVNURURfS0VZUklORw0KKwlo
+ZWxwDQorCSAgSWYgc2V0LCBvbmx5IENBIGNlcnRpZmljYXRlcyBjYW4gYmUgYWRkZWQgdG8gdGhl
+IHNlY29uZGFyeSB0cnVzdGVkIGtleXJpbmcuDQorCSAgQW4gYWNjZXB0YWJsZSBDQSBjZXJ0aWZp
+Y2F0ZSBtdXN0IGluY2x1ZGUgdGhlIGBrZXlDZXJ0U2lnbmAgdmFsdWUgaW4NCisJICB0aGUgYGtl
+eVVzYWdlYCBmaWVsZC4gQ0EgY2VydGlmaWNhdGVzIHRoYXQgaW5jbHVkZSB0aGUgYGRpZ2l0YWxT
+aWduYXR1cmVgDQorCSAgdmFsdWUgaW4gdGhlIGBrZXlVc2FnZWAgZmllbGQgd2lsbCBub3QgYmUg
+YWNjZXB0ZWQuDQorDQogY29uZmlnIFNZU1RFTV9CTEFDS0xJU1RfS0VZUklORw0KIAlib29sICJQ
+cm92aWRlIHN5c3RlbS13aWRlIHJpbmcgb2YgYmxhY2tsaXN0ZWQga2V5cyINCiAJZGVwZW5kcyBv
+biBLRVlTDQpkaWZmIC0tZ2l0IGEvY2VydHMvc3lzdGVtX2tleXJpbmcuYyBiL2NlcnRzL3N5c3Rl
+bV9rZXlyaW5nLmMNCmluZGV4IDlkZTYxMGJmMWY0Yi4uZWUxNDQ0NzM3NGU3IDEwMDY0NA0KLS0t
+IGEvY2VydHMvc3lzdGVtX2tleXJpbmcuYw0KKysrIGIvY2VydHMvc3lzdGVtX2tleXJpbmcuYw0K
+QEAgLTk5LDYgKzk5LDIyIEBAIGludCByZXN0cmljdF9saW5rX2J5X2J1aWx0aW5fYW5kX3NlY29u
+ZGFyeV90cnVzdGVkKA0KIAkJLyogQWxsb3cgdGhlIGJ1aWx0aW4ga2V5cmluZyB0byBiZSBhZGRl
+ZCB0byB0aGUgc2Vjb25kYXJ5ICovDQogCQlyZXR1cm4gMDsNCiANCisJaWYgKElTX0VOQUJMRUQo
+Q09ORklHX1NFQ09OREFSWV9UUlVTVEVEX0tFWVJJTkdfRk9SX0NBX0NFUlRJRklDQVRFU19PTkxZ
+KSAmJg0KKwkgICAgZGVzdF9rZXlyaW5nID09IHNlY29uZGFyeV90cnVzdGVkX2tleXMpIHsNCisJ
+CWNvbnN0IHN0cnVjdCBwdWJsaWNfa2V5ICpwdWIgPSBwYXlsb2FkLT5kYXRhW2FzeW1fY3J5cHRv
+XTsNCisNCisJCWlmICh0eXBlICE9ICZrZXlfdHlwZV9hc3ltbWV0cmljKQ0KKwkJCXJldHVybiAt
+RU9QTk9UU1VQUDsNCisJCWlmICghcHViKQ0KKwkJCXJldHVybiAtRU5PUEtHOw0KKwkJaWYgKCF0
+ZXN0X2JpdChLRVlfRUZMQUdfQ0EsICZwdWItPmtleV9lZmxhZ3MpKQ0KKwkJCXJldHVybiAtRVBF
+Uk07DQorCQlpZiAoIXRlc3RfYml0KEtFWV9FRkxBR19LRVlDRVJUU0lHTiwgJnB1Yi0+a2V5X2Vm
+bGFncykpDQorCQkJcmV0dXJuIC1FUEVSTTsNCisJCWlmICh0ZXN0X2JpdChLRVlfRUZMQUdfRElH
+SVRBTFNJRywgJnB1Yi0+a2V5X2VmbGFncykpDQorCQkJcmV0dXJuIC1FUEVSTTsNCisJfQ0KKw0K
+IAlyZXR1cm4gcmVzdHJpY3RfbGlua19ieV9zaWduYXR1cmUoZGVzdF9rZXlyaW5nLCB0eXBlLCBw
+YXlsb2FkLA0KIAkJCQkJICBzZWNvbmRhcnlfdHJ1c3RlZF9rZXlzKTsNCiB9DQotLSANCjIuMzQu
+MQ0K
