@@ -2,223 +2,232 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D8E07B5DE0
-	for <lists+keyrings@lfdr.de>; Tue,  3 Oct 2023 01:50:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 046F67B62E9
+	for <lists+keyrings@lfdr.de>; Tue,  3 Oct 2023 09:57:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229862AbjJBXuD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 2 Oct 2023 19:50:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42270 "EHLO
+        id S231340AbjJCH5d (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 3 Oct 2023 03:57:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229747AbjJBXuD (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 2 Oct 2023 19:50:03 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D450C83;
-        Mon,  2 Oct 2023 16:49:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC5F8C433C7;
-        Mon,  2 Oct 2023 23:49:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696290599;
-        bh=eQvzq/pyS6uCjfM+/FiGWMp1HvzJv5UeqBTNXcKGofk=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=o/uS8mTR05XyRyW1FTe8g6gAfL7zScnEBWG2EA1KCNnytQJGScEr2D3O+kMJxM7t+
-         ErYQEi5tKdIkvtphMRBW9sCXukBQ0pEYAua3U8OumbGxaPAKHTf9B2LSLKvqh5Lpop
-         yfUN0rEX0qDIxsMIqzR6H5j2rg5AEvL2fc752J/5p5gY/xoBbqO/7AoFCfxUdVGwB+
-         /Wv1j4tXVsMZKdjWaMOJkVkCFiXif3NiaMvGMoJnnegBmZHR9bq9HkPmUAt+qHjxQp
-         5+AScyrsAWH2hA/n5qqRdA45AF2TQTry9T1dvfClQVKyIO8U7JGv5gx11NdCLvxE6B
-         CGxi57HMHZa3w==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Tue, 03 Oct 2023 02:49:53 +0300
-Message-Id: <CVYCTWRQAXDF.2HY5028ZT9FEC@seitikki>
-Cc:     "dhowells@redhat.com" <dhowells@redhat.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Sergey Shtylyov" <s.shtylyov@omp.ru>
-Subject: Re: [PATCH v3] certs: Add option to disallow non-CA certificates in
- secondary trusted keying
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Denis Glazkov" <d.glazkov@omp.ru>
-X-Mailer: aerc 0.14.0
-References: <CVS5MB3X82Q8.8KDB4346ROR5@suppilovahvero>
- <20231002104525.7631-1-d.glazkov@omp.ru>
-In-Reply-To: <20231002104525.7631-1-d.glazkov@omp.ru>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231274AbjJCH5c (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 3 Oct 2023 03:57:32 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D504EA1;
+        Tue,  3 Oct 2023 00:57:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1696319848; x=1727855848;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=Jaw97fwQTJRMgjyL+30NMvRWupub7HmLVrt/CGiEHHM=;
+  b=ELtAYsqvFnsET2tin/9Bn7vJ3urxNmyQwhLCDXtDZsgTZIviOdrm5Knu
+   pQr2lExssC5gQ326YNgM3NQdutu+fSMdHZMjYm/rQE4oPgJ977fdaFYTJ
+   UbPAzjWD+z8WPQdJqvskKGFxFZZ3XcJ7diWzxKug/Bikr+oxjfgi1u36g
+   RuhQb3inrsObFTy4O7qUeJ8KLGzVfqUXEeS0rc2EoXZOXx0DpPq5ASLuZ
+   s9Gl9v8ShdGYckEhEISl+QflYDQfYEcAOIrzrYcrSm6/ld2alShGKDAPh
+   61dx2tcxDQCjR4yL3VESHxHRjsDGPsn36sOQjzw8cl7AOj4akbjCMZ1dt
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="446977348"
+X-IronPort-AV: E=Sophos;i="6.03,196,1694761200"; 
+   d="scan'208";a="446977348"
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2023 00:57:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="821142123"
+X-IronPort-AV: E=Sophos;i="6.03,196,1694761200"; 
+   d="scan'208";a="821142123"
+Received: from tciutacu-mobl.ger.corp.intel.com ([10.252.40.114])
+  by fmsmga004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2023 00:57:15 -0700
+Date:   Tue, 3 Oct 2023 10:57:10 +0300 (EEST)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Lukas Wunner <lukas@wunner.de>
+cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
+        linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        linuxarm@huawei.com, David Box <david.e.box@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        "Li, Ming" <ming4.li@intel.com>, Zhi Wang <zhi.a.wang@intel.com>,
+        Alistair Francis <alistair.francis@wdc.com>,
+        Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+        Alexey Kardashevskiy <aik@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Alexander Graf <graf@amazon.com>
+Subject: Re: [PATCH 01/12] X.509: Make certificate parser public
+In-Reply-To: <e3d7c94d89e09a6985ac2bf0a6d192b007f454bf.1695921657.git.lukas@wunner.de>
+Message-ID: <cdabed9d-72f5-c125-fdf2-b9a3cd6030cc@linux.intel.com>
+References: <cover.1695921656.git.lukas@wunner.de> <e3d7c94d89e09a6985ac2bf0a6d192b007f454bf.1695921657.git.lukas@wunner.de>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="8323329-1636035145-1696319842=:2030"
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon Oct 2, 2023 at 1:46 PM EEST, Denis Glazkov wrote:
-> The Linux kernel has an IMA (Integrity Measurement Architecture)
-> subsystem to check the integrity of the file system based on digital
-> signatures. IMA uses certificates in `.ima` keying to check integrity.
->
-> Only certificates issued by one of the trusted CA (Certificate Authority)
-> certificates can be added to the `.ima` keying.
->
-> The Linux kernel now has a secondary trusted keying to which trusted
-> certificates from user space can be added if you have superuser
-> privileges. Previously, all trusted certificates were in the built-in
-> trusted keying, which could not be modified from user space.
-> Trusted certificates were placed in the built-in trusted keying at
-> kernel compile time.
->
-> The secondary trusted keying is designed so that any certificates that
-> are signed by one of the trusted CA certificates in the built-in or
-> secondary trusted keyring can be added to it.
->
-> Let's imagine that we have the following certificate trust chain:
->
->              =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=AC=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=90
->              =E2=94=82                           =E2=94=82     =E2=94=8C=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90   =
-    =E2=94=82
->              =E2=94=82                           =E2=94=82     =E2=94=82 =
-      =E2=94=82       =E2=94=82
-> =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90    =E2=94=8C=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=96=BC=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90=
-  =E2=94=82 =E2=94=8C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=B4=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=90
-> =E2=94=82.builtin_trusted_keys=E2=94=82=E2=97=84=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=A4.secondary_trusted_keys =E2=94=9C=E2=94=80=E2=94=80=E2=94=98 =
-=E2=94=82   .ima    =E2=94=82
-> =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4    =E2=94=9C=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4=
-    =E2=94=9C=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=A4
-> =E2=94=82     Root CA Cert    =E2=94=82-----=E2=96=BA Intermediate CA Cer=
-t  =E2=94=82-----=E2=96=BA IMA Cert =E2=94=82
-> =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98    =E2=94=94=
-=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=
-=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98=
-    =E2=94=94=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=98
->
->                 Issues                  Restricted by
->             -------------=E2=96=BA             =E2=94=80=E2=94=80=E2=94=
-=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=E2=94=80=
-=E2=94=80=E2=94=80=E2=94=80=E2=96=BA
->
-> Since the IMA certificate is signed by a CA certificate from a secondary
-> trusted keying, an attacker with superuser privileges will be able to
-> add the IMA certificate to the secondary trusted keying. That is, the IMA
-> certificate will become trusted.
->
-> Since, with `CONFIG_MODULE_SIG` option enabled, modules can only be
-> loaded into kernel space if they are signed with one of the trusted
-> certificates, an attacker could sign untrusted kernel modules with
-> the private key corresponding to the IMA certificate and successfully
-> load the untrusted modules into kernel space.
->
-> This patch was created not to solve only the problem of loading
-> untrusted kernel modules, but to make it possible to use a secondary
-> trusted keying only as a part of a chain of trust containing only
-> CA certificates with no digital signature capability. This will
-> help avoid similar problems when new features appear in the linux
-> kernel that are similar to kernel modules in terms of their impact
-> on system security, which will also use trusted certificates for
-> signature verification.
->
-> This patch adds the configuration that once enabled, only
-> certificates that meet the following requirements can be added
-> to the secondary trusted keying:
->
-> 1. The certificate is a CA (Certificate Authority)
-> 2. The certificate must be used for verifying a CA's signatures
-> 3. The certificate must not be used for digital signatures
->
-> Signed-off-by: Denis Glazkov <d.glazkov@omp.ru>
-> ---
-> v1 -> v2:
->  - Rebase the patch from `linux-next` to the main `linux` repo master bra=
-nch
->  - Make the commit message more detailed
->  - Move the variable declaration to the `if` block
->  - Replace `#ifdef` with `IS_ENABLED` macro
->
-> v2 -> v3:
->  - Add the purpose and goal of the patch to the commit message
-> ---
->  certs/Kconfig          |  9 +++++++++
->  certs/system_keyring.c | 16 ++++++++++++++++
->  2 files changed, 25 insertions(+)
->
-> diff --git a/certs/Kconfig b/certs/Kconfig
-> index 1f109b070877..4a4dc8aab892 100644
-> --- a/certs/Kconfig
-> +++ b/certs/Kconfig
-> @@ -90,6 +90,15 @@ config SECONDARY_TRUSTED_KEYRING
->  	  those keys are not blacklisted and are vouched for by a key built
->  	  into the kernel or already in the secondary trusted keyring.
-> =20
-> +config SECONDARY_TRUSTED_KEYRING_FOR_CA_CERTIFICATES_ONLY
-> +	bool "Allow only CA certificates to be added to the secondary trusted k=
-eyring"
-> +	depends on SECONDARY_TRUSTED_KEYRING
-> +	help
-> +	  If set, only CA certificates can be added to the secondary trusted ke=
-yring.
-> +	  An acceptable CA certificate must include the `keyCertSign` value in
-> +	  the `keyUsage` field. CA certificates that include the `digitalSignat=
-ure`
-> +	  value in the `keyUsage` field will not be accepted.
-> +
->  config SYSTEM_BLACKLIST_KEYRING
->  	bool "Provide system-wide ring of blacklisted keys"
->  	depends on KEYS
-> diff --git a/certs/system_keyring.c b/certs/system_keyring.c
-> index 9de610bf1f4b..ee14447374e7 100644
-> --- a/certs/system_keyring.c
-> +++ b/certs/system_keyring.c
-> @@ -99,6 +99,22 @@ int restrict_link_by_builtin_and_secondary_trusted(
->  		/* Allow the builtin keyring to be added to the secondary */
->  		return 0;
-> =20
-> +	if (IS_ENABLED(CONFIG_SECONDARY_TRUSTED_KEYRING_FOR_CA_CERTIFICATES_ONL=
-Y) &&
-> +	    dest_keyring =3D=3D secondary_trusted_keys) {
-> +		const struct public_key *pub =3D payload->data[asym_crypto];
-> +
-> +		if (type !=3D &key_type_asymmetric)
-> +			return -EOPNOTSUPP;
-> +		if (!pub)
-> +			return -ENOPKG;
-> +		if (!test_bit(KEY_EFLAG_CA, &pub->key_eflags))
-> +			return -EPERM;
-> +		if (!test_bit(KEY_EFLAG_KEYCERTSIGN, &pub->key_eflags))
-> +			return -EPERM;
-> +		if (test_bit(KEY_EFLAG_DIGITALSIG, &pub->key_eflags))
-> +			return -EPERM;
-> +	}
-> +
->  	return restrict_link_by_signature(dest_keyring, type, payload,
->  					  secondary_trusted_keys);
->  }
-> --=20
-> 2.34.1
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-I don't think this does any harm. What do you think Mimi?
+--8323329-1636035145-1696319842=:2030
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Transfer-Encoding: 8BIT
 
-BR, Jarkko
+On Thu, 28 Sep 2023, Lukas Wunner wrote:
+
+> The upcoming support for PCI device authentication with CMA-SPDM
+> (PCIe r6.1 sec 6.31) requires validating the Subject Alternative Name
+> in X.509 certificates.
+> 
+> High-level functions for X.509 parsing such as key_create_or_update()
+> throw away the internal, low-level struct x509_certificate after
+> extracting the struct public_key and public_key_signature from it.
+> The Subject Alternative Name is thus inaccessible when using those
+> functions.
+> 
+> Afford CMA-SPDM access to the Subject Alternative Name by making struct
+> x509_certificate public, together with the functions for parsing an
+> X.509 certificate into such a struct and freeing such a struct.
+> 
+> The private header file x509_parser.h previously included <linux/time.h>
+> for the definition of time64_t.  That definition was since moved to
+> <linux/time64.h> by commit 361a3bf00582 ("time64: Add time64.h header
+> and define struct timespec64"), so adjust the #include directive as part
+> of the move to the new public header file <keys/x509-parser.h>.
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> ---
+>  crypto/asymmetric_keys/x509_parser.h | 37 +----------------------
+>  include/keys/x509-parser.h           | 44 ++++++++++++++++++++++++++++
+>  2 files changed, 45 insertions(+), 36 deletions(-)
+>  create mode 100644 include/keys/x509-parser.h
+> 
+> diff --git a/crypto/asymmetric_keys/x509_parser.h b/crypto/asymmetric_keys/x509_parser.h
+> index a299c9c56f40..a7ef43c39002 100644
+> --- a/crypto/asymmetric_keys/x509_parser.h
+> +++ b/crypto/asymmetric_keys/x509_parser.h
+> @@ -5,40 +5,7 @@
+>   * Written by David Howells (dhowells@redhat.com)
+>   */
+>  
+> -#include <linux/time.h>
+> -#include <crypto/public_key.h>
+> -#include <keys/asymmetric-type.h>
+> -
+> -struct x509_certificate {
+> -	struct x509_certificate *next;
+> -	struct x509_certificate *signer;	/* Certificate that signed this one */
+> -	struct public_key *pub;			/* Public key details */
+> -	struct public_key_signature *sig;	/* Signature parameters */
+> -	char		*issuer;		/* Name of certificate issuer */
+> -	char		*subject;		/* Name of certificate subject */
+> -	struct asymmetric_key_id *id;		/* Issuer + Serial number */
+> -	struct asymmetric_key_id *skid;		/* Subject + subjectKeyId (optional) */
+> -	time64_t	valid_from;
+> -	time64_t	valid_to;
+> -	const void	*tbs;			/* Signed data */
+> -	unsigned	tbs_size;		/* Size of signed data */
+> -	unsigned	raw_sig_size;		/* Size of signature */
+> -	const void	*raw_sig;		/* Signature data */
+> -	const void	*raw_serial;		/* Raw serial number in ASN.1 */
+> -	unsigned	raw_serial_size;
+> -	unsigned	raw_issuer_size;
+> -	const void	*raw_issuer;		/* Raw issuer name in ASN.1 */
+> -	const void	*raw_subject;		/* Raw subject name in ASN.1 */
+> -	unsigned	raw_subject_size;
+> -	unsigned	raw_skid_size;
+> -	const void	*raw_skid;		/* Raw subjectKeyId in ASN.1 */
+> -	unsigned	index;
+> -	bool		seen;			/* Infinite recursion prevention */
+> -	bool		verified;
+> -	bool		self_signed;		/* T if self-signed (check unsupported_sig too) */
+> -	bool		unsupported_sig;	/* T if signature uses unsupported crypto */
+> -	bool		blacklisted;
+> -};
+> +#include <keys/x509-parser.h>
+>  
+>  /*
+>   * selftest.c
+> @@ -52,8 +19,6 @@ static inline int fips_signature_selftest(void) { return 0; }
+>  /*
+>   * x509_cert_parser.c
+>   */
+> -extern void x509_free_certificate(struct x509_certificate *cert);
+> -extern struct x509_certificate *x509_cert_parse(const void *data, size_t datalen);
+>  extern int x509_decode_time(time64_t *_t,  size_t hdrlen,
+>  			    unsigned char tag,
+>  			    const unsigned char *value, size_t vlen);
+> diff --git a/include/keys/x509-parser.h b/include/keys/x509-parser.h
+> new file mode 100644
+> index 000000000000..7c2ebc84791f
+> --- /dev/null
+> +++ b/include/keys/x509-parser.h
+> @@ -0,0 +1,44 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/* X.509 certificate parser
+> + *
+> + * Copyright (C) 2012 Red Hat, Inc. All Rights Reserved.
+> + * Written by David Howells (dhowells@redhat.com)
+> + */
+
+Please add the include guard #ifndef + #define.
+
+Other than that, this looks okay,
+
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+
+-- 
+ i.
+
+
+> +
+> +#include <crypto/public_key.h>
+> +#include <keys/asymmetric-type.h>
+> +#include <linux/time64.h>
+> +
+> +struct x509_certificate {
+> +	struct x509_certificate *next;
+> +	struct x509_certificate *signer;	/* Certificate that signed this one */
+> +	struct public_key *pub;			/* Public key details */
+> +	struct public_key_signature *sig;	/* Signature parameters */
+> +	char		*issuer;		/* Name of certificate issuer */
+> +	char		*subject;		/* Name of certificate subject */
+> +	struct asymmetric_key_id *id;		/* Issuer + Serial number */
+> +	struct asymmetric_key_id *skid;		/* Subject + subjectKeyId (optional) */
+> +	time64_t	valid_from;
+> +	time64_t	valid_to;
+> +	const void	*tbs;			/* Signed data */
+> +	unsigned	tbs_size;		/* Size of signed data */
+> +	unsigned	raw_sig_size;		/* Size of signature */
+> +	const void	*raw_sig;		/* Signature data */
+> +	const void	*raw_serial;		/* Raw serial number in ASN.1 */
+> +	unsigned	raw_serial_size;
+> +	unsigned	raw_issuer_size;
+> +	const void	*raw_issuer;		/* Raw issuer name in ASN.1 */
+> +	const void	*raw_subject;		/* Raw subject name in ASN.1 */
+> +	unsigned	raw_subject_size;
+> +	unsigned	raw_skid_size;
+> +	const void	*raw_skid;		/* Raw subjectKeyId in ASN.1 */
+> +	unsigned	index;
+> +	bool		seen;			/* Infinite recursion prevention */
+> +	bool		verified;
+> +	bool		self_signed;		/* T if self-signed (check unsupported_sig too) */
+> +	bool		unsupported_sig;	/* T if signature uses unsupported crypto */
+> +	bool		blacklisted;
+> +};
+> +
+> +struct x509_certificate *x509_cert_parse(const void *data, size_t datalen);
+> +void x509_free_certificate(struct x509_certificate *cert);
+--8323329-1636035145-1696319842=:2030--
