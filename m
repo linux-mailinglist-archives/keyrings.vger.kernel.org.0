@@ -2,56 +2,38 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1BF17B6688
-	for <lists+keyrings@lfdr.de>; Tue,  3 Oct 2023 12:35:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 195977B6BDD
+	for <lists+keyrings@lfdr.de>; Tue,  3 Oct 2023 16:39:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231553AbjJCKf5 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 3 Oct 2023 06:35:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49528 "EHLO
+        id S237689AbjJCOjv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 3 Oct 2023 10:39:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231161AbjJCKf5 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 3 Oct 2023 06:35:57 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0F25AC;
-        Tue,  3 Oct 2023 03:35:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1696329350; x=1727865350;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=VxyHL+uYOAb3lHGwaiYS9GjXmmM9aBl7t8yOsfFHYCc=;
-  b=HsRxMg1f0KA7lOQGzmPiPiy1huSCkObaYALYTrJemaaYWNkPofcyyL9R
-   mZ74yUy5khAEGEVs+AUnp4WQAyvR7K/59XYCWLojJNrDFNhV66amfGfBs
-   d0w5NSK/cIQZzvZTosIIp+JFJF821uQS9uFqqCEK8byuCswCCmwi73wJm
-   BQAxwczLbRGAPzKN71AYRJIx0q0uytmjihM5Fx4uHd9g+q+znU58UiGNZ
-   fqdov/DAGoglEXWTUaJ5e328iC3iZ/cvRm5BbxGYUzx3jEKwCjY/cfmvI
-   SLg98b5kObhs0OSKFSFWorhz3MqTK21DkMu3Yyy6zp/sdTJUo6hSnISYR
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="380120961"
-X-IronPort-AV: E=Sophos;i="6.03,196,1694761200"; 
-   d="scan'208";a="380120961"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2023 03:35:49 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10851"; a="727573191"
-X-IronPort-AV: E=Sophos;i="6.03,197,1694761200"; 
-   d="scan'208";a="727573191"
-Received: from tciutacu-mobl.ger.corp.intel.com ([10.252.40.114])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Oct 2023 03:35:29 -0700
-Date:   Tue, 3 Oct 2023 13:35:26 +0300 (EEST)
-From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+        with ESMTP id S232230AbjJCOju (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 3 Oct 2023 10:39:50 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A533A1;
+        Tue,  3 Oct 2023 07:39:42 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S0L5l1sWSz6K6Dl;
+        Tue,  3 Oct 2023 22:38:03 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 3 Oct
+ 2023 15:39:38 +0100
+Date:   Tue, 3 Oct 2023 15:39:37 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To:     Lukas Wunner <lukas@wunner.de>
-cc:     Bjorn Helgaas <helgaas@kernel.org>,
+CC:     Bjorn Helgaas <helgaas@kernel.org>,
         David Howells <dhowells@redhat.com>,
         David Woodhouse <dwmw2@infradead.org>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>,
         Alex Williamson <alex.williamson@redhat.com>,
-        linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
-        linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linuxarm@huawei.com, David Box <david.e.box@intel.com>,
+        <linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+        <linux-coco@lists.linux.dev>, <keyrings@vger.kernel.org>,
+        <linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
+        <linuxarm@huawei.com>, David Box <david.e.box@intel.com>,
         Dan Williams <dan.j.williams@intel.com>,
         Dave Jiang <dave.jiang@intel.com>,
         "Li, Ming" <ming4.li@intel.com>, Zhi Wang <zhi.a.wang@intel.com>,
@@ -62,21 +44,30 @@ cc:     Bjorn Helgaas <helgaas@kernel.org>,
         Sean Christopherson <seanjc@google.com>,
         Alexander Graf <graf@amazon.com>
 Subject: Re: [PATCH 07/12] spdm: Introduce library to authenticate devices
+Message-ID: <20231003153937.000034ca@Huawei.com>
 In-Reply-To: <89a83f42ae3c411f46efd968007e9b2afd839e74.1695921657.git.lukas@wunner.de>
-Message-ID: <5d0e75-993c-3978-8ccf-60bfb7cac10@linux.intel.com>
-References: <cover.1695921656.git.lukas@wunner.de> <89a83f42ae3c411f46efd968007e9b2afd839e74.1695921657.git.lukas@wunner.de>
+References: <cover.1695921656.git.lukas@wunner.de>
+        <89a83f42ae3c411f46efd968007e9b2afd839e74.1695921657.git.lukas@wunner.de>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 28 Sep 2023, Lukas Wunner wrote:
+On Thu, 28 Sep 2023 19:32:37 +0200
+Lukas Wunner <lukas@wunner.de> wrote:
 
 > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
@@ -92,12 +83,26 @@ On Thu, 28 Sep 2023, Lukas Wunner wrote:
 >   https://www.dmtf.org/dsp/DSP0274
 > 
 > This implementation supports SPDM 1.0 through 1.3 (the latest version).
+
+I've no strong objection in allowing 1.0, but I think we do need
+to control min version accepted somehow as I'm not that keen to get
+security folk analyzing old version...
+
 > It is designed to be transport-agnostic as the kernel already supports
 > two different SPDM-capable transports:
 > 
 > * PCIe Data Object Exchange (PCIe r6.1 sec 6.30, drivers/pci/doe.c)
 > * Management Component Transport Protocol (MCTP,
 >   Documentation/networking/mctp.rst)
+
+The MCTP side of things is going to be interesting because mostly you
+need to jump through a bunch of hoops (address assignment, routing setup
+etc) before you can actually talk to a device.   That all involves
+a userspace agent.  So I'm not 100% sure how this will all turn out.
+However still makes sense to have a transport agnostic implementation
+as if nothing else it makes it easier to review as keeps us within
+one specification.
+
 > 
 > Use cases for SPDM include, but are not limited to:
 > 
@@ -105,6 +110,10 @@ On Thu, 28 Sep 2023, Lukas Wunner wrote:
 > * Compute Express Link (CXL r3.0 sec 14.11.6)
 > * Open Compute Project (Attestation of System Components r1.0)
 >   https://www.opencompute.org/documents/attestation-v1-0-20201104-pdf
+
+Alastair, would it make sense to also call out some of the storage
+use cases you are interested in?
+
 > 
 > The initial focus of this implementation is enabling PCIe CMA device
 > authentication.  As such, only a subset of the SPDM specification is
@@ -138,6 +147,16 @@ On Thu, 28 Sep 2023, Lukas Wunner wrote:
 > Lukas reworked it for upstream.
 > 
 > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Feels like a Co-developed Lukas ...
+is appropriate use of that tag here as you've done quite
+a lot of work on this.
+
+I've forgotten most of this code. Hopefully I'll be more
+able to spot bugs than if I remembered how it works :)
+All comments ended up being fairly superficial stuff,
+Looks good to me otherwise and anyway would be odd if I gave a
+RB on 'my own patch ' :)
+
 > Signed-off-by: Lukas Wunner <lukas@wunner.de>
 > ---
 >  MAINTAINERS          |    9 +
@@ -198,11 +217,7 @@ On Thu, 28 Sep 2023, Lukas Wunner wrote:
 > +typedef int (spdm_transport)(void *priv, struct device *dev,
 > +			     const void *request, size_t request_sz,
 > +			     void *response, size_t response_sz);
-
-This returns a length or an error, right? If so return ssize_t instead.
-
-If you make this change, alter the caller types too.
-
+> +
 > +struct spdm_state *spdm_create(struct device *dev, spdm_transport *transport,
 > +			       void *transport_priv, u32 transport_sz,
 > +			       struct key *keyring);
@@ -231,6 +246,10 @@ If you make this change, alter the caller types too.
 > +	select X509_CERTIFICATE_PARSER
 > +	help
 > +	 The Security Protocol and Data Model (SPDM) allows for authentication,
+
+This file is inconsistent but tab + 2 spaces seems more common for help
+text. I don't mind though if you prefer this.
+
 > +	 measurement, key exchange and encrypted sessions with devices.  This
 > +	 option enables support for the SPDM requester role.
 > +
@@ -285,6 +304,13 @@ If you make this change, alter the caller types too.
 > +#define SPDM_MIN_VER 0x10
 > +#define SPDM_MAX_VER 0x13
 > +
+Given how hard I fin the SPDM specifications to navigate
+perhaps we should provide some breadcrumbs for reviewers?
+/*
+ * SPDM 1.3.0
+ * Table 13 - Flag Fields definitions for the Requester
+ * Table 14 - Flag Fields definitions for the Responder
+ */
 > +#define SPDM_CACHE_CAP			BIT(0)		    /* response only */
 > +#define SPDM_CERT_CAP			BIT(1)
 > +#define SPDM_CHAL_CAP			BIT(2)
@@ -293,19 +319,32 @@ If you make this change, alter the caller types too.
 > +#define   SPDM_MEAS_CAP_MEAS		1		    /* response only */
 > +#define   SPDM_MEAS_CAP_MEAS_SIG	2		    /* response only */
 > +#define SPDM_MEAS_FRESH_CAP		BIT(5)		    /* response only */
+
+This is awkward but SPDM 1.01 has PSS_CAP in bits 6 and 7 of byte 1.
+Looks good by time of 1.1.0 
+
 > +#define SPDM_ENCRYPT_CAP		BIT(6)
 > +#define SPDM_MAC_CAP			BIT(7)
-> +#define SPDM_MUT_AUTH_CAP		BIT(8)
+> +#define SPDM_MUT_AUTH_CAP		BIT(8) 
+/* 1.1.0 */
 > +#define SPDM_KEY_EX_CAP			BIT(9)
+/* 1.1.0 */
 > +#define SPDM_PSK_CAP_MASK		GENMASK(11, 10)
+/* 1.1.0 */
 > +#define   SPDM_PSK_CAP_NO		0
 > +#define   SPDM_PSK_CAP_PSK		1
 > +#define   SPDM_PSK_CAP_PSK_CTX		2		    /* response only */
 > +#define SPDM_ENCAP_CAP			BIT(12)
+/* 1.1.0 */
 > +#define SPDM_HBEAT_CAP			BIT(13)
+/* 1.1.0 */
 > +#define SPDM_KEY_UPD_CAP		BIT(14)
+/* 1.1.0 */
 > +#define SPDM_HANDSHAKE_ITC_CAP		BIT(15)
+/* 1.1.0 */
 > +#define SPDM_PUB_KEY_ID_CAP		BIT(16)
+/* 1.1.0 */
+
 > +#define SPDM_CHUNK_CAP			BIT(17)		/* 1.2 */
 > +#define SPDM_ALIAS_CERT_CAP		BIT(18)		/* 1.2 response only */
 > +#define SPDM_SET_CERT_CAP		BIT(19)		/* 1.2 response only */
@@ -349,8 +388,13 @@ If you make this change, alter the caller types too.
 > +#define SPDM_ASYM_ECDSA_ECC_NIST_P384	BIT(7)
 > +#define SPDM_ASYM_ECDSA_ECC_NIST_P521	BIT(8)
 > +#define SPDM_ASYM_SM2_ECC_SM2_P256	BIT(9)
+/* 1.2.0 */
 > +#define SPDM_ASYM_EDDSA_ED25519		BIT(10)
+/* 1.2.0 */
 > +#define SPDM_ASYM_EDDSA_ED448		BIT(11)
+/* 1.2.0 */
+I have far too many versions of this spec open currently...
+
 > +
 > +#define SPDM_HASH_SHA_256		BIT(0)
 > +#define SPDM_HASH_SHA_384		BIT(1)
@@ -359,11 +403,23 @@ If you make this change, alter the caller types too.
 > +#define SPDM_HASH_SHA3_384		BIT(4)
 > +#define SPDM_HASH_SHA3_512		BIT(5)
 > +#define SPDM_HASH_SM3_256		BIT(6)
+/* 1.2.0 */
+
 > +
 > +#if IS_ENABLED(CONFIG_CRYPTO_RSA)
 > +#define SPDM_ASYM_RSA			SPDM_ASYM_RSASSA_2048 |		\
 > +					SPDM_ASYM_RSASSA_3072 |		\
 > +					SPDM_ASYM_RSASSA_4096 |
+
+I'm not keen on the trailing | 
+
+Maybe,
+
+#else
+#define SPDM_ASYM_RSA 0
+#endif
+
+
 > +#endif
 > +
 > +#if IS_ENABLED(CONFIG_CRYPTO_ECDSA)
@@ -383,60 +439,37 @@ If you make this change, alter the caller types too.
 > +/* SPDM algorithms supported by this implementation */
 > +#define SPDM_ASYM_ALGOS		       (SPDM_ASYM_RSA			\
 > +					SPDM_ASYM_ECDSA	0)
+Doesn't this give errors for not defined for these if the config options not set
+above? I think we need #else for each of them.
 > +
 > +#define SPDM_HASH_ALGOS		       (SPDM_HASH_SHA2_256		\
 > +					SPDM_HASH_SHA2_384_512 0)
 > +
-> +/*
-> + * Common header shared by all messages.
-> + * Note that the meaning of param1 and param2 is message dependent.
-> + */
-> +struct spdm_header {
-> +	u8 version;
-> +	u8 code;  /* RequestResponseCode */
-> +	u8 param1;
-> +	u8 param2;
-> +} __packed;
-> +
-> +#define SPDM_REQ 0x80
-> +#define SPDM_GET_VERSION 0x84
+...
 
-Align.
-
-> +struct spdm_get_version_req {
-> +	u8 version;
-> +	u8 code;
-> +	u8 param1;
-> +	u8 param2;
-> +} __packed;
-> +
-> +struct spdm_get_version_rsp {
-> +	u8 version;
-> +	u8 code;
-> +	u8 param1;
-> +	u8 param2;
-> +
-> +	u8 reserved;
-> +	u8 version_number_entry_count;
-> +	__le16 version_number_entries[];
-
-__counted_by(version_number_entry_count) ?
-
-> +} __packed;
-> +
 > +#define SPDM_GET_CAPABILITIES 0xE1
-
-There's non-capital hex later in the file, please try to be consistent.
-
 > +#define SPDM_MIN_DATA_TRANSFER_SIZE 42 /* SPDM 1.2.0 margin no 226 */
 > +
 > +/* For this exchange the request and response messages have the same form */
+
+Not before 1.1.0 they don't...
+
 > +struct spdm_get_capabilities_reqrsp {
 > +	u8 version;
 > +	u8 code;
 > +	u8 param1;
 > +	u8 param2;
 > +	/* End of SPDM 1.0 structure */
+
+True for request, but response is different (which breaks the comment above)
+That means we should probably split this just for documentation purposes.
+Or add more comments...
+
+You have it right where it's used, so just a question of bringing comments
+inline with that code
+
+
+
 > +
 > +	u8 reserved1;
 > +	u8 ctexponent;
@@ -447,6 +480,12 @@ There's non-capital hex later in the file, please try to be consistent.
 > +
 > +	__le32 data_transfer_size;			/* 1.2+ */
 > +	__le32 max_spdm_msg_size;			/* 1.2+ */
+
+There's potentially more for the 1.3 response...
+Supported Algorithms seems to have been added of AlgSize if
+param1 bit 1 is set.
+
+
 > +} __packed;
 > +
 > +#define SPDM_NEGOTIATE_ALGS 0xE3
@@ -460,6 +499,13 @@ There's non-capital hex later in the file, please try to be consistent.
 > +	__le16 length;
 > +	u8 measurement_specification;
 > +	u8 other_params_support;			/* 1.2+ */
+
+Probably comment that it's reserved pre 1.2 rather than later elements
+moving around. I guess some catch all text at the top of the file
+to say that fields at the end that don't exist for earlier structures
+mean shorter structures but fields in the middle replace reserved
+space.
+
 > +
 > +	__le32 base_asym_algo;
 > +	__le32 base_hash_algo;
@@ -477,51 +523,9 @@ There's non-capital hex later in the file, please try to be consistent.
 > +	 * - ReqAlgStruct: variable size * param1	 * 1.1+ *
 > +	 */
 > +} __packed;
-> +
-> +struct spdm_negotiate_algs_rsp {
-> +	u8 version;
-> +	u8 code;
-> +	u8 param1; /* Number of RespAlgStruct entries at end */
-> +	u8 param2;
-> +
-> +	__le16 length;
-> +	u8 measurement_specification_sel;
-> +	u8 other_params_sel;				/* 1.2+ */
-> +
-> +	__le32 measurement_hash_algo;
-> +	__le32 base_asym_sel;
-> +	__le32 base_hash_sel;
-> +
-> +	u8 reserved1[11];
-> +	u8 mel_specification_sel;			/* 1.3+ */
-> +	u8 ext_asym_sel_count; /* Either 0 or 1 */
-> +	u8 ext_hash_sel_count; /* Either 0 or 1 */
-> +	u8 reserved2[2];
-> +
-> +	/*
-> +	 * Additional optional fields at end of this structure:
-> +	 * - ExtAsym: 4 bytes * ext_asym_count
-> +	 * - ExtHash: 4 bytes * ext_hash_count
-> +	 * - RespAlgStruct: variable size * param1	 * 1.1+ *
-> +	 */
-> +} __packed;
-> +
-> +struct spdm_req_alg_struct {
-> +	u8 alg_type;
-> +	u8 alg_count; /* 0x2K where K is number of alg_external entries */
-> +	__le16 alg_supported; /* Size is in alg_count[7:4], always 2 */
-> +	__le32 alg_external[];
-> +} __packed;
-> +
-> +#define SPDM_GET_DIGESTS 0x81
-> +
-> +struct spdm_get_digests_req {
-> +	u8 version;
-> +	u8 code;
-> +	u8 param1; /* Reserved */
-> +	u8 param2; /* Reserved */
-> +} __packed;
-> +
+
+...
+
 > +struct spdm_get_digests_rsp {
 > +	u8 version;
 > +	u8 code;
@@ -529,6 +533,9 @@ There's non-capital hex later in the file, please try to be consistent.
 > +	u8 param2; /* ProvisionedSlotMask */
 > +	u8 digests[]; /* Hash of struct spdm_cert_chain for each slot */
 > +	/* End of SPDM 1.2 structure */
+
+1.2 and earlier?
+
 > +
 > +	/*
 > +	 * Additional optional fields at end of this structure:
@@ -538,39 +545,28 @@ There's non-capital hex later in the file, please try to be consistent.
 > +	 * - KeyUsageMask: 2 bytes for each slot	 * 1.3+ *
 > +	 */
 > +} __packed;
-> +
-> +#define SPDM_GET_CERTIFICATE 0x82
-> +#define SPDM_SLOTS 8 /* SPDM 1.0.0 section 4.9.2.1 */
-> +
-> +struct spdm_get_certificate_req {
-> +	u8 version;
-> +	u8 code;
-> +	u8 param1; /* Slot number 0..7 */
-> +	u8 param2; /* SlotSizeRequested */		/* 1.3+ */
-> +	__le16 offset;
-> +	__le16 length;
-> +} __packed;
-> +
+
+...
+
 > +struct spdm_get_certificate_rsp {
 > +	u8 version;
 > +	u8 code;
 > +	u8 param1; /* Slot number 0..7 */
 > +	u8 param2; /* CertModel */			/* 1.3+ */
+Why CertModel?  I'm seeing Cerificate Response Attributes which has
+a field called CertificateInfo. Format of that is defined by CertModel
+back in the digests request, but CertModel seems inappropriate here..
+
+Mind you I've not read that bit of 1.3.0 yet so maybe this is appropriate
+short hand.
+ 
 > +	__le16 portion_length;
 > +	__le16 remainder_length;
 > +	u8 cert_chain[]; /* PortionLength long */
 > +} __packed;
-> +
-> +struct spdm_cert_chain {
-> +	__le16 length;
-> +	u8 reserved[2];
-> +	/*
-> +	 * Additional fields at end of this structure:
-> +	 * - RootHash: Digest of Root Certificate
-> +	 * - Certificates: Chain of ASN.1 DER-encoded X.509 v3 certificates
-> +	 */
-> +} __packed;
-> +
+
+...
+
 > +#define SPDM_CHALLENGE 0x83
 > +#define SPDM_MAX_OPAQUE_DATA 1024 /* SPDM 1.0.0 table 21 */
 > +
@@ -581,6 +577,10 @@ There's non-capital hex later in the file, please try to be consistent.
 > +	u8 param2; /* MeasurementSummaryHash type */
 > +	u8 nonce[32];
 > +	/* End of SPDM 1.2 structure */
+
+1.2 and earlier
+
+
 > +
 > +	u8 context[8];					/* 1.3+ */
 > +} __packed;
@@ -598,6 +598,12 @@ There's non-capital hex later in the file, please try to be consistent.
 > +	 * - OpaqueDataLength: 2 bytes long
 > +	 * - OpaqueData: Up to 1024 bytes long
 > +	 * - RequesterContext: 8 bytes long		 * 1.3+ *
+
+Perhaps call out that this is not a case of reserved field being filled in.
+It moves the signature field. Which is different to other cases above
+where prior to 1.3 there was a reserved field.
+
+
 > +	 * - Signature
 > +	 */
 > +} __packed;
@@ -611,134 +617,40 @@ There's non-capital hex later in the file, please try to be consistent.
 > +	spdm_unexpected_request = 0x04,
 > +	spdm_unspecified = 0x05,
 > +	spdm_decrypt_error = 0x06,
+/* 1.1+ */
+
 > +	spdm_unsupported_request = 0x07,
 > +	spdm_request_in_flight = 0x08,
+/* 1.1+ */
 > +	spdm_invalid_response_code = 0x09,
+/* 1.1+ */
 > +	spdm_session_limit_exceeded = 0x0a,
+/* 1.1+ */
+
 > +	spdm_session_required = 0x0b,
+/* 1.2+ */
 > +	spdm_reset_required = 0x0c,
+/* 1.2+ */
 > +	spdm_response_too_large = 0x0d,
+/* 1.2+ */
 > +	spdm_request_too_large = 0x0e,
+/* 1.2+ */
 > +	spdm_large_response = 0x0f,
+/* 1.2+ */
 > +	spdm_message_lost = 0x10,
+/* 1.2+ */
 > +	spdm_invalid_policy = 0x11,			/* 1.3+ */
+
 > +	spdm_version_mismatch = 0x41,
 > +	spdm_response_not_ready = 0x42,
 > +	spdm_request_resynch = 0x43,
 > +	spdm_operation_failed = 0x44,			/* 1.3+ */
 > +	spdm_no_pending_requests = 0x45,		/* 1.3+ */
 > +	spdm_vendor_defined_error = 0xff,
-
-Align values.
-
-So SPDM_ERROR is in caps but the error codes aren't?
-
 > +};
-> +
-> +struct spdm_error_rsp {
-> +	u8 version;
-> +	u8 code;
-> +	enum spdm_error_code error_code:8;
+...
 
-Is this always going to produce the layout you want given the alignment 
-requirements for the storage unit for u8 and enum are probably different?
 
-> +	u8 error_data;
-> +
-> +	u8 extended_error_data[];
-> +} __packed;
-> +
-> +static int spdm_err(struct device *dev, struct spdm_error_rsp *rsp)
-> +{
-> +	switch (rsp->error_code) {
-> +	case spdm_invalid_request:
-> +		dev_err(dev, "Invalid request\n");
-> +		return -EINVAL;
-> +	case spdm_invalid_session:
-> +		if (rsp->version == 0x11) {
-> +			dev_err(dev, "Invalid session %#x\n", rsp->error_data);
-> +			return -EINVAL;
-> +		}
-> +		break;
-> +	case spdm_busy:
-> +		dev_err(dev, "Busy\n");
-> +		return -EBUSY;
-> +	case spdm_unexpected_request:
-> +		dev_err(dev, "Unexpected request\n");
-> +		return -EINVAL;
-> +	case spdm_unspecified:
-> +		dev_err(dev, "Unspecified error\n");
-> +		return -EINVAL;
-> +	case spdm_decrypt_error:
-> +		dev_err(dev, "Decrypt error\n");
-> +		return -EIO;
-> +	case spdm_unsupported_request:
-> +		dev_err(dev, "Unsupported request %#x\n", rsp->error_data);
-> +		return -EINVAL;
-> +	case spdm_request_in_flight:
-> +		dev_err(dev, "Request in flight\n");
-> +		return -EINVAL;
-> +	case spdm_invalid_response_code:
-> +		dev_err(dev, "Invalid response code\n");
-> +		return -EINVAL;
-> +	case spdm_session_limit_exceeded:
-> +		dev_err(dev, "Session limit exceeded\n");
-> +		return -EBUSY;
-> +	case spdm_session_required:
-> +		dev_err(dev, "Session required\n");
-> +		return -EINVAL;
-> +	case spdm_reset_required:
-> +		dev_err(dev, "Reset required\n");
-> +		return -ERESTART;
-
-Is it really good to use this return code? Isn't there even some special 
-handling for it, hopefully it never leaks to anything that will take it as 
-special.
-
-If these occur (this and the one below) after there was an existing 
-session, -EPIPE would be one potential alternative which kinda matches 
-what's going on. If that's not acceptable perhaps some connection oriented 
-return codes would be close enough (session is conceptually close to 
-connection anyway).
-
-> +	case spdm_response_too_large:
-> +		dev_err(dev, "Response too large\n");
-> +		return -EINVAL;
-> +	case spdm_request_too_large:
-> +		dev_err(dev, "Request too large\n");
-> +		return -EINVAL;
-> +	case spdm_large_response:
-> +		dev_err(dev, "Large response\n");
-> +		return -EMSGSIZE;
-> +	case spdm_message_lost:
-> +		dev_err(dev, "Message lost\n");
-> +		return -EIO;
-> +	case spdm_invalid_policy:
-> +		dev_err(dev, "Invalid policy\n");
-> +		return -EINVAL;
-> +	case spdm_version_mismatch:
-> +		dev_err(dev, "Version mismatch\n");
-> +		return -EINVAL;
-> +	case spdm_response_not_ready:
-> +		dev_err(dev, "Response not ready\n");
-> +		return -EINPROGRESS;
-> +	case spdm_request_resynch:
-> +		dev_err(dev, "Request resynchronization\n");
-> +		return -ERESTART;
-> +	case spdm_operation_failed:
-> +		dev_err(dev, "Operation failed\n");
-> +		return -EINVAL;
-> +	case spdm_no_pending_requests:
-> +		return -ENOENT;
-> +	case spdm_vendor_defined_error:
-> +		dev_err(dev, "Vendor defined error\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	dev_err(dev, "Undefined error %#x\n", rsp->error_code);
-> +	return -EINVAL;
-> +}
-> +
 > +/**
 > + * struct spdm_state - SPDM session state
 > + *
@@ -802,122 +714,23 @@ connection anyway).
 > +	struct crypto_shash *shash;
 > +	struct shash_desc *desc;
 > +	size_t h;
-
-I understand this h and s come directly from the naming in the spec but it 
-feels unnecessarily obfuscated from code reading PoV to not use hash_len 
-and sig_len.
-
 > +
 > +	/* Certificates */
 > +	struct public_key *leaf_key;
 > +	struct key *root_keyring;
 > +};
-> +
-> +static int __spdm_exchange(struct spdm_state *spdm_state,
-> +			   const void *req, size_t req_sz,
-> +			   void *rsp, size_t rsp_sz)
-> +{
-> +	const struct spdm_header *request = req;
-> +	struct spdm_header *response = rsp;
-> +	int length;
-> +	int rc;
-> +
-> +	rc = spdm_state->transport(spdm_state->transport_priv, spdm_state->dev,
-> +				   req, req_sz, rsp, rsp_sz);
-> +	if (rc < 0)
-> +		return rc;
-> +
-> +	length = rc;
 
-rc feels pretty unnecessary variable here.
+...
 
-> +	if (length < sizeof(struct spdm_header))
-> +		return -EPROTO;
-> +
-> +	if (response->code == SPDM_ERROR)
-> +		return spdm_err(spdm_state->dev, (struct spdm_error_rsp *)rsp);
-> +
-> +	if (response->code != (request->code & ~SPDM_REQ)) {
-> +		dev_err(spdm_state->dev,
-> +			"Response code %#x does not match request code %#x\n",
-> +			response->code, request->code);
-> +		return -EPROTO;
-> +	}
-> +
-> +	return length;
-> +}
-> +
-> +static int spdm_exchange(struct spdm_state *spdm_state,
-> +			 void *req, size_t req_sz, void *rsp, size_t rsp_sz)
-> +{
-> +	struct spdm_header *req_header = req;
-> +
-> +	if (req_sz < sizeof(struct spdm_header) ||
-> +	    rsp_sz < sizeof(struct spdm_header))
 
-Variable names that close to each other seem like a disaster awaiting to 
-happen. Even changing rsp -> resp would be a huge improvement.
-
-> +		return -EINVAL;
-> +
-> +	req_header->version = spdm_state->version;
-> +
-> +	return __spdm_exchange(spdm_state, req, req_sz, rsp, rsp_sz);
-> +}
 > +
 > +static const struct spdm_get_version_req spdm_get_version_req = {
 > +	.version = 0x10,
 > +	.code = SPDM_GET_VERSION,
 > +};
-> +
-> +static int spdm_get_version(struct spdm_state *spdm_state,
-> +			    struct spdm_get_version_rsp *rsp, size_t *rsp_sz)
-> +{
-> +	u8 version = SPDM_MIN_VER;
-> +	bool foundver = false;
-> +	int rc, length, i;
-> +
-> +	/*
-> +	 * Bypass spdm_exchange() to be able to set version = 0x10.
-> +	 * rsp buffer is large enough for the maximum possible 255 entries.
-> +	 */
-> +	rc = __spdm_exchange(spdm_state, &spdm_get_version_req,
-> +			     sizeof(spdm_get_version_req), rsp,
-> +			     struct_size(rsp, version_number_entries, 255));
-> +	if (rc < 0)
-> +		return rc;
-> +
-> +	length = rc;
-> +	if (length < sizeof(*rsp) ||
-> +	    length < struct_size(rsp, version_number_entries,
-> +				 rsp->version_number_entry_count)) {
-> +		dev_err(spdm_state->dev, "Truncated version response\n");
-> +		return -EIO;
-> +	}
-> +
-> +	for (i = 0; i < rsp->version_number_entry_count; i++) {
-> +		u8 ver = get_unaligned_le16(&rsp->version_number_entries[i]) >> 8;
 
-Name field you're after with #define and use FIELD_GET() here?
+...
 
-> +
-> +		if (ver >= version && ver <= SPDM_MAX_VER) {
-> +			foundver = true;
-> +			version = ver;
-> +		}
-> +	}
-> +	if (!foundver) {
-> +		dev_err(spdm_state->dev, "No common supported version\n");
-> +		return -EPROTO;
-> +	}
-> +	spdm_state->version = version;
-> +
-> +	*rsp_sz = struct_size(rsp, version_number_entries,
-> +			      rsp->version_number_entry_count);
-> +
-> +	return 0;
-> +}
-> +
 > +static int spdm_get_capabilities(struct spdm_state *spdm_state,
 > +				 struct spdm_get_capabilities_reqrsp *req,
 > +				 size_t *reqrsp_sz)
@@ -933,6 +746,10 @@ Name field you're after with #define and use FIELD_GET() here?
 > +
 > +	if (spdm_state->version == 0x10) {
 > +		req_sz = offsetof(typeof(*req), reserved1);
+
+For all these, maybe offsetofend() would be easier to compare with the
+specification than offsetof() field only defined in later spec?
+
 > +		rsp_sz = offsetof(typeof(*rsp), data_transfer_size);
 > +	} else if (spdm_state->version == 0x11) {
 > +		req_sz = offsetof(typeof(*req), data_transfer_size);
@@ -943,14 +760,11 @@ Name field you're after with #define and use FIELD_GET() here?
 > +		req->data_transfer_size = cpu_to_le32(spdm_state->transport_sz);
 > +		req->max_spdm_msg_size = cpu_to_le32(spdm_state->transport_sz);
 > +	}
-
-Use switch?
-
 > +
 > +	rsp = (void *)req + req_sz;
 
-It would be more logical (and not require relying on C extension) to cast 
-to u8 * but that will then require another cast.
+Add a comment on why we are doing this packing (I'd forgotten this mess with
+building the cached version for hashing later).
 
 > +
 > +	rc = spdm_exchange(spdm_state, req, req_sz, rsp, rsp_sz);
@@ -964,11 +778,6 @@ to u8 * but that will then require another cast.
 > +	}
 > +
 > +	spdm_state->responder_caps = le32_to_cpu(rsp->flags);
-
-Earlier, unaligned accessors where used with the version_number_entries.
-Is it intentional they're not used here (I cannot see what would be 
-reason for this difference)?
-
 > +	if ((spdm_state->responder_caps & SPDM_MIN_CAPS) != SPDM_MIN_CAPS)
 > +		return -EPROTONOSUPPORT;
 > +
@@ -985,7 +794,9 @@ reason for this difference)?
 > +
 > +	*reqrsp_sz += req_sz + rsp_sz;
 
-Would just total_sz of something along those lines do?
+This parameter isn't obvious either.  I wonder if renaming it to transcript_sz
+as per the parameter passed in is a better idea?  Or do the addition part
+externally from this function where we can see why it is happening?
 
 > +
 > +	return 0;
@@ -1005,6 +816,10 @@ Would just total_sz of something along those lines do?
 > + * We've just learned the hash algorithm to use for CHALLENGE_AUTH signature
 > + * verification.  Hash the GET_VERSION and GET_CAPABILITIES exchanges which
 > + * have been stashed in @transcript, as well as the NEGOTIATE_ALGORITHMS
+
+This isn't quite right.  GET_VERSION reply is in the transcript, but the
+request is const so done separately.
+
 > + * exchange which has just been performed.  Subsequent requests and responses
 > + * will be added to the hash as they become available.
 > + *
@@ -1035,9 +850,6 @@ Would just total_sz of something along those lines do?
 > +	rc = crypto_shash_init(spdm_state->desc);
 > +	if (rc)
 > +		return rc;
-
-Leak spdm_state->desc on error? (Similarly the returns below.)
-
 > +
 > +	rc = crypto_shash_update(spdm_state->desc,
 > +				 (u8 *)&spdm_get_version_req,
@@ -1057,54 +869,13 @@ Leak spdm_state->desc on error? (Similarly the returns below.)
 > +	rc = crypto_shash_update(spdm_state->desc, (u8 *)rsp, rsp_sz);
 > +
 > +	return rc;
+
+	return crypto_...
+
 > +}
-> +
-> +static int spdm_parse_algs(struct spdm_state *spdm_state)
-> +{
-> +	switch (spdm_state->base_asym_alg) {
-> +	case SPDM_ASYM_RSASSA_2048:
-> +		spdm_state->s = 256;
-> +		spdm_state->base_asym_enc = "pkcs1";
-> +		break;
-> +	case SPDM_ASYM_RSASSA_3072:
-> +		spdm_state->s = 384;
-> +		spdm_state->base_asym_enc = "pkcs1";
-> +		break;
-> +	case SPDM_ASYM_RSASSA_4096:
-> +		spdm_state->s = 512;
-> +		spdm_state->base_asym_enc = "pkcs1";
-> +		break;
-> +	case SPDM_ASYM_ECDSA_ECC_NIST_P256:
-> +		spdm_state->s = 64;
-> +		spdm_state->base_asym_enc = "p1363";
-> +		break;
-> +	case SPDM_ASYM_ECDSA_ECC_NIST_P384:
-> +		spdm_state->s = 96;
-> +		spdm_state->base_asym_enc = "p1363";
-> +		break;
-> +	default:
-> +		dev_err(spdm_state->dev, "Unknown asym algorithm\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	switch (spdm_state->base_hash_alg) {
-> +	case SPDM_HASH_SHA_256:
-> +		spdm_state->base_hash_alg_name = "sha256";
-> +		break;
-> +	case SPDM_HASH_SHA_384:
-> +		spdm_state->base_hash_alg_name = "sha384";
-> +		break;
-> +	case SPDM_HASH_SHA_512:
-> +		spdm_state->base_hash_alg_name = "sha512";
-> +		break;
-> +	default:
-> +		dev_err(spdm_state->dev, "Unknown hash algorithm\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
+
+
+
 > +static int spdm_negotiate_algs(struct spdm_state *spdm_state,
 > +			       void *transcript, size_t transcript_sz)
 > +{
@@ -1117,11 +888,12 @@ Leak spdm_state->desc on error? (Similarly the returns below.)
 > +
 > +	/* Request length shall be <= 128 bytes (SPDM 1.1.0 margin no 185) */
 > +	BUILD_BUG_ON(req_sz > 128);
-
-I don't know why this really has to be here? This could be static_assert()
-below the struct declaration.
-
+> +
 > +	req = kzalloc(req_sz, GFP_KERNEL);
+
+Maybe cleanup.h magic?  Seems like it would simplify error paths here a
+tiny bit. Various other cases follow, but I won't mention this every time.
+
 > +	if (!req)
 > +		return -ENOMEM;
 > +
@@ -1152,6 +924,10 @@ below the struct declaration.
 > +		le32_to_cpu(rsp->base_asym_sel) & SPDM_ASYM_ALGOS;
 > +	spdm_state->base_hash_alg =
 > +		le32_to_cpu(rsp->base_hash_sel) & SPDM_HASH_ALGOS;
+
+Isn't it a bug if the responder gives us more options than we asked about?
+If that happens we should scream about it.
+
 > +
 > +	/* Responder shall select exactly 1 alg (SPDM 1.0.0 table 14) */
 > +	if (hweight32(spdm_state->base_asym_alg) != 1 ||
@@ -1186,61 +962,8 @@ below the struct declaration.
 > +	return rc;
 > +}
 > +
-> +static int spdm_get_digests(struct spdm_state *spdm_state)
-> +{
-> +	struct spdm_get_digests_req req = { .code = SPDM_GET_DIGESTS };
-> +	struct spdm_get_digests_rsp *rsp;
-> +	size_t rsp_sz;
-> +	int rc, length;
-> +
-> +	/*
-> +	 * Assume all 8 slots are populated.  We know the hash length (and thus
-> +	 * the response size) because the responder only returns digests for
-> +	 * the hash algorithm selected during the NEGOTIATE_ALGORITHMS exchange
-> +	 * (SPDM 1.1.2 margin no 206).
-> +	 */
-> +	rsp_sz = sizeof(*rsp) + SPDM_SLOTS * spdm_state->h;
-> +	rsp = kzalloc(rsp_sz, GFP_KERNEL);
-> +	if (!rsp)
-> +		return -ENOMEM;
-> +
-> +	rc = spdm_exchange(spdm_state, &req, sizeof(req), rsp, rsp_sz);
-> +	if (rc < 0)
-> +		goto err_free_rsp;
-> +
-> +	length = rc;
-> +	if (length < sizeof(*rsp) ||
-> +	    length < sizeof(*rsp) + hweight8(rsp->param2) * spdm_state->h) {
-> +		dev_err(spdm_state->dev, "Truncated digests response\n");
-> +		rc = -EIO;
-> +		goto err_free_rsp;
-> +	}
-> +
-> +	rsp_sz = sizeof(*rsp) + hweight8(rsp->param2) * spdm_state->h;
-> +
-> +	/*
-> +	 * Authentication-capable endpoints must carry at least 1 cert chain
-> +	 * (SPDM 1.0.0 section 4.9.2.1).
-> +	 */
-> +	spdm_state->slot_mask = rsp->param2;
-> +	if (!spdm_state->slot_mask) {
-> +		dev_err(spdm_state->dev, "No certificates provisioned\n");
-> +		rc = -EPROTO;
-> +		goto err_free_rsp;
-> +	}
-> +
-> +	rc = crypto_shash_update(spdm_state->desc, (u8 *)&req, sizeof(req));
-> +	if (rc)
-> +		goto err_free_rsp;
-> +
-> +	rc = crypto_shash_update(spdm_state->desc, (u8 *)rsp, rsp_sz);
-> +
-> +err_free_rsp:
-> +	kfree(rsp);
-> +
-> +	return rc;
-> +}
-> +
+...
+
 > +static int spdm_validate_cert_chain(struct spdm_state *spdm_state, u8 slot,
 > +				    u8 *certs, size_t total_length)
 > +{
@@ -1257,6 +980,9 @@ below the struct declaration.
 > +			dev_err(spdm_state->dev, "Invalid certificate length "
 > +				"at slot %u offset %zu\n", slot, offset);
 > +			goto err_free_prev;
+
+If we exit here, prev == cert and double free occurs I think?
+
 > +		}
 > +
 > +		length = rc;
@@ -1273,6 +999,10 @@ below the struct declaration.
 > +		     test_bit(KEY_EFLAG_CA, &cert->pub->key_eflags)) ||
 > +		    (is_leaf_cert &&
 > +		     !test_bit(KEY_EFLAG_DIGITALSIG, &cert->pub->key_eflags))) {
+
+I'd like a comment on these two conditions, or expand the error message
+to make it clear why these options are valid.
+
 > +			rc = -EKEYREJECTED;
 > +			dev_err(spdm_state->dev, "Malformed certificate "
 > +				"at slot %u offset %zu\n", slot, offset);
@@ -1320,8 +1050,19 @@ below the struct declaration.
 > +		}
 > +
 > +		x509_free_certificate(prev);
+
+Even this could be done with the cleanup.h stuff with appropriate
+pointer stealing and hence allow direct returns.
+
+This is the sort of case that I think really justifies that stuff.
+
 > +		offset += length;
 > +		prev = cert;
+
+As above, I think you need to set 
+		cert = NULL; here to avoid a double free then deal
+with prev, not cert in the good path.
+
 > +	}
 > +
 > +	prev = NULL;
@@ -1345,9 +1086,6 @@ below the struct declaration.
 > +	struct spdm_cert_chain *certs = NULL;
 > +	size_t rsp_sz, total_length, header_length;
 > +	u16 remainder_length = 0xffff;
-
-0xffff in this function should use either U16_MAX or SZ_64K - 1.
-
 > +	u16 portion_length;
 > +	u16 offset = 0;
 > +	int rc, length;
@@ -1358,140 +1096,18 @@ below the struct declaration.
 > +	 * too small buffer, we can't calculate the hash over the (truncated)
 > +	 * response.  Only choice is thus to allocate the maximum possible 64k.
 > +	 */
+
+Yikes.  An alternative is just reject any device that does this until we get
+a report of a device in the wild that does it. 
+
 > +	rsp_sz = min_t(u32, sizeof(*rsp) + 0xffff, spdm_state->transport_sz);
 > +	rsp = kvmalloc(rsp_sz, GFP_KERNEL);
 > +	if (!rsp)
 > +		return -ENOMEM;
-> +
-> +	do {
-> +		/*
-> +		 * If transport_sz is sufficiently large, first request will be
-> +		 * for offset 0 and length 0xffff, which means entire cert
-> +		 * chain (SPDM 1.0.0 table 18).
-> +		 */
-> +		req.offset = cpu_to_le16(offset);
-> +		req.length = cpu_to_le16(min_t(size_t, remainder_length,
-> +					       rsp_sz - sizeof(*rsp)));
-> +
-> +		rc = spdm_exchange(spdm_state, &req, sizeof(req), rsp, rsp_sz);
-> +		if (rc < 0)
-> +			goto err_free_certs;
-> +
-> +		length = rc;
-> +		if (length < sizeof(*rsp) ||
-> +		    length < sizeof(*rsp) + le16_to_cpu(rsp->portion_length)) {
-> +			dev_err(spdm_state->dev,
-> +				"Truncated certificate response\n");
-> +			rc = -EIO;
-> +			goto err_free_certs;
-> +		}
-> +
-> +		portion_length = le16_to_cpu(rsp->portion_length);
-> +		remainder_length = le16_to_cpu(rsp->remainder_length);
-> +
-> +		/*
-> +		 * On first response we learn total length of cert chain.
-> +		 * Should portion_length + remainder_length exceed 0xffff,
-> +		 * the min() ensures that the malformed check triggers below.
-> +		 */
-> +		if (!certs) {
-> +			total_length = min(portion_length + remainder_length,
-> +					   0xffff);
-> +			certs = kvmalloc(total_length, GFP_KERNEL);
-> +			if (!certs) {
-> +				rc = -ENOMEM;
-> +				goto err_free_certs;
-> +			}
-> +		}
-> +
-> +		if (!portion_length ||
-> +		    (rsp->param1 & 0xf) != slot ||
+...
 
-Name the field with #define?
 
-> +		    offset + portion_length + remainder_length != total_length)
-> +		{
-> +			dev_err(spdm_state->dev,
-> +				"Malformed certificate response\n");
-> +			rc = -EPROTO;
-> +			goto err_free_certs;
-> +		}
-> +
-> +		memcpy((u8 *)certs + offset, rsp->cert_chain, portion_length);
-> +		offset += portion_length;
-> +
-> +		rc = crypto_shash_update(spdm_state->desc, (u8 *)&req,
-> +					 sizeof(req));
-> +		if (rc)
-> +			goto err_free_certs;
-> +
-> +		rc = crypto_shash_update(spdm_state->desc, (u8 *)rsp,
-> +					 sizeof(*rsp) + portion_length);
-> +		if (rc)
-> +			goto err_free_certs;
-> +
-> +	} while (remainder_length > 0);
-> +
-> +	header_length = sizeof(struct spdm_cert_chain) + spdm_state->h;
-> +
-> +	if (total_length < header_length ||
-> +	    total_length != le16_to_cpu(certs->length)) {
-> +		dev_err(spdm_state->dev,
-> +			"Malformed certificate chain in slot %u\n", slot);
-> +		rc = -EPROTO;
-> +		goto err_free_certs;
-> +	}
-> +
-> +	rc = spdm_validate_cert_chain(spdm_state, slot,
-> +				      (u8 *)certs + header_length,
-> +				      total_length - header_length);
-> +
-> +err_free_certs:
-> +	kvfree(certs);
-> +	kvfree(rsp);
-> +	return rc;
-> +}
-> +
-> +#define SPDM_PREFIX_SZ 64 /* SPDM 1.2.0 margin no 803 */
-> +#define SPDM_COMBINED_PREFIX_SZ 100 /* SPDM 1.2.0 margin no 806 */
-> +
-> +/**
-> + * spdm_create_combined_prefix() - Create combined_spdm_prefix for a hash
-> + *
-> + * @spdm_state: SPDM session state
-> + * @spdm_context: SPDM context
-> + * @buf: Buffer to receive combined_spdm_prefix (100 bytes)
-> + *
-> + * From SPDM 1.2, a hash is prefixed with the SPDM version and context before
-> + * a signature is generated (or verified) over the resulting concatenation
-> + * (SPDM 1.2.0 section 15).  Create that prefix.
-> + */
-> +static void spdm_create_combined_prefix(struct spdm_state *spdm_state,
-> +					const char *spdm_context, void *buf)
-> +{
-> +	u8 minor = spdm_state->version & 0xf;
-> +	u8 major = spdm_state->version >> 4;
 
-Name the fields with define and use FIELD_GET().
-
-> +	size_t len = strlen(spdm_context);
-> +	int rc, zero_pad;
-> +
-> +	rc = snprintf(buf, SPDM_PREFIX_SZ + 1,
-> +		      "dmtf-spdm-v%hhx.%hhx.*dmtf-spdm-v%hhx.%hhx.*"
-> +		      "dmtf-spdm-v%hhx.%hhx.*dmtf-spdm-v%hhx.%hhx.*",
-
-Why are these using s8 formatting specifier %hhx ??
-
-> +		      major, minor, major, minor, major, minor, major, minor);
-> +	WARN_ON(rc != SPDM_PREFIX_SZ);
-> +
-> +	zero_pad = SPDM_COMBINED_PREFIX_SZ - SPDM_PREFIX_SZ - 1 - len;
-> +	WARN_ON(zero_pad < 0);
-> +
-> +	memset(buf + SPDM_PREFIX_SZ + 1, 0, zero_pad);
-> +	memcpy(buf + SPDM_PREFIX_SZ + 1 + zero_pad, spdm_context, len);
-> +}
 > +
 > +/**
 > + * spdm_verify_signature() - Verify signature against leaf key
@@ -1528,6 +1144,9 @@ Why are these using s8 formatting specifier %hhx ??
 > +	if (spdm_state->version <= 0x11) {
 > +		/*
 > +		 * Until SPDM 1.1, the signature is computed only over the hash
+For SPDM 1.1 and earlier
+(Until isn't necessarily inclusive).
+
 > +		 * (SPDM 1.0.0 section 4.9.2.7).
 > +		 */
 > +		sig.digest = m + SPDM_COMBINED_PREFIX_SZ;
@@ -1595,13 +1214,10 @@ Why are these using s8 formatting specifier %hhx ??
 > +{
 > +	size_t  size  = sizeof(*rsp)		/* Header */
 
-extra space between size_t and size.
+Double spaces look a bit strange...
 
 > +		      + spdm_state->h		/* CertChainHash */
 > +		      + 32;			/* Nonce */
-
-Add SPDM_NONCE_SIZE ?
-
 > +
 > +	if (rsp)
 > +		/* May be unaligned if hash algorithm has unusual length. */
@@ -1616,78 +1232,12 @@ Add SPDM_NONCE_SIZE ?
 > +
 > +	return  size  + spdm_state->s;		/* Signature */
 
-Remove the extra space.
+Double space here as well looks odd to me.
 
 > +}
-> +
-> +static int spdm_challenge(struct spdm_state *spdm_state, u8 slot)
-> +{
-> +	size_t req_sz, rsp_sz, rsp_sz_max, sig_offset;
-> +	struct spdm_challenge_req req = {
-> +		.code = SPDM_CHALLENGE,
-> +		.param1 = slot,
-> +		.param2 = 0, /* no measurement summary hash */
-> +	};
-> +	struct spdm_challenge_rsp *rsp;
-> +	int rc, length;
-> +
-> +	get_random_bytes(&req.nonce, sizeof(req.nonce));
-> +
-> +	if (spdm_state->version <= 0x12)
-> +		req_sz = offsetof(typeof(req), context);
-> +	else
-> +		req_sz = sizeof(req);
-> +
-> +	rsp_sz_max = spdm_challenge_rsp_sz(spdm_state, NULL);
-> +	rsp = kzalloc(rsp_sz_max, GFP_KERNEL);
-> +	if (!rsp)
-> +		return -ENOMEM;
-> +
-> +	rc = spdm_exchange(spdm_state, &req, req_sz, rsp, rsp_sz_max);
-> +	if (rc < 0)
-> +		goto err_free_rsp;
-> +
-> +	length = rc;
-> +	rsp_sz = spdm_challenge_rsp_sz(spdm_state, rsp);
-> +	if (length < rsp_sz) {
-> +		dev_err(spdm_state->dev, "Truncated challenge_auth response\n");
-> +		rc = -EIO;
-> +		goto err_free_rsp;
-> +	}
-> +
-> +	/* Last step of building the hash */
-> +	rc = crypto_shash_update(spdm_state->desc, (u8 *)&req, req_sz);
-> +	if (rc)
-> +		goto err_free_rsp;
-> +
-> +	sig_offset = rsp_sz - spdm_state->s;
-> +	rc = crypto_shash_update(spdm_state->desc, (u8 *)rsp, sig_offset);
-> +	if (rc)
-> +		goto err_free_rsp;
-> +
-> +	/* Hash is complete and signature received; verify against leaf key */
-> +	rc = spdm_verify_signature(spdm_state, (u8 *)rsp + sig_offset,
-> +				   "responder-challenge_auth signing");
-> +	if (rc)
-> +		dev_err(spdm_state->dev,
-> +			"Failed to verify challenge_auth signature: %d\n", rc);
-> +
-> +err_free_rsp:
-> +	kfree(rsp);
-> +	return rc;
-> +}
-> +
-> +static void spdm_reset(struct spdm_state *spdm_state)
-> +{
-> +	public_key_free(spdm_state->leaf_key);
-> +	spdm_state->leaf_key = NULL;
-> +
-> +	kfree(spdm_state->desc);
-> +	spdm_state->desc = NULL;
-> +
-> +	crypto_free_shash(spdm_state->shash);
-> +	spdm_state->shash = NULL;
-> +}
+
+
+
 > +
 > +/**
 > + * spdm_authenticate() - Authenticate device
@@ -1711,6 +1261,14 @@ Remove the extra space.
 > +	u8 slot;
 > +
 > +	mutex_lock(&spdm_state->lock);
+
+You could use
+	guard(mutex)(&spdm_state->lock);
+but if you prefer not that's fine by me as there are disadvantages in
+readability perhaps.
+
+Will still need the gotos though to do the rest if appropriate.
+
 > +	spdm_reset(spdm_state);
 > +
 > +	/*
@@ -1729,6 +1287,8 @@ Remove the extra space.
 > +			     GFP_KERNEL);
 > +	if (!transcript)
 > +		goto unlock;
+	this doesn't need to reset, so perhaps another label appropriate?
+
 > +
 > +	rc = spdm_get_version(spdm_state, transcript, &transcript_sz);
 > +	if (rc)
@@ -1762,26 +1322,32 @@ Remove the extra space.
 > +unlock:
 > +	if (rc)
 > +		spdm_reset(spdm_state);
+
+I'd expect reset to also clear authenticated. Seems odd to do it separately
+and relies on reset only being called here. If that were the case and you
+were handling locking and freeing using cleanup.h magic, then
+
+	rc = spdm_challenge(spdm_state);
+	if (rc)
+		goto reset;
+	return 0;
+
+reset:
+	spdm_reset(spdm_state);
+
 > +	spdm_state->authenticated = !rc;
 > +	mutex_unlock(&spdm_state->lock);
 > +	kfree(transcript);
+
+Ordering seems strange as transcript was allocated under the lock
+but freed outside it.
+
 > +	return rc;
 > +}
 > +EXPORT_SYMBOL_GPL(spdm_authenticate);
-> +
-> +/**
-> + * spdm_authenticated() - Whether device was authenticated successfully
-> + *
-> + * @spdm_state: SPDM session state
-> + *
-> + * Return true if the most recent spdm_authenticate() call was successful.
-> + */
-> +bool spdm_authenticated(struct spdm_state *spdm_state)
-> +{
-> +	return spdm_state->authenticated;
-> +}
-> +EXPORT_SYMBOL_GPL(spdm_authenticated);
-> +
+
+...
+
 > +/**
 > + * spdm_create() - Allocate SPDM session
 > + *
@@ -1813,6 +1379,9 @@ Remove the extra space.
 > +	return spdm_state;
 > +}
 > +EXPORT_SYMBOL_GPL(spdm_create);
+
+Makes sense to namespace these?
+
 > +
 > +/**
 > + * spdm_destroy() - Destroy SPDM session
@@ -1828,8 +1397,4 @@ Remove the extra space.
 > +EXPORT_SYMBOL_GPL(spdm_destroy);
 > +
 > +MODULE_LICENSE("GPL");
-> 
-
--- 
- i.
 
