@@ -2,138 +2,98 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35ADF7BA156
-	for <lists+keyrings@lfdr.de>; Thu,  5 Oct 2023 16:53:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 340C17BA813
+	for <lists+keyrings@lfdr.de>; Thu,  5 Oct 2023 19:30:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237150AbjJEOnc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 5 Oct 2023 10:43:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49588 "EHLO
+        id S229614AbjJERaO (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 5 Oct 2023 13:30:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237344AbjJEOjE (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 5 Oct 2023 10:39:04 -0400
-Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAE0E55DD6
-        for <keyrings@vger.kernel.org>; Thu,  5 Oct 2023 07:05:37 -0700 (PDT)
-Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-59f6e6b7600so10831447b3.3
-        for <keyrings@vger.kernel.org>; Thu, 05 Oct 2023 07:05:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1696514737; x=1697119537; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YUPOooK4Ns6DH/Jalgn9lVTRMXc80w0ZAjwIoNKA7QA=;
-        b=gZJjm7wIgO3iNaVndIuYT4UV17QLvXVqy6yrN8Ec6SpZ1nPqHW9BOYT9/GBBD2pxUY
-         4X6htYn6c+WhUk2zH/Ppo9KAs97EYf/C5jPcdpK6dBpy5vqEYhqHKDSBAWyau5FJH84h
-         y0yt9V/2+L5zoliDdtajzBAAVTAOcuemc6Dp53MKB/NmrALbmsdPSCdVqnFUt0PV1PFk
-         SM5UvQ/PBgLUYEybmLEXY+7EjY2/Z/M3tEW7ME5LUcvM4gNv3LUBa8lkS5aaZ2T1W50K
-         QgFN7cgf79mUY8nEGz0LU993w2u2BA+LaJA58F7x7VOPCvsWz5UcDkQPS9CaD/Ps1kCr
-         1tGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696514737; x=1697119537;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YUPOooK4Ns6DH/Jalgn9lVTRMXc80w0ZAjwIoNKA7QA=;
-        b=DUuCZcs3nESFnBjogalC0/tEBt1DSd51lWXzJ9YwXvOErZQMHprc4XQsVRU3kHc5IJ
-         d+CuuA/1b1QiIc+cH67zHnRfI3AlzdT2TDx7Ag8FfvC2OFNuA/p7XrWN3e0QfU2R7lTR
-         B7O+hwrzIPMP/PK6iAf/0IuVis/mhP0uiuQHyAdi9nDxMAullVdBW3s3/9HvRvclQb2E
-         9JHixFQ8+5vgh2vO4m/eVZlr8PqetdZfQuhHqWeK2YULEKihS0/tJ5oxRhPAsh4xXxNH
-         CMPaFYxQmFBE1E4K7oDJJjJeXAIlw4vgoaA7Iot85XVGeO5XjWq+MqlcaYbviPBqVwO7
-         L1aw==
-X-Gm-Message-State: AOJu0Yz7xkpk0mV9TindWpRgwF7FNxSiAQRMleRYOWyRpyRts/wKOoMB
-        +UPUxywcezsALGuJlQkpPGur+EJnRlbQVyb4ZezV
-X-Google-Smtp-Source: AGHT+IEhII1+ssm6kMv+2+D8NIey8gXMZEJQg4s9lOhq3v8CS0TIyvbGSdMA3HXKy2CrlPTC5uALpYCU+9MbO/YcHp4=
-X-Received: by 2002:a25:bb83:0:b0:d80:1bbf:fabf with SMTP id
- y3-20020a25bb83000000b00d801bbffabfmr4580170ybg.2.1696514736829; Thu, 05 Oct
- 2023 07:05:36 -0700 (PDT)
+        with ESMTP id S230163AbjJER32 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 5 Oct 2023 13:29:28 -0400
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF1053AA1;
+        Thu,  5 Oct 2023 10:27:03 -0700 (PDT)
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+        id 1qoLXS-003l7w-JB; Thu, 05 Oct 2023 18:25:03 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 05 Oct 2023 18:25:06 +0800
+Date:   Thu, 5 Oct 2023 18:25:06 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Lukas Wunner <lukas@wunner.de>
+Cc:     David Howells <dhowells@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vivek Goyal <vgoyal@redhat.com>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org
+Subject: Re: [PATCH] X.509: Add missing IMPLICIT annotations to AKID ASN.1
+ module
+Message-ID: <ZR6PAjwmLiusu022@gondor.apana.org.au>
+References: <be8ab09429d55c6cfc52ee0e43bf021ffb384152.1695720715.git.lukas@wunner.de>
 MIME-Version: 1.0
-References: <CEA476C1-4CE5-4FFC-91D7-6061C8605B18@oracle.com>
- <ba2f5560800608541e81fbdd28efa9875b35e491.camel@linux.ibm.com>
- <932231F5-8050-4436-84B8-D7708DC43845@oracle.com> <7335a4587233626a39ce9bc8a969957d7f43a34c.camel@linux.ibm.com>
- <FD6FB139-F901-4E55-9705-E7B0023BDBA8@oracle.com> <1149b6dbfdaabef3e48dc2852cc76aa11a6dd6b0.camel@linux.ibm.com>
- <4A0505D0-2933-43BD-BEEA-94350BB22AE7@oracle.com> <20230913.Ceifae7ievei@digikod.net>
- <D0F16BFD-72EB-4BE2-BA3D-BAE1BCCDCB6F@oracle.com> <20230914.shah5al9Kaib@digikod.net>
- <20231005.dajohf2peiBu@digikod.net>
-In-Reply-To: <20231005.dajohf2peiBu@digikod.net>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Thu, 5 Oct 2023 10:05:25 -0400
-Message-ID: <CAHC9VhQioMnXdbBugn3h8TBmOPvv_pCehMh8ON5LOOPmt1=6LA@mail.gmail.com>
-Subject: Re: RFC: New LSM to control usage of x509 certificates
-To:     Eric Snowberg <eric.snowberg@oracle.com>,
-        =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>
-Cc:     "Serge E. Hallyn" <serge@hallyn.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Kanth Ghatraju <kanth.ghatraju@oracle.com>,
-        Konrad Wilk <konrad.wilk@oracle.com>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-security-module@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <be8ab09429d55c6cfc52ee0e43bf021ffb384152.1695720715.git.lukas@wunner.de>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, Oct 5, 2023 at 6:32=E2=80=AFAM Micka=C3=ABl Sala=C3=BCn <mic@digiko=
-d.net> wrote:
->
-> The initial subject was "Re: [PATCH] certs: Restrict blacklist updates
-> to the secondary trusted keyring":
-> https://lore.kernel.org/all/20230908213428.731513-1-eric.snowberg@oracle.=
-com/
->
-> On Thu, Sep 14, 2023 at 10:34:44AM +0200, Micka=C3=ABl Sala=C3=BCn wrote:
-> > CCing the LSM mailing list for this potential new LSM proposal:
-> > On Wed, Sep 13, 2023 at 10:29:58PM +0000, Eric Snowberg wrote:
-> > > > On Sep 13, 2023, at 4:21 AM, Micka=C3=ABl Sala=C3=BCn <mic@digikod.=
-net> wrote:
-> > > > On Wed, Sep 13, 2023 at 02:40:17AM +0000, Eric Snowberg wrote:
-> > > >>> On Sep 12, 2023, at 4:47 PM, Mimi Zohar <zohar@linux.ibm.com> wro=
-te:
+On Tue, Sep 26, 2023 at 11:46:41AM +0200, Lukas Wunner wrote:
+> The ASN.1 module in RFC 5280 appendix A.1 uses EXPLICIT TAGS whereas the
+> one in appendix A.2 uses IMPLICIT TAGS.
+> 
+> The kernel's simplified asn1_compiler.c always uses EXPLICIT TAGS, hence
+> definitions from appendix A.2 need to be annotated as IMPLICIT for the
+> compiler to generate RFC-compliant code.
+> 
+> In particular, GeneralName is defined in appendix A.2:
+> 
+> GeneralName ::= CHOICE {
+>         otherName                       [0] OtherName,
+>         ...
+>         dNSName                         [2] IA5String,
+>         x400Address                     [3] ORAddress,
+>         directoryName                   [4] Name,
+>         ...
+>         }
+> 
+> Because appendix A.2 uses IMPLICIT TAGS, the IA5String tag (0x16) of a
+> dNSName is not rendered.  Instead, the string directly succeeds the
+> [2] tag (0x82).
+> 
+> Likewise, the SEQUENCE tag (0x30) of an OtherName is not rendered.
+> Instead, only the constituents of the SEQUENCE are rendered:  An OID tag
+> (0x06), a [0] tag (0xa0) and an ANY tag.  That's three consecutive tags
+> instead of a single encompassing tag.
+> 
+> The situation is different for x400Address and directoryName choices:
+> They reference ORAddress and Name, which are defined in appendix A.1,
+> therefore use EXPLICIT TAGS.
+> 
+> The AKID ASN.1 module is missing several IMPLICIT annotations, hence
+> isn't RFC-compliant.  In the unlikely event that an AKID contains other
+> elements beside a directoryName, users may see parse errors.
+> 
+> Add the missing annotations but do not tag this commit for stable as I
+> am not aware of any issue reports.  Fixes are only eligible for stable
+> if they're "obviously correct" and with ASN.1 there's no such thing.
+> 
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> ---
+> Found this while bringing up PCI device authentication, which involves
+> validating the Subject Alternative Name in certificates.
+> 
+> I double-checked all ASN.1 modules in the tree and this seems to be
+> the only one affected by the issue.
+> 
+>  crypto/asymmetric_keys/x509_akid.asn1 | 24 +++++++++++++++++-------
+>  1 file changed, 17 insertions(+), 7 deletions(-)
 
-[Just a reminder that trimming massive emails to the relevant portions
-is a nice thing to do]
-
-> > > > A complementary approach would be to create an
-> > > > LSM (or a dedicated interface) to tie certificate properties to a s=
-et of
-> > > > kernel usages, while still letting users configure these constraint=
-s.
-> > >
-> > > That is an interesting idea.  Would the other security maintainers be=
- in
-> > > support of such an approach?  Would a LSM be the correct interface?
-> > > Some of the recent work I have done with introducing key usage and CA
-> > > enforcement is difficult for a distro to pick up, since these changes=
- can be
-> > > viewed as a regression.  Each end-user has different signing procedur=
-es
-> > > and policies, so making something work for everyone is difficult.  Le=
-tting the
-> > > user configure these constraints would solve this problem.
-
-I can't say that I have been following this thread very closely, but I
-see no reason why we wouldn't support a LSM that enforces access
-controls on certificates/keys based on their attributes/properties.
-We do have some LSM control points for the kernel keyring, which are
-used by at least one LSM, but I'm sure you would probably need some
-additional control points.
-
-If you are interested in pursuing the creation of a new LSM, and
-likely new LSM hooks, we do have some documented guidelines you should
-keep in mind:
-
-* https://github.com/LinuxSecurityModule/kernel/blob/main/README.md
-
---=20
-paul-moore.com
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
