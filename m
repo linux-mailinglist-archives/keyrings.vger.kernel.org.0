@@ -2,129 +2,138 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27D497BA395
-	for <lists+keyrings@lfdr.de>; Thu,  5 Oct 2023 17:58:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35ADF7BA156
+	for <lists+keyrings@lfdr.de>; Thu,  5 Oct 2023 16:53:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234436AbjJEP56 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 5 Oct 2023 11:57:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54500 "EHLO
+        id S237150AbjJEOnc (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 5 Oct 2023 10:43:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234417AbjJEP4q (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 5 Oct 2023 11:56:46 -0400
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5782E9ED4;
-        Thu,  5 Oct 2023 07:04:49 -0700 (PDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-         client-signature RSA-PSS (4096 bits) client-digest SHA256)
-        (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
-        by bmailout2.hostsharing.net (Postfix) with ESMTPS id 7B1A62800BBF3;
-        Thu,  5 Oct 2023 16:04:47 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-        id 662DD4DD3BE; Thu,  5 Oct 2023 16:04:47 +0200 (CEST)
-Date:   Thu, 5 Oct 2023 16:04:47 +0200
-From:   Lukas Wunner <lukas@wunner.de>
-To:     Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        with ESMTP id S237344AbjJEOjE (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 5 Oct 2023 10:39:04 -0400
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAE0E55DD6
+        for <keyrings@vger.kernel.org>; Thu,  5 Oct 2023 07:05:37 -0700 (PDT)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-59f6e6b7600so10831447b3.3
+        for <keyrings@vger.kernel.org>; Thu, 05 Oct 2023 07:05:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1696514737; x=1697119537; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YUPOooK4Ns6DH/Jalgn9lVTRMXc80w0ZAjwIoNKA7QA=;
+        b=gZJjm7wIgO3iNaVndIuYT4UV17QLvXVqy6yrN8Ec6SpZ1nPqHW9BOYT9/GBBD2pxUY
+         4X6htYn6c+WhUk2zH/Ppo9KAs97EYf/C5jPcdpK6dBpy5vqEYhqHKDSBAWyau5FJH84h
+         y0yt9V/2+L5zoliDdtajzBAAVTAOcuemc6Dp53MKB/NmrALbmsdPSCdVqnFUt0PV1PFk
+         SM5UvQ/PBgLUYEybmLEXY+7EjY2/Z/M3tEW7ME5LUcvM4gNv3LUBa8lkS5aaZ2T1W50K
+         QgFN7cgf79mUY8nEGz0LU993w2u2BA+LaJA58F7x7VOPCvsWz5UcDkQPS9CaD/Ps1kCr
+         1tGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696514737; x=1697119537;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YUPOooK4Ns6DH/Jalgn9lVTRMXc80w0ZAjwIoNKA7QA=;
+        b=DUuCZcs3nESFnBjogalC0/tEBt1DSd51lWXzJ9YwXvOErZQMHprc4XQsVRU3kHc5IJ
+         d+CuuA/1b1QiIc+cH67zHnRfI3AlzdT2TDx7Ag8FfvC2OFNuA/p7XrWN3e0QfU2R7lTR
+         B7O+hwrzIPMP/PK6iAf/0IuVis/mhP0uiuQHyAdi9nDxMAullVdBW3s3/9HvRvclQb2E
+         9JHixFQ8+5vgh2vO4m/eVZlr8PqetdZfQuhHqWeK2YULEKihS0/tJ5oxRhPAsh4xXxNH
+         CMPaFYxQmFBE1E4K7oDJJjJeXAIlw4vgoaA7Iot85XVGeO5XjWq+MqlcaYbviPBqVwO7
+         L1aw==
+X-Gm-Message-State: AOJu0Yz7xkpk0mV9TindWpRgwF7FNxSiAQRMleRYOWyRpyRts/wKOoMB
+        +UPUxywcezsALGuJlQkpPGur+EJnRlbQVyb4ZezV
+X-Google-Smtp-Source: AGHT+IEhII1+ssm6kMv+2+D8NIey8gXMZEJQg4s9lOhq3v8CS0TIyvbGSdMA3HXKy2CrlPTC5uALpYCU+9MbO/YcHp4=
+X-Received: by 2002:a25:bb83:0:b0:d80:1bbf:fabf with SMTP id
+ y3-20020a25bb83000000b00d801bbffabfmr4580170ybg.2.1696514736829; Thu, 05 Oct
+ 2023 07:05:36 -0700 (PDT)
+MIME-Version: 1.0
+References: <CEA476C1-4CE5-4FFC-91D7-6061C8605B18@oracle.com>
+ <ba2f5560800608541e81fbdd28efa9875b35e491.camel@linux.ibm.com>
+ <932231F5-8050-4436-84B8-D7708DC43845@oracle.com> <7335a4587233626a39ce9bc8a969957d7f43a34c.camel@linux.ibm.com>
+ <FD6FB139-F901-4E55-9705-E7B0023BDBA8@oracle.com> <1149b6dbfdaabef3e48dc2852cc76aa11a6dd6b0.camel@linux.ibm.com>
+ <4A0505D0-2933-43BD-BEEA-94350BB22AE7@oracle.com> <20230913.Ceifae7ievei@digikod.net>
+ <D0F16BFD-72EB-4BE2-BA3D-BAE1BCCDCB6F@oracle.com> <20230914.shah5al9Kaib@digikod.net>
+ <20231005.dajohf2peiBu@digikod.net>
+In-Reply-To: <20231005.dajohf2peiBu@digikod.net>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Thu, 5 Oct 2023 10:05:25 -0400
+Message-ID: <CAHC9VhQioMnXdbBugn3h8TBmOPvv_pCehMh8ON5LOOPmt1=6LA@mail.gmail.com>
+Subject: Re: RFC: New LSM to control usage of x509 certificates
+To:     Eric Snowberg <eric.snowberg@oracle.com>,
+        =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>
+Cc:     "Serge E. Hallyn" <serge@hallyn.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
         David Howells <dhowells@redhat.com>,
         David Woodhouse <dwmw2@infradead.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
-        linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
-        linuxarm@huawei.com, David Box <david.e.box@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        "Li, Ming" <ming4.li@intel.com>, Zhi Wang <zhi.a.wang@intel.com>,
-        Alistair Francis <alistair.francis@wdc.com>,
-        Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-        Alexey Kardashevskiy <aik@amd.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Alexander Graf <graf@amazon.com>
-Subject: Re: [PATCH 09/12] PCI/CMA: Validate Subject Alternative Name in
- certificates
-Message-ID: <20231005140447.GA23472@wunner.de>
-References: <cover.1695921656.git.lukas@wunner.de>
- <bc1efd945f5d76587787f8351199e1ea45eaf2ef.1695921657.git.lukas@wunner.de>
- <20231003160455.00001a4f@Huawei.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231003160455.00001a4f@Huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_NONE autolearn=no autolearn_force=no version=3.4.6
+        Kanth Ghatraju <kanth.ghatraju@oracle.com>,
+        Konrad Wilk <konrad.wilk@oracle.com>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-security-module@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Oct 03, 2023 at 04:04:55PM +0100, Jonathan Cameron wrote:
-> On Thu, 28 Sep 2023 19:32:39 +0200 Lukas Wunner <lukas@wunner.de> wrote:
-> > PCIe r6.1 sec 6.31.3 stipulates requirements for X.509 Leaf Certificates
-> > presented by devices, in particular the presence of a Subject Alternative
-> > Name extension with a name that encodes the Vendor ID, Device ID, Device
-> > Serial Number, etc.
-> 
-> Lets you do any of
-> * What you have here
-> * Reference Integrity Manifest, e.g. see Trusted Computing Group
-> * A pointer to a location where such a Reference Integrity Manifest can be
->   obtained.
-> 
-> So this text feels a little strong though I'm fine with only support the
-> Subject Alternative Name bit for now. Whoever has one of the other options
-> can add that support :)
+On Thu, Oct 5, 2023 at 6:32=E2=80=AFAM Micka=C3=ABl Sala=C3=BCn <mic@digiko=
+d.net> wrote:
+>
+> The initial subject was "Re: [PATCH] certs: Restrict blacklist updates
+> to the secondary trusted keyring":
+> https://lore.kernel.org/all/20230908213428.731513-1-eric.snowberg@oracle.=
+com/
+>
+> On Thu, Sep 14, 2023 at 10:34:44AM +0200, Micka=C3=ABl Sala=C3=BCn wrote:
+> > CCing the LSM mailing list for this potential new LSM proposal:
+> > On Wed, Sep 13, 2023 at 10:29:58PM +0000, Eric Snowberg wrote:
+> > > > On Sep 13, 2023, at 4:21 AM, Micka=C3=ABl Sala=C3=BCn <mic@digikod.=
+net> wrote:
+> > > > On Wed, Sep 13, 2023 at 02:40:17AM +0000, Eric Snowberg wrote:
+> > > >>> On Sep 12, 2023, at 4:47 PM, Mimi Zohar <zohar@linux.ibm.com> wro=
+te:
 
-I intend to amend the commit message as follows.  If anyone believes
-this is inaccurate, please let me know:
+[Just a reminder that trimming massive emails to the relevant portions
+is a nice thing to do]
 
-    Side note:  Instead of a Subject Alternative Name, Leaf Certificates may
-    include "a Reference Integrity Manifest, e.g., see Trusted Computing
-    Group" or "a pointer to a location where such a Reference Integrity
-    Manifest can be obtained" (PCIe r6.1 sec 6.31.3).
+> > > > A complementary approach would be to create an
+> > > > LSM (or a dedicated interface) to tie certificate properties to a s=
+et of
+> > > > kernel usages, while still letting users configure these constraint=
+s.
+> > >
+> > > That is an interesting idea.  Would the other security maintainers be=
+ in
+> > > support of such an approach?  Would a LSM be the correct interface?
+> > > Some of the recent work I have done with introducing key usage and CA
+> > > enforcement is difficult for a distro to pick up, since these changes=
+ can be
+> > > viewed as a regression.  Each end-user has different signing procedur=
+es
+> > > and policies, so making something work for everyone is difficult.  Le=
+tting the
+> > > user configure these constraints would solve this problem.
 
-    A Reference Integrity Manifest contains "golden" measurements which can
-    be compared to actual measurements retrieved from a device.  It serves a
-    different purpose than the Subject Alternative Name, hence it is unclear
-    why the spec says only either of them is necessary.  It is also unclear
-    how a Reference Integrity Manifest shall be encoded into a certificate.
+I can't say that I have been following this thread very closely, but I
+see no reason why we wouldn't support a LSM that enforces access
+controls on certificates/keys based on their attributes/properties.
+We do have some LSM control points for the kernel keyring, which are
+used by at least one LSM, but I'm sure you would probably need some
+additional control points.
 
-    Ignore the Reference Integrity Manifest requirement until this confusion
-    is resolved by a spec update.
+If you are interested in pursuing the creation of a new LSM, and
+likely new LSM hooks, we do have some documented guidelines you should
+keep in mind:
 
+* https://github.com/LinuxSecurityModule/kernel/blob/main/README.md
 
-> I haven't looked asn.1 recently enough to have any confidence on
-> a review of that bit...
-> So, for everything except the asn.1
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-In case it raises the confidence in that portion of the patch,
-I have tested it successfully not just with certificates containing
-a single CMA otherName, but also:
-
-- a single otherName with a different OID
-- multiple otherNames with a mix of CMA and other OIDs
-- multiple otherNames plus additional unrelated dNSNames
-- no Subject Alternative Name
-
-Getting the IMPLICIT annotations right was a bit nontrivial.
-It turned out that the existing crypto/asymmetric_keys/x509_akid.asn1
-got that wrong as well, so I fixed it up as a byproduct of this series:
-
-https://git.kernel.org/herbert/cryptodev-2.6/c/a1e452026e6d
-
-The debug experience made me appreciate the kernel's ASN.1 compiler
-and parser though:  Their code is surprisingly small, the generated
-output of the compiler is quite readable and the split architecture
-with a compiler+parser feels much safer than what openssl does.
-
-Thanks,
-
-Lukas
+--=20
+paul-moore.com
