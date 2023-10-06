@@ -2,62 +2,66 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 759077BADA5
-	for <lists+keyrings@lfdr.de>; Thu,  5 Oct 2023 23:33:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4D527BB43D
+	for <lists+keyrings@lfdr.de>; Fri,  6 Oct 2023 11:30:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231779AbjJEVdl (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 5 Oct 2023 17:33:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53878 "EHLO
+        id S231455AbjJFJa3 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 6 Oct 2023 05:30:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231828AbjJEVdi (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 5 Oct 2023 17:33:38 -0400
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35A14100;
-        Thu,  5 Oct 2023 14:33:34 -0700 (PDT)
-Received: from msexch01.omp.ru (10.188.4.12) by msexch02.omp.ru (10.188.4.13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Fri, 6 Oct 2023
- 00:33:30 +0300
-Received: from msexch01.omp.ru ([fe80::4020:d881:621a:6b6b]) by
- msexch01.omp.ru ([fe80::4020:d881:621a:6b6b%5]) with mapi id 15.02.0986.014;
- Fri, 6 Oct 2023 00:33:30 +0300
-From:   Denis Glazkov <d.glazkov@omp.ru>
-To:     Eric Snowberg <eric.snowberg@oracle.com>
-CC:     Jarkko Sakkinen <jarkko@kernel.org>,
-        "dhowells@redhat.com" <dhowells@redhat.com>,
-        "dwmw2@infradead.org" <dwmw2@infradead.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Sergey Shtylyov" <s.shtylyov@omp.ru>,
-        Denis Glazkov <d.glazkov@omp.ru>
-Subject: Re: [PATCH v3] certs: Add option to disallow non-CA certificates in
- secondary trusted keying
-Thread-Topic: [PATCH v3] certs: Add option to disallow non-CA certificates in
- secondary trusted keying
-Thread-Index: AQHZ9R25FRQFBB8VuUOFgsWwTdSR3rA2+cGAgAFCf4CAA05lgA==
-Date:   Thu, 5 Oct 2023 21:33:30 +0000
-Message-ID: <8e60632f20f94d45b39cda95218fac11ac962f91.camel@omp.ru>
-References: <CVS5MB3X82Q8.8KDB4346ROR5@suppilovahvero>
-         <20231002104525.7631-1-d.glazkov@omp.ru>
-         <CVYCTWRQAXDF.2HY5028ZT9FEC@seitikki>
-         <4A271804-9481-4454-A371-3A7CA26F40D9@oracle.com>
-In-Reply-To: <4A271804-9481-4454-A371-3A7CA26F40D9@oracle.com>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.188.4.41]
-x-kse-serverinfo: msexch02.omp.ru, 9
-x-kse-attachmentfiltering-interceptor-info: protection disabled
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: Clean, bases: 7/15/2023 3:35:00 AM
-x-kse-bulkmessagesfiltering-scan-result: sender external
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <BDEDCBCE7B831D4DA83AA5D4B94EF7B2@omp.ru>
-Content-Transfer-Encoding: base64
+        with ESMTP id S231373AbjJFJa1 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 6 Oct 2023 05:30:27 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 614CDC6;
+        Fri,  6 Oct 2023 02:30:25 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S23462Dsgz6HJbf;
+        Fri,  6 Oct 2023 17:27:34 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Fri, 6 Oct
+ 2023 10:30:22 +0100
+Date:   Fri, 6 Oct 2023 10:30:20 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Lukas Wunner <lukas@wunner.de>
+CC:     Bjorn Helgaas <helgaas@kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        <linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+        <linux-coco@lists.linux.dev>, <keyrings@vger.kernel.org>,
+        <linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
+        <linuxarm@huawei.com>, David Box <david.e.box@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        "Li, Ming" <ming4.li@intel.com>, Zhi Wang <zhi.a.wang@intel.com>,
+        Alistair Francis <alistair.francis@wdc.com>,
+        Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+        Alexey Kardashevskiy <aik@amd.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Alexander Graf <graf@amazon.com>
+Subject: Re: [PATCH 12/12] PCI/CMA: Grant guests exclusive control of
+ authentication
+Message-ID: <20231006103020.0000174f@Huawei.com>
+In-Reply-To: <20231003193058.GA16417@wunner.de>
+References: <cover.1695921656.git.lukas@wunner.de>
+        <467bff0c4bab93067b1e353e5b8a92f1de353a3f.1695921657.git.lukas@wunner.de>
+        <20231003164048.0000148c@Huawei.com>
+        <20231003193058.GA16417@wunner.de>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,147 +69,71 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-T24gVHVlLCBPY3QgMyAyMDIzIGF0IDA3OjA0IFBNICswMDAwLCBFcmljIFNub3diZXJnIHdyb3Rl
-Og0KPiANCj4gPiBPbiBPY3QgMiwgMjAyMywgYXQgNTo0OSBQTSwgSmFya2tvIFNha2tpbmVuIDxq
-YXJra29Aa2VybmVsLm9yZz4gd3JvdGU6DQo+ID4gDQo+ID4gT24gTW9uIE9jdCAyLCAyMDIzIGF0
-IDE6NDYgUE0gRUVTVCwgRGVuaXMgR2xhemtvdiB3cm90ZToNCj4gPiA+IFRoZSBMaW51eCBrZXJu
-ZWwgaGFzIGFuIElNQSAoSW50ZWdyaXR5IE1lYXN1cmVtZW50IEFyY2hpdGVjdHVyZSkNCj4gPiA+
-IHN1YnN5c3RlbSB0byBjaGVjayB0aGUgaW50ZWdyaXR5IG9mIHRoZSBmaWxlIHN5c3RlbSBiYXNl
-ZCBvbiBkaWdpdGFsDQo+ID4gPiBzaWduYXR1cmVzLiBJTUEgdXNlcyBjZXJ0aWZpY2F0ZXMgaW4g
-YC5pbWFgIGtleWluZyB0byBjaGVjayBpbnRlZ3JpdHkuDQo+ID4gPiANCj4gPiA+IE9ubHkgY2Vy
-dGlmaWNhdGVzIGlzc3VlZCBieSBvbmUgb2YgdGhlIHRydXN0ZWQgQ0EgKENlcnRpZmljYXRlIEF1
-dGhvcml0eSkNCj4gPiA+IGNlcnRpZmljYXRlcyBjYW4gYmUgYWRkZWQgdG8gdGhlIGAuaW1hYCBr
-ZXlpbmcuDQo+ID4gPiANCj4gPiA+IFRoZSBMaW51eCBrZXJuZWwgbm93IGhhcyBhIHNlY29uZGFy
-eSB0cnVzdGVkIGtleWluZyB0byB3aGljaCB0cnVzdGVkDQo+ID4gPiBjZXJ0aWZpY2F0ZXMgZnJv
-bSB1c2VyIHNwYWNlIGNhbiBiZSBhZGRlZCBpZiB5b3UgaGF2ZSBzdXBlcnVzZXINCj4gPiA+IHBy
-aXZpbGVnZXMuIFByZXZpb3VzbHksIGFsbCB0cnVzdGVkIGNlcnRpZmljYXRlcyB3ZXJlIGluIHRo
-ZSBidWlsdC1pbg0KPiA+ID4gdHJ1c3RlZCBrZXlpbmcsIHdoaWNoIGNvdWxkIG5vdCBiZSBtb2Rp
-ZmllZCBmcm9tIHVzZXIgc3BhY2UuDQo+ID4gPiBUcnVzdGVkIGNlcnRpZmljYXRlcyB3ZXJlIHBs
-YWNlZCBpbiB0aGUgYnVpbHQtaW4gdHJ1c3RlZCBrZXlpbmcgYXQNCj4gPiA+IGtlcm5lbCBjb21w
-aWxlIHRpbWUuDQo+ID4gPiANCj4gPiA+IFRoZSBzZWNvbmRhcnkgdHJ1c3RlZCBrZXlpbmcgaXMg
-ZGVzaWduZWQgc28gdGhhdCBhbnkgY2VydGlmaWNhdGVzIHRoYXQNCj4gPiA+IGFyZSBzaWduZWQg
-Ynkgb25lIG9mIHRoZSB0cnVzdGVkIENBIGNlcnRpZmljYXRlcyBpbiB0aGUgYnVpbHQtaW4gb3IN
-Cj4gPiA+IHNlY29uZGFyeSB0cnVzdGVkIGtleXJpbmcgY2FuIGJlIGFkZGVkIHRvIGl0Lg0KPiA+
-ID4gDQo+ID4gPiBMZXQncyBpbWFnaW5lIHRoYXQgd2UgaGF2ZSB0aGUgZm9sbG93aW5nIGNlcnRp
-ZmljYXRlIHRydXN0IGNoYWluOg0KPiA+ID4gDQo+ID4gPiAgICAgICAgICAgICAg4pSM4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSs4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSQDQo+ID4gPiAgICAgICAgICAgICAg4pSCICAg
-ICAgICAgICAgICAgICAgICAgICAgICAg4pSCICAgICDilIzilIDilIDilIDilIDilIDilIDilIDi
-lJAgICAgICAg4pSCDQo+ID4gPiAgICAgICAgICAgICAg4pSCICAgICAgICAgICAgICAgICAgICAg
-ICAgICAg4pSCICAgICDilIIgICAgICAg4pSCICAgICAgIOKUgg0KPiA+ID4g4pSM4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pa84pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSQ
-ICAgIOKUjOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKWvOKUgOKUgOKU
-gOKUgOKUgOKWvOKUgOKUgOKUgOKUgOKUkCAg4pSCIOKUjOKUgOKUgOKUgOKUgOKUgOKUtOKUgOKU
-gOKUgOKUgOKUgOKUkA0KPiA+ID4g4pSCLmJ1aWx0aW5fdHJ1c3RlZF9rZXlz4pSC4peE4pSA4pSA
-4pSA4pSkLnNlY29uZGFyeV90cnVzdGVkX2tleXMg4pSc4pSA4pSA4pSYIOKUgiAgIC5pbWEgICAg
-4pSCDQo+ID4gPiDilJzilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDi
-lIDilIDilIDilIDilIDilIDilIDilKQgICAg4pSc4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSkICAgIOKUnOKU
-gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUpA0KPiA+ID4g4pSCICAgICBSb290IENB
-IENlcnQgICAg4pSCLS0tLS3ilrogSW50ZXJtZWRpYXRlIENBIENlcnQgIOKUgi0tLS0t4pa6IElN
-QSBDZXJ0IOKUgg0KPiA+ID4g4pSU4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA
-4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSYICAgIOKUlOKUgOKUgOKUgOKUgOKUgOKUgOKU
-gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUmCAg
-ICDilJTilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilJgNCj4gPiA+IA0KPiA+ID4g
-ICAgICAgICAgICAgICAgSXNzdWVzICAgICAgICAgICAgICAgICAgUmVzdHJpY3RlZCBieQ0KPiA+
-ID4gICAgICAgICAgICAtLS0tLS0tLS0tLS0t4pa6ICAgICAgICAgICAgIOKUgOKUgOKUgOKUgOKU
-gOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKWug0KPiA+ID4gDQo+ID4gPiBTaW5jZSB0aGUg
-SU1BIGNlcnRpZmljYXRlIGlzIHNpZ25lZCBieSBhIENBIGNlcnRpZmljYXRlIGZyb20gYSBzZWNv
-bmRhcnkNCj4gPiA+IHRydXN0ZWQga2V5aW5nLCBhbiBhdHRhY2tlciB3aXRoIHN1cGVydXNlciBw
-cml2aWxlZ2VzIHdpbGwgYmUgYWJsZSB0bw0KPiA+ID4gYWRkIHRoZSBJTUEgY2VydGlmaWNhdGUg
-dG8gdGhlIHNlY29uZGFyeSB0cnVzdGVkIGtleWluZy4gVGhhdCBpcywgdGhlIElNQQ0KPiA+ID4g
-Y2VydGlmaWNhdGUgd2lsbCBiZWNvbWUgdHJ1c3RlZC4NCj4gPiA+IA0KPiA+ID4gU2luY2UsIHdp
-dGggYENPTkZJR19NT0RVTEVfU0lHYCBvcHRpb24gZW5hYmxlZCwgbW9kdWxlcyBjYW4gb25seSBi
-ZQ0KPiA+ID4gbG9hZGVkIGludG8ga2VybmVsIHNwYWNlIGlmIHRoZXkgYXJlIHNpZ25lZCB3aXRo
-IG9uZSBvZiB0aGUgdHJ1c3RlZA0KPiA+ID4gY2VydGlmaWNhdGVzLCBhbiBhdHRhY2tlciBjb3Vs
-ZCBzaWduIHVudHJ1c3RlZCBrZXJuZWwgbW9kdWxlcyB3aXRoDQo+ID4gPiB0aGUgcHJpdmF0ZSBr
-ZXkgY29ycmVzcG9uZGluZyB0byB0aGUgSU1BIGNlcnRpZmljYXRlIGFuZCBzdWNjZXNzZnVsbHkN
-Cj4gPiA+IGxvYWQgdGhlIHVudHJ1c3RlZCBtb2R1bGVzIGludG8ga2VybmVsIHNwYWNlLg0KPiA+
-ID4gDQo+ID4gPiBUaGlzIHBhdGNoIHdhcyBjcmVhdGVkIG5vdCB0byBzb2x2ZSBvbmx5IHRoZSBw
-cm9ibGVtIG9mIGxvYWRpbmcNCj4gPiA+IHVudHJ1c3RlZCBrZXJuZWwgbW9kdWxlcywgYnV0IHRv
-IG1ha2UgaXQgcG9zc2libGUgdG8gdXNlIGEgc2Vjb25kYXJ5DQo+ID4gPiB0cnVzdGVkIGtleWlu
-ZyBvbmx5IGFzIGEgcGFydCBvZiBhIGNoYWluIG9mIHRydXN0IGNvbnRhaW5pbmcgb25seQ0KPiA+
-ID4gQ0EgY2VydGlmaWNhdGVzIHdpdGggbm8gZGlnaXRhbCBzaWduYXR1cmUgY2FwYWJpbGl0eS4g
-VGhpcyB3aWxsDQo+ID4gPiBoZWxwIGF2b2lkIHNpbWlsYXIgcHJvYmxlbXMgd2hlbiBuZXcgZmVh
-dHVyZXMgYXBwZWFyIGluIHRoZSBsaW51eA0KPiA+ID4ga2VybmVsIHRoYXQgYXJlIHNpbWlsYXIg
-dG8ga2VybmVsIG1vZHVsZXMgaW4gdGVybXMgb2YgdGhlaXIgaW1wYWN0DQo+ID4gPiBvbiBzeXN0
-ZW0gc2VjdXJpdHksIHdoaWNoIHdpbGwgYWxzbyB1c2UgdHJ1c3RlZCBjZXJ0aWZpY2F0ZXMgZm9y
-DQo+ID4gPiBzaWduYXR1cmUgdmVyaWZpY2F0aW9uLg0KPiA+ID4gDQo+ID4gPiBUaGlzIHBhdGNo
-IGFkZHMgdGhlIGNvbmZpZ3VyYXRpb24gdGhhdCBvbmNlIGVuYWJsZWQsIG9ubHkNCj4gPiA+IGNl
-cnRpZmljYXRlcyB0aGF0IG1lZXQgdGhlIGZvbGxvd2luZyByZXF1aXJlbWVudHMgY2FuIGJlIGFk
-ZGVkDQo+ID4gPiB0byB0aGUgc2Vjb25kYXJ5IHRydXN0ZWQga2V5aW5nOg0KPiA+ID4gDQo+ID4g
-PiAxLiBUaGUgY2VydGlmaWNhdGUgaXMgYSBDQSAoQ2VydGlmaWNhdGUgQXV0aG9yaXR5KQ0KPiA+
-ID4gMi4gVGhlIGNlcnRpZmljYXRlIG11c3QgYmUgdXNlZCBmb3IgdmVyaWZ5aW5nIGEgQ0EncyBz
-aWduYXR1cmVzDQo+ID4gPiAzLiBUaGUgY2VydGlmaWNhdGUgbXVzdCBub3QgYmUgdXNlZCBmb3Ig
-ZGlnaXRhbCBzaWduYXR1cmVzDQo+ID4gPiANCj4gPiA+IFNpZ25lZC1vZmYtYnk6IERlbmlzIEds
-YXprb3YgPGQuZ2xhemtvdkBvbXAucnU+DQo+ID4gPiAtLS0NCj4gPiA+IHYxIC0+IHYyOg0KPiA+
-ID4gLSBSZWJhc2UgdGhlIHBhdGNoIGZyb20gYGxpbnV4LW5leHRgIHRvIHRoZSBtYWluIGBsaW51
-eGAgcmVwbyBtYXN0ZXIgYnJhbmNoDQo+ID4gPiAtIE1ha2UgdGhlIGNvbW1pdCBtZXNzYWdlIG1v
-cmUgZGV0YWlsZWQNCj4gPiA+IC0gTW92ZSB0aGUgdmFyaWFibGUgZGVjbGFyYXRpb24gdG8gdGhl
-IGBpZmAgYmxvY2sNCj4gPiA+IC0gUmVwbGFjZSBgI2lmZGVmYCB3aXRoIGBJU19FTkFCTEVEYCBt
-YWNybw0KPiA+ID4gDQo+ID4gPiB2MiAtPiB2MzoNCj4gPiA+IC0gQWRkIHRoZSBwdXJwb3NlIGFu
-ZCBnb2FsIG9mIHRoZSBwYXRjaCB0byB0aGUgY29tbWl0IG1lc3NhZ2UNCj4gPiA+IC0tLQ0KPiA+
-ID4gY2VydHMvS2NvbmZpZyAgICAgICAgICB8ICA5ICsrKysrKysrKw0KPiA+ID4gY2VydHMvc3lz
-dGVtX2tleXJpbmcuYyB8IDE2ICsrKysrKysrKysrKysrKysNCj4gPiA+IDIgZmlsZXMgY2hhbmdl
-ZCwgMjUgaW5zZXJ0aW9ucygrKQ0KPiA+ID4gDQo+ID4gPiBkaWZmIC0tZ2l0IGEvY2VydHMvS2Nv
-bmZpZyBiL2NlcnRzL0tjb25maWcNCj4gPiA+IGluZGV4IDFmMTA5YjA3MDg3Ny4uNGE0ZGM4YWFi
-ODkyIDEwMDY0NA0KPiA+ID4gLS0tIGEvY2VydHMvS2NvbmZpZw0KPiA+ID4gKysrIGIvY2VydHMv
-S2NvbmZpZw0KPiA+ID4gQEAgLTkwLDYgKzkwLDE1IEBAIGNvbmZpZyBTRUNPTkRBUllfVFJVU1RF
-RF9LRVlSSU5HDQo+ID4gPiAJICB0aG9zZSBrZXlzIGFyZSBub3QgYmxhY2tsaXN0ZWQgYW5kIGFy
-ZSB2b3VjaGVkIGZvciBieSBhIGtleSBidWlsdA0KPiA+ID4gCSAgaW50byB0aGUga2VybmVsIG9y
-IGFscmVhZHkgaW4gdGhlIHNlY29uZGFyeSB0cnVzdGVkIGtleXJpbmcuDQo+ID4gPiANCj4gPiA+
-ICtjb25maWcgU0VDT05EQVJZX1RSVVNURURfS0VZUklOR19GT1JfQ0FfQ0VSVElGSUNBVEVTX09O
-TFkNCj4gPiA+ICsJYm9vbCAiQWxsb3cgb25seSBDQSBjZXJ0aWZpY2F0ZXMgdG8gYmUgYWRkZWQg
-dG8gdGhlIHNlY29uZGFyeSB0cnVzdGVkIGtleXJpbmciDQo+ID4gPiArCWRlcGVuZHMgb24gU0VD
-T05EQVJZX1RSVVNURURfS0VZUklORw0KPiA+ID4gKwloZWxwDQo+ID4gPiArCSAgSWYgc2V0LCBv
-bmx5IENBIGNlcnRpZmljYXRlcyBjYW4gYmUgYWRkZWQgdG8gdGhlIHNlY29uZGFyeSB0cnVzdGVk
-IGtleXJpbmcuDQo+ID4gPiArCSAgQW4gYWNjZXB0YWJsZSBDQSBjZXJ0aWZpY2F0ZSBtdXN0IGlu
-Y2x1ZGUgdGhlIGBrZXlDZXJ0U2lnbmAgdmFsdWUgaW4NCj4gPiA+ICsJICB0aGUgYGtleVVzYWdl
-YCBmaWVsZC4gQ0EgY2VydGlmaWNhdGVzIHRoYXQgaW5jbHVkZSB0aGUgYGRpZ2l0YWxTaWduYXR1
-cmVgDQo+ID4gPiArCSAgdmFsdWUgaW4gdGhlIGBrZXlVc2FnZWAgZmllbGQgd2lsbCBub3QgYmUg
-YWNjZXB0ZWQuDQo+ID4gPiArDQo+ID4gPiBjb25maWcgU1lTVEVNX0JMQUNLTElTVF9LRVlSSU5H
-DQo+ID4gPiAJYm9vbCAiUHJvdmlkZSBzeXN0ZW0td2lkZSByaW5nIG9mIGJsYWNrbGlzdGVkIGtl
-eXMiDQo+ID4gPiAJZGVwZW5kcyBvbiBLRVlTDQo+ID4gPiBkaWZmIC0tZ2l0IGEvY2VydHMvc3lz
-dGVtX2tleXJpbmcuYyBiL2NlcnRzL3N5c3RlbV9rZXlyaW5nLmMNCj4gPiA+IGluZGV4IDlkZTYx
-MGJmMWY0Yi4uZWUxNDQ0NzM3NGU3IDEwMDY0NA0KPiA+ID4gLS0tIGEvY2VydHMvc3lzdGVtX2tl
-eXJpbmcuYw0KPiA+ID4gKysrIGIvY2VydHMvc3lzdGVtX2tleXJpbmcuYw0KPiA+ID4gQEAgLTk5
-LDYgKzk5LDIyIEBAIGludCByZXN0cmljdF9saW5rX2J5X2J1aWx0aW5fYW5kX3NlY29uZGFyeV90
-cnVzdGVkKA0KPiA+ID4gCQkvKiBBbGxvdyB0aGUgYnVpbHRpbiBrZXlyaW5nIHRvIGJlIGFkZGVk
-IHRvIHRoZSBzZWNvbmRhcnkgKi8NCj4gPiA+IAkJcmV0dXJuIDA7DQo+ID4gPiANCj4gPiA+ICsJ
-aWYgKElTX0VOQUJMRUQoQ09ORklHX1NFQ09OREFSWV9UUlVTVEVEX0tFWVJJTkdfRk9SX0NBX0NF
-UlRJRklDQVRFU19PTkxZKSAmJg0KPiA+ID4gKwkgICAgZGVzdF9rZXlyaW5nID09IHNlY29uZGFy
-eV90cnVzdGVkX2tleXMpIHsNCj4gPiA+ICsJCWNvbnN0IHN0cnVjdCBwdWJsaWNfa2V5ICpwdWIg
-PSBwYXlsb2FkLT5kYXRhW2FzeW1fY3J5cHRvXTsNCj4gPiA+ICsNCj4gPiA+ICsJCWlmICh0eXBl
-ICE9ICZrZXlfdHlwZV9hc3ltbWV0cmljKQ0KPiA+ID4gKwkJCXJldHVybiAtRU9QTk9UU1VQUDsN
-Cj4gPiA+ICsJCWlmICghcHViKQ0KPiA+ID4gKwkJCXJldHVybiAtRU5PUEtHOw0KPiA+ID4gKwkJ
-aWYgKCF0ZXN0X2JpdChLRVlfRUZMQUdfQ0EsICZwdWItPmtleV9lZmxhZ3MpKQ0KPiA+ID4gKwkJ
-CXJldHVybiAtRVBFUk07DQo+ID4gPiArCQlpZiAoIXRlc3RfYml0KEtFWV9FRkxBR19LRVlDRVJU
-U0lHTiwgJnB1Yi0+a2V5X2VmbGFncykpDQo+ID4gPiArCQkJcmV0dXJuIC1FUEVSTTsNCj4gPiA+
-ICsJCWlmICh0ZXN0X2JpdChLRVlfRUZMQUdfRElHSVRBTFNJRywgJnB1Yi0+a2V5X2VmbGFncykp
-DQo+ID4gPiArCQkJcmV0dXJuIC1FUEVSTTsNCj4gPiA+ICsJfQ0KPiA+ID4gKw0KPiA+ID4gCXJl
-dHVybiByZXN0cmljdF9saW5rX2J5X3NpZ25hdHVyZShkZXN0X2tleXJpbmcsIHR5cGUsIHBheWxv
-YWQsDQo+ID4gPiAJCQkJCSAgc2Vjb25kYXJ5X3RydXN0ZWRfa2V5cyk7DQo+ID4gPiB9DQo+ID4g
-PiAtLSANCj4gPiA+IDIuMzQuMQ0KPiA+IA0KPiA+IEkgZG9uJ3QgdGhpbmsgdGhpcyBkb2VzIGFu
-eSBoYXJtLg0KPiANCj4gUmlnaHQgb3Igd3JvbmcsIHRoZXJlIGRvIHNlZW0gdG8gYmUgSW50ZXJt
-ZWRpYXRlIENB4oCZcyB0aGF0IGhhdmUgdGhlIA0KPiBkaWdpdGFsIHNpZ25hdHVyZSB1c2FnZSBz
-ZXQgWzFdLg0KPiANCj4gMS4gaHR0cHM6Ly93d3cuZGlnaWNlcnQuY29tL2tiL2RpZ2ljZXJ0LXJv
-b3QtY2VydGlmaWNhdGVzLmh0bSNpbnRlcm1lZGlhdGVzDQoNCkkgd2FzIHN1cnByaXNlZCB0byBz
-ZWUgdGhhdCBpbnRlcm1lZGlhdGUgQ0EgY2VydGlmaWNhdGVzIGlzc3VlZCBieQ0KRGlnaUNlcnQg
-Y2FuIGJlIHVzZWQgZm9yIGRpZ2l0YWwgc2lnbmF0dXJlLiBTaW5jZSBpbiBpZGVhIGFsbCB0aGF0
-DQppcyByZXF1aXJlZCBmcm9tIGludGVybWVkaWF0ZSBDQSBjZXJ0aWZpY2F0ZXMgaXMgdG8gYmUg
-YSBtZW1iZXIgb2YNCnRoZSBjaGFpbiBvZiB0cnVzdCBhbmQgdG8gaXNzdWUgZW5kLXVzZXIgY2Vy
-dGlmaWNhdGVzIHRoYXQgc2hvdWxkDQpiZSB1c2VkIGZvciBkaWdpdGFsIHNpZ25hdHVyZXMuDQoN
-CkluIG15IG9waW5pb24gZm9yIHRoZXNlIHR3byBwdXJwb3NlcyB0aGVyZSBpcyBubyBuZWVkIHRv
-IGFkZCBkaWdpdGFsDQpzaWduYXR1cmUgcmlnaHRzIHRvIHRoZSBpbnRlcm1lZGlhdGUgQ0EgY2Vy
-dGlmaWNhdGUuIFRoaXMgaXMgcHJvYmFibHkNCmJlY2F1c2UgbW9zdCBvZiB0aGVzZSBpbnRlcm1l
-ZGlhdGUgQ0EgY2VydGlmaWNhdGVzIGFyZSB1c2VkIG9uIHRoZQ0Kd2ViLCB3aGVyZSB0aGV5IG1v
-c3QgbGlrZWx5IGhhdmUgYWRkaXRpb25hbCB1c2UgY2FzZXMuDQoNCkl0IGlzIGRpZmZpY3VsdCBm
-b3IgbWUgdG8gaW1hZ2luZSB1c2luZyBzdWNoIGludGVybWVkaWF0ZSBDQQ0KY2VydGlmaWNhdGVz
-IGluIExpbnV4IHRydXN0ZWQga2V5cmluZ3MsIHNpbmNlIHRoZXkgYXJlIHByYWN0aWNhbGx5DQpu
-byBkaWZmZXJlbnQgZnJvbSBlbmQtdXNlciBjZXJ0aWZpY2F0ZXMsIHdoaWNoIGNhbiBiZSB1c2Vk
-IHRvDQp2ZXJpZnkgbW9kdWxlIHNpZ25hdHVyZXMuDQoNClRoYXQncyB3aHkgdGhpcyBwYXRjaCBp
-bmNsdWRlcyBhbiBhZGRpdGlvbmFsIGNoZWNrIHRvIG1ha2Ugc3VyZSB0aGF0DQp0aGUgY2VydGlm
-aWNhdGUgZG9lcyBub3QgaGF2ZSBkaWdpdGFsIHNpZ25hdHVyZSByaWdodHMsIHdoaWNoIHdpbGwN
-CnByb3RlY3QgdGhlIHNlY29uZGFyeSB0cnVzdGVkIGtleXJpbmcgZnJvbSB0aGUgc2NlbmFyaW8g
-ZGVzY3JpYmVkIGluDQp0aGUgY29tbWl0IG1lc3NhZ2UuDQoNCkJSLCBEZW5pcw==
+On Tue, 3 Oct 2023 21:30:58 +0200
+Lukas Wunner <lukas@wunner.de> wrote:
+
+> On Tue, Oct 03, 2023 at 04:40:48PM +0100, Jonathan Cameron wrote:
+> > On Thu, 28 Sep 2023 19:32:42 +0200 Lukas Wunner <lukas@wunner.de> wrote:  
+> > > At any given time, only a single entity in a physical system may have
+> > > an SPDM connection to a device.  That's because the GET_VERSION request
+> > > (which begins an authentication sequence) resets "the connection and all
+> > > context associated with that connection" (SPDM 1.3.0 margin no 158).
+> > > 
+> > > Thus, when a device is passed through to a guest and the guest has
+> > > authenticated it, a subsequent authentication by the host would reset
+> > > the device's CMA-SPDM session behind the guest's back.
+> > > 
+> > > Prevent by letting the guest claim exclusive CMA ownership of the device
+> > > during passthrough.  Refuse CMA reauthentication on the host as long.
+> > > After passthrough has concluded, reauthenticate the device on the host.  
+> > 
+> > Is there anything stopping a PF presenting multiple CMA capable DOE
+> > instances?  I'd expect them to have their own contexts if they do..  
+> 
+> The spec does not seem to *explicitly* forbid a PF having multiple
+> CMA-capable DOE instances, but PCIe r6.1 sec 6.31.3 says:
+> "The instance of DOE used for CMA-SPDM must support ..."
+> 
+> Note the singular ("The instance").  It seems to suggest that the
+> spec authors assumed there's only a single DOE instance for CMA-SPDM.
+
+It's a little messy and a bit of American vs British English I think.
+If it said
+"The instance of DOE used for a specific CMA-SPDM must support..." 
+then it would clearly allow multiple instances.  However, conversely,
+I don't read that sentence as blocking multiple instances (even though
+I suspect you are right and the author was thinking of there being one).
+
+> 
+> Could you (as an English native speaker) comment on the clarity of the
+> two sentences "Prevent ... as long." above, as Ilpo objected to them?
+> 
+> The antecedent of "Prevent" is the undesirable behaviour in the preceding
+> sentence (host resets guest's SPDM connection).
+> 
+> The antecedent of "as long" is "during passthrough" in the preceding
+> sentence.
+> 
+> Is that clear and understandable for an English native speaker or
+> should I rephrase?
+
+Not clear enough to me as it stands.  That "as long" definitely feels
+like there is more to follow it as Ilpo noted.
+
+Maybe reword as something like 
+
+Prevent this by letting the guest claim exclusive ownership of the device
+during passthrough ensuring problematic CMA reauthentication by the host
+is blocked.
+
+Also combine this with previous paragraph to make the 'this' more obvious
+refer to the problem described in that paragraph.
+
+Jonathan
+
+> 
+> Thanks,
+> 
+> Lukas
+> 
+
