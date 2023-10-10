@@ -2,110 +2,68 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B6E87C4282
-	for <lists+keyrings@lfdr.de>; Tue, 10 Oct 2023 23:28:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ABF67C4450
+	for <lists+keyrings@lfdr.de>; Wed, 11 Oct 2023 00:38:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230094AbjJJV2M (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 10 Oct 2023 17:28:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38142 "EHLO
+        id S230347AbjJJWin (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 10 Oct 2023 18:38:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231749AbjJJV2L (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 10 Oct 2023 17:28:11 -0400
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CA259B
-        for <keyrings@vger.kernel.org>; Tue, 10 Oct 2023 14:28:06 -0700 (PDT)
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 9742C3FA5D
-        for <keyrings@vger.kernel.org>; Tue, 10 Oct 2023 21:28:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1696973284;
-        bh=kGYTzfoZ1kv7weJtQlok3IlvagfJw5eAGxwX3/sR+4o=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=OeNDxuEbraKLdn8fn3ZrQoCYuPU5iyGy0YtNUbOWhJqcwBcrH6zo1u1Gq0AbmNzYs
-         VTcMExs6ry5gnr0oRz+234O18qLbryZJJxGqkKjKzOAdu5/ohMGPQSK2LHUuHmo+rW
-         l/csA7C8rMso8+yUqEhu6r+8xEQFaMN8ALC2QAPnrKd6Yit8SMBOUr3EjAX29mR4Di
-         82wMI2LEeVH2mgI0v6UVwScqXGVZm6B1DViwslKgrsZx5AowZEgIwfUYro5Y2vS50P
-         CG9rsGgmdPZO343EYJbXjzxG6306bUtpd/E6f4idImuWqIkxrkVIKlSSy91XwKQDCk
-         v+Hnz7sec8SyQ==
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-27911ce6206so6011670a91.0
-        for <keyrings@vger.kernel.org>; Tue, 10 Oct 2023 14:28:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696973283; x=1697578083;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kGYTzfoZ1kv7weJtQlok3IlvagfJw5eAGxwX3/sR+4o=;
-        b=TXOuGpvzigxLR/TFtfCx+p0AAYSz6EdgksDpK7R98E1an/xKVgi92biAU9mzTPvITQ
-         74zhJprHdZqT0ZuHnztOBcNvOHn4oGF3baUWoElq67o1w1fBeyJNIgm/WwqWUxGmCpCx
-         WoRDph0B5HsXDfJzxXAtH+mzEJfLpx1LIlQhdHNc5T8eoQa8jvy5uUiZqib3arGPNC8i
-         Qw7jY6su7nnTg1SyRbalHdAw7npkHBTNpkccygJ/t/oOmzG/yemrT67dLl9kJ9kGYU1Q
-         PVjzMjVzG3QRuPsmXD9Q4+q1lMI8SdbBrmk0CIpvgSW0bGXdh/4rJkLIQ/8f28iFHiW8
-         AiZA==
-X-Gm-Message-State: AOJu0YxnDZrvLeU8/W5Xh74l6bttDdVUjbU60CHNSDQYiukVFK5YFC7y
-        hv+Uf9d1AETvm1yf7VmRCisahtY1x0n1Yzw+BzHFurU04eOmMZJoKEbj+SvmniHysxFlSoRWdEO
-        J9Y7XTyC+MGgeU8bGqkx3eC9LYjrP0lm0QM6P
-X-Received: by 2002:a17:90a:d994:b0:27c:f305:cf82 with SMTP id d20-20020a17090ad99400b0027cf305cf82mr2076217pjv.24.1696973283205;
-        Tue, 10 Oct 2023 14:28:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHHTGkfR5o6XjzlsdIQU0gFnvfe+TOn1Qjq6XWUx1g5sYVOL098jMoAxrBFmurn6Bm/1uScZw==
-X-Received: by 2002:a17:90a:d994:b0:27c:f305:cf82 with SMTP id d20-20020a17090ad99400b0027cf305cf82mr2076207pjv.24.1696973282882;
-        Tue, 10 Oct 2023 14:28:02 -0700 (PDT)
-Received: from localhost ([2001:67c:1560:8007::aac:c15c])
-        by smtp.gmail.com with ESMTPSA id 24-20020a17090a001800b002791d5a3e29sm369949pja.6.2023.10.10.14.28.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Oct 2023 14:28:02 -0700 (PDT)
-From:   Dimitri John Ledkov <dimitri.ledkov@canonical.com>
-To:     David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>
-Cc:     linux-modules@vger.kernel.org, linux-crypto@vger.kernel.org,
-        herbert@gondor.apana.org.au, mcgrof@kernel.org,
-        keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] crypto: Limit MODULE_SIG_KEY_TYPE_ECDSA to SHA384 or SHA512
-Date:   Tue, 10 Oct 2023 22:27:55 +0100
-Message-Id: <20231010212755.64744-1-dimitri.ledkov@canonical.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S230495AbjJJWim (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 10 Oct 2023 18:38:42 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A21768F;
+        Tue, 10 Oct 2023 15:38:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=90TfTQ0HXtaxpP2N+kX5JJUdpzOu8ILN/U8ZS/CUaG4=; b=lop/4jucpEXHelFQId1crSEMAC
+        Gn32k7Bk/APUtM7fo9a1ua/e3qWsB79DoGlaKkj1X6fcyXH+FYcXlag5+sTsEb9OiWTDzl4IaqSr1
+        mTD7AILBHYRnAMRuv4Qj9/qKPsSCJzt8cSmPp8I3SBITTp2C3MirJfzvwzUmf6Lk6GR5eQ41WssDi
+        V/JCqInkk9bcWRDixVfTwmSuF+ojwsgozE7VuwNg89zcQXzs/isFCVnZs6D4VBuEHqZTnInHlFSPt
+        lKK+wixmi7wlv18SQzt8Cocdk7JW7D//xwNTl9dOFYPwVhRsq2hEI6f0uqp6xo/1s6vT6BnTGi6+H
+        nC9tuvJQ==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+        id 1qqLN9-00EHUI-0o;
+        Tue, 10 Oct 2023 22:38:39 +0000
+Date:   Tue, 10 Oct 2023 15:38:39 -0700
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+Cc:     David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        linux-modules@vger.kernel.org, linux-crypto@vger.kernel.org,
+        herbert@gondor.apana.org.au, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] crypto: Limit MODULE_SIG_KEY_TYPE_ECDSA to SHA384 or
+ SHA512
+Message-ID: <ZSXSb9oQxWukme4d@bombadil.infradead.org>
+References: <20231010212755.64744-1-dimitri.ledkov@canonical.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231010212755.64744-1-dimitri.ledkov@canonical.com>
+Sender: Luis Chamberlain <mcgrof@infradead.org>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-NIST FIPS 186-5 states that it is recommended that the security
-strength associated with the bit length of n and the security strength
-of the hash function be the same, or higher upon agreement. Given NIST
-P384 curve is used, force using either SHA384 or SHA512.
+On Tue, Oct 10, 2023 at 10:27:55PM +0100, Dimitri John Ledkov wrote:
+> NIST FIPS 186-5 states that it is recommended that the security
+> strength associated with the bit length of n and the security strength
+> of the hash function be the same, or higher upon agreement. Given NIST
+> P384 curve is used, force using either SHA384 or SHA512.
+> 
+> Signed-off-by: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+> ---
 
-Signed-off-by: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
----
- certs/Kconfig | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+I'd imagine this could go through crypto tree, as folks more in tune
+with these requirements would be more aligned with what we need.
 
-diff --git a/certs/Kconfig b/certs/Kconfig
-index 1f109b0708..84582de66b 100644
---- a/certs/Kconfig
-+++ b/certs/Kconfig
-@@ -30,9 +30,11 @@ config MODULE_SIG_KEY_TYPE_RSA
- config MODULE_SIG_KEY_TYPE_ECDSA
- 	bool "ECDSA"
- 	select CRYPTO_ECDSA
-+	depends on MODULE_SIG_SHA384 || MODULE_SIG_SHA512
- 	help
--	 Use an elliptic curve key (NIST P384) for module signing. Consider
--	 using a strong hash like sha256 or sha384 for hashing modules.
-+	 Use an elliptic curve key (NIST P384) for module signing. Use
-+	 a strong hash of same or higher bit length, i.e. sha384 or
-+	 sha512 for hashing modules.
- 
- 	 Note: Remove all ECDSA signing keys, e.g. certs/signing_key.pem,
- 	 when falling back to building Linux 5.14 and older kernels.
--- 
-2.34.1
-
+  Luis
