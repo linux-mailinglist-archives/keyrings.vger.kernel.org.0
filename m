@@ -2,180 +2,242 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1A0E7C59B1
-	for <lists+keyrings@lfdr.de>; Wed, 11 Oct 2023 18:57:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E45F7C5D59
+	for <lists+keyrings@lfdr.de>; Wed, 11 Oct 2023 21:02:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232868AbjJKQ5x (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 11 Oct 2023 12:57:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33182 "EHLO
+        id S233287AbjJKTCD (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 11 Oct 2023 15:02:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230158AbjJKQ5x (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 11 Oct 2023 12:57:53 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 042D28F;
-        Wed, 11 Oct 2023 09:57:51 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4S5Jpv2CChz6K7GN;
-        Thu, 12 Oct 2023 00:57:27 +0800 (CST)
-Received: from localhost (10.126.175.8) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Wed, 11 Oct
- 2023 17:57:47 +0100
-Date:   Wed, 11 Oct 2023 17:57:46 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     Alexey Kardashevskiy <aik@amd.com>
-CC:     Lukas Wunner <lukas@wunner.de>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Bjorn Helgaas <helgaas@kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        <linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
-        <linux-coco@lists.linux.dev>, <keyrings@vger.kernel.org>,
-        <linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
-        <linuxarm@huawei.com>, David Box <david.e.box@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        "Li, Ming" <ming4.li@intel.com>, Zhi Wang <zhi.a.wang@intel.com>,
-        Alistair Francis <alistair.francis@wdc.com>,
-        Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Alexander Graf <graf@amazon.com>
-Subject: Re: [PATCH 00/12] PCI device authentication
-Message-ID: <20231011175746.00003d57@Huawei.com>
-In-Reply-To: <2a21b730-9ad4-4585-b636-9aa139266f94@amd.com>
-References: <cover.1695921656.git.lukas@wunner.de>
-        <652030759e42d_ae7e72946@dwillia2-xfh.jf.intel.com.notmuch>
-        <20231007100433.GA7596@wunner.de>
-        <20231009123335.00006d3d@Huawei.com>
-        <20231009134950.GA7097@wunner.de>
-        <b003c0ca-b5c7-4082-a391-aeb04ccc33ca@amd.com>
-        <20231010081913.GA24050@wunner.de>
-        <2a21b730-9ad4-4585-b636-9aa139266f94@amd.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
+        with ESMTP id S233052AbjJKTCC (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 11 Oct 2023 15:02:02 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB00894;
+        Wed, 11 Oct 2023 12:02:00 -0700 (PDT)
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39BJ0dbo019376;
+        Wed, 11 Oct 2023 19:01:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=EvSrdzgQac9t6SDpr7YjTWUuBILcaWDNXy2FILzX1wo=;
+ b=L2qDpLDc/2g1BpFRswBB+qQrSm0VpZhL5KHen0nqiBrxOiWlGYxmSX35WngizvVOuidR
+ ZyUyzJPUGUwJlFtCXsH4NKLsJp4PY15cJAxyUYNMd1KLz4ymyHsncfHRMu+5Vvx/P3qP
+ ZWYAbXulJxpsudI2b5HyAEvO6cI/r4NBi/X1VYth35A6S7bZcq1nU026uRfg8z7MkqUE
+ qY4AZwTAm0VdD98AEIuV/reOJ+JMgzwPgDcEjTUxPODSh84h3kkV02xCzoAdCpNQd9gf
+ DvXN6iyJa2pH4wckhUzEKBkyas4pS6qtouqFkQ0gYS7oDZDHPTneZRfZ8+9M74nCOMUL mA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tp1540vb3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 11 Oct 2023 19:01:15 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39BJ1DYR024658;
+        Wed, 11 Oct 2023 19:01:14 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tp1540vac-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 11 Oct 2023 19:01:13 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+        by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39BHKjAT023000;
+        Wed, 11 Oct 2023 19:01:12 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+        by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tkmc1sspt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 11 Oct 2023 19:01:12 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+        by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39BJ1BgF21758490
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 11 Oct 2023 19:01:11 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 626625803F;
+        Wed, 11 Oct 2023 19:01:11 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id ECC4558064;
+        Wed, 11 Oct 2023 19:01:09 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.watson.ibm.com (unknown [9.31.99.90])
+        by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+        Wed, 11 Oct 2023 19:01:09 +0000 (GMT)
+Message-ID: <8646e30b0074a2932076b5a0a792b14be034de98.camel@linux.ibm.com>
+Subject: Re: [PATCH v3 02/25] ima: Align ima_post_path_mknod() definition
+ with LSM infrastructure
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Roberto Sassu <roberto.sassu@huaweicloud.com>,
+        viro@zeniv.linux.org.uk, brauner@kernel.org,
+        chuck.lever@oracle.com, jlayton@kernel.org, neilb@suse.de,
+        kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com,
+        dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
+        serge@hallyn.com, dhowells@redhat.com, jarkko@kernel.org,
+        stephen.smalley.work@gmail.com, eparis@parisplace.org,
+        casey@schaufler-ca.com
+Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-nfs@vger.kernel.org, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        selinux@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
+Date:   Wed, 11 Oct 2023 15:01:09 -0400
+In-Reply-To: <b51baf7741de1fdee8b36a87bd2dde71184d47a8.camel@huaweicloud.com>
+References: <20230904133415.1799503-1-roberto.sassu@huaweicloud.com>
+         <20230904133415.1799503-3-roberto.sassu@huaweicloud.com>
+         <a733fe780a3197150067ad35ed280bf85e11fa97.camel@linux.ibm.com>
+         <b51baf7741de1fdee8b36a87bd2dde71184d47a8.camel@huaweicloud.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.126.175.8]
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: k9vtrmvf_jr5Aju86L5AhcagQ05seHkC
+X-Proofpoint-GUID: f5GLYj_fQbiDab6xRZa3zu3I1Dw5ExMb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-11_13,2023-10-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1015
+ impostorscore=0 bulkscore=0 lowpriorityscore=0 mlxlogscore=999 spamscore=0
+ priorityscore=1501 adultscore=0 suspectscore=0 malwarescore=0 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2309180000
+ definitions=main-2310110168
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 10 Oct 2023 23:53:16 +1100
-Alexey Kardashevskiy <aik@amd.com> wrote:
-
-> On 10/10/23 19:19, Lukas Wunner wrote:
-> > On Tue, Oct 10, 2023 at 03:07:41PM +1100, Alexey Kardashevskiy wrote:  
-> >> On 10/10/23 00:49, Lukas Wunner wrote:  
-> >>> PCI Firmware Spec would seem to be appropriate.  However this can't
-> >>> be solved by the kernel community.  
-> >>
-> >> How so? It is up to the user to decide whether it is SPDM/CMA in the kernel
-> >> or   the firmware + coco, both are quite possible (it is IDE which is not
-> >> possible without the firmware on AMD but we are not there yet).  
+On Wed, 2023-10-11 at 18:02 +0200, Roberto Sassu wrote:
+> On Wed, 2023-10-11 at 10:38 -0400, Mimi Zohar wrote:
+> > On Mon, 2023-09-04 at 15:33 +0200, Roberto Sassu wrote:
+> > > From: Roberto Sassu <roberto.sassu@huawei.com>
+> > > 
+> > > Change ima_post_path_mknod() definition, so that it can be registered as
+> > > implementation of the path_post_mknod hook. Since LSMs see a umask-stripped
+> > > mode from security_path_mknod(), pass the same to ima_post_path_mknod() as
+> > > well.
+> > > Also, make sure that ima_post_path_mknod() is executed only if
+> > > (mode & S_IFMT) is equal to zero or S_IFREG.
+> > > 
+> > > Add this check to take into account the different placement of the
+> > > path_post_mknod hook (to be introduced) in do_mknodat().
 > > 
-> > The user can control ownership of CMA-SPDM e.g. through a BIOS knob.
-> > And that BIOS knob then influences the outcome of the _OSC negotiation
-> > between platform and OS.
+> > Move "(to be introduced)" to when it is first mentioned.
 > > 
-> >   
-> >> But the way SPDM is done now is that if the user (as myself) wants to let
-> >> the firmware run SPDM - the only choice is disabling CONFIG_CMA completely
-> >> as CMA is not a (un)loadable module or built-in (with some "blacklist"
-> >> parameters), and does not provide a sysfs knob to control its tentacles.  
+> > > Since the new hook
+> > > will be placed after the switch(), the check ensures that
+> > > ima_post_path_mknod() is invoked as originally intended when it is
+> > > registered as implementation of path_post_mknod.
+> > > 
+> > > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> > > ---
+> > >  fs/namei.c                        |  9 ++++++---
+> > >  include/linux/ima.h               |  7 +++++--
+> > >  security/integrity/ima/ima_main.c | 10 +++++++++-
+> > >  3 files changed, 20 insertions(+), 6 deletions(-)
+> > > 
+> > > diff --git a/fs/namei.c b/fs/namei.c
+> > > index e56ff39a79bc..c5e96f716f98 100644
+> > > --- a/fs/namei.c
+> > > +++ b/fs/namei.c
+> > > @@ -4024,6 +4024,7 @@ static int do_mknodat(int dfd, struct filename *name, umode_t mode,
+> > >  	struct path path;
+> > >  	int error;
+> > >  	unsigned int lookup_flags = 0;
+> > > +	umode_t mode_stripped;
+> > >  
+> > >  	error = may_mknod(mode);
+> > >  	if (error)
+> > > @@ -4034,8 +4035,9 @@ static int do_mknodat(int dfd, struct filename *name, umode_t mode,
+> > >  	if (IS_ERR(dentry))
+> > >  		goto out1;
+> > >  
+> > > -	error = security_path_mknod(&path, dentry,
+> > > -			mode_strip_umask(path.dentry->d_inode, mode), dev);
+> > > +	mode_stripped = mode_strip_umask(path.dentry->d_inode, mode);
+> > > +
+> > > +	error = security_path_mknod(&path, dentry, mode_stripped, dev);
+> > >  	if (error)
+> > >  		goto out2;
+> > >  
+> > > @@ -4045,7 +4047,8 @@ static int do_mknodat(int dfd, struct filename *name, umode_t mode,
+> > >  			error = vfs_create(idmap, path.dentry->d_inode,
+> > >  					   dentry, mode, true);
+> > >  			if (!error)
+> > > -				ima_post_path_mknod(idmap, dentry);
+> > > +				ima_post_path_mknod(idmap, &path, dentry,
+> > > +						    mode_stripped, dev);
+> > >  			break;
+> > >  		case S_IFCHR: case S_IFBLK:
+> > >  			error = vfs_mknod(idmap, path.dentry->d_inode,
+> > > diff --git a/include/linux/ima.h b/include/linux/ima.h
+> > > index 910a2f11a906..179ce52013b2 100644
+> > > --- a/include/linux/ima.h
+> > > +++ b/include/linux/ima.h
+> > > @@ -32,7 +32,8 @@ extern int ima_read_file(struct file *file, enum kernel_read_file_id id,
+> > >  extern int ima_post_read_file(struct file *file, void *buf, loff_t size,
+> > >  			      enum kernel_read_file_id id);
+> > >  extern void ima_post_path_mknod(struct mnt_idmap *idmap,
+> > > -				struct dentry *dentry);
+> > > +				const struct path *dir, struct dentry *dentry,
+> > > +				umode_t mode, unsigned int dev);
+> > >  extern int ima_file_hash(struct file *file, char *buf, size_t buf_size);
+> > >  extern int ima_inode_hash(struct inode *inode, char *buf, size_t buf_size);
+> > >  extern void ima_kexec_cmdline(int kernel_fd, const void *buf, int size);
+> > > @@ -114,7 +115,9 @@ static inline int ima_post_read_file(struct file *file, void *buf, loff_t size,
+> > >  }
+> > >  
+> > >  static inline void ima_post_path_mknod(struct mnt_idmap *idmap,
+> > > -				       struct dentry *dentry)
+> > > +				       const struct path *dir,
+> > > +				       struct dentry *dentry,
+> > > +				       umode_t mode, unsigned int dev)
+> > >  {
+> > >  	return;
+> > >  }
+> > > diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+> > > index 365db0e43d7c..76eba92d7f10 100644
+> > > --- a/security/integrity/ima/ima_main.c
+> > > +++ b/security/integrity/ima/ima_main.c
+> > > @@ -696,18 +696,26 @@ void ima_post_create_tmpfile(struct mnt_idmap *idmap,
+> > >  /**
+> > >   * ima_post_path_mknod - mark as a new inode
+> > >   * @idmap: idmap of the mount the inode was found from
+> > > + * @dir: path structure of parent of the new file
+> > >   * @dentry: newly created dentry
+> > > + * @mode: mode of the new file
+> > > + * @dev: undecoded device number
+> > >   *
+> > >   * Mark files created via the mknodat syscall as new, so that the
+> > >   * file data can be written later.
+> > >   */
+> > >  void ima_post_path_mknod(struct mnt_idmap *idmap,
+> > > -			 struct dentry *dentry)
+> > > +			 const struct path *dir, struct dentry *dentry,
+> > > +			 umode_t mode, unsigned int dev)
+> > >  {
+> > >  	struct integrity_iint_cache *iint;
+> > >  	struct inode *inode = dentry->d_inode;
+> > >  	int must_appraise;
+> > >  
+> > > +	/* See do_mknodat(), IMA is executed for case 0: and case S_IFREG: */
+> > > +	if ((mode & S_IFMT) != 0 && (mode & S_IFMT) != S_IFREG)
+> > > +		return;
+> > > +
 > > 
-> > The problem is every single vendor thinks they can come up with
-> > their own idea of who owns the SPDM session:
-> > 
-> > I've looked at the Nvidia driver and they've hacked libspdm into it,
-> > so their idea is that the device driver owns the SPDM session.
->  >
-> > AMD wants the host to proxy DOE but not own the SPDM session.
->  >
-> > We have *standards* for a reason.  So that products are interoperable.  
+> > There's already a check below to make sure that this is a regular file.
+> > Are both needed?
 > 
-> There is no "standard PCI ethernet device", somehow we survive ;)
-> 
-> > If the kernel tries to accommodate to every vendor's idea of SPDM ownership
-> > we'll end up with an unmaintainable mess of quirks, plus sysfs knobs
-> > which were once intended as a stopgap but can never be removed because
-> > they're userspace ABI.  
-> 
-> The host kernel needs to accommodate the idea that it is not trusted, 
-> and neither is the BIOS.
-> 
-> > This needs to be solved in the *specification*.
->  >
-> > And the existing solution for who owns a particular PCI feature is _OSC.
-> > Hence this needs to be taken up with the Firmware Working Group at the
-> > PCISIG.  
-> 
-> I do like the general idea of specifying things, etc but this place does 
-> not sound right. The firmware you are talking about has full access to 
-> PCI, the PSP firmware does not have any (besides the IDE keys 
-> programming), is there any example of such firmware in the PCI Firmware 
-> spec? From the BIOS standpoint, the host OS owns DOE and whatever is 
-> sent over it (on AMD SEV TIO). The host OS chooses not to compose these 
-> SPDM packets itself (while it could) in order to be able to run guests 
-> without having them to trust the host OS.
+> You are right, I can remove the first check.
 
-As a minimum I'd like to see something saying - "keep away from discovery
-protocol on this DOE instance".  An ACPI _OSC or _DSM or similar could do that.
-It won't be needed for every approach, but it might for some.
-
-Then either firmwware knows what to do, or a specific driver does.
-
-If your proxy comes up late enough that we've already done (and cached) discovery
-protocols results then this might not be a problem for this particular
-approach as we have no reason to rerun discovery (other than hotplug in which
-case there is lots of other stuff to do anyway).
-
-For your case we need some hooks for the PSP to be able to drive the SPDM session
-but that should be easy to allow. I don't think precludes the hypervisor also
-verifying the hardware is trusted by it along the way (though not used for IDE).
-So if you are relying on a host OS proxy I don't thing you need to disable CONFIG_CMA
-(maybe something around resets?)
-
-Potentially the host OS tries first (maybe succeeds - that doesn't matter though
-nothing wrong with defense in depth) and then the PSP via a proxy does it all over
-again which is fine.  All we need to do is guarantee ordering and I think we are
-fine for that.
-
-Far too many possible models here but such is life I guess.
+The question then becomes why modify hook the arguments?   
 
 > 
-> >> Note, this PSP firmware is not BIOS (which runs on the same core and has
-> >> same access to PCI as the host OS), it is a separate platform processor
-> >> which only programs IDE keys to the PCI RC (via some some internal bus
-> >> mechanism) but does not do anything on the bus itself and relies on the host
-> >> OS proxying DOE, and there is no APCI between the core and the psp.  
-> > 
-> > Somewhat tangentially, would it be possible in your architecture
-> > that the host or guest asks PSP to program IDE keys into the Root Port?  
+> > >  	if (!ima_policy_flag || !S_ISREG(inode->i_mode))
+> > >  		return;
+> > >  
 > 
-> Sure it is possible to implement. But this does not help our primary use 
-> case which is confidential VMs where the host OS is not trusted with the 
-> keys.
-> 
-> > Or alternatively, access the key registers directly without PSP involvement?  
-> 
-> No afaik, for the reason above.
-> 
-> 
-> > 
-> > Thanks,
-> > 
-> > Lukas  
-> 
+
+-- 
+thanks,
+
+Mimi
+
 
