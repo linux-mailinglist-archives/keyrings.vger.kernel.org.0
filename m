@@ -2,126 +2,127 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEEA27C4D62
-	for <lists+keyrings@lfdr.de>; Wed, 11 Oct 2023 10:42:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 626667C4FC2
+	for <lists+keyrings@lfdr.de>; Wed, 11 Oct 2023 12:12:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230386AbjJKIme (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 11 Oct 2023 04:42:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42040 "EHLO
+        id S230238AbjJKKMK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 11 Oct 2023 06:12:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229957AbjJKImd (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 11 Oct 2023 04:42:33 -0400
+        with ESMTP id S233592AbjJKKMJ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 11 Oct 2023 06:12:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D124B93;
-        Wed, 11 Oct 2023 01:42:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61AE1C433C9;
-        Wed, 11 Oct 2023 08:42:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28B33A4;
+        Wed, 11 Oct 2023 03:12:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED25EC433C8;
+        Wed, 11 Oct 2023 10:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697013751;
-        bh=/qnCsWhvwJGmydL5cFopunMWv+54w3gBRXtRDqkm3Mo=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Db5h7oG7HRhT0j2ZKdp8Krg7SPnXjuNjx2Sjo1zzsZZVC6a4g2b0i7l7W1Rtee219
-         QHEqRS0aSTOl/B93iRJcePiEzxMD9X9QaXPtoTUJJIbpdfYGg1WZkGL/upySXZOOmi
-         Bb4/LgU0qiUuaEsdpkaB02sCp9KGfk2nLsCpPJwYhyrqkXIZnUcQJX2lOMFz9p/fCP
-         apVub3lK2vbP6MNxKheZCxdXRYPrRJWYdlK8BuSCWSwg9qlP1VGTmaqOUstwp8s6aq
-         QjWC99i4o0m+7Du3ofOKBi0Llc0Ih9ek7oq8e05Y4JFZZEUN2R5/AIA6qbSMwx0m6b
-         1c6x2zZESjT/g==
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-50567477b29so8563817e87.3;
-        Wed, 11 Oct 2023 01:42:31 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzqW+XAxku8vsXyPbaPu+RogsW/LxiaDHSLWS61EfqIrnoQEuPT
-        GMCoK1Vnm3zid+R00PPZl5JbYOOdj1394nyXb5w=
-X-Google-Smtp-Source: AGHT+IEQ8N+hxnKlsY3kdHlMUmD2dB5AsGDgukW+xZ9lNPz+9WLrpyVRancG44N14b/uhYsTkc7NkZszxEOW8nSO8M4=
-X-Received: by 2002:a05:6512:2527:b0:4fe:279b:7603 with SMTP id
- be39-20020a056512252700b004fe279b7603mr18296412lfb.14.1697013749583; Wed, 11
- Oct 2023 01:42:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231010212530.63470-1-dimitri.ledkov@canonical.com>
-In-Reply-To: <20231010212530.63470-1-dimitri.ledkov@canonical.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Wed, 11 Oct 2023 10:42:18 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFVPnowdREEjVREy=KKY12nZUp58qL2b_u97=bOTz0wgA@mail.gmail.com>
-Message-ID: <CAMj1kXFVPnowdREEjVREy=KKY12nZUp58qL2b_u97=bOTz0wgA@mail.gmail.com>
-Subject: Re: [PATCH] crypto: mscode_parser: remove sha224 authenticode support
-To:     Dimitri John Ledkov <dimitri.ledkov@canonical.com>
-Cc:     David Howells <dhowells@redhat.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+        s=k20201202; t=1697019127;
+        bh=0ArQgzQ4dKVLY9l4ESHcxBl/89hy5GRkTw8PcjI+eQk=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=YVcO2DJPQ9FTgBiId6sWJhnpSYL3fO9MPn+hFyaRMESm+qo/ahgZglNFumE8XK/fW
+         Wh99gFk5q6vG4BA/7/YE0YoTLsQUCoqks8u/xatRA4PtvLwoc3YDR4tY/oCu02FIES
+         bK2TpLMCVfdrQQ2MCrAg/Uo6Q6gpoHoUTTDbMClABDIoA2MokI775YsQzrKV2Ys0m3
+         SCRZ75iTQJe4UGG+fU70j/ypbc0WP3MEwFNELjJiKR78do+IsatvoqIZa8msLZa+eO
+         t+h0kzh+9NRXCfaLEYoD9JRusXorC1+/AM/vLGYC8pvor9ocdbWHhiX3bHvxXCeZ+2
+         FHyYnsFDfJt2A==
+Message-ID: <186a4b62517ead88df8c3c0e9e9585e88f9a6fd8.camel@kernel.org>
+Subject: Re: [PATCH] KEYS: trusted: Rollback init_trusted() consistently
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     Sumit Garg <sumit.garg@linaro.org>
+Cc:     keyrings@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        stable@vger.kernel.org, James Bottomley <jejb@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        "open list:KEYS-TRUSTED" <linux-integrity@vger.kernel.org>,
+        "open list:SECURITY SUBSYSTEM" 
+        <linux-security-module@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+Date:   Wed, 11 Oct 2023 13:12:02 +0300
+In-Reply-To: <CAFA6WYMdrCfqMVExYBbhCK7vUSQffyUfSWpQO0=HeQc6Edz9OA@mail.gmail.com>
+References: <20231010231616.3122392-1-jarkko@kernel.org>
+         <CAFA6WYMdrCfqMVExYBbhCK7vUSQffyUfSWpQO0=HeQc6Edz9OA@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: base64
+User-Agent: Evolution 3.46.4-2 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 10 Oct 2023 at 23:25, Dimitri John Ledkov
-<dimitri.ledkov@canonical.com> wrote:
->
-> It is possible to stand up own certificates and sign PE-COFF binaries
-> using SHA-224. However it never became popular or needed since it has
-> similar costs as SHA-256. Windows Authenticode infrastructure never
-> had support for SHA-224, and all secureboot keys used fro linux
+T24gV2VkLCAyMDIzLTEwLTExIGF0IDExOjI3ICswNTMwLCBTdW1pdCBHYXJnIHdyb3RlOgo+IE9u
+IFdlZCwgMTEgT2N0IDIwMjMgYXQgMDQ6NDYsIEphcmtrbyBTYWtraW5lbiA8amFya2tvQGtlcm5l
+bC5vcmc+IHdyb3RlOgo+ID4gCj4gPiBEbyBiaW5kIG5laXRoZXIgc3RhdGljIGNhbGxzIG5vciB0
+cnVzdGVkX2tleV9leGl0KCkgYmVmb3JlIGEgc3VjY2Vzc2Z1bAo+ID4gaW5pdCwgaW4gb3JkZXIg
+dG8gbWFpbnRhaW4gYSBjb25zaXN0ZW50IHN0YXRlLiBJbiBhZGRpdGlvbiwgZGVwYXJ0IHRoZQo+
+ID4gaW5pdF90cnVzdGVkKCkgaW4gdGhlIGNhc2Ugb2YgYSByZWFsIGVycm9yIChpLmUuIGdldHRp
+bmcgYmFjayBzb21ldGhpbmcKPiA+IGVsc2UgdGhhbiAtRU5PREVWKS4KPiA+IAo+ID4gUmVwb3J0
+ZWQtYnk6IExpbnVzIFRvcnZhbGRzIDx0b3J2YWxkc0BsaW51eC1mb3VuZGF0aW9uLm9yZz4KPiA+
+IENsb3NlczogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgtaW50ZWdyaXR5L0NBSGstPXdo
+T1BvTGFXTThTOEdnb09QVDdhMituTUg1aDNUTEt0bj1SXzN3NFIxX1V2Z0BtYWlsLmdtYWlsLmNv
+bS8KPiA+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnwqAjIHY1LjEzKwo+ID4gRml4ZXM6IDVk
+MDY4MmJlMzE4OSAoIktFWVM6IHRydXN0ZWQ6IEFkZCBnZW5lcmljIHRydXN0ZWQga2V5cyBmcmFt
+ZXdvcmsiKQo+ID4gU2lnbmVkLW9mZi1ieTogSmFya2tvIFNha2tpbmVuIDxqYXJra29Aa2VybmVs
+Lm9yZz4KPiA+IC0tLQo+ID4gwqBzZWN1cml0eS9rZXlzL3RydXN0ZWQta2V5cy90cnVzdGVkX2Nv
+cmUuYyB8IDIwICsrKysrKysrKystLS0tLS0tLS0tCj4gPiDCoDEgZmlsZSBjaGFuZ2VkLCAxMCBp
+bnNlcnRpb25zKCspLCAxMCBkZWxldGlvbnMoLSkKPiA+IAo+ID4gZGlmZiAtLWdpdCBhL3NlY3Vy
+aXR5L2tleXMvdHJ1c3RlZC1rZXlzL3RydXN0ZWRfY29yZS5jIGIvc2VjdXJpdHkva2V5cy90cnVz
+dGVkLWtleXMvdHJ1c3RlZF9jb3JlLmMKPiA+IGluZGV4IDg1ZmI1YzIyNTI5YS4uZmVlMWFiMmM3
+MzRkIDEwMDY0NAo+ID4gLS0tIGEvc2VjdXJpdHkva2V5cy90cnVzdGVkLWtleXMvdHJ1c3RlZF9j
+b3JlLmMKPiA+ICsrKyBiL3NlY3VyaXR5L2tleXMvdHJ1c3RlZC1rZXlzL3RydXN0ZWRfY29yZS5j
+Cj4gPiBAQCAtMzU4LDE3ICszNTgsMTcgQEAgc3RhdGljIGludCBfX2luaXQgaW5pdF90cnVzdGVk
+KHZvaWQpCj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWYgKCFnZXRfcmFuZG9t
+KQo+ID4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBnZXRf
+cmFuZG9tID0ga2VybmVsX2dldF9yYW5kb207Cj4gPiAKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgIHN0YXRpY19jYWxsX3VwZGF0ZSh0cnVzdGVkX2tleV9zZWFsLAo+ID4gLcKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCB0cnVzdGVkX2tleV9zb3VyY2VzW2ldLm9wcy0+c2VhbCk7Cj4gPiAtwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoCBzdGF0aWNfY2FsbF91cGRhdGUodHJ1c3RlZF9rZXlfdW5zZWFsLAo+
+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoCB0cnVzdGVkX2tleV9zb3VyY2VzW2ldLm9wcy0+dW5zZWFsKTsKPiA+IC3C
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHN0YXRpY19jYWxsX3VwZGF0ZSh0cnVzdGVkX2tl
+eV9nZXRfcmFuZG9tLAo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBnZXRfcmFuZG9tKTsKPiA+IC3CoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgIHRydXN0ZWRfa2V5X2V4aXQgPSB0cnVzdGVkX2tleV9zb3VyY2Vz
+W2ldLm9wcy0+ZXhpdDsKPiA+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG1pZ3JhdGFi
+bGUgPSB0cnVzdGVkX2tleV9zb3VyY2VzW2ldLm9wcy0+bWlncmF0YWJsZTsKPiA+IC0KPiA+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXQgPSB0cnVzdGVkX2tleV9zb3VyY2VzW2ld
+Lm9wcy0+aW5pdCgpOwo+ID4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgaWYgKCFyZXQp
+Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAoIXJldCkgewo+ID4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHN0YXRpY19jYWxsX3VwZGF0
+ZSh0cnVzdGVkX2tleV9zZWFsLCB0cnVzdGVkX2tleV9zb3VyY2VzW2ldLm9wcy0+c2VhbCk7Cj4g
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc3RhdGljX2Nh
+bGxfdXBkYXRlKHRydXN0ZWRfa2V5X3Vuc2VhbCwgdHJ1c3RlZF9rZXlfc291cmNlc1tpXS5vcHMt
+PnVuc2VhbCk7Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgc3RhdGljX2NhbGxfdXBkYXRlKHRydXN0ZWRfa2V5X2dldF9yYW5kb20sIGdldF9yYW5kb20p
+Owo+ID4gKwo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+IHRydXN0ZWRfa2V5X2V4aXQgPSB0cnVzdGVkX2tleV9zb3VyY2VzW2ldLm9wcy0+ZXhpdDsKPiA+
+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBtaWdyYXRhYmxl
+ID0gdHJ1c3RlZF9rZXlfc291cmNlc1tpXS5vcHMtPm1pZ3JhdGFibGU7Cj4gPiArwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoCB9Cj4gPiArCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCBpZiAoIXJldCB8fCByZXQgIT0gLUVOT0RFVikKPiAKPiBBcyBtZW50aW9uZWQgaW4gdGhl
+IG90aGVyIHRocmVhZCwgd2Ugc2hvdWxkIGFsbG93IG90aGVyIHRydXN0IHNvdXJjZXMKPiB0byBi
+ZSBpbml0aWFsaXplZCBpZiB0aGUgcHJpbWFyeSBvbmUgZmFpbHMuCgpJIHNlbnQgdGhlIHBhdGNo
+IGJlZm9yZSBJIHJlY2VpdmVkIHRoYXQgcmVzcG9uc2UgYnV0IGhlcmUncyB3aGF0IHlvdQp3cm90
+ZToKCiJXZSBzaG91bGQgZ2l2ZSBvdGhlciB0cnVzdCBzb3VyY2VzIGEgY2hhbmNlIHRvIHJlZ2lz
+dGVyIGZvciB0cnVzdGVkCmtleXMgaWYgdGhlIHByaW1hcnkgb25lIGZhaWxzLiIKCjEuIFRoaXMg
+Y29uZGl0aW9uIGlzIGxhY2tpbmcgYW4gaW5saW5lIGNvbW1lbnQuCjIuIE5laXRoZXIgdGhpcyBy
+ZXNwb25zZSBvciB0aGUgb25lIHRoYXQgeW91IHBvaW50ZWQgb3V0IGhhcyBhbnkKICAgZXhwbGFu
+YXRpb24gd2h5IGZvciBhbnkgc3lzdGVtIGZhaWx1cmUgdGhlIHByb2Nlc3Mgc2hvdWxkCiAgIGNv
+bnRpbnVlLgoKWW91IHNob3VsZCByZWFsbHkga25vdyB0aGUgc2l0dWF0aW9ucyAoZS5nLiBsaXN0
+IG9mIHBvc2l4IGVycm9yCmNvZGUpIHdoZW4gdGhlIHByb2Nlc3MgY2FuIGNvbnRpbnVlIGFuZCAi
+YWxsb3cgbGlzdCIgdGhvc2UuIFRoaXMKd2F5IHdheSB0b28gYWJzdHJhY3QuIEl0IGNhbm5vdCBi
+ZSBsZXQgYWxsIHBvc3NpYmxlIHN5c3RlbSBmYWlsdXJlcwpwYXNzLgoKQ2FuIHlvdSBlLmcuIGV4
+cGxhaW4gYSBsZWdpdCB1c2UgY2FzZSB3aGVuIHNvbWV0aGluZyBlbHNlIGlzCnJldHVybmVkIHRo
+YW4gLUVOT0RFViBidXQgaXQgaXMgY29vbCBhbmQgd2UgY2FuIGNvbnRpbnVlIGluIApzb21lIHJl
+YWwgd29ybGQgdXNlIGNhc2U/CgpCUiwgSmFya2tvCg==
 
-fro
-
-> vmlinuz have always been using at least SHA-256.
->
-> Given the point of mscode_parser is to support interoperatiblity with
-
-interoperatibility
-
-> typical de-facto hashes, remove support for SHA-224 to avoid
-> posibility
-
-the possibility
-
-> of creating interoperatibility
-
-interoperability
-
-> issues with rhboot/shim,
-> grub, and non-linux systems trying to sign or verify vmlinux.
->
-> SHA-224 itself is not removed from the kernel, as it is truncated
-> SHA-256. If requested I can write patches to remove SHA-224 support
-> across all of the drivers.
->
-
-We can stop using it but we cannot remove it.
-
-As you say, it is just SHA-256 with a different initial state and a
-truncated hash, so removing support entirely achieves very little. And
-there are plenty of other algorithms we'd be happy to remove first if
-we were only sure that nobody was relying on them. (Note that AF_ALG
-supports AEAD so someone somewhere could be using the kernel's sha224
-from user space)
-
-> Signed-off-by: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
-
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-
-> ---
->  crypto/asymmetric_keys/mscode_parser.c | 3 ---
->  1 file changed, 3 deletions(-)
->
-> diff --git a/crypto/asymmetric_keys/mscode_parser.c b/crypto/asymmetric_keys/mscode_parser.c
-> index 6416bded0e..855cbc46a9 100644
-> --- a/crypto/asymmetric_keys/mscode_parser.c
-> +++ b/crypto/asymmetric_keys/mscode_parser.c
-> @@ -84,9 +84,6 @@ int mscode_note_digest_algo(void *context, size_t hdrlen,
->         case OID_sha512:
->                 ctx->digest_algo = "sha512";
->                 break;
-> -       case OID_sha224:
-> -               ctx->digest_algo = "sha224";
-> -               break;
->
->         case OID__NR:
->                 sprint_oid(value, vlen, buffer, sizeof(buffer));
-> --
-> 2.34.1
->
