@@ -2,110 +2,76 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16BE97C683B
-	for <lists+keyrings@lfdr.de>; Thu, 12 Oct 2023 10:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40EF17C6901
+	for <lists+keyrings@lfdr.de>; Thu, 12 Oct 2023 11:08:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347256AbjJLIDe convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Thu, 12 Oct 2023 04:03:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43900 "EHLO
+        id S235338AbjJLJID (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 12 Oct 2023 05:08:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347243AbjJLIDc (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 12 Oct 2023 04:03:32 -0400
-X-Greylist: delayed 1181 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 12 Oct 2023 01:03:27 PDT
-Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8C9290;
-        Thu, 12 Oct 2023 01:03:27 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.229])
-        by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4S5hBk5V4Sz9yrH2;
-        Thu, 12 Oct 2023 15:30:54 +0800 (CST)
-Received: from [127.0.0.1] (unknown [10.204.63.22])
-        by APP1 (Coremail) with SMTP id LxC2BwBnwJGGoydlzkoQAg--.30762S2;
-        Thu, 12 Oct 2023 08:43:16 +0100 (CET)
-Message-ID: <80e4a1ea172edb2d4d441b70dcd93bfa1654a5b7.camel@huaweicloud.com>
-Subject: Re: [PATCH v3 12/25] security: Introduce inode_post_setattr hook
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     Mimi Zohar <zohar@linux.ibm.com>, viro@zeniv.linux.org.uk,
-        brauner@kernel.org, chuck.lever@oracle.com, jlayton@kernel.org,
-        neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com,
-        tom@talpey.com, dmitry.kasatkin@gmail.com, paul@paul-moore.com,
-        jmorris@namei.org, serge@hallyn.com, dhowells@redhat.com,
-        jarkko@kernel.org, stephen.smalley.work@gmail.com,
-        eparis@parisplace.org, casey@schaufler-ca.com
-Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-nfs@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        selinux@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
-Date:   Thu, 12 Oct 2023 09:42:58 +0200
-In-Reply-To: <22761c3d88c2c4dbac747cc7ddca3d743c6d88d9.camel@linux.ibm.com>
-References: <20230904133415.1799503-1-roberto.sassu@huaweicloud.com>
-         <20230904133415.1799503-13-roberto.sassu@huaweicloud.com>
-         <22761c3d88c2c4dbac747cc7ddca3d743c6d88d9.camel@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.44.4-0ubuntu2 
+        with ESMTP id S234842AbjJLJID (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 12 Oct 2023 05:08:03 -0400
+Received: from jari.cn (unknown [218.92.28.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 88D5F98;
+        Thu, 12 Oct 2023 02:07:58 -0700 (PDT)
+Received: from chenguohua$jari.cn ( [182.148.14.172] ) by
+ ajax-webmail-localhost.localdomain (Coremail) ; Thu, 12 Oct 2023 17:06:10
+ +0800 (GMT+08:00)
+X-Originating-IP: [182.148.14.172]
+Date:   Thu, 12 Oct 2023 17:06:10 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From:   chenguohua@jari.cn
+To:     dhowells@redhat.com, jarkko@kernel.org
+Cc:     keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] KEYS: Clean up errors in key.h
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.1-cmXT6 build
+ 20230419(ff23bf83) Copyright (c) 2002-2023 www.mailtech.cn
+ mispb-4e503810-ca60-4ec8-a188-7102c18937cf-zhkzyfz.cn
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 MIME-Version: 1.0
-X-CM-TRANSID: LxC2BwBnwJGGoydlzkoQAg--.30762S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zw1fKrykCF43XF13tw1rtFb_yoW8JFyxpF
-        W8Ga1DKr98Kry7C3s3tF48ZayFvayfKw4UXrZrJryxAFsrWw13Kan7Gay8ua4DGrWUGr1Y
-        qry2gasrXa4DZa7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I
-        0E14v26r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-        6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-        Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI
-        7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxV
-        Cjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY
-        6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcV
-        CF04k26cxKx2IYs7xG6rWUJVWrZr1UMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2
-        jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UQZ2-UUUUU=
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAIBF1jj5DumAAAsZ
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Message-ID: <1f5f72f6.936.18b2322e256.Coremail.chenguohua@jari.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID: AQAAfwDXaD4DtydlXbHBAA--.619W
+X-CM-SenderInfo: xfkh0w5xrk3tw6md2xgofq/1tbiAQAAEWUjyrIAGQACs1
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+        CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+        daVFxhVjvjDU=
+X-Spam-Status: No, score=3.4 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_PBL,RDNS_NONE,T_SPF_HELO_PERMERROR,T_SPF_PERMERROR,XPRIO
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, 2023-10-11 at 20:08 -0400, Mimi Zohar wrote:
-> gOn Mon, 2023-09-04 at 15:34 +0200, Roberto Sassu wrote:
-> > From: Roberto Sassu <roberto.sassu@huawei.com>
-> > 
-> > In preparation for moving IMA and EVM to the LSM infrastructure, introduce
-> > the inode_post_setattr hook.
-> > 
-> > It is useful for EVM to recalculate the HMAC on modified file attributes
-> > and other file metadata, after it verified the HMAC of current file
-> > metadata with the inode_setattr hook.
-> 
-> "useful"?  
-> 
-> At inode_setattr hook, EVM verifies the file's existing HMAC value.  At
-> inode_post_setattr, EVM re-calculates the file's HMAC based on the
-> modified file attributes and other file metadata.
-> 
-> > 
-> > LSMs should use the new hook instead of inode_setattr, when they need to
-> > know that the operation was done successfully (not known in inode_setattr).
-> > The new hook cannot return an error and cannot cause the operation to be
-> > reverted.
-> 
-> Other LSMs could similarly update security xattrs or ...
-
-I added your sentence. The one above is to satisfy Casey's request to
-justify the addition of the new hook, and to explain why inode_setattr
-is not sufficient.
-
-Thanks
-
-Roberto
-
-> > 
-> > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> 
-> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-
+Rml4IHRoZSBmb2xsb3dpbmcgZXJyb3JzIHJlcG9ydGVkIGJ5IGNoZWNrcGF0Y2g6CgpFUlJPUjog
+c3BhY2UgcmVxdWlyZWQgYmVmb3JlIHRoZSBvcGVuIHBhcmVudGhlc2lzICcoJwoKU2lnbmVkLW9m
+Zi1ieTogR3VvSHVhIENoZW5nIDxjaGVuZ3VvaHVhQGphcmkuY24+Ci0tLQogaW5jbHVkZS9saW51
+eC9rZXkuaCB8IDE4ICsrKysrKysrKy0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDkgaW5zZXJ0
+aW9ucygrKSwgOSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9pbmNsdWRlL2xpbnV4L2tleS5o
+IGIvaW5jbHVkZS9saW51eC9rZXkuaAppbmRleCA5MzhkN2VjZmI0OTUuLjQ4YTQzYzllZmFlZCAx
+MDA2NDQKLS0tIGEvaW5jbHVkZS9saW51eC9rZXkuaAorKysgYi9pbmNsdWRlL2xpbnV4L2tleS5o
+CkBAIC01MDMsMTggKzUwMywxOCBAQCBleHRlcm4gdm9pZCBrZXlfaW5pdCh2b2lkKTsKICNkZWZp
+bmUga2V5X3ZhbGlkYXRlKGspCQkJMAogI2RlZmluZSBrZXlfc2VyaWFsKGspCQkJMAogI2RlZmlu
+ZSBrZXlfZ2V0KGspIAkJCSh7IE5VTEw7IH0pCi0jZGVmaW5lIGtleV9yZXZva2UoaykJCQlkbyB7
+IH0gd2hpbGUoMCkKLSNkZWZpbmUga2V5X2ludmFsaWRhdGUoaykJCWRvIHsgfSB3aGlsZSgwKQot
+I2RlZmluZSBrZXlfcHV0KGspCQkJZG8geyB9IHdoaWxlKDApCi0jZGVmaW5lIGtleV9yZWZfcHV0
+KGspCQkJZG8geyB9IHdoaWxlKDApCisjZGVmaW5lIGtleV9yZXZva2UoaykJCQlkbyB7IH0gd2hp
+bGUgKDApCisjZGVmaW5lIGtleV9pbnZhbGlkYXRlKGspCQlkbyB7IH0gd2hpbGUgKDApCisjZGVm
+aW5lIGtleV9wdXQoaykJCQlkbyB7IH0gd2hpbGUgKDApCisjZGVmaW5lIGtleV9yZWZfcHV0KGsp
+CQkJZG8geyB9IHdoaWxlICgwKQogI2RlZmluZSBtYWtlX2tleV9yZWYoaywgcCkJCU5VTEwKICNk
+ZWZpbmUga2V5X3JlZl90b19wdHIoaykJCU5VTEwKICNkZWZpbmUgaXNfa2V5X3Bvc3Nlc3NlZChr
+KQkJMAotI2RlZmluZSBrZXlfZnN1aWRfY2hhbmdlZChjKQkJZG8geyB9IHdoaWxlKDApCi0jZGVm
+aW5lIGtleV9mc2dpZF9jaGFuZ2VkKGMpCQlkbyB7IH0gd2hpbGUoMCkKLSNkZWZpbmUga2V5X2lu
+aXQoKQkJCWRvIHsgfSB3aGlsZSgwKQotI2RlZmluZSBrZXlfZnJlZV91c2VyX25zKG5zKQkJZG8g
+eyB9IHdoaWxlKDApCi0jZGVmaW5lIGtleV9yZW1vdmVfZG9tYWluKGQpCQlkbyB7IH0gd2hpbGUo
+MCkKKyNkZWZpbmUga2V5X2ZzdWlkX2NoYW5nZWQoYykJCWRvIHsgfSB3aGlsZSAoMCkKKyNkZWZp
+bmUga2V5X2ZzZ2lkX2NoYW5nZWQoYykJCWRvIHsgfSB3aGlsZSAoMCkKKyNkZWZpbmUga2V5X2lu
+aXQoKQkJCWRvIHsgfSB3aGlsZSAoMCkKKyNkZWZpbmUga2V5X2ZyZWVfdXNlcl9ucyhucykJCWRv
+IHsgfSB3aGlsZSAoMCkKKyNkZWZpbmUga2V5X3JlbW92ZV9kb21haW4oZCkJCWRvIHsgfSB3aGls
+ZSAoMCkKIAogI2VuZGlmIC8qIENPTkZJR19LRVlTICovCiAjZW5kaWYgLyogX19LRVJORUxfXyAq
+LwotLSAKMi4xNy4xCg==
