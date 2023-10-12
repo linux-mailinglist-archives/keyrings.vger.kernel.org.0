@@ -2,235 +2,138 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1235D7C6E69
-	for <lists+keyrings@lfdr.de>; Thu, 12 Oct 2023 14:46:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 500A17C6EE4
+	for <lists+keyrings@lfdr.de>; Thu, 12 Oct 2023 15:13:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343899AbjJLMq2 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+keyrings@lfdr.de>); Thu, 12 Oct 2023 08:46:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38330 "EHLO
+        id S1347205AbjJLNNj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 12 Oct 2023 09:13:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343872AbjJLMq2 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 12 Oct 2023 08:46:28 -0400
-Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94EBFB8;
-        Thu, 12 Oct 2023 05:46:25 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.228])
-        by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4S5pvx3ZC2z9y0J2;
-        Thu, 12 Oct 2023 20:33:33 +0800 (CST)
-Received: from [127.0.0.1] (unknown [10.204.63.22])
-        by APP1 (Coremail) with SMTP id LxC2BwDnP5F16idlsrETAg--.31126S2;
-        Thu, 12 Oct 2023 13:45:55 +0100 (CET)
-Message-ID: <e6f0e7929abda6fa6ae7ef450b6e155b420a5f5b.camel@huaweicloud.com>
-Subject: Re: [PATCH v3 14/25] security: Introduce file_post_open hook
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     Mimi Zohar <zohar@linux.ibm.com>, viro@zeniv.linux.org.uk,
-        brauner@kernel.org, chuck.lever@oracle.com, jlayton@kernel.org,
-        neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com,
-        tom@talpey.com, dmitry.kasatkin@gmail.com, paul@paul-moore.com,
-        jmorris@namei.org, serge@hallyn.com, dhowells@redhat.com,
-        jarkko@kernel.org, stephen.smalley.work@gmail.com,
-        eparis@parisplace.org, casey@schaufler-ca.com
-Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-nfs@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        selinux@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
-Date:   Thu, 12 Oct 2023 14:45:38 +0200
-In-Reply-To: <2026a46459563d8f5d132a099f402ddad8f06fae.camel@linux.ibm.com>
-References: <20230904133415.1799503-1-roberto.sassu@huaweicloud.com>
-         <20230904133415.1799503-15-roberto.sassu@huaweicloud.com>
-         <2026a46459563d8f5d132a099f402ddad8f06fae.camel@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.44.4-0ubuntu2 
+        with ESMTP id S1343748AbjJLNNi (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 12 Oct 2023 09:13:38 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27752B8
+        for <keyrings@vger.kernel.org>; Thu, 12 Oct 2023 06:13:36 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-40684f53bfcso9690145e9.0
+        for <keyrings@vger.kernel.org>; Thu, 12 Oct 2023 06:13:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1697116414; x=1697721214; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=IvfsuqeXvTAiiT0A6Kg2dLp8waVJkGZPJh+mIn+Z3lc=;
+        b=asheKMbhbemLGughzEIK2P1pRezyMpbJ+eXyNW7ikkxvQl/0OOMsDeizR69PbNPKoD
+         gA+pFBIUZqts/JPS+Bws5bzT9t68yxmfL63rSagkjjRCZoMEA2uj1HRBrXqiU4uNTNHE
+         k02PUV5/zUrXuscDmzgYTKJmjl1BcTUn0NYKifoCEWg+LfhkfrVSsITk32iXpGHROFVR
+         fZRq+t1KWjkfRssUBOu0ZWlBOqZ7H7OVCAgvSKP9H8+k/SWoiptYMnuoAvE1ENe5Il7f
+         TxWXCbu738HD7oeLjreqERgr7eyw/nEwHaLBR//Ru6vA4N5KTDrkAUfom4og2uVqVUNm
+         26uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697116414; x=1697721214;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IvfsuqeXvTAiiT0A6Kg2dLp8waVJkGZPJh+mIn+Z3lc=;
+        b=lJvi868nyGopo6ykn1OiyKG83nkuOkdgixiscqfrs9PfcSMgpa74AZrr2fOv2UVLE1
+         uUM4o0+yWyU/fxcHQoeTWOY8R2QuK8DiIkq/k2kWkWCgrbFAyMREGJ9kbnv1ZTnUVwfy
+         ztjgklYm/lmZIllss+izsPNv0ztU1kB8rktV26V0YhT5ivCOwrwaaOv4BT8teqGHf4UI
+         LY7n+oAmaUImiNoJdPhgo7ETHdvSrSsI3mNR5Dx9JQwxyvdbuqIS0Qtj1nVuWitqXfpg
+         iOx5SpddgHDrB2BuhyeRbXNiLgXArW0dXhhzua0LZsxUAIgiYa+TFlfb8KBRUhU2vMtY
+         iQVQ==
+X-Gm-Message-State: AOJu0YxXB9IAB9+nR/MOFLKYiE+n/gjFgRmb+mbdkV0wLuuPTA+xebNM
+        8fbiFUTOOoonRsxjjp3YW0z9Cg==
+X-Google-Smtp-Source: AGHT+IFDkAeW7u7CFaRSTjjZPVGdE97IuC3OvNH39GloKvqqSstnsBhwBW7Tc7zhg48/jzIDrvVQig==
+X-Received: by 2002:a05:600c:255:b0:405:3d83:2b76 with SMTP id 21-20020a05600c025500b004053d832b76mr20973611wmj.13.1697116414527;
+        Thu, 12 Oct 2023 06:13:34 -0700 (PDT)
+Received: from vermeer ([2a01:cb1d:81a9:dd00:b570:b34c:ffd4:c805])
+        by smtp.gmail.com with ESMTPSA id l17-20020a1ced11000000b0040588d85b3asm21637965wmh.15.2023.10.12.06.13.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Oct 2023 06:13:34 -0700 (PDT)
+Date:   Thu, 12 Oct 2023 15:13:31 +0200
+From:   Samuel Ortiz <sameo@rivosinc.com>
+To:     Lukas Wunner <lukas@wunner.de>
+Cc:     Alexey Kardashevskiy <aik@amd.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
+        linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
+        linuxarm@huawei.com, David Box <david.e.box@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        "Li, Ming" <ming4.li@intel.com>, Zhi Wang <zhi.a.wang@intel.com>,
+        Alistair Francis <alistair.francis@wdc.com>,
+        Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Alexander Graf <graf@amazon.com>
+Subject: Re: [PATCH 00/12] PCI device authentication
+Message-ID: <ZSfw+xswgOSaYxgW@vermeer>
+References: <cover.1695921656.git.lukas@wunner.de>
+ <652030759e42d_ae7e72946@dwillia2-xfh.jf.intel.com.notmuch>
+ <20231007100433.GA7596@wunner.de>
+ <20231009123335.00006d3d@Huawei.com>
+ <20231009134950.GA7097@wunner.de>
+ <b003c0ca-b5c7-4082-a391-aeb04ccc33ca@amd.com>
+ <20231012091542.GA22596@wunner.de>
 MIME-Version: 1.0
-X-CM-TRANSID: LxC2BwDnP5F16idlsrETAg--.31126S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3JF1fKF1kKrWkJrW3tr15CFg_yoW7KFW8pF
-        Z5Ja17GFWkJFy7Wrn7Aa13uF4Sg395Kr1UWrZ5X34jyFnYqr1vgFs8Kr1Y9F45JrZYka40
-        v3W2grZxCryDZFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUkFb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
-        AFwI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-        6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-        Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI
-        7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxV
-        Cjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY
-        6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6x
-        AIw20EY4v20xvaj40_Wr1j6rW3Jr1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280
-        aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07UAkuxUUUUU=
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAIBF1jj5DyygABsW
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231012091542.GA22596@wunner.de>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Thu, 2023-10-12 at 08:36 -0400, Mimi Zohar wrote:
-> On Mon, 2023-09-04 at 15:34 +0200, Roberto Sassu wrote:
-> > From: Roberto Sassu <roberto.sassu@huawei.com>
-> > 
-> > In preparation to move IMA and EVM to the LSM infrastructure, introduce the
-> > file_post_open hook. Also, export security_file_post_open() for NFS.
-> > 
-> > It is useful for IMA to calculate the dhigest of the file content, and to
-> > decide based on that digest whether the file should be made accessible to
-> > the requesting process.
+On Thu, Oct 12, 2023 at 11:15:42AM +0200, Lukas Wunner wrote:
+> On Tue, Oct 10, 2023 at 03:07:41PM +1100, Alexey Kardashevskiy wrote:
+> > But the way SPDM is done now is that if the user (as myself) wants to let
+> > the firmware run SPDM - the only choice is disabling CONFIG_CMA completely
+> > as CMA is not a (un)loadable module or built-in (with some "blacklist"
+> > parameters), and does not provide a sysfs knob to control its tentacles.
+> > Kinda harsh.
 > 
-> Please remove "It is usefile for".   Perhaps something along the lines:
-> 
-> 
-> Based on policy, IMA calculates the digest of the file content and
-> decides ...
+> On AMD SEV-TIO, does the PSP perform SPDM exchanges with a device
+> *before* it is passed through to a guest?  If so, why does it do that?
 
-Ok.
+SPDM exchanges would be done with the DSM, i.e. through the PF, which is
+typically *not* passed through to guests. VFs are.
 
-> > 
-> > LSMs should use this hook instead of file_open, if they need to make their
-> > decision based on an opened file (for example by inspecting the file
-> > content). The file is not open yet in the file_open hook.
-> 
-> The security hooks were originally defined for enforcing access
-> control.  As a result the hooks were placed before the action.  The
-> usage of the LSM hooks is not limited to just enforcing access control
-> these days.  For IMA/EVM to become full LSMs additional hooks are
-> needed post action.  Other LSMs, probably non-access control ones,
-> could similarly take some action post action, in this case successful
-> file open.
+The RISC-V CoVE-IO [1] spec follows similar flows as SEV-TIO (and to
+some extend TDX-Connect) and expects the host to explicitly request the
+TSM to establish an SPDM connection with the DSM (PF) before passing one
+VF through a TSM managed guest. VFs would be vfio bound, not the PF, so
+I think patch #12 does not solve our problem here. 
 
-I don't know, I would not exclude LSMs to enforce access control. The
-post action can be used to update the state, which can be used to check
-next accesses (exactly what happens for EVM).
+> Dan and I discussed this off-list and Dan is arguing for lazy attestation,
+> i.e. the TSM should only have the need to perform SPDM exchanges with
+> the device when it is passed through.
+> 
+> So the host enumerates the DOE protocols and authenticates the device.
+> When the device is passed through, patch 12/12 ensures that the host
+> keeps its hands off of the device, thus affording the TSM exclusive
+> SPDM control.
 
-> Having to justify the new LSM post hooks in terms of the existing LSMs,
-> which enforce access control, is really annoying and makes no sense. 
-> Please don't.
+Just to re-iterate: The TSM does not talk SPDM with the passed
+through device(s), but with the corresponding PF. If the host kernel
+owns the SPDM connection when the TSM initiates the SPDM connection with
+the DSM (For IDE key setup), the connection establishment will fail.
+Both CoVE-IO and SEV-TIO (Alexey, please correct me if I'm wrong)
+expect the host to explicitly ask the TSM to establish that SPDM
+connection. That request should somehow come from KVM, which then would
+have to destroy the existing CMA/SPDM connection in order to give the
+TSM a chance to successfully establish the SPDM link.
 
-Well, there is a relationship between the pre and post. But if you
-prefer, I remove this comparison.
+Cheers,
+Samuel.
 
-Thanks
-
-Roberto
-
-> > The new hook can
-> > return an error and can cause the open to be aborted.
+[1] https://github.com/riscv-non-isa/riscv-ap-tee-io/blob/main/specification/07-theory_operations.adoc
 > 
-> Please make this a separate pagraph.
-> 
-> > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> > ---
-> >  fs/namei.c                    |  2 ++
-> >  fs/nfsd/vfs.c                 |  6 ++++++
-> >  include/linux/lsm_hook_defs.h |  1 +
-> >  include/linux/security.h      |  6 ++++++
-> >  security/security.c           | 17 +++++++++++++++++
-> >  5 files changed, 32 insertions(+)
-> > 
-> > diff --git a/fs/namei.c b/fs/namei.c
-> > index 1f5ec71360de..7dc4626859f0 100644
-> > --- a/fs/namei.c
-> > +++ b/fs/namei.c
-> > @@ -3634,6 +3634,8 @@ static int do_open(struct nameidata *nd,
-> >  	error = may_open(idmap, &nd->path, acc_mode, open_flag);
-> >  	if (!error && !(file->f_mode & FMODE_OPENED))
-> >  		error = vfs_open(&nd->path, file);
-> > +	if (!error)
-> > +		error = security_file_post_open(file, op->acc_mode);
-> >  	if (!error)
-> >  		error = ima_file_check(file, op->acc_mode);
-> >  	if (!error && do_truncate)
-> > diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-> > index 8a2321d19194..3450bb1c8a18 100644
-> > --- a/fs/nfsd/vfs.c
-> > +++ b/fs/nfsd/vfs.c
-> > @@ -862,6 +862,12 @@ __nfsd_open(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type,
-> >  		goto out_nfserr;
-> >  	}
-> >  
-> > +	host_err = security_file_post_open(file, may_flags);
-> > +	if (host_err) {
-> > +		fput(file);
-> > +		goto out_nfserr;
-> > +	}
-> > +
-> >  	host_err = ima_file_check(file, may_flags);
-> >  	if (host_err) {
-> >  		fput(file);
-> > diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-> > index 1153e7163b8b..60ed33f0c80d 100644
-> > --- a/include/linux/lsm_hook_defs.h
-> > +++ b/include/linux/lsm_hook_defs.h
-> > @@ -188,6 +188,7 @@ LSM_HOOK(int, 0, file_send_sigiotask, struct task_struct *tsk,
-> >  	 struct fown_struct *fown, int sig)
-> >  LSM_HOOK(int, 0, file_receive, struct file *file)
-> >  LSM_HOOK(int, 0, file_open, struct file *file)
-> > +LSM_HOOK(int, 0, file_post_open, struct file *file, int mask)
-> >  LSM_HOOK(int, 0, file_truncate, struct file *file)
-> >  LSM_HOOK(int, 0, task_alloc, struct task_struct *task,
-> >  	 unsigned long clone_flags)
-> > diff --git a/include/linux/security.h b/include/linux/security.h
-> > index 665bba3e0081..a0f16511c059 100644
-> > --- a/include/linux/security.h
-> > +++ b/include/linux/security.h
-> > @@ -403,6 +403,7 @@ int security_file_send_sigiotask(struct task_struct *tsk,
-> >  				 struct fown_struct *fown, int sig);
-> >  int security_file_receive(struct file *file);
-> >  int security_file_open(struct file *file);
-> > +int security_file_post_open(struct file *file, int mask);
-> >  int security_file_truncate(struct file *file);
-> >  int security_task_alloc(struct task_struct *task, unsigned long clone_flags);
-> >  void security_task_free(struct task_struct *task);
-> > @@ -1044,6 +1045,11 @@ static inline int security_file_open(struct file *file)
-> >  	return 0;
-> >  }
-> >  
-> > +static inline int security_file_post_open(struct file *file, int mask)
-> > +{
-> > +	return 0;
-> > +}
-> > +
-> >  static inline int security_file_truncate(struct file *file)
-> >  {
-> >  	return 0;
-> > diff --git a/security/security.c b/security/security.c
-> > index 3947159ba5e9..3e0078b51e46 100644
-> > --- a/security/security.c
-> > +++ b/security/security.c
-> > @@ -2856,6 +2856,23 @@ int security_file_open(struct file *file)
-> >  	return fsnotify_perm(file, MAY_OPEN);
-> >  }
-> >  
-> > +/**
-> > + * security_file_post_open() - Recheck access to a file after it has been opened
-> 
-> The LSM post hooks aren't needed to enforce access control.   Probably
-> better to say something along the lines of "take some action after
-> successful file open".
-> 
-> > + * @file: the file
-> > + * @mask: access mask
-> > + *
-> > + * Recheck access with mask after the file has been opened. The hook is useful
-> > + * for LSMs that require the file content to be available in order to make
-> > + * decisions.
-> 
-> And reword the above accordingly.
-> 
-> > + *
-> > + * Return: Returns 0 if permission is granted.
-> > + */
-> > +int security_file_post_open(struct file *file, int mask)
-> > +{
-> > +	return call_int_hook(file_post_open, 0, file, mask);
-> > +}
-> > +EXPORT_SYMBOL_GPL(security_file_post_open);
-> > +
-> >  /**
-> >   * security_file_truncate() - Check if truncating a file is allowed
-> >   * @file: file
-> 
-
