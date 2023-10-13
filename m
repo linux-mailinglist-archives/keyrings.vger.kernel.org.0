@@ -2,142 +2,165 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A541C7C73ED
-	for <lists+keyrings@lfdr.de>; Thu, 12 Oct 2023 19:16:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D57B77C7CDF
+	for <lists+keyrings@lfdr.de>; Fri, 13 Oct 2023 07:03:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344129AbjJLRQd (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Thu, 12 Oct 2023 13:16:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58704 "EHLO
+        id S229618AbjJMFDK (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 13 Oct 2023 01:03:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344032AbjJLRQc (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Thu, 12 Oct 2023 13:16:32 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1422D6;
-        Thu, 12 Oct 2023 10:16:27 -0700 (PDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39CH2IQJ007409;
-        Thu, 12 Oct 2023 17:15:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=ruLAwstVJYOfziGmebf4MFgKg/exPipsxwb0UugNc+4=;
- b=b2mv3jUxA6k4cTp8yMzRSfLlz0S4Zy/Nc0UwZtt3Szi4QUfJ1Q+rStBO4u52y64zObaR
- ro/AiG7XiWrbz4Pxcgz9EmLvf/DoOywBPWDCH+I3Nw05JfLi0tzpjZhIZc9vM232dnMU
- ETX0JVSw5lp/ME6rm38lMrh2gPaoZc4AzFLlIFe846AJwQY9cbLP0b7r9Q38S68ztnAV
- AOmOZTArLtdDroBx2bmcjeCB4ANq065yMuOgntkJ1pyl2UaNiVdHVeKhzTVxiGMuQGae
- khByidn34IHmUOGBnrkpqPr2uJPly5yHdMsKno390q7OztC+dZWRvsQh/nZ2oWwWMOkO hA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tpmuj0d14-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 12 Oct 2023 17:15:44 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39CHFhwb020298;
-        Thu, 12 Oct 2023 17:15:43 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tpmuj0cwm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 12 Oct 2023 17:15:43 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-        by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39CFCsfw028188;
-        Thu, 12 Oct 2023 17:10:53 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-        by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tkj1yh8y6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 12 Oct 2023 17:10:53 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-        by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39CHAqUv50135662
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 12 Oct 2023 17:10:53 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C5ADB5805A;
-        Thu, 12 Oct 2023 17:10:52 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 87EDD5805D;
-        Thu, 12 Oct 2023 17:10:50 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.watson.ibm.com (unknown [9.31.99.90])
-        by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-        Thu, 12 Oct 2023 17:10:50 +0000 (GMT)
-Message-ID: <102b06b30518ac6595022e079de92717c92f3b8e.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 02/25] ima: Align ima_post_path_mknod() definition
- with LSM infrastructure
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Roberto Sassu <roberto.sassu@huaweicloud.com>,
-        viro@zeniv.linux.org.uk, brauner@kernel.org,
-        chuck.lever@oracle.com, jlayton@kernel.org, neilb@suse.de,
-        kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com,
-        dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com, dhowells@redhat.com, jarkko@kernel.org,
-        stephen.smalley.work@gmail.com, eparis@parisplace.org,
-        casey@schaufler-ca.com
-Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-nfs@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        selinux@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
-Date:   Thu, 12 Oct 2023 13:10:50 -0400
-In-Reply-To: <4866a6ef46deebf9a9afdeb7efd600edb589da93.camel@huaweicloud.com>
-References: <20230904133415.1799503-1-roberto.sassu@huaweicloud.com>
-         <20230904133415.1799503-3-roberto.sassu@huaweicloud.com>
-         <a733fe780a3197150067ad35ed280bf85e11fa97.camel@linux.ibm.com>
-         <b51baf7741de1fdee8b36a87bd2dde71184d47a8.camel@huaweicloud.com>
-         <8646e30b0074a2932076b5a0a792b14be034de98.camel@linux.ibm.com>
-         <16c8c95f2e63ab9a2fba8cba919bf129d0541b61.camel@huaweicloud.com>
-         <c16551704db68c6e0ba89c729c892e9401f05dfc.camel@linux.ibm.com>
-         <2336abd6ae195eda221d54e3c2349a4760afaff2.camel@huaweicloud.com>
-         <84cfe4d93cb5b02591f4bd921b828eb6f3e95faa.camel@linux.ibm.com>
-         <4866a6ef46deebf9a9afdeb7efd600edb589da93.camel@huaweicloud.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: JsOvQDlFYlC1UJRUF-UeTH3-IMW7Gucg
-X-Proofpoint-GUID: d359mtKa2PkNdJRCP2N4Q_la3JjXXcGd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-12_09,2023-10-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
- clxscore=1015 malwarescore=0 spamscore=0 mlxscore=0 mlxlogscore=806
- phishscore=0 priorityscore=1501 adultscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310120143
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229504AbjJMFDJ (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 13 Oct 2023 01:03:09 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90D7BC0
+        for <keyrings@vger.kernel.org>; Thu, 12 Oct 2023 22:03:06 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-3232be274a0so1847710f8f.1
+        for <keyrings@vger.kernel.org>; Thu, 12 Oct 2023 22:03:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1697173385; x=1697778185; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UVpd0E4GFx6H/SM7YV3uveoOWkdUC4wwz8FAahExBkA=;
+        b=RFbKBnHDCyktRRB57c8Fy81XmruDZuU0iBvedpxokaFQAg/X3OcvG7Z8qH5+8qmLJC
+         NKIzdQfKKUec13eemPEIPSAxBCFTLPosnixtOqHzXxx0OSCK3GclprQj6R71ZMT51Uo9
+         SDkcVohf7dPmjEHSdH0DBrTHAP2Vqdk4kBKgrlR/gki1HpX55HF4iI0r82uIG4rLPo+A
+         dqCv5GabtcL0w3yaxA4aFyJdXpR9WZpULD0eveJ7Z/57nvwq/jl3szm2ZwRm/quRAEin
+         To5XH2S4eCryqXdSALjPxPYTrBnlyIld+g35x4FRfaHl04/yYCBFwnlTFcQp8Ctram0D
+         hLbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697173385; x=1697778185;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UVpd0E4GFx6H/SM7YV3uveoOWkdUC4wwz8FAahExBkA=;
+        b=YSCHCg8/D4bK0hzGDdsFEPj3aPMWX/EAnEVFC+MjQeXThc5Sx55VzJbLpd1R94Z4FW
+         NeSoRTCP6NgJxMXLtflpmAtd0lrErimVi06eahgG00D0WGlQznBxhRG8jXdzQCrJABPR
+         aQs8A4N5+2ZUDVrEwBEI5wbakD7g7jdtJhG0eEM9MTxeBh/FHzOWq3A/1LDK8u+AVnnT
+         OrRT6Pu6buwqXMQuN4ZqemWgM8udLXtBVOnY212IgK7MyLaeY7bxfDuMhynvmGCXKzaH
+         KIfrpIqJGRGlYyumW6fOCONSUoNSsAVaGW8clrxA8OJJ5wWaKOnNNVQha0s/JSvXI3B8
+         CErQ==
+X-Gm-Message-State: AOJu0YwtEO+//ZZjib4oQmih7nYW5n7Zt8y8KnJ/RrLdYe+ivqlxgX6Z
+        CKxJUdZl3ojygTXzJxCsE9/wsA==
+X-Google-Smtp-Source: AGHT+IEvea4eYbGIhMcMt7pht9MZ6rkBFbtUuvgV/OJhcSTlZKOMEd1P7WHPPrbIAstniFTyYUMHUA==
+X-Received: by 2002:adf:fb47:0:b0:318:416:a56a with SMTP id c7-20020adffb47000000b003180416a56amr17734101wrs.13.1697173384872;
+        Thu, 12 Oct 2023 22:03:04 -0700 (PDT)
+Received: from vermeer ([2a01:cb1d:81a9:dd00:b570:b34c:ffd4:c805])
+        by smtp.gmail.com with ESMTPSA id u5-20020a05600c00c500b004063c9f68f2sm1455494wmm.26.2023.10.12.22.03.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Oct 2023 22:03:04 -0700 (PDT)
+Date:   Fri, 13 Oct 2023 07:03:01 +0200
+From:   Samuel Ortiz <sameo@rivosinc.com>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc:     Lukas Wunner <lukas@wunner.de>, Alexey Kardashevskiy <aik@amd.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
+        linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
+        linuxarm@huawei.com, David Box <david.e.box@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        "Li, Ming" <ming4.li@intel.com>, Zhi Wang <zhi.a.wang@intel.com>,
+        Alistair Francis <alistair.francis@wdc.com>,
+        Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Alexander Graf <graf@amazon.com>
+Subject: Re: [PATCH 00/12] PCI device authentication
+Message-ID: <ZSjPhTJ9N0EKH5+W@vermeer>
+References: <cover.1695921656.git.lukas@wunner.de>
+ <652030759e42d_ae7e72946@dwillia2-xfh.jf.intel.com.notmuch>
+ <20231007100433.GA7596@wunner.de>
+ <20231009123335.00006d3d@Huawei.com>
+ <20231009134950.GA7097@wunner.de>
+ <b003c0ca-b5c7-4082-a391-aeb04ccc33ca@amd.com>
+ <20231012091542.GA22596@wunner.de>
+ <ZSfw+xswgOSaYxgW@vermeer>
+ <20231012163221.000064af@Huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231012163221.000064af@Huawei.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-> > > > > We need to make sure that ima_post_path_mknod() has the same parameters
-> > > > > as the LSM hook at the time we register it to the LSM infrastructure.
-> > > > 
-> > > > I'm trying to understand why the pre hook parameters and the missing
-> > > > IMA parameter are used, as opposed to just defining the new
-> > > > post_path_mknod hook like IMA.
+On Thu, Oct 12, 2023 at 04:32:21PM +0100, Jonathan Cameron wrote:
+> On Thu, 12 Oct 2023 15:13:31 +0200
+> Samuel Ortiz <sameo@rivosinc.com> wrote:
+> 
+> > On Thu, Oct 12, 2023 at 11:15:42AM +0200, Lukas Wunner wrote:
+> > > On Tue, Oct 10, 2023 at 03:07:41PM +1100, Alexey Kardashevskiy wrote:  
+> > > > But the way SPDM is done now is that if the user (as myself) wants to let
+> > > > the firmware run SPDM - the only choice is disabling CONFIG_CMA completely
+> > > > as CMA is not a (un)loadable module or built-in (with some "blacklist"
+> > > > parameters), and does not provide a sysfs knob to control its tentacles.
+> > > > Kinda harsh.  
 > > > 
-> > > As an empyrical rule, I pass the same parameters as the corresponding
-> > > pre hook (plus idmap, in this case). This is similar to the
-> > > inode_setxattr hook. But I can be wrong, if desired I can reduce.
+> > > On AMD SEV-TIO, does the PSP perform SPDM exchanges with a device
+> > > *before* it is passed through to a guest?  If so, why does it do that?  
 > > 
-> > The inode_setxattr hook change example is legitimate, as EVM includes
-> > idmap, while IMA doesn't. 
+> > SPDM exchanges would be done with the DSM, i.e. through the PF, which is
+> > typically *not* passed through to guests. VFs are.
 > > 
-> > Unless there is a good reason for the additional parameters, I'm not
-> > sure that adding them makes sense.  Not modifying the parameter list
-> > will reduce the size of this patch set.
+> > The RISC-V CoVE-IO [1] spec follows similar flows as SEV-TIO (and to
+> > some extend TDX-Connect) and expects the host to explicitly request the
+> > TSM to establish an SPDM connection with the DSM (PF) before passing one
+> > VF through a TSM managed guest. VFs would be vfio bound, not the PF, so
+> > I think patch #12 does not solve our problem here. 
+> > 
+> > > Dan and I discussed this off-list and Dan is arguing for lazy attestation,
+> > > i.e. the TSM should only have the need to perform SPDM exchanges with
+> > > the device when it is passed through.
+> > > 
+> > > So the host enumerates the DOE protocols and authenticates the device.
+> > > When the device is passed through, patch 12/12 ensures that the host
+> > > keeps its hands off of the device, thus affording the TSM exclusive
+> > > SPDM control.  
+> > 
+> > Just to re-iterate: The TSM does not talk SPDM with the passed
+> > through device(s), but with the corresponding PF. If the host kernel
+> > owns the SPDM connection when the TSM initiates the SPDM connection with
+> > the DSM (For IDE key setup), the connection establishment will fail.
+> > Both CoVE-IO and SEV-TIO (Alexey, please correct me if I'm wrong)
+> > expect the host to explicitly ask the TSM to establish that SPDM
+> > connection. That request should somehow come from KVM, which then would
+> > have to destroy the existing CMA/SPDM connection in order to give the
+> > TSM a chance to successfully establish the SPDM link.
 > 
-> The hook is going to be used by any LSM. Without knowing all the
-> possible use cases, maybe it is better to include more information now,
-> than modifying the hook and respective implementations later.
-> 
-> (again, no problem to reduce)
+> Agreed - I don't see a problem with throwing away the initial connection.
+> In these cases you are passing that role on to another entity - the
+> job of this patch set is done.
 
-Unless there is a known use case for a specific parameter, please
-minimize them.   Additional parameters can be added later as needed. 
+Right. As long as there's a way for the kernel to explicitly drop that
+ownership before calling into the TSM for asking it to create a new SPDM
+connection, we should be fine. Alexey, would you agree with that
+statement?
 
--- 
-thanks,
+> I'm not clear yet if we need an explicit lock out similar to the VFIO
+> one for PF pass through or if everything will happen in a 'safe' order
+> anyway. I suspect a lockout on the ability to re attest is necessary
+> if the PF driver is loaded.
+>
+> Perhaps just dropping the
+> +#if IS_ENABLED(CONFIG_VFIO_PCI_CORE)
+> and letting other PF drivers or another bit of core kernel code
+> (I'm not sure where the proxy resides for the models being discussed)
+> claim ownership is enough?
 
-Mimi
+If we agree that other parts of the kernel (I suspect KVM would do the
+"Connect to device" call to the TSM) should be able to tear the
+established SPDM connection, then yes, the claim/return_ownership() API
+should not be only available to VFIO.
 
+Cheers,
+Samuel.
