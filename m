@@ -2,151 +2,162 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC65D7C8DE1
-	for <lists+keyrings@lfdr.de>; Fri, 13 Oct 2023 21:46:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E93E7C9E9D
+	for <lists+keyrings@lfdr.de>; Mon, 16 Oct 2023 07:22:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229891AbjJMTqC (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 13 Oct 2023 15:46:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45100 "EHLO
+        id S229590AbjJPFV7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 16 Oct 2023 01:21:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229830AbjJMTqB (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 13 Oct 2023 15:46:01 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24B8DAD;
-        Fri, 13 Oct 2023 12:46:00 -0700 (PDT)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39DJgHCq011983;
-        Fri, 13 Oct 2023 19:45:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=Pc0KhaMZjt1JJ8BTzzbAY2PLqOgVWSZXPMggq2UpqC4=;
- b=oNakhZdhqyiBB1xeneH9eObxYi6grzwt2PDYW492vVwRxRHgvoQ4Syn9r9QPmjAYIaTP
- 6aKFPreFl3Yp9g31WJWZvNEcbbD4/UuZ238sO1vfk6vrhXcrc7ds24k3ugEI1rGJrgIZ
- KPrd7F0Vljj/fqcs80mDqn6AHRCyivlWACao6vOPeXQjaf8OXIoG3LlbGWw6i1nEDfVV
- 7tGi264DEu0LvW8MdjleOwBT44b+/tIluYg2nsH2wmZvDndITs0RoqvP9z+mK+rJD81O
- Y/Ww8GD1Twmteqk/oZTZ8T4kZFtlTRyhnJ6+naZx+yLRRvKo/g5SgJmy6fK3rOUAbsmF pg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tqc9gr3q0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 13 Oct 2023 19:45:19 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39DJhCV3014636;
-        Fri, 13 Oct 2023 19:45:19 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tqc9gr3ja-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 13 Oct 2023 19:45:18 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-        by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39DJHpjQ008837;
-        Fri, 13 Oct 2023 19:45:13 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-        by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tpt57p9ef-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 13 Oct 2023 19:45:13 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-        by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39DJjDH564029094
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 13 Oct 2023 19:45:13 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 1013E58061;
-        Fri, 13 Oct 2023 19:45:13 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 5C56A58057;
-        Fri, 13 Oct 2023 19:45:11 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.61.129.99])
-        by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-        Fri, 13 Oct 2023 19:45:11 +0000 (GMT)
-Message-ID: <ea1de829cec76d7e20efa305df0b0758fc986aac.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 00/25] security: Move IMA and EVM to the LSM
- infrastructure
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Roberto Sassu <roberto.sassu@huaweicloud.com>,
-        viro@zeniv.linux.org.uk, brauner@kernel.org,
-        chuck.lever@oracle.com, jlayton@kernel.org, neilb@suse.de,
-        kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com,
-        dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com, dhowells@redhat.com, jarkko@kernel.org,
-        stephen.smalley.work@gmail.com, eparis@parisplace.org,
-        casey@schaufler-ca.com
-Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-nfs@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-        selinux@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
-Date:   Fri, 13 Oct 2023 15:45:10 -0400
-In-Reply-To: <20230904133415.1799503-1-roberto.sassu@huaweicloud.com>
-References: <20230904133415.1799503-1-roberto.sassu@huaweicloud.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: vFTp2Ee0JeBQOP1vrgvHIBWFlp1Y_sdO
-X-Proofpoint-ORIG-GUID: iQnGzuzPyAealHWZ8tc09AvVLAvGFvSP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-13_11,2023-10-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- malwarescore=0 spamscore=0 suspectscore=0 mlxlogscore=999 clxscore=1015
- mlxscore=0 adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310130170
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229501AbjJPFV6 (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 16 Oct 2023 01:21:58 -0400
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64114DC;
+        Sun, 15 Oct 2023 22:21:55 -0700 (PDT)
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+        by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+        id 1qsG2t-007PS5-JK; Mon, 16 Oct 2023 13:21:40 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Mon, 16 Oct 2023 13:21:44 +0800
+Date:   Mon, 16 Oct 2023 13:21:44 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
+        Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH] certs: Break circular dependency when selftest is modular
+Message-ID: <ZSzIaBZ8YQHss2Dv@gondor.apana.org.au>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Mon, 2023-09-04 at 15:33 +0200, Roberto Sassu wrote:
-> From: Roberto Sassu <roberto.sassu@huawei.com>
-> 
-> IMA and EVM are not effectively LSMs, especially due the fact that in the
-> past they could not provide a security blob while there is another LSM
-> active.
-> 
-> That changed in the recent years, the LSM stacking feature now makes it
-> possible to stack together multiple LSMs, and allows them to provide a
-> security blob for most kernel objects. While the LSM stacking feature has
-> some limitations being worked out, it is already suitable to make IMA and
-> EVM as LSMs.
-> 
-> In short, while this patch set is big, it does not make any functional
-> change to IMA and EVM. IMA and EVM functions are called by the LSM
-> infrastructure in the same places as before (except ima_post_path_mknod()),
-> rather being hardcoded calls, and the inode metadata pointer is directly
-> stored in the inode security blob rather than in a separate rbtree.
-> 
-> More specifically, patches 1-11 make IMA and EVM functions suitable to
-> be registered to the LSM infrastructure, by aligning function parameters.
-> 
-> Patches 12-20 add new LSM hooks in the same places where IMA and EVM
-> functions are called, if there is no LSM hook already.
-> 
-> Patches 21-24 do the bulk of the work, remove hardcoded calls to IMA, EVM
-> and integrity functions, register those functions in the LSM
-> infrastructure, and let the latter call them. In addition, they also
-> reserve one slot for EVM to supply an xattr with the inode_init_security
-> hook.
-> 
-> Finally, patch 25 removes the rbtree used to bind metadata to the inodes,
-> and instead reserves a space in the inode security blob to store the
-> pointer to metadata. This also brings performance improvements due to
-> retrieving metadata in constant time, as opposed to logarithmic.
-> 
-> The patch set applies on top of lsm/next, commit 8e4672d6f902 ("lsm:
-> constify the 'file' parameter in security_binder_transfer_file()")
+The modular build fails because the self-test code depends on pkcs7
+which in turn depends on x509 which contains the self-test.
 
-Thanks, Roberto!   There were just a few suggestions/changes, which
-though minor, will result in some patch churn.   Other than that, there
-were some suggestions patch description suggestions.
+Split the self-test out into its own module to break the cycle.
 
+Fixes: 3cde3174eb91 ("certs: Add FIPS selftests")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+
+diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
+index 1ef3b46d6f6e..59ec726b7c77 100644
+--- a/crypto/asymmetric_keys/Kconfig
++++ b/crypto/asymmetric_keys/Kconfig
+@@ -76,7 +76,7 @@ config SIGNED_PE_FILE_VERIFICATION
+ 	  signed PE binary.
+ 
+ config FIPS_SIGNATURE_SELFTEST
+-	bool "Run FIPS selftests on the X.509+PKCS7 signature verification"
++	tristate "Run FIPS selftests on the X.509+PKCS7 signature verification"
+ 	help
+ 	  This option causes some selftests to be run on the signature
+ 	  verification code, using some built in data.  This is required
+@@ -84,5 +84,6 @@ config FIPS_SIGNATURE_SELFTEST
+ 	depends on KEYS
+ 	depends on ASYMMETRIC_KEY_TYPE
+ 	depends on PKCS7_MESSAGE_PARSER=X509_CERTIFICATE_PARSER
++	depends on X509_CERTIFICATE_PARSER
+ 
+ endif # ASYMMETRIC_KEY_TYPE
+diff --git a/crypto/asymmetric_keys/Makefile b/crypto/asymmetric_keys/Makefile
+index 0d1fa1b692c6..1a273d6df3eb 100644
+--- a/crypto/asymmetric_keys/Makefile
++++ b/crypto/asymmetric_keys/Makefile
+@@ -22,7 +22,8 @@ x509_key_parser-y := \
+ 	x509_cert_parser.o \
+ 	x509_loader.o \
+ 	x509_public_key.o
+-x509_key_parser-$(CONFIG_FIPS_SIGNATURE_SELFTEST) += selftest.o
++obj-$(CONFIG_FIPS_SIGNATURE_SELFTEST) += x509_selftest.o
++x509_selftest-y += selftest.o
+ 
+ $(obj)/x509_cert_parser.o: \
+ 	$(obj)/x509.asn1.h \
+diff --git a/crypto/asymmetric_keys/selftest.c b/crypto/asymmetric_keys/selftest.c
+index fa0bf7f24284..c50da7ef90ae 100644
+--- a/crypto/asymmetric_keys/selftest.c
++++ b/crypto/asymmetric_keys/selftest.c
+@@ -4,10 +4,11 @@
+  * Written by David Howells (dhowells@redhat.com)
+  */
+ 
+-#include <linux/kernel.h>
+-#include <linux/cred.h>
+-#include <linux/key.h>
+ #include <crypto/pkcs7.h>
++#include <linux/cred.h>
++#include <linux/kernel.h>
++#include <linux/key.h>
++#include <linux/module.h>
+ #include "x509_parser.h"
+ 
+ struct certs_test {
+@@ -175,7 +176,7 @@ static const struct certs_test certs_tests[] __initconst = {
+ 	TEST(certs_selftest_1_data, certs_selftest_1_pkcs7),
+ };
+ 
+-int __init fips_signature_selftest(void)
++static int __init fips_signature_selftest(void)
+ {
+ 	struct key *keyring;
+ 	int ret, i;
+@@ -222,3 +223,9 @@ int __init fips_signature_selftest(void)
+ 	key_put(keyring);
+ 	return 0;
+ }
++
++late_initcall(fips_signature_selftest);
++
++MODULE_DESCRIPTION("X.509 self tests");
++MODULE_AUTHOR("Red Hat, Inc.");
++MODULE_LICENSE("GPL");
+diff --git a/crypto/asymmetric_keys/x509_parser.h b/crypto/asymmetric_keys/x509_parser.h
+index a299c9c56f40..97a886cbe01c 100644
+--- a/crypto/asymmetric_keys/x509_parser.h
++++ b/crypto/asymmetric_keys/x509_parser.h
+@@ -40,15 +40,6 @@ struct x509_certificate {
+ 	bool		blacklisted;
+ };
+ 
+-/*
+- * selftest.c
+- */
+-#ifdef CONFIG_FIPS_SIGNATURE_SELFTEST
+-extern int __init fips_signature_selftest(void);
+-#else
+-static inline int fips_signature_selftest(void) { return 0; }
+-#endif
+-
+ /*
+  * x509_cert_parser.c
+  */
+diff --git a/crypto/asymmetric_keys/x509_public_key.c b/crypto/asymmetric_keys/x509_public_key.c
+index 7c71db3ac23d..6a4f00be22fc 100644
+--- a/crypto/asymmetric_keys/x509_public_key.c
++++ b/crypto/asymmetric_keys/x509_public_key.c
+@@ -262,15 +262,9 @@ static struct asymmetric_key_parser x509_key_parser = {
+ /*
+  * Module stuff
+  */
+-extern int __init certs_selftest(void);
+ static int __init x509_key_init(void)
+ {
+-	int ret;
+-
+-	ret = register_asymmetric_key_parser(&x509_key_parser);
+-	if (ret < 0)
+-		return ret;
+-	return fips_signature_selftest();
++	return register_asymmetric_key_parser(&x509_key_parser);
+ }
+ 
+ static void __exit x509_key_exit(void)
 -- 
-thanks,
-
-Mimi
-
-
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
