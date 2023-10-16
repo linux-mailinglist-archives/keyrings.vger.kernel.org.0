@@ -2,161 +2,90 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E93E7C9E9D
-	for <lists+keyrings@lfdr.de>; Mon, 16 Oct 2023 07:22:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8B237CA1B6
+	for <lists+keyrings@lfdr.de>; Mon, 16 Oct 2023 10:35:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229590AbjJPFV7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 16 Oct 2023 01:21:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50358 "EHLO
+        id S229666AbjJPIfv (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 16 Oct 2023 04:35:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbjJPFV6 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 16 Oct 2023 01:21:58 -0400
+        with ESMTP id S230105AbjJPIfu (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 16 Oct 2023 04:35:50 -0400
 Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64114DC;
-        Sun, 15 Oct 2023 22:21:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C669A1;
+        Mon, 16 Oct 2023 01:35:47 -0700 (PDT)
 Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
         by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-        id 1qsG2t-007PS5-JK; Mon, 16 Oct 2023 13:21:40 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Mon, 16 Oct 2023 13:21:44 +0800
-Date:   Mon, 16 Oct 2023 13:21:44 +0800
+        id 1qsJ4V-007Sey-0T; Mon, 16 Oct 2023 16:35:32 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Mon, 16 Oct 2023 16:35:36 +0800
+Date:   Mon, 16 Oct 2023 16:35:36 +0800
 From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+To:     Denis Kenzior <denkenz@gmail.com>
+Cc:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        James Prestwood <prestwoj@gmail.com>,
         David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
         Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH] certs: Break circular dependency when selftest is modular
-Message-ID: <ZSzIaBZ8YQHss2Dv@gondor.apana.org.au>
+Subject: [PATCH] KEYS: asymmetric: Fix sign/verify on pkcs1pad without a hash
+Message-ID: <ZSz12KHsfJmZGjKz@gondor.apana.org.au>
+References: <ab4d8025-a4cc-48c6-a6f0-1139e942e1db@gmail.com>
+ <ZSc/9nUuF/d24iO6@gondor.apana.org.au>
+ <ZSda3l7asdCr06kA@gondor.apana.org.au>
+ <be96d2e7-592e-467e-9ad2-3f69a69cf844@gmail.com>
+ <ZSdn29PDrs6hzjV9@gondor.apana.org.au>
+ <1d22cd18-bc2a-4273-8087-e74030fbf373@gmail.com>
+ <ZSgChGwi1r9CILPI@gondor.apana.org.au>
+ <c917020d-0cb0-4289-a2e3-d9a0fa28151a@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <c917020d-0cb0-4289-a2e3-d9a0fa28151a@gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-The modular build fails because the self-test code depends on pkcs7
-which in turn depends on x509 which contains the self-test.
+On Thu, Oct 12, 2023 at 10:08:46AM -0500, Denis Kenzior wrote:
+>
+> Looks like something took out the ability to run sign/verify without a hash
+> on asymmetric keys.
 
-Split the self-test out into its own module to break the cycle.
+Indeed this is what it was.  Please try this patch.  Thanks!
 
-Fixes: 3cde3174eb91 ("certs: Add FIPS selftests")
+---8<---
+The new sign/verify code broke the case of pkcs1pad without a
+hash algorithm.  Fix it by setting issig correctly for this case.
+
+Fixes: 63ba4d67594a ("KEYS: asymmetric: Use new crypto interface without scatterlists")
+Cc: stable@vger.kernel.org # v6.5
+Reported-by: Denis Kenzior <denkenz@gmail.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 
-diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
-index 1ef3b46d6f6e..59ec726b7c77 100644
---- a/crypto/asymmetric_keys/Kconfig
-+++ b/crypto/asymmetric_keys/Kconfig
-@@ -76,7 +76,7 @@ config SIGNED_PE_FILE_VERIFICATION
- 	  signed PE binary.
- 
- config FIPS_SIGNATURE_SELFTEST
--	bool "Run FIPS selftests on the X.509+PKCS7 signature verification"
-+	tristate "Run FIPS selftests on the X.509+PKCS7 signature verification"
- 	help
- 	  This option causes some selftests to be run on the signature
- 	  verification code, using some built in data.  This is required
-@@ -84,5 +84,6 @@ config FIPS_SIGNATURE_SELFTEST
- 	depends on KEYS
- 	depends on ASYMMETRIC_KEY_TYPE
- 	depends on PKCS7_MESSAGE_PARSER=X509_CERTIFICATE_PARSER
-+	depends on X509_CERTIFICATE_PARSER
- 
- endif # ASYMMETRIC_KEY_TYPE
-diff --git a/crypto/asymmetric_keys/Makefile b/crypto/asymmetric_keys/Makefile
-index 0d1fa1b692c6..1a273d6df3eb 100644
---- a/crypto/asymmetric_keys/Makefile
-+++ b/crypto/asymmetric_keys/Makefile
-@@ -22,7 +22,8 @@ x509_key_parser-y := \
- 	x509_cert_parser.o \
- 	x509_loader.o \
- 	x509_public_key.o
--x509_key_parser-$(CONFIG_FIPS_SIGNATURE_SELFTEST) += selftest.o
-+obj-$(CONFIG_FIPS_SIGNATURE_SELFTEST) += x509_selftest.o
-+x509_selftest-y += selftest.o
- 
- $(obj)/x509_cert_parser.o: \
- 	$(obj)/x509.asn1.h \
-diff --git a/crypto/asymmetric_keys/selftest.c b/crypto/asymmetric_keys/selftest.c
-index fa0bf7f24284..c50da7ef90ae 100644
---- a/crypto/asymmetric_keys/selftest.c
-+++ b/crypto/asymmetric_keys/selftest.c
-@@ -4,10 +4,11 @@
-  * Written by David Howells (dhowells@redhat.com)
-  */
- 
--#include <linux/kernel.h>
--#include <linux/cred.h>
--#include <linux/key.h>
- #include <crypto/pkcs7.h>
-+#include <linux/cred.h>
-+#include <linux/kernel.h>
-+#include <linux/key.h>
-+#include <linux/module.h>
- #include "x509_parser.h"
- 
- struct certs_test {
-@@ -175,7 +176,7 @@ static const struct certs_test certs_tests[] __initconst = {
- 	TEST(certs_selftest_1_data, certs_selftest_1_pkcs7),
- };
- 
--int __init fips_signature_selftest(void)
-+static int __init fips_signature_selftest(void)
- {
- 	struct key *keyring;
- 	int ret, i;
-@@ -222,3 +223,9 @@ int __init fips_signature_selftest(void)
- 	key_put(keyring);
- 	return 0;
- }
-+
-+late_initcall(fips_signature_selftest);
-+
-+MODULE_DESCRIPTION("X.509 self tests");
-+MODULE_AUTHOR("Red Hat, Inc.");
-+MODULE_LICENSE("GPL");
-diff --git a/crypto/asymmetric_keys/x509_parser.h b/crypto/asymmetric_keys/x509_parser.h
-index a299c9c56f40..97a886cbe01c 100644
---- a/crypto/asymmetric_keys/x509_parser.h
-+++ b/crypto/asymmetric_keys/x509_parser.h
-@@ -40,15 +40,6 @@ struct x509_certificate {
- 	bool		blacklisted;
- };
- 
--/*
-- * selftest.c
-- */
--#ifdef CONFIG_FIPS_SIGNATURE_SELFTEST
--extern int __init fips_signature_selftest(void);
--#else
--static inline int fips_signature_selftest(void) { return 0; }
--#endif
--
- /*
-  * x509_cert_parser.c
-  */
-diff --git a/crypto/asymmetric_keys/x509_public_key.c b/crypto/asymmetric_keys/x509_public_key.c
-index 7c71db3ac23d..6a4f00be22fc 100644
---- a/crypto/asymmetric_keys/x509_public_key.c
-+++ b/crypto/asymmetric_keys/x509_public_key.c
-@@ -262,15 +262,9 @@ static struct asymmetric_key_parser x509_key_parser = {
- /*
-  * Module stuff
-  */
--extern int __init certs_selftest(void);
- static int __init x509_key_init(void)
- {
--	int ret;
--
--	ret = register_asymmetric_key_parser(&x509_key_parser);
--	if (ret < 0)
--		return ret;
--	return fips_signature_selftest();
-+	return register_asymmetric_key_parser(&x509_key_parser);
- }
- 
- static void __exit x509_key_exit(void)
+diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+index abeecb8329b3..2f9181c4cd59 100644
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -81,14 +81,13 @@ software_key_determine_akcipher(const struct public_key *pkey,
+ 		 * RSA signatures usually use EMSA-PKCS1-1_5 [RFC3447 sec 8.2].
+ 		 */
+ 		if (strcmp(encoding, "pkcs1") == 0) {
++			*sig = op == kernel_pkey_sign ||
++			       op == kernel_pkey_verify;
+ 			if (!hash_algo) {
+-				*sig = false;
+ 				n = snprintf(alg_name, CRYPTO_MAX_ALG_NAME,
+ 					     "pkcs1pad(%s)",
+ 					     pkey->pkey_algo);
+ 			} else {
+-				*sig = op == kernel_pkey_sign ||
+-				       op == kernel_pkey_verify;
+ 				n = snprintf(alg_name, CRYPTO_MAX_ALG_NAME,
+ 					     "pkcs1pad(%s,%s)",
+ 					     pkey->pkey_algo, hash_algo);
 -- 
 Email: Herbert Xu <herbert@gondor.apana.org.au>
 Home Page: http://gondor.apana.org.au/~herbert/
