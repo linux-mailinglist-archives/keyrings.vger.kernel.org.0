@@ -2,81 +2,88 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 807BF7CB360
-	for <lists+keyrings@lfdr.de>; Mon, 16 Oct 2023 21:37:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B4E67CC321
+	for <lists+keyrings@lfdr.de>; Tue, 17 Oct 2023 14:26:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232055AbjJPThN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 16 Oct 2023 15:37:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47616 "EHLO
+        id S235161AbjJQM0V (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 17 Oct 2023 08:26:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229848AbjJPThM (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 16 Oct 2023 15:37:12 -0400
-Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C431BAB;
-        Mon, 16 Oct 2023 12:37:09 -0700 (PDT)
-Received: by mail-oo1-xc32.google.com with SMTP id 006d021491bc7-57b635e3fd9so2471339eaf.3;
-        Mon, 16 Oct 2023 12:37:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697485029; x=1698089829; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6paLYXnAOeT4tceyUbnVYWZhYebDk9ZkaF8qziV46gI=;
-        b=D9fY2qXBh5rY4rWj1hDfYnYdQwHDCFpqbT46Erk6nwdVaCUBW/1rfkD7yWPKdr062A
-         +uBlyHtx+BG4fybriSnSqKiiK6/DreatAkt6ySIjlYiXtnfnxWE00OWEJLnRdYGb3DoD
-         qXsXsxeOpqCqbFYQOXoI0wRJsOj2Iiqnh4jwqaY9zaoOEGJNjpR4KrMjT6kJjcArj+tr
-         wDKFa4akf3C91dQVUuRTq5KIIbAkFca2I+ifwxNM59kQE1PDya+/YKDMWqGCgg3qXAgM
-         27L/G/A1GLADzJnetvCro0P9bA3BSIcmKQdiWRhCKpEp3gZgKUN0IbEnoEqczVoBE8DY
-         ImjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697485029; x=1698089829;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6paLYXnAOeT4tceyUbnVYWZhYebDk9ZkaF8qziV46gI=;
-        b=RgTZV3YTU7Ehlwr8LJBooAZkzicWmPo05TrDSzSZP3L4ec2KGPqimd+HAKsP0v+ZOn
-         IZzPjXd9oXIZtwhYy/AySrZ6wW4fHDOYR/vHSPxcr+m0KwHzvrEDoqDFeY+dcGYTFDHA
-         Dw0qIHkx6SM3XZ8DwC84SmrQ/rD3nso5o7OnPMava2pW1VoTkIe9w8pbWMExsYvV0hOG
-         CN4h2meouGxFl7YDy8bKY0VB0pJhxd+a7VqdW8pr87JUhKJZNx/BqetZ9mR0bOg5XXrB
-         4aFbnCjFAi7TwU4yCIXUmSvLEjUqyWKJge8cvOwT1m0ZQNcvTIV+CVAaXn9qUjKCQyOW
-         j2Eg==
-X-Gm-Message-State: AOJu0YzTAp/ZBPZkpCvk9LSuUTG989sB1XIxRRZwSbga+N29rf23e8xh
-        U3S3NhEKo9B015eNy9zrba72+JabLdY=
-X-Google-Smtp-Source: AGHT+IFc9rNzmOqhTCFE6BUhJ6YD93zHnSgXPyXNU/RzuxqQUpqznmaJdYgREjmKVe2h3pzdw9dtQQ==
-X-Received: by 2002:a05:6820:1503:b0:57e:1c6a:d551 with SMTP id ay3-20020a056820150300b0057e1c6ad551mr23130oob.3.1697485029043;
-        Mon, 16 Oct 2023 12:37:09 -0700 (PDT)
-Received: from [172.16.49.130] (cpe-70-114-247-242.austin.res.rr.com. [70.114.247.242])
-        by smtp.googlemail.com with ESMTPSA id e18-20020a056820061200b0057b722edbd5sm1201979oow.1.2023.10.16.12.37.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 16 Oct 2023 12:37:08 -0700 (PDT)
-Message-ID: <99eb29ee-3ebd-443e-ac33-32a8e4676afe@gmail.com>
-Date:   Mon, 16 Oct 2023 14:37:07 -0500
+        with ESMTP id S232268AbjJQM0R (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 17 Oct 2023 08:26:17 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1C771A3;
+        Tue, 17 Oct 2023 05:26:15 -0700 (PDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39HC9juR008253;
+        Tue, 17 Oct 2023 12:25:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=qe2gZCMY4DzIcjrCtLl12VhOToj/RK0dgRL0uJ/FQ5I=;
+ b=ZfcJA1IFl97eNub3flZx994AHfCc52a8XLtXwK+ixg+fNFQgF9TUGr1A9um7Ir+bC3hS
+ amFAyaUQClbHPranGVWe4DOAxuxCdACWxDjnTaGRWwFcd6QKs3B4m+QacJ9BN5gXqP3J
+ h8/uENHgM2bhKt0enT/TTbpVJ8rGu0rHx3OvyMs2fVpAfLdACXhcAfrdd6sPQHtcXk+D
+ uRYSoB7taxdDUkFc+hyDMnTH3alrfpN/RdHUOQRtcmna8EQQBQiQS748IbNIzoNJYLGv
+ c/tc9OWNUJQCQy5GNwvxjM1pkth3etVBtpP7l9sGFAY9gErUPyq4aDfcbbBe8iHCge98 Gg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tst1d0j4m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 17 Oct 2023 12:25:53 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39HCARAM010454;
+        Tue, 17 Oct 2023 12:25:51 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tst1d0j2w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 17 Oct 2023 12:25:51 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+        by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39HB7d4i012876;
+        Tue, 17 Oct 2023 12:25:50 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+        by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr5py8ydp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 17 Oct 2023 12:25:50 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+        by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39HCPmkD22020730
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 17 Oct 2023 12:25:48 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B741F2004E;
+        Tue, 17 Oct 2023 12:25:48 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id DFE942004B;
+        Tue, 17 Oct 2023 12:25:45 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com.com (unknown [9.61.43.157])
+        by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+        Tue, 17 Oct 2023 12:25:45 +0000 (GMT)
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Denis Glazkov <d.glazkov@omp.ru>
+Cc:     Mimi Zohar <zohar@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        "David S . Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org
+Subject: [RFC PATCH] certs: Only allow certs signed by keys on the builtin keyring
+Date:   Tue, 17 Oct 2023 08:25:07 -0400
+Message-Id: <20231017122507.185896-1-zohar@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KEYS: asymmetric: Fix sign/verify on pkcs1pad without a
- hash
-Content-Language: en-US
-To:     Herbert Xu <herbert@gondor.apana.org.au>
-Cc:     Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        James Prestwood <prestwoj@gmail.com>,
-        David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
-        Jarkko Sakkinen <jarkko@kernel.org>
-References: <ab4d8025-a4cc-48c6-a6f0-1139e942e1db@gmail.com>
- <ZSc/9nUuF/d24iO6@gondor.apana.org.au> <ZSda3l7asdCr06kA@gondor.apana.org.au>
- <be96d2e7-592e-467e-9ad2-3f69a69cf844@gmail.com>
- <ZSdn29PDrs6hzjV9@gondor.apana.org.au>
- <1d22cd18-bc2a-4273-8087-e74030fbf373@gmail.com>
- <ZSgChGwi1r9CILPI@gondor.apana.org.au>
- <c917020d-0cb0-4289-a2e3-d9a0fa28151a@gmail.com>
- <ZSz12KHsfJmZGjKz@gondor.apana.org.au>
-From:   Denis Kenzior <denkenz@gmail.com>
-In-Reply-To: <ZSz12KHsfJmZGjKz@gondor.apana.org.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: fQM3WX5OU-ippFqbTpxhX-yDaIOySOCZ
+X-Proofpoint-ORIG-GUID: 95M6MI7O38NgjXI3EUUCVF2JRH8TZZw8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-16_13,2023-10-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1011 priorityscore=1501 malwarescore=0 adultscore=0 spamscore=0
+ mlxscore=0 suspectscore=0 mlxlogscore=958 impostorscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310170104
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,20 +91,66 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi Herbert,
+Originally the secondary trusted keyring provided a keyring to which extra
+keys may be added, provided those keys were not blacklisted and were
+vouched for by a key built into the kernel or already in the secondary
+trusted keyring.
 
-On 10/16/23 03:35, Herbert Xu wrote:
-> On Thu, Oct 12, 2023 at 10:08:46AM -0500, Denis Kenzior wrote:
->>
->> Looks like something took out the ability to run sign/verify without a hash
->> on asymmetric keys.
-> 
-> Indeed this is what it was.  Please try this patch.  Thanks!
-> 
+On systems with the machine keyring configured, additional keys may also
+be vouched for by a key on the machine keyring.
 
-I can confirm that this fix does make all unit tests pass again.  Feel free to add:
+Prevent loading additional certificates directly onto the secondary
+keyring, vouched for by keys on the machine keyring, yet allow these
+certificates to be loaded onto other trusted keyrings.
 
-Tested-by: Denis Kenzior <denkenz@gmail.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+---
+ certs/Kconfig                     | 16 +++++++++++++++-
+ crypto/asymmetric_keys/restrict.c |  4 ++++
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
-Regards,
--Denis
+diff --git a/certs/Kconfig b/certs/Kconfig
+index 4a4dc8aab892..2e621963d260 100644
+--- a/certs/Kconfig
++++ b/certs/Kconfig
+@@ -88,7 +88,21 @@ config SECONDARY_TRUSTED_KEYRING
+ 	help
+ 	  If set, provide a keyring to which extra keys may be added, provided
+ 	  those keys are not blacklisted and are vouched for by a key built
+-	  into the kernel or already in the secondary trusted keyring.
++	  into the kernel, machine keyring (if configured), or already in the
++	  secondary trusted keyring.
++
++config SECONDARY_TRUSTED_KEYRING_SIGNED_BY_BUILTIN
++	bool "Only allow additional certs signed by keys on the builtin trusted keyring"
++	depends on SECONDARY_TRUSTED_KEYRING
++	help
++	  If set, only certificates signed by keys on the builtin trusted
++	  keyring may be loaded onto the secondary trusted keyring.
++
++	  Note: The machine keyring, if configured, will be linked to the
++	  secondary keyring.  When enabling this option, it is recommended
++	  to also configure INTEGRITY_CA_MACHINE_KEYRING_MAX to prevent
++	  linking code signing keys with imputed trust to the secondary
++	  trusted keyring.
+ 
+ config SECONDARY_TRUSTED_KEYRING_FOR_CA_CERTIFICATES_ONLY
+ 	bool "Allow only CA certificates to be added to the secondary trusted keyring"
+diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/restrict.c
+index 6b69ea40da23..afcd4d101ac5 100644
+--- a/crypto/asymmetric_keys/restrict.c
++++ b/crypto/asymmetric_keys/restrict.c
+@@ -102,6 +102,10 @@ int restrict_link_by_signature(struct key *dest_keyring,
+ 
+ 	if (use_builtin_keys && !test_bit(KEY_FLAG_BUILTIN, &key->flags))
+ 		ret = -ENOKEY;
++	else if (IS_BUILTIN(CONFIG_SECONDARY_TRUSTED_KEYRING_SIGNED_BY_BUILTIN) &&
++		 !strcmp(dest_keyring->description, ".secondary_trusted_keys") &&
++		 !test_bit(KEY_FLAG_BUILTIN, &key->flags))
++		ret = -ENOKEY;
+ 	else
+ 		ret = verify_signature(key, sig);
+ 	key_put(key);
+-- 
+2.39.3
+
