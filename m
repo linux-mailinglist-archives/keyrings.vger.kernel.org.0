@@ -2,146 +2,256 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0B897CDF92
-	for <lists+keyrings@lfdr.de>; Wed, 18 Oct 2023 16:25:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14E857CE852
+	for <lists+keyrings@lfdr.de>; Wed, 18 Oct 2023 21:58:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235223AbjJROZz (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 18 Oct 2023 10:25:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54098 "EHLO
+        id S231656AbjJRT6T (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 18 Oct 2023 15:58:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345676AbjJROZb (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 18 Oct 2023 10:25:31 -0400
-Received: from smtp-bc08.mail.infomaniak.ch (smtp-bc08.mail.infomaniak.ch [IPv6:2001:1600:4:17::bc08])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D89B710D8
-        for <keyrings@vger.kernel.org>; Wed, 18 Oct 2023 07:14:10 -0700 (PDT)
-Received: from smtp-2-0001.mail.infomaniak.ch (unknown [10.5.36.108])
-        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4S9Xs95kx0zMqBDW;
-        Wed, 18 Oct 2023 14:14:05 +0000 (UTC)
-Received: from unknown by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4S9Xs900CdzMppKm;
-        Wed, 18 Oct 2023 16:14:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
-        s=20191114; t=1697638445;
-        bh=AJCppQD+bLjbEs7xewzXV45Zcp0SfH1Bhh+lWslfscM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=n23hMfMY7BCeeWfC+vRX7uYp3N2pqK1TOOIKiCpU1sWaX5L85cu8QOJvf3HhcUjx0
-         72e2daim6t3sKxX3Bjj93peawurco7/d809Ro3jVgn5rsGowPdzmA2GWt7hsyOmib4
-         aVsI6v+B2mIOSlnfQgc3KKNanxmjtBWB5Sy7YNR0=
-Date:   Wed, 18 Oct 2023 16:14:03 +0200
-From:   =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-To:     Eric Snowberg <eric.snowberg@oracle.com>
-Cc:     Paul Moore <paul@paul-moore.com>, Mimi Zohar <zohar@linux.ibm.com>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
+        with ESMTP id S229921AbjJRT6T (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 18 Oct 2023 15:58:19 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DA4911D;
+        Wed, 18 Oct 2023 12:58:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697659097; x=1729195097;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=b51keTvs74PmwNNmuwKF8ljn+hboHUyj8N19nOqhfZA=;
+  b=AGi08hpjLTGIiO0RGxMK6Bv4a/GdgqYpI6UWf2CSdXE3CZ5MwA2F83P6
+   hbSsTRL5vNr1jf1wAo1lvz/75Ec9bkYeX2BrNWjAU4m9M/gIkXhhed1KA
+   FusU6/+fOe7fjZco9Ht3tMAsCjS+hDo63bAZjVo+iznOiCczt546dsa5m
+   IEFthehKip3rFhPAaEiLVdk2oi1wLJajbWoJBYTKTjXcOvBAL4EwYo9pK
+   2lnvZDP/YAk8loWd+lnqxf2TYFoLFyeZ8+uNjalINX79+9rAPh7w4QSVH
+   nVCFbAF5kF48pjjUVmD2VPFFz0cM5twvUojPj2LFPA6Qi+3/07W2NJwN/
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="383317737"
+X-IronPort-AV: E=Sophos;i="6.03,235,1694761200"; 
+   d="scan'208";a="383317737"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2023 12:58:15 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="750227117"
+X-IronPort-AV: E=Sophos;i="6.03,235,1694761200"; 
+   d="scan'208";a="750227117"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+  by orsmga007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 18 Oct 2023 12:58:14 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Wed, 18 Oct 2023 12:58:14 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Wed, 18 Oct 2023 12:58:14 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.168)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Wed, 18 Oct 2023 12:58:13 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JDGefYCRB6YJaoseaMZeInc9av6nsu/t+BWd265vlYel91WSCBCV0oWoTR9u/t3cHqEyAak3k9+0rNehoSFbCVl6UzjfGqhHuQMsVHY0o5xqrJx2foHf+OD4rWLXKvzUNuMWH3n+5vdkohosR83fyZ6JKJOjgz/bYtOR6xCAxSUXXNoeWykQD/rT1FsTHpuzJqhQOemQAyqSF0jquQt+B/HCuh1e60xWZiH8h+sWr+AdDkXvNrYfQoCyDP9jtOQPtxSEy9oTVlZKtOAaM5Bb63B/O4AqWObeHRursU0oRqLmv5cRDuQWT7YaUpJJCjt2CqhSOSk4gGE90xXeYA/o+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cnXFRT8QxFUGRWInX0u/VGuz74I6OwAwsT5aSon5Thg=;
+ b=D145xGM80QCR5whYOEyP7odgEADvQepS8u2y9TFNxp1PsEnED4oX8QnGwKE5IlRNxsAPpdQfm4iomxnDChe2ZlVcOncyaBp3Z3Gp59cmMoTC9b+zk/xmzNLEGQKKv0MN+5YrtvYChmcl+H823nQjacJbpeDhDkFXEmU9CPqC83PPYK3RU/MS6iroXiu0fO1ginTCgB1DgjS9mP2Opy4SNZkeiBi+w92o5SPdDNUbwmTSO79CtJUzoBGj9v47E9LVCW5Sr7TkUrRTyKSu6bQPwqyZdp3aCCxvdhnhumImC2UI/iwfXiMQPRV3/K30nIxV6J6OM7FsHP96sbv1xoaiXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by CY8PR11MB7291.namprd11.prod.outlook.com (2603:10b6:930:9b::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.21; Wed, 18 Oct
+ 2023 19:58:04 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::7978:1ba5:6ed0:717d]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::7978:1ba5:6ed0:717d%4]) with mapi id 15.20.6886.034; Wed, 18 Oct 2023
+ 19:58:04 +0000
+Date:   Wed, 18 Oct 2023 12:58:01 -0700
+From:   Dan Williams <dan.j.williams@intel.com>
+To:     Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lukas Wunner <lukas@wunner.de>
+CC:     Bjorn Helgaas <helgaas@kernel.org>,
         David Howells <dhowells@redhat.com>,
         David Woodhouse <dwmw2@infradead.org>,
-        Kanth Ghatraju <kanth.ghatraju@oracle.com>,
-        Konrad Wilk <konrad.wilk@oracle.com>,
-        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-security-module <linux-security-module@vger.kernel.org>
-Subject: Re: RFC: New LSM to control usage of x509 certificates
-Message-ID: <20231018.heiju2Shexai@digikod.net>
-References: <D0F16BFD-72EB-4BE2-BA3D-BAE1BCCDCB6F@oracle.com>
- <20230914.shah5al9Kaib@digikod.net>
- <20231005.dajohf2peiBu@digikod.net>
- <d3b51f26c14fd273d41da3432895fdce9f4d047c.camel@linux.ibm.com>
- <CAHC9VhRdU1CZJpPSEdSmui-Xirr0j261K=+SM7KiDwiPG-JSrQ@mail.gmail.com>
- <a851227aaa75ab16b0d6dd93433e1ee1679715f9.camel@linux.ibm.com>
- <CAHC9VhS_Ttdy5ZB=jYdVfNyaJfn_7G1wztr5+g0g7uUDForXvA@mail.gmail.com>
- <5c795b4cf6d7460af205e85a36194fa188136c38.camel@linux.ibm.com>
- <CAHC9VhTug20M0ET=QojUPtjrGkeHfU=ADDNrKfXmLTQPG_i1vw@mail.gmail.com>
- <2512D2AE-4ACA-41B9-B9FB-C2B4802B9A10@oracle.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Alex Williamson" <alex.williamson@redhat.com>,
+        <linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+        <linux-coco@lists.linux.dev>, <keyrings@vger.kernel.org>,
+        <linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
+        <linuxarm@huawei.com>, David Box <david.e.box@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        "Li, Ming" <ming4.li@intel.com>, Zhi Wang <zhi.a.wang@intel.com>,
+        Alistair Francis <alistair.francis@wdc.com>,
+        "Wilfred Mallawa" <wilfred.mallawa@wdc.com>,
+        Alexey Kardashevskiy <aik@amd.com>,
+        "Tom Lendacky" <thomas.lendacky@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Alexander Graf <graf@amazon.com>
+Subject: Re: [PATCH 12/12] PCI/CMA: Grant guests exclusive control of
+ authentication
+Message-ID: <653038c93a054_780ef294e9@dwillia2-xfh.jf.intel.com.notmuch>
+References: <cover.1695921656.git.lukas@wunner.de>
+ <467bff0c4bab93067b1e353e5b8a92f1de353a3f.1695921657.git.lukas@wunner.de>
+ <20231003164048.0000148c@Huawei.com>
+ <20231003193058.GA16417@wunner.de>
+ <20231006103020.0000174f@Huawei.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2512D2AE-4ACA-41B9-B9FB-C2B4802B9A10@oracle.com>
-X-Infomaniak-Routing: alpha
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20231006103020.0000174f@Huawei.com>
+X-ClientProxiedBy: MW4PR03CA0271.namprd03.prod.outlook.com
+ (2603:10b6:303:b5::6) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|CY8PR11MB7291:EE_
+X-MS-Office365-Filtering-Correlation-Id: f8cbb68c-14fa-4f71-335e-08dbd0148a5d
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 1q7Nyyn3c78v0KJr+qcVpPVkQwIY8xH3LmePN0JvnWkPXYpVBr2t/cvj2FYCkPsT5xunWLlRF2W76EO1DKXva/seyDd4mo7vS/l3sQaI53Rd4TkRvY1qzs7CtLMymxT3l/N2wuuotHW4top/vYxOvMuetBYt9Xg0azW5tHxSIDCL6+yudpOcWcDoMKuJbqkCzjNmwU1Nk/6wPx+dDcWj4Me1xMd64gWL9B0UkDKHnYYg65E+aYaVK+cHkVapzqVf+sgKoapPwwFBHHHXAwn3D/+l8ZIFRvGaYXhX9Kw8i9RiQKioOhaHY8g2hYH2svgRY5c0CFA759IvR2CF0YF2wLpeHuTirNrSdHZvS3QFls5nGmmCVCfNYapDjWQ1wjK9i2e0nYkxnoCJWR47gbH7cf5CNSTa7A/gClPAusGyHMyOpTZEafX5Y5sWIyqM9+p6mODsWCy5NRCp++Tq3K7dXA3SFR9f7env8bPNpZeWi3bKNenywTJnhX2p/6cLHsI/69xHCqIwLoAmk/yvQW0J9kk6PVub5etWCp5P0LUJfcu1pBhQQum720ZYdqowfkwX
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(346002)(396003)(366004)(39860400002)(136003)(230922051799003)(451199024)(1800799009)(64100799003)(186009)(66946007)(7416002)(2906002)(86362001)(4326008)(41300700001)(8676002)(110136005)(66476007)(8936002)(5660300002)(54906003)(66556008)(316002)(26005)(83380400001)(82960400001)(6512007)(38100700002)(9686003)(6666004)(6506007)(6486002)(478600001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Aawo2S6LfnPzWvyoxHtVrFTHQXN27J9dCWT95JQEvLysXb6EKauXmYGBfgXe?=
+ =?us-ascii?Q?BPWQtJNu0RUCe6ZyMD6NabYoemfKUPuMUQ23ivap8mhXma0gp+WlY6WxnI9E?=
+ =?us-ascii?Q?a+DeXR0DijT6k2/pxo9dtkoJBYA2HhEzuaxJgzQCYjJ+Tb5K9jAARVN163FY?=
+ =?us-ascii?Q?lhO4uzGoFqeO9Kedw08kslTkFgZvi7aqiZ7IsfRdOl84bJqZoZ3kkAnPd14G?=
+ =?us-ascii?Q?hEITZPFJpbosxn3nsxjFTgVnPukuKAWtcOlkCJBVfXQ78QRPDUUDyejk9ZOB?=
+ =?us-ascii?Q?8VYmb/Bt1aD18x4e7xStJMhETftAQlAR0l0W8ZiVhE/2jkePNSle2G7olc5O?=
+ =?us-ascii?Q?TmCRVPpbmiOJRU3QbAn2dT5OUr/IOuSEMq5ln76u9LELJUAi7qN3PCRChasM?=
+ =?us-ascii?Q?/oZO7smxBAWu3w1+qgj17dit3HOEKU/0GOoK/I7GEh6KwPd1RtUgqk/ijn2g?=
+ =?us-ascii?Q?2qbjGxOsUpMYZkQdvoYU678Xbku8GTPNFMLjlBOTC81n+60QWzbkpR6F50Et?=
+ =?us-ascii?Q?ZFyhHY75sl3IOLVRwbX+7OkR0WfzJwunmXajCoI2KtqB0aDUJvW0PkJwvdIX?=
+ =?us-ascii?Q?+tiD6HD6ST71zS6zzCJq0ksJi6NmGDOFQg69WsvMiewuS8bXGsy8U94EbYnn?=
+ =?us-ascii?Q?OChYvNAR6k/5fdAdSf+v0FIUfV1ZJYY1Cxtx/OgbmJyKFE2EaO7IjCHsdIRk?=
+ =?us-ascii?Q?CCJxJ2oPdqSuZ3azXltJMqcKuCsi3H2QxPmeAAB3YaA0+manqOyxPgiWvlOo?=
+ =?us-ascii?Q?JL+JQ8BORlDrKiFScoEyJi7mf+I/pBr9ZMWWfH5yYVMwB1KG/an32VWskJuW?=
+ =?us-ascii?Q?Gw3iEkkn8boRl1mwRpZeNLFfI13fMojTe43N+LSJdTX98TR3FC6CV8mzc7g0?=
+ =?us-ascii?Q?0hG85wyJuKaoBMT6OQq+C6BMh/SVgl8PnUeib9dmatsESN7T0/NgdMtaB+g7?=
+ =?us-ascii?Q?o1OLicKUtFtV/dbE/7lulVeb0fZQgM6FW+2KfbLIHProR/4mtFMPKub4FK5U?=
+ =?us-ascii?Q?1E13qm3St7vgSFCYDqyov6bN87HLbo2sl7++tJ76vdm9Df95lF8oCU3PVZHF?=
+ =?us-ascii?Q?DZozaagQGKND2VK9ubOp723XpUeDSm2aU5Fn0P4+YQWW9lRV3hwCDFbPJQ0z?=
+ =?us-ascii?Q?nKC7tYj3IUFvrbfWq5bytwDq7Z3g2JwMkysxucX9LqF2QWLb2LD7EW0r4NvX?=
+ =?us-ascii?Q?3n1GJ5dVsFld0e5j0ZOuLglPpnLWoKlSuU2rBvfRDBWAP0I3wgHDylw33T3r?=
+ =?us-ascii?Q?vSdrxWDRnsLl06uvoqlVQuOwt4GE22l9+yd6VSFiJPvEkWZmvSHC671e4xVQ?=
+ =?us-ascii?Q?acPiUvsqnCfMy1VOUUk16WticeDtSSqMDg2xp1YJIUL3fgQmrSvZ7crb52/X?=
+ =?us-ascii?Q?ksa0eN6PW1pwOxmnJBrx+1hwzpz7cVwrv2JxwvrjyMiMXaF6oRewvTD7CCt7?=
+ =?us-ascii?Q?L9WjHk5C8eab2RrMWIn8RUOrhfDaW+lYbZrGQVDgLNAk1DyMj4qBmL/2n9Bf?=
+ =?us-ascii?Q?q6HuS4KBxfxtZ3qT2ZjH77c8eqhf40wLEj0qBBFYpal52LRY4XMB6gRqB11T?=
+ =?us-ascii?Q?b8LwEaQwbxXWx2i3hEMAg7xzO2/+jxyP8poBSDr9FFKG+8EW54fndCcabFPH?=
+ =?us-ascii?Q?Cw=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: f8cbb68c-14fa-4f71-335e-08dbd0148a5d
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2023 19:58:04.4330
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xSizCBDq5dXuT4LJ7l18pO4VChexfHWY4a+JuuY+um/u3yaNMxNjYculbBNydcThYpdTD4ggxMNfpH0kPuDrwWxo716XISW8OkAXV3JEFso=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7291
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, Oct 17, 2023 at 07:34:25PM +0000, Eric Snowberg wrote:
+Jonathan Cameron wrote:
+> On Tue, 3 Oct 2023 21:30:58 +0200
+> Lukas Wunner <lukas@wunner.de> wrote:
 > 
-> 
-> > On Oct 17, 2023, at 12:51 PM, Paul Moore <paul@paul-moore.com> wrote:
+> > On Tue, Oct 03, 2023 at 04:40:48PM +0100, Jonathan Cameron wrote:
+> > > On Thu, 28 Sep 2023 19:32:42 +0200 Lukas Wunner <lukas@wunner.de> wrote:  
+> > > > At any given time, only a single entity in a physical system may have
+> > > > an SPDM connection to a device.  That's because the GET_VERSION request
+> > > > (which begins an authentication sequence) resets "the connection and all
+> > > > context associated with that connection" (SPDM 1.3.0 margin no 158).
+> > > > 
+> > > > Thus, when a device is passed through to a guest and the guest has
+> > > > authenticated it, a subsequent authentication by the host would reset
+> > > > the device's CMA-SPDM session behind the guest's back.
+> > > > 
+> > > > Prevent by letting the guest claim exclusive CMA ownership of the device
+> > > > during passthrough.  Refuse CMA reauthentication on the host as long.
+> > > > After passthrough has concluded, reauthenticate the device on the host.  
+> > > 
+> > > Is there anything stopping a PF presenting multiple CMA capable DOE
+> > > instances?  I'd expect them to have their own contexts if they do..  
 > > 
-> > On Tue, Oct 17, 2023 at 1:59 PM Mimi Zohar <zohar@linux.ibm.com> wrote:
-> >> On Tue, 2023-10-17 at 13:29 -0400, Paul Moore wrote:
-> >>> On Tue, Oct 17, 2023 at 1:09 PM Mimi Zohar <zohar@linux.ibm.com> wrote:
-> >>>> On Tue, 2023-10-17 at 11:45 -0400, Paul Moore wrote:
-> >>>>> On Tue, Oct 17, 2023 at 9:48 AM Mimi Zohar <zohar@linux.ibm.com> wrote:
-> >>>>>> On Thu, 2023-10-05 at 12:32 +0200, Mickaël Salaün wrote:
-> >>>>>>>>>> A complementary approach would be to create an
-> >>>>>>>>>> LSM (or a dedicated interface) to tie certificate properties to a set of
-> >>>>>>>>>> kernel usages, while still letting users configure these constraints.
-> >>>>>>>>> 
-> >>>>>>>>> That is an interesting idea.  Would the other security maintainers be in
-> >>>>>>>>> support of such an approach?  Would a LSM be the correct interface?
-> >>>>>>>>> Some of the recent work I have done with introducing key usage and CA
-> >>>>>>>>> enforcement is difficult for a distro to pick up, since these changes can be
-> >>>>>>>>> viewed as a regression.  Each end-user has different signing procedures
-> >>>>>>>>> and policies, so making something work for everyone is difficult.  Letting the
-> >>>>>>>>> user configure these constraints would solve this problem.
-> >>>>>> 
-> >>>>>> Something definitely needs to be done about controlling the usage of
-> >>>>>> x509 certificates.  My concern is the level of granularity.  Would this
-> >>>>>> be at the LSM hook level or even finer granaularity?
-> >>>>> 
-> >>>>> You lost me, what do you mean by finer granularity than a LSM-based
-> >>>>> access control?  Can you give an existing example in the Linux kernel
-> >>>>> of access control granularity that is finer grained than what is
-> >>>>> provided by the LSMs?
-> >>>> 
-> >>>> The current x509 certificate access control granularity is at the
-> >>>> keyring level.  Any key on the keyring may be used to verify a
-> >>>> signature.  Finer granularity could associate a set of certificates on
-> >>>> a particular keyring with an LSM hook - kernel modules, BPRM, kexec,
-> >>>> firmware, etc.  Even finer granularity could somehow limit a key's
-> >>>> signature verification to files in particular software package(s) for
-> >>>> example.
-> >>>> 
-> >>>> Perhaps Mickaël and Eric were thinking about a new LSM to control usage
-> >>>> of x509 certificates from a totally different perspective.  I'd like to
-> >>>> hear what they're thinking.
-> >>>> 
-> >>>> I hope this addressed your questions.
-> >>> 
-> >>> Okay, so you were talking about finer granularity when compared to the
-> >>> *current* LSM keyring hooks.  Gotcha.
-> >>> 
-> >>> If we need additional, or modified, hooks that shouldn't be a problem.
-> >>> Although I'm guessing the answer is going to be moving towards
-> >>> purpose/operation specific keyrings which might fit in well with the
-> >>> current keyring level controls.
-> >> 
-> >> I don't believe defining per purpose/operation specific keyrings will
-> >> resolve the underlying problem of granularity.
+> > The spec does not seem to *explicitly* forbid a PF having multiple
+> > CMA-capable DOE instances, but PCIe r6.1 sec 6.31.3 says:
+> > "The instance of DOE used for CMA-SPDM must support ..."
 > > 
-> > Perhaps not completely, but for in-kernel operations I believe it is
-> > an attractive idea.
+> > Note the singular ("The instance").  It seems to suggest that the
+> > spec authors assumed there's only a single DOE instance for CMA-SPDM.
 > 
-> Could the X.509 Extended Key Usage (EKU) extension [1], be used here?  
-> Various OIDs would need to be defined or assigned for each purpose.  
-> Once assigned, the kernel could parse this information and do the
-> enforcement.  Then all keys could continue to remain in the .builtin, 
-> .secondary, and .machine keyrings.   Only a subset of each keyring 
-> would be used for verification based on what is contained in the EKU.
+> It's a little messy and a bit of American vs British English I think.
+> If it said
+> "The instance of DOE used for a specific CMA-SPDM must support..." 
+> then it would clearly allow multiple instances.  However, conversely,
+> I don't read that sentence as blocking multiple instances (even though
+> I suspect you are right and the author was thinking of there being one).
 > 
-> 1. https://www.rfc-editor.org/rfc/rfc5280#section-4.2.1.12
+> > 
+> > Could you (as an English native speaker) comment on the clarity of the
+> > two sentences "Prevent ... as long." above, as Ilpo objected to them?
+> > 
+> > The antecedent of "Prevent" is the undesirable behaviour in the preceding
+> > sentence (host resets guest's SPDM connection).
+> > 
+> > The antecedent of "as long" is "during passthrough" in the preceding
+> > sentence.
+> > 
+> > Is that clear and understandable for an English native speaker or
+> > should I rephrase?
+> 
+> Not clear enough to me as it stands.  That "as long" definitely feels
+> like there is more to follow it as Ilpo noted.
+> 
+> Maybe reword as something like 
+> 
+> Prevent this by letting the guest claim exclusive ownership of the device
+> during passthrough ensuring problematic CMA reauthentication by the host
+> is blocked.
 
-I was also thinking about this kind of use cases. Because it might be
-difficult in practice to control all certificate properties, we might
-want to let sysadmins configure these subset of keyring according to
-various certificate properties. There are currently LSM hooks to control
-interactions with kernel keys by user space, and keys are already tied
-to LSM blobs. New LSM hooks could be added to dynamically filter
-keyrings according to kernel usages (e.g. kernel module verification, a
-subset of an authentication mechanism according to the checked object).
+My contribution to the prose here is to clarify that this mechanism is
+less about "appoint the guest as the exslusive owner" and more about
+"revoke the bare-metal host as the authentication owner".
+
+In fact I don't see how the guest can ever claim to "own" CMA since
+config-space is always emulated to the guest. So the guest will always
+be in a situation where it needs to proxy SPDM related operations. The
+proxy is either terminated in the host as native SPDM on behalf of the
+guest, or further proxied to the platform-TSM.
+
+So let's just clarify that at assignment, host control is revoked, and
+the guest is afforded the opportunity to re-establish authentication
+either by asking the host re-authenticate on the guest's behalf, or
+asking the platform-tsm to authenticate the device on the guest's
+behalf.
+
+...and even there the guest does not know if it is accessing a 1:1 VF:PF
+device representation, or one VF instance of PF where the PF
+authentication answer only occurs once for all potential VFs.
+
+Actually, that brings up a question about when to revoke host
+authentication in the VF assignment case? That seems to be a policy
+decision that the host needs to make globally for all VFs of a PF. If
+the guest is going to opt-in to relying on the host's authentication
+decision then the revoking early may not make sense. It may be a
+decision that needs to be deferred until the guest makes its intentions
+clear, and the host will need to have policy around how to resolve
+conflicts between guestA wants "native" and guestB wants "platform-TSM".
+If the VFs those guests are using map to the same PF then only one
+policy can be in effect.
