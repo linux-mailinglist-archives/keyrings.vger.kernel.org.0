@@ -2,23 +2,23 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A2667D07F0
-	for <lists+keyrings@lfdr.de>; Fri, 20 Oct 2023 07:55:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 136A97D07F8
+	for <lists+keyrings@lfdr.de>; Fri, 20 Oct 2023 07:56:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235663AbjJTFzJ (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Fri, 20 Oct 2023 01:55:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41126 "EHLO
+        id S235621AbjJTF4u (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Fri, 20 Oct 2023 01:56:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346980AbjJTFzB (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Oct 2023 01:55:01 -0400
+        with ESMTP id S235630AbjJTF4t (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Fri, 20 Oct 2023 01:56:49 -0400
 Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6520BD64;
-        Thu, 19 Oct 2023 22:54:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5E03D68;
+        Thu, 19 Oct 2023 22:56:46 -0700 (PDT)
 Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
         by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-        id 1qtiT8-0097c3-Da; Fri, 20 Oct 2023 13:54:47 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 20 Oct 2023 13:54:51 +0800
-Date:   Fri, 20 Oct 2023 13:54:51 +0800
+        id 1qtiUt-0097gO-BW; Fri, 20 Oct 2023 13:56:36 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 20 Oct 2023 13:56:40 +0800
+Date:   Fri, 20 Oct 2023 13:56:40 +0800
 From:   Herbert Xu <herbert@gondor.apana.org.au>
 To:     Dimitri John Ledkov <dimitri.ledkov@canonical.com>
 Cc:     David Howells <dhowells@redhat.com>,
@@ -28,7 +28,7 @@ Cc:     David Howells <dhowells@redhat.com>,
         linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] crypto: Limit MODULE_SIG_KEY_TYPE_ECDSA to SHA384 or
  SHA512
-Message-ID: <ZTIWK5qidPSVKUEi@gondor.apana.org.au>
+Message-ID: <ZTIWmIp6OuFCTHDN@gondor.apana.org.au>
 References: <20231010212755.64744-1-dimitri.ledkov@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
