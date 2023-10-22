@@ -2,93 +2,204 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 542DA7D21F9
-	for <lists+keyrings@lfdr.de>; Sun, 22 Oct 2023 10:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BE317D2537
+	for <lists+keyrings@lfdr.de>; Sun, 22 Oct 2023 20:23:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229452AbjJVIx2 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Sun, 22 Oct 2023 04:53:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54004 "EHLO
+        id S232462AbjJVSWw (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Sun, 22 Oct 2023 14:22:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231351AbjJVIx1 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Sun, 22 Oct 2023 04:53:27 -0400
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BBFAE4;
-        Sun, 22 Oct 2023 01:53:24 -0700 (PDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+        with ESMTP id S232403AbjJVSWq (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Sun, 22 Oct 2023 14:22:46 -0400
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75A05D5D
+        for <keyrings@vger.kernel.org>; Sun, 22 Oct 2023 11:22:44 -0700 (PDT)
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-         client-signature RSA-PSS (4096 bits) client-digest SHA256)
-        (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
-        by bmailout1.hostsharing.net (Postfix) with ESMTPS id 7FF8D3000E301;
-        Sun, 22 Oct 2023 10:53:19 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-        id 6E8F211A868; Sun, 22 Oct 2023 10:53:19 +0200 (CEST)
-Date:   Sun, 22 Oct 2023 10:53:19 +0200
-From:   Lukas Wunner <lukas@wunner.de>
-To:     Richard Fontana <rfontana@redhat.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-spdx@vger.kernel.org, David Howells <dhowells@redhat.com>,
-        Tadeusz Struk <tadeusz.struk@linaro.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, Hyunchul Lee <hyc.lee@gmail.com>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <sfrench@samba.org>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Tom Talpey <tom@talpey.com>, linux-cifs@vger.kernel.org,
-        Taehee Yoo <ap420073@gmail.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Jozsef Kadlecsik <kadlec@netfilter.org>,
-        Florian Westphal <fw@strlen.de>, coreteam@netfilter.org,
-        netfilter-devel@vger.kernel.org
-Subject: Re: [PATCH] treewide: Add SPDX identifier to IETF ASN.1 modules
-Message-ID: <20231022085319.GA25981@wunner.de>
-References: <143690ecc1102c0f67fa7faec437ec7b02bb2304.1697885975.git.lukas@wunner.de>
- <CAC1cPGx-cb+YZ9KgEFvSjtf+fp9Dhcn4sm9qHmFFDRDxb=7fHg@mail.gmail.com>
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 4488E3FA6A
+        for <keyrings@vger.kernel.org>; Sun, 22 Oct 2023 18:22:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1697998963;
+        bh=eYf+t+El9qBlaiw5wPUd9OUTW1C9eNGz0+xZv0WFeT0=;
+        h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+         MIME-Version;
+        b=eoBwSQAV2jc9lvUuO6XuUtM11av8szafNo8pPQIx/9niJJ06BJvUx67ZWWIHUdN5b
+         KReGpTAMppQ0Jymn8IIrI12jPjitKciaaJmEHWPki5FXbTImei0RvZm0RnccooW4zf
+         A7bPrhqSC236gg6E23fi4YiUBnzyreLJ5zKXHlWNkIANrrXGx5nzuYll27oDgk5X96
+         2N2PZZa/Z7Y9lFW5k+LktnsFZQZIgx4eWHml114KLQKjQ7iN9HB9zEA2KEsBJUzc3n
+         7AzmdBaIzHYw+UxrrUgWJqOO+pxlDFh0W7SbKrcYpb9PGeTrsBR4UrZdBXusOIxr8L
+         XNH8XgUO6DulQ==
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-32de95ec119so896842f8f.2
+        for <keyrings@vger.kernel.org>; Sun, 22 Oct 2023 11:22:43 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697998963; x=1698603763;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eYf+t+El9qBlaiw5wPUd9OUTW1C9eNGz0+xZv0WFeT0=;
+        b=EoJ0cylz+rJ+0wd0mxroJBR6NWj9nXwgHgCuYyHXAGBN0COZUd+UxlhzGrsi/sFZ61
+         yyf7uy/W5AHEEpfaSX5frpoYoksXw8ECiwaJWPzI3yTO1PfukRNqdg6KFwHWkxtWTlUN
+         rnOpA9v+oE/4x8GfBOZ1YolmVNgCIA8bX0Xo7m4bOuRKOdAdPYmBZrD/4xHnHn5DknZo
+         64pQMXhQBPLd2FJWDc3aHJO6wkDdj0vi1kiH7Ol5FZJ7YMH7XTA1QKVUbg6lFMbqbMKx
+         nBBCBswV8rAr8S1xRu6fQsqNc/5Jdn6eEzu2n2CVKcRW54Cvf4ZTj0DgSOB82EEIA0v6
+         Z4Kw==
+X-Gm-Message-State: AOJu0YxOEnGReF6ZxjRD4YmPd5MBQfG+u/f1B5ihG1tx6MG5zj9WzI2i
+        A3O/QxsnkQSroIIZr6+sLcj7oJnuO0t8U66SKcuvPZcosJiwIQaEh5cZBG497cDDN+e91tyT1R4
+        FHQ3cKIbzrpq6MSJUqtfBThHDpz1Ufj02P6sp
+X-Received: by 2002:a05:6000:1183:b0:313:f463:9d40 with SMTP id g3-20020a056000118300b00313f4639d40mr3828254wrx.65.1697998962876;
+        Sun, 22 Oct 2023 11:22:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH7qAP+4YfSJntn9JV5vYJgPooPDtZyiLr3U9fc40TZZa0J1KRatDzDmqR1M8L1F9Pg36Jk5w==
+X-Received: by 2002:a05:6000:1183:b0:313:f463:9d40 with SMTP id g3-20020a056000118300b00313f4639d40mr3828248wrx.65.1697998962650;
+        Sun, 22 Oct 2023 11:22:42 -0700 (PDT)
+Received: from localhost ([2001:67c:1560:8007::aac:c15c])
+        by smtp.gmail.com with ESMTPSA id y5-20020adff145000000b0031fd849e797sm6100729wro.105.2023.10.22.11.22.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Oct 2023 11:22:42 -0700 (PDT)
+From:   Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+To:     herbert@gondor.apana.org.au, David Howells <dhowells@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        keyrings@vger.kernel.org
+Subject: [PATCH 4/6] crypto: x509 pkcs7 - allow FIPS 202 SHA-3 signatures
+Date:   Sun, 22 Oct 2023 19:22:06 +0100
+Message-Id: <20231022182208.188714-5-dimitri.ledkov@canonical.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231022182208.188714-1-dimitri.ledkov@canonical.com>
+References: <20231022182208.188714-1-dimitri.ledkov@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAC1cPGx-cb+YZ9KgEFvSjtf+fp9Dhcn4sm9qHmFFDRDxb=7fHg@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_NONE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Sat, Oct 21, 2023 at 09:23:55AM -0400, Richard Fontana wrote:
-> On Sat, Oct 21, 2023 at 7:25???AM Lukas Wunner <lukas@wunner.de> wrote:
-> >
-> > Per section 4.c. of the IETF Trust Legal Provisions, "Code Components"
-> > in IETF Documents are licensed on the terms of the BSD-3-Clause license:
-> >
-> > https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/
-> >
-> > The term "Code Components" specifically includes ASN.1 modules:
-> >
-> > https://trustee.ietf.org/documents/trust-legal-provisions/code-components-list-3/
-> 
-> Sorry if this seems super-pedantic but I am pretty sure the license
-> text in the IETF Trust Legal Provisions does not actually match SPDX
-> `BSD-3-Clause` because of one additional word in clause 3 ("specific"
-> before "contributors"), so IMO you should get SPDX to modify its
-> definition of `BSD-3-Clause` prior to applying this patch (or get IETF
-> to change its version of the license, but I imagine that would be more
-> difficult).
+Add FIPS 202 SHA-3 hash signature support in x509 certificates, pkcs7
+signatures, and authenticode signatures. Supports hashes of size 256
+and up, as 224 is too weak for any practical purposes.
 
-I've submitted a pull request to modify the SPDX definition of
-BSD-3-Clause for the IETF variant:
+Signed-off-by: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+---
+ crypto/asymmetric_keys/mscode_parser.c    |  9 +++++++++
+ crypto/asymmetric_keys/pkcs7_parser.c     | 12 ++++++++++++
+ crypto/asymmetric_keys/public_key.c       |  5 ++++-
+ crypto/asymmetric_keys/x509_cert_parser.c | 24 +++++++++++++++++++++++
+ 4 files changed, 49 insertions(+), 1 deletion(-)
 
-https://github.com/spdx/license-list-XML/pull/2218
+diff --git a/crypto/asymmetric_keys/mscode_parser.c b/crypto/asymmetric_keys/mscode_parser.c
+index 855cbc46a9..05402ef896 100644
+--- a/crypto/asymmetric_keys/mscode_parser.c
++++ b/crypto/asymmetric_keys/mscode_parser.c
+@@ -84,6 +84,15 @@ int mscode_note_digest_algo(void *context, size_t hdrlen,
+ 	case OID_sha512:
+ 		ctx->digest_algo = "sha512";
+ 		break;
++	case OID_sha3_256:
++		ctx->digest_algo = "sha3-256";
++		break;
++	case OID_sha3_384:
++		ctx->digest_algo = "sha3-384";
++		break;
++	case OID_sha3_512:
++		ctx->digest_algo = "sha3-512";
++		break;
+ 
+ 	case OID__NR:
+ 		sprint_oid(value, vlen, buffer, sizeof(buffer));
+diff --git a/crypto/asymmetric_keys/pkcs7_parser.c b/crypto/asymmetric_keys/pkcs7_parser.c
+index ab647cb4d7..5b08c50722 100644
+--- a/crypto/asymmetric_keys/pkcs7_parser.c
++++ b/crypto/asymmetric_keys/pkcs7_parser.c
+@@ -248,6 +248,15 @@ int pkcs7_sig_note_digest_algo(void *context, size_t hdrlen,
+ 	case OID_gost2012Digest512:
+ 		ctx->sinfo->sig->hash_algo = "streebog512";
+ 		break;
++	case OID_sha3_256:
++		ctx->sinfo->sig->hash_algo = "sha3-256";
++		break;
++	case OID_sha3_384:
++		ctx->sinfo->sig->hash_algo = "sha3-384";
++		break;
++	case OID_sha3_512:
++		ctx->sinfo->sig->hash_algo = "sha3-512";
++		break;
+ 	default:
+ 		printk("Unsupported digest algo: %u\n", ctx->last_oid);
+ 		return -ENOPKG;
+@@ -273,6 +282,9 @@ int pkcs7_sig_note_pkey_algo(void *context, size_t hdrlen,
+ 	case OID_id_ecdsa_with_sha256:
+ 	case OID_id_ecdsa_with_sha384:
+ 	case OID_id_ecdsa_with_sha512:
++	case OID_id_ecdsa_with_sha3_256:
++	case OID_id_ecdsa_with_sha3_384:
++	case OID_id_ecdsa_with_sha3_512:
+ 		ctx->sinfo->sig->pkey_algo = "ecdsa";
+ 		ctx->sinfo->sig->encoding = "x962";
+ 		break;
+diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+index 5bf0452c17..8eeab38a3d 100644
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -119,7 +119,10 @@ software_key_determine_akcipher(const struct public_key *pkey,
+ 		if (strcmp(hash_algo, "sha224") != 0 &&
+ 		    strcmp(hash_algo, "sha256") != 0 &&
+ 		    strcmp(hash_algo, "sha384") != 0 &&
+-		    strcmp(hash_algo, "sha512") != 0)
++		    strcmp(hash_algo, "sha512") != 0 &&
++		    strcmp(hash_algo, "sha3-256") != 0 &&
++		    strcmp(hash_algo, "sha3-384") != 0 &&
++		    strcmp(hash_algo, "sha3-512") != 0)
+ 			return -EINVAL;
+ 	} else if (strcmp(pkey->pkey_algo, "sm2") == 0) {
+ 		if (strcmp(encoding, "raw") != 0)
+diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
+index 68ef1ffbbe..487204d394 100644
+--- a/crypto/asymmetric_keys/x509_cert_parser.c
++++ b/crypto/asymmetric_keys/x509_cert_parser.c
+@@ -214,6 +214,18 @@ int x509_note_sig_algo(void *context, size_t hdrlen, unsigned char tag,
+ 		ctx->cert->sig->hash_algo = "sha224";
+ 		goto rsa_pkcs1;
+ 
++	case OID_id_rsassa_pkcs1_v1_5_with_sha3_256:
++		ctx->cert->sig->hash_algo = "sha3-256";
++		goto rsa_pkcs1;
++
++	case OID_id_rsassa_pkcs1_v1_5_with_sha3_384:
++		ctx->cert->sig->hash_algo = "sha3-384";
++		goto rsa_pkcs1;
++
++	case OID_id_rsassa_pkcs1_v1_5_with_sha3_512:
++		ctx->cert->sig->hash_algo = "sha3-512";
++		goto rsa_pkcs1;
++
+ 	case OID_id_ecdsa_with_sha224:
+ 		ctx->cert->sig->hash_algo = "sha224";
+ 		goto ecdsa;
+@@ -230,6 +242,18 @@ int x509_note_sig_algo(void *context, size_t hdrlen, unsigned char tag,
+ 		ctx->cert->sig->hash_algo = "sha512";
+ 		goto ecdsa;
+ 
++	case OID_id_ecdsa_with_sha3_256:
++		ctx->cert->sig->hash_algo = "sha3-256";
++		goto ecdsa;
++
++	case OID_id_ecdsa_with_sha3_384:
++		ctx->cert->sig->hash_algo = "sha3-384";
++		goto ecdsa;
++
++	case OID_id_ecdsa_with_sha3_512:
++		ctx->cert->sig->hash_algo = "sha3-512";
++		goto ecdsa;
++
+ 	case OID_gost2012Signature256:
+ 		ctx->cert->sig->hash_algo = "streebog256";
+ 		goto ecrdsa;
+-- 
+2.34.1
 
-I assume this addresses your concern?  Let me know if it doesn't.
-
-If anyone has further objections to this patch please speak up.
-
-Thanks,
-
-Lukas
