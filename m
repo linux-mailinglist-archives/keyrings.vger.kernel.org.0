@@ -2,68 +2,96 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7E367D2C55
-	for <lists+keyrings@lfdr.de>; Mon, 23 Oct 2023 10:13:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 867097D4093
+	for <lists+keyrings@lfdr.de>; Mon, 23 Oct 2023 21:59:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229593AbjJWINH (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 23 Oct 2023 04:13:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44508 "EHLO
+        id S229585AbjJWT7l (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 23 Oct 2023 15:59:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232498AbjJWIMz (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 23 Oct 2023 04:12:55 -0400
-X-Greylist: delayed 416 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 23 Oct 2023 01:12:53 PDT
-Received: from mail.projektbudowlany.biz.pl (mail.projektbudowlany.biz.pl [94.177.230.190])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 377511719
-        for <keyrings@vger.kernel.org>; Mon, 23 Oct 2023 01:12:53 -0700 (PDT)
-Received: by mail.projektbudowlany.biz.pl (Postfix, from userid 1002)
-        id 1B02F82AFC; Mon, 23 Oct 2023 10:05:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=projektbudowlany.biz.pl; s=mail; t=1698048356;
-        bh=biyW755MzzVxeTjJpyR/fzHTo/SOjoGZzb8vJNzw6Bg=;
-        h=Date:From:To:Subject:From;
-        b=u46IY1t1COhPuj2YT5ZD94CZWUbw2MmwhuB5BK3G3pJmku5k15epw94ynN+/2r16z
-         IKZfX6HOfLMxn5e870Vj3GCdN4sZJdJ/hRuIYq8eiOwgS/mXrtqdBSVWVJt0yi3LRF
-         L4oNTWIKW3Jj2DpupX98JAfrZm+ySooShHfX7O9F2CvaidhlFBFI+1qJbOHhS92AgN
-         jmwMZR2ZV/1iXN2zeEt8359deoB+9wgYKVL8U8rWNkHn0pgg/oTlArmCxpBs7Zb0cI
-         0f+znuRHvKPM9X77qpI+QrBCeUSpEVgu0FWjlYLc6M9O/Mf2kONdqeUF69XkHnMf4u
-         08phHQY+EW01w==
-Received: by mail.projektbudowlany.biz.pl for <keyrings@vger.kernel.org>; Mon, 23 Oct 2023 08:05:40 GMT
-Message-ID: <20231023084500-0.1.32.a479.0.pipomaaq7l@projektbudowlany.biz.pl>
-Date:   Mon, 23 Oct 2023 08:05:40 GMT
-From:   =?UTF-8?Q? "Robert_Miko=C5=82ajczyk" ?= 
-        <robert.mikolajczyk@projektbudowlany.biz.pl>
-To:     <keyrings@vger.kernel.org>
-Subject: Apartament  nad morzem  - inwestycja
-X-Mailer: mail.projektbudowlany.biz.pl
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+        with ESMTP id S229447AbjJWT7k (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 23 Oct 2023 15:59:40 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F11DEE;
+        Mon, 23 Oct 2023 12:59:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E35C433C7;
+        Mon, 23 Oct 2023 19:59:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698091178;
+        bh=4k58y7meSTe6yhK2m/jmZQ1cwFI4QLr1oNCOS01MlaM=;
+        h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+        b=o+YUVrYxCuQ/AEvm+WQCiWxuEvKrqSrtkc2amwRqQUmdr5XRBV2dzeHfw/WbbZSh5
+         UPcPd7mu/SqAqn88gT+mTwOAOowjsyCO5xt6oVm4/ekc+FVzrTe+TRtVSqj7dvQZF5
+         dbfldde+2ShWBVONcFC1//wMIeq3zS//pwrlRjKs/KzggumPSVQUMa6j0ygE3sm5qV
+         D3Y2RSMehdy7kTQRKiNkpRfnUqolzS11LN8gnf0n65MRBbMx9NX7ctVYM5a3ggghqK
+         J0YLngJfg1U2UdhDxWocV3WHMhr0RCLZ0NFgOBPvPhYQtJ/DAiy/sjHqwl/vJ0/de7
+         40b8TngJVZmug==
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_20,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Date:   Mon, 23 Oct 2023 22:59:35 +0300
+Message-Id: <CWG330WZCFGQ.35L0OJ29CT08S@suppilovahvero>
+To:     <chenguohua@jari.cn>, <dhowells@redhat.com>
+Cc:     <keyrings@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] KEYS: Clean up errors in key.h
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+X-Mailer: aerc 0.15.2
+References: <1f5f72f6.936.18b2322e256.Coremail.chenguohua@jari.cn>
+In-Reply-To: <1f5f72f6.936.18b2322e256.Coremail.chenguohua@jari.cn>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Thu Oct 12, 2023 at 12:06 PM EEST,  wrote:
+> Fix the following errors reported by checkpatch:
+>
+> ERROR: space required before the open parenthesis '('
+>
+> Signed-off-by: GuoHua Cheng <chenguohua@jari.cn>
 
-czy byliby Pa=C5=84stwo zainteresowani inwestycj=C4=85 w jedno z najbardz=
-iej dochodowych przedsi=C4=99wzi=C4=99=C4=87 na rynku?
+So what was the patch?
 
-Inwestycja w luksusowy condohotel w Mi=C4=99dzywodziu to gwarancja stopy =
-zwrotu do 8%, corocznej waloryzacji czynszu o wska=C5=BAnik inflacji, ren=
-towno=C5=9Bci, rosn=C4=85cej warto=C5=9Bci nieruchomo=C5=9Bci i mo=C5=BCl=
-iwo=C5=9B=C4=87 rozliczenia VAT do 23%.  =20
+> ---
+>  include/linux/key.h | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
+>
+> diff --git a/include/linux/key.h b/include/linux/key.h
+> index 938d7ecfb495..48a43c9efaed 100644
+> --- a/include/linux/key.h
+> +++ b/include/linux/key.h
+> @@ -503,18 +503,18 @@ extern void key_init(void);
+>  #define key_validate(k)			0
+>  #define key_serial(k)			0
+>  #define key_get(k) 			({ NULL; })
+> -#define key_revoke(k)			do { } while(0)
+> -#define key_invalidate(k)		do { } while(0)
+> -#define key_put(k)			do { } while(0)
+> -#define key_ref_put(k)			do { } while(0)
+> +#define key_revoke(k)			do { } while (0)
+> +#define key_invalidate(k)		do { } while (0)
+> +#define key_put(k)			do { } while (0)
+> +#define key_ref_put(k)			do { } while (0)
+>  #define make_key_ref(k, p)		NULL
+>  #define key_ref_to_ptr(k)		NULL
+>  #define is_key_possessed(k)		0
+> -#define key_fsuid_changed(c)		do { } while(0)
+> -#define key_fsgid_changed(c)		do { } while(0)
+> -#define key_init()			do { } while(0)
+> -#define key_free_user_ns(ns)		do { } while(0)
+> -#define key_remove_domain(d)		do { } while(0)
+> +#define key_fsuid_changed(c)		do { } while (0)
+> +#define key_fsgid_changed(c)		do { } while (0)
+> +#define key_init()			do { } while (0)
+> +#define key_free_user_ns(ns)		do { } while (0)
+> +#define key_remove_domain(d)		do { } while (0)
+> =20
+>  #endif /* CONFIG_KEYS */
+>  #endif /* __KERNEL__ */
 
-Inwestor nie musi zajmowa=C4=87 si=C4=99 ob=C5=82o=C5=BCeniem, og=C5=82os=
-zeniami i negocjacj=C4=85 cen, poniewa=C5=BC dbaj=C4=85 o to profesjonali=
-=C5=9Bci. Apartament pracuje dla Pa=C5=84stwa przy minimum zaanga=C5=BCow=
-ania.
-
-Mog=C4=99 przedstawi=C4=87 szczeg=C3=B3=C5=82y tego projektu?
-
-
-Pozdrawiam
-Robert Miko=C5=82ajczyk
+BR, Jarkko
