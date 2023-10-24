@@ -2,128 +2,177 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF0A17D4E44
-	for <lists+keyrings@lfdr.de>; Tue, 24 Oct 2023 12:52:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E45587D57DC
+	for <lists+keyrings@lfdr.de>; Tue, 24 Oct 2023 18:20:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232057AbjJXKw7 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 24 Oct 2023 06:52:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33226 "EHLO
+        id S234719AbjJXQUi (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 24 Oct 2023 12:20:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232042AbjJXKw6 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 24 Oct 2023 06:52:58 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3DB5E5;
-        Tue, 24 Oct 2023 03:52:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F39C433C7;
-        Tue, 24 Oct 2023 10:52:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698144776;
-        bh=6YSqBXV8Q6ZLxR+uekTkLRXBUqLPTfXD2GcE6JjAFts=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=CgX987re7ZS0qylHmqFYwlTHLEPwEfcyIsKycVyYYOm/Lt+9EuTTNsHODYTu1efDY
-         ignd/9YFh4ugqsQpM0y8lMDwjgbInGmui0cp7F9EOeeS4KmlA8UraHNl0uzvT8OzW0
-         Ipy1pTEsB5ut/XEkzJJ8fygxVtymVGmGcwvQoyCnRA68y8Qjw8lhnI7+z1V5OTvd2/
-         +RYb7XZ2GortgvAPmq2si/N0JFJIymwAfkbz5My7vNCeGCoVVtgmS3SgrpKHCnTm+3
-         ciCLOy8t5L9g7jzXYVgWqrkTjTJzRlxzWmTtOr5EEkBS4MpvSPe7TDCR2NaGJ66a48
-         HBBsj0NLY2/+g==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Tue, 24 Oct 2023 13:52:51 +0300
-Message-Id: <CWGM2YH00DJ3.JKSYNNEWVRW4@suppilovahvero>
-Cc:     <keyrings@vger.kernel.org>,
-        "James Bottomley" <James.Bottomley@HansenPartnership.com>,
-        "William Roberts" <bill.c.roberts@gmail.com>,
-        "Stefan Berger" <stefanb@linux.ibm.com>,
-        "David Howells" <dhowells@redhat.com>,
-        "Jason Gunthorpe" <jgg@ziepe.ca>,
-        "Mimi Zohar" <zohar@linux.ibm.com>,
-        "Peter Huewe" <peterhuewe@gmx.de>,
-        "Julien Gomes" <julien@arista.com>,
-        "Jerry Snitselaar" <jsnitsel@redhat.com>,
-        "open list" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 5/6] tpm: Add tpm_buf_read_{u8,u16,u32}
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Mario Limonciello" <mario.limonciello@amd.com>,
-        <linux-integrity@vger.kernel.org>
-X-Mailer: aerc 0.15.2
-References: <20231024011531.442587-1-jarkko@kernel.org>
- <20231024011531.442587-6-jarkko@kernel.org>
- <3f9086f6-935f-48a7-889b-c71398422fa1@amd.com>
-In-Reply-To: <3f9086f6-935f-48a7-889b-c71398422fa1@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S234699AbjJXQUh (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 24 Oct 2023 12:20:37 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 735E612B
+        for <keyrings@vger.kernel.org>; Tue, 24 Oct 2023 09:20:34 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-9a58dbd5daeso703092766b.2
+        for <keyrings@vger.kernel.org>; Tue, 24 Oct 2023 09:20:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sigma-star.at; s=google; t=1698164433; x=1698769233; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TRO+xCDaQbDKnIXJCwBi3Y2yF65udPG/2rEKc0aYwBQ=;
+        b=HPZbp6wV4cnVc9Z93xaS5+8Nvr3Fr52HYuvzwmmozvKm81NPDNF5a2is9H/tmS/F3A
+         J91pxK26nNjWyUgCHvrHOINISafexowDu/Gex1AvyOp0hsJJLfuO1Ooma4XPP8ki9MC3
+         ALCj3tvW6Y9uoGfuNGwrRvBEwMbsXmNHXdyeS5J4dUFgB1vsU5CGp4ks8gC0izwsbhWz
+         h5Xsbv2M4WTKAcCEEYvCmSj76WGY1N6YeylKRMhyHFYioTU41B3HdlFQXhVE5NNzLUBF
+         ZSJvzsz1lFt9jTFDrTDqTf+PSR3tH8Ln5M3vR/oFqUrok+zR93EDN3YZ03yQz+otJLZv
+         cZ3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698164433; x=1698769233;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TRO+xCDaQbDKnIXJCwBi3Y2yF65udPG/2rEKc0aYwBQ=;
+        b=r/UfLPiE671E3/016JciiWzVdcPp0JqVEhbuEWIqZm+dq2cYOVnYba4KMftlc3WqbH
+         El3llcBv6tHCIGSyxRythYu5GhhY3PTyrBXtPb7qozUepHPQILHUSpd2Nkt0M7vIeQxS
+         HTEn5BzUhrIBQ7j5OiBJs8ceiE4o3DnrpXUCd57xQlmwr73Lj726fdQmVm7yqmnaAxHK
+         C7ufnWOfCUeN16Qo24EcboCvMHxFVhE2bsOmikUpf3KfhR5Slc9/sdIYHk+n5imzt1HJ
+         0oa1ThTmMi5zQ6CXD/55YLnzG0FB8ameOu91R9mK9UfS5GsWU/ubJTi/CSKSs5j48Qu9
+         cpmw==
+X-Gm-Message-State: AOJu0YwZUHE7L21Z7ePuQL6+eKk/IIvf2yNUIiR34HdDG1TtDZFyksnI
+        5gm3ioPcMJ1Gcycc391ksBMi5A==
+X-Google-Smtp-Source: AGHT+IEIk3iJ6GCsHRYMeMdo8uw1QNTL6gntpg/5SaGUAZHqkqQekLyT81Tgpt8fo9diZdiabupYpQ==
+X-Received: by 2002:a17:907:c0d:b0:9be:8693:66bb with SMTP id ga13-20020a1709070c0d00b009be869366bbmr9625930ejc.59.1698164431055;
+        Tue, 24 Oct 2023 09:20:31 -0700 (PDT)
+Received: from localhost (clnet-p106-198.ikbnet.co.at. [83.175.106.198])
+        by smtp.gmail.com with UTF8SMTPSA id cw11-20020a170906c78b00b009add084a00csm8489556ejb.36.2023.10.24.09.20.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Oct 2023 09:20:30 -0700 (PDT)
+From:   David Gstir <david@sigma-star.at>
+To:     Mimi Zohar <zohar@linux.ibm.com>,
+        James Bottomley <jejb@linux.ibm.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     David Gstir <david@sigma-star.at>, Shawn Guo <shawnguo@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        sigma star Kernel Team <upstream+dcp@sigma-star.at>,
+        David Howells <dhowells@redhat.com>,
+        Li Yang <leoyang.li@nxp.com>, Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Tejun Heo <tj@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-security-module@vger.kernel.org
+Subject: [PATCH v4 0/5] DCP as trusted keys backend
+Date:   Tue, 24 Oct 2023 18:20:14 +0200
+Message-ID: <20231024162024.51260-1-david@sigma-star.at>
+X-Mailer: git-send-email 2.42.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue Oct 24, 2023 at 4:38 AM EEST, Mario Limonciello wrote:
-> On 10/23/2023 20:15, Jarkko Sakkinen wrote:
-> > Add tpm_buf_read_u8(), tpm_buf_read_u16() and tpm_read_u32() for the sa=
-ke
-> > of more convenient parsing of TPM responses.
-> >=20
-> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > ---
-> >   drivers/char/tpm/tpm-buf.c | 69 +++++++++++++++++++++++++++++++++++++=
-+
-> >   include/linux/tpm.h        |  3 ++
-> >   2 files changed, 72 insertions(+)
-> >=20
-> > diff --git a/drivers/char/tpm/tpm-buf.c b/drivers/char/tpm/tpm-buf.c
-> > index f1d92d7e758d..bcd3cbcd9dd9 100644
-> > --- a/drivers/char/tpm/tpm-buf.c
-> > +++ b/drivers/char/tpm/tpm-buf.c
-> > @@ -124,3 +124,72 @@ void tpm_buf_append_u32(struct tpm_buf *buf, const=
- u32 value)
-> >   	tpm_buf_append(buf, (u8 *)&value2, 4);
-> >   }
-> >   EXPORT_SYMBOL_GPL(tpm_buf_append_u32);
-> > +
-> > +/**
-> > + * tpm_buf_read() - Read from a TPM buffer
-> > + * @buf:	&tpm_buf instance
-> > + * @offset:	offset within the buffer
-> > + * @count:	the number of bytes to read
-> > + * @output:	the output buffer
-> > + */
-> > +static void tpm_buf_read(const struct tpm_buf *buf, off_t *offset, siz=
-e_t count, void *output)
-> > +{
-> > +	if (*(offset + count) >=3D buf->length) {
-> > +		WARN(1, "tpm_buf: overflow\n");
-> > +		return;
-> > +	}
->
-> In the overflow case wouldn't you want to pass an error code up instead=
-=20
-> of just showing a WARN trace?
->
-> The helper functions can't tell the difference, and the net outcome is=20
-> going to be that if there is overflow you get a warning trace in the=20
-> kernel log and whatever garbage "value" happened to have going to the=20
-> caller.  It's a programmer error but it's also unpredictable what=20
-> happens here.
->
-> I think it's cleaner to have callers of=20
-> tpm_buf_read_u8/tpm_buf_read_u16/tpm_buf_read_u32 to to be able to know=
-=20
-> something wrong happened.
+This is a revival of the previous patch set submitted by Richard Weinberger:
+https://lore.kernel.org/linux-integrity/20210614201620.30451-1-richard@nod.at/
 
-I think you have a fair point here and I also think it is also a bigger
-issue for the response parsing than programmer error. I.e. faulty or
-malicious TPM could return corrupted data, which makes WARN() wrong
-choice.
+v3 is here:
+https://lore.kernel.org/keyrings/20230918141826.8139-1-david@sigma-star.at/
 
-So, as a corrective measure I think it should be pr_warn() instead, and
-instead of returning u8/u16/u32, all functions should return 'ssize_t'
-and -EIO in the case of overflow.
+v3 -> v4:
+- Split changes on MAINTAINERS and documentation into dedicated patches
+- Use more concise wording in commit messages as suggested by Jarkko Sakkinen
+v2 -> v3:
+- Addressed review comments from Jarkko Sakkinen
+v1 -> v2:
+- Revive and rebase to latest version
+- Include review comments from Ahmad Fatoum
 
-Thank you, it was a really good catch.
+The Data CoProcessor (DCP) is an IP core built into many NXP SoCs such
+as i.mx6ull.
 
-BR, Jarkko
+Similar to the CAAM engine used in more powerful SoCs, DCP can AES-
+encrypt/decrypt user data using a unique, never-disclosed,
+device-specific key. Unlike CAAM though, it cannot directly wrap and
+unwrap blobs in hardware. As DCP offers only the bare minimum feature
+set and a blob mechanism needs aid from software. A blob in this case
+is a piece of sensitive data (e.g. a key) that is encrypted and
+authenticated using the device-specific key so that unwrapping can only
+be done on the hardware where the blob was wrapped.
+
+This patch series adds a DCP based, trusted-key backend and is similar
+in spirit to the one by Ahmad Fatoum [0] that does the same for CAAM.
+It is of interest for similar use cases as the CAAM patch set, but for
+lower end devices, where CAAM is not available.
+
+Because constructing and parsing the blob has to happen in software,
+we needed to decide on a blob format and chose the following:
+
+struct dcp_blob_fmt {
+	__u8 fmt_version;
+	__u8 blob_key[AES_KEYSIZE_128];
+	__u8 nonce[AES_KEYSIZE_128];
+	__le32 payload_len;
+	__u8 payload[];
+} __packed;
+
+The `fmt_version` is currently 1.
+
+The encrypted key is stored in the payload area. It is AES-128-GCM
+encrypted using `blob_key` and `nonce`, GCM auth tag is attached at
+the end of the payload (`payload_len` does not include the size of
+the auth tag).
+
+The `blob_key` itself is encrypted in AES-128-ECB mode by DCP using
+the OTP or UNIQUE device key. A new `blob_key` and `nonce` are generated
+randomly, when sealing/exporting the DCP blob.
+
+This patchset was tested with dm-crypt on an i.MX6ULL board.
+
+[0] https://lore.kernel.org/keyrings/20220513145705.2080323-1-a.fatoum@pengutronix.de/
+
+David Gstir (5):
+  crypto: mxs-dcp: Add support for hardware-bound keys
+  KEYS: trusted: Introduce NXP DCP-backed trusted keys
+  MAINTAINERS: add entry for DCP-based trusted keys
+  docs: document DCP-backed trusted keys kernel params
+  docs: trusted-encrypted: add DCP as new trust source
+
+ .../admin-guide/kernel-parameters.txt         |  13 +
+ .../security/keys/trusted-encrypted.rst       |  85 +++++
+ MAINTAINERS                                   |   9 +
+ drivers/crypto/mxs-dcp.c                      | 104 +++++-
+ include/keys/trusted_dcp.h                    |  11 +
+ include/soc/fsl/dcp.h                         |  17 +
+ security/keys/trusted-keys/Kconfig            |   9 +-
+ security/keys/trusted-keys/Makefile           |   2 +
+ security/keys/trusted-keys/trusted_core.c     |   6 +-
+ security/keys/trusted-keys/trusted_dcp.c      | 311 ++++++++++++++++++
+ 10 files changed, 554 insertions(+), 13 deletions(-)
+ create mode 100644 include/keys/trusted_dcp.h
+ create mode 100644 include/soc/fsl/dcp.h
+ create mode 100644 security/keys/trusted-keys/trusted_dcp.c
+
+-- 
+2.35.3
 
