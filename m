@@ -2,253 +2,194 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E57D7D57FE
-	for <lists+keyrings@lfdr.de>; Tue, 24 Oct 2023 18:21:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6FB47D5955
+	for <lists+keyrings@lfdr.de>; Tue, 24 Oct 2023 19:04:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234700AbjJXQVP (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Tue, 24 Oct 2023 12:21:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33834 "EHLO
+        id S232862AbjJXREj (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Tue, 24 Oct 2023 13:04:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343876AbjJXQVA (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Tue, 24 Oct 2023 12:21:00 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F71A10E0
-        for <keyrings@vger.kernel.org>; Tue, 24 Oct 2023 09:20:53 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-53e07db272cso7055081a12.3
-        for <keyrings@vger.kernel.org>; Tue, 24 Oct 2023 09:20:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1698164452; x=1698769252; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+qntkmutwprS+2oQeQzgmaP97TAaIsTbzLeg5qvDo3I=;
-        b=HcRwS17ufuRUW3CRl/tZfzLcNU/Yl2oyBRikCVDTyXaWBaE/Mpt0ru0TZTba95TNwT
-         aTU9VHu++Ye2UXcFhuSkFnnRwJOrJ7OC6ZScNW9XdfaA52SuzW+9w+jfcwRXs12vJ/45
-         lTNXJlkBqjXUonDu7wYpa3f+MN92iOCZmjuJsrDOJDcJm6R0ufXCFcBc8zellwSkeJKR
-         6Un6reyGpehkT/Sbzmo+phF0Obts3pxhH1/DLJamoMLho8SyShJW3kyGzmYAZfypaN0r
-         nyqTOHaTd/GWs4MI4FYeXKPzVh/MxEv7eiqrjjNBpIrIGc6QKop3nh5ozN9cUgX953A9
-         8o4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698164452; x=1698769252;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+qntkmutwprS+2oQeQzgmaP97TAaIsTbzLeg5qvDo3I=;
-        b=AoDav02SZtLvlu25XoEiinmM28H9nIePMclO7ctli5xlZEbMEBFsf6TQhYPvFU7ovA
-         TAgZmzf4qRR0xJ2Im6gdj3Vh4WQNVYOODyOdpvkIyJJFuHgXE+YCToqlurSx+h1PEW/n
-         3fzstdaYskCVDpJzvTUzHYO/5qQE/WzzVCA7yGnhe9EjdMjwTeSdFUjatNHtWzKgK+yU
-         OChd8MrTMbxH8F+YnKd68gunwTG92TRq9Segqczkr4vD2C6s6lILpqyTfMYUE7OCrc9y
-         iFPgnlw0ENM/UGF6yrdxvp1K2u0XGwRDbNVUUIPcFrEUGzl3ttdbgwyFIWBi3UHlSFuA
-         8a8g==
-X-Gm-Message-State: AOJu0YzcWfpUv83ZA5DK7t1w2+j0s2PwBj3v+phNTT49RTtKEzSdQF4W
-        MCN7zuzqGUdRMs0pkRroDIVmyQ==
-X-Google-Smtp-Source: AGHT+IF0iLrbDbUm1V98XXFpcmmPGqY4cfPlX1aQoOtBifDgtK4ig3PeyUmZMmyPcMbx9I21p02aGQ==
-X-Received: by 2002:a05:6402:5106:b0:53e:4dc6:a2e8 with SMTP id m6-20020a056402510600b0053e4dc6a2e8mr11045680edd.19.1698164451864;
-        Tue, 24 Oct 2023 09:20:51 -0700 (PDT)
-Received: from localhost (clnet-p106-198.ikbnet.co.at. [83.175.106.198])
-        by smtp.gmail.com with UTF8SMTPSA id dk18-20020a0564021d9200b005402c456892sm4624084edb.33.2023.10.24.09.20.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Oct 2023 09:20:51 -0700 (PDT)
-From:   David Gstir <david@sigma-star.at>
-To:     Mimi Zohar <zohar@linux.ibm.com>,
-        James Bottomley <jejb@linux.ibm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-Cc:     David Gstir <david@sigma-star.at>, Shawn Guo <shawnguo@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        sigma star Kernel Team <upstream+dcp@sigma-star.at>,
+        with ESMTP id S232329AbjJXREi (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Tue, 24 Oct 2023 13:04:38 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CC55118;
+        Tue, 24 Oct 2023 10:04:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698167077; x=1729703077;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=wuFFBBOF0f6sohSN/+TPeeYaDHLCjsfu7LYve0DKGWs=;
+  b=BGkjjU0E4ld7596VAZL7PIH7OwdDLKBfQRsMieAiZQucLxutdFq/fXUG
+   4ofQ75TM1L5rS72BmAVROc1oF59FwU+XlE6KPfoDV+ixDNy7pb54SnISw
+   zRs0ZKDT1wZiDaifZCtDVj32BJOzV0A6FNb311yc+tfeJ+r5SlF8F/FEt
+   VjmuxxA6ZW/+1Jsi4KldNZcYpGVrDx7ihWT5wi1ytrHyB4koeel2fy9a/
+   OdfV7ZauSfHimiUBl7wNEqJb67AK30olCdoGEweG68xQxcbDDaKjWPVpZ
+   LxZuCQOfVRUUhlVxa8C9QmRV+lJdv/HnNAhNI4uTSq90hQxXNGHs/5EIM
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10873"; a="418239378"
+X-IronPort-AV: E=Sophos;i="6.03,248,1694761200"; 
+   d="scan'208";a="418239378"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2023 10:04:31 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10873"; a="793574435"
+X-IronPort-AV: E=Sophos;i="6.03,248,1694761200"; 
+   d="scan'208";a="793574435"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orsmga001.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 24 Oct 2023 10:04:30 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Tue, 24 Oct 2023 10:04:30 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32; Tue, 24 Oct 2023 10:04:29 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.32 via Frontend Transport; Tue, 24 Oct 2023 10:04:29 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.100)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.32; Tue, 24 Oct 2023 10:04:27 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KB5edfZs82atOEzWv2TJPJIoYfV2woRH5bqdKYMGC58o4A7IHNel1DOGzHXSTp97DjdR5os3nwcpbiUEWE8AcMCWOlEpE/O3VbGLr5UKRRwQuH4pWp96BtiuzYI1Nlxa07sNkMENLsSf1Yqipn3CiX3uT9FW3INPSXC3rqpJfRgUagbexsTY4TZQ0qtXQ73akGPJ5L7bdf+b/xTe5felf5RI2Ht7veWlURDls4NMHOCy6Stm9kwqT6EihGMhX57DYF8P1R/IooIYr3TYZxRl88N9AOGIlJ6YDGw4bp92geanpsrb4gbFPj44FgSeEQ+vRx1Q6Q7eGJQZ604GS/yvHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BZFMaI0bXeqmzCJLz/EnbTzAw2PMgJmDHYH1Zj4FkJw=;
+ b=ag27CMUMTGDkeCtJPUsjUn/iBwsSLt1jo5enQOnTyl8I7DmiKy0fPmWfdLDeR4YGYnMv9B9FXz/qzOkf0KWtJmN3byKMpuZPmHpxOVqEqphklOVdVaamxIKt1ubmBlsruiwXJjoVsYTTA1u8vhgQG7kOKnFkL0fQUL5+B3i7HL4KCn4QA4ozPrO+FCc6FWLt7KjLU6AxkeziM16KwDZYniP8L3WWR4wxl7s+BIHgYHBHEStyqZ91uYBy4Ctq1BldKcWz46jw7GApw4Pnez3GCuCCBHuKams6GnIUrQHBJ/8NL6T5KmQvwlBePLg6XUBLBASGupY1s2+n5o6qLrqPGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by DM4PR11MB7327.namprd11.prod.outlook.com (2603:10b6:8:105::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.29; Tue, 24 Oct
+ 2023 17:04:22 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::e75f:ec47:9be1:e9e4]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::e75f:ec47:9be1:e9e4%4]) with mapi id 15.20.6907.032; Tue, 24 Oct 2023
+ 17:04:22 +0000
+Date:   Tue, 24 Oct 2023 10:04:18 -0700
+From:   Dan Williams <dan.j.williams@intel.com>
+To:     Alexey Kardashevskiy <aik@amd.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Lukas Wunner <lukas@wunner.de>
+CC:     Bjorn Helgaas <helgaas@kernel.org>,
         David Howells <dhowells@redhat.com>,
-        Li Yang <leoyang.li@nxp.com>, Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Tejun Heo <tj@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org,
-        linux-security-module@vger.kernel.org,
-        Richard Weinberger <richard@nod.at>,
-        David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Subject: [PATCH v4 5/5] docs: trusted-encrypted: add DCP as new trust source
-Date:   Tue, 24 Oct 2023 18:20:19 +0200
-Message-ID: <20231024162024.51260-6-david@sigma-star.at>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231024162024.51260-1-david@sigma-star.at>
-References: <20231024162024.51260-1-david@sigma-star.at>
+        David Woodhouse <dwmw2@infradead.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Alex Williamson" <alex.williamson@redhat.com>,
+        <linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+        <linux-coco@lists.linux.dev>, <keyrings@vger.kernel.org>,
+        <linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
+        <linuxarm@huawei.com>, David Box <david.e.box@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        "Li, Ming" <ming4.li@intel.com>, Zhi Wang <zhi.a.wang@intel.com>,
+        Alistair Francis <alistair.francis@wdc.com>,
+        Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+        "Tom Lendacky" <thomas.lendacky@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Alexander Graf <graf@amazon.com>
+Subject: Re: [PATCH 12/12] PCI/CMA: Grant guests exclusive control of
+ authentication
+Message-ID: <6537f912dbb83_7258329424@dwillia2-xfh.jf.intel.com.notmuch>
+References: <cover.1695921656.git.lukas@wunner.de>
+ <467bff0c4bab93067b1e353e5b8a92f1de353a3f.1695921657.git.lukas@wunner.de>
+ <20231003164048.0000148c@Huawei.com>
+ <20231003193058.GA16417@wunner.de>
+ <20231006103020.0000174f@Huawei.com>
+ <653038c93a054_780ef294e9@dwillia2-xfh.jf.intel.com.notmuch>
+ <38d0c5ce-7de2-47fb-bfaf-50f900b7f747@amd.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <38d0c5ce-7de2-47fb-bfaf-50f900b7f747@amd.com>
+X-ClientProxiedBy: MW2PR2101CA0002.namprd21.prod.outlook.com
+ (2603:10b6:302:1::15) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DM4PR11MB7327:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2bf37a73-4756-42f6-2e8b-08dbd4b344f9
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: svskZXefIWhY95qrWjTShqGCwp0FHwnLy3cqKun0cEVKonan9q+W5E4JtdHwEsM6fvzELvbfeoe9F/DLnExHa/LPCX6FrLsJr716fKzR1ocRhS5L8Gbh5CIGRL7suMBZxiHLWBCIXTCEKf6TpGewS/VuW3qr8MhlvYVNS/jkqYuDkrFBDaxe+SuMzjwrLb8uzMbDzUQlAJZ4DodRxLpD5Uetf6Wvy908qDy8Jfs7f0pnQx6jmfxqT8IS5QiTBP18k8N38jr3xhHiZ/JtOXAyFX5d9fKf4/xXPRNgN+PdP42BJeHOdxBJAuNYHVfKE9a/5HMgl82gV+B8+MPwZOUYlkofh4vAKVYRPaa2VH95jz+OIYdNlWr2ykS9w4grpEBlzdsnrgPkOy50xYiX1p7EfabuaIW4ycz1rAoY+zA4XXQRJeQnXcHMQ3eIYObbALogWz40eBi4T2LSJOgGDIm0nmrIRm4BNoS79oESF4M+NpK8KopCf6X4S/A5WKMzHimxgPxW3brLUFQ71Wao7fCTHyWWXIZy6J0UzkHOpvTzz4XUdqpi59Ojh7iyvdgSvgOw
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(39860400002)(376002)(366004)(346002)(136003)(230922051799003)(451199024)(186009)(64100799003)(1800799009)(4744005)(2906002)(5660300002)(8936002)(8676002)(38100700002)(4326008)(7416002)(41300700001)(66946007)(54906003)(66476007)(86362001)(478600001)(6486002)(110136005)(6666004)(6506007)(316002)(9686003)(6512007)(26005)(83380400001)(82960400001)(66556008);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?xLPzBIxHuhLmt+Y86UZ0l2prwOBIF6/P95r82JZAbc6fPjwxS+/8IweKEPRD?=
+ =?us-ascii?Q?ewwxfNiYRkr/HHpQntw9PivzrqjFSPHp2w4dfQrkm2qAPoKfelHesZE8IwwU?=
+ =?us-ascii?Q?mqied0p7n55pp5Ymm0ecrEn7RgwtQq15/NHPmOVlDPYjw6mCTYyhNSJIJxGk?=
+ =?us-ascii?Q?19NVRaGq8lCv6RBWvSNDf/ZhQvS+nt7T5jF72f29FfRz7t0jkjGpWP9rzuZi?=
+ =?us-ascii?Q?LBk1+Fgwwo3sec2TR4lluPaO7YON0AyJ43Zs8olfZ5BWZ4tO+z+wKkj71llw?=
+ =?us-ascii?Q?wWvu6IhFygZkg3a7TVkj6lqdUGQJ8O242YaJxRHQTcHADUBwSDI99XcrcyTI?=
+ =?us-ascii?Q?s/c/uZvlLd+FANsTxiIHoW6Nozbst9AlsW22SFUutGndnW767Ow5bixL3g/I?=
+ =?us-ascii?Q?AAUtSulu6nGiFcN3NNAQwSAuOTBszJhgT+ggbrWbpbNwh/AKj7bzbnttASp0?=
+ =?us-ascii?Q?y09fAQ3r1KVRLa8NxmbnAqhXzSxKHoBD8lgjY3hM1WV6W6Z/ZnPoVDwbdo0/?=
+ =?us-ascii?Q?aF6pnt0Rj+rKbSxThp6ZgWd0I5qfgJjQpy1HJRgOIR1f1XnI3A3Y4bpM6O6C?=
+ =?us-ascii?Q?QGvjG7RtJJaeTPLSdvTi9V2bEGDu9nA//0BRiZ8SADPvD6bCbTfTPqpPJGZU?=
+ =?us-ascii?Q?YRw2lwp/l206HTXrbEMuoUWgB15HkRKWxXL9QPcMkFKEKnoFKdYAicWABqBv?=
+ =?us-ascii?Q?wo4s5Gb86oFwd2APr1rAqH12GmCmFZlSu0JbSFaBwHeY06fgDRdR4OjdYIGa?=
+ =?us-ascii?Q?QHs/izaEi/rhAszzloSHXsjx/iHjHyaQ2jUHLSnyg/aWi209QOBvcozpMFPF?=
+ =?us-ascii?Q?HN5yk2x/iwbgH9YhcCZlkZ6gEhIDvrlU4LsbuGI2R1n3bvKg6hLbyjxy19hb?=
+ =?us-ascii?Q?XBlk244k7e0OSiqNy3llN9EklSym+GZlnW/tWih+ZtsBdsCgHHH36Jlo0s7h?=
+ =?us-ascii?Q?YItrguhwfeotRFbJEbKjoHKMEnBTGa2jPW6xcL5/yeffLZ31pbyGZRPV/eyX?=
+ =?us-ascii?Q?eoieVurCKfFMfUPFf49M/nQFXmybrpBjRgtvZUktNupM0H2f/L7pf7/aE1uN?=
+ =?us-ascii?Q?7PIpv9mM0fXigOo5qCdfTPB7ci3vwA7dG7RyJ8iD0cyrukiJiYfhSuoaPp/R?=
+ =?us-ascii?Q?JSGheIGj8fUTojMBYCBIrBSSX2Iv/JYSbcu8rpGazxIT5IeFwRUknaW/Zi99?=
+ =?us-ascii?Q?nqb6W4jitqkKsowxhj/FsmqMfv2L1ekHz7JjoKx6l5YrmXycYjry5iicNeP2?=
+ =?us-ascii?Q?fEbR7x241lKvo/388l1HQ2k9BKfJjvCwcITBixIdfDjmfyzJlV/DJGfceqeo?=
+ =?us-ascii?Q?Q2SzQS4zyizNFbT+bTUPhKeGCXMPyux4KAtRMmBh64jEGVhzCCX5fVmQh+W/?=
+ =?us-ascii?Q?rRYhJHUJUKZZJ5oBj8zKCuxjWf2ZDnXa9xfADnM9st6zJP/VkffgQOBRHKMD?=
+ =?us-ascii?Q?pOOadvQuT4bt3Osd+WGX3KsclfPHV5hdaAReCGnOa1PE6dzZ7jx+Amp/pGm1?=
+ =?us-ascii?Q?SpJYz4fYAQsfLsOBcPVpji/HBIrsCZ4Vu7u1XnQEfyJFT7YBh/q3bJoAHTVO?=
+ =?us-ascii?Q?q/f5dgHI9EP7olvG6fU5/CL1qs8vNaWnurCW5fCYNCXfZLhnz6HSEYtOVM2j?=
+ =?us-ascii?Q?XA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2bf37a73-4756-42f6-2e8b-08dbd4b344f9
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2023 17:04:22.7143
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lt/2q3zPqnlV2piswBHuZWpagEggOrkDHKTk3h6Scu4wNkKilcdASI5lMUzJSYdQWwmSKL3ntAtgRcULWW5DdN6vPyJkl+As4Lz36uO9AI4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB7327
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Update the documentation for trusted and encrypted KEYS with DCP as new
-trust source:
+Alexey Kardashevskiy wrote:
+[..]
+> To own IDE, the guest will have to have exclusive access to the portion 
+> of RC responsible for the IDE keys. Which is doable but requires passing 
+> through both RC and the device and probably everything between these 
+> two.  It is going to be quite different "host-native" and 
+> "guest-native". How IDE keys are going to be programmed into the RC on 
+> Intel?
 
-- Describe security properties of DCP trust source
-- Describe key usage
-- Document blob format
+I do not think the guest can "own IDE" in any meaningful. It is always
+going to be a PF level policy coordinated either by the host or the
+platform-TSM, and as far as I can see all end user interest currently
+lies in the platform-TSM case.
 
-Co-developed-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Signed-off-by: David Gstir <david@sigma-star.at>
----
- .../security/keys/trusted-encrypted.rst       | 85 +++++++++++++++++++
- 1 file changed, 85 insertions(+)
-
-diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
-index 9bc9db8ec651..4452070afbe9 100644
---- a/Documentation/security/keys/trusted-encrypted.rst
-+++ b/Documentation/security/keys/trusted-encrypted.rst
-@@ -42,6 +42,14 @@ safe.
-          randomly generated and fused into each SoC at manufacturing time.
-          Otherwise, a common fixed test key is used instead.
- 
-+     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
-+
-+         Rooted to a one-time programmable key (OTP) that is generally burnt
-+         in the on-chip fuses and is accessible to the DCP encryption engine only.
-+         DCP provides two keys that can be used as root of trust: the OTP key
-+         and the UNIQUE key. Default is to use the UNIQUE key, but selecting
-+         the OTP key can be done via a module parameter (dcp_use_otp_key).
-+
-   *  Execution isolation
- 
-      (1) TPM
-@@ -57,6 +65,12 @@ safe.
- 
-          Fixed set of operations running in isolated execution environment.
- 
-+     (4) DCP
-+
-+         Fixed set of cryptographic operations running in isolated execution
-+         environment. Only basic blob key encryption is executed there.
-+         The actual key sealing/unsealing is done on main processor/kernel space.
-+
-   * Optional binding to platform integrity state
- 
-      (1) TPM
-@@ -79,6 +93,11 @@ safe.
-          Relies on the High Assurance Boot (HAB) mechanism of NXP SoCs
-          for platform integrity.
- 
-+     (4) DCP
-+
-+         Relies on Secure/Trusted boot process (called HAB by vendor) for
-+         platform integrity.
-+
-   *  Interfaces and APIs
- 
-      (1) TPM
-@@ -94,6 +113,11 @@ safe.
- 
-          Interface is specific to silicon vendor.
- 
-+     (4) DCP
-+
-+         Vendor-specific API that is implemented as part of the DCP crypto driver in
-+         ``drivers/crypto/mxs-dcp.c``.
-+
-   *  Threat model
- 
-      The strength and appropriateness of a particular trust source for a given
-@@ -129,6 +153,13 @@ selected trust source:
-      CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure the device
-      is probed.
- 
-+  *  DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
-+
-+     The DCP hardware device itself does not provide a dedicated RNG interface,
-+     so the kernel default RNG is used. SoCs with DCP like the i.MX6ULL do have
-+     a dedicated hardware RNG that is independent from DCP which can be enabled
-+     to back the kernel RNG.
-+
- Users may override this by specifying ``trusted.rng=kernel`` on the kernel
- command-line to override the used RNG with the kernel's random number pool.
- 
-@@ -231,6 +262,19 @@ Usage::
- CAAM-specific format.  The key length for new keys is always in bytes.
- Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
- 
-+Trusted Keys usage: DCP
-+-----------------------
-+
-+Usage::
-+
-+    keyctl add trusted name "new keylen" ring
-+    keyctl add trusted name "load hex_blob" ring
-+    keyctl print keyid
-+
-+"keyctl print" returns an ASCII hex copy of the sealed key, which is in format
-+specific to this DCP key-blob implementation.  The key length for new keys is
-+always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-+
- Encrypted Keys usage
- --------------------
- 
-@@ -426,3 +470,44 @@ string length.
- privkey is the binary representation of TPM2B_PUBLIC excluding the
- initial TPM2B header which can be reconstructed from the ASN.1 octed
- string length.
-+
-+DCP Blob Format
-+---------------
-+
-+The Data Co-Processor (DCP) provides hardware-bound AES keys using its
-+AES encryption engine only. It does not provide direct key sealing/unsealing.
-+To make DCP hardware encryption keys usable as trust source, we define
-+our own custom format that uses a hardware-bound key to secure the sealing
-+key stored in the key blob.
-+
-+Whenever a new trusted key using DCP is generated, we generate a random 128-bit
-+blob encryption key (BEK) and 128-bit nonce. The BEK and nonce are used to
-+encrypt the trusted key payload using AES-128-GCM.
-+
-+The BEK itself is encrypted using the hardware-bound key using the DCP's AES
-+encryption engine with AES-128-ECB. The encrypted BEK, generated nonce,
-+BEK-encrypted payload and authentication tag make up the blob format together
-+with a version number, payload length and authentication tag::
-+
-+    /*
-+     * struct dcp_blob_fmt - DCP BLOB format.
-+     *
-+     * @fmt_version: Format version, currently being %1
-+     * @blob_key: Random AES 128 key which is used to encrypt @payload,
-+     *            @blob_key itself is encrypted with OTP or UNIQUE device key in
-+     *            AES-128-ECB mode by DCP.
-+     * @nonce: Random nonce used for @payload encryption.
-+     * @payload_len: Length of the plain text @payload.
-+     * @payload: The payload itself, encrypted using AES-128-GCM and @blob_key,
-+     *           GCM auth tag of size AES_BLOCK_SIZE is attached at the end of it.
-+     *
-+     * The total size of a DCP BLOB is sizeof(struct dcp_blob_fmt) + @payload_len +
-+     * AES_BLOCK_SIZE.
-+     */
-+    struct dcp_blob_fmt {
-+            __u8 fmt_version;
-+            __u8 blob_key[AES_KEYSIZE_128];
-+            __u8 nonce[AES_KEYSIZE_128];
-+            __le32 payload_len;
-+            __u8 payload[];
-+    } __packed;
--- 
-2.35.3
-
+Now, there is definitely value in considering how a guest can maximize
+security in the absence of a platform-TSM in the code design, but that
+does not diminish the need for a path for the guest to coordinate the
+life-cycle through the platform-TSM. Otherwise, as you mention, passing
+through the host-bridge resources and the VF has challenges.
