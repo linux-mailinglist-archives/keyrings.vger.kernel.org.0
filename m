@@ -2,43 +2,42 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 797D17D43E3
-	for <lists+keyrings@lfdr.de>; Tue, 24 Oct 2023 02:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38C4D7D44B2
+	for <lists+keyrings@lfdr.de>; Tue, 24 Oct 2023 03:15:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231523AbjJXAZ0 (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Mon, 23 Oct 2023 20:25:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46312 "EHLO
+        id S229582AbjJXBPp (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Mon, 23 Oct 2023 21:15:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231396AbjJXAZ0 (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Mon, 23 Oct 2023 20:25:26 -0400
+        with ESMTP id S229510AbjJXBPo (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Mon, 23 Oct 2023 21:15:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3EFE10C;
-        Mon, 23 Oct 2023 17:25:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76672C433C8;
-        Tue, 24 Oct 2023 00:25:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6B67A1;
+        Mon, 23 Oct 2023 18:15:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CA5C433C7;
+        Tue, 24 Oct 2023 01:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698107124;
-        bh=/g7m0LnslOGK1YzQuPsBQeTkjUC7xa8Yb26dMeliAP0=;
+        s=k20201202; t=1698110142;
+        bh=cqNiWrCmevZV6/MtAe7Td+HZSGwJmyaPwK8QTHpAIEY=;
         h=From:To:Cc:Subject:Date:From;
-        b=i/esd8X91dHBM/21aleiKjjPwTy3DRsBsSEm3PWvHDRHE5Wj1/yclV3EkC05s1xX6
-         4xFYyI/gRgyPlgj2PX0XD7iDcKd5oGmcxgdTDF1wyCUSZU6BhLKqwHA9PstRYJXyjZ
-         1x4csmHgFmUhpYOdXWvolPXFbfKNsCAZxoVPIpo+QTgccHjlMK9/UbplPzxzMlokaH
-         DTcdiY+1awxICKujKllRo2Oh4BpQDJk5ILd8YwlFosaw8sN2laP8CvLsaPVXNZol3t
-         qqt8h+s5XOrUbQj5+F0W54444GpCTRqz94fLqUqdc8aRGKEeHTxcrzKIE3WefY1ZaH
-         UERJ3wrVgTgJg==
+        b=MbCEXWitCNCzO643GJeBocbBBx1uuJSb5yBaEWDRm2vhiPMLk9LYYoTMJr23TqxXh
+         HYP5zMBWlrtkwAOjM0aTHh+oJCZDLikN/Go0GD/BVgDL6ell6xySc2jizGKQV0RkYd
+         iRXDM8/I+5OMJZe9phLglDDrcRVmm9eoKS25I/E6dqLutMy1+Yr9AGUG5kzpPkRD7/
+         T2J6qqV7NIQoGC03pZtoGyYrf+2K0Pzsn1pX7E9KslMcNfRgNh6O6ajxO+dWDxWJ9p
+         XhErsEMLU9efTjf6rgsv5qXfbzjUrk+kH3APpSLdtWKmckFA+8KFvR9EP/oAY2DnJ4
+         NdpLDghvq8k1w==
 From:   Jarkko Sakkinen <jarkko@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
+To:     linux-integrity@vger.kernel.org
+Cc:     keyrings@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>,
+        James Bottomley <James.Bottomley@HansenPartnership.com>,
+        William Roberts <bill.c.roberts@gmail.com>,
+        Stefan Berger <stefanb@linux.ibm.com>,
         David Howells <dhowells@redhat.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org
-Subject: [GIT PULL] tpmdd changes for v6.7
-Date:   Tue, 24 Oct 2023 03:25:14 +0300
-Message-ID: <20231024002514.433180-1-jarkko@kernel.org>
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH v3 0/6] Extend struct tpm_buf to support sized buffers (TPM2B)
+Date:   Tue, 24 Oct 2023 04:15:18 +0300
+Message-ID: <20231024011531.442587-1-jarkko@kernel.org>
 X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -51,41 +50,77 @@ Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-  Merge tag 'for-6.6-rc7-tag' of git://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux (2023-10-23 07:59:13 -1000)
+This patch set implements my ideas on how to extend struct tpm_buf to
+support TPM2 sized buffers (TPM2B). See Section 10.4 in TPM2 Structures
+specification for more information.
 
-are available in the Git repository at:
+The goal is to do initial groundwork for smoother landing of integrity
+protection patches by James Bottomley.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-v6.7
+I tested the patch set with:
 
-for you to fetch changes up to 03acb9ccec3f8cbcc0ed93c188b7a119ef30ef64:
+https://github.com/jarkkojs/buildroot-tpmdd/tree/linux-6.5.y
 
-  keys: Remove unused extern declarations (2023-10-24 03:16:52 +0300)
+Compilation:
 
-----------------------------------------------------------------
-Hi,
+make qemu_x86_64_defconfig
+make 2>&1 | tee build.txt;
 
-This is a small sized pull request. One commit I would like to pinpoint
-is my fix for init_trusted() rollback, as for actual patch I did not
-receive any feedback. I think it is a no-brainer but can also send a
-new pull request if required.
+TPM1 startup: output/images/start-qemu.sh --use-system-swtpm --rtc --tpm1
+TPM2 startup: output/images/start-qemu.sh --use-system-swtpm --rtc
 
-BR, Jarkko
+For TPM2 I executed the following as the smoke test for these patches:
 
-----------------------------------------------------------------
-Jarkko Sakkinen (1):
-      KEYS: trusted: Rollback init_trusted() consistently
+/usr/lib/kselftests/run_kselftest.sh
+tpm2_createprimary --hierarchy o -G rsa2048 -c key.ctxt
+tpm2_evictcontrol -c key.ctxt 0x81000001
+keyctl add trusted kmk "new 32 keyhandle=0x81000001" @u
+keyctl add encrypted 1000100010001000 "new ecryptfs trusted:kmk 64" @u
 
-Michal Suchanek (1):
-      integrity: powerpc: Do not select CA_MACHINE_KEYRING
+For TPM1 I tried:
 
-Sumit Garg (1):
-      KEYS: trusted: tee: Refactor register SHM usage
+keyctl add trusted kmk "new 32" @u
 
-YueHaibing (1):
-      keys: Remove unused extern declarations
+This caused TPM error 18, which AFAIK means that there is not SRK (?),
+which is probably an issue in my swtpm configuration, which is visible
+in board/qemu/start-qemu.sh.in.
 
- security/integrity/Kconfig                |  2 -
- security/keys/internal.h                  |  7 ----
- security/keys/trusted-keys/trusted_core.c | 20 +++++-----
- security/keys/trusted-keys/trusted_tee.c  | 64 ++++++++++---------------------
- 4 files changed, 30 insertions(+), 63 deletions(-)
+v3:
+- Resend with rebase to the latest upstream.
+
+Link: https://lore.kernel.org/linux-integrity/CT5OE5VZA7D7.3B7C6CK27JIK1@suppilovahvero/
+Link: https://lore.kernel.org/linux-integrity/20230403214003.32093-1-James.Bottomley@HansenPartnership.com/
+Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: William Roberts <bill.c.roberts@gmail.com> 
+Cc: Stefan Berger <stefanb@linux.ibm.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Mimi Zohar <zohar@linux.ibm.com>
+
+James Bottomley (1):
+  tpm: Move buffer handling from static inlines to real functions
+
+Jarkko Sakkinen (5):
+  tpm: Store TPM buffer length
+  tpm: Detach tpm_buf_reset() from tpm_buf_init()
+  tpm: Support TPM2 sized buffers (TPM2B)
+  tpm: Add tpm_buf_read_{u8,u16,u32}
+  KEYS: trusted: tpm2: Use struct tpm_buf for sized buffers
+
+ drivers/char/tpm/Makefile                 |   1 +
+ drivers/char/tpm/tpm-buf.c                | 195 ++++++++++++++++++++++
+ drivers/char/tpm/tpm-interface.c          |  18 +-
+ drivers/char/tpm/tpm-sysfs.c              |   3 +-
+ drivers/char/tpm/tpm1-cmd.c               |  26 ++-
+ drivers/char/tpm/tpm2-cmd.c               |  36 ++--
+ drivers/char/tpm/tpm2-space.c             |   7 +-
+ drivers/char/tpm/tpm_vtpm_proxy.c         |  13 +-
+ include/linux/tpm.h                       |  96 ++---------
+ security/keys/trusted-keys/trusted_tpm1.c |  12 +-
+ security/keys/trusted-keys/trusted_tpm2.c |  60 ++++---
+ 11 files changed, 325 insertions(+), 142 deletions(-)
+ create mode 100644 drivers/char/tpm/tpm-buf.c
+
+-- 
+2.42.0
+
