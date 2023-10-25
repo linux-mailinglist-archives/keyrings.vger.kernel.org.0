@@ -2,68 +2,70 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C25717D6C7F
-	for <lists+keyrings@lfdr.de>; Wed, 25 Oct 2023 14:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B4B47D7181
+	for <lists+keyrings@lfdr.de>; Wed, 25 Oct 2023 18:13:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344265AbjJYM5w (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 25 Oct 2023 08:57:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38226 "EHLO
+        id S233808AbjJYQMx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 25 Oct 2023 12:12:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234947AbjJYM5v (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 25 Oct 2023 08:57:51 -0400
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51D0ACC
-        for <keyrings@vger.kernel.org>; Wed, 25 Oct 2023 05:57:49 -0700 (PDT)
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 7612F3FD3C
-        for <keyrings@vger.kernel.org>; Wed, 25 Oct 2023 12:57:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1698238666;
-        bh=YZ12GF+aERDoIF3r6TEMZGT37W8A+JNypJswAaYxRhM=;
-        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-         To:Cc:Content-Type;
-        b=Nq3lJYRjmvlNFzhC88nKA+acZLBDUj9Ov5G9LL4MuBCW+ekeopmaP6jh1I3O7zSi3
-         VHcgE4W3aVos+T3jx4sC9AuqdjMKXzFYdSIp7QtXybesE78Tp0Y+I9/UCodeFPk9vy
-         bhlFQn1hVxFVdvg+jlfaHTMdnjHRibS57BNgxU/3ADQoqprN+STbnIyn84Fqeue9z4
-         wueAES6fHVy8EtziuEz7fG/7tmbevvB9wpoMp9MhLoHG/JlQYoWmizinkzN1jdNFyW
-         rMz82xE0dxseXyB0G1AIoOTTCiGq4xJIkoTNpvV6GCnM4v2+Sif16TcizvuwguCX3v
-         qRT5RAREbrXog==
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-32d9cd6eb0bso2281719f8f.0
-        for <keyrings@vger.kernel.org>; Wed, 25 Oct 2023 05:57:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698238664; x=1698843464;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YZ12GF+aERDoIF3r6TEMZGT37W8A+JNypJswAaYxRhM=;
-        b=p7DrUviM4x3peIppARKe5b2MNeZJzqjXOn6R+tih6kaB5iBxS4ElRjR3u/MkXydbeQ
-         A/lEc3fR4Y2YuOGe0aixwl+F7bAJ5afwiUDmeXe9KINtMLFFxPOR62km0vFIBRQ2rlBw
-         oBKBGlaP1EmhP3mCMkA2vtFNglvfMXZYxJoyckV1dFMXe7sglzqr7nuabbtauoGcDBsu
-         sQG1hD6Ty0LZFWqyjzWg8ORPShDXZZw7qtifeOJzK1is4b1R6tATi3ZVG55ZV3E7TxTa
-         PQUjD+TOU68DzTBGhwlomI4d1tdznOQ2g7CJ7AHFLcLkcYE7MF/ert/0gDigpzuF2Yzq
-         w/3A==
-X-Gm-Message-State: AOJu0Yz76Mb/toFmmd+e4E9lrqNags2j1R8C8oPtwloV/q2h3uhGse4h
-        YzCaGZecL3otuba4v7XsxYIDmc7L3eQenKtDPln12XSGNR4X8yqZi5bYgOakM9qakOr9OUu279c
-        Z8Zu40XuOBWcUUeDsgX9zkDgodERgcnoI7Hlznn2CfQZ+b48A0kMy
-X-Received: by 2002:adf:edc2:0:b0:32d:a57b:8c8d with SMTP id v2-20020adfedc2000000b0032da57b8c8dmr12438006wro.69.1698238664539;
-        Wed, 25 Oct 2023 05:57:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHaI9gj2ovxx4sLpIcOCYpedqxIgHFi3Wcs69w/nw0GZB5lBOAnarl0/VEXOqC/394g7rDDa9Lg2WtTwOg2eIM=
-X-Received: by 2002:adf:edc2:0:b0:32d:a57b:8c8d with SMTP id
- v2-20020adfedc2000000b0032da57b8c8dmr12437987wro.69.1698238664182; Wed, 25
- Oct 2023 05:57:44 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231025104212.12738-1-lukas.bulwahn@gmail.com>
-In-Reply-To: <20231025104212.12738-1-lukas.bulwahn@gmail.com>
-From:   Dimitri John Ledkov <dimitri.ledkov@canonical.com>
-Date:   Wed, 25 Oct 2023 13:57:08 +0100
-Message-ID: <CADWks+ZoLs1FUJx0sSg5FBYK5BtD+Po7bRORVT4uBLM6QJxXJQ@mail.gmail.com>
-Subject: Re: [PATCH] docs: module-signing: adjust guide after sha1 and sha224
- support is gone
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        with ESMTP id S233033AbjJYQMw (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 25 Oct 2023 12:12:52 -0400
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC506136;
+        Wed, 25 Oct 2023 09:12:49 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailout.nyi.internal (Postfix) with ESMTP id 573BF5C022F;
+        Wed, 25 Oct 2023 12:12:49 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Wed, 25 Oct 2023 12:12:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
+         h=cc:cc:content-type:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to; s=fm2; t=1698250369; x=
+        1698336769; bh=hzZnckzsfVdY/d5nAAxnaS/VZqgX4l6X8qsQLMXgz7o=; b=k
+        SUpR7nXsLdnBZj+3/LnwISTaSJJaqialZ41pOIpB33smuanqY2izcAgEB9/fiQsp
+        4+3yYiNLtHSaIYFDHhPJgJOPf8qUO4k27xfgm31CUKX+L0EGjUCFBJh5sGBPCqzz
+        bb4DMCQ8xYjKE5JebX2dHlj9Ox2Kk4ycTj+dKsJWO7Bcl6blzyoX1ByAVyEgNcsz
+        wzRdhRv9yMbvpQ12FL4tkbh8KScw3Y28TDdg/sT6LrHzvf21CnMlKf6yT+XRE448
+        PRG6pOlCtUP4VVE6gaBcaKjpWs8nqoFj5yDZ2eB6Paiag9x3bhf6EaB19tojQ1Tc
+        wU4ubSJ43fMS1lXtMgeBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1698250369; x=1698336769; bh=hzZnckzsfVdY/
+        d5nAAxnaS/VZqgX4l6X8qsQLMXgz7o=; b=dCNya2qKKdzLspnFePdcw751pGDMG
+        UlYrMwNIB4gIgnv3Xz7eVaxaN+Fg8SLcZ/QBtED5tO16HQ8BoTLoav0u1ceJo18O
+        6o9GaJ+ns5ZEhveyeLwZCVgIxZEYyle796CqxdvJkp7zAjE2bimBsRA1NvUDVigc
+        hiQmTTuWqDgwz0ksx7jQdGORty7cw5KYO1CkeQTN63Y/SxXWShDYSyInAFtWgFvk
+        cSsXIhnfo6YbB17F1VIL29kQ6lQlchyLnjUkiEnH3P0MKkMY5plB0a41CILfss/8
+        V8SbnJJDAgicfuxwoi86E64Fo7N4b2SDVbAsf0xYJdG+N29tdPwlp1OLg==
+X-ME-Sender: <xms:gD45ZcRe13O5wUwMc8-8RBYn7VADT0Yk_Mi8F9-6BTfkQQjcpz5zPQ>
+    <xme:gD45ZZyNfW6ZZ1jtNFrWlgKn6faSsVz8YIdBFD5c0bKKEnYdbunCWFnFBJYtkzdPj
+    urg57uAjv4x4WGx1cU>
+X-ME-Received: <xmr:gD45ZZ3L36OsQ4bRuQ8Kk7ZVCKqgqRAejWtAxucXF2t89DQVwhPWZ9AYx4a06qKzzDAX6f6vebSymqA-1M0y3c6g6Fr-MAM8bYCI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrledtgdeljecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjfgesthdtredttderjeenucfhrhhomhepuegvnhcu
+    uehovggtkhgvlhcuoehmvgessggvnhgsohgvtghkvghlrdhnvghtqeenucggtffrrghtth
+    gvrhhnpeffleegffevleekffekheeigfdtleeuvddtgffhtddvfefgjeehffduueevkedv
+    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmvg
+    essggvnhgsohgvtghkvghlrdhnvght
+X-ME-Proxy: <xmx:gD45ZQAs2PaCTsuG1J_IaF9Iw5lxGylttujSuJ6O8Dkns-j11ThMKA>
+    <xmx:gD45ZViA1h1JU86CPz7iP4sk3YPNG16pvI-UIA0FJpcirCXMFNAiRg>
+    <xmx:gD45ZcpRqo2LKQPI79EJt1MaLc11MBwOSKxIWBt1COFUbJiaER830Q>
+    <xmx:gT45ZQprAFt55ukZEyvkkzpm5SXB2mh1Z3pDmqgxV4UWxy5n_9Bt8g>
+Feedback-ID: iffc1478b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 25 Oct 2023 12:12:48 -0400 (EDT)
+Date:   Wed, 25 Oct 2023 12:12:47 -0400
+From:   Ben Boeckel <me@benboeckel.net>
+To:     Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         David Howells <dhowells@redhat.com>,
         David Woodhouse <dwmw2@infradead.org>,
         Jonathan Corbet <corbet@lwn.net>,
@@ -71,76 +73,30 @@ Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
         linux-modules@vger.kernel.org, keyrings@vger.kernel.org,
         linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Subject: Re: [PATCH] docs: module-signing: adjust guide after sha1 and sha224
+ support is gone
+Message-ID: <ZTk+fytHiyfbgNFC@farprobe>
+References: <20231025104212.12738-1-lukas.bulwahn@gmail.com>
+ <CADWks+ZoLs1FUJx0sSg5FBYK5BtD+Po7bRORVT4uBLM6QJxXJQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CADWks+ZoLs1FUJx0sSg5FBYK5BtD+Po7bRORVT4uBLM6QJxXJQ@mail.gmail.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-Hi,
+On Wed, Oct 25, 2023 at 13:57:08 +0100, Dimitri John Ledkov wrote:
+> Sorry for not patching documentation at the same time as the code
+> changes that made documentation out of date.
 
-On Wed, 25 Oct 2023 at 11:42, Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
->
-> Commit 16ab7cb5825f ("crypto: pkcs7 - remove sha1 support") and commit
-> fc3225fd6f1e ("module: Do not offer sha224 for built-in module signing")
-> removes sha1 and sha224 support for kernel module signing.
->
-> Adjust the module-signing admin guide documentation to those changes.
->
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Should this, perhaps, get a `Fixes` trailer then?
 
-Note I have submitted this change as part of the patch series that
-adds SHA-3 over at
-https://lore.kernel.org/linux-crypto/20231022182208.188714-1-dimitri.ledkov@canonical.com/T/#m81c32a65341a4de39596b72743ba38d46899016f
-
-But indeed, if that patch series doesn't make it into the cryptodev
-tree, then this documentation should go in, and the sha-3 one rebased
-/ adjusted.
-
-Sorry for not patching documentation at the same time as the code
-changes that made documentation out of date.
-
-Acked-by: Dimitri John ledkov <dimitri.ledkov@canonical.com>
-
-> ---
->  Documentation/admin-guide/module-signing.rst | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/Documentation/admin-guide/module-signing.rst b/Documentation/admin-guide/module-signing.rst
-> index 2898b2703297..e3ea1def4c0c 100644
-> --- a/Documentation/admin-guide/module-signing.rst
-> +++ b/Documentation/admin-guide/module-signing.rst
-> @@ -30,8 +30,8 @@ This facility uses X.509 ITU-T standard certificates to encode the public keys
->  involved.  The signatures are not themselves encoded in any industrial standard
->  type.  The facility currently only supports the RSA public key encryption
->  standard (though it is pluggable and permits others to be used).  The possible
-> -hash algorithms that can be used are SHA-1, SHA-224, SHA-256, SHA-384, and
-> -SHA-512 (the algorithm is selected by data in the signature).
-> +hash algorithms that can be used are SHA-256, SHA-384, and SHA-512 (the
-> +algorithm is selected by data in the signature).
->
->
->  ==========================
-> @@ -81,8 +81,6 @@ This has a number of options available:
->       sign the modules with:
->
->          =============================== ==========================================
-> -       ``CONFIG_MODULE_SIG_SHA1``      :menuselection:`Sign modules with SHA-1`
-> -       ``CONFIG_MODULE_SIG_SHA224``    :menuselection:`Sign modules with SHA-224`
->         ``CONFIG_MODULE_SIG_SHA256``    :menuselection:`Sign modules with SHA-256`
->         ``CONFIG_MODULE_SIG_SHA384``    :menuselection:`Sign modules with SHA-384`
->         ``CONFIG_MODULE_SIG_SHA512``    :menuselection:`Sign modules with SHA-512`
-> --
-> 2.17.1
->
-
-
--- 
-okurrr,
-
-Dimitri
+--Ben
