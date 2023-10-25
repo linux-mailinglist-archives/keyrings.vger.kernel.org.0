@@ -2,173 +2,145 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0108C7D6C5A
-	for <lists+keyrings@lfdr.de>; Wed, 25 Oct 2023 14:51:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C25717D6C7F
+	for <lists+keyrings@lfdr.de>; Wed, 25 Oct 2023 14:58:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234911AbjJYMvI (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 25 Oct 2023 08:51:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60518 "EHLO
+        id S1344265AbjJYM5w (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 25 Oct 2023 08:57:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234913AbjJYMvH (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 25 Oct 2023 08:51:07 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41A31116;
-        Wed, 25 Oct 2023 05:51:04 -0700 (PDT)
-Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39PClMf6030661;
-        Wed, 25 Oct 2023 12:48:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=ULQ4YxdcX8D9cI1DIKnQIgJzU19KsvPJwigu81r9uA8=;
- b=eR86F/EbsAqLayHx+tBDE+qRqQBbFKHhivarsyNquDAIiqbow7KfyBkPnKzYcbVvskAV
- 9N1HQoljX8OIuS35mKs5P9CADTmUBWsvF6ys/ELKUTtqXiuHpek8e6mMyVFoYV/CZFrZ
- dsFgA+SZWSZ2wEkjKYlXxx2V7y5DmYDKKxsILpK5zYW5vyjMVQFH9t3UfamKbbJy9Iu5
- a4/G4kqpJw+r+kqPwzq98NzQyZA1/w9dpRoIXXT4RIHC2a4OVlBNQ9PSXiNM4dgmCFn7
- V76zbb5q+eIxjI+E20s59H4DjQ+Eto+SzNWbRn8JKs7JQNUPyDSx2O+qfSGqQzkLwHj/ zw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ty3b202j4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 25 Oct 2023 12:48:51 +0000
-Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39PClQrd030781;
-        Wed, 25 Oct 2023 12:48:47 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ty3b202ch-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 25 Oct 2023 12:48:47 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-        by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39PBi2k4012344;
-        Wed, 25 Oct 2023 12:48:44 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-        by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tvup1x4mh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 25 Oct 2023 12:48:44 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-        by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39PCmhSm28705464
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 25 Oct 2023 12:48:43 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 63E7658065;
-        Wed, 25 Oct 2023 12:48:43 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A572758055;
-        Wed, 25 Oct 2023 12:48:42 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.61.173.216])
-        by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-        Wed, 25 Oct 2023 12:48:42 +0000 (GMT)
-Message-ID: <ed4e9e491c381ea201c1ac37501c6582fba6334d.camel@linux.ibm.com>
-Subject: Re: [RFC PATCH] certs: Only allow certs signed by keys on the
- builtin keyring
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Denis Glazkov <d.glazkov@omp.ru>
-Cc:     David Howells <dhowells@redhat.com>,
+        with ESMTP id S234947AbjJYM5v (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 25 Oct 2023 08:57:51 -0400
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51D0ACC
+        for <keyrings@vger.kernel.org>; Wed, 25 Oct 2023 05:57:49 -0700 (PDT)
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 7612F3FD3C
+        for <keyrings@vger.kernel.org>; Wed, 25 Oct 2023 12:57:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1698238666;
+        bh=YZ12GF+aERDoIF3r6TEMZGT37W8A+JNypJswAaYxRhM=;
+        h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+         To:Cc:Content-Type;
+        b=Nq3lJYRjmvlNFzhC88nKA+acZLBDUj9Ov5G9LL4MuBCW+ekeopmaP6jh1I3O7zSi3
+         VHcgE4W3aVos+T3jx4sC9AuqdjMKXzFYdSIp7QtXybesE78Tp0Y+I9/UCodeFPk9vy
+         bhlFQn1hVxFVdvg+jlfaHTMdnjHRibS57BNgxU/3ADQoqprN+STbnIyn84Fqeue9z4
+         wueAES6fHVy8EtziuEz7fG/7tmbevvB9wpoMp9MhLoHG/JlQYoWmizinkzN1jdNFyW
+         rMz82xE0dxseXyB0G1AIoOTTCiGq4xJIkoTNpvV6GCnM4v2+Sif16TcizvuwguCX3v
+         qRT5RAREbrXog==
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-32d9cd6eb0bso2281719f8f.0
+        for <keyrings@vger.kernel.org>; Wed, 25 Oct 2023 05:57:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698238664; x=1698843464;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YZ12GF+aERDoIF3r6TEMZGT37W8A+JNypJswAaYxRhM=;
+        b=p7DrUviM4x3peIppARKe5b2MNeZJzqjXOn6R+tih6kaB5iBxS4ElRjR3u/MkXydbeQ
+         A/lEc3fR4Y2YuOGe0aixwl+F7bAJ5afwiUDmeXe9KINtMLFFxPOR62km0vFIBRQ2rlBw
+         oBKBGlaP1EmhP3mCMkA2vtFNglvfMXZYxJoyckV1dFMXe7sglzqr7nuabbtauoGcDBsu
+         sQG1hD6Ty0LZFWqyjzWg8ORPShDXZZw7qtifeOJzK1is4b1R6tATi3ZVG55ZV3E7TxTa
+         PQUjD+TOU68DzTBGhwlomI4d1tdznOQ2g7CJ7AHFLcLkcYE7MF/ert/0gDigpzuF2Yzq
+         w/3A==
+X-Gm-Message-State: AOJu0Yz76Mb/toFmmd+e4E9lrqNags2j1R8C8oPtwloV/q2h3uhGse4h
+        YzCaGZecL3otuba4v7XsxYIDmc7L3eQenKtDPln12XSGNR4X8yqZi5bYgOakM9qakOr9OUu279c
+        Z8Zu40XuOBWcUUeDsgX9zkDgodERgcnoI7Hlznn2CfQZ+b48A0kMy
+X-Received: by 2002:adf:edc2:0:b0:32d:a57b:8c8d with SMTP id v2-20020adfedc2000000b0032da57b8c8dmr12438006wro.69.1698238664539;
+        Wed, 25 Oct 2023 05:57:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHaI9gj2ovxx4sLpIcOCYpedqxIgHFi3Wcs69w/nw0GZB5lBOAnarl0/VEXOqC/394g7rDDa9Lg2WtTwOg2eIM=
+X-Received: by 2002:adf:edc2:0:b0:32d:a57b:8c8d with SMTP id
+ v2-20020adfedc2000000b0032da57b8c8dmr12437987wro.69.1698238664182; Wed, 25
+ Oct 2023 05:57:44 -0700 (PDT)
+MIME-Version: 1.0
+References: <20231025104212.12738-1-lukas.bulwahn@gmail.com>
+In-Reply-To: <20231025104212.12738-1-lukas.bulwahn@gmail.com>
+From:   Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+Date:   Wed, 25 Oct 2023 13:57:08 +0100
+Message-ID: <CADWks+ZoLs1FUJx0sSg5FBYK5BtD+Po7bRORVT4uBLM6QJxXJQ@mail.gmail.com>
+Subject: Re: [PATCH] docs: module-signing: adjust guide after sha1 and sha224
+ support is gone
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        David Howells <dhowells@redhat.com>,
         David Woodhouse <dwmw2@infradead.org>,
-        "David S . Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org
-Date:   Wed, 25 Oct 2023 08:48:42 -0400
-In-Reply-To: <CWG7J7N7NE6L.3MHDW81QMPYRY@suppilovahvero>
-References: <20231017122507.185896-1-zohar@linux.ibm.com>
-         <CWG7J7N7NE6L.3MHDW81QMPYRY@suppilovahvero>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: CldYim4D4jzZ8ofLEelVGGlHu_e3dx_m
-X-Proofpoint-GUID: vjUz4cSy6JV3TOQao940HKm-E3urhV7O
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-25_01,2023-10-25_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=999 spamscore=0 suspectscore=0 malwarescore=0 impostorscore=0
- phishscore=0 clxscore=1015 mlxscore=0 lowpriorityscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310170001 definitions=main-2310250111
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        Jonathan Corbet <corbet@lwn.net>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        linux-modules@vger.kernel.org, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue, 2023-10-24 at 02:28 +0300, Jarkko Sakkinen wrote:
-> On Tue Oct 17, 2023 at 3:25 PM EEST, Mimi Zohar wrote:
-> > Originally the secondary trusted keyring provided a keyring to which extra
-> > keys may be added, provided those keys were not blacklisted and were
-> > vouched for by a key built into the kernel or already in the secondary
-> > trusted keyring.
-> >
-> > On systems with the machine keyring configured, additional keys may also
-> > be vouched for by a key on the machine keyring.
-> >
-> > Prevent loading additional certificates directly onto the secondary
-> > keyring, vouched for by keys on the machine keyring, yet allow these
-> > certificates to be loaded onto other trusted keyrings.
-> >
-> > Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-> > ---
-> >  certs/Kconfig                     | 16 +++++++++++++++-
-> >  crypto/asymmetric_keys/restrict.c |  4 ++++
-> >  2 files changed, 19 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/certs/Kconfig b/certs/Kconfig
-> > index 4a4dc8aab892..2e621963d260 100644
-> > --- a/certs/Kconfig
-> > +++ b/certs/Kconfig
-> > @@ -88,7 +88,21 @@ config SECONDARY_TRUSTED_KEYRING
-> >  	help
-> >  	  If set, provide a keyring to which extra keys may be added, provided
-> >  	  those keys are not blacklisted and are vouched for by a key built
-> > -	  into the kernel or already in the secondary trusted keyring.
-> > +	  into the kernel, machine keyring (if configured), or already in the
-> > +	  secondary trusted keyring.
-> > +
-> > +config SECONDARY_TRUSTED_KEYRING_SIGNED_BY_BUILTIN
-> > +	bool "Only allow additional certs signed by keys on the builtin trusted keyring"
-> > +	depends on SECONDARY_TRUSTED_KEYRING
-> > +	help
-> > +	  If set, only certificates signed by keys on the builtin trusted
-> > +	  keyring may be loaded onto the secondary trusted keyring.
-> > +
-> > +	  Note: The machine keyring, if configured, will be linked to the
-> > +	  secondary keyring.  When enabling this option, it is recommended
-> > +	  to also configure INTEGRITY_CA_MACHINE_KEYRING_MAX to prevent
-> > +	  linking code signing keys with imputed trust to the secondary
-> > +	  trusted keyring.
-> >  
-> >  config SECONDARY_TRUSTED_KEYRING_FOR_CA_CERTIFICATES_ONLY
-> >  	bool "Allow only CA certificates to be added to the secondary trusted keyring"
-> > diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/restrict.c
-> > index 6b69ea40da23..afcd4d101ac5 100644
-> > --- a/crypto/asymmetric_keys/restrict.c
-> > +++ b/crypto/asymmetric_keys/restrict.c
-> > @@ -102,6 +102,10 @@ int restrict_link_by_signature(struct key *dest_keyring,
-> >  
-> >  	if (use_builtin_keys && !test_bit(KEY_FLAG_BUILTIN, &key->flags))
-> >  		ret = -ENOKEY;
-> > +	else if (IS_BUILTIN(CONFIG_SECONDARY_TRUSTED_KEYRING_SIGNED_BY_BUILTIN) &&
-> > +		 !strcmp(dest_keyring->description, ".secondary_trusted_keys") &&
-> > +		 !test_bit(KEY_FLAG_BUILTIN, &key->flags))
-> > +		ret = -ENOKEY;
-> >  	else
-> >  		ret = verify_signature(key, sig);
-> >  	key_put(key);
-> 
-> Plese pick this to your tree.
-> 
-> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Hi,
 
-Thanks, Jarkko.   Applied.
+On Wed, 25 Oct 2023 at 11:42, Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
+>
+> Commit 16ab7cb5825f ("crypto: pkcs7 - remove sha1 support") and commit
+> fc3225fd6f1e ("module: Do not offer sha224 for built-in module signing")
+> removes sha1 and sha224 support for kernel module signing.
+>
+> Adjust the module-signing admin guide documentation to those changes.
+>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+
+Note I have submitted this change as part of the patch series that
+adds SHA-3 over at
+https://lore.kernel.org/linux-crypto/20231022182208.188714-1-dimitri.ledkov@canonical.com/T/#m81c32a65341a4de39596b72743ba38d46899016f
+
+But indeed, if that patch series doesn't make it into the cryptodev
+tree, then this documentation should go in, and the sha-3 one rebased
+/ adjusted.
+
+Sorry for not patching documentation at the same time as the code
+changes that made documentation out of date.
+
+Acked-by: Dimitri John ledkov <dimitri.ledkov@canonical.com>
+
+> ---
+>  Documentation/admin-guide/module-signing.rst | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+>
+> diff --git a/Documentation/admin-guide/module-signing.rst b/Documentation/admin-guide/module-signing.rst
+> index 2898b2703297..e3ea1def4c0c 100644
+> --- a/Documentation/admin-guide/module-signing.rst
+> +++ b/Documentation/admin-guide/module-signing.rst
+> @@ -30,8 +30,8 @@ This facility uses X.509 ITU-T standard certificates to encode the public keys
+>  involved.  The signatures are not themselves encoded in any industrial standard
+>  type.  The facility currently only supports the RSA public key encryption
+>  standard (though it is pluggable and permits others to be used).  The possible
+> -hash algorithms that can be used are SHA-1, SHA-224, SHA-256, SHA-384, and
+> -SHA-512 (the algorithm is selected by data in the signature).
+> +hash algorithms that can be used are SHA-256, SHA-384, and SHA-512 (the
+> +algorithm is selected by data in the signature).
+>
+>
+>  ==========================
+> @@ -81,8 +81,6 @@ This has a number of options available:
+>       sign the modules with:
+>
+>          =============================== ==========================================
+> -       ``CONFIG_MODULE_SIG_SHA1``      :menuselection:`Sign modules with SHA-1`
+> -       ``CONFIG_MODULE_SIG_SHA224``    :menuselection:`Sign modules with SHA-224`
+>         ``CONFIG_MODULE_SIG_SHA256``    :menuselection:`Sign modules with SHA-256`
+>         ``CONFIG_MODULE_SIG_SHA384``    :menuselection:`Sign modules with SHA-384`
+>         ``CONFIG_MODULE_SIG_SHA512``    :menuselection:`Sign modules with SHA-512`
+> --
+> 2.17.1
+>
+
 
 -- 
-thanks,
+okurrr,
 
-Mimi
-
-
-
-
+Dimitri
