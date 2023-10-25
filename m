@@ -2,101 +2,105 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B4B47D7181
-	for <lists+keyrings@lfdr.de>; Wed, 25 Oct 2023 18:13:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE4057D726B
+	for <lists+keyrings@lfdr.de>; Wed, 25 Oct 2023 19:36:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233808AbjJYQMx (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 25 Oct 2023 12:12:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45208 "EHLO
+        id S231552AbjJYRgN (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Wed, 25 Oct 2023 13:36:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233033AbjJYQMw (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 25 Oct 2023 12:12:52 -0400
-Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC506136;
-        Wed, 25 Oct 2023 09:12:49 -0700 (PDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailout.nyi.internal (Postfix) with ESMTP id 573BF5C022F;
-        Wed, 25 Oct 2023 12:12:49 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Wed, 25 Oct 2023 12:12:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
-         h=cc:cc:content-type:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm2; t=1698250369; x=
-        1698336769; bh=hzZnckzsfVdY/d5nAAxnaS/VZqgX4l6X8qsQLMXgz7o=; b=k
-        SUpR7nXsLdnBZj+3/LnwISTaSJJaqialZ41pOIpB33smuanqY2izcAgEB9/fiQsp
-        4+3yYiNLtHSaIYFDHhPJgJOPf8qUO4k27xfgm31CUKX+L0EGjUCFBJh5sGBPCqzz
-        bb4DMCQ8xYjKE5JebX2dHlj9Ox2Kk4ycTj+dKsJWO7Bcl6blzyoX1ByAVyEgNcsz
-        wzRdhRv9yMbvpQ12FL4tkbh8KScw3Y28TDdg/sT6LrHzvf21CnMlKf6yT+XRE448
-        PRG6pOlCtUP4VVE6gaBcaKjpWs8nqoFj5yDZ2eB6Paiag9x3bhf6EaB19tojQ1Tc
-        wU4ubSJ43fMS1lXtMgeBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1698250369; x=1698336769; bh=hzZnckzsfVdY/
-        d5nAAxnaS/VZqgX4l6X8qsQLMXgz7o=; b=dCNya2qKKdzLspnFePdcw751pGDMG
-        UlYrMwNIB4gIgnv3Xz7eVaxaN+Fg8SLcZ/QBtED5tO16HQ8BoTLoav0u1ceJo18O
-        6o9GaJ+ns5ZEhveyeLwZCVgIxZEYyle796CqxdvJkp7zAjE2bimBsRA1NvUDVigc
-        hiQmTTuWqDgwz0ksx7jQdGORty7cw5KYO1CkeQTN63Y/SxXWShDYSyInAFtWgFvk
-        cSsXIhnfo6YbB17F1VIL29kQ6lQlchyLnjUkiEnH3P0MKkMY5plB0a41CILfss/8
-        V8SbnJJDAgicfuxwoi86E64Fo7N4b2SDVbAsf0xYJdG+N29tdPwlp1OLg==
-X-ME-Sender: <xms:gD45ZcRe13O5wUwMc8-8RBYn7VADT0Yk_Mi8F9-6BTfkQQjcpz5zPQ>
-    <xme:gD45ZZyNfW6ZZ1jtNFrWlgKn6faSsVz8YIdBFD5c0bKKEnYdbunCWFnFBJYtkzdPj
-    urg57uAjv4x4WGx1cU>
-X-ME-Received: <xmr:gD45ZZ3L36OsQ4bRuQ8Kk7ZVCKqgqRAejWtAxucXF2t89DQVwhPWZ9AYx4a06qKzzDAX6f6vebSymqA-1M0y3c6g6Fr-MAM8bYCI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrledtgdeljecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjfgesthdtredttderjeenucfhrhhomhepuegvnhcu
-    uehovggtkhgvlhcuoehmvgessggvnhgsohgvtghkvghlrdhnvghtqeenucggtffrrghtth
-    gvrhhnpeffleegffevleekffekheeigfdtleeuvddtgffhtddvfefgjeehffduueevkedv
-    vdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmvg
-    essggvnhgsohgvtghkvghlrdhnvght
-X-ME-Proxy: <xmx:gD45ZQAs2PaCTsuG1J_IaF9Iw5lxGylttujSuJ6O8Dkns-j11ThMKA>
-    <xmx:gD45ZViA1h1JU86CPz7iP4sk3YPNG16pvI-UIA0FJpcirCXMFNAiRg>
-    <xmx:gD45ZcpRqo2LKQPI79EJt1MaLc11MBwOSKxIWBt1COFUbJiaER830Q>
-    <xmx:gT45ZQprAFt55ukZEyvkkzpm5SXB2mh1Z3pDmqgxV4UWxy5n_9Bt8g>
-Feedback-ID: iffc1478b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 25 Oct 2023 12:12:48 -0400 (EDT)
-Date:   Wed, 25 Oct 2023 12:12:47 -0400
-From:   Ben Boeckel <me@benboeckel.net>
-To:     Dimitri John Ledkov <dimitri.ledkov@canonical.com>
-Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        David Howells <dhowells@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        linux-modules@vger.kernel.org, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] docs: module-signing: adjust guide after sha1 and sha224
- support is gone
-Message-ID: <ZTk+fytHiyfbgNFC@farprobe>
-References: <20231025104212.12738-1-lukas.bulwahn@gmail.com>
- <CADWks+ZoLs1FUJx0sSg5FBYK5BtD+Po7bRORVT4uBLM6QJxXJQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CADWks+ZoLs1FUJx0sSg5FBYK5BtD+Po7bRORVT4uBLM6QJxXJQ@mail.gmail.com>
-User-Agent: Mutt/2.2.9 (2022-11-12)
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S234524AbjJYRgC (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Wed, 25 Oct 2023 13:36:02 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F8D6183;
+        Wed, 25 Oct 2023 10:36:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3551DC433C8;
+        Wed, 25 Oct 2023 17:35:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698255359;
+        bh=76zTKwswmBirf1LCqHxQmnoZ+6FzNZDOXE/gwyujFsM=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=lj+Ip072aXzpoqSgPyMhTHwAuLFysevZmOBAkVx+ZMK32rMbctOB7YPlz6oRtA03Z
+         8ppvmdIo6hyxLCIfUvvmJNKOTxyLIKOdf+42c6zSVzjKetK0JYlDSuFleOSKfbqQ8D
+         vxklxPt/SCMuhC27qPxyKNHB1eRkdTZGlzFr39OheOmwtnOFcxWxAFmiVSNiP4ZV6j
+         3IjftZ2yz/lkmkGuaKimR5kmtsJDYaVJigdbpshaFaiEzap1h6eodxqq/gk8N3hrC8
+         8BuiBgQzMWV08SM9MB9JtYWCjYYebLFT5FAe587OskyVpLphNWtvtcc3EJ5VuF0XXa
+         8FVxtfbgdabhA==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Wed, 25 Oct 2023 20:35:55 +0300
+Message-Id: <CWHPA3T3YIJT.148L3L98EXBXD@suppilovahvero>
+Cc:     <linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>,
+        "James Bottomley" <James.Bottomley@hansenpartnership.com>,
+        "William Roberts" <bill.c.roberts@gmail.com>,
+        "Stefan Berger" <stefanb@linux.ibm.com>,
+        "David Howells" <dhowells@redhat.com>,
+        "Jason Gunthorpe" <jgg@ziepe.ca>,
+        "Mimi Zohar" <zohar@linux.ibm.com>,
+        "Peter Huewe" <peterhuewe@gmx.de>,
+        "Mario Limonciello" <mario.limonciello@amd.com>,
+        "Julien Gomes" <julien@arista.com>,
+        "open list" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 1/6] tpm: Move buffer handling from static inlines to
+ real functions
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Jerry Snitselaar" <jsnitsel@redhat.com>
+X-Mailer: aerc 0.15.2
+References: <20231024011531.442587-1-jarkko@kernel.org>
+ <20231024011531.442587-2-jarkko@kernel.org>
+ <qktrbbbqrz3z4jh4h7pz42leikmyg2mdevzl2brapn32kst55e@s5thpstdtlxp>
+In-Reply-To: <qktrbbbqrz3z4jh4h7pz42leikmyg2mdevzl2brapn32kst55e@s5thpstdtlxp>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Wed, Oct 25, 2023 at 13:57:08 +0100, Dimitri John Ledkov wrote:
-> Sorry for not patching documentation at the same time as the code
-> changes that made documentation out of date.
+On Wed Oct 25, 2023 at 12:03 PM EEST, Jerry Snitselaar wrote:
+> Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
 
-Should this, perhaps, get a `Fixes` trailer then?
+On Wed, 2023-10-25 at 02:03 -0700, Jerry Snitselaar wrote:
+> Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+>
 
---Ben
+Thanks I'll add it to the next round.
+
+For the tpm_buf_read(), I was thinking along the lines of:
+
+/**
+ * tpm_buf_read() - Read from a TPM buffer
+ * @buf:	&tpm_buf instance
+ * @pos:	position within the buffer
+ * @count:	the number of bytes to read
+ * @output:	the output buffer
+ *
+ * Read bytes from a TPM buffer, and update the position. Returns false whe=
+n the
+ * amount of bytes requested would overflow the buffer, which is expected t=
+o
+ * only happen in the case of hardware failure.
+ */
+static bool tpm_buf_read(const struct tpm_buf *buf, off_t *pos, size_t coun=
+t, void *output)
+{
+	off_t next =3D *pos + count;
+
+	if (next >=3D buf->length) {
+		pr_warn("%s: %lu >=3D %lu\n", __func__, next, *offset);
+		return false;
+	}
+
+	memcpy(output, &buf->data[*pos], count);
+	*offset =3D next;
+	return true;
+}
+
+BR, Jarkko
+
+
+
+
