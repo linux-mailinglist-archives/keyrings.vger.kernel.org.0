@@ -2,205 +2,132 @@ Return-Path: <keyrings-owner@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6CA37D729D
-	for <lists+keyrings@lfdr.de>; Wed, 25 Oct 2023 19:49:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA7DB7D8752
+	for <lists+keyrings@lfdr.de>; Thu, 26 Oct 2023 19:11:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231539AbjJYRth (ORCPT <rfc822;lists+keyrings@lfdr.de>);
-        Wed, 25 Oct 2023 13:49:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48252 "EHLO
+        id S235044AbjJZRLY (ORCPT <rfc822;lists+keyrings@lfdr.de>);
+        Thu, 26 Oct 2023 13:11:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229978AbjJYRtg (ORCPT
-        <rfc822;keyrings@vger.kernel.org>); Wed, 25 Oct 2023 13:49:36 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B990181;
-        Wed, 25 Oct 2023 10:49:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A26C433C8;
-        Wed, 25 Oct 2023 17:49:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698256173;
-        bh=CeyTBZs2xeQb0TaJ5m+PpCM8nU28HSwaY1ik5tYD5o0=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=nadt9RxLEqdHQTzPCvB13pBQ1Ju+RhH3NuQ+TT+dsOEsLlKYWgzWmdZbyM7HjHxsG
-         R7PqnTwS5jDxcU0LCHA15oW67sHKbxeTFWDFsZkNjS6wPoDme83JMnIAkPZg+iMOiG
-         gvM89z6zDpLOCUhfgShobVv5NtRtt4igElnNjJJ596qVQ+FJAdlCIlJVfWw15kw+fH
-         f5I8rbfwXSh5SoR2cWdwEa/TzVEJcmGZb6bAlUNACxoItcxlsz1b14qIJ0v05LDXT/
-         /IOHbguBYqKOkVKZvQ+XVSmfCas70j1oqYv3vTtDp6JapFQpKWQ/rNR8apP0znKWAp
-         pOMIzfudAr/HA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 25 Oct 2023 20:49:24 +0300
-Message-Id: <CWHPKFQIGWPM.B6IBLPXVBR1E@suppilovahvero>
-Cc:     "Shawn Guo" <shawnguo@kernel.org>,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        "Sascha Hauer" <s.hauer@pengutronix.de>,
-        "Pengutronix Kernel Team" <kernel@pengutronix.de>,
-        "Fabio Estevam" <festevam@gmail.com>,
-        "NXP Linux Team" <linux-imx@nxp.com>,
-        "Ahmad Fatoum" <a.fatoum@pengutronix.de>,
-        "sigma star Kernel Team" <upstream+dcp@sigma-star.at>,
-        "David Howells" <dhowells@redhat.com>,
-        "Li Yang" <leoyang.li@nxp.com>, "Paul Moore" <paul@paul-moore.com>,
-        "James Morris" <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        "Randy Dunlap" <rdunlap@infradead.org>,
-        "Catalin Marinas" <catalin.marinas@arm.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        "Tejun Heo" <tj@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>,
-        <linux-crypto@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linuxppc-dev@lists.ozlabs.org>,
-        <linux-security-module@vger.kernel.org>,
-        "Richard Weinberger" <richard@nod.at>,
-        "David Oberhollenzer" <david.oberhollenzer@sigma-star.at>
-Subject: Re: [PATCH v4 2/5] KEYS: trusted: Introduce NXP DCP-backed trusted
- keys
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "David Gstir" <david@sigma-star.at>,
-        "Mimi Zohar" <zohar@linux.ibm.com>,
-        "James Bottomley" <jejb@linux.ibm.com>,
-        "Herbert Xu" <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>
-X-Mailer: aerc 0.15.2
-References: <20231024162024.51260-1-david@sigma-star.at>
- <20231024162024.51260-3-david@sigma-star.at>
-In-Reply-To: <20231024162024.51260-3-david@sigma-star.at>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S235014AbjJZRLW (ORCPT
+        <rfc822;keyrings@vger.kernel.org>); Thu, 26 Oct 2023 13:11:22 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2D6F10A
+        for <keyrings@vger.kernel.org>; Thu, 26 Oct 2023 10:10:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1698340232;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=/CIQaN2hYmBCGrEr5wSwlpK+Nw1/R/cDnWMd/K0WyEc=;
+        b=e1+DOlpGjnBLGAh79lixXcH7TjWR/Trntm8ZwSKCmoQxhmFFo7z7XH0rZHucp6qJb4yGJG
+        Q+PmOngLmQviG4gVXRWM9zoXyI3j/kIxsXcOThjfefbUqMQ3Sb/rc5SNQ+IFMwW6nAMsEg
+        bTztXT+ts1NLVbN5GuoXQrnt2WY2Zn4=
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com
+ [209.85.167.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-199-TpOV_BrlPNKE0OCUJRxnhw-1; Thu, 26 Oct 2023 13:10:30 -0400
+X-MC-Unique: TpOV_BrlPNKE0OCUJRxnhw-1
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-3b51e0bd5c0so1506759b6e.2
+        for <keyrings@vger.kernel.org>; Thu, 26 Oct 2023 10:10:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698340229; x=1698945029;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/CIQaN2hYmBCGrEr5wSwlpK+Nw1/R/cDnWMd/K0WyEc=;
+        b=Rk8UmK2MRWLVD9xjifExwSuIA0Gih9zeGxUyz4Gst7uqUUZVz60FjuTThzoLHy9v2b
+         e+xzckyVNi2dPlGBqHjdi2n6dUw2l1PK7x3i/G95TVO0Ajwf3GvlE0WODtPrJAz3vbkG
+         SHqaGikhuBYlp4SfO7AOFyI3poQS40dYHrvD+O8U/9OKCULfErw1AJB1JJ89a6TnEZ8x
+         /L1vjjeSvLY3RXkiIMOkqgqwRvwXN5dgDkue8f37Cr8NKIXkv6EfIlh0CgfanyT9/kK1
+         mKb3HuKh0AvZyy1lwWzZb9WE7ADuUi9eRi/lST9vmMCKhMVAIsa3DsKaVNaTXAXttwHK
+         Il2w==
+X-Gm-Message-State: AOJu0YwoCaxeRBY7+Y/iw535rotX92t+T0dOw8EK/o38DZJcYvfFOseQ
+        yqRzqepgs8Ku4H+CBd7AG5DtMkhSfdzpLH4nrKqFyZfrcI9nJRZ8E1PJXxNmssSDTjXMify/N3E
+        UIQPlUum0AfcVvh8FmNiMaBUwQWw=
+X-Received: by 2002:a05:6870:700e:b0:1e9:9469:a858 with SMTP id u14-20020a056870700e00b001e99469a858mr177896oae.39.1698340228765;
+        Thu, 26 Oct 2023 10:10:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFMcG7bFJI3uZvagRkgLSPwdpNdpoULYCl6UniOWGqMYyzyTbNJBhELZeGRoTmo2AKqS168Kw==
+X-Received: by 2002:a05:6870:700e:b0:1e9:9469:a858 with SMTP id u14-20020a056870700e00b001e99469a858mr177884oae.39.1698340228525;
+        Thu, 26 Oct 2023 10:10:28 -0700 (PDT)
+Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
+        by smtp.gmail.com with ESMTPSA id b23-20020ac86bd7000000b0041969bc2e4csm5160636qtt.32.2023.10.26.10.10.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Oct 2023 10:10:28 -0700 (PDT)
+Date:   Thu, 26 Oct 2023 10:10:26 -0700
+From:   Jerry Snitselaar <jsnitsel@redhat.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        William Roberts <bill.c.roberts@gmail.com>,
+        Stefan Berger <stefanb@linux.ibm.com>,
+        David Howells <dhowells@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Julien Gomes <julien@arista.com>,
+        open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3 1/6] tpm: Move buffer handling from static inlines to
+ real functions
+Message-ID: <g6grxamrilogiy4vjrvwwn6iz2xm26oeq2y7redbskvcreil6w@seavf5djd4ph>
+References: <20231024011531.442587-1-jarkko@kernel.org>
+ <20231024011531.442587-2-jarkko@kernel.org>
+ <qktrbbbqrz3z4jh4h7pz42leikmyg2mdevzl2brapn32kst55e@s5thpstdtlxp>
+ <CWHPA3T3YIJT.148L3L98EXBXD@suppilovahvero>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CWHPA3T3YIJT.148L3L98EXBXD@suppilovahvero>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <keyrings.vger.kernel.org>
 X-Mailing-List: keyrings@vger.kernel.org
 
-On Tue Oct 24, 2023 at 7:20 PM EEST, David Gstir wrote:
-> DCP (Data Co-Processor) is the little brother of NXP's CAAM IP.
-> Beside of accelerated crypto operations, it also offers support for
-> hardware-bound keys. Using this feature it is possible to implement a blo=
-b
-> mechanism similar to what CAAM offers. Unlike on CAAM, constructing and
-> parsing the blob has to happen in software (i.e. the kernel).
->
-> The software-based blob format used by DCP trusted keys encrypts
-> the payload using AES-128-GCM with a freshly generated random key and non=
-ce.
-> The random key itself is AES-128-ECB encrypted using the DCP unique
-> or OTP key.
->
-> The DCP trusted key blob format is:
-> /*
->  * struct dcp_blob_fmt - DCP BLOB format.
+On Wed, Oct 25, 2023 at 08:35:55PM +0300, Jarkko Sakkinen wrote:
+> On Wed Oct 25, 2023 at 12:03 PM EEST, Jerry Snitselaar wrote:
+> > Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+> 
+> On Wed, 2023-10-25 at 02:03 -0700, Jerry Snitselaar wrote:
+> > Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+> >
+> 
+> Thanks I'll add it to the next round.
+> 
+> For the tpm_buf_read(), I was thinking along the lines of:
+> 
+> /**
+>  * tpm_buf_read() - Read from a TPM buffer
+>  * @buf:	&tpm_buf instance
+>  * @pos:	position within the buffer
+>  * @count:	the number of bytes to read
+>  * @output:	the output buffer
 >  *
->  * @fmt_version: Format version, currently being %1
->  * @blob_key: Random AES 128 key which is used to encrypt @payload,
->  *            @blob_key itself is encrypted with OTP or UNIQUE device key=
- in
->  *            AES-128-ECB mode by DCP.
->  * @nonce: Random nonce used for @payload encryption.
->  * @payload_len: Length of the plain text @payload.
->  * @payload: The payload itself, encrypted using AES-128-GCM and @blob_ke=
-y,
->  *           GCM auth tag of size AES_BLOCK_SIZE is attached at the end o=
-f it.
->  *
->  * The total size of a DCP BLOB is sizeof(struct dcp_blob_fmt) + @payload=
-_len +
->  * AES_BLOCK_SIZE.
+>  * Read bytes from a TPM buffer, and update the position. Returns false when the
+>  * amount of bytes requested would overflow the buffer, which is expected to
+>  * only happen in the case of hardware failure.
 >  */
-> struct dcp_blob_fmt {
-> 	__u8 fmt_version;
-> 	__u8 blob_key[AES_KEYSIZE_128];
-> 	__u8 nonce[AES_KEYSIZE_128];
-> 	__le32 payload_len;
-> 	__u8 payload[];
-> } __packed;
->
-> By default the unique key is used. It is also possible to use the
-> OTP key. While the unique key should be unique it is not documented how
-> this key is derived. Therefore selection the OTP key is supported as
-> well via the use_otp_key module parameter.
->
-> Co-developed-by: Richard Weinberger <richard@nod.at>
-> Signed-off-by: Richard Weinberger <richard@nod.at>
-> Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-> Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-> Signed-off-by: David Gstir <david@sigma-star.at>
-> ---
->  include/keys/trusted_dcp.h                |  11 +
->  security/keys/trusted-keys/Kconfig        |   9 +-
->  security/keys/trusted-keys/Makefile       |   2 +
->  security/keys/trusted-keys/trusted_core.c |   6 +-
->  security/keys/trusted-keys/trusted_dcp.c  | 311 ++++++++++++++++++++++
->  5 files changed, 337 insertions(+), 2 deletions(-)
->  create mode 100644 include/keys/trusted_dcp.h
->  create mode 100644 security/keys/trusted-keys/trusted_dcp.c
->
-> diff --git a/include/keys/trusted_dcp.h b/include/keys/trusted_dcp.h
-> new file mode 100644
-> index 000000000000..9aaa42075b40
-> --- /dev/null
-> +++ b/include/keys/trusted_dcp.h
-> @@ -0,0 +1,11 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +/*
-> + * Copyright (C) 2021 sigma star gmbh
-> + */
-> +
-> +#ifndef TRUSTED_DCP_H
-> +#define TRUSTED_DCP_H
-> +
-> +extern struct trusted_key_ops dcp_trusted_key_ops;
-> +
-> +#endif
-> diff --git a/security/keys/trusted-keys/Kconfig b/security/keys/trusted-k=
-eys/Kconfig
-> index dbfdd8536468..c6b80b7e5c78 100644
-> --- a/security/keys/trusted-keys/Kconfig
-> +++ b/security/keys/trusted-keys/Kconfig
-> @@ -33,6 +33,13 @@ config TRUSTED_KEYS_CAAM
->  	  Enable use of NXP's Cryptographic Accelerator and Assurance Module
->  	  (CAAM) as trusted key backend.
-> =20
-> -if !TRUSTED_KEYS_TPM && !TRUSTED_KEYS_TEE && !TRUSTED_KEYS_CAAM
-> +config TRUSTED_KEYS_DCP
-> +	bool "DCP-based trusted keys"
-> +	depends on CRYPTO_DEV_MXS_DCP >=3D TRUSTED_KEYS
-> +	default y
-> +	help
-> +	  Enable use of NXP's DCP (Data Co-Processor) as trusted key backend.
-> +
-> +if !TRUSTED_KEYS_TPM && !TRUSTED_KEYS_TEE && !TRUSTED_KEYS_CAAM && !TRUS=
-TED_KEYS_DCP
+> static bool tpm_buf_read(const struct tpm_buf *buf, off_t *pos, size_t count, void *output)
+> {
+> 	off_t next = *pos + count;
+> 
+> 	if (next >= buf->length) {
+> 		pr_warn("%s: %lu >= %lu\n", __func__, next, *offset);
+> 		return false;
+> 	}
+> 
+> 	memcpy(output, &buf->data[*pos], count);
+> 	*offset = next;
+> 	return true;
+> }
+> 
+> BR, Jarkko
+> 
 
-This does not scale tbh.
+Then the callers will check, and return -EIO?
 
-I'd suggest to add additional patch before adding the new key type,
-which clears this up a little bit.
-
-First:
-
-config HAVE_TRUSTED_KEYS
-	bool
-
-And then following this pattern to all trusted key types:
-
-config TRUSTED_KEYS_DCP
-	bool "DCP-based trusted keys"
-	depends on CRYPTO_DEV_MXS_DCP >=3D TRUSTED_KEYS
-	default y
-	select HAVE_TRUSTED_KEYS
-	help
-	  Enable use of NXP's DCP (Data Co-Processor) as trusted key backend.
-
-And finally:
-
-if !HAVE_TRUSTED_KEYS
-	comment "No trust source selected!"
-endif
-
-BR, Jarkko
