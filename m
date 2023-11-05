@@ -1,168 +1,101 @@
-Return-Path: <keyrings+bounces-10-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-11-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A597E1764
-	for <lists+keyrings@lfdr.de>; Sun,  5 Nov 2023 23:42:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C238D7E1768
+	for <lists+keyrings@lfdr.de>; Sun,  5 Nov 2023 23:46:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D7601C2093A
-	for <lists+keyrings@lfdr.de>; Sun,  5 Nov 2023 22:42:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80F14281234
+	for <lists+keyrings@lfdr.de>; Sun,  5 Nov 2023 22:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1375A3C04;
-	Sun,  5 Nov 2023 22:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C96F8F77;
+	Sun,  5 Nov 2023 22:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="OtRNMGZp";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="OtRNMGZp"
+	dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b="5qpOpQAz";
+	dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b="CM073Dtk"
 X-Original-To: keyrings@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D985615A6
-	for <keyrings@vger.kernel.org>; Sun,  5 Nov 2023 22:42:10 +0000 (UTC)
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95076CF;
-	Sun,  5 Nov 2023 14:42:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1699224125;
-	bh=8cXH1/Q4sHqWtgac+Sz4lIYk/+iiFfAcIe+nqos9YHE=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=OtRNMGZpt8C0C3EbyXo9vhekL8eMI49tLrSWoDb73wavLUk2npuysDqf4RjM7Z5Gx
-	 Ot3/3yi/Cu0FonYecScCfyvRR4PW7LgXKu8U+jL5cP1YVIUVvHNcyM0T37V726F1Sx
-	 Gv9xkTJ2QvEcivs1lgz+2ai0ceMt3WVpzZjdzRmU=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 9B48E12810B5;
-	Sun,  5 Nov 2023 17:42:05 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id LpbKEJnu54r0; Sun,  5 Nov 2023 17:42:05 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1699224125;
-	bh=8cXH1/Q4sHqWtgac+Sz4lIYk/+iiFfAcIe+nqos9YHE=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=OtRNMGZpt8C0C3EbyXo9vhekL8eMI49tLrSWoDb73wavLUk2npuysDqf4RjM7Z5Gx
-	 Ot3/3yi/Cu0FonYecScCfyvRR4PW7LgXKu8U+jL5cP1YVIUVvHNcyM0T37V726F1Sx
-	 Gv9xkTJ2QvEcivs1lgz+2ai0ceMt3WVpzZjdzRmU=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B99F2156E2
+	for <keyrings@vger.kernel.org>; Sun,  5 Nov 2023 22:45:57 +0000 (UTC)
+Received: from s1.sapience.com (s1.sapience.com [72.84.236.66])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEDF810B;
+	Sun,  5 Nov 2023 14:45:55 -0800 (PST)
+Authentication-Results: dkim-srvy7; dkim=pass (Good ed25519-sha256 
+   signature) header.d=sapience.com header.i=@sapience.com 
+   header.a=ed25519-sha256; dkim=pass (Good 2048 bit rsa-sha256 signature) 
+   header.d=sapience.com header.i=@sapience.com header.a=rsa-sha256
+Received: from srv8.prv.sapience.com (srv8.prv.sapience.com [x.x.x.x])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 417611280143;
-	Sun,  5 Nov 2023 17:42:04 -0500 (EST)
-Message-ID: <2162ca751035b3ea8c5ce8409c17c1906951181d.camel@HansenPartnership.com>
-Subject: Re: [PATCH v3 1/6] tpm: Move buffer handling from static inlines to
- real functions
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>, Jerry Snitselaar
- <jsnitsel@redhat.com>
-Cc: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, William
- Roberts <bill.c.roberts@gmail.com>, Stefan Berger <stefanb@linux.ibm.com>,
- David Howells <dhowells@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, Mimi
- Zohar <zohar@linux.ibm.com>,  Peter Huewe <peterhuewe@gmx.de>, Mario
- Limonciello <mario.limonciello@amd.com>, Julien Gomes <julien@arista.com>,
- open list <linux-kernel@vger.kernel.org>
-Date: Sun, 05 Nov 2023 17:42:02 -0500
-In-Reply-To: <ac616f9f1eef89e9c202b43d2be5b3ccb6afd1dd.camel@kernel.org>
-References: <20231024011531.442587-1-jarkko@kernel.org>
-	 <20231024011531.442587-2-jarkko@kernel.org>
-	 <qktrbbbqrz3z4jh4h7pz42leikmyg2mdevzl2brapn32kst55e@s5thpstdtlxp>
-	 <CWHPA3T3YIJT.148L3L98EXBXD@suppilovahvero>
-	 <g6grxamrilogiy4vjrvwwn6iz2xm26oeq2y7redbskvcreil6w@seavf5djd4ph>
-	 <d468a3f18e871f2af4db9c104d393866849ff2d0.camel@HansenPartnership.com>
-	 <3e69c10c5d03ab2ccf7bda82b7ed9991dbced523.camel@kernel.org>
-	 <ac616f9f1eef89e9c202b43d2be5b3ccb6afd1dd.camel@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
+	(No client certificate requested)
+	by s1.sapience.com (Postfix) with ESMTPS id 21EA1480A29;
+	Sun,  5 Nov 2023 17:45:55 -0500 (EST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=sapience.com;
+ i=@sapience.com; q=dns/txt; s=dk-ed25519-220413; t=1699224355;
+ h=message-id : date : mime-version : subject : from : to : references
+ : in-reply-to : content-type : content-transfer-encoding : from;
+ bh=5f9IVU0iQFOUi7B5c/rYv8o9c2hnsOJAQqtuHXKCsKI=;
+ b=5qpOpQAzgIwi6DjsdMrKbhfe6fZVZ7N9WW8VWNQm40xLe1nCf3Krjq6UkJrT2uhnfOqh4
+ WSK+FVOx7v9LJIcBA==
+ARC-Seal: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412; t=1699224355;
+	cv=none; b=adkHv2B+W+gCcM+LUmT9xeCZNWgMEQr9S8cKQlDsvsrB3vpaoruastZxTgzvoprBfrECJLfIMgBjde2r40yIzKPMhZRmM66t/ZPXcbYXSyNbI2OHIkZHjlac7jN6Czxcuy7vHXnzloA3FHt4o5jK1F1O0geqDOr6ZpQBpljGGKjJ+NHihOivSwH1qPqBdhIAkrLlE80H0qLWdWQiu2cKMg4pl7UKp3y27kCkGRQwXm+MAqmTvnWzrpsTLJtLcCyMeDpXKXjJMobCAvwq5WNDl9kkiizf7k24GjhUl7A2fxVYQqIIuB+FXfTTBaqZAJoRjx+HOqJTfNa7uHshaNNdbw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412;
+	t=1699224355; c=relaxed/simple;
+	bh=bOCDA6Mt95d3IbyNTKeIFPj/IhJ/HLkkTXsdCMbIR4c=;
+	h=DKIM-Signature:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:Content-Language:From:To:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding; b=gBZ6aNexEPM5VscNugANygb5ZXbkB2CD++LhvtzBfwFJ+qPYDmwuCA8SvktDilzq//1ys5Yig/zjyJ9Ufsl1oXADU19s8biriugkuW28AIZLWMoZ4lxNF+JmdDKqFFe582ytXvjqqW/DH26WvbFL/EVTzFbz2Vqv7//J1hXpyVI+2w6FR5y4MvT//o42DrkqnNtAyRp63JoWuOoGOWyqM/l4A8zS0m+EYlCAXHgOjqdz1EnsFQRCC9LyQbFIPX2jYY5pHpygOdMKLc/61WO4dRuO+asROs22fGMyhaU+UK4wDTyT2yYtQ9Rm84bU28YuZojbBQbf7oGEC8BdC4Q4Xw==
+ARC-Authentication-Results: i=1; arc-srv8.sapience.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sapience.com;
+ i=@sapience.com; q=dns/txt; s=dk-rsa-220413; t=1699224355;
+ h=message-id : date : mime-version : subject : from : to : references
+ : in-reply-to : content-type : content-transfer-encoding : from;
+ bh=5f9IVU0iQFOUi7B5c/rYv8o9c2hnsOJAQqtuHXKCsKI=;
+ b=CM073DtkpL2mMWIKbhDrpl6mzH7bXYHRfxVNWxrfEz5+v/ixqnyRz4+6aPC6g6QGBlij/
+ 1JnA6EAAt0B80zjvo0V5UJkVA6BSkyHi+Ov7Bc6u84rSchCh/1qgvGWgh+VWsPYdtcOcvdW
+ +jnI5wwn2OWYY8KmhhDup8oxInPgIMyPVAIjzsFUYhryWzHvPCK38Od9RB6q7XBpm3l9Yk4
+ Z/CEZt6BPVBTN26FD7u3kf+S0aD45CcGJZCPHmFV+b07EprHXheghY3/dScHXMYWpazaV2w
+ iRsda7mXkyk1mgQWbMXSUVqKuSmr/v0kQvkq0IuPfPlnDTMwg3jjxwTf2nYg==
+Message-ID: <e76b6853-95e9-46b4-bc8a-ac10a1be2246@sapience.com>
+Date: Sun, 5 Nov 2023 17:45:53 -0500
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: Hash sha3-512 vs scripts/sign-file vs openssl
+Content-Language: en-US
+From: Genes Lists <lists@sapience.com>
+To: linux-kernel@vger.kernel.org, dhowells@redhat.com, dwmw2@infradead.org,
+ keyrings@vger.kernel.org
+References: <be576842-6ad5-43f8-abcf-bd7fa84e235d@sapience.com>
+In-Reply-To: <be576842-6ad5-43f8-abcf-bd7fa84e235d@sapience.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On Mon, 2023-11-06 at 00:01 +0200, Jarkko Sakkinen wrote:
-> On Sun, 2023-11-05 at 23:59 +0200, Jarkko Sakkinen wrote:
-> > On Thu, 2023-10-26 at 13:55 -0400, James Bottomley wrote:
-> > > On Thu, 2023-10-26 at 10:10 -0700, Jerry Snitselaar wrote:
-> > > > On Wed, Oct 25, 2023 at 08:35:55PM +0300, Jarkko Sakkinen
-> > > > wrote:
-> > > > > On Wed Oct 25, 2023 at 12:03 PM EEST, Jerry Snitselaar wrote:
-> > > > > > Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-> > > > > 
-> > > > > On Wed, 2023-10-25 at 02:03 -0700, Jerry Snitselaar wrote:
-> > > > > > Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-> > > > > > 
-> > > > > 
-> > > > > Thanks I'll add it to the next round.
-> > > > > 
-> > > > > For the tpm_buf_read(), I was thinking along the lines of:
-> > > > > 
-> > > > > /**
-> > > > >  * tpm_buf_read() - Read from a TPM buffer
-> > > > >  * @buf:        &tpm_buf instance
-> > > > >  * @pos:        position within the buffer
-> > > > >  * @count:      the number of bytes to read
-> > > > >  * @output:     the output buffer
-> > > > >  *
-> > > > >  * Read bytes from a TPM buffer, and update the position.
-> > > > > Returns
-> > > > > false when the
-> > > > >  * amount of bytes requested would overflow the buffer, which
-> > > > > is
-> > > > > expected to
-> > > > >  * only happen in the case of hardware failure.
-> > > > >  */
-> > > > > static bool tpm_buf_read(const struct tpm_buf *buf, off_t
-> > > > > *pos,
-> > > > > size_t count, void *output)
-> > > > > {
-> > > > >         off_t next = *pos + count;
-> > > > > 
-> > > > >         if (next >= buf->length) {
-> > > > >                 pr_warn("%s: %lu >= %lu\n", __func__, next,
-> > > > > *offset);
-> > > > >                 return false;
-> > > > >         }
-> > > > > 
-> > > > >         memcpy(output, &buf->data[*pos], count);
-> > > > >         *offset = next;
-> > > > >         return true;
-> > > > > }
-> > > > > 
-> > > > > BR, Jarkko
-> > > > > 
-> > > > 
-> > > > Then the callers will check, and return -EIO?
-> > > 
-> > > Really, no, why would we do that?
-> > > 
-> > > The initial buffer is a page and no TPM currently can have a
-> > > command that big, so if the buffer overflows, it's likely a
-> > > programming error (failure to terminate loop or something) rather
-> > > than a runtime one (a user actually induced a command that big
-> > > and wanted it to be sent to the TPM).  The only reason you might
-> > > need to check is the no-alloc case and you passed in a much
-> > > smaller buffer, but even there, I would guess it will come down
-> > > to a coding fault not a possible runtime error.
-> > 
-> > 
-> > Yeah, this was my thinking too. So in HMAC case you anyway would
-> > not need to check it because crypto is destined to fail anyway.
-> > 
-> > Returning boolean here does no harm so I thought that this is
-> > overally good compromise.
+On 11/5/23 16:49, Genes Lists wrote:
+> Mainline modules signing supports sha3-xxx.
 > 
-> Or actually maybe we should go just with void, as it does have even
-> then "return value", as it emits to klog, right?
+..
+>   At main.c:321:
+> - SSL error:2EFFF06F:CMS routines:CRYPTO_internal:ctrl failure: 
+> cms/cms_sd.c:269
+> 
+> openssl version here on arch is 3.1.4 and this may quite possibly be 
+..
 
-Right, these functions are almost drop in replacements for the
-get_inc_XX ones.  The latter were void returning because all the
-knowledge of what is being looked for is in the calling routine,
-because it knows at a macro level what structure the buffer should
-have.
+I confirm that linking sign-file against openssl git head works fine.
 
-James
+So it should be fixed in openssl 3.2
+
+regards,
+
+gene
 
 
