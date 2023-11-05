@@ -1,126 +1,99 @@
-Return-Path: <keyrings+bounces-5-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-6-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B40627DC78C
-	for <lists+keyrings@lfdr.de>; Tue, 31 Oct 2023 08:46:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 994E67E16F0
+	for <lists+keyrings@lfdr.de>; Sun,  5 Nov 2023 22:55:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67AE0281684
-	for <lists+keyrings@lfdr.de>; Tue, 31 Oct 2023 07:46:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFE961C2088E
+	for <lists+keyrings@lfdr.de>; Sun,  5 Nov 2023 21:55:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E306910A10;
-	Tue, 31 Oct 2023 07:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E9D18E0B;
+	Sun,  5 Nov 2023 21:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="jiPJS0IG"
+	dkim=permerror (0-bit key) header.d=sapience.com header.i=@sapience.com header.b="hn0HvWaq";
+	dkim=pass (2048-bit key) header.d=sapience.com header.i=@sapience.com header.b="A/BLgfPu"
 X-Original-To: keyrings@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F093E20E6
-	for <keyrings@vger.kernel.org>; Tue, 31 Oct 2023 07:45:58 +0000 (UTC)
-Received: from m15.mail.163.com (m15.mail.163.com [45.254.50.219])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9261FF1;
-	Tue, 31 Oct 2023 00:45:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=EteBa
-	//SMZcb/2FTv07A9wc8ZWg6lHHk08GTm5LnHF8=; b=jiPJS0IGr7o3hxanmw0nD
-	wuyPuzruCbrlHPsSwSz2gkzsD56wYRf8u/PM2NR4HbvuuRHiD8pI3LIEwYzKd9os
-	AOauRQx+Jy+MVql/QU+j7AmbrSCForGyak7gR+Tl8MMA7E+13jThWDImwXbE/aoy
-	+xRNBwvKRbkuD8pqKtdUxc=
-Received: from localhost.localdomain (unknown [106.13.245.201])
-	by zwqz-smtp-mta-g2-1 (Coremail) with SMTP id _____wD3_1yXsEBlr83VBw--.26819S2;
-	Tue, 31 Oct 2023 15:45:34 +0800 (CST)
-From: Yusong Gao <a869920004@163.com>
-To: dhowells@redhat.com,
-	dwmw2@infradead.org
-Cc: keyrings@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yusong Gao <a869920004@163.com>
-Subject: [PATCH] sign-file: Correct return value check for sign-file
-Date: Tue, 31 Oct 2023 07:45:17 +0000
-Message-Id: <20231031074517.858183-1-a869920004@163.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E465418E05
+	for <keyrings@vger.kernel.org>; Sun,  5 Nov 2023 21:55:39 +0000 (UTC)
+X-Greylist: delayed 376 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 05 Nov 2023 13:55:37 PST
+Received: from s1.sapience.com (s1.sapience.com [72.84.236.66])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 528CBBF;
+	Sun,  5 Nov 2023 13:55:37 -0800 (PST)
+Authentication-Results: dkim-srvy7; dkim=pass (Good ed25519-sha256 
+   signature) header.d=sapience.com header.i=@sapience.com 
+   header.a=ed25519-sha256; dkim=pass (Good 2048 bit rsa-sha256 signature) 
+   header.d=sapience.com header.i=@sapience.com header.a=rsa-sha256
+Received: from srv8.prv.sapience.com (srv8.prv.sapience.com [x.x.x.x])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
+	(No client certificate requested)
+	by s1.sapience.com (Postfix) with ESMTPS id 280C348025C;
+	Sun,  5 Nov 2023 16:49:20 -0500 (EST)
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=sapience.com;
+ i=@sapience.com; q=dns/txt; s=dk-ed25519-220413; t=1699220960;
+ h=message-id : date : mime-version : to : from : subject :
+ content-type : content-transfer-encoding : from;
+ bh=w846FgME/jEcSJRPkUT+ZucoFM06xqBTLPlRyUMyt8s=;
+ b=hn0HvWaq6dUgP+jUeAGCetMpGQoPmkBxxAEWWEgtpxD79Vfe0CxpavryroBU9zMGZuH8M
+ lJCs5aEsNn56GoKDQ==
+ARC-Seal: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412; t=1699220960;
+	cv=none; b=Ztn1KmpLgJwq3NohB8Rt0r2DUJ8I+AhHQZPZBMERcwUPFtai2R3sCrzye6mubAn6j45UI/XB+oM/4pzzKkEFhAfDYynb4yMSu8pEzMe8+MC2hy5fv0HYXehWU2fUyQX/tHLAn/xYueQkHZqedF8OQxqNzZiKUIeAYkmvQpf5Ba4yrpHoWmkkKodQxRn758cKIc0fQnUq7xqOjvwV7TrKoQiTK4g63ZdFn7Sf8iptzJGn10LyO/yXAE8L/G4O8bYY4KbzqTc3pJFJYtNkFTMuPJqkK3v3v3zK4qsvhiS/hEQ1r5PDZszn4ozCkuXQDGPUICyJ7B5r18+GayUSz0S56A==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=sapience.com; s=arc6-rsa-220412;
+	t=1699220960; c=relaxed/simple;
+	bh=ea3jR6zDLYnVl7gOllMac0LjYLqs6vkRIFyTtg7L8Do=;
+	h=DKIM-Signature:DKIM-Signature:Message-ID:Date:MIME-Version:
+	 User-Agent:Content-Language:To:From:Subject:Content-Type:
+	 Content-Transfer-Encoding; b=WPM0QxcMzrziTFBmETOdXnEEfgm+CIBfRf9V4ydnGlUVygH8J5pmv6GHL1thmvpg5LWKnxhxtN+88PAVs/88+HUy+m+nOlLPbruNYnPDy1WB57d3MZm0fADeiOBK99CWqpgzp5zBSLxo9w+YOmzG0gsOX2fqqGdy4AbRENG0g+8AQ/zmMy5Ilfl2y7K0ApQhZkFEmrwvfTviEzWaynwV2bjH92QWWGdm5dY2JHvvaXTP2vXusPuRFklon1fKQVQv7+fRTP+2f4zRz+aMZP/aFPlIzYefwiziSSl+2QZkR87F1HFE9e1+5/Y37nXKbcIFfNrEmBjjS5i67PrekUZzsA==
+ARC-Authentication-Results: i=1; arc-srv8.sapience.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sapience.com;
+ i=@sapience.com; q=dns/txt; s=dk-rsa-220413; t=1699220960;
+ h=message-id : date : mime-version : to : from : subject :
+ content-type : content-transfer-encoding : from;
+ bh=w846FgME/jEcSJRPkUT+ZucoFM06xqBTLPlRyUMyt8s=;
+ b=A/BLgfPuXDptzdPMLpdKBWrtsFISvHhe1YDsTtPW7cNzzJu+hOb2wOeEFaiq4QrYR5emt
+ 59Fon2rspHZIAeevUE7kEcrCQxjOBg76pjQZ8Wse9lWTaQn57WliMnYrrLAPOJHc+LJFdgC
+ tmKk+9iHnVbCU6jqQIpe6q52KHm9c3xRBkQ+rxBml5LI5mAFLy5w0sRA+cojD6v5KSBJf7b
+ 7MyMGNrAbF+4nXJEcEayFspAnuFZ4zI3Gc+x1NGjCZFlcxFSFgmuTDCdFNe/h1NLsnw0LSY
+ GwRC067BT1yb0UeKagnT+4BR68MJ8j/MlaFqhdnQ+TbG1tFQCcuD47NSQpvQ==
+Message-ID: <be576842-6ad5-43f8-abcf-bd7fa84e235d@sapience.com>
+Date: Sun, 5 Nov 2023 16:49:19 -0500
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD3_1yXsEBlr83VBw--.26819S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ZF48Zw4kCr1UXFW8ur4rXwb_yoW8Kr47pr
-	4Fk3WSyFWxJrWqyay7K3W0kF45Kr4kt3Wru3Z8Jw1YyFyYq3yIgr4v9a4rXr95XF45ur15
-	XF97Jay5Aa45JFUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zReOJrUUUUU=
-X-Originating-IP: [106.13.245.201]
-X-CM-SenderInfo: zdywmmasqqiki6rwjhhfrp/xtbB0wYa6VXl18I-LgAAsS
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: linux-kernel@vger.kernel.org, dhowells@redhat.com, dwmw2@infradead.org,
+ keyrings@vger.kernel.org
+From: Genes Lists <lists@sapience.com>
+Subject: Hash sha3-512 vs scripts/sign-file vs openssl
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-There are some wrong return value check in sign-file when call OpenSSL
-API. For example the CMS_final() return 1 for success or 0 for failure
-The ERR() check cond is wrong because of the program only check the
-return value is < 0 instead of <= 0, so correct it.
+Mainline modules signing supports sha3-xxx.
 
-Reference:
-https://www.openssl.org/docs/manmaster/man3/CMS_final.html
-https://www.openssl.org/docs/manmaster/man3/i2d_CMS_bio_stream.html
-https://www.openssl.org/docs/manmaster/man3/i2d_PKCS7_bio.html
-https://www.openssl.org/docs/manmaster/man3/BIO_free.html
+However, unless I'm doing something wonky, signing fails and it appears 
+to come from scripts/sign-file failing in CMS_add1_signer() :
 
-Signed-off-by: Yusong Gao <a869920004@163.com>
----
- scripts/sign-file.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+  At main.c:321:
+- SSL error:2EFFF06F:CMS routines:CRYPTO_internal:ctrl failure: 
+cms/cms_sd.c:269
 
-diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-index 598ef5465f82..dcebbcd6bebd 100644
---- a/scripts/sign-file.c
-+++ b/scripts/sign-file.c
-@@ -322,7 +322,7 @@ int main(int argc, char **argv)
- 				     CMS_NOSMIMECAP | use_keyid |
- 				     use_signed_attrs),
- 		    "CMS_add1_signer");
--		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) < 0,
-+		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) <= 0,
- 		    "CMS_final");
- 
- #else
-@@ -341,10 +341,10 @@ int main(int argc, char **argv)
- 			b = BIO_new_file(sig_file_name, "wb");
- 			ERR(!b, "%s", sig_file_name);
- #ifndef USE_PKCS7
--			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) < 0,
-+			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) <= 0,
- 			    "%s", sig_file_name);
- #else
--			ERR(i2d_PKCS7_bio(b, pkcs7) < 0,
-+			ERR(i2d_PKCS7_bio(b, pkcs7) <= 0,
- 			    "%s", sig_file_name);
- #endif
- 			BIO_free(b);
-@@ -374,9 +374,9 @@ int main(int argc, char **argv)
- 
- 	if (!raw_sig) {
- #ifndef USE_PKCS7
--		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) < 0, "%s", dest_name);
-+		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) <= 0, "%s", dest_name);
- #else
--		ERR(i2d_PKCS7_bio(bd, pkcs7) < 0, "%s", dest_name);
-+		ERR(i2d_PKCS7_bio(bd, pkcs7) <= 0, "%s", dest_name);
- #endif
- 	} else {
- 		BIO *b;
-@@ -396,7 +396,7 @@ int main(int argc, char **argv)
- 	ERR(BIO_write(bd, &sig_info, sizeof(sig_info)) < 0, "%s", dest_name);
- 	ERR(BIO_write(bd, magic_number, sizeof(magic_number) - 1) < 0, "%s", dest_name);
- 
--	ERR(BIO_free(bd) < 0, "%s", dest_name);
-+	ERR(BIO_free(bd) <= 0, "%s", dest_name);
- 
- 	/* Finally, if we're signing in place, replace the original. */
- 	if (replace_orig)
--- 
-2.34.1
+openssl version here on arch is 3.1.4 and this may quite possibly be 
+related to the following issue with sha3 and ecdsa, but not clear to me.
+
+   https://github.com/openssl/openssl/pull/22147
+
+regards,
+
+gene
 
 
