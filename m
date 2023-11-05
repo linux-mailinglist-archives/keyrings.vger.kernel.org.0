@@ -1,56 +1,57 @@
-Return-Path: <keyrings+bounces-7-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-8-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2FD67E16F7
-	for <lists+keyrings@lfdr.de>; Sun,  5 Nov 2023 22:58:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 215A67E1706
+	for <lists+keyrings@lfdr.de>; Sun,  5 Nov 2023 22:59:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80AA4B20C38
-	for <lists+keyrings@lfdr.de>; Sun,  5 Nov 2023 21:58:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A624E281263
+	for <lists+keyrings@lfdr.de>; Sun,  5 Nov 2023 21:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E6718C39;
-	Sun,  5 Nov 2023 21:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671D618C3F;
+	Sun,  5 Nov 2023 21:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HEkEgeT4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PhmAnmpB"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15819168BB
-	for <keyrings@vger.kernel.org>; Sun,  5 Nov 2023 21:57:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5716C433C7;
-	Sun,  5 Nov 2023 21:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481DD168BB
+	for <keyrings@vger.kernel.org>; Sun,  5 Nov 2023 21:59:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E290C433C8;
+	Sun,  5 Nov 2023 21:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1699221478;
-	bh=n34n91FMUrksdk+c27jo66gRnU2yKoyb5esJtMxTQLE=;
+	s=k20201202; t=1699221575;
+	bh=+fQntMiPTShEdZDkX4ZTyKiQpFcFE2MgFsGVK1Zt3BU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=HEkEgeT4essBePRujfHGNBM9f/URbJywdVYzzlnohAwNCij4XsiB0gQG9m1MlqdX7
-	 nJ77QX28EA41SDj9hvnw510+WC/ikrpXJYyMiRv1w4SDn76eVCF84JGo3/6VHRd022
-	 T4GEOmB/vIdvpoiWre08WIbzGa1oIoPdw5k9aJaQg0DIduAfpDYbGFXvDF+ueRmc6r
-	 /c4OiPIqIu/JbnIHwTbP0LAvBQ21alqsCdBH/e/H29j4hd4LxUc9xOzd0Ya9pJG3og
-	 6pz27VimAftyuw6e+6msxAw8y6uRSjyKYHJxjFRkf6vjE7cV+D9vTevSLP4+TObyko
-	 Jt9mpfnQEc8Pg==
-Message-ID: <0fc4ef0992e0bc4b824b5f395c00a2a4e143b10f.camel@kernel.org>
+	b=PhmAnmpBd1TjDjAgEOv940jUoT08+DToVP0RwHaBjYk8E6FRMHsrWRG8u5T398p+5
+	 58PMi6j/zKxtXVk5ma199nnTC5nD+Rko9Y3EwlhywAYUnF0oTrn9vXOfZlAnER6Nn+
+	 1Rm7muMZU16Jx9F6h8fXTTm2q6jUY+72xO3YeIiG6dXtGcF5bkpcEurDob02EpkBZ5
+	 XOHHSNM9/+LSr80W8KkkZyPJCCWUOKM/G9qrl7isK7Ij2M3EUUvNUy/U4a+Wk8xbQ/
+	 r+IVYIe0Fhr7HtdeE0LE3YWxiPorHnqJDOGZFo02i7Ll5yu8azMVWWqO4E58f63IfS
+	 x3GOUCb3VTxEw==
+Message-ID: <3e69c10c5d03ab2ccf7bda82b7ed9991dbced523.camel@kernel.org>
 Subject: Re: [PATCH v3 1/6] tpm: Move buffer handling from static inlines to
  real functions
 From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Jerry Snitselaar <jsnitsel@redhat.com>
-Cc: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, James
- Bottomley <James.Bottomley@hansenpartnership.com>, William Roberts
- <bill.c.roberts@gmail.com>, Stefan Berger <stefanb@linux.ibm.com>, David
- Howells <dhowells@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, Mimi Zohar
- <zohar@linux.ibm.com>,  Peter Huewe <peterhuewe@gmx.de>, Mario Limonciello
- <mario.limonciello@amd.com>, Julien Gomes <julien@arista.com>, open list
- <linux-kernel@vger.kernel.org>
-Date: Sun, 05 Nov 2023 23:57:28 +0200
-In-Reply-To: <g6grxamrilogiy4vjrvwwn6iz2xm26oeq2y7redbskvcreil6w@seavf5djd4ph>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>, Jerry
+ Snitselaar <jsnitsel@redhat.com>
+Cc: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, William
+ Roberts <bill.c.roberts@gmail.com>, Stefan Berger <stefanb@linux.ibm.com>,
+ David Howells <dhowells@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>, Mimi
+ Zohar <zohar@linux.ibm.com>,  Peter Huewe <peterhuewe@gmx.de>, Mario
+ Limonciello <mario.limonciello@amd.com>, Julien Gomes <julien@arista.com>,
+ open list <linux-kernel@vger.kernel.org>
+Date: Sun, 05 Nov 2023 23:59:31 +0200
+In-Reply-To: <d468a3f18e871f2af4db9c104d393866849ff2d0.camel@HansenPartnership.com>
 References: <20231024011531.442587-1-jarkko@kernel.org>
 	 <20231024011531.442587-2-jarkko@kernel.org>
 	 <qktrbbbqrz3z4jh4h7pz42leikmyg2mdevzl2brapn32kst55e@s5thpstdtlxp>
 	 <CWHPA3T3YIJT.148L3L98EXBXD@suppilovahvero>
 	 <g6grxamrilogiy4vjrvwwn6iz2xm26oeq2y7redbskvcreil6w@seavf5djd4ph>
+	 <d468a3f18e871f2af4db9c104d393866849ff2d0.camel@HansenPartnership.com>
 Autocrypt: addr=jarkko@kernel.org; prefer-encrypt=mutual;
  keydata=mQINBF0RXVoBEACq7dxNqGliHRIUjKeA0Ajj8R0JiNRbhayBAmCmjfDh6m/QTNfyCmFBv6ZPe4EbBEyCgcFxerS0qgkaRD0FApKgtrX842rkwDyyhTA222rkv5Q/U2SY1Hi55kekBcAgYHVQzhvHnRrckvE7YxDlH06mnUGlL63s9NI/xnhtJvn92rLNvWqAyn+48Ud/EcE9oBo6vvq10O0UAHN/PEsyqtThN9tlTEKH8IMXmy1FAC70Ov8Ap63ZJT2RE7H4wbIYrHOOxarfHaKHcKy+UjZBhuQ54sGxxch2kXQCfkXOY7Ab7KKNkb4u2jDc6lyz8TJlc8Twi5KQcWBzomnYy5R0OJ01g6byY7vCSwAfCSp87P50F5O2pmjqd82mdB3Noy+CWIlV1kjMjaJglTyFGym7CWkvx7+yP+Jjq643aIbveN/Tx5OYZIhtSMRtJDzT+nDIgD83NyHL6JHO3LzKZEw6yZJWWSXyK9P5H8RX7ipWf3o3NaUCcs1K8wyTcgBZ/GT9X9SprH1ySYAGJz+G1UyPMQT1V4OirkQaMfN0Ht7jl6gEXXOs0Ks1sOdaKZUFIGn9P1cNRixp34Bw3edL4ZjNljXZa12MqzbaArTCm+WzJqrvkToOx2bqU37Y1vNskOBdYkCvWhKsIf8Gj5LZiVjFnX27bXeLv6Gd3asJ4qcQAl06+wARAQABtChKYXJra28gU2Fra2luZW4gPGphcmtrby5zYWtraW5lbkBpa2kuZmk+iQJXBBMBCgBBAhsBBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAhkBFiEEUQfmbTR4ipPjInyQOrBUhsd1L+EFAmSlnJMFCQl1crkACgkQOrBUhsd1L+EPKw/9EnoAjcbK+duuIN4JA6iXCfdWrYK8DhvaMgfNIbH4ZrtbMYwAPsHeZTv/C47pf48sp200OvdQoA2qoYdtX+I1JLhz7aaRtemBp1lwZEESeNG5j
 	0EwCSLeR6ITQanlpnj8FQ0MnLi8yKf8crWR8QyKlE96zT1yBFxNsjveGHBpW9syHjSFUZOLVA9JVSv6eSGobvU265EPxekVH3+GreSzs/lXWOMvXdLONbUtRJSktq1/p8T5m+btNxRKRi16gQOK8gZL/VRXg0/GLhNgobOniAYKz/q9pM/6vQWDzVeg+ur1HHbln/C28DJNubV8+4VnmZGWDpb2AOrEVX8xXyPr6MZmsPdf0/X5nSHDjF8+NOwWfPcdIu+ZmPKX0kAzDtefDoXD54dm13WvPVxH1zS1hz66LKRmEhutXUpE05U+XBrpxlXGKEU3MF/XeaMN04s6JktjXyIyAeG7G7TrexHcDEmi7bbUhzPCHMHnL3ialXDH59hpzdYBMiFkMiQ1xv45ow5W3AsCkfgljEG4GAnLbvnFJgbcvdYhR5QEfS2/vBXLrmHsi+cNlGuD9maf22ymiUJEdAe9AtwapT6YLNSlHuOF4OhmBemYkmTAYB6Jo/2jD5sSDnQXglO/Ib1+qh9Adj/iCgjavijojl3kebWNcusZGspuQpYQKoKHFSZLyqe0I0phcmtrbyBTYWtraW5lbiA8amFya2tvQGtlcm5lbC5vcmc+iQJUBBMBCgA+AhsBBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAFiEEUQfmbTR4ipPjInyQOrBUhsd1L+EFAmSlnJ8FCQl1crkACgkQOrBUhsd1L+H4UxAAnw2J8ew6vDB+vAK2snuNKUaVsyZX2EPJJ9WZStGkCyEzbnG/a3dk4ktpGlNLpk9tJJKTpb88efDIkp/Xa1fIUuOP75QQO8lNePX8lsc1aVWwNr4QHqTWe1Jgr1rBE29qeZA1R/poAMezI3Rrn5YEchexdDqFICba6KL2Wzl/yFR2puXMZoscVen3+NjyXE2UZiLdH0F/zacr2sIiwzKwp3Ej3m+fXmvxp+EPvRlt9LzxiTnDNKAy3A+xBec2uNveAM
@@ -71,62 +72,80 @@ List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Thu, 2023-10-26 at 10:10 -0700, Jerry Snitselaar wrote:
-> On Wed, Oct 25, 2023 at 08:35:55PM +0300, Jarkko Sakkinen wrote:
-> > On Wed Oct 25, 2023 at 12:03 PM EEST, Jerry Snitselaar wrote:
-> > > Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-> >=20
-> > On Wed, 2023-10-25 at 02:03 -0700, Jerry Snitselaar wrote:
-> > > Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+On Thu, 2023-10-26 at 13:55 -0400, James Bottomley wrote:
+> On Thu, 2023-10-26 at 10:10 -0700, Jerry Snitselaar wrote:
+> > On Wed, Oct 25, 2023 at 08:35:55PM +0300, Jarkko Sakkinen wrote:
+> > > On Wed Oct 25, 2023 at 12:03 PM EEST, Jerry Snitselaar wrote:
+> > > > Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+> > >=20
+> > > On Wed, 2023-10-25 at 02:03 -0700, Jerry Snitselaar wrote:
+> > > > Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+> > > >=20
+> > >=20
+> > > Thanks I'll add it to the next round.
+> > >=20
+> > > For the tpm_buf_read(), I was thinking along the lines of:
+> > >=20
+> > > /**
+> > > =C2=A0* tpm_buf_read() - Read from a TPM buffer
+> > > =C2=A0* @buf:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0&tpm_buf=
+ instance
+> > > =C2=A0* @pos:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0position=
+ within the buffer
+> > > =C2=A0* @count:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0the number of byte=
+s to read
+> > > =C2=A0* @output:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0the output buffer
+> > > =C2=A0*
+> > > =C2=A0* Read bytes from a TPM buffer, and update the position. Return=
+s
+> > > false when the
+> > > =C2=A0* amount of bytes requested would overflow the buffer, which is
+> > > expected to
+> > > =C2=A0* only happen in the case of hardware failure.
+> > > =C2=A0*/
+> > > static bool tpm_buf_read(const struct tpm_buf *buf, off_t *pos,
+> > > size_t count, void *output)
+> > > {
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0off_t next =3D *pos +=
+ count;
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (next >=3D buf->le=
+ngth) {
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0pr_warn("%s: %lu >=3D %lu\n", __func__, next,
+> > > *offset);
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0return false;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> > >=20
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0memcpy(output, &buf->=
+data[*pos], count);
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0*offset =3D next;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return true;
+> > > }
+> > >=20
+> > > BR, Jarkko
 > > >=20
 > >=20
-> > Thanks I'll add it to the next round.
-> >=20
-> > For the tpm_buf_read(), I was thinking along the lines of:
-> >=20
-> > /**
-> > =C2=A0* tpm_buf_read() - Read from a TPM buffer
-> > =C2=A0* @buf: &tpm_buf instance
-> > =C2=A0* @pos: position within the buffer
-> > =C2=A0* @count: the number of bytes to read
-> > =C2=A0* @output: the output buffer
-> > =C2=A0*
-> > =C2=A0* Read bytes from a TPM buffer, and update the position. Returns =
-false when the
-> > =C2=A0* amount of bytes requested would overflow the buffer, which is e=
-xpected to
-> > =C2=A0* only happen in the case of hardware failure.
-> > =C2=A0*/
-> > static bool tpm_buf_read(const struct tpm_buf *buf, off_t *pos, size_t =
-count, void *output)
-> > {
-> > =C2=A0off_t next =3D *pos + count;
-> >=20
-> > =C2=A0if (next >=3D buf->length) {
-> > =C2=A0pr_warn("%s: %lu >=3D %lu\n", __func__, next, *offset);
-> > =C2=A0return false;
-> > =C2=A0}
-> >=20
-> > =C2=A0memcpy(output, &buf->data[*pos], count);
-> > =C2=A0*offset =3D next;
-> > =C2=A0return true;
-> > }
-> >=20
-> > BR, Jarkko
-> >=20
+> > Then the callers will check, and return -EIO?
 >=20
-> Then the callers will check, and return -EIO?
+> Really, no, why would we do that?
+>=20
+> The initial buffer is a page and no TPM currently can have a command
+> that big, so if the buffer overflows, it's likely a programming error
+> (failure to terminate loop or something) rather than a runtime one (a
+> user actually induced a command that big and wanted it to be sent to
+> the TPM).=C2=A0 The only reason you might need to check is the no-alloc c=
+ase
+> and you passed in a much smaller buffer, but even there, I would guess
+> it will come down to a coding fault not a possible runtime error.
 
-Most likely. My thinking with boolean was that this way it
-sort of documents that this function can have only single
-possible error state.
 
-If it was int there could be possibly some other error codes
-to handle...
+Yeah, this was my thinking too. So in HMAC case you anyway would not
+need to check it because crypto is destined to fail anyway.
 
-Just would prefer this based on my experience calling other
-in-kernel functions. I often need to use lxr a lot just to
-get full understanding of all possible POSIX codes...
+Returning boolean here does no harm so I thought that this is overally
+good compromise.
 
 BR, Jarkko
 
