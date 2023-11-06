@@ -1,69 +1,69 @@
-Return-Path: <keyrings+bounces-18-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-19-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD68C7E2CC7
-	for <lists+keyrings@lfdr.de>; Mon,  6 Nov 2023 20:27:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E56BB7E2CD9
+	for <lists+keyrings@lfdr.de>; Mon,  6 Nov 2023 20:31:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EDB8280AC3
-	for <lists+keyrings@lfdr.de>; Mon,  6 Nov 2023 19:26:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 753AAB2093F
+	for <lists+keyrings@lfdr.de>; Mon,  6 Nov 2023 19:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E10C2F41;
-	Mon,  6 Nov 2023 19:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E531D20301;
+	Mon,  6 Nov 2023 19:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FcePSch5"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ASFf3jj0"
 X-Original-To: keyrings@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E762D051
-	for <keyrings@vger.kernel.org>; Mon,  6 Nov 2023 19:26:52 +0000 (UTC)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFBF7FA
-	for <keyrings@vger.kernel.org>; Mon,  6 Nov 2023 11:26:51 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A350E168BC
+	for <keyrings@vger.kernel.org>; Mon,  6 Nov 2023 19:31:36 +0000 (UTC)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AC66C6
+	for <keyrings@vger.kernel.org>; Mon,  6 Nov 2023 11:31:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1699298811;
+	s=mimecast20190719; t=1699299094;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/C/WjxiCVsJz9f1oEP2Y4XakhqVX5j64dRCa7+qXYyE=;
-	b=FcePSch5UkLs10NJt2JqY85LzjWU8RYRduswJKD3g8lrjr4c7xh94pfmDM1Wj+N5r+4Bnw
-	xNMOm790IjGCmOFMzX7hFGDrQyhVjNFryq1ul2wPOB+Ff7adNDheJ6KBCdxKk/dIjfwnt2
-	3F2XpKIT7PsL2RH6ClFyH+Xz7OTZJ+w=
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
- [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=sqWGwV812/CXYndzj2W50PA7KOMPm+tHC+e+xjD2/M0=;
+	b=ASFf3jj0lazzOKnHJ/q3yO4maXPHk8gbLkUqNytOQ6xTG2dufg00/+F0u9inNM9APzRo/5
+	SElMhLm5CFMQsfDPQ8k7INcQ8V+fEBBVSyEcVdFRFaXQdt7M+t2/w33HPKIpE2/m62lKFR
+	hRlcmYvT0Z+oYrRTbVMwgylrr2Sr7TU=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-e0NaBhSaOweB7lpl0Eu3Mw-1; Mon, 06 Nov 2023 14:26:49 -0500
-X-MC-Unique: e0NaBhSaOweB7lpl0Eu3Mw-1
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-778a2e84830so533706585a.3
-        for <keyrings@vger.kernel.org>; Mon, 06 Nov 2023 11:26:49 -0800 (PST)
+ us-mta-49-AKch9maZPgakYTyFXHg4Og-1; Mon, 06 Nov 2023 14:31:33 -0500
+X-MC-Unique: AKch9maZPgakYTyFXHg4Og-1
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-77a033cbd96so491577185a.2
+        for <keyrings@vger.kernel.org>; Mon, 06 Nov 2023 11:31:33 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699298809; x=1699903609;
+        d=1e100.net; s=20230601; t=1699299093; x=1699903893;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/C/WjxiCVsJz9f1oEP2Y4XakhqVX5j64dRCa7+qXYyE=;
-        b=PQV/4uxa97Ajpt7yCg1NY8BjFrcdWEe03RF1j/8KzsGroEPFF7JoaGeYmHmfjW2jPu
-         qIVWeIT249nXeNmHE7PvwSjN4WY8AKpTDld/s53WfM5Bzq+AOBVHE7AEr/9B7/EgOq1v
-         fSwSX6HVbth3Maxv4pml02FOIQ/amYmoO+zXOmbUlrD3fLk0gU8P2rSdiLT5zysQN04L
-         vZju+wCX0q1RFsW33FoaaXnj91yXppa1ttc1kAKiyFfkwZhv/TMCvlFEx90IastguaBt
-         YB60Om80OapuRJds6GY2xcH3oj/ctcKKjPZoWO3O5d8TBH9n9T+sgWCLR23KEoEgr3aD
-         L77g==
-X-Gm-Message-State: AOJu0YxlGHzqb1tSULvGwv3HnbN0KRsZcrZ6hxTmLWFhww5INhwSvAks
-	KuGhGKsen4ldnKaNF3Mx9+jgTiDBfVe6T+KNRQiyR9mApSN4F6K5tU/cH8bTsYD/ZkGVLTg+bkS
-	O14h1nY3HLTILtTtSxis=
-X-Received: by 2002:a05:620a:444b:b0:778:9542:a765 with SMTP id w11-20020a05620a444b00b007789542a765mr40268959qkp.64.1699298809007;
-        Mon, 06 Nov 2023 11:26:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IF4J4SaJitD2GuvTLmTEH/lixSVaiP4mCjrPIimN2+kmtJXKyqkH9XwjIiR80Gp98vcOrUInw==
-X-Received: by 2002:a05:620a:444b:b0:778:9542:a765 with SMTP id w11-20020a05620a444b00b007789542a765mr40268946qkp.64.1699298808800;
-        Mon, 06 Nov 2023 11:26:48 -0800 (PST)
+        bh=sqWGwV812/CXYndzj2W50PA7KOMPm+tHC+e+xjD2/M0=;
+        b=PewP52g+mzDSMV/FO3iZC8T40cQQctH1vqfRGpEucmyMqA+loQHWDIzEzJfCpRNOiv
+         5TEvtfX55Na3NbvVtDVikDCw4TQIzsa34s0p9Ky/InddHkFkbhdjYP3a/IKvs5A9PFA4
+         O+kYWCdkrZuIpUxklVVRaowOd/Qf/2MjWshuK2MmZwLCatfSt0mbGDotmFlyS8LCKQeq
+         L1Q+Hea3yCM+6KihJ+/bLNQD6zoIyDzypnAb1xja68S4Uj88eu51/EXbgXul7nCC42eH
+         d6EfBXclWmDZLW/KDAJqv/hYNgljnzawX54PtlEs2uyiROrGNsg2RZ9HvTw7ugEni6VO
+         f2DQ==
+X-Gm-Message-State: AOJu0Yw2sQSlj/KnIhSxn5faezKqF7/56jxTDaam/KC0erwXvR8C2rtV
+	p6hAyvPeLGPOqOPvaJ5MjEp7FBk51hmWyoSTmEJ083gSYMLdeFnm0mlNkQBnsQu1Gz+x2pYp9mG
+	71biIdOX3ExzG2H2DQl0=
+X-Received: by 2002:a05:620a:31a6:b0:773:c4c8:2d58 with SMTP id bi38-20020a05620a31a600b00773c4c82d58mr33054184qkb.59.1699299092995;
+        Mon, 06 Nov 2023 11:31:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEMC4OZw13o7zojxKDTLQnTVqildfL87qAiPF2IC97OBWWvfcH0eCZKZ8LoCuggfuWN7AoEdg==
+X-Received: by 2002:a05:620a:31a6:b0:773:c4c8:2d58 with SMTP id bi38-20020a05620a31a600b00773c4c82d58mr33054171qkb.59.1699299092693;
+        Mon, 06 Nov 2023 11:31:32 -0800 (PST)
 Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
-        by smtp.gmail.com with ESMTPSA id x8-20020ae9f808000000b007756e75b91bsm3554551qkh.78.2023.11.06.11.26.47
+        by smtp.gmail.com with ESMTPSA id oo12-20020a05620a530c00b007758b25ac3bsm3555862qkn.82.2023.11.06.11.31.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Nov 2023 11:26:48 -0800 (PST)
-Date: Mon, 6 Nov 2023 12:26:46 -0700
+        Mon, 06 Nov 2023 11:31:32 -0800 (PST)
+Date: Mon, 6 Nov 2023 12:31:30 -0700
 From: Jerry Snitselaar <jsnitsel@redhat.com>
 To: Jarkko Sakkinen <jarkko@kernel.org>
 Cc: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, 
@@ -75,10 +75,10 @@ Cc: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
 	"Serge E. Hallyn" <serge@hallyn.com>, Julien Gomes <julien@arista.com>, 
 	Mario Limonciello <mario.limonciello@amd.com>, open list <linux-kernel@vger.kernel.org>, 
 	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH v3 2/6] tpm: Store TPM buffer length
-Message-ID: <lifu6orgfo57usei3szyfrmr6ofl37477gji5xh5bwkhftswxg@cjwwa5okjshi>
+Subject: Re: [PATCH v3 3/6] tpm: Detach tpm_buf_reset() from tpm_buf_init()
+Message-ID: <xp2tdlw2qjg3pbazb3oye7poeh4r5neeqbsvamgiazdl2bouwa@qnxhvt7vzkpb>
 References: <20231024011531.442587-1-jarkko@kernel.org>
- <20231024011531.442587-3-jarkko@kernel.org>
+ <20231024011531.442587-4-jarkko@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -87,8 +87,7 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231024011531.442587-3-jarkko@kernel.org>
-
+In-Reply-To: <20231024011531.442587-4-jarkko@kernel.org>
 
 Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
 
