@@ -1,151 +1,95 @@
-Return-Path: <keyrings+bounces-17-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-18-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D50007E2A1B
-	for <lists+keyrings@lfdr.de>; Mon,  6 Nov 2023 17:40:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD68C7E2CC7
+	for <lists+keyrings@lfdr.de>; Mon,  6 Nov 2023 20:27:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59967B20D5D
-	for <lists+keyrings@lfdr.de>; Mon,  6 Nov 2023 16:40:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EDB8280AC3
+	for <lists+keyrings@lfdr.de>; Mon,  6 Nov 2023 19:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFF628E2C;
-	Mon,  6 Nov 2023 16:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E10C2F41;
+	Mon,  6 Nov 2023 19:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="L4q+mC09"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FcePSch5"
 X-Original-To: keyrings@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B476179B8;
-	Mon,  6 Nov 2023 16:40:44 +0000 (UTC)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F2AAF3;
-	Mon,  6 Nov 2023 08:40:43 -0800 (PST)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A6G9wJq012558;
-	Mon, 6 Nov 2023 16:40:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=ntZsLRi2hus613FqdTu44OeobP9ahDx7BzxS4O7ju4U=;
- b=L4q+mC098fBK/UtAXsxypV3spcgftlRSQJy+2CUdgGUDbllToOxeEm8Ic1aTxLNFn60H
- kpBu540y2frJ67xd0dCxSk8FMsKSzWpz1OmRKQbbpIY/1/ke3t7u1IQVRHcYdbwxVMvE
- 26w5IES8+okz+YwgVtpyzR2PI2Lkeen0BykOmCm4v6yaUBFVW+pnKoC8gS8xTf5h8k7p
- +lCFW1muge7J1+J9RgrHgn4x0ImTND3khz6cXsT9LliFLTEUYHWC3IUv6V2pjFOk5CYS
- xCH5uZN5SrorLDmGelw7b8Msj0PHgsuuWrOOt/lGky9E/UBf2iF70MbAcTeS/6wLmdF0 ew== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u73dwh8y0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Nov 2023 16:40:14 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A6GA5af013143;
-	Mon, 6 Nov 2023 16:40:13 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u73dwh8xj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Nov 2023 16:40:13 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3A6Eqi53028251;
-	Mon, 6 Nov 2023 16:40:12 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u62gjt9gx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Nov 2023 16:40:12 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3A6GeBce18875026
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 6 Nov 2023 16:40:11 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 86AE658045;
-	Mon,  6 Nov 2023 16:40:11 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 44E8E58056;
-	Mon,  6 Nov 2023 16:40:09 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.61.58.168])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  6 Nov 2023 16:40:09 +0000 (GMT)
-Message-ID: <980b8df5eccc03a67328e28b7cef2b777bc310f0.camel@linux.ibm.com>
-Subject: Re: [PATCH v4 12/23] security: Introduce file_post_open hook
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Roberto Sassu <roberto.sassu@huaweicloud.com>, viro@zeniv.linux.org.uk,
-        brauner@kernel.org, chuck.lever@oracle.com, jlayton@kernel.org,
-        neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        dmitry.kasatkin@gmail.com, dhowells@redhat.com, jarkko@kernel.org,
-        stephen.smalley.work@gmail.com, eparis@parisplace.org,
-        casey@schaufler-ca.com, mic@digikod.net
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        selinux@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>,
-        Stefan
- Berger <stefanb@linux.ibm.com>
-Date: Mon, 06 Nov 2023 11:40:08 -0500
-In-Reply-To: <20231027083558.484911-13-roberto.sassu@huaweicloud.com>
-References: <20231027083558.484911-1-roberto.sassu@huaweicloud.com>
-	 <20231027083558.484911-13-roberto.sassu@huaweicloud.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E762D051
+	for <keyrings@vger.kernel.org>; Mon,  6 Nov 2023 19:26:52 +0000 (UTC)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFBF7FA
+	for <keyrings@vger.kernel.org>; Mon,  6 Nov 2023 11:26:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1699298811;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/C/WjxiCVsJz9f1oEP2Y4XakhqVX5j64dRCa7+qXYyE=;
+	b=FcePSch5UkLs10NJt2JqY85LzjWU8RYRduswJKD3g8lrjr4c7xh94pfmDM1Wj+N5r+4Bnw
+	xNMOm790IjGCmOFMzX7hFGDrQyhVjNFryq1ul2wPOB+Ff7adNDheJ6KBCdxKk/dIjfwnt2
+	3F2XpKIT7PsL2RH6ClFyH+Xz7OTZJ+w=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-664-e0NaBhSaOweB7lpl0Eu3Mw-1; Mon, 06 Nov 2023 14:26:49 -0500
+X-MC-Unique: e0NaBhSaOweB7lpl0Eu3Mw-1
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-778a2e84830so533706585a.3
+        for <keyrings@vger.kernel.org>; Mon, 06 Nov 2023 11:26:49 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699298809; x=1699903609;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/C/WjxiCVsJz9f1oEP2Y4XakhqVX5j64dRCa7+qXYyE=;
+        b=PQV/4uxa97Ajpt7yCg1NY8BjFrcdWEe03RF1j/8KzsGroEPFF7JoaGeYmHmfjW2jPu
+         qIVWeIT249nXeNmHE7PvwSjN4WY8AKpTDld/s53WfM5Bzq+AOBVHE7AEr/9B7/EgOq1v
+         fSwSX6HVbth3Maxv4pml02FOIQ/amYmoO+zXOmbUlrD3fLk0gU8P2rSdiLT5zysQN04L
+         vZju+wCX0q1RFsW33FoaaXnj91yXppa1ttc1kAKiyFfkwZhv/TMCvlFEx90IastguaBt
+         YB60Om80OapuRJds6GY2xcH3oj/ctcKKjPZoWO3O5d8TBH9n9T+sgWCLR23KEoEgr3aD
+         L77g==
+X-Gm-Message-State: AOJu0YxlGHzqb1tSULvGwv3HnbN0KRsZcrZ6hxTmLWFhww5INhwSvAks
+	KuGhGKsen4ldnKaNF3Mx9+jgTiDBfVe6T+KNRQiyR9mApSN4F6K5tU/cH8bTsYD/ZkGVLTg+bkS
+	O14h1nY3HLTILtTtSxis=
+X-Received: by 2002:a05:620a:444b:b0:778:9542:a765 with SMTP id w11-20020a05620a444b00b007789542a765mr40268959qkp.64.1699298809007;
+        Mon, 06 Nov 2023 11:26:49 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF4J4SaJitD2GuvTLmTEH/lixSVaiP4mCjrPIimN2+kmtJXKyqkH9XwjIiR80Gp98vcOrUInw==
+X-Received: by 2002:a05:620a:444b:b0:778:9542:a765 with SMTP id w11-20020a05620a444b00b007789542a765mr40268946qkp.64.1699298808800;
+        Mon, 06 Nov 2023 11:26:48 -0800 (PST)
+Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
+        by smtp.gmail.com with ESMTPSA id x8-20020ae9f808000000b007756e75b91bsm3554551qkh.78.2023.11.06.11.26.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Nov 2023 11:26:48 -0800 (PST)
+Date: Mon, 6 Nov 2023 12:26:46 -0700
+From: Jerry Snitselaar <jsnitsel@redhat.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, William Roberts <bill.c.roberts@gmail.com>, 
+	Stefan Berger <stefanb@linux.ibm.com>, David Howells <dhowells@redhat.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Mimi Zohar <zohar@linux.ibm.com>, 
+	Peter Huewe <peterhuewe@gmx.de>, James Bottomley <jejb@linux.ibm.com>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Julien Gomes <julien@arista.com>, 
+	Mario Limonciello <mario.limonciello@amd.com>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
+Subject: Re: [PATCH v3 2/6] tpm: Store TPM buffer length
+Message-ID: <lifu6orgfo57usei3szyfrmr6ofl37477gji5xh5bwkhftswxg@cjwwa5okjshi>
+References: <20231024011531.442587-1-jarkko@kernel.org>
+ <20231024011531.442587-3-jarkko@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: zw57y4MwJGx3BnjPgEXX4OPSmxPCeezQ
-X-Proofpoint-GUID: _5sXQ_fpTpFu-_ZM3yCz4MGm249TyFjc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-06_12,2023-11-02_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- priorityscore=1501 suspectscore=0 spamscore=0 clxscore=1015 mlxscore=0
- lowpriorityscore=0 bulkscore=0 impostorscore=0 malwarescore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310240000 definitions=main-2311060134
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231024011531.442587-3-jarkko@kernel.org>
 
-On Fri, 2023-10-27 at 10:35 +0200, Roberto Sassu wrote:
-> diff --git a/security/security.c b/security/security.c
-> index 2ee958afaf40..d24a8f92d641 100644
-> --- a/security/security.c
-> +++ b/security/security.c
-> @@ -2947,6 +2947,23 @@ int security_file_open(struct file *file)
->         return fsnotify_perm(file, MAY_OPEN);
->  }
->  
-> +/**
-> + * security_file_post_open() - Recheck access to a file after it has been opened
-> + * @file: the file
-> + * @mask: access mask
-> + *
-> + * Recheck access with mask after the file has been opened. The hook is useful
-> + * for LSMs that require the file content to be available in order to make
-> + * decisions.
-> + *
 
-The hook isn't limited to "Recheck access".    It's used for measuring,
-appraising, and auditing a file's integrity.   Sorry for suggesting an
-incomplete patch description.  Please update the wording here and the
-patch description accordingly.
-
-> + * Return: Returns 0 if permission is granted.
-> + */
-> +int security_file_post_open(struct file *file, int mask)
-> +{
-> +       return call_int_hook(file_post_open, 0, file, mask);
-> +}
-> +EXPORT_SYMBOL_GPL(security_file_post_open);
-> +
->  /**
->   * security_file_truncate() - Check if truncating a file is allowed
->   * @file: file
-
--- 
-thanks,
-
-Mimi
+Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
 
 
