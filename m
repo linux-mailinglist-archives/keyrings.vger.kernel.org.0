@@ -1,128 +1,128 @@
-Return-Path: <keyrings+bounces-20-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-21-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3A0A7E2D00
-	for <lists+keyrings@lfdr.de>; Mon,  6 Nov 2023 20:36:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 030A57E332D
+	for <lists+keyrings@lfdr.de>; Tue,  7 Nov 2023 03:48:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BA811C202ED
-	for <lists+keyrings@lfdr.de>; Mon,  6 Nov 2023 19:36:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98D47B20AFC
+	for <lists+keyrings@lfdr.de>; Tue,  7 Nov 2023 02:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFAC928E18;
-	Mon,  6 Nov 2023 19:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD02441F;
+	Tue,  7 Nov 2023 02:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ERzm/1Qw"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="RmiRCClQ"
 X-Original-To: keyrings@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4322906
-	for <keyrings@vger.kernel.org>; Mon,  6 Nov 2023 19:36:49 +0000 (UTC)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CED31BD3
-	for <keyrings@vger.kernel.org>; Mon,  6 Nov 2023 11:36:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1699299392;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/7nXQhaGb4pY7ry3e+e6wtXTEqqn1g4LsKBGCFFbdOs=;
-	b=ERzm/1QwOow7iXN98aJ9Cld1a/1q7EBVufwm9bHA5dss7T3mXDyPVYG5UUglRJyplY62/3
-	ufkFPHoTUd846EaU4U/YAOKvaAawVH2Z3aF24KQgOskISlHOiLbAZla3Ex+JZgbxyac/fq
-	8KxaCoIopQZB+hCKAh5k05LnnqySFDw=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-25IFFQdgMf6iyMPgkDwFGw-1; Mon, 06 Nov 2023 14:36:31 -0500
-X-MC-Unique: 25IFFQdgMf6iyMPgkDwFGw-1
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-778964b7c8bso530343985a.1
-        for <keyrings@vger.kernel.org>; Mon, 06 Nov 2023 11:36:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699299391; x=1699904191;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/7nXQhaGb4pY7ry3e+e6wtXTEqqn1g4LsKBGCFFbdOs=;
-        b=qz1AA1q+k8SdR2zBHHpmCGnip2DRCt5Cmsn6HGo0XF3guskrForiEZlNOsW1YtU9RX
-         K0GdYVVmdU03ugcq2MOqTqZM6755U/QTjQCo/1BNtZOQMvGqeQsoWa1Qll8PMKPT7p0n
-         BoIPtO4TXg7uKN2PEyNhS6qUO8/RpYr3YjduhfXL+V4mIcRRJlU5JugV+H/0JxhMY7zH
-         dd35jI0xU+DOqQqeSSkT9tCVn/PJt7+S4AHP+f9M0+GeHC7OyR9OCuUtp2NUXazjO3WT
-         jKq70lZnzLy8W3OT0vkOGOmVRpXlcEDHyTKByDhMGXaPleP4C62wrC1jUMjHeH+5yi4Q
-         /dGQ==
-X-Gm-Message-State: AOJu0YyNBIzfGdPWQgnbUJUbQJ7jN0beBJ7ENBYreZvZRx5YYu0ELWwh
-	NrfXyfGCEEql+dAibotz5sPT0TH1BxQCJ7Ns6gnv4nWjQ8qU7KcYdmARvjhhZC3N/QMDG2D9F5A
-	M/QDirKuZjeg07zr3qf8=
-X-Received: by 2002:a05:620a:118e:b0:775:f1bd:f75e with SMTP id b14-20020a05620a118e00b00775f1bdf75emr29927590qkk.39.1699299391180;
-        Mon, 06 Nov 2023 11:36:31 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFNkybdYX04EQtC/tz+Zpa+0fOVbb/hUPD57Vng3tHmEY+2ovmvEntRX3G/+cgNqoXu8DTZmg==
-X-Received: by 2002:a05:620a:118e:b0:775:f1bd:f75e with SMTP id b14-20020a05620a118e00b00775f1bdf75emr29927560qkk.39.1699299390943;
-        Mon, 06 Nov 2023 11:36:30 -0800 (PST)
-Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
-        by smtp.gmail.com with ESMTPSA id qs16-20020a05620a395000b00774133fb9a3sm3537442qkn.114.2023.11.06.11.36.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Nov 2023 11:36:30 -0800 (PST)
-Date: Mon, 6 Nov 2023 12:36:29 -0700
-From: Jerry Snitselaar <jsnitsel@redhat.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, William Roberts <bill.c.roberts@gmail.com>, 
-	Stefan Berger <stefanb@linux.ibm.com>, David Howells <dhowells@redhat.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Mimi Zohar <zohar@linux.ibm.com>, 
-	Peter Huewe <peterhuewe@gmx.de>, James Bottomley <jejb@linux.ibm.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Julien Gomes <julien@arista.com>, 
-	Mario Limonciello <mario.limonciello@amd.com>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH v3 2/6] tpm: Store TPM buffer length
-Message-ID: <4gyb46g6makecsv7mq67qdp5hilytpymvdbffz5q64tday5dva@wjg3achi5rrv>
-References: <20231024011531.442587-1-jarkko@kernel.org>
- <20231024011531.442587-3-jarkko@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC39BA49
+	for <keyrings@vger.kernel.org>; Tue,  7 Nov 2023 02:48:39 +0000 (UTC)
+Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.196])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 32CEBFA;
+	Mon,  6 Nov 2023 18:48:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=idBGo
+	4BTDVZ+Z3lF72lxoQVZEFbFKuRCuTlSuPmNJYs=; b=RmiRCClQcTQ7SPEFFgcDY
+	FHabxlKUvQW5YxZ2ih8gJb9ahPwbe25JQgWEENM1tBCIGzab7Lr5+ILWOzKDhtsv
+	hR91AQUgozglSn4+qkhgE0MrtfNZ6TDocXhNJ9M3MoVEr7+8vsjIl7LNslJDxSZE
+	+mybZG9rR3oqLmZR/iM3Lk=
+Received: from localhost.localdomain (unknown [106.13.245.201])
+	by zwqz-smtp-mta-g5-0 (Coremail) with SMTP id _____wD3XylQpUllFjPSAw--.21S2;
+	Tue, 07 Nov 2023 10:47:46 +0800 (CST)
+From: Yusong Gao <a869920004@163.com>
+To: dhowells@redhat.com,
+	dwmw2@infradead.org,
+	jarkko@kernel.org,
+	zohar@linux.ibm.com,
+	juerg.haefliger@hpe.com
+Cc: keyrings@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RESEND] sign-file: Correct return value check for sign-file
+Date: Tue,  7 Nov 2023 02:47:44 +0000
+Message-Id: <20231107024744.744658-1-a869920004@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231024011531.442587-3-jarkko@kernel.org>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3XylQpUllFjPSAw--.21S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7CF18AFWrAF4kCw1fGFykXwb_yoW8Kr48pr
+	4FkF1SyFWxJrWqyay7K3WIkF45Kr4kt3Wru3Z8Jw1YvFyjq3yIgr4v9a4rXr95XF45ur15
+	XF97Jay5A345XFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jyGQDUUUUU=
+X-Originating-IP: [106.13.245.201]
+X-CM-SenderInfo: zdywmmasqqiki6rwjhhfrp/1tbiRQwh6WDu2w0NTwABsa
 
-On Tue, Oct 24, 2023 at 04:15:20AM +0300, Jarkko Sakkinen wrote:
-> Both TPM commands and sized buffers (TPM2B) have a fixed size header, which
-> is followed by the body. Store TPM buffer length to a new field in the
-> struct tpm_buf.
-> 
-> The invariant here is that the length field must always contain the total
-> length of the buffer, i.e. the sum header and body length. The value must
-> then be mapped to the length representation of the buffer type, and this
-> correspondence must be maintained.
-> 
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> ---
->  drivers/char/tpm/tpm-buf.c                | 36 ++++++++++++++++-------
->  drivers/char/tpm/tpm-interface.c          | 18 +++++++++---
->  include/linux/tpm.h                       | 10 +++----
->  security/keys/trusted-keys/trusted_tpm1.c |  8 ++---
->  4 files changed, 49 insertions(+), 23 deletions(-)
-> 
-> diff --git a/drivers/char/tpm/tpm-buf.c b/drivers/char/tpm/tpm-buf.c
-> index 88ce1a5402de..8dc6b9db006b 100644
-> --- a/drivers/char/tpm/tpm-buf.c
-> +++ b/drivers/char/tpm/tpm-buf.c
-> @@ -18,6 +18,12 @@ int tpm_buf_init(struct tpm_buf *buf, u16 tag, u32 ordinal)
->  }
->  EXPORT_SYMBOL_GPL(tpm_buf_init);
->  
-> +/**
-> + * tpm_buf_reset() - Initialize a TPM command
-> + * @buf:	A @tpm_buf
+There are some wrong return values check in sign-file when call OpenSSL
+API. For example the CMS_final() return 1 for success or 0 for failure.
+The ERR() check cond is wrong because of the program only check the
+return value is < 0 instead of <= 0, so correct it.
 
-One minor thing I meant to mention, did you intend this to be &tpm_buf like it
-is for tpm_buf_append?
+Link:
+https://www.openssl.org/docs/manmaster/man3/CMS_final.html
+https://www.openssl.org/docs/manmaster/man3/i2d_CMS_bio_stream.html
+https://www.openssl.org/docs/manmaster/man3/i2d_PKCS7_bio.html
+https://www.openssl.org/docs/manmaster/man3/BIO_free.html
 
-Regards,
-Jerry
+Signed-off-by: Yusong Gao <a869920004@163.com>
+---
+ scripts/sign-file.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/scripts/sign-file.c b/scripts/sign-file.c
+index 598ef5465f82..dcebbcd6bebd 100644
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -322,7 +322,7 @@ int main(int argc, char **argv)
+ 				     CMS_NOSMIMECAP | use_keyid |
+ 				     use_signed_attrs),
+ 		    "CMS_add1_signer");
+-		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) < 0,
++		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) <= 0,
+ 		    "CMS_final");
+ 
+ #else
+@@ -341,10 +341,10 @@ int main(int argc, char **argv)
+ 			b = BIO_new_file(sig_file_name, "wb");
+ 			ERR(!b, "%s", sig_file_name);
+ #ifndef USE_PKCS7
+-			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) < 0,
++			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) <= 0,
+ 			    "%s", sig_file_name);
+ #else
+-			ERR(i2d_PKCS7_bio(b, pkcs7) < 0,
++			ERR(i2d_PKCS7_bio(b, pkcs7) <= 0,
+ 			    "%s", sig_file_name);
+ #endif
+ 			BIO_free(b);
+@@ -374,9 +374,9 @@ int main(int argc, char **argv)
+ 
+ 	if (!raw_sig) {
+ #ifndef USE_PKCS7
+-		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) < 0, "%s", dest_name);
++		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) <= 0, "%s", dest_name);
+ #else
+-		ERR(i2d_PKCS7_bio(bd, pkcs7) < 0, "%s", dest_name);
++		ERR(i2d_PKCS7_bio(bd, pkcs7) <= 0, "%s", dest_name);
+ #endif
+ 	} else {
+ 		BIO *b;
+@@ -396,7 +396,7 @@ int main(int argc, char **argv)
+ 	ERR(BIO_write(bd, &sig_info, sizeof(sig_info)) < 0, "%s", dest_name);
+ 	ERR(BIO_write(bd, magic_number, sizeof(magic_number) - 1) < 0, "%s", dest_name);
+ 
+-	ERR(BIO_free(bd) < 0, "%s", dest_name);
++	ERR(BIO_free(bd) <= 0, "%s", dest_name);
+ 
+ 	/* Finally, if we're signing in place, replace the original. */
+ 	if (replace_orig)
+-- 
+2.34.1
 
 
