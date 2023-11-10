@@ -1,49 +1,76 @@
-Return-Path: <keyrings+bounces-72-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-73-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BE677E5151
-	for <lists+keyrings@lfdr.de>; Wed,  8 Nov 2023 08:47:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD047E79B8
+	for <lists+keyrings@lfdr.de>; Fri, 10 Nov 2023 08:18:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FC70B20C26
-	for <lists+keyrings@lfdr.de>; Wed,  8 Nov 2023 07:47:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18064B20DD0
+	for <lists+keyrings@lfdr.de>; Fri, 10 Nov 2023 07:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23CFD300;
-	Wed,  8 Nov 2023 07:46:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986C01FC4;
+	Fri, 10 Nov 2023 07:18:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QVGj73XS"
 X-Original-To: keyrings@vger.kernel.org
 Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FB6D2EF
-	for <keyrings@vger.kernel.org>; Wed,  8 Nov 2023 07:46:57 +0000 (UTC)
-X-Greylist: delayed 571 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Nov 2023 23:46:55 PST
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8BE6113;
-	Tue,  7 Nov 2023 23:46:55 -0800 (PST)
-Received: from localhost (unknown [124.16.138.129])
-	by APP-03 (Coremail) with SMTP id rQCowAB3fDyfOktlDpduAw--.10026S2;
-	Wed, 08 Nov 2023 15:37:03 +0800 (CST)
-From: Chen Ni <nichen@iscas.ac.cn>
-To: zohar@linux.ibm.com,
-	dhowells@redhat.com,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368EF1C30
+	for <keyrings@vger.kernel.org>; Fri, 10 Nov 2023 07:18:26 +0000 (UTC)
+Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com [IPv6:2607:f8b0:4864:20::e30])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B1EB83ED;
+	Thu,  9 Nov 2023 23:18:23 -0800 (PST)
+Received: by mail-vs1-xe30.google.com with SMTP id ada2fe7eead31-45d90e1333fso781218137.3;
+        Thu, 09 Nov 2023 23:18:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699600702; x=1700205502; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pn6MUDiWEFfbX9oPQpdiJgdcxG5eK/ICtFVVPS0LXu0=;
+        b=QVGj73XSG+3qofv5XV1fLsFz+lKWCi5I8pOUZnuw68ulaJD/HztLklNmGPAmLGhaB1
+         2PfgHcObL0ojoDlxlnatOug+mOV6ISMOio9HyV+Gbtl62u/uNzZfHjw2Bdix4XgOkiGx
+         +gZB0iKh961nwl8+SHkznwaPDLiHa2OzUvSdAfjsI6hL8yOa7ZfsOX48ELte9xYAMkzl
+         zXgBw2GPBw9CTXOEfu+TO4KNW1a4nePuTvlNylwnAiPPrV6+PEm1vbHhZNjb3TsFJVin
+         rK8YKPLsa+oquD1UghKOZenr8eWO186h1tDPOHi7cD4i83t58NwUaWum8OqlAPfmrnZQ
+         gKtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699600702; x=1700205502;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Pn6MUDiWEFfbX9oPQpdiJgdcxG5eK/ICtFVVPS0LXu0=;
+        b=Qq2twGxCCOot8oRq7/KtsLgugkJZYfa9SOF6VWfPdmDp5d1dPwg0LfM5+YtuYCECJe
+         QVWwgeZ1R7YTLi5sA+ZRd6CLiD5VfwhZ244giLpNqXDJqSlC3F1BLcBHvDV7L1Jcqr1i
+         gdGCQ1tr8Hnb2Kr9elzdMUNH3ccHxB/FjkGyfi2f/AttBfn0PYrpx7kPfiA2tqIyAW6T
+         ycT9lRTktecO5aq828uLOFuiZM8AMTT7yeijYF5fXqdOWdEK/YW/mbYg0TzM09DBbp6j
+         80f052UkwaFM8qBtJ8viV7SbA7gCbOZ0rYAGKWV3sdh2nNDCZcs+Axhrs3Bi7WBdcEEx
+         ef3Q==
+X-Gm-Message-State: AOJu0YwUMexPK4L2As3a3OQAGsoROQ8soAORLepenZp3O0dk/KyKLdZ/
+	IVcvV746O+LchafmNuuJ/C0=
+X-Google-Smtp-Source: AGHT+IF7nOo7LYHhHizC9muNzUETAtfsA5nQCD8wsu25SN/o3qbFo4u0zymwbRQmsYONC9thL+REUg==
+X-Received: by 2002:a67:b206:0:b0:45e:f8af:79cc with SMTP id b6-20020a67b206000000b0045ef8af79ccmr7165852vsf.8.1699600702472;
+        Thu, 09 Nov 2023 23:18:22 -0800 (PST)
+Received: from localhost.localdomain ([154.85.62.239])
+        by smtp.gmail.com with ESMTPSA id x4-20020a63db44000000b005b8ea15c338sm5822726pgi.62.2023.11.09.23.18.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Nov 2023 23:18:22 -0800 (PST)
+From: Yusong Gao <a869920004@gmail.com>
+To: dhowells@redhat.com,
+	dwmw2@infradead.org,
 	jarkko@kernel.org,
-	paul@paul-moore.com,
-	jmorris@namei.org,
-	serge@hallyn.com,
-	sumit.garg@linaro.org,
-	yaelt@google.com
-Cc: linux-integrity@vger.kernel.org,
-	keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chen Ni <nichen@iscas.ac.cn>
-Subject: [PATCH] KEYS: encrypted: Add check for strsep
-Date: Wed,  8 Nov 2023 07:36:27 +0000
-Message-Id: <20231108073627.1063464-1-nichen@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	zohar@linux.ibm.com,
+	herbert@gondor.apana.org.au,
+	lists@sapience.com,
+	dimitri.ledkov@canonical.com
+Cc: keyrings@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RESEND PATCH v2] sign-file: Fix incorrect return values check
+Date: Fri, 10 Nov 2023 07:18:12 +0000
+Message-Id: <20231110071812.280144-1-a869920004@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -51,50 +78,73 @@ List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAB3fDyfOktlDpduAw--.10026S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7XF1DKw4UJw1kCrW8uF15urg_yoW3KFX_Cr
-	yUAF1rJ3yDZF18WrWUX3y8Aw1Svr95J348ur9rKF1vy34Fqw40qFy7JFs7AFZ5Cry0qF1j
-	krs8try8A3ZrWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbVxFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY02Avz4vE14v_GF4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr
-	0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY
-	17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcV
-	C0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY
-	6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa
-	73UjIFyTuYvjfUYMKZDUUUU
-X-Originating-IP: [124.16.138.129]
-X-CM-SenderInfo: xqlfxv3q6l2u1dvotugofq/
 
-Add check for strsep() in order to transfer the error.
+From: Yusong Gao <a869920004@163.com>
 
-Fixes: cd3bc044af48 ("KEYS: encrypted: Instantiate key with user-provided decrypted data")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+There are some wrong return values check in sign-file when call OpenSSL
+API. For example the CMS_final() return 1 for success or 0 for failure.
+The ERR() check cond is wrong because of the program only check the
+return value is < 0 instead of <= 0.
+
+Link:
+https://www.openssl.org/docs/manmaster/man3/CMS_final.html
+https://www.openssl.org/docs/manmaster/man3/i2d_CMS_bio_stream.html
+https://www.openssl.org/docs/manmaster/man3/i2d_PKCS7_bio.html
+https://www.openssl.org/docs/manmaster/man3/BIO_free.html
+
+Signed-off-by: Yusong Gao <a869920004@gmail.com>
 ---
- security/keys/encrypted-keys/encrypted.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ scripts/sign-file.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encrypted-keys/encrypted.c
-index 8af2136069d2..76f55dd13cb8 100644
---- a/security/keys/encrypted-keys/encrypted.c
-+++ b/security/keys/encrypted-keys/encrypted.c
-@@ -237,6 +237,10 @@ static int datablob_parse(char *datablob, const char **format,
- 			break;
- 		}
- 		*decrypted_data = strsep(&datablob, " \t");
-+		if (!*decrypted_data) {
-+			pr_info("encrypted_key: decrypted_data is missing\n");
-+			break;
-+		}
- 		ret = 0;
- 		break;
- 	case Opt_load:
+diff --git a/scripts/sign-file.c b/scripts/sign-file.c
+index 598ef5465f82..dcebbcd6bebd 100644
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -322,7 +322,7 @@ int main(int argc, char **argv)
+ 				     CMS_NOSMIMECAP | use_keyid |
+ 				     use_signed_attrs),
+ 		    "CMS_add1_signer");
+-		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) < 0,
++		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) <= 0,
+ 		    "CMS_final");
+ 
+ #else
+@@ -341,10 +341,10 @@ int main(int argc, char **argv)
+ 			b = BIO_new_file(sig_file_name, "wb");
+ 			ERR(!b, "%s", sig_file_name);
+ #ifndef USE_PKCS7
+-			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) < 0,
++			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) <= 0,
+ 			    "%s", sig_file_name);
+ #else
+-			ERR(i2d_PKCS7_bio(b, pkcs7) < 0,
++			ERR(i2d_PKCS7_bio(b, pkcs7) <= 0,
+ 			    "%s", sig_file_name);
+ #endif
+ 			BIO_free(b);
+@@ -374,9 +374,9 @@ int main(int argc, char **argv)
+ 
+ 	if (!raw_sig) {
+ #ifndef USE_PKCS7
+-		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) < 0, "%s", dest_name);
++		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) <= 0, "%s", dest_name);
+ #else
+-		ERR(i2d_PKCS7_bio(bd, pkcs7) < 0, "%s", dest_name);
++		ERR(i2d_PKCS7_bio(bd, pkcs7) <= 0, "%s", dest_name);
+ #endif
+ 	} else {
+ 		BIO *b;
+@@ -396,7 +396,7 @@ int main(int argc, char **argv)
+ 	ERR(BIO_write(bd, &sig_info, sizeof(sig_info)) < 0, "%s", dest_name);
+ 	ERR(BIO_write(bd, magic_number, sizeof(magic_number) - 1) < 0, "%s", dest_name);
+ 
+-	ERR(BIO_free(bd) < 0, "%s", dest_name);
++	ERR(BIO_free(bd) <= 0, "%s", dest_name);
+ 
+ 	/* Finally, if we're signing in place, replace the original. */
+ 	if (replace_orig)
 -- 
-2.25.1
+2.34.1
 
 
