@@ -1,78 +1,71 @@
-Return-Path: <keyrings+bounces-74-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-75-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1626C7E895C
-	for <lists+keyrings@lfdr.de>; Sat, 11 Nov 2023 06:56:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CE647ED541
+	for <lists+keyrings@lfdr.de>; Wed, 15 Nov 2023 22:02:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE90BB20AA1
-	for <lists+keyrings@lfdr.de>; Sat, 11 Nov 2023 05:56:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D5A51C204DA
+	for <lists+keyrings@lfdr.de>; Wed, 15 Nov 2023 21:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D13C16FB2;
-	Sat, 11 Nov 2023 05:56:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B13135EED;
+	Wed, 15 Nov 2023 21:02:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tQU52lc1"
 X-Original-To: keyrings@vger.kernel.org
-Received: from lindbergh.monkeyblade.net (lindbergh.monkeyblade.net [23.128.96.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A0C6FAD;
-	Sat, 11 Nov 2023 05:56:07 +0000 (UTC)
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12CBB4204;
-	Fri, 10 Nov 2023 21:56:04 -0800 (PST)
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R891e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045170;MF=yilin.li@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0Vw6WwWY_1699682161;
-Received: from localhost(mailfrom:YiLin.Li@linux.alibaba.com fp:SMTPD_---0Vw6WwWY_1699682161)
-          by smtp.aliyun-inc.com;
-          Sat, 11 Nov 2023 13:56:02 +0800
-From: "YiLin.Li" <YiLin.Li@linux.alibaba.com>
-To: David Howells <dhowells@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: YiLin.Li@linux.alibaba.com,
-	tianjia.zhang@linux.alibaba.com
-Subject: [PATCH] crypto: asymmetric_keys/pkcs7.asn1 - remove the duplicated contentType pkcs7_note_OID processing logic
-Date: Sat, 11 Nov 2023 05:55:53 +0000
-Message-Id: <20231111055553.103757-1-YiLin.Li@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A30043ACA;
+	Wed, 15 Nov 2023 21:02:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E94AC433C8;
+	Wed, 15 Nov 2023 21:02:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700082174;
+	bh=amAyqsi96+KIo8jVI7yrm8bYp50p+LjkFfJin590EQY=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=tQU52lc1JSc3olebP0l3uSjB4xeMi0lcT0q5n8jHrSb7mBhlt7LyhqnzDZRmbLr2A
+	 f6HlCOCcJgjEWCGnedxgfZ28jWHFDeUSuRXPLhTe7e0ud0Rz3QKwcl7KNh1Ntv+gcX
+	 RoDL80kx6+r0xdOelwlHsxSOrPROCnyTKUvqNK6nmkMofnRRg7XmWQ5RjHRlCDPo+A
+	 G6hfugcRuqKvKha5nF4OMeJkJth00I2dP1GodwfE0iD61qEB2oQxQxBPwMAfU3GGts
+	 pAQrlkuP4RUR5ZhncqfaEkSKZw6ni5sR7r9J2tc8ygAcmTCELV/LrLanXDy6UGb3WG
+	 tt276Q2ocE5AQ==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 15 Nov 2023 23:02:48 +0200
+Message-Id: <CWZOTY9J9VUU.39FYDBM2MZ153@kernel.org>
+To: "Jerry Snitselaar" <jsnitsel@redhat.com>
+Cc: <linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>, "James
+ Bottomley" <James.Bottomley@hansenpartnership.com>, "William Roberts"
+ <bill.c.roberts@gmail.com>, "Stefan Berger" <stefanb@linux.ibm.com>, "David
+ Howells" <dhowells@redhat.com>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Mimi
+ Zohar" <zohar@linux.ibm.com>, "Peter Huewe" <peterhuewe@gmx.de>, "James
+ Bottomley" <jejb@linux.ibm.com>, "Paul Moore" <paul@paul-moore.com>, "James
+ Morris" <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, "Julien
+ Gomes" <julien@arista.com>, "Mario Limonciello"
+ <mario.limonciello@amd.com>, "open list" <linux-kernel@vger.kernel.org>,
+ "open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
+Subject: Re: [PATCH v3 2/6] tpm: Store TPM buffer length
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+X-Mailer: aerc 0.15.2
+References: <20231024011531.442587-1-jarkko@kernel.org>
+ <20231024011531.442587-3-jarkko@kernel.org>
+ <lifu6orgfo57usei3szyfrmr6ofl37477gji5xh5bwkhftswxg@cjwwa5okjshi>
+In-Reply-To: <lifu6orgfo57usei3szyfrmr6ofl37477gji5xh5bwkhftswxg@cjwwa5okjshi>
 
-The OID of contentType has been recorded in
-`ContentType ::= OBJECT IDENTIFIER ({ pkcs7_note_OID })`,
-so there is no need to re-extract the OID of contentType in
-`contentType ContentType ({ pkcs7_note_OID })`.
-Therefore, we need to remove the duplicated contentType
-pkcs7_note_OID processing logic.
+On Mon Nov 6, 2023 at 9:26 PM EET, Jerry Snitselaar wrote:
+>
+> Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
 
-Signed-off-by: YiLin.Li <YiLin.Li@linux.alibaba.com>
----
- crypto/asymmetric_keys/pkcs7.asn1 | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks.
 
-diff --git a/crypto/asymmetric_keys/pkcs7.asn1 b/crypto/asymmetric_keys/pkcs7.asn1
-index 28e1f4a41c14..3f7adec38245 100644
---- a/crypto/asymmetric_keys/pkcs7.asn1
-+++ b/crypto/asymmetric_keys/pkcs7.asn1
-@@ -28,7 +28,7 @@ SignedData ::= SEQUENCE {
- }
- 
- ContentInfo ::= SEQUENCE {
--	contentType	ContentType ({ pkcs7_note_OID }),
-+	contentType	ContentType,
- 	content		[0] EXPLICIT Data OPTIONAL
- }
- 
--- 
-2.31.1
-
+BR, Jarkko
 
