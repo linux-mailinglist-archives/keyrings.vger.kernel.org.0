@@ -1,115 +1,134 @@
-Return-Path: <keyrings+bounces-79-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-80-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B3647ED665
-	for <lists+keyrings@lfdr.de>; Wed, 15 Nov 2023 22:56:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32C6A7EDAC9
+	for <lists+keyrings@lfdr.de>; Thu, 16 Nov 2023 05:34:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B9FF1C208D6
-	for <lists+keyrings@lfdr.de>; Wed, 15 Nov 2023 21:56:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4859EB20A1F
+	for <lists+keyrings@lfdr.de>; Thu, 16 Nov 2023 04:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6733EA7F;
-	Wed, 15 Nov 2023 21:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA9E2F2D;
+	Thu, 16 Nov 2023 04:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lUkytxTW"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="cUShdtqX"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0F1E193;
-	Wed, 15 Nov 2023 13:56:41 -0800 (PST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AFLhVJA004961;
-	Wed, 15 Nov 2023 21:56:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=9K/cLdVo2ucKzMPx1+SKCSvLmh4Jt/8QKnLodIoP+VA=;
- b=lUkytxTWAYIo3dXMNT+PSP3+sXR4E9I9Psp3s10BkVwQw8qKiMOPgWjg+JKlWiDO/zBb
- aJA/1tOQxVTPmjtfxgoeRB9i8Fl8a8QvaxQ7ak/jYySyuXOPYEz09uoHPuAL84pSTyf/
- P4hTxv5DoAA6hPWo7CQ4BHZyRlhHANb5H59aIrW4QqJBsEmIW/2B7ROSfc3iE/UFT60c
- 1w1080gz0+DvW7m6nein+BPKv0c5+78LYHQcAPW03a2ymuPwHsQEtPB+HMryqOZ89iP/
- U6UVDdNzjuNw5H5ofpp+bNMHVJRGvoy72zKA7snJPmShj8KJM/NZBoUbqF44guypaUoQ Vg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ud51q1v6m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Nov 2023 21:56:38 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AFLRTAu016535;
-	Wed, 15 Nov 2023 21:56:37 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ud51q1uuw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Nov 2023 21:56:37 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AFKIx1o014619;
-	Wed, 15 Nov 2023 21:56:06 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uanekt9w8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 15 Nov 2023 21:56:06 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AFLu5JX15336128
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 15 Nov 2023 21:56:06 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9B99B5805E;
-	Wed, 15 Nov 2023 21:56:05 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D742C58051;
-	Wed, 15 Nov 2023 21:56:04 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 15 Nov 2023 21:56:04 +0000 (GMT)
-Message-ID: <ee054131-9d64-4945-b8aa-76b212effa7b@linux.ibm.com>
-Date: Wed, 15 Nov 2023 16:56:03 -0500
+Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 549391A3
+	for <keyrings@vger.kernel.org>; Wed, 15 Nov 2023 20:33:47 -0800 (PST)
+Received: by mail-qk1-x729.google.com with SMTP id af79cd13be357-778999c5ecfso20332585a.2
+        for <keyrings@vger.kernel.org>; Wed, 15 Nov 2023 20:33:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1700109226; x=1700714026; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=HOfDZdWy3FlMMU3byFQ5fyH9fZQUeVFWx7pZHVOBZ9I=;
+        b=cUShdtqX6NpRR3sTAX0J50EPelbnHmQNFwtWvwzNOaB5PsWSbAaumzdhhDAezZ/KVs
+         4uAi6bZhs7kWxiaREbmBkx5XOlv0YLLmHnOuaHpkfianch+ql9QBTSLz8ULbt4MoRQhP
+         HS49Y2z6QZAsdUpvur/XvuVba1Prftyd00XHMiGESmfqTkMiO89y110AJ5j6llyg0rd4
+         YD7CtJVPc4kiEp6m1LVvXvZuFGfh6vW8fiOQfNuQXj/6O7yuLxQdstH2aL6JGF64QybS
+         i3RTojbP3mpDQJCYFP1Xh4eVjB/pRvLS5ma7lWrP4rC9H6MczSvb/71xmqO9qtnNDdKN
+         yiyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700109226; x=1700714026;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HOfDZdWy3FlMMU3byFQ5fyH9fZQUeVFWx7pZHVOBZ9I=;
+        b=L5y2NUJ+xlvTsdo/KG/aiBpVTnWfQ1nBQXgj3R4EsYVX9SeTW+0oag8AvrM3FQER1R
+         z4ul2eDjHJXlMbqrjkDUCyjOStnb4Lkd6qHlKReXZZOE7qXKHsPqEYDsca6upoPnU8Wn
+         AbJg+yJu4zqE9Z7DPQzpku+kEM6piNHVGoGFzAhMwNOmdqfh8HjOtj5OZLZMYWpJ718V
+         I8XZaIqXjDtSchXalzA3hMu0d3id8fFEj++JPpg59q/J/w05FcvmsCyrt1+8xvgxCSva
+         UxLIaj5vaoZtnZehZDJSA9BzgcH/buuS+FU4gE2iFmKCdN7pJ/27/FUMgPyXxrtbuq2n
+         rv9w==
+X-Gm-Message-State: AOJu0Yy/idT6z4MrQSBZ85Y3S7lYHGgDWECkN+cjDA0lGuyEPqfmXc6Z
+	C0qB+G0NvoGaZU6nSZP9QAQM
+X-Google-Smtp-Source: AGHT+IER1laoQSGviRJQuTFe6S8/gip4gdebLlsXd5eO0S7LgScOwZM8Bh3pBl2l/YUS5yGMypAquA==
+X-Received: by 2002:a05:620a:201c:b0:778:920a:7a70 with SMTP id c28-20020a05620a201c00b00778920a7a70mr8484989qka.66.1700109226313;
+        Wed, 15 Nov 2023 20:33:46 -0800 (PST)
+Received: from localhost ([70.22.175.108])
+        by smtp.gmail.com with ESMTPSA id qc3-20020a05620a654300b0076d25b11b62sm4033067qkn.38.2023.11.15.20.33.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Nov 2023 20:33:45 -0800 (PST)
+Date: Wed, 15 Nov 2023 23:33:45 -0500
+Message-ID: <231ff26ec85f437261753faf03b384e6.paul@paul-moore.com>
+From: Paul Moore <paul@paul-moore.com>
+To: Roberto Sassu <roberto.sassu@huaweicloud.com>, viro@zeniv.linux.org.uk, brauner@kernel.org, chuck.lever@oracle.com, jlayton@kernel.org, neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com, jmorris@namei.org, serge@hallyn.com, zohar@linux.ibm.com, dmitry.kasatkin@gmail.com, dhowells@redhat.com, jarkko@kernel.org, stephen.smalley.work@gmail.com, eparis@parisplace.org, casey@schaufler-ca.com, mic@digikod.net
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, selinux@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>, Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH v5 10/23] security: Introduce inode_post_setattr hook
+References: <20231107134012.682009-11-roberto.sassu@huaweicloud.com>
+In-Reply-To: <20231107134012.682009-11-roberto.sassu@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/6] Extend struct tpm_buf to support sized buffers
- (TPM2B)
-Content-Language: en-US
-To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org
-Cc: keyrings@vger.kernel.org,
-        James Bottomley <James.Bottomley@HansenPartnership.com>,
-        William Roberts <bill.c.roberts@gmail.com>,
-        David Howells <dhowells@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Mimi Zohar <zohar@linux.ibm.com>
-References: <20231024011531.442587-1-jarkko@kernel.org>
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20231024011531.442587-1-jarkko@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: hxvq3Jm9IotJVc_jxNKr0IXxcoNd_wRd
-X-Proofpoint-GUID: QU_NMfOQm3pNkuK5aTwxgI2p-wXCj569
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-15_20,2023-11-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
- phishscore=0 suspectscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=690
- mlxscore=0 adultscore=0 malwarescore=0 lowpriorityscore=0 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
- definitions=main-2311150173
 
-
-
-On 10/23/23 21:15, Jarkko Sakkinen wrote:
-
-> For TPM1 I tried:
+On Nov  7, 2023 Roberto Sassu <roberto.sassu@huaweicloud.com> wrote:
 > 
-> keyctl add trusted kmk "new 32" @u
+> In preparation for moving IMA and EVM to the LSM infrastructure, introduce
+> the inode_post_setattr hook.
 > 
-> This caused TPM error 18, which AFAIK means that there is not SRK (?),
-> which is probably an issue in my swtpm configuration, which is visible
-> in board/qemu/start-qemu.sh.in.
+> At inode_setattr hook, EVM verifies the file's existing HMAC value. At
+> inode_post_setattr, EVM re-calculates the file's HMAC based on the modified
+> file attributes and other file metadata.
+> 
+> Other LSMs could similarly take some action after successful file attribute
+> change.
+> 
+> The new hook cannot return an error and cannot cause the operation to be
+> reverted.
+> 
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+> Acked-by: Casey Schaufler <casey@schaufler-ca.com>
+> ---
+>  fs/attr.c                     |  1 +
+>  include/linux/lsm_hook_defs.h |  2 ++
+>  include/linux/security.h      |  7 +++++++
+>  security/security.c           | 16 ++++++++++++++++
+>  4 files changed, 26 insertions(+)
 
-FYI: This would create a TPM 1.2 with an SRK with password 'sss':
+...
 
-swtpm_setup --tpmstate=./ --create-ek-cert --take-ownership --overwrite 
---srkpass sss --ownerpass ooo
+> diff --git a/security/security.c b/security/security.c
+> index 7935d11d58b5..ce3bc7642e18 100644
+> --- a/security/security.c
+> +++ b/security/security.c
+> @@ -2222,6 +2222,22 @@ int security_inode_setattr(struct mnt_idmap *idmap,
+>  }
+>  EXPORT_SYMBOL_GPL(security_inode_setattr);
+>  
+> +/**
+> + * security_inode_post_setattr() - Update the inode after a setattr operation
+> + * @idmap: idmap of the mount
+> + * @dentry: file
+> + * @ia_valid: file attributes set
+> + *
+> + * Update inode security field after successful setting file attributes.
+> + */
+> +void security_inode_post_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+> +				 int ia_valid)
+> +{
+> +	if (unlikely(IS_PRIVATE(d_backing_inode(dentry))))
+> +		return;
+
+I may be missing it, but I don't see the S_PRIVATE flag check in the
+existing IMA or EVM hooks so I'm curious as to why it is added here?
+Please don't misunderstand me, I think it makes sense to return early
+on private dentrys/inodes, but why aren't we doing that now?
+
+> +	call_void_hook(inode_post_setattr, idmap, dentry, ia_valid);
+> +}
+> +
+>  /**
+>   * security_inode_getattr() - Check if getting file attributes is allowed
+>   * @path: file
+> -- 
+> 2.34.1
+
+--
+paul-moore.com
 
