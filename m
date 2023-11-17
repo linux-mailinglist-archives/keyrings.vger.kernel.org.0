@@ -1,107 +1,138 @@
-Return-Path: <keyrings+bounces-94-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-95-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A8F87EEE59
-	for <lists+keyrings@lfdr.de>; Fri, 17 Nov 2023 10:20:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EF4A7EF8ED
+	for <lists+keyrings@lfdr.de>; Fri, 17 Nov 2023 21:58:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4959C1C20752
-	for <lists+keyrings@lfdr.de>; Fri, 17 Nov 2023 09:20:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7610280FB6
+	for <lists+keyrings@lfdr.de>; Fri, 17 Nov 2023 20:58:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADED8125A9;
-	Fri, 17 Nov 2023 09:20:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A642D45C1A;
+	Fri, 17 Nov 2023 20:57:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="UgXRGSUY"
 X-Original-To: keyrings@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90D87B7;
-	Fri, 17 Nov 2023 01:20:48 -0800 (PST)
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-	id 1r3v0v-000aCz-Kl; Fri, 17 Nov 2023 17:19:50 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 17 Nov 2023 17:19:57 +0800
-Date: Fri, 17 Nov 2023 17:19:57 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: David Gstir <david@sigma-star.at>
-Cc: Mimi Zohar <zohar@linux.ibm.com>, James Bottomley <jejb@linux.ibm.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Shawn Guo <shawnguo@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	sigma star Kernel Team <upstream+dcp@sigma-star.at>,
-	David Howells <dhowells@redhat.com>, Li Yang <leoyang.li@nxp.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Tejun Heo <tj@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-security-module@vger.kernel.org,
-	Richard Weinberger <richard@nod.at>,
-	David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Subject: Re: [PATCH v4 1/5] crypto: mxs-dcp: Add support for hardware-bound
- keys
-Message-ID: <ZVcwPUEbu3Frp61X@gondor.apana.org.au>
-References: <20231024162024.51260-1-david@sigma-star.at>
- <20231024162024.51260-2-david@sigma-star.at>
+Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F36FD6D
+	for <keyrings@vger.kernel.org>; Fri, 17 Nov 2023 12:57:52 -0800 (PST)
+Received: by mail-qt1-x82a.google.com with SMTP id d75a77b69052e-41cc0e9d92aso13903431cf.3
+        for <keyrings@vger.kernel.org>; Fri, 17 Nov 2023 12:57:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1700254671; x=1700859471; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=bzVqwuvaomrtW1rFoY9rJJKDbCx8C1ZbkSBq2JOlS7c=;
+        b=UgXRGSUY7JiQlnB7qYapmgY9IHLq6inX1AYTw7HnnKCW5iYGVi/Wo6Np65OwY/6FEv
+         p4Kvh1NFMID4VwXGgrZoknbifkXPtrKUXPEuUUNV4s52j+xo4K4+imRQXiuXrScZjX+B
+         llvj44l+xccHwV5qWRUpu1OY/biUG6iH/7lXz+wthAPAgX6t+Z7glBgriCVcy+GtBere
+         746bdnbnzY4lKkCvPT0TnQlBy11ZAbmDiq6WLc9BJE/bquQE+Pdvjht6QiUb4NsMdmmY
+         1fmIgZ356BgwBNMyWbk2VwexqWi2g9ePLbNKjR6XJhkOAMVxDsIybe8fneK15XeJg2YL
+         54qQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700254671; x=1700859471;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bzVqwuvaomrtW1rFoY9rJJKDbCx8C1ZbkSBq2JOlS7c=;
+        b=bRibRpJeBNPFU9utDgDEiNCluLER0Kt9jQY3/y8HB6mwn1ehjF5mo9GLpKFSWSvxW0
+         YVKq3q6BQOXEQD5LEuBFBXTcQyHRDRRWDwsdveeHqX1zHF27/mALlCYHdu6ZYKbz+r8y
+         xdn40fJ2FX+fTH2xS9lbq+KgSJXtZ94Lrk0xzroKLrpnlgde3sGAM2yh1EQi1c1qew6f
+         5Rvl/R5e6U5/uB9BdwZBGAz4KXFews2pfnDEiPTYphu4sjlbNU1fKjhIfcJeUml+oX4U
+         9GFl6GYqGFysTeFniFUxCpCzGIG/ejOGPa0NvTNzxEAJkSp/xztLRUuFFWUhoRLnYljN
+         ez+Q==
+X-Gm-Message-State: AOJu0Yz1wGy7CjaEfUDsq2dEcuG1vfZt18unpCth0xEiEkyStpmCQMy5
+	iiXs755B2GWYDLy9b9001Fr8
+X-Google-Smtp-Source: AGHT+IETTzY5QAJOhSSX9WgqhpKW3XEYQ+hKIJQj84OHBSoAAzNFaiPFDk/ljl7y5ZXFF2ajrMbeHg==
+X-Received: by 2002:ac8:4e8f:0:b0:420:72:3075 with SMTP id 15-20020ac84e8f000000b0042000723075mr1208982qtp.17.1700254671570;
+        Fri, 17 Nov 2023 12:57:51 -0800 (PST)
+Received: from localhost ([70.22.175.108])
+        by smtp.gmail.com with ESMTPSA id p2-20020ac87402000000b004196d75d79csm831843qtq.46.2023.11.17.12.57.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Nov 2023 12:57:51 -0800 (PST)
+Date: Fri, 17 Nov 2023 15:57:50 -0500
+Message-ID: <17befa132379d37977fc854a8af25f6d.paul@paul-moore.com>
+From: Paul Moore <paul@paul-moore.com>
+To: Roberto Sassu <roberto.sassu@huaweicloud.com>, viro@zeniv.linux.org.uk, brauner@kernel.org, chuck.lever@oracle.com, jlayton@kernel.org, neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com, jmorris@namei.org, serge@hallyn.com, zohar@linux.ibm.com, dmitry.kasatkin@gmail.com, dhowells@redhat.com, jarkko@kernel.org, stephen.smalley.work@gmail.com, eparis@parisplace.org, casey@schaufler-ca.com, mic@digikod.net
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, selinux@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
+Subject: Re: [PATCH v5 23/23] integrity: Switch from rbtree to LSM-managed blob  for integrity_iint_cache
+References: <20231107134012.682009-24-roberto.sassu@huaweicloud.com>
+In-Reply-To: <20231107134012.682009-24-roberto.sassu@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231024162024.51260-2-david@sigma-star.at>
 
-On Tue, Oct 24, 2023 at 06:20:15PM +0200, David Gstir wrote:
-> DCP is capable of performing AES with two hardware-bound keys:
+On Nov  7, 2023 Roberto Sassu <roberto.sassu@huaweicloud.com> wrote:
 > 
-> - The one-time programmable (OTP) key which is burnt via on-chip fuses
-> - The unique key (UK) which is derived from the OTP key
+> Before the security field of kernel objects could be shared among LSMs with
+> the LSM stacking feature, IMA and EVM had to rely on an alternative storage
+> of inode metadata. The association between inode metadata and inode is
+> maintained through an rbtree.
 > 
-> In addition to the two hardware-bound keys, DCP also supports
-> storing keys in 4 dedicated key slots within its secure memory area
-> (internal SRAM).
+> Because of this alternative storage mechanism, there was no need to use
+> disjoint inode metadata, so IMA and EVM today still share them.
 > 
-> These keys are not stored in main memory and are therefore
-> not directly accessible by the operating system. To use them
-> for AES operations, a one-byte key reference has to supplied
-> with the DCP operation descriptor in the control register.
+> With the reservation mechanism offered by the LSM infrastructure, the
+> rbtree is no longer necessary, as each LSM could reserve a space in the
+> security blob for each inode. However, since IMA and EVM share the
+> inode metadata, they cannot directly reserve the space for them.
 > 
-> This adds support for using any of these 6 keys through the crypto API
-> via their key reference after they have been set up. The main purpose
-> is to add support for DCP-backed trusted keys. Other use cases are
-> possible too (see similar existing paes implementations), but these
-> should carefully be evaluated as e.g. enabling AF_ALG will give
-> userspace full access to use keys. In scenarios with untrustworthy
-> userspace, this will enable en-/decryption oracles.
+> Instead, request from the 'integrity' LSM a space in the security blob for
+> the pointer of inode metadata (integrity_iint_cache structure). The other
+> reason for keeping the 'integrity' LSM is to preserve the original ordering
+> of IMA and EVM functions as when they were hardcoded.
 > 
-> Co-developed-by: Richard Weinberger <richard@nod.at>
-> Signed-off-by: Richard Weinberger <richard@nod.at>
-> Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-> Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-> Signed-off-by: David Gstir <david@sigma-star.at>
+> Prefer reserving space for a pointer to allocating the integrity_iint_cache
+> structure directly, as IMA would require it only for a subset of inodes.
+> Always allocating it would cause a waste of memory.
+> 
+> Introduce two primitives for getting and setting the pointer of
+> integrity_iint_cache in the security blob, respectively
+> integrity_inode_get_iint() and integrity_inode_set_iint(). This would make
+> the code more understandable, as they directly replace rbtree operations.
+> 
+> Locking is not needed, as access to inode metadata is not shared, it is per
+> inode.
+> 
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
+> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
 > ---
->  drivers/crypto/mxs-dcp.c | 104 ++++++++++++++++++++++++++++++++++-----
->  include/soc/fsl/dcp.h    |  17 +++++++
->  2 files changed, 110 insertions(+), 11 deletions(-)
->  create mode 100644 include/soc/fsl/dcp.h
+>  security/integrity/iint.c      | 71 +++++-----------------------------
+>  security/integrity/integrity.h | 20 +++++++++-
+>  2 files changed, 29 insertions(+), 62 deletions(-)
+> 
+> diff --git a/security/integrity/iint.c b/security/integrity/iint.c
+> index 882fde2a2607..a5edd3c70784 100644
+> --- a/security/integrity/iint.c
+> +++ b/security/integrity/iint.c
+> @@ -231,6 +175,10 @@ static int __init integrity_lsm_init(void)
+>  	return 0;
+>  }
+>  
+> +struct lsm_blob_sizes integrity_blob_sizes __ro_after_init = {
+> +	.lbs_inode = sizeof(struct integrity_iint_cache *),
+> +};
 
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+I'll admit that I'm likely missing an important detail, but is there
+a reason why you couldn't stash the integrity_iint_cache struct
+directly in the inode's security blob instead of the pointer?  For
+example:
+
+  struct lsm_blob_sizes ... = {
+    .lbs_inode = sizeof(struct integrity_iint_cache),
+  };
+
+  struct integrity_iint_cache *integrity_inode_get(inode)
+  {
+    if (unlikely(!inode->isecurity))
+      return NULL;
+    return inode->i_security + integrity_blob_sizes.lbs_inode;
+  }
+
+--
+paul-moore.com
 
