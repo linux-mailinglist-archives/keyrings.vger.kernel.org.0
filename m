@@ -1,93 +1,107 @@
-Return-Path: <keyrings+bounces-93-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-94-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2756B7EEC12
-	for <lists+keyrings@lfdr.de>; Fri, 17 Nov 2023 06:49:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8F87EEE59
+	for <lists+keyrings@lfdr.de>; Fri, 17 Nov 2023 10:20:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 535801C20905
-	for <lists+keyrings@lfdr.de>; Fri, 17 Nov 2023 05:49:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4959C1C20752
+	for <lists+keyrings@lfdr.de>; Fri, 17 Nov 2023 09:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEB4D2F2;
-	Fri, 17 Nov 2023 05:49:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=blastwave.org header.i=@blastwave.org header.b="mI0DHJEA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADED8125A9;
+	Fri, 17 Nov 2023 09:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: keyrings@vger.kernel.org
-X-Greylist: delayed 863 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 16 Nov 2023 21:49:05 PST
-Received: from mail.oetec.com (mail.oetec.com [108.160.241.186])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A8A21A5;
-	Thu, 16 Nov 2023 21:49:05 -0800 (PST)
-Received: from [172.16.35.9] (cpe8c6a8d4d360a-cm8c6a8d4d3608.cpe.net.cable.rogers.com [99.253.151.152])
-	(authenticated bits=0)
-	by mail.oetec.com (8.17.1/8.16.1) with ESMTPSA id 3AH5YCpU064107
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT);
-	Fri, 17 Nov 2023 00:34:13 -0500 (EST)
-	(envelope-from dclarke@blastwave.org)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=blastwave.org;
-	s=default; t=1700199254;
-	bh=PvIxctXLgaHgk2d2RaUgrIbNlEUE181R8LoHySAcYCY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mI0DHJEA7W0nohOYB1QCRNdDzlCjLAe3aG2MIeeokSWKRVu6WOeUtRALp1qMZCXuC
-	 rbDmk12wtHpzrTzieH1101Au1Zg2HgLXX7P8exdi8rgIECqbkwgURnnVgP+sOlokZf
-	 /AGCZE5075eMq7qnvuyhihaLl6W7+HBhuEUjApIltaOijvg8O6qUKHB4ELsxLUIOO+
-	 oCZfgKYMl0+KpkVNEYIJuJC32QQ/B+XpZzuqrwDTLOu1NeZbRrN2wSiKBbhDUduE6F
-	 hHxEd0zuqut0eLvX8GYH6lSWe3UGjv7yK5M/9+siUly4ZdsIAvsVTOmIrdjH7njsH8
-	 rmZ+xpRJg00uA==
-Message-ID: <e110cfff-08f9-4bbc-6b69-0d67ae6562b6@blastwave.org>
-Date: Fri, 17 Nov 2023 00:34:12 -0500
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90D87B7;
+	Fri, 17 Nov 2023 01:20:48 -0800 (PST)
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+	id 1r3v0v-000aCz-Kl; Fri, 17 Nov 2023 17:19:50 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 17 Nov 2023 17:19:57 +0800
+Date: Fri, 17 Nov 2023 17:19:57 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: David Gstir <david@sigma-star.at>
+Cc: Mimi Zohar <zohar@linux.ibm.com>, James Bottomley <jejb@linux.ibm.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Shawn Guo <shawnguo@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	sigma star Kernel Team <upstream+dcp@sigma-star.at>,
+	David Howells <dhowells@redhat.com>, Li Yang <leoyang.li@nxp.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Tejun Heo <tj@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-security-module@vger.kernel.org,
+	Richard Weinberger <richard@nod.at>,
+	David Oberhollenzer <david.oberhollenzer@sigma-star.at>
+Subject: Re: [PATCH v4 1/5] crypto: mxs-dcp: Add support for hardware-bound
+ keys
+Message-ID: <ZVcwPUEbu3Frp61X@gondor.apana.org.au>
+References: <20231024162024.51260-1-david@sigma-star.at>
+ <20231024162024.51260-2-david@sigma-star.at>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: =?UTF-8?Q?Re=3a_Fwd=3a_sign-file=2ec=3a149=3a17=3a_warning=3a_impli?=
- =?UTF-8?Q?cit_declaration_of_function_=e2=80=98ENGINE=5fload=5fbuiltin=5fen?=
- =?UTF-8?B?Z2luZXPigJk=?=
-Content-Language: en-CA
-To: Bagas Sanjaya <bagasdotme@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Kernel Build System <linux-kbuild@vger.kernel.org>,
-        Linux Kernel Keyrings <keyrings@vger.kernel.org>
-Cc: David Howells <dhowells@redhat.com>,
-        David Woodhouse
- <dwmw2@infradead.org>,
-        Masahiro Yamada <masahiroy@kernel.org>
-References: <1fca50c4-6d7b-4c9b-bcea-4df17e2c2e7e@gmail.com>
-From: Dennis Clarke <dclarke@blastwave.org>
-Organization: GENUNIX
-In-Reply-To: <1fca50c4-6d7b-4c9b-bcea-4df17e2c2e7e@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-oetec-MailScanner-Information: Please contact the ISP for more information
-X-oetec-MailScanner-ID: 3AH5YCpU064107
-X-oetec-MailScanner: Found to be clean
-X-oetec-MailScanner-From: dclarke@blastwave.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231024162024.51260-2-david@sigma-star.at>
 
-On 11/16/23 18:41, Bagas Sanjaya wrote:
-> Hi,
+On Tue, Oct 24, 2023 at 06:20:15PM +0200, David Gstir wrote:
+> DCP is capable of performing AES with two hardware-bound keys:
 > 
-> I notice a bug report on Bugzilla [1]. Quoting from it:
+> - The one-time programmable (OTP) key which is burnt via on-chip fuses
+> - The unique key (UK) which is derived from the OTP key
 > 
-<snip>
->> Not related to https://bugzilla.kernel.org/show_bug.cgi?id=215750 but I *feel* that
->> this code needs a hug.
+> In addition to the two hardware-bound keys, DCP also supports
+> storing keys in 4 dedicated key slots within its secure memory area
+> (internal SRAM).
 > 
-> See Bugzilla for the full thread.
+> These keys are not stored in main memory and are therefore
+> not directly accessible by the operating system. To use them
+> for AES operations, a one-byte key reference has to supplied
+> with the DCP operation descriptor in the control register.
 > 
-> AFAIK, this looks like a bug when the kernel is compiled against custom
-> (non-system) version of OpenSSL library.
+> This adds support for using any of these 6 keys through the crypto API
+> via their key reference after they have been set up. The main purpose
+> is to add support for DCP-backed trusted keys. Other use cases are
+> possible too (see similar existing paes implementations), but these
+> should carefully be evaluated as e.g. enabling AF_ALG will give
+> userspace full access to use keys. In scenarios with untrustworthy
+> userspace, this will enable en-/decryption oracles.
 > 
+> Co-developed-by: Richard Weinberger <richard@nod.at>
+> Signed-off-by: Richard Weinberger <richard@nod.at>
+> Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
+> Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
+> Signed-off-by: David Gstir <david@sigma-star.at>
+> ---
+>  drivers/crypto/mxs-dcp.c | 104 ++++++++++++++++++++++++++++++++++-----
+>  include/soc/fsl/dcp.h    |  17 +++++++
+>  2 files changed, 110 insertions(+), 11 deletions(-)
+>  create mode 100644 include/soc/fsl/dcp.h
 
-I do not know what you could possibly mean. There is nothing "custom"
-about OpenSSL. For that matter the gcc compiler I am using was also
-built by me. Works fine. The sign-file.c source compiles fine.
-
-It fails to compile in the usual way when trying to build the kernel.
-
-Dennis
+Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
