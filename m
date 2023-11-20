@@ -1,192 +1,82 @@
-Return-Path: <keyrings+bounces-131-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-132-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A9CF7F1E81
-	for <lists+keyrings@lfdr.de>; Mon, 20 Nov 2023 22:06:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87BB97F218C
+	for <lists+keyrings@lfdr.de>; Tue, 21 Nov 2023 00:44:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EA03B20F7E
-	for <lists+keyrings@lfdr.de>; Mon, 20 Nov 2023 21:06:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 421B3282210
+	for <lists+keyrings@lfdr.de>; Mon, 20 Nov 2023 23:44:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F59032C93;
-	Mon, 20 Nov 2023 21:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC923B2B1;
+	Mon, 20 Nov 2023 23:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="YLhyT6Rm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ufd0rVmR"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AD1CE3
-	for <keyrings@vger.kernel.org>; Mon, 20 Nov 2023 13:06:21 -0800 (PST)
-Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-daf2eda7efaso4787587276.0
-        for <keyrings@vger.kernel.org>; Mon, 20 Nov 2023 13:06:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1700514380; x=1701119180; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NG2FEhp12pFkNfvVzutmm+LjhzXXRny+ltBXXG6QNR4=;
-        b=YLhyT6RmzMxgdwWF3OzA1dbTAz8GYwlqdzU9jExIzFo7f7lyo2lc/g5s8M1FPVxNVx
-         9xH5Qe/wVsv58MHQpjcvW3LKQcQ5vIb9Aa73yrI/rkqK7MVSaCFxHqne8L13lT5gfTNd
-         jrz2ZdVN1Qe3itctMb74xkKwKI6nJ4cxYD4hmugMHvP5aWDW4emrejI+By1/ZbG0f7JT
-         cFXvDnsb5rYwIE/fidXu7jWV6ZgD3xHcJYQin5mUIyp4H3oCK5n4tdFaaQXQEZFpoH+G
-         SJuLfuXl8Rod2tCYybo07Z13jXhOFKBICD9TAWYrNxzyLdOcfmQ9oJDeTWht/WBRaKY0
-         ufgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700514380; x=1701119180;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NG2FEhp12pFkNfvVzutmm+LjhzXXRny+ltBXXG6QNR4=;
-        b=UZ3yOmg1u9fjodEdE5GZN1vSZADVMp9SjWyBBCf0mRvg0NleXdv3HgaOK71pEAqdjT
-         ZdgQ6qsY+YGXpsTXBTwO0pLzkfp1pxGFMCjOZ6KpvvxgBCCdXn9UUxW+esh3ODehiP7X
-         I9NGLFGbSjFH44ZxRKPGAdaInbGWnKmcsy5OfFC/UqgNqOMxUYqbLN6/YQvXalVkYKcU
-         I4JvZ/uekZE3Qvtk9aFNFTEB2ETfDWY6koubbsNwwS8UjJevRW2LIog98IsliG2qX/uk
-         4gVrjGvxGLnaOI3WrqwlYhj+oqxxaoc6ewKy/UmUjxGMgNbXjak46bMOrpgR/mLy4E6L
-         hytQ==
-X-Gm-Message-State: AOJu0Yw2dguNKV4rHiEDueuakElgwWnKNbKpev7qNmBgJ59FhrjL+XXh
-	emJ+2ppeKFZdauKy05r18drBLGlk21j2qYQKkMW0
-X-Google-Smtp-Source: AGHT+IH9dEFOAePFkBv2PMwl9MhCUaQv6Ntac6yIXsmvUTEQCyAzM8wMPOVAFCDufYnlm3OoAXU+qg91wHL5Jm2H0Ok=
-X-Received: by 2002:a81:ac17:0:b0:5ca:7629:7a9a with SMTP id
- k23-20020a81ac17000000b005ca76297a9amr4086414ywh.37.1700514380344; Mon, 20
- Nov 2023 13:06:20 -0800 (PST)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE8138F8F;
+	Mon, 20 Nov 2023 23:44:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1359C433C7;
+	Mon, 20 Nov 2023 23:44:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700523848;
+	bh=Kd8MO4g1L5NTe6VF4FsH/eaduBF2fDgRgJuS7ZGu1iU=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=Ufd0rVmR5y3R7QnornCtBcuirGAcrKKp42f3eDqcYIB1XonOVDSdvIw6LrO4cW2ar
+	 0NpeKZXlbxFXQqrGmG2KBLfCq9/M0n7dN8/1Dtc2JLwtubEj0mLNR6/jxRpyhuF9OR
+	 R9SxEJt5l1+Cr/VOEqAnN4vRCKbhLjltSO2E7Lx316gDOrTKyZ+sZIIToUVsG2vuio
+	 h5np78o+4dKBYHNZZFzQUkUCxZc3+p69vTiHJ7Y395UkGtLmJKQr88G0oKHWwoiIGO
+	 a5mrFDA/e6gvjX7JVIVBvk4BTRlex4VESUTbpYKwKmoz/14KtZRi7Jb49dbEDDyqRf
+	 ukRiua9v/JZeg==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20231107134012.682009-24-roberto.sassu@huaweicloud.com>
- <17befa132379d37977fc854a8af25f6d.paul@paul-moore.com> <2084adba3c27a606cbc5ed7b3214f61427a829dd.camel@huaweicloud.com>
-In-Reply-To: <2084adba3c27a606cbc5ed7b3214f61427a829dd.camel@huaweicloud.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Mon, 20 Nov 2023 16:06:09 -0500
-Message-ID: <CAHC9VhTTKac1o=RnQadu2xqdeKH8C_F+Wh4sY=HkGbCArwc8JQ@mail.gmail.com>
-Subject: Re: [PATCH v5 23/23] integrity: Switch from rbtree to LSM-managed
- blob for integrity_iint_cache
-To: Roberto Sassu <roberto.sassu@huaweicloud.com>
-Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, chuck.lever@oracle.com, 
-	jlayton@kernel.org, neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com, 
-	tom@talpey.com, jmorris@namei.org, serge@hallyn.com, zohar@linux.ibm.com, 
-	dmitry.kasatkin@gmail.com, dhowells@redhat.com, jarkko@kernel.org, 
-	stephen.smalley.work@gmail.com, eparis@parisplace.org, casey@schaufler-ca.com, 
-	mic@digikod.net, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, 
-	selinux@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 21 Nov 2023 01:44:03 +0200
+Message-Id: <CX41E533XH4S.1B6IZCU0PKPL2@kernel.org>
+Cc: <keyrings@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-crypto@vger.kernel.org>
+Subject: Re: [RESEND PATCH v2] sign-file: Fix incorrect return values check
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Yusong Gao" <a869920004@gmail.com>, <davem@davemloft.net>,
+ <dhowells@redhat.com>, <dwmw2@infradead.org>, <zohar@linux.ibm.com>,
+ <herbert@gondor.apana.org.au>, <lists@sapience.com>,
+ <dimitri.ledkov@canonical.com>
+X-Mailer: aerc 0.15.2
+References: <20231120013359.814059-1-a869920004@gmail.com>
+In-Reply-To: <20231120013359.814059-1-a869920004@gmail.com>
 
-On Mon, Nov 20, 2023 at 3:16=E2=80=AFAM Roberto Sassu
-<roberto.sassu@huaweicloud.com> wrote:
-> On Fri, 2023-11-17 at 15:57 -0500, Paul Moore wrote:
-> > On Nov  7, 2023 Roberto Sassu <roberto.sassu@huaweicloud.com> wrote:
-> > >
-> > > Before the security field of kernel objects could be shared among LSM=
-s with
-> > > the LSM stacking feature, IMA and EVM had to rely on an alternative s=
-torage
-> > > of inode metadata. The association between inode metadata and inode i=
-s
-> > > maintained through an rbtree.
-> > >
-> > > Because of this alternative storage mechanism, there was no need to u=
-se
-> > > disjoint inode metadata, so IMA and EVM today still share them.
-> > >
-> > > With the reservation mechanism offered by the LSM infrastructure, the
-> > > rbtree is no longer necessary, as each LSM could reserve a space in t=
-he
-> > > security blob for each inode. However, since IMA and EVM share the
-> > > inode metadata, they cannot directly reserve the space for them.
-> > >
-> > > Instead, request from the 'integrity' LSM a space in the security blo=
-b for
-> > > the pointer of inode metadata (integrity_iint_cache structure). The o=
-ther
-> > > reason for keeping the 'integrity' LSM is to preserve the original or=
-dering
-> > > of IMA and EVM functions as when they were hardcoded.
-> > >
-> > > Prefer reserving space for a pointer to allocating the integrity_iint=
-_cache
-> > > structure directly, as IMA would require it only for a subset of inod=
-es.
-> > > Always allocating it would cause a waste of memory.
-> > >
-> > > Introduce two primitives for getting and setting the pointer of
-> > > integrity_iint_cache in the security blob, respectively
-> > > integrity_inode_get_iint() and integrity_inode_set_iint(). This would=
- make
-> > > the code more understandable, as they directly replace rbtree operati=
-ons.
-> > >
-> > > Locking is not needed, as access to inode metadata is not shared, it =
-is per
-> > > inode.
-> > >
-> > > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> > > Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
-> > > Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-> > > ---
-> > >  security/integrity/iint.c      | 71 +++++---------------------------=
---
-> > >  security/integrity/integrity.h | 20 +++++++++-
-> > >  2 files changed, 29 insertions(+), 62 deletions(-)
-> > >
-> > > diff --git a/security/integrity/iint.c b/security/integrity/iint.c
-> > > index 882fde2a2607..a5edd3c70784 100644
-> > > --- a/security/integrity/iint.c
-> > > +++ b/security/integrity/iint.c
-> > > @@ -231,6 +175,10 @@ static int __init integrity_lsm_init(void)
-> > >     return 0;
-> > >  }
-> > >
-> > > +struct lsm_blob_sizes integrity_blob_sizes __ro_after_init =3D {
-> > > +   .lbs_inode =3D sizeof(struct integrity_iint_cache *),
-> > > +};
-> >
-> > I'll admit that I'm likely missing an important detail, but is there
-> > a reason why you couldn't stash the integrity_iint_cache struct
-> > directly in the inode's security blob instead of the pointer?  For
-> > example:
-> >
-> >   struct lsm_blob_sizes ... =3D {
-> >     .lbs_inode =3D sizeof(struct integrity_iint_cache),
-> >   };
-> >
-> >   struct integrity_iint_cache *integrity_inode_get(inode)
-> >   {
-> >     if (unlikely(!inode->isecurity))
-> >       return NULL;
-> >     return inode->i_security + integrity_blob_sizes.lbs_inode;
-> >   }
+On Mon Nov 20, 2023 at 3:33 AM EET, Yusong Gao wrote:
+> There are some wrong return values check in sign-file when call OpenSSL
+> API. For example the CMS_final() return 1 for success or 0 for failure.
+
+Why not make it a closed sentence and list the functions that need to be
+changed?
+
+> The ERR() check cond is wrong because of the program only check the
+> return value is < 0 instead of <=3D 0.
 >
-> It would increase memory occupation. Sometimes the IMA policy
-> encompasses a small subset of the inodes. Allocating the full
-> integrity_iint_cache would be a waste of memory, I guess?
 
-Perhaps, but if it allows us to remove another layer of dynamic memory
-I would argue that it may be worth the cost.  It's also worth
-considering the size of integrity_iint_cache, while it isn't small, it
-isn't exactly huge either.
+Lacking Fixes tag(s). See: ttps://www.kernel.org/doc/html/latest/process/su=
+bmitting-patches.html
 
-> On the other hand... (did not think fully about that) if we embed the
-> full structure in the security blob, we already have a mutex available
-> to use, and we don't need to take the inode lock (?).
+> Link:
+> https://www.openssl.org/docs/manmaster/man3/CMS_final.html
+> https://www.openssl.org/docs/manmaster/man3/i2d_CMS_bio_stream.html
+> https://www.openssl.org/docs/manmaster/man3/i2d_PKCS7_bio.html
+> https://www.openssl.org/docs/manmaster/man3/BIO_free.html
 
-That would be excellent, getting rid of a layer of locking would be signifi=
-cant.
+Replace with
 
-> I'm fully convinced that we can improve the implementation
-> significantly. I just was really hoping to go step by step and not
-> accumulating improvements as dependency for moving IMA and EVM to the
-> LSM infrastructure.
+Link: https://www.openssl.org/docs/manmaster/man3/
 
-I understand, and I agree that an iterative approach is a good idea, I
-just want to make sure we keep things tidy from a user perspective,
-i.e. not exposing the "integrity" LSM when it isn't required.
-
---
-paul-moore.com
+BR, Jarkko
 
