@@ -1,862 +1,150 @@
-Return-Path: <keyrings+bounces-137-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-138-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC7A7F26E8
-	for <lists+keyrings@lfdr.de>; Tue, 21 Nov 2023 09:03:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CDDD7F37C1
+	for <lists+keyrings@lfdr.de>; Tue, 21 Nov 2023 21:54:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CBB7B20BC3
-	for <lists+keyrings@lfdr.de>; Tue, 21 Nov 2023 08:03:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96380B2145E
+	for <lists+keyrings@lfdr.de>; Tue, 21 Nov 2023 20:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778A838DC8;
-	Tue, 21 Nov 2023 08:03:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD065101A;
+	Tue, 21 Nov 2023 20:54:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l6QuB6h0"
 X-Original-To: keyrings@vger.kernel.org
-Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8B8FC1;
-	Tue, 21 Nov 2023 00:03:26 -0800 (PST)
-Received: from mail02.huawei.com (unknown [172.18.147.229])
-	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4SZGfX3kqzz9xwwV;
-	Tue, 21 Nov 2023 15:46:44 +0800 (CST)
-Received: from [127.0.0.1] (unknown [10.204.63.22])
-	by APP2 (Coremail) with SMTP id GxC2BwDHxF4lZFxlaQoRAQ--.59449S2;
-	Tue, 21 Nov 2023 09:02:58 +0100 (CET)
-Message-ID: <ce13d72a471af5049e538620fb5e9051e94fe32b.camel@huaweicloud.com>
-Subject: Re: [PATCH v6 19/25] ima: Move to LSM infrastructure
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: viro@zeniv.linux.org.uk, brauner@kernel.org, chuck.lever@oracle.com, 
-	jlayton@kernel.org, neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com, 
-	tom@talpey.com, paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, 
-	zohar@linux.ibm.com, dmitry.kasatkin@gmail.com, dhowells@redhat.com, 
-	jarkko@kernel.org, stephen.smalley.work@gmail.com, eparis@parisplace.org, 
-	casey@schaufler-ca.com, mic@digikod.net
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, 
-	selinux@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
-Date: Tue, 21 Nov 2023 09:02:42 +0100
-In-Reply-To: <20231120173318.1132868-20-roberto.sassu@huaweicloud.com>
-References: <20231120173318.1132868-1-roberto.sassu@huaweicloud.com>
-	 <20231120173318.1132868-20-roberto.sassu@huaweicloud.com>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 126BF51010;
+	Tue, 21 Nov 2023 20:54:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D78A8C433C7;
+	Tue, 21 Nov 2023 20:54:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700600078;
+	bh=GyHN4wCOMA8c6nPwQG+j0NoaqWqZE4TlER9FWsCywLo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=l6QuB6h0ZmMyA+kEHo0OihyS7AcrZlKV05jgRPUt0y3RxWlmN2z1O140qnaqpQgmf
+	 IHu/xhzVG3pcsQAHwHQF1uhjzH5aNMMq9Qq4LHONJfp4dnhJQNazfH6QlSl7GNq5zL
+	 dFMlIqCh4gWsnHMa0VWTE3JoxhIDmWjk2O4FyieAdPGg0vhiUK4zUqs/HlpfWHApwa
+	 j6hwjquCTDYnMa1mYZ/lEQcXlVo1hxB+ncICI1GmZtoiBmGDqHotm5MaCgO9LwwVZn
+	 JPDkiSNChbPGKIsXJxxVvWgHlAIoO+BeHvM3A+E/51prSkA4kqH1yR5McuRJZj821k
+	 wTtV8xWgF/rPw==
+Message-ID: <89f0dbe3a390dd2d49b09c0ff75a142aa44793fd.camel@kernel.org>
+Subject: Re: [PATCH v3] sign-file: Fix incorrect return values check
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Yusong Gao <a869920004@gmail.com>, davem@davemloft.net,
+ dhowells@redhat.com,  dwmw2@infradead.org, juergh@proton.me,
+ zohar@linux.ibm.com,  herbert@gondor.apana.org.au, lists@sapience.com,
+ dimitri.ledkov@canonical.com
+Cc: keyrings@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-crypto@vger.kernel.org
+Date: Tue, 21 Nov 2023 22:54:33 +0200
+In-Reply-To: <20231121034044.847642-1-a869920004@gmail.com>
+References: <20231121034044.847642-1-a869920004@gmail.com>
+Autocrypt: addr=jarkko@kernel.org; prefer-encrypt=mutual;
+ keydata=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
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+User-Agent: Evolution 3.50.1 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-CM-TRANSID:GxC2BwDHxF4lZFxlaQoRAQ--.59449S2
-X-Coremail-Antispam: 1UD129KBjvAXoWfuFWfZw18GFyrGr1rtF48Crg_yoW5GF4kCo
-	WIqwsxJr4FqF13GayakF1SyFsxWws8K3yrArWa9rZ8W3W2yw1Ut34jvF47Aa4UXF4fK3WU
-	G3s7J3yFva1ktw1rn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
-	AaLaJ3UjIYCTnIWjp_UUUYj7kC6x804xWl14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK
-	8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4
-	AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF
-	7I0E14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4j6F4UM28EF7xvwVC2z280aVCY1x
-	0267AKxVW8JVW8Jr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8C
-	rVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4
-	IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCF04k20xvY
-	0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I
-	0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAI
-	cVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0x
-	vE42xK8VAvwI8IcIk0rVW3JVWrJr1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280
-	aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IUbHa0PUUUUU==
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQAIBF1jj5atQAABsG
-X-CFilter-Loop: Reflected
 
-On Mon, 2023-11-20 at 18:33 +0100, Roberto Sassu wrote:
-> From: Roberto Sassu <roberto.sassu@huawei.com>
+On Tue, 2023-11-21 at 03:40 +0000, Yusong Gao wrote:
+> There are some wrong return values check in sign-file when call
+> OpenSSL
+> API. The ERR() check cond is wrong because of the program only check
+> the
+> return value is < 0 instead of <=3D 0. For example:
+> 1. CMS_final() return 1 for success or 0 for failure.
+> 2. i2d_CMS_bio_stream() returns 1 for success or 0 for failure.
+> 3. i2d_TYPEbio() return 1 for success and 0 for failure.
+> 4. BIO_free() return 1 for success and 0 for failure.
 >=20
-> Move hardcoded IMA function calls (not appraisal-specific functions) from
-> various places in the kernel to the LSM infrastructure, by introducing a
-> new LSM named 'ima' (at the end of the LSM list and always enabled like
-> 'integrity').
+> Link: https://www.openssl.org/docs/manmaster/man3/
+> Fixes: e5a2e3c84782 ("scripts/sign-file.c: Add support for signing
+> with a raw signature")
 >=20
-> Make moved functions as static (except ima_post_key_create_or_update(),
-> which is not in ima_main.c), and register them as implementation of the
-> respective hooks in the new function init_ima_lsm(). Conditionally regist=
-er
-> ima_post_path_mknod() if CONFIG_SECURITY_PATH is enabled, otherwise the
-> path_post_mknod hook won't be available.
->=20
-> Move integrity_kernel_module_request() to IMA (renamed to
-> ima_kernel_module_request()), and conditionally register it as
-> implementation of the kernel_module_request LSM hook (if
-> CONFIG_INTEGRITY_ASYMMETRIC_KEYS is enabled).
->=20
-> Define the 'ima' LSM, and initialize it with init_ima_lsm(). Consequently=
-,
-> assign the LSM_ID_IMA ID to IMA in include/uapi/linux/lsm.h.
->=20
-> Still rely on the existing 'integrity' subsystem to be enabled and to
-> manage integrity metadata.
->=20
-> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> Acked-by: Chuck Lever <chuck.lever@oracle.com>
+
+No empty line here.
+
+> Signed-off-by: Yusong Gao <a869920004@gmail.com>
 > ---
->  fs/file_table.c                        |   2 -
->  fs/namei.c                             |   6 --
->  fs/nfsd/vfs.c                          |   7 --
->  fs/open.c                              |   1 -
->  include/linux/ima.h                    |  94 ---------------------
->  include/linux/integrity.h              |  13 ---
->  include/uapi/linux/lsm.h               |   1 +
->  security/integrity/digsig_asymmetric.c |  22 -----
->  security/integrity/iint.c              |   2 +-
->  security/integrity/ima/ima.h           |   6 ++
->  security/integrity/ima/ima_main.c      | 108 ++++++++++++++++++++-----
->  security/integrity/integrity.h         |   1 +
->  security/keys/key.c                    |   9 +--
->  security/security.c                    |  63 +++------------
->  14 files changed, 110 insertions(+), 225 deletions(-)
+> V1, V2: Clarify the description of git message.
+> ---
+> =C2=A0scripts/sign-file.c | 12 ++++++------
+> =C2=A01 file changed, 6 insertions(+), 6 deletions(-)
 >=20
-> diff --git a/fs/file_table.c b/fs/file_table.c
-> index c72dc75f2bd3..0401ac98281c 100644
-> --- a/fs/file_table.c
-> +++ b/fs/file_table.c
-> @@ -26,7 +26,6 @@
->  #include <linux/percpu_counter.h>
->  #include <linux/percpu.h>
->  #include <linux/task_work.h>
-> -#include <linux/ima.h>
->  #include <linux/swap.h>
->  #include <linux/kmemleak.h>
-> =20
-> @@ -386,7 +385,6 @@ static void __fput(struct file *file)
->  	locks_remove_file(file);
-> =20
->  	security_file_release(file);
-> -	ima_file_free(file);
->  	if (unlikely(file->f_flags & FASYNC)) {
->  		if (file->f_op->fasync)
->  			file->f_op->fasync(-1, file, 0);
-> diff --git a/fs/namei.c b/fs/namei.c
-> index adb3ab27951a..37cc0988308f 100644
-> --- a/fs/namei.c
-> +++ b/fs/namei.c
-> @@ -27,7 +27,6 @@
->  #include <linux/fsnotify.h>
->  #include <linux/personality.h>
->  #include <linux/security.h>
-> -#include <linux/ima.h>
->  #include <linux/syscalls.h>
->  #include <linux/mount.h>
->  #include <linux/audit.h>
-> @@ -3622,8 +3621,6 @@ static int do_open(struct nameidata *nd,
->  		error =3D vfs_open(&nd->path, file);
->  	if (!error)
->  		error =3D security_file_post_open(file, op->acc_mode);
-> -	if (!error)
-> -		error =3D ima_file_check(file, op->acc_mode);
->  	if (!error && do_truncate)
->  		error =3D handle_truncate(idmap, file);
->  	if (unlikely(error > 0)) {
-> @@ -3687,7 +3684,6 @@ static int vfs_tmpfile(struct mnt_idmap *idmap,
->  		spin_unlock(&inode->i_lock);
->  	}
->  	security_inode_post_create_tmpfile(idmap, inode);
-> -	ima_post_create_tmpfile(idmap, inode);
->  	return 0;
->  }
-> =20
-> @@ -4036,8 +4032,6 @@ static int do_mknodat(int dfd, struct filename *nam=
-e, umode_t mode,
->  		case 0: case S_IFREG:
->  			error =3D vfs_create(idmap, path.dentry->d_inode,
->  					   dentry, mode, true);
-> -			if (!error)
-> -				ima_post_path_mknod(idmap, dentry);
->  			break;
->  		case S_IFCHR: case S_IFBLK:
->  			error =3D vfs_mknod(idmap, path.dentry->d_inode,
-> diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-> index b0c3f07a8bba..e491392a1243 100644
-> --- a/fs/nfsd/vfs.c
-> +++ b/fs/nfsd/vfs.c
-> @@ -25,7 +25,6 @@
->  #include <linux/posix_acl_xattr.h>
->  #include <linux/xattr.h>
->  #include <linux/jhash.h>
-> -#include <linux/ima.h>
->  #include <linux/pagemap.h>
->  #include <linux/slab.h>
->  #include <linux/uaccess.h>
-> @@ -883,12 +882,6 @@ __nfsd_open(struct svc_rqst *rqstp, struct svc_fh *f=
-hp, umode_t type,
->  		goto out;
->  	}
-> =20
-> -	host_err =3D ima_file_check(file, may_flags);
-> -	if (host_err) {
-> -		fput(file);
-> -		goto out;
-> -	}
-> -
->  	if (may_flags & NFSD_MAY_64BIT_COOKIE)
->  		file->f_mode |=3D FMODE_64BITHASH;
->  	else
-> diff --git a/fs/open.c b/fs/open.c
-> index 02dc608d40d8..c8bb9bd5259f 100644
-> --- a/fs/open.c
-> +++ b/fs/open.c
-> @@ -29,7 +29,6 @@
->  #include <linux/audit.h>
->  #include <linux/falloc.h>
->  #include <linux/fs_struct.h>
-> -#include <linux/ima.h>
->  #include <linux/dnotify.h>
->  #include <linux/compat.h>
->  #include <linux/mnt_idmapping.h>
-> diff --git a/include/linux/ima.h b/include/linux/ima.h
-> index 31ef6c3c3207..23ae24b60ecf 100644
-> --- a/include/linux/ima.h
-> +++ b/include/linux/ima.h
-> @@ -16,24 +16,6 @@ struct linux_binprm;
-> =20
->  #ifdef CONFIG_IMA
->  extern enum hash_algo ima_get_current_hash_algo(void);
-> -extern int ima_bprm_check(struct linux_binprm *bprm);
-> -extern int ima_file_check(struct file *file, int mask);
-> -extern void ima_post_create_tmpfile(struct mnt_idmap *idmap,
-> -				    struct inode *inode);
-> -extern void ima_file_free(struct file *file);
-> -extern int ima_file_mmap(struct file *file, unsigned long reqprot,
-> -			 unsigned long prot, unsigned long flags);
-> -extern int ima_file_mprotect(struct vm_area_struct *vma, unsigned long r=
-eqprot,
-> -			     unsigned long prot);
-> -extern int ima_load_data(enum kernel_load_data_id id, bool contents);
-> -extern int ima_post_load_data(char *buf, loff_t size,
-> -			      enum kernel_load_data_id id, char *description);
-> -extern int ima_read_file(struct file *file, enum kernel_read_file_id id,
-> -			 bool contents);
-> -extern int ima_post_read_file(struct file *file, char *buf, loff_t size,
-> -			      enum kernel_read_file_id id);
-> -extern void ima_post_path_mknod(struct mnt_idmap *idmap,
-> -				struct dentry *dentry);
->  extern int ima_file_hash(struct file *file, char *buf, size_t buf_size);
->  extern int ima_inode_hash(struct inode *inode, char *buf, size_t buf_siz=
-e);
->  extern void ima_kexec_cmdline(int kernel_fd, const void *buf, int size);
-> @@ -58,68 +40,6 @@ static inline enum hash_algo ima_get_current_hash_algo=
-(void)
->  	return HASH_ALGO__LAST;
->  }
-> =20
-> -static inline int ima_bprm_check(struct linux_binprm *bprm)
-> -{
-> -	return 0;
-> -}
-> -
-> -static inline int ima_file_check(struct file *file, int mask)
-> -{
-> -	return 0;
-> -}
-> -
-> -static inline void ima_post_create_tmpfile(struct mnt_idmap *idmap,
-> -					   struct inode *inode)
-> -{
-> -}
-> -
-> -static inline void ima_file_free(struct file *file)
-> -{
-> -	return;
-> -}
-> -
-> -static inline int ima_file_mmap(struct file *file, unsigned long reqprot=
-,
-> -				unsigned long prot, unsigned long flags)
-> -{
-> -	return 0;
-> -}
-> -
-> -static inline int ima_file_mprotect(struct vm_area_struct *vma,
-> -				    unsigned long reqprot, unsigned long prot)
-> -{
-> -	return 0;
-> -}
-> -
-> -static inline int ima_load_data(enum kernel_load_data_id id, bool conten=
-ts)
-> -{
-> -	return 0;
-> -}
-> -
-> -static inline int ima_post_load_data(char *buf, loff_t size,
-> -				     enum kernel_load_data_id id,
-> -				     char *description)
-> -{
-> -	return 0;
-> -}
-> -
-> -static inline int ima_read_file(struct file *file, enum kernel_read_file=
-_id id,
-> -				bool contents)
-> -{
-> -	return 0;
-> -}
-> -
-> -static inline int ima_post_read_file(struct file *file, char *buf, loff_=
-t size,
-> -				     enum kernel_read_file_id id)
-> -{
-> -	return 0;
-> -}
-> -
-> -static inline void ima_post_path_mknod(struct mnt_idmap *idmap,
-> -				       struct dentry *dentry)
-> -{
-> -	return;
-> -}
-> -
->  static inline int ima_file_hash(struct file *file, char *buf, size_t buf=
-_size)
->  {
->  	return -EOPNOTSUPP;
-> @@ -170,20 +90,6 @@ static inline void ima_add_kexec_buffer(struct kimage=
- *image)
->  {}
->  #endif
-> =20
-> -#ifdef CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS
-> -extern void ima_post_key_create_or_update(struct key *keyring,
-> -					  struct key *key,
-> -					  const void *payload, size_t plen,
-> -					  unsigned long flags, bool create);
-> -#else
-> -static inline void ima_post_key_create_or_update(struct key *keyring,
-> -						 struct key *key,
-> -						 const void *payload,
-> -						 size_t plen,
-> -						 unsigned long flags,
-> -						 bool create) {}
-> -#endif  /* CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS */
-> -
->  #ifdef CONFIG_IMA_APPRAISE
->  extern bool is_ima_appraise_enabled(void);
->  extern void ima_inode_post_setattr(struct mnt_idmap *idmap,
-> diff --git a/include/linux/integrity.h b/include/linux/integrity.h
-> index 2ea0f2f65ab6..ef0f63ef5ebc 100644
-> --- a/include/linux/integrity.h
-> +++ b/include/linux/integrity.h
-> @@ -42,17 +42,4 @@ static inline void integrity_load_keys(void)
->  }
->  #endif /* CONFIG_INTEGRITY */
-> =20
-> -#ifdef CONFIG_INTEGRITY_ASYMMETRIC_KEYS
-> -
-> -extern int integrity_kernel_module_request(char *kmod_name);
-> -
-> -#else
-> -
-> -static inline int integrity_kernel_module_request(char *kmod_name)
-> -{
-> -	return 0;
-> -}
-> -
-> -#endif /* CONFIG_INTEGRITY_ASYMMETRIC_KEYS */
-> -
->  #endif /* _LINUX_INTEGRITY_H */
-> diff --git a/include/uapi/linux/lsm.h b/include/uapi/linux/lsm.h
-> index f0386880a78e..ee7d034255a9 100644
-> --- a/include/uapi/linux/lsm.h
-> +++ b/include/uapi/linux/lsm.h
-> @@ -61,6 +61,7 @@ struct lsm_ctx {
->  #define LSM_ID_LOCKDOWN		108
->  #define LSM_ID_BPF		109
->  #define LSM_ID_LANDLOCK		110
-> +#define LSM_ID_IMA		111
-> =20
->  /*
->   * LSM_ATTR_XXX definitions identify different LSM attributes
-> diff --git a/security/integrity/digsig_asymmetric.c b/security/integrity/=
-digsig_asymmetric.c
-> index 895f4b9ce8c6..4d11c622fabd 100644
-> --- a/security/integrity/digsig_asymmetric.c
-> +++ b/security/integrity/digsig_asymmetric.c
-> @@ -133,25 +133,3 @@ int asymmetric_verify(struct key *keyring, const cha=
-r *sig,
->  	return ret;
->  }
-> =20
-> -/**
-> - * integrity_kernel_module_request - prevent crypto-pkcs1pad(rsa,*) requ=
-ests
-> - * @kmod_name: kernel module name
-> - *
-> - * We have situation, when public_key_verify_signature() in case of RSA
-> - * algorithm use alg_name to store internal information in order to
-> - * construct an algorithm on the fly, but crypto_larval_lookup() will tr=
-y
-> - * to use alg_name in order to load kernel module with same name.
-> - * Since we don't have any real "crypto-pkcs1pad(rsa,*)" kernel modules,
-> - * we are safe to fail such module request from crypto_larval_lookup().
-> - *
-> - * In this way we prevent modprobe execution during digsig verification
-> - * and avoid possible deadlock if modprobe and/or it's dependencies
-> - * also signed with digsig.
-> - */
-> -int integrity_kernel_module_request(char *kmod_name)
-> -{
-> -	if (strncmp(kmod_name, "crypto-pkcs1pad(rsa,", 20) =3D=3D 0)
-> -		return -EINVAL;
-> -
-> -	return 0;
-> -}
-> diff --git a/security/integrity/iint.c b/security/integrity/iint.c
-> index d4419a2a1e24..6cbf2aa5540e 100644
-> --- a/security/integrity/iint.c
-> +++ b/security/integrity/iint.c
-> @@ -200,13 +200,13 @@ static int __init integrity_iintcache_init(void)
->  			      0, SLAB_PANIC, iint_init_once);
->  	return 0;
->  }
-> +
->  DEFINE_LSM(integrity) =3D {
->  	.name =3D "integrity",
->  	.init =3D integrity_iintcache_init,
->  	.order =3D LSM_ORDER_LAST,
->  };
-> =20
-> -
->  /*
->   * integrity_kernel_read - read data from the file
->   *
-> diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
-> index c29db699c996..c0412100023e 100644
-> --- a/security/integrity/ima/ima.h
-> +++ b/security/integrity/ima/ima.h
-> @@ -127,6 +127,12 @@ void ima_load_kexec_buffer(void);
->  static inline void ima_load_kexec_buffer(void) {}
->  #endif /* CONFIG_HAVE_IMA_KEXEC */
-> =20
-> +#ifdef CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS
-> +void ima_post_key_create_or_update(struct key *keyring, struct key *key,
-> +				   const void *payload, size_t plen,
-> +				   unsigned long flags, bool create);
-> +#endif
-> +
->  /*
->   * The default binary_runtime_measurements list format is defined as the
->   * platform native format.  The canonical format is defined as little-en=
-dian.
-> diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/i=
-ma_main.c
-> index 02021ee467d3..af213bece9b8 100644
-> --- a/security/integrity/ima/ima_main.c
-> +++ b/security/integrity/ima/ima_main.c
-> @@ -189,7 +189,7 @@ static void ima_check_last_writer(struct integrity_ii=
-nt_cache *iint,
->   *
->   * Flag files that changed, based on i_version
->   */
-> -void ima_file_free(struct file *file)
-> +static void ima_file_free(struct file *file)
->  {
->  	struct inode *inode =3D file_inode(file);
->  	struct integrity_iint_cache *iint;
-> @@ -427,8 +427,8 @@ static int process_measurement(struct file *file, con=
-st struct cred *cred,
->   * On success return 0.  On integrity appraisal error, assuming the file
->   * is in policy and IMA-appraisal is in enforcing mode, return -EACCES.
->   */
-> -int ima_file_mmap(struct file *file, unsigned long reqprot,
-> -		  unsigned long prot, unsigned long flags)
-> +static int ima_file_mmap(struct file *file, unsigned long reqprot,
-> +			 unsigned long prot, unsigned long flags)
->  {
->  	u32 secid;
->  	int ret;
-> @@ -466,8 +466,8 @@ int ima_file_mmap(struct file *file, unsigned long re=
-qprot,
->   *
->   * On mprotect change success, return 0.  On failure, return -EACESS.
->   */
-> -int ima_file_mprotect(struct vm_area_struct *vma, unsigned long reqprot,
-> -		      unsigned long prot)
-> +static int ima_file_mprotect(struct vm_area_struct *vma, unsigned long r=
-eqprot,
-> +			     unsigned long prot)
->  {
->  	struct ima_template_desc *template =3D NULL;
->  	struct file *file;
-> @@ -525,7 +525,7 @@ int ima_file_mprotect(struct vm_area_struct *vma, uns=
-igned long reqprot,
->   * On success return 0.  On integrity appraisal error, assuming the file
->   * is in policy and IMA-appraisal is in enforcing mode, return -EACCES.
->   */
-> -int ima_bprm_check(struct linux_binprm *bprm)
-> +static int ima_bprm_check(struct linux_binprm *bprm)
->  {
->  	int ret;
->  	u32 secid;
-> @@ -551,7 +551,7 @@ int ima_bprm_check(struct linux_binprm *bprm)
->   * On success return 0.  On integrity appraisal error, assuming the file
->   * is in policy and IMA-appraisal is in enforcing mode, return -EACCES.
->   */
-> -int ima_file_check(struct file *file, int mask)
-> +static int ima_file_check(struct file *file, int mask)
->  {
->  	u32 secid;
-> =20
-> @@ -560,7 +560,6 @@ int ima_file_check(struct file *file, int mask)
->  				   mask & (MAY_READ | MAY_WRITE | MAY_EXEC |
->  					   MAY_APPEND), FILE_CHECK);
->  }
-> -EXPORT_SYMBOL_GPL(ima_file_check);
-> =20
->  static int __ima_inode_hash(struct inode *inode, struct file *file, char=
- *buf,
->  			    size_t buf_size)
-> @@ -685,8 +684,9 @@ EXPORT_SYMBOL_GPL(ima_inode_hash);
->   * Skip calling process_measurement(), but indicate which newly, created
->   * tmpfiles are in policy.
->   */
-> -void ima_post_create_tmpfile(struct mnt_idmap *idmap,
-> -			     struct inode *inode)
-> +static void ima_post_create_tmpfile(struct mnt_idmap *idmap,
-> +				    struct inode *inode)
-> +
->  {
->  	struct integrity_iint_cache *iint;
->  	int must_appraise;
-> @@ -717,8 +717,8 @@ void ima_post_create_tmpfile(struct mnt_idmap *idmap,
->   * Mark files created via the mknodat syscall as new, so that the
->   * file data can be written later.
->   */
-> -void ima_post_path_mknod(struct mnt_idmap *idmap,
-> -			 struct dentry *dentry)
-> +static void __maybe_unused
-> +ima_post_path_mknod(struct mnt_idmap *idmap, struct dentry *dentry)
->  {
->  	struct integrity_iint_cache *iint;
->  	struct inode *inode =3D dentry->d_inode;
-> @@ -753,8 +753,8 @@ void ima_post_path_mknod(struct mnt_idmap *idmap,
->   *
->   * For permission return 0, otherwise return -EACCES.
->   */
-> -int ima_read_file(struct file *file, enum kernel_read_file_id read_id,
-> -		  bool contents)
-> +static int ima_read_file(struct file *file, enum kernel_read_file_id rea=
-d_id,
-> +			 bool contents)
->  {
->  	enum ima_hooks func;
->  	u32 secid;
-> @@ -803,8 +803,8 @@ const int read_idmap[READING_MAX_ID] =3D {
->   * On success return 0.  On integrity appraisal error, assuming the file
->   * is in policy and IMA-appraisal is in enforcing mode, return -EACCES.
->   */
-> -int ima_post_read_file(struct file *file, char *buf, loff_t size,
-> -		       enum kernel_read_file_id read_id)
-> +static int ima_post_read_file(struct file *file, char *buf, loff_t size,
-> +			      enum kernel_read_file_id read_id)
->  {
->  	enum ima_hooks func;
->  	u32 secid;
-> @@ -837,7 +837,7 @@ int ima_post_read_file(struct file *file, char *buf, =
-loff_t size,
->   *
->   * For permission return 0, otherwise return -EACCES.
->   */
-> -int ima_load_data(enum kernel_load_data_id id, bool contents)
-> +static int ima_load_data(enum kernel_load_data_id id, bool contents)
->  {
->  	bool ima_enforce, sig_enforce;
-> =20
-> @@ -891,9 +891,9 @@ int ima_load_data(enum kernel_load_data_id id, bool c=
-ontents)
->   * On success return 0.  On integrity appraisal error, assuming the file
->   * is in policy and IMA-appraisal is in enforcing mode, return -EACCES.
->   */
-> -int ima_post_load_data(char *buf, loff_t size,
-> -		       enum kernel_load_data_id load_id,
-> -		       char *description)
-> +static int ima_post_load_data(char *buf, loff_t size,
-> +			      enum kernel_load_data_id load_id,
-> +			      char *description)
->  {
->  	if (load_id =3D=3D LOADING_FIRMWARE) {
->  		if ((ima_appraise & IMA_APPRAISE_FIRMWARE) &&
-> @@ -1122,4 +1122,72 @@ static int __init init_ima(void)
->  	return error;
->  }
-> =20
-> +/**
-> + * ima_kernel_module_request - prevent crypto-pkcs1pad(rsa,*) requests
-> + * @kmod_name: kernel module name
-> + *
-> + * We have situation, when public_key_verify_signature() in case of RSA
-> + * algorithm use alg_name to store internal information in order to
-> + * construct an algorithm on the fly, but crypto_larval_lookup() will tr=
-y
-> + * to use alg_name in order to load kernel module with same name.
-> + * Since we don't have any real "crypto-pkcs1pad(rsa,*)" kernel modules,
-> + * we are safe to fail such module request from crypto_larval_lookup().
-> + *
-> + * In this way we prevent modprobe execution during digsig verification
-> + * and avoid possible deadlock if modprobe and/or it's dependencies
-> + * also signed with digsig.
-> + */
-> +static int __maybe_unused ima_kernel_module_request(char *kmod_name)
-> +{
-> +	if (strncmp(kmod_name, "crypto-pkcs1pad(rsa,", 20) =3D=3D 0)
-> +		return -EINVAL;
-> +
-> +	return 0;
-> +}
-> +
-> +static struct security_hook_list ima_hooks[] __ro_after_init =3D {
-> +	LSM_HOOK_INIT(bprm_check_security, ima_bprm_check),
-> +	LSM_HOOK_INIT(file_post_open, ima_file_check),
-> +	LSM_HOOK_INIT(inode_post_create_tmpfile, ima_post_create_tmpfile),
-> +	LSM_HOOK_INIT(file_release, ima_file_free),
-> +	LSM_HOOK_INIT(mmap_file, ima_file_mmap),
-> +	LSM_HOOK_INIT(file_mprotect, ima_file_mprotect),
-> +	LSM_HOOK_INIT(kernel_load_data, ima_load_data),
-> +	LSM_HOOK_INIT(kernel_post_load_data, ima_post_load_data),
-> +	LSM_HOOK_INIT(kernel_read_file, ima_read_file),
-> +	LSM_HOOK_INIT(kernel_post_read_file, ima_post_read_file),
-> +#ifdef CONFIG_SECURITY_PATH
-> +	LSM_HOOK_INIT(path_post_mknod, ima_post_path_mknod),
-> +#endif
-> +#ifdef CONFIG_IMA_MEASURE_ASYMMETRIC_KEYS
-> +	LSM_HOOK_INIT(key_post_create_or_update, ima_post_key_create_or_update)=
-,
-> +#endif
-> +#ifdef CONFIG_INTEGRITY_ASYMMETRIC_KEYS
-> +	LSM_HOOK_INIT(kernel_module_request, ima_kernel_module_request),
-> +#endif
-> +};
-> +
-> +static const struct lsm_id ima_lsmid =3D {
-> +	.name =3D "ima",
-> +	.id =3D LSM_ID_IMA,
-> +};
-> +
-> +/*
-> + * Since with the LSM_ORDER_LAST there is no guarantee about the orderin=
-g
-> + * within the .lsm_info.init section, ensure that IMA hooks are before E=
-VM
-> + * ones, by letting the 'integrity' LSM call init_ima_lsm() to initializ=
-e the
-> + * 'ima' and 'evm' LSMs in this sequence.
-> + */
+> diff --git a/scripts/sign-file.c b/scripts/sign-file.c
+> index 598ef5465f82..dcebbcd6bebd 100644
+> --- a/scripts/sign-file.c
+> +++ b/scripts/sign-file.c
+> @@ -322,7 +322,7 @@ int main(int argc, char **argv)
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 CMS_NOSMIMECAP | use_keyid |
+> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 use_signed_attrs),
+> =C2=A0		=C2=A0=C2=A0=C2=A0 "CMS_add1_signer");
+> -		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS |
+> CMS_BINARY) < 0,
+> +		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS |
+> CMS_BINARY) <=3D 0,
+> =C2=A0		=C2=A0=C2=A0=C2=A0 "CMS_final");
+> =C2=A0
+> =C2=A0#else
+> @@ -341,10 +341,10 @@ int main(int argc, char **argv)
+> =C2=A0			b =3D BIO_new_file(sig_file_name, "wb");
+> =C2=A0			ERR(!b, "%s", sig_file_name);
+> =C2=A0#ifndef USE_PKCS7
+> -			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) < 0,
+> +			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) <=3D
+> 0,
+> =C2=A0			=C2=A0=C2=A0=C2=A0 "%s", sig_file_name);
+> =C2=A0#else
+> -			ERR(i2d_PKCS7_bio(b, pkcs7) < 0,
+> +			ERR(i2d_PKCS7_bio(b, pkcs7) <=3D 0,
+> =C2=A0			=C2=A0=C2=A0=C2=A0 "%s", sig_file_name);
+> =C2=A0#endif
+> =C2=A0			BIO_free(b);
+> @@ -374,9 +374,9 @@ int main(int argc, char **argv)
+> =C2=A0
+> =C2=A0	if (!raw_sig) {
+> =C2=A0#ifndef USE_PKCS7
+> -		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) < 0, "%s",
+> dest_name);
+> +		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) <=3D 0, "%s",
+> dest_name);
+> =C2=A0#else
+> -		ERR(i2d_PKCS7_bio(bd, pkcs7) < 0, "%s", dest_name);
+> +		ERR(i2d_PKCS7_bio(bd, pkcs7) <=3D 0, "%s", dest_name);
+> =C2=A0#endif
+> =C2=A0	} else {
+> =C2=A0		BIO *b;
+> @@ -396,7 +396,7 @@ int main(int argc, char **argv)
+> =C2=A0	ERR(BIO_write(bd, &sig_info, sizeof(sig_info)) < 0, "%s",
+> dest_name);
+> =C2=A0	ERR(BIO_write(bd, magic_number, sizeof(magic_number) - 1) <
+> 0, "%s", dest_name);
+> =C2=A0
+> -	ERR(BIO_free(bd) < 0, "%s", dest_name);
+> +	ERR(BIO_free(bd) <=3D 0, "%s", dest_name);
+> =C2=A0
+> =C2=A0	/* Finally, if we're signing in place, replace the original.
+> */
+> =C2=A0	if (replace_orig)
 
-Sorry, leftover from the previous version (also for EVM).
 
-> +int __init init_ima_lsm(void)
-
-Will make this as static (reported by kernel robot).
-
-Roberto
-
-> +{
-> +	security_add_hooks(ima_hooks, ARRAY_SIZE(ima_hooks), &ima_lsmid);
-> +	return 0;
-> +}
-> +
-> +DEFINE_LSM(ima) =3D {
-> +	.name =3D "ima",
-> +	.init =3D init_ima_lsm,
-> +	.order =3D LSM_ORDER_LAST,
-> +};
-> +
->  late_initcall(init_ima);	/* Start IMA after the TPM is available */
-> diff --git a/security/integrity/integrity.h b/security/integrity/integrit=
-y.h
-> index 9561db7cf6b4..59eaddd84434 100644
-> --- a/security/integrity/integrity.h
-> +++ b/security/integrity/integrity.h
-> @@ -18,6 +18,7 @@
->  #include <crypto/hash.h>
->  #include <linux/key.h>
->  #include <linux/audit.h>
-> +#include <linux/lsm_hooks.h>
-> =20
->  /* iint action cache flags */
->  #define IMA_MEASURE		0x00000001
-> diff --git a/security/keys/key.c b/security/keys/key.c
-> index f75fe66c2f03..80fc2f203a0c 100644
-> --- a/security/keys/key.c
-> +++ b/security/keys/key.c
-> @@ -13,7 +13,6 @@
->  #include <linux/security.h>
->  #include <linux/workqueue.h>
->  #include <linux/random.h>
-> -#include <linux/ima.h>
->  #include <linux/err.h>
->  #include "internal.h"
-> =20
-> @@ -937,8 +936,6 @@ static key_ref_t __key_create_or_update(key_ref_t key=
-ring_ref,
-> =20
->  	security_key_post_create_or_update(keyring, key, payload, plen, flags,
->  					   true);
-> -	ima_post_key_create_or_update(keyring, key, payload, plen,
-> -				      flags, true);
-> =20
->  	key_ref =3D make_key_ref(key, is_key_possessed(keyring_ref));
-> =20
-> @@ -970,13 +967,9 @@ static key_ref_t __key_create_or_update(key_ref_t ke=
-yring_ref,
-> =20
->  	key_ref =3D __key_update(key_ref, &prep);
-> =20
-> -	if (!IS_ERR(key_ref)) {
-> +	if (!IS_ERR(key_ref))
->  		security_key_post_create_or_update(keyring, key, payload, plen,
->  						   flags, false);
-> -		ima_post_key_create_or_update(keyring, key,
-> -					      payload, plen,
-> -					      flags, false);
-> -	}
-> =20
->  	goto error_free_prep;
->  }
-> diff --git a/security/security.c b/security/security.c
-> index 423d53092604..e18953ee4a97 100644
-> --- a/security/security.c
-> +++ b/security/security.c
-> @@ -50,7 +50,8 @@
->  	(IS_ENABLED(CONFIG_SECURITY_SAFESETID) ? 1 : 0) + \
->  	(IS_ENABLED(CONFIG_SECURITY_LOCKDOWN_LSM) ? 1 : 0) + \
->  	(IS_ENABLED(CONFIG_BPF_LSM) ? 1 : 0) + \
-> -	(IS_ENABLED(CONFIG_SECURITY_LANDLOCK) ? 1 : 0))
-> +	(IS_ENABLED(CONFIG_SECURITY_LANDLOCK) ? 1 : 0) + \
-> +	(IS_ENABLED(CONFIG_IMA) ? 1 : 0))
-> =20
->  /*
->   * These are descriptions of the reasons that can be passed to the
-> @@ -1182,12 +1183,7 @@ int security_bprm_creds_from_file(struct linux_bin=
-prm *bprm, const struct file *
->   */
->  int security_bprm_check(struct linux_binprm *bprm)
->  {
-> -	int ret;
-> -
-> -	ret =3D call_int_hook(bprm_check_security, 0, bprm);
-> -	if (ret)
-> -		return ret;
-> -	return ima_bprm_check(bprm);
-> +	return call_int_hook(bprm_check_security, 0, bprm);
->  }
-> =20
->  /**
-> @@ -2883,13 +2879,8 @@ static inline unsigned long mmap_prot(struct file =
-*file, unsigned long prot)
->  int security_mmap_file(struct file *file, unsigned long prot,
->  		       unsigned long flags)
->  {
-> -	unsigned long prot_adj =3D mmap_prot(file, prot);
-> -	int ret;
-> -
-> -	ret =3D call_int_hook(mmap_file, 0, file, prot, prot_adj, flags);
-> -	if (ret)
-> -		return ret;
-> -	return ima_file_mmap(file, prot, prot_adj, flags);
-> +	return call_int_hook(mmap_file, 0, file, prot, mmap_prot(file, prot),
-> +			     flags);
->  }
-> =20
->  /**
-> @@ -2918,12 +2909,7 @@ int security_mmap_addr(unsigned long addr)
->  int security_file_mprotect(struct vm_area_struct *vma, unsigned long req=
-prot,
->  			   unsigned long prot)
->  {
-> -	int ret;
-> -
-> -	ret =3D call_int_hook(file_mprotect, 0, vma, reqprot, prot);
-> -	if (ret)
-> -		return ret;
-> -	return ima_file_mprotect(vma, reqprot, prot);
-> +	return call_int_hook(file_mprotect, 0, vma, reqprot, prot);
->  }
-> =20
->  /**
-> @@ -3232,12 +3218,7 @@ int security_kernel_create_files_as(struct cred *n=
-ew, struct inode *inode)
->   */
->  int security_kernel_module_request(char *kmod_name)
->  {
-> -	int ret;
-> -
-> -	ret =3D call_int_hook(kernel_module_request, 0, kmod_name);
-> -	if (ret)
-> -		return ret;
-> -	return integrity_kernel_module_request(kmod_name);
-> +	return call_int_hook(kernel_module_request, 0, kmod_name);
->  }
-> =20
->  /**
-> @@ -3253,12 +3234,7 @@ int security_kernel_module_request(char *kmod_name=
-)
->  int security_kernel_read_file(struct file *file, enum kernel_read_file_i=
-d id,
->  			      bool contents)
->  {
-> -	int ret;
-> -
-> -	ret =3D call_int_hook(kernel_read_file, 0, file, id, contents);
-> -	if (ret)
-> -		return ret;
-> -	return ima_read_file(file, id, contents);
-> +	return call_int_hook(kernel_read_file, 0, file, id, contents);
->  }
->  EXPORT_SYMBOL_GPL(security_kernel_read_file);
-> =20
-> @@ -3278,12 +3254,7 @@ EXPORT_SYMBOL_GPL(security_kernel_read_file);
->  int security_kernel_post_read_file(struct file *file, char *buf, loff_t =
-size,
->  				   enum kernel_read_file_id id)
->  {
-> -	int ret;
-> -
-> -	ret =3D call_int_hook(kernel_post_read_file, 0, file, buf, size, id);
-> -	if (ret)
-> -		return ret;
-> -	return ima_post_read_file(file, buf, size, id);
-> +	return call_int_hook(kernel_post_read_file, 0, file, buf, size, id);
->  }
->  EXPORT_SYMBOL_GPL(security_kernel_post_read_file);
-> =20
-> @@ -3298,12 +3269,7 @@ EXPORT_SYMBOL_GPL(security_kernel_post_read_file);
->   */
->  int security_kernel_load_data(enum kernel_load_data_id id, bool contents=
-)
->  {
-> -	int ret;
-> -
-> -	ret =3D call_int_hook(kernel_load_data, 0, id, contents);
-> -	if (ret)
-> -		return ret;
-> -	return ima_load_data(id, contents);
-> +	return call_int_hook(kernel_load_data, 0, id, contents);
->  }
->  EXPORT_SYMBOL_GPL(security_kernel_load_data);
-> =20
-> @@ -3325,13 +3291,8 @@ int security_kernel_post_load_data(char *buf, loff=
-_t size,
->  				   enum kernel_load_data_id id,
->  				   char *description)
->  {
-> -	int ret;
-> -
-> -	ret =3D call_int_hook(kernel_post_load_data, 0, buf, size, id,
-> -			    description);
-> -	if (ret)
-> -		return ret;
-> -	return ima_post_load_data(buf, size, id, description);
-> +	return call_int_hook(kernel_post_load_data, 0, buf, size, id,
-> +			     description);
->  }
->  EXPORT_SYMBOL_GPL(security_kernel_post_load_data);
-> =20
-
+BR, Jarkko
 
