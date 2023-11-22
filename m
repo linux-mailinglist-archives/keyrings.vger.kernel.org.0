@@ -1,100 +1,81 @@
-Return-Path: <keyrings+bounces-144-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-145-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB947F50EC
-	for <lists+keyrings@lfdr.de>; Wed, 22 Nov 2023 20:51:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D92777F519C
+	for <lists+keyrings@lfdr.de>; Wed, 22 Nov 2023 21:28:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B8B5B20C47
-	for <lists+keyrings@lfdr.de>; Wed, 22 Nov 2023 19:51:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A84E2812E2
+	for <lists+keyrings@lfdr.de>; Wed, 22 Nov 2023 20:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 867534EB57;
-	Wed, 22 Nov 2023 19:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B83E4CDFA;
+	Wed, 22 Nov 2023 20:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=benboeckel.net header.i=@benboeckel.net header.b="XbtIvT0V";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SFUY0LZF"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EJPK1+BN"
 X-Original-To: keyrings@vger.kernel.org
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F042418E
-	for <keyrings@vger.kernel.org>; Wed, 22 Nov 2023 11:51:19 -0800 (PST)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailout.nyi.internal (Postfix) with ESMTP id 694BE5C00E7;
-	Wed, 22 Nov 2023 14:51:19 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Wed, 22 Nov 2023 14:51:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:sender:subject:subject:to:to; s=fm3; t=1700682679; x=
-	1700769079; bh=PmsbO17EpDJPIKBqSJCwENxvkyCFjWrYwHTTrYaRFA4=; b=X
-	btIvT0V1vdJvuQ1atXp5FVxJi9HkpfjdQmvma5GdQ9OPQ1RdnrKBs+X0jqxJnADo
-	kjNIArhwlWwYwRhGXMZmDbnGkd/nzhcDOFFKmrVPhy3ABW+Wa2t6vKtx3m/49Lyr
-	uDsBhjbgg9eud+6DFoawl6eynX/5wHgXUFEfSl7Rwtmmz2O5pM+h0PN2ITIxM8Kc
-	sbkyaVMHGNnHrp0qSRLhUBtgKI0hVKN+QlG+6XUS7xAoJmVZ7aD0qjxTkCuzFJxI
-	HXH61j7YmVRzmY1HpqQaHzanCDJINu0JzCE0oJCTWOnVGLZLtWZvyh3/vqS4HyBB
-	a/Vq82ErFQ1kbIcpVFfyQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1700682679; x=1700769079; bh=PmsbO17EpDJPI
-	KBqSJCwENxvkyCFjWrYwHTTrYaRFA4=; b=SFUY0LZFSKYWjo0mg0hmJv0CTltOz
-	JYosCDJwSr56WpYys5IgWI7NgMHf39Rm/g3fko0PlYn5VjEwkHFzpo4qTk6Md1Tc
-	kIE70+IgkIajCdcZtF0tOTvoQ+BblFRrERtdC95gvdr2YOyLjzPX0v/JyuFh6KoP
-	DT4F22SoecjMMpsV22YCXGO60BYbeP8HXwQEW0UracVEM2wmS1+sYW8dUprhvMzO
-	IhVSsCOisJoliHBaX9AcHVilq1N1DxWNLS2CF/KR39K31rFwr2CPDZGx0a85gbW9
-	zVYOuUPy6W9fLI0eXBrDXMhbfdys20vvEN7dyrKc2sstxg50vKDKmA9JA==
-X-ME-Sender: <xms:t1teZYmTNXfZi5V4NK5gvixRSQryhNrPcmt8iIwKc6tJZ9XOIocI4A>
-    <xme:t1teZX0Dn_ywgUGt1SizZ9xXSxyXNnPoPg1_34nAyCbbLZO166zn4VMKqKV0D7lAL
-    SyJJ6yb_vrv3oGBYzo>
-X-ME-Received: <xmr:t1teZWoicwEGVBg6pvJm9GXuODhOjaJmwRjNk__Oxp8pHQgAx9RQ4rynWk81ibDwk_LS13QTQal3eKTHn6HGSj7T4z6QdC_a7EGz>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudehuddguddvkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjfgesthdtredttderjeenucfhrhhomhepuegv
-    nhcuuehovggtkhgvlhcuoehmvgessggvnhgsohgvtghkvghlrdhnvghtqeenucggtffrrg
-    htthgvrhhnpeefhfelvddthedujeegjedvveffueeuhfdvleeuheeuheefveekudduvddv
-    geefffenucffohhmrghinhepghhithhlrggsrdgtohhmnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgvsegsvghnsghovggtkhgvlhdrnhgv
-    th
-X-ME-Proxy: <xmx:t1teZUlPjPngcan6e-13Bzy_RsM-4xhHhB0Avrpj-pxYN6zvqoVOKQ>
-    <xmx:t1teZW0cifEDxISj5t1biTt9xdaaSu6i6LzqcwFizDd8b2ay-EG3-A>
-    <xmx:t1teZbukTUIsrPkL0xzsiSt2yED8SqQi257wDbXGj8US5W3Bv1tIzw>
-    <xmx:t1teZb-aODhZXvHxl9VDGT8a6qh3ucnxq-iFthJwmwOSpu6o0j8V6Q>
-Feedback-ID: iffc1478b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Nov 2023 14:51:18 -0500 (EST)
-Date: Wed, 22 Nov 2023 14:51:15 -0500
-From: Ben Boeckel <me@benboeckel.net>
-To: David Howells <dhowells@redhat.com>
-Cc: keyrings@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BB979A
+	for <keyrings@vger.kernel.org>; Wed, 22 Nov 2023 12:28:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1700684893;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kexBUKh1GtS1siCZEP+1NKTD1HmL5jAf4zVQjEezZLQ=;
+	b=EJPK1+BNy/vhpXmcNbM2K2S+E6/cXc7iHi8VpBRstPdvSR3SnmSH7H97ntDBwYhj4/g1IB
+	baFq1x/fwhBcGs1v93Jgv8EYXDdnA46QF3xNswOUaPXv8E12bbLkAv5BU9j66DG1rFFG/D
+	k21iHNGc7Fn6HJ1e+AkoaS66bwvUdDY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-623-LIbAZVDaMHGnt3ZCA8kOUA-1; Wed,
+ 22 Nov 2023 15:28:11 -0500
+X-MC-Unique: LIbAZVDaMHGnt3ZCA8kOUA-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3C2342806047;
+	Wed, 22 Nov 2023 20:28:11 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.161])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 9180A1121306;
+	Wed, 22 Nov 2023 20:28:10 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <ZV5bs6azAPM2UIMq@farprobe>
+References: <ZV5bs6azAPM2UIMq@farprobe> <268530.1700676155@warthog.procyon.org.uk>
+To: Ben Boeckel <me@benboeckel.net>
+Cc: dhowells@redhat.com, keyrings@vger.kernel.org,
+    Jarkko Sakkinen <jarkko@kernel.org>
 Subject: Re: GitLab repo for keyrings
-Message-ID: <ZV5bs6azAPM2UIMq@farprobe>
-References: <268530.1700676155@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <268530.1700676155@warthog.procyon.org.uk>
-User-Agent: Mutt/2.2.9 (2022-11-12)
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <271141.1700684889.1@warthog.procyon.org.uk>
+Date: Wed, 22 Nov 2023 20:28:09 +0000
+Message-ID: <271142.1700684889@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
-On Wed, Nov 22, 2023 at 18:02:35 +0000, David Howells wrote:
-> I'm intending to move keyrings to GitLab for its upstream repo:
+Ben Boeckel <me@benboeckel.net> wrote:
+
+> > I'm intending to move keyrings to GitLab for its upstream repo:
+> > 
+> > 	https://gitlab.com/linux-afs/keyutils
 > 
-> 	https://gitlab.com/linux-afs/keyutils
+> Thanks for the notice. Is the patch submission workflow going to add
+> merge requests via the GitLab instance? If so, will the list be notified
+> of activity on them?
 
-Thanks for the notice. Is the patch submission workflow going to add
-merge requests via the GitLab instance? If so, will the list be notified
-of activity on them?
+Hmmm...  I wonder if I can make gitlab do that automatically.
 
-Thanks,
+David
 
---Ben
 
