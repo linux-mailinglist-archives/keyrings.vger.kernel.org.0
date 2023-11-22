@@ -1,148 +1,121 @@
-Return-Path: <keyrings+bounces-140-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-141-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D017F3C62
-	for <lists+keyrings@lfdr.de>; Wed, 22 Nov 2023 04:26:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3A27F3D09
+	for <lists+keyrings@lfdr.de>; Wed, 22 Nov 2023 05:55:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2AB71C20E11
-	for <lists+keyrings@lfdr.de>; Wed, 22 Nov 2023 03:26:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E135128279C
+	for <lists+keyrings@lfdr.de>; Wed, 22 Nov 2023 04:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5838826;
-	Wed, 22 Nov 2023 03:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3922BB0B;
+	Wed, 22 Nov 2023 04:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gL/vdMT+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bTzOGbJ1"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80719D1;
-	Tue, 21 Nov 2023 19:26:51 -0800 (PST)
-Received: by mail-pg1-x533.google.com with SMTP id 41be03b00d2f7-5bdbe2de25fso4828178a12.3;
-        Tue, 21 Nov 2023 19:26:51 -0800 (PST)
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07127E7;
+	Tue, 21 Nov 2023 20:55:43 -0800 (PST)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1ccbb7f79cdso47335315ad.3;
+        Tue, 21 Nov 2023 20:55:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700623611; x=1701228411; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=S9gyE+nnGI5QjTthItALD6eI6iRC86scX04yNpna6SY=;
-        b=gL/vdMT+4P0gcWVxld8gkVpd00QBKuChio9WoNBl16ucWojzmtcGDrOKzB9puL6UmQ
-         ZggXta1pDiWk3ou2/ufHZbJqZs6P3Ciulqx32naTQB2ti8dVsdzNO1MGk/1cm4Yzy9dO
-         /O/eM/lL+XKPTHZNLT36Jqd0T+1EosPALxiVHObdKDO1yKHThzSadxFCENJCJ9UHcuvx
-         qT6VB4PvusdjBcO9wuaRuVBR3R4mKDOCIrcaVaSD24Z69DNC2LIjexSH8emRH0X5QO4B
-         Kao1NK44xzssmV+d0a0+3mUvKOFcyfpXhrNya9XUR5OjUc24UIODHn5qg0KYPsVh1Qi3
-         FlTA==
+        d=gmail.com; s=20230601; t=1700628942; x=1701233742; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4BWTNx2Usd2MLM0igaHIxkodLvHly8HX8g96LPstSIY=;
+        b=bTzOGbJ1Rstd08ObzcUjOgkkGhOvdl74BGOKBuJWANx5bF6aI+Yz49DGZUV1TR+3i3
+         Xf2AOnD9J/7GGcmU+sPh5CSrLWgGDAX5btgUEBqW8Xj+d+jiYSW0dlcu9YBbqXDjbk4q
+         nZovCZ52Th4BYApyvYAxj4on20M2Phw4obJucstDG61vPO8M+WfcJgGrdnH6yejsG+W1
+         6JmAtkflqBJizu9PRsbH/J10RzEC4DiPlHC+i+zMiGIJ930gJ4t420MyduW3JetcxMy+
+         9YJqmwlnAAEpPaMy9Iqd8hZHeipY9m6CSdu7Bxn8XaACCAr9EtvDKwH/2d11Wc+BR5iD
+         0+eA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700623611; x=1701228411;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=S9gyE+nnGI5QjTthItALD6eI6iRC86scX04yNpna6SY=;
-        b=gxQz6D5oAEms8b4LbzkbHiSxVQiBfvNjraFOqDhldCnRA/INHO7hyIGneodyuBvhrJ
-         xSL/qEm3nVR66tl67CDytCeKwgU6y1CT+MolG4oo3cqO8Q5n+Znt85yL/oB6B8lSmOOD
-         ledaVkdzEOhQQgE/6AniZV66rQ+2dYLppq54i0Et5tNogPSLfxTIhurAw2N+Fkpk5K68
-         QYV81WI0ZYcORrGfJlag+iCn3EL9ABGsJsrlb2oHS6Bzjn/sPk+31S1ECNmaz3nZBfN+
-         emy9RlUbP6F6PvDNaIHMIyd4BX9VqDyC2KcKwqdvUiBOw1zg3/56Utt+afK/LkTnuWJi
-         4BCw==
-X-Gm-Message-State: AOJu0YzLaR881yxu3knS7tf347y/WjlNOj2hfoQTxhIOLb48yBG88m/1
-	Cb1YAhpYZyTL1kGBOe53tKI=
-X-Google-Smtp-Source: AGHT+IFf4iHbpjsD/zActaFjI53Jn5hNpfUpZ6KKYh1FWaYytEFyRxrGvZIz1j9k074tOwMP3JCv1A==
-X-Received: by 2002:a05:6a20:8423:b0:187:f083:2cb2 with SMTP id c35-20020a056a20842300b00187f0832cb2mr1410689pzd.31.1700623610863;
-        Tue, 21 Nov 2023 19:26:50 -0800 (PST)
-Received: from localhost.localdomain ([154.85.62.239])
-        by smtp.gmail.com with ESMTPSA id 21-20020a170902c11500b001c5bcc9d916sm8576720pli.176.2023.11.21.19.26.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 Nov 2023 19:26:50 -0800 (PST)
-From: Yusong Gao <a869920004@gmail.com>
-To: jarkko@kernel.org,
-	davem@davemloft.net,
-	dhowells@redhat.com,
-	dwmw2@infradead.org,
-	juergh@proton.me,
-	zohar@linux.ibm.com,
-	herbert@gondor.apana.org.au,
-	lists@sapience.com,
-	dimitri.ledkov@canonical.com
-Cc: keyrings@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org
-Subject: [PATCH v4] sign-file: Fix incorrect return values check
-Date: Wed, 22 Nov 2023 03:26:27 +0000
-Message-Id: <20231122032627.41094-1-a869920004@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1700628942; x=1701233742;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4BWTNx2Usd2MLM0igaHIxkodLvHly8HX8g96LPstSIY=;
+        b=YqCRbHKi1u8wcVN0pbKayiXnVMOStiSnLvPiTRxMiB/ldbh34ubvHmuQc0Q28qEu8x
+         RUryI6akWmQDEt7ZK/Mxfh1k4JlHnWdh2SCUWJIHk5qAD9jMBQbdLyoaVhUTJ+ZKfKPr
+         5UmSvQK6zbJCfwOdWWD5jlEM80+xuiUtqWF3X43P6yf6ewFZNVIiMASoItknBvhawA5J
+         PAbBjwAm5KSJzG0gY9YjaqJYUvHOm45s/2CxICTA2nsctLom+w7yTsTeJCWtpf7HPVQB
+         s5czX0df/OlPE/j8PuVzSKrKxzaVc714+5tA26hvaQn+6irr63z0r9ilKnxeXsYZ/Vxu
+         g2lQ==
+X-Gm-Message-State: AOJu0YyOCTckNqiodYRdH+h2aec5rv5z2JVZqwoRKOgyCE0eigc3dZON
+	MrNyyi5ERyC+ukIU4Ppmu/810d9cOT/ZfA==
+X-Google-Smtp-Source: AGHT+IEgdbsMqDRYpHotVosS4FYvhOFFrpSSBZ8x0rFFDXmVhzL7uHiHUwTZA4Z0uS2ryJv7X0KIHg==
+X-Received: by 2002:a17:902:b7c6:b0:1ce:89a7:440b with SMTP id v6-20020a170902b7c600b001ce89a7440bmr1158502plz.2.1700628942386;
+        Tue, 21 Nov 2023 20:55:42 -0800 (PST)
+Received: from [192.168.0.106] ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id iw15-20020a170903044f00b001cf69103b91sm3237407plb.130.2023.11.21.20.55.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Nov 2023 20:55:41 -0800 (PST)
+Message-ID: <da6d3886-3b51-4ce3-92f1-6e86a62ff579@gmail.com>
+Date: Wed, 22 Nov 2023 11:55:35 +0700
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?Q?Re=3A_Fwd=3A_sign-file=2Ec=3A149=3A17=3A_warning=3A_impli?=
+ =?UTF-8?Q?cit_declaration_of_function_=E2=80=98ENGINE=5Fload=5Fbuiltin=5Fen?=
+ =?UTF-8?B?Z2luZXPigJk=?=
+Content-Language: en-US
+To: Dennis Clarke <dclarke@blastwave.org>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux Kernel Build System <linux-kbuild@vger.kernel.org>,
+ Linux Kernel Keyrings <keyrings@vger.kernel.org>
+Cc: David Howells <dhowells@redhat.com>, David Woodhouse
+ <dwmw2@infradead.org>, Masahiro Yamada <masahiroy@kernel.org>,
+ Thorsten Leemhuis <regressions@leemhuis.info>
+References: <1fca50c4-6d7b-4c9b-bcea-4df17e2c2e7e@gmail.com>
+ <e110cfff-08f9-4bbc-6b69-0d67ae6562b6@blastwave.org>
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+In-Reply-To: <e110cfff-08f9-4bbc-6b69-0d67ae6562b6@blastwave.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-There are some wrong return values check in sign-file when call OpenSSL
-API. The ERR() check cond is wrong because of the program only check the
-return value is < 0 instead of <= 0. For example:
-1. CMS_final() return 1 for success or 0 for failure.
-2. i2d_CMS_bio_stream() returns 1 for success or 0 for failure.
-3. i2d_TYPEbio() return 1 for success and 0 for failure.
-4. BIO_free() return 1 for success and 0 for failure.
+On 11/17/23 12:34, Dennis Clarke wrote:
+> On 11/16/23 18:41, Bagas Sanjaya wrote:
+>> Hi,
+>>
+>> I notice a bug report on Bugzilla [1]. Quoting from it:
+>>
+> <snip>
+>>> Not related to https://bugzilla.kernel.org/show_bug.cgi?id=215750 but I *feel* that
+>>> this code needs a hug.
+>>
+>> See Bugzilla for the full thread.
+>>
+>> AFAIK, this looks like a bug when the kernel is compiled against custom
+>> (non-system) version of OpenSSL library.
+>>
+> 
+> I do not know what you could possibly mean. There is nothing "custom"
+> about OpenSSL. For that matter the gcc compiler I am using was also
+> built by me. Works fine. The sign-file.c source compiles fine.
+> 
+> It fails to compile in the usual way when trying to build the kernel.
+> 
 
-Link: https://www.openssl.org/docs/manmaster/man3/
-Fixes: e5a2e3c84782 ("scripts/sign-file.c: Add support for signing with a raw signature")
-Signed-off-by: Yusong Gao <a869920004@gmail.com>
----
-V1, V2: Clarify the description of git message.
-V3: Removed redundant empty line.
----
- scripts/sign-file.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Hi Thorsten and all,
 
-diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-index 598ef5465f82..dcebbcd6bebd 100644
---- a/scripts/sign-file.c
-+++ b/scripts/sign-file.c
-@@ -322,7 +322,7 @@ int main(int argc, char **argv)
- 				     CMS_NOSMIMECAP | use_keyid |
- 				     use_signed_attrs),
- 		    "CMS_add1_signer");
--		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) < 0,
-+		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) <= 0,
- 		    "CMS_final");
- 
- #else
-@@ -341,10 +341,10 @@ int main(int argc, char **argv)
- 			b = BIO_new_file(sig_file_name, "wb");
- 			ERR(!b, "%s", sig_file_name);
- #ifndef USE_PKCS7
--			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) < 0,
-+			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) <= 0,
- 			    "%s", sig_file_name);
- #else
--			ERR(i2d_PKCS7_bio(b, pkcs7) < 0,
-+			ERR(i2d_PKCS7_bio(b, pkcs7) <= 0,
- 			    "%s", sig_file_name);
- #endif
- 			BIO_free(b);
-@@ -374,9 +374,9 @@ int main(int argc, char **argv)
- 
- 	if (!raw_sig) {
- #ifndef USE_PKCS7
--		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) < 0, "%s", dest_name);
-+		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) <= 0, "%s", dest_name);
- #else
--		ERR(i2d_PKCS7_bio(bd, pkcs7) < 0, "%s", dest_name);
-+		ERR(i2d_PKCS7_bio(bd, pkcs7) <= 0, "%s", dest_name);
- #endif
- 	} else {
- 		BIO *b;
-@@ -396,7 +396,7 @@ int main(int argc, char **argv)
- 	ERR(BIO_write(bd, &sig_info, sizeof(sig_info)) < 0, "%s", dest_name);
- 	ERR(BIO_write(bd, magic_number, sizeof(magic_number) - 1) < 0, "%s", dest_name);
- 
--	ERR(BIO_free(bd) < 0, "%s", dest_name);
-+	ERR(BIO_free(bd) <= 0, "%s", dest_name);
- 
- 	/* Finally, if we're signing in place, replace the original. */
- 	if (replace_orig)
+AFAIK there is no reply from kbuild people (maybe they missed this bug?).
+
+As for the error itself, let me clarify. The reporter (Dennis) have a build
+problem with /usr/local version of OpenSSL library. He installed it
+(presumably) alongside with system version (which is installed to /usr),
+hence I called the /usr/local version as custom one (IDK if that version
+is vanilla OpenSSL or not). Maybe am I missing something?
+
+Thanks.
+
 -- 
-2.34.1
+An old man doll... just what I always wanted! - Clara
 
 
