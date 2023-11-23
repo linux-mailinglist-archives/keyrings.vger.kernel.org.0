@@ -1,122 +1,136 @@
-Return-Path: <keyrings+bounces-146-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-147-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00BC87F55AC
-	for <lists+keyrings@lfdr.de>; Thu, 23 Nov 2023 01:53:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA20D7F61A1
+	for <lists+keyrings@lfdr.de>; Thu, 23 Nov 2023 15:37:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94745B20D36
-	for <lists+keyrings@lfdr.de>; Thu, 23 Nov 2023 00:53:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDAC21C21181
+	for <lists+keyrings@lfdr.de>; Thu, 23 Nov 2023 14:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8640710E9;
-	Thu, 23 Nov 2023 00:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EF922EF4;
+	Thu, 23 Nov 2023 14:37:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=benboeckel.net header.i=@benboeckel.net header.b="e0hsgplA";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="e25QCN4i"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=blastwave.org header.i=@blastwave.org header.b="cdb8TPbA"
 X-Original-To: keyrings@vger.kernel.org
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 447FA18D
-	for <keyrings@vger.kernel.org>; Wed, 22 Nov 2023 16:53:48 -0800 (PST)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailout.nyi.internal (Postfix) with ESMTP id 399315C007D;
-	Wed, 22 Nov 2023 19:53:44 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Wed, 22 Nov 2023 19:53:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:sender:subject:subject:to:to;
-	 s=fm3; t=1700700824; x=1700787224; bh=HOq93W3M+1IvNOCOMEdNVb7Ln
-	RfO6RnR7DLtnUG4LnA=; b=e0hsgplAcWHGU8kAcCD9imwJ/Lp+ziDGeG1i+ECIl
-	VEHaScAM8J8bIYD2CnKJr/6n6/cDK1rmptr1DdRs+WWJMw6K4KB2fIQZ/PG4nj79
-	ZLw/dmi+KMDHJJXkmP8ZTVzZCjqNYEZqlyaCmdLuwU0fe9hIGCC6RX4yBlL0AVli
-	A3mQJ2kXXIsoKg8v1yVdb7BdrtUIae0VsdO+pfulal6D7gZ5QYbT3MSYlQ+UNz2f
-	lPXdOl1q+wSxeu2Vm0bRIxfZlrXKj1GR4RjOCEcO5vhSujU1gTQ+4+9LryiaHhED
-	1/1UdgFJw4f93YjOCFNNYMBF+0ortwKoRNHp1SNmj3RhA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1700700824; x=1700787224; bh=HOq93W3M+1IvNOCOMEdNVb7LnRfO6RnR7DL
-	tnUG4LnA=; b=e25QCN4iz/pd8jZh4T+tstK4L8b5cObG5t0DRtZEFqjlT4GNcE1
-	PIyBepX7Y92tKLvcSJxqvseMWeWCcXs0wB71UNKT/A1z7wwdl4PCmjkPfLbs2XfY
-	Tvhk2RGtj1klWv91OcW7lX6CytaUc068QiW+FV1WjICrzZz7H5lwHENsCEaYUsdB
-	PmqOc66CsbboTFOFsS/QgE8umklsEbkayRVzoZFozdGby+K2rNlo7CrIoj+eYofi
-	Lx2bmoHm/MLH2R5v1d7IzZzepXGQknjH/Jk0TOhlTc3euhqSXaUHkvKVQ2ASLzfo
-	8rlLFbMXzxacF4FnpgNcz8IDqDzWrjOwL1g==
-X-ME-Sender: <xms:mKJeZWJDO3gowj0k0Fa7qWX-oCYBsyWXS7iRyng5cCI2Qdb7tn8wHQ>
-    <xme:mKJeZeLYE9KWwew4pCaw75Qo3glmIMCzMdzJZ_SBlVCB768ZUZjUgTNrDb2e9P8w3
-    khJizt9kj6HZ4PgSMU>
-X-ME-Received: <xmr:mKJeZWu8BisSRMcOMamwspEgXusMrFAJmgPnOfhhQ_oalw0ASj13Qas_uD6NTLSv5QPiL6DQ-3pdDgIg-liKaC5JCBJXcTFhbIvy>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudehvddgvdekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggugfgjfgesthekredttderjeenucfhrhhomhepuegv
-    nhcuuehovggtkhgvlhcuoehmvgessggvnhgsohgvtghkvghlrdhnvghtqeenucggtffrrg
-    htthgvrhhnpeeiheehvdeufeeuteeihedtheeliefhueekhfduveelhfdtheegheefvdfg
-    tddvjeenucffohhmrghinhepghhithhlrggsrdgtohhmpdhkvghrnhgvlhdrohhrghdpkh
-    hithifrghrvgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgr
-    ihhlfhhrohhmpehmvgessggvnhgsohgvtghkvghlrdhnvght
-X-ME-Proxy: <xmx:mKJeZbbHrSAeZyHCPPu9E1TjL73iPD0mYO4L5g83UDeQtkHCNGMgkw>
-    <xmx:mKJeZdZQdzdWcH1r1xHdHsF7f3OLeuPrRVTyicTk-io1AUVmZ5SQhQ>
-    <xmx:mKJeZXBLnGpkQ6QbfyfOZ5nZQhCbekeSaEHLN1MNkjrbY3wXUkAweg>
-    <xmx:mKJeZczTFSjOA-STYwDaVDkvE4lnraT3l0nl0b_ZRVFFV30MoTW8ZQ>
-Feedback-ID: iffc1478b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 Nov 2023 19:53:43 -0500 (EST)
-Date: Wed, 22 Nov 2023 19:53:42 -0500
-From: Ben Boeckel <me@benboeckel.net>
-To: David Howells <dhowells@redhat.com>
-Cc: keyrings@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>
-Subject: Re: GitLab repo for keyrings
-Message-ID: <ZV6ilnhiE5tQs3RK@farprobe>
-References: <ZV5bs6azAPM2UIMq@farprobe>
- <268530.1700676155@warthog.procyon.org.uk>
- <271142.1700684889@warthog.procyon.org.uk>
+Received: from mail.oetec.com (mail.oetec.com [108.160.241.186])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 334731B3;
+	Thu, 23 Nov 2023 06:37:51 -0800 (PST)
+Received: from [172.16.35.9] (cpe8c6a8d4d360a-cm8c6a8d4d3608.cpe.net.cable.rogers.com [99.253.151.152])
+	(authenticated bits=0)
+	by mail.oetec.com (8.17.1/8.16.1) with ESMTPSA id 3ANEbBDl087792
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT);
+	Thu, 23 Nov 2023 09:37:12 -0500 (EST)
+	(envelope-from dclarke@blastwave.org)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=blastwave.org;
+	s=default; t=1700750233;
+	bh=Ged2w9ywaKuu3NmYHu9HfzcjNR8RiuK6uTXl2aHx/Ns=;
+	h=Date:From:Subject:To:Cc:References:In-Reply-To;
+	b=cdb8TPbAU5ikS4B+YDsJ+ewCPXsdhZCkHZIo6fYRt9yXJbDUmbR1wpSX5ipIhibK7
+	 2St3FO3WsmAY8By+jxTMWwmmfB5iLj+M/N/sIBQn49U27dkx1gIM1a0dOj/3SJlXPn
+	 YR0Gk+sobikZiHH4kQoU9VoOCXrR9VZB2FJOmDVhi0zUQPw73lGuzJQF2qSLaxTeri
+	 3Q1CDjhR9BrsdopnT40Z8p9CgF34fVg5oYwga/3C7hcw2It3w+uI9MPNsNImwnFUPc
+	 8Sx8P66vHzCe7Uc/8uUovdYozxbfh+sv3qYuHMj5o865PXqHp9tN5gtzh1+K+WApuf
+	 aoW8ZbBuEbrZw==
+Message-ID: <3f7f1345-5629-5841-e2a9-78c189aecb36@blastwave.org>
+Date: Thu, 23 Nov 2023 09:37:11 -0500
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <271142.1700684889@warthog.procyon.org.uk>
-User-Agent: Mutt/2.2.12 (2023-09-09)
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+From: Dennis Clarke <dclarke@blastwave.org>
+Subject: =?UTF-8?Q?Re=3a_Fwd=3a_sign-file=2ec=3a149=3a17=3a_warning=3a_impli?=
+ =?UTF-8?Q?cit_declaration_of_function_=e2=80=98ENGINE=5fload=5fbuiltin=5fen?=
+ =?UTF-8?B?Z2luZXPigJk=?=
+To: Bagas Sanjaya <bagasdotme@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Kernel Build System <linux-kbuild@vger.kernel.org>,
+        Linux Kernel Keyrings <keyrings@vger.kernel.org>
+Cc: David Howells <dhowells@redhat.com>,
+        David Woodhouse
+ <dwmw2@infradead.org>,
+        Masahiro Yamada <masahiroy@kernel.org>
+References: <1fca50c4-6d7b-4c9b-bcea-4df17e2c2e7e@gmail.com>
+ <e110cfff-08f9-4bbc-6b69-0d67ae6562b6@blastwave.org>
+ <da6d3886-3b51-4ce3-92f1-6e86a62ff579@gmail.com>
+Content-Language: en-CA
+Organization: GENUNIX
+In-Reply-To: <da6d3886-3b51-4ce3-92f1-6e86a62ff579@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-oetec-MailScanner-Information: Please contact the ISP for more information
+X-oetec-MailScanner-ID: 3ANEbBDl087792
+X-oetec-MailScanner: Found to be clean
+X-oetec-MailScanner-From: dclarke@blastwave.org
 
-On Wed, Nov 22, 2023 at 20:28:09 +0000, David Howells wrote:
-> Ben Boeckel <me@benboeckel.net> wrote:
+On 11/21/23 23:55, Bagas Sanjaya wrote:
+> On 11/17/23 12:34, Dennis Clarke wrote:
+>> On 11/16/23 18:41, Bagas Sanjaya wrote:
+>>> Hi,
+>>>
+>>> I notice a bug report on Bugzilla [1]. Quoting from it:
+>>>
+>> <snip>
+>>>> Not related to https://bugzilla.kernel.org/show_bug.cgi?id=215750 but I *feel* that
+>>>> this code needs a hug.
+>>>
+>>> See Bugzilla for the full thread.
+>>>
+>>> AFAIK, this looks like a bug when the kernel is compiled against custom
+>>> (non-system) version of OpenSSL library.
+>>>
+>>
+>> I do not know what you could possibly mean. There is nothing "custom"
+>> about OpenSSL. For that matter the gcc compiler I am using was also
+>> built by me. Works fine. The sign-file.c source compiles fine.
+>>
+>> It fails to compile in the usual way when trying to build the kernel.
+>>
 > 
-> > > I'm intending to move keyrings to GitLab for its upstream repo:
-> > > 
-> > > 	https://gitlab.com/linux-afs/keyutils
-> > 
-> > Thanks for the notice. Is the patch submission workflow going to add
-> > merge requests via the GitLab instance? If so, will the list be notified
-> > of activity on them?
+> Hi Thorsten and all,
 > 
-> Hmmm...  I wonder if I can make gitlab do that automatically.
+> AFAIK there is no reply from kbuild people (maybe they missed this bug?).
 
-I don't see anything on my (unpaid) account at least under project
-integrations. Closest that seems useful is a webhook delivery
-service…needs something to reflect that to email though. Maybe something
-kernel.org would be willing to host (once developed)? For listening to
-and categorizing webhooks, we use this project:
+I suspect no one is even looking at it. Just us :)
 
-    https://gitlab.kitware.com/utils/webhook-listen
+> 
+> As for the error itself, let me clarify. The reporter (Dennis) have a build
+> problem with /usr/local version of OpenSSL library. He installed it
+> (presumably) alongside with system version (which is installed to /usr),
+> hence I called the /usr/local version as custom one (IDK if that version
+> is vanilla OpenSSL or not). Maybe am I missing something?
+> 
 
-which turns them into JSON files on disk that can then be used as a work
-queue at least. (We split it up because it lets us lifecycle the daemon
-handling events independently from the webhook receiver; I recommend
-that for email reflection as well.)
+Well, today we have OpenSSL 3.2.0 published :
 
-Another alternative is setting up a gitlab.com account that receives
-notifications and forwards/subscribes using the ML address.
+     https://www.openssl.org/source/
 
---Ben
+So I will try again and this time I will begin with a very stripped down
+install of Debian stable. When I mean stripped down I mean there will be
+nothing in the base install except reasonable TCP/IP network support and
+the ability to FTP a file into it. I can extract a tarball of a decent
+compiler that I bootstrapped myself with excellent results :
+
+     https://gcc.gnu.org/pipermail/gcc-testresults/2023-August/794816.html
+
+This will be done on real hardware. Not a virtual machine of any type
+where that should make no difference at all. Anyone running ESXi would
+see that same results I am seeing anyways.
+
+I want to see if the old sign-file.c code is simply using deprecated
+calls and then rewrite/patch as needed. This means the OpenSSL involved
+will be the production 3.2.0 release published today.
+
+
+
+Dennis Clarke
+RISC-V/SPARC/PPC/ARM/CISC
+UNIX and Linux spoken
+
 
