@@ -1,74 +1,48 @@
-Return-Path: <keyrings+bounces-157-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-158-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A1317F97F5
-	for <lists+keyrings@lfdr.de>; Mon, 27 Nov 2023 04:35:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A65F7FA9DE
+	for <lists+keyrings@lfdr.de>; Mon, 27 Nov 2023 20:09:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10E5228099D
-	for <lists+keyrings@lfdr.de>; Mon, 27 Nov 2023 03:35:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D19F0281971
+	for <lists+keyrings@lfdr.de>; Mon, 27 Nov 2023 19:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BB0223D1;
-	Mon, 27 Nov 2023 03:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB92D3DBA5;
+	Mon, 27 Nov 2023 19:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UACw++3V"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="kUPl51r9"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16F9EEB;
-	Sun, 26 Nov 2023 19:35:20 -0800 (PST)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1cfc9c4acb6so3175845ad.0;
-        Sun, 26 Nov 2023 19:35:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701056119; x=1701660919; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ssk5Abzwo4ytex3sYQ2U++2wbQ07TVIErdEorqQPuwU=;
-        b=UACw++3VZqlc2lLnmKMJOkbTc53MyTURcJuu4/RYYJ+Cx1De3mZqZDHAFAfTsTVn2G
-         vgt3eu0z4+oGdh0oc5fPOTw262VmEsCJuFzlyz1mvii3EZP5Mf1Hh0/fAto6U+U/jyZC
-         i00sByMlV+9Q5W2aXx0GCodVTGlTsOlj5OtDWMI3K83dswjIY0RaliyGZEw5teyjTT0v
-         FR44SP/KCSmDwxMsFR5+jqAcR1lff0wxj8uNo1qUhbm/yI1WWoCf25xDJs0dCfqeKQEf
-         HsR5kjDlEYHAay4O6sNYczXDgFbzVyEaGKahccvT9bFO62cv20k1rtISTrGt+1QSY/kP
-         EdGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701056119; x=1701660919;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ssk5Abzwo4ytex3sYQ2U++2wbQ07TVIErdEorqQPuwU=;
-        b=kIbS0U7s5IAvbHjsbkbn4yZKx+/jwE3x4g4/k/LEozuK7Bv8kf5GG1xYqo8YAPSeBM
-         EvhuP0YNKF8uJLAyyo7CheYO8xrsI8MWQbfy/C18wFb0Q+afW937Ni3Ul+f33Ntm/eqL
-         MI0L7nBe87YrNol0/EnyAdlHCEcw8d9eULlwVqC8hHujSnFfDjU9Z1haRqsoRgaQkr+l
-         zAlky0bDgS+/NxuhfxtV6zWfKxQ9ruU8JEr6jIgd6xDbEBKT/Hgr90W4nALhjTdFDF8W
-         etZWSIzCtuHzVz7iNwMLS2gjdS9yVp7BMtiM5T2nkY3KtaS/NEioiHdfFKFj7TUgT9Iz
-         rIig==
-X-Gm-Message-State: AOJu0Yw1JHV2eG7bStvyO2ZYpx49CrHVx/X54tzExtGxU6Pfxugtz06a
-	DxAHhAVZBSzorTp7dXDgOG7ZLy+zerk=
-X-Google-Smtp-Source: AGHT+IG0ZAHM4c3weK45UF0baXzlRNh53yI/FPkX9NZXIpdAVkdKniCV4fQbQ+srFZ4MdD/NEUyCOg==
-X-Received: by 2002:a17:903:1250:b0:1cc:5378:6a56 with SMTP id u16-20020a170903125000b001cc53786a56mr11115598plh.48.1701056119572;
-        Sun, 26 Nov 2023 19:35:19 -0800 (PST)
-Received: from localhost.localdomain ([156.240.117.4])
-        by smtp.gmail.com with ESMTPSA id q8-20020a17090311c800b001cf57ea953csm7078684plh.290.2023.11.26.19.35.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Nov 2023 19:35:19 -0800 (PST)
-From: Yusong Gao <a869920004@gmail.com>
-To: jarkko@kernel.org,
-	davem@davemloft.net,
-	dhowells@redhat.com,
-	dwmw2@infradead.org,
-	juergh@proton.me,
-	zohar@linux.ibm.com,
-	herbert@gondor.apana.org.au,
-	lists@sapience.com,
-	dimitri.ledkov@canonical.com
-Cc: keyrings@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org
-Subject: [PATCH v5] sign-file: Fix incorrect return values check
-Date: Mon, 27 Nov 2023 03:34:56 +0000
-Message-Id: <20231127033456.452151-1-a869920004@gmail.com>
-X-Mailer: git-send-email 2.34.1
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B86C9D5D;
+	Mon, 27 Nov 2023 11:09:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1701112154;
+	bh=zoGc2JZZb8dCHLG9oIz/ChaoRjOs3tUiFCnmjDqqt1I=;
+	h=From:To:Subject:Date:Message-Id:From;
+	b=kUPl51r9kw4yNAkkQ60l/kRjAzga7eAcGXmFYr+rjeVgtdp3usmliwjwV5H3CE6bf
+	 iJ6yIjGYC8lftcuDu3dMQKxaj+tmXdk9XCFLJw8tYK/itiMGi88W2OpK/D2fXEu8kj
+	 nqMyqnwDjGserlIPPweKHA13kMn1Gd0FkCsJjMYs=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 12632128174C;
+	Mon, 27 Nov 2023 14:09:14 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id oEy1Azh4uP2n; Mon, 27 Nov 2023 14:09:13 -0500 (EST)
+Received: from lingrow.int.hansenpartnership.com (unknown [153.66.160.227])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 7282D1280087;
+	Mon, 27 Nov 2023 14:09:13 -0500 (EST)
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: linux-integrity@vger.kernel.org
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	keyrings@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH v5 00/17] add integrity and security to TPM2 transactions
+Date: Mon, 27 Nov 2023 14:08:37 -0500
+Message-Id: <20231127190854.13310-1-James.Bottomley@HansenPartnership.com>
+X-Mailer: git-send-email 2.35.3
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -77,73 +51,167 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-There are some wrong return values check in sign-file when call OpenSSL
-API. The ERR() check cond is wrong because of the program only check the
-return value is < 0 which ignored the return val is 0. For example:
-1. CMS_final() return 1 for success or 0 for failure.
-2. i2d_CMS_bio_stream() returns 1 for success or 0 for failure.
-3. i2d_TYPEbio() return 1 for success and 0 for failure.
-4. BIO_free() return 1 for success and 0 for failure.
+The interest in securing the TPM against interposers, both active and
+passive has risen to fever pitch with the demonstration of key
+recovery against windows bitlocker:
 
-Link: https://www.openssl.org/docs/manmaster/man3/
-Fixes: e5a2e3c84782 ("scripts/sign-file.c: Add support for signing with a raw signature")
-Signed-off-by: Yusong Gao <a869920004@gmail.com>
----
-V1, V2: Clarify the description of git message.
-V3: Removed redundant empty line.
-V4: Change to more strict check mode.
----
- scripts/sign-file.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+https://dolosgroup.io/blog/2021/7/9/from-stolen-laptop-to-inside-the-company-network
 
-diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-index 598ef5465f82..3edb156ae52c 100644
---- a/scripts/sign-file.c
-+++ b/scripts/sign-file.c
-@@ -322,7 +322,7 @@ int main(int argc, char **argv)
- 				     CMS_NOSMIMECAP | use_keyid |
- 				     use_signed_attrs),
- 		    "CMS_add1_signer");
--		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) < 0,
-+		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
- 		    "CMS_final");
- 
- #else
-@@ -341,10 +341,10 @@ int main(int argc, char **argv)
- 			b = BIO_new_file(sig_file_name, "wb");
- 			ERR(!b, "%s", sig_file_name);
- #ifndef USE_PKCS7
--			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) < 0,
-+			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) != 1,
- 			    "%s", sig_file_name);
- #else
--			ERR(i2d_PKCS7_bio(b, pkcs7) < 0,
-+			ERR(i2d_PKCS7_bio(b, pkcs7) != 1,
- 			    "%s", sig_file_name);
- #endif
- 			BIO_free(b);
-@@ -374,9 +374,9 @@ int main(int argc, char **argv)
- 
- 	if (!raw_sig) {
- #ifndef USE_PKCS7
--		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) < 0, "%s", dest_name);
-+		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) != 1, "%s", dest_name);
- #else
--		ERR(i2d_PKCS7_bio(bd, pkcs7) < 0, "%s", dest_name);
-+		ERR(i2d_PKCS7_bio(bd, pkcs7) != 1, "%s", dest_name);
- #endif
- 	} else {
- 		BIO *b;
-@@ -396,7 +396,7 @@ int main(int argc, char **argv)
- 	ERR(BIO_write(bd, &sig_info, sizeof(sig_info)) < 0, "%s", dest_name);
- 	ERR(BIO_write(bd, magic_number, sizeof(magic_number) - 1) < 0, "%s", dest_name);
- 
--	ERR(BIO_free(bd) < 0, "%s", dest_name);
-+	ERR(BIO_free(bd) != 1, "%s", dest_name);
- 
- 	/* Finally, if we're signing in place, replace the original. */
- 	if (replace_orig)
+And subsequently the same attack being successful against all the
+Linux TPM based security solutions:
+
+https://www.secura.com/blog/tpm-sniffing-attacks-against-non-bitlocker-targets
+
+The attacks fall into two categories:
+
+1. Passive Interposers, which sit on the bus and merely observe
+2. Active Interposers, which try to manipulate TPM transactions on the
+   bus using man in the middle and packet stealing to create TPM state
+   the interposer owner desires.
+
+Our broadest interposer target is the use of TPM_RS_PW for password
+authorization which sends the actual password to the TPM without any
+obfuscation and effectively hands it to any interposer. The way to fix
+this is to use real sessions for HMAC capabilities to ensure integrity
+and to use parameter and response encryption to ensure confidentiality
+of the data flowing over the TPM bus.  HMAC sessions by agreeing a
+challenge with the TPM and then giving a response which is a HMAC of
+the password and the challenge, so the application proves knowledge of
+the password to the TPM without ever transmitting the password itself.
+Using HMAC sessions when sending commands to the TPM also provides
+some measure of protection against active interposers, since the
+interposer can't interfere with or delete a HMAC'd command (because
+they can't manufacture a response with the correct HMAC).
+
+To protect TPM transactions where there isn't a shared secret
+(i.e. the command is something like a PCR extension which doesn't
+involve a TPM object with a password) we have to do a bit more work to
+set up sessions with a passed in encrypted secret (called a salt) to
+act in place of the shared secret in the HMAC.  This secret salt is
+effectively a random number encrypted to a public key of the TPM.  The
+final piece of the puzzle is using parameter input and response return
+encryption, so any interposer can't see the data passing from the
+application to the TPM and vice versa.
+
+The most insidious interposer attack of all is a reset attack: since
+the interposer has access to the TPM bus, it can assert the TPM reset
+line any time it wants.  When a TPM resets it mostly comes back in the
+same state except that all the PCRs are reset to their initial values.
+Controlling the reset line allows the interposer to change the PCR
+state after the fact by resetting the TPM and then replaying PCR
+extends to get the PCRs into a valid state to release secrets, so even
+if an attack event was recorded, the record is erased.  This reset
+attack violates the fundamental princible of non-repudiability of TPM
+logs.  Defeating the reset attack involves tying all TPM operations
+within the kernel to a property which will change detectably if the
+TPM is reset.  For that reason, we tie all TPM sessions to the null
+hierarchy we obtain at start of day and whose seed changes on every
+reset.  If an active interposer asserts a TPM reset, the new null
+primary won't match the kernel's stored one and all TPM operations
+will start failing because of HMAC mismatches in the sessions.  So if
+the kernel TPM code keeps operating, it guarantees that a reset hasn't
+occurred.
+
+The final part of the puzzle is that the machine owner must have a
+fixed idea of the EK of their TPM and should have certified this with
+the TPM manufacturer.  On every boot, the certified EK public key
+should be used to do a make credential/activate credential attestation
+key insertion and then the null key certified with the attestation
+key.  We can follow a trust on first use model where an OS
+installation will extract and verify a public EK and save it to a read
+only file.
+
+This patch series adds a simple API which can ensure the above
+properties as a layered addition to the existing TPM handling code.
+This series now includes protections for PCR extend, getting random
+numbers from the TPM and data sealing and unsealing.  It therefore
+eliminates all uses of TPM2_RS_PW in the kernel and adds encryption
+protection to sensitive data flowing into and out of the TPM.  The
+first four patches add more sophisticated buffer handling to the TPM
+which is needed to build the more complex encryption and
+authentication based commands.  Patch 6 adds all the generic
+cryptography primitives and patches 7-9 use them in critical TPM
+operations where we want to avoid or detect interposers.  Patch 10
+exports the name of the null key we used for boot/run time
+verification and patch 11 documents the security guarantees and
+expectations.
+
+This was originally sent over four years ago, with the last iteration
+being:
+
+https://lore.kernel.org/linux-integrity/1568031515.6613.31.camel@HansenPartnership.com/
+
+I'm dusting it off now because various forces at Microsoft and Google
+via the Open Compute Platform are making a lot of noise about
+interposers and we in the linux kernel look critically lacking in that
+regard, particularly for TPM trusted keys.
+
+---
+v2 fixes the problems smatch reported and adds more explanation about
+the code motion in the first few patches
+v3 rebases the encryption to be against Ard's new library function, the
+aescfb addition of which appears as patch 1.
+v4 refreshes Ard's patch, adds kernel doc (including a new patch to
+add it to the moved tpm-buf functions) updates and rewords some commit
+logs
+v5: update to proposed tpm-buf implementation (for ease of use all
+precursor patches are part of this series, so the actual session HMAC
+and encryption begins at patch 10) and add review feedback
+
+James
+
+---
+
+Ard Biesheuvel (1):
+  crypto: lib - implement library version of AES in CFB mode
+
+James Bottomley (9):
+  tpm: Move buffer handling from static inlines to real functions
+  tpm: add buffer function to point to returned parameters
+  tpm: export the context save and load commands
+  tpm: Add full HMAC and encrypt/decrypt session handling code
+  tpm: add hmac checks to tpm2_pcr_extend()
+  tpm: add session encryption protection to tpm2_get_random()
+  KEYS: trusted: Add session encryption protection to the seal/unseal
+    path
+  tpm: add the null key name as a sysfs export
+  Documentation: add tpm-security.rst
+
+Jarkko Sakkinen (7):
+  tpm: Remove unused tpm_buf_tag()
+  tpm: Remove tpm_send()
+  tpm: Update struct tpm_buf documentation comments
+  tpm: Store the length of the tpm_buf data separately.
+  tpm: TPM2B formatted buffers
+  tpm: Add tpm_buf_read_{u8,u16,u32}
+  KEYS: trusted: tpm2: Use struct tpm_buf for sized buffers
+
+ Documentation/security/tpm/tpm-security.rst |  216 ++++
+ drivers/char/tpm/Kconfig                    |   14 +
+ drivers/char/tpm/Makefile                   |    2 +
+ drivers/char/tpm/tpm-buf.c                  |  251 ++++
+ drivers/char/tpm/tpm-chip.c                 |    3 +
+ drivers/char/tpm/tpm-interface.c            |   26 +-
+ drivers/char/tpm/tpm-sysfs.c                |   18 +
+ drivers/char/tpm/tpm.h                      |   14 +
+ drivers/char/tpm/tpm2-cmd.c                 |   53 +-
+ drivers/char/tpm/tpm2-sessions.c            | 1176 +++++++++++++++++++
+ drivers/char/tpm/tpm2-space.c               |    8 +-
+ include/crypto/aes.h                        |    5 +
+ include/keys/trusted_tpm.h                  |    2 -
+ include/linux/tpm.h                         |  294 +++--
+ lib/crypto/Kconfig                          |    5 +
+ lib/crypto/Makefile                         |    3 +
+ lib/crypto/aescfb.c                         |  257 ++++
+ security/keys/trusted-keys/trusted_tpm1.c   |   23 +-
+ security/keys/trusted-keys/trusted_tpm2.c   |  136 ++-
+ 19 files changed, 2312 insertions(+), 194 deletions(-)
+ create mode 100644 Documentation/security/tpm/tpm-security.rst
+ create mode 100644 drivers/char/tpm/tpm-buf.c
+ create mode 100644 drivers/char/tpm/tpm2-sessions.c
+ create mode 100644 lib/crypto/aescfb.c
+
 -- 
-2.34.1
+2.35.3
 
 
