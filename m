@@ -1,231 +1,149 @@
-Return-Path: <keyrings+bounces-156-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-157-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D697F97BE
-	for <lists+keyrings@lfdr.de>; Mon, 27 Nov 2023 03:57:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A1317F97F5
+	for <lists+keyrings@lfdr.de>; Mon, 27 Nov 2023 04:35:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 779601C20756
-	for <lists+keyrings@lfdr.de>; Mon, 27 Nov 2023 02:57:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10E5228099D
+	for <lists+keyrings@lfdr.de>; Mon, 27 Nov 2023 03:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34A51C31;
-	Mon, 27 Nov 2023 02:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BB0223D1;
+	Mon, 27 Nov 2023 03:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XqvzYjPT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UACw++3V"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08DC510F;
-	Sun, 26 Nov 2023 18:57:52 -0800 (PST)
-Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-6cb4d366248so2962728b3a.0;
-        Sun, 26 Nov 2023 18:57:52 -0800 (PST)
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16F9EEB;
+	Sun, 26 Nov 2023 19:35:20 -0800 (PST)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1cfc9c4acb6so3175845ad.0;
+        Sun, 26 Nov 2023 19:35:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701053871; x=1701658671; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PIDMPJ5Fz4DSb8xJE1SSIT1+JsijvA/aO2DeFjbapII=;
-        b=XqvzYjPTlWZz1YBNBMA+WhbW2tmLPMJgCrV1742jkjVeWS06xoIYrXxF8JjAzytfHM
-         05f/qrvJGFhfBf7Ro9+oYhRlz0q6Q3xiX/a900BK4g2vnMQ9w+ysHVRr4D+eZXjs9Kj8
-         G7Zttlc5jpy+TKTeNUcbLSNm+7BzWcVsPMm+RZBvVN8yRbTkI2gEJ5x4OH7pytbX+6+g
-         Hl4uW3rBFU8utRTEBRc/FE0y4eKbFPxtf1LfrgPmpHntsnIuI09+SPWRAgb4fqLC42DG
-         AyjTe7zA8dFoRuYU7GZcXPf0/FoL4IoWciZQ+uf6iYtyKID2eipaXpLJSxIAEmkt/Rb+
-         ketA==
+        d=gmail.com; s=20230601; t=1701056119; x=1701660919; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ssk5Abzwo4ytex3sYQ2U++2wbQ07TVIErdEorqQPuwU=;
+        b=UACw++3VZqlc2lLnmKMJOkbTc53MyTURcJuu4/RYYJ+Cx1De3mZqZDHAFAfTsTVn2G
+         vgt3eu0z4+oGdh0oc5fPOTw262VmEsCJuFzlyz1mvii3EZP5Mf1Hh0/fAto6U+U/jyZC
+         i00sByMlV+9Q5W2aXx0GCodVTGlTsOlj5OtDWMI3K83dswjIY0RaliyGZEw5teyjTT0v
+         FR44SP/KCSmDwxMsFR5+jqAcR1lff0wxj8uNo1qUhbm/yI1WWoCf25xDJs0dCfqeKQEf
+         HsR5kjDlEYHAay4O6sNYczXDgFbzVyEaGKahccvT9bFO62cv20k1rtISTrGt+1QSY/kP
+         EdGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701053871; x=1701658671;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PIDMPJ5Fz4DSb8xJE1SSIT1+JsijvA/aO2DeFjbapII=;
-        b=VX3Fz+4g5Cs6v1chmRE62t1usNGkJ5qXdEz/43PVKyxY3Zb+NBOPL0k0h5/BOXpZ2f
-         KKY6MSKu9GlgF9ru+fgoZ6+9GdLvLa7JnXmP/NN0PqQTr9R+xCPbhU2vDcEyY4xqajGx
-         G16+t7HKRmUWsO1JOiPVEjXLW/ORI59WH06Vj7N4usM3r50KiHMMOFIO+CUUsDnV7kES
-         Y76GrvoxT+r1/UqB5+eDwLvD+Hrquxnju5IPInX1Zv4TD6Zr45yTxhzmHwnTVlfm3eOA
-         8Hth9GmapVyNXFIF8HPTJ4WDKJdhaZsI6Z9GqVtfVmb35NX06jMn5OzdkSvfHRJegnkN
-         dLjQ==
-X-Gm-Message-State: AOJu0YzqSC83L7HENmiSpVU38JAV+9KTpYSQBmuxDZCE1DclGhI1PfEB
-	1IftgnifmT7HnokIymULLv0=
-X-Google-Smtp-Source: AGHT+IEn47Qx2wTUei4IUoMowwNOsXuHXcrEJ7H2BpGeaNVRCAc0h2eRoGUH2QuOPWJnmV/dbHUDFA==
-X-Received: by 2002:a05:6a00:2e08:b0:6be:5367:2131 with SMTP id fc8-20020a056a002e0800b006be53672131mr9925508pfb.24.1701053871459;
-        Sun, 26 Nov 2023 18:57:51 -0800 (PST)
-Received: from localhost.localdomain ([154.85.51.139])
-        by smtp.gmail.com with ESMTPSA id x71-20020a63864a000000b0057412d84d25sm6783651pgd.4.2023.11.26.18.57.48
+        d=1e100.net; s=20230601; t=1701056119; x=1701660919;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ssk5Abzwo4ytex3sYQ2U++2wbQ07TVIErdEorqQPuwU=;
+        b=kIbS0U7s5IAvbHjsbkbn4yZKx+/jwE3x4g4/k/LEozuK7Bv8kf5GG1xYqo8YAPSeBM
+         EvhuP0YNKF8uJLAyyo7CheYO8xrsI8MWQbfy/C18wFb0Q+afW937Ni3Ul+f33Ntm/eqL
+         MI0L7nBe87YrNol0/EnyAdlHCEcw8d9eULlwVqC8hHujSnFfDjU9Z1haRqsoRgaQkr+l
+         zAlky0bDgS+/NxuhfxtV6zWfKxQ9ruU8JEr6jIgd6xDbEBKT/Hgr90W4nALhjTdFDF8W
+         etZWSIzCtuHzVz7iNwMLS2gjdS9yVp7BMtiM5T2nkY3KtaS/NEioiHdfFKFj7TUgT9Iz
+         rIig==
+X-Gm-Message-State: AOJu0Yw1JHV2eG7bStvyO2ZYpx49CrHVx/X54tzExtGxU6Pfxugtz06a
+	DxAHhAVZBSzorTp7dXDgOG7ZLy+zerk=
+X-Google-Smtp-Source: AGHT+IG0ZAHM4c3weK45UF0baXzlRNh53yI/FPkX9NZXIpdAVkdKniCV4fQbQ+srFZ4MdD/NEUyCOg==
+X-Received: by 2002:a17:903:1250:b0:1cc:5378:6a56 with SMTP id u16-20020a170903125000b001cc53786a56mr11115598plh.48.1701056119572;
+        Sun, 26 Nov 2023 19:35:19 -0800 (PST)
+Received: from localhost.localdomain ([156.240.117.4])
+        by smtp.gmail.com with ESMTPSA id q8-20020a17090311c800b001cf57ea953csm7078684plh.290.2023.11.26.19.35.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Nov 2023 18:57:51 -0800 (PST)
+        Sun, 26 Nov 2023 19:35:19 -0800 (PST)
 From: Yusong Gao <a869920004@gmail.com>
-To: juergh@proton.me,
-	jarkko@kernel.org
-Cc: a869920004@gmail.com,
+To: jarkko@kernel.org,
 	davem@davemloft.net,
 	dhowells@redhat.com,
-	dimitri.ledkov@canonical.com,
 	dwmw2@infradead.org,
+	juergh@proton.me,
+	zohar@linux.ibm.com,
 	herbert@gondor.apana.org.au,
-	keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
 	lists@sapience.com,
-	zohar@linux.ibm.com
-Subject: [PATCH v3] sign-file: Fix incorrect return values check
-Date: Mon, 27 Nov 2023 02:57:37 +0000
-Message-Id: <20231127025737.451718-1-a869920004@gmail.com>
+	dimitri.ledkov@canonical.com
+Cc: keyrings@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org
+Subject: [PATCH v5] sign-file: Fix incorrect return values check
+Date: Mon, 27 Nov 2023 03:34:56 +0000
+Message-Id: <20231127033456.452151-1-a869920004@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231122082050.7eeea7bd@smeagol>
-References: <20231122082050.7eeea7bd@smeagol>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Nov 22, 2023 at 3:21 PM Juerg Haefliger <juergh@proton.me>=0D
-wrote:=0D
->=0D
-> On Tue, 21 Nov 2023 03:40:44 +0000=0D
-> "Yusong Gao" <a869920004@gmail.com> wrote:=0D
->=0D
-> > There are some wrong return values check in sign-file when call=0D
-> > OpenSSL=0D
-> > API. The ERR() check cond is wrong because of the program only check=0D
-> > the=0D
-> > return value is < 0 instead of <=3D 0. For example:=0D
-> > 1. CMS_final() return 1 for success or 0 for failure.=0D
-> > 2. i2d_CMS_bio_stream() returns 1 for success or 0 for failure.=0D
-> > 3. i2d_TYPEbio() return 1 for success and 0 for failure.=0D
-> > 4. BIO_free() return 1 for success and 0 for failure.=0D
->=0D
-> Good catch! In this case I'd probably be more strict and check for '!=3D=
-=0D
-> 1'.=0D
-> See below.=0D
->=0D
-> ...Juerg=0D
->=0D
->=0D
-> > Link: https://www.openssl.org/docs/manmaster/man3/=0D
-> > Fixes: e5a2e3c84782 ("scripts/sign-file.c: Add support for signing=0D
-> > with a raw signature")=0D
-> >=0D
-> > Signed-off-by: Yusong Gao <a869920004@gmail.com>=0D
-> > ---=0D
-> > V1, V2: Clarify the description of git message.=0D
-> > ---=0D
-> > =C2=A0scripts/sign-file.c | 12 ++++++------=0D
-> > =C2=A01 file changed, 6 insertions(+), 6 deletions(-)=0D
-> >=0D
-> > diff --git a/scripts/sign-file.c b/scripts/sign-file.c=0D
-> > index 598ef5465f82..dcebbcd6bebd 100644=0D
-> > --- a/scripts/sign-file.c=0D
-> > +++ b/scripts/sign-file.c=0D
-> > @@ -322,7 +322,7 @@ int main(int argc, char **argv)=0D
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0CMS_NOSMIMECAP | use=
-_keyid |=0D
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0use_signed_attrs),=0D
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 "CMS_add=
-1_signer");=0D
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ERR(CMS_final(cms, bm, NULL=
-, CMS_NOCERTS | CMS_BINARY)=0D
-> > < 0,=0D
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ERR(CMS_final(cms, bm, NULL=
-, CMS_NOCERTS | CMS_BINARY)=0D
-> > <=3D 0,=0D
->=0D
-> ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) !=3D 1,=0D
->=0D
->=0D
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 "CMS_fin=
-al");=0D
-> >=0D
-> > =C2=A0#else=0D
-> > @@ -341,10 +341,10 @@ int main(int argc, char **argv)=0D
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 b =3D BIO_new_file(sig_file_name, "wb");=0D
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 ERR(!b, "%s", sig_file_name);=0D
-> > =C2=A0#ifndef USE_PKCS7=0D
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) < 0,=0D
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) <=3D 0,=0D
->=0D
-> ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) !=3D 1,=0D
->=0D
->=0D
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 "%s", sig_file_name);=0D
-> > =C2=A0#else=0D
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- ERR(i2d_PKCS7_bio(b, pkcs7) < 0,=0D
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- ERR(i2d_PKCS7_bio(b, pkcs7) <=3D 0,=0D
->=0D
-> ERR(i2d_PKCS7_bio(b, pkcs7) !=3D 1,=0D
->=0D
->=0D
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 "%s", sig_file_name);=0D
-> > =C2=A0#endif=0D
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 BIO_free(b);=0D
-> > @@ -374,9 +374,9 @@ int main(int argc, char **argv)=0D
-> >=0D
-> > =C2=A0 =C2=A0 =C2=A0 if (!raw_sig) {=0D
-> > =C2=A0#ifndef USE_PKCS7=0D
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ERR(i2d_CMS_bio_stream(bd, =
-cms, NULL, 0) < 0, "%s",=0D
-> > dest_name);=0D
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ERR(i2d_CMS_bio_stream(bd, =
-cms, NULL, 0) <=3D 0, "%s",=0D
-> > dest_name);=0D
->=0D
->=0D
-> ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) !=3D 1, "%s", dest_name);=0D
->=0D
->=0D
-> > =C2=A0#else=0D
-> > - =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ERR(i2d_PKCS7_bio(bd, pkcs7=
-) < 0, "%s", dest_name);=0D
-> > + =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 ERR(i2d_PKCS7_bio(bd, pkcs7=
-) <=3D 0, "%s", dest_name);=0D
->=0D
-> ERR(i2d_PKCS7_bio(bd, pkcs7) !=3D 1, "%s", dest_name);=0D
->=0D
->=0D
-> > =C2=A0#endif=0D
-> > =C2=A0 =C2=A0 =C2=A0 } else {=0D
-> > =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 BIO *b;=0D
-> > @@ -396,7 +396,7 @@ int main(int argc, char **argv)=0D
-> > =C2=A0 =C2=A0 =C2=A0 ERR(BIO_write(bd, &sig_info, sizeof(sig_info)) < 0=
-, "%s",=0D
-> > dest_name);=0D
-> > =C2=A0 =C2=A0 =C2=A0 ERR(BIO_write(bd, magic_number, sizeof(magic_numbe=
-r) - 1) < 0,=0D
-> > "%s", dest_name);=0D
-> >=0D
-> > - =C2=A0 =C2=A0 ERR(BIO_free(bd) < 0, "%s", dest_name);=0D
-> > + =C2=A0 =C2=A0 ERR(BIO_free(bd) <=3D 0, "%s", dest_name);=0D
->=0D
-> ERR(BIO_free(bd) !=3D 1, "%s", dest_name);=0D
->=0D
->=0D
-> >=0D
-> > =C2=A0 =C2=A0 =C2=A0 /* Finally, if we're signing in place, replace the=
- original.=0D
-> > */=0D
-> > =C2=A0 =C2=A0 =C2=A0 if (replace_orig)=0D
-> > --=0D
-> > 2.34.1=0D
-> >=0D
->=0D
-=0D
-Agreed. Will do.=0D
-Thanks for your review.=0D
-=0D
-=0D
-BR, Yusong Gao=0D
+There are some wrong return values check in sign-file when call OpenSSL
+API. The ERR() check cond is wrong because of the program only check the
+return value is < 0 which ignored the return val is 0. For example:
+1. CMS_final() return 1 for success or 0 for failure.
+2. i2d_CMS_bio_stream() returns 1 for success or 0 for failure.
+3. i2d_TYPEbio() return 1 for success and 0 for failure.
+4. BIO_free() return 1 for success and 0 for failure.
+
+Link: https://www.openssl.org/docs/manmaster/man3/
+Fixes: e5a2e3c84782 ("scripts/sign-file.c: Add support for signing with a raw signature")
+Signed-off-by: Yusong Gao <a869920004@gmail.com>
+---
+V1, V2: Clarify the description of git message.
+V3: Removed redundant empty line.
+V4: Change to more strict check mode.
+---
+ scripts/sign-file.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/scripts/sign-file.c b/scripts/sign-file.c
+index 598ef5465f82..3edb156ae52c 100644
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -322,7 +322,7 @@ int main(int argc, char **argv)
+ 				     CMS_NOSMIMECAP | use_keyid |
+ 				     use_signed_attrs),
+ 		    "CMS_add1_signer");
+-		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) < 0,
++		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
+ 		    "CMS_final");
+ 
+ #else
+@@ -341,10 +341,10 @@ int main(int argc, char **argv)
+ 			b = BIO_new_file(sig_file_name, "wb");
+ 			ERR(!b, "%s", sig_file_name);
+ #ifndef USE_PKCS7
+-			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) < 0,
++			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) != 1,
+ 			    "%s", sig_file_name);
+ #else
+-			ERR(i2d_PKCS7_bio(b, pkcs7) < 0,
++			ERR(i2d_PKCS7_bio(b, pkcs7) != 1,
+ 			    "%s", sig_file_name);
+ #endif
+ 			BIO_free(b);
+@@ -374,9 +374,9 @@ int main(int argc, char **argv)
+ 
+ 	if (!raw_sig) {
+ #ifndef USE_PKCS7
+-		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) < 0, "%s", dest_name);
++		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) != 1, "%s", dest_name);
+ #else
+-		ERR(i2d_PKCS7_bio(bd, pkcs7) < 0, "%s", dest_name);
++		ERR(i2d_PKCS7_bio(bd, pkcs7) != 1, "%s", dest_name);
+ #endif
+ 	} else {
+ 		BIO *b;
+@@ -396,7 +396,7 @@ int main(int argc, char **argv)
+ 	ERR(BIO_write(bd, &sig_info, sizeof(sig_info)) < 0, "%s", dest_name);
+ 	ERR(BIO_write(bd, magic_number, sizeof(magic_number) - 1) < 0, "%s", dest_name);
+ 
+-	ERR(BIO_free(bd) < 0, "%s", dest_name);
++	ERR(BIO_free(bd) != 1, "%s", dest_name);
+ 
+ 	/* Finally, if we're signing in place, replace the original. */
+ 	if (replace_orig)
+-- 
+2.34.1
+
 
