@@ -1,290 +1,294 @@
-Return-Path: <keyrings+bounces-175-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-176-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8580A7FAA26
-	for <lists+keyrings@lfdr.de>; Mon, 27 Nov 2023 20:21:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CF017FB2DA
+	for <lists+keyrings@lfdr.de>; Tue, 28 Nov 2023 08:35:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4077B20CEF
-	for <lists+keyrings@lfdr.de>; Mon, 27 Nov 2023 19:21:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F51B1C20A0B
+	for <lists+keyrings@lfdr.de>; Tue, 28 Nov 2023 07:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DDF43EA62;
-	Mon, 27 Nov 2023 19:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2A613AEC;
+	Tue, 28 Nov 2023 07:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="cTaBl+12"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YOZNt4if"
 X-Original-To: keyrings@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21C01D5F;
-	Mon, 27 Nov 2023 11:21:30 -0800 (PST)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1B5F1987;
+	Mon, 27 Nov 2023 23:35:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1701112889;
-	bh=X0Q0v99eN2KxDgCMEZHqzTucfel3h4EGsfBLUoiMmnw=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:From;
-	b=cTaBl+128W2RNbXGZhO5VxmBEHfjA138e35szbwowJUCoaIFEUti8WdLvybakr74x
-	 dpLdGg46OUwRMfKOJYhTQH7W/14Xryz8jLgYnoBzREdgWmYuyMBY1rEK6Yc3xaWgkg
-	 D4RCsTDZhdpwdlC7VPiUWx5HwyGyq0HwJCYH+keQ=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id DD2031286989;
-	Mon, 27 Nov 2023 14:21:29 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id D5tWZ5F41rWy; Mon, 27 Nov 2023 14:21:29 -0500 (EST)
-Received: from lingrow.int.hansenpartnership.com (unknown [153.66.160.227])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 50B7B1286954;
-	Mon, 27 Nov 2023 14:21:29 -0500 (EST)
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: linux-integrity@vger.kernel.org
-Cc: Jarkko Sakkinen <jarkko@kernel.org>,
-	keyrings@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH v5 17/17] Documentation: add tpm-security.rst
-Date: Mon, 27 Nov 2023 14:08:54 -0500
-Message-Id: <20231127190854.13310-18-James.Bottomley@HansenPartnership.com>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20231127190854.13310-1-James.Bottomley@HansenPartnership.com>
-References: <20231127190854.13310-1-James.Bottomley@HansenPartnership.com>
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701156923; x=1732692923;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=KWN/ysY+oElKEYN6xaisIkC1BjUSzqYDSd3wAedn/24=;
+  b=YOZNt4if53kmxGWf6vSbz8Ip9X7jFS1MM3uVcBKd/zzWTpnz190AOTht
+   zrtAF078DoIpevftB2p14FFrjk51guBlJHz5jpqRGVo9iBDhTpERYke/O
+   Jxmc/mNqL+EZ+JYkVVhkfic/ys0s59re7MFEQUxVL4dxxaTAxX1cYDLe0
+   4o1g0F/8y06frtN+XD2DCf21P6fFWN0t1ASAQN2/x1tZZUQDvfQwN0p3E
+   kmmGfkwPooyd59+OvvhYJf+km1Sax+AjUPJkXc6BQNz1LB6Whxi+heMr3
+   d/IbOVbCz5Q5fUo9vFfSfh4+pO0W1dA0J2YWD8K4Lewj0RJ/brXwLrbJg
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10907"; a="479070762"
+X-IronPort-AV: E=Sophos;i="6.04,233,1695711600"; 
+   d="scan'208";a="479070762"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2023 23:35:06 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10907"; a="859332659"
+X-IronPort-AV: E=Sophos;i="6.04,233,1695711600"; 
+   d="scan'208";a="859332659"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by FMSMGA003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 27 Nov 2023 23:35:06 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34; Mon, 27 Nov 2023 23:35:05 -0800
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34 via Frontend Transport; Mon, 27 Nov 2023 23:35:05 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.41) by
+ edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.34; Mon, 27 Nov 2023 23:35:05 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZHKO1M8k2NQkGWZ+UcH+tEN7AXtVH1Zs2GLXzyh/B6j8C6Hj1jNPJWxZw64XQBjsar7hr+fN67vbv7lezAbmkK7vsQWtEmM1QAL/LDa8USz9K1C6bGBga0HN+sBGYxMRfVJeU8aAtiD+byi0s4aY0JP4LrNy01Dv1Zmr2ueuh/NImUhOTHQ+uVSN2dzDJobwiDCvtKF594f6HviDtQrz5UtkgwqA+9R8jsTMtA6Q/GP2hsUlTApXrDIgoxH64ktk+AnaRq/Uo0KbhQg62uGhy3tSwJ0K48ati3VV5ASQdnDeysZ59kyKtvNpWMR9mdJDr4CyMQMb65bUchtq2GDxag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kIBoFc2OoorGM50VCz/zEHXF97Hkc8IxK/+IoQJmkVM=;
+ b=kOR/2YsyNON/hn5cVhix1XCsrWJP6MPXSngCUI2DG7aqUXZaZXqHHr2kshqqeymGvEg60HvrIZm2j9K02T95lw4oXhm5pS3O+YxqxnQO75HAIkFRjaxhgCZO0erGQZZwgrMQ0nCpfbDGdBq1ueAja0C2luZIN/rC8trDGVgidWRRIOPDGErkM0FG6ZVOYrmJX4cb58U2xBsV7DptAzLSSqWIOwf3ob+2lKk/QkUgF6g/BzWTwJsPxt29SJZqvYI7AjXTk2tE/43vdjNSkn6Vj4OWZ590l4SSKykmT2Wksobphq/BdUmDnSgovYEaJlJJ3tMKhHWwRGEiA8SJrWuhxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com (2603:10b6:408:1b6::9)
+ by DM4PR11MB8204.namprd11.prod.outlook.com (2603:10b6:8:17d::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.27; Tue, 28 Nov
+ 2023 07:35:03 +0000
+Received: from LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::1236:9a2e:5acd:a7f]) by LV3PR11MB8603.namprd11.prod.outlook.com
+ ([fe80::1236:9a2e:5acd:a7f%3]) with mapi id 15.20.7025.022; Tue, 28 Nov 2023
+ 07:35:03 +0000
+Date: Tue, 28 Nov 2023 15:34:55 +0800
+From: kernel test robot <oliver.sang@intel.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+CC: <oe-lkp@lists.linux.dev>, <lkp@intel.com>,
+	<linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <oliver.sang@intel.com>
+Subject: [jarkko-tpmdd:tpm_buf-v4] [tpm]  5581fa1c8f:
+ WARNING:at_drivers/char/tpm/tpm-buf.c:#tpm_buf_reset
+Message-ID: <202311272244.dc5dae8e-oliver.sang@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+X-ClientProxiedBy: SG2PR03CA0097.apcprd03.prod.outlook.com
+ (2603:1096:4:7c::25) To LV3PR11MB8603.namprd11.prod.outlook.com
+ (2603:10b6:408:1b6::9)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV3PR11MB8603:EE_|DM4PR11MB8204:EE_
+X-MS-Office365-Filtering-Correlation-Id: 769d3783-915e-4150-57ea-08dbefe488cf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: LB3z8vq0XXSnCB0BHsEsvTW9f7UQZvGzv0X4xblbEDRWie3wQmfukx2cp8H5VJIRERRjTF+jxls6RHqH8vNKCPkVhWXNkQ07EikZP9vSOmixY4W2DmLAC8yY9BlvxShn0iuYAnMTE8TDNmLm2b/GJS66b0hcck3S91c5caE5w/thxkowFFWg1T8a1udHqTDdOHtB5LDA/5g8ev46OGnwmUl0nqsvBlF+8PcTxsjkOEFtv3XxCvXJlIcYDs8q7DLlRqestePqG9eEcAeNdzfkWdNqWtPC8Bv1nxa+uEPTSaYBPPkUnyg3UC+VQYWuc9r0IpHe10z4zS1ZDpkPJ+kZpYItMtFj99gr2SK//cIrkb7jLejXMAOeHv3+FDjvmHjYCeDQfmmC06NJul6VjJQcRwTPD8Cf3MrPXqAWVfbGwO71Bessb3w3T7YLpdvUA66cYSYQksd5+7Ci/oGcnt1ConbEXWley8lx9KaufRlimK58/lo8Kims0ZU0uamzWOYAVJWV0mmZnXnUTZRy1XbWSEAgmKPbQtIecTGMa4wGlsymJYchLmzvxG3SKGRGTmfPWV8GApvYhfrhdiCYobUUofCbYbpFNgj46EcCpTjvGuZ1yoPQ5Uf+OMfd8Log5GXtC1BzgRLPJddxk9Jffs2JVA==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR11MB8603.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(136003)(39860400002)(346002)(396003)(366004)(230273577357003)(230173577357003)(230922051799003)(186009)(451199024)(1800799012)(64100799003)(6666004)(8936002)(8676002)(4326008)(45080400002)(6512007)(6506007)(66556008)(66476007)(66946007)(6916009)(316002)(6486002)(966005)(478600001)(36756003)(38100700002)(41300700001)(1076003)(86362001)(107886003)(26005)(2906002)(2616005)(83380400001)(82960400001)(5660300002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?FdQcKH8HUxh2XKFXGVBy0tbWLp+Qz7IIifioR7vsqQIPwbrm1gOnrBJNz4IC?=
+ =?us-ascii?Q?80oewWMgeVdl34mIiRdSuowbhrioN9/s0ZrusSId90Bt/M2TsucYQttQiPbS?=
+ =?us-ascii?Q?33OsinSNm6rjlxYQJTbkrGrp+UmG8RFrOGqjH+/GC0HuowEEtFnP0S74PkIm?=
+ =?us-ascii?Q?TxluLXNyOkN9Wfk4HhmE+m4XB9iVIbrWH7eAnAGEtozc2U2EZV03d0t8kh5c?=
+ =?us-ascii?Q?O1yrjJ1QaF7VmJvyFX1Sa6JNy/cZP2MxoY93KBoXKk5xU5dP2j0GlFOUN8hH?=
+ =?us-ascii?Q?rGISZ7KZEd13yXtXdb00DpWokqJ0EcEGTCR4Vs9NWqKi9W6Xc1lTZsiPm5cG?=
+ =?us-ascii?Q?8tXggAXWF66+gmj7KVx9Y8exDGsnUVZOtxhQk7XvqHQk2WgXZA1UH2ILZlxh?=
+ =?us-ascii?Q?StJW15GouFpNiSF0ten9y8hImq+kcaW7ZQihvo5tY/8B3XHj2E2/a3a4qCrs?=
+ =?us-ascii?Q?B0X6c1aKGBqUfKIDtZ1GabCW0/lN0rSFMLChUd+8PMDo+f6pDxm/u3Tn/cfk?=
+ =?us-ascii?Q?Mn+HW/Y06XSDQwhod+c3/NqLd8QmlFcAqT5xAgUnXG9IBY779rf7T7ff3Pr8?=
+ =?us-ascii?Q?xqMl36sJAgOiy0J6vl1x9jJLbIM8hmy05a6w0BDsE5KgNegD3azvyJYV0ylf?=
+ =?us-ascii?Q?w0OD8FNV5NvVBHQ1zWt3FAywN2tAi7r+94Nhq1dv7NlIJQFuJa+l9XBfS0qT?=
+ =?us-ascii?Q?rR3/VcFI+jT5JlS8YuIZafSTaSGHqPIbuKsm2Udme818i2PRSmQgD6nmcRnB?=
+ =?us-ascii?Q?7sfg/C8sDtpNZYVccuZ/G971qUYyi8jJbuMYN00vr5dfQTmt+eG2ML8ixdY+?=
+ =?us-ascii?Q?3h+HTVZPi1unzqsZfZ6rM8Lt0D0dwCPa21ViMsM9olWLSUShOGP/o+Ay00kS?=
+ =?us-ascii?Q?ik3P0pAhz73fJsWs9OhKiYmg4g+zrgPAN3HXZmtc1Ckp4pOnme2bB+QAadBP?=
+ =?us-ascii?Q?mYU2fsfzoXwshmV/95mEX8lHutNl0EKdOdC7E6jNZsn65IxlMWJB8xV8zxea?=
+ =?us-ascii?Q?4PIgxNQV9V3Q0mnJa9abBzTf6WJo4WlMd/GrNT+r4sbCINDy5ofHr71p8DQo?=
+ =?us-ascii?Q?7hiVQm7dgZOT0FpSmZobe4gvoJrMl9nDBpO76EYXr6fXJuylFKTp4umppeI9?=
+ =?us-ascii?Q?KgLDsUTGXzNDIHcA/YyRcElHpmAAwTQUu5C7g4YFIOes1lNI3RA1EX1fGbxa?=
+ =?us-ascii?Q?O5rHr1yf595uOzkt01iL3YbvbM7hCIkWBJeOwjEnRnxgDeKgXWz+dOCUISov?=
+ =?us-ascii?Q?yJ66R9+V374zwfgobZZ9OMnd5Gt0aebPZlf+9XaHSSuXUDcOcenbPma6tnQn?=
+ =?us-ascii?Q?JcKKb5fBrAyb9cco+U9CDL6ey9K45m0nPdBmfgEwdYpuF0/rL/e7//uwbiIW?=
+ =?us-ascii?Q?TIHDsaqUc5kLqpjXNnndMTC0Mh6rnQZwV5npnlT664mTIOOfyN03kq4Ygln2?=
+ =?us-ascii?Q?8u7M5Bo/SQUFPG73DzAWBSh1e0iahta1mqUOegfL+MusosSXs5im8qPmZnbY?=
+ =?us-ascii?Q?wf5vcmRpc/Fmlb7xjip70fxhmVASM7tFR3I1KVoP0hy36P7NCZXSFwLk3k6k?=
+ =?us-ascii?Q?je2iQ+h3RnSbkZoIENSHo2Q8xGPSn9v7REV+NNZdRMu8lWcVA7uAMRH0TvBv?=
+ =?us-ascii?Q?9A=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 769d3783-915e-4150-57ea-08dbefe488cf
+X-MS-Exchange-CrossTenant-AuthSource: LV3PR11MB8603.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2023 07:35:03.2933
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: wyD2jp0/oXd2bZg8RiiSLjKGqniHjY+gIrpYisbnFHAgxwe9+yBNZBfkQ1IEMTdM441T8Hi7YnovDndVfzzNdQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB8204
+X-OriginatorOrg: intel.com
 
-Document how the new encrypted secure interface for TPM2 works and how
-security can be assured after boot by certifying the NULL seed.
 
-Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
----
- Documentation/security/tpm/tpm-security.rst | 216 ++++++++++++++++++++
- 1 file changed, 216 insertions(+)
- create mode 100644 Documentation/security/tpm/tpm-security.rst
 
-diff --git a/Documentation/security/tpm/tpm-security.rst b/Documentation/security/tpm/tpm-security.rst
-new file mode 100644
-index 000000000000..4f633f251033
---- /dev/null
-+++ b/Documentation/security/tpm/tpm-security.rst
-@@ -0,0 +1,216 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
-+
-+TPM Security
-+============
-+
-+The object of this document is to describe how we make the kernel's
-+use of the TPM reasonably robust in the face of external snooping and
-+packet alteration attacks (called passive and active interposer attack
-+in the literature).  The current security document is for TPM 2.0.
-+
-+Introduction
-+------------
-+
-+The TPM is usually a discrete chip attached to a PC via some type of
-+low bandwidth bus.  There are exceptions to this such as the Intel
-+PTT, which is a software TPM running inside a software environment
-+close to the CPU, which are subject to different attacks, but right at
-+the moment, most hardened security environments require a discrete
-+hardware TPM, which is the use case discussed here.
-+
-+Snooping and Alteration Attacks against the bus
-+-----------------------------------------------
-+
-+The current state of the art for snooping the `TPM Genie`_ hardware
-+interposer which is a simple external device that can be installed in
-+a couple of seconds on any system or laptop.  Recently attacks were
-+successfully demonstrated against the `Windows Bitlocker TPM`_ system.
-+Most recently the same `attack against TPM based Linux disk
-+encryption`_ schemes.  The next phase of research seems to be hacking
-+existing devices on the bus to act as interposers, so the fact that
-+the attacker requires physical access for a few seconds might
-+evaporate.  However, the goal of this document is to protect TPM
-+secrets and integrity as far as we are able in this environment and to
-+try to insure that if we can't prevent the attack then at least we can
-+detect it.
-+
-+Unfortunately, most of the TPM functionality, including the hardware
-+reset capability can be controlled by an attacker who has access to
-+the bus, so we'll discuss some of the disruption possibilities below.
-+
-+Measurement (PCR) Integrity
-+---------------------------
-+
-+Since the attacker can send their own commands to the TPM, they can
-+send arbitrary PCR extends and thus disrupt the measurement system,
-+which would be an annoying denial of service attack.  However, there
-+are two, more serious, classes of attack aimed at entities sealed to
-+trust measurements.
-+
-+1. The attacker could intercept all PCR extends coming from the system
-+   and completely substitute their own values, producing a replay of
-+   an untampered state that would cause PCR measurements to attest to
-+   a trusted state and release secrets
-+
-+2. At some point in time the attacker could reset the TPM, clearing
-+   the PCRs and then send down their own measurements which would
-+   effectively overwrite the boot time measurements the TPM has
-+   already done.
-+
-+The first can be thwarted by always doing HMAC protection of the PCR
-+extend and read command meaning measurement values cannot be
-+substituted without producing a detectable HMAC failure in the
-+response.  However, the second can only really be detected by relying
-+on some sort of mechanism for protection which would change over TPM
-+reset.
-+
-+Secrets Guarding
-+----------------
-+
-+Certain information passing in and out of the TPM, such as key sealing
-+and private key import and random number generation, is vulnerable to
-+interception which HMAC protection alone cannot protect against, so
-+for these types of command we must also employ request and response
-+encryption to prevent the loss of secret information.
-+
-+Establishing Initial Trust with the TPM
-+---------------------------------------
-+
-+In order to provide security from the beginning, an initial shared or
-+asymmetric secret must be established which must also be unknown to
-+the attacker.  The most obvious avenues for this are the endorsement
-+and storage seeds, which can be used to derive asymmetric keys.
-+However, using these keys is difficult because the only way to pass
-+them into the kernel would be on the command line, which requires
-+extensive support in the boot system, and there's no guarantee that
-+either hierarchy would not have some type of authorization.
-+
-+The mechanism chosen for the Linux Kernel is to derive the primary
-+elliptic curve key from the null seed using the standard storage seed
-+parameters.  The null seed has two advantages: firstly the hierarchy
-+physically cannot have an authorization, so we are always able to use
-+it and secondly, the null seed changes across TPM resets, meaning if
-+we establish trust on the null seed at start of day, all sessions
-+salted with the derived key will fail if the TPM is reset and the seed
-+changes.
-+
-+Obviously using the null seed without any other prior shared secrets,
-+we have to create and read the initial public key which could, of
-+course, be intercepted and substituted by the bus interposer.
-+However, the TPM has a key certification mechanism (using the EK
-+endorsement certificate, creating an attestation identity key and
-+certifying the null seed primary with that key) which is too complex
-+to run within the kernel, so we keep a copy of the null primary key
-+name, which is what is exported via sysfs so user-space can run the
-+full certification when it boots.  The definitive guarantee here is
-+that if the null primary key certifies correctly, you know all your
-+TPM transactions since start of day were secure and if it doesn't, you
-+know there's an interposer on your system (and that any secret used
-+during boot may have been leaked).
-+
-+Stacking Trust
-+--------------
-+
-+In the current null primary scenario, the TPM must be completely
-+cleared before handing it on to the next consumer.  However the kernel
-+hands to user-space the name of the derived null seed key which can
-+then be verified by certification in user-space.  Therefore, this chain
-+of name handoff can be used between the various boot components as
-+well (via an unspecified mechanism).  For instance, grub could use the
-+null seed scheme for security and hand the name off to the kernel in
-+the boot area.  The kernel could make its own derivation of the key
-+and the name and know definitively that if they differ from the handed
-+off version that tampering has occurred.  Thus it becomes possible to
-+chain arbitrary boot components together (UEFI to grub to kernel) via
-+the name handoff provided each successive component knows how to
-+collect the name and verifies it against its derived key.
-+
-+Session Properties
-+------------------
-+
-+All TPM commands the kernel uses allow sessions.  HMAC sessions may be
-+used to check the integrity of requests and responses and decrypt and
-+encrypt flags may be used to shield parameters and responses.  The
-+HMAC and encryption keys are usually derived from the shared
-+authorization secret, but for a lot of kernel operations that is well
-+known (and usually empty).  Thus, every HMAC session used by the
-+kernel must be created using the null primary key as the salt key
-+which thus provides a cryptographic input into the session key
-+derivation.  Thus, the kernel creates the null primary key once (as a
-+volatile TPM handle) and keeps it around in a saved context stored in
-+tpm_chip for every in-kernel use of the TPM.  Currently, because of a
-+lack of de-gapping in the in-kernel resource manager, the session must
-+be created and destroyed for each operation, but, in future, a single
-+session may also be reused for the in-kernel HMAC, encryption and
-+decryption sessions.
-+
-+Protection Types
-+----------------
-+
-+For every in-kernel operation we use null primary salted HMAC to
-+protect the integrity.  Additionally, we use parameter encryption to
-+protect key sealing and parameter decryption to protect key unsealing
-+and random number generation.
-+
-+Null Primary Key Certification in Userspace
-+===========================================
-+
-+Every TPM comes shipped with a couple of X.509 certificates for the
-+primary endorsement key.  This document assumes that the Elliptic
-+Curve version of the certificate exists at 01C00002, but will work
-+equally well with the RSA certificate (at 01C00001).
-+
-+The first step in the certification is primary creation using the
-+template from the `TCG EK Credential Profile`_ which allows comparison
-+of the generated primary key against the one in the certificate (the
-+public key must match).  Note that generation of the EK primary
-+requires the EK hierarchy password, but a pre-generated version of the
-+EC primary should exist at 81010002 and a TPM2_ReadPublic() may be
-+performed on this without needing the key authority.  Next, the
-+certificate itself must be verified to chain back to the manufacturer
-+root (which should be published on the manufacturer website).  Once
-+this is done, an attestation key (AK) is generated within the TPM and
-+it's name and the EK public key can be used to encrypt a secret using
-+TPM2_MakeCredential.  The TPM then runs TPM2_ActivateCredential which
-+will only recover the secret if the binding between the TPM, the EK
-+and the AK is true. the generated AK may now be used to run a
-+certification of the null primary key whose name the kernel has
-+exported.  Since TPM2_MakeCredential/ActivateCredential are somewhat
-+complicated, a more simplified process involving an externally
-+generated private key is described below.
-+
-+This process is a simplified abbreviation of the usual privacy CA
-+based attestation process.  The assumption here is that the
-+attestation is done by the TPM owner who thus has access to only the
-+owner hierarchy.  The owner creates an external public/private key
-+pair (assume elliptic curve in this case) and wraps the private key
-+for import using an inner wrapping process and parented to the EC
-+derived storage primary.  The TPM2_Import() is done using a parameter
-+decryption HMAC session salted to the EK primary (which also does not
-+require the EK key authority) meaning that the inner wrapping key is
-+the encrypted parameter and thus the TPM will not be able to perform
-+the import unless is possesses the certified EK so if the command
-+succeeds and the HMAC verifies on return we know we have a loadable
-+copy of the private key only for the certified TPM.  This key is now
-+loaded into the TPM and the Storage primary flushed (to free up space
-+for the null key generation).
-+
-+The null EC primary is now generated using the Storage profile
-+outlined in the `TCG TPM v2.0 Provisioning Guidance`_; the name of
-+this key (the hash of the public area) is computed and compared to the
-+null seed name presented by the kernel in
-+/sys/class/tpm/tpm0/null_name.  If the names do not match, the TPM is
-+compromised.  If the names match, the user performs a TPM2_Certify()
-+using the null primary as the object handle and the loaded private key
-+as the sign handle and providing randomized qualifying data.  The
-+signature of the returned certifyInfo is verified against the public
-+part of the loaded private key and the qualifying data checked to
-+prevent replay.  If all of these tests pass, the user is now assured
-+that TPM integrity and privacy was preserved across the entire boot
-+sequence of this kernel.
-+
-+.. _TPM Genie: https://www.nccgroup.trust/globalassets/about-us/us/documents/tpm-genie.pdf
-+.. _Windows Bitlocker TPM: https://dolosgroup.io/blog/2021/7/9/from-stolen-laptop-to-inside-the-company-network
-+.. _attack against TPM based Linux disk encryption: https://www.secura.com/blog/tpm-sniffing-attacks-against-non-bitlocker-targets
-+.. _TCG EK Credential Profile: https://trustedcomputinggroup.org/resource/tcg-ek-credential-profile-for-tpm-family-2-0/
-+.. _TCG TPM v2.0 Provisioning Guidance: https://trustedcomputinggroup.org/resource/tcg-tpm-v2-0-provisioning-guidance/
+Hello,
+
+kernel test robot noticed "WARNING:at_drivers/char/tpm/tpm-buf.c:#tpm_buf_reset" on:
+
+commit: 5581fa1c8fc5f0ecf4a5635fcc2a46d9bfdf3748 ("tpm: Store the length of the tpm_buf data separately.")
+git://git.kernel.org/cgit/linux/kernel/git/jarkko/linux-tpmdd.git tpm_buf-v4
+
+in testcase: stress-ng
+version: stress-ng-x86_64-0.15.04-1_20231112
+with following parameters:
+
+	nr_threads: 100%
+	testtime: 60s
+	sc_pid_max: 4194304
+	class: scheduler
+	test: hrtimers
+	cpufreq_governor: performance
+
+
+
+compiler: gcc-12
+test machine: 64 threads 2 sockets Intel(R) Xeon(R) Gold 6346 CPU @ 3.10GHz (Ice Lake) with 256G memory
+
+(please refer to attached dmesg/kmsg for entire log/backtrace)
+
+
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <oliver.sang@intel.com>
+| Closes: https://lore.kernel.org/oe-lkp/202311272244.dc5dae8e-oliver.sang@intel.com
+
+
+[   12.301011][    T1] ------------[ cut here ]------------
+[   12.303782][  T504] tsc: Refined TSC clocksource calibration: 3092.733 MHz
+[ 12.306311][ T1] WARNING: CPU: 48 PID: 1 at drivers/char/tpm/tpm-buf.c:39 tpm_buf_reset (drivers/char/tpm/tpm-buf.c:39) 
+[   12.313193][  T504] clocksource: tsc: mask: 0xffffffffffffffff max_cycles: 0x2c9476b3f97, max_idle_ns: 440795271218 ns
+[   12.322271][    T1] Modules linked in:
+[   12.336676][    T1] CPU: 48 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc1-00347-g5581fa1c8fc5 #1
+[   12.345349][    T1] Hardware name: Inspur NF5180M6/NF5180M6, BIOS 06.00.04 04/12/2022
+[ 12.353157][ T1] RIP: 0010:tpm_buf_reset (drivers/char/tpm/tpm-buf.c:39) 
+[ 12.358197][ T1] Code: fe c1 00 75 25 48 b9 00 00 00 00 0a 00 00 00 66 c1 c6 08 0f ca 48 89 0f 66 89 30 c7 40 02 00 00 00 0a 89 50 06 c3 cc cc cc cc <0f> 0b eb d7 66 66 2e 0f 1f 84 00 00 00 00 00 66 66 2e 0f 1f 84 00
+All code
+========
+   0:	fe c1                	inc    %cl
+   2:	00 75 25             	add    %dh,0x25(%rbp)
+   5:	48 b9 00 00 00 00 0a 	movabs $0xa00000000,%rcx
+   c:	00 00 00 
+   f:	66 c1 c6 08          	rol    $0x8,%si
+  13:	0f ca                	bswap  %edx
+  15:	48 89 0f             	mov    %rcx,(%rdi)
+  18:	66 89 30             	mov    %si,(%rax)
+  1b:	c7 40 02 00 00 00 0a 	movl   $0xa000000,0x2(%rax)
+  22:	89 50 06             	mov    %edx,0x6(%rax)
+  25:	c3                   	retq   
+  26:	cc                   	int3   
+  27:	cc                   	int3   
+  28:	cc                   	int3   
+  29:	cc                   	int3   
+  2a:*	0f 0b                	ud2    		<-- trapping instruction
+  2c:	eb d7                	jmp    0x5
+  2e:	66 66 2e 0f 1f 84 00 	data16 nopw %cs:0x0(%rax,%rax,1)
+  35:	00 00 00 00 
+  39:	66                   	data16
+  3a:	66                   	data16
+  3b:	2e                   	cs
+  3c:	0f                   	.byte 0xf
+  3d:	1f                   	(bad)  
+  3e:	84 00                	test   %al,(%rax)
+
+Code starting with the faulting instruction
+===========================================
+   0:	0f 0b                	ud2    
+   2:	eb d7                	jmp    0xffffffffffffffdb
+   4:	66 66 2e 0f 1f 84 00 	data16 nopw %cs:0x0(%rax,%rax,1)
+   b:	00 00 00 00 
+   f:	66                   	data16
+  10:	66                   	data16
+  11:	2e                   	cs
+  12:	0f                   	.byte 0xf
+  13:	1f                   	(bad)  
+  14:	84 00                	test   %al,(%rax)
+[   12.377595][    T1] RSP: 0000:ffa00000001cba70 EFLAGS: 00010297
+[   12.383495][    T1] RAX: ff1100010d559000 RBX: 0000000000000000 RCX: 0000000000007fff
+[   12.391303][    T1] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffa00000001cbab0
+[   12.399113][    T1] RBP: ffa00000001cbab0 R08: 0000000000000001 R09: ff11003fc2e32a20
+[   12.406920][    T1] R10: 0000000000000000 R11: ff11003fc2e2ca64 R12: 0000000000000000
+[   12.414727][    T1] R13: ff11002087beaf80 R14: 0000000000000000 R15: 0000000000000020
+[   12.422535][    T1] FS:  0000000000000000(0000) GS:ff11003fc2e00000(0000) knlGS:0000000000000000
+[   12.431295][    T1] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   12.437717][    T1] CR2: 0000000000000000 CR3: 000000407ea18001 CR4: 0000000000771ef0
+[   12.445526][    T1] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[   12.453333][    T1] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[   12.461140][    T1] PKRU: 55555554
+[   12.464540][    T1] Call Trace:
+[   12.467679][    T1]  <TASK>
+[ 12.470471][ T1] ? tpm_buf_reset (drivers/char/tpm/tpm-buf.c:39) 
+[ 12.474906][ T1] ? __warn (kernel/panic.c:677) 
+[ 12.478825][ T1] ? tpm_buf_reset (drivers/char/tpm/tpm-buf.c:39) 
+[ 12.483260][ T1] ? report_bug (lib/bug.c:180 lib/bug.c:219) 
+[ 12.487609][ T1] ? handle_bug (arch/x86/kernel/traps.c:237) 
+[ 12.491786][ T1] ? exc_invalid_op (arch/x86/kernel/traps.c:258 (discriminator 1)) 
+[ 12.496308][ T1] ? asm_exc_invalid_op (arch/x86/include/asm/idtentry.h:568) 
+[ 12.501177][ T1] ? tpm_buf_reset (drivers/char/tpm/tpm-buf.c:39) 
+[ 12.505609][ T1] tpm_buf_init (drivers/char/tpm/tpm-buf.c:25) 
+[ 12.509789][ T1] tpm2_get_random (drivers/char/tpm/tpm2-cmd.c:302) 
+[ 12.514308][ T1] tpm_get_random (drivers/char/tpm/tpm-interface.c:442) 
+[ 12.518658][ T1] add_early_randomness (drivers/char/hw_random/core.c:196 drivers/char/hw_random/core.c:69) 
+[ 12.523526][ T1] hwrng_register (drivers/char/hw_random/core.c:586) 
+[ 12.528047][ T1] tpm_chip_register (drivers/char/tpm/tpm-chip.c:549 drivers/char/tpm/tpm-chip.c:630 drivers/char/tpm/tpm-chip.c:616) 
+[ 12.532830][ T1] tpm_tis_core_init (drivers/char/tpm/tpm_tis_core.c:1293) 
+[ 12.537612][ T1] tpm_tis_plat_probe (drivers/char/tpm/tpm_tis.c:338) 
+[ 12.542394][ T1] platform_probe (drivers/base/platform.c:1404) 
+[ 12.546741][ T1] really_probe (drivers/base/dd.c:579 drivers/base/dd.c:658) 
+[ 12.551093][ T1] ? __pfx___driver_attach (drivers/base/dd.c:1157) 
+[ 12.556217][ T1] __driver_probe_device (drivers/base/dd.c:800) 
+[ 12.561258][ T1] driver_probe_device (drivers/base/dd.c:830) 
+[ 12.566041][ T1] __driver_attach (drivers/base/dd.c:1217) 
+[ 12.570564][ T1] bus_for_each_dev (drivers/base/bus.c:368) 
+[ 12.575085][ T1] bus_add_driver (drivers/base/bus.c:673) 
+[ 12.579608][ T1] driver_register (drivers/base/driver.c:246) 
+[ 12.584128][ T1] ? __pfx_init_tis (drivers/char/tpm/tpm_tis.c:391) 
+[ 12.588651][ T1] init_tis (drivers/char/tpm/tpm_tis.c:399) 
+[ 12.592571][ T1] ? __pfx_init_tis (drivers/char/tpm/tpm_tis.c:391) 
+[ 12.597089][ T1] do_one_initcall (init/main.c:1236) 
+[ 12.601613][ T1] do_initcalls (init/main.c:1297 init/main.c:1314) 
+[ 12.605877][ T1] kernel_init_freeable (init/main.c:1555) 
+[ 12.610916][ T1] ? __pfx_kernel_init (init/main.c:1433) 
+[ 12.615697][ T1] kernel_init (init/main.c:1443) 
+[ 12.619874][ T1] ret_from_fork (arch/x86/kernel/process.c:147) 
+[ 12.624136][ T1] ? __pfx_kernel_init (init/main.c:1433) 
+[ 12.628919][ T1] ret_from_fork_asm (arch/x86/entry/entry_64.S:250) 
+[   12.633526][    T1]  </TASK>
+[   12.636406][    T1] ---[ end trace 0000000000000000 ]---
+[   12.641784][  T504] clocksource: Switched to clocksource tsc
+
+
+The kernel config and materials to reproduce are available at:
+https://download.01.org/0day-ci/archive/20231127/202311272244.dc5dae8e-oliver.sang@intel.com
+
+
+
 -- 
-2.35.3
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
 
