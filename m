@@ -1,182 +1,218 @@
-Return-Path: <keyrings+bounces-178-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-179-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27667FD088
-	for <lists+keyrings@lfdr.de>; Wed, 29 Nov 2023 09:19:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED1507FD6C0
+	for <lists+keyrings@lfdr.de>; Wed, 29 Nov 2023 13:28:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1051F1C2092B
-	for <lists+keyrings@lfdr.de>; Wed, 29 Nov 2023 08:19:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AC221C20D0C
+	for <lists+keyrings@lfdr.de>; Wed, 29 Nov 2023 12:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6469B11724;
-	Wed, 29 Nov 2023 08:19:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iLyQ+KVR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 422F91DDCA;
+	Wed, 29 Nov 2023 12:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 668FC1735;
-	Wed, 29 Nov 2023 00:19:24 -0800 (PST)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1cfc2bcffc7so26117455ad.1;
-        Wed, 29 Nov 2023 00:19:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701245964; x=1701850764; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pitQD+gW5dzBAjSz8pHlIhLJL8YzOCm583XKc/zjIKE=;
-        b=iLyQ+KVRM9VTloiu9AfhrVbVZPaV/ZByzozTri2/QEh66YuXYeIomCGC/b+/38SrZg
-         DxTOwu7XoCpX7b6S7tbgsbt+gcbEFTIA4f03MIm/jW9ENCS2zW0XILhVIoZPeOGt3yhb
-         rpGA/XNrg+Sk9iGOe1pvL9i3Cp9CndfNGfw1LTrH7Uli7i2NyMZzC6sFEAAowt5E1Ib8
-         CJtcFxPQaAcToN81mNWUkXMNzoBhXz/RG8hq9wlGpTdcVgxoQOcHLOQxMunYKpNmU5+6
-         0FU/Gz10h0FbTRE609AS2NZGefmKT6k8SP9BHJ1c9GfwpF2NOgG0OEp4DpvK0YoMHXK0
-         aIyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701245964; x=1701850764;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pitQD+gW5dzBAjSz8pHlIhLJL8YzOCm583XKc/zjIKE=;
-        b=JhyWNZxLUd3LLGEuNUmDMvVcBsGItxZcxumv3kpXEGthNyW0NJhJ28MmJPKOlMDWSa
-         2RQLN3SViRRGRdRC1Bh8oljE8RlESvuOdBPkAD4fd5310YzfDl1/1AcqrJEZswjOUOWw
-         y3VciuRMEuzBxae8zI3Au1RbFx3/OBT9oKJ4PTjzgp5mVJ2TcJQIkx33OJzmEuPe4pqK
-         Q7P7qweCWpw7ALgRJlyThkp+8Ikg645t3sIFUCaItlPsNDp5kivsMebFxi/Is3654ypo
-         PjymTp94tpDrcqKEvGfqUOCrVWioV/Mn9ziMtOfzhDudUNvOY5kP541dQTYD3mDQB5h3
-         nbXw==
-X-Gm-Message-State: AOJu0YxOxC3xrE6BAs1G2hwv5kZgJvccRY0ansib0Qma3vYQSuNLrrhO
-	3qlGrZA3N0eTSxJz5UCdWTo=
-X-Google-Smtp-Source: AGHT+IHnwCpZL6ALoY5W5b8E7P3Bbp+sX02k5cXjC692O8hzZh0gkO3k4cS7ftIWftUNaMVcH9dodQ==
-X-Received: by 2002:a17:902:dac7:b0:1cf:c397:8f09 with SMTP id q7-20020a170902dac700b001cfc3978f09mr13907496plx.55.1701245963796;
-        Wed, 29 Nov 2023 00:19:23 -0800 (PST)
-Received: from localhost.localdomain ([154.85.51.139])
-        by smtp.gmail.com with ESMTPSA id x10-20020a170902ea8a00b001cfcd2fb7b0sm5470932plb.285.2023.11.29.00.19.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Nov 2023 00:19:23 -0800 (PST)
-From: Yusong Gao <a869920004@gmail.com>
-To: jarkko@kernel.org,
-	davem@davemloft.net,
-	dhowells@redhat.com,
-	dwmw2@infradead.org,
-	juergh@proton.me,
-	zohar@linux.ibm.com,
-	herbert@gondor.apana.org.au,
-	lists@sapience.com,
-	dimitri.ledkov@canonical.com,
-	a869920004@gmail.com
-Cc: keyrings@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org
-Subject: Re: [PATCH v5] sign-file: Fix incorrect return values check
-Date: Wed, 29 Nov 2023 08:19:06 +0000
-Message-Id: <20231129081906.504149-1-a869920004@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231129080033.12c4efe3@smeagol>
-References: <20231129080033.12c4efe3@smeagol>
+Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B6B31707;
+	Wed, 29 Nov 2023 04:28:19 -0800 (PST)
+Received: from mail.maildlp.com (unknown [172.18.186.29])
+	by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4SgJCq3X9czB01N3;
+	Wed, 29 Nov 2023 20:14:31 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.47])
+	by mail.maildlp.com (Postfix) with ESMTP id 6AE2C1400CA;
+	Wed, 29 Nov 2023 20:28:15 +0800 (CST)
+Received: from [127.0.0.1] (unknown [10.204.63.22])
+	by APP1 (Coremail) with SMTP id LxC2BwAXBXVKLmdlCSKXAQ--.11947S2;
+	Wed, 29 Nov 2023 13:28:14 +0100 (CET)
+Message-ID: <b6c51351be3913be197492469a13980ab379e412.camel@huaweicloud.com>
+Subject: Re: [PATCH v5 23/23] integrity: Switch from rbtree to LSM-managed
+ blob for integrity_iint_cache
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+To: Paul Moore <paul@paul-moore.com>
+Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, chuck.lever@oracle.com, 
+ jlayton@kernel.org, neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com, 
+ tom@talpey.com, jmorris@namei.org, serge@hallyn.com, zohar@linux.ibm.com, 
+ dmitry.kasatkin@gmail.com, dhowells@redhat.com, jarkko@kernel.org, 
+ stephen.smalley.work@gmail.com, eparis@parisplace.org,
+ casey@schaufler-ca.com,  mic@digikod.net, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  linux-nfs@vger.kernel.org,
+ linux-security-module@vger.kernel.org,  linux-integrity@vger.kernel.org,
+ keyrings@vger.kernel.org,  selinux@vger.kernel.org, Roberto Sassu
+ <roberto.sassu@huawei.com>
+Date: Wed, 29 Nov 2023 13:27:51 +0100
+In-Reply-To: <CAHC9VhTTKac1o=RnQadu2xqdeKH8C_F+Wh4sY=HkGbCArwc8JQ@mail.gmail.com>
+References: <20231107134012.682009-24-roberto.sassu@huaweicloud.com>
+	 <17befa132379d37977fc854a8af25f6d.paul@paul-moore.com>
+	 <2084adba3c27a606cbc5ed7b3214f61427a829dd.camel@huaweicloud.com>
+	 <CAHC9VhTTKac1o=RnQadu2xqdeKH8C_F+Wh4sY=HkGbCArwc8JQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:LxC2BwAXBXVKLmdlCSKXAQ--.11947S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxKryfJr4xZFy7JF1rCr17ZFb_yoW7Aw4rpF
+	W3KayxGw1kAry29rn2vF45urWfKrW8WFyUWrn8Cr1kAas0vr10qr4UCryUuFyUGrWDJw1j
+	qF1a9ry7u3Wqy3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij
+	64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
+	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE
+	2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
+	xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIE
+	c7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UAkuxUUUUU=
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQAQBF1jj5cNmwAFsg
 
+On Mon, 2023-11-20 at 16:06 -0500, Paul Moore wrote:
+> On Mon, Nov 20, 2023 at 3:16=E2=80=AFAM Roberto Sassu
+> <roberto.sassu@huaweicloud.com> wrote:
+> > On Fri, 2023-11-17 at 15:57 -0500, Paul Moore wrote:
+> > > On Nov  7, 2023 Roberto Sassu <roberto.sassu@huaweicloud.com> wrote:
+> > > >=20
+> > > > Before the security field of kernel objects could be shared among L=
+SMs with
+> > > > the LSM stacking feature, IMA and EVM had to rely on an alternative=
+ storage
+> > > > of inode metadata. The association between inode metadata and inode=
+ is
+> > > > maintained through an rbtree.
+> > > >=20
+> > > > Because of this alternative storage mechanism, there was no need to=
+ use
+> > > > disjoint inode metadata, so IMA and EVM today still share them.
+> > > >=20
+> > > > With the reservation mechanism offered by the LSM infrastructure, t=
+he
+> > > > rbtree is no longer necessary, as each LSM could reserve a space in=
+ the
+> > > > security blob for each inode. However, since IMA and EVM share the
+> > > > inode metadata, they cannot directly reserve the space for them.
+> > > >=20
+> > > > Instead, request from the 'integrity' LSM a space in the security b=
+lob for
+> > > > the pointer of inode metadata (integrity_iint_cache structure). The=
+ other
+> > > > reason for keeping the 'integrity' LSM is to preserve the original =
+ordering
+> > > > of IMA and EVM functions as when they were hardcoded.
+> > > >=20
+> > > > Prefer reserving space for a pointer to allocating the integrity_ii=
+nt_cache
+> > > > structure directly, as IMA would require it only for a subset of in=
+odes.
+> > > > Always allocating it would cause a waste of memory.
+> > > >=20
+> > > > Introduce two primitives for getting and setting the pointer of
+> > > > integrity_iint_cache in the security blob, respectively
+> > > > integrity_inode_get_iint() and integrity_inode_set_iint(). This wou=
+ld make
+> > > > the code more understandable, as they directly replace rbtree opera=
+tions.
+> > > >=20
+> > > > Locking is not needed, as access to inode metadata is not shared, i=
+t is per
+> > > > inode.
+> > > >=20
+> > > > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> > > > Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
+> > > > Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+> > > > ---
+> > > >  security/integrity/iint.c      | 71 +++++-------------------------=
+----
+> > > >  security/integrity/integrity.h | 20 +++++++++-
+> > > >  2 files changed, 29 insertions(+), 62 deletions(-)
+> > > >=20
+> > > > diff --git a/security/integrity/iint.c b/security/integrity/iint.c
+> > > > index 882fde2a2607..a5edd3c70784 100644
+> > > > --- a/security/integrity/iint.c
+> > > > +++ b/security/integrity/iint.c
+> > > > @@ -231,6 +175,10 @@ static int __init integrity_lsm_init(void)
+> > > >     return 0;
+> > > >  }
+> > > >=20
+> > > > +struct lsm_blob_sizes integrity_blob_sizes __ro_after_init =3D {
+> > > > +   .lbs_inode =3D sizeof(struct integrity_iint_cache *),
+> > > > +};
+> > >=20
+> > > I'll admit that I'm likely missing an important detail, but is there
+> > > a reason why you couldn't stash the integrity_iint_cache struct
+> > > directly in the inode's security blob instead of the pointer?  For
+> > > example:
+> > >=20
+> > >   struct lsm_blob_sizes ... =3D {
+> > >     .lbs_inode =3D sizeof(struct integrity_iint_cache),
+> > >   };
+> > >=20
+> > >   struct integrity_iint_cache *integrity_inode_get(inode)
+> > >   {
+> > >     if (unlikely(!inode->isecurity))
+> > >       return NULL;
+> > >     return inode->i_security + integrity_blob_sizes.lbs_inode;
+> > >   }
+> >=20
+> > It would increase memory occupation. Sometimes the IMA policy
+> > encompasses a small subset of the inodes. Allocating the full
+> > integrity_iint_cache would be a waste of memory, I guess?
+>=20
+> Perhaps, but if it allows us to remove another layer of dynamic memory
+> I would argue that it may be worth the cost.  It's also worth
+> considering the size of integrity_iint_cache, while it isn't small, it
+> isn't exactly huge either.
+>=20
+> > On the other hand... (did not think fully about that) if we embed the
+> > full structure in the security blob, we already have a mutex available
+> > to use, and we don't need to take the inode lock (?).
+>=20
+> That would be excellent, getting rid of a layer of locking would be signi=
+ficant.
+>=20
+> > I'm fully convinced that we can improve the implementation
+> > significantly. I just was really hoping to go step by step and not
+> > accumulating improvements as dependency for moving IMA and EVM to the
+> > LSM infrastructure.
+>=20
+> I understand, and I agree that an iterative approach is a good idea, I
+> just want to make sure we keep things tidy from a user perspective,
+> i.e. not exposing the "integrity" LSM when it isn't required.
 
+Ok, I went back to it again.
 
-On Wed, Nov 29, 2023 at 3:00 PM Juerg Haefliger <juergh@proton.me>
-wrote:
->
-> On Mon, 27 Nov 2023 03:34:56 +0000
-> "Yusong Gao" <a869920004@gmail.com> wrote:
->
-> > There are some wrong return values check in sign-file when call
-> > OpenSSL
-> > API. The ERR() check cond is wrong because of the program only check
-> > the
-> > return value is < 0 which ignored the return val is 0. For example:
-> > 1. CMS_final() return 1 for success or 0 for failure.
-> > 2. i2d_CMS_bio_stream() returns 1 for success or 0 for failure.
-> > 3. i2d_TYPEbio() return 1 for success and 0 for failure.
-> > 4. BIO_free() return 1 for success and 0 for failure.
-> >
-> > Link: https://www.openssl.org/docs/manmaster/man3/
-> > Fixes: e5a2e3c84782 ("scripts/sign-file.c: Add support for signing
-> > with a raw signature")
-> > Signed-off-by: Yusong Gao <a869920004@gmail.com>
-> > ---
-> > V1, V2: Clarify the description of git message.
-> > V3: Removed redundant empty line.
-> > V4: Change to more strict check mode.
-> > ---
-> >  scripts/sign-file.c | 12 ++++++------
-> >  1 file changed, 6 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-> > index 598ef5465f82..3edb156ae52c 100644
-> > --- a/scripts/sign-file.c
-> > +++ b/scripts/sign-file.c
-> > @@ -322,7 +322,7 @@ int main(int argc, char **argv)
-> >                                    CMS_NOSMIMECAP | use_keyid |
-> >                                    use_signed_attrs),
-> >                   "CMS_add1_signer");
-> > -             ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY)
-> > < 0,
-> > +             ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY)
-> > != 1,
-> >                   "CMS_final");
-> >
-> >  #else
-> > @@ -341,10 +341,10 @@ int main(int argc, char **argv)
-> >                       b = BIO_new_file(sig_file_name, "wb");
-> >                       ERR(!b, "%s", sig_file_name);
-> >  #ifndef USE_PKCS7
-> > -                     ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) < 0,
-> > +                     ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) != 1,
-> >                           "%s", sig_file_name);
-> >  #else
-> > -                     ERR(i2d_PKCS7_bio(b, pkcs7) < 0,
-> > +                     ERR(i2d_PKCS7_bio(b, pkcs7) != 1,
-> >                           "%s", sig_file_name);
-> >  #endif
-> >                       BIO_free(b);
-> > @@ -374,9 +374,9 @@ int main(int argc, char **argv)
-> >
-> >       if (!raw_sig) {
-> >  #ifndef USE_PKCS7
-> > -             ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) < 0, "%s",
-> > dest_name);
-> > +             ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) != 1, "%s",
-> > dest_name);
-> >  #else
-> > -             ERR(i2d_PKCS7_bio(bd, pkcs7) < 0, "%s", dest_name);
-> > +             ERR(i2d_PKCS7_bio(bd, pkcs7) != 1, "%s", dest_name);
-> >  #endif
-> >       } else {
-> >               BIO *b;
-> > @@ -396,7 +396,7 @@ int main(int argc, char **argv)
-> >       ERR(BIO_write(bd, &sig_info, sizeof(sig_info)) < 0, "%s",
-> >       dest_name);
-> >       ERR(BIO_write(bd, magic_number, sizeof(magic_number) - 1) < 0,
-> >       "%s", dest_name);
-> >
-> > -     ERR(BIO_free(bd) < 0, "%s", dest_name);
-> > +     ERR(BIO_free(bd) != 1, "%s", dest_name);
-> >
-> >       /* Finally, if we're signing in place, replace the original.
-> >       */
-> >       if (replace_orig)
-> > --
-> > 2.34.1
-> >
->
-> Nit: v5 in the email subject should be v4.
+I think trying to separate integrity metadata is premature now, too
+many things at the same time.
 
-Yeah, thanks for point out, I get it. 
+I started to think, does EVM really need integrity metadata or it can
+work without?
 
->
-> Reviewed-by: Juerg Haefliger <juerg.haefliger@canonical.com>
->
+The fact is that CONFIG_IMA=3Dn and CONFIG_EVM=3Dy is allowed, so we have
+the same problem now. What if we make IMA the one that manages
+integrity metadata, so that we can remove the 'integrity' LSM?
 
+So, no embedding the full structure in the security blob now, move
+integrity_inode_free() and integrity_kernel_module_request() to IMA,
+call integrity_iintcache_init() from IMA.
 
-BR, Yusong Gao
+EVM verification of new files would fail without IMA, but it would be
+the same now.
+
+Also, evm_verifyxattr() would only work with IMA, as it assumes that
+the latter creates integrity metadata and passes them as argument.
+
+Regarding the LSM order, I would take Casey's suggestion of introducing
+LSM_ORDER_REALLY_LAST, for EVM.
+
+Thanks
+
+Roberto
+
 
