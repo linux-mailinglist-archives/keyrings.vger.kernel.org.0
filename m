@@ -1,55 +1,54 @@
-Return-Path: <keyrings+bounces-188-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-189-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45F0E7FF79D
-	for <lists+keyrings@lfdr.de>; Thu, 30 Nov 2023 17:59:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D7E7FF7A5
+	for <lists+keyrings@lfdr.de>; Thu, 30 Nov 2023 18:00:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A571FB21249
-	for <lists+keyrings@lfdr.de>; Thu, 30 Nov 2023 16:59:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 862AFB20EEB
+	for <lists+keyrings@lfdr.de>; Thu, 30 Nov 2023 17:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9114955C2C;
-	Thu, 30 Nov 2023 16:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141FA54BF8;
+	Thu, 30 Nov 2023 17:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="XBD3WWY8"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="YNyyzKCy"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EEB7D7D
-	for <keyrings@vger.kernel.org>; Thu, 30 Nov 2023 08:59:31 -0800 (PST)
-Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-dae7cc31151so1047553276.3
-        for <keyrings@vger.kernel.org>; Thu, 30 Nov 2023 08:59:31 -0800 (PST)
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9132C10D0
+	for <keyrings@vger.kernel.org>; Thu, 30 Nov 2023 09:00:42 -0800 (PST)
+Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-da37522a363so1073720276.0
+        for <keyrings@vger.kernel.org>; Thu, 30 Nov 2023 09:00:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1701363570; x=1701968370; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KC+YVAHwKs2kkAU34IYOVVTovQR04OMhKsJNMkFTFrA=;
-        b=XBD3WWY8IJSAStE1FQ8v8QeGtkTywkRiNNMMP5q9awnNXYeghZAfOB7ojMuBO9spjw
-         m4mLJ6G5vY03eH0VF1kwgEhQw1fQLPpYCs1xBDaCecI+/AcxI5OKCTB5vTjYU8g1yyR+
-         hBk3h3jJnp8kwKY1Yf2n/tF+DJJx88OaR0E2vXRabM/Aa2p7r2nTH2l7j2usbBFcyJYC
-         OuyMoARJPHpPYisjarNftLXrZ+/bSInY0EgbtJnfhv0m/6yAduXEkzksSVCDEUtyrdGA
-         rAy3TQuRs7d+FrTJC873C90ZPCNTlwi3pKycdFCHEK7TGJbG2NieBz2fhijCFRZS0u1y
-         fyMw==
+        d=paul-moore.com; s=google; t=1701363642; x=1701968442; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=2Hky/KzjhYHUu4aS2qxPMLUaAm2fO0s9p6joqU6jYEY=;
+        b=YNyyzKCyfsDJEM1CKQHQD+BXpNbAgAxMWeZ5wQamWzzifpi6ycxP+xC9V+xWSbJWEr
+         JA0w9sXn1E3nXDzWK5gyQphUs+RGlDzIWuC1qlvh18wfisjwn3Pj9ThWk3bWgtP4HkJP
+         5KIAYsUWSk+OI5VVRySmF2laOlvYPrt8cex+kioYbE5n7isyGBdBcLq6WxLhuAnF+joC
+         HLxmJ9LbtgjZ9y8uh3MoGFn2xNQByszDC1T6V9yFNClI7uOLVkUWY8AhscSga9ltQyUm
+         UHpbvPlQjLYjKqNzH79ApOgtyPPxsQaOES2RMnt2vFuQRdkvLY/ewrOiP/BQOhAxW6qd
+         c/HA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701363570; x=1701968370;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KC+YVAHwKs2kkAU34IYOVVTovQR04OMhKsJNMkFTFrA=;
-        b=OhpHSAcz/NFP95JTVn0oemoagxhFdA+KI/Hai/TJuJnu1CjIYW3ys1cyBkKr+m8RhI
-         yn48pbMZ0IB1tIhZEAWdqgT1cUaA3W21jzji0hgwHmIE+Uyq+vKFtuPvJngsAVu+Z7ZG
-         MHw2l9myFXelwxSHs/1GAeiqfWjD85XizmLOQr9ZdDT5LgCtrag/Ii1SgOe2s6NvxMHn
-         FH+XHjFYlaSV67qsxFE5e4zVm2+Qsfh+dT6YNpvzZL8aUkwQlnDg6AGyVbVeRBof0XyF
-         r+RubE6PfrKbG8cfy6vp7WLqHW/C4gmywegAEYApeLZPIRHW2Wo0zg+u8jFBvSQrjzKq
-         9dcg==
-X-Gm-Message-State: AOJu0Yw+KOjHWwv5xz+D7WmUcJGI0kXs/vIeyIrsSd8vHxQoAidFOmDm
-	LjyHvPGeNSyPRM2UMln/g8yzHMNK8o6jdscFjuAg
-X-Google-Smtp-Source: AGHT+IERQwY73BfKyowLaBkWCwON5Z7fm/5peh0ErEUfe9ZiF54XUdUJecnVn1oRjqpirYk/CaQQxBixoUm8GSxjd0s=
-X-Received: by 2002:a25:8d0b:0:b0:da0:cbff:4e20 with SMTP id
- n11-20020a258d0b000000b00da0cbff4e20mr20156386ybl.56.1701363570522; Thu, 30
- Nov 2023 08:59:30 -0800 (PST)
+        d=1e100.net; s=20230601; t=1701363642; x=1701968442;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2Hky/KzjhYHUu4aS2qxPMLUaAm2fO0s9p6joqU6jYEY=;
+        b=lMtw57N4ipntFvagH1cNNIwjyPXHhq3mD1jmFYKN6gAFpIV12uxd5DITrcqO1T3AAI
+         1zS/o5QcZ1JzvxolAsISguT6V/48+UGO9415kiSQRyqA815s1hHDZabflCRnnjDRXF+q
+         JXsl7d0PFylhs+KWlucmLeQwtyNE3hF/84C1czk8warXGzzNWR2OipnDbNyIYSyKigIp
+         e44NMTdRlrcvQsbkcXcmf+BssCgFNSyT2QJzsBX8NiMEDymHUtO930p/mm7GSrQEXgbj
+         cq2ZUJ4UR47QYyuEhN0I1BAPvnoMyuSDGgaxf1rIko0rVn4SrFr0RQHY9P6mijMhpGiJ
+         mb2Q==
+X-Gm-Message-State: AOJu0Ywhg66l5HKM+bMHlszFdW094R7HE7XJUE4Bq2e9oFkOSbtg9XXn
+	eo8G1JoU9q4n+Q/hbpipnrdAtDC72IcwSGYAiRy5
+X-Google-Smtp-Source: AGHT+IGWeq1u3TY1LG8uphGYW7WlDE5cBTGD3zQC5Dpze48seToweLISJPvMV/SevTHuqk4ZZoykKhlfrHXvZ4kk9d0=
+X-Received: by 2002:a25:4f05:0:b0:db0:2b47:aa1 with SMTP id
+ d5-20020a254f05000000b00db02b470aa1mr20617458ybb.40.1701363641760; Thu, 30
+ Nov 2023 09:00:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -62,105 +61,28 @@ References: <20231107134012.682009-24-roberto.sassu@huaweicloud.com>
  <b6c51351be3913be197492469a13980ab379e412.camel@huaweicloud.com>
  <CAHC9VhSAryQSeFy0ZMexOiwBG-YdVGRzvh58=heH916DftcmWA@mail.gmail.com>
  <90eb8e9d-c63e-42d6-b951-f856f31590db@huaweicloud.com> <7cb732ea42a221b4b8bbfad941d9dec41a3a35fa.camel@linux.ibm.com>
-In-Reply-To: <7cb732ea42a221b4b8bbfad941d9dec41a3a35fa.camel@linux.ibm.com>
+ <CAHC9VhS28XuVjNX73H9qWZibObCxKCx_M3omQu9+5EdourUc+w@mail.gmail.com>
+In-Reply-To: <CAHC9VhS28XuVjNX73H9qWZibObCxKCx_M3omQu9+5EdourUc+w@mail.gmail.com>
 From: Paul Moore <paul@paul-moore.com>
-Date: Thu, 30 Nov 2023 11:59:19 -0500
-Message-ID: <CAHC9VhS28XuVjNX73H9qWZibObCxKCx_M3omQu9+5EdourUc+w@mail.gmail.com>
+Date: Thu, 30 Nov 2023 12:00:30 -0500
+Message-ID: <CAHC9VhRpNc2ih3iwc00sNGsgM_Ogqf8_r=kLGp_Q4+LdAz-J1A@mail.gmail.com>
 Subject: Re: [PATCH v5 23/23] integrity: Switch from rbtree to LSM-managed
  blob for integrity_iint_cache
-To: Mimi Zohar <zohar@linux.ibm.com>
-Cc: Roberto Sassu <roberto.sassu@huaweicloud.com>, viro@zeniv.linux.org.uk, 
-	brauner@kernel.org, chuck.lever@oracle.com, jlayton@kernel.org, neilb@suse.de, 
-	kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com, jmorris@namei.org, 
-	serge@hallyn.com, dmitry.kasatkin@gmail.com, dhowells@redhat.com, 
-	jarkko@kernel.org, stephen.smalley.work@gmail.com, eparis@parisplace.org, 
-	casey@schaufler-ca.com, mic@digikod.net, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, 
-	keyrings@vger.kernel.org, selinux@vger.kernel.org, 
-	Roberto Sassu <roberto.sassu@huawei.com>
+To: Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huaweicloud.com>
+Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, chuck.lever@oracle.com, 
+	jlayton@kernel.org, neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com, 
+	tom@talpey.com, jmorris@namei.org, serge@hallyn.com, 
+	dmitry.kasatkin@gmail.com, dhowells@redhat.com, jarkko@kernel.org, 
+	stephen.smalley.work@gmail.com, eparis@parisplace.org, casey@schaufler-ca.com, 
+	mic@digikod.net, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, 
+	selinux@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Nov 30, 2023 at 6:13=E2=80=AFAM Mimi Zohar <zohar@linux.ibm.com> wr=
-ote:
-> On Wed, 2023-11-29 at 19:46 +0100, Roberto Sassu wrote:
-> > On 11/29/2023 6:22 PM, Paul Moore wrote:
-> > > On Wed, Nov 29, 2023 at 7:28=E2=80=AFAM Roberto Sassu wrote:
-> > >> On Mon, 2023-11-20 at 16:06 -0500, Paul Moore wrote:
-> > >>> On Mon, Nov 20, 2023 at 3:16=E2=80=AFAM Roberto Sassu wrote:
-> > >>>> On Fri, 2023-11-17 at 15:57 -0500, Paul Moore wrote:
-> > >>>>> On Nov  7, 2023 Roberto Sassu <roberto.sassu@huaweicloud.com> wro=
-te:
+A quick note that I'm going to have some networking disruptions at
+home and email responses may be delayed for the next few days.
 
-...
-
-> First you suggested lumping IMA and EVM together, dropping EVM
-> entirely.  Now you're suggesting making EVM dependent on IMA.  Please
-> stop.
-
-Welcome to design discussions and brainstorming where changing
-opinions and unexpected suggestions are part of the process.  When we
-are faced with difficult problems I want everyone to think creatively
-and not be afraid to adjust their thinking based on their changing
-understanding and the ongoing discussion.
-
-Asking people to stop thinking outside the status quo is not a good
-way to solve challenging problems.
-
-> EVM and IMA should remain independent of each other.
-
-A few posts back that was the goal, then Roberto mentioned EVM
-breakage when IMA was disabled so I simply asked if it was worth
-"revisit the basic idea of if it even makes sense to enable EVM
-without IMA?".  A bad answer to that question is what you provided
-above (and to be fair, we are all guilty of that at times), a good
-answer is to explain why IMA and EVM need to remain independent with
-bonus points awarded for realistic use cases that support the
-assertion of independence.
-
-> > >> Regarding the LSM order, I would take Casey's suggestion of introduc=
-ing
-> > >> LSM_ORDER_REALLY_LAST, for EVM.
-> > >
-> > > Please understand that I really dislike that we have imposed ordering
-> > > constraints at the LSM layer, but I do understand the necessity (the
-> > > BPF LSM ordering upsets me the most).  I really don't want to see us
-> > > make things worse by adding yet another ordering bucket, I would
-> > > rather that we document it well and leave it alone ... basically trea=
-t
-> > > it like the BPF LSM (grrrrrr).
-> >
-> > Uhm, that would not be possible right away (the BPF LSM is mutable),
-> > remember that we defined LSM_ORDER_LAST so that an LSM can be always
-> > enable and placed as last (requested by Mimi)?
->
-> Making EVM a full fledged LSM was contingent on two things - EVM always
-> being enabled if configured and being the last LSM.  Using capability
-> as a precedent for ordering requirement, Micka=C3=ABl suggested defining
-> LSM_ORDER_LAST, which you agreed to.   It sounds like you're
-> backtracking on an agreement.
-
-I not only agreed to LSM_ORDER_LAST, I merged the code and it is
-currently in Linus' tree.  See my last reply to Roberto; I see no
-reason to change that.  I never would have merged that code or sent it
-to Linus if I didn't feel it was necessary.
-
-I'm guessing that you misread my reply above (perhaps you missed the
-"another" in "... I really don't want to see us make things worse by
-adding yet another ordering bucket ..."), but regardless of that, I
-want to deal with your "backtracking" comment.  Similar to my comments
-above about brainstorming, I don't want people to feel that they can't
-change their mind about something.  Call it backtracking if you want
-(although that has a negative connotation for many), but I want people
-to feel free to adjust their opinions as they learn more about
-something or as the conversation evolves.  I believe this is the
-primary (only?) way for us to reach consensus on challenging problems.
-
-If you are uncomfortable with new, different, and changing ideas this
-may not be the right place for you.  I might suggest a career in
-politics as an alternative.
-
---=20
+-- 
 paul-moore.com
 
