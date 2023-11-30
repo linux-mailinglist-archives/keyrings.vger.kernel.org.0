@@ -1,141 +1,127 @@
-Return-Path: <keyrings+bounces-190-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-191-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA7337FFC82
-	for <lists+keyrings@lfdr.de>; Thu, 30 Nov 2023 21:30:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0DF57FFD96
+	for <lists+keyrings@lfdr.de>; Thu, 30 Nov 2023 22:35:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 952B928185E
-	for <lists+keyrings@lfdr.de>; Thu, 30 Nov 2023 20:30:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFB741C2036D
+	for <lists+keyrings@lfdr.de>; Thu, 30 Nov 2023 21:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D3A5A0FB;
-	Thu, 30 Nov 2023 20:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=blastwave.org header.i=@blastwave.org header.b="VL+5tHP5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7265917F;
+	Thu, 30 Nov 2023 21:35:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail.oetec.com (mail.oetec.com [108.160.241.186])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B138810F9;
-	Thu, 30 Nov 2023 12:30:50 -0800 (PST)
-Received: from [172.16.35.9] (cpe8c6a8d4d360a-cm8c6a8d4d3608.cpe.net.cable.rogers.com [99.253.151.152])
-	(authenticated bits=0)
-	by mail.oetec.com (8.17.1/8.16.1) with ESMTPSA id 3AUKUHaK088376
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT);
-	Thu, 30 Nov 2023 15:30:18 -0500 (EST)
-	(envelope-from dclarke@blastwave.org)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=blastwave.org;
-	s=default; t=1701376220;
-	bh=/AO9bHhiO7lqHWL6mYqvfEW7TwJLbLFwNox+mdAvsYQ=;
-	h=Date:From:Subject:To:Cc:References:In-Reply-To;
-	b=VL+5tHP5AGo0rJtBCrYNWVW72RzVLOlZX/8tHyhMwqEhWnzWuTb/51OVGsjNTRd49
-	 iISQXnXevQJiUrzlKBCk+61DTWi+s+84QTnDjViBo3uiBi1ZsYoaSPahq0u3rSu3u1
-	 3gX/DLM0TbjuzGipctj64A2r1AlA1NSR6IAOBlRdlUdrpAfKIiBcqenJeU3iwPK9Tt
-	 RklcyKpneCM0wyhJBxoj95MR/ke0+2Pv6Qzy81hI28/3EBO1I1jNrFgLICq1jg6Ue/
-	 VuU9Q0pq7A4F/6pg8mcXJJ9NpTQRE5YcAv7hC+ssTNK3lEkcZsfexWY+MLO+7ISseN
-	 d5sPaJs/ZEYkw==
-Message-ID: <8cb7186f-6346-7997-13b3-8f5a1d71bc3d@blastwave.org>
-Date: Thu, 30 Nov 2023 15:30:17 -0500
+Received: from frasgout11.his.huawei.com (frasgout11.his.huawei.com [14.137.139.23])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 631C6194;
+	Thu, 30 Nov 2023 13:35:09 -0800 (PST)
+Received: from mail.maildlp.com (unknown [172.18.186.29])
+	by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4Sh8JG0NwSz9yGX1;
+	Fri,  1 Dec 2023 05:21:18 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.47])
+	by mail.maildlp.com (Postfix) with ESMTP id E7FC0140F0D;
+	Fri,  1 Dec 2023 05:34:55 +0800 (CST)
+Received: from [10.81.202.161] (unknown [10.81.202.161])
+	by APP1 (Coremail) with SMTP id LxC2BwA3c3Pv_2hljvGsAQ--.1329S2;
+	Thu, 30 Nov 2023 22:34:55 +0100 (CET)
+Message-ID: <9297638a-8dab-42ba-8b60-82c03497c9cd@huaweicloud.com>
+Date: Thu, 30 Nov 2023 22:34:37 +0100
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-From: Dennis Clarke <dclarke@blastwave.org>
-Subject: =?UTF-8?Q?Re=3a_Fwd=3a_sign-file=2ec=3a149=3a17=3a_warning=3a_impli?=
- =?UTF-8?Q?cit_declaration_of_function_=e2=80=98ENGINE=5fload=5fbuiltin=5fen?=
- =?UTF-8?B?Z2luZXPigJk=?=
-To: James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Kernel Build System <linux-kbuild@vger.kernel.org>,
-        Linux Kernel Keyrings <keyrings@vger.kernel.org>
-Cc: David Howells <dhowells@redhat.com>,
-        David Woodhouse
- <dwmw2@infradead.org>,
-        Masahiro Yamada <masahiroy@kernel.org>
-References: <1fca50c4-6d7b-4c9b-bcea-4df17e2c2e7e@gmail.com>
- <e110cfff-08f9-4bbc-6b69-0d67ae6562b6@blastwave.org>
- <164a4d4434e77ba1b65624a081799a073a3aced7.camel@HansenPartnership.com>
- <7fce272f-65f5-9aa8-5f28-aeecb98a8ab4@blastwave.org>
- <ce0c752cd1ed482bff97c6c62266440e3ff8f937.camel@HansenPartnership.com>
-Content-Language: en-CA
-Organization: GENUNIX
-In-Reply-To: <ce0c752cd1ed482bff97c6c62266440e3ff8f937.camel@HansenPartnership.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 23/23] integrity: Switch from rbtree to LSM-managed
+ blob for integrity_iint_cache
+To: Casey Schaufler <casey@schaufler-ca.com>,
+ Petr Tesarik <petrtesarik@huaweicloud.com>, Paul Moore <paul@paul-moore.com>
+Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, chuck.lever@oracle.com,
+ jlayton@kernel.org, neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com,
+ tom@talpey.com, jmorris@namei.org, serge@hallyn.com, zohar@linux.ibm.com,
+ dmitry.kasatkin@gmail.com, dhowells@redhat.com, jarkko@kernel.org,
+ stephen.smalley.work@gmail.com, eparis@parisplace.org, mic@digikod.net,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org,
+ linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+ selinux@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
+References: <20231107134012.682009-24-roberto.sassu@huaweicloud.com>
+ <17befa132379d37977fc854a8af25f6d.paul@paul-moore.com>
+ <2084adba3c27a606cbc5ed7b3214f61427a829dd.camel@huaweicloud.com>
+ <CAHC9VhTTKac1o=RnQadu2xqdeKH8C_F+Wh4sY=HkGbCArwc8JQ@mail.gmail.com>
+ <b6c51351be3913be197492469a13980ab379e412.camel@huaweicloud.com>
+ <CAHC9VhSAryQSeFy0ZMexOiwBG-YdVGRzvh58=heH916DftcmWA@mail.gmail.com>
+ <90eb8e9d-c63e-42d6-b951-f856f31590db@huaweicloud.com>
+ <366a6e5f-d43d-4266-8421-a8a05938a8fd@schaufler-ca.com>
+ <66ec6876-483a-4403-9baa-487ebad053f2@huaweicloud.com>
+ <a121c359-03c9-42b1-aa19-1e9e34f6a386@schaufler-ca.com>
+Content-Language: en-US
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+In-Reply-To: <a121c359-03c9-42b1-aa19-1e9e34f6a386@schaufler-ca.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-oetec-MailScanner-Information: Please contact the ISP for more information
-X-oetec-MailScanner-ID: 3AUKUHaK088376
-X-oetec-MailScanner: Found to be clean
-X-oetec-MailScanner-From: dclarke@blastwave.org
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:LxC2BwA3c3Pv_2hljvGsAQ--.1329S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7WFWrtFWxCr4fWr4kKr1xXwb_yoW8Xw4rpa
+	yxtayUtF4qyr47KrZ2ya1FgFyFvFs3AFy5Jry5tr1Fy3s8WFyxAr4xKFsI9asrCwnak34F
+	yrWay3s0vr4kAaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkK14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
+	c2xKxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6rW3Jr0E3s1lIxAIcVC2z280aVAFwI0_Jr0_
+	Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbJ73D
+	UUUUU==
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQARBF1jj5cdpQAFsP
 
-On 11/23/23 20:05, James Bottomley wrote:
-> On Thu, 2023-11-23 at 18:42 -0500, Dennis Clarke wrote:
->> On 11/23/23 09:53, James Bottomley wrote:
->>> On Fri, 2023-11-17 at 00:34 -0500, Dennis Clarke wrote:
->>>> On 11/16/23 18:41, Bagas Sanjaya wrote:
->>>>> Hi,
->>>>>
->>>>> I notice a bug report on Bugzilla [1]. Quoting from it:
->>>>>
->>>> <snip>
->>>>>> Not related to
->>>>>> https://bugzilla.kernel.org/show_bug.cgi?id=215750 but I
-.
-.  <snip>
-.
+On 11/30/2023 5:15 PM, Casey Schaufler wrote:
+> On 11/30/2023 12:30 AM, Petr Tesarik wrote:
+>> Hi all,
 >>
->> I am looking into this. The code will likely age into some deprecated
->> calls and I think that I may be way out on the edge here.
+>> On 11/30/2023 1:41 AM, Casey Schaufler wrote:
+>>> ...
+>>> It would be nice if the solution directly addresses the problem.
+>>> EVM needs to be after the LSMs that use xattrs, not after all LSMs.
+>>> I suggested LSM_ORDER_REALLY_LAST in part to identify the notion as
+>>> unattractive.
+>> Excuse me to chime in, but do we really need the ordering in code?
 > 
-> So you did build without engine support ...
-
-Yep.
-
-     --prefix=/usr/local no-asm shared no-engine no-hw threads zlib
-          sctp enable-weak-ssl-ciphers -DPEDANTIC -D_REENTRANT
-
-So there we see the "no-engine" option.  That pretty much kicks the
-sign-file.c code to the curb.
-
-
->>   However the code will need a pile of ifndef stuff and then call the
->> correct future looking calls for OpenSSL 3.x etc etc etc ... the
->> usual stuff
+> tl;dr - Yes.
 > 
-> Well, not really: openssl is highly configurable and if it gets
-> configured wrongly, stuff like this happens. 
-
-Well, not "wrongly". More like "not the usual off the shelf stuff".
-
-> That's why distros have a
-> fairly inclusive configuration and they stick to it.  No-one can cope
-> with the combinatoric explosion of openssl configuration possibilities
-> (even though they have ifdefs for most of them) so the only way is
-> really to fix a standard configuration and assume you're building for
-> it.
-
-Seems clear to me.
-
-> Openssl has been talking for ages about removing engine support, but
-> they've been unable to do so due to the rather slow pace of conversion
-> of their own engines.  I anticipate this code can be removed in favour
-> of the pkcs11 provider long before openssl actually manages to remove
-> engines.
+>>   FWIW
+>> the linker guarantees that objects appear in the order they are seen
+>> during the link (unless --sort-section overrides that default, but this
+>> option is not used in the kernel). Since *.a archive files are used in
+>> kbuild, I have also verified that their use does not break the
+>> assumption; they are always created from scratch.
+>>
+>> In short, to enforce an ordering, you can simply list the corresponding
+>> object files in that order in the Makefile. Of course, add a big fat
+>> warning comment, so people understand the order is not arbitrary.
 > 
-> James
+> Not everyone builds custom kernels.
 
+Sorry, I didn't understand your comment. Everyone builds the kernel, 
+also Linux distros. What Petr was suggesting was that it does not matter 
+how you build the kernel, the linker will place the LSMs in the order 
+they appear in the Makefile. And for this particular case, we have:
 
-Well I thank you for the clarity here. I still feel that sign-file.c 
-needs a bit of a rewrite and I guess the old expression "patches are
-welcome" works here.
+obj-$(CONFIG_IMA)                       += ima/
+obj-$(CONFIG_EVM)                       += evm/
 
+In the past, I also verified that swapping these two resulted in the 
+swapped order of LSMs. Petr confirmed that it would always happen.
 
-Dennis Clarke
-RISC-V/SPARC/PPC/ARM/CISC
-UNIX and Linux spoken
+Thanks
+
+Roberto
 
 
