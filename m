@@ -1,107 +1,102 @@
-Return-Path: <keyrings+bounces-241-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-242-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D7080CCB0
-	for <lists+keyrings@lfdr.de>; Mon, 11 Dec 2023 15:03:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF13380D1E2
+	for <lists+keyrings@lfdr.de>; Mon, 11 Dec 2023 17:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAFFC1C21219
-	for <lists+keyrings@lfdr.de>; Mon, 11 Dec 2023 14:03:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 747B31F215DA
+	for <lists+keyrings@lfdr.de>; Mon, 11 Dec 2023 16:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF85482E9;
-	Mon, 11 Dec 2023 14:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D5F1D69C;
+	Mon, 11 Dec 2023 16:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c1wYYmiU"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WA0X5Tbu"
 X-Original-To: keyrings@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 275933A82
-	for <keyrings@vger.kernel.org>; Mon, 11 Dec 2023 06:03:02 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABD60C2
+	for <keyrings@vger.kernel.org>; Mon, 11 Dec 2023 08:34:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702303382;
+	s=mimecast20190719; t=1702312461;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H/ItFeG9I3Z0oT+bsnz2Nm0t33eZdTXAx/q4fgwtKPo=;
-	b=c1wYYmiUatvz4PBVVt0sNDqEaaNTCdSH3rnh68/g/xNQr2ZNq4pXONhIkGp5PkyIkcorpC
-	ZU2HWZUtO/p0tFmt7ieUXWyto82+WLFeyxiOoz9DlWquGn+D5HcQFwecSJriD9noOKCVN3
-	BCCsm8q9L9ttdgqfKlDc47hIdBuoAR0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-561-6_kAC2vdNKWK8F8OWA-jnA-1; Mon,
- 11 Dec 2023 09:02:59 -0500
-X-MC-Unique: 6_kAC2vdNKWK8F8OWA-jnA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=nsV9+0B0VQ25C7AzDesdB06lttw93Mil7/MhVPbjkO0=;
+	b=WA0X5TbuKgNI7UPPhZezbSKKMkRpZX/Kw3/MOSURtGXTu+d9RJSA5DSRMOPmxgHZAsQ06s
+	eOQMlN1I/Z0VVQRiBx3vpx7+szpO3v9xyO+EOMphIzZNendrMwqvhJqr6wDOcw7ZAl79ie
+	mQlcmdY+y+3wsOTqNP3nYupnVXzzT+E=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-15-Cxh188gnO_uFafuTJl-saQ-1; Mon, 11 Dec 2023 11:34:18 -0500
+X-MC-Unique: Cxh188gnO_uFafuTJl-saQ-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1F7E53C2AF66;
-	Mon, 11 Dec 2023 14:02:49 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.2])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 47C5D51E3;
-	Mon, 11 Dec 2023 14:02:48 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2443788D131;
+	Mon, 11 Dec 2023 16:34:18 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.2])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 143A53C2E;
+	Mon, 11 Dec 2023 16:34:16 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20231207024323.GA1994@sol.localdomain>
-References: <20231207024323.GA1994@sol.localdomain> <20231206145744.17277-1-lhenriques@suse.de> <498294.1701878642@warthog.procyon.org.uk> <87bkb3z047.fsf@suse.de>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: dhowells@redhat.com, Luis Henriques <lhenriques@suse.de>,
-    Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] keys: flush work when accessing /proc/key-users
+To: Markus Suvanto <markus.suvanto@gmail.com>,
+	Marc Dionne <marc.dionne@auristor.com>
+Cc: David Howells <dhowells@redhat.com>,
+	linux-afs@lists.infradead.org,
+	keyrings@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] afs: Fix dynamic root interaction with failing DNS lookups
+Date: Mon, 11 Dec 2023 16:34:09 +0000
+Message-ID: <20231211163412.2766147-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2744562.1702303367.1@warthog.procyon.org.uk>
-Date: Mon, 11 Dec 2023 14:02:47 +0000
-Message-ID: <2744563.1702303367@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.1
 
-Eric Biggers <ebiggers@kernel.org> wrote:
+Hi Markus, Marc,
 
-> If there was a function that fully and synchronously releases a key's quota,
-> fs/crypto/ could call it before unlinking the key.  key_payload_reserve(key,
-> 0) almost does the trick, but it would release the key's bytes, not the key
-> itself.
+Here's a set of fixes to improve the interaction of arbitrary lookups in
+the AFS dynamic root that hit DNS lookup failures:
 
-Umm...  The point of the quota is that the key is occupying unswappable kernel
-memory (partly true in the case of big_key) and we need to limit that.
-Further, the key is not released until it is unlinked.
+ (1) Always delete unused (particularly negative) dentries as soon as
+     possible so that they don't prevent future lookups from retrying.
 
-> However, that would only fix the flakiness of the key quota for fs/crypto/,
-> not for other users of the keyrings service.  Maybe this suggests that
-> key_put() should release the key's quota right away if the key's refcount
-> drops to 0?
+ (2) Fix the handling of new-style negative DNS lookups in ->lookup() to
+     make them return ENOENT so that userspace doesn't get confused when
+     stat succeeds but the following open on the looked up file then fails.
 
-That I would be okay with as the key should be removed in short order.
+ (3) Fix key handling so that DNS lookup results are reclaimed as soon as
+     they expire rather than sitting round either forever or for an
+     additional 5 mins beyond a set expiry time returning EKEYEXPIRED.
 
-Note that you'd have to change the spinlocks on key->user->lock to irq-locking
-types.  Or maybe we can do without them, at least for key gc, and use atomic
-counters.  key_invalidate() should probably drop the quota also.
+The patches can be found here:
 
-I'm also working up a patch so that key types can be marked for immediate gc
-if they expire, rather than there being a period (key_gc_delay) in which they
-cause EKEYEXPIRED rather than ENOKEY to be returned for better indication to
-userspace as to what's happened when a filesystem op fails to to key problems.
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=afs-fixes
 
-> Either way, note that where fs/crypto/ does key_put() on a whole keyring at
-> once, it would first need to call keyring_clear() to clear it synchronously.
-
-What if there's another link on the keyring?  Should it still be cleared?
-
-Do we need faster disposal of keys?  Perhaps keeping a list of keys that need
-destroying rather than scanning the entire key set for them.  We still need to
-scan non-destroyed keyrings, though, to find the pointers to defunct keys
-unless I have some sort of backpointer list.
-
+Thanks,
 David
+
+David Howells (3):
+  afs: Fix the dynamic root's d_delete to always delete unused dentries
+  afs: Fix dynamic root lookup DNS check
+  keys, dns: Allow key types (eg. DNS) to be reclaimed immediately on
+    expiry
+
+ fs/afs/dynroot.c           | 31 +++++++++++++++++--------------
+ include/linux/key-type.h   |  1 +
+ net/dns_resolver/dns_key.c | 10 +++++++++-
+ security/keys/gc.c         | 31 +++++++++++++++++++++----------
+ security/keys/internal.h   |  8 +++++++-
+ security/keys/key.c        | 15 +++++----------
+ security/keys/proc.c       |  2 +-
+ 7 files changed, 61 insertions(+), 37 deletions(-)
 
 
