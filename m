@@ -1,71 +1,142 @@
-Return-Path: <keyrings+bounces-246-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-247-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAA8480D235
-	for <lists+keyrings@lfdr.de>; Mon, 11 Dec 2023 17:40:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D8E80D414
+	for <lists+keyrings@lfdr.de>; Mon, 11 Dec 2023 18:37:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5DC628197C
-	for <lists+keyrings@lfdr.de>; Mon, 11 Dec 2023 16:40:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E10891F216A4
+	for <lists+keyrings@lfdr.de>; Mon, 11 Dec 2023 17:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13D71D69C;
-	Mon, 11 Dec 2023 16:40:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PQ2d0ebw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB2654E60D;
+	Mon, 11 Dec 2023 17:37:42 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94B5F91
-	for <keyrings@vger.kernel.org>; Mon, 11 Dec 2023 08:40:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702312819;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b6fINjgYzDp4pT6EiKMHp9CdMk4eAHEGQUt/Jxjj7L0=;
-	b=PQ2d0ebwl1gkZfaQ73EVWHG8lTJ6iIccHihHAzAvgcqLP5891AC12LzOEVaj3vOvk5boF1
-	5ZSlodfsW4VCSLMg76dO0a36MQyWHCE74105hxna87QA5mqxaX46T8+KAiESbfppQD01Zf
-	3gZQ4CFR/86scJlDrXDfwSXmw4Scbfk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-246-66pKNrKKPKGDcqdc3R7j0Q-1; Mon, 11 Dec 2023 11:40:14 -0500
-X-MC-Unique: 66pKNrKKPKGDcqdc3R7j0Q-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id AFFAC88D7A1;
-	Mon, 11 Dec 2023 16:40:12 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.2])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id C80432166B32;
-	Mon, 11 Dec 2023 16:40:11 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20231211163412.2766147-1-dhowells@redhat.com>
-References: <20231211163412.2766147-1-dhowells@redhat.com>
-To: Markus Suvanto <markus.suvanto@gmail.com>,
-    Marc Dionne <marc.dionne@auristor.com>
-Cc: dhowells@redhat.com, linux-afs@lists.infradead.org,
-    keyrings@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] afs: Fix dynamic root interaction with failing DNS lookups
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4BC6123;
+	Mon, 11 Dec 2023 09:37:38 -0800 (PST)
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-50dfac6c0beso1824971e87.2;
+        Mon, 11 Dec 2023 09:37:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702316257; x=1702921057;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Vq+VT1yoNILYRnVYlXhIlgVV3TQoNuR0AWtL0JI09is=;
+        b=QiI/UkQv7mV95XzCPICO7aO2jhtYILNOdk2PcvVPAnTsCahBAuQeFl9GZr7GYbAKfQ
+         8zGTEmqmbo3+znWKbuxr+PDKPp0XVO4Ts94o0PzqQhWcuMG9/uj2Ga5EkaZQ4dU2rlko
+         WYz2TArp9dgf5yiOr5lFJUDFELmqj+my6IAJYV/0CheGb1zyxRCq4aYVxLFsZxn/yF9Y
+         95tQ7RZz/ixzlpky6YBhwNL6GuXIb2bMaDIU7Mekua97Ji3O23ZQSXwDLDVxjB/9FLzy
+         KalpmprGs861mpIHtngE9Vgjcj5d1Ei1QlsoI+TOwtuBjSKQlhUVsRbW/gr0OCPsHm+N
+         wjEQ==
+X-Gm-Message-State: AOJu0YxRNved6N6Wu0N/13MRWHFZqVQTxuXaYJfswpOSlEuu64ceSfsz
+	CylDshP/Q+ZgpcmSKqFzohZXJYLS47Txs3sxqhw=
+X-Google-Smtp-Source: AGHT+IEpL3HwYdodNmXK64xmycgt8LjdEl6qA7Mj1X3e8066G/U6GTY9ZLc39vLD67XcJ17bcvHzAg==
+X-Received: by 2002:a05:6512:6c7:b0:50c:d72:2010 with SMTP id u7-20020a05651206c700b0050c0d722010mr2686236lff.121.1702316256502;
+        Mon, 11 Dec 2023 09:37:36 -0800 (PST)
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com. [209.85.167.53])
+        by smtp.gmail.com with ESMTPSA id c1-20020a056512104100b0050ab696bfaasm1142468lfb.3.2023.12.11.09.37.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Dec 2023 09:37:36 -0800 (PST)
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-50bfa7f7093so6063439e87.0;
+        Mon, 11 Dec 2023 09:37:36 -0800 (PST)
+X-Received: by 2002:ac2:4892:0:b0:50c:20f3:2a3 with SMTP id
+ x18-20020ac24892000000b0050c20f302a3mr2287048lfc.6.1702316256037; Mon, 11 Dec
+ 2023 09:37:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2766463.1702312811.1@warthog.procyon.org.uk>
-Date: Mon, 11 Dec 2023 16:40:11 +0000
-Message-ID: <2766464.1702312811@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
+References: <20231211163412.2766147-1-dhowells@redhat.com> <20231211163412.2766147-3-dhowells@redhat.com>
+In-Reply-To: <20231211163412.2766147-3-dhowells@redhat.com>
+From: Marc Dionne <marc.dionne@auristor.com>
+Date: Mon, 11 Dec 2023 13:37:24 -0400
+X-Gmail-Original-Message-ID: <CAB9dFdsCnAeitHcNJRY+f8eG=exrgpBZpczfMhHHXLvCR32MaA@mail.gmail.com>
+Message-ID: <CAB9dFdsCnAeitHcNJRY+f8eG=exrgpBZpczfMhHHXLvCR32MaA@mail.gmail.com>
+Subject: Re: [PATCH 2/3] afs: Fix dynamic root lookup DNS check
+To: David Howells <dhowells@redhat.com>
+Cc: Markus Suvanto <markus.suvanto@gmail.com>, linux-afs@lists.infradead.org, 
+	keyrings@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is the related bug: https://bugzilla.kernel.org/show_bug.cgi?id=216637
+On Mon, Dec 11, 2023 at 12:34=E2=80=AFPM David Howells <dhowells@redhat.com=
+> wrote:
+>
+> In the afs dynamic root directory, the ->lookup() function does a DNS che=
+ck
+> on the cell being asked for and if the DNS upcall reports an error it wil=
+l
+> report an error back to userspace (typically ENOENT).
+>
+> However, if a failed DNS upcall returns a new-style result, it will retur=
+n
+> a valid result, with the status field set appropriately to indicate the
+> type of failure - and in that case, dns_query() doesn't return an error a=
+nd
+> we let stat() complete with no error - which can cause confusion in
+> userspace as subsequent calls that trigger d_automount then fail with
+> ENOENT.
+>
+> Fix this by checking the status result from a valid dns_query() and
+> returning an error if it indicates a failure.
+>
+> Fixes: bbb4c4323a4d ("dns: Allow the dns resolver to retrieve a server se=
+t")
+> Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D216637
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Marc Dionne <marc.dionne@auristor.com>
+> cc: linux-afs@lists.infradead.org
+> ---
+>  fs/afs/dynroot.c | 18 ++++++++++++++++--
+>  1 file changed, 16 insertions(+), 2 deletions(-)
+>
+> diff --git a/fs/afs/dynroot.c b/fs/afs/dynroot.c
+> index 34474a061654..4089d77a7a4d 100644
+> --- a/fs/afs/dynroot.c
+> +++ b/fs/afs/dynroot.c
+> @@ -114,6 +114,7 @@ static int afs_probe_cell_name(struct dentry *dentry)
+>         struct afs_net *net =3D afs_d2net(dentry);
+>         const char *name =3D dentry->d_name.name;
+>         size_t len =3D dentry->d_name.len;
+> +       char *result =3D NULL;
+>         int ret;
+>
+>         /* Names prefixed with a dot are R/W mounts. */
+> @@ -131,9 +132,22 @@ static int afs_probe_cell_name(struct dentry *dentry=
+)
+>         }
+>
+>         ret =3D dns_query(net->net, "afsdb", name, len, "srv=3D1",
+> -                       NULL, NULL, false);
+> -       if (ret =3D=3D -ENODATA || ret =3D=3D -ENOKEY)
+> +                       &result, NULL, false);
+> +       if (ret =3D=3D -ENODATA || ret =3D=3D -ENOKEY || ret =3D=3D 0)
+>                 ret =3D -ENOENT;
+> +       if (ret >=3D sizeof(struct dns_server_list_v1_header)) {
 
+This needs an additional ret > 0 check, as the comparison may return
+true with a negative ret if it gets promoted to an unsigned.
+
+> +               struct dns_server_list_v1_header *v1 =3D (void *)result;
+> +
+> +               if (v1->hdr.zero =3D=3D 0 &&
+> +                   v1->hdr.content =3D=3D DNS_PAYLOAD_IS_SERVER_LIST &&
+> +                   v1->hdr.version =3D=3D 1 &&
+> +                   (v1->status !=3D DNS_LOOKUP_GOOD &&
+> +                    v1->status !=3D DNS_LOOKUP_GOOD_WITH_BAD))
+> +                       return -ENOENT;
+> +
+> +       }
+> +
+> +       kfree(result);
+>         return ret;
+>  }
+
+Marc
 
