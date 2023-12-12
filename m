@@ -1,96 +1,103 @@
-Return-Path: <keyrings+bounces-254-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-255-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD8EB80E6FF
-	for <lists+keyrings@lfdr.de>; Tue, 12 Dec 2023 10:03:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB91A80E7F0
+	for <lists+keyrings@lfdr.de>; Tue, 12 Dec 2023 10:41:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 793D4282206
-	for <lists+keyrings@lfdr.de>; Tue, 12 Dec 2023 09:03:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0881B1C20986
+	for <lists+keyrings@lfdr.de>; Tue, 12 Dec 2023 09:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3DE958119;
-	Tue, 12 Dec 2023 09:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C62158AA6;
+	Tue, 12 Dec 2023 09:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VY+n3vRt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UhoSrJiG"
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDC0CC3
-	for <keyrings@vger.kernel.org>; Tue, 12 Dec 2023 01:03:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1702371794;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kXfjl/vlm5PNTtLk2bLz+UFG60aKKQyTeA8UKaXlhT4=;
-	b=VY+n3vRtyMuZRFuvaRKVK75L9zu9ALACBm4GJ73qe1+GC4VRupQ3CR8ez+nWvMYYvLzGyx
-	uSzMsIW3KgZJLfUM0/wZAlyh8mRxnn9Y7aBMNF4qj0WcuR7nMcsp2kWwSvdLVjQWViN9mz
-	lp+ZBQgdJpHDrsjUq/W7k/V1rbdzLdM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-21-tvCXtk4aNqyFcX2GvVdYhw-1; Tue, 12 Dec 2023 04:03:08 -0500
-X-MC-Unique: tvCXtk4aNqyFcX2GvVdYhw-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 859B788B789;
-	Tue, 12 Dec 2023 09:03:08 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.2])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 1F79440C6EBA;
-	Tue, 12 Dec 2023 09:03:06 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <59be73c8346ca0c0d6feddcdb56b043cfa0aea4d.camel@gmail.com>
-References: <59be73c8346ca0c0d6feddcdb56b043cfa0aea4d.camel@gmail.com> <20231211163412.2766147-1-dhowells@redhat.com>
-To: markus.suvanto@gmail.com
-Cc: dhowells@redhat.com, Marc Dionne <marc.dionne@auristor.com>,
-    linux-afs@lists.infradead.org, keyrings@vger.kernel.org,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] afs: Fix dynamic root interaction with failing DNS lookups
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72395DC;
+	Tue, 12 Dec 2023 01:41:51 -0800 (PST)
+Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2cc2683fdaaso14240131fa.0;
+        Tue, 12 Dec 2023 01:41:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702374109; x=1702978909; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=aVLRsdYbktegNzx/Zud+ZtI8big1fblrhu7NGAxTQAw=;
+        b=UhoSrJiGJ532dSxRZ2GtlJrhxqA0dRydAXdnIBka2HNV1twuSCEKnei3fPhee36NY6
+         2joh0ZQMyfPIfYOCLG7HcWkyhqEc7YirrMNToT2UV0lLBOHk8mPsPfm6Gy2KLwre/2DT
+         zAWtfD2iMNDgksIbPyExEb+5q4HvFOiNfKq1Ve+8IpId0TYHAOUaFb9DTi8y4hQM31QN
+         2C6sxplfUCs2ab0QwOlUFLd1kI7oLy1J+7Vwj8QCN/EqS8xkjBU8SdFhlNtThpSRvFer
+         aPITmU42fi+Q6SesVvTAYnWyF6DUR3qcC+26BJeSFecqL9UsPTOjVd6qivnk6nNiEyEt
+         a0TQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702374109; x=1702978909;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aVLRsdYbktegNzx/Zud+ZtI8big1fblrhu7NGAxTQAw=;
+        b=tN6IQ8kSIxek428Gb/0NOXylznFtDN3oAJ8iwlKHdVXrrw5eR/sEWo0Dpiy1WdgJ9h
+         Aw/nrL8q8Q1lmTQSg+XCHrV/m50NxAXtzOazOie3zFgcDQtNVaAXASof/nW/urBpll/J
+         +LpA7dfDW6wDQTXPOsk6iIIsN4qcgZsBaXguQDjJu9fh4RwnH/vN9RhT9A9EM3p7kFUC
+         ElOwS00JPWus5rwg4F60IWXAzLgJoijapFhQJAaTNCzLlSrxO535yKlvrkM0DaeGZBWf
+         CHdTjztCwyFlP8vx/lLXjt4XPpumx4tQ149o3p9wWqUy2guShtd6IAlv76vSMjtHBD0P
+         hYUw==
+X-Gm-Message-State: AOJu0Yw6nnXDUnMjn0DdSbksbYQD15O106D01+48OMKrKFCjUE4g8fa9
+	1wNHZuVxSNVHocWjwpBUwdPJyYP8Qo5P7A==
+X-Google-Smtp-Source: AGHT+IGjFCbfOwwOutwRYz9AG4gY6Bjb3gwTl7okXn4Z2UZjyVCgGejFArR0xoCO2FepI8R+GuIWdg==
+X-Received: by 2002:a2e:be83:0:b0:2ca:135:2204 with SMTP id a3-20020a2ebe83000000b002ca01352204mr4525370ljr.16.1702374109370;
+        Tue, 12 Dec 2023 01:41:49 -0800 (PST)
+Received: from dy7lrfj8vfr2jm7whrhxy-4.rev.dnainternet.fi (dy7lrfj8vfr2jm7whrhxy-4.rev.dnainternet.fi. [2001:14bb:6d2:e21f:9123:ac75:6e46:71a6])
+        by smtp.gmail.com with ESMTPSA id l25-20020a2e8699000000b002c9f16d5da9sm1477738lji.95.2023.12.12.01.41.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 Dec 2023 01:41:49 -0800 (PST)
+Message-ID: <d523ca40916a8c17ea8ab6d980265e2985e094b3.camel@gmail.com>
+Subject: Re: [PATCH 0/3] afs: Fix dynamic root interaction with failing DNS
+ lookups
+From: markus.suvanto@gmail.com
+To: David Howells <dhowells@redhat.com>
+Cc: Marc Dionne <marc.dionne@auristor.com>, linux-afs@lists.infradead.org, 
+	keyrings@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Tue, 12 Dec 2023 11:41:42 +0200
+In-Reply-To: <2810523.1702371786@warthog.procyon.org.uk>
+References: <59be73c8346ca0c0d6feddcdb56b043cfa0aea4d.camel@gmail.com>
+	 <20231211163412.2766147-1-dhowells@redhat.com>
+	 <2810523.1702371786@warthog.procyon.org.uk>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.1 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2810522.1702371786.1@warthog.procyon.org.uk>
-Date: Tue, 12 Dec 2023 09:03:06 +0000
-Message-ID: <2810523.1702371786@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 
-markus.suvanto@gmail.com wrote:
+ti, 2023-12-12 kello 09:03 +0000, David Howells kirjoitti:
+> markus.suvanto@gmail.com wrote:
+>=20
+> > Reproduce:
+> > 1) kinit ....
+> > 2) aklog....
+> > 3) keyctl show=20
+> > Session Keyring
+> >  347100937 --alswrv   1001 65534  keyring: _uid_ses.1001
+> > 1062692655 --alswrv   1001 65534   \_ keyring: _uid.1001
+> >  698363997 --als-rv   1001   100   \_ rxrpc: afs@station.com
+> >=20
+> > klist=20
+> > Ticket cache: KEYRING:persistent:1001:1001
+> > Default principal: .....
+>=20
+> Can you "grep rxrpc /proc/keys" at this point?
+>=20
+different cell though...
 
-> Reproduce:
-> 1) kinit ....
-> 2) aklog....
-> 3) keyctl show 
-> Session Keyring
->  347100937 --alswrv   1001 65534  keyring: _uid_ses.1001
-> 1062692655 --alswrv   1001 65534   \_ keyring: _uid.1001
->  698363997 --als-rv   1001   100   \_ rxrpc: afs@station.com
-> 
-> klist 
-> Ticket cache: KEYRING:persistent:1001:1001
-> Default principal: .....
-
-Can you "grep rxrpc /proc/keys" at this point?
-
-> 4) ls /afs/notfound
-> 5) keyctl show   
-> Session Keyring
->  709308533 --alswrv   1001 65534  keyring: _uid_ses.1001
->  385820479 --alswrv   1001 65534   \_ keyring: _uid.1001
-> 
-> klist
-> klist: Credentials cache keyring 'persistent:1001:1001' not found
-
-David
+masu@t470 ~ % grep rxrpc /proc/keys
+23e16cda I--Q---     1   3d 3b010000  1001   100 rxrpc     afs@movesole.com=
+: ka
 
 
