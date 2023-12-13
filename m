@@ -1,77 +1,129 @@
-Return-Path: <keyrings+bounces-267-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-268-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10849811923
-	for <lists+keyrings@lfdr.de>; Wed, 13 Dec 2023 17:22:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 671178119C3
+	for <lists+keyrings@lfdr.de>; Wed, 13 Dec 2023 17:42:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B79FC282E68
-	for <lists+keyrings@lfdr.de>; Wed, 13 Dec 2023 16:22:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD2AE1F21A2E
+	for <lists+keyrings@lfdr.de>; Wed, 13 Dec 2023 16:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5E733CC7;
-	Wed, 13 Dec 2023 16:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1090A364B8;
+	Wed, 13 Dec 2023 16:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="PD81Z9+H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uxm9QoTn"
 X-Original-To: keyrings@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD99083;
-	Wed, 13 Dec 2023 08:22:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=zh20bVNgEauOmKOMVTT+oQhslL42e63cd3mafc5QuMg=; b=PD81Z9+Hz5q5itQ3DmYt+lymtK
-	rbAWH1HZLxLHUKVZEBh1CUDT1Gcq2raouKY3J6f0oeH7MF1Qf8jNPcX/QD3F1eFfA9LYtxKJd5XWM
-	NYaKwqm3OkJb3wbVkc1KlSShBk3kmXX51ppvBALlC/6FF9RmPt7z14e8kNIq+p9OjLeoJ8incaTEl
-	KOTQkgC3JC43xmofru4rI8AJ9KtlWAwIWUWqXJukMc/XBEEbnP2/cKKLw2+8MxRihfAv2AEGd9O8h
-	qbjPKxgqUiDMxuGernieuindthAfSXsJbsHcHuxrI0NOKrda94Ap5leFuQ+F1PdOn+bvhlsLYOakq
-	VQ/4sHXg==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1rDRzx-002B4P-Kt; Wed, 13 Dec 2023 16:22:13 +0000
-Date: Wed, 13 Dec 2023 16:22:13 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Maria Yu <quic_aiquny@quicinc.com>
-Cc: ebiederm@xmission.com, kernel@quicinc.com, quic_pkondeti@quicinc.com,
-	keescook@chromium.or, viro@zeniv.linux.org.uk, brauner@kernel.org,
-	oleg@redhat.com, dhowells@redhat.com, jarkko@kernel.org,
-	paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH] kernel: Introduce a write lock/unlock wrapper for
- tasklist_lock
-Message-ID: <ZXnaNSrtaWbS2ivU@casper.infradead.org>
-References: <20231213101745.4526-1-quic_aiquny@quicinc.com>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2542364AD;
+	Wed, 13 Dec 2023 16:42:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA05BC433CB;
+	Wed, 13 Dec 2023 16:42:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702485739;
+	bh=UnQkY4haweGH+Ng7uOudSim3h1wco1uOsY7euBPXDXw=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=uxm9QoTnsRor5k7RnTNNqga+H3tP3lOBgH+5EmDk4TKAN3CKnCApR881IWubPYg4u
+	 rl9qAnlc3DoSBAHfL5vQmA2IPyICprUooody75Po2Pu49xYiUX1Gh9nWGG774llhii
+	 nviXwdoAKYR9nB+DVx/2zaojsbWfzvtJuNEO2MpaXuySlE53iipErSFEszd65jXlHs
+	 pQou0qA2kyVTZ8RDJruPPQ8WNj152GX4Cpl13pPnO9WOsLfwDxTeKdvd3Ho8lISAUA
+	 Ug9k8LVzyB+tZMnJIPVFNZKdeLpicHAA9RA20V6BrJwsLnAdfIY+sphaDIUuvs3pFi
+	 jTujRH7MweLtg==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231213101745.4526-1-quic_aiquny@quicinc.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 13 Dec 2023 18:42:16 +0200
+Message-Id: <CXNCTQ9WNKDH.2AH4O16RD3W0X@suppilovahvero>
+Subject: Re: [PATCH v5 12/17] tpm: Add full HMAC and encrypt/decrypt session
+ handling code
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "James Bottomley" <James.Bottomley@HansenPartnership.com>,
+ <linux-integrity@vger.kernel.org>
+Cc: <keyrings@vger.kernel.org>, "Ard Biesheuvel" <ardb@kernel.org>
+X-Mailer: aerc 0.15.2
+References: <20231127190854.13310-1-James.Bottomley@HansenPartnership.com>
+ <20231127190854.13310-13-James.Bottomley@HansenPartnership.com>
+ <CXHTVYW17UB6.MR6RH0TMDIX3@suppilovahvero>
+ <f63ce1f09f7fe2b4ca421ff72d6553c5f7d354fc.camel@HansenPartnership.com>
+In-Reply-To: <f63ce1f09f7fe2b4ca421ff72d6553c5f7d354fc.camel@HansenPartnership.com>
 
-On Wed, Dec 13, 2023 at 06:17:45PM +0800, Maria Yu wrote:
-> +static inline void write_lock_tasklist_lock(void)
-> +{
-> +	while (1) {
-> +		local_irq_disable();
-> +		if (write_trylock(&tasklist_lock))
-> +			break;
-> +		local_irq_enable();
-> +		cpu_relax();
+On Fri Dec 8, 2023 at 1:09 AM EET, James Bottomley wrote:
+> On Thu, 2023-12-07 at 06:52 +0200, Jarkko Sakkinen wrote:
+> > On Mon Nov 27, 2023 at 9:08 PM EET, James Bottomley wrote:
+> > > Add session based HMAC authentication plus parameter decryption and
+> > > response encryption using AES. The basic design is to segregate all
+> > > the nasty crypto, hash and hmac code into tpm2-sessions.c and
+> > > export a usable API.=C2=A0 The API first of all starts off by gaining=
+ a
+> > > session with
+> > >=20
+> > > tpm2_start_auth_session()
+> > >=20
+> > > which initiates a session with the TPM and allocates an opaque
+> > > tpm2_auth structure to handle the session parameters.=C2=A0 The desig=
+n
+> > > is that session use will be single threaded from start to finish
+> > > under the ops lock, so the tpm2_auth structure is stored in struct
+> > > tpm2_chip. Then the use is simply:
+> > >=20
+> > > * tpm_buf_append_name() in place of the tpm_buf_append_u32 for the
+> > > =C2=A0 handles
+> > >=20
+> > > * tpm_buf_append_hmac_session() where tpm2_append_auth() would go
+> > >=20
+> > > * tpm_buf_fill_hmac_session() called after the entire command
+> > > buffer
+> > > =C2=A0 is finished but before tpm_transmit_cmd() is called which
+> > > computes
+> > > =C2=A0 the correct HMAC and places it in the command at the correct
+> > > =C2=A0 location.
+> >=20
+> > Split each exported function into a separate patches. This too big
+> > chunk of diff to be reviawable, i.e. it is impossible to give=20
+> > reviewed-by in this form. I think I've commented this also throughout
+> > the series, and it has not been changed.
+>
+> Um, you mean you mentioned it once and I explained that the API is
+> unitary so logically it does belong in one patch and you didn't mention
+> it again?
+>
+> > There needs to be a patch per each exported API function so that they
+> > can be looked into detail. This patch does not align with submission
+> > guidelines in the form it is either.
+>
+> There's no length limit on patch sizes, just the recommendation to keep
+> the changes logical.  One patch per API is actually illogical and
+> contrary to the guide because the APIs come in sets, so you'd miss the
+> logical reviewability with that split.  I suppose what I could do is
+> split it into three logically complete API sets: 1) primary creation;
+> 2) session start/end 3) rest of the session HMAC helpers.  That would
+> give three patches of 400-600 lines each.
 
-This is a bad implementation though.  You don't set the _QW_WAITING flag
-so readers don't know that there's a pending writer.  Also, I've seen
-cpu_relax() pessimise CPU behaviour; putting it into a low-power mode
-that takes a while to wake up from.
+That would be good enough.
 
-I think the right way to fix this is to pass a boolean flag to
-queued_write_lock_slowpath() to let it know whether it can re-enable
-interrupts while checking whether _QW_WAITING is set.
+I've now also verified that call chains look to go through with
+bpftrace. I have full green flag for including from blackbox
+testing perspective, the feature has (in my opinion) correct
+design and also since distributions are gaining TPN sealed
+encryption this sorts that orthogonally. So in that sense
+as long as the code changes will become clean enough this is
+definitely something that we want to Linux (just saying this
+that polishing work does not go down the drain).
 
+I mean with this, it closes how things are sealed e.g. in modern
+Mac's, at least to the level that the computer is still open for
+the owner :-)
+
+>
+> James
+
+BR, Jarkko
 
