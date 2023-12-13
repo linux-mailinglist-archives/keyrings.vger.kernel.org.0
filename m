@@ -1,142 +1,107 @@
-Return-Path: <keyrings+bounces-270-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-271-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2141F811C54
-	for <lists+keyrings@lfdr.de>; Wed, 13 Dec 2023 19:25:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFE88811DD3
+	for <lists+keyrings@lfdr.de>; Wed, 13 Dec 2023 20:00:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77C27B20A80
-	for <lists+keyrings@lfdr.de>; Wed, 13 Dec 2023 18:25:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32A5E1C21317
+	for <lists+keyrings@lfdr.de>; Wed, 13 Dec 2023 19:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5908659551;
-	Wed, 13 Dec 2023 18:25:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eXtUZ/si"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62BBA5FF18;
+	Wed, 13 Dec 2023 19:00:24 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A6E59540;
-	Wed, 13 Dec 2023 18:25:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3860CC433CA;
-	Wed, 13 Dec 2023 18:25:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702491941;
-	bh=wG6b813DPAMHtSvpVHIONo2pc9EAGaBhNNz8bo++r5A=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=eXtUZ/siUj5wgE7wSk8TEUuMLdUq25LpUzkYO+I33/rHy0isgTZVCOVMgP2YgKEd/
-	 nU8f4xF+Vcb7qFgTBqEXU/mXy1Fb1eBLUZGFqTrGjZJPoJSGms/6Ty7Qm0aWu/ebX/
-	 zpNbC+nZhWuMDPW1CSaCy24gwrTM5zfTq0eQdLOlInMkiYSg5Oavs96UP68/nca5hF
-	 Z3g4vKPfz1ylXMCusxX9+oKKdv5kX9TcsNUCsfahXSVbJJgBdirLAnZdpwwO3Nswla
-	 GQDqeyyuPBbtr5ZVZuu08Eql9Im2POJAPXiSksxYnQTL6D33EWHw7MwQgbQLhVJAqm
-	 HpIy5MjDzdOaQ==
+X-Greylist: delayed 1976 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 13 Dec 2023 11:00:15 PST
+Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35A0D99;
+	Wed, 13 Dec 2023 11:00:14 -0800 (PST)
+Received: from in01.mta.xmission.com ([166.70.13.51]:50630)
+	by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1rDTwx-000ZKP-6d; Wed, 13 Dec 2023 11:27:15 -0700
+Received: from ip68-227-168-167.om.om.cox.net ([68.227.168.167]:38540 helo=email.froward.int.ebiederm.org.xmission.com)
+	by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1rDTww-007q8r-4s; Wed, 13 Dec 2023 11:27:14 -0700
+From: "Eric W. Biederman" <ebiederm@xmission.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Maria Yu <quic_aiquny@quicinc.com>,  kernel@quicinc.com,
+  quic_pkondeti@quicinc.com,  keescook@chromium.or,
+  viro@zeniv.linux.org.uk,  brauner@kernel.org,  oleg@redhat.com,
+  dhowells@redhat.com,  jarkko@kernel.org,  paul@paul-moore.com,
+  jmorris@namei.org,  serge@hallyn.com,  linux-mm@kvack.org,
+  linux-fsdevel@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  keyrings@vger.kernel.org,  linux-security-module@vger.kernel.org,
+  linux-arm-msm@vger.kernel.org
+References: <20231213101745.4526-1-quic_aiquny@quicinc.com>
+	<ZXnaNSrtaWbS2ivU@casper.infradead.org>
+Date: Wed, 13 Dec 2023 12:27:05 -0600
+In-Reply-To: <ZXnaNSrtaWbS2ivU@casper.infradead.org> (Matthew Wilcox's message
+	of "Wed, 13 Dec 2023 16:22:13 +0000")
+Message-ID: <87o7eu7ybq.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 13 Dec 2023 20:25:37 +0200
-Message-Id: <CXNF0UTRENI8.S6ZOFO151V3M@suppilovahvero>
-Cc: <keyrings@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-crypto@vger.kernel.org>
-Subject: Re: [PATCH v5 RESEND] sign-file: Fix incorrect return values check
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Yusong Gao" <a869920004@gmail.com>, <davem@davemloft.net>,
- <dhowells@redhat.com>, <dwmw2@infradead.org>, <juergh@proton.me>,
- <zohar@linux.ibm.com>, <herbert@gondor.apana.org.au>, <lists@sapience.com>,
- <dimitri.ledkov@canonical.com>
-X-Mailer: aerc 0.15.2
-References: <20231213024405.624692-1-a869920004@gmail.com>
-In-Reply-To: <20231213024405.624692-1-a869920004@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-XM-SPF: eid=1rDTww-007q8r-4s;;;mid=<87o7eu7ybq.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.168.167;;;frm=ebiederm@xmission.com;;;spf=pass
+X-XM-AID: U2FsdGVkX1/VU39+2YW8c791zJoSkh67aCTXIOvQAFw=
+X-SA-Exim-Connect-IP: 68.227.168.167
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-Spam-Level: 
+X-Spam-DCC: XMission; sa07 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: ;Matthew Wilcox <willy@infradead.org>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 465 ms - load_scoreonly_sql: 0.06 (0.0%),
+	signal_user_changed: 11 (2.4%), b_tie_ro: 10 (2.1%), parse: 0.85
+	(0.2%), extract_message_metadata: 11 (2.3%), get_uri_detail_list: 0.81
+	(0.2%), tests_pri_-2000: 11 (2.4%), tests_pri_-1000: 2.5 (0.5%),
+	tests_pri_-950: 1.16 (0.3%), tests_pri_-900: 1.01 (0.2%),
+	tests_pri_-90: 193 (41.5%), check_bayes: 189 (40.7%), b_tokenize: 6
+	(1.3%), b_tok_get_all: 63 (13.5%), b_comp_prob: 3.3 (0.7%),
+	b_tok_touch_all: 114 (24.5%), b_finish: 0.94 (0.2%), tests_pri_0: 221
+	(47.5%), check_dkim_signature: 0.53 (0.1%), check_dkim_adsp: 2.6
+	(0.6%), poll_dns_idle: 0.46 (0.1%), tests_pri_10: 2.0 (0.4%),
+	tests_pri_500: 7 (1.6%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH] kernel: Introduce a write lock/unlock wrapper for
+ tasklist_lock
+X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
+X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
 
-On Wed Dec 13, 2023 at 4:44 AM EET, Yusong Gao wrote:
-> There are some wrong return values check in sign-file when call OpenSSL
-> API. The ERR() check cond is wrong because of the program only check the
-> return value is < 0 which ignored the return val is 0. For example:
-> 1. CMS_final() return 1 for success or 0 for failure.
-> 2. i2d_CMS_bio_stream() returns 1 for success or 0 for failure.
-> 3. i2d_TYPEbio() return 1 for success and 0 for failure.
-q
+Matthew Wilcox <willy@infradead.org> writes:
+
+> On Wed, Dec 13, 2023 at 06:17:45PM +0800, Maria Yu wrote:
+>> +static inline void write_lock_tasklist_lock(void)
+>> +{
+>> +	while (1) {
+>> +		local_irq_disable();
+>> +		if (write_trylock(&tasklist_lock))
+>> +			break;
+>> +		local_irq_enable();
+>> +		cpu_relax();
 >
-> Link: https://www.openssl.org/docs/manmaster/man3/
-> Fixes: e5a2e3c84782 ("scripts/sign-file.c: Add support for signing with a=
- raw signature")
-
-Given that:
-
-$ git describe --contains  e5a2e3c84782
-v4.6-rc1~127^2^2~14
-
-Should have also:
-
-Cc: stable@vger.kernel.org # v4.6+
-
-
-> Signed-off-by: Yusong Gao <a869920004@gmail.com>
-> Reviewed-by: Juerg Haefliger <juerg.haefliger@canonical.com>
-> ---
-> V5: No change.
-> V4: Change to more strict check mode.
-> V3: Removed redundant empty line.
-> V1, V2: Clarify the description of git message.
-> ---
->  scripts/sign-file.c | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+> This is a bad implementation though.  You don't set the _QW_WAITING flag
+> so readers don't know that there's a pending writer.  Also, I've seen
+> cpu_relax() pessimise CPU behaviour; putting it into a low-power mode
+> that takes a while to wake up from.
 >
-> diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-> index 598ef5465f82..3edb156ae52c 100644
-> --- a/scripts/sign-file.c
-> +++ b/scripts/sign-file.c
-> @@ -322,7 +322,7 @@ int main(int argc, char **argv)
->  				     CMS_NOSMIMECAP | use_keyid |
->  				     use_signed_attrs),
->  		    "CMS_add1_signer");
-> -		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) < 0,
-> +		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) !=3D 1,
->  		    "CMS_final");
-> =20
->  #else
-> @@ -341,10 +341,10 @@ int main(int argc, char **argv)
->  			b =3D BIO_new_file(sig_file_name, "wb");
->  			ERR(!b, "%s", sig_file_name);
->  #ifndef USE_PKCS7
-> -			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) < 0,
-> +			ERR(i2d_CMS_bio_stream(b, cms, NULL, 0) !=3D 1,
->  			    "%s", sig_file_name);
->  #else
-> -			ERR(i2d_PKCS7_bio(b, pkcs7) < 0,
-> +			ERR(i2d_PKCS7_bio(b, pkcs7) !=3D 1,
->  			    "%s", sig_file_name);
->  #endif
->  			BIO_free(b);
-> @@ -374,9 +374,9 @@ int main(int argc, char **argv)
-> =20
->  	if (!raw_sig) {
->  #ifndef USE_PKCS7
-> -		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) < 0, "%s", dest_name);
-> +		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) !=3D 1, "%s", dest_name);
->  #else
-> -		ERR(i2d_PKCS7_bio(bd, pkcs7) < 0, "%s", dest_name);
-> +		ERR(i2d_PKCS7_bio(bd, pkcs7) !=3D 1, "%s", dest_name);
->  #endif
->  	} else {
->  		BIO *b;
-> @@ -396,7 +396,7 @@ int main(int argc, char **argv)
->  	ERR(BIO_write(bd, &sig_info, sizeof(sig_info)) < 0, "%s", dest_name);
->  	ERR(BIO_write(bd, magic_number, sizeof(magic_number) - 1) < 0, "%s", de=
-st_name);
-> =20
-> -	ERR(BIO_free(bd) < 0, "%s", dest_name);
-> +	ERR(BIO_free(bd) !=3D 1, "%s", dest_name);
-> =20
->  	/* Finally, if we're signing in place, replace the original. */
->  	if (replace_orig)
+> I think the right way to fix this is to pass a boolean flag to
+> queued_write_lock_slowpath() to let it know whether it can re-enable
+> interrupts while checking whether _QW_WAITING is set.
 
+Yes.  It seems to make sense to distinguish between write_lock_irq and
+write_lock_irqsave and fix this for all of write_lock_irq.
 
-BR, Jarkko
+Either that or someone can put in the work to start making the
+tasklist_lock go away.
+
+Eric
+
 
