@@ -1,230 +1,101 @@
-Return-Path: <keyrings+bounces-272-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-275-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE93812A1A
-	for <lists+keyrings@lfdr.de>; Thu, 14 Dec 2023 09:15:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 703B7813392
+	for <lists+keyrings@lfdr.de>; Thu, 14 Dec 2023 15:51:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12FBCB211F0
-	for <lists+keyrings@lfdr.de>; Thu, 14 Dec 2023 08:15:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2740E1F21441
+	for <lists+keyrings@lfdr.de>; Thu, 14 Dec 2023 14:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966CA1775C;
-	Thu, 14 Dec 2023 08:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3985B1EB;
+	Thu, 14 Dec 2023 14:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="Q2sX2gV5"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78A4AE0
-	for <keyrings@vger.kernel.org>; Thu, 14 Dec 2023 00:15:23 -0800 (PST)
-Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-6ce2e42ec17so4938711b3a.3
-        for <keyrings@vger.kernel.org>; Thu, 14 Dec 2023 00:15:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702541723; x=1703146523;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=q2ulKuoq72Pn9SlOBn9i6jG9e0gOWsCcYWgayS3GhB8=;
-        b=L9MT31SGZwi8eos1UND58R7yt9Fzr2umi5ZQnMqktluPKaF+VN9nelQR7yoK23kPOY
-         d5xsKd5O2VFNOJAOe2ndHR7Vlx78/0luWR6iEBHlU3XS8FWgHVeA4iAkGEFHLtRQhVv/
-         RCbextJdWJKXY9mEAlcy+x3g2yKgP7rQyz8mzDwi+PbA2ybAcb774RaD53HXrCxnUFbg
-         mv8lXHMPt5IHZTHF3LgMbzR8YIIPWf7sYntm6lSRGwGvYR6ostsQlRpSoIalQ37cQco9
-         WSJlP2adb7qB3OM9ndpO/vISwW03JKW281MSeE9lpgcPfDtF4ZkdtTMJ7Psd/88UVUAR
-         ZfEw==
-X-Gm-Message-State: AOJu0Yy7mL5QH4A87k0o80lSZ6nOwA/ilifX4JLgFeo305q3KVD/SsXa
-	9ceZF6n8kQSyqr9SFGye5kwvbe9f0hJTvteJnjdcz5gw1I3s
-X-Google-Smtp-Source: AGHT+IHBg4dPtwn9W8uzlpptHAWD1jYrfuInfghlYHkLpixrN5bFQzkTbGLocMIaQXdmh//ZxuxC7PIugRHa6+pddmRsu+qKuOgI
+Received: from out203-205-221-149.mail.qq.com (out203-205-221-149.mail.qq.com [203.205.221.149])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28B8310F;
+	Thu, 14 Dec 2023 06:51:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1702565473; bh=H3iNTZBNvgXdZhYRXpFWoMYuroegG1F/IhVpJB+1qRc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Q2sX2gV5YWB2z959wk3pba0YdVVSPjDPA7qFSq+NrR11viemrcRn71Xq7nvfEx3nM
+	 6cXFJndHqL36YidLQ6Z+Sk6rzJ31MX3RzrNEhYbvARhAKC5lSIVeOjpS8Gwo1nShcF
+	 /saDQCwJxxFdR8jtk4oSsRvsDShcxW9x5TNBBiRs=
+Received: from pek-lxu-l1.wrs.com ([111.198.225.215])
+	by newxmesmtplogicsvrszc5-0.qq.com (NewEsmtp) with SMTP
+	id 8568D4F3; Thu, 14 Dec 2023 22:33:22 +0800
+X-QQ-mid: xmsmtpt1702564402tglr1se4s
+Message-ID: <tencent_B0E34B701B7025C7BAFDBB2833BB9EE41B08@qq.com>
+X-QQ-XMAILINFO: OJVlX7oey6I0WONnjsPxacehnbgXyP7N3XwoWA38eqchNHms7zPovzaIUlEICL
+	 nbTMJAndYQX48YKUzJ5GGr9kwfkfxcpDAkxdXumrgxUfGWI1uspM2i2/bNX/leV7IiQitlzc5Ayc
+	 lTznkyTXIO9mYtGsmgNpzIxla3A63cKnNq+n4GcubkxEAX/j0xY3+a6z197gwLhXo6566ZzH4MgV
+	 krSex17eOLX9urtRGs5q4XNBPeBNfr1hltIBjvnczCgzrUhE8m/ABFEbtr2ARoRTLJBZrSd3IirS
+	 1omk8a5i0s8F+vxlD73EZV0udH/2oB6uZJuBJ2Drj18HQvkquj5DYx4BD6ampiBrvCmK90Iyh8Ak
+	 EgJZOSdu0t9xDMJy2Ba3hnPXdIfBIza/JR11Byu0RUW359CrOaXkf0ZKUJYi7BHH0gnp2dlpojD4
+	 4/IvszBm67C/7B8eXVW46eTWy7ogwSC6BgO/DOTA2IbSvHyXciJi3d2UBiL8UCuDIliFielBjdk5
+	 i7txg5dYu/fjGOPXFgLPZoVbGF00GDIpkPA4ncX/VeICz0D5KGJ+N0T19xw25awF5sJIgkIoyQ01
+	 Ohf79yCIbMVr6KxUlx/guL9MEK2Id5oVIMUDCGelGN399slJELN0lHs9wAkXknBYwXQ92A84VMKN
+	 OUq462f9qhmcMH5/cDfyMSLB3sY/Ew/4t6SI4V1bjeRcMH3RcIda1FAX5G43tw/njFwrpgK+mWAC
+	 jGrpbt8lntG0syKWB3rF1s9zwEHdCnTCIGyYGQ6byby1cZYQU50IaRuJNTh1z3mpTT5QT/0/qaSL
+	 m0ghPS1DpDC7Ca5fsh4NU0CN4I9qUBIU7R+2EvyrFsHaM6Rylu9s9W1dZjgBt97PapLvUU5+rB03
+	 2tjr6xDG8PzE96jKcmaBUrd7HURTxKpSktdrz8mYaXbyWa5du6e2AyAZhAZP+tbYQ+xYAqn8VN
+X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
+From: Edward Adam Davis <eadavis@qq.com>
+To: syzbot+94bbb75204a05da3d89f@syzkaller.appspotmail.com
+Cc: davem@davemloft.net,
+	dhowells@redhat.com,
+	edumazet@google.com,
+	jarkko@kernel.org,
+	jmorris@namei.org,
+	keyrings@vger.kernel.org,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	paul@paul-moore.com,
+	serge@hallyn.com,
+	syzkaller-bugs@googlegroups.com
+Subject: [PATCH next] keys/dns: datalen must greater than sizeof(*v1)
+Date: Thu, 14 Dec 2023 22:33:23 +0800
+X-OQ-MSGID: <20231214143322.1004059-2-eadavis@qq.com>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <0000000000009b39bc060c73e209@google.com>
+References: <0000000000009b39bc060c73e209@google.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6a00:1412:b0:6cd:f50c:32ac with SMTP id
- l18-20020a056a00141200b006cdf50c32acmr1180836pfu.6.1702541722858; Thu, 14 Dec
- 2023 00:15:22 -0800 (PST)
-Date: Thu, 14 Dec 2023 00:15:22 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <0000000000009b39bc060c73e209@google.com>
-Subject: [syzbot] [net?] KASAN: slab-out-of-bounds Read in dns_resolver_preparse
-From: syzbot <syzbot+94bbb75204a05da3d89f@syzkaller.appspotmail.com>
-To: davem@davemloft.net, dhowells@redhat.com, edumazet@google.com, 
-	jarkko@kernel.org, jmorris@namei.org, keyrings@vger.kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, paul@paul-moore.com, serge@hallyn.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Level: **
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: ***
 
-Hello,
+bin will be forcibly converted to "struct dns_server_list_v1_header *", so it 
+is necessary to compare datalen with sizeof(*v1).
 
-syzbot found the following issue on:
-
-HEAD commit:    48e8992e33ab Add linux-next specific files for 20231213
-git tree:       linux-next
-console+strace: https://syzkaller.appspot.com/x/log.txt?x=155c1ac1e80000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=978b8aaa2e92a8f
-dashboard link: https://syzkaller.appspot.com/bug?extid=94bbb75204a05da3d89f
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10e0a966e80000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1555a15ce80000
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/ade5327f8151/disk-48e8992e.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/16bff810e759/vmlinux-48e8992e.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/14c4448589de/bzImage-48e8992e.xz
-
-The issue was bisected to:
-
-commit b946001d3bb1202e90093cf5e72dbcb20e2689a0
-Author: David Howells <dhowells@redhat.com>
-Date:   Sat Dec 9 00:41:55 2023 +0000
-
-    keys, dns: Allow key types (eg. DNS) to be reclaimed immediately on expiry
-
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=10c349c1e80000
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=12c349c1e80000
-console output: https://syzkaller.appspot.com/x/log.txt?x=14c349c1e80000
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+94bbb75204a05da3d89f@syzkaller.appspotmail.com
 Fixes: b946001d3bb1 ("keys, dns: Allow key types (eg. DNS) to be reclaimed immediately on expiry")
-
-==================================================================
-BUG: KASAN: slab-out-of-bounds in dns_resolver_preparse+0xc9f/0xd60 net/dns_resolver/dns_key.c:127
-Read of size 1 at addr ffff888028894084 by task syz-executor265/5069
-
-CPU: 0 PID: 5069 Comm: syz-executor265 Not tainted 6.7.0-rc5-next-20231213-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xd9/0x1b0 lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0xc3/0x620 mm/kasan/report.c:488
- kasan_report+0xd9/0x110 mm/kasan/report.c:601
- dns_resolver_preparse+0xc9f/0xd60 net/dns_resolver/dns_key.c:127
- __key_create_or_update+0x453/0xdf0 security/keys/key.c:842
- key_create_or_update+0x42/0x50 security/keys/key.c:1007
- __do_sys_add_key+0x29c/0x450 security/keys/keyctl.c:134
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x62/0x6a
-RIP: 0033:0x7fd37f34f2e9
-Code: 48 83 c4 28 c3 e8 37 17 00 00 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fff2f4f3198 EFLAGS: 00000246 ORIG_RAX: 00000000000000f8
-RAX: ffffffffffffffda RBX: 00007fff2f4f3368 RCX: 00007fd37f34f2e9
-RDX: 0000000020000080 RSI: 0000000000000000 RDI: 00000000200003c0
-RBP: 00007fd37f3c2610 R08: 0000000002853c32 R09: 00007fff2f4f3368
-R10: 0000000000000004 R11: 0000000000000246 R12: 0000000000000001
-R13: 00007fff2f4f3358 R14: 0000000000000001 R15: 0000000000000001
- </TASK>
-
-Allocated by task 5069:
- kasan_save_stack+0x33/0x50 mm/kasan/common.c:47
- kasan_set_track+0x24/0x30 mm/kasan/common.c:61
- ____kasan_kmalloc mm/kasan/common.c:375 [inline]
- __kasan_kmalloc+0xa2/0xb0 mm/kasan/common.c:384
- kasan_kmalloc include/linux/kasan.h:198 [inline]
- __do_kmalloc_node mm/slub.c:3985 [inline]
- __kmalloc_node+0x226/0x480 mm/slub.c:3992
- kmalloc_node include/linux/slab.h:610 [inline]
- kvmalloc_node+0x99/0x1a0 mm/util.c:617
- kvmalloc include/linux/slab.h:728 [inline]
- __do_sys_add_key+0x1f8/0x450 security/keys/keyctl.c:116
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x62/0x6a
-
-The buggy address belongs to the object at ffff888028894080
- which belongs to the cache kmalloc-8 of size 8
-The buggy address is located 0 bytes to the right of
- allocated 4-byte region [ffff888028894080, ffff888028894084)
-
-The buggy address belongs to the physical page:
-page:ffffea0000a22500 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x28894
-anon flags: 0xfff00000000800(slab|node=0|zone=1|lastcpupid=0x7ff)
-page_type: 0xffffffff()
-raw: 00fff00000000800 ffff888013041280 0000000000000000 dead000000000001
-raw: 0000000000000000 0000000080800080 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 0, migratetype Unmovable, gfp_mask 0x12cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY), pid 1, tgid 1 (swapper/0), ts 27978623390, free_ts 27978121808
- set_page_owner include/linux/page_owner.h:31 [inline]
- post_alloc_hook+0x2d0/0x350 mm/page_alloc.c:1540
- prep_new_page mm/page_alloc.c:1547 [inline]
- get_page_from_freelist+0xa19/0x3740 mm/page_alloc.c:3355
- __alloc_pages+0x22e/0x2410 mm/page_alloc.c:4611
- alloc_pages_mpol+0x258/0x5f0 mm/mempolicy.c:2133
- alloc_slab_page mm/slub.c:2191 [inline]
- allocate_slab mm/slub.c:2358 [inline]
- new_slab+0x283/0x3c0 mm/slub.c:2411
- ___slab_alloc+0x4ab/0x1990 mm/slub.c:3544
- __slab_alloc.constprop.0+0x56/0xa0 mm/slub.c:3629
- __slab_alloc_node mm/slub.c:3682 [inline]
- slab_alloc_node mm/slub.c:3854 [inline]
- __do_kmalloc_node mm/slub.c:3984 [inline]
- __kmalloc_node_track_caller+0x367/0x470 mm/slub.c:4005
- kstrdup+0x3c/0x70 mm/util.c:62
- kstrdup_const+0x5f/0x70 mm/util.c:85
- kvasprintf_const+0x10b/0x190 lib/kasprintf.c:48
- kobject_set_name_vargs+0x5a/0x130 lib/kobject.c:272
- kobject_add_varg lib/kobject.c:366 [inline]
- kobject_init_and_add+0xe8/0x190 lib/kobject.c:455
- locate_module_kobject+0xef/0x190 kernel/params.c:781
- kernel_add_sysfs_param kernel/params.c:808 [inline]
- param_sysfs_builtin kernel/params.c:856 [inline]
- param_sysfs_builtin_init+0x25f/0x450 kernel/params.c:990
- do_one_initcall+0x128/0x680 init/main.c:1236
-page last free pid 3062 tgid 3062 stack trace:
- reset_page_owner include/linux/page_owner.h:24 [inline]
- free_pages_prepare mm/page_alloc.c:1140 [inline]
- free_unref_page_prepare+0x51f/0xb10 mm/page_alloc.c:2390
- free_unref_page+0x33/0x3b0 mm/page_alloc.c:2530
- mm_free_pgd kernel/fork.c:799 [inline]
- __mmdrop+0xd5/0x470 kernel/fork.c:915
- mmdrop include/linux/sched/mm.h:54 [inline]
- __mmput+0x40a/0x4d0 kernel/fork.c:1352
- mmput+0x62/0x70 kernel/fork.c:1363
- free_bprm+0x143/0x3e0 fs/exec.c:1490
- kernel_execve+0x3e6/0x4e0 fs/exec.c:2036
- call_usermodehelper_exec_async+0x252/0x4c0 kernel/umh.c:110
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
-
-Memory state around the buggy address:
- ffff888028893f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff888028894000: 07 fc fc fc 07 fc fc fc fa fc fc fc 05 fc fc fc
->ffff888028894080: 04 fc fc fc fb fc fc fc fb fc fc fc 06 fc fc fc
-                   ^
- ffff888028894100: 06 fc fc fc fb fc fc fc 00 fc fc fc 00 fc fc fc
- ffff888028894180: fb fc fc fc 04 fc fc fc 04 fc fc fc fb fc fc fc
-==================================================================
-
-
+Reported-and-tested-by: syzbot+94bbb75204a05da3d89f@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ net/dns_resolver/dns_key.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+diff --git a/net/dns_resolver/dns_key.c b/net/dns_resolver/dns_key.c
+index 3233f4f25fed..15f19521021c 100644
+--- a/net/dns_resolver/dns_key.c
++++ b/net/dns_resolver/dns_key.c
+@@ -104,7 +104,7 @@ dns_resolver_preparse(struct key_preparsed_payload *prep)
+ 
+ 	if (data[0] == 0) {
+ 		/* It may be a server list. */
+-		if (datalen <= sizeof(*bin))
++		if (datalen <= sizeof(*v1))
+ 			return -EINVAL;
+ 
+ 		bin = (const struct dns_payload_header *)data;
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
