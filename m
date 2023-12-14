@@ -1,107 +1,230 @@
-Return-Path: <keyrings+bounces-271-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-272-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE88811DD3
-	for <lists+keyrings@lfdr.de>; Wed, 13 Dec 2023 20:00:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE93812A1A
+	for <lists+keyrings@lfdr.de>; Thu, 14 Dec 2023 09:15:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32A5E1C21317
-	for <lists+keyrings@lfdr.de>; Wed, 13 Dec 2023 19:00:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12FBCB211F0
+	for <lists+keyrings@lfdr.de>; Thu, 14 Dec 2023 08:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62BBA5FF18;
-	Wed, 13 Dec 2023 19:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966CA1775C;
+	Thu, 14 Dec 2023 08:15:28 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-X-Greylist: delayed 1976 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 13 Dec 2023 11:00:15 PST
-Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35A0D99;
-	Wed, 13 Dec 2023 11:00:14 -0800 (PST)
-Received: from in01.mta.xmission.com ([166.70.13.51]:50630)
-	by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1rDTwx-000ZKP-6d; Wed, 13 Dec 2023 11:27:15 -0700
-Received: from ip68-227-168-167.om.om.cox.net ([68.227.168.167]:38540 helo=email.froward.int.ebiederm.org.xmission.com)
-	by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <ebiederm@xmission.com>)
-	id 1rDTww-007q8r-4s; Wed, 13 Dec 2023 11:27:14 -0700
-From: "Eric W. Biederman" <ebiederm@xmission.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Maria Yu <quic_aiquny@quicinc.com>,  kernel@quicinc.com,
-  quic_pkondeti@quicinc.com,  keescook@chromium.or,
-  viro@zeniv.linux.org.uk,  brauner@kernel.org,  oleg@redhat.com,
-  dhowells@redhat.com,  jarkko@kernel.org,  paul@paul-moore.com,
-  jmorris@namei.org,  serge@hallyn.com,  linux-mm@kvack.org,
-  linux-fsdevel@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  keyrings@vger.kernel.org,  linux-security-module@vger.kernel.org,
-  linux-arm-msm@vger.kernel.org
-References: <20231213101745.4526-1-quic_aiquny@quicinc.com>
-	<ZXnaNSrtaWbS2ivU@casper.infradead.org>
-Date: Wed, 13 Dec 2023 12:27:05 -0600
-In-Reply-To: <ZXnaNSrtaWbS2ivU@casper.infradead.org> (Matthew Wilcox's message
-	of "Wed, 13 Dec 2023 16:22:13 +0000")
-Message-ID: <87o7eu7ybq.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+Received: from mail-pf1-f199.google.com (mail-pf1-f199.google.com [209.85.210.199])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78A4AE0
+	for <keyrings@vger.kernel.org>; Thu, 14 Dec 2023 00:15:23 -0800 (PST)
+Received: by mail-pf1-f199.google.com with SMTP id d2e1a72fcca58-6ce2e42ec17so4938711b3a.3
+        for <keyrings@vger.kernel.org>; Thu, 14 Dec 2023 00:15:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702541723; x=1703146523;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=q2ulKuoq72Pn9SlOBn9i6jG9e0gOWsCcYWgayS3GhB8=;
+        b=L9MT31SGZwi8eos1UND58R7yt9Fzr2umi5ZQnMqktluPKaF+VN9nelQR7yoK23kPOY
+         d5xsKd5O2VFNOJAOe2ndHR7Vlx78/0luWR6iEBHlU3XS8FWgHVeA4iAkGEFHLtRQhVv/
+         RCbextJdWJKXY9mEAlcy+x3g2yKgP7rQyz8mzDwi+PbA2ybAcb774RaD53HXrCxnUFbg
+         mv8lXHMPt5IHZTHF3LgMbzR8YIIPWf7sYntm6lSRGwGvYR6ostsQlRpSoIalQ37cQco9
+         WSJlP2adb7qB3OM9ndpO/vISwW03JKW281MSeE9lpgcPfDtF4ZkdtTMJ7Psd/88UVUAR
+         ZfEw==
+X-Gm-Message-State: AOJu0Yy7mL5QH4A87k0o80lSZ6nOwA/ilifX4JLgFeo305q3KVD/SsXa
+	9ceZF6n8kQSyqr9SFGye5kwvbe9f0hJTvteJnjdcz5gw1I3s
+X-Google-Smtp-Source: AGHT+IHBg4dPtwn9W8uzlpptHAWD1jYrfuInfghlYHkLpixrN5bFQzkTbGLocMIaQXdmh//ZxuxC7PIugRHa6+pddmRsu+qKuOgI
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1rDTww-007q8r-4s;;;mid=<87o7eu7ybq.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.168.167;;;frm=ebiederm@xmission.com;;;spf=pass
-X-XM-AID: U2FsdGVkX1/VU39+2YW8c791zJoSkh67aCTXIOvQAFw=
-X-SA-Exim-Connect-IP: 68.227.168.167
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Level: 
-X-Spam-DCC: XMission; sa07 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ;Matthew Wilcox <willy@infradead.org>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 465 ms - load_scoreonly_sql: 0.06 (0.0%),
-	signal_user_changed: 11 (2.4%), b_tie_ro: 10 (2.1%), parse: 0.85
-	(0.2%), extract_message_metadata: 11 (2.3%), get_uri_detail_list: 0.81
-	(0.2%), tests_pri_-2000: 11 (2.4%), tests_pri_-1000: 2.5 (0.5%),
-	tests_pri_-950: 1.16 (0.3%), tests_pri_-900: 1.01 (0.2%),
-	tests_pri_-90: 193 (41.5%), check_bayes: 189 (40.7%), b_tokenize: 6
-	(1.3%), b_tok_get_all: 63 (13.5%), b_comp_prob: 3.3 (0.7%),
-	b_tok_touch_all: 114 (24.5%), b_finish: 0.94 (0.2%), tests_pri_0: 221
-	(47.5%), check_dkim_signature: 0.53 (0.1%), check_dkim_adsp: 2.6
-	(0.6%), poll_dns_idle: 0.46 (0.1%), tests_pri_10: 2.0 (0.4%),
-	tests_pri_500: 7 (1.6%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH] kernel: Introduce a write lock/unlock wrapper for
- tasklist_lock
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
+X-Received: by 2002:a05:6a00:1412:b0:6cd:f50c:32ac with SMTP id
+ l18-20020a056a00141200b006cdf50c32acmr1180836pfu.6.1702541722858; Thu, 14 Dec
+ 2023 00:15:22 -0800 (PST)
+Date: Thu, 14 Dec 2023 00:15:22 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000009b39bc060c73e209@google.com>
+Subject: [syzbot] [net?] KASAN: slab-out-of-bounds Read in dns_resolver_preparse
+From: syzbot <syzbot+94bbb75204a05da3d89f@syzkaller.appspotmail.com>
+To: davem@davemloft.net, dhowells@redhat.com, edumazet@google.com, 
+	jarkko@kernel.org, jmorris@namei.org, keyrings@vger.kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, paul@paul-moore.com, serge@hallyn.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Level: **
 
-Matthew Wilcox <willy@infradead.org> writes:
+Hello,
 
-> On Wed, Dec 13, 2023 at 06:17:45PM +0800, Maria Yu wrote:
->> +static inline void write_lock_tasklist_lock(void)
->> +{
->> +	while (1) {
->> +		local_irq_disable();
->> +		if (write_trylock(&tasklist_lock))
->> +			break;
->> +		local_irq_enable();
->> +		cpu_relax();
->
-> This is a bad implementation though.  You don't set the _QW_WAITING flag
-> so readers don't know that there's a pending writer.  Also, I've seen
-> cpu_relax() pessimise CPU behaviour; putting it into a low-power mode
-> that takes a while to wake up from.
->
-> I think the right way to fix this is to pass a boolean flag to
-> queued_write_lock_slowpath() to let it know whether it can re-enable
-> interrupts while checking whether _QW_WAITING is set.
+syzbot found the following issue on:
 
-Yes.  It seems to make sense to distinguish between write_lock_irq and
-write_lock_irqsave and fix this for all of write_lock_irq.
+HEAD commit:    48e8992e33ab Add linux-next specific files for 20231213
+git tree:       linux-next
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=155c1ac1e80000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=978b8aaa2e92a8f
+dashboard link: https://syzkaller.appspot.com/bug?extid=94bbb75204a05da3d89f
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10e0a966e80000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1555a15ce80000
 
-Either that or someone can put in the work to start making the
-tasklist_lock go away.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/ade5327f8151/disk-48e8992e.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/16bff810e759/vmlinux-48e8992e.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/14c4448589de/bzImage-48e8992e.xz
 
-Eric
+The issue was bisected to:
 
+commit b946001d3bb1202e90093cf5e72dbcb20e2689a0
+Author: David Howells <dhowells@redhat.com>
+Date:   Sat Dec 9 00:41:55 2023 +0000
+
+    keys, dns: Allow key types (eg. DNS) to be reclaimed immediately on expiry
+
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=10c349c1e80000
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=12c349c1e80000
+console output: https://syzkaller.appspot.com/x/log.txt?x=14c349c1e80000
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+94bbb75204a05da3d89f@syzkaller.appspotmail.com
+Fixes: b946001d3bb1 ("keys, dns: Allow key types (eg. DNS) to be reclaimed immediately on expiry")
+
+==================================================================
+BUG: KASAN: slab-out-of-bounds in dns_resolver_preparse+0xc9f/0xd60 net/dns_resolver/dns_key.c:127
+Read of size 1 at addr ffff888028894084 by task syz-executor265/5069
+
+CPU: 0 PID: 5069 Comm: syz-executor265 Not tainted 6.7.0-rc5-next-20231213-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xd9/0x1b0 lib/dump_stack.c:106
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0xc3/0x620 mm/kasan/report.c:488
+ kasan_report+0xd9/0x110 mm/kasan/report.c:601
+ dns_resolver_preparse+0xc9f/0xd60 net/dns_resolver/dns_key.c:127
+ __key_create_or_update+0x453/0xdf0 security/keys/key.c:842
+ key_create_or_update+0x42/0x50 security/keys/key.c:1007
+ __do_sys_add_key+0x29c/0x450 security/keys/keyctl.c:134
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x62/0x6a
+RIP: 0033:0x7fd37f34f2e9
+Code: 48 83 c4 28 c3 e8 37 17 00 00 0f 1f 80 00 00 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff2f4f3198 EFLAGS: 00000246 ORIG_RAX: 00000000000000f8
+RAX: ffffffffffffffda RBX: 00007fff2f4f3368 RCX: 00007fd37f34f2e9
+RDX: 0000000020000080 RSI: 0000000000000000 RDI: 00000000200003c0
+RBP: 00007fd37f3c2610 R08: 0000000002853c32 R09: 00007fff2f4f3368
+R10: 0000000000000004 R11: 0000000000000246 R12: 0000000000000001
+R13: 00007fff2f4f3358 R14: 0000000000000001 R15: 0000000000000001
+ </TASK>
+
+Allocated by task 5069:
+ kasan_save_stack+0x33/0x50 mm/kasan/common.c:47
+ kasan_set_track+0x24/0x30 mm/kasan/common.c:61
+ ____kasan_kmalloc mm/kasan/common.c:375 [inline]
+ __kasan_kmalloc+0xa2/0xb0 mm/kasan/common.c:384
+ kasan_kmalloc include/linux/kasan.h:198 [inline]
+ __do_kmalloc_node mm/slub.c:3985 [inline]
+ __kmalloc_node+0x226/0x480 mm/slub.c:3992
+ kmalloc_node include/linux/slab.h:610 [inline]
+ kvmalloc_node+0x99/0x1a0 mm/util.c:617
+ kvmalloc include/linux/slab.h:728 [inline]
+ __do_sys_add_key+0x1f8/0x450 security/keys/keyctl.c:116
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x62/0x6a
+
+The buggy address belongs to the object at ffff888028894080
+ which belongs to the cache kmalloc-8 of size 8
+The buggy address is located 0 bytes to the right of
+ allocated 4-byte region [ffff888028894080, ffff888028894084)
+
+The buggy address belongs to the physical page:
+page:ffffea0000a22500 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x28894
+anon flags: 0xfff00000000800(slab|node=0|zone=1|lastcpupid=0x7ff)
+page_type: 0xffffffff()
+raw: 00fff00000000800 ffff888013041280 0000000000000000 dead000000000001
+raw: 0000000000000000 0000000080800080 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0x12cc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY), pid 1, tgid 1 (swapper/0), ts 27978623390, free_ts 27978121808
+ set_page_owner include/linux/page_owner.h:31 [inline]
+ post_alloc_hook+0x2d0/0x350 mm/page_alloc.c:1540
+ prep_new_page mm/page_alloc.c:1547 [inline]
+ get_page_from_freelist+0xa19/0x3740 mm/page_alloc.c:3355
+ __alloc_pages+0x22e/0x2410 mm/page_alloc.c:4611
+ alloc_pages_mpol+0x258/0x5f0 mm/mempolicy.c:2133
+ alloc_slab_page mm/slub.c:2191 [inline]
+ allocate_slab mm/slub.c:2358 [inline]
+ new_slab+0x283/0x3c0 mm/slub.c:2411
+ ___slab_alloc+0x4ab/0x1990 mm/slub.c:3544
+ __slab_alloc.constprop.0+0x56/0xa0 mm/slub.c:3629
+ __slab_alloc_node mm/slub.c:3682 [inline]
+ slab_alloc_node mm/slub.c:3854 [inline]
+ __do_kmalloc_node mm/slub.c:3984 [inline]
+ __kmalloc_node_track_caller+0x367/0x470 mm/slub.c:4005
+ kstrdup+0x3c/0x70 mm/util.c:62
+ kstrdup_const+0x5f/0x70 mm/util.c:85
+ kvasprintf_const+0x10b/0x190 lib/kasprintf.c:48
+ kobject_set_name_vargs+0x5a/0x130 lib/kobject.c:272
+ kobject_add_varg lib/kobject.c:366 [inline]
+ kobject_init_and_add+0xe8/0x190 lib/kobject.c:455
+ locate_module_kobject+0xef/0x190 kernel/params.c:781
+ kernel_add_sysfs_param kernel/params.c:808 [inline]
+ param_sysfs_builtin kernel/params.c:856 [inline]
+ param_sysfs_builtin_init+0x25f/0x450 kernel/params.c:990
+ do_one_initcall+0x128/0x680 init/main.c:1236
+page last free pid 3062 tgid 3062 stack trace:
+ reset_page_owner include/linux/page_owner.h:24 [inline]
+ free_pages_prepare mm/page_alloc.c:1140 [inline]
+ free_unref_page_prepare+0x51f/0xb10 mm/page_alloc.c:2390
+ free_unref_page+0x33/0x3b0 mm/page_alloc.c:2530
+ mm_free_pgd kernel/fork.c:799 [inline]
+ __mmdrop+0xd5/0x470 kernel/fork.c:915
+ mmdrop include/linux/sched/mm.h:54 [inline]
+ __mmput+0x40a/0x4d0 kernel/fork.c:1352
+ mmput+0x62/0x70 kernel/fork.c:1363
+ free_bprm+0x143/0x3e0 fs/exec.c:1490
+ kernel_execve+0x3e6/0x4e0 fs/exec.c:2036
+ call_usermodehelper_exec_async+0x252/0x4c0 kernel/umh.c:110
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
+
+Memory state around the buggy address:
+ ffff888028893f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff888028894000: 07 fc fc fc 07 fc fc fc fa fc fc fc 05 fc fc fc
+>ffff888028894080: 04 fc fc fc fb fc fc fc fb fc fc fc 06 fc fc fc
+                   ^
+ ffff888028894100: 06 fc fc fc fb fc fc fc 00 fc fc fc 00 fc fc fc
+ ffff888028894180: fb fc fc fc 04 fc fc fc 04 fc fc fc fb fc fc fc
+==================================================================
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
