@@ -1,37 +1,37 @@
-Return-Path: <keyrings+bounces-301-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-302-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B090814051
-	for <lists+keyrings@lfdr.de>; Fri, 15 Dec 2023 04:01:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EE078140AF
+	for <lists+keyrings@lfdr.de>; Fri, 15 Dec 2023 04:34:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 188C4282E4A
-	for <lists+keyrings@lfdr.de>; Fri, 15 Dec 2023 03:00:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCFAD1F229C8
+	for <lists+keyrings@lfdr.de>; Fri, 15 Dec 2023 03:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D135DECD;
-	Fri, 15 Dec 2023 03:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC6E539D;
+	Fri, 15 Dec 2023 03:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tP0zJSAQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tJzRGe5z"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DCDEC8;
-	Fri, 15 Dec 2023 03:00:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CDE1C433C8;
-	Fri, 15 Dec 2023 03:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F47D5382;
+	Fri, 15 Dec 2023 03:34:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1666C433C7;
+	Fri, 15 Dec 2023 03:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702609254;
-	bh=+F+HH1od62WSI2Xzj+oCa5iYNSg0EkSDaFRNOcuhUyE=;
+	s=k20201202; t=1702611265;
+	bh=pvggstVAuJtl46xlyPK3eOtyOXNJEfxiASZ0RXguL10=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=tP0zJSAQpL6B2DXF01BKoZQHOnAtM1xZi0tWeo9+CPGKnUljK/yq6gqEUS9aqIEer
-	 paLW18kLnjoMbqDv/smSZuxiFUzstFHp4t9rjS+iJ2Q7goZLzuMcxee2AbSBONrugU
-	 uAL7tbG0UfmeJb0mGpfGVjIjGJMj+Enz8HoAYWco9W48y7KXK1JRzpQLogfcKbswWt
-	 yAB0eVrbci1mI9hj2idiZkI1AU3Q+4gOufkKB5lW3iejwLuXrkviVQKGh3ILFzYUS9
-	 f9J5qcNJ5UujzvXem0SGHQHsBDNNNMxYvJtj6Z6Kxk31p95vJkARr2UoCFefNzcMVB
-	 t2gXVcGyp43/g==
+	b=tJzRGe5zueo5jDKnmjISkiPDNN/tg8VMHNjcdG/4O/wpnq40Q0V6CW44+p11719L6
+	 9tIe1EzkH82uODQBeyLKoziTOOhLi93BCOli1N92QSP2koqjpRTFY3oYV/zfdDwp54
+	 9nB2Tk+9wmh9Wg4oxUr8ZfteCAFdTUovczIAdk5wPvOyuRPG0NUGrF0YHI29r4615H
+	 Y+k4CPyXEcgggJnvR0tUkqwmt+Z7CYN5wzpCVdM5JePrgLJUxsX6K/GMDgVx0EEfLo
+	 Ck5rwyuYfxoe94tbG2f9F1jWlzTCWhZfI33uAPZrNmuWdjJ3JvdZ9GaY918kLcvJ48
+	 bJkFK7qNhnjDA==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -40,52 +40,81 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 15 Dec 2023 05:00:48 +0200
-Message-Id: <CXOKLV16E1FZ.GB1X2HLFVY08@suppilovahvero>
-Cc: <davem@davemloft.net>, <dhowells@redhat.com>, <edumazet@google.com>,
- <jmorris@namei.org>, <keyrings@vger.kernel.org>, <kuba@kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
- <netdev@vger.kernel.org>, <pabeni@redhat.com>, <paul@paul-moore.com>,
- <serge@hallyn.com>, <syzkaller-bugs@googlegroups.com>
-Subject: Re: [PATCH next] keys/dns: datalen must greater than sizeof(*v1)
+Date: Fri, 15 Dec 2023 05:34:22 +0200
+Message-Id: <CXOLBK5KCP3U.2UEBNXDHCOAJF@suppilovahvero>
+Cc: <keyrings@vger.kernel.org>, "Ard Biesheuvel" <ardb@kernel.org>
+Subject: Re: [PATCH v5 16/17] tpm: add the null key name as a sysfs export
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Edward Adam Davis" <eadavis@qq.com>,
- <syzbot+94bbb75204a05da3d89f@syzkaller.appspotmail.com>
+To: "James Bottomley" <James.Bottomley@HansenPartnership.com>,
+ <linux-integrity@vger.kernel.org>
 X-Mailer: aerc 0.15.2
-References: <0000000000009b39bc060c73e209@google.com>
- <tencent_B0E34B701B7025C7BAFDBB2833BB9EE41B08@qq.com>
-In-Reply-To: <tencent_B0E34B701B7025C7BAFDBB2833BB9EE41B08@qq.com>
+References: <20231127190854.13310-1-James.Bottomley@HansenPartnership.com>
+ <20231127190854.13310-17-James.Bottomley@HansenPartnership.com>
+In-Reply-To: <20231127190854.13310-17-James.Bottomley@HansenPartnership.com>
 
-On Thu Dec 14, 2023 at 4:33 PM EET, Edward Adam Davis wrote:
-> bin will be forcibly converted to "struct dns_server_list_v1_header *", s=
-o it=20
-> is necessary to compare datalen with sizeof(*v1).
+On Mon Nov 27, 2023 at 9:08 PM EET, James Bottomley wrote:
+> This is the last component of encrypted tpm2 session handling that
+> allows us to verify from userspace that the key derived from the NULL
+> seed genuinely belongs to the TPM and has not been spoofed.
 >
-> Fixes: b946001d3bb1 ("keys, dns: Allow key types (eg. DNS) to be reclaime=
-d immediately on expiry")
-> Reported-and-tested-by: syzbot+94bbb75204a05da3d89f@syzkaller.appspotmail=
-.com
-> Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+> The procedure for doing this involves creating an attestation identity
+> key (which requires verification of the TPM EK certificate) and then
+> using that AIK to sign a certification of the Elliptic Curve key over
+> the NULL seed.  Userspace must create this EC Key using the parameters
+> prescribed in TCG TPM v2.0 Provisioning Guidance for the SRK ECC; if
+> this is done correctly the names will match and the TPM can then run a
+> TPM2_Certify operation on this derived primary key using the newly
+> created AIK.
+>
+> Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
 > ---
->  net/dns_resolver/dns_key.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/char/tpm/tpm-sysfs.c | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
 >
-> diff --git a/net/dns_resolver/dns_key.c b/net/dns_resolver/dns_key.c
-> index 3233f4f25fed..15f19521021c 100644
-> --- a/net/dns_resolver/dns_key.c
-> +++ b/net/dns_resolver/dns_key.c
-> @@ -104,7 +104,7 @@ dns_resolver_preparse(struct key_preparsed_payload *p=
-rep)
+> diff --git a/drivers/char/tpm/tpm-sysfs.c b/drivers/char/tpm/tpm-sysfs.c
+> index 54c71473aa29..403dffea4ea6 100644
+> --- a/drivers/char/tpm/tpm-sysfs.c
+> +++ b/drivers/char/tpm/tpm-sysfs.c
+> @@ -309,6 +309,21 @@ static ssize_t tpm_version_major_show(struct device =
+*dev,
+>  }
+>  static DEVICE_ATTR_RO(tpm_version_major);
 > =20
->  	if (data[0] =3D=3D 0) {
->  		/* It may be a server list. */
-> -		if (datalen <=3D sizeof(*bin))
-> +		if (datalen <=3D sizeof(*v1))
->  			return -EINVAL;
-> =20
->  		bin =3D (const struct dns_payload_header *)data;
+> +#ifdef CONFIG_TPM_BUS_SECURITY
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+After considering options TCG_TPM2_HMAC would be both dead obvious, i.e.
+you cannot get it wrong and along the lines of existing config flags.
+
+> +static ssize_t null_name_show(struct device *dev, struct device_attribut=
+e *attr,
+> +			      char *buf)
+> +{
+> +	struct tpm_chip *chip =3D to_tpm_chip(dev);
+> +	int size =3D TPM2_NAME_SIZE;
+> +
+> +	bin2hex(buf, chip->tpmkeyname, size);
+> +	size *=3D 2;
+> +	buf[size++] =3D '\n';
+> +	return size;
+> +}
+> +static DEVICE_ATTR_RO(null_name);
+> +#endif
+> +
+>  static struct attribute *tpm1_dev_attrs[] =3D {
+>  	&dev_attr_pubek.attr,
+>  	&dev_attr_pcrs.attr,
+> @@ -326,6 +341,9 @@ static struct attribute *tpm1_dev_attrs[] =3D {
+> =20
+>  static struct attribute *tpm2_dev_attrs[] =3D {
+>  	&dev_attr_tpm_version_major.attr,
+> +#ifdef CONFIG_TPM_BUS_SECURITY
+> +	&dev_attr_null_name.attr,
+> +#endif
+>  	NULL
+>  };
+> =20
+
+Otherwise, LGTM
 
 BR, Jarkko
 
