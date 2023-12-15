@@ -1,264 +1,206 @@
-Return-Path: <keyrings+bounces-310-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-311-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB637814658
-	for <lists+keyrings@lfdr.de>; Fri, 15 Dec 2023 12:08:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00145815191
+	for <lists+keyrings@lfdr.de>; Fri, 15 Dec 2023 22:05:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF4121C232BF
-	for <lists+keyrings@lfdr.de>; Fri, 15 Dec 2023 11:08:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 205EF1C22C1A
+	for <lists+keyrings@lfdr.de>; Fri, 15 Dec 2023 21:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492E62DB7F;
-	Fri, 15 Dec 2023 11:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053AD49F70;
+	Fri, 15 Dec 2023 21:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b="pOH/51at"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="Ht8Sm7ng"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from sonic316-27.consmr.mail.ne1.yahoo.com (sonic316-27.consmr.mail.ne1.yahoo.com [66.163.187.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702C22D78A
-	for <keyrings@vger.kernel.org>; Fri, 15 Dec 2023 11:07:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigma-star.at
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-32f8441dfb5so421522f8f.0
-        for <keyrings@vger.kernel.org>; Fri, 15 Dec 2023 03:07:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1702638439; x=1703243239; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+qntkmutwprS+2oQeQzgmaP97TAaIsTbzLeg5qvDo3I=;
-        b=pOH/51atVr7BH/rvGzASIsdokLdrAh2KwL9LKfemqSGyhegKt84LLc2UQhHeBIXUzr
-         8gBYidiYO3kRkSpcxsP9v4H7JK0VVzhbfOf9CDWg+nsRjP5BV+k/TQmXKUnEFDEeG3X1
-         SRV98hI1ayMXWeSD0Cob33njgMyP4vNEAREaAovbmG3/Nm/RjHkjXvf2ckfgSZIcZf2+
-         Gbj2MR1DgFqd3S07LV4KJ+MOqfxGZQQHmhKdEvCS8W7Sn8bnDlBNn7kFEpJkUDSnQRBD
-         oc58EBbgVcklglvPtrXeEL+F9t7wMxkTN5ZDH0Oxnlfr5ZNc5Lg5O/GfyLgxTS/ByOC1
-         sOfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702638439; x=1703243239;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+qntkmutwprS+2oQeQzgmaP97TAaIsTbzLeg5qvDo3I=;
-        b=o7HgArShzQ8lNfTAJnxwq9fKPpegayR/RLA0WF7wswzMR9swrQbGqdIsk59Y4uFaON
-         kqmlDN2jzV48J5xRMvWuguTYPl/2xKFvTtmXT2Ihoc+Vy5i6mcrFLAPTOIRa/pl8GljZ
-         0K+S4sDBVSFeocH1BDNTCFqUVVi7pdISPUVfyVCYY5+VXNHTt6EEN/SykghOj6oiHJXd
-         gnJIoXg9i93FXMvhLzuZUE2hd82CFESJCu4eVdfeWVvKgkoymkV/ZqPYo94Z+ur3jjCb
-         RDeyjr6jWmcH62FC3pt2lt+bBuMbXopNf+WJ0kwH1+NTNFH1oA8kSc8PWN7QjSxAdtyI
-         twTg==
-X-Gm-Message-State: AOJu0YxAqkuNVihfoAFIT1Za1EdE4z+oLvFzchrWaP5KNnUgmwG/ebwO
-	7jnWOZoYrw5LMsovHyHvmifofQ==
-X-Google-Smtp-Source: AGHT+IELSxWyakYU5tmDr1VXLpSIS8du+8Ca/Qhvys+9ED2/licpi1Hnfyj3ePT+IUVtn4Xva0PsAw==
-X-Received: by 2002:a5d:4590:0:b0:336:4bac:f9a5 with SMTP id p16-20020a5d4590000000b003364bacf9a5mr978164wrq.64.1702638438773;
-        Fri, 15 Dec 2023 03:07:18 -0800 (PST)
-Received: from localhost (clnet-p106-198.ikbnet.co.at. [83.175.106.198])
-        by smtp.gmail.com with UTF8SMTPSA id e18-20020a056000121200b00333404e9935sm18384464wrx.54.2023.12.15.03.07.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Dec 2023 03:07:18 -0800 (PST)
-From: David Gstir <david@sigma-star.at>
-To: Mimi Zohar <zohar@linux.ibm.com>,
-	James Bottomley <jejb@linux.ibm.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>
-Cc: David Gstir <david@sigma-star.at>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	NXP Linux Team <linux-imx@nxp.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	sigma star Kernel Team <upstream+dcp@sigma-star.at>,
-	David Howells <dhowells@redhat.com>,
-	Li Yang <leoyang.li@nxp.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Tejun Heo <tj@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-integrity@vger.kernel.org,
-	keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-security-module@vger.kernel.org,
-	Richard Weinberger <richard@nod.at>,
-	David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Subject: [PATCH v5 6/6] docs: trusted-encrypted: add DCP as new trust source
-Date: Fri, 15 Dec 2023 12:06:33 +0100
-Message-ID: <20231215110639.45522-7-david@sigma-star.at>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231215110639.45522-1-david@sigma-star.at>
-References: <20231215110639.45522-1-david@sigma-star.at>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586D449F68
+	for <keyrings@vger.kernel.org>; Fri, 15 Dec 2023 21:05:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1702674338; bh=h6AWNHWJC/UC96v1b1QJxTRjmX7Dyfl7dMUYyHD71gM=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=Ht8Sm7ngRGuDTpCUHdn6g5M8qokPmwa1SBwMuaysjZYsBDadGj4Sud+ie280xJAxXinfLOn2X1ib8qbJBkBq15DylOYVeEoZcJh3HJlRfS/jHwYBPNqnD/Rn8D8EFQKj6tOfbTYgeUQfFSqNH9d6Cuv3ovR5GqhBsUeqB8r134exTRZTi7DTO73ezdnrpVODNanVNixQw91rgbnTYSCoMyY2AjlEA/yyKhGwb3a78cgRK8QpEcAFX0B62ZLG2TfF4Pd8dLjIan96ezogv57rEu3FpUi9MiKTcfrl3v5sbmeJKYrxQ4hDgJQ1QRJBwKRVE/0G+Q8GqoC0/+l8SJvDVg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1702674338; bh=EUlOt7OQHRMUT+KZVBTz5PbUFR9CBQ+04YtOrI3iqOa=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=WjSpuUWijAhF0fDDuyvnVDWxvf2uTSrUKyfQhiw0r7x8AwDcQqoIHxGNi87OePA4hC7pu0Drj7fS3CxzlxlgBvy3jWI/l60PUt9qOH7kbAW0xdXKq0T/sz5XJCQKtV9h9lPWKHiqStUyZf5YQd2065+QBvSb8pRYTdoI7r5SZ077kO9a37sWsmN1QheuVMqGKflhLtUuIWFw5x8l9LdtBvZz0xlYpoyr/rCJWrlQ8021R/9XhVA893bvJZeIG0RnvEZXf5dfGbbN/oe3S22NG7s2lVs9vadkeNqbe+PyrLqhjJRSC4cKDvSpkQdVFN1VoujOwqe8YiDunj9cEFSRgg==
+X-YMail-OSG: 4YnanhgVM1mIt78sweK4QLBPomWSnrgMyiiyMf8yn97zT5Lb_1X6Z_T9DbzQj83
+ Ihcq91pwrI3Yrp7AJjzT_NS3rsPT0w_whOuzouvb0QkeFIL9chowJ9puN8vyr7KcppdyWF5ASgp3
+ akkxc0d7AVB7nccM.LJkySDy3_tjoLhnw5mPYR55Hoor5rZgTBEZrzT7T7BezoZy7rR864o82zK3
+ mtIVo0qZJ2fNmZ9rXK0RS49rT0BkHdbRGzirarSTh_YXsC8uYjPioL5AnK4qfJ8LsMPO5boHAo3o
+ 364QxyZiO6wnCwVn7kaL8IumWq58.9Z9n.SvbAkEAbo5LMB83p2EMwhZyLx9a8ri63gZHoXPnhTs
+ pFYUvUQBweBW8ZV_sOMH_EEysyLV9KhqcCyR_6OoUjSmj6C1irdlUDn7qzg1HNQ74RhjBmBIP6HJ
+ yWDRB0uU5rxBGkllNh3wbO9YqZfkI.PfyftBB.NmePSRA0X.U6ayoF3r1ddMhXOkJVK6NfEkVjX0
+ l2r1c7XxLA3nes8bQluLafy_cZ7Njxug9CBNguubL9ylPHiebxs7KRUmmOloAPCwT5yGARufFpQR
+ jrEZogQUJicAvRA1OdxkEHu_yNjPOs7GL_zuofC6h7Dt50PWRDonu8jK9oVRnWvFaWwTKQSroyNn
+ _nXTQHPkRJ_DIoNOfGjkO3PnhwBYvQC.fTH2lJ0nYJd53bf3R1SthoPjjcHDw8NJDxa9mTUYuhYx
+ ETXjNlmvV.zM049MOfFK8.hq21SMGfyWmYHTZaJ9bVZGex91NGvg7fQxjLg6dnZhOOChopVCnx6w
+ KRhdvZcxZzrcaDh.zsxNt5rDhRN.7.HnUmkcp44mxKMW5KDrYIzGUL5AtWaCovxXYrVA0xR9.Hh3
+ W_0plDNW43xXqtB927A9Rdqwl54UjaIPyX8yz5lQMImijEB1fxUw_gMOC_9WRWZ8phRU_.CNiPr2
+ lsHeG28WUl6Kb2S9i0JFo3XP1elEIi1uJiQLMCOZZK35UizAFcm.W3qupGT324XOXU82MLs3eANb
+ S_QEMw6I_eNX.GTgtfURkAlJFeMokjIyV6J7GTMoXch3H5Y.XpC6KHZCbDoFlwbuju5L2y5Nqgjz
+ S3pMB3Q.yZ.r.PMISXONAFlPV7KrFdPvGkyLB0qDT_gBFojBGu3hO1GY1lrBBGn5P8QHXkI2lMOZ
+ LeAJ.31.mnNLlvi6PYwAQa7w.CMEfF5v3oDTd6hXzwTkdXzE.UeuDDrMgYzypdWCKRhmVCWrFTTa
+ gl7YQpS7Fj9OntklKU6nluP2J7ASjcpEGhT7fHy6Z3DsCbDnKF7NmDSR0cBRw2Q6NLmNHwlv9QuT
+ 3I.8o1J4diCKR7kcF9hyjgcaMIg4cxf3IIgjJr5XK.6Fo40q3C70.4cVRLzop8rcwjyuZ4DmQULB
+ x0_SPFWM3IpwyHNiNicBbrywpCO1cg2LnVtCCQd2UNaDolLI3ItidG7ojuQB8c9HMmL5fAeJqCIK
+ 5OatDwWrNmNMk69YqCBrrs6V3EZF9bmCbCYr7tsbAvYG24hOqUr8xIQVY5ChysWuNgBkEheHevIp
+ Qdi0ova9924WWFlvyrwmYT0X9Q3HQjGVZHWlKNRMuCZA57BC2s92DzEmmERI1okI_JKrsKnf1oG4
+ Xv0WpckXDCPrd6zLqCVAinEiHhBGqYKgMmTILf_yxaF_03KhW2bk2J7IzUxydDNBrYByEl5BqgSr
+ SiebyFhl1nKrljqXq5nAuQ8ZqLdVH.o1zEd7WrMjMsPQsQWJQ2Ef02owsA87pzsIahu6N.RDmTFA
+ kzxokEhEKZ7DhLzncHlV1PRyC7wZ9w9_eu2pnX9Ty9oRwBoREv3VNAzNwEp7z8zIQD3xKBHLdPrF
+ eftjlG.lplp6byi_pw.Cw51c8AJlDXGEwNfxvt4V.MxWRpyyY21ugIT5utaOw4_gqUZ3DVJg1uvA
+ ExqWurPbfjvmWvtnH2CHRSVbXyBOLpsMyzd5N4B4f_2N_wAGDsFyeVfjDy6I24y1eavfUvaPMjea
+ pMETb8blI9q1iTOdHp_OxYa0JBgJfmkxUtxQFgR_wDZnQj3E8585I1Gh68uYyGAb4d1L7kvrQHLS
+ csPcKI9EUcvsLUDnG5o05dRtPSsX4RZj61iNmZHzdSnvWT2KJ5KaiBc67z1JT.i97Xvm8tEum9tR
+ B_qC24IdC0oxSOBv4WGDTtbKVzwlHkPL9vDjnJ87DqiHyqKZScKSw.LEFxcI4YutS_yGwEjtCEGX
+ sHIZmMqMCAHD7kif9lIWqFg9Q7Cs51VKhNcyI
+X-Sonic-MF: <casey@schaufler-ca.com>
+X-Sonic-ID: 4380ada8-d70d-4e4c-b8ec-d678c5b6a69a
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.ne1.yahoo.com with HTTP; Fri, 15 Dec 2023 21:05:38 +0000
+Received: by hermes--production-gq1-6949d6d8f9-pmzmd (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID de6033d21389d7246e7fe82deec412af;
+          Fri, 15 Dec 2023 21:05:34 +0000 (UTC)
+Message-ID: <a4493b56-503f-46c3-aa5f-400691b07367@schaufler-ca.com>
+Date: Fri, 15 Dec 2023 13:05:33 -0800
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 11/24] security: Introduce inode_post_removexattr hook
+To: Roberto Sassu <roberto.sassu@huaweicloud.com>, viro@zeniv.linux.org.uk,
+ brauner@kernel.org, chuck.lever@oracle.com, jlayton@kernel.org,
+ neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com,
+ paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+ zohar@linux.ibm.com, dmitry.kasatkin@gmail.com, dhowells@redhat.com,
+ jarkko@kernel.org, stephen.smalley.work@gmail.com, eparis@parisplace.org,
+ shuah@kernel.org, mic@digikod.net
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org,
+ linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+ selinux@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ Roberto Sassu <roberto.sassu@huawei.com>,
+ Stefan Berger <stefanb@linux.ibm.com>,
+ Casey Schaufler <casey@schaufler-ca.com>
+References: <20231214170834.3324559-1-roberto.sassu@huaweicloud.com>
+ <20231214170834.3324559-12-roberto.sassu@huaweicloud.com>
+Content-Language: en-US
+From: Casey Schaufler <casey@schaufler-ca.com>
+In-Reply-To: <20231214170834.3324559-12-roberto.sassu@huaweicloud.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.21952 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-Update the documentation for trusted and encrypted KEYS with DCP as new
-trust source:
+On 12/14/2023 9:08 AM, Roberto Sassu wrote:
+> From: Roberto Sassu <roberto.sassu@huawei.com>
+>
+> In preparation for moving IMA and EVM to the LSM infrastructure, introduce
+> the inode_post_removexattr hook.
+>
+> At inode_removexattr hook, EVM verifies the file's existing HMAC value. At
+> inode_post_removexattr, EVM re-calculates the file's HMAC with the passed
+> xattr removed and other file metadata.
+>
+> Other LSMs could similarly take some action after successful xattr removal.
+>
+> The new hook cannot return an error and cannot cause the operation to be
+> reverted.
+>
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
 
-- Describe security properties of DCP trust source
-- Describe key usage
-- Document blob format
+Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
 
-Co-developed-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Signed-off-by: David Gstir <david@sigma-star.at>
----
- .../security/keys/trusted-encrypted.rst       | 85 +++++++++++++++++++
- 1 file changed, 85 insertions(+)
-
-diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
-index 9bc9db8ec651..4452070afbe9 100644
---- a/Documentation/security/keys/trusted-encrypted.rst
-+++ b/Documentation/security/keys/trusted-encrypted.rst
-@@ -42,6 +42,14 @@ safe.
-          randomly generated and fused into each SoC at manufacturing time.
-          Otherwise, a common fixed test key is used instead.
- 
-+     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
-+
-+         Rooted to a one-time programmable key (OTP) that is generally burnt
-+         in the on-chip fuses and is accessible to the DCP encryption engine only.
-+         DCP provides two keys that can be used as root of trust: the OTP key
-+         and the UNIQUE key. Default is to use the UNIQUE key, but selecting
-+         the OTP key can be done via a module parameter (dcp_use_otp_key).
-+
-   *  Execution isolation
- 
-      (1) TPM
-@@ -57,6 +65,12 @@ safe.
- 
-          Fixed set of operations running in isolated execution environment.
- 
-+     (4) DCP
-+
-+         Fixed set of cryptographic operations running in isolated execution
-+         environment. Only basic blob key encryption is executed there.
-+         The actual key sealing/unsealing is done on main processor/kernel space.
-+
-   * Optional binding to platform integrity state
- 
-      (1) TPM
-@@ -79,6 +93,11 @@ safe.
-          Relies on the High Assurance Boot (HAB) mechanism of NXP SoCs
-          for platform integrity.
- 
-+     (4) DCP
-+
-+         Relies on Secure/Trusted boot process (called HAB by vendor) for
-+         platform integrity.
-+
-   *  Interfaces and APIs
- 
-      (1) TPM
-@@ -94,6 +113,11 @@ safe.
- 
-          Interface is specific to silicon vendor.
- 
-+     (4) DCP
-+
-+         Vendor-specific API that is implemented as part of the DCP crypto driver in
-+         ``drivers/crypto/mxs-dcp.c``.
-+
-   *  Threat model
- 
-      The strength and appropriateness of a particular trust source for a given
-@@ -129,6 +153,13 @@ selected trust source:
-      CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure the device
-      is probed.
- 
-+  *  DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
-+
-+     The DCP hardware device itself does not provide a dedicated RNG interface,
-+     so the kernel default RNG is used. SoCs with DCP like the i.MX6ULL do have
-+     a dedicated hardware RNG that is independent from DCP which can be enabled
-+     to back the kernel RNG.
-+
- Users may override this by specifying ``trusted.rng=kernel`` on the kernel
- command-line to override the used RNG with the kernel's random number pool.
- 
-@@ -231,6 +262,19 @@ Usage::
- CAAM-specific format.  The key length for new keys is always in bytes.
- Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
- 
-+Trusted Keys usage: DCP
-+-----------------------
-+
-+Usage::
-+
-+    keyctl add trusted name "new keylen" ring
-+    keyctl add trusted name "load hex_blob" ring
-+    keyctl print keyid
-+
-+"keyctl print" returns an ASCII hex copy of the sealed key, which is in format
-+specific to this DCP key-blob implementation.  The key length for new keys is
-+always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-+
- Encrypted Keys usage
- --------------------
- 
-@@ -426,3 +470,44 @@ string length.
- privkey is the binary representation of TPM2B_PUBLIC excluding the
- initial TPM2B header which can be reconstructed from the ASN.1 octed
- string length.
-+
-+DCP Blob Format
-+---------------
-+
-+The Data Co-Processor (DCP) provides hardware-bound AES keys using its
-+AES encryption engine only. It does not provide direct key sealing/unsealing.
-+To make DCP hardware encryption keys usable as trust source, we define
-+our own custom format that uses a hardware-bound key to secure the sealing
-+key stored in the key blob.
-+
-+Whenever a new trusted key using DCP is generated, we generate a random 128-bit
-+blob encryption key (BEK) and 128-bit nonce. The BEK and nonce are used to
-+encrypt the trusted key payload using AES-128-GCM.
-+
-+The BEK itself is encrypted using the hardware-bound key using the DCP's AES
-+encryption engine with AES-128-ECB. The encrypted BEK, generated nonce,
-+BEK-encrypted payload and authentication tag make up the blob format together
-+with a version number, payload length and authentication tag::
-+
-+    /*
-+     * struct dcp_blob_fmt - DCP BLOB format.
-+     *
-+     * @fmt_version: Format version, currently being %1
-+     * @blob_key: Random AES 128 key which is used to encrypt @payload,
-+     *            @blob_key itself is encrypted with OTP or UNIQUE device key in
-+     *            AES-128-ECB mode by DCP.
-+     * @nonce: Random nonce used for @payload encryption.
-+     * @payload_len: Length of the plain text @payload.
-+     * @payload: The payload itself, encrypted using AES-128-GCM and @blob_key,
-+     *           GCM auth tag of size AES_BLOCK_SIZE is attached at the end of it.
-+     *
-+     * The total size of a DCP BLOB is sizeof(struct dcp_blob_fmt) + @payload_len +
-+     * AES_BLOCK_SIZE.
-+     */
-+    struct dcp_blob_fmt {
-+            __u8 fmt_version;
-+            __u8 blob_key[AES_KEYSIZE_128];
-+            __u8 nonce[AES_KEYSIZE_128];
-+            __le32 payload_len;
-+            __u8 payload[];
-+    } __packed;
--- 
-2.35.3
-
+> ---
+>  fs/xattr.c                    |  9 +++++----
+>  include/linux/lsm_hook_defs.h |  2 ++
+>  include/linux/security.h      |  5 +++++
+>  security/security.c           | 14 ++++++++++++++
+>  4 files changed, 26 insertions(+), 4 deletions(-)
+>
+> diff --git a/fs/xattr.c b/fs/xattr.c
+> index 09d927603433..f891c260a971 100644
+> --- a/fs/xattr.c
+> +++ b/fs/xattr.c
+> @@ -552,11 +552,12 @@ __vfs_removexattr_locked(struct mnt_idmap *idmap,
+>  		goto out;
+>  
+>  	error = __vfs_removexattr(idmap, dentry, name);
+> +	if (error)
+> +		return error;
+>  
+> -	if (!error) {
+> -		fsnotify_xattr(dentry);
+> -		evm_inode_post_removexattr(dentry, name);
+> -	}
+> +	fsnotify_xattr(dentry);
+> +	security_inode_post_removexattr(dentry, name);
+> +	evm_inode_post_removexattr(dentry, name);
+>  
+>  out:
+>  	return error;
+> diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+> index 091cddb4e6de..c3199bb69103 100644
+> --- a/include/linux/lsm_hook_defs.h
+> +++ b/include/linux/lsm_hook_defs.h
+> @@ -149,6 +149,8 @@ LSM_HOOK(int, 0, inode_getxattr, struct dentry *dentry, const char *name)
+>  LSM_HOOK(int, 0, inode_listxattr, struct dentry *dentry)
+>  LSM_HOOK(int, 0, inode_removexattr, struct mnt_idmap *idmap,
+>  	 struct dentry *dentry, const char *name)
+> +LSM_HOOK(void, LSM_RET_VOID, inode_post_removexattr, struct dentry *dentry,
+> +	 const char *name)
+>  LSM_HOOK(int, 0, inode_set_acl, struct mnt_idmap *idmap,
+>  	 struct dentry *dentry, const char *acl_name, struct posix_acl *kacl)
+>  LSM_HOOK(int, 0, inode_get_acl, struct mnt_idmap *idmap,
+> diff --git a/include/linux/security.h b/include/linux/security.h
+> index 664df46b22a9..922ea7709bae 100644
+> --- a/include/linux/security.h
+> +++ b/include/linux/security.h
+> @@ -380,6 +380,7 @@ int security_inode_getxattr(struct dentry *dentry, const char *name);
+>  int security_inode_listxattr(struct dentry *dentry);
+>  int security_inode_removexattr(struct mnt_idmap *idmap,
+>  			       struct dentry *dentry, const char *name);
+> +void security_inode_post_removexattr(struct dentry *dentry, const char *name);
+>  int security_inode_need_killpriv(struct dentry *dentry);
+>  int security_inode_killpriv(struct mnt_idmap *idmap, struct dentry *dentry);
+>  int security_inode_getsecurity(struct mnt_idmap *idmap,
+> @@ -940,6 +941,10 @@ static inline int security_inode_removexattr(struct mnt_idmap *idmap,
+>  	return cap_inode_removexattr(idmap, dentry, name);
+>  }
+>  
+> +static inline void security_inode_post_removexattr(struct dentry *dentry,
+> +						   const char *name)
+> +{ }
+> +
+>  static inline int security_inode_need_killpriv(struct dentry *dentry)
+>  {
+>  	return cap_inode_need_killpriv(dentry);
+> diff --git a/security/security.c b/security/security.c
+> index ce3bc7642e18..8aa6e9f316dd 100644
+> --- a/security/security.c
+> +++ b/security/security.c
+> @@ -2452,6 +2452,20 @@ int security_inode_removexattr(struct mnt_idmap *idmap,
+>  	return evm_inode_removexattr(idmap, dentry, name);
+>  }
+>  
+> +/**
+> + * security_inode_post_removexattr() - Update the inode after a removexattr op
+> + * @dentry: file
+> + * @name: xattr name
+> + *
+> + * Update the inode after a successful removexattr operation.
+> + */
+> +void security_inode_post_removexattr(struct dentry *dentry, const char *name)
+> +{
+> +	if (unlikely(IS_PRIVATE(d_backing_inode(dentry))))
+> +		return;
+> +	call_void_hook(inode_post_removexattr, dentry, name);
+> +}
+> +
+>  /**
+>   * security_inode_need_killpriv() - Check if security_inode_killpriv() required
+>   * @dentry: associated dentry
 
