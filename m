@@ -1,120 +1,135 @@
-Return-Path: <keyrings+bounces-302-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-303-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EE078140AF
-	for <lists+keyrings@lfdr.de>; Fri, 15 Dec 2023 04:34:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5398481418B
+	for <lists+keyrings@lfdr.de>; Fri, 15 Dec 2023 06:52:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCFAD1F229C8
-	for <lists+keyrings@lfdr.de>; Fri, 15 Dec 2023 03:34:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D71A1C22412
+	for <lists+keyrings@lfdr.de>; Fri, 15 Dec 2023 05:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC6E539D;
-	Fri, 15 Dec 2023 03:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F4ADDB8;
+	Fri, 15 Dec 2023 05:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tJzRGe5z"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="osIOs18x"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F47D5382;
-	Fri, 15 Dec 2023 03:34:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1666C433C7;
-	Fri, 15 Dec 2023 03:34:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702611265;
-	bh=pvggstVAuJtl46xlyPK3eOtyOXNJEfxiASZ0RXguL10=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=tJzRGe5zueo5jDKnmjISkiPDNN/tg8VMHNjcdG/4O/wpnq40Q0V6CW44+p11719L6
-	 9tIe1EzkH82uODQBeyLKoziTOOhLi93BCOli1N92QSP2koqjpRTFY3oYV/zfdDwp54
-	 9nB2Tk+9wmh9Wg4oxUr8ZfteCAFdTUovczIAdk5wPvOyuRPG0NUGrF0YHI29r4615H
-	 Y+k4CPyXEcgggJnvR0tUkqwmt+Z7CYN5wzpCVdM5JePrgLJUxsX6K/GMDgVx0EEfLo
-	 Ck5rwyuYfxoe94tbG2f9F1jWlzTCWhZfI33uAPZrNmuWdjJ3JvdZ9GaY918kLcvJ48
-	 bJkFK7qNhnjDA==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C470DDA8;
+	Fri, 15 Dec 2023 05:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BF3tA23030077;
+	Fri, 15 Dec 2023 05:52:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=WwhbnCJ/fvj1pBHTsPcikQpwh3p9fizJJVTCR0bzuCo=; b=os
+	IOs18xp/yBTZqmdQzVbjlJTRbFjICiHbu9cijQ0MNmMnxMm0nE88Ap3eyc222Y/B
+	n1RFlSredGasfpyvHZiA5cRJrQ41j1cGUYTf8N7AcnSFBJZQd5BYVrWmmUZXJpHo
+	OvDCjCWCFF8tqtKb2JdefmfpHEDY4cAtDfrVThmNNPiQHm7pmF6JOaRxOY/Znppe
+	k0yxmOzsADwRB54Nu0VD6lnhZydUlgecvtpb4H6UAruSxXTxfNGwYGi4rueVo0KE
+	Rm6kQqu550Rl2EJZLDN51Kgbuc5GSEgZFEtGs13R0Bay3rmqbxh/0Vhpk8d2dLte
+	xADAHzfUcPaEoElYgAuQ==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uyp0pb79r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 15 Dec 2023 05:52:25 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3BF5qOFd024341
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 15 Dec 2023 05:52:24 GMT
+Received: from [10.239.132.150] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 14 Dec
+ 2023 21:52:16 -0800
+Message-ID: <75de85ae-ebcb-4f86-8cbf-749708cb3668@quicinc.com>
+Date: Fri, 15 Dec 2023 13:52:14 +0800
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 15 Dec 2023 05:34:22 +0200
-Message-Id: <CXOLBK5KCP3U.2UEBNXDHCOAJF@suppilovahvero>
-Cc: <keyrings@vger.kernel.org>, "Ard Biesheuvel" <ardb@kernel.org>
-Subject: Re: [PATCH v5 16/17] tpm: add the null key name as a sysfs export
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "James Bottomley" <James.Bottomley@HansenPartnership.com>,
- <linux-integrity@vger.kernel.org>
-X-Mailer: aerc 0.15.2
-References: <20231127190854.13310-1-James.Bottomley@HansenPartnership.com>
- <20231127190854.13310-17-James.Bottomley@HansenPartnership.com>
-In-Reply-To: <20231127190854.13310-17-James.Bottomley@HansenPartnership.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] kernel: Introduce a write lock/unlock wrapper for
+ tasklist_lock
+Content-Language: en-US
+To: "Eric W. Biederman" <ebiederm@xmission.com>,
+        Matthew Wilcox
+	<willy@infradead.org>
+CC: <kernel@quicinc.com>, <quic_pkondeti@quicinc.com>, <keescook@chromium.or>,
+        <viro@zeniv.linux.org.uk>, <brauner@kernel.org>, <oleg@redhat.com>,
+        <dhowells@redhat.com>, <jarkko@kernel.org>, <paul@paul-moore.com>,
+        <jmorris@namei.org>, <serge@hallyn.com>, <linux-mm@kvack.org>,
+        <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <keyrings@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
+        <linux-arm-msm@vger.kernel.org>
+References: <20231213101745.4526-1-quic_aiquny@quicinc.com>
+ <ZXnaNSrtaWbS2ivU@casper.infradead.org>
+ <87o7eu7ybq.fsf@email.froward.int.ebiederm.org>
+From: "Aiqun Yu (Maria)" <quic_aiquny@quicinc.com>
+In-Reply-To: <87o7eu7ybq.fsf@email.froward.int.ebiederm.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 9L7uaS1JyabO0j9O4o1SCZxK4G0IVJ0o
+X-Proofpoint-GUID: 9L7uaS1JyabO0j9O4o1SCZxK4G0IVJ0o
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=543 mlxscore=0 phishscore=0 impostorscore=0 malwarescore=0
+ lowpriorityscore=0 adultscore=0 bulkscore=0 spamscore=0 classifier=spam
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2311290000
+ definitions=main-2312150034
 
-On Mon Nov 27, 2023 at 9:08 PM EET, James Bottomley wrote:
-> This is the last component of encrypted tpm2 session handling that
-> allows us to verify from userspace that the key derived from the NULL
-> seed genuinely belongs to the TPM and has not been spoofed.
->
-> The procedure for doing this involves creating an attestation identity
-> key (which requires verification of the TPM EK certificate) and then
-> using that AIK to sign a certification of the Elliptic Curve key over
-> the NULL seed.  Userspace must create this EC Key using the parameters
-> prescribed in TCG TPM v2.0 Provisioning Guidance for the SRK ECC; if
-> this is done correctly the names will match and the TPM can then run a
-> TPM2_Certify operation on this derived primary key using the newly
-> created AIK.
->
-> Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
-> ---
->  drivers/char/tpm/tpm-sysfs.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
->
-> diff --git a/drivers/char/tpm/tpm-sysfs.c b/drivers/char/tpm/tpm-sysfs.c
-> index 54c71473aa29..403dffea4ea6 100644
-> --- a/drivers/char/tpm/tpm-sysfs.c
-> +++ b/drivers/char/tpm/tpm-sysfs.c
-> @@ -309,6 +309,21 @@ static ssize_t tpm_version_major_show(struct device =
-*dev,
->  }
->  static DEVICE_ATTR_RO(tpm_version_major);
-> =20
-> +#ifdef CONFIG_TPM_BUS_SECURITY
 
-After considering options TCG_TPM2_HMAC would be both dead obvious, i.e.
-you cannot get it wrong and along the lines of existing config flags.
 
-> +static ssize_t null_name_show(struct device *dev, struct device_attribut=
-e *attr,
-> +			      char *buf)
-> +{
-> +	struct tpm_chip *chip =3D to_tpm_chip(dev);
-> +	int size =3D TPM2_NAME_SIZE;
-> +
-> +	bin2hex(buf, chip->tpmkeyname, size);
-> +	size *=3D 2;
-> +	buf[size++] =3D '\n';
-> +	return size;
-> +}
-> +static DEVICE_ATTR_RO(null_name);
-> +#endif
-> +
->  static struct attribute *tpm1_dev_attrs[] =3D {
->  	&dev_attr_pubek.attr,
->  	&dev_attr_pcrs.attr,
-> @@ -326,6 +341,9 @@ static struct attribute *tpm1_dev_attrs[] =3D {
-> =20
->  static struct attribute *tpm2_dev_attrs[] =3D {
->  	&dev_attr_tpm_version_major.attr,
-> +#ifdef CONFIG_TPM_BUS_SECURITY
-> +	&dev_attr_null_name.attr,
-> +#endif
->  	NULL
->  };
-> =20
+On 12/14/2023 2:27 AM, Eric W. Biederman wrote:
+> Matthew Wilcox <willy@infradead.org> writes:
+> 
+>> On Wed, Dec 13, 2023 at 06:17:45PM +0800, Maria Yu wrote:
+>>> +static inline void write_lock_tasklist_lock(void)
+>>> +{
+>>> +	while (1) {
+>>> +		local_irq_disable();
+>>> +		if (write_trylock(&tasklist_lock))
+>>> +			break;
+>>> +		local_irq_enable();
+>>> +		cpu_relax();
+>>
+>> This is a bad implementation though.  You don't set the _QW_WAITING flag
+Any better ideas and suggestions are welcomed. :)
+>> so readers don't know that there's a pending writer.  Also, I've see >> cpu_relax() pessimise CPU behaviour; putting it into a low-power mode
+>> that takes a while to wake up from.
+>>
+>> I think the right way to fix this is to pass a boolean flag to
+>> queued_write_lock_slowpath() to let it know whether it can re-enable
+>> interrupts while checking whether _QW_WAITING is set.
+> 
+> Yes.  It seems to make sense to distinguish between write_lock_irq and
+> write_lock_irqsave and fix this for all of write_lock_irq.
+> 
+Let me think about this.
+It seems a possible because there is a special behavior from reader side 
+when in interrupt it will directly get the lock regardless of the 
+pending writer.
 
-Otherwise, LGTM
+> Either that or someone can put in the work to start making the
+> tasklist_lock go away.
+> 
+> Eric
+> 
 
-BR, Jarkko
+-- 
+Thx and BRs,
+Aiqun(Maria) Yu
 
