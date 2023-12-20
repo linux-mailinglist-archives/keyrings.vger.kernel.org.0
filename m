@@ -1,188 +1,370 @@
-Return-Path: <keyrings+bounces-317-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-318-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E33A817EF5
-	for <lists+keyrings@lfdr.de>; Tue, 19 Dec 2023 01:46:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B3F9819FEB
+	for <lists+keyrings@lfdr.de>; Wed, 20 Dec 2023 14:36:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF3211F2162D
-	for <lists+keyrings@lfdr.de>; Tue, 19 Dec 2023 00:46:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21876286B90
+	for <lists+keyrings@lfdr.de>; Wed, 20 Dec 2023 13:36:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D0593FDD;
-	Tue, 19 Dec 2023 00:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0574E36B1B;
+	Wed, 20 Dec 2023 13:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="LqEnhT3+"
+	dkim=pass (1024-bit key) header.d=auristor.com header.i=jaltman@auristor.com header.b="qpVzXr/f"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sequoia-grove.ad.secure-endpoints.com (sequoia-grove.ad.secure-endpoints.com [208.125.0.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DC6620
-	for <keyrings@vger.kernel.org>; Tue, 19 Dec 2023 00:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-yb1-f173.google.com with SMTP id 3f1490d57ef6-dbd029beef4so2530401276.0
-        for <keyrings@vger.kernel.org>; Mon, 18 Dec 2023 16:45:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1702946745; x=1703551545; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oasQpdQEdRdV5iTLy9b03b575xEh8lY+6DBy55U7VgY=;
-        b=LqEnhT3+a+75yoCOyPmBl41RJ7jwkObERW3lG2ZIL08Wx4+TSQANXr31ju52BBmUJ1
-         A71eYmv3PanU7wvWn1wzpVsVHVI22JetZL1N1VCudBPOvlda1UHAU4d4cCMjEBs8ihnv
-         JixbhPjvThzyKSCjWlKTqc208dPSldcx5ZAyOoKgNu6emMoZKC9FAeoxj/6vg4Yzhkc1
-         DBDjlMv+QXWQTuD5fXRI8RUM4UWU3F7mwKt0kH/RG/dbRGRWxHDDBm0BkBli7tg/d3Qd
-         y2QuyDvbOi/3tg1Wc/rCEhok/Xy+hUVcuMrL1N5O+y2TO63kGVqSRD4qkf3WT5fiedVf
-         EafQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702946745; x=1703551545;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oasQpdQEdRdV5iTLy9b03b575xEh8lY+6DBy55U7VgY=;
-        b=PsSDr5AjCz3+quAjb7cwVui+2Z2frRWO4JoWW0ELVmvjOFWL4HfvdUL68ThFmlyXbs
-         LxdWMczyo2gIuFZV4uwwC41oE8/M4clh1jFcSrXqcg8OBlVJGnqrPDo10hwEqb8HbBw8
-         R6Z9qKJyU6/1cCopSyuCusRJBgD8CExnsGIwnJppOQzKfEEQ8+DLBrrfaY6w+hPvF0Ko
-         +ODWUVLpmQS9ISM4elTjlnB+AKsQiLGqzE9SPx5PC9avfgxdIky0QoiBE9cduKaTJDqL
-         HBC4c+Pq+4txdGdphPbRipM4sbeZuxy2GykfBJoIiaXmDa223H5hhIguK4Q78/4Ja5UJ
-         AZtw==
-X-Gm-Message-State: AOJu0Yz17Q2OhYfL8Kc3BwUQ9Pyj/Gz1vVsmJlIGDVhfEHl47FuwOcWb
-	FRGSkVPEDRCRGfhArjLvkMafzGsBF5h7H5d5oHtKDVlO4nG3
-X-Google-Smtp-Source: AGHT+IHFtpoGslhpNZUWQ9Yvh/0J3BP+vucf5ghv5vQv8fV6Ebtbue95F9C+pqRj+w9X/e1PwDGZwltTgDSmFXCRZ9M=
-X-Received: by 2002:a25:d785:0:b0:dbc:f85e:eb39 with SMTP id
- o127-20020a25d785000000b00dbcf85eeb39mr196775ybg.3.1702946745056; Mon, 18 Dec
- 2023 16:45:45 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A6134571
+	for <keyrings@vger.kernel.org>; Wed, 20 Dec 2023 13:36:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=auristor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auristor.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/relaxed;
+	d=auristor.com; s=MDaemon; r=y; t=1703079359; x=1703684159;
+	i=jaltman@auristor.com; q=dns/txt; h=Message-ID:Date:
+	MIME-Version:User-Agent:Subject:Content-Language:To:Cc:
+	References:From:Organization:In-Reply-To:Content-Type:
+	Content-Transfer-Encoding; bh=8/6Un6gYYbd+YxpW3ApIitxJxgZHCCKvXI
+	9dX8wctdQ=; b=qpVzXr/fNg2Bz9bhlHOORwt0AbvmZaY36UzlUvH2GLkIe/pzMc
+	ej0hBxd31U90ty4WULC2Ebfwlwdr8viAFXEFT/1X0cLQ9BasTSnzehILLEBE5Le2
+	um7tsxdTvyvDKGfdjxnQiKQwwRU+3wIGMnHxccAXjS1b2S78ZUKu8zuQ8=
+X-MDAV-Result: clean
+X-MDAV-Processed: sequoia-grove.ad.secure-endpoints.com, Wed, 20 Dec 2023 08:35:59 -0500
+Received: from [IPV6:2603:7000:73c:c800:b4b0:7f91:4ad9:4ee] by auristor.com (IPv6:2001:470:1f07:f77:28d9:68fb:855d:c2a5) (MDaemon PRO v23.5.1) 
+	with ESMTPSA id md5001003764615.msg; Wed, 20 Dec 2023 08:35:58 -0500
+X-Spam-Processed: sequoia-grove.ad.secure-endpoints.com, Wed, 20 Dec 2023 08:35:58 -0500
+	(not processed: message from trusted or authenticated source)
+X-MDRemoteIP: 2603:7000:73c:c800:b4b0:7f91:4ad9:4ee
+X-MDHelo: [IPV6:2603:7000:73c:c800:b4b0:7f91:4ad9:4ee]
+X-MDArrival-Date: Wed, 20 Dec 2023 08:35:58 -0500
+X-MDOrigin-Country: US, NA
+X-Authenticated-Sender: jaltman@auristor.com
+X-Return-Path: prvs=1718724d2e=jaltman@auristor.com
+X-Envelope-From: jaltman@auristor.com
+X-MDaemon-Deliver-To: keyrings@vger.kernel.org
+Message-ID: <ad30af13-6389-4be5-9992-30bbebbe1bb3@auristor.com>
+Date: Wed, 20 Dec 2023 08:35:48 -0500
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231215110639.45522-1-david@sigma-star.at>
-In-Reply-To: <20231215110639.45522-1-david@sigma-star.at>
-From: Paul Moore <paul@paul-moore.com>
-Date: Mon, 18 Dec 2023 19:45:34 -0500
-Message-ID: <CAHC9VhSRjwN=a9=V--m46_xh4fQNwZ9781YBCDpAmAV1mofhQg@mail.gmail.com>
-Subject: Re: [PATCH v5 0/6] DCP as trusted keys backend
-To: David Gstir <david@sigma-star.at>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>
-Cc: James Bottomley <jejb@linux.ibm.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	"David S. Miller" <davem@davemloft.net>, Shawn Guo <shawnguo@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Sascha Hauer <s.hauer@pengutronix.de>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, 
-	NXP Linux Team <linux-imx@nxp.com>, Ahmad Fatoum <a.fatoum@pengutronix.de>, 
-	sigma star Kernel Team <upstream+dcp@sigma-star.at>, Li Yang <leoyang.li@nxp.com>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, 
-	Tejun Heo <tj@kernel.org>, "Steven Rostedt (Google)" <rostedt@goodmis.org>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org, 
-	keyrings@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-security-module@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/3] keys, dns: Allow key types (eg. DNS) to be
+ reclaimed immediately on expiry
+Content-Language: en-US
+To: David Howells <dhowells@redhat.com>,
+ Markus Suvanto <markus.suvanto@gmail.com>,
+ Marc Dionne <marc.dionne@auristor.com>
+Cc: linux-afs@lists.infradead.org, keyrings@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Wang Lei <wang840925@gmail.com>, Jeff Layton <jlayton@redhat.com>,
+ Steve French <sfrench@us.ibm.com>, Jarkko Sakkinen <jarkko@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, netdev@vger.kernel.org
+References: <20231212144611.3100234-1-dhowells@redhat.com>
+ <20231212144611.3100234-4-dhowells@redhat.com>
+From: Jeffrey E Altman <jaltman@auristor.com>
+Organization: AuriStor, Inc.
+In-Reply-To: <20231212144611.3100234-4-dhowells@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-MDCFSigsAdded: auristor.com
 
-On Fri, Dec 15, 2023 at 6:07=E2=80=AFAM David Gstir <david@sigma-star.at> w=
-rote:
+On 12/12/2023 9:46 AM, David Howells wrote:
+> If a key has an expiration time, then when that time passes, the key is
+> left around for a certain amount of time before being collected (5 mins by
+> default) so that EKEYEXPIRED can be returned instead of ENOKEY.  This is a
+> problem for DNS keys because we want to redo the DNS lookup immediately at
+> that point.
 >
-> This is a revival of the previous patch set submitted by Richard Weinberg=
-er:
-> https://lore.kernel.org/linux-integrity/20210614201620.30451-1-richard@no=
-d.at/
+> Fix this by allowing key types to be marked such that keys of that type
+> don't have this extra period, but are reclaimed as soon as they expire and
+> turn this on for dns_resolver-type keys.  To make this easier to handle,
+> key->expiry is changed to be permanent if TIME64_MAX rather than 0.
 >
-> v4 is here:
-> https://lore.kernel.org/keyrings/20231024162024.51260-1-david@sigma-star.=
-at/
+> Furthermore, give such new-style negative DNS results a 10s default expiry
+> if no other expiry time is set rather than allowing it to stick around
+> indefinitely.  This shouldn't be zero as ls will follow a failing stat call
+> immediately with a second with AT_SYMLINK_NOFOLLOW added.
 >
-> v4 -> v5:
-> - Make Kconfig for trust source check scalable as suggested by Jarkko Sak=
-kinen
-> - Add Acked-By from Herbert Xu to patch #1 - thanks!
-> v3 -> v4:
-> - Split changes on MAINTAINERS and documentation into dedicated patches
-> - Use more concise wording in commit messages as suggested by Jarkko Sakk=
-inen
-> v2 -> v3:
-> - Addressed review comments from Jarkko Sakkinen
-> v1 -> v2:
-> - Revive and rebase to latest version
-> - Include review comments from Ahmad Fatoum
+> Fixes: 1a4240f4764a ("DNS: Separate out CIFS DNS Resolver code")
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Wang Lei <wang840925@gmail.com>
+> cc: Jeff Layton <jlayton@redhat.com>
+> cc: Steve French <sfrench@us.ibm.com>
+> cc: Marc Dionne <marc.dionne@auristor.com>
+> cc: Jarkko Sakkinen <jarkko@kernel.org>
+> cc: "David S. Miller" <davem@davemloft.net>
+> cc: Eric Dumazet <edumazet@google.com>
+> cc: Jakub Kicinski <kuba@kernel.org>
+> cc: Paolo Abeni <pabeni@redhat.com>
+> cc: linux-afs@lists.infradead.org
+> cc: linux-cifs@vger.kernel.org
+> cc: linux-nfs@vger.kernel.org
+> cc: ceph-devel@vger.kernel.org
+> cc: keyrings@vger.kernel.org
+> cc: netdev@vger.kernel.org
+> ---
 >
-> The Data CoProcessor (DCP) is an IP core built into many NXP SoCs such
-> as i.mx6ull.
+> Notes:
+>      Changes
+>      =======
+>      ver #3)
+>       - Don't add to TIME64_MAX (ie. permanent) when checking expiry time.
 >
-> Similar to the CAAM engine used in more powerful SoCs, DCP can AES-
-> encrypt/decrypt user data using a unique, never-disclosed,
-> device-specific key. Unlike CAAM though, it cannot directly wrap and
-> unwrap blobs in hardware. As DCP offers only the bare minimum feature
-> set and a blob mechanism needs aid from software. A blob in this case
-> is a piece of sensitive data (e.g. a key) that is encrypted and
-> authenticated using the device-specific key so that unwrapping can only
-> be done on the hardware where the blob was wrapped.
+>   include/linux/key-type.h   |  1 +
+>   net/dns_resolver/dns_key.c | 10 +++++++++-
+>   security/keys/gc.c         | 31 +++++++++++++++++++++----------
+>   security/keys/internal.h   | 11 ++++++++++-
+>   security/keys/key.c        | 15 +++++----------
+>   security/keys/proc.c       |  2 +-
+>   6 files changed, 47 insertions(+), 23 deletions(-)
 >
-> This patch series adds a DCP based, trusted-key backend and is similar
-> in spirit to the one by Ahmad Fatoum [0] that does the same for CAAM.
-> It is of interest for similar use cases as the CAAM patch set, but for
-> lower end devices, where CAAM is not available.
->
-> Because constructing and parsing the blob has to happen in software,
-> we needed to decide on a blob format and chose the following:
->
-> struct dcp_blob_fmt {
->         __u8 fmt_version;
->         __u8 blob_key[AES_KEYSIZE_128];
->         __u8 nonce[AES_KEYSIZE_128];
->         __le32 payload_len;
->         __u8 payload[];
-> } __packed;
->
-> The `fmt_version` is currently 1.
->
-> The encrypted key is stored in the payload area. It is AES-128-GCM
-> encrypted using `blob_key` and `nonce`, GCM auth tag is attached at
-> the end of the payload (`payload_len` does not include the size of
-> the auth tag).
->
-> The `blob_key` itself is encrypted in AES-128-ECB mode by DCP using
-> the OTP or UNIQUE device key. A new `blob_key` and `nonce` are generated
-> randomly, when sealing/exporting the DCP blob.
->
-> This patchset was tested with dm-crypt on an i.MX6ULL board.
->
-> [0] https://lore.kernel.org/keyrings/20220513145705.2080323-1-a.fatoum@pe=
-ngutronix.de/
->
-> David Gstir (6):
->   crypto: mxs-dcp: Add support for hardware-bound keys
->   KEYS: trusted: improve scalability of trust source config
->   KEYS: trusted: Introduce NXP DCP-backed trusted keys
->   MAINTAINERS: add entry for DCP-based trusted keys
->   docs: document DCP-backed trusted keys kernel params
->   docs: trusted-encrypted: add DCP as new trust source
->
->  .../admin-guide/kernel-parameters.txt         |  13 +
->  .../security/keys/trusted-encrypted.rst       |  85 +++++
->  MAINTAINERS                                   |   9 +
->  drivers/crypto/mxs-dcp.c                      | 104 +++++-
->  include/keys/trusted_dcp.h                    |  11 +
->  include/soc/fsl/dcp.h                         |  17 +
->  security/keys/trusted-keys/Kconfig            |  18 +-
->  security/keys/trusted-keys/Makefile           |   2 +
->  security/keys/trusted-keys/trusted_core.c     |   6 +-
->  security/keys/trusted-keys/trusted_dcp.c      | 311 ++++++++++++++++++
->  10 files changed, 562 insertions(+), 14 deletions(-)
->  create mode 100644 include/keys/trusted_dcp.h
->  create mode 100644 include/soc/fsl/dcp.h
->  create mode 100644 security/keys/trusted-keys/trusted_dcp.c
+> diff --git a/include/linux/key-type.h b/include/linux/key-type.h
+> index 7d985a1dfe4a..5caf3ce82373 100644
+> --- a/include/linux/key-type.h
+> +++ b/include/linux/key-type.h
+> @@ -73,6 +73,7 @@ struct key_type {
+>   
+>   	unsigned int flags;
+>   #define KEY_TYPE_NET_DOMAIN	0x00000001 /* Keys of this type have a net namespace domain */
+> +#define KEY_TYPE_INSTANT_REAP	0x00000002 /* Keys of this type don't have a delay after expiring */
+>   
+>   	/* vet a description */
+>   	int (*vet_description)(const char *description);
+> diff --git a/net/dns_resolver/dns_key.c b/net/dns_resolver/dns_key.c
+> index 01e54b46ae0b..3233f4f25fed 100644
+> --- a/net/dns_resolver/dns_key.c
+> +++ b/net/dns_resolver/dns_key.c
+> @@ -91,6 +91,7 @@ const struct cred *dns_resolver_cache;
+>   static int
+>   dns_resolver_preparse(struct key_preparsed_payload *prep)
+>   {
+> +	const struct dns_server_list_v1_header *v1;
+>   	const struct dns_payload_header *bin;
+>   	struct user_key_payload *upayload;
+>   	unsigned long derrno;
+> @@ -122,6 +123,13 @@ dns_resolver_preparse(struct key_preparsed_payload *prep)
+>   			return -EINVAL;
+>   		}
+>   
+> +		v1 = (const struct dns_server_list_v1_header *)bin;
+> +		if ((v1->status != DNS_LOOKUP_GOOD &&
+> +		     v1->status != DNS_LOOKUP_GOOD_WITH_BAD)) {
+> +			if (prep->expiry == TIME64_MAX)
+> +				prep->expiry = ktime_get_real_seconds() + 10;
 
-Jarkko, Mimi, David - if this patchset isn't already in your review
-queue, can you take a look at it from a security/keys perspective?
+10 seconds is much longer than is needed to ensure that that the result 
+is available for
+a second stat() from "ls" in response to a failure.   I would be more 
+comfortable if this
+were one second.
 
-Thanks.
 
---=20
-paul-moore.com
+> +		}
+> +
+>   		result_len = datalen;
+>   		goto store_result;
+>   	}
+> @@ -314,7 +322,7 @@ static long dns_resolver_read(const struct key *key,
+>   
+>   struct key_type key_type_dns_resolver = {
+>   	.name		= "dns_resolver",
+> -	.flags		= KEY_TYPE_NET_DOMAIN,
+> +	.flags		= KEY_TYPE_NET_DOMAIN | KEY_TYPE_INSTANT_REAP,
+>   	.preparse	= dns_resolver_preparse,
+>   	.free_preparse	= dns_resolver_free_preparse,
+>   	.instantiate	= generic_key_instantiate,
+> diff --git a/security/keys/gc.c b/security/keys/gc.c
+> index 3c90807476eb..eaddaceda14e 100644
+> --- a/security/keys/gc.c
+> +++ b/security/keys/gc.c
+> @@ -66,6 +66,19 @@ void key_schedule_gc(time64_t gc_at)
+>   	}
+>   }
+>   
+> +/*
+> + * Set the expiration time on a key.
+> + */
+> +void key_set_expiry(struct key *key, time64_t expiry)
+> +{
+> +	key->expiry = expiry;
+> +	if (expiry != TIME64_MAX) {
+> +		if (!(key->type->flags & KEY_TYPE_INSTANT_REAP))
+> +			expiry += key_gc_delay;
+> +		key_schedule_gc(expiry);
+> +	}
+> +}
+> +
+>   /*
+>    * Schedule a dead links collection run.
+>    */
+> @@ -176,7 +189,6 @@ static void key_garbage_collector(struct work_struct *work)
+>   	static u8 gc_state;		/* Internal persistent state */
+>   #define KEY_GC_REAP_AGAIN	0x01	/* - Need another cycle */
+>   #define KEY_GC_REAPING_LINKS	0x02	/* - We need to reap links */
+> -#define KEY_GC_SET_TIMER	0x04	/* - We need to restart the timer */
+>   #define KEY_GC_REAPING_DEAD_1	0x10	/* - We need to mark dead keys */
+>   #define KEY_GC_REAPING_DEAD_2	0x20	/* - We need to reap dead key links */
+>   #define KEY_GC_REAPING_DEAD_3	0x40	/* - We need to reap dead keys */
+> @@ -184,21 +196,17 @@ static void key_garbage_collector(struct work_struct *work)
+>   
+>   	struct rb_node *cursor;
+>   	struct key *key;
+> -	time64_t new_timer, limit;
+> +	time64_t new_timer, limit, expiry;
+>   
+>   	kenter("[%lx,%x]", key_gc_flags, gc_state);
+>   
+>   	limit = ktime_get_real_seconds();
+> -	if (limit > key_gc_delay)
+> -		limit -= key_gc_delay;
+> -	else
+> -		limit = key_gc_delay;
+>   
+>   	/* Work out what we're going to be doing in this pass */
+>   	gc_state &= KEY_GC_REAPING_DEAD_1 | KEY_GC_REAPING_DEAD_2;
+>   	gc_state <<= 1;
+>   	if (test_and_clear_bit(KEY_GC_KEY_EXPIRED, &key_gc_flags))
+> -		gc_state |= KEY_GC_REAPING_LINKS | KEY_GC_SET_TIMER;
+> +		gc_state |= KEY_GC_REAPING_LINKS;
+>   
+>   	if (test_and_clear_bit(KEY_GC_REAP_KEYTYPE, &key_gc_flags))
+>   		gc_state |= KEY_GC_REAPING_DEAD_1;
+> @@ -233,8 +241,11 @@ static void key_garbage_collector(struct work_struct *work)
+>   			}
+>   		}
+>   
+> -		if (gc_state & KEY_GC_SET_TIMER) {
+> -			if (key->expiry > limit && key->expiry < new_timer) {
+> +		expiry = key->expiry;
+> +		if (expiry != TIME64_MAX) {
+> +			if (!(key->type->flags & KEY_TYPE_INSTANT_REAP))
+> +				expiry += key_gc_delay;
+> +			if (expiry > limit && expiry < new_timer) {
+>   				kdebug("will expire %x in %lld",
+>   				       key_serial(key), key->expiry - limit);
+>   				new_timer = key->expiry;
+> @@ -276,7 +287,7 @@ static void key_garbage_collector(struct work_struct *work)
+>   	 */
+>   	kdebug("pass complete");
+>   
+> -	if (gc_state & KEY_GC_SET_TIMER && new_timer != (time64_t)TIME64_MAX) {
+> +	if (new_timer != TIME64_MAX) {
+>   		new_timer += key_gc_delay;
+>   		key_schedule_gc(new_timer);
+>   	}
+> diff --git a/security/keys/internal.h b/security/keys/internal.h
+> index 471cf36dedc0..2cffa6dc8255 100644
+> --- a/security/keys/internal.h
+> +++ b/security/keys/internal.h
+> @@ -167,6 +167,7 @@ extern unsigned key_gc_delay;
+>   extern void keyring_gc(struct key *keyring, time64_t limit);
+>   extern void keyring_restriction_gc(struct key *keyring,
+>   				   struct key_type *dead_type);
+> +void key_set_expiry(struct key *key, time64_t expiry);
+>   extern void key_schedule_gc(time64_t gc_at);
+>   extern void key_schedule_gc_links(void);
+>   extern void key_gc_keytype(struct key_type *ktype);
+> @@ -215,10 +216,18 @@ extern struct key *key_get_instantiation_authkey(key_serial_t target_id);
+>    */
+>   static inline bool key_is_dead(const struct key *key, time64_t limit)
+>   {
+> +	time64_t expiry = key->expiry;
+> +
+> +	if (expiry != TIME64_MAX) {
+> +		if (!(key->type->flags & KEY_TYPE_INSTANT_REAP))
+> +			expiry += key_gc_delay;
+> +		if (expiry <= limit)
+> +			return true;
+> +	}
+> +
+>   	return
+>   		key->flags & ((1 << KEY_FLAG_DEAD) |
+>   			      (1 << KEY_FLAG_INVALIDATED)) ||
+> -		(key->expiry > 0 && key->expiry <= limit) ||
+>   		key->domain_tag->removed;
+>   }
+>   
+> diff --git a/security/keys/key.c b/security/keys/key.c
+> index 0260a1902922..5b10641debd5 100644
+> --- a/security/keys/key.c
+> +++ b/security/keys/key.c
+> @@ -294,6 +294,7 @@ struct key *key_alloc(struct key_type *type, const char *desc,
+>   	key->uid = uid;
+>   	key->gid = gid;
+>   	key->perm = perm;
+> +	key->expiry = TIME64_MAX;
+>   	key->restrict_link = restrict_link;
+>   	key->last_used_at = ktime_get_real_seconds();
+>   
+> @@ -463,10 +464,7 @@ static int __key_instantiate_and_link(struct key *key,
+>   			if (authkey)
+>   				key_invalidate(authkey);
+>   
+> -			if (prep->expiry != TIME64_MAX) {
+> -				key->expiry = prep->expiry;
+> -				key_schedule_gc(prep->expiry + key_gc_delay);
+> -			}
+> +			key_set_expiry(key, prep->expiry);
+>   		}
+>   	}
+>   
+> @@ -606,8 +604,7 @@ int key_reject_and_link(struct key *key,
+>   		atomic_inc(&key->user->nikeys);
+>   		mark_key_instantiated(key, -error);
+>   		notify_key(key, NOTIFY_KEY_INSTANTIATED, -error);
+> -		key->expiry = ktime_get_real_seconds() + timeout;
+> -		key_schedule_gc(key->expiry + key_gc_delay);
+> +		key_set_expiry(key, ktime_get_real_seconds() + timeout);
+>   
+>   		if (test_and_clear_bit(KEY_FLAG_USER_CONSTRUCT, &key->flags))
+>   			awaken = 1;
+> @@ -723,16 +720,14 @@ struct key_type *key_type_lookup(const char *type)
+>   
+>   void key_set_timeout(struct key *key, unsigned timeout)
+>   {
+> -	time64_t expiry = 0;
+> +	time64_t expiry = TIME64_MAX;
+>   
+>   	/* make the changes with the locks held to prevent races */
+>   	down_write(&key->sem);
+>   
+>   	if (timeout > 0)
+>   		expiry = ktime_get_real_seconds() + timeout;
+> -
+> -	key->expiry = expiry;
+> -	key_schedule_gc(key->expiry + key_gc_delay);
+> +	key_set_expiry(key, expiry);
+>   
+>   	up_write(&key->sem);
+>   }
+> diff --git a/security/keys/proc.c b/security/keys/proc.c
+> index d0cde6685627..4f4e2c1824f1 100644
+> --- a/security/keys/proc.c
+> +++ b/security/keys/proc.c
+> @@ -198,7 +198,7 @@ static int proc_keys_show(struct seq_file *m, void *v)
+>   
+>   	/* come up with a suitable timeout value */
+>   	expiry = READ_ONCE(key->expiry);
+> -	if (expiry == 0) {
+> +	if (expiry == TIME64_MAX) {
+>   		memcpy(xbuf, "perm", 5);
+>   	} else if (now >= expiry) {
+>   		memcpy(xbuf, "expd", 5);
+>
+>
+
+Beyond the default lifetime issue the change looks good to me.
+
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+
+
 
