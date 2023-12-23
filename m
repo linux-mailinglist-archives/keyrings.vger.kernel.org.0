@@ -1,136 +1,80 @@
-Return-Path: <keyrings+bounces-331-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-332-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E5F481D73E
-	for <lists+keyrings@lfdr.de>; Sun, 24 Dec 2023 00:34:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6117A81D750
+	for <lists+keyrings@lfdr.de>; Sun, 24 Dec 2023 00:59:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52D251F21D6F
-	for <lists+keyrings@lfdr.de>; Sat, 23 Dec 2023 23:34:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72E2F282A83
+	for <lists+keyrings@lfdr.de>; Sat, 23 Dec 2023 23:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8FE1D68A;
-	Sat, 23 Dec 2023 23:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BIwArM19"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99C2200D9;
+	Sat, 23 Dec 2023 23:59:08 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD16A1D527
-	for <keyrings@vger.kernel.org>; Sat, 23 Dec 2023 23:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1703374478;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R6MwvTNgc3edtUi1oD2vuk843ZSwVQ67y6EiHuffl3Q=;
-	b=BIwArM198Y63jmtTzb//YZZO68MbriEysh40Mc6j31T4vlHcBWC+Aq7l0P6Qg4Ogl8n3AX
-	b5ksB2ggzZduUKUG62W4zkPh/Jkyo1M8t/W3VNyzxgPpNZLYlnWETRvTWXQ4/D20jmG7v4
-	YhAbgsIUpLt0rN4h5644QzSzw4Zhk58=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-646-9lITgyanOQahtKf1ir0iaA-1; Sat, 23 Dec 2023 18:34:34 -0500
-X-MC-Unique: 9lITgyanOQahtKf1ir0iaA-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F06B9807F54;
-	Sat, 23 Dec 2023 23:34:33 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.39.195.169])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 0546951D5;
-	Sat, 23 Dec 2023 23:34:31 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <0000000000009b39bc060c73e209@google.com>
-References: <0000000000009b39bc060c73e209@google.com>
-To: syzbot <syzbot+94bbb75204a05da3d89f@syzkaller.appspotmail.com>
-Cc: dhowells@redhat.com, davem@davemloft.net, edumazet@google.com,
-    jarkko@kernel.org, jmorris@namei.org, keyrings@vger.kernel.org,
-    kuba@kernel.org, linux-kernel@vger.kernel.org,
-    linux-security-module@vger.kernel.org, netdev@vger.kernel.org,
-    pabeni@redhat.com, paul@paul-moore.com, serge@hallyn.com,
-    syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [net?] KASAN: slab-out-of-bounds Read in dns_resolver_preparse
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D9F1D554
+	for <keyrings@vger.kernel.org>; Sat, 23 Dec 2023 23:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-7b7018c9476so274483139f.0
+        for <keyrings@vger.kernel.org>; Sat, 23 Dec 2023 15:59:06 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703375946; x=1703980746;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MnE90/gM+FOrwq3n/A3KUGVcXoe8EyUry4mDboMk71A=;
+        b=Yn/L4uQai8gH36QxO1ixzSlWcdZ/W2AM8W546JTzh7oLdqnMCqVNJfZjwk0M/abso9
+         lGUXV/3EIgTFYJawAJse4SsL5KtLn2cgT0iNN56HSp2d8N5PIIvY1aKNqMIFHXz5AWzv
+         KcVrEaaadpuY5CcrjWThyUSJWMHFtpvIhfmINJSpThnXOEoP/SOrBOU0+kLGpSDD9W0Q
+         Wwq2XnMhjf6WBQ062CZwoUG/DnpHaC7tCH/3G40y0WgaRb0l8IWG3OpQ5PdsnUgaXeVZ
+         wTRwuqFnie6kEcAe//ykgBkWNJ0woNbLtt9fA/CPCPHkRBpaKc1ulilo6Ggfgk5bDcEi
+         1Jrg==
+X-Gm-Message-State: AOJu0YzSPHpERqr1yRgf+6nHaxUoaCKIeGIldbYsZqrJikxKDeW55/ZO
+	qb7tsQVVV5xpNBmMMfYobBgr5C0PXee0Rs65o1cjOLNvL/sk
+X-Google-Smtp-Source: AGHT+IHdzy992p3eOYSCm1ExrqtgEjAANMZE46uTFzCGwczENlpyuH3RnOK6ks2u2GJyi5rfC3cm7A/jZHBGKzTo/cWixzyqFyxa
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2592300.1703374471.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 23 Dec 2023 23:34:31 +0000
-Message-ID: <2592301.1703374471@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+X-Received: by 2002:a05:6e02:1be1:b0:35f:e864:f6f with SMTP id
+ y1-20020a056e021be100b0035fe8640f6fmr275747ilv.0.1703375945865; Sat, 23 Dec
+ 2023 15:59:05 -0800 (PST)
+Date: Sat, 23 Dec 2023 15:59:05 -0800
+In-Reply-To: <2592301.1703374471@warthog.procyon.org.uk>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000002c1f71060d361ece@google.com>
+Subject: Re: [syzbot] [net?] KASAN: slab-out-of-bounds Read in dns_resolver_preparse
+From: syzbot <syzbot+94bbb75204a05da3d89f@syzkaller.appspotmail.com>
+To: davem@davemloft.net, dhowells@redhat.com, edumazet@google.com, 
+	jarkko@kernel.org, jmorris@namei.org, keyrings@vger.kernel.org, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, paul@paul-moore.com, serge@hallyn.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.gi=
-t master
+Hello,
 
-diff --git a/net/dns_resolver/dns_key.c b/net/dns_resolver/dns_key.c
-index 2a6d363763a2..f18ca02aa95a 100644
---- a/net/dns_resolver/dns_key.c
-+++ b/net/dns_resolver/dns_key.c
-@@ -91,8 +91,6 @@ const struct cred *dns_resolver_cache;
- static int
- dns_resolver_preparse(struct key_preparsed_payload *prep)
- {
--	const struct dns_server_list_v1_header *v1;
--	const struct dns_payload_header *bin;
- 	struct user_key_payload *upayload;
- 	unsigned long derrno;
- 	int ret;
-@@ -103,27 +101,28 @@ dns_resolver_preparse(struct key_preparsed_payload *=
-prep)
- 		return -EINVAL;
- =
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
- 	if (data[0] =3D=3D 0) {
-+		const struct dns_server_list_v1_header *v1;
-+
- 		/* It may be a server list. */
--		if (datalen <=3D sizeof(*bin))
-+		if (datalen <=3D sizeof(*v1))
- 			return -EINVAL;
- =
+Reported-and-tested-by: syzbot+94bbb75204a05da3d89f@syzkaller.appspotmail.com
 
--		bin =3D (const struct dns_payload_header *)data;
--		kenter("[%u,%u],%u", bin->content, bin->version, datalen);
--		if (bin->content !=3D DNS_PAYLOAD_IS_SERVER_LIST) {
-+		v1 =3D (const struct dns_server_list_v1_header *)data;
-+		kenter("[%u,%u],%u", v1->hdr.content, v1->hdr.version, datalen);
-+		if (v1->hdr.content !=3D DNS_PAYLOAD_IS_SERVER_LIST) {
- 			pr_warn_ratelimited(
- 				"dns_resolver: Unsupported content type (%u)\n",
--				bin->content);
-+				v1->hdr.content);
- 			return -EINVAL;
- 		}
- =
+Tested on:
 
--		if (bin->version !=3D 1) {
-+		if (v1->hdr.version !=3D 1) {
- 			pr_warn_ratelimited(
- 				"dns_resolver: Unsupported server list version (%u)\n",
--				bin->version);
-+				v1->hdr.version);
- 			return -EINVAL;
- 		}
- =
+commit:         3f82f1c3 Merge tag 'x86-urgent-2023-12-23' of git://gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=132be7e9e80000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=9f7c7b3fa354ead9
+dashboard link: https://syzkaller.appspot.com/bug?extid=94bbb75204a05da3d89f
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=15ef6e26e80000
 
--		v1 =3D (const struct dns_server_list_v1_header *)bin;
- 		if ((v1->status !=3D DNS_LOOKUP_GOOD &&
- 		     v1->status !=3D DNS_LOOKUP_GOOD_WITH_BAD)) {
- 			if (prep->expiry =3D=3D TIME64_MAX)
-
+Note: testing is done by a robot and is best-effort only.
 
