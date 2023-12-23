@@ -1,173 +1,171 @@
-Return-Path: <keyrings+bounces-327-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-328-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5532681D545
-	for <lists+keyrings@lfdr.de>; Sat, 23 Dec 2023 18:29:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22A8E81D636
+	for <lists+keyrings@lfdr.de>; Sat, 23 Dec 2023 20:15:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E00551F21484
-	for <lists+keyrings@lfdr.de>; Sat, 23 Dec 2023 17:29:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9FE41F21B4F
+	for <lists+keyrings@lfdr.de>; Sat, 23 Dec 2023 19:15:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D23D10962;
-	Sat, 23 Dec 2023 17:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8144714F90;
+	Sat, 23 Dec 2023 19:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SGjc16AT"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Uw0cPQxQ"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE2BE12E71;
-	Sat, 23 Dec 2023 17:29:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5621DC433C8;
-	Sat, 23 Dec 2023 17:29:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1703352545;
-	bh=7xG6o54wRSyxhLE5knTREAIYMUB47waY0f2uTnrJ8Y0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SGjc16ATLDegO3xcDc4uo3f6yfiQzSUA2ip8Lfmg7uIgVBm84VUfpA7fdKtjtQQX2
-	 mCEStsb6okKJO0jI6XNhhImL2WgbTaQ6cOT5uvz9kfPlpCC3Cy3fmy7PksUfrKJjmu
-	 SQj2gEx3c3zy6WoFu1sJV5+bmA0dl0AyvtOJpCaigrxgv4DBqj4j4xo9ugO6hV2z6d
-	 sKOmklTMiLes054XPs2Uka7IMCJXmS6e3dYQBa/EYbGoNSdffgLRDFKjqDwzqpY3Br
-	 HEskgr05zQdv+o11jRs1yqfLNLSJzefrqZCLOc3q4zboFQbZ+DfuRa1UJSBK5omam4
-	 d4OOg7/WaXLNw==
-Date: Sat, 23 Dec 2023 17:28:58 +0000
-From: Simon Horman <horms@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: torvalds@linux-foundation.org,
-	Markus Suvanto <markus.suvanto@gmail.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Wang Lei <wang840925@gmail.com>, Jeff Layton <jlayton@redhat.com>,
-	Steve French <smfrench@gmail.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org, keyrings@vger.kernel.org,
-	linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org, netdev@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Edward Adam Davis <eadavis@qq.com>
-Subject: Re: [GIT PULL] afs, dns: Fix dynamic root interaction with negative
- DNS
-Message-ID: <20231223172858.GI201037@kernel.org>
-References: <1843374.1703172614@warthog.procyon.org.uk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2C9B15481
+	for <keyrings@vger.kernel.org>; Sat, 23 Dec 2023 19:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-40d2764c0f2so35929255e9.2
+        for <keyrings@vger.kernel.org>; Sat, 23 Dec 2023 11:14:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1703358892; x=1703963692; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=vmydVtrXfV1+PhmHNSQyFxq8qaU40/ai4YL8AqJQUW0=;
+        b=Uw0cPQxQTwg4gQRJK86IVpSNf+W/H4J5yhcwCk/B7XO8iP4XcSiSd+NyMBm1q65tka
+         vS7Jm8yN+lXFv30CF3kvTj1W1I8Z4qpm3d2LkTRTpTRCuv3Ig3wXiCIS1p5faKEk1Eqg
+         SDcMUMdYIAESSLkusqkcWYVR2W/jpVhdFyQuo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1703358892; x=1703963692;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vmydVtrXfV1+PhmHNSQyFxq8qaU40/ai4YL8AqJQUW0=;
+        b=WBDSWW9Ot7if45H+TqyzYisbiS2TL5HIIxS+1fpf7zdmKw08YRWfQcOLVFd+wogvBa
+         ZO3uGmMXNelEBgfxSzHHpGo4sYTFUmuyeHgmqRkNRNhExQntOKZYc9j9vqGVHOL3ijJl
+         w50aF5DusiF0RMytInRh9O/gBpGaVsc2pmrMOCFYh/h++/28UVDGJHJ3WeQBfIJpU62E
+         7SzJI8MXpXWaZTGkyuw7EaJgahhhWkVPdKFhUg8H5KDcVIXRGqrenqA/jrIGB9Y6n+Jz
+         leIfevQ0nvSHV7QifY7q8X8avaKuIhYyVux5RFTpO6BPT9dkkRczjOoGOV9CTTw59Yic
+         KdqQ==
+X-Gm-Message-State: AOJu0YxJwohQCcLwpCIKuQuNswzKvaKseLXxXekvt+b/l74U9MSVj5S/
+	JHuA9YBfPn4AOKEjIlYKT6WaiblsSSis8NlLlF/0Si6bz7MCtA==
+X-Google-Smtp-Source: AGHT+IGv8W5KK9D1HS0QI9wR8i3xmZL8cLJEMboE3mmc+se3n2wzQaqbPtGgp59+mrsLcxeoQK7OmA==
+X-Received: by 2002:a05:600c:c0c:b0:40d:43fe:e9b5 with SMTP id fm12-20020a05600c0c0c00b0040d43fee9b5mr1597037wmb.69.1703358891853;
+        Sat, 23 Dec 2023 11:14:51 -0800 (PST)
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
+        by smtp.gmail.com with ESMTPSA id ka14-20020a170907920e00b00a26a29e50fcsm3154829ejb.38.2023.12.23.11.14.49
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 23 Dec 2023 11:14:50 -0800 (PST)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a2331caab22so298639566b.3
+        for <keyrings@vger.kernel.org>; Sat, 23 Dec 2023 11:14:49 -0800 (PST)
+X-Received: by 2002:a17:906:73d5:b0:a23:3bf5:bc73 with SMTP id
+ n21-20020a17090673d500b00a233bf5bc73mr1443998ejl.58.1703358889639; Sat, 23
+ Dec 2023 11:14:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1843374.1703172614@warthog.procyon.org.uk>
+References: <1843374.1703172614@warthog.procyon.org.uk> <20231223172858.GI201037@kernel.org>
+In-Reply-To: <20231223172858.GI201037@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sat, 23 Dec 2023 11:14:32 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wgJz36ZE66_8gXjP_TofkkugXBZEpTr_Dtc_JANsH1SEw@mail.gmail.com>
+Message-ID: <CAHk-=wgJz36ZE66_8gXjP_TofkkugXBZEpTr_Dtc_JANsH1SEw@mail.gmail.com>
+Subject: Re: [GIT PULL] afs, dns: Fix dynamic root interaction with negative DNS
+To: Simon Horman <horms@kernel.org>
+Cc: David Howells <dhowells@redhat.com>, Markus Suvanto <markus.suvanto@gmail.com>, 
+	Marc Dionne <marc.dionne@auristor.com>, Wang Lei <wang840925@gmail.com>, 
+	Jeff Layton <jlayton@redhat.com>, Steve French <smfrench@gmail.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	linux-afs@lists.infradead.org, keyrings@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	ceph-devel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Edward Adam Davis <eadavis@qq.com>
+Content-Type: multipart/mixed; boundary="0000000000008aede3060d322575"
 
-+ Edward Adam Davis <eadavis@qq.com>
+--0000000000008aede3060d322575
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Dec 21, 2023 at 03:30:14PM +0000, David Howells wrote:
-> Hi Linus,
-> 
-> Could you apply this, please?  It's intended to improve the interaction of
-> arbitrary lookups in the AFS dynamic root that hit DNS lookup failures[1]
-> where kafs behaves differently from openafs and causes some applications to
-> fail that aren't expecting that.  Further, negative DNS results aren't
-> getting removed and are causing failures to persist.
-> 
->  (1) Always delete unused (particularly negative) dentries as soon as
->      possible so that they don't prevent future lookups from retrying.
-> 
->  (2) Fix the handling of new-style negative DNS lookups in ->lookup() to
->      make them return ENOENT so that userspace doesn't get confused when
->      stat succeeds but the following open on the looked up file then fails.
-> 
->  (3) Fix key handling so that DNS lookup results are reclaimed almost as
->      soon as they expire rather than sitting round either forever or for an
->      additional 5 mins beyond a set expiry time returning EKEYEXPIRED.
->      They persist for 1s as /bin/ls will do a second stat call if the first
->      fails.
-> 
-> Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-> 
-> Thanks,
-> David
-> 
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=216637 [1]
-> Link: https://lore.kernel.org/r/20231211163412.2766147-1-dhowells@redhat.com/ # v1
-> Link: https://lore.kernel.org/r/20231211213233.2793525-1-dhowells@redhat.com/ # v2
-> Link: https://lore.kernel.org/r/20231212144611.3100234-1-dhowells@redhat.com/ # v3
-> Link: https://lore.kernel.org/r/20231221134558.1659214-1-dhowells@redhat.com/ # v4
-> ---
-> The following changes since commit ceb6a6f023fd3e8b07761ed900352ef574010bcb:
-> 
->   Linux 6.7-rc6 (2023-12-17 15:19:28 -0800)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git tags/afs-fixes-20231221
-> 
-> for you to fetch changes up to 39299bdd2546688d92ed9db4948f6219ca1b9542:
-> 
->   keys, dns: Allow key types (eg. DNS) to be reclaimed immediately on expiry (2023-12-21 13:47:38 +0000)
-> 
-> ----------------------------------------------------------------
-> AFS fixes
-> 
-> ----------------------------------------------------------------
-> David Howells (3):
->       afs: Fix the dynamic root's d_delete to always delete unused dentries
->       afs: Fix dynamic root lookup DNS check
->       keys, dns: Allow key types (eg. DNS) to be reclaimed immediately on expiry
+On Sat, 23 Dec 2023 at 09:29, Simon Horman <horms@kernel.org> wrote:
+>
+>
+>         if (data[0] == 0) {
+>                 /* It may be a server list. */
+> -               if (datalen <= sizeof(*bin))
+> +               if (datalen <= sizeof(*v1))
+>                         return -EINVAL;
+>
+>                 bin = (const struct dns_payload_header *)data;
 
-Hi Linus, David, Edward, Networking maintainers, all,
+Ugh, I hate how it checks the size of a *different* structure than the
+one it then assigns the pointer to.
 
-This is a heads up that my understanding is that the last patch introduces
-a buffer overrun for which a patch has been posted. Ordinarily I would
-think that the fix should go through net. But the above patches aren't in
-net yet.
+So I get the feeling that we should get rid of 'bin' entirely, and
+just use the 'v1' pointer, since it literally checks that that is what
+it is, and then the size check matches the thing we're casting things
+to.
 
-Given a) we're now in a holiday season and b) the severity of this
-problem is unclear (to me), perhaps it is best to wait a bit then
-post the fix to net?
+So then "bin->xyz" becomes "v1->hdr.xyz".
 
-Link: https://lore.kernel.org/netdev/tencent_7D663C8936BA96F837124A4474AF76ED6709@qq.com/
+Yes, the patch becomes a bit bigger, but I think the end result is a
+whole lot more obvious and maintainable.
 
-N.B. The hash in the fixes tag for the fix patch is now incorrect.
+I'd also move the remaining 'v1' variable declaration to the inner
+context where it's actually used.
 
-For reference the fix, from the link above, is below.
-I've fixed the hash for the fixes tag and added the posted review tag.
-And added my own SoB, because the patch is in this email.
+IOW, I personally would be much happier with a patch like the attached, but I
 
-From: Edward Adam Davis <eadavis@qq.com>
+ (a) don't want to take credit for this, since my change is purely syntactic
 
-bin will be forcibly converted to "struct dns_server_list_v1_header *", so it 
-is necessary to compare datalen with sizeof(*v1).
+ (b) have not tested this patch apart from checking that it compiles
+in at least one config
 
-Fixes: 39299bdd2546 ("keys, dns: Allow key types (eg. DNS) to be reclaimed immediately on expiry")
-Reported-and-tested-by: syzbot+94bbb75204a05da3d89f@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Simon Horman <horms@kernel.org>
+so honestly, I'd love to see this patch come back to me with sign-offs
+and tested-bys by the actual people who noticed this.
 
----
- net/dns_resolver/dns_key.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hmm?
 
-diff --git a/net/dns_resolver/dns_key.c b/net/dns_resolver/dns_key.c
-index 3233f4f25fed..15f19521021c 100644
---- a/net/dns_resolver/dns_key.c
-+++ b/net/dns_resolver/dns_key.c
-@@ -104,7 +104,7 @@ dns_resolver_preparse(struct key_preparsed_payload *prep)
- 
- 	if (data[0] == 0) {
- 		/* It may be a server list. */
--		if (datalen <= sizeof(*bin))
-+		if (datalen <= sizeof(*v1))
- 			return -EINVAL;
- 
- 		bin = (const struct dns_payload_header *)data;
--- 
-2.43.0
+                 Linus
 
+--0000000000008aede3060d322575
+Content-Type: text/x-patch; charset="US-ASCII"; name="patch.diff"
+Content-Disposition: attachment; filename="patch.diff"
+Content-Transfer-Encoding: base64
+Content-ID: <f_lqifv8pp0>
+X-Attachment-Id: f_lqifv8pp0
 
+IG5ldC9kbnNfcmVzb2x2ZXIvZG5zX2tleS5jIHwgMTkgKysrKysrKysrLS0tLS0tLS0tLQogMSBm
+aWxlIGNoYW5nZWQsIDkgaW5zZXJ0aW9ucygrKSwgMTAgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0
+IGEvbmV0L2Ruc19yZXNvbHZlci9kbnNfa2V5LmMgYi9uZXQvZG5zX3Jlc29sdmVyL2Ruc19rZXku
+YwppbmRleCAyYTZkMzYzNzYzYTIuLmYxOGNhMDJhYTk1YSAxMDA2NDQKLS0tIGEvbmV0L2Ruc19y
+ZXNvbHZlci9kbnNfa2V5LmMKKysrIGIvbmV0L2Ruc19yZXNvbHZlci9kbnNfa2V5LmMKQEAgLTkx
+LDggKzkxLDYgQEAgY29uc3Qgc3RydWN0IGNyZWQgKmRuc19yZXNvbHZlcl9jYWNoZTsKIHN0YXRp
+YyBpbnQKIGRuc19yZXNvbHZlcl9wcmVwYXJzZShzdHJ1Y3Qga2V5X3ByZXBhcnNlZF9wYXlsb2Fk
+ICpwcmVwKQogewotCWNvbnN0IHN0cnVjdCBkbnNfc2VydmVyX2xpc3RfdjFfaGVhZGVyICp2MTsK
+LQljb25zdCBzdHJ1Y3QgZG5zX3BheWxvYWRfaGVhZGVyICpiaW47CiAJc3RydWN0IHVzZXJfa2V5
+X3BheWxvYWQgKnVwYXlsb2FkOwogCXVuc2lnbmVkIGxvbmcgZGVycm5vOwogCWludCByZXQ7CkBA
+IC0xMDMsMjcgKzEwMSwyOCBAQCBkbnNfcmVzb2x2ZXJfcHJlcGFyc2Uoc3RydWN0IGtleV9wcmVw
+YXJzZWRfcGF5bG9hZCAqcHJlcCkKIAkJcmV0dXJuIC1FSU5WQUw7CiAKIAlpZiAoZGF0YVswXSA9
+PSAwKSB7CisJCWNvbnN0IHN0cnVjdCBkbnNfc2VydmVyX2xpc3RfdjFfaGVhZGVyICp2MTsKKwog
+CQkvKiBJdCBtYXkgYmUgYSBzZXJ2ZXIgbGlzdC4gKi8KLQkJaWYgKGRhdGFsZW4gPD0gc2l6ZW9m
+KCpiaW4pKQorCQlpZiAoZGF0YWxlbiA8PSBzaXplb2YoKnYxKSkKIAkJCXJldHVybiAtRUlOVkFM
+OwogCi0JCWJpbiA9IChjb25zdCBzdHJ1Y3QgZG5zX3BheWxvYWRfaGVhZGVyICopZGF0YTsKLQkJ
+a2VudGVyKCJbJXUsJXVdLCV1IiwgYmluLT5jb250ZW50LCBiaW4tPnZlcnNpb24sIGRhdGFsZW4p
+OwotCQlpZiAoYmluLT5jb250ZW50ICE9IEROU19QQVlMT0FEX0lTX1NFUlZFUl9MSVNUKSB7CisJ
+CXYxID0gKGNvbnN0IHN0cnVjdCBkbnNfc2VydmVyX2xpc3RfdjFfaGVhZGVyICopZGF0YTsKKwkJ
+a2VudGVyKCJbJXUsJXVdLCV1IiwgdjEtPmhkci5jb250ZW50LCB2MS0+aGRyLnZlcnNpb24sIGRh
+dGFsZW4pOworCQlpZiAodjEtPmhkci5jb250ZW50ICE9IEROU19QQVlMT0FEX0lTX1NFUlZFUl9M
+SVNUKSB7CiAJCQlwcl93YXJuX3JhdGVsaW1pdGVkKAogCQkJCSJkbnNfcmVzb2x2ZXI6IFVuc3Vw
+cG9ydGVkIGNvbnRlbnQgdHlwZSAoJXUpXG4iLAotCQkJCWJpbi0+Y29udGVudCk7CisJCQkJdjEt
+Pmhkci5jb250ZW50KTsKIAkJCXJldHVybiAtRUlOVkFMOwogCQl9CiAKLQkJaWYgKGJpbi0+dmVy
+c2lvbiAhPSAxKSB7CisJCWlmICh2MS0+aGRyLnZlcnNpb24gIT0gMSkgewogCQkJcHJfd2Fybl9y
+YXRlbGltaXRlZCgKIAkJCQkiZG5zX3Jlc29sdmVyOiBVbnN1cHBvcnRlZCBzZXJ2ZXIgbGlzdCB2
+ZXJzaW9uICgldSlcbiIsCi0JCQkJYmluLT52ZXJzaW9uKTsKKwkJCQl2MS0+aGRyLnZlcnNpb24p
+OwogCQkJcmV0dXJuIC1FSU5WQUw7CiAJCX0KIAotCQl2MSA9IChjb25zdCBzdHJ1Y3QgZG5zX3Nl
+cnZlcl9saXN0X3YxX2hlYWRlciAqKWJpbjsKIAkJaWYgKCh2MS0+c3RhdHVzICE9IEROU19MT09L
+VVBfR09PRCAmJgogCQkgICAgIHYxLT5zdGF0dXMgIT0gRE5TX0xPT0tVUF9HT09EX1dJVEhfQkFE
+KSkgewogCQkJaWYgKHByZXAtPmV4cGlyeSA9PSBUSU1FNjRfTUFYKQo=
+--0000000000008aede3060d322575--
 
