@@ -1,109 +1,110 @@
-Return-Path: <keyrings+bounces-347-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-348-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635F681F239
-	for <lists+keyrings@lfdr.de>; Wed, 27 Dec 2023 22:36:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1BB081F404
+	for <lists+keyrings@lfdr.de>; Thu, 28 Dec 2023 02:56:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20CF4281EE9
-	for <lists+keyrings@lfdr.de>; Wed, 27 Dec 2023 21:36:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C0BB1C20DF4
+	for <lists+keyrings@lfdr.de>; Thu, 28 Dec 2023 01:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B1247F59;
-	Wed, 27 Dec 2023 21:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8B015B3;
+	Thu, 28 Dec 2023 01:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TwWULeo8"
+	dkim=pass (2048-bit key) header.d=benboeckel.net header.i=@benboeckel.net header.b="e7NzKu3N";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="YRYIJfnq"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B060347F55
-	for <keyrings@vger.kernel.org>; Wed, 27 Dec 2023 21:36:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7810827e54eso530998585a.2
-        for <keyrings@vger.kernel.org>; Wed, 27 Dec 2023 13:36:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1703712982; x=1704317782; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=F59TL2r9+gmkl9Lt1/UOOhoybbFjeFixeFZdCwpZoIg=;
-        b=TwWULeo8z8AB/dpYn1FtCj6mPEUfllCEKtVm7lHnjhyf4LK24D2WA619BzmhhaD6Hq
-         /huPBp+x8oRaSrLZ1RkXsZjF//gVSNRkN9Jnq/DnkPyLx3Ch8uS4/ZuDuxRrg3a0cfPL
-         SXRrGwSaEF9HE8/plNf5d0UY0fB7Ga4wqjrOEbS+sX2o521RSsphBMkPrkrOWvhvAPmv
-         dKIaLIafKB64dhyC0DLhFe6jhpLmQHdEsnJ1y4t2l44GXnFDNImOVa4hRd7e9vK0aNHd
-         tWj1koQZtofW31xM6wwA80mwjZ4X2CbWHPHE1EKa5D/H0eyjARCpiwvSDw/EoaEHSv+v
-         xSNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703712982; x=1704317782;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=F59TL2r9+gmkl9Lt1/UOOhoybbFjeFixeFZdCwpZoIg=;
-        b=w4itfnTye5EimWUEJ2oyUR9aWGs82BrVlV6n9CbE/ZcAqaZOGwFvwL3Jdlyz/4E7oH
-         ouJPsoFPyRY27KnDl7tlDHEmsc8RFaIRhN2VTcwNoNzn8kpBILG0gYjqWLtg3aNCvtl+
-         WnmvXC4FRK/Q3P5hng/sROg8mC20K6z7jaACUTSuq70Vaufp3/vWFfWq2j4Zf/ZwSLD6
-         gLfW4BNKFNhYzUlT3YzowUq2Pwcm2tBBx9uHd4H93pd/aT8bf72TIdt6wjOgUnt4Gd1q
-         fDKqmtBgX0o3VuYEJIG/NXetab02VXE/zwB4H9bzwXk744VLlph+Sub8mM8xX50TmSHX
-         bwAQ==
-X-Gm-Message-State: AOJu0Yy7SVt3zBEc3bB/ZK53bntOrFdqI8Gbhv5yw2R2EdjMKa26YdNS
-	Gl2T1+D3Bj5tYKjQQYV1rAuAfcuXS30=
-X-Google-Smtp-Source: AGHT+IEf1oZfM1kJJ/dlSR1e+ZU0WPb0dfU35xWdr9bDF0mOd1GeNNO+lzKSA3jIeO3BNVKGFMzXHg==
-X-Received: by 2002:a05:620a:2611:b0:781:3bcf:ce1a with SMTP id z17-20020a05620a261100b007813bcfce1amr11180278qko.134.1703712982525;
-        Wed, 27 Dec 2023 13:36:22 -0800 (PST)
-Received: from localhost.localdomain ([2602:47:d950:3e00:31d5:414f:e827:d642])
-        by smtp.googlemail.com with ESMTPSA id br41-20020a05620a462900b007815ce9fe78sm985215qkb.92.2023.12.27.13.36.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Dec 2023 13:36:22 -0800 (PST)
-From: Nicholas Vinson <nvinson234@gmail.com>
-To: keyrings@vger.kernel.org,
-	dhowells@redhat.com
-Cc: Nicholas Vinson <nvinson234@gmail.com>
-Subject: [keyutils] Remove undefined functions afrom version.lds
-Date: Wed, 27 Dec 2023 16:35:16 -0500
-Message-ID: <85561febfcf0618a9280448d5c53775646f470d6.1703712863.git.nvinson234@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B7D136F
+	for <keyrings@vger.kernel.org>; Thu, 28 Dec 2023 01:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=benboeckel.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=benboeckel.net
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailout.nyi.internal (Postfix) with ESMTP id 0FE4A5C01AD;
+	Wed, 27 Dec 2023 20:56:09 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Wed, 27 Dec 2023 20:56:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1703728569; x=
+	1703814969; bh=/w7Vsxxre5/xKj+1zxQumws9yVqXYyb02kdmhCMqo5M=; b=e
+	7NzKu3NzTUoQdQbzZ2X1uoaD8iKqGGcjhIwlzHF2joir8oHsGOxGAZYXherFPQdZ
+	se7oWmZbWDZhAutMGYZQJYRbSqA+UOG6RRn6eKbPeqBHGMca7vksZPuzi7BIX6Mz
+	MQE+rMCblX0j+tntZwu54hRG8wKr85zaLvEieR3XaTB6ck97AFyG1y0xSBWHE1Yd
+	F3Ow6Bj4Rlex7EcY90dmAxqYjrmiSv2AIDBjfsjwVU5jdOso2Ife/CIeLWAOVNK0
+	dD3chUOWomwDdVfAHjoQwt3YVwWXMtGsfs//HZFUE0xUuCuvjyDByHFj/t/y89Ij
+	HcI2fHb+YC5iYWEhjtznw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1703728569; x=1703814969; bh=/w7Vsxxre5/xKj+1zxQumws9yVqX
+	Yyb02kdmhCMqo5M=; b=YRYIJfnqm1v5XLASGGWG68dvWgVXIAeS2FCPWowX3zFi
+	GGA7kUOZCd6vQSIAKqaJvUYj2miByx+fOPcXqlKwaBo9sO7Y+T/+0PnCbOsvXtwk
+	VVIjmwjhJ1qGp+0hO216yEiFLA4ctAyYkvKg43ZfB+qvQs/Mhz2EvNiwKBgs38ey
+	Oonv7KQXXjAUQDOFwPDFCdL8MioqBE1N3sY+fE610WabBqQloyQUxOYIWAv2e3yv
+	kN5WDGH3raVJKTYKLNUAC2Dfflm6wjsNPH7679tvMUaRdUjf11YFwclDlX+ozdPO
+	zDaANa9UJnLVl9sZasN3yhJq+AgWm8tdqbcpK/6ItQ==
+X-ME-Sender: <xms:uNWMZeed2mU5p_FvB4rxw0intt0t05-o8_8sbY_gqZgy4KFBc_JCgg>
+    <xme:uNWMZYPh3PIqXpcKK6hDv3gx0kFrAm3sBdAU5aq2libHx9dou_PIjbHIfowcb_RVN
+    KlcI0R79OZ7bHcmKRg>
+X-ME-Received: <xmr:uNWMZfgOzFD2F411IfbGG9YnQM3VVGr7esyQKqZaTG1B_sgJWPMdEz4EjPAMKTWikMY1_JgonCiHrr9sDUcsmBERl4mgfKE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdeftddggedvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujggfsehttdertddtreejnecuhfhrohhmpeeuvghn
+    uceuohgvtghkvghluceomhgvsegsvghnsghovggtkhgvlhdrnhgvtheqnecuggftrfgrth
+    htvghrnhepfefhledvtdehudejgeejvdevffeuuefhvdelueehueehfeevkeduuddvvdeg
+    feffnecuffhomhgrihhnpehgihhtlhgrsgdrtghomhenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmvgessggvnhgsohgvtghkvghlrdhnvght
+X-ME-Proxy: <xmx:uNWMZb-b2N1Eam9xVa2GWjazZKH6yFb1tsLmXBjxX9R6jqq6Ufw7kg>
+    <xmx:uNWMZauuf4M2JDptaIfxD5d3is7t8F_yl6GrbljVgXNAB8hOyb1XOA>
+    <xmx:uNWMZSGd1YS4pxqFBF4X0-UWUuG9wQXRT511wQcwP39Sqr7JQcQLAg>
+    <xmx:udWMZfW_mWBSBYPpcvmg5TmdW7M75o8S6Q7PY9yPrWXsmUA_AAP87w>
+Feedback-ID: iffc1478b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 27 Dec 2023 20:56:08 -0500 (EST)
+Date: Wed, 27 Dec 2023 20:56:05 -0500
+From: Ben Boeckel <me@benboeckel.net>
+To: Nicholas Vinson <nvinson234@gmail.com>
+Cc: keyrings@vger.kernel.org, dhowells@redhat.com
+Subject: Re: [keyutils] Remove undefined functions afrom version.lds
+Message-ID: <ZYzVtdviEYQ6AN-6@farprobe>
+References: <85561febfcf0618a9280448d5c53775646f470d6.1703712863.git.nvinson234@gmail.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <85561febfcf0618a9280448d5c53775646f470d6.1703712863.git.nvinson234@gmail.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
 
-Functions keyctl_restrict() and keyctl_dh_compute_kdf_alloc() are
-nodefined. Their inclusion in version.lds causes clang/llvm LTO
-optimizations to fail with error messages similar to
+On Wed, Dec 27, 2023 at 16:35:16 -0500, Nicholas Vinson wrote:
+> Functions keyctl_restrict() and keyctl_dh_compute_kdf_alloc() are
+> nodefined. Their inclusion in version.lds causes clang/llvm LTO
+> optimizations to fail with error messages similar to
+> 
+>     error: version script assignment of KEYUTILS_1.7 to symbol
+>     keyctl_restrict failed: symbol not defined
+> 
+> This patch fixes the issue by removing the symbol names from
+> version.lds.
 
-    error: version script assignment of KEYUTILS_1.7 to symbol
-    keyctl_restrict failed: symbol not defined
+FYI, there is also a GitLab repo here if you want to submit an MR:
 
-This patch fixes the issue by removing the symbol names from
-version.lds.
+    https://gitlab.com/linux-afs/keyutils
 
-Fixes Gentoo bug 914637 (https://bugs.gentoo.org/914637)
+I believe it has yet to be seen if this is preferred or GitLab. Or
+whether the ML will get GitLab MR notifications.
 
-Signed-off-by: Nicholas Vinson <nvinson234@gmail.com>
----
- version.lds | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/version.lds b/version.lds
-index 6c34adf..6186fb6 100644
---- a/version.lds
-+++ b/version.lds
-@@ -76,9 +76,7 @@ KEYUTILS_1.6 {
- 
- KEYUTILS_1.7 {
- 	/* management functions */
--	keyctl_restrict;
- 	keyctl_dh_compute_kdf;
--	keyctl_dh_compute_kdf_alloc;
- 
- } KEYUTILS_1.6;
- 
--- 
-2.43.0
-
+--Ben
 
