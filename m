@@ -1,157 +1,226 @@
-Return-Path: <keyrings+bounces-357-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-358-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA71A821B7C
-	for <lists+keyrings@lfdr.de>; Tue,  2 Jan 2024 13:15:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B86F4821FDF
+	for <lists+keyrings@lfdr.de>; Tue,  2 Jan 2024 18:04:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F6F0B21E22
-	for <lists+keyrings@lfdr.de>; Tue,  2 Jan 2024 12:15:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61DF02837AB
+	for <lists+keyrings@lfdr.de>; Tue,  2 Jan 2024 17:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07A5F9C4;
-	Tue,  2 Jan 2024 12:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 227D215481;
+	Tue,  2 Jan 2024 17:04:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="xN7RYPsI"
 X-Original-To: keyrings@vger.kernel.org
-Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BF1EEC6;
-	Tue,  2 Jan 2024 12:15:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.29])
-	by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4T49v03yQfz9yKXF;
-	Tue,  2 Jan 2024 19:42:20 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.27])
-	by mail.maildlp.com (Postfix) with ESMTP id 2BF741407FC;
-	Tue,  2 Jan 2024 19:56:44 +0800 (CST)
-Received: from [10.48.129.192] (unknown [10.48.129.192])
-	by APP2 (Coremail) with SMTP id GxC2BwBnGGLs+ZNlT9WtAw--.57596S2;
-	Tue, 02 Jan 2024 12:56:43 +0100 (CET)
-Message-ID: <42911719-547d-443a-b2f2-07b0cfb11f7a@huaweicloud.com>
-Date: Tue, 2 Jan 2024 12:56:26 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC8915480;
+	Tue,  2 Jan 2024 17:04:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1704215075;
+	bh=Ua5JFHQNfmeD7ZubGqCDsaHoXtvmP3dP1IybN78gw7Q=;
+	h=From:To:Subject:Date:Message-Id:From;
+	b=xN7RYPsIXEsVwu00jEfdgT9Cc3UmA83xeUOED08uBCmkfi7esFqoJwWfz6smWvKOj
+	 JxtKYlUYHQ4YPuqRhexp14BCmokByVLCeNimfWuMu5Ty215l0VHg/biRNkRS0TwIJZ
+	 WUE8CtV1FgWbHtDnMtbIesIqfbt0QQeS38NPI6X0=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id DCE4D1286811;
+	Tue,  2 Jan 2024 12:04:35 -0500 (EST)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id kE5asYah5ASJ; Tue,  2 Jan 2024 12:04:35 -0500 (EST)
+Received: from lingrow.int.hansenpartnership.com (unknown [153.66.160.227])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id A5D4F1286803;
+	Tue,  2 Jan 2024 12:04:34 -0500 (EST)
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: linux-integrity@vger.kernel.org
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	keyrings@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH v6 00/20] add integrity and security to TPM2 transactions
+Date: Tue,  2 Jan 2024 12:03:48 -0500
+Message-Id: <20240102170408.21969-1-James.Bottomley@HansenPartnership.com>
+X-Mailer: git-send-email 2.35.3
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 21/24] evm: Move to LSM infrastructure
-Content-Language: en-US
-To: Mimi Zohar <zohar@linux.ibm.com>, viro@zeniv.linux.org.uk,
- brauner@kernel.org, chuck.lever@oracle.com, jlayton@kernel.org,
- neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com,
- paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
- dmitry.kasatkin@gmail.com, dhowells@redhat.com, jarkko@kernel.org,
- stephen.smalley.work@gmail.com, eparis@parisplace.org,
- casey@schaufler-ca.com, shuah@kernel.org, mic@digikod.net
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org,
- linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
- selinux@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Roberto Sassu <roberto.sassu@huawei.com>
-References: <20231214170834.3324559-1-roberto.sassu@huaweicloud.com>
- <20231214170834.3324559-22-roberto.sassu@huaweicloud.com>
- <b03e68e9fa1803d6b2cc7a2c0260f78a05a4d88e.camel@linux.ibm.com>
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-In-Reply-To: <b03e68e9fa1803d6b2cc7a2c0260f78a05a4d88e.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:GxC2BwBnGGLs+ZNlT9WtAw--.57596S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zr15Kr1DtrW5Zr1DXryftFb_yoW5JrW3pr
-	sxG3Wjkw4DZFW7Kry8tF48X39Y9FWfGrW7Xw4vgrs2vFnrAr18try8Cay7ZFy5Cr4vkFnY
-	qFW7Arn5urn8AaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij
-	64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
-	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE
-	2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
-	xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIE
-	c7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UAkuxUUUUU=
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQAKBF1jj5giOwABs+
+Content-Transfer-Encoding: 8bit
 
-On 12/26/2023 11:13 PM, Mimi Zohar wrote:
-> On Thu, 2023-12-14 at 18:08 +0100, Roberto Sassu wrote:
->> From: Roberto Sassu <roberto.sassu@huawei.com>
->>
->> As for IMA, move hardcoded EVM function calls from various places in the
->> kernel to the LSM infrastructure, by introducing a new LSM named 'evm'
->> (last and always enabled like 'ima'). The order in the Makefile ensures
->> that 'evm' hooks are executed after 'ima' ones.
->>
->> Make EVM functions as static (except for evm_inode_init_security(), which
->> is exported), and register them as hook implementations in init_evm_lsm().
->>
->> Unlike before (see commit to move IMA to the LSM infrastructure),
->> evm_inode_post_setattr(), evm_inode_post_set_acl(),
->> evm_inode_post_remove_acl(), and evm_inode_post_removexattr() are not
->> executed for private inodes.
->>
-> 
-> Missing is a comment on moving the inline function definitions -
-> evm_inode_remove_acl(), evm_inode_post_remove_acl(), and
-> evm_inode_post_set_acl() - to evm_main.c.
+The interest in securing the TPM against interposers, both active and
+passive has risen to fever pitch with the demonstration of key
+recovery against windows bitlocker:
 
-Ok.
+https://dolosgroup.io/blog/2021/7/9/from-stolen-laptop-to-inside-the-company-network
 
->> Finally, add the LSM_ID_EVM case in lsm_list_modules_test.c
->>
->> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
->> ---
-> 
-> [...]
->> @@ -2307,9 +2299,7 @@ int security_inode_setxattr(struct mnt_idmap *idmap,
->>   
->>   	if (ret == 1)
->>   		ret = cap_inode_setxattr(dentry, name, value, size, flags);
->> -	if (ret)
->> -		return ret;
->> -	return evm_inode_setxattr(idmap, dentry, name, value, size, flags);
->> +	return ret;
->>   }
-> 
-> Even though capability will be called after EVM, it doesn't make a
-> difference in this instance.
-> 
-> [...]
-> 
->>   /**
->> @@ -2493,9 +2472,7 @@ int security_inode_removexattr(struct mnt_idmap *idmap,
->>   	ret = call_int_hook(inode_removexattr, 1, idmap, dentry, name);
->>   	if (ret == 1)
->>   		ret = cap_inode_removexattr(idmap, dentry, name);
->> -	if (ret)
->> -		return ret;
->> -	return evm_inode_removexattr(idmap, dentry, name);
->> +	return ret;
->>   }
-> 
-> 'security.capability' is one of the EVM protected xattrs.  As
-> capability isn't an LSM, it will now be called after EVM, which is a
-> problem.
+And subsequently the same attack being successful against all the
+Linux TPM based security solutions:
 
-Uhm, according to this comment in security_inode_removexattr() and 
-security_inode_setxattr():
+https://www.secura.com/blog/tpm-sniffing-attacks-against-non-bitlocker-targets
 
-	/*
-	 * SELinux and Smack integrate the cap call,
-	 * so assume that all LSMs supplying this call do so.
-	 */
+The attacks fall into two categories:
 
-We can add the call to IMA and EVM as well, to be compliant.
+1. Passive Interposers, which sit on the bus and merely observe
+2. Active Interposers, which try to manipulate TPM transactions on the
+   bus using man in the middle and packet stealing to create TPM state
+   the interposer owner desires.
 
-However, I'm missing why the two cases are different. It seems 
-cap_inode_set/removexattr() are doing just checks.
+Our broadest interposer target is the use of TPM_RS_PW for password
+authorization which sends the actual password to the TPM without any
+obfuscation and effectively hands it to any interposer. The way to fix
+this is to use real sessions for HMAC capabilities to ensure integrity
+and to use parameter and response encryption to ensure confidentiality
+of the data flowing over the TPM bus.  HMAC sessions by agreeing a
+challenge with the TPM and then giving a response which is a HMAC of
+the password and the challenge, so the application proves knowledge of
+the password to the TPM without ever transmitting the password itself.
+Using HMAC sessions when sending commands to the TPM also provides
+some measure of protection against active interposers, since the
+interposer can't interfere with or delete a HMAC'd command (because
+they can't manufacture a response with the correct HMAC).
 
-Thanks
+To protect TPM transactions where there isn't a shared secret
+(i.e. the command is something like a PCR extension which doesn't
+involve a TPM object with a password) we have to do a bit more work to
+set up sessions with a passed in encrypted secret (called a salt) to
+act in place of the shared secret in the HMAC.  This secret salt is
+effectively a random number encrypted to a public key of the TPM.  The
+final piece of the puzzle is using parameter input and response return
+encryption, so any interposer can't see the data passing from the
+application to the TPM and vice versa.
 
-Roberto
+The most insidious interposer attack of all is a reset attack: since
+the interposer has access to the TPM bus, it can assert the TPM reset
+line any time it wants.  When a TPM resets it mostly comes back in the
+same state except that all the PCRs are reset to their initial values.
+Controlling the reset line allows the interposer to change the PCR
+state after the fact by resetting the TPM and then replaying PCR
+extends to get the PCRs into a valid state to release secrets, so even
+if an attack event was recorded, the record is erased.  This reset
+attack violates the fundamental princible of non-repudiability of TPM
+logs.  Defeating the reset attack involves tying all TPM operations
+within the kernel to a property which will change detectably if the
+TPM is reset.  For that reason, we tie all TPM sessions to the null
+hierarchy we obtain at start of day and whose seed changes on every
+reset.  If an active interposer asserts a TPM reset, the new null
+primary won't match the kernel's stored one and all TPM operations
+will start failing because of HMAC mismatches in the sessions.  So if
+the kernel TPM code keeps operating, it guarantees that a reset hasn't
+occurred.
+
+The final part of the puzzle is that the machine owner must have a
+fixed idea of the EK of their TPM and should have certified this with
+the TPM manufacturer.  On every boot, the certified EK public key
+should be used to do a make credential/activate credential attestation
+key insertion and then the null key certified with the attestation
+key.  We can follow a trust on first use model where an OS
+installation will extract and verify a public EK and save it to a read
+only file.
+
+This patch series adds a simple API which can ensure the above
+properties as a layered addition to the existing TPM handling code.
+This series now includes protections for PCR extend, getting random
+numbers from the TPM and data sealing and unsealing.  It therefore
+eliminates all uses of TPM2_RS_PW in the kernel and adds encryption
+protection to sensitive data flowing into and out of the TPM.  The
+first four patches add more sophisticated buffer handling to the TPM
+which is needed to build the more complex encryption and
+authentication based commands.  Patch 6 adds all the generic
+cryptography primitives and patches 7-9 use them in critical TPM
+operations where we want to avoid or detect interposers.  Patch 10
+exports the name of the null key we used for boot/run time
+verification and patch 11 documents the security guarantees and
+expectations.
+
+This was originally sent over four years ago, with the last iteration
+being:
+
+https://lore.kernel.org/linux-integrity/1568031515.6613.31.camel@HansenPartnership.com/
+
+I'm dusting it off now because various forces at Microsoft and Google
+via the Open Compute Platform are making a lot of noise about
+interposers and we in the linux kernel look critically lacking in that
+regard, particularly for TPM trusted keys.
+
+---
+v2 fixes the problems smatch reported and adds more explanation about
+the code motion in the first few patches
+v3 rebases the encryption to be against Ard's new library function, the
+aescfb addition of which appears as patch 1.
+v4 refreshes Ard's patch, adds kernel doc (including a new patch to
+add it to the moved tpm-buf functions) updates and rewords some commit
+logs
+v5: update to proposed tpm-buf implementation (for ease of use all
+precursor patches are part of this series, so the actual session HMAC
+and encryption begins at patch 10) and add review feedback
+v6: split the original sessions patch into three and change the config
+variable name
+
+James
+
+---
+
+Ard Biesheuvel (1):
+  crypto: lib - implement library version of AES in CFB mode
+
+James Bottomley (12):
+  tpm: Move buffer handling from static inlines to real functions
+  tpm: add buffer function to point to returned parameters
+  tpm: export the context save and load commands
+  tpm: Add NULL primary creation
+  tpm: Add HMAC session start and end functions
+  tpm: Add HMAC session name/handle append
+  tpm: Add the rest of the session HMAC API
+  tpm: add hmac checks to tpm2_pcr_extend()
+  tpm: add session encryption protection to tpm2_get_random()
+  KEYS: trusted: Add session encryption protection to the seal/unseal
+    path
+  tpm: add the null key name as a sysfs export
+  Documentation: add tpm-security.rst
+
+Jarkko Sakkinen (7):
+  tpm: Remove unused tpm_buf_tag()
+  tpm: Remove tpm_send()
+  tpm: Update struct tpm_buf documentation comments
+  tpm: Store the length of the tpm_buf data separately.
+  tpm: TPM2B formatted buffers
+  tpm: Add tpm_buf_read_{u8,u16,u32}
+  KEYS: trusted: tpm2: Use struct tpm_buf for sized buffers
+
+ Documentation/security/tpm/tpm-security.rst |  216 ++++
+ drivers/char/tpm/Kconfig                    |   14 +
+ drivers/char/tpm/Makefile                   |    2 +
+ drivers/char/tpm/tpm-buf.c                  |  251 ++++
+ drivers/char/tpm/tpm-chip.c                 |    3 +
+ drivers/char/tpm/tpm-interface.c            |   26 +-
+ drivers/char/tpm/tpm-sysfs.c                |   18 +
+ drivers/char/tpm/tpm.h                      |   14 +
+ drivers/char/tpm/tpm2-cmd.c                 |   53 +-
+ drivers/char/tpm/tpm2-sessions.c            | 1178 +++++++++++++++++++
+ drivers/char/tpm/tpm2-space.c               |    8 +-
+ include/crypto/aes.h                        |    5 +
+ include/keys/trusted_tpm.h                  |    2 -
+ include/linux/tpm.h                         |  292 +++--
+ lib/crypto/Kconfig                          |    5 +
+ lib/crypto/Makefile                         |    3 +
+ lib/crypto/aescfb.c                         |  257 ++++
+ security/keys/trusted-keys/trusted_tpm1.c   |   23 +-
+ security/keys/trusted-keys/trusted_tpm2.c   |  136 ++-
+ 19 files changed, 2312 insertions(+), 194 deletions(-)
+ create mode 100644 Documentation/security/tpm/tpm-security.rst
+ create mode 100644 drivers/char/tpm/tpm-buf.c
+ create mode 100644 drivers/char/tpm/tpm2-sessions.c
+ create mode 100644 lib/crypto/aescfb.c
+
+-- 
+2.35.3
 
 
