@@ -1,122 +1,150 @@
-Return-Path: <keyrings+bounces-355-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-356-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08B908218CC
-	for <lists+keyrings@lfdr.de>; Tue,  2 Jan 2024 10:15:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E453821A85
+	for <lists+keyrings@lfdr.de>; Tue,  2 Jan 2024 11:54:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 958CF1F21F78
-	for <lists+keyrings@lfdr.de>; Tue,  2 Jan 2024 09:15:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 942A31C215FE
+	for <lists+keyrings@lfdr.de>; Tue,  2 Jan 2024 10:54:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6832F6122;
-	Tue,  2 Jan 2024 09:15:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qbjbK+L5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A940D515;
+	Tue,  2 Jan 2024 10:54:32 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3B2CA69;
-	Tue,  2 Jan 2024 09:15:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=tlEfMQFt5gK7xTvm4OYyFW6oyrGcWRnYRgh3+dnfWXQ=; b=qbjbK+L5aYe/lDZscjtenI5cjW
-	dZL/n71TVQj2zphfxq3RZ+cNggYEWOSaYIL6eYvVx5t5XbeQtXC5MfvkPEbeyWhD7ffyRT3M3U/Vd
-	VVSFZvNRo70tslTpjdD38Sg+/jUCGJ+dlQkKzla59Tw98eiFplHqpLYGh8x1cESshIjA8i2C7Sn5M
-	muL2EGVBlVq2u1U2wLBjpcL4+E4cCtxzD6oY/ijyD7c2z9wI6Hy3ySQPY+FZTT4GhfgPtObTsn+Mf
-	4GMgFwlfji7YX5rkT/+U0nnZrO6GArNuSqp3UnB6eP/3Dq/eakRRSpeSc0fIN9D8KevfYWMzxiVW4
-	BH4OtoIw==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1rKaqw-009pns-In; Tue, 02 Jan 2024 09:14:26 +0000
-Date: Tue, 2 Jan 2024 09:14:26 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: "Aiqun Yu (Maria)" <quic_aiquny@quicinc.com>
-Cc: "Eric W. Biederman" <ebiederm@xmission.com>,
-	Hillf Danton <hdanton@sina.com>, kernel@quicinc.com,
-	quic_pkondeti@quicinc.com, keescook@chromium.or,
-	viro@zeniv.linux.org.uk, brauner@kernel.org, oleg@redhat.com,
-	dhowells@redhat.com, jarkko@kernel.org, paul@paul-moore.com,
-	jmorris@namei.org, serge@hallyn.com, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH] kernel: Introduce a write lock/unlock wrapper for
- tasklist_lock
-Message-ID: <ZZPT8hMiuT1pCBP7@casper.infradead.org>
-References: <20231213101745.4526-1-quic_aiquny@quicinc.com>
- <ZXnaNSrtaWbS2ivU@casper.infradead.org>
- <87o7eu7ybq.fsf@email.froward.int.ebiederm.org>
- <ZY30k7OCtxrdR9oP@casper.infradead.org>
- <cd0f6613-9aa9-4698-bebe-0f61286d7552@quicinc.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CFFD507;
+	Tue,  2 Jan 2024 10:54:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.18.186.29])
+	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4T48R00yTDz9xGZH;
+	Tue,  2 Jan 2024 18:36:28 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.27])
+	by mail.maildlp.com (Postfix) with ESMTP id 689EF140D05;
+	Tue,  2 Jan 2024 18:54:11 +0800 (CST)
+Received: from [10.48.129.192] (unknown [10.48.129.192])
+	by APP2 (Coremail) with SMTP id GxC2BwAnIlxD65NlVSetAw--.48730S2;
+	Tue, 02 Jan 2024 11:54:10 +0100 (CET)
+Message-ID: <997cfb2f-a493-4f02-9e75-6ebb525c8406@huaweicloud.com>
+Date: Tue, 2 Jan 2024 11:53:50 +0100
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cd0f6613-9aa9-4698-bebe-0f61286d7552@quicinc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 23/24] ima: Make it independent from 'integrity' LSM
+To: Mimi Zohar <zohar@linux.ibm.com>, viro@zeniv.linux.org.uk,
+ brauner@kernel.org, chuck.lever@oracle.com, jlayton@kernel.org,
+ neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com,
+ paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+ dmitry.kasatkin@gmail.com, dhowells@redhat.com, jarkko@kernel.org,
+ stephen.smalley.work@gmail.com, eparis@parisplace.org,
+ casey@schaufler-ca.com, shuah@kernel.org, mic@digikod.net
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org,
+ linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+ selinux@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ Roberto Sassu <roberto.sassu@huawei.com>
+References: <20231214170834.3324559-1-roberto.sassu@huaweicloud.com>
+ <20231214170834.3324559-24-roberto.sassu@huaweicloud.com>
+ <5aa5986266c3a3f834114a835378455cbbff7b64.camel@linux.ibm.com>
+ <ff8e6341-1ff0-4163-b5c7-236a0e8bdc7c@huaweicloud.com>
+ <96f82924cd2fda95f0c89341215e128419bf77fd.camel@linux.ibm.com>
+Content-Language: en-US
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+In-Reply-To: <96f82924cd2fda95f0c89341215e128419bf77fd.camel@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:GxC2BwAnIlxD65NlVSetAw--.48730S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxCF1xAF47CF1rZFWkGF4xXrb_yoW5AFWrpF
+	Z7Ka4UGr1DZry2kw4vya9xZrWfK395WFW7urn0kr1kAr1vvrn0qF40kr1UuFy5Gr1Ut3WI
+	qF4UG3sxZ3Wqy3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij
+	64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
+	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE
+	2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
+	xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIE
+	c7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UAkuxUUUUU=
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAKBF1jj5QiDQABsH
 
-On Tue, Jan 02, 2024 at 10:19:47AM +0800, Aiqun Yu (Maria) wrote:
-> On 12/29/2023 6:20 AM, Matthew Wilcox wrote:
-> > On Wed, Dec 13, 2023 at 12:27:05PM -0600, Eric W. Biederman wrote:
-> > > Matthew Wilcox <willy@infradead.org> writes:
-> > > > I think the right way to fix this is to pass a boolean flag to
-> > > > queued_write_lock_slowpath() to let it know whether it can re-enable
-> > > > interrupts while checking whether _QW_WAITING is set.
-> > > 
-> > > Yes.  It seems to make sense to distinguish between write_lock_irq and
-> > > write_lock_irqsave and fix this for all of write_lock_irq.
-> > 
-> > I wasn't planning on doing anything here, but Hillf kind of pushed me into
-> > it.  I think it needs to be something like this.  Compile tested only.
-> > If it ends up getting used,
-> Happy new year!
+On 12/27/2023 8:21 PM, Mimi Zohar wrote:
+> On Wed, 2023-12-27 at 17:39 +0100, Roberto Sassu wrote:
+>> On 12/27/2023 2:22 PM, Mimi Zohar wrote:
+>>> On Thu, 2023-12-14 at 18:08 +0100, Roberto Sassu wrote:
+>>>> From: Roberto Sassu <roberto.sassu@huawei.com>
+>>>>
+>>>> Make the 'ima' LSM independent from the 'integrity' LSM by introducing IMA
+>>>> own integrity metadata (ima_iint_cache structure, with IMA-specific fields
+>>>> from the integrity_iint_cache structure), and by managing it directly from
+>>>> the 'ima' LSM.
+>>>>
+>>>> Move the remaining IMA-specific flags to security/integrity/ima/ima.h,
+>>>> since they are now unnecessary in the common integrity layer.
+>>>>
+>>>> Replace integrity_iint_cache with ima_iint_cache in various places
+>>>> of the IMA code.
+>>>>
+>>>> Then, reserve space in the security blob for the entire ima_iint_cache
+>>>> structure, so that it is available for all inodes having the security blob
+>>>> allocated (those for which security_inode_alloc() was called).  Adjust the
+>>>> IMA code accordingly, call ima_iint_inode() to retrieve the ima_iint_cache
+>>>> structure. Keep the non-NULL checks since there can be inodes without
+>>>> security blob.
+>>>
+>>> Previously the 'iint' memory was only allocated for regular files in
+>>> policy and were tagged S_IMA.  This patch totally changes when and how
+>>> memory is being allocated.  Does it make sense to allocate memory at
+>>> security_inode_alloc()?  Is this change really necessary for making IMA
+>>> a full fledged LSM?
+>>
+>> Good question. I think it wouldn't be necessary, we can reuse the same
+>> approach as in the patch 'integrity: Switch from rbtree to LSM-managed
+>> blob for integrity_iint_cache'.
+> 
+> Going forward with the v8 proposed solution would require some real
+> memory usage analysis for different types of policies.
+> 
+> To me the "integrity: Switch from rbtree to LSM-managed blob for
+> integrity_iint_cache" makes a lot more sense.   Looking back at the
+> original thread, your reasons back then for not directly allocating the
+> integrity_iint_cache are still valid for the ima_iint_cache structure.
 
-Thank you!  I know your new year is a few weeks away still ;-)
+Uhm, ok. It should not be too difficult to restore the old mechanism for 
+ima_iint_cache. Will do it in v9.
 
-> > -void __lockfunc queued_write_lock_slowpath(struct qrwlock *lock)
-> > +void __lockfunc queued_write_lock_slowpath(struct qrwlock *lock, bool irq)
-> >   {
-> >   	int cnts;
-> > @@ -82,7 +83,11 @@ void __lockfunc queued_write_lock_slowpath(struct qrwlock *lock)
-> Also a new state showed up after the current design:
-> 1. locked flag with _QW_WAITING, while irq enabled.
-> 2. And this state will be only in interrupt context.
-> 3. lock->wait_lock is hold by the write waiter.
-> So per my understanding, a different behavior also needed to be done in
-> queued_write_lock_slowpath:
->   when (unlikely(in_interrupt())) , get the lock directly.
+Thanks
 
-I don't think so.  Remember that write_lock_irq() can only be called in
-process context, and when interrupts are enabled.
+Roberto
 
-> So needed to be done in release path. This is to address Hillf's concern on
-> possibility of deadlock.
-
-Hillf's concern is invalid.
-
-> >   	/* When no more readers or writers, set the locked flag */
-> >   	do {
-> > +		if (irq)
-> > +			local_irq_enable();
-> I think write_lock_irqsave also needs to be take account. So
-> loal_irq_save(flags) should be take into account here.
-
-If we did want to support the same kind of spinning with interrupts
-enabled for write_lock_irqsave(), we'd want to pass the flags in
-and do local_irq_restore(), but I don't know how we'd support
-write_lock_irq() if we did that -- can we rely on passing in 0 for flags
-meaning "reenable" on all architectures?  And ~0 meaning "don't
-reenable" on all architectures?
-
-That all seems complicated, so I didn't do that.
+> Mimi
+> 
+>>>
+>>>>
+>>>> Don't include the inode pointer as field in the ima_iint_cache structure,
+>>>> since the association with the inode is clear. Since the inode field is
+>>>> missing in ima_iint_cache, pass the extra inode parameter to
+>>>> ima_get_verity_digest().
+>>>>
+>>>> Finally, register ima_inode_alloc_security/ima_inode_free_security() to
+>>>> initialize/deinitialize the new ima_iint_cache structure (before this task
+>>>> was done by iint_init_always() and iint_free()). Also, duplicate
+>>>> iint_lockdep_annotate() for the ima_iint_cache structure, and name it
+>>>> ima_iint_lockdep_annotate().
+>>>>
+>>>> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+>>
+> 
 
 
