@@ -1,37 +1,37 @@
-Return-Path: <keyrings+bounces-382-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-383-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D57822F29
-	for <lists+keyrings@lfdr.de>; Wed,  3 Jan 2024 15:05:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F08822F38
+	for <lists+keyrings@lfdr.de>; Wed,  3 Jan 2024 15:12:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 118C9283CC5
-	for <lists+keyrings@lfdr.de>; Wed,  3 Jan 2024 14:05:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C12F1F24499
+	for <lists+keyrings@lfdr.de>; Wed,  3 Jan 2024 14:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5901A29B;
-	Wed,  3 Jan 2024 14:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDF91A293;
+	Wed,  3 Jan 2024 14:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rKTr7qNL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VUW+dOJd"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF20E1A28A;
-	Wed,  3 Jan 2024 14:04:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35CE6C433C7;
-	Wed,  3 Jan 2024 14:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50B41A28F
+	for <keyrings@vger.kernel.org>; Wed,  3 Jan 2024 14:12:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40BAC433C7;
+	Wed,  3 Jan 2024 14:12:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704290699;
-	bh=RYNKFXB1pA6ACfuaqdpya+quA/X8Ww41O670fD+ZNNg=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=rKTr7qNLBKgIMnnNZD5kydCgVoB0ShDhCqxZzuZqnQaHxHN+3n8eAD5Q1loCLVjJR
-	 uU1d0eneow4rgu1o41DaW+lS1T3SB/GWC+sAZEwEzhpsz6huPi7L5ffd+A/Osns3xs
-	 7guQ8ydipmDJb1pAO2A/VCrWuk4yQep6SMzb5AfD3U77wP7mA/+hlmJnmLhgOvoAC0
-	 COBE5pracc5vYmGzZV2GMs3Sos2+unnWsqjHeTlXI//wPfvHXLMVJNxASe2Dt+0fkt
-	 aYVcIIjciGqJKBRkXKDfoRcP2UEytgT1ESXUAN6VvIJUMkEXdR8r+HD0owcPqTQJdy
-	 NYdIoSbmFVuKw==
+	s=k20201202; t=1704291130;
+	bh=blag6nNOEjE0iw0cGlp4hPbVBAHS0HeJvFVm+2MZZe0=;
+	h=Date:Subject:From:To:References:In-Reply-To:From;
+	b=VUW+dOJd3u6qt0sqv4Vvmk5zMxQLewZnbdLVM1UJ5rn0sZyIEi2wrlan7wHtkPOO5
+	 rhzYhz/j6spV4X6hEV0SMdYtj9HlRSIfQMdcwMIboJPG50gjTUNdMavqVnN/aR6f1Y
+	 Dc6IC0lTQwzuoQdtYwAPB1OiRfOEbvENNV1Y36XZ/aBJ9AYsxXXgiE8GloWO8Fgs9N
+	 Lzh3SJCGumLGaVhncvOMeHVy36Zo8LkMB+3lRO+4B/kzOYUsODWtBelGygIImZA4kG
+	 Pimxl2d16EXLcmWrYQpc+D1Bc97CdDKdghqt+dFFU+Sc2cHvbD7YBjQtsddEDQmOQt
+	 aACCtCICFotzA==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -40,149 +40,55 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 03 Jan 2024 16:04:54 +0200
-Message-Id: <CY54MOETXVFI.1102C6BQTO36@suppilovahvero>
-Cc: <kernel@quicinc.com>, <quic_pkondeti@quicinc.com>,
- <keescook@chromium.or>, <viro@zeniv.linux.org.uk>, <brauner@kernel.org>,
- <oleg@redhat.com>, <dhowells@redhat.com>, <paul@paul-moore.com>,
- <jmorris@namei.org>, <serge@hallyn.com>, <linux-mm@kvack.org>,
- <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <keyrings@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
- <linux-arm-msm@vger.kernel.org>
-Subject: Re: [PATCH] kernel: Introduce a write lock/unlock wrapper for
- tasklist_lock
+Date: Wed, 03 Jan 2024 16:12:08 +0200
+Message-Id: <CY54S7MB53ZC.1RD8JLZDE1MKF@suppilovahvero>
+Subject: Re: [keyutils] Remove undefined functions afrom version.lds
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Maria Yu" <quic_aiquny@quicinc.com>, <ebiederm@xmission.com>
+To: "Nicholas Vinson" <nvinson234@gmail.com>, <keyrings@vger.kernel.org>,
+ <dhowells@redhat.com>
 X-Mailer: aerc 0.15.2
-References: <20231225081932.17752-1-quic_aiquny@quicinc.com>
-In-Reply-To: <20231225081932.17752-1-quic_aiquny@quicinc.com>
+References: <85561febfcf0618a9280448d5c53775646f470d6.1703712863.git.nvinson234@gmail.com>
+In-Reply-To: <85561febfcf0618a9280448d5c53775646f470d6.1703712863.git.nvinson234@gmail.com>
 
-On Mon Dec 25, 2023 at 10:19 AM EET, Maria Yu wrote:
-> As a rwlock for tasklist_lock, there are multiple scenarios to acquire
-> read lock which write lock needed to be waiting for.
-> In freeze_process/thaw_processes it can take about 200+ms for holding rea=
-d
-> lock of tasklist_lock by walking and freezing/thawing tasks in commercial
-> devices. And write_lock_irq will have preempt disabled and local irq
-> disabled to spin until the tasklist_lock can be acquired. This leading to
-> a bad responsive performance of current system.
-> Take an example:
-> 1. cpu0 is holding read lock of tasklist_lock to thaw_processes.
-> 2. cpu1 is waiting write lock of tasklist_lock to exec a new thread with
->    preempt_disabled and local irq disabled.
-> 3. cpu2 is waiting write lock of tasklist_lock to do_exit with
->    preempt_disabled and local irq disabled.
-> 4. cpu3 is waiting write lock of tasklist_lock to do_exit with
->    preempt_disabled and local irq disabled.
-> So introduce a write lock/unlock wrapper for tasklist_lock specificly.
-> The current taskslist_lock writers all have write_lock_irq to hold
-> tasklist_lock, and write_unlock_irq to release tasklist_lock, that means
-> the writers are not suitable or workable to wait on tasklist_lock in irq
-> disabled scenarios. So the write lock/unlock wrapper here only follow the
-> current design of directly use local_irq_disable and local_irq_enable,
-> and not take already irq disabled writer callers into account.
-> Use write_trylock in the loop and enabled irq for cpu to repsond if lock
-> cannot be taken.
+On Wed Dec 27, 2023 at 11:35 PM EET, Nicholas Vinson wrote:
+> Functions keyctl_restrict() and keyctl_dh_compute_kdf_alloc() are
+> nodefined. Their inclusion in version.lds causes clang/llvm LTO
+
+What does "nodefined" mean?
+
+> optimizations to fail with error messages similar to
 >
-> Signed-off-by: Maria Yu <quic_aiquny@quicinc.com>
+>     error: version script assignment of KEYUTILS_1.7 to symbol
+>     keyctl_restrict failed: symbol not defined
+>
+> This patch fixes the issue by removing the symbol names from
+> version.lds.
+>
+> Fixes Gentoo bug 914637 (https://bugs.gentoo.org/914637)
+
+I wonder if we can uses here "Closes: <url>" similarly as with
+kernel bugzilla (question to more broad audience)?
+
+>
+> Signed-off-by: Nicholas Vinson <nvinson234@gmail.com>
 > ---
->  fs/exec.c                  | 10 +++++-----
->  include/linux/sched/task.h | 29 +++++++++++++++++++++++++++++
->  kernel/exit.c              | 16 ++++++++--------
->  kernel/fork.c              |  6 +++---
->  kernel/ptrace.c            | 12 ++++++------
->  kernel/sys.c               |  8 ++++----
->  security/keys/keyctl.c     |  4 ++--
->  7 files changed, 57 insertions(+), 28 deletions(-)
+>  version.lds | 2 --
+>  1 file changed, 2 deletions(-)
 >
-> diff --git a/fs/exec.c b/fs/exec.c
-> index 4aa19b24f281..030eef6852eb 100644
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -1086,7 +1086,7 @@ static int de_thread(struct task_struct *tsk)
+> diff --git a/version.lds b/version.lds
+> index 6c34adf..6186fb6 100644
+> --- a/version.lds
+> +++ b/version.lds
+> @@ -76,9 +76,7 @@ KEYUTILS_1.6 {
 > =20
->  		for (;;) {
->  			cgroup_threadgroup_change_begin(tsk);
-> -			write_lock_irq(&tasklist_lock);
-> +			write_lock_tasklist_lock();
->  			/*
->  			 * Do this under tasklist_lock to ensure that
->  			 * exit_notify() can't miss ->group_exec_task
-> @@ -1095,7 +1095,7 @@ static int de_thread(struct task_struct *tsk)
->  			if (likely(leader->exit_state))
->  				break;
->  			__set_current_state(TASK_KILLABLE);
-> -			write_unlock_irq(&tasklist_lock);
-> +			write_unlock_tasklist_lock();
->  			cgroup_threadgroup_change_end(tsk);
->  			schedule();
->  			if (__fatal_signal_pending(tsk))
-> @@ -1150,7 +1150,7 @@ static int de_thread(struct task_struct *tsk)
->  		 */
->  		if (unlikely(leader->ptrace))
->  			__wake_up_parent(leader, leader->parent);
-> -		write_unlock_irq(&tasklist_lock);
-> +		write_unlock_tasklist_lock();
->  		cgroup_threadgroup_change_end(tsk);
+>  KEYUTILS_1.7 {
+>  	/* management functions */
+> -	keyctl_restrict;
+>  	keyctl_dh_compute_kdf;
+> -	keyctl_dh_compute_kdf_alloc;
 > =20
->  		release_task(leader);
-> @@ -1198,13 +1198,13 @@ static int unshare_sighand(struct task_struct *me=
-)
+>  } KEYUTILS_1.6;
 > =20
->  		refcount_set(&newsighand->count, 1);
-> =20
-> -		write_lock_irq(&tasklist_lock);
-> +		write_lock_tasklist_lock();
->  		spin_lock(&oldsighand->siglock);
->  		memcpy(newsighand->action, oldsighand->action,
->  		       sizeof(newsighand->action));
->  		rcu_assign_pointer(me->sighand, newsighand);
->  		spin_unlock(&oldsighand->siglock);
-> -		write_unlock_irq(&tasklist_lock);
-> +		write_unlock_tasklist_lock();
-> =20
->  		__cleanup_sighand(oldsighand);
->  	}
-> diff --git a/include/linux/sched/task.h b/include/linux/sched/task.h
-> index a23af225c898..6f69d9a3c868 100644
-> --- a/include/linux/sched/task.h
-> +++ b/include/linux/sched/task.h
-> @@ -50,6 +50,35 @@ struct kernel_clone_args {
->   * a separate lock).
->   */
->  extern rwlock_t tasklist_lock;
-> +
-> +/*
-> + * Tasklist_lock is a special lock, it takes a good amount of time of
-> + * taskslist_lock readers to finish, and the pure write_irq_lock api
-> + * will do local_irq_disable at the very first, and put the current cpu
-> + * waiting for the lock while is non-responsive for interrupts.
-> + *
-> + * The current taskslist_lock writers all have write_lock_irq to hold
-> + * tasklist_lock, and write_unlock_irq to release tasklist_lock, that
-> + * means the writers are not suitable or workable to wait on
-> + * tasklist_lock in irq disabled scenarios. So the write lock/unlock
-> + * wrapper here only follow the current design of directly use
-> + * local_irq_disable and local_irq_enable.
-> + */
-> +static inline void write_lock_tasklist_lock(void)
-> +{
-> +	while (1) {
-> +		local_irq_disable();
-> +		if (write_trylock(&tasklist_lock))
-> +			break;
-> +		local_irq_enable();
-> +		cpu_relax();
-> +	}
-
-Maybe:
-
-	local_irq_disable();
-	while (!write_trylock(&tasklist_lock)) {
-		local_irq_enable();
-		cpu_relax();
-		local_irq_disable();
-	}
 
 BR, Jarkko
 
