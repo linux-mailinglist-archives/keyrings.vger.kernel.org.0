@@ -1,37 +1,37 @@
-Return-Path: <keyrings+bounces-385-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-386-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55174822F3D
-	for <lists+keyrings@lfdr.de>; Wed,  3 Jan 2024 15:16:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E50822FF4
+	for <lists+keyrings@lfdr.de>; Wed,  3 Jan 2024 15:59:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6BDB1F23364
-	for <lists+keyrings@lfdr.de>; Wed,  3 Jan 2024 14:16:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49BA21C215C6
+	for <lists+keyrings@lfdr.de>; Wed,  3 Jan 2024 14:59:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01211A29F;
-	Wed,  3 Jan 2024 14:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715071A70B;
+	Wed,  3 Jan 2024 14:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qV8cpc5f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sfFwX/w1"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DD91A293
-	for <keyrings@vger.kernel.org>; Wed,  3 Jan 2024 14:16:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A351C433C9;
-	Wed,  3 Jan 2024 14:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529CE1A706;
+	Wed,  3 Jan 2024 14:59:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E63F4C433C7;
+	Wed,  3 Jan 2024 14:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704291366;
-	bh=tD6azCgMEIYE/KQU9Mn8eMBOJOH45Id5PrJPPVH/9XQ=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=qV8cpc5fxYJ9AdnV0DJEYHVs+9TLqQj3KU6y/nTjTg0DVhafQXC6yjx3nlZCgO5Jt
-	 whKww5FceoBLWMm3aNjPv2lGgvrBSBUK7q+rJNSXZWg/de6emUZjpmq8qcA7MGXgQW
-	 msaP+UpsNjfmIiZR8bR+raya8kMxbKptTb9WoAqXNhJy4pCz7s8jA2w2vs8WlsC9uF
-	 fQyY57M0whz9jKHeMi0fnTJu6sano/fS1N9JOBq0PEA/1lstvsj71x96XB23Gdfrah
-	 s16Ik1Yt6s1sdFkw1OcEvT0E1uf+WktCuPTXGC6/TzAlyS45EmW+XDjXhj2vjaFDuZ
-	 PfQ/0E7dnCckQ==
+	s=k20201202; t=1704293943;
+	bh=Ouxm0wPO+1VlGaUlmQL5dN2XXWLD4GCLCnA+9DdndZ4=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=sfFwX/w1GPITRtw4xcZTU8zWIY6YJd9vCL8GjxrMiA26J2oWwVuWIZckH3pjpgQiR
+	 23yWVElDl6cvd61RAIuH6jLUxUOhd2Ve3zw6PHqZ1uy2E+OJoJhsNrpXD5afuOs44L
+	 PWSETOmluboUmIkZoV1obJWAtUFEHvJ/30qV3yMGpxRpmdpPKOHGrKKx2hq2SlotwK
+	 ffmzegyobGFk/nxETG8jo6i5jhEus+t3tWKtAeY+UXiHbIlsuxIeuTWCqe/ry0Lvn8
+	 4dRV8O9ZSy196Ug2DgbL3A9N2xTFDIKSjOlbfaXj94H6HzDos1GlzAinpUE9g5vqK8
+	 s+z+4YW9beo5g==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -40,44 +40,361 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 03 Jan 2024 16:16:03 +0200
-Message-Id: <CY54V7V3PMDV.1CO4FJ2XDA44L@suppilovahvero>
-Subject: Re: [keyutils] Remove undefined functions afrom version.lds
+Date: Wed, 03 Jan 2024 16:59:00 +0200
+Message-Id: <CY55S3QYJI7L.2XT5VE45V1VIY@suppilovahvero>
+Cc: <keyrings@vger.kernel.org>, "Ard Biesheuvel" <ardb@kernel.org>
+Subject: Re: [PATCH v6 09/20] crypto: lib - implement library version of AES
+ in CFB mode
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Nicholas Vinson" <nvinson234@gmail.com>, "Ben Boeckel"
- <me@benboeckel.net>
-Cc: <keyrings@vger.kernel.org>, <dhowells@redhat.com>
+To: "James Bottomley" <James.Bottomley@HansenPartnership.com>,
+ <linux-integrity@vger.kernel.org>
 X-Mailer: aerc 0.15.2
-References: <85561febfcf0618a9280448d5c53775646f470d6.1703712863.git.nvinson234@gmail.com> <ZYzVtdviEYQ6AN-6@farprobe> <fe5c7770-7fbc-4332-aa85-80e281cda8c2@gmail.com>
-In-Reply-To: <fe5c7770-7fbc-4332-aa85-80e281cda8c2@gmail.com>
+References: <20240102170408.21969-1-James.Bottomley@HansenPartnership.com>
+ <20240102170408.21969-10-James.Bottomley@HansenPartnership.com>
+In-Reply-To: <20240102170408.21969-10-James.Bottomley@HansenPartnership.com>
 
-On Thu Dec 28, 2023 at 4:20 AM EET, Nicholas Vinson wrote:
+On Tue Jan 2, 2024 at 7:03 PM EET, James Bottomley wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
 >
-> On 12/27/23 20:56, Ben Boeckel wrote:
-> > On Wed, Dec 27, 2023 at 16:35:16 -0500, Nicholas Vinson wrote:
-> >> Functions keyctl_restrict() and keyctl_dh_compute_kdf_alloc() are
-> >> nodefined. Their inclusion in version.lds causes clang/llvm LTO
-> >> optimizations to fail with error messages similar to
-> >>
-> >>      error: version script assignment of KEYUTILS_1.7 to symbol
-> >>      keyctl_restrict failed: symbol not defined
-> >>
-> >> This patch fixes the issue by removing the symbol names from
-> >> version.lds.
-> > FYI, there is also a GitLab repo here if you want to submit an MR:
-> >
-> >      https://gitlab.com/linux-afs/keyutils
-> >
-> > I believe it has yet to be seen if this is preferred or GitLab. Or
-> > whether the ML will get GitLab MR notifications.
+> Implement AES in CFB mode using the existing, mostly constant-time
+> generic AES library implementation. This will be used by the TPM code
+> to encrypt communications with TPM hardware, which is often a discrete
+> component connected using sniffable wires or traces.
 >
-> Thanks for the information. Would it be possible to add the information=
-=20
-> to the SUBMITTING_PATCHES file?
+> While a CFB template does exist, using a skcipher is a major pain for
+> non-performance critical synchronous crypto where the algorithm is known
+> at compile time and the data is in contiguous buffers with valid kernel
+> virtual addresses.
+>
+> Tested-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+> Reviewed-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+> Link: https://lore.kernel.org/all/20230216201410.15010-1-James.Bottomley@=
+HansenPartnership.com/
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  include/crypto/aes.h |   5 +
+>  lib/crypto/Kconfig   |   5 +
+>  lib/crypto/Makefile  |   3 +
+>  lib/crypto/aescfb.c  | 257 +++++++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 270 insertions(+)
+>  create mode 100644 lib/crypto/aescfb.c
+>
+> diff --git a/include/crypto/aes.h b/include/crypto/aes.h
+> index 2090729701ab..9339da7c20a8 100644
+> --- a/include/crypto/aes.h
+> +++ b/include/crypto/aes.h
+> @@ -87,4 +87,9 @@ void aes_decrypt(const struct crypto_aes_ctx *ctx, u8 *=
+out, const u8 *in);
+>  extern const u8 crypto_aes_sbox[];
+>  extern const u8 crypto_aes_inv_sbox[];
+> =20
+> +void aescfb_encrypt(const struct crypto_aes_ctx *ctx, u8 *dst, const u8 =
+*src,
+> +		    int len, const u8 iv[AES_BLOCK_SIZE]);
+> +void aescfb_decrypt(const struct crypto_aes_ctx *ctx, u8 *dst, const u8 =
+*src,
+> +		    int len, const u8 iv[AES_BLOCK_SIZE]);
+> +
+>  #endif
+> diff --git a/lib/crypto/Kconfig b/lib/crypto/Kconfig
+> index 45436bfc6dff..b01253cac70a 100644
+> --- a/lib/crypto/Kconfig
+> +++ b/lib/crypto/Kconfig
+> @@ -8,6 +8,11 @@ config CRYPTO_LIB_UTILS
+>  config CRYPTO_LIB_AES
+>  	tristate
+> =20
+> +config CRYPTO_LIB_AESCFB
+> +	tristate
+> +	select CRYPTO_LIB_AES
+> +	select CRYPTO_LIB_UTILS
+> +
+>  config CRYPTO_LIB_AESGCM
+>  	tristate
+>  	select CRYPTO_LIB_AES
+> diff --git a/lib/crypto/Makefile b/lib/crypto/Makefile
+> index 8d1446c2be71..969baab8c805 100644
+> --- a/lib/crypto/Makefile
+> +++ b/lib/crypto/Makefile
+> @@ -10,6 +10,9 @@ obj-$(CONFIG_CRYPTO_LIB_CHACHA_GENERIC)		+=3D libchacha=
+.o
+>  obj-$(CONFIG_CRYPTO_LIB_AES)			+=3D libaes.o
+>  libaes-y					:=3D aes.o
+> =20
+> +obj-$(CONFIG_CRYPTO_LIB_AESCFB)			+=3D libaescfb.o
+> +libaescfb-y					:=3D aescfb.o
+> +
+>  obj-$(CONFIG_CRYPTO_LIB_AESGCM)			+=3D libaesgcm.o
+>  libaesgcm-y					:=3D aesgcm.o
+> =20
+> diff --git a/lib/crypto/aescfb.c b/lib/crypto/aescfb.c
+> new file mode 100644
+> index 000000000000..749dc1258a44
+> --- /dev/null
+> +++ b/lib/crypto/aescfb.c
+> @@ -0,0 +1,257 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Minimal library implementation of AES in CFB mode
+> + *
+> + * Copyright 2023 Google LLC
+> + */
+> +
+> +#include <linux/module.h>
+> +
+> +#include <crypto/algapi.h>
+> +#include <crypto/aes.h>
+> +
+> +#include <asm/irqflags.h>
+> +
+> +static void aescfb_encrypt_block(const struct crypto_aes_ctx *ctx, void =
+*dst,
+> +				 const void *src)
+> +{
+> +	unsigned long flags;
+> +
+> +	/*
+> +	 * In AES-CFB, the AES encryption operates on known 'plaintext' (the IV
+> +	 * and ciphertext), making it susceptible to timing attacks on the
+> +	 * encryption key. The AES library already mitigates this risk to some
+> +	 * extent by pulling the entire S-box into the caches before doing any
+> +	 * substitutions, but this strategy is more effective when running with
+> +	 * interrupts disabled.
+> +	 */
+> +	local_irq_save(flags);
+> +	aes_encrypt(ctx, dst, src);
+> +	local_irq_restore(flags);
+> +}
+> +
+> +/**
+> + * aescfb_encrypt - Perform AES-CFB encryption on a block of data
+> + *
+> + * @ctx:	The AES-CFB key schedule
+> + * @dst:	Pointer to the ciphertext output buffer
+> + * @src:	Pointer the plaintext (may equal @dst for encryption in place)
+> + * @len:	The size in bytes of the plaintext and ciphertext.
+> + * @iv:		The initialization vector (IV) to use for this block of data
+> + */
+> +void aescfb_encrypt(const struct crypto_aes_ctx *ctx, u8 *dst, const u8 =
+*src,
+> +		    int len, const u8 iv[AES_BLOCK_SIZE])
+> +{
+> +	u8 ks[AES_BLOCK_SIZE];
+> +	const u8 *v =3D iv;
+> +
+> +	while (len > 0) {
+> +		aescfb_encrypt_block(ctx, ks, v);
+> +		crypto_xor_cpy(dst, src, ks, min(len, AES_BLOCK_SIZE));
+> +		v =3D dst;
+> +
+> +		dst +=3D AES_BLOCK_SIZE;
+> +		src +=3D AES_BLOCK_SIZE;
+> +		len -=3D AES_BLOCK_SIZE;
+> +	}
+> +
+> +	memzero_explicit(ks, sizeof(ks));
+> +}
+> +EXPORT_SYMBOL(aescfb_encrypt);
+> +
+> +/**
+> + * aescfb_decrypt - Perform AES-CFB decryption on a block of data
+> + *
+> + * @ctx:	The AES-CFB key schedule
+> + * @dst:	Pointer to the plaintext output buffer
+> + * @src:	Pointer the ciphertext (may equal @dst for decryption in place)
+> + * @len:	The size in bytes of the plaintext and ciphertext.
+> + * @iv:		The initialization vector (IV) to use for this block of data
+> + */
+> +void aescfb_decrypt(const struct crypto_aes_ctx *ctx, u8 *dst, const u8 =
+*src,
+> +		    int len, const u8 iv[AES_BLOCK_SIZE])
+> +{
+> +	u8 ks[2][AES_BLOCK_SIZE];
+> +
+> +	aescfb_encrypt_block(ctx, ks[0], iv);
+> +
+> +	for (int i =3D 0; len > 0; i ^=3D 1) {
+> +		if (len > AES_BLOCK_SIZE)
+> +			/*
+> +			 * Generate the keystream for the next block before
+> +			 * performing the XOR, as that may update in place and
+> +			 * overwrite the ciphertext.
+> +			 */
+> +			aescfb_encrypt_block(ctx, ks[!i], src);
+> +
+> +		crypto_xor_cpy(dst, src, ks[i], min(len, AES_BLOCK_SIZE));
+> +
+> +		dst +=3D AES_BLOCK_SIZE;
+> +		src +=3D AES_BLOCK_SIZE;
+> +		len -=3D AES_BLOCK_SIZE;
+> +	}
+> +
+> +	memzero_explicit(ks, sizeof(ks));
+> +}
+> +EXPORT_SYMBOL(aescfb_decrypt);
+> +
+> +MODULE_DESCRIPTION("Generic AES-CFB library");
+> +MODULE_AUTHOR("Ard Biesheuvel <ardb@kernel.org>");
+> +MODULE_LICENSE("GPL");
+> +
+> +#ifndef CONFIG_CRYPTO_MANAGER_DISABLE_TESTS
+> +
+> +/*
+> + * Test code below. Vectors taken from crypto/testmgr.h
+> + */
+> +
+> +static struct {
+> +	u8	ptext[64];
+> +	u8	ctext[64];
+> +
+> +	u8	key[AES_MAX_KEY_SIZE];
+> +	u8	iv[AES_BLOCK_SIZE];
+> +
+> +	int	klen;
+> +	int	len;
+> +} const aescfb_tv[] __initconst =3D {
+> +	{ /* From NIST SP800-38A */
+> +		.key    =3D "\x2b\x7e\x15\x16\x28\xae\xd2\xa6"
+> +			  "\xab\xf7\x15\x88\x09\xcf\x4f\x3c",
+> +		.klen	=3D 16,
+> +		.iv	=3D "\x00\x01\x02\x03\x04\x05\x06\x07"
+> +			  "\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f",
+> +		.ptext	=3D "\x6b\xc1\xbe\xe2\x2e\x40\x9f\x96"
+> +			  "\xe9\x3d\x7e\x11\x73\x93\x17\x2a"
+> +			  "\xae\x2d\x8a\x57\x1e\x03\xac\x9c"
+> +			  "\x9e\xb7\x6f\xac\x45\xaf\x8e\x51"
+> +			  "\x30\xc8\x1c\x46\xa3\x5c\xe4\x11"
+> +			  "\xe5\xfb\xc1\x19\x1a\x0a\x52\xef"
+> +			  "\xf6\x9f\x24\x45\xdf\x4f\x9b\x17"
+> +			  "\xad\x2b\x41\x7b\xe6\x6c\x37\x10",
+> +		.ctext	=3D "\x3b\x3f\xd9\x2e\xb7\x2d\xad\x20"
+> +			  "\x33\x34\x49\xf8\xe8\x3c\xfb\x4a"
+> +			  "\xc8\xa6\x45\x37\xa0\xb3\xa9\x3f"
+> +			  "\xcd\xe3\xcd\xad\x9f\x1c\xe5\x8b"
+> +			  "\x26\x75\x1f\x67\xa3\xcb\xb1\x40"
+> +			  "\xb1\x80\x8c\xf1\x87\xa4\xf4\xdf"
+> +			  "\xc0\x4b\x05\x35\x7c\x5d\x1c\x0e"
+> +			  "\xea\xc4\xc6\x6f\x9f\xf7\xf2\xe6",
+> +		.len	=3D 64,
+> +	}, {
+> +		.key	=3D "\x8e\x73\xb0\xf7\xda\x0e\x64\x52"
+> +			  "\xc8\x10\xf3\x2b\x80\x90\x79\xe5"
+> +			  "\x62\xf8\xea\xd2\x52\x2c\x6b\x7b",
+> +		.klen	=3D 24,
+> +		.iv	=3D "\x00\x01\x02\x03\x04\x05\x06\x07"
+> +			  "\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f",
+> +		.ptext	=3D "\x6b\xc1\xbe\xe2\x2e\x40\x9f\x96"
+> +			  "\xe9\x3d\x7e\x11\x73\x93\x17\x2a"
+> +			  "\xae\x2d\x8a\x57\x1e\x03\xac\x9c"
+> +			  "\x9e\xb7\x6f\xac\x45\xaf\x8e\x51"
+> +			  "\x30\xc8\x1c\x46\xa3\x5c\xe4\x11"
+> +			  "\xe5\xfb\xc1\x19\x1a\x0a\x52\xef"
+> +			  "\xf6\x9f\x24\x45\xdf\x4f\x9b\x17"
+> +			  "\xad\x2b\x41\x7b\xe6\x6c\x37\x10",
+> +		.ctext	=3D "\xcd\xc8\x0d\x6f\xdd\xf1\x8c\xab"
+> +			  "\x34\xc2\x59\x09\xc9\x9a\x41\x74"
+> +			  "\x67\xce\x7f\x7f\x81\x17\x36\x21"
+> +			  "\x96\x1a\x2b\x70\x17\x1d\x3d\x7a"
+> +			  "\x2e\x1e\x8a\x1d\xd5\x9b\x88\xb1"
+> +			  "\xc8\xe6\x0f\xed\x1e\xfa\xc4\xc9"
+> +			  "\xc0\x5f\x9f\x9c\xa9\x83\x4f\xa0"
+> +			  "\x42\xae\x8f\xba\x58\x4b\x09\xff",
+> +		.len	=3D 64,
+> +	}, {
+> +		.key	=3D "\x60\x3d\xeb\x10\x15\xca\x71\xbe"
+> +			  "\x2b\x73\xae\xf0\x85\x7d\x77\x81"
+> +			  "\x1f\x35\x2c\x07\x3b\x61\x08\xd7"
+> +			  "\x2d\x98\x10\xa3\x09\x14\xdf\xf4",
+> +		.klen	=3D 32,
+> +		.iv	=3D "\x00\x01\x02\x03\x04\x05\x06\x07"
+> +			  "\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f",
+> +		.ptext	=3D "\x6b\xc1\xbe\xe2\x2e\x40\x9f\x96"
+> +			  "\xe9\x3d\x7e\x11\x73\x93\x17\x2a"
+> +			  "\xae\x2d\x8a\x57\x1e\x03\xac\x9c"
+> +			  "\x9e\xb7\x6f\xac\x45\xaf\x8e\x51"
+> +			  "\x30\xc8\x1c\x46\xa3\x5c\xe4\x11"
+> +			  "\xe5\xfb\xc1\x19\x1a\x0a\x52\xef"
+> +			  "\xf6\x9f\x24\x45\xdf\x4f\x9b\x17"
+> +			  "\xad\x2b\x41\x7b\xe6\x6c\x37\x10",
+> +		.ctext	=3D "\xdc\x7e\x84\xbf\xda\x79\x16\x4b"
+> +			  "\x7e\xcd\x84\x86\x98\x5d\x38\x60"
+> +			  "\x39\xff\xed\x14\x3b\x28\xb1\xc8"
+> +			  "\x32\x11\x3c\x63\x31\xe5\x40\x7b"
+> +			  "\xdf\x10\x13\x24\x15\xe5\x4b\x92"
+> +			  "\xa1\x3e\xd0\xa8\x26\x7a\xe2\xf9"
+> +			  "\x75\xa3\x85\x74\x1a\xb9\xce\xf8"
+> +			  "\x20\x31\x62\x3d\x55\xb1\xe4\x71",
+> +		.len	=3D 64,
+> +	}, { /* > 16 bytes, not a multiple of 16 bytes */
+> +		.key	=3D "\x2b\x7e\x15\x16\x28\xae\xd2\xa6"
+> +			  "\xab\xf7\x15\x88\x09\xcf\x4f\x3c",
+> +		.klen	=3D 16,
+> +		.iv	=3D "\x00\x01\x02\x03\x04\x05\x06\x07"
+> +			  "\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f",
+> +		.ptext	=3D "\x6b\xc1\xbe\xe2\x2e\x40\x9f\x96"
+> +			  "\xe9\x3d\x7e\x11\x73\x93\x17\x2a"
+> +			  "\xae",
+> +		.ctext	=3D "\x3b\x3f\xd9\x2e\xb7\x2d\xad\x20"
+> +			  "\x33\x34\x49\xf8\xe8\x3c\xfb\x4a"
+> +			  "\xc8",
+> +		.len	=3D 17,
+> +	}, { /* < 16 bytes */
+> +		.key	=3D "\x2b\x7e\x15\x16\x28\xae\xd2\xa6"
+> +			  "\xab\xf7\x15\x88\x09\xcf\x4f\x3c",
+> +		.klen	=3D 16,
+> +		.iv	=3D "\x00\x01\x02\x03\x04\x05\x06\x07"
+> +			  "\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f",
+> +		.ptext	=3D "\x6b\xc1\xbe\xe2\x2e\x40\x9f",
+> +		.ctext	=3D "\x3b\x3f\xd9\x2e\xb7\x2d\xad",
+> +		.len	=3D 7,
+> +	},
+> +};
+> +
+> +static int __init libaescfb_init(void)
+> +{
+> +	for (int i =3D 0; i < ARRAY_SIZE(aescfb_tv); i++) {
+> +		struct crypto_aes_ctx ctx;
+> +		u8 buf[64];
+> +
+> +		if (aes_expandkey(&ctx, aescfb_tv[i].key, aescfb_tv[i].klen)) {
+> +			pr_err("aes_expandkey() failed on vector %d\n", i);
+> +			return -ENODEV;
+> +		}
+> +
+> +		aescfb_encrypt(&ctx, buf, aescfb_tv[i].ptext, aescfb_tv[i].len,
+> +			       aescfb_tv[i].iv);
+> +		if (memcmp(buf, aescfb_tv[i].ctext, aescfb_tv[i].len)) {
+> +			pr_err("aescfb_encrypt() #1 failed on vector %d\n", i);
+> +			return -ENODEV;
+> +		}
+> +
+> +		/* decrypt in place */
+> +		aescfb_decrypt(&ctx, buf, buf, aescfb_tv[i].len, aescfb_tv[i].iv);
+> +		if (memcmp(buf, aescfb_tv[i].ptext, aescfb_tv[i].len)) {
+> +			pr_err("aescfb_decrypt() failed on vector %d\n", i);
+> +			return -ENODEV;
+> +		}
+> +
+> +		/* encrypt in place */
+> +		aescfb_encrypt(&ctx, buf, buf, aescfb_tv[i].len, aescfb_tv[i].iv);
+> +		if (memcmp(buf, aescfb_tv[i].ctext, aescfb_tv[i].len)) {
+> +			pr_err("aescfb_encrypt() #2 failed on vector %d\n", i);
+> +
+> +			return -ENODEV;
+> +		}
+> +
+> +	}
+> +	return 0;
+> +}
+> +module_init(libaescfb_init);
+> +
+> +static void __exit libaescfb_exit(void)
+> +{
+> +}
+> +module_exit(libaescfb_exit);
+> +#endif
 
-This Gitlab migration is recent and we have not yet made any decisions
-on how to deal with merge requests, or block them entirely. It came just
-before holidays.
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
 BR, Jarkko
 
