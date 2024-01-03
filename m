@@ -1,352 +1,106 @@
-Return-Path: <keyrings+bounces-402-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-403-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06095823297
-	for <lists+keyrings@lfdr.de>; Wed,  3 Jan 2024 18:09:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7714882343B
+	for <lists+keyrings@lfdr.de>; Wed,  3 Jan 2024 19:18:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DE141C2384E
-	for <lists+keyrings@lfdr.de>; Wed,  3 Jan 2024 17:09:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26C6A1F23B13
+	for <lists+keyrings@lfdr.de>; Wed,  3 Jan 2024 18:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3721BDF1;
-	Wed,  3 Jan 2024 17:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822AB1C68C;
+	Wed,  3 Jan 2024 18:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n3J6BBCx"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="mNYekl/c"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDD01BDDE;
-	Wed,  3 Jan 2024 17:09:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9575AC433C8;
-	Wed,  3 Jan 2024 17:09:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704301752;
-	bh=cmxX8PILbpL3xKu052OYdedPeAiLgERVsRgsQcGdejg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n3J6BBCxcrfzmwDb7ngu6wlaFqDHnmdwlxikdn9uJkMEpE8aa1N6eciBgtHETQmYk
-	 637nu9BbN9/UO1Lr7zNZVqWV5qH/FuGhQoYwSmRSQRlHSYEzi7pkg8l20oTXLADZX7
-	 evZ3Ny07KtcYQB7ekTxsC7510K8wRxkM50QXcm9g=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Markus Suvanto <markus.suvanto@gmail.com>,
-	Wang Lei <wang840925@gmail.com>,
-	Jeff Layton <jlayton@redhat.com>,
-	Steve French <smfrench@gmail.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org,
-	keyrings@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 19/75] keys, dns: Allow key types (eg. DNS) to be reclaimed immediately on expiry
-Date: Wed,  3 Jan 2024 17:55:00 +0100
-Message-ID: <20240103164846.109915439@linuxfoundation.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240103164842.953224409@linuxfoundation.org>
-References: <20240103164842.953224409@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF831CA81;
+	Wed,  3 Jan 2024 18:18:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=FmcnlJXDQ98odN/WIJ37kgFC20dlWMFiiPEysBR0RLo=; b=mNYekl/cRuUCgREXI6BMiAqoL/
+	WKPwXmHicaLj/SoyAyhEl4lwc1JY9ho99XeqYCADJfovFEgcmKtKxbzHtZ23d0x+GrjTXAp/nAXYg
+	6m55AvIuQOxvVhpkh70jRdbDVoJuollTmjQmR5eqGNyq6/mm5fwDk6fn4LwBqgrBstcXYATXDKTwf
+	P6+NOcN82q5Xp9FeAKjKuLv52WprkRqG/XUtFj8Pm35WDZ3lKo1SrK/w7C5LJRZCNiokxNKao0itW
+	ILPXteBeUi1q+KqxjWo30XinMlvhI0WgyRJGkhNj/qbivwdDJuv/kTYK34e+83w4UBYTiiG03sIGY
+	1lnCH5JQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1rL5od-00DHx5-Kt; Wed, 03 Jan 2024 18:18:07 +0000
+Date: Wed, 3 Jan 2024 18:18:07 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: "Aiqun Yu (Maria)" <quic_aiquny@quicinc.com>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>,
+	Hillf Danton <hdanton@sina.com>, kernel@quicinc.com,
+	quic_pkondeti@quicinc.com, keescook@chromium.org,
+	viro@zeniv.linux.org.uk, brauner@kernel.org, oleg@redhat.com,
+	dhowells@redhat.com, jarkko@kernel.org, paul@paul-moore.com,
+	jmorris@namei.org, serge@hallyn.com, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH] kernel: Introduce a write lock/unlock wrapper for
+ tasklist_lock
+Message-ID: <ZZWk368hZpOc25X0@casper.infradead.org>
+References: <20231213101745.4526-1-quic_aiquny@quicinc.com>
+ <ZXnaNSrtaWbS2ivU@casper.infradead.org>
+ <87o7eu7ybq.fsf@email.froward.int.ebiederm.org>
+ <ZY30k7OCtxrdR9oP@casper.infradead.org>
+ <cd0f6613-9aa9-4698-bebe-0f61286d7552@quicinc.com>
+ <ZZPT8hMiuT1pCBP7@casper.infradead.org>
+ <99c44790-5f1b-4535-9858-c5e9c752159c@quicinc.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <99c44790-5f1b-4535-9858-c5e9c752159c@quicinc.com>
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+On Wed, Jan 03, 2024 at 10:58:33AM +0800, Aiqun Yu (Maria) wrote:
+> On 1/2/2024 5:14 PM, Matthew Wilcox wrote:
+> > > > -void __lockfunc queued_write_lock_slowpath(struct qrwlock *lock)
+> > > > +void __lockfunc queued_write_lock_slowpath(struct qrwlock *lock, bool irq)
+> > > >    {
+> > > >    	int cnts;
+> > > > @@ -82,7 +83,11 @@ void __lockfunc queued_write_lock_slowpath(struct qrwlock *lock)
+> > > Also a new state showed up after the current design:
+> > > 1. locked flag with _QW_WAITING, while irq enabled.
+> > > 2. And this state will be only in interrupt context.
+> > > 3. lock->wait_lock is hold by the write waiter.
+> > > So per my understanding, a different behavior also needed to be done in
+> > > queued_write_lock_slowpath:
+> > >    when (unlikely(in_interrupt())) , get the lock directly.
+> > 
+> > I don't think so.  Remember that write_lock_irq() can only be called in
+> > process context, and when interrupts are enabled.
+> In current kernel drivers, I can see same lock called with write_lock_irq
+> and write_lock_irqsave in different drivers.
+> 
+> And this is the scenario I am talking about:
+> 1. cpu0 have task run and called write_lock_irq.(Not in interrupt context)
+> 2. cpu0 hold the lock->wait_lock and re-enabled the interrupt.
 
-------------------
+Oh, I missed that it was holding the wait_lock.  Yes, we also need to
+release the wait_lock before spinning with interrupts disabled.
 
-From: David Howells <dhowells@redhat.com>
+> I was thinking to support both write_lock_irq and write_lock_irqsave with
+> interrupt enabled together in queued_write_lock_slowpath.
+> 
+> That's why I am suggesting in write_lock_irqsave when (in_interrupt()),
+> instead spin for the lock->wait_lock, spin to get the lock->cnts directly.
 
-[ Upstream commit 39299bdd2546688d92ed9db4948f6219ca1b9542 ]
-
-If a key has an expiration time, then when that time passes, the key is
-left around for a certain amount of time before being collected (5 mins by
-default) so that EKEYEXPIRED can be returned instead of ENOKEY.  This is a
-problem for DNS keys because we want to redo the DNS lookup immediately at
-that point.
-
-Fix this by allowing key types to be marked such that keys of that type
-don't have this extra period, but are reclaimed as soon as they expire and
-turn this on for dns_resolver-type keys.  To make this easier to handle,
-key->expiry is changed to be permanent if TIME64_MAX rather than 0.
-
-Furthermore, give such new-style negative DNS results a 1s default expiry
-if no other expiry time is set rather than allowing it to stick around
-indefinitely.  This shouldn't be zero as ls will follow a failing stat call
-immediately with a second with AT_SYMLINK_NOFOLLOW added.
-
-Fixes: 1a4240f4764a ("DNS: Separate out CIFS DNS Resolver code")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Tested-by: Markus Suvanto <markus.suvanto@gmail.com>
-cc: Wang Lei <wang840925@gmail.com>
-cc: Jeff Layton <jlayton@redhat.com>
-cc: Steve French <smfrench@gmail.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jarkko Sakkinen <jarkko@kernel.org>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: linux-afs@lists.infradead.org
-cc: linux-cifs@vger.kernel.org
-cc: linux-nfs@vger.kernel.org
-cc: ceph-devel@vger.kernel.org
-cc: keyrings@vger.kernel.org
-cc: netdev@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- include/linux/key-type.h   |  1 +
- net/dns_resolver/dns_key.c | 10 +++++++++-
- security/keys/gc.c         | 31 +++++++++++++++++++++----------
- security/keys/internal.h   | 11 ++++++++++-
- security/keys/key.c        | 15 +++++----------
- security/keys/proc.c       |  2 +-
- 6 files changed, 47 insertions(+), 23 deletions(-)
-
-diff --git a/include/linux/key-type.h b/include/linux/key-type.h
-index 2ab2d6d6aeab8..7de851a9af8f3 100644
---- a/include/linux/key-type.h
-+++ b/include/linux/key-type.h
-@@ -72,6 +72,7 @@ struct key_type {
- 
- 	unsigned int flags;
- #define KEY_TYPE_NET_DOMAIN	0x00000001 /* Keys of this type have a net namespace domain */
-+#define KEY_TYPE_INSTANT_REAP	0x00000002 /* Keys of this type don't have a delay after expiring */
- 
- 	/* vet a description */
- 	int (*vet_description)(const char *description);
-diff --git a/net/dns_resolver/dns_key.c b/net/dns_resolver/dns_key.c
-index 3aced951d5ab8..03f8f33dc134c 100644
---- a/net/dns_resolver/dns_key.c
-+++ b/net/dns_resolver/dns_key.c
-@@ -91,6 +91,7 @@ const struct cred *dns_resolver_cache;
- static int
- dns_resolver_preparse(struct key_preparsed_payload *prep)
- {
-+	const struct dns_server_list_v1_header *v1;
- 	const struct dns_payload_header *bin;
- 	struct user_key_payload *upayload;
- 	unsigned long derrno;
-@@ -122,6 +123,13 @@ dns_resolver_preparse(struct key_preparsed_payload *prep)
- 			return -EINVAL;
- 		}
- 
-+		v1 = (const struct dns_server_list_v1_header *)bin;
-+		if ((v1->status != DNS_LOOKUP_GOOD &&
-+		     v1->status != DNS_LOOKUP_GOOD_WITH_BAD)) {
-+			if (prep->expiry == TIME64_MAX)
-+				prep->expiry = ktime_get_real_seconds() + 1;
-+		}
-+
- 		result_len = datalen;
- 		goto store_result;
- 	}
-@@ -314,7 +322,7 @@ static long dns_resolver_read(const struct key *key,
- 
- struct key_type key_type_dns_resolver = {
- 	.name		= "dns_resolver",
--	.flags		= KEY_TYPE_NET_DOMAIN,
-+	.flags		= KEY_TYPE_NET_DOMAIN | KEY_TYPE_INSTANT_REAP,
- 	.preparse	= dns_resolver_preparse,
- 	.free_preparse	= dns_resolver_free_preparse,
- 	.instantiate	= generic_key_instantiate,
-diff --git a/security/keys/gc.c b/security/keys/gc.c
-index 3c90807476eb0..eaddaceda14ea 100644
---- a/security/keys/gc.c
-+++ b/security/keys/gc.c
-@@ -66,6 +66,19 @@ void key_schedule_gc(time64_t gc_at)
- 	}
- }
- 
-+/*
-+ * Set the expiration time on a key.
-+ */
-+void key_set_expiry(struct key *key, time64_t expiry)
-+{
-+	key->expiry = expiry;
-+	if (expiry != TIME64_MAX) {
-+		if (!(key->type->flags & KEY_TYPE_INSTANT_REAP))
-+			expiry += key_gc_delay;
-+		key_schedule_gc(expiry);
-+	}
-+}
-+
- /*
-  * Schedule a dead links collection run.
-  */
-@@ -176,7 +189,6 @@ static void key_garbage_collector(struct work_struct *work)
- 	static u8 gc_state;		/* Internal persistent state */
- #define KEY_GC_REAP_AGAIN	0x01	/* - Need another cycle */
- #define KEY_GC_REAPING_LINKS	0x02	/* - We need to reap links */
--#define KEY_GC_SET_TIMER	0x04	/* - We need to restart the timer */
- #define KEY_GC_REAPING_DEAD_1	0x10	/* - We need to mark dead keys */
- #define KEY_GC_REAPING_DEAD_2	0x20	/* - We need to reap dead key links */
- #define KEY_GC_REAPING_DEAD_3	0x40	/* - We need to reap dead keys */
-@@ -184,21 +196,17 @@ static void key_garbage_collector(struct work_struct *work)
- 
- 	struct rb_node *cursor;
- 	struct key *key;
--	time64_t new_timer, limit;
-+	time64_t new_timer, limit, expiry;
- 
- 	kenter("[%lx,%x]", key_gc_flags, gc_state);
- 
- 	limit = ktime_get_real_seconds();
--	if (limit > key_gc_delay)
--		limit -= key_gc_delay;
--	else
--		limit = key_gc_delay;
- 
- 	/* Work out what we're going to be doing in this pass */
- 	gc_state &= KEY_GC_REAPING_DEAD_1 | KEY_GC_REAPING_DEAD_2;
- 	gc_state <<= 1;
- 	if (test_and_clear_bit(KEY_GC_KEY_EXPIRED, &key_gc_flags))
--		gc_state |= KEY_GC_REAPING_LINKS | KEY_GC_SET_TIMER;
-+		gc_state |= KEY_GC_REAPING_LINKS;
- 
- 	if (test_and_clear_bit(KEY_GC_REAP_KEYTYPE, &key_gc_flags))
- 		gc_state |= KEY_GC_REAPING_DEAD_1;
-@@ -233,8 +241,11 @@ static void key_garbage_collector(struct work_struct *work)
- 			}
- 		}
- 
--		if (gc_state & KEY_GC_SET_TIMER) {
--			if (key->expiry > limit && key->expiry < new_timer) {
-+		expiry = key->expiry;
-+		if (expiry != TIME64_MAX) {
-+			if (!(key->type->flags & KEY_TYPE_INSTANT_REAP))
-+				expiry += key_gc_delay;
-+			if (expiry > limit && expiry < new_timer) {
- 				kdebug("will expire %x in %lld",
- 				       key_serial(key), key->expiry - limit);
- 				new_timer = key->expiry;
-@@ -276,7 +287,7 @@ static void key_garbage_collector(struct work_struct *work)
- 	 */
- 	kdebug("pass complete");
- 
--	if (gc_state & KEY_GC_SET_TIMER && new_timer != (time64_t)TIME64_MAX) {
-+	if (new_timer != TIME64_MAX) {
- 		new_timer += key_gc_delay;
- 		key_schedule_gc(new_timer);
- 	}
-diff --git a/security/keys/internal.h b/security/keys/internal.h
-index 9b9cf3b6fcbb4..bede6c71ffd97 100644
---- a/security/keys/internal.h
-+++ b/security/keys/internal.h
-@@ -176,6 +176,7 @@ extern unsigned key_gc_delay;
- extern void keyring_gc(struct key *keyring, time64_t limit);
- extern void keyring_restriction_gc(struct key *keyring,
- 				   struct key_type *dead_type);
-+void key_set_expiry(struct key *key, time64_t expiry);
- extern void key_schedule_gc(time64_t gc_at);
- extern void key_schedule_gc_links(void);
- extern void key_gc_keytype(struct key_type *ktype);
-@@ -224,10 +225,18 @@ extern struct key *key_get_instantiation_authkey(key_serial_t target_id);
-  */
- static inline bool key_is_dead(const struct key *key, time64_t limit)
- {
-+	time64_t expiry = key->expiry;
-+
-+	if (expiry != TIME64_MAX) {
-+		if (!(key->type->flags & KEY_TYPE_INSTANT_REAP))
-+			expiry += key_gc_delay;
-+		if (expiry <= limit)
-+			return true;
-+	}
-+
- 	return
- 		key->flags & ((1 << KEY_FLAG_DEAD) |
- 			      (1 << KEY_FLAG_INVALIDATED)) ||
--		(key->expiry > 0 && key->expiry <= limit) ||
- 		key->domain_tag->removed;
- }
- 
-diff --git a/security/keys/key.c b/security/keys/key.c
-index 151ff39b68030..67ad0826e385c 100644
---- a/security/keys/key.c
-+++ b/security/keys/key.c
-@@ -294,6 +294,7 @@ struct key *key_alloc(struct key_type *type, const char *desc,
- 	key->uid = uid;
- 	key->gid = gid;
- 	key->perm = perm;
-+	key->expiry = TIME64_MAX;
- 	key->restrict_link = restrict_link;
- 	key->last_used_at = ktime_get_real_seconds();
- 
-@@ -463,10 +464,7 @@ static int __key_instantiate_and_link(struct key *key,
- 			if (authkey)
- 				key_invalidate(authkey);
- 
--			if (prep->expiry != TIME64_MAX) {
--				key->expiry = prep->expiry;
--				key_schedule_gc(prep->expiry + key_gc_delay);
--			}
-+			key_set_expiry(key, prep->expiry);
- 		}
- 	}
- 
-@@ -605,8 +603,7 @@ int key_reject_and_link(struct key *key,
- 		atomic_inc(&key->user->nikeys);
- 		mark_key_instantiated(key, -error);
- 		notify_key(key, NOTIFY_KEY_INSTANTIATED, -error);
--		key->expiry = ktime_get_real_seconds() + timeout;
--		key_schedule_gc(key->expiry + key_gc_delay);
-+		key_set_expiry(key, ktime_get_real_seconds() + timeout);
- 
- 		if (test_and_clear_bit(KEY_FLAG_USER_CONSTRUCT, &key->flags))
- 			awaken = 1;
-@@ -721,16 +718,14 @@ struct key_type *key_type_lookup(const char *type)
- 
- void key_set_timeout(struct key *key, unsigned timeout)
- {
--	time64_t expiry = 0;
-+	time64_t expiry = TIME64_MAX;
- 
- 	/* make the changes with the locks held to prevent races */
- 	down_write(&key->sem);
- 
- 	if (timeout > 0)
- 		expiry = ktime_get_real_seconds() + timeout;
--
--	key->expiry = expiry;
--	key_schedule_gc(key->expiry + key_gc_delay);
-+	key_set_expiry(key, expiry);
- 
- 	up_write(&key->sem);
- }
-diff --git a/security/keys/proc.c b/security/keys/proc.c
-index d0cde6685627f..4f4e2c1824f18 100644
---- a/security/keys/proc.c
-+++ b/security/keys/proc.c
-@@ -198,7 +198,7 @@ static int proc_keys_show(struct seq_file *m, void *v)
- 
- 	/* come up with a suitable timeout value */
- 	expiry = READ_ONCE(key->expiry);
--	if (expiry == 0) {
-+	if (expiry == TIME64_MAX) {
- 		memcpy(xbuf, "perm", 5);
- 	} else if (now >= expiry) {
- 		memcpy(xbuf, "expd", 5);
--- 
-2.43.0
-
-
+Mmm, but the interrupt could come in on a different CPU and that would
+lead to it stealing the wait_lock from the CPU which is merely waiting
+for the readers to go away.
 
 
