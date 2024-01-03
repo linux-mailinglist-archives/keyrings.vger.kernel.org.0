@@ -1,66 +1,65 @@
-Return-Path: <keyrings+bounces-400-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-401-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21FDF823095
-	for <lists+keyrings@lfdr.de>; Wed,  3 Jan 2024 16:31:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F08F82322B
+	for <lists+keyrings@lfdr.de>; Wed,  3 Jan 2024 18:03:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C47DB2290B
-	for <lists+keyrings@lfdr.de>; Wed,  3 Jan 2024 15:31:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFF8CB241D7
+	for <lists+keyrings@lfdr.de>; Wed,  3 Jan 2024 17:03:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B591B271;
-	Wed,  3 Jan 2024 15:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664331C2B3;
+	Wed,  3 Jan 2024 17:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="MW48QkkJ";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="MW48QkkJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4OTfGSy"
 X-Original-To: keyrings@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95051B272;
-	Wed,  3 Jan 2024 15:31:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1704295895;
-	bh=UQvhsnGSpV/EWl0XpntG3HXlkzaoYbazK99y+TlLzkM=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=MW48QkkJkcg8doCQs1BIGCYwrRlPYeeF6jiS2oApXo9esYeFnQJJxyGTSZFRXowQp
-	 HC2Dn1A//Oi1stn+Lw3bRAAMXEiG7Mis5VL1l2QqSblRjBMWHyfAOsClewxUSrdY72
-	 EDEknzyweynEupIVGODtlstBBU+kqyHYyNpeRMzM=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id D82EF1286D2B;
-	Wed,  3 Jan 2024 10:31:35 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id iI0swpkofHHk; Wed,  3 Jan 2024 10:31:35 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1704295895;
-	bh=UQvhsnGSpV/EWl0XpntG3HXlkzaoYbazK99y+TlLzkM=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=MW48QkkJkcg8doCQs1BIGCYwrRlPYeeF6jiS2oApXo9esYeFnQJJxyGTSZFRXowQp
-	 HC2Dn1A//Oi1stn+Lw3bRAAMXEiG7Mis5VL1l2QqSblRjBMWHyfAOsClewxUSrdY72
-	 EDEknzyweynEupIVGODtlstBBU+kqyHYyNpeRMzM=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::c14])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id EDF361286AD1;
-	Wed,  3 Jan 2024 10:31:34 -0500 (EST)
-Message-ID: <926f031e15739ea9044c8aaa7bbe72ab18a8f3c5.camel@HansenPartnership.com>
-Subject: Re: [PATCH v6 13/20] tpm: Add HMAC session start and end functions
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org
-Cc: keyrings@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 03 Jan 2024 10:31:33 -0500
-In-Reply-To: <CY566RG0WK3A.21KMYFHM9R6UR@suppilovahvero>
-References: <20240102170408.21969-1-James.Bottomley@HansenPartnership.com>
-	 <20240102170408.21969-14-James.Bottomley@HansenPartnership.com>
-	 <CY566RG0WK3A.21KMYFHM9R6UR@suppilovahvero>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B6C1C282;
+	Wed,  3 Jan 2024 17:03:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74591C433C9;
+	Wed,  3 Jan 2024 17:03:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1704301396;
+	bh=doZvB1AhWDPhSXJDSLa0IYHlW1KUg+XWUQ4t3H3LFEo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=g4OTfGSy0nTHa7PbIHmcPpc3O7kGlt6wrDhfPuHnD1deoD7KBFdTVrXrQ2iwEZwFU
+	 7IPS7yU7nR0jLziPRj9w97M8IrkvdloRwvvJml1KDAHSMnQvqO10NpTdY6FxTQtGCp
+	 lBWyNeNPPQWdeds2rTaEydpwpeFo0ec2w+wdS9BQ=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	David Howells <dhowells@redhat.com>,
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	Wang Lei <wang840925@gmail.com>,
+	Jeff Layton <jlayton@redhat.com>,
+	Steve French <smfrench@gmail.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	ceph-devel@vger.kernel.org,
+	keyrings@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 21/95] keys, dns: Allow key types (eg. DNS) to be reclaimed immediately on expiry
+Date: Wed,  3 Jan 2024 17:54:29 +0100
+Message-ID: <20240103164857.327278177@linuxfoundation.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
+References: <20240103164853.921194838@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -69,257 +68,285 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Wed, 2024-01-03 at 17:18 +0200, Jarkko Sakkinen wrote:
-> On Tue Jan 2, 2024 at 7:04 PM EET, James Bottomley wrote:
-> > Add session  based HMAC  authentication plus parameter  decryption
-> > and
-> > response encryption  using AES. The  basic design is to  segregate
-> > all
-> > the nasty crypto, hash and hmac code into tpm2-sessions.c and
-> > export a
-> > usable API.  The API first of all starts off by gaining a session
-> > with
-> > tpm2_start_auth_session() which  initiates a session with  the TPM
-> > and
-> > allocates  an  opaque  tpm2_auth   structure  to  handle  the 
-> > session
-> > parameters.  The  design is that  session use will be  single
-> > threaded
-> > from start to finish under the ops lock, so the tpm2_auth structure
-> > is
-> > stored in struct tpm2_chip to simpify the externally visible API.
-> > 
-> > The session can be ended with tpm2_end_auth_session() which is
-> > designed only to be used in error legs.  Ordinarily the further
-> > session API (future patches) will end or continue the session
-> > appropriately without having to call this.
-> > 
-> > Signed-off-by: James Bottomley
-> > <James.Bottomley@HansenPartnership.com>
-> > Reviewed-by: Ard Biesheuvel <ard.biesheuvel@linaro.org> # crypto
-> > API parts
-> > 
-> > ---
-> > 
-> > v6: split into new patch, update config variable
-> > ---
-> >  drivers/char/tpm/Kconfig         |   3 +
-> >  drivers/char/tpm/tpm-buf.c       |   1 +
-> >  drivers/char/tpm/tpm-chip.c      |   3 +
-> >  drivers/char/tpm/tpm2-sessions.c | 383
-> > +++++++++++++++++++++++++++++++
-> >  include/linux/tpm.h              |  34 +++
-> >  5 files changed, 424 insertions(+)
-> > 
-> > diff --git a/drivers/char/tpm/Kconfig b/drivers/char/tpm/Kconfig
-> > index e3c39a83171b..086cb8588493 100644
-> > --- a/drivers/char/tpm/Kconfig
-> > +++ b/drivers/char/tpm/Kconfig
-> > @@ -30,6 +30,9 @@ if TCG_TPM
-> >  config TCG_TPM2_HMAC
-> >         bool "Use encrypted and HMACd transactions on the TPM bus"
-> >         default y
-> > +       select CRYPTO_ECDH
-> > +       select CRYPTO_LIB_AESCFB
-> > +       select CRYPTO_LIB_SHA256
-> >         help
-> >            Setting this causes us to deploy a scheme which uses
-> > request
-> >           and response HMACs in addition to encryption for
-> > diff --git a/drivers/char/tpm/tpm-buf.c b/drivers/char/tpm/tpm-
-> > buf.c
-> > index bb81180495d1..274130398569 100644
-> > --- a/drivers/char/tpm/tpm-buf.c
-> > +++ b/drivers/char/tpm/tpm-buf.c
-> > @@ -44,6 +44,7 @@ void tpm_buf_reset(struct tpm_buf *buf, u16 tag,
-> > u32 ordinal)
-> >         head->tag = cpu_to_be16(tag);
-> >         head->length = cpu_to_be32(sizeof(*head));
-> >         head->ordinal = cpu_to_be32(ordinal);
-> > +       buf->handles = 0;
-> >  }
-> >  EXPORT_SYMBOL_GPL(tpm_buf_reset);
-> >  
-> > diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-
-> > chip.c
-> > index 42b1062e33cd..d93937326b2e 100644
-> > --- a/drivers/char/tpm/tpm-chip.c
-> > +++ b/drivers/char/tpm/tpm-chip.c
-> > @@ -275,6 +275,9 @@ static void tpm_dev_release(struct device *dev)
-> >         kfree(chip->work_space.context_buf);
-> >         kfree(chip->work_space.session_buf);
-> >         kfree(chip->allocated_banks);
-> > +#ifdef CONFIG_TCG_TPM2_HMAC
-> > +       kfree(chip->auth);
-> > +#endif
-> >         kfree(chip);
-> >  }
-> >  
-> > diff --git a/drivers/char/tpm/tpm2-sessions.c
-> > b/drivers/char/tpm/tpm2-sessions.c
-> > index ef66c28bb332..bca6fe3ebb10 100644
-> > --- a/drivers/char/tpm/tpm2-sessions.c
-> > +++ b/drivers/char/tpm/tpm2-sessions.c
-> > @@ -3,18 +3,397 @@
-> >  /*
-> >   * Copyright (C) 2018 James.Bottomley@HansenPartnership.com
-> >   *
-> > + * Cryptographic helper routines for handling TPM2 sessions for
-> > + * authorization HMAC and request response encryption.
-> > + *
-> > + * The idea is to ensure that every TPM command is HMAC protected
-> > by a
-> > + * session, meaning in-flight tampering would be detected and in
-> > + * addition all sensitive inputs and responses should be
-> > encrypted.
-> > + *
-> > + * The basic way this works is to use a TPM feature called salted
-> > + * sessions where a random secret used in session construction is
-> > + * encrypted to the public part of a known TPM key.  The problem
-> > is we
-> > + * have no known keys, so initially a primary Elliptic Curve key
-> > is
-> > + * derived from the NULL seed (we use EC because most TPMs
-> > generate
-> > + * these keys much faster than RSA ones).  The curve used is
-> > NIST_P256
-> > + * because that's now mandated to be present in 'TCG TPM v2.0
-> > + * Provisioning Guidance'
-> > + *
-> > + * Threat problems: the initial TPM2_CreatePrimary is not (and
-> > cannot
-> > + * be) session protected, so a clever Man in the Middle could
-> > return a
-> > + * public key they control to this command and from there
-> > intercept
-> > + * and decode all subsequent session based transactions.  The
-> > kernel
-> > + * cannot mitigate this threat but, after boot, userspace can get
-> > + * proof this has not happened by asking the TPM to certify the
-> > NULL
-> > + * key.  This certification would chain back to the TPM
-> > Endorsement
-> > + * Certificate and prove the NULL seed primary had not been
-> > tampered
-> > + * with and thus all sessions must have been cryptographically
-> > secure.
-> > + * To assist with this, the initial NULL seed public key name is
-> > made
-> > + * available in a sysfs file.
-> > + *
-> > + * Use of these functions:
-> > + *
-> > + * The design is all the crypto, hash and hmac gunk is confined in
-> > this
-> > + * file and never needs to be seen even by the kernel internal
-> > user.  To
-> > + * the user there's an init function tpm2_sessions_init() that
-> > needs to
-> > + * be called once per TPM which generates the NULL seed primary
-> > key.
-> > + *
-> > + * These are the usage functions:
-> > + *
-> > + * tpm2_start_auth_session() which allocates the opaque auth
-> > structure
-> > + *     and gets a session from the TPM.  This must be called
-> > before
-> > + *     any of the following functions.  The session is protected
-> > by a
-> > + *     session_key which is derived from a random salt value
-> > + *     encrypted to the NULL seed.
-> > + * tpm2_end_auth_session() kills the session and frees the
-> > resources.
-> > + *     Under normal operation this function is done by
-> > + *     tpm_buf_check_hmac_response(), so this is only to be used
-> > on
-> > + *     error legs where the latter is not executed.
-> >   */
-> >  
-> >  #include "tpm.h"
-> >  
-> > +#include <linux/random.h>
-> > +#include <linux/scatterlist.h>
-> > +
-> >  #include <asm/unaligned.h>
-> >  
-> >  #include <crypto/aes.h>
-> > +#include <crypto/kpp.h>
-> > +#include <crypto/ecdh.h>
-> > +#include <crypto/hash.h>
-> > +#include <crypto/hmac.h>
-> >  
-> >  /* if you change to AES256, you only need change this */
-> >  #define AES_KEYBYTES   AES_KEYSIZE_128
-> >  
-> >  #define AES_KEYBITS    (AES_KEYBYTES*8)
-> > +#define AUTH_MAX_NAMES 3
-> > +
-> > +/*
-> > + * This is the structure that carries all the auth information
-> > (like
-> > + * session handle, nonces, session key and auth) from use to use
-> > it is
-> > + * designed to be opaque to anything outside.
-> > + */
-> > +struct tpm2_auth {
-> > +       u32 handle;
-> > +       /*
-> > +        * This has two meanings: before
-> > tpm_buf_fill_hmac_session()
-> > +        * it marks the offset in the buffer of the start of the
-> > +        * sessions (i.e. after all the handles).  Once the buffer
-> > has
-> > +        * been filled it markes the session number of our auth
-> > +        * session so we can find it again in the response buffer.
-> > +        *
-> > +        * The two cases are distinguished because the first offset
-> > +        * must always be greater than TPM_HEADER_SIZE and the
-> > second
-> > +        * must be less than or equal to 5.
-> > +        */
-> > +       u32 session;
-> > +       /*
-> > +        * the size here is variable and set by the size of
-> > our_nonce
-> > +        * which must be between 16 and the name hash length. we
-> > set
-> > +        * the maximum sha256 size for the greatest protection
-> > +        */
-> > +       u8 our_nonce[SHA256_DIGEST_SIZE];
-> > +       u8 tpm_nonce[SHA256_DIGEST_SIZE];
-> > +       /*
-> > +        * the salt is only used across the session
-> > command/response
-> > +        * after that it can be used as a scratch area
-> > +        */
-> > +       union {
-> > +               u8 salt[EC_PT_SZ];
-> > +               /* scratch for key + IV */
-> > +               u8 scratch[AES_KEYBYTES + AES_BLOCK_SIZE];
-> > +       };
-> > +       u8 session_key[SHA256_DIGEST_SIZE];
-> > +};
-> 
-> Could this contain also the fields added in the previous patch?
-> 
-> Then obviously this data would be allocated together with chip
-> but is there hard reason why this needs separate kzalloc and cannot
-> be always allocated with chip blob?
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
-It's session specific (and highly sensitive data), so it needs to be
-allocated and destroyed with each session.  Our usage pattern under the
-ops mutex means that every session is single threaded, so effectively
-it has a 1:1 relationship with the chip, but part of the reason for all
-of this is to remove visibility of the contents of this area from
-anything other than the session code.  Essentially it's stuff the chip
-doesn't need to know because it's always constructed when the session
-is created.
+------------------
 
-I've also got a policy patch much later that requires two sessions, so
-needs a push and pop mechanism which a static allocation in the chip
-area won't work for.
+From: David Howells <dhowells@redhat.com>
 
-James
+[ Upstream commit 39299bdd2546688d92ed9db4948f6219ca1b9542 ]
+
+If a key has an expiration time, then when that time passes, the key is
+left around for a certain amount of time before being collected (5 mins by
+default) so that EKEYEXPIRED can be returned instead of ENOKEY.  This is a
+problem for DNS keys because we want to redo the DNS lookup immediately at
+that point.
+
+Fix this by allowing key types to be marked such that keys of that type
+don't have this extra period, but are reclaimed as soon as they expire and
+turn this on for dns_resolver-type keys.  To make this easier to handle,
+key->expiry is changed to be permanent if TIME64_MAX rather than 0.
+
+Furthermore, give such new-style negative DNS results a 1s default expiry
+if no other expiry time is set rather than allowing it to stick around
+indefinitely.  This shouldn't be zero as ls will follow a failing stat call
+immediately with a second with AT_SYMLINK_NOFOLLOW added.
+
+Fixes: 1a4240f4764a ("DNS: Separate out CIFS DNS Resolver code")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Tested-by: Markus Suvanto <markus.suvanto@gmail.com>
+cc: Wang Lei <wang840925@gmail.com>
+cc: Jeff Layton <jlayton@redhat.com>
+cc: Steve French <smfrench@gmail.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Jarkko Sakkinen <jarkko@kernel.org>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: linux-afs@lists.infradead.org
+cc: linux-cifs@vger.kernel.org
+cc: linux-nfs@vger.kernel.org
+cc: ceph-devel@vger.kernel.org
+cc: keyrings@vger.kernel.org
+cc: netdev@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/linux/key-type.h   |  1 +
+ net/dns_resolver/dns_key.c | 10 +++++++++-
+ security/keys/gc.c         | 31 +++++++++++++++++++++----------
+ security/keys/internal.h   | 11 ++++++++++-
+ security/keys/key.c        | 15 +++++----------
+ security/keys/proc.c       |  2 +-
+ 6 files changed, 47 insertions(+), 23 deletions(-)
+
+diff --git a/include/linux/key-type.h b/include/linux/key-type.h
+index 7d985a1dfe4af..5caf3ce823733 100644
+--- a/include/linux/key-type.h
++++ b/include/linux/key-type.h
+@@ -73,6 +73,7 @@ struct key_type {
+ 
+ 	unsigned int flags;
+ #define KEY_TYPE_NET_DOMAIN	0x00000001 /* Keys of this type have a net namespace domain */
++#define KEY_TYPE_INSTANT_REAP	0x00000002 /* Keys of this type don't have a delay after expiring */
+ 
+ 	/* vet a description */
+ 	int (*vet_description)(const char *description);
+diff --git a/net/dns_resolver/dns_key.c b/net/dns_resolver/dns_key.c
+index 3aced951d5ab8..03f8f33dc134c 100644
+--- a/net/dns_resolver/dns_key.c
++++ b/net/dns_resolver/dns_key.c
+@@ -91,6 +91,7 @@ const struct cred *dns_resolver_cache;
+ static int
+ dns_resolver_preparse(struct key_preparsed_payload *prep)
+ {
++	const struct dns_server_list_v1_header *v1;
+ 	const struct dns_payload_header *bin;
+ 	struct user_key_payload *upayload;
+ 	unsigned long derrno;
+@@ -122,6 +123,13 @@ dns_resolver_preparse(struct key_preparsed_payload *prep)
+ 			return -EINVAL;
+ 		}
+ 
++		v1 = (const struct dns_server_list_v1_header *)bin;
++		if ((v1->status != DNS_LOOKUP_GOOD &&
++		     v1->status != DNS_LOOKUP_GOOD_WITH_BAD)) {
++			if (prep->expiry == TIME64_MAX)
++				prep->expiry = ktime_get_real_seconds() + 1;
++		}
++
+ 		result_len = datalen;
+ 		goto store_result;
+ 	}
+@@ -314,7 +322,7 @@ static long dns_resolver_read(const struct key *key,
+ 
+ struct key_type key_type_dns_resolver = {
+ 	.name		= "dns_resolver",
+-	.flags		= KEY_TYPE_NET_DOMAIN,
++	.flags		= KEY_TYPE_NET_DOMAIN | KEY_TYPE_INSTANT_REAP,
+ 	.preparse	= dns_resolver_preparse,
+ 	.free_preparse	= dns_resolver_free_preparse,
+ 	.instantiate	= generic_key_instantiate,
+diff --git a/security/keys/gc.c b/security/keys/gc.c
+index 3c90807476eb0..eaddaceda14ea 100644
+--- a/security/keys/gc.c
++++ b/security/keys/gc.c
+@@ -66,6 +66,19 @@ void key_schedule_gc(time64_t gc_at)
+ 	}
+ }
+ 
++/*
++ * Set the expiration time on a key.
++ */
++void key_set_expiry(struct key *key, time64_t expiry)
++{
++	key->expiry = expiry;
++	if (expiry != TIME64_MAX) {
++		if (!(key->type->flags & KEY_TYPE_INSTANT_REAP))
++			expiry += key_gc_delay;
++		key_schedule_gc(expiry);
++	}
++}
++
+ /*
+  * Schedule a dead links collection run.
+  */
+@@ -176,7 +189,6 @@ static void key_garbage_collector(struct work_struct *work)
+ 	static u8 gc_state;		/* Internal persistent state */
+ #define KEY_GC_REAP_AGAIN	0x01	/* - Need another cycle */
+ #define KEY_GC_REAPING_LINKS	0x02	/* - We need to reap links */
+-#define KEY_GC_SET_TIMER	0x04	/* - We need to restart the timer */
+ #define KEY_GC_REAPING_DEAD_1	0x10	/* - We need to mark dead keys */
+ #define KEY_GC_REAPING_DEAD_2	0x20	/* - We need to reap dead key links */
+ #define KEY_GC_REAPING_DEAD_3	0x40	/* - We need to reap dead keys */
+@@ -184,21 +196,17 @@ static void key_garbage_collector(struct work_struct *work)
+ 
+ 	struct rb_node *cursor;
+ 	struct key *key;
+-	time64_t new_timer, limit;
++	time64_t new_timer, limit, expiry;
+ 
+ 	kenter("[%lx,%x]", key_gc_flags, gc_state);
+ 
+ 	limit = ktime_get_real_seconds();
+-	if (limit > key_gc_delay)
+-		limit -= key_gc_delay;
+-	else
+-		limit = key_gc_delay;
+ 
+ 	/* Work out what we're going to be doing in this pass */
+ 	gc_state &= KEY_GC_REAPING_DEAD_1 | KEY_GC_REAPING_DEAD_2;
+ 	gc_state <<= 1;
+ 	if (test_and_clear_bit(KEY_GC_KEY_EXPIRED, &key_gc_flags))
+-		gc_state |= KEY_GC_REAPING_LINKS | KEY_GC_SET_TIMER;
++		gc_state |= KEY_GC_REAPING_LINKS;
+ 
+ 	if (test_and_clear_bit(KEY_GC_REAP_KEYTYPE, &key_gc_flags))
+ 		gc_state |= KEY_GC_REAPING_DEAD_1;
+@@ -233,8 +241,11 @@ static void key_garbage_collector(struct work_struct *work)
+ 			}
+ 		}
+ 
+-		if (gc_state & KEY_GC_SET_TIMER) {
+-			if (key->expiry > limit && key->expiry < new_timer) {
++		expiry = key->expiry;
++		if (expiry != TIME64_MAX) {
++			if (!(key->type->flags & KEY_TYPE_INSTANT_REAP))
++				expiry += key_gc_delay;
++			if (expiry > limit && expiry < new_timer) {
+ 				kdebug("will expire %x in %lld",
+ 				       key_serial(key), key->expiry - limit);
+ 				new_timer = key->expiry;
+@@ -276,7 +287,7 @@ static void key_garbage_collector(struct work_struct *work)
+ 	 */
+ 	kdebug("pass complete");
+ 
+-	if (gc_state & KEY_GC_SET_TIMER && new_timer != (time64_t)TIME64_MAX) {
++	if (new_timer != TIME64_MAX) {
+ 		new_timer += key_gc_delay;
+ 		key_schedule_gc(new_timer);
+ 	}
+diff --git a/security/keys/internal.h b/security/keys/internal.h
+index 9b9cf3b6fcbb4..bede6c71ffd97 100644
+--- a/security/keys/internal.h
++++ b/security/keys/internal.h
+@@ -176,6 +176,7 @@ extern unsigned key_gc_delay;
+ extern void keyring_gc(struct key *keyring, time64_t limit);
+ extern void keyring_restriction_gc(struct key *keyring,
+ 				   struct key_type *dead_type);
++void key_set_expiry(struct key *key, time64_t expiry);
+ extern void key_schedule_gc(time64_t gc_at);
+ extern void key_schedule_gc_links(void);
+ extern void key_gc_keytype(struct key_type *ktype);
+@@ -224,10 +225,18 @@ extern struct key *key_get_instantiation_authkey(key_serial_t target_id);
+  */
+ static inline bool key_is_dead(const struct key *key, time64_t limit)
+ {
++	time64_t expiry = key->expiry;
++
++	if (expiry != TIME64_MAX) {
++		if (!(key->type->flags & KEY_TYPE_INSTANT_REAP))
++			expiry += key_gc_delay;
++		if (expiry <= limit)
++			return true;
++	}
++
+ 	return
+ 		key->flags & ((1 << KEY_FLAG_DEAD) |
+ 			      (1 << KEY_FLAG_INVALIDATED)) ||
+-		(key->expiry > 0 && key->expiry <= limit) ||
+ 		key->domain_tag->removed;
+ }
+ 
+diff --git a/security/keys/key.c b/security/keys/key.c
+index c45afdd1dfbb4..e65240641ca57 100644
+--- a/security/keys/key.c
++++ b/security/keys/key.c
+@@ -294,6 +294,7 @@ struct key *key_alloc(struct key_type *type, const char *desc,
+ 	key->uid = uid;
+ 	key->gid = gid;
+ 	key->perm = perm;
++	key->expiry = TIME64_MAX;
+ 	key->restrict_link = restrict_link;
+ 	key->last_used_at = ktime_get_real_seconds();
+ 
+@@ -463,10 +464,7 @@ static int __key_instantiate_and_link(struct key *key,
+ 			if (authkey)
+ 				key_invalidate(authkey);
+ 
+-			if (prep->expiry != TIME64_MAX) {
+-				key->expiry = prep->expiry;
+-				key_schedule_gc(prep->expiry + key_gc_delay);
+-			}
++			key_set_expiry(key, prep->expiry);
+ 		}
+ 	}
+ 
+@@ -606,8 +604,7 @@ int key_reject_and_link(struct key *key,
+ 		atomic_inc(&key->user->nikeys);
+ 		mark_key_instantiated(key, -error);
+ 		notify_key(key, NOTIFY_KEY_INSTANTIATED, -error);
+-		key->expiry = ktime_get_real_seconds() + timeout;
+-		key_schedule_gc(key->expiry + key_gc_delay);
++		key_set_expiry(key, ktime_get_real_seconds() + timeout);
+ 
+ 		if (test_and_clear_bit(KEY_FLAG_USER_CONSTRUCT, &key->flags))
+ 			awaken = 1;
+@@ -722,16 +719,14 @@ struct key_type *key_type_lookup(const char *type)
+ 
+ void key_set_timeout(struct key *key, unsigned timeout)
+ {
+-	time64_t expiry = 0;
++	time64_t expiry = TIME64_MAX;
+ 
+ 	/* make the changes with the locks held to prevent races */
+ 	down_write(&key->sem);
+ 
+ 	if (timeout > 0)
+ 		expiry = ktime_get_real_seconds() + timeout;
+-
+-	key->expiry = expiry;
+-	key_schedule_gc(key->expiry + key_gc_delay);
++	key_set_expiry(key, expiry);
+ 
+ 	up_write(&key->sem);
+ }
+diff --git a/security/keys/proc.c b/security/keys/proc.c
+index d0cde6685627f..4f4e2c1824f18 100644
+--- a/security/keys/proc.c
++++ b/security/keys/proc.c
+@@ -198,7 +198,7 @@ static int proc_keys_show(struct seq_file *m, void *v)
+ 
+ 	/* come up with a suitable timeout value */
+ 	expiry = READ_ONCE(key->expiry);
+-	if (expiry == 0) {
++	if (expiry == TIME64_MAX) {
+ 		memcpy(xbuf, "perm", 5);
+ 	} else if (now >= expiry) {
+ 		memcpy(xbuf, "expd", 5);
+-- 
+2.43.0
+
+
 
 
