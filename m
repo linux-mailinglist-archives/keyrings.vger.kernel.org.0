@@ -1,162 +1,202 @@
-Return-Path: <keyrings+bounces-407-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-408-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 505EE824AD7
-	for <lists+keyrings@lfdr.de>; Thu,  4 Jan 2024 23:26:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75107824CCA
+	for <lists+keyrings@lfdr.de>; Fri,  5 Jan 2024 03:14:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0EC51F21632
-	for <lists+keyrings@lfdr.de>; Thu,  4 Jan 2024 22:26:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE2A22867C8
+	for <lists+keyrings@lfdr.de>; Fri,  5 Jan 2024 02:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02EA12C859;
-	Thu,  4 Jan 2024 22:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7351FC4;
+	Fri,  5 Jan 2024 02:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="VZk07FVu";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="VZk07FVu"
+	dkim=pass (1024-bit key) header.d=auristor.com header.i=jaltman@auristor.com header.b="Iio819W8"
 X-Original-To: keyrings@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sequoia-grove.ad.secure-endpoints.com (sequoia-grove.ad.secure-endpoints.com [208.125.0.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94EF02C855;
-	Thu,  4 Jan 2024 22:26:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1704407163;
-	bh=pxtFYTfg5Btt9q2rnCmd31UlDOGjhAIA3pQzQG/fur8=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=VZk07FVuzBCbVfrboiLg+q2okHjldFAPOUSZZbhrUGwPCWD1ajCFNvf1KTZ4guVp8
-	 /61WOOnuecqdTKuxpljbQWD1xolw/vz4UdLqRJoWwtpoHargHmLNOTh3IDeH5PlQ1s
-	 /pl3CDn5IeJAaKvBMhJOlOa7E2CGb9qEdGm3acQQ=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id C399E1286A8E;
-	Thu,  4 Jan 2024 17:26:03 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id OtKBJrqFQNQP; Thu,  4 Jan 2024 17:26:03 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1704407163;
-	bh=pxtFYTfg5Btt9q2rnCmd31UlDOGjhAIA3pQzQG/fur8=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=VZk07FVuzBCbVfrboiLg+q2okHjldFAPOUSZZbhrUGwPCWD1ajCFNvf1KTZ4guVp8
-	 /61WOOnuecqdTKuxpljbQWD1xolw/vz4UdLqRJoWwtpoHargHmLNOTh3IDeH5PlQ1s
-	 /pl3CDn5IeJAaKvBMhJOlOa7E2CGb9qEdGm3acQQ=
-Received: from [IPv6:2601:5c4:4302:c21::a774] (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id C920B1286A80;
-	Thu,  4 Jan 2024 17:26:02 -0500 (EST)
-Message-ID: <c4f30887420363ad67f09b6df607544695e9c0e9.camel@HansenPartnership.com>
-Subject: Re: [PATCH v6 13/20] tpm: Add HMAC session start and end functions
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org
-Cc: keyrings@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 04 Jan 2024 17:25:58 -0500
-In-Reply-To: <CY64GOLHZ2ZS.VIOWWUMZTV6U@suppilovahvero>
-References: <20240102170408.21969-1-James.Bottomley@HansenPartnership.com>
-	 <20240102170408.21969-14-James.Bottomley@HansenPartnership.com>
-	 <CY566RG0WK3A.21KMYFHM9R6UR@suppilovahvero>
-	 <926f031e15739ea9044c8aaa7bbe72ab18a8f3c5.camel@HansenPartnership.com>
-	 <CY64GOLHZ2ZS.VIOWWUMZTV6U@suppilovahvero>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986E624A0A
+	for <keyrings@vger.kernel.org>; Fri,  5 Jan 2024 02:13:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=auristor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auristor.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/relaxed;
+	d=auristor.com; s=MDaemon; r=y; t=1704420833; x=1705025633;
+	i=jaltman@auristor.com; q=dns/txt; h=Message-ID:Date:
+	MIME-Version:User-Agent:Subject:Content-Language:To:Cc:
+	References:From:Organization:In-Reply-To:Content-Type; bh=EyY5K4
+	3ZxbeNKLS77u/lbdVvK03ncy5VeZcZKlUqzlw=; b=Iio819W8SDlb1fKZScE3CG
+	wLWw7JrFHkPyt4iV1bwxx9V45TdAu8H/fLmqG1brawwksXm/4iq3JrZKnFt3Q2EN
+	XuWLeJdtRzNPoyck9umiw3DkA57nddAVxku5F+2O1jXqrkXHZgi24UgUOC6jh1pn
+	EoVsSl672UaGpXAbMmWY8=
+X-MDAV-Result: clean
+X-MDAV-Processed: sequoia-grove.ad.secure-endpoints.com, Thu, 04 Jan 2024 21:13:53 -0500
+Received: from [IPV6:2603:7000:73c:c800:199f:1b35:3bd5:843e] by auristor.com (IPv6:2001:470:1f07:f77:28d9:68fb:855d:c2a5) (MDaemon PRO v23.5.2a) 
+	with ESMTPSA id md5001003770368.msg; Thu, 04 Jan 2024 21:13:52 -0500
+X-Spam-Processed: sequoia-grove.ad.secure-endpoints.com, Thu, 04 Jan 2024 21:13:52 -0500
+	(not processed: message from trusted or authenticated source)
+X-MDRemoteIP: 2603:7000:73c:c800:199f:1b35:3bd5:843e
+X-MDHelo: [IPV6:2603:7000:73c:c800:199f:1b35:3bd5:843e]
+X-MDArrival-Date: Thu, 04 Jan 2024 21:13:52 -0500
+X-MDOrigin-Country: US, NA
+X-Authenticated-Sender: jaltman@auristor.com
+X-Return-Path: prvs=1734dd26fb=jaltman@auristor.com
+X-Envelope-From: jaltman@auristor.com
+X-MDaemon-Deliver-To: keyrings@vger.kernel.org
+Message-ID: <cd1d6f0d-a05b-412c-882a-e62ee9e67b85@auristor.com>
+Date: Thu, 4 Jan 2024 21:13:34 -0500
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 067/156] keys, dns: Allow key types (eg. DNS) to be
+ reclaimed immediately on expiry
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
+ Markus Suvanto <markus.suvanto@gmail.com>, Wang Lei <wang840925@gmail.com>,
+ Jeff Layton <jlayton@redhat.com>, Steve French <smfrench@gmail.com>,
+ Marc Dionne <marc.dionne@auristor.com>, Jarkko Sakkinen <jarkko@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
+ linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+ keyrings@vger.kernel.org, netdev@vger.kernel.org,
+ Sasha Levin <sashal@kernel.org>
+References: <20231230115812.333117904@linuxfoundation.org>
+ <20231230115814.539935693@linuxfoundation.org>
+From: Jeffrey E Altman <jaltman@auristor.com>
+Organization: AuriStor, Inc.
+In-Reply-To: <20231230115814.539935693@linuxfoundation.org>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256; boundary="------------ms040802090304090309010709"
+X-MDCFSigsAdded: auristor.com
+
+This is a cryptographically signed message in MIME format.
+
+--------------ms040802090304090309010709
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On Thu, 2024-01-04 at 20:09 +0200, Jarkko Sakkinen wrote:
-> On Wed Jan 3, 2024 at 5:31 PM EET, James Bottomley wrote:
-> > On Wed, 2024-01-03 at 17:18 +0200, Jarkko Sakkinen wrote:
-> > > On Tue Jan 2, 2024 at 7:04 PM EET, James Bottomley wrote:
-[...]
-> > > > +struct tpm2_auth {
-> > > > +       u32 handle;
-> > > > +       /*
-> > > > +        * This has two meanings: before
-> > > > tpm_buf_fill_hmac_session()
-> > > > +        * it marks the offset in the buffer of the start of
-> > > > the
-> > > > +        * sessions (i.e. after all the handles).  Once the
-> > > > buffer
-> > > > has
-> > > > +        * been filled it markes the session number of our auth
-> > > > +        * session so we can find it again in the response
-> > > > buffer.
-> > > > +        *
-> > > > +        * The two cases are distinguished because the first
-> > > > offset
-> > > > +        * must always be greater than TPM_HEADER_SIZE and the
-> > > > second
-> > > > +        * must be less than or equal to 5.
-> > > > +        */
-> > > > +       u32 session;
-> > > > +       /*
-> > > > +        * the size here is variable and set by the size of
-> > > > our_nonce
-> > > > +        * which must be between 16 and the name hash length.
-> > > > we
-> > > > set
-> > > > +        * the maximum sha256 size for the greatest protection
-> > > > +        */
-> > > > +       u8 our_nonce[SHA256_DIGEST_SIZE];
-> > > > +       u8 tpm_nonce[SHA256_DIGEST_SIZE];
-> > > > +       /*
-> > > > +        * the salt is only used across the session
-> > > > command/response
-> > > > +        * after that it can be used as a scratch area
-> > > > +        */
-> > > > +       union {
-> > > > +               u8 salt[EC_PT_SZ];
-> > > > +               /* scratch for key + IV */
-> > > > +               u8 scratch[AES_KEYBYTES + AES_BLOCK_SIZE];
-> > > > +       };
-> > > > +       u8 session_key[SHA256_DIGEST_SIZE];
-> > > > +};
-> > > 
-> > > Could this contain also the fields added in the previous patch?
-> > > 
-> > > Then obviously this data would be allocated together with chip
-> > > but is there hard reason why this needs separate kzalloc and
-> > > cannot be always allocated with chip blob?
-> > 
-> > It's session specific (and highly sensitive data), so it needs to
-> > be allocated and destroyed with each session.  Our usage pattern
-> > under the ops mutex means that every session is single threaded, so
-> > effectively it has a 1:1 relationship with the chip, but part of
-> > the reason for all of this is to remove visibility of the contents
-> > of this area from anything other than the session code. 
-> > Essentially it's stuff the chip doesn't need to know because it's
-> > always constructed when the session is created.
-> > 
-> > I've also got a policy patch much later that requires two sessions,
-> > so needs a push and pop mechanism which a static allocation in the
-> > chip area won't work for.
-> > 
-> > James
-> 
-> Given the 1:1 relationship keeping the fields in tpm_chip has the
-> benefit of not having to deal with allocation error.
-> 
-> I guess having struct tpm2_auth (dunno, maybe tpm2_hmac_auth tho)
-> does make sense because then it could be declared as static field
-> and zeroed with memzero_explicit().
-> 
-> I don't see any point saving memory here at least...
+On 12/30/2023 6:58 AM, Greg Kroah-Hartman wrote:
+> 6.6-stable review patch.  If anyone has any objections, please let me know.
+>
+> ------------------
+>
+> From: David Howells <dhowells@redhat.com>
+>
+> [ Upstream commit 39299bdd2546688d92ed9db4948f6219ca1b9542 ]
+Greg,
 
-It's not about saving memory, it's about encapsulation: the inner
-details of session encryption would have to go into a global linux wide
-header file.  Ideally they should stay local to the TPM code and not be
-splashed about the kernel, so as not to give anyone else the idea they
-can muck with the values.  And, as I also said, a single allocation
-won't work with >1 sessions which are needed later on.
+Upstream commit 39299bdd2546688d92ed9db4948f6219ca1b9542 ("keys, dns: 
+Allow key types (eg. DNS) to be reclaimed immediately on expiry") was 
+subsequently fixed by
 
-James
+   commit 1997b3cb4217b09e49659b634c94da47f0340409
+   Author: Edward Adam Davis <eadavis@qq.com>
+   Date:   Sun Dec 24 00:02:49 2023 +0000
+
+     keys, dns: Fix missing size check of V1 server-list header
+
+   Fixes: b946001d3bb1 ("keys, dns: Allow key types (eg. DNS) to be 
+reclaimed immediately on expiry")
+
+If it is not too late, would it be possible to apply 1997b3cb421 to the 
+branches b946001d3bb1 was cherry-picked to before release?
+I believe the complete set of branches are
+
+   linux-6.6.y, linux-6.1.y, linux-5.15.y, linux-5.10.y, linux-5.0.y
+
+Thank you.
+
+Jeffrey Altman
+
+
+--------------ms040802090304090309010709
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCC
+DHEwggXSMIIEuqADAgECAhBAAYJpmi/rPn/F0fJyDlzMMA0GCSqGSIb3DQEBCwUAMDoxCzAJ
+BgNVBAYTAlVTMRIwEAYDVQQKEwlJZGVuVHJ1c3QxFzAVBgNVBAMTDlRydXN0SUQgQ0EgQTEz
+MB4XDTIyMDgwNDE2MDQ0OFoXDTI1MTAzMTE2MDM0OFowcDEvMC0GCgmSJomT8ixkAQETH0Ew
+MTQxMEQwMDAwMDE4MjY5OUEyRkQyMDAwMjMzQ0QxGTAXBgNVBAMTEEplZmZyZXkgRSBBbHRt
+YW4xFTATBgNVBAoTDEF1cmlTdG9yIEluYzELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEB
+AQUAA4IBDwAwggEKAoIBAQCkC7PKBBZnQqDKPtZPMLAy77zo2DPvwtGnd1hNjPvbXrpGxUb3
+xHZRtv179LHKAOcsY2jIctzieMxf82OMyhpBziMPsFAG/ukihBMFj3/xEeZVso3K27pSAyyN
+fO/wJ0rX7G+ges22Dd7goZul8rPaTJBIxbZDuaykJMGpNq4PQ8VPcnYZx+6b+nJwJJoJ46kI
+EEfNh3UKvB/vM0qtxS690iAdgmQIhTl+qfXq4IxWB6b+3NeQxgR6KLU4P7v88/tvJTpxIKkg
+9xj89ruzeThyRFd2DSe3vfdnq9+g4qJSHRXyTft6W3Lkp7UWTM4kMqOcc4VSRdufVKBQNXjG
+IcnhAgMBAAGjggKcMIICmDAOBgNVHQ8BAf8EBAMCBPAwgYQGCCsGAQUFBwEBBHgwdjAwBggr
+BgEFBQcwAYYkaHR0cDovL2NvbW1lcmNpYWwub2NzcC5pZGVudHJ1c3QuY29tMEIGCCsGAQUF
+BzAChjZodHRwOi8vdmFsaWRhdGlvbi5pZGVudHJ1c3QuY29tL2NlcnRzL3RydXN0aWRjYWEx
+My5wN2MwHwYDVR0jBBgwFoAULbfeG1l+KpguzeHUG+PFEBJe6RQwCQYDVR0TBAIwADCCASsG
+A1UdIASCASIwggEeMIIBGgYLYIZIAYb5LwAGAgEwggEJMEoGCCsGAQUFBwIBFj5odHRwczov
+L3NlY3VyZS5pZGVudHJ1c3QuY29tL2NlcnRpZmljYXRlcy9wb2xpY3kvdHMvaW5kZXguaHRt
+bDCBugYIKwYBBQUHAgIwga0MgapUaGlzIFRydXN0SUQgQ2VydGlmaWNhdGUgaGFzIGJlZW4g
+aXNzdWVkIGluIGFjY29yZGFuY2Ugd2l0aCBJZGVuVHJ1c3QncyBUcnVzdElEIENlcnRpZmlj
+YXRlIFBvbGljeSBmb3VuZCBhdCBodHRwczovL3NlY3VyZS5pZGVudHJ1c3QuY29tL2NlcnRp
+ZmljYXRlcy9wb2xpY3kvdHMvaW5kZXguaHRtbDBFBgNVHR8EPjA8MDqgOKA2hjRodHRwOi8v
+dmFsaWRhdGlvbi5pZGVudHJ1c3QuY29tL2NybC90cnVzdGlkY2FhMTMuY3JsMB8GA1UdEQQY
+MBaBFGphbHRtYW5AYXVyaXN0b3IuY29tMB0GA1UdDgQWBBQB+nzqgljLocLTsiUn2yWqEc2s
+gjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwDQYJKoZIhvcNAQELBQADggEBAJwV
+eycprp8Ox1npiTyfwc5QaVaqtoe8Dcg2JXZc0h4DmYGW2rRLHp8YL43snEV93rPJVk6B2v4c
+WLeQfaMrnyNeEuvHx/2CT44cdLtaEk5zyqo3GYJYlLcRVz6EcSGHv1qPXgDT0xB/25etwGYq
+utYF4Chkxu4KzIpq90eDMw5ajkexw+8ARQz4N5+d6NRbmMCovd7wTGi8th/BZvz8hgKUiUJo
+Qle4wDxrdXdnIhCP7g87InXKefWgZBF4VX21t2+hkc04qrhIJlHrocPG9mRSnnk2WpsY0MXt
+a8ivbVKtfpY7uSNDZSKTDi1izEFH5oeQdYRkgIGb319a7FjslV8wggaXMIIEf6ADAgECAhBA
+AXA7OrqBjMk8rp4OuNQSMA0GCSqGSIb3DQEBCwUAMEoxCzAJBgNVBAYTAlVTMRIwEAYDVQQK
+EwlJZGVuVHJ1c3QxJzAlBgNVBAMTHklkZW5UcnVzdCBDb21tZXJjaWFsIFJvb3QgQ0EgMTAe
+Fw0yMDAyMTIyMTA3NDlaFw0zMDAyMTIyMTA3NDlaMDoxCzAJBgNVBAYTAlVTMRIwEAYDVQQK
+EwlJZGVuVHJ1c3QxFzAVBgNVBAMTDlRydXN0SUQgQ0EgQTEzMIIBIjANBgkqhkiG9w0BAQEF
+AAOCAQ8AMIIBCgKCAQEAu6sUO01SDD99PM+QdZkNxKxJNt0NgQE+Zt6ixaNP0JKSjTd+SG5L
+wqxBWjnOgI/3dlwgtSNeN77AgSs+rA4bK4GJ75cUZZANUXRKw/et8pf9Qn6iqgB63OdHxBN/
+15KbM3HR+PyiHXQoUVIevCKW8nnlWnnZabT1FejOhRRKVUg5HACGOTfnCOONrlxlg+m1Vjgn
+o1uNqNuLM/jkD1z6phNZ/G9IfZGI0ppHX5AA/bViWceX248VmefNhSR14ADZJtlAAWOi2un0
+3bqrBPHA9nDyXxI8rgWLfUP5rDy8jx2hEItg95+ORF5wfkGUq787HBjspE86CcaduLka/Bk2
+VwIDAQABo4IChzCCAoMwEgYDVR0TAQH/BAgwBgEB/wIBADAOBgNVHQ8BAf8EBAMCAYYwgYkG
+CCsGAQUFBwEBBH0wezAwBggrBgEFBQcwAYYkaHR0cDovL2NvbW1lcmNpYWwub2NzcC5pZGVu
+dHJ1c3QuY29tMEcGCCsGAQUFBzAChjtodHRwOi8vdmFsaWRhdGlvbi5pZGVudHJ1c3QuY29t
+L3Jvb3RzL2NvbW1lcmNpYWxyb290Y2ExLnA3YzAfBgNVHSMEGDAWgBTtRBnA0/AGi+6ke75C
+5yZUyI42djCCASQGA1UdIASCARswggEXMIIBEwYEVR0gADCCAQkwSgYIKwYBBQUHAgEWPmh0
+dHBzOi8vc2VjdXJlLmlkZW50cnVzdC5jb20vY2VydGlmaWNhdGVzL3BvbGljeS90cy9pbmRl
+eC5odG1sMIG6BggrBgEFBQcCAjCBrQyBqlRoaXMgVHJ1c3RJRCBDZXJ0aWZpY2F0ZSBoYXMg
+YmVlbiBpc3N1ZWQgaW4gYWNjb3JkYW5jZSB3aXRoIElkZW5UcnVzdCdzIFRydXN0SUQgQ2Vy
+dGlmaWNhdGUgUG9saWN5IGZvdW5kIGF0IGh0dHBzOi8vc2VjdXJlLmlkZW50cnVzdC5jb20v
+Y2VydGlmaWNhdGVzL3BvbGljeS90cy9pbmRleC5odG1sMEoGA1UdHwRDMEEwP6A9oDuGOWh0
+dHA6Ly92YWxpZGF0aW9uLmlkZW50cnVzdC5jb20vY3JsL2NvbW1lcmNpYWxyb290Y2ExLmNy
+bDAdBgNVHQ4EFgQULbfeG1l+KpguzeHUG+PFEBJe6RQwHQYDVR0lBBYwFAYIKwYBBQUHAwIG
+CCsGAQUFBwMEMA0GCSqGSIb3DQEBCwUAA4ICAQB/7BKcygLX6Nl4a03cDHt7TLdPxCzFvDF2
+bkVYCFTRX47UfeomF1gBPFDee3H/IPlLRmuTPoNt0qjdpfQzmDWN95jUXLdLPRToNxyaoB5s
+0hOhcV6H08u3FHACBif55i0DTDzVSaBv0AZ9h1XeuGx4Fih1Vm3Xxz24GBqqVudvPRLyMJ7u
+6hvBqTIKJ53uCs3dyQLZT9DXnp+kJv8y7ZSAY+QVrI/dysT8avtn8d7k7azNBkfnbRq+0e88
+QoBnel6u+fpwbd5NLRHywXeH+phbzULCa+bLPRMqJaW2lbhvSWrMHRDy3/d8HvgnLCBFK2s4
+Spns4YCN4xVcbqlGWzgolHCKUH39vpcsDo1ymZFrJ8QR6ihIn8FmJ5oKwAnnd/G6ADXFC9bu
+db9+532phSAXOZrrecIQn+vtP366PC+aClAPsIIDJDsotS5z4X2JUFsNIuEgXGqhiKE7SuZb
+rFG9sdcLprSlJN7TsRDc0W2b9nqwD+rj/5MN0C+eKwha+8ydv0+qzTyxPP90KRgaegGowC4d
+UsZyTk2n4Z3MuAHX5nAZL/Vh/SyDj/ajorV44yqZBzQ3ChKhXbfUSwe2xMmygA2Z5DRwMRJn
+p/BscizYdNk2WXJMTnH+wVLN8sLEwEtQR4eTLoFmQvrK2AMBS9kW5sBkMzINt/ZbbcZ3F+eA
+MDGCAxQwggMQAgEBME4wOjELMAkGA1UEBhMCVVMxEjAQBgNVBAoTCUlkZW5UcnVzdDEXMBUG
+A1UEAxMOVHJ1c3RJRCBDQSBBMTMCEEABgmmaL+s+f8XR8nIOXMwwDQYJYIZIAWUDBAIBBQCg
+ggGXMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI0MDEwNTAy
+MTMzNFowLwYJKoZIhvcNAQkEMSIEIFFTReKUjre1AmcsxXuYiHHnOg0SiXa/XVXzMyuFOmFu
+MF0GCSsGAQQBgjcQBDFQME4wOjELMAkGA1UEBhMCVVMxEjAQBgNVBAoTCUlkZW5UcnVzdDEX
+MBUGA1UEAxMOVHJ1c3RJRCBDQSBBMTMCEEABgmmaL+s+f8XR8nIOXMwwXwYLKoZIhvcNAQkQ
+AgsxUKBOMDoxCzAJBgNVBAYTAlVTMRIwEAYDVQQKEwlJZGVuVHJ1c3QxFzAVBgNVBAMTDlRy
+dXN0SUQgQ0EgQTEzAhBAAYJpmi/rPn/F0fJyDlzMMGwGCSqGSIb3DQEJDzFfMF0wCwYJYIZI
+AWUDBAEqMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzAOBggqhkiG9w0DAgICAIAwDQYIKoZI
+hvcNAwICAUAwBwYFKw4DAgcwDQYIKoZIhvcNAwICASgwDQYJKoZIhvcNAQEBBQAEggEAie9f
+MBHbfCX2VV6HqWhxJtXwZw70QhmnxCw0YwWiyIb2E+geXGkS17f/+JKS0ZMI8g/RcuZdRaTT
+h07tdcRLyWt1zSktWBkEmgXik3nZYt1yIGOryH5JbswUzwVJHnvdMhiz2luDkElm04bCrUz/
+fabOqJA/x2Q5mzgbQYeE8eYhk8o6Tsx6KsMfXtjIWwIOk4k+8rwpaytX2yZpWi1orymKhYRr
+PdQJEQ8FdEeG8QdTS+JGLMLInRBP+gBIgtgiT8KNXzgiQYKtC9m3nISp3O8pA63SluCx7Ey+
+MCrD0B3fTrjEPbrSuAv20wxDzQHE+XriIZ5uV4NcgQG3BT4zGQAAAAAAAA==
+--------------ms040802090304090309010709--
 
 
