@@ -1,114 +1,175 @@
-Return-Path: <keyrings+bounces-410-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-411-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C0E7825174
-	for <lists+keyrings@lfdr.de>; Fri,  5 Jan 2024 11:07:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ACB38256C4
+	for <lists+keyrings@lfdr.de>; Fri,  5 Jan 2024 16:36:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6D371F22DEF
-	for <lists+keyrings@lfdr.de>; Fri,  5 Jan 2024 10:07:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 803301C20BE4
+	for <lists+keyrings@lfdr.de>; Fri,  5 Jan 2024 15:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AADD24B3A;
-	Fri,  5 Jan 2024 10:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F4D2E640;
+	Fri,  5 Jan 2024 15:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCPY23v5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CB2giagl"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167B424B2F;
-	Fri,  5 Jan 2024 10:06:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10CFEC433C8;
-	Fri,  5 Jan 2024 10:06:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704449219;
-	bh=Exy/fCfgWx2532qZ1vXYkjfLM2k7/JjLhx9Pk8pooss=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64AA2E631;
+	Fri,  5 Jan 2024 15:36:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44BC0C433C8;
+	Fri,  5 Jan 2024 15:36:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704469006;
+	bh=/b6funpS0X/9KSxRshCH0i3q2i/kWjlVhaCDfv8+BaQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sCPY23v50V2ll1z90icCOZpj4qdgoNJ3e9JEJNMtB2grMqRnAVcKBIcRZC7C0/hFt
-	 rOGRJWf+vMQbIij+5Syis7i+svqiVMboeSNjz0eRDvEZfgbAM3792ROS3uIaj0YeND
-	 sit07u3Dx2XIo4EzK+VdNzjZGNAArCVciPyjOiEs=
-Date: Fri, 5 Jan 2024 11:06:57 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jeffrey E Altman <jaltman@auristor.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Markus Suvanto <markus.suvanto@gmail.com>,
-	Wang Lei <wang840925@gmail.com>, Jeff Layton <jlayton@redhat.com>,
-	Steve French <smfrench@gmail.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-	keyrings@vger.kernel.org, netdev@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 067/156] keys, dns: Allow key types (eg. DNS) to be
- reclaimed immediately on expiry
-Message-ID: <2024010556-tradition-reappoint-95a4@gregkh>
-References: <20231230115812.333117904@linuxfoundation.org>
- <20231230115814.539935693@linuxfoundation.org>
- <cd1d6f0d-a05b-412c-882a-e62ee9e67b85@auristor.com>
- <2024010526-catalyst-flame-2e33@gregkh>
+	b=CB2giagl66OOlu1L5P2le9NKzW6s2xm8YnqlRbyIqPDo1mCs3hUJoL0N6eVKr9rME
+	 HrUV7FroqH9jTDpU4zAe8/8IR4Tlr9MicY6x5py1U0CF70O9n3aiKPXSOb8JaFIlTX
+	 WxJT8yWxwMeYRgzWUWWoZaK+MBqan+dS3B8YJmF9lHVXFuFnl+GimbVvgGNm6iQIXz
+	 bcZS6nzDxqg16HR1h/wRyvKlzLubi3WZJm0z8jgXwzw+mGE8/nFOSI8/LPeThIpsaG
+	 ckzkPbeEmZsj+4G7he3vmanwBPSNa68MwvGxkLY7NwC6UE0W33Tn7RtWJ8QTdjPANH
+	 BMmDc8ak8766A==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2024010526-catalyst-flame-2e33@gregkh>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 05 Jan 2024 17:36:43 +0200
+Message-Id: <CY6VU28UYUP8.1FBIPURJHNNHV@suppilovahvero>
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "James Bottomley" <James.Bottomley@HansenPartnership.com>,
+ <linux-integrity@vger.kernel.org>
+Cc: <keyrings@vger.kernel.org>, "Ard Biesheuvel" <ardb@kernel.org>
+Subject: Re: [PATCH v6 13/20] tpm: Add HMAC session start and end functions
+X-Mailer: aerc 0.15.2
+References: <20240102170408.21969-1-James.Bottomley@HansenPartnership.com>
+ <20240102170408.21969-14-James.Bottomley@HansenPartnership.com>
+ <CY566RG0WK3A.21KMYFHM9R6UR@suppilovahvero>
+ <926f031e15739ea9044c8aaa7bbe72ab18a8f3c5.camel@HansenPartnership.com>
+ <CY64GOLHZ2ZS.VIOWWUMZTV6U@suppilovahvero>
+ <c4f30887420363ad67f09b6df607544695e9c0e9.camel@HansenPartnership.com>
+In-Reply-To: <c4f30887420363ad67f09b6df607544695e9c0e9.camel@HansenPartnership.com>
 
-On Fri, Jan 05, 2024 at 10:51:50AM +0100, Greg Kroah-Hartman wrote:
-> On Thu, Jan 04, 2024 at 09:13:34PM -0500, Jeffrey E Altman wrote:
-> > On 12/30/2023 6:58 AM, Greg Kroah-Hartman wrote:
-> > > 6.6-stable review patch.  If anyone has any objections, please let me know.
-> > > 
-> > > ------------------
-> > > 
-> > > From: David Howells <dhowells@redhat.com>
-> > > 
-> > > [ Upstream commit 39299bdd2546688d92ed9db4948f6219ca1b9542 ]
-> > Greg,
-> > 
-> > Upstream commit 39299bdd2546688d92ed9db4948f6219ca1b9542 ("keys, dns: Allow
-> > key types (eg. DNS) to be reclaimed immediately on expiry") was subsequently
-> > fixed by
-> > 
-> >   commit 1997b3cb4217b09e49659b634c94da47f0340409
-> >   Author: Edward Adam Davis <eadavis@qq.com>
-> >   Date:   Sun Dec 24 00:02:49 2023 +0000
-> > 
-> >     keys, dns: Fix missing size check of V1 server-list header
-> > 
-> >   Fixes: b946001d3bb1 ("keys, dns: Allow key types (eg. DNS) to be reclaimed
-> > immediately on expiry")
-> > 
-> > If it is not too late, would it be possible to apply 1997b3cb421 to the
-> > branches b946001d3bb1 was cherry-picked to before release?
-> > I believe the complete set of branches are
-> > 
-> >   linux-6.6.y, linux-6.1.y, linux-5.15.y, linux-5.10.y, linux-5.0.y
-> 
-> The stable trees were already released with this change in it, so I'll
-> queue this up for the next round, thanks.
+On Fri Jan 5, 2024 at 12:25 AM EET, James Bottomley wrote:
+> On Thu, 2024-01-04 at 20:09 +0200, Jarkko Sakkinen wrote:
+> > On Wed Jan 3, 2024 at 5:31 PM EET, James Bottomley wrote:
+> > > On Wed, 2024-01-03 at 17:18 +0200, Jarkko Sakkinen wrote:
+> > > > On Tue Jan 2, 2024 at 7:04 PM EET, James Bottomley wrote:
+> [...]
+> > > > > +struct tpm2_auth {
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0u32 handle;
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/*
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * This has two meanin=
+gs: before
+> > > > > tpm_buf_fill_hmac_session()
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * it marks the offset=
+ in the buffer of the start of
+> > > > > the
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * sessions (i.e. afte=
+r all the handles).=C2=A0 Once the
+> > > > > buffer
+> > > > > has
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * been filled it mark=
+es the session number of our auth
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * session so we can f=
+ind it again in the response
+> > > > > buffer.
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 *
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * The two cases are d=
+istinguished because the first
+> > > > > offset
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * must always be grea=
+ter than TPM_HEADER_SIZE and the
+> > > > > second
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * must be less than o=
+r equal to 5.
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0u32 session;
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/*
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * the size here is va=
+riable and set by the size of
+> > > > > our_nonce
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * which must be betwe=
+en 16 and the name hash length.
+> > > > > we
+> > > > > set
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * the maximum sha256 =
+size for the greatest protection
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0u8 our_nonce[SHA256_DI=
+GEST_SIZE];
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0u8 tpm_nonce[SHA256_DI=
+GEST_SIZE];
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/*
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * the salt is only us=
+ed across the session
+> > > > > command/response
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * after that it can b=
+e used as a scratch area
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0union {
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0u8 salt[EC_PT_SZ];
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0/* scratch for key + IV */
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0u8 scratch[AES_KEYBYTES + AES_BLOCK_SIZE];
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0};
+> > > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0u8 session_key[SHA256_=
+DIGEST_SIZE];
+> > > > > +};
+> > > >=20
+> > > > Could this contain also the fields added in the previous patch?
+> > > >=20
+> > > > Then obviously this data would be allocated together with chip
+> > > > but is there hard reason why this needs separate kzalloc and
+> > > > cannot be always allocated with chip blob?
+> > >=20
+> > > It's session specific (and highly sensitive data), so it needs to
+> > > be allocated and destroyed with each session.=C2=A0 Our usage pattern
+> > > under the ops mutex means that every session is single threaded, so
+> > > effectively it has a 1:1 relationship with the chip, but part of
+> > > the reason for all of this is to remove visibility of the contents
+> > > of this area from anything other than the session code.=C2=A0
+> > > Essentially it's stuff the chip doesn't need to know because it's
+> > > always constructed when the session is created.
+> > >=20
+> > > I've also got a policy patch much later that requires two sessions,
+> > > so needs a push and pop mechanism which a static allocation in the
+> > > chip area won't work for.
+> > >=20
+> > > James
+> >=20
+> > Given the 1:1 relationship keeping the fields in tpm_chip has the
+> > benefit of not having to deal with allocation error.
+> >=20
+> > I guess having struct tpm2_auth (dunno, maybe tpm2_hmac_auth tho)
+> > does make sense because then it could be declared as static field
+> > and zeroed with memzero_explicit().
+> >=20
+> > I don't see any point saving memory here at least...
+>
+> It's not about saving memory, it's about encapsulation: the inner
+> details of session encryption would have to go into a global linux wide
+> header file.  Ideally they should stay local to the TPM code and not be
+> splashed about the kernel, so as not to give anyone else the idea they
+> can muck with the values.  And, as I also said, a single allocation
+> won't work with >1 sessions which are needed later on.
 
-Ah, I see what happened, that line:
-	Fixes: b946001d3bb1 ("keys, dns: Allow key types (eg. DNS) to be reclaimed immediately on expiry")
-refers to a commit that is not in Linus's tree, and isn't the sha1 that
-you are pointing at here either.
+Do not mean to be impolite but "later on" does not matter, unless
+it is within the scope of the same patch set. Clearly tpm2_auth
+is not required to implement the feature and should be postponed
+to a patch set which requires multiple instances of tpm2_auth.
 
-So I'll go add this manually, but this is why our checking scripts
-missed this, please be more careful about using the proper SHA1 values
-in commits.  Using invalid ones is almost worse than not using them at
-allm as it gives you the false sense that the markings are correct.
+I don't simply want to commmit to futures, sorry.
 
-thanks,
+> James
 
-greg k-h
+BR, Jarkko
 
