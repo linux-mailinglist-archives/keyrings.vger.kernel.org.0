@@ -1,55 +1,102 @@
-Return-Path: <keyrings+bounces-412-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-413-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A746825EB9
-	for <lists+keyrings@lfdr.de>; Sat,  6 Jan 2024 08:41:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C71DE826455
+	for <lists+keyrings@lfdr.de>; Sun,  7 Jan 2024 15:00:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 288C528434F
-	for <lists+keyrings@lfdr.de>; Sat,  6 Jan 2024 07:41:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C7971F2193D
+	for <lists+keyrings@lfdr.de>; Sun,  7 Jan 2024 14:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A749440A;
-	Sat,  6 Jan 2024 07:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C35E134B1;
+	Sun,  7 Jan 2024 14:00:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="VlqDGmtv"
 X-Original-To: keyrings@vger.kernel.org
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51312440D;
-	Sat,  6 Jan 2024 07:41:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045168;MF=yilin.li@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0W-0zWHn_1704526879;
-Received: from 30.221.132.184(mailfrom:YiLin.Li@linux.alibaba.com fp:SMTPD_---0W-0zWHn_1704526879)
-          by smtp.aliyun-inc.com;
-          Sat, 06 Jan 2024 15:41:33 +0800
-Message-ID: <5f908530-564a-2778-9bc8-72bbf6475255@linux.alibaba.com>
-Date: Sat, 6 Jan 2024 15:41:17 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6E1134AF;
+	Sun,  7 Jan 2024 14:00:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
+Received: from pps.filterd (m0134420.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 406MgEoX011973;
+	Sun, 7 Jan 2024 13:29:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pps0720;
+ bh=zqiJ0Y28ldPU2T0izIyr/oSqprYD9uf+d2v7zsTR3GU=;
+ b=VlqDGmtvZqjHT6cfQ4rJt6QBnG+oltgxOBG1c9G0zzL7hVp7IkSopfr8Apa+8tQPsJiE
+ SFxyZT/xj4HXclBo786hTVYWH5gX4IlQYwDAtPBCjrKqIIAx4KM5nWTvQHwg2ng9RRHl
+ /qxXB5PcaAM4lZ9iBH99xtWdx1DDHLNjwdiKxtZ1du4hqco1Nsegpj4G3JRSsIRQdmug
+ WY+yxGt8pdeV1+HMWS6RJevMkTrGsIIrz2qo1nFqmaaekghVDI524+omYY9wwZBDaCXU
+ RuKkXxF1rocm7PU1osZlVYZrrJ0HlbrYXYKRqIDp41ZZXovtclJyiXsmZY1/YEuKElKZ 9Q== 
+Received: from p1lg14880.it.hpe.com ([16.230.97.201])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3vf2679009-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 07 Jan 2024 13:29:15 +0000
+Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by p1lg14880.it.hpe.com (Postfix) with ESMTPS id 52755800390;
+	Sun,  7 Jan 2024 13:29:14 +0000 (UTC)
+Received: from openbmc-builder-cc.amslabs.hpecorp.net (unknown [16.231.227.36])
+	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTP id 296F080ADA9;
+	Sun,  7 Jan 2024 13:29:13 +0000 (UTC)
+From: clayc@hpe.com
+To: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc: dhowells@redhat.com, herbert@gondor.apana.org.au, davem@davemloft.net,
+        Clay Chang <clayc@hpe.com>
+Subject: [PATCH] KEYS: include header for EINVAL definition
+Date: Sun,  7 Jan 2024 21:28:42 +0800
+Message-Id: <20240107132842.4024084-1-clayc@hpe.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.1
-Subject: Re: [PATCH] crypto: asymmetric_keys/pkcs7.asn1 - remove the
- duplicated contentType pkcs7_note_OID processing logic
-To: David Howells <dhowells@redhat.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: tianjia.zhang@linux.alibaba.com, YiLin.Li@linux.alibaba.com
-References: <20231111055553.103757-1-YiLin.Li@linux.alibaba.com>
- <99c010f0-3bb1-1e67-4184-6b0ce312b232@linux.alibaba.com>
-From: "YiLin.Li" <YiLin.Li@linux.alibaba.com>
-In-Reply-To: <99c010f0-3bb1-1e67-4184-6b0ce312b232@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: HnJDMSS5RTifhufW5WfN3tWDjIt4kn5u
+X-Proofpoint-ORIG-GUID: HnJDMSS5RTifhufW5WfN3tWDjIt4kn5u
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-07_08,2024-01-05_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
+ clxscore=1011 lowpriorityscore=0 adultscore=0 mlxlogscore=519
+ impostorscore=0 priorityscore=1501 suspectscore=0 malwarescore=0
+ bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401070065
 
-gently ping...
+From: Clay Chang <clayc@hpe.com>
 
-在 2023/12/1 15:44, YiLin.Li 写道:
-> gently ping...
+This patch includes linux/errno.h to address the issue of 'EINVAL' being
+undeclared.
+
+Signed-off-by: Clay Chang <clayc@hpe.com>
+---
+ include/crypto/public_key.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
+index 462f8a34cdf8..b7f308977c84 100644
+--- a/include/crypto/public_key.h
++++ b/include/crypto/public_key.h
+@@ -10,6 +10,7 @@
+ #ifndef _LINUX_PUBLIC_KEY_H
+ #define _LINUX_PUBLIC_KEY_H
+ 
++#include <linux/errno.h>
+ #include <linux/keyctl.h>
+ #include <linux/oid_registry.h>
+ 
+-- 
+2.34.1
+
 
