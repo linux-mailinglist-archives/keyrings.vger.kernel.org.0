@@ -1,102 +1,83 @@
-Return-Path: <keyrings+bounces-413-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-414-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C71DE826455
-	for <lists+keyrings@lfdr.de>; Sun,  7 Jan 2024 15:00:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B97827132
+	for <lists+keyrings@lfdr.de>; Mon,  8 Jan 2024 15:24:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C7971F2193D
-	for <lists+keyrings@lfdr.de>; Sun,  7 Jan 2024 14:00:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE5071C22A12
+	for <lists+keyrings@lfdr.de>; Mon,  8 Jan 2024 14:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C35E134B1;
-	Sun,  7 Jan 2024 14:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84ECA4654F;
+	Mon,  8 Jan 2024 14:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="VlqDGmtv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tUsYivmD"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6E1134AF;
-	Sun,  7 Jan 2024 14:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
-Received: from pps.filterd (m0134420.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 406MgEoX011973;
-	Sun, 7 Jan 2024 13:29:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pps0720;
- bh=zqiJ0Y28ldPU2T0izIyr/oSqprYD9uf+d2v7zsTR3GU=;
- b=VlqDGmtvZqjHT6cfQ4rJt6QBnG+oltgxOBG1c9G0zzL7hVp7IkSopfr8Apa+8tQPsJiE
- SFxyZT/xj4HXclBo786hTVYWH5gX4IlQYwDAtPBCjrKqIIAx4KM5nWTvQHwg2ng9RRHl
- /qxXB5PcaAM4lZ9iBH99xtWdx1DDHLNjwdiKxtZ1du4hqco1Nsegpj4G3JRSsIRQdmug
- WY+yxGt8pdeV1+HMWS6RJevMkTrGsIIrz2qo1nFqmaaekghVDI524+omYY9wwZBDaCXU
- RuKkXxF1rocm7PU1osZlVYZrrJ0HlbrYXYKRqIDp41ZZXovtclJyiXsmZY1/YEuKElKZ 9Q== 
-Received: from p1lg14880.it.hpe.com ([16.230.97.201])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3vf2679009-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 07 Jan 2024 13:29:15 +0000
-Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by p1lg14880.it.hpe.com (Postfix) with ESMTPS id 52755800390;
-	Sun,  7 Jan 2024 13:29:14 +0000 (UTC)
-Received: from openbmc-builder-cc.amslabs.hpecorp.net (unknown [16.231.227.36])
-	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTP id 296F080ADA9;
-	Sun,  7 Jan 2024 13:29:13 +0000 (UTC)
-From: clayc@hpe.com
-To: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc: dhowells@redhat.com, herbert@gondor.apana.org.au, davem@davemloft.net,
-        Clay Chang <clayc@hpe.com>
-Subject: [PATCH] KEYS: include header for EINVAL definition
-Date: Sun,  7 Jan 2024 21:28:42 +0800
-Message-Id: <20240107132842.4024084-1-clayc@hpe.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646274654A;
+	Mon,  8 Jan 2024 14:24:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED8EC433C7;
+	Mon,  8 Jan 2024 14:24:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704723889;
+	bh=+STw9UiZGx3J/t1LF9eRC4a7J3XN0t4eLlAKGTfSH1U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tUsYivmDk53zNMF6yAQHm+njCpZSL3PgUZqMOTcqDZGUHsizruc0ktIKN7HducdIn
+	 6TJal63c9EldYJc12emykxs2b3ML2Uj1dADW5akfTOq/OKHnUwUm2X2ix/CalI9uXF
+	 MYk+lTZRU4g9h8PmsDlHxEIsyckyxX9w5YYU/EG8lMxz1N7AnHU9BPxnBw3/Dewf8X
+	 KATMrRfXimt9Bux0MDEvejcFO489v8qVS1r+tD3pM5tN551MGnQU670ibfNwpgLcGy
+	 QC+765QEgeV9LiNtYEm0d9tcb9Aq6wns48HmEmMcD9tL7lRL1vMOgRLiS9Z/J8qltM
+	 oXtwpy9xekl3A==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: HnJDMSS5RTifhufW5WfN3tWDjIt4kn5u
-X-Proofpoint-ORIG-GUID: HnJDMSS5RTifhufW5WfN3tWDjIt4kn5u
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-07_08,2024-01-05_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 phishscore=0
- clxscore=1011 lowpriorityscore=0 adultscore=0 mlxlogscore=519
- impostorscore=0 priorityscore=1501 suspectscore=0 malwarescore=0
- bulkscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401070065
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 08 Jan 2024 16:24:46 +0200
+Message-Id: <CY9E6M2BYETA.1VE73N3UHD4B9@suppilovahvero>
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: <clayc@hpe.com>, <keyrings@vger.kernel.org>,
+ <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Cc: <dhowells@redhat.com>, <herbert@gondor.apana.org.au>,
+ <davem@davemloft.net>
+Subject: Re: [PATCH] KEYS: include header for EINVAL definition
+X-Mailer: aerc 0.15.2
+References: <20240107132842.4024084-1-clayc@hpe.com>
+In-Reply-To: <20240107132842.4024084-1-clayc@hpe.com>
 
-From: Clay Chang <clayc@hpe.com>
+On Sun Jan 7, 2024 at 3:28 PM EET,  wrote:
+> From: Clay Chang <clayc@hpe.com>
+>
+> This patch includes linux/errno.h to address the issue of 'EINVAL' being
+> undeclared.
+>
+> Signed-off-by: Clay Chang <clayc@hpe.com>
+> ---
+>  include/crypto/public_key.h | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
+> index 462f8a34cdf8..b7f308977c84 100644
+> --- a/include/crypto/public_key.h
+> +++ b/include/crypto/public_key.h
+> @@ -10,6 +10,7 @@
+>  #ifndef _LINUX_PUBLIC_KEY_H
+>  #define _LINUX_PUBLIC_KEY_H
+> =20
+> +#include <linux/errno.h>
+>  #include <linux/keyctl.h>
+>  #include <linux/oid_registry.h>
+> =20
 
-This patch includes linux/errno.h to address the issue of 'EINVAL' being
-undeclared.
+Please provide evidence that issue exist (applies for any possible kernel i=
+ssue).
 
-Signed-off-by: Clay Chang <clayc@hpe.com>
----
- include/crypto/public_key.h | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
-index 462f8a34cdf8..b7f308977c84 100644
---- a/include/crypto/public_key.h
-+++ b/include/crypto/public_key.h
-@@ -10,6 +10,7 @@
- #ifndef _LINUX_PUBLIC_KEY_H
- #define _LINUX_PUBLIC_KEY_H
- 
-+#include <linux/errno.h>
- #include <linux/keyctl.h>
- #include <linux/oid_registry.h>
- 
--- 
-2.34.1
-
+BR, Jarkko
 
