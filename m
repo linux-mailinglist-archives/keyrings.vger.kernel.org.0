@@ -1,104 +1,117 @@
-Return-Path: <keyrings+bounces-433-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-434-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D03EF829F0A
-	for <lists+keyrings@lfdr.de>; Wed, 10 Jan 2024 18:25:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA326829FE9
+	for <lists+keyrings@lfdr.de>; Wed, 10 Jan 2024 18:56:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63363B20BFC
-	for <lists+keyrings@lfdr.de>; Wed, 10 Jan 2024 17:25:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 917911F29978
+	for <lists+keyrings@lfdr.de>; Wed, 10 Jan 2024 17:56:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3179B4EB52;
-	Wed, 10 Jan 2024 17:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C4D4D12D;
+	Wed, 10 Jan 2024 17:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EyZJjSUO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JAygTEqZ"
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A1A4EB4E
-	for <keyrings@vger.kernel.org>; Wed, 10 Jan 2024 17:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1704907420;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jocqRgtMadaCQwvnSiqn2EsI9KXVShv2lHTrjFxLh1M=;
-	b=EyZJjSUOWPRm3AwfJ6dDuswNHgmw6HTSNnY2No3JkiOTM2FzjjB3O1GI/xVZKhCtV3Gs65
-	dBcqoJdxZO2NENtUVf90RO7ylP74vAFrXg7Y/U2IHkUt5nFYmLVe94UWrmT8I6fUb0cpcG
-	a+aL/aQKpRX7cLhOIg2MmG9JYjF19lM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-460-cbBMg0BXOm21eCxa6xC7xg-1; Wed, 10 Jan 2024 12:23:38 -0500
-X-MC-Unique: cbBMg0BXOm21eCxa6xC7xg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C547688CC43;
-	Wed, 10 Jan 2024 17:23:36 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.67])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 914741C060AF;
-	Wed, 10 Jan 2024 17:23:33 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <ZZ56MMinZLrmF9Z+@xpf.sh.intel.com>
-References: <ZZ56MMinZLrmF9Z+@xpf.sh.intel.com> <ZZ4fyY4r3rqgZL+4@xpf.sh.intel.com> <CAHk-=wgJz36ZE66_8gXjP_TofkkugXBZEpTr_Dtc_JANsH1SEw@mail.gmail.com> <1843374.1703172614@warthog.procyon.org.uk> <20231223172858.GI201037@kernel.org> <2592945.1703376169@warthog.procyon.org.uk> <1694631.1704881668@warthog.procyon.org.uk>
-To: Pengfei Xu <pengfei.xu@intel.com>
-Cc: dhowells@redhat.com, eadavis@qq.com,
-    Linus Torvalds <torvalds@linux-foundation.org>,
-    "Simon
- Horman" <horms@kernel.org>,
-    Markus Suvanto <markus.suvanto@gmail.com>,
-    "Jeffrey E Altman" <jaltman@auristor.com>,
-    Marc Dionne <marc.dionne@auristor.com>,
-    "Wang Lei" <wang840925@gmail.com>, Jeff Layton <jlayton@redhat.com>,
-    Steve French <smfrench@gmail.com>,
-    Jarkko Sakkinen <jarkko@kernel.org>,
-    "David S. Miller" <davem@davemloft.net>,
-    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-    Paolo Abeni <pabeni@redhat.com>, linux-afs@lists.infradead.org,
-    keyrings@vger.kernel.org, linux-cifs@vger.kernel.org,
-    linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    netdev@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-    linux-kernel@vger.kernel.org, heng.su@intel.com
-Subject: Re: [PATCH] keys, dns: Fix missing size check of V1 server-list header
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DB44D125;
+	Wed, 10 Jan 2024 17:55:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE8BC433F1;
+	Wed, 10 Jan 2024 17:55:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704909315;
+	bh=fu4Rj/eN06CEkV5JbSMpnHawgZaPLeLIgtEFRQv1w5o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JAygTEqZWVfylCFiDRG7P1l/VNgkre3NkIa+TSKWtjTWzTjqWxGd+6jLl9JLq9Ff0
+	 HkUiC0YShB3RTedTUqQpvGmjzfg4QuMwsAoJ/Jdw+Tb8AoAVZ2vkZw9wgCj3kSgF+j
+	 yzwcPO01+qwLDH/Y73uLhuwWnuWnal0emVdoFNiftr94w2BLYKTYdnr0oMLshOaGDd
+	 NBbRCi0am1LWayVzGsz33cPYmCO/+nX7iUneIlV6CMd6eTt5zF+47RDDPWe+BOqgei
+	 Z9rVGGi0mIBlfrbcxwOpuT5Te9ccn5QkF6yosVtLxF4wzyuFarxC28PHW4SJAiMXg/
+	 agoDkyYabdckg==
+Date: Wed, 10 Jan 2024 09:55:15 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Matthew Wilcox <willy@infradead.org>, Hugh Dickins <hughd@google.com>,
+	Chandan Babu R <chandan.babu@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Howells <dhowells@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	x86@kernel.org, linux-sgx@vger.kernel.org, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, keyrings@vger.kernel.org
+Subject: Re: [PATCH 2/2] xfs: disable large folio support in xfile_create
+Message-ID: <20240110175515.GA722950@frogsfrogsfrogs>
+References: <20240110092109.1950011-1-hch@lst.de>
+ <20240110092109.1950011-3-hch@lst.de>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1784440.1704907412.1@warthog.procyon.org.uk>
-Date: Wed, 10 Jan 2024 17:23:32 +0000
-Message-ID: <1784441.1704907412@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240110092109.1950011-3-hch@lst.de>
 
-Meh.  Does the attached fix it for you?
+On Wed, Jan 10, 2024 at 10:21:09AM +0100, Christoph Hellwig wrote:
+> The xfarray code will crash if large folios are force enabled using:
+> 
+>    echo force > /sys/kernel/mm/transparent_hugepage/shmem_enabled
+> 
+> Fixing this will require a bit of an API change, and prefeably sorting out
+> the hwpoison story for pages vs folio and where it is placed in the shmem
+> API.  For now use this one liner to disable large folios.
+> 
+> Reported-by: Darrick J. Wong <djwong@kernel.org>
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-David
----
-diff --git a/net/dns_resolver/dns_key.c b/net/dns_resolver/dns_key.c
-index f18ca02aa95a..c42ddd85ff1f 100644
---- a/net/dns_resolver/dns_key.c
-+++ b/net/dns_resolver/dns_key.c
-@@ -104,7 +104,7 @@ dns_resolver_preparse(struct key_preparsed_payload *prep)
- 		const struct dns_server_list_v1_header *v1;
- 
- 		/* It may be a server list. */
--		if (datalen <= sizeof(*v1))
-+		if (datalen < sizeof(*v1))
- 			return -EINVAL;
- 
- 		v1 = (const struct dns_server_list_v1_header *)data;
+Can someone who knows more about shmem.c than I do please review
+https://lore.kernel.org/linux-xfs/20240103084126.513354-4-hch@lst.de/
+so that I can feel slightly more confident as hch and I sort through the
+xfile.c issues?
 
+For this patch,
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+
+--D
+
+> ---
+>  fs/xfs/scrub/xfile.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/fs/xfs/scrub/xfile.c b/fs/xfs/scrub/xfile.c
+> index 090c3ead43fdf1..1a8d1bedd0b0dc 100644
+> --- a/fs/xfs/scrub/xfile.c
+> +++ b/fs/xfs/scrub/xfile.c
+> @@ -94,6 +94,11 @@ xfile_create(
+>  
+>  	lockdep_set_class(&inode->i_rwsem, &xfile_i_mutex_key);
+>  
+> +	/*
+> +	 * We're not quite ready for large folios yet.
+> +	 */
+> +	mapping_clear_large_folios(inode->i_mapping);
+> +
+>  	trace_xfile_create(xf);
+>  
+>  	*xfilep = xf;
+> -- 
+> 2.39.2
+> 
+> 
 
