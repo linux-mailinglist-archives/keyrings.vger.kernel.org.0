@@ -1,114 +1,123 @@
-Return-Path: <keyrings+bounces-423-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-424-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31806829632
-	for <lists+keyrings@lfdr.de>; Wed, 10 Jan 2024 10:21:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B187C829717
+	for <lists+keyrings@lfdr.de>; Wed, 10 Jan 2024 11:15:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 585161C215F5
-	for <lists+keyrings@lfdr.de>; Wed, 10 Jan 2024 09:21:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D3B21F2146D
+	for <lists+keyrings@lfdr.de>; Wed, 10 Jan 2024 10:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DA53F8F9;
-	Wed, 10 Jan 2024 09:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B473FB3B;
+	Wed, 10 Jan 2024 10:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Dg3kbq00"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gmlCxTBN"
 X-Original-To: keyrings@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A1D3F8D2;
-	Wed, 10 Jan 2024 09:21:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=SRlTQ4JibYJcOmgh50kWG725LphAqsA74nKJKgMAVp4=; b=Dg3kbq00hAKG9Jac9pBCT8H0hY
-	gQ8Pe7mzKNIEig0gdVS8L1YQm0lhILIpgErWpRQQhhUxLv9H0RVqQ3mwJIZgCK71qmej5Pzo80Gdc
-	esoiR5D75fIZEZkE2YGIQ0nRjdBJgj5NgoZ0u6hyM5l308ERxwn5zQS37wJOuDp3WVhw9DmbPux0P
-	jbkJFK7k3ROEFnFSjfok+rePV67Oo3t8DURPYH89imUH1WfUTjQEQmy1GSAcXWYC8OlDc8YzNDXUE
-	PvxJ1Yxm5WtS8mPmLMaHV4I181FWwxPbMxc4CbckfiLDECitlWA61LzaC24kAJ/8WbYHany1t520v
-	wVR5xXoQ==;
-Received: from [2001:4bb8:191:2f6b:27f:45ef:e74a:3466] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNUly-00AsAw-0n;
-	Wed, 10 Jan 2024 09:21:18 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Matthew Wilcox <willy@infradead.org>,
-	Hugh Dickins <hughd@google.com>,
-	Chandan Babu R <chandan.babu@oracle.com>
-Cc: "Darrick J . Wong" <djwong@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-	intel-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	x86@kernel.org,
-	linux-sgx@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	keyrings@vger.kernel.org
-Subject: [PATCH 2/2] xfs: disable large folio support in xfile_create
-Date: Wed, 10 Jan 2024 10:21:09 +0100
-Message-Id: <20240110092109.1950011-3-hch@lst.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240110092109.1950011-1-hch@lst.de>
-References: <20240110092109.1950011-1-hch@lst.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18053FB02
+	for <keyrings@vger.kernel.org>; Wed, 10 Jan 2024 10:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1704881678;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N8fyAvLcym3lieO4wYcel0i1AGhFIX/f3clpYmcSXdA=;
+	b=gmlCxTBNIHc/h+uy64oOUH9cwYnMhLqPGOa4/zokVyZ8E6Su9x+PnHZScQo0dK9mVkxDmU
+	pJ3KSL095jGkOraketTKasYno1dbPRoyHNkdf9EHVxh3WMjY9s8Lvfsm9eBNvPAnOrnLa3
+	NUp+e/6rakKv8E1S+2LSUDLqccFPd8I=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-546-OvzGbcwzPAGBkz83m5jLww-1; Wed, 10 Jan 2024 05:14:33 -0500
+X-MC-Unique: OvzGbcwzPAGBkz83m5jLww-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 63AC78945A7;
+	Wed, 10 Jan 2024 10:14:32 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.67])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 3D79E2026D6F;
+	Wed, 10 Jan 2024 10:14:29 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <ZZ4fyY4r3rqgZL+4@xpf.sh.intel.com>
+References: <ZZ4fyY4r3rqgZL+4@xpf.sh.intel.com> <CAHk-=wgJz36ZE66_8gXjP_TofkkugXBZEpTr_Dtc_JANsH1SEw@mail.gmail.com> <1843374.1703172614@warthog.procyon.org.uk> <20231223172858.GI201037@kernel.org> <2592945.1703376169@warthog.procyon.org.uk>
+To: Pengfei Xu <pengfei.xu@intel.com>
+Cc: dhowells@redhat.com, eadavis@qq.com,
+    Linus Torvalds <torvalds@linux-foundation.org>,
+    Simon Horman <horms@kernel.org>,
+    Markus Suvanto <markus.suvanto@gmail.com>,
+    Jeffrey E Altman <jaltman@auristor.com>,
+    "Marc
+ Dionne" <marc.dionne@auristor.com>,
+    Wang Lei <wang840925@gmail.com>, "Jeff
+ Layton" <jlayton@redhat.com>,
+    Steve French <smfrench@gmail.com>,
+    "Jarkko
+ Sakkinen" <jarkko@kernel.org>,
+    "David S. Miller" <davem@davemloft.net>,
+    "Eric
+ Dumazet" <edumazet@google.com>,
+    Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+    linux-afs@lists.infradead.org, keyrings@vger.kernel.org,
+    linux-cifs@vger.kernel.org, linux-nfs@vger.kernel.org,
+    ceph-devel@vger.kernel.org, netdev@vger.kernel.org,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+    heng.su@intel.com
+Subject: Re: [PATCH] keys, dns: Fix missing size check of V1 server-list header
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1694630.1704881668.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 10 Jan 2024 10:14:28 +0000
+Message-ID: <1694631.1704881668@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
-The xfarray code will crash if large folios are force enabled using:
+Pengfei Xu <pengfei.xu@intel.com> wrote:
 
-   echo force > /sys/kernel/mm/transparent_hugepage/shmem_enabled
+>   Bisected info between v6.7-rc7(keyctl05 passed) and v6.7-rc8(keyctl05 =
+failed)
+> is in attached.
+> =
 
-Fixing this will require a bit of an API change, and prefeably sorting out
-the hwpoison story for pages vs folio and where it is placed in the shmem
-API.  For now use this one liner to disable large folios.
+> keyctl05 failed in add_key with type "dns_resolver" syscall step tracked
+> by strace:
+> "
+> [pid 863107] add_key("dns_resolver", "desc", "\0\0\1\377\0", 5, KEY_SPEC=
+_SESSION_KEYRING <unfinished ...>
+> [pid 863106] <... alarm resumed>)       =3D 30
+> [pid 863107] <... add_key resumed>)     =3D -1 EINVAL (Invalid argument)
+> "
 
-Reported-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- fs/xfs/scrub/xfile.c | 5 +++++
- 1 file changed, 5 insertions(+)
+It should fail as the payload is actually invalid.  The payload specifies =
+a
+version 1 format - and that requires a 6-byte header.  The bug the patched
+fixes is that whilst there is a length check for the basic 3-byte header,
+there was no length check for the extended v1 header.
 
-diff --git a/fs/xfs/scrub/xfile.c b/fs/xfs/scrub/xfile.c
-index 090c3ead43fdf1..1a8d1bedd0b0dc 100644
---- a/fs/xfs/scrub/xfile.c
-+++ b/fs/xfs/scrub/xfile.c
-@@ -94,6 +94,11 @@ xfile_create(
- 
- 	lockdep_set_class(&inode->i_rwsem, &xfile_i_mutex_key);
- 
-+	/*
-+	 * We're not quite ready for large folios yet.
-+	 */
-+	mapping_clear_large_folios(inode->i_mapping);
-+
- 	trace_xfile_create(xf);
- 
- 	*xfilep = xf;
--- 
-2.39.2
+> After increased the dns_res_payload to 7 bytes(6 bytes was still failed)=
+,
+
+The following doesn't work for you?
+
+	echo -n -e '\0\0\01\xff\0\0' | keyctl padd dns_resolver desc @p
+
+David
 
 
