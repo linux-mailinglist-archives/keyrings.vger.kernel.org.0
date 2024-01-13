@@ -1,37 +1,37 @@
-Return-Path: <keyrings+bounces-447-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-448-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C89682CE68
-	for <lists+keyrings@lfdr.de>; Sat, 13 Jan 2024 21:41:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 205FD82CE74
+	for <lists+keyrings@lfdr.de>; Sat, 13 Jan 2024 21:47:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91774283315
-	for <lists+keyrings@lfdr.de>; Sat, 13 Jan 2024 20:41:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB5E02829B6
+	for <lists+keyrings@lfdr.de>; Sat, 13 Jan 2024 20:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC814C97;
-	Sat, 13 Jan 2024 20:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C8A4C97;
+	Sat, 13 Jan 2024 20:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qn4xslFV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="elFGA7OA"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5134579E5;
-	Sat, 13 Jan 2024 20:41:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DA4C433F1;
-	Sat, 13 Jan 2024 20:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C316AB9;
+	Sat, 13 Jan 2024 20:47:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575F4C433F1;
+	Sat, 13 Jan 2024 20:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705178460;
-	bh=c8BIQyP1H8lJObZSyl18dvJBZNh2pJY7zSNOX401RyQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qn4xslFVH3tcADj40i6pWVh6bZyn8WaSie6SIWR0WkQSXBtyJJJ9lUMuUJctrEXxM
-	 J0orl6gEIo61FRKwl2wq+Rbruo4hrelO5oD7OBsjGXsefe3ku26FyKy7gqh5Y8jVqL
-	 R9gRghwdeQRGyixCVKKVnaDGR78+pekJu6fwIn/LsY36kaLkWImdmUk4zAG5/ubgqI
-	 4pMqhjNxXMJsVoXEoD+EnZR7GoNBihD93TeMJyvvcCalZynDqiKmfTumxdEVJDZYVZ
-	 kB0uLDJ3o6Y4PgZcqvm77scHlMb2HGwUlkOirDnNc2N51LyKAyF4FU54Ow9cbZD61/
-	 Pcw6rICC9g1wg==
+	s=k20201202; t=1705178820;
+	bh=iwEVATHQ8eeDbVh0zZOeyRTJ7va9/daHx97fvBWGCnc=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=elFGA7OAAVDu5Vtl+1rE9koMNONVqQziudmT364fAVLfwluPsG963158mubxJMrfI
+	 OkZvV7rgV3+7U0C8wB+Vb5kPKoZKLDUCx/oIZT2y90SpyYyM9TRjupAqVUFdE8/6D0
+	 YNgX0OPsdD/wL5RSkPZ1T48vyt3L7edkolfwLwBlXpZPvbsBW1hmD1/ttRHCL0l8ow
+	 1cawMy0CyaoMsD9Y2MN/VEEREJAfxbQk5EaZ3UiKp9VOhYKrI9VBv3OI1sjJMZDnYh
+	 0w+yOrYIt3pi4DBp5UAiCJe3UCq1yDOAqWrXeOmaBQ/jzXfYrks29Br/fBXrU5Ipeh
+	 AIvh8rn7afNtg==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -40,80 +40,39 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 13 Jan 2024 22:40:54 +0200
-Message-Id: <CYDVBBKUZ314.1VU7WLWB1IMM3@kernel.org>
+Date: Sat, 13 Jan 2024 22:46:57 +0200
+Message-Id: <CYDVFYGDLJFC.1IAQAPLY6VRWX@kernel.org>
+Cc: <dhowells@redhat.com>, <herbert@gondor.apana.org.au>,
+ <davem@davemloft.net>
+Subject: Re: [PATCH] KEYS: include header for EINVAL definition
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "David Howells" <dhowells@redhat.com>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, "Edward Adam Davis" <eadavis@qq.com>,
- "Pengfei Xu" <pengfei.xu@intel.com>
-Cc: "Simon Horman" <horms@kernel.org>, "Markus Suvanto"
- <markus.suvanto@gmail.com>, "Jeffrey E Altman" <jaltman@auristor.com>,
- "Marc Dionne" <marc.dionne@auristor.com>, "Wang Lei"
- <wang840925@gmail.com>, "Jeff Layton" <jlayton@redhat.com>, "Steve French"
- <smfrench@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
- Abeni" <pabeni@redhat.com>, <linux-afs@lists.infradead.org>,
- <keyrings@vger.kernel.org>, <linux-cifs@vger.kernel.org>,
- <linux-nfs@vger.kernel.org>, <ceph-devel@vger.kernel.org>,
- <netdev@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] keys, dns: Fix size check of V1 server-list header
+To: "Clay Chang" <clayc@hpe.com>, <keyrings@vger.kernel.org>,
+ <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.16.0
-References: <1850031.1704921100@warthog.procyon.org.uk>
-In-Reply-To: <1850031.1704921100@warthog.procyon.org.uk>
+References: <20240107132842.4024084-1-clayc@hpe.com>
+ <CY9E6M2BYETA.1VE73N3UHD4B9@suppilovahvero>
+ <a77797fd-cbe4-42be-abd6-54cc815d360a@hpe.com>
+ <CYBAG2X330P5.2SIIYCQ1GN44G@suppilovahvero>
+ <a8ad036a-7d65-4dbe-8c87-f569e54d7a57@hpe.com>
+In-Reply-To: <a8ad036a-7d65-4dbe-8c87-f569e54d7a57@hpe.com>
 
-On Wed Jan 10, 2024 at 11:11 PM EET, David Howells wrote:
->    =20
-> Fix the size check added to dns_resolver_preparse() for the V1 server-lis=
-t
-> header so that it doesn't give EINVAL if the size supplied is the same as
-> the size of the header struct (which should be valid).
+On Fri Jan 12, 2024 at 7:59 AM EET, Clay Chang wrote:
+> Hi Jarkko,
 >
-> This can be tested with:
+> Yes, I have. I am working on an OpenBMC project and the kernel .config wa=
+s generated by merging several config fragments. In one experiment where th=
+e CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE was not presented, I got a EINVAL un=
+declared compilation error.
 >
->         echo -n -e '\0\0\01\xff\0\0' | keyctl padd dns_resolver desc @p
->
-> which will give "add_key: Invalid argument" without this fix.
->
-> Fixes: 1997b3cb4217 ("keys, dns: Fix missing size check of V1 server-list=
- header")
-> Reported-by: Pengfei Xu <pengfei.xu@intel.com>
-> Link: https://lore.kernel.org/r/ZZ4fyY4r3rqgZL+4@xpf.sh.intel.com/
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Edward Adam Davis <eadavis@qq.com>
-> cc: Linus Torvalds <torvalds@linux-foundation.org>
-> cc: Simon Horman <horms@kernel.org>
-> Cc: Jarkko Sakkinen <jarkko@kernel.org>
-> Cc: Jeffrey E Altman <jaltman@auristor.com>
-> Cc: Wang Lei <wang840925@gmail.com>
-> Cc: Jeff Layton <jlayton@redhat.com>
-> Cc: Steve French <sfrench@us.ibm.com>
-> Cc: Marc Dionne <marc.dionne@auristor.com>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Eric Dumazet <edumazet@google.com>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Paolo Abeni <pabeni@redhat.com>
-> ---
->  net/dns_resolver/dns_key.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/net/dns_resolver/dns_key.c b/net/dns_resolver/dns_key.c
-> index f18ca02aa95a..c42ddd85ff1f 100644
-> --- a/net/dns_resolver/dns_key.c
-> +++ b/net/dns_resolver/dns_key.c
-> @@ -104,7 +104,7 @@ dns_resolver_preparse(struct key_preparsed_payload *p=
-rep)
->  		const struct dns_server_list_v1_header *v1;
-> =20
->  		/* It may be a server list. */
-> -		if (datalen <=3D sizeof(*v1))
-> +		if (datalen < sizeof(*v1))
->  			return -EINVAL;
-> =20
->  		v1 =3D (const struct dns_server_list_v1_header *)data;
+> Do you want me to show the full .config here?
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Well the problem with the patch is that it does not *prove*
+that there is issue.
+
+So you evidence in the commit message that there is bug in
+the first place and which config options cause it. And it
+it must be testable with latest mainline (not by downstream
+project).
 
 BR, Jarkko
-
 
