@@ -1,215 +1,175 @@
-Return-Path: <keyrings+bounces-492-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-493-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A3E83621C
-	for <lists+keyrings@lfdr.de>; Mon, 22 Jan 2024 12:41:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE799836294
+	for <lists+keyrings@lfdr.de>; Mon, 22 Jan 2024 12:51:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B32A21F28213
-	for <lists+keyrings@lfdr.de>; Mon, 22 Jan 2024 11:41:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A3F52860A1
+	for <lists+keyrings@lfdr.de>; Mon, 22 Jan 2024 11:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ECE54643B;
-	Mon, 22 Jan 2024 11:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC5E3B78E;
+	Mon, 22 Jan 2024 11:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y2wktsU/"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="hkVyHtZs";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="vzaQ4ZjW";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="wTEmZEoP";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qZ+o7gec"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C69C482D9;
-	Mon, 22 Jan 2024 11:32:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B523B29D;
+	Mon, 22 Jan 2024 11:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705923134; cv=none; b=nXHtPWF0DN3o/o5ppbwFH9H5ZptweqMovV0KuZe95rfyeahIxk7QyLta/pHAA+ZzaYedbFhluuB0kZLcJSJu2MfFdAcdnGuvR9I5U0riDAtmKTIxJQGDrnB5d1DdSAfsKdwBVm/jxESn+S2Xm1c2lszgQr+hHepNKpQnGVEr5VE=
+	t=1705924217; cv=none; b=RBZKDZEf0Pn1I0nWZs1/v2hXZ9qSsauonLhS7UDF0PoDzclIY6vwg9cJnfBUTfRZ4r9Il/C06FQ2r22QJGdyo3SW8oNZIr++c6KiAzbVeI81GO/iWTyUEMfSVmRXby6G/FK89drasLALGLzUoG3MsdamXi4Mbew1CgVewq45o94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705923134; c=relaxed/simple;
-	bh=jIWbdhazF1DtsVh0QU7A3sMXExHW1xlwHLYRk2ok3JI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mddYbSCA4fm/xHDpdi49hSpZaR99jBFaNSCnLTrJUhISyk44DKWcqcLxKJ0lmtyJMyiQPHoFkDfkDWZd4swTotke4bY76F/F/c7vfCaSg+7ONwrhGyZNy5U9G+cIN24MEoQSED20nRQ6e9K+F5IXlrTLNfPY/p9ayzBK1d8IMME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y2wktsU/; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-50ec948ad31so3218903e87.2;
-        Mon, 22 Jan 2024 03:32:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705923130; x=1706527930; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=DPbIVtQUATMQ9HXAYvqkNgY9ZzASBXmb6XQmjxVPQJI=;
-        b=Y2wktsU/SQyvf9cBbsO6aW9XDcAo/bjxm6+9SKSf15D2tULKCYhp2RQZ42MvtUSTt8
-         p/tEgv2f5b8xVJ/pmT4u9KKCIpMUWRd/RKgAxzRwMmTeTf9Rc+LWaL8EDpLjXGp+DXDV
-         mSYQfpbdn8kl2PIbvUzPH1SNzH17jbnNC9ACJcw04z65Hyo8Mgbf5xMmTnr6av2O3Gwj
-         8hafpuPUaoksQHJoUlTX9e0hKvMILOmGDnPt+CYlT46gQ86Gmkrqh/nhDsXX6nUEhSNg
-         gjg16c0Fx8XGC30BErSuvv0YdReUeFV+CKNCa5QHZvnqBXG087PxYZ2C6awTRunYB4vk
-         WytQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705923130; x=1706527930;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :reply-to:in-reply-to:references:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DPbIVtQUATMQ9HXAYvqkNgY9ZzASBXmb6XQmjxVPQJI=;
-        b=Z4kKvnBvLdlac3DMWHL2WOFRbnKbs1nn+uFlKINxlRegzg96EMs1sfXEihtKLlm/mv
-         Fgyi6WzrQcBxolyx1YQFR6OotyBP7b0oz1tR1VqaRZK6/dwixsjkN73bUUC1KBvMDoPs
-         l9BexicdJXpsMoLEc4zsljxaaXN/UT7mvU2qVkFIxe3bIfLSqZTQRU+qegIFMyY93yFC
-         IAWL4GXpeNU76huZFM3dau1NTDiGXigBi6CBbxA2eGxLh61sj04PIn5eMe6TreMtFomD
-         0Y3E5HmvB5H+IJtbgP+IXmmK6+X7LBV8jB0w7cWfG/IMyRCNoN5eRhwuRuGLiiP8MQ8E
-         a2iQ==
-X-Gm-Message-State: AOJu0Yw+rGDvdTkTdWFINXPbsayARwzEzm7i2zgjgsRIRfb+7+RsurF9
-	7WF7R5pqziykDtlkCXcfkfLvo8keoOKP4Zuq9aItuvqEdAmPh0tdccFHdDiEDjci+BCrTEFPWYi
-	ASBVcJGxXJ4QxyX4owO28+7sjtUE=
-X-Google-Smtp-Source: AGHT+IE8q+aq6bFKrhgG9BSySHiV+tD954Tn/cVZYKhwVGHb0K+uUjH7ovE9Bu9iAyd12VXTVTX6Bsn87zFzzMIkblM=
-X-Received: by 2002:a05:6512:3d1e:b0:50e:80db:3c35 with SMTP id
- d30-20020a0565123d1e00b0050e80db3c35mr1745864lfv.80.1705923130168; Mon, 22
- Jan 2024 03:32:10 -0800 (PST)
+	s=arc-20240116; t=1705924217; c=relaxed/simple;
+	bh=ZoHlYs9JBv8+jjTA2+gz65BwpiMRWVkIsKYXrGdWIPQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=LOJAjJ2XGnpwDcI9A6ArsGqfg/yr70aX/t8P/truQ0jG9vHW0v1NfNUopQk7uX7e0jALcusA60j/g174pmKRGVZ3vSjEwj3WJuLcyLjaTMKle6s/qOiGbObKAdxTrp9Ruxrr6ciLKHI4J/YisK+kIXj0MkV32kb5X8DjkJ5PYOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=hkVyHtZs; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=vzaQ4ZjW; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=wTEmZEoP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qZ+o7gec; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 796E91FBB3;
+	Mon, 22 Jan 2024 11:50:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1705924213; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MswQKcwjQrmv0UBX4o6XAXUbWeE3MQll8CxGSuZco2g=;
+	b=hkVyHtZssdA2zvLJzLu4hBwKYy8HO6REEEBKPKXbO9QNZfEO0IV5TpZUirrjfu+bTKEGgP
+	i9CjE0Z4V/qdjfWeQRf1oX/DFz4YCo20Z/NvaFkLWbmniOcapGQ+7F1dDqFgUUQswk1lKj
+	C/JU/B/4TvVybqOwjuQLQ0zOaRQx2OY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1705924213;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MswQKcwjQrmv0UBX4o6XAXUbWeE3MQll8CxGSuZco2g=;
+	b=vzaQ4ZjW82x9QDqelAl+I+af1fIIGNQFIl373qQRLcH5xiuQl8ml9GXZOJo7GCNiVpw2Ia
+	HhaK4cN0SyNvdQDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1705924212; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MswQKcwjQrmv0UBX4o6XAXUbWeE3MQll8CxGSuZco2g=;
+	b=wTEmZEoP5n1NOhxX/29CA27TsNrLDduDXl2+BygbtZOOiQxufIoUJpRZYWbZvz3+OYLQr9
+	UBhh48BztLfO/ixE2SJqeV4zSsH2gJj5F1xlL1pYmfocgFjiryF1BYo9tzjwigFq6aoM33
+	ssxVGbkxTP8MYWnOO/xyDLXI4CzOIcQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1705924212;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MswQKcwjQrmv0UBX4o6XAXUbWeE3MQll8CxGSuZco2g=;
+	b=qZ+o7gec+gASPm9cxhk3AxKnD9YMrdVHJngJLYN6JwxLribUPNezyUBt79NC2F4pCSpQz2
+	g39C5zh8SFqXz+DA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 09748139A2;
+	Mon, 22 Jan 2024 11:50:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id hcluOnNWrmUPIgAAD6G6ig
+	(envelope-from <lhenriques@suse.de>); Mon, 22 Jan 2024 11:50:11 +0000
+Received: from localhost (brahms.olymp [local])
+	by brahms.olymp (OpenSMTPD) with ESMTPA id 4c05b0c9;
+	Mon, 22 Jan 2024 11:50:11 +0000 (UTC)
+From: Luis Henriques <lhenriques@suse.de>
+To: "Jarkko Sakkinen" <jarkko@kernel.org>
+Cc: "David Howells" <dhowells@redhat.com>,  "Eric Biggers"
+ <ebiggers@kernel.org>,  <keyrings@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH v2] keys: update key quotas in key_put()
+In-Reply-To: <CYIZP2D9FS0N.1XY2F5VX9STEY@seitikki> (Jarkko Sakkinen's message
+	of "Fri, 19 Jan 2024 21:10:15 +0000")
+References: <2744563.1702303367@warthog.procyon.org.uk>
+	<20240115120300.27606-1-lhenriques@suse.de>
+	<CYIZP2D9FS0N.1XY2F5VX9STEY@seitikki>
+Date: Mon, 22 Jan 2024 11:50:11 +0000
+Message-ID: <87il3llh8s.fsf@suse.de>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <1850031.1704921100@warthog.procyon.org.uk> <CA+icZUUc_0M_6JU3dZzVqrUUrWJceY1uD8dO2yFMCwtHtkaa_Q@mail.gmail.com>
- <CA+icZUWYSxfFHf5A56h9b4uOYYaANNxo2Z+cpwP1Bs1pF8MXQQ@mail.gmail.com>
-In-Reply-To: <CA+icZUWYSxfFHf5A56h9b4uOYYaANNxo2Z+cpwP1Bs1pF8MXQQ@mail.gmail.com>
-Reply-To: sedat.dilek@gmail.com
-From: Sedat Dilek <sedat.dilek@gmail.com>
-Date: Mon, 22 Jan 2024 12:31:32 +0100
-Message-ID: <CA+icZUV5zbsm4=wceT7+nzCrCw7S8SkKonTevFBpNTgvzbHT8g@mail.gmail.com>
-Subject: Re: [PATCH] keys, dns: Fix size check of V1 server-list header
-To: sedat.dilek@gmail.com
-Cc: David Howells <dhowells@redhat.com>, ceph-devel@vger.kernel.org, davem@davemloft.net, 
-	eadavis@qq.com, edumazet@google.com, horms@kernel.org, jaltman@auristor.com, 
-	jarkko@kernel.org, jlayton@redhat.com, keyrings@vger.kernel.org, 
-	kuba@kernel.org, linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, marc.dionne@auristor.com, markus.suvanto@gmail.com, 
-	netdev@vger.kernel.org, pabeni@redhat.com, pengfei.xu@intel.com, 
-	smfrench@gmail.com, stable@vger.kernel.org, torvalds@linux-foundation.org, 
-	wang840925@gmail.com, sashal@kernel.org, gregkh@linuxfoundation.org, 
-	pvorel@suse.cz
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-Spam-Level: 
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=wTEmZEoP;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=qZ+o7gec
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.51 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 MIME_GOOD(-0.10)[text/plain];
+	 DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+	 RCPT_COUNT_FIVE(0.00)[5];
+	 RCVD_COUNT_THREE(0.00)[4];
+	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	 DKIM_TRACE(0.00)[suse.de:+];
+	 MX_GOOD(-0.01)[];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_LAST(0.00)[];
+	 MID_RHS_MATCH_FROM(0.00)[];
+	 BAYES_HAM(-0.00)[30.16%]
+X-Spam-Score: -3.51
+X-Rspamd-Queue-Id: 796E91FBB3
+X-Spam-Flag: NO
 
-On Mon, Jan 22, 2024 at 12:01=E2=80=AFPM Sedat Dilek <sedat.dilek@gmail.com=
-> wrote:
+"Jarkko Sakkinen" <jarkko@kernel.org> writes:
+
+> On Mon Jan 15, 2024 at 12:03 PM UTC, Luis Henriques wrote:
+>> Delaying key quotas update when key's refcount reaches 0 in key_put() has
+>> been causing some issues in fscrypt testing.  This patches fixes this te=
+st
+>                                                 ~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~~
+> 						This commit fixes the test
 >
-> On Mon, Jan 22, 2024 at 8:33=E2=80=AFAM Petr Vorel <pvorel@suse.cz> wrote=
-:
-> >
-> > From: Sedat Dilek <sedat.dilek@gmail.com>
-> >
-> > On Wed, Jan 10, 2024 at 10:12=E2=80=AFPM David Howells <dhowells@redhat=
-.com> wrote:
-> > >
-> > >
-> > > Fix the size check added to dns_resolver_preparse() for the V1 server=
--list
-> > > header so that it doesn't give EINVAL if the size supplied is the sam=
-e as
-> > > the size of the header struct (which should be valid).
-> > >
-> > > This can be tested with:
-> > >
-> > >         echo -n -e '\0\0\01\xff\0\0' | keyctl padd dns_resolver desc =
-@p
-> > >
-> > > which will give "add_key: Invalid argument" without this fix.
-> > >
-> > > Fixes: 1997b3cb4217 ("keys, dns: Fix missing size check of V1 server-=
-list header")
-> >
-> > [ CC stable@vger.kernel.org ]
-> >
-> > Your (follow-up) patch is now upstream.
-> >
-> > https://git.kernel.org/linus/acc657692aed438e9931438f8c923b2b107aebf9
-> >
-> > This misses CC: Stable Tag as suggested by Linus.
-> >
-> > Looks like linux-6.1.y and linux-6.6.y needs it, too.
-> >
-> > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit=
-/?h=3Dv6.6.11&id=3Dda89365158f6f656b28bcdbcbbe9eaf97c63c474
-> > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit=
-/?h=3Dv6.1.72&id=3D079eefaecfd7bbb8fcc30eccb0dfdf50c91f1805
-> >
-> > BG,
-> > -Sedat-
-> >
-> > Hi Greg, Sasa,
-> >
-> > could you please add this also to linux-6.1.y and linux-6.6.y?  (Easily
-> > applicable to both, needed for both.) Or is there any reason why it's n=
-ot
-> > being added?
-> >
+>> flakiness by dealing with the quotas immediately, but leaving all the ot=
+her
+>> clean-ups to the key garbage collector.  Unfortunately, this means that =
+we
+>> also need to switch to the irq-version of the spinlock that protects quo=
+ta.
 >
-> Great!
+> The commit message fails to describe the implementation changes.
 >
-> I forgot to CC Greg and Sasha directly.
->
-> Thanks.
->
+> You have a motivation paragraph but you also need to add implementation
+> paragraph, which describes how the code changes reflect the motivation.
 
-Addendum:
+Thank you for your feedback, Jarkko.  I'll address your comments in v3.
 
-Linus says:
-"
-Bah. Obvious fix is obvious.
+But before sending another rev, I'll wait a bit more, maybe David also has
+some feedback on the implementation.
 
-Mind sending it as a proper patch with sign-off etc, and we'll get
-this fixed and marked for stable.
-"
-
-https://lore.kernel.org/all/CAHk-=3DwiyG8BKKZmU7CDHC8+rmvBndrqNSgLV6LtuqN8W=
-_gL3hA@mail.gmail.com/
-
--Sedat-
-
-> BG,
-> -Sedat-
->
-> > Kind regards,
-> > Petr
-> >
-> > > Reported-by: Pengfei Xu <pengfei.xu@intel.com>
-> > > Link: https://lore.kernel.org/r/ZZ4fyY4r3rqgZL+4@xpf.sh.intel.com/
-> > > Signed-off-by: David Howells <dhowells@redhat.com>
-> > > cc: Edward Adam Davis <eadavis@qq.com>
-> > > cc: Linus Torvalds <torvalds@linux-foundation.org>
-> > > cc: Simon Horman <horms@kernel.org>
-> > > Cc: Jarkko Sakkinen <jarkko@kernel.org>
-> > > Cc: Jeffrey E Altman <jaltman@auristor.com>
-> > > Cc: Wang Lei <wang840925@gmail.com>
-> > > Cc: Jeff Layton <jlayton@redhat.com>
-> > > Cc: Steve French <sfrench@us.ibm.com>
-> > > Cc: Marc Dionne <marc.dionne@auristor.com>
-> > > Cc: "David S. Miller" <davem@davemloft.net>
-> > > Cc: Eric Dumazet <edumazet@google.com>
-> > > Cc: Jakub Kicinski <kuba@kernel.org>
-> > > Cc: Paolo Abeni <pabeni@redhat.com>
-> > > ---
-> > >  net/dns_resolver/dns_key.c |    2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/net/dns_resolver/dns_key.c b/net/dns_resolver/dns_key.c
-> > > index f18ca02aa95a..c42ddd85ff1f 100644
-> > > --- a/net/dns_resolver/dns_key.c
-> > > +++ b/net/dns_resolver/dns_key.c
-> > > @@ -104,7 +104,7 @@ dns_resolver_preparse(struct key_preparsed_payloa=
-d *prep)
-> > >                 const struct dns_server_list_v1_header *v1;
-> > >
-> > >                 /* It may be a server list. */
-> > > -               if (datalen <=3D sizeof(*v1))
-> > > +               if (datalen < sizeof(*v1))
-> > >                         return -EINVAL;
-> > >
-> > >                 v1 =3D (const struct dns_server_list_v1_header *)data=
-;
-> > >
-> > >
-> >
+Cheers,
+--=20
+Lu=C3=ADs
 
