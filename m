@@ -1,316 +1,271 @@
-Return-Path: <keyrings+bounces-489-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-490-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C9DB835727
-	for <lists+keyrings@lfdr.de>; Sun, 21 Jan 2024 18:50:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45EE9835BA5
+	for <lists+keyrings@lfdr.de>; Mon, 22 Jan 2024 08:33:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65B1E1C20A19
-	for <lists+keyrings@lfdr.de>; Sun, 21 Jan 2024 17:50:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99448284008
+	for <lists+keyrings@lfdr.de>; Mon, 22 Jan 2024 07:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DCC4381CB;
-	Sun, 21 Jan 2024 17:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B77DF12B81;
+	Mon, 22 Jan 2024 07:33:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="r16CENZi";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="zpp3PUi1";
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="r16CENZi";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="zpp3PUi1";
+	dkim=permerror (0-bit key) header.d=gmail.com header.i=@gmail.com header.b="CzqZMzEZ"
 X-Original-To: keyrings@vger.kernel.org
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DAD4381B2;
-	Sun, 21 Jan 2024 17:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56B1FBF1;
+	Mon, 22 Jan 2024 07:33:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705859453; cv=none; b=pD/rmmT6wGxECgZNdJSfQtQupASGRsPBo4+wAxwEIpaBmuhTZDU9EjzXsjRyAg4P6lxQ9REoEqY4S2SN8edf3BX4AyjFCtRErsg7Hb2Cp+VYNFnVTXGfu7XyRWeRb0KFHAWtavx4Y1tsy+Auu9hS/PGFXkFwgL02TpIzvTFrCxk=
+	t=1705908784; cv=none; b=YGwa8ZWMqWaOCwMjUgwwkGdbxnBY/Mz1GemHWB484aQi8qXUc/FfwK87TnlgNngWpnpUReg1WPkuD35INbIWctrTaoA206RM7aZuR5FpF0plikUitpqKmShu5JcZFCbM/9ZiZgdll5wDEu7mQBjobfhQhXfAEBMqoLnq27bq7oY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705859453; c=relaxed/simple;
-	bh=eHDq0ZLRZIdD55BRN9hALO8SRsLCnZIWS+ajT5ovEOI=;
-	h=Message-Id:From:Date:Subject:To:Cc; b=HrtJ+QDFS7XS98ISBy7Ltd5IJcqII94nDbSt4GzZkBdS88+qITwFSfeAmgNSKJt9PKnWV+ntwr+GcBsNYeyUttQ5WBhRdRjvzpaaHSWpPuthAIGMGyL/tg6zJxUon/NbUrONa0vAPBSfaKug3Inqm0fS73MWh+r7U/YX+KuSQvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.78.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	s=arc-20240116; t=1705908784; c=relaxed/simple;
+	bh=sWD5AGkRBwhuAG/GT1Bayy7saGl12tVct1E5myEMZ04=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LiFo8NgTjH2esKPoZiuttqWVDj7UC3dILbdrdqHnLM3bEefYObviKgMirHY/dc33TgcnVmR/YpBKnPh2t5xWs1JqYihnImcRuuqX+ImR08F1q89IJRJj9WZjDlZqAXQNXsv+SQE1RmHweqsfhAhouP81j6/IuA/RAmhpbd+GFLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=r16CENZi; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=zpp3PUi1; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=r16CENZi; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=zpp3PUi1; dkim=permerror (0-bit key) header.d=gmail.com header.i=@gmail.com header.b=CzqZMzEZ; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 2F8582800B3C6;
-	Sun, 21 Jan 2024 18:50:40 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 0DB9E2C4F3A; Sun, 21 Jan 2024 18:50:40 +0100 (CET)
-Message-Id: <70ecd3904a70d2b92f8f1e04365a2b9ce66fac25.1705857475.git.lukas@wunner.de>
-From: Lukas Wunner <lukas@wunner.de>
-Date: Sun, 21 Jan 2024 18:50:39 +0100
-Subject: [PATCH] X.509: Introduce scope-based x509_certificate allocation
-To: David Howells <dhowells@redhat.com>, Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Peter Zijlstra <peterz@infradead.org>, Dan Williams <dan.j.williams@intel.com>, Ard Biesheuvel <ardb@kernel.org>
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3C2A61FB96;
+	Mon, 22 Jan 2024 07:32:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1705908778;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:list-id:
+	 list-unsubscribe:list-subscribe;
+	bh=3igCp/BzejU8TkKcIbMGYWN93bxOYZ2K40uNvLaOz04=;
+	b=r16CENZivv40J9jGSZzhRzZ8/4fFpAdxpyLT4kaqPCPcbJrDV62Mz2/p3XQ4fxMzJkWPph
+	faSmjOxfd2i5mwdZ3GV6aVd1JNdUZdVSc1MjHuQ+jKBRClcDAcK2DwSC54JGVFiWeeoWQE
+	sqOwq1zWq4SInVo6ny7rj9vVy3/kdlw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1705908778;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:list-id:
+	 list-unsubscribe:list-subscribe;
+	bh=3igCp/BzejU8TkKcIbMGYWN93bxOYZ2K40uNvLaOz04=;
+	b=zpp3PUi1pQV+VpbvqQ0qczoVRLDXcjVVREz/LYwpSyAAqxL36cM8E3F12ShoyK3dYAbEtw
+	guJm6tb8bYI8AjAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1705908778;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:list-id:
+	 list-unsubscribe:list-subscribe;
+	bh=3igCp/BzejU8TkKcIbMGYWN93bxOYZ2K40uNvLaOz04=;
+	b=r16CENZivv40J9jGSZzhRzZ8/4fFpAdxpyLT4kaqPCPcbJrDV62Mz2/p3XQ4fxMzJkWPph
+	faSmjOxfd2i5mwdZ3GV6aVd1JNdUZdVSc1MjHuQ+jKBRClcDAcK2DwSC54JGVFiWeeoWQE
+	sqOwq1zWq4SInVo6ny7rj9vVy3/kdlw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1705908778;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:list-id:
+	 list-unsubscribe:list-subscribe;
+	bh=3igCp/BzejU8TkKcIbMGYWN93bxOYZ2K40uNvLaOz04=;
+	b=zpp3PUi1pQV+VpbvqQ0qczoVRLDXcjVVREz/LYwpSyAAqxL36cM8E3F12ShoyK3dYAbEtw
+	guJm6tb8bYI8AjAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 23ED9139A2;
+	Mon, 22 Jan 2024 07:32:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DTK5BikarmW+TAAAD6G6ig
+	(envelope-from <pvorel@suse.cz>); Mon, 22 Jan 2024 07:32:57 +0000
+From: Petr Vorel <pvorel@suse.cz>
+To: sedat.dilek@gmail.com,
+	David Howells <dhowells@redhat.com>
+Cc: ceph-devel@vger.kernel.org,
+	davem@davemloft.net,
+	eadavis@qq.com,
+	edumazet@google.com,
+	horms@kernel.org,
+	jaltman@auristor.com,
+	jarkko@kernel.org,
+	jlayton@redhat.com,
+	keyrings@vger.kernel.org,
+	kuba@kernel.org,
+	linux-afs@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	marc.dionne@auristor.com,
+	markus.suvanto@gmail.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	pengfei.xu@intel.com,
+	smfrench@gmail.com,
+	stable@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	wang840925@gmail.com,
+	sashal@kernel.org,
+	gregkh@linuxfoundation.org,
+	pvorel@suse.cz
+Subject: Re: [PATCH] keys, dns: Fix size check of V1 server-list header
+Date: Mon, 22 Jan 2024 08:32:20 +0100
+Message-ID: <CA+icZUUc_0M_6JU3dZzVqrUUrWJceY1uD8dO2yFMCwtHtkaa_Q@mail.gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <1850031.1704921100@warthog.procyon.org.uk>
+References: <1850031.1704921100@warthog.procyon.org.uk>
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46]) (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits)) (No client certificate requested) by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5DE5382; Thu, 11 Jan 2024 05:59:25 +0000 (UTC)
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-50eaa8b447bso5330201e87.1; Wed, 10 Jan 2024 21:59:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmail.com; s=20230601; t=1704952764; x=1705557564; darn=vger.kernel.org; h=content-transfer-encoding:cc:to:subject:message-id:date:from :reply-to:in-reply-to:references:mime-version:from:to:cc:subject :date:message-id:reply-to; bh=FJ87IotFFb22oBVL3yLTlm/KMv2+8lgNVJRq/vObCyk=; b=CzqZMzEZtvDdKV5J1zvfpPjPR0wILxDKt26BQKl6dgvHwvuCdUpx9zofNRErh3RHcX 4RuSBM6WZWJ1QKGW+9aiqdcuZ62e09X44gxoTRBDE+voHnFnRDsr+edQ5ck1zC7LsJhN EMK1qwLK1bRNnbMuChx86E3Azw77svFukz6fqTpXK3bsM2rTrEDn7RijQtfJzRULk5fh 03jquwf/rzboIOEKrCR16L4yr1+Xatxw99hk68jjfEH+31e9vDr7ITE8LCsNPBfAQQpH P6UrE+PD1kzUZiHQ0KvBiTXXqrktw2yk9LaQhbiPyPJxRxnNuSars1Af7vD/wPL9xNN4 4M3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1e100.net; s=20230601; t=1704952764; x=1705557564; h=content-transfer-encoding:cc:to:subject:message-id:date:from :reply-to:in-reply-to:references:mime-version:x-gm-message-state :from:to:cc:subject:date:message-id:reply-to; bh=FJ87IotFFb22oBVL3yLTlm/KMv2+8lgNVJRq/vObCyk=; b=PZikC1qFb00UIl7giDpbUhRi+PwG7WMGC2I2TAEF1QH5b8owBpy+p/8rvT3vq+CCsV V461beb9lR8JKSyJ8vearvFNjmrLIwdr8iJQp047Rwx+y81rtRcoq5yQ/yYSOHA76ehV lG2l3qp7uLV1MfLdNTGrt1s2zyKLXu7rjfQwT4PmnAXsQMnVUVqx3nnKa0jZFzbUvrOX s/zCJhOF6LAB2tHaRWCdKxPTPkGzCPKp2F8Xet1nwZI0SRPETfv9nGa3Y0Ltqxv7XDHQ MJ8M7lvivuv4Xh6kXxoODM4mc+k54GZl5vBHmg5W8oItq7JtStAu94AtWAezRC/u+uR9 5KZQ==
+X-Gm-Message-State: AOJu0YyVqvzD5u0f/yOoNxYT7dq5ZdTTUXgj+AXRBVyKnTXhwC7XN5aF /LgPOEbucY8bFWak009t9Uj9eZlnQaX9WuTMcro=
+X-Google-Smtp-Source: AGHT+IGQ5ZV/gXo7v/rJ2auVyXpmqs0QYfi3tBSjxW2wUQzS96ysR1EG48kjTCbHRzoOg/0bxoYvPzkVO6R5r9tJSuk=
+X-Received: by 2002:a05:6512:3990:b0:50e:2e5d:10a8 with SMTP id j16-20020a056512399000b0050e2e5d10a8mr136706lfu.133.1704952763509; Wed, 10 Jan 2024 21:59:23 -0800 (PST)
+Precedence: bulk
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Reply-To: sedat.dilek@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: ********
+X-Spamd-Bar: ++++++++
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=r16CENZi;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zpp3PUi1
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [8.63 / 50.00];
+	 HAS_REPLYTO(0.30)[sedat.dilek@gmail.com];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 SUSE_ML_WHITELIST_VGER(-0.10)[];
+	 R_RATELIMIT(0.00)[to_ip_from(RL9hkrcy1f6ordxndu6pi8qgoz)];
+	 DKIM_TRACE(0.00)[suse.cz:+];
+	 MX_GOOD(-0.01)[];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 MAILLIST(-0.15)[generic];
+	 FREEMAIL_TO(0.00)[gmail.com,redhat.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 BAYES_HAM(-3.00)[100.00%];
+	 ARC_NA(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 RCVD_COUNT_FIVE(0.00)[5];
+	 FROM_HAS_DN(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com,qq.com];
+	 PRECEDENCE_BULK(0.00)[];
+	 TAGGED_RCPT(0.00)[];
+	 FREEMAIL_REPLYTO(4.00)[gmail.com];
+	 REPLYTO_DOM_NEQ_FROM_DOM(1.60)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 HAS_LIST_UNSUB(-0.01)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 SPOOF_REPLYTO(6.00)[suse.cz,gmail.com];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 RCPT_COUNT_TWELVE(0.00)[29];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FREEMAIL_CC(0.00)[vger.kernel.org,davemloft.net,qq.com,google.com,kernel.org,auristor.com,redhat.com,lists.infradead.org,gmail.com,intel.com,linux-foundation.org,linuxfoundation.org,suse.cz];
+	 RCVD_TLS_ALL(0.00)[];
+	 SUSPICIOUS_RECIPS(1.50)[]
+X-Spam-Score: 8.63
+X-Rspamd-Queue-Id: 3C2A61FB96
+X-Spam-Flag: NO
 
-Jonathan suggests adding cleanup.h support for x509_certificate structs:
-https://lore.kernel.org/all/20231003153937.000034ca@Huawei.com/
+From: Sedat Dilek <sedat.dilek@gmail.com>
 
-Introduce a DEFINE_FREE() macro and use it in x509_cert_parse() and
-x509_key_preparse().  These are the only functions where scope-based
-x509_certificate allocation currently makes sense.  Another user will
-be introduced with the upcoming SPDM library (Security Protocol and
-Data Model) for PCI device authentication.
+On Wed, Jan 10, 2024 at 10:12 PM David Howells <dhowells@redhat.com> wrote:
+>
+>
+> Fix the size check added to dns_resolver_preparse() for the V1 server-list
+> header so that it doesn't give EINVAL if the size supplied is the same as
+> the size of the header struct (which should be valid).
+>
+> This can be tested with:
+>
+>         echo -n -e '\0\0\01\xff\0\0' | keyctl padd dns_resolver desc @p
+>
+> which will give "add_key: Invalid argument" without this fix.
+>
+> Fixes: 1997b3cb4217 ("keys, dns: Fix missing size check of V1 server-list header")
 
-Unlike most other DEFINE_FREE() macros, this one not only has to check
-for NULL, but also for ERR_PTR() before calling x509_free_certificate()
-at end of scope.  That's because the "constructor" of x509_certificate
-structs, x509_cert_parse(), may return an ERR_PTR().
+[ CC stable@vger.kernel.org ]
 
-I've compared the Assembler output before/after and while I couldn't
-spot a functional difference, I did notice an annoying superfluous check
-being added to each function:
+Your (follow-up) patch is now upstream.
 
-* x509_key_preparse() now checks that "cert" is not NULL before calling
-  x509_free_certificate() at end of scope.  It knows whether "cert" is
-  an ERR_PTR() because of the explicit "if (IS_ERR(cert))" check at the
-  top of the function, but it doesn't know whether it's NULL.  In fact
-  it can *never* be NULL because x509_cert_parse() only returns either
-  a valid pointer or an ERR_PTR().
+https://git.kernel.org/linus/acc657692aed438e9931438f8c923b2b107aebf9
 
-  I've tried adding __attribute__((returns_nonnull)) to x509_cert_parse()
-  but the compiler ignores it due to commit a3ca86aea507
-  ("Add '-fno-delete-null-pointer-checks' to gcc CFLAGS").
+This misses CC: Stable Tag as suggested by Linus.
 
-* x509_cert_parse() now checks that "cert" is not an ERR_PTR() before
-  calling x509_free_certificate() at end of scope.  The compiler doesn't
-  know that kzalloc() never returns an ERR_PTR().
+Looks like linux-6.1.y and linux-6.6.y needs it, too.
 
-  I've tried telling the compiler that by amending kmalloc() with
-  "if (IS_ERR(ptr)) __builtin_unreachable();", but the result was
-  disappointing:  While it succeeded in eliminating the superfluous
-  ERR_PTR() check, total vmlinux size increased by 448 bytes.
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.6.11&id=da89365158f6f656b28bcdbcbbe9eaf97c63c474
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.1.72&id=079eefaecfd7bbb8fcc30eccb0dfdf50c91f1805
 
-  I could add such a clause locally to x509_cert_parse() instead of
-  kmalloc(), but it would require additions to compiler-*.h.
-  (clang uses a different syntax for these annotations.)
+BG,
+-Sedat-
 
-Despite the annoying extra checks, I think the gain in readability
-justifies the conversion.
+Hi Greg, Sasa,
 
-Suggested-by: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
----
- crypto/asymmetric_keys/x509_cert_parser.c | 42 +++++++++++--------------------
- crypto/asymmetric_keys/x509_parser.h      |  3 +++
- crypto/asymmetric_keys/x509_public_key.c  | 31 +++++++----------------
- 3 files changed, 27 insertions(+), 49 deletions(-)
+could you please add this also to linux-6.1.y and linux-6.6.y?  (Easily
+applicable to both, needed for both.) Or is there any reason why it's not
+being added?
 
-diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
-index 487204d..e597ac6 100644
---- a/crypto/asymmetric_keys/x509_cert_parser.c
-+++ b/crypto/asymmetric_keys/x509_cert_parser.c
-@@ -60,24 +60,23 @@ void x509_free_certificate(struct x509_certificate *cert)
-  */
- struct x509_certificate *x509_cert_parse(const void *data, size_t datalen)
- {
--	struct x509_certificate *cert;
--	struct x509_parse_context *ctx;
-+	struct x509_certificate *cert __free(x509_free_certificate);
-+	struct x509_parse_context *ctx __free(kfree) = NULL;
- 	struct asymmetric_key_id *kid;
- 	long ret;
- 
--	ret = -ENOMEM;
- 	cert = kzalloc(sizeof(struct x509_certificate), GFP_KERNEL);
- 	if (!cert)
--		goto error_no_cert;
-+		return ERR_PTR(-ENOMEM);
- 	cert->pub = kzalloc(sizeof(struct public_key), GFP_KERNEL);
- 	if (!cert->pub)
--		goto error_no_ctx;
-+		return ERR_PTR(-ENOMEM);
- 	cert->sig = kzalloc(sizeof(struct public_key_signature), GFP_KERNEL);
- 	if (!cert->sig)
--		goto error_no_ctx;
-+		return ERR_PTR(-ENOMEM);
- 	ctx = kzalloc(sizeof(struct x509_parse_context), GFP_KERNEL);
- 	if (!ctx)
--		goto error_no_ctx;
-+		return ERR_PTR(-ENOMEM);
- 
- 	ctx->cert = cert;
- 	ctx->data = (unsigned long)data;
-@@ -85,7 +84,7 @@ struct x509_certificate *x509_cert_parse(const void *data, size_t datalen)
- 	/* Attempt to decode the certificate */
- 	ret = asn1_ber_decoder(&x509_decoder, ctx, data, datalen);
- 	if (ret < 0)
--		goto error_decode;
-+		return ERR_PTR(ret);
- 
- 	/* Decode the AuthorityKeyIdentifier */
- 	if (ctx->raw_akid) {
-@@ -95,20 +94,19 @@ struct x509_certificate *x509_cert_parse(const void *data, size_t datalen)
- 				       ctx->raw_akid, ctx->raw_akid_size);
- 		if (ret < 0) {
- 			pr_warn("Couldn't decode AuthKeyIdentifier\n");
--			goto error_decode;
-+			return ERR_PTR(ret);
- 		}
- 	}
- 
--	ret = -ENOMEM;
- 	cert->pub->key = kmemdup(ctx->key, ctx->key_size, GFP_KERNEL);
- 	if (!cert->pub->key)
--		goto error_decode;
-+		return ERR_PTR(-ENOMEM);
- 
- 	cert->pub->keylen = ctx->key_size;
- 
- 	cert->pub->params = kmemdup(ctx->params, ctx->params_size, GFP_KERNEL);
- 	if (!cert->pub->params)
--		goto error_decode;
-+		return ERR_PTR(-ENOMEM);
- 
- 	cert->pub->paramlen = ctx->params_size;
- 	cert->pub->algo = ctx->key_algo;
-@@ -116,33 +114,23 @@ struct x509_certificate *x509_cert_parse(const void *data, size_t datalen)
- 	/* Grab the signature bits */
- 	ret = x509_get_sig_params(cert);
- 	if (ret < 0)
--		goto error_decode;
-+		return ERR_PTR(ret);
- 
- 	/* Generate cert issuer + serial number key ID */
- 	kid = asymmetric_key_generate_id(cert->raw_serial,
- 					 cert->raw_serial_size,
- 					 cert->raw_issuer,
- 					 cert->raw_issuer_size);
--	if (IS_ERR(kid)) {
--		ret = PTR_ERR(kid);
--		goto error_decode;
--	}
-+	if (IS_ERR(kid))
-+		return ERR_CAST(kid);
- 	cert->id = kid;
- 
- 	/* Detect self-signed certificates */
- 	ret = x509_check_for_self_signed(cert);
- 	if (ret < 0)
--		goto error_decode;
--
--	kfree(ctx);
--	return cert;
-+		return ERR_PTR(ret);
- 
--error_decode:
--	kfree(ctx);
--error_no_ctx:
--	x509_free_certificate(cert);
--error_no_cert:
--	return ERR_PTR(ret);
-+	return_ptr(cert);
- }
- EXPORT_SYMBOL_GPL(x509_cert_parse);
- 
-diff --git a/crypto/asymmetric_keys/x509_parser.h b/crypto/asymmetric_keys/x509_parser.h
-index 97a886c..d2dfe50 100644
---- a/crypto/asymmetric_keys/x509_parser.h
-+++ b/crypto/asymmetric_keys/x509_parser.h
-@@ -5,6 +5,7 @@
-  * Written by David Howells (dhowells@redhat.com)
-  */
- 
-+#include <linux/cleanup.h>
- #include <linux/time.h>
- #include <crypto/public_key.h>
- #include <keys/asymmetric-type.h>
-@@ -44,6 +45,8 @@ struct x509_certificate {
-  * x509_cert_parser.c
-  */
- extern void x509_free_certificate(struct x509_certificate *cert);
-+DEFINE_FREE(x509_free_certificate, struct x509_certificate *,
-+	    if (!IS_ERR_OR_NULL(_T)) x509_free_certificate(_T))
- extern struct x509_certificate *x509_cert_parse(const void *data, size_t datalen);
- extern int x509_decode_time(time64_t *_t,  size_t hdrlen,
- 			    unsigned char tag,
-diff --git a/crypto/asymmetric_keys/x509_public_key.c b/crypto/asymmetric_keys/x509_public_key.c
-index 6a4f00b..00ac715 100644
---- a/crypto/asymmetric_keys/x509_public_key.c
-+++ b/crypto/asymmetric_keys/x509_public_key.c
-@@ -161,12 +161,11 @@ int x509_check_for_self_signed(struct x509_certificate *cert)
-  */
- static int x509_key_preparse(struct key_preparsed_payload *prep)
- {
--	struct asymmetric_key_ids *kids;
--	struct x509_certificate *cert;
-+	struct x509_certificate *cert __free(x509_free_certificate);
-+	struct asymmetric_key_ids *kids __free(kfree) = NULL;
-+	char *p, *desc __free(kfree) = NULL;
- 	const char *q;
- 	size_t srlen, sulen;
--	char *desc = NULL, *p;
--	int ret;
- 
- 	cert = x509_cert_parse(prep->data, prep->datalen);
- 	if (IS_ERR(cert))
-@@ -188,9 +187,8 @@ static int x509_key_preparse(struct key_preparsed_payload *prep)
- 	}
- 
- 	/* Don't permit addition of blacklisted keys */
--	ret = -EKEYREJECTED;
- 	if (cert->blacklisted)
--		goto error_free_cert;
-+		return -EKEYREJECTED;
- 
- 	/* Propose a description */
- 	sulen = strlen(cert->subject);
-@@ -202,10 +200,9 @@ static int x509_key_preparse(struct key_preparsed_payload *prep)
- 		q = cert->raw_serial;
- 	}
- 
--	ret = -ENOMEM;
- 	desc = kmalloc(sulen + 2 + srlen * 2 + 1, GFP_KERNEL);
- 	if (!desc)
--		goto error_free_cert;
-+		return -ENOMEM;
- 	p = memcpy(desc, cert->subject, sulen);
- 	p += sulen;
- 	*p++ = ':';
-@@ -215,16 +212,14 @@ static int x509_key_preparse(struct key_preparsed_payload *prep)
- 
- 	kids = kmalloc(sizeof(struct asymmetric_key_ids), GFP_KERNEL);
- 	if (!kids)
--		goto error_free_desc;
-+		return -ENOMEM;
- 	kids->id[0] = cert->id;
- 	kids->id[1] = cert->skid;
- 	kids->id[2] = asymmetric_key_generate_id(cert->raw_subject,
- 						 cert->raw_subject_size,
- 						 "", 0);
--	if (IS_ERR(kids->id[2])) {
--		ret = PTR_ERR(kids->id[2]);
--		goto error_free_kids;
--	}
-+	if (IS_ERR(kids->id[2]))
-+		return PTR_ERR(kids->id[2]);
- 
- 	/* We're pinning the module by being linked against it */
- 	__module_get(public_key_subtype.owner);
-@@ -242,15 +237,7 @@ static int x509_key_preparse(struct key_preparsed_payload *prep)
- 	cert->sig = NULL;
- 	desc = NULL;
- 	kids = NULL;
--	ret = 0;
--
--error_free_kids:
--	kfree(kids);
--error_free_desc:
--	kfree(desc);
--error_free_cert:
--	x509_free_certificate(cert);
--	return ret;
-+	return 0;
- }
- 
- static struct asymmetric_key_parser x509_key_parser = {
--- 
-2.40.1
+Kind regards,
+Petr
+
+> Reported-by: Pengfei Xu <pengfei.xu@intel.com>
+> Link: https://lore.kernel.org/r/ZZ4fyY4r3rqgZL+4@xpf.sh.intel.com/
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Edward Adam Davis <eadavis@qq.com>
+> cc: Linus Torvalds <torvalds@linux-foundation.org>
+> cc: Simon Horman <horms@kernel.org>
+> Cc: Jarkko Sakkinen <jarkko@kernel.org>
+> Cc: Jeffrey E Altman <jaltman@auristor.com>
+> Cc: Wang Lei <wang840925@gmail.com>
+> Cc: Jeff Layton <jlayton@redhat.com>
+> Cc: Steve French <sfrench@us.ibm.com>
+> Cc: Marc Dionne <marc.dionne@auristor.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> ---
+>  net/dns_resolver/dns_key.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/net/dns_resolver/dns_key.c b/net/dns_resolver/dns_key.c
+> index f18ca02aa95a..c42ddd85ff1f 100644
+> --- a/net/dns_resolver/dns_key.c
+> +++ b/net/dns_resolver/dns_key.c
+> @@ -104,7 +104,7 @@ dns_resolver_preparse(struct key_preparsed_payload *prep)
+>                 const struct dns_server_list_v1_header *v1;
+>
+>                 /* It may be a server list. */
+> -               if (datalen <= sizeof(*v1))
+> +               if (datalen < sizeof(*v1))
+>                         return -EINVAL;
+>
+>                 v1 = (const struct dns_server_list_v1_header *)data;
+>
+>
 
 
