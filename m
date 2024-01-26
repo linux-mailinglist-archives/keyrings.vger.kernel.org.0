@@ -1,56 +1,52 @@
-Return-Path: <keyrings+bounces-502-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-503-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 025AD83B487
-	for <lists+keyrings@lfdr.de>; Wed, 24 Jan 2024 23:12:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C5EC83D3FA
+	for <lists+keyrings@lfdr.de>; Fri, 26 Jan 2024 06:37:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 349391C22787
-	for <lists+keyrings@lfdr.de>; Wed, 24 Jan 2024 22:12:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B64451C22247
+	for <lists+keyrings@lfdr.de>; Fri, 26 Jan 2024 05:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7BE135411;
-	Wed, 24 Jan 2024 22:12:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DnylZEIr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75819BA56;
+	Fri, 26 Jan 2024 05:37:55 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D87135406;
-	Wed, 24 Jan 2024 22:12:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FE8BA33;
+	Fri, 26 Jan 2024 05:37:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706134348; cv=none; b=beV3UGoIy0O/53tdGMDJERaBAIN3QCqa4R6+tVvSBGaVqF5sXiX/ODpEXst+rO0+f/OIwSvEZNdINGR0lxG9qWXPJg6hA5StMbs2j8M7icEv2SWYQHKUs3mWd2astqMuCS92ss5P+gN/HXujGDjwywVdWX6mzYJzRsLy2nF17Cw=
+	t=1706247475; cv=none; b=iU1Mh5OnUw2YADF6+1ER8fKhSQK13V3XBFQElddn8zN4gFK2zejq+YVT5F/QwOrlhLqsSFOMjhhdO9WhwprqtV+azw6eI9g8a09p/P6Ti0SSX5CoFtl5+Dw+UJ5+JeB/Q7PIbYt77obPcjLWScylpSSeqSQ0I5CBLLigMs2NDIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706134348; c=relaxed/simple;
-	bh=gc13NGs1cozYsps1K1Aw7bZhty0AXw1eubkb+LJzZZA=;
+	s=arc-20240116; t=1706247475; c=relaxed/simple;
+	bh=S0K5VFn4XkEj6LucTmHHkt4xJ4B4YZkO2Nf6C4KQQ8s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AcFp7WanWZkmuPnZrBXLFsfwhUMN9v+VjNLA3Ie89QLcizLLtYr/MmXoSN14BWo7S9m73SdeE5LXV6ypTf3Lzeu1yezkDr7Ll1A7It1wFAUTNp+5aU+V5pYSkLFz8ywNfMICk6bFi7iI0IxgDt7Hgz1e9iL88hJhc0t/WX7gQeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DnylZEIr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC775C433C7;
-	Wed, 24 Jan 2024 22:12:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706134348;
-	bh=gc13NGs1cozYsps1K1Aw7bZhty0AXw1eubkb+LJzZZA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DnylZEIrzTT5YlkpQFG0beg+X37lzo9YLQA68KJZNFySMJy+Yai3KtMhCAB7RFZMO
-	 46i0C2iQTyLvzzKYHWCmjSZE15Kot2WAsI84EJUbpgHxi4Ft6D22HUi/bCxDsyJdXC
-	 2KdTQp9fMGGs5/lXOenlMuv+dbg921lE5ofaTi8HHPH1+jcQIoyCSIHXmPV0Moe5nG
-	 im2jNUZeHol1xO8QpNKjnzc/UzwHfpt+iSq2WT5PrWnD3oarKi4QGhzg1/DWqD1ZCZ
-	 f0Js5fOa9AjdJlszpBGSom1WNZqCl1zlz3RtX2MVzEHxkEUYDxwdAvUEm3HAUCeXaN
-	 Lit3HSibP79Dg==
-Date: Wed, 24 Jan 2024 14:12:25 -0800
-From: Eric Biggers <ebiggers@kernel.org>
-To: Luis Henriques <lhenriques@suse.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=aKhyTrOWaG6tJvfXKGYKbDId2ZaypOMbu27Bq3cRDOMMrbhmFnTZtgyk22bUe5xTEsoQm3OGoFfuv+/8Uat0Y1lYPZ/bd/qbtyNm74abL558FgZne2CSz7e2VcdmuC7bUIKbGuwJEsBLdrii3DvRHi1hpPV35tMIUN1wXan+O9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+	id 1rTEtv-006Chw-FO; Fri, 26 Jan 2024 13:37:16 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 26 Jan 2024 13:37:28 +0800
+Date: Fri, 26 Jan 2024 13:37:28 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Lukas Wunner <lukas@wunner.de>
 Cc: David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v2] keys: update key quotas in key_put()
-Message-ID: <20240124221225.GD1088@sol.localdomain>
-References: <2744563.1702303367@warthog.procyon.org.uk>
- <20240115120300.27606-1-lhenriques@suse.de>
+	"David S. Miller" <davem@davemloft.net>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH] X.509: Introduce scope-based x509_certificate allocation
+Message-ID: <ZbNFGC4q0Yy6RPNe@gondor.apana.org.au>
+References: <70ecd3904a70d2b92f8f1e04365a2b9ce66fac25.1705857475.git.lukas@wunner.de>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -59,36 +55,20 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240115120300.27606-1-lhenriques@suse.de>
+In-Reply-To: <70ecd3904a70d2b92f8f1e04365a2b9ce66fac25.1705857475.git.lukas@wunner.de>
 
-On Mon, Jan 15, 2024 at 12:03:00PM +0000, Luis Henriques wrote:
-> Delaying key quotas update when key's refcount reaches 0 in key_put() has
-> been causing some issues in fscrypt testing.  This patches fixes this test
-> flakiness by dealing with the quotas immediately, but leaving all the other
-> clean-ups to the key garbage collector.  Unfortunately, this means that we
-> also need to switch to the irq-version of the spinlock that protects quota.
-> 
-> Signed-off-by: Luis Henriques <lhenriques@suse.de>
-> ---
-> Hi David!
-> 
-> I have these changes in my local disk for a while; I wanted to send them
-> before EOY break but... yeah, it didn't happen.  Anyway, I'm still sending
-> it as an RFC as I'm probably missing something.
-> 
->  security/keys/gc.c     |  8 --------
->  security/keys/key.c    | 32 ++++++++++++++++++++++----------
->  security/keys/keyctl.c | 11 ++++++-----
->  3 files changed, 28 insertions(+), 23 deletions(-)
+On Sun, Jan 21, 2024 at 06:50:39PM +0100, Lukas Wunner wrote:
+>
+> * x509_cert_parse() now checks that "cert" is not an ERR_PTR() before
+>   calling x509_free_certificate() at end of scope.  The compiler doesn't
+>   know that kzalloc() never returns an ERR_PTR().
 
-This patch seems reasonable to me, though I'm still thinking about changing
-fs/crypto/ to manage its key quotas itself which would avoid the issue entirely.
+How about moving the IS_ERR_OR_NULL check into x509_free_certificate
+itself so that you can always call it?
 
-Note that as I said before, fs/crypto/ does key_put() on a whole keyring at
-once, in order to release the quota of the keys in the keyring.  Do you plan to
-also change fs/crypto/ to keyring_clear() the keyring before putting it?
-Without that, I don't think the problem is solved, as the quota release will
-still happen asynchronously due to the keyring being cleared asynchronously.
-
-- Eric
+Cheers,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
