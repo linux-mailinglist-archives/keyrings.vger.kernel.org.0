@@ -1,46 +1,46 @@
-Return-Path: <keyrings+bounces-514-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-515-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27E47842AC6
-	for <lists+keyrings@lfdr.de>; Tue, 30 Jan 2024 18:22:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A819842AE1
+	for <lists+keyrings@lfdr.de>; Tue, 30 Jan 2024 18:27:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8675287FC5
-	for <lists+keyrings@lfdr.de>; Tue, 30 Jan 2024 17:22:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36EE6285C4B
+	for <lists+keyrings@lfdr.de>; Tue, 30 Jan 2024 17:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C121292DE;
-	Tue, 30 Jan 2024 17:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112A21292DC;
+	Tue, 30 Jan 2024 17:27:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J2FB7jMS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O6GYPm23"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D89364AC;
-	Tue, 30 Jan 2024 17:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC9D1292CD;
+	Tue, 30 Jan 2024 17:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706635358; cv=none; b=HlVks0kry9iDrVwgbWf6evkZuRo7dOnBxbpaoTIn0ik9iBIHwZRTzseqSqgq3lvEiLUpFNRPGe1ofPEiMqPPKrJpHORo/b4QMGipavcAiQ5feoCkkDvYS2EyMKdZ7XuBGxl7n6q8Jen7FAxW0ns8Q/1uwG2brXS1LRfv+G2A8Lg=
+	t=1706635668; cv=none; b=dnZEEHf7l0rd77lSvfBDrqkgIUONK9DUNBIo0yihaKieVktExAdBrYLuPPlRcH1563BCWvf8Iz6aj9KotBa/nLvtRfHK3krWnHciHCl2YG5ULJAl0nnND26BGdGlrg0ONd4pdd+eo6Or7382x7sM9F80117yi/fQfxeOilNAlAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706635358; c=relaxed/simple;
-	bh=ju5+fIhGys1s4Yvih8zTw/mrpn562bGGj18DsSWfWaU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=ItDvxAYSU49qK+n9mIxUhR1znlj6l41jEZCn94Gum8zClbORdE/wdM/HsbkgFmDHvi2vIpyC03EDGOIqw4HtPzo6F1vkAk4wBDMerZR7oi5HD0720NKjiD/82rGCDxkopCXSpSiN7iQMsNI777ooASfne8k4GKOI8T/HprSc8TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J2FB7jMS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02FE1C433F1;
-	Tue, 30 Jan 2024 17:22:33 +0000 (UTC)
+	s=arc-20240116; t=1706635668; c=relaxed/simple;
+	bh=ExHtMHFhc8+GQs5GVCQvMdASt/COJfq1w+DGLLm9XZ4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=BDrQA4EWoODL2j+lGrgrXcfpTPp1VbMrnTbLQbLGlA7z9hXZB35eMB8DtGfA6+gyDp+2akkP26ddtZXxnq8EOH9RP/ZwKuUD3Pub6VOCyNJkl/oUfQjjN6s6YvoqJ+aWUZhDNxzan4kyetNSPu4YvEV2klzjOhjIVYhGZfXUH28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O6GYPm23; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE39C433C7;
+	Tue, 30 Jan 2024 17:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706635357;
-	bh=ju5+fIhGys1s4Yvih8zTw/mrpn562bGGj18DsSWfWaU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J2FB7jMSpiTHPf9zT8UDkEUEbTxVUXY4bqp+SnrEP9Mg5tFTNVYpj6AAQUYtTmvqh
-	 liMbd6GxHdNZCYCSRQuXVNjtAkR3fBobldlAxmCRLI291N4VOYBMF89jY+cZMRd+jZ
-	 ErO5ej0tWjIHm/mjlsTcYJPovj8mpYs/alCqog4N466/PfXacPv9SGHHyvBJraygrQ
-	 UFfEMwElSeFBzdv8cBruc1eTlPfreBUJ3Fz0XDystOjLT30O/MG9yUx6azNHRKjEg5
-	 H9QOc1pK0L6gYQjkeXjzPKUrDqFG+694TW7qcSvfgje127A6sIWT7x5/6gtM1EYCIN
-	 sgKB/HH1qX4EA==
+	s=k20201202; t=1706635667;
+	bh=ExHtMHFhc8+GQs5GVCQvMdASt/COJfq1w+DGLLm9XZ4=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=O6GYPm23K0wHcpG9+FscQZSa3zkVBqEKNKkUgCVD0J/eW2tS4hAj3N8LzFf06jlYj
+	 54ALyOQKZIRTk34+IUTE0FNqYdzwaGqy2RnCLb10oNijhs5CP+iKUzlqQHM/73RkU+
+	 Mo5ALXyFCSWnRraFJxUDICDfKhJvGUiiktoPoG7Xtfpu4+c+Nh8lCQJXxE8/WTu9Pt
+	 ajbeBE6ZG7PL8TVT+lPxjsU0p2gCoQ1lAmG2hrhDW4AjvuZ16bovvuA0DN1wBMX1Sw
+	 Bv38Il+WtB8A5xYTAHqufan1SiMLWS+6yd1ff8Ezf3PHL0sgG81oFsCciUeLcjj53r
+	 2AUt/nHbYoKsA==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,59 +49,40 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 30 Jan 2024 19:22:27 +0200
-Message-Id: <CYS7QMYS8XAJ.2QPI3MS5KXK8E@suppilovahvero>
+Date: Tue, 30 Jan 2024 19:27:44 +0200
+Message-Id: <CYS7UOQQ3L7P.2V7HDL1U2VOD4@suppilovahvero>
+Cc: <keyrings@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v3] keys: update key quotas in key_put()
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Verma, Vishal L" <vishal.l.verma@intel.com>, "zohar@linux.ibm.com"
- <zohar@linux.ibm.com>, "paul@paul-moore.com" <paul@paul-moore.com>,
- "dhowells@redhat.com" <dhowells@redhat.com>, "yaelt@google.com"
- <yaelt@google.com>, "serge@hallyn.com" <serge@hallyn.com>,
- "nichen@iscas.ac.cn" <nichen@iscas.ac.cn>, "sumit.garg@linaro.org"
- <sumit.garg@linaro.org>, "jmorris@namei.org" <jmorris@namei.org>
-Cc: "Jiang, Dave" <dave.jiang@intel.com>, "linux-integrity@vger.kernel.org"
- <linux-integrity@vger.kernel.org>, "linux-cxl@vger.kernel.org"
- <linux-cxl@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "Williams, Dan J"
- <dan.j.williams@intel.com>, "keyrings@vger.kernel.org"
- <keyrings@vger.kernel.org>, "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>, "nvdimm@lists.linux.dev"
- <nvdimm@lists.linux.dev>
-Subject: Re: [PATCH] KEYS: encrypted: Add check for strsep
+To: "Luis Henriques" <lhenriques@suse.de>, "David Howells"
+ <dhowells@redhat.com>, "Eric Biggers" <ebiggers@kernel.org>
 X-Mailer: aerc 0.15.2
-References: <20231108073627.1063464-1-nichen@iscas.ac.cn>
- <4d3465b48b9c5a87deb385b15bf5125fc1704019.camel@intel.com>
- <e3275c0cfe21d75e0d71ea3fc24a31252efc9ad6.camel@linux.ibm.com>
- <e3b1a5e532ed86e674385abc4812c5a774f851d4.camel@intel.com>
- <49c48e3e96bf0f5ebef14e7328cc8a6ca6380e08.camel@linux.ibm.com>
- <50c2fa781e3266ee8151afdef5a8659d63ca952e.camel@intel.com>
-In-Reply-To: <50c2fa781e3266ee8151afdef5a8659d63ca952e.camel@intel.com>
+References: <20240130101344.28936-1-lhenriques@suse.de>
+In-Reply-To: <20240130101344.28936-1-lhenriques@suse.de>
 
-On Wed Jan 24, 2024 at 11:10 PM EET, Verma, Vishal L wrote:
-> On Wed, 2024-01-24 at 15:40 -0500, Mimi Zohar wrote:
-> > On Wed, 2024-01-24 at 20:10 +0000, Verma, Vishal L wrote:
-> > > >=20
-> > > Ah, thanks for confirming! Would you like me to send a revert patch o=
-r
-> > > will you do it?
-> >=20
-> > Revert "KEYS: encrypted: Add check for strsep"
-> > =C2=A0=C2=A0=C2=A0=20
-> > This reverts commit b4af096b5df5dd131ab796c79cedc7069d8f4882.
-> > =C2=A0=C2=A0=C2=A0=20
-> > New encrypted keys are created either from kernel-generated random
-> > numbers or user-provided decrypted data.=C2=A0 Revert the change requir=
-ing
-> > user-provided decrypted data.
-> >=20
-> >=20
-> > Can I add your Reported-by?
+On Tue Jan 30, 2024 at 12:13 PM EET, Luis Henriques wrote:
+> Delaying key quotas update when key's refcount reaches 0 in key_put() has
+> been causing some issues in fscrypt testing, specifically in fstest
+> generic/581.  This commit fixes this test flakiness by dealing with the
+> quotas immediately, and leaving all the other clean-ups to the key garbag=
+e
+> collector.
 >
-> Yes that works, Thank you.
+> This is done by moving the updates to the qnkeys and qnbytes fields in
+> struct key_user from key_gc_unused_keys() into key_put().  Unfortunately,
+> this also means that we need to switch to the irq-version of the spinlock
+> that protects these fields and use spin_lock_{irqsave,irqrestore} in all =
+the
+> code that touches these fields.
+>
+> Signed-off-by: Luis Henriques <lhenriques@suse.de>
 
-This went totally wrong IMHO.
+OK this is great. I mean in this commit it is pretty essentiual to
+document that there is an ownership change. Such changes have by
+far the biggest impact to kernel semantics, and thus very useful
+to mark such commits for e.g. bisection.
 
-Priority should be to locate and fix the bug not revert useful stuff
-when a bug is found that has limited scope.
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
 BR, Jarkko
 
