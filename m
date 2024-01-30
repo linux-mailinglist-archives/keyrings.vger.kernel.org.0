@@ -1,319 +1,143 @@
-Return-Path: <keyrings+bounces-511-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-512-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5402A8420E7
-	for <lists+keyrings@lfdr.de>; Tue, 30 Jan 2024 11:14:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 565A3842AB1
+	for <lists+keyrings@lfdr.de>; Tue, 30 Jan 2024 18:19:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62DE5B28AD4
-	for <lists+keyrings@lfdr.de>; Tue, 30 Jan 2024 10:14:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88DF11C25298
+	for <lists+keyrings@lfdr.de>; Tue, 30 Jan 2024 17:19:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 422FD65BBE;
-	Tue, 30 Jan 2024 10:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700A11292F0;
+	Tue, 30 Jan 2024 17:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="WqkfrpWM";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="fxmqXdce";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="WqkfrpWM";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="fxmqXdce"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TV1DFHzY"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D97865BB9;
-	Tue, 30 Jan 2024 10:13:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3992512836C;
+	Tue, 30 Jan 2024 17:19:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706609635; cv=none; b=tFFSqyfiPlmRHW0LnSt3epIT2YvqNvWPAiyqMtagDhciqGrrOX8dL6knxi2685/iqXOOQhwvVLx8IsuC4xtwQ7jOpTmCa2U80rVuuiFIAhkZjaUGuV0uciWMp5WjoEK6PO9fZVdNCKDs8Y5wEsn15IGk9g4NS7dDzem24YQvwZI=
+	t=1706635173; cv=none; b=SQlx9ARxMTm7Ano0jF8EgKHpE7MlUo0PE8K7JMfEXUfoysPhrKKvcusU8ryTT8vy5SfAsiRYAYdUQZM74LQif+jPWGXSK4dWzNrAH9ufQQqjVh/G4e/BGU15IdU/tB+eRzACduUntZ4yLNQ3ZVhsLCF3fOjsoreY1vL7rJ2Ql20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706609635; c=relaxed/simple;
-	bh=ebwcJYHABdjmsH5ZUROMIvOoKuO8rxTQG5c3BzIWhBU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hyPHqXnhJY16MQaafvcQTD5KeeYZERkUK3q3n2r5jRY4AcjVk/CQxL5TTggQKRBRa9fXTMsXyjFDd9Poc5rZBBMW+Z3ViGExkUXEyuL6xekpmav1JO3Joes/nZr0iURI7pRQAroMCnbQQQcGuh4bYGJFsa1CuhYsKih4/rSOfGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=WqkfrpWM; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=fxmqXdce; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=WqkfrpWM; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=fxmqXdce; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 57D741F83F;
-	Tue, 30 Jan 2024 10:13:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1706609631; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=f3y+0iAPNbDl3HJP1v1zTF4zdJz4UdOj3bK+QYK5UT8=;
-	b=WqkfrpWMHbGoM0n/J+fFxu2DH8Uc1steR+aUD+3Ul2WlwJqIWAGFZ/LkYZPY/Toa56Tvrf
-	PWC5bId5hVtLc6eQe+WY9XU5GE3UXtEvmlM8kx4pj5yJAqTQGQLGa1+ZuDASdHBr8bS8hg
-	8jaHbXzIU3lWM3hnvDiVc+IJyokIHlQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1706609631;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=f3y+0iAPNbDl3HJP1v1zTF4zdJz4UdOj3bK+QYK5UT8=;
-	b=fxmqXdceamCXtKCAs8bstX1dTJmnLUFq/zG/YObfKX3L8bF48eh+CGtIBaTWonfqGEa/xm
-	BaM00/16P9PGtYAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1706609631; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=f3y+0iAPNbDl3HJP1v1zTF4zdJz4UdOj3bK+QYK5UT8=;
-	b=WqkfrpWMHbGoM0n/J+fFxu2DH8Uc1steR+aUD+3Ul2WlwJqIWAGFZ/LkYZPY/Toa56Tvrf
-	PWC5bId5hVtLc6eQe+WY9XU5GE3UXtEvmlM8kx4pj5yJAqTQGQLGa1+ZuDASdHBr8bS8hg
-	8jaHbXzIU3lWM3hnvDiVc+IJyokIHlQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1706609631;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=f3y+0iAPNbDl3HJP1v1zTF4zdJz4UdOj3bK+QYK5UT8=;
-	b=fxmqXdceamCXtKCAs8bstX1dTJmnLUFq/zG/YObfKX3L8bF48eh+CGtIBaTWonfqGEa/xm
-	BaM00/16P9PGtYAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CA35013A66;
-	Tue, 30 Jan 2024 10:13:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id VxEBLd7LuGWZLAAAD6G6ig
-	(envelope-from <lhenriques@suse.de>); Tue, 30 Jan 2024 10:13:50 +0000
-Received: from localhost (brahms.olymp [local])
-	by brahms.olymp (OpenSMTPD) with ESMTPA id 58312eee;
-	Tue, 30 Jan 2024 10:13:45 +0000 (UTC)
-From: Luis Henriques <lhenriques@suse.de>
-To: David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Cc: keyrings@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Luis Henriques <lhenriques@suse.de>
-Subject: [PATCH v3] keys: update key quotas in key_put()
-Date: Tue, 30 Jan 2024 10:13:44 +0000
-Message-ID: <20240130101344.28936-1-lhenriques@suse.de>
+	s=arc-20240116; t=1706635173; c=relaxed/simple;
+	bh=V7diJ4YqO6S1GcyDtkgjCTNRmeE4ZsUI1fbKWHRDOzA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=GsKXGFy8KbrAmRtdHGQO3PA+pCfji268zombttv58rYNpl9ptuhjF3uDr6OFft8YxtnNEnwyNOGNmbwTCzeWibMZwGxyU84KMtfQRmPSCjFgMCqL0pgrsoS7urQfYSqwUgnrXuXSnciwSEph4opzuit0n6Ehf+6767xw2BRB91k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TV1DFHzY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709EFC433C7;
+	Tue, 30 Jan 2024 17:19:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706635172;
+	bh=V7diJ4YqO6S1GcyDtkgjCTNRmeE4ZsUI1fbKWHRDOzA=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=TV1DFHzYDZhW59OLkmEAT5zHp3Om+RiE56/Rs+zzt2cYC51I696Ozv4XqGyYhfvLs
+	 DiMhVVHFj37CPiUvZdXlMkSTNCyTF43+XZPTAny/wk4lgvcxXTU8ynkhZy5m7EqyYa
+	 LTJrrhFygZkqmEFYNAQ7/MAYdFxl29FT5xcXmYYPZ9P2JQRNHgqpd9kp1C+N4smMr9
+	 r5ontZ1b86UZ82H6/KIlrEPWd0eieYpSNHwHLZnKHA9YCpp+usbxb7LfQsqwyDs9zb
+	 Ahk84q+dt3xhTMzPIzA+m+C65eIWL/j+4uwnP4s+wpzO3N82ossDdMVCL2hnK/Xv+u
+	 Qmzjuli3IDvew==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: 0.70
-X-Spamd-Result: default: False [0.70 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 R_MISSING_CHARSET(2.50)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 RCPT_COUNT_FIVE(0.00)[6];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 RCVD_COUNT_THREE(0.00)[4];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 MID_CONTAINS_FROM(1.00)[];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_LAST(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%]
-X-Spam-Flag: NO
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 30 Jan 2024 19:19:27 +0200
+Message-Id: <CYS7OCDQ54WZ.3RS9IWCQG4Y5L@suppilovahvero>
+Cc: "Jiang, Dave" <dave.jiang@intel.com>, "linux-integrity@vger.kernel.org"
+ <linux-integrity@vger.kernel.org>, "linux-cxl@vger.kernel.org"
+ <linux-cxl@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "Williams, Dan J"
+ <dan.j.williams@intel.com>, "keyrings@vger.kernel.org"
+ <keyrings@vger.kernel.org>, "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>, "nvdimm@lists.linux.dev"
+ <nvdimm@lists.linux.dev>
+Subject: Re: [PATCH] KEYS: encrypted: Add check for strsep
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Verma, Vishal L" <vishal.l.verma@intel.com>, "zohar@linux.ibm.com"
+ <zohar@linux.ibm.com>, "paul@paul-moore.com" <paul@paul-moore.com>,
+ "dhowells@redhat.com" <dhowells@redhat.com>, "yaelt@google.com"
+ <yaelt@google.com>, "serge@hallyn.com" <serge@hallyn.com>,
+ "nichen@iscas.ac.cn" <nichen@iscas.ac.cn>, "sumit.garg@linaro.org"
+ <sumit.garg@linaro.org>, "jmorris@namei.org" <jmorris@namei.org>
+X-Mailer: aerc 0.15.2
+References: <20231108073627.1063464-1-nichen@iscas.ac.cn>
+ <4d3465b48b9c5a87deb385b15bf5125fc1704019.camel@intel.com>
+In-Reply-To: <4d3465b48b9c5a87deb385b15bf5125fc1704019.camel@intel.com>
 
-Delaying key quotas update when key's refcount reaches 0 in key_put() has
-been causing some issues in fscrypt testing, specifically in fstest
-generic/581.  This commit fixes this test flakiness by dealing with the
-quotas immediately, and leaving all the other clean-ups to the key garbage
-collector.
+On Wed Jan 24, 2024 at 8:21 PM EET, Verma, Vishal L wrote:
+> On Wed, 2023-11-08 at 07:36 +0000, Chen Ni wrote:
+> > Add check for strsep() in order to transfer the error.
+> >=20
+> > Fixes: cd3bc044af48 ("KEYS: encrypted: Instantiate key with user-
+> > provided decrypted data")
+> > Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+> > ---
+> > =C2=A0security/keys/encrypted-keys/encrypted.c | 4 ++++
+> > =C2=A01 file changed, 4 insertions(+)
+> >=20
+> > diff --git a/security/keys/encrypted-keys/encrypted.c
+> > b/security/keys/encrypted-keys/encrypted.c
+> > index 8af2136069d2..76f55dd13cb8 100644
+> > --- a/security/keys/encrypted-keys/encrypted.c
+> > +++ b/security/keys/encrypted-keys/encrypted.c
+> > @@ -237,6 +237,10 @@ static int datablob_parse(char *datablob, const
+> > char **format,
+> > =C2=A0			break;
+> > =C2=A0		}
+> > =C2=A0		*decrypted_data =3D strsep(&datablob, " \t");
+> > +		if (!*decrypted_data) {
+> > +			pr_info("encrypted_key: decrypted_data is
+> > missing\n");
+> > +			break;
+> > +		}
+>
+> Hello,
+>
+> This patch seems to break keyring usage in CXL and NVDIMM, with the
+> "decrypted_data is missing" error path being hit. Reverting this commit
+> fixes the tests. I'm not sure if there are valid scenarios where this is
+> expected to be empty?
+>
+> Here's an strace snippet of where the error occurs:
+>
+>    keyctl(KEYCTL_SEARCH, KEY_SPEC_USER_KEYRING, "user", "nvdimm-master", =
+0) =3D 76300785
+>    openat(AT_FDCWD, "/sys/devices/platform/cxl_acpi.0/root0/nvdimm-bridge=
+0/ndbus0/nmem0/state", O_RDONLY|O_CLOEXEC) =3D 3
+>    read(3, "idle\n", 1024)                 =3D 5
+>    close(3)                                =3D 0
+>    keyctl(KEYCTL_SEARCH, KEY_SPEC_USER_KEYRING, "encrypted", "nvdimm:0", =
+0) =3D -1 ENOKEY (Required key not available)
+>    uname({sysname=3D"Linux", nodename=3D"fedora", ...}) =3D 0
+>    newfstatat(AT_FDCWD, "/etc/ndctl/keys/nvdimm_0_fedora.blob", 0x7fff23f=
+bc210, 0) =3D -1 ENOENT (No such file or directory)
+>    add_key("encrypted", "nvdimm:0", "new enc32 user:nvdimm-master 32", 31=
+, KEY_SPEC_USER_KEYRING) =3D -1 EINVAL (Invalid argument)
+>   =20
 
-This is done by moving the updates to the qnkeys and qnbytes fields in
-struct key_user from key_gc_unused_keys() into key_put().  Unfortunately,
-this also means that we need to switch to the irq-version of the spinlock
-that protects these fields and use spin_lock_{irqsave,irqrestore} in all the
-code that touches these fields.
+I think removing the klog message does not make sense meaning
+that the recent revert was wrong action taken.
 
-Signed-off-by: Luis Henriques <lhenriques@suse.de>
----
-Changes since v2:
-- Updated commit message as suggested by Jarkko, adding details on the
-  implementation
+Instead necessary actions to retain backwards compatibility
+must be taken, meaning that the branch should set "ret =3D 0;".
 
- security/keys/gc.c     |  8 --------
- security/keys/key.c    | 32 ++++++++++++++++++++++----------
- security/keys/keyctl.c | 11 ++++++-----
- 3 files changed, 28 insertions(+), 23 deletions(-)
+Motivation to keep it is dead obvious: your examples show that
+it can reveal potentially incorrect behaviour in user space
+software packages. It is info-level to mark that it can be
+also false positive. I.e. the revert commit takes away
+functionality that previously caused kernel masking a
+potential bug.
 
-diff --git a/security/keys/gc.c b/security/keys/gc.c
-index eaddaceda14e..7d687b0962b1 100644
---- a/security/keys/gc.c
-+++ b/security/keys/gc.c
-@@ -155,14 +155,6 @@ static noinline void key_gc_unused_keys(struct list_head *keys)
- 
- 		security_key_free(key);
- 
--		/* deal with the user's key tracking and quota */
--		if (test_bit(KEY_FLAG_IN_QUOTA, &key->flags)) {
--			spin_lock(&key->user->lock);
--			key->user->qnkeys--;
--			key->user->qnbytes -= key->quotalen;
--			spin_unlock(&key->user->lock);
--		}
--
- 		atomic_dec(&key->user->nkeys);
- 		if (state != KEY_IS_UNINSTANTIATED)
- 			atomic_dec(&key->user->nikeys);
-diff --git a/security/keys/key.c b/security/keys/key.c
-index 5b10641debd5..ec155cfaae38 100644
---- a/security/keys/key.c
-+++ b/security/keys/key.c
-@@ -231,6 +231,7 @@ struct key *key_alloc(struct key_type *type, const char *desc,
- 	struct key *key;
- 	size_t desclen, quotalen;
- 	int ret;
-+	unsigned long irqflags;
- 
- 	key = ERR_PTR(-EINVAL);
- 	if (!desc || !*desc)
-@@ -260,7 +261,7 @@ struct key *key_alloc(struct key_type *type, const char *desc,
- 		unsigned maxbytes = uid_eq(uid, GLOBAL_ROOT_UID) ?
- 			key_quota_root_maxbytes : key_quota_maxbytes;
- 
--		spin_lock(&user->lock);
-+		spin_lock_irqsave(&user->lock, irqflags);
- 		if (!(flags & KEY_ALLOC_QUOTA_OVERRUN)) {
- 			if (user->qnkeys + 1 > maxkeys ||
- 			    user->qnbytes + quotalen > maxbytes ||
-@@ -270,7 +271,7 @@ struct key *key_alloc(struct key_type *type, const char *desc,
- 
- 		user->qnkeys++;
- 		user->qnbytes += quotalen;
--		spin_unlock(&user->lock);
-+		spin_unlock_irqrestore(&user->lock, irqflags);
- 	}
- 
- 	/* allocate and initialise the key and its description */
-@@ -328,10 +329,10 @@ struct key *key_alloc(struct key_type *type, const char *desc,
- 	kfree(key->description);
- 	kmem_cache_free(key_jar, key);
- 	if (!(flags & KEY_ALLOC_NOT_IN_QUOTA)) {
--		spin_lock(&user->lock);
-+		spin_lock_irqsave(&user->lock, irqflags);
- 		user->qnkeys--;
- 		user->qnbytes -= quotalen;
--		spin_unlock(&user->lock);
-+		spin_unlock_irqrestore(&user->lock, irqflags);
- 	}
- 	key_user_put(user);
- 	key = ERR_PTR(ret);
-@@ -341,10 +342,10 @@ struct key *key_alloc(struct key_type *type, const char *desc,
- 	kmem_cache_free(key_jar, key);
- no_memory_2:
- 	if (!(flags & KEY_ALLOC_NOT_IN_QUOTA)) {
--		spin_lock(&user->lock);
-+		spin_lock_irqsave(&user->lock, irqflags);
- 		user->qnkeys--;
- 		user->qnbytes -= quotalen;
--		spin_unlock(&user->lock);
-+		spin_unlock_irqrestore(&user->lock, irqflags);
- 	}
- 	key_user_put(user);
- no_memory_1:
-@@ -352,7 +353,7 @@ struct key *key_alloc(struct key_type *type, const char *desc,
- 	goto error;
- 
- no_quota:
--	spin_unlock(&user->lock);
-+	spin_unlock_irqrestore(&user->lock, irqflags);
- 	key_user_put(user);
- 	key = ERR_PTR(-EDQUOT);
- 	goto error;
-@@ -381,8 +382,9 @@ int key_payload_reserve(struct key *key, size_t datalen)
- 	if (delta != 0 && test_bit(KEY_FLAG_IN_QUOTA, &key->flags)) {
- 		unsigned maxbytes = uid_eq(key->user->uid, GLOBAL_ROOT_UID) ?
- 			key_quota_root_maxbytes : key_quota_maxbytes;
-+		unsigned long flags;
- 
--		spin_lock(&key->user->lock);
-+		spin_lock_irqsave(&key->user->lock, flags);
- 
- 		if (delta > 0 &&
- 		    (key->user->qnbytes + delta > maxbytes ||
-@@ -393,7 +395,7 @@ int key_payload_reserve(struct key *key, size_t datalen)
- 			key->user->qnbytes += delta;
- 			key->quotalen += delta;
- 		}
--		spin_unlock(&key->user->lock);
-+		spin_unlock_irqrestore(&key->user->lock, flags);
- 	}
- 
- 	/* change the recorded data length if that didn't generate an error */
-@@ -646,8 +648,18 @@ void key_put(struct key *key)
- 	if (key) {
- 		key_check(key);
- 
--		if (refcount_dec_and_test(&key->usage))
-+		if (refcount_dec_and_test(&key->usage)) {
-+			unsigned long flags;
-+
-+			/* deal with the user's key tracking and quota */
-+			if (test_bit(KEY_FLAG_IN_QUOTA, &key->flags)) {
-+				spin_lock_irqsave(&key->user->lock, flags);
-+				key->user->qnkeys--;
-+				key->user->qnbytes -= key->quotalen;
-+				spin_unlock_irqrestore(&key->user->lock, flags);
-+			}
- 			schedule_work(&key_gc_work);
-+		}
- 	}
- }
- EXPORT_SYMBOL(key_put);
-diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
-index 10ba439968f7..4bc3e9398ee3 100644
---- a/security/keys/keyctl.c
-+++ b/security/keys/keyctl.c
-@@ -954,6 +954,7 @@ long keyctl_chown_key(key_serial_t id, uid_t user, gid_t group)
- 	long ret;
- 	kuid_t uid;
- 	kgid_t gid;
-+	unsigned long flags;
- 
- 	uid = make_kuid(current_user_ns(), user);
- 	gid = make_kgid(current_user_ns(), group);
-@@ -1010,7 +1011,7 @@ long keyctl_chown_key(key_serial_t id, uid_t user, gid_t group)
- 			unsigned maxbytes = uid_eq(uid, GLOBAL_ROOT_UID) ?
- 				key_quota_root_maxbytes : key_quota_maxbytes;
- 
--			spin_lock(&newowner->lock);
-+			spin_lock_irqsave(&newowner->lock, flags);
- 			if (newowner->qnkeys + 1 > maxkeys ||
- 			    newowner->qnbytes + key->quotalen > maxbytes ||
- 			    newowner->qnbytes + key->quotalen <
-@@ -1019,12 +1020,12 @@ long keyctl_chown_key(key_serial_t id, uid_t user, gid_t group)
- 
- 			newowner->qnkeys++;
- 			newowner->qnbytes += key->quotalen;
--			spin_unlock(&newowner->lock);
-+			spin_unlock_irqrestore(&newowner->lock, flags);
- 
--			spin_lock(&key->user->lock);
-+			spin_lock_irqsave(&key->user->lock, flags);
- 			key->user->qnkeys--;
- 			key->user->qnbytes -= key->quotalen;
--			spin_unlock(&key->user->lock);
-+			spin_unlock_irqrestore(&key->user->lock, flags);
- 		}
- 
- 		atomic_dec(&key->user->nkeys);
-@@ -1056,7 +1057,7 @@ long keyctl_chown_key(key_serial_t id, uid_t user, gid_t group)
- 	return ret;
- 
- quota_overrun:
--	spin_unlock(&newowner->lock);
-+	spin_unlock_irqrestore(&newowner->lock, flags);
- 	zapowner = newowner;
- 	ret = -EDQUOT;
- 	goto error_put;
+Please revert the revert.
+
+BR, Jarkko
+
 
