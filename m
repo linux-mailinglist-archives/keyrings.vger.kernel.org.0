@@ -1,205 +1,175 @@
-Return-Path: <keyrings+bounces-519-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-520-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A8E98464E0
-	for <lists+keyrings@lfdr.de>; Fri,  2 Feb 2024 01:07:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2495848FAA
+	for <lists+keyrings@lfdr.de>; Sun,  4 Feb 2024 18:25:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3245287AC9
-	for <lists+keyrings@lfdr.de>; Fri,  2 Feb 2024 00:07:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6527283113
+	for <lists+keyrings@lfdr.de>; Sun,  4 Feb 2024 17:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0933E7E5;
-	Fri,  2 Feb 2024 00:06:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="fWSSMaSK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F135A225D7;
+	Sun,  4 Feb 2024 17:25:21 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15986C8D2;
-	Fri,  2 Feb 2024 00:06:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2D824215;
+	Sun,  4 Feb 2024 17:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706832377; cv=none; b=ZVRXw1xPZZjI6/zj3zqUbXhfJokMhvbyvvTS1KvkbHsajIRjmf6CqlrPoYKqxV2JN7fHlvqhvi2+pqtukt7B7LCTvw6vKy7eZWuyAgVTF0Xxu2vref2+3wKH/2ipKp4GE8sOOsogAPBrl1+tR16wuYdb0gViZKGd0kID6781Ges=
+	t=1707067521; cv=none; b=GM1kqxvichtTG0GoZZ4cNM7S4FUxVaBp41QrXgstMIbRoG7MbskpnEscNjV1MIHKpGkEt9rg1JHpPj2j2uRdmOOOtrCy7kmClVs2mEs7vRim/4Ol0oT7RUtri1tEoeWhKW7tw+hFo1ztumsfvgMLfHWwf4j1C1poJWXBEQ/PzcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706832377; c=relaxed/simple;
-	bh=N5ytPMI8CcBmVCIRgJRyHCtLc2INmcdE0bUH/E1B1pA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:Mime-Version; b=N5+QxxJ0CKGZxycwK9m0dvouzJXwJ1gWotMOxbRqtz90eE/7mXg7DcUf+1lq8subY/Ia8VEWQOns/cwKrV2qd7ICZKnX5lRr3e5lmvvi97leI88wQfaQjtwT7xb9kAAHMlJ8Us7gYPH2hjnvP1l3Lf4kEjPS3LJLE2jLOmSL8mQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fWSSMaSK; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 411Nbr7x020563;
-	Fri, 2 Feb 2024 00:05:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=344H4x8Ad8z8mLylBhJTlrMcVRy2QejlkXWVgJvg15c=;
- b=fWSSMaSKXCTh1Gs99inTLNtCPiCtwuibOItyo1C4K4zgA4enOyUXk1rVRITHSzV/kdsL
- vrwMYNUOaUIZBba4PnyY/BGQM05MutP0HoYPHHenVsTbU2VSWc9IuNY3jBvdIcmmaR+7
- EaphozfCgcDiwqdr3XT1HgyYJum8REE5KkHi37ChllKbq7w9eb739DIShztOQpDQbHmR
- qQhQMB6lzrUl+waCRB/Af7Ov+VFhjr0n2b63fqwIvXzM86npCRwa6bIwQuHBM/CiZHP7
- BJtNhd8+QhUy1ZUhur/rvCN/8Cs5hon0E4HTuK5tG2pmatkWWcFkEe7DRAFuIm/6Gth5 aQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w0n518n4a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Feb 2024 00:05:55 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 411NcwFo023109;
-	Fri, 2 Feb 2024 00:05:54 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w0n518n3u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Feb 2024 00:05:54 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 411MgJYi007189;
-	Fri, 2 Feb 2024 00:05:53 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vwev2qbxx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Feb 2024 00:05:53 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41205qxA48562502
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 2 Feb 2024 00:05:52 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B54105805E;
-	Fri,  2 Feb 2024 00:05:52 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2119858059;
-	Fri,  2 Feb 2024 00:05:51 +0000 (GMT)
-Received: from li-5cd3c5cc-21f9-11b2-a85c-a4381f30c2f3.ibm.com (unknown [9.61.60.157])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  2 Feb 2024 00:05:51 +0000 (GMT)
-Message-ID: <d0ccd2f19ed1adccc8f3dfe677c30bc44feb3d36.camel@linux.ibm.com>
-Subject: Re: [PATCH] KEYS: encrypted: Add check for strsep
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>,
-        Dan Williams
- <dan.j.williams@intel.com>,
-        "Verma, Vishal L" <vishal.l.verma@intel.com>,
-        "paul@paul-moore.com" <paul@paul-moore.com>,
-        "dhowells@redhat.com"
- <dhowells@redhat.com>,
-        "yaelt@google.com" <yaelt@google.com>,
-        "serge@hallyn.com" <serge@hallyn.com>,
-        "nichen@iscas.ac.cn"
- <nichen@iscas.ac.cn>,
-        "sumit.garg@linaro.org" <sumit.garg@linaro.org>,
-        "jmorris@namei.org" <jmorris@namei.org>
-Cc: "Jiang, Dave" <dave.jiang@intel.com>,
-        "linux-integrity@vger.kernel.org"
-	 <linux-integrity@vger.kernel.org>,
-        "linux-cxl@vger.kernel.org"
-	 <linux-cxl@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	 <linux-kernel@vger.kernel.org>,
-        "keyrings@vger.kernel.org"
-	 <keyrings@vger.kernel.org>,
-        "linux-security-module@vger.kernel.org"
-	 <linux-security-module@vger.kernel.org>,
-        "nvdimm@lists.linux.dev"
-	 <nvdimm@lists.linux.dev>
-Date: Thu, 01 Feb 2024 19:05:50 -0500
-In-Reply-To: <CYU2JV57VXA9.3C5QTG4LX50TD@suppilovahvero>
-References: <20231108073627.1063464-1-nichen@iscas.ac.cn>
-	 <4d3465b48b9c5a87deb385b15bf5125fc1704019.camel@intel.com>
-	 <e3275c0cfe21d75e0d71ea3fc24a31252efc9ad6.camel@linux.ibm.com>
-	 <e3b1a5e532ed86e674385abc4812c5a774f851d4.camel@intel.com>
-	 <49c48e3e96bf0f5ebef14e7328cc8a6ca6380e08.camel@linux.ibm.com>
-	 <50c2fa781e3266ee8151afdef5a8659d63ca952e.camel@intel.com>
-	 <CYS7QMYS8XAJ.2QPI3MS5KXK8E@suppilovahvero>
-	 <CYS7WMFLXNE1.35OBTKTONKNX3@suppilovahvero>
-	 <65b93f2b3099b_5cc6f29453@dwillia2-mobl3.amr.corp.intel.com.notmuch>
-	 <CYU2JV57VXA9.3C5QTG4LX50TD@suppilovahvero>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
+	s=arc-20240116; t=1707067521; c=relaxed/simple;
+	bh=o6XgZklQg99ao472cPaHWFZkdLc8gXrmjSvTwRxHuxo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TN1avc3WT/XHGYEkLHNFOWH4ajWnHA1mlu09SaaoYq3nTErMNinLTVO++B90QFMD5Hq/AoVYu1VgnV2DW1mmEXMPe97840OoD1kF3sWZ2ySKwLTJSptf57J7FWI6quGfO5rjUEOQckHsywGb/SAd0UNS3rrJquwSyaI7tcUyxOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 5E0872800B3C2;
+	Sun,  4 Feb 2024 18:25:10 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 463422F90E5; Sun,  4 Feb 2024 18:25:10 +0100 (CET)
+Date: Sun, 4 Feb 2024 18:25:10 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
+	linuxarm@huawei.com, David Box <david.e.box@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, "Li, Ming" <ming4.li@intel.com>,
+	Zhi Wang <zhi.a.wang@intel.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Alexander Graf <graf@amazon.com>
+Subject: Re: [PATCH 07/12] spdm: Introduce library to authenticate devices
+Message-ID: <20240204172510.GA19805@wunner.de>
+References: <cover.1695921656.git.lukas@wunner.de>
+ <89a83f42ae3c411f46efd968007e9b2afd839e74.1695921657.git.lukas@wunner.de>
+ <20231003153937.000034ca@Huawei.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: oLsn3Vd9Pcs0Fl12p7OhnGd4O-iUA5CF
-X-Proofpoint-ORIG-GUID: GJlw1TEeGH8bzKJubicc8sFAJerRWBn3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-01_08,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
- mlxscore=0 lowpriorityscore=0 malwarescore=0 mlxlogscore=999
- suspectscore=0 impostorscore=0 priorityscore=1501 spamscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402010185
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231003153937.000034ca@Huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Thu, 2024-02-01 at 23:43 +0200, Jarkko Sakkinen wrote:
-> On Tue Jan 30, 2024 at 8:25 PM EET, Dan Williams wrote:
-> > Jarkko Sakkinen wrote:
-> > > On Tue Jan 30, 2024 at 7:22 PM EET, Jarkko Sakkinen wrote:
-> > > > On Wed Jan 24, 2024 at 11:10 PM EET, Verma, Vishal L wrote:
-> > > > > On Wed, 2024-01-24 at 15:40 -0500, Mimi Zohar wrote:
-> > > > > > On Wed, 2024-01-24 at 20:10 +0000, Verma, Vishal L wrote:
-> > > > > > > Ah, thanks for confirming! Would you like me to send a
-> > > > > > > revert patch or
-> > > > > > > will you do it?
-> > > > > > 
-> > > > > > Revert "KEYS: encrypted: Add check for strsep"
-> > > > > >     
-> > > > > > This reverts commit
-> > > > > > b4af096b5df5dd131ab796c79cedc7069d8f4882.
-> > > > > >     
-> > > > > > New encrypted keys are created either from kernel-generated 
-> > > > > > random
-> > > > > > numbers or user-provided decrypted data.  Revert the change
-> > > > > > requiring
-> > > > > > user-provided decrypted data.
-> > > > > > 
-> > > > > > 
-> > > > > > Can I add your Reported-by?
-> > > > > 
-> > > > > Yes that works, Thank you.
-> > > > 
-> > > > This went totally wrong IMHO.
-> > > > 
-> > > > Priority should be to locate and fix the bug not revert useful
-> > > > stuff
-> > > > when a bug is found that has limited scope.
-> > > 
-> > > By guidelines here the commit is also a bug fix and reverting
-> > > such commit means seeding a bug to the mainline. Also the klog
-> > > message alone is a bug fix here. So also by book it really has
-> > > to come back as it was already commit because we cannot
-> > > knowingly mount bugs to the mainline, right?
-> > 
-> > No, the commit broke userspace. The rule is do not cause
-> > regressions
-> > even if userspace is abusing the ABI in an undesirable way. Even
-> > the
-> > new pr_info() is a log spamming behavior change, a pr_debug() might
-> > be
-> > suitable, but otherwise a logic change here needs a clear
-> > description
-> > about what is broken about the old userspace behavior and why the
-> > kernel
-> > can not possibly safely handle it.
+On Tue, Oct 03, 2023 at 03:39:37PM +0100, Jonathan Cameron wrote:
+> On Thu, 28 Sep 2023 19:32:37 +0200 Lukas Wunner <lukas@wunner.de> wrote:
+> > +/**
+> > + * spdm_challenge_rsp_sz() - Calculate CHALLENGE_AUTH response size
+> > + *
+> > + * @spdm_state: SPDM session state
+> > + * @rsp: CHALLENGE_AUTH response (optional)
+> > + *
+> > + * A CHALLENGE_AUTH response contains multiple variable-length fields
+> > + * as well as optional fields.  This helper eases calculating its size.
+> > + *
+> > + * If @rsp is %NULL, assume the maximum OpaqueDataLength of 1024 bytes
+> > + * (SPDM 1.0.0 table 21).  Otherwise read OpaqueDataLength from @rsp.
+> > + * OpaqueDataLength can only be > 0 for SPDM 1.0 and 1.1, as they lack
+> > + * the OtherParamsSupport field in the NEGOTIATE_ALGORITHMS request.
+> > + * For SPDM 1.2+, we do not offer any Opaque Data Formats in that field,
+> > + * which forces OpaqueDataLength to 0 (SPDM 1.2.0 margin no 261).
+> > + */
+> > +static size_t spdm_challenge_rsp_sz(struct spdm_state *spdm_state,
+> > +				    struct spdm_challenge_rsp *rsp)
+> > +{
+> > +	size_t  size  = sizeof(*rsp)		/* Header */
 > 
-> The rationale literally gives empirical proof that the log message
-> is useful by measure. It would be useless if log level is decreased
-> to debug, as then sysadmin's won't take notice. I don't really know
-> what is the definition of "spam" here but at least for me actually
-> useful log message are not in that category.
+> Double spaces look a bit strange...
 > 
-> Issue was legit but git revert is objectively an incorrect way to
-> address the bug.
+> > +		      + spdm_state->h		/* CertChainHash */
+> > +		      + 32;			/* Nonce */
+> > +
+> > +	if (rsp)
+> > +		/* May be unaligned if hash algorithm has unusual length. */
+> > +		size += get_unaligned_le16((u8 *)rsp + size);
+> > +	else
+> > +		size += SPDM_MAX_OPAQUE_DATA;	/* OpaqueData */
+> > +
+> > +	size += 2;				/* OpaqueDataLength */
+> > +
+> > +	if (spdm_state->version >= 0x13)
+> > +		size += 8;			/* RequesterContext */
+> > +
+> > +	return  size  + spdm_state->s;		/* Signature */
+> 
+> Double space here as well looks odd to me.
 
-No, I made a mistake in upstreaming the patch in the first place.  It
-broke the original "encrypted" keys usage.  Reverting it was the
-correct solution.
+This was criticized by Ilpo as well, but the double spaces are
+intentional to vertically align "size" on each line for neatness.
 
-Mimi
+How strongly do you guys feel about it? ;)
 
+
+> > +int spdm_authenticate(struct spdm_state *spdm_state)
+> > +{
+> > +	size_t transcript_sz;
+> > +	void *transcript;
+> > +	int rc = -ENOMEM;
+> > +	u8 slot;
+> > +
+> > +	mutex_lock(&spdm_state->lock);
+> > +	spdm_reset(spdm_state);
+[...]
+> > +	rc = spdm_challenge(spdm_state, slot);
+> > +
+> > +unlock:
+> > +	if (rc)
+> > +		spdm_reset(spdm_state);
+> 
+> I'd expect reset to also clear authenticated. Seems odd to do it separately
+> and relies on reset only being called here. If that were the case and you
+> were handling locking and freeing using cleanup.h magic, then
+> 
+> 	rc = spdm_challenge(spdm_state);
+> 	if (rc)
+> 		goto reset;
+> 	return 0;
+> 
+> reset:
+> 	spdm_reset(spdm_state);
+
+Unfortunately clearing "authenticated" in spdm_reset() is not an
+option:
+
+Note that spdm_reset() is also called at the top of spdm_authenticate().
+
+If the device was previously successfully authenticated and is now
+re-authenticated successfully, clearing "authenticated" in spdm_reset()
+would cause the flag to be briefly set to false, which may irritate
+user space inspecting the sysfs attribute at just the wrong moment.
+
+If the device was previously successfully authenticated and is
+re-authenticated successfully, I want the "authenticated" attribute
+to show "true" without any gaps.  Hence it's only cleared at the end
+of spdm_authenticate() if there was an error.
+
+I agree with all your other review feedback and have amended the
+patch accordingly.  Thanks a lot!
+
+Lukas
 
