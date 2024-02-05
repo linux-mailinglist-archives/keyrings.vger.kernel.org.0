@@ -1,226 +1,188 @@
-Return-Path: <keyrings+bounces-521-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-522-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52C30849588
-	for <lists+keyrings@lfdr.de>; Mon,  5 Feb 2024 09:39:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEFA184977E
+	for <lists+keyrings@lfdr.de>; Mon,  5 Feb 2024 11:14:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09705285A1E
-	for <lists+keyrings@lfdr.de>; Mon,  5 Feb 2024 08:39:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5371B2B724
+	for <lists+keyrings@lfdr.de>; Mon,  5 Feb 2024 10:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF3711C89;
-	Mon,  5 Feb 2024 08:39:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b="USQm8JgA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36306134B5;
+	Mon,  5 Feb 2024 10:07:59 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2241011CB2
-	for <keyrings@vger.kernel.org>; Mon,  5 Feb 2024 08:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37CB168D9;
+	Mon,  5 Feb 2024 10:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707122365; cv=none; b=ZHFivApTmRhKVuhXpPkxbnxKxb8oPjBkT6nVpNlsfT/T8VFCOcIky8xbpUPvTE8azbEMpFhrEK8NUllmfTHunExYpUGTcwKa9JVONBi6mfmgZQzgZ0RKGSchR0yQbpAmQIxSDfGyrXgz1X6IFzMbENHKYbzwk2eZZwxdnse8Qfw=
+	t=1707127679; cv=none; b=aI/jCq6PKunj/bSeJq7XxqoDLtJPwDo8ry4i+00hayWrW+W5b1F0NhuldU7AE/dK0GRhtk0bNgeNu/9q0ZlPUZcd123cNCjLRGxaD0P8zl1XOcBPZBJ4P9c/xzGSXil8PVjxY/n2BEGGXzTnOIHWTcQPY1mNuG8UeNUttkxhlT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707122365; c=relaxed/simple;
-	bh=vWCUg5e3ZEMZK/WPs6t0bqEagLm8F2BxIwdVLhxnKZU=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=kIRE1Fl9pjHtgm8gvWBLvN7pmr43fYoASLgLNy4+L6oe6YDZTRenXqA5BI7SkxMeHrfB7GJ4ODr6YzkbK68+ASnUyiGdSU/vYz/Zpy+Ndbq4h98Y7TmkNKlWWgz+uYh4XtT/oWkEQWmUzojuYQYYoLLtKo5D4UaS4eCBoHE3+5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at; spf=pass smtp.mailfrom=sigma-star.at; dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b=USQm8JgA; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigma-star.at
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a36126e7459so538478666b.2
-        for <keyrings@vger.kernel.org>; Mon, 05 Feb 2024 00:39:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1707122360; x=1707727160; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9fYC3H+9fhYO7ZOc/qX6rq1afQIQ11uUH5tLK3IWpXc=;
-        b=USQm8JgAsU+bvggwhfSL5ljcQ5Z14tU+aidl4amOwC7ZtSddvc9cEIU5FQDAtpdiZt
-         00xL062bRmN7OPRxqr9e3hhhQP2KxWABZr8Ma9bEsukUP/+XfBdKrxS8u8xvWWr8r2VP
-         UxZhDLZ4BtL4L3Hy+SGvRO9Zo7LX77N1QosSuLMUgDOa7fp2NEBZlRX8TlRHzfj2xsHg
-         ruw24jXiiwcaiq+nC/CJZi0HDUybbK0aKr+39odEyNF9Ke1tux69a9NVWHrTn2sGHRUW
-         SZ6dIdM1EKfOG0F+J9NXyLx/pz+JwMNCxlMay3J1rr9zgJTm+WrXQnjvV4L2LLRkUFpB
-         W1XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707122360; x=1707727160;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9fYC3H+9fhYO7ZOc/qX6rq1afQIQ11uUH5tLK3IWpXc=;
-        b=ZnOW7bxVjfwgFhT22/wby5em4v+MaFMWdSIPjasSbTU6V8nNUju7JS7AEpKP7tURYU
-         JTiz8DlaGMTcSj5yUgSgk4sVdb4iYdVxclGg1PLB8Xta07ts23LaHu0tnsimuZY8CusS
-         VikiuNMglusdOoc1I4GHXpXd6LepUhN2YCAm05lrLMShBDubCzGRfPUKbsvUgRvJZOHm
-         5+Yg+QUU09Z/iEdrOLSMZo+Nh8HbHeuihIiampp694nv3UVM9rLhirp8n4Qtfv11+Pkq
-         JZidAUNoQ/jNPuHFCYW9qH/zJlxHtzvWyNG4QvhJtz0Z9oQzH5pM7ZPutBew1PZJE9Xm
-         LGqA==
-X-Gm-Message-State: AOJu0Yx0Lm4afUuK4c3p490V7IqZY/XvkALKYCj8vxPRE94D9vxl1buX
-	6yavdxofeJe6VCjjQMX+v/5idVsDCtWIZWK0cxrHBADouajmjxdI8vmZF7Mc4KY=
-X-Google-Smtp-Source: AGHT+IHLVlIqTHZQT4uS2cWMqHQ2/IKc/41epP/Cs1vBSz9FD6909OEjZv22ODsI8EUgs+fyzA4YHw==
-X-Received: by 2002:a17:906:16c8:b0:a37:bdc2:e4e6 with SMTP id t8-20020a17090616c800b00a37bdc2e4e6mr1530645ejd.10.1707122360096;
-        Mon, 05 Feb 2024 00:39:20 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCUTINvkr7TdZxNV3zYWkm9NGPQZ3GBX+JIgmxygvgv41SJzvPqoxxCTp3Tc5PUMHqQw6PbrIpUJx88b3E4cjK5SpUhXe9GIOdkr+YAeq65K7GeGBl1IcKBE3vDLsUsnuV2IbaG0QNY2n7bIZmG6EvZe1SBcWh+cXAGLPTi+gsHzLIB4Ek4PUYTx4gU+ytkjrCv9icm50Zeb3mURGFiiEDIG7cEFIv8APYkltJkm2gyR7ujeOD214DLsYXioA4GA+mfSAn1zE6cUXN3gEY+rLpkmUpLjD2iJPbzDVzGNISNprHIg7SmguU4h2FdVVnwSTySpbdJdWbY3O73k0isTb+fW+2BhqgbYzLQP4Th8toVBowOkBsWLuiIMTWzYAOhJmk6ekd906b1/N5qCiiP0jMcDqGHNHD66is0Ey/uYHly9YuPt9eh1AjwKjjwF5b/qpsQ704D/FfKIJGUGgJ1LvvVEDZ4wkLobm4MWzCyKR42KQu0JY9qwDmsVCk+CmP2XiCJQ8kF2e1uHxU2m6jE1Jk/PCyOQgU3eOv7zuzVmmRlrTGC97+WwZ9lMD8jIvBNhTVIoLbb6F+28AgmyFJsGRwnuvmQaQIBSDluu/HVeamiL/BJF4j44dxmUseTJh1DPAFnwb8JEHWSiMWx8TUueFEYA879cQmBtXxDqUYJWkmFVkkCePJ36slN9TE80+JJXJ1Z0bJJAZkbT5axJshtLmW1nYM/cCaLufm5IJ62p4nLFPkfgMBdpMO6VDWIOUm45cYxAY+QEZfwBlvJpE8Lld5T1ciB/mRzSVLQhcT3wgMswJ4SIQG0CdlYdDMod8umwfxAvQ5eVNuJZUIxogGlCwuZkzTMDTNJW11/MvqvmrxyUY2liKdTG8Q37KBJklaQPX7hBwW80miWJmXOgOFH/ZR0c8gSG0jlvmwQvhcM3zN3VOh/65AVlQsT6eAoJaDQm1u4hW4
- /DnIJlK+OUtw19HfTP17A+oLh+MUcCC6cXuft5pI0Syr4CJfj5Mt2O/zB3IJax/LQQuYmm
-Received: from smtpclient.apple ([82.150.214.1])
-        by smtp.gmail.com with ESMTPSA id vu11-20020a170907a64b00b00a37a38737d5sm1316761ejc.89.2024.02.05.00.39.18
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 05 Feb 2024 00:39:19 -0800 (PST)
-Content-Type: text/plain;
-	charset=us-ascii
+	s=arc-20240116; t=1707127679; c=relaxed/simple;
+	bh=iBaUmXBlN0VxxLhGqD9SvUefjOy+3CbgHgnuPzCue3A=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FxqXdmmtIAicsRKyp9mODHykKfiu6kIQfQow/pK6ddGWPfp2kPpZHzueGHtzDS0lPMILClToBaDDJOEvV0heuhZqZlP+JXY5jwfMxyYXEfxs4hK6QU/gWCWqLAW1Zdw/KsQDtYy8GXSFsZV3QCrRmPxwDkbxrtDHgySs3pwNJqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TT26g0TNXz6GBd5;
+	Mon,  5 Feb 2024 18:04:43 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id BFC8314185F;
+	Mon,  5 Feb 2024 18:07:54 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 5 Feb
+ 2024 10:07:54 +0000
+Date: Mon, 5 Feb 2024 10:07:53 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Lukas Wunner <lukas@wunner.de>
+CC: Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, "Bjorn
+ Helgaas" <helgaas@kernel.org>, David Howells <dhowells@redhat.com>, "David
+ Woodhouse" <dwmw2@infradead.org>, Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>, Alex Williamson
+	<alex.williamson@redhat.com>, <linux-pci@vger.kernel.org>,
+	<linux-cxl@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+	<kvm@vger.kernel.org>, <linuxarm@huawei.com>, David Box
+	<david.e.box@intel.com>, Dan Williams <dan.j.williams@intel.com>, "Dave
+ Jiang" <dave.jiang@intel.com>, "Li, Ming" <ming4.li@intel.com>, Zhi Wang
+	<zhi.a.wang@intel.com>, Alistair Francis <alistair.francis@wdc.com>, Wilfred
+ Mallawa <wilfred.mallawa@wdc.com>, Alexey Kardashevskiy <aik@amd.com>, Tom
+ Lendacky <thomas.lendacky@amd.com>, "Sean Christopherson"
+	<seanjc@google.com>, Alexander Graf <graf@amazon.com>
+Subject: Re: [PATCH 07/12] spdm: Introduce library to authenticate devices
+Message-ID: <20240205100753.0000798b@Huawei.com>
+In-Reply-To: <20240204172510.GA19805@wunner.de>
+References: <cover.1695921656.git.lukas@wunner.de>
+	<89a83f42ae3c411f46efd968007e9b2afd839e74.1695921657.git.lukas@wunner.de>
+	<20231003153937.000034ca@Huawei.com>
+	<20240204172510.GA19805@wunner.de>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
-Subject: Re: [PATCH v5 0/6] DCP as trusted keys backend
-From: David Gstir <david@sigma-star.at>
-In-Reply-To: <20231215110639.45522-1-david@sigma-star.at>
-Date: Mon, 5 Feb 2024 09:39:07 +0100
-Cc: Shawn Guo <shawnguo@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- NXP Linux Team <linux-imx@nxp.com>,
- Ahmad Fatoum <a.fatoum@pengutronix.de>,
- sigma star Kernel Team <upstream+dcp@sigma-star.at>,
- David Howells <dhowells@redhat.com>,
- Li Yang <leoyang.li@nxp.com>,
- Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Tejun Heo <tj@kernel.org>,
- "Steven Rostedt (Google)" <rostedt@goodmis.org>,
- linux-doc@vger.kernel.org,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
- "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
- "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
- linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org,
- "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <7AED262F-9387-446D-B11A-C549C02542F9@sigma-star.at>
-References: <20231215110639.45522-1-david@sigma-star.at>
-To: Mimi Zohar <zohar@linux.ibm.com>,
- James Bottomley <jejb@linux.ibm.com>,
- Jarkko Sakkinen <jarkko@kernel.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>
-X-Mailer: Apple Mail (2.3774.400.31)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500006.china.huawei.com (7.191.161.198) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-Hi,
+On Sun, 4 Feb 2024 18:25:10 +0100
+Lukas Wunner <lukas@wunner.de> wrote:
 
-> On 15.12.2023, at 12:06, David Gstir <david@sigma-star.at> wrote:
->=20
-> This is a revival of the previous patch set submitted by Richard =
-Weinberger:
-> =
-https://lore.kernel.org/linux-integrity/20210614201620.30451-1-richard@nod=
-.at/
->=20
-> v4 is here:
-> =
-https://lore.kernel.org/keyrings/20231024162024.51260-1-david@sigma-star.a=
-t/
->=20
-> v4 -> v5:
-> - Make Kconfig for trust source check scalable as suggested by Jarkko =
-Sakkinen
-> - Add Acked-By from Herbert Xu to patch #1 - thanks!
-> v3 -> v4:
-> - Split changes on MAINTAINERS and documentation into dedicated =
-patches
-> - Use more concise wording in commit messages as suggested by Jarkko =
-Sakkinen
-> v2 -> v3:
-> - Addressed review comments from Jarkko Sakkinen
-> v1 -> v2:
-> - Revive and rebase to latest version
-> - Include review comments from Ahmad Fatoum
->=20
-> The Data CoProcessor (DCP) is an IP core built into many NXP SoCs such
-> as i.mx6ull.
->=20
-> Similar to the CAAM engine used in more powerful SoCs, DCP can AES-
-> encrypt/decrypt user data using a unique, never-disclosed,
-> device-specific key. Unlike CAAM though, it cannot directly wrap and
-> unwrap blobs in hardware. As DCP offers only the bare minimum feature
-> set and a blob mechanism needs aid from software. A blob in this case
-> is a piece of sensitive data (e.g. a key) that is encrypted and
-> authenticated using the device-specific key so that unwrapping can =
-only
-> be done on the hardware where the blob was wrapped.
->=20
-> This patch series adds a DCP based, trusted-key backend and is similar
-> in spirit to the one by Ahmad Fatoum [0] that does the same for CAAM.
-> It is of interest for similar use cases as the CAAM patch set, but for
-> lower end devices, where CAAM is not available.
->=20
-> Because constructing and parsing the blob has to happen in software,
-> we needed to decide on a blob format and chose the following:
->=20
-> struct dcp_blob_fmt {
-> __u8 fmt_version;
-> __u8 blob_key[AES_KEYSIZE_128];
-> __u8 nonce[AES_KEYSIZE_128];
-> __le32 payload_len;
-> __u8 payload[];
-> } __packed;
->=20
-> The `fmt_version` is currently 1.
->=20
-> The encrypted key is stored in the payload area. It is AES-128-GCM
-> encrypted using `blob_key` and `nonce`, GCM auth tag is attached at
-> the end of the payload (`payload_len` does not include the size of
-> the auth tag).
->=20
-> The `blob_key` itself is encrypted in AES-128-ECB mode by DCP using
-> the OTP or UNIQUE device key. A new `blob_key` and `nonce` are =
-generated
-> randomly, when sealing/exporting the DCP blob.
->=20
-> This patchset was tested with dm-crypt on an i.MX6ULL board.
->=20
-> [0] =
-https://lore.kernel.org/keyrings/20220513145705.2080323-1-a.fatoum@pengutr=
-onix.de/
->=20
-> David Gstir (6):
->  crypto: mxs-dcp: Add support for hardware-bound keys
->  KEYS: trusted: improve scalability of trust source config
->  KEYS: trusted: Introduce NXP DCP-backed trusted keys
->  MAINTAINERS: add entry for DCP-based trusted keys
->  docs: document DCP-backed trusted keys kernel params
->  docs: trusted-encrypted: add DCP as new trust source
->=20
-> .../admin-guide/kernel-parameters.txt         |  13 +
-> .../security/keys/trusted-encrypted.rst       |  85 +++++
-> MAINTAINERS                                   |   9 +
-> drivers/crypto/mxs-dcp.c                      | 104 +++++-
-> include/keys/trusted_dcp.h                    |  11 +
-> include/soc/fsl/dcp.h                         |  17 +
-> security/keys/trusted-keys/Kconfig            |  18 +-
-> security/keys/trusted-keys/Makefile           |   2 +
-> security/keys/trusted-keys/trusted_core.c     |   6 +-
-> security/keys/trusted-keys/trusted_dcp.c      | 311 ++++++++++++++++++
-> 10 files changed, 562 insertions(+), 14 deletions(-)
-> create mode 100644 include/keys/trusted_dcp.h
-> create mode 100644 include/soc/fsl/dcp.h
-> create mode 100644 security/keys/trusted-keys/trusted_dcp.c
+> On Tue, Oct 03, 2023 at 03:39:37PM +0100, Jonathan Cameron wrote:
+> > On Thu, 28 Sep 2023 19:32:37 +0200 Lukas Wunner <lukas@wunner.de> wrote:  
+> > > +/**
+> > > + * spdm_challenge_rsp_sz() - Calculate CHALLENGE_AUTH response size
+> > > + *
+> > > + * @spdm_state: SPDM session state
+> > > + * @rsp: CHALLENGE_AUTH response (optional)
+> > > + *
+> > > + * A CHALLENGE_AUTH response contains multiple variable-length fields
+> > > + * as well as optional fields.  This helper eases calculating its size.
+> > > + *
+> > > + * If @rsp is %NULL, assume the maximum OpaqueDataLength of 1024 bytes
+> > > + * (SPDM 1.0.0 table 21).  Otherwise read OpaqueDataLength from @rsp.
+> > > + * OpaqueDataLength can only be > 0 for SPDM 1.0 and 1.1, as they lack
+> > > + * the OtherParamsSupport field in the NEGOTIATE_ALGORITHMS request.
+> > > + * For SPDM 1.2+, we do not offer any Opaque Data Formats in that field,
+> > > + * which forces OpaqueDataLength to 0 (SPDM 1.2.0 margin no 261).
+> > > + */
+> > > +static size_t spdm_challenge_rsp_sz(struct spdm_state *spdm_state,
+> > > +				    struct spdm_challenge_rsp *rsp)
+> > > +{
+> > > +	size_t  size  = sizeof(*rsp)		/* Header */  
+> > 
+> > Double spaces look a bit strange...
+> >   
+> > > +		      + spdm_state->h		/* CertChainHash */
+> > > +		      + 32;			/* Nonce */
+> > > +
+> > > +	if (rsp)
+> > > +		/* May be unaligned if hash algorithm has unusual length. */
+> > > +		size += get_unaligned_le16((u8 *)rsp + size);
+> > > +	else
+> > > +		size += SPDM_MAX_OPAQUE_DATA;	/* OpaqueData */
+> > > +
+> > > +	size += 2;				/* OpaqueDataLength */
+> > > +
+> > > +	if (spdm_state->version >= 0x13)
+> > > +		size += 8;			/* RequesterContext */
+> > > +
+> > > +	return  size  + spdm_state->s;		/* Signature */  
+> > 
+> > Double space here as well looks odd to me.  
+> 
+> This was criticized by Ilpo as well, but the double spaces are
+> intentional to vertically align "size" on each line for neatness.
+> 
+> How strongly do you guys feel about it? ;)
 
-Jarkko, Mimi, David do you need anything from my side for these patches =
-to get them merged?
+I suspect we'll see 'fixes' for this creating noise for maintainers.
+So whilst I don't feel that strongly about it I'm not sure the alignment
+really helps much with readability either.
+ 
+> 
+> 
+> > > +int spdm_authenticate(struct spdm_state *spdm_state)
+> > > +{
+> > > +	size_t transcript_sz;
+> > > +	void *transcript;
+> > > +	int rc = -ENOMEM;
+> > > +	u8 slot;
+> > > +
+> > > +	mutex_lock(&spdm_state->lock);
+> > > +	spdm_reset(spdm_state);  
+> [...]
+> > > +	rc = spdm_challenge(spdm_state, slot);
+> > > +
+> > > +unlock:
+> > > +	if (rc)
+> > > +		spdm_reset(spdm_state);  
+> > 
+> > I'd expect reset to also clear authenticated. Seems odd to do it separately
+> > and relies on reset only being called here. If that were the case and you
+> > were handling locking and freeing using cleanup.h magic, then
+> > 
+> > 	rc = spdm_challenge(spdm_state);
+> > 	if (rc)
+> > 		goto reset;
+> > 	return 0;
+> > 
+> > reset:
+> > 	spdm_reset(spdm_state);  
+> 
+> Unfortunately clearing "authenticated" in spdm_reset() is not an
+> option:
+> 
+> Note that spdm_reset() is also called at the top of spdm_authenticate().
+> 
+> If the device was previously successfully authenticated and is now
+> re-authenticated successfully, clearing "authenticated" in spdm_reset()
+> would cause the flag to be briefly set to false, which may irritate
+> user space inspecting the sysfs attribute at just the wrong moment.
 
-Thanks,
-- David
+That makes sense. Thanks.
+
+> 
+> If the device was previously successfully authenticated and is
+> re-authenticated successfully, I want the "authenticated" attribute
+> to show "true" without any gaps.  Hence it's only cleared at the end
+> of spdm_authenticate() if there was an error.
+> 
+> I agree with all your other review feedback and have amended the
+> patch accordingly.  Thanks a lot!
+> 
+> Lukas
+> 
 
 
