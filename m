@@ -1,116 +1,134 @@
-Return-Path: <keyrings+bounces-525-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-526-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA02784D7A9
-	for <lists+keyrings@lfdr.de>; Thu,  8 Feb 2024 02:56:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F45E84D844
+	for <lists+keyrings@lfdr.de>; Thu,  8 Feb 2024 04:18:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 366DE2870E2
-	for <lists+keyrings@lfdr.de>; Thu,  8 Feb 2024 01:56:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD8BFB20D28
+	for <lists+keyrings@lfdr.de>; Thu,  8 Feb 2024 03:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36E31CF91;
-	Thu,  8 Feb 2024 01:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9637A1D6BD;
+	Thu,  8 Feb 2024 03:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="yUDDt+mZ"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="RBYcfQLZ"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC731CD21;
-	Thu,  8 Feb 2024 01:56:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB071D532
+	for <keyrings@vger.kernel.org>; Thu,  8 Feb 2024 03:18:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707357383; cv=none; b=Lnp89T7iEWkn+2z91wPlBZs4lgDZxzH9PMcgRkLce0Jcz089n1ySU0U+hoSuLQxiBWA2D1IghmkwEVfPGCG9LCWJlbpJp+DRBvPVmYB2ghSp5zInVMGltCrsdNIkguVXMWJwy02AyZVkzjAJ+u2tBh1FDs+DY1AVnO7Cj5osViA=
+	t=1707362315; cv=none; b=JaRigOr0xp+QTAFLf6loQUjUvcmgGVvo4vkdx/wItHvQg9lZ5h9EOXt+6pPsmHHdMGA5gPrl0zrbZ0CaD3wunwKmNzAjlzMTsXn4RklWhqDxmmAwUBAYVEq1rX16GFk4rXIGvVQ/mZDAt8zn6f6ZBKvRd20J87XopOS7t1C0YNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707357383; c=relaxed/simple;
-	bh=rVThkiSRe3KkWzz8wgEgHLkSR8j9heMzqKF037jczOY=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=d5ukmSj5ca3+hWNF1psAQD2Fg4Lwj4lEV0vVH/eOJiKdKIXqlFwuT2dZMvKeJGv9cGp1ni+i0NYHHLmBjxNvQ+4s4SWxpLW9JrjqpvKLFmItpZpEgzkWljT5r5YycWPpxaOEytL3ZntxyrlmgFznjdCo4ElemmF9OZrxTmvF1qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yUDDt+mZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F693C433F1;
-	Thu,  8 Feb 2024 01:56:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1707357383;
-	bh=rVThkiSRe3KkWzz8wgEgHLkSR8j9heMzqKF037jczOY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=yUDDt+mZSSrAsObYnTUAk/OhxeX96BaLr5Y8tpQe4YqaooWEd4/eS7dpuHp1vkn13
-	 DGZrF4kxSizzi9e75I5QE0hdsAWZ78TzvC+YzBw9U0qq+uVOGPIEnVyjBDv+JhmoOC
-	 7FIzeR1kkM2mME9zqctRaKkRB8AxLyxqsRcDLtyE=
-Date: Wed, 7 Feb 2024 17:56:21 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Matthew Wilcox <willy@infradead.org>, Christoph Hellwig <hch@lst.de>,
- Hugh Dickins <hughd@google.com>, Chandan Babu R <chandan.babu@oracle.com>,
- David Howells <dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>, Christian Koenig
- <christian.koenig@amd.com>, Huang Rui <ray.huang@amd.com>, Jani Nikula
- <jani.nikula@linux.intel.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- x86@kernel.org, linux-sgx@vger.kernel.org, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, keyrings@vger.kernel.org
-Subject: Re: [PATCH 2/2] xfs: disable large folio support in xfile_create
-Message-Id: <20240207175621.dd773204e7928dbeee7a92bf@linux-foundation.org>
-In-Reply-To: <20240112022250.GU723010@frogsfrogsfrogs>
-References: <20240110092109.1950011-1-hch@lst.de>
-	<20240110092109.1950011-3-hch@lst.de>
-	<20240110175515.GA722950@frogsfrogsfrogs>
-	<20240110200451.GB722950@frogsfrogsfrogs>
-	<20240111140053.51948fb3ed10e06d8e389d2e@linux-foundation.org>
-	<ZaBvoWCCChU5wHDp@casper.infradead.org>
-	<20240112022250.GU723010@frogsfrogsfrogs>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1707362315; c=relaxed/simple;
+	bh=CwXu+mEYRI9NtMHVFqk3Ff2/WozQDRsM1R/qG5WWA8w=;
+	h=Date:Message-ID:MIME-Version:Content-Type:Content-Disposition:
+	 From:To:Cc:Subject:References:In-Reply-To; b=bcJ7/vLExo6K1CGoOHYITDAazgrTvGhQ9oZEufpaTvP9w7XTpDSKNif5w0/zytu8RCUZKXINJ7ZPcGSCICQPbyUjUxTU3ANAj/6+JTyUL5tEaVEVVbo+uEL9R0dU5ySZF81G5OmtYTSkZlxB4fnT3e2Uu3klcpqS131ZYFIl5+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=RBYcfQLZ; arc=none smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-42a4516ec5dso9585171cf.3
+        for <keyrings@vger.kernel.org>; Wed, 07 Feb 2024 19:18:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1707362312; x=1707967112; darn=vger.kernel.org;
+        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
+         :content-disposition:mime-version:message-id:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=hK0BeESH0EV8j47xzGv04cLJ4LIyRw2g36A76+PXBk8=;
+        b=RBYcfQLZMf5lpVN7fxjLnX2DoVMoSKm+6dNz3zT+9CR45fEDT0NAvMtZmSWYMD0WS4
+         Nuz1VPnBK2CSkLuq60y0qaUkH5HMvOqNC4oQDKnBTNQzgRohE84R1wN8HCGtViitA/Ka
+         RPdOOsnku53l5/uKuBYdU9Jl7s3PAkEz+Hzb/FsdU036fCh0i0h4VlL4TeOi5v23o4eX
+         K3lfzFTFg5KVng1ZPqzn1qT09KT/mFOyo7RBmSYBBIczy7V3B1qvf7RhqyQc2piqrP86
+         Um5G5MhCFleg+gSRquvszS0DeHmMIfWHIIRmdhfgQaY5mzE4EfVCfHFdvo6QuVXyOW06
+         3uMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707362312; x=1707967112;
+        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
+         :content-disposition:mime-version:message-id:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hK0BeESH0EV8j47xzGv04cLJ4LIyRw2g36A76+PXBk8=;
+        b=HMsh+hhTuFUOGFb6i302WbwEOZQ7RUXHFFvOoSE2Yd6I/1c0TInS8QbUZWJY/MIVIW
+         w+qJAK1b6kzs+nN64XuqIJ6Wqv64ln3RdsQDdpwIMnUi7NkO3svHdhZt/2zM8HWl6oqj
+         6NSZJ2PqFtgfg82E4G6KdQq4lzMh4WvutT4BBUemygTicOVJUrGJ3fDK8q58s3zt9c6R
+         8rYjLPX3TlRqmkknfl9bktmQKKJFqGpGErF+a/5KFirH8cvAuqdJpCTXvtvoiSAyhoC1
+         787j//39uem6U+vbifjplLoyhoOPrcMHYer2supWPPgWREEshobzBmKtD3xZ7Zx3djWw
+         uhTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU6gFIOf6AvDL5QhIOqGh7aY3Nv8F9WazHYpg2PW5OnkecibVeKxEunGlHdZ01N+WyAmjyiqQyeHFMT3bU3Ld+JS7/wdTr2phQ=
+X-Gm-Message-State: AOJu0Yxeg97dq2xYkq4xSsSeU/0Ebxhy84ssYW6i0OZAmyP/67gULVl2
+	MHJC8M+QvJmDxxJY/URnaBm1Z+aie3UKpRzls/4TijSslmuncvaOla+NzMYZkg==
+X-Google-Smtp-Source: AGHT+IGpZWRS7BciYc0E1wVHDo3UpmFl3VgGAmCTU/eLWbmLvCNB5DRi1BbJML+2QLswaRfYEk1Scg==
+X-Received: by 2002:a05:622a:5094:b0:42a:8a40:e33c with SMTP id fp20-20020a05622a509400b0042a8a40e33cmr7154113qtb.57.1707362312345;
+        Wed, 07 Feb 2024 19:18:32 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUevVJKwGdSjfdxiP74JGQH+dsVjTsQ22eS+EDgBhq5kdojHKMCot0Gi/z8CEm12WoDxxkC3fcVtiK1dC0B3jq9yqLGeT5IFivl8m7XQJWgO55sQ9GXn1H7Ahms5bxBd6ZCyxKAdFNl2BYS72MgAwJD8S9UW4n1izwi2zeo/x/6ETDHNdxssLHxhaFub0YwbvtgYkQ+Ts4QIs7hmF61Y0SEo7j5ZG0Xamly6PoTUHvENvAy+ub6SJ4HG1A22OmY8yClktBlY+zrwL3Ab0EVQ+0lI+ybXc96Pd02q8LtBA9SI8XhGCFyO4N68F6edRmx6KaVTqS3OPyjAl2iOkAN2e3UnfK9zHTj/4KCXUV9tyxtLZ9dbGoCXN1hn+ZmobXJRfCWvYks8nMbQXj8Wc/kf7EB42miI/kXnvD8VqHV5+s51PqtdtyrqA5Gz2WNVfPSdGXsBW0LACDd760AbQCozTmHErxN6lEAyEBt03J7rcruNSyNpM6Wn+umVt7c7/VVoivjVOXcU+sxKnheAA2vtSugW1dN38s2OpNzvrFgApBY/MxAf4nddsTPkXLHFoiA6ZYqJJm6Da0e955UOduupoYwOoj0vZF4IZQ8xNOty6rkZ5kRzAGJWo3Paz4OmvTnMBQ+nvI/304hJMLv9S+syJjaw7s9Ze27m3HM28DvziGUmI8ETXbrbIMjexxmysGJIMnpQa3tif2wEvfrl2D6BkN7Dh4pYcvIqjIkwq0sZLEIggav8FBhb83axn0lwmF0E59LNP182o3Lbhyu3ia5Liy98P3Ihe7jst+qOisYHc6KBfQD70sSyyITvsLhAF8CSzxECMO+c1DJ0NNdDiISpQJlXVfA1iJUidOs2SNjtGWBHBJ5cu10lvsZQwX6TACxjEwZhJo+WXEuJQIWx5uasUCUwLZyA6h3QHchFf9sBvNtRjPwoGvF
+Received: from localhost ([70.22.175.108])
+        by smtp.gmail.com with ESMTPSA id b24-20020ac86bd8000000b0042bed7dc558sm1071255qtt.6.2024.02.07.19.18.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Feb 2024 19:18:31 -0800 (PST)
+Date: Wed, 07 Feb 2024 22:18:31 -0500
+Message-ID: <d54ca249c3071522218c7ba7b4984bab@paul-moore.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0 
+Content-Type: text/plain; charset=utf-8 
+Content-Disposition: inline 
+Content-Transfer-Encoding: 8bit
+From: Paul Moore <paul@paul-moore.com>
+To: Roberto Sassu <roberto.sassu@huaweicloud.com>, viro@zeniv.linux.org.uk, brauner@kernel.org, chuck.lever@oracle.com, jlayton@kernel.org, neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com, jmorris@namei.org, serge@hallyn.com, zohar@linux.ibm.com, dmitry.kasatkin@gmail.com, eric.snowberg@oracle.com, dhowells@redhat.com, jarkko@kernel.org, stephen.smalley.work@gmail.com, eparis@parisplace.org, casey@schaufler-ca.com, shuah@kernel.org, mic@digikod.net
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, selinux@vger.kernel.org, linux-kselftest@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
+Subject: Re: [PATCH v9 0/25] security: Move IMA and EVM to the LSM
+ infrastructure
+References: <20240115181809.885385-1-roberto.sassu@huaweicloud.com>
+In-Reply-To: <20240115181809.885385-1-roberto.sassu@huaweicloud.com>
 
-On Thu, 11 Jan 2024 18:22:50 -0800 "Darrick J. Wong" <djwong@kernel.org> wrote:
-
-> On Thu, Jan 11, 2024 at 10:45:53PM +0000, Matthew Wilcox wrote:
-> > On Thu, Jan 11, 2024 at 02:00:53PM -0800, Andrew Morton wrote:
-> > > On Wed, 10 Jan 2024 12:04:51 -0800 "Darrick J. Wong" <djwong@kernel.org> wrote:
-> > > 
-> > > > > > Fixing this will require a bit of an API change, and prefeably sorting out
-> > > > > > the hwpoison story for pages vs folio and where it is placed in the shmem
-> > > > > > API.  For now use this one liner to disable large folios.
-> > > > > > 
-> > > > > > Reported-by: Darrick J. Wong <djwong@kernel.org>
-> > > > > > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> > > > > 
-> > > > > Can someone who knows more about shmem.c than I do please review
-> > > > > https://lore.kernel.org/linux-xfs/20240103084126.513354-4-hch@lst.de/
-> > > > > so that I can feel slightly more confident as hch and I sort through the
-> > > > > xfile.c issues?
-> > > > > 
-> > > > > For this patch,
-> > > > > Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-> > > > 
-> > > > ...except that I'm still getting 2M THPs even with this enabled, so I
-> > > > guess either we get to fix it now, or create our own private tmpfs mount
-> > > > so that we can pass in huge=never, similar to what i915 does. :(
-> > > 
-> > > What is "this"?  Are you saying that $Subject doesn't work, or that the
-> > > above-linked please-review patch doesn't work?
-> > 
-> > shmem pays no attention to the mapping_large_folio_support() flag,
-> > so the proposed fix doesn't work.  It ought to, but it has its own way
-> > of doing it that predates mapping_large_folio_support existing.
+On Jan 15, 2024 Roberto Sassu <roberto.sassu@huaweicloud.com> wrote:
 > 
-> Yep.  It turned out to be easier to fix xfile.c to deal with large
-> folios than I thought it would be.  Or so I think.  We'll see what
-> happens on fstestscloud overnight.
+> IMA and EVM are not effectively LSMs, especially due to the fact that in
+> the past they could not provide a security blob while there is another LSM
+> active.
+> 
+> That changed in the recent years, the LSM stacking feature now makes it
+> possible to stack together multiple LSMs, and allows them to provide a
+> security blob for most kernel objects. While the LSM stacking feature has
+> some limitations being worked out, it is already suitable to make IMA and
+> EVM as LSMs.
+> 
+> The main purpose of this patch set is to remove IMA and EVM function calls,
+> hardcoded in the LSM infrastructure and other places in the kernel, and to
+> register them as LSM hook implementations, so that those functions are
+> called by the LSM infrastructure like other regular LSMs.
 
-Where do we stand with this?  Should I merge these two patches into
-6.8-rcX, cc:stable?
+Thanks Roberto, this is looking good.  I appreciate all the work you've
+put into making this happen; when I first mentioned this idea I figured
+it would be something that would happen much farther into the future, I
+wasn't expecting to see you pick this up and put in the work to make it
+happen - thank you.
+
+I had some pretty minor comments but I think the only thing I saw that
+I think needs a change/addition is a comment in the Makefile regarding
+the IMA/EVM ordering; take a look and let me know what you think.
+
+There are also a few patches in the patchset that don't have an
+ACK/review tag from Mimi, although now that you are co-maininting IMA/EVM
+with Mimi I don't know if that matters.  If the two of you can let me
+know how you want me to handle LSM patches that are IMA/EVM related I
+would appreciate it (two ACKs, one or other, something else?).
+
+Once you add a Makefile commane and we sort out the IMA/EVM approval
+process I think we're good to get this into linux-next.  A while back
+Mimi and I had a chat offline and if I recall everything correctly she
+preferred that I take this patchset via the LSM tree.  I don't have a
+problem with that, and to be honest I would probably prefer
+that too, but I wanted to check with everyone that is still the case.
+Just in case, I've added my ACKs/reviews to this patchset in case this
+needs to be merged via the integrity tree.
+
+--
+paul-moore.com
 
