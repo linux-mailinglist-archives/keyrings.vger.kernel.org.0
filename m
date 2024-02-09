@@ -1,153 +1,163 @@
-Return-Path: <keyrings+bounces-584-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-585-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9C784F4F7
-	for <lists+keyrings@lfdr.de>; Fri,  9 Feb 2024 13:03:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4739284FCF3
+	for <lists+keyrings@lfdr.de>; Fri,  9 Feb 2024 20:37:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBF86289053
-	for <lists+keyrings@lfdr.de>; Fri,  9 Feb 2024 12:03:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC6FEB260A3
+	for <lists+keyrings@lfdr.de>; Fri,  9 Feb 2024 19:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D392E651;
-	Fri,  9 Feb 2024 12:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C90084A2A;
+	Fri,  9 Feb 2024 19:36:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QmQeu32M"
 X-Original-To: keyrings@vger.kernel.org
-Received: from frasgout11.his.huawei.com (frasgout11.his.huawei.com [14.137.139.23])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3812E630;
-	Fri,  9 Feb 2024 12:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EA983CB7;
+	Fri,  9 Feb 2024 19:36:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707480211; cv=none; b=CXrAZ42b1z5HqaoB0Sn778zf1t4xyZH0kN+ddfOQDYZrizn9Ba5xTCs9G0FIy3lXwGHKF0pGAnB2dRarUL8M2CUJyjwdcYwWseTJW0MWA0JrgNXMAVuRo+8Gmgwuu5w8yIgfi0EuM3lay/YwVkCTV5rYQEeDtWamWrM6y/ZuiaM=
+	t=1707507407; cv=none; b=W5VHV075TtcojwDbLivxdHRDza0nBKb2/GF67Nd08+6T+tWctFWhj28HPx37Tu64plCu42OE2wxyLUXA7iQcrCyNShqSXnCbZ6mZCD8PiYpb7vh9BRa8/loBSQohoMt6JU04Yde5r2ouGQfi4KszrdWhp85u0+LqcNlljiKsGEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707480211; c=relaxed/simple;
-	bh=BhA/UikenM4m0IyfeHs3E+dkP69p7UWIJfw5VFHgk24=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=brJx/cQC5LWOZnAB7EiCvcPfLjwyigMZaHefHf1hZyqHCwZh4ThybmE52nP5ARE0e50TmXZEEBD+TO+mV2w5BbAQASuTVnKtgyjHUnzHnKZ7S7wckaYJgH0+F0KRz43oVDuKke+K6FfAHDqNY1l7ILNKjUEDXUfvd4JtboShyn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.51])
-	by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4TWXDB6LM8z9xvhR;
-	Fri,  9 Feb 2024 19:48:10 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.27])
-	by mail.maildlp.com (Postfix) with ESMTP id DB61B14086B;
-	Fri,  9 Feb 2024 20:03:09 +0800 (CST)
-Received: from [127.0.0.1] (unknown [10.204.63.22])
-	by APP2 (Coremail) with SMTP id GxC2BwAXBChtFMZlv1EoAg--.21619S2;
-	Fri, 09 Feb 2024 13:03:09 +0100 (CET)
-Message-ID: <f61cb90858d866ed3eb7a2b607152c4aa2a52f5d.camel@huaweicloud.com>
-Subject: Re: [PATCH v9 12/25] security: Introduce file_post_open hook
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: viro@zeniv.linux.org.uk, chuck.lever@oracle.com, jlayton@kernel.org, 
- neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com, 
- paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
- zohar@linux.ibm.com,  dmitry.kasatkin@gmail.com, eric.snowberg@oracle.com,
- dhowells@redhat.com,  jarkko@kernel.org, stephen.smalley.work@gmail.com,
- eparis@parisplace.org,  casey@schaufler-ca.com, shuah@kernel.org,
- mic@digikod.net,  linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org,  linux-nfs@vger.kernel.org,
- linux-security-module@vger.kernel.org,  linux-integrity@vger.kernel.org,
- keyrings@vger.kernel.org,  selinux@vger.kernel.org,
- linux-kselftest@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>,
- Stefan Berger <stefanb@linux.ibm.com>
-Date: Fri, 09 Feb 2024 13:02:49 +0100
-In-Reply-To: <20240209-giert-erlenholz-b131fa85ee36@brauner>
-References: <20240115181809.885385-1-roberto.sassu@huaweicloud.com>
-	 <20240115181809.885385-13-roberto.sassu@huaweicloud.com>
-	 <20240209-luftleer-jobangebote-6d6ab29b7191@brauner>
-	 <86ab971f45c2ff11dcbdeab78b4b050f07495f55.camel@huaweicloud.com>
-	 <20240209-giert-erlenholz-b131fa85ee36@brauner>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	s=arc-20240116; t=1707507407; c=relaxed/simple;
+	bh=bTxXNbHfZZhEuLVtEBZ4sln50esH9OZdaF3Hs6jsuZE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QmkReLnYA3MJCZqKLN/WXID+E+E8eqizUrE4nEsYmKxO7akGXqilJxAhKmM5JekPja/iAhDVRhHMZS6MnrqKtAE93GWiEBow6Jo8Rq+DXrM8OtvFbL+YY8PcSEV0GUeo9sDQubgMAZADSg3TYSfBkhXiwgaSQcWp66k/brVtrhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QmQeu32M; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707507405; x=1739043405;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=bTxXNbHfZZhEuLVtEBZ4sln50esH9OZdaF3Hs6jsuZE=;
+  b=QmQeu32MVyXN+N29N45pfMgRciZ4BicJ+DLBk9EQCwKiKfbr1dbUBLpp
+   Trz+OIEuRemTR8TWYBASC0xi7QqIt12MCZP0MCNHiZ4npp+lG3pZicoN9
+   vy3hULHqrvr9f2Ue7D2JSvOMaoSgojIxKXUDoc+vLR0XGisQRqSM8fBmz
+   luTxtWyEJP2fujX3zZvtNFpf3MWTWpFMkis5VxkyC1xSVGROQOh8U/8YF
+   ekV19tyHeUn5xeLqjOhIL2inIFAJymfH7eqWiVj9CnOAnnsPPyVHpuOQC
+   +0S6Y/wkYrRjzrptsx7/OzUumOu2O+0rl/dtaSWY+xP+V8Bnx9Wc5S/mg
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="18902724"
+X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; 
+   d="scan'208";a="18902724"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 11:36:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="934510391"
+X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; 
+   d="scan'208";a="934510391"
+Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 09 Feb 2024 11:36:39 -0800
+Received: from kbuild by 01f0647817ea with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rYWfs-00053a-2R;
+	Fri, 09 Feb 2024 19:36:36 +0000
+Date: Sat, 10 Feb 2024 03:36:23 +0800
+From: kernel test robot <lkp@intel.com>
+To: Stefan Berger <stefanb@linux.ibm.com>, keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au,
+	davem@davemloft.net
+Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+	saulo.alessandre@tse.jus.br, Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH 01/14] crypto: ecdsa - Convert byte arrays with key
+ coordinates to digits
+Message-ID: <202402100352.1TagPxg9-lkp@intel.com>
+References: <20240208221840.3665874-2-stefanb@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-CM-TRANSID:GxC2BwAXBChtFMZlv1EoAg--.21619S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJr4UAr1ftFWDuF4xKF17KFg_yoW8Kw4rpa
-	y5J3Z8GF4kGry7Cr9IvF90qFnYg392qFyUXrZxX34UArnFqrnI9F47Cr15uFyqqr1xGr10
-	vr429r9xWr1UArJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkYb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI
-	7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxV
-	Cjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY
-	6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6x
-	AIw20EY4v20xvaj40_WFyUJVCq3wCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv
-	6xkF7I0E14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7IU1c4S7UUUUU==
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAIBF1jj5Y3PwAAsh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240208221840.3665874-2-stefanb@linux.ibm.com>
 
-On Fri, 2024-02-09 at 12:34 +0100, Christian Brauner wrote:
-> On Fri, Feb 09, 2024 at 11:46:16AM +0100, Roberto Sassu wrote:
-> > On Fri, 2024-02-09 at 11:12 +0100, Christian Brauner wrote:
-> > > On Mon, Jan 15, 2024 at 07:17:56PM +0100, Roberto Sassu wrote:
-> > > > From: Roberto Sassu <roberto.sassu@huawei.com>
-> > > >=20
-> > > > In preparation to move IMA and EVM to the LSM infrastructure, intro=
-duce the
-> > > > file_post_open hook. Also, export security_file_post_open() for NFS=
-.
-> > > >=20
-> > > > Based on policy, IMA calculates the digest of the file content and
-> > > > extends the TPM with the digest, verifies the file's integrity base=
-d on
-> > > > the digest, and/or includes the file digest in the audit log.
-> > > >=20
-> > > > LSMs could similarly take action depending on the file content and =
-the
-> > > > access mask requested with open().
-> > > >=20
-> > > > The new hook returns a value and can cause the open to be aborted.
-> > > >=20
-> > > > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> > > > Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-> > > > Acked-by: Casey Schaufler <casey@schaufler-ca.com>
-> > > > Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-> > > > ---
-> > > >  fs/namei.c                    |  2 ++
-> > > >  fs/nfsd/vfs.c                 |  6 ++++++
-> > > >  include/linux/lsm_hook_defs.h |  1 +
-> > > >  include/linux/security.h      |  6 ++++++
-> > > >  security/security.c           | 17 +++++++++++++++++
-> > > >  5 files changed, 32 insertions(+)
-> > > >=20
-> > > > diff --git a/fs/namei.c b/fs/namei.c
-> > > > index 71c13b2990b4..fb93d3e13df6 100644
-> > > > --- a/fs/namei.c
-> > > > +++ b/fs/namei.c
-> > > > @@ -3620,6 +3620,8 @@ static int do_open(struct nameidata *nd,
-> > > >  	error =3D may_open(idmap, &nd->path, acc_mode, open_flag);
-> > > >  	if (!error && !(file->f_mode & FMODE_OPENED))
-> > > >  		error =3D vfs_open(&nd->path, file);
-> > > > +	if (!error)
-> > > > +		error =3D security_file_post_open(file, op->acc_mode);
-> > >=20
-> > > What does it do for O_CREAT? IOW, we managed to create that thing and=
- we
-> > > managed to open that thing. Can security_file_post_open() and
-> > > ima_file_check() fail afterwards even for newly created files?
-> >=20
-> > $ strace touch test-file
-> > ...
-> > openat(AT_FDCWD, "test-file", O_WRONLY|O_CREAT|O_NOCTTY|O_NONBLOCK, 066=
-6) =3D -1 EPERM (Operation not permitted)
->=20
-> Ah, meh. I was hoping IMA just wouldn't care about this case.
+Hi Stefan,
 
-Actually it doesn't. I added code to artifically create the situation
-(to see what happens if a new LSM does that).
+kernel test robot noticed the following build warnings:
 
-Roberto
+[auto build test WARNING on herbert-cryptodev-2.6/master]
+[also build test WARNING on herbert-crypto-2.6/master linus/master v6.8-rc3 next-20240209]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
+url:    https://github.com/intel-lab-lkp/linux/commits/Stefan-Berger/crypto-ecdsa-Convert-byte-arrays-with-key-coordinates-to-digits/20240209-062415
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/herbert/cryptodev-2.6.git master
+patch link:    https://lore.kernel.org/r/20240208221840.3665874-2-stefanb%40linux.ibm.com
+patch subject: [PATCH 01/14] crypto: ecdsa - Convert byte arrays with key coordinates to digits
+config: x86_64-randconfig-101-20240209 (https://download.01.org/0day-ci/archive/20240210/202402100352.1TagPxg9-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240210/202402100352.1TagPxg9-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202402100352.1TagPxg9-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> crypto/ecdsa.c:225:34: warning: variable 'nbytes' set but not used [-Wunused-but-set-variable]
+     225 |         unsigned int digitlen, ndigits, nbytes;
+         |                                         ^
+   1 warning generated.
+
+
+vim +/nbytes +225 crypto/ecdsa.c
+
+   216	
+   217	/*
+   218	 * Set the public key given the raw uncompressed key data from an X509
+   219	 * certificate. The key data contain the concatenated X and Y coordinates of
+   220	 * the public key.
+   221	 */
+   222	static int ecdsa_set_pub_key(struct crypto_akcipher *tfm, const void *key, unsigned int keylen)
+   223	{
+   224		struct ecc_ctx *ctx = akcipher_tfm_ctx(tfm);
+ > 225		unsigned int digitlen, ndigits, nbytes;
+   226		const unsigned char *d = key;
+   227		int ret;
+   228	
+   229		ret = ecdsa_ecc_ctx_reset(ctx);
+   230		if (ret < 0)
+   231			return ret;
+   232	
+   233		if (keylen < 1 || (((keylen - 1) >> 1) % sizeof(u64)) != 0)
+   234			return -EINVAL;
+   235		/* we only accept uncompressed format indicated by '4' */
+   236		if (d[0] != 4)
+   237			return -EINVAL;
+   238	
+   239		keylen--;
+   240		digitlen = keylen >> 1;
+   241	
+   242		ndigits = digitlen / sizeof(u64);
+   243		if (ndigits != ctx->curve->g.ndigits)
+   244			return -EINVAL;
+   245	
+   246		nbytes = ndigits * sizeof(u64);
+   247		d++;
+   248	
+   249		ecc_digits_from_array(d, digitlen, ctx->pub_key.x, ndigits);
+   250		ecc_digits_from_array(&d[digitlen], digitlen, ctx->pub_key.y, ndigits);
+   251	
+   252		ret = ecc_is_pubkey_valid_full(ctx->curve, &ctx->pub_key);
+   253	
+   254		ctx->pub_key_set = ret == 0;
+   255	
+   256		return ret;
+   257	}
+   258	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
