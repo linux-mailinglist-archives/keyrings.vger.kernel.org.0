@@ -1,163 +1,218 @@
-Return-Path: <keyrings+bounces-585-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-586-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4739284FCF3
-	for <lists+keyrings@lfdr.de>; Fri,  9 Feb 2024 20:37:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4BD384FD99
+	for <lists+keyrings@lfdr.de>; Fri,  9 Feb 2024 21:32:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC6FEB260A3
-	for <lists+keyrings@lfdr.de>; Fri,  9 Feb 2024 19:37:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22F011C215FC
+	for <lists+keyrings@lfdr.de>; Fri,  9 Feb 2024 20:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C90084A2A;
-	Fri,  9 Feb 2024 19:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QmQeu32M"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C8653A9;
+	Fri,  9 Feb 2024 20:32:11 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EA983CB7;
-	Fri,  9 Feb 2024 19:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED1023B1;
+	Fri,  9 Feb 2024 20:32:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707507407; cv=none; b=W5VHV075TtcojwDbLivxdHRDza0nBKb2/GF67Nd08+6T+tWctFWhj28HPx37Tu64plCu42OE2wxyLUXA7iQcrCyNShqSXnCbZ6mZCD8PiYpb7vh9BRa8/loBSQohoMt6JU04Yde5r2ouGQfi4KszrdWhp85u0+LqcNlljiKsGEY=
+	t=1707510731; cv=none; b=mr0mV2Thy90uzXwhmGLtG/GXiYACATOlmTKiqFbvbBWZ4y0XTxwRfSrdUx2wqBsmpDNPerLKhKg0Jpsi6f66liVzzjfrjft4mSBauEDXIXsk8xJBGDRWL3yuwKiGI6Yg9jGCW1c6cIiH4I6WLvKmMJ0YTOlD24P0UTqS8aY97U0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707507407; c=relaxed/simple;
-	bh=bTxXNbHfZZhEuLVtEBZ4sln50esH9OZdaF3Hs6jsuZE=;
+	s=arc-20240116; t=1707510731; c=relaxed/simple;
+	bh=W4hX4Fr27kDfOqCWn6zXDk0H9YB1rKxtALyMNKxVk4o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QmkReLnYA3MJCZqKLN/WXID+E+E8eqizUrE4nEsYmKxO7akGXqilJxAhKmM5JekPja/iAhDVRhHMZS6MnrqKtAE93GWiEBow6Jo8Rq+DXrM8OtvFbL+YY8PcSEV0GUeo9sDQubgMAZADSg3TYSfBkhXiwgaSQcWp66k/brVtrhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QmQeu32M; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707507405; x=1739043405;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bTxXNbHfZZhEuLVtEBZ4sln50esH9OZdaF3Hs6jsuZE=;
-  b=QmQeu32MVyXN+N29N45pfMgRciZ4BicJ+DLBk9EQCwKiKfbr1dbUBLpp
-   Trz+OIEuRemTR8TWYBASC0xi7QqIt12MCZP0MCNHiZ4npp+lG3pZicoN9
-   vy3hULHqrvr9f2Ue7D2JSvOMaoSgojIxKXUDoc+vLR0XGisQRqSM8fBmz
-   luTxtWyEJP2fujX3zZvtNFpf3MWTWpFMkis5VxkyC1xSVGROQOh8U/8YF
-   ekV19tyHeUn5xeLqjOhIL2inIFAJymfH7eqWiVj9CnOAnnsPPyVHpuOQC
-   +0S6Y/wkYrRjzrptsx7/OzUumOu2O+0rl/dtaSWY+xP+V8Bnx9Wc5S/mg
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="18902724"
-X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; 
-   d="scan'208";a="18902724"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2024 11:36:42 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10979"; a="934510391"
-X-IronPort-AV: E=Sophos;i="6.05,257,1701158400"; 
-   d="scan'208";a="934510391"
-Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 09 Feb 2024 11:36:39 -0800
-Received: from kbuild by 01f0647817ea with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rYWfs-00053a-2R;
-	Fri, 09 Feb 2024 19:36:36 +0000
-Date: Sat, 10 Feb 2024 03:36:23 +0800
-From: kernel test robot <lkp@intel.com>
-To: Stefan Berger <stefanb@linux.ibm.com>, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au,
-	davem@davemloft.net
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	saulo.alessandre@tse.jus.br, Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH 01/14] crypto: ecdsa - Convert byte arrays with key
- coordinates to digits
-Message-ID: <202402100352.1TagPxg9-lkp@intel.com>
-References: <20240208221840.3665874-2-stefanb@linux.ibm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=by9URIP60WTQrCWub5K32hvG3K43Xv7yJlU4QT+TfazPQ9lHlq/4P/1w7BJdxS4Z9+njgFzxKsQ7Q1HStGHC5IFHKag9kfbR4I9CgQy9a1e4IwilVQ8JdvZPcPFl7pb5cSSnT8e9X93vt1Fkt78+QSriscI7CbGppoAFQxXQyRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 9FB682800B767;
+	Fri,  9 Feb 2024 21:32:04 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 808144D3896; Fri,  9 Feb 2024 21:32:04 +0100 (CET)
+Date: Fri, 9 Feb 2024 21:32:04 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linuxarm@huawei.com,
+	David Box <david.e.box@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>, "Li, Ming" <ming4.li@intel.com>,
+	Zhi Wang <zhi.a.wang@intel.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Alexander Graf <graf@amazon.com>
+Subject: Re: [PATCH 07/12] spdm: Introduce library to authenticate devices
+Message-ID: <20240209203204.GA5850@wunner.de>
+References: <cover.1695921656.git.lukas@wunner.de>
+ <89a83f42ae3c411f46efd968007e9b2afd839e74.1695921657.git.lukas@wunner.de>
+ <5d0e75-993c-3978-8ccf-60bfb7cac10@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240208221840.3665874-2-stefanb@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5d0e75-993c-3978-8ccf-60bfb7cac10@linux.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-Hi Stefan,
+On Tue, Oct 03, 2023 at 01:35:26PM +0300, Ilpo Järvinen wrote:
+> On Thu, 28 Sep 2023, Lukas Wunner wrote:
+> > +typedef int (spdm_transport)(void *priv, struct device *dev,
+> > +                          const void *request, size_t request_sz,
+> > +                          void *response, size_t response_sz);
+> 
+> This returns a length or an error, right? If so return ssize_t instead.
+> 
+> If you make this change, alter the caller types too.
 
-kernel test robot noticed the following build warnings:
+Alright, I've changed the types in __spdm_exchange() and spdm_exchange().
 
-[auto build test WARNING on herbert-cryptodev-2.6/master]
-[also build test WARNING on herbert-crypto-2.6/master linus/master v6.8-rc3 next-20240209]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+However the callers of those functions assign the result to an "rc" variable
+which is also used to receive an "int" return value.
+E.g. spdm_get_digests() assigns the ssize_t result of spdm_exchange() to rc
+but also the int result of crypto_shash_update().
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Stefan-Berger/crypto-ecdsa-Convert-byte-arrays-with-key-coordinates-to-digits/20240209-062415
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/herbert/cryptodev-2.6.git master
-patch link:    https://lore.kernel.org/r/20240208221840.3665874-2-stefanb%40linux.ibm.com
-patch subject: [PATCH 01/14] crypto: ecdsa - Convert byte arrays with key coordinates to digits
-config: x86_64-randconfig-101-20240209 (https://download.01.org/0day-ci/archive/20240210/202402100352.1TagPxg9-lkp@intel.com/config)
-compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240210/202402100352.1TagPxg9-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202402100352.1TagPxg9-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> crypto/ecdsa.c:225:34: warning: variable 'nbytes' set but not used [-Wunused-but-set-variable]
-     225 |         unsigned int digitlen, ndigits, nbytes;
-         |                                         ^
-   1 warning generated.
+It feels awkward to change the type of "rc" to "ssize_t" in those
+functions, so I kept "int".
 
 
-vim +/nbytes +225 crypto/ecdsa.c
+> > +} __packed;
+> > +
+> > +#define SPDM_GET_CAPABILITIES 0xE1
+> 
+> There's non-capital hex later in the file, please try to be consistent.
 
-   216	
-   217	/*
-   218	 * Set the public key given the raw uncompressed key data from an X509
-   219	 * certificate. The key data contain the concatenated X and Y coordinates of
-   220	 * the public key.
-   221	 */
-   222	static int ecdsa_set_pub_key(struct crypto_akcipher *tfm, const void *key, unsigned int keylen)
-   223	{
-   224		struct ecc_ctx *ctx = akcipher_tfm_ctx(tfm);
- > 225		unsigned int digitlen, ndigits, nbytes;
-   226		const unsigned char *d = key;
-   227		int ret;
-   228	
-   229		ret = ecdsa_ecc_ctx_reset(ctx);
-   230		if (ret < 0)
-   231			return ret;
-   232	
-   233		if (keylen < 1 || (((keylen - 1) >> 1) % sizeof(u64)) != 0)
-   234			return -EINVAL;
-   235		/* we only accept uncompressed format indicated by '4' */
-   236		if (d[0] != 4)
-   237			return -EINVAL;
-   238	
-   239		keylen--;
-   240		digitlen = keylen >> 1;
-   241	
-   242		ndigits = digitlen / sizeof(u64);
-   243		if (ndigits != ctx->curve->g.ndigits)
-   244			return -EINVAL;
-   245	
-   246		nbytes = ndigits * sizeof(u64);
-   247		d++;
-   248	
-   249		ecc_digits_from_array(d, digitlen, ctx->pub_key.x, ndigits);
-   250		ecc_digits_from_array(&d[digitlen], digitlen, ctx->pub_key.y, ndigits);
-   251	
-   252		ret = ecc_is_pubkey_valid_full(ctx->curve, &ctx->pub_key);
-   253	
-   254		ctx->pub_key_set = ret == 0;
-   255	
-   256		return ret;
-   257	}
-   258	
+The spec uses capital hex characters, so this was done to ease
+connecting the implementation to the spec.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+OTOH I don't want to capitalize all the hex codes in enum spdm_error_code.
+
+So I guess consistency takes precedence and I've amended the
+patch to downcase all hex characters, as you've requested.
+
+
+> > +struct spdm_error_rsp {
+> > +	u8 version;
+> > +	u8 code;
+> > +	enum spdm_error_code error_code:8;
+> > +	u8 error_data;
+> > +
+> > +	u8 extended_error_data[];
+> > +} __packed;
+> 
+> Is this always going to produce the layout you want given the alignment 
+> requirements for the storage unit for u8 and enum are probably different?
+
+Yes, the __packed attribute forces the compiler to avoid padding.
+
+
+> > +	spdm_state->responder_caps = le32_to_cpu(rsp->flags);
+> 
+> Earlier, unaligned accessors where used with the version_number_entries.
+> Is it intentional they're not used here (I cannot see what would be 
+> reason for this difference)?
+
+Thanks, good catch.  Indeed this is not necessarily naturally aligned
+because the GET_CAPABILITIES request and response succeeds the
+GET_VERSION response in the same allocation.  And the GET_VERSION
+response size is a multiple of 2, but not always a multiple of 4.
+
+So I've amended the patch to use a separate allocation for the
+GET_CAPABILITIES request and response.  The spec-defined struct layout
+of those messages is such that the 32-bit accesses are indeed always
+naturally aligned.
+
+The existing unaligned accessor in spdm_get_version() turned out
+to be unnecessary after taking a closer look, so I dropped that one.
+
+
+> > +static int spdm_negotiate_algs(struct spdm_state *spdm_state,
+> > +			       void *transcript, size_t transcript_sz)
+> > +{
+> > +	struct spdm_req_alg_struct *req_alg_struct;
+> > +	struct spdm_negotiate_algs_req *req;
+> > +	struct spdm_negotiate_algs_rsp *rsp;
+> > +	size_t req_sz = sizeof(*req);
+> > +	size_t rsp_sz = sizeof(*rsp);
+> > +	int rc, length;
+> > +
+> > +	/* Request length shall be <= 128 bytes (SPDM 1.1.0 margin no 185) */
+> > +	BUILD_BUG_ON(req_sz > 128);
+> 
+> I don't know why this really has to be here? This could be static_assert()
+> below the struct declaration.
+
+A follow-on patch to add key exchange support increases req_sz based on
+an SPDM_MAX_REQ_ALG_STRUCT macro defined here in front of the function
+where it's used.  That's the reason why the size is checked here as well.
+
+
+> > +static int spdm_get_certificate(struct spdm_state *spdm_state, u8 slot)
+> > +{
+> > +	struct spdm_get_certificate_req req = {
+> > +		.code = SPDM_GET_CERTIFICATE,
+> > +		.param1 = slot,
+> > +	};
+> > +	struct spdm_get_certificate_rsp *rsp;
+> > +	struct spdm_cert_chain *certs = NULL;
+> > +	size_t rsp_sz, total_length, header_length;
+> > +	u16 remainder_length = 0xffff;
+> 
+> 0xffff in this function should use either U16_MAX or SZ_64K - 1.
+
+The SPDM spec uses 0xffff so I'm deliberately using that as well
+to make the connection to the spec obvious.
+
+
+> > +static void spdm_create_combined_prefix(struct spdm_state *spdm_state,
+> > +					const char *spdm_context, void *buf)
+> > +{
+> > +	u8 minor = spdm_state->version & 0xf;
+> > +	u8 major = spdm_state->version >> 4;
+> > +	size_t len = strlen(spdm_context);
+> > +	int rc, zero_pad;
+> > +
+> > +	rc = snprintf(buf, SPDM_PREFIX_SZ + 1,
+> > +		      "dmtf-spdm-v%hhx.%hhx.*dmtf-spdm-v%hhx.%hhx.*"
+> > +		      "dmtf-spdm-v%hhx.%hhx.*dmtf-spdm-v%hhx.%hhx.*",
+> > +		      major, minor, major, minor, major, minor, major, minor);
+> 
+> Why are these using s8 formatting specifier %hhx ??
+
+I don't quite follow, "%hhx" is an unsigned char, not a signed char.
+
+spdm_state->version may contain e.g. 0x12 which is converted to
+"dmtf-spdm-v1.2.*" here.
+
+The question is what happens if the major or minor version goes beyond 9.
+The total length of the prefix is hard-coded by the spec, hence my
+expectation is that 1.10 will be represented as "dmtf-spdm-v1.a.*"
+to not exceed the length.  The code follows that expectation.
+
+Thanks for taking a look!   I've amended the patch to take all your
+other feedback into account.
+
+Lukas
 
