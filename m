@@ -1,103 +1,166 @@
-Return-Path: <keyrings+bounces-604-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-605-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCC2C851DD2
-	for <lists+keyrings@lfdr.de>; Mon, 12 Feb 2024 20:20:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 843D4851E16
+	for <lists+keyrings@lfdr.de>; Mon, 12 Feb 2024 20:48:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4522CB23241
-	for <lists+keyrings@lfdr.de>; Mon, 12 Feb 2024 19:20:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A01A1F22EF8
+	for <lists+keyrings@lfdr.de>; Mon, 12 Feb 2024 19:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3132C4644E;
-	Mon, 12 Feb 2024 19:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1CA47773;
+	Mon, 12 Feb 2024 19:47:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="nxvjID8z"
 X-Original-To: keyrings@vger.kernel.org
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08A945014;
-	Mon, 12 Feb 2024 19:20:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AB947F45;
+	Mon, 12 Feb 2024 19:47:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707765615; cv=none; b=kxjD0oaB860QQMwrX25yE1mS1iqsJGhY2USXYr5rFLI3gViCCf6ckiR0pnSmgfr2WhKIUEQE/C+oKuqhZ7xd/7MbW0nRbITtr8nKTDRIidkcjsBFrE/Vtr+7+t1qkMwAEkTLS8ekMheX6bP7Ti34EeoGaKxeWNjugCmfafcdLIA=
+	t=1707767278; cv=none; b=skfmIl3jOljPoV105VLmbu/KTLIXxEwY+Pp7bsSmf+1v6lcf5XLkUld8Nged3E4B5dg/Wz36Z3Wn8WSLi1yBuz2MfpeRqbJ9X+gmD6a4HUM6Ka4UKNCoeK9lKGmqrnikMFDtrQKGLddPKWbu6cf5xLFLPSONkVyPAnzkF444mX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707765615; c=relaxed/simple;
-	bh=FVraK5VpA8KDPuPKggW2NuN6F75oJkEORc7dRBwXXsM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pYSMzs3apvenakQEAeHRiUogcb08EB/87MmjZX0esyPLwZsD1oS+USkZH4rdg5KIEForpn+7pjBrPfnnrUzuy9GmGoU8cyE6U+qR3iyiL2lAYz9vebl/QgcJvWbt30GuD36W7myrc86XHCHOkdqQgzy4OHjFLOf7yvpBzWogWAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 7D9D52800E5D0;
-	Mon, 12 Feb 2024 20:20:09 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 664C0473EC7; Mon, 12 Feb 2024 20:20:09 +0100 (CET)
-Date: Mon, 12 Feb 2024 20:20:09 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: David Howells <dhowells@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: Re: [PATCH v2] X.509: Introduce scope-based x509_certificate
- allocation
-Message-ID: <20240212192009.GA13884@wunner.de>
-References: <4143b15418c4ecf87ddeceb36813943c3ede17aa.1707734526.git.lukas@wunner.de>
- <65ca6c5ab2728_5a7f294fe@dwillia2-xfh.jf.intel.com.notmuch>
+	s=arc-20240116; t=1707767278; c=relaxed/simple;
+	bh=zJTgtxIKXgoU9MG2O9BnZcboJP5eJ6Oewa5Hsjb/uRI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qX9mVrH9aWJq+vbGLmi8lutP9pdkEdzBjusnudixg2mTaavIQK5Jh2ekdfwRto5tH7DLM0Ok3mUguZFTDOE23LpKO0215b3oqszG6HRgAopvF79hd4JOqRVO9Sns7zUgqOPwjf7BUDvkoZ9SGIAsIPegVMaGHvV7HCg/yrA5mx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=nxvjID8z; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41CJffmB020322;
+	Mon, 12 Feb 2024 19:47:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=6L3jpxBwkyfcvRtH8S/uSaadMDWnvfPBo1NAJUDPJUk=;
+ b=nxvjID8zwQcQynlc6Me8SNDzFKVHc8Tsn/lvnutsNlnI/d9gjMH2sXwjaZThXhPYUNGu
+ FGGWWIe175KQBGtX0kooKCVaCbFmTHtmXnUNlb/9e4qyobKRbTUD8bPF34uOkfx90SGS
+ haBvaTiTuwR06O9QW6XgBg40EsRhuJTOAEGvGf8k0CfQhKdsQ+fNbSnlbiBQRidKBkA5
+ OoDK+m1xHRjDOO2ozZ2a8xZS1RjFWLxugwT06+e8cDacoXpoeAsv/uTYRQY+0ClBAEEO
+ HqCPROFBFc6ueNnO/inoxKuTX/7qF/otZsXk7ICyawfypqZPGrSlD5+vnd0bsTwb7aFF LA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w7sgw0b2x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Feb 2024 19:47:27 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41CJgDOR021802;
+	Mon, 12 Feb 2024 19:47:27 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w7sgw0b2f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Feb 2024 19:47:26 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41CIQVXR032605;
+	Mon, 12 Feb 2024 19:47:25 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w6kftb2em-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 Feb 2024 19:47:25 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41CJlMxd21889752
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 12 Feb 2024 19:47:25 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BD80758055;
+	Mon, 12 Feb 2024 19:47:22 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2019F58043;
+	Mon, 12 Feb 2024 19:47:21 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 12 Feb 2024 19:47:21 +0000 (GMT)
+Message-ID: <155295d9-6cf3-4e66-9bfa-27c1a8e62694@linux.ibm.com>
+Date: Mon, 12 Feb 2024 14:47:20 -0500
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <65ca6c5ab2728_5a7f294fe@dwillia2-xfh.jf.intel.com.notmuch>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 24/25] ima: Make it independent from 'integrity' LSM
+Content-Language: en-US
+To: Roberto Sassu <roberto.sassu@huaweicloud.com>, viro@zeniv.linux.org.uk,
+        brauner@kernel.org, chuck.lever@oracle.com, jlayton@kernel.org,
+        neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
+        eric.snowberg@oracle.com, dhowells@redhat.com, jarkko@kernel.org,
+        stephen.smalley.work@gmail.com, eparis@parisplace.org,
+        casey@schaufler-ca.com, shuah@kernel.org, mic@digikod.net
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        selinux@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        Roberto Sassu <roberto.sassu@huawei.com>
+References: <20240115181809.885385-1-roberto.sassu@huaweicloud.com>
+ <20240115181809.885385-25-roberto.sassu@huaweicloud.com>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20240115181809.885385-25-roberto.sassu@huaweicloud.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Dx0riDMbYA92UQJVBQpjCX7PeCl41sXr
+X-Proofpoint-ORIG-GUID: lBW5bSawebGnMLF6HBsmtLn_O5yit_IQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-12_16,2024-02-12_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=561
+ bulkscore=0 priorityscore=1501 phishscore=0 malwarescore=0 spamscore=0
+ clxscore=1015 impostorscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2402120152
 
-On Mon, Feb 12, 2024 at 11:07:06AM -0800, Dan Williams wrote:
-> Lukas Wunner wrote:
-> > In x509_cert_parse(), add a hint for the compiler that kzalloc() never
-> > returns an ERR_PTR().  Otherwise the compiler adds a gratuitous IS_ERR()
-> > check on return.  Introduce a handy assume() macro for this which can be
-> > re-used elsewhere in the kernel to provide hints for the compiler.
-[...]
-> >  	cert = kzalloc(sizeof(struct x509_certificate), GFP_KERNEL);
-> > +	assume(!IS_ERR(cert)); /* Avoid gratuitous IS_ERR() check on return */
+
+
+On 1/15/24 13:18, Roberto Sassu wrote:
+> From: Roberto Sassu <roberto.sassu@huawei.com>
 > 
-> I like the idea of assume() I just wonder if it should move inside of
-> the kmalloc() inline definition itself? I.e. solve the "cleanup.h" vs
-> ERR_PTR() rough edge more generally.
+> Make the 'ima' LSM independent from the 'integrity' LSM by introducing IMA
+> own integrity metadata (ima_iint_cache structure, with IMA-specific fields
+> from the integrity_iint_cache structure), and by managing it directly from
+> the 'ima' LSM.
+> 
+> Create ima_iint.c and introduce the same integrity metadata management
+> functions found in iint.c (renamed with ima_). However, instead of putting
+> metadata in an rbtree, reserve space from IMA in the inode security blob
+> for a pointer, and introduce the ima_inode_set_iint()/ima_inode_get_iint()
+> primitives to store/retrieve that pointer. This improves search time from
+> logarithm to constant.
 
-I've tried that but total vmlinux size increased by 448 bytes.
-It seems to cause additional code or padding somewhere.  To avoid
-pushback because of that, I confined it to just x509_cert_parse().
+logarithmic
 
-I should mention that there's a coccinelle rule which warns if
-someone performs an IS_ERR() check on a kmalloc'ed pointer
-(scripts/coccinelle/null/eno.cocci).  Which is why there likely
-aren't any offenders in the tree.  That rule is triggered by
-this assume() clause, but it's obviously a false-positive.
-I'll look into suppressing that warning if/when this patch
-gets accepted.
+> 
+> Consequently, don't include the inode pointer as field in the
+> ima_iint_cache structure, since the association with the inode is clear.
+> Since the inode field is missing in ima_iint_cache, pass the extra inode
+> parameter to ima_get_verity_digest().
+> 
+> Prefer storing the pointer instead of the entire ima_iint_cache structure,
+> to avoid too much memory pressure. Use the same mechanism as before, a
+> cache named ima_iint_cache (renamed from iint_cache), to quickly allocate
+> a new ima_iint_cache structure when requested by the IMA policy.
+> 
+> Create the new ima_iint_cache in ima_iintcache_init(),
+> called by init_ima_lsm(), during the initialization of the 'ima' LSM. And,
+> register ima_inode_free_security() to free the ima_iint_cache structure, if
+> exists.
+> 
+> Replace integrity_iint_cache with ima_iint_cache in various places of the
+> IMA code. Also, replace integrity_inode_get() and integrity_iint_find(),
+> respectively with ima_inode_get() and ima_iint_find().
+> 
+> Finally, move the remaining IMA-specific flags
+> to security/integrity/ima/ima.h, since they are now unnecessary in the
+> common integrity layer.
+> 
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
 
-I should also mention that assume() currently only has an effect
-with gcc.  clang-15 just ignored it during my testing.
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 
-Thanks,
-
-Lukas
 
