@@ -1,218 +1,156 @@
-Return-Path: <keyrings+bounces-586-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-587-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BD384FD99
-	for <lists+keyrings@lfdr.de>; Fri,  9 Feb 2024 21:32:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15350850D51
+	for <lists+keyrings@lfdr.de>; Mon, 12 Feb 2024 06:12:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22F011C215FC
-	for <lists+keyrings@lfdr.de>; Fri,  9 Feb 2024 20:32:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C7041C2120B
+	for <lists+keyrings@lfdr.de>; Mon, 12 Feb 2024 05:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C8653A9;
-	Fri,  9 Feb 2024 20:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0675396;
+	Mon, 12 Feb 2024 05:12:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bPH8JGEm"
 X-Original-To: keyrings@vger.kernel.org
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED1023B1;
-	Fri,  9 Feb 2024 20:32:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2068B2F55;
+	Mon, 12 Feb 2024 05:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707510731; cv=none; b=mr0mV2Thy90uzXwhmGLtG/GXiYACATOlmTKiqFbvbBWZ4y0XTxwRfSrdUx2wqBsmpDNPerLKhKg0Jpsi6f66liVzzjfrjft4mSBauEDXIXsk8xJBGDRWL3yuwKiGI6Yg9jGCW1c6cIiH4I6WLvKmMJ0YTOlD24P0UTqS8aY97U0=
+	t=1707714725; cv=none; b=LsouEeBWJhTZv+CAnC2SWXLa1mLTYsyK5pzR5kExViNZhmfQN3Fmnu1DFBigtZiZFoQwv/M7dzzl4tyfF6JdjVwRBsGNpFXXjgfUAxA2P6LA37jZuk9tY2LrVVc1oqdrBmxMrgLCLZr4RqM/mMHhwDKrU6VcLjua0u27+2M+3BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707510731; c=relaxed/simple;
-	bh=W4hX4Fr27kDfOqCWn6zXDk0H9YB1rKxtALyMNKxVk4o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=by9URIP60WTQrCWub5K32hvG3K43Xv7yJlU4QT+TfazPQ9lHlq/4P/1w7BJdxS4Z9+njgFzxKsQ7Q1HStGHC5IFHKag9kfbR4I9CgQy9a1e4IwilVQ8JdvZPcPFl7pb5cSSnT8e9X93vt1Fkt78+QSriscI7CbGppoAFQxXQyRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 9FB682800B767;
-	Fri,  9 Feb 2024 21:32:04 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 808144D3896; Fri,  9 Feb 2024 21:32:04 +0100 (CET)
-Date: Fri, 9 Feb 2024 21:32:04 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linuxarm@huawei.com,
-	David Box <david.e.box@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>, "Li, Ming" <ming4.li@intel.com>,
-	Zhi Wang <zhi.a.wang@intel.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Alexander Graf <graf@amazon.com>
-Subject: Re: [PATCH 07/12] spdm: Introduce library to authenticate devices
-Message-ID: <20240209203204.GA5850@wunner.de>
-References: <cover.1695921656.git.lukas@wunner.de>
- <89a83f42ae3c411f46efd968007e9b2afd839e74.1695921657.git.lukas@wunner.de>
- <5d0e75-993c-3978-8ccf-60bfb7cac10@linux.intel.com>
+	s=arc-20240116; t=1707714725; c=relaxed/simple;
+	bh=Inesfow/+o5xS1pMzhZ/lezVf1fXzsERlilchZkTN6E=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=StrILRXzTLXh4fkTSyv3S35Cx+f9SBK+TSq5Hph4ZT8ijt1WD5A0dwp9M+DIxrAN+vCXnwj+V8p7pHZgxXX9IkPvILyDisHY2uCgss6yNiug5l+RMhgXAM+DZWQ7wXIxkisjO/6RboBpVrWC1YYC+6bivmbOuOX0Rv49GOZX/ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bPH8JGEm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232E2C433C7;
+	Mon, 12 Feb 2024 05:11:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707714724;
+	bh=Inesfow/+o5xS1pMzhZ/lezVf1fXzsERlilchZkTN6E=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=bPH8JGEmOQUUJH8kCoM0AXr8VrwJ1nDOlPP3I3GF0e1ANYesf6SzSYI2AgIQLnkaF
+	 KNrv5iI560dWFuyoTiLoeVVlYma+fgFfYY6QHCYej3KUzFPP8UCQe34xeslf2V6DIK
+	 hWmYMfXjsassBvEaZN4Tv0129KMtyRvqanlHpy/tkS7xeNA2JJQIcMiXQ07wBb66W0
+	 g/BnedkJyc40AAog97Wokaqhw+jfw7ukGZmlS6Dqi/EJ2Q8QP01nMHhGEAQiFfMFzd
+	 XFhWDaXNf+ySOK1PEsAivM0Ce6eM84MgzGLNbPM5dROAb7VHNuU7MnJgotURudWXFO
+	 vGo6Jit3yWYKg==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5d0e75-993c-3978-8ccf-60bfb7cac10@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 12 Feb 2024 05:11:57 +0000
+Message-Id: <CZ2UCEZ1VT96.2QZE7X8CS8EJ2@seitikki>
+Cc: "Jiang, Dave" <dave.jiang@intel.com>, "linux-integrity@vger.kernel.org"
+ <linux-integrity@vger.kernel.org>, "linux-cxl@vger.kernel.org"
+ <linux-cxl@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "keyrings@vger.kernel.org"
+ <keyrings@vger.kernel.org>, "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>, "nvdimm@lists.linux.dev"
+ <nvdimm@lists.linux.dev>
+Subject: Re: [PATCH] KEYS: encrypted: Add check for strsep
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Mimi Zohar" <zohar@linux.ibm.com>, "Dan Williams"
+ <dan.j.williams@intel.com>, "Verma, Vishal L" <vishal.l.verma@intel.com>,
+ "paul@paul-moore.com" <paul@paul-moore.com>, "dhowells@redhat.com"
+ <dhowells@redhat.com>, "yaelt@google.com" <yaelt@google.com>,
+ "serge@hallyn.com" <serge@hallyn.com>, "nichen@iscas.ac.cn"
+ <nichen@iscas.ac.cn>, "sumit.garg@linaro.org" <sumit.garg@linaro.org>,
+ "jmorris@namei.org" <jmorris@namei.org>
+X-Mailer: aerc 0.15.2
+References: <20231108073627.1063464-1-nichen@iscas.ac.cn>
+ <4d3465b48b9c5a87deb385b15bf5125fc1704019.camel@intel.com>
+ <e3275c0cfe21d75e0d71ea3fc24a31252efc9ad6.camel@linux.ibm.com>
+ <e3b1a5e532ed86e674385abc4812c5a774f851d4.camel@intel.com>
+ <49c48e3e96bf0f5ebef14e7328cc8a6ca6380e08.camel@linux.ibm.com>
+ <50c2fa781e3266ee8151afdef5a8659d63ca952e.camel@intel.com>
+ <CYS7QMYS8XAJ.2QPI3MS5KXK8E@suppilovahvero>
+ <CYS7WMFLXNE1.35OBTKTONKNX3@suppilovahvero>
+ <65b93f2b3099b_5cc6f29453@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+ <CYU2JV57VXA9.3C5QTG4LX50TD@suppilovahvero>
+ <d0ccd2f19ed1adccc8f3dfe677c30bc44feb3d36.camel@linux.ibm.com>
+In-Reply-To: <d0ccd2f19ed1adccc8f3dfe677c30bc44feb3d36.camel@linux.ibm.com>
 
-On Tue, Oct 03, 2023 at 01:35:26PM +0300, Ilpo Järvinen wrote:
-> On Thu, 28 Sep 2023, Lukas Wunner wrote:
-> > +typedef int (spdm_transport)(void *priv, struct device *dev,
-> > +                          const void *request, size_t request_sz,
-> > +                          void *response, size_t response_sz);
-> 
-> This returns a length or an error, right? If so return ssize_t instead.
-> 
-> If you make this change, alter the caller types too.
+On Fri Feb 2, 2024 at 12:05 AM UTC, Mimi Zohar wrote:
+> On Thu, 2024-02-01 at 23:43 +0200, Jarkko Sakkinen wrote:
+> > On Tue Jan 30, 2024 at 8:25 PM EET, Dan Williams wrote:
+> > > Jarkko Sakkinen wrote:
+> > > > On Tue Jan 30, 2024 at 7:22 PM EET, Jarkko Sakkinen wrote:
+> > > > > On Wed Jan 24, 2024 at 11:10 PM EET, Verma, Vishal L wrote:
+> > > > > > On Wed, 2024-01-24 at 15:40 -0500, Mimi Zohar wrote:
+> > > > > > > On Wed, 2024-01-24 at 20:10 +0000, Verma, Vishal L wrote:
+> > > > > > > > Ah, thanks for confirming! Would you like me to send a
+> > > > > > > > revert patch or
+> > > > > > > > will you do it?
+> > > > > > >=20
+> > > > > > > Revert "KEYS: encrypted: Add check for strsep"
+> > > > > > >    =20
+> > > > > > > This reverts commit
+> > > > > > > b4af096b5df5dd131ab796c79cedc7069d8f4882.
+> > > > > > >    =20
+> > > > > > > New encrypted keys are created either from kernel-generated=
+=20
+> > > > > > > random
+> > > > > > > numbers or user-provided decrypted data.  Revert the change
+> > > > > > > requiring
+> > > > > > > user-provided decrypted data.
+> > > > > > >=20
+> > > > > > >=20
+> > > > > > > Can I add your Reported-by?
+> > > > > >=20
+> > > > > > Yes that works, Thank you.
+> > > > >=20
+> > > > > This went totally wrong IMHO.
+> > > > >=20
+> > > > > Priority should be to locate and fix the bug not revert useful
+> > > > > stuff
+> > > > > when a bug is found that has limited scope.
+> > > >=20
+> > > > By guidelines here the commit is also a bug fix and reverting
+> > > > such commit means seeding a bug to the mainline. Also the klog
+> > > > message alone is a bug fix here. So also by book it really has
+> > > > to come back as it was already commit because we cannot
+> > > > knowingly mount bugs to the mainline, right?
+> > >=20
+> > > No, the commit broke userspace. The rule is do not cause
+> > > regressions
+> > > even if userspace is abusing the ABI in an undesirable way. Even
+> > > the
+> > > new pr_info() is a log spamming behavior change, a pr_debug() might
+> > > be
+> > > suitable, but otherwise a logic change here needs a clear
+> > > description
+> > > about what is broken about the old userspace behavior and why the
+> > > kernel
+> > > can not possibly safely handle it.
+> >=20
+> > The rationale literally gives empirical proof that the log message
+> > is useful by measure. It would be useless if log level is decreased
+> > to debug, as then sysadmin's won't take notice. I don't really know
+> > what is the definition of "spam" here but at least for me actually
+> > useful log message are not in that category.
+> >=20
+> > Issue was legit but git revert is objectively an incorrect way to
+> > address the bug.
+>
+> No, I made a mistake in upstreaming the patch in the first place.  It
+> broke the original "encrypted" keys usage.  Reverting it was the
+> correct solution.
+>
+> Mimi
 
-Alright, I've changed the types in __spdm_exchange() and spdm_exchange().
+The way I see it the semantic change caused the bug because it was not
+backwards compatible. That does not make the log message less useful.
 
-However the callers of those functions assign the result to an "rc" variable
-which is also used to receive an "int" return value.
-E.g. spdm_get_digests() assigns the ssize_t result of spdm_exchange() to rc
-but also the int result of crypto_shash_update().
-
-It feels awkward to change the type of "rc" to "ssize_t" in those
-functions, so I kept "int".
-
-
-> > +} __packed;
-> > +
-> > +#define SPDM_GET_CAPABILITIES 0xE1
-> 
-> There's non-capital hex later in the file, please try to be consistent.
-
-The spec uses capital hex characters, so this was done to ease
-connecting the implementation to the spec.
-
-OTOH I don't want to capitalize all the hex codes in enum spdm_error_code.
-
-So I guess consistency takes precedence and I've amended the
-patch to downcase all hex characters, as you've requested.
-
-
-> > +struct spdm_error_rsp {
-> > +	u8 version;
-> > +	u8 code;
-> > +	enum spdm_error_code error_code:8;
-> > +	u8 error_data;
-> > +
-> > +	u8 extended_error_data[];
-> > +} __packed;
-> 
-> Is this always going to produce the layout you want given the alignment 
-> requirements for the storage unit for u8 and enum are probably different?
-
-Yes, the __packed attribute forces the compiler to avoid padding.
-
-
-> > +	spdm_state->responder_caps = le32_to_cpu(rsp->flags);
-> 
-> Earlier, unaligned accessors where used with the version_number_entries.
-> Is it intentional they're not used here (I cannot see what would be 
-> reason for this difference)?
-
-Thanks, good catch.  Indeed this is not necessarily naturally aligned
-because the GET_CAPABILITIES request and response succeeds the
-GET_VERSION response in the same allocation.  And the GET_VERSION
-response size is a multiple of 2, but not always a multiple of 4.
-
-So I've amended the patch to use a separate allocation for the
-GET_CAPABILITIES request and response.  The spec-defined struct layout
-of those messages is such that the 32-bit accesses are indeed always
-naturally aligned.
-
-The existing unaligned accessor in spdm_get_version() turned out
-to be unnecessary after taking a closer look, so I dropped that one.
-
-
-> > +static int spdm_negotiate_algs(struct spdm_state *spdm_state,
-> > +			       void *transcript, size_t transcript_sz)
-> > +{
-> > +	struct spdm_req_alg_struct *req_alg_struct;
-> > +	struct spdm_negotiate_algs_req *req;
-> > +	struct spdm_negotiate_algs_rsp *rsp;
-> > +	size_t req_sz = sizeof(*req);
-> > +	size_t rsp_sz = sizeof(*rsp);
-> > +	int rc, length;
-> > +
-> > +	/* Request length shall be <= 128 bytes (SPDM 1.1.0 margin no 185) */
-> > +	BUILD_BUG_ON(req_sz > 128);
-> 
-> I don't know why this really has to be here? This could be static_assert()
-> below the struct declaration.
-
-A follow-on patch to add key exchange support increases req_sz based on
-an SPDM_MAX_REQ_ALG_STRUCT macro defined here in front of the function
-where it's used.  That's the reason why the size is checked here as well.
-
-
-> > +static int spdm_get_certificate(struct spdm_state *spdm_state, u8 slot)
-> > +{
-> > +	struct spdm_get_certificate_req req = {
-> > +		.code = SPDM_GET_CERTIFICATE,
-> > +		.param1 = slot,
-> > +	};
-> > +	struct spdm_get_certificate_rsp *rsp;
-> > +	struct spdm_cert_chain *certs = NULL;
-> > +	size_t rsp_sz, total_length, header_length;
-> > +	u16 remainder_length = 0xffff;
-> 
-> 0xffff in this function should use either U16_MAX or SZ_64K - 1.
-
-The SPDM spec uses 0xffff so I'm deliberately using that as well
-to make the connection to the spec obvious.
-
-
-> > +static void spdm_create_combined_prefix(struct spdm_state *spdm_state,
-> > +					const char *spdm_context, void *buf)
-> > +{
-> > +	u8 minor = spdm_state->version & 0xf;
-> > +	u8 major = spdm_state->version >> 4;
-> > +	size_t len = strlen(spdm_context);
-> > +	int rc, zero_pad;
-> > +
-> > +	rc = snprintf(buf, SPDM_PREFIX_SZ + 1,
-> > +		      "dmtf-spdm-v%hhx.%hhx.*dmtf-spdm-v%hhx.%hhx.*"
-> > +		      "dmtf-spdm-v%hhx.%hhx.*dmtf-spdm-v%hhx.%hhx.*",
-> > +		      major, minor, major, minor, major, minor, major, minor);
-> 
-> Why are these using s8 formatting specifier %hhx ??
-
-I don't quite follow, "%hhx" is an unsigned char, not a signed char.
-
-spdm_state->version may contain e.g. 0x12 which is converted to
-"dmtf-spdm-v1.2.*" here.
-
-The question is what happens if the major or minor version goes beyond 9.
-The total length of the prefix is hard-coded by the spec, hence my
-expectation is that 1.10 will be represented as "dmtf-spdm-v1.a.*"
-to not exceed the length.  The code follows that expectation.
-
-Thanks for taking a look!   I've amended the patch to take all your
-other feedback into account.
-
-Lukas
+BR, Jarkko
 
