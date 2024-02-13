@@ -1,121 +1,111 @@
-Return-Path: <keyrings+bounces-610-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-611-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5034851F6C
-	for <lists+keyrings@lfdr.de>; Mon, 12 Feb 2024 22:18:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5094852820
+	for <lists+keyrings@lfdr.de>; Tue, 13 Feb 2024 06:11:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A4D0B2139D
-	for <lists+keyrings@lfdr.de>; Mon, 12 Feb 2024 21:18:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 119241C22D54
+	for <lists+keyrings@lfdr.de>; Tue, 13 Feb 2024 05:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482A04E1CB;
-	Mon, 12 Feb 2024 21:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="aXaB4ioj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8175E816;
+	Tue, 13 Feb 2024 05:11:18 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4914DA01
-	for <keyrings@vger.kernel.org>; Mon, 12 Feb 2024 21:17:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8319111717;
+	Tue, 13 Feb 2024 05:11:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707772634; cv=none; b=rW0/ZRoBKeiJAUVJG5bH/vPoAkHsEH78IBK3UltAWsVRYIhWx4oP05qxIa4Jv3k52FQtTwQ8Qj5fgObUluu7vFXfp50PtAx4CZEbAfwCzWz6nbLPucVP+1JjQy3MgxtJ57+E3ZW+IIf8fFwsohbn1cNgylKuvGmLh4rNdSEv/FA=
+	t=1707801078; cv=none; b=MT0h4E07Np+hx/tmCCf2CWAhLARmGwHrT3xSG4m70Pd9zqJShoCjenhpY+MSy72mb0lGFSu8dTJWH8ZyU4rRsA2KErRjsHL41/k8rLDhD0UCi9D1WYTZkLeC0Iv+7qOH17aRW6ngEncAudchvR8lCltEnbJo3WdyWti0ndHOMcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707772634; c=relaxed/simple;
-	bh=sKyYv3h5LS/Xc+JkhqC/7H32Ejapjycaf0b1D5xsxdY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TA9+Pt+eFaKRRt1N5zfSxH9Tmye7Cx7RYAwMaKZJCq1ibuwOWJSIOr/oe/eGPnYOsVPLvJEh+up66dubA5hzEpMOgsX5AWlQdA0/CfUV/W4y++FaiA77YmAGKFnjK2WbS3MJhC+iW1GnnlL1v8pCnyoaLiCW8nOCUje6utapbCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=aXaB4ioj; arc=none smtp.client-ip=209.85.219.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-dbed179f0faso3281745276.1
-        for <keyrings@vger.kernel.org>; Mon, 12 Feb 2024 13:17:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1707772630; x=1708377430; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZsnFwrkSPFxLZoShd+G+bJFEOcLvvtQSuD3i6JLjUWA=;
-        b=aXaB4iojMUi4axEelhZ0stCsfoeKjXkqyvnfbZrFMOcXTy3lf8VtkFY2Ko0RCxA8hK
-         gUOqXp9eCWzlicRERGuZaZIrFN3wWQn1ZdWqtOkFPlaofdV/+HODU8yTjxURHdlFqtLv
-         ZLO7i2Hdcr3WEQAjn7Qo3jo6Dh1fnT7Ju+gGTnMTUEW1Lq3b+GAmGjkBLvTcyNsb7IvX
-         C9X4aDlG/kdcKibBXcjX14+uys8CEASKUh7LIF5o1Eddxy2q+ucLTtVrCoHVOmmNl6pL
-         wO0CWg7c5gxyx8NczGZwqKRgGSDYgUCPFjEjc2NIjT43UEFxYtnTeKv4KEY/kly5y2Il
-         CPqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707772630; x=1708377430;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZsnFwrkSPFxLZoShd+G+bJFEOcLvvtQSuD3i6JLjUWA=;
-        b=nfcs55lM4C/mlEyzbtuwWmuTr6sSIZDT5OrCKmUQbv2StdE/EFoJ1s9EcFDgiTX/m3
-         hgB+6goCzsd8UN2IyhyAALhVoNjtHOUWwdAZSuwIgE6owkrS1EuOL9yF0PPjmeQuNhv+
-         AqiZ46AHH3oBF8KVokkiGY1gizKRbzbF8uZkdiiClzHFBDNdigQHo/jBRYCluwcQE3F1
-         9TWr2cvGen0Rsrtb787sRFr/rPH+27DBgD/f6J+gc3n/qzJLNMI9vQu8B2em4173S5Vd
-         mLWH8KFS6Ozx5mHH7M3MmgpIqEgLvDu2d+VXFCcdPtYKbDBmB4uYQs5UdF+r+JZf85Yi
-         tlMg==
-X-Gm-Message-State: AOJu0YxN/O38oc/tQVm0WVke92KYsrImzZWMvI2bl0I4haODG7IKcttm
-	V4UU1758zdQ8d1pD6oZZHiJvYBIaNud3dZZFUw3gPtQ5oz0Ff7vRqm53s4C4OancpbZdT4+X9+8
-	771k3RN4rKgukq5q6wo8qAiC5bINO332uBOtU
-X-Google-Smtp-Source: AGHT+IEOi98MZdQxOtaW3bif3LCitIRo8nxqZzxmxH4vbtrZo7RwV5CIap8rAl9zZwh9y87ZH2fwVGa5f+4Y+dV/RGg=
-X-Received: by 2002:a81:4e10:0:b0:604:541d:9d54 with SMTP id
- c16-20020a814e10000000b00604541d9d54mr598093ywb.21.1707772629971; Mon, 12 Feb
- 2024 13:17:09 -0800 (PST)
+	s=arc-20240116; t=1707801078; c=relaxed/simple;
+	bh=CHJ+Aj4mFHtfBR7E6FlZ5tP+277WRqFkwNzHnRNxBlo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p4r/nx6X6yb+Op5JDQBjSGDNLo/sMtbpkkcMZ4VGMhkib8eYthCJdWKLx0J3F4iUEksw/VT7JOssOsC/mQLIxirNZL7VA34mwAmwTqPPw/v2DtncndT7DnOaLeOq4yBdAaw8SNld58/nGyIDid32GfKA7EhShnrozljVRP9XcAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id E4191300037E4;
+	Tue, 13 Feb 2024 06:04:45 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id D045C1D43B9; Tue, 13 Feb 2024 06:04:45 +0100 (CET)
+Date: Tue, 13 Feb 2024 06:04:45 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: David Howells <dhowells@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: Re: [PATCH v2] X.509: Introduce scope-based x509_certificate
+ allocation
+Message-ID: <20240213050445.GA27995@wunner.de>
+References: <4143b15418c4ecf87ddeceb36813943c3ede17aa.1707734526.git.lukas@wunner.de>
+ <65ca6c5ab2728_5a7f294fe@dwillia2-xfh.jf.intel.com.notmuch>
+ <20240212192009.GA13884@wunner.de>
+ <65ca861e14779_5a7f2949e@dwillia2-xfh.jf.intel.com.notmuch>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240115181809.885385-1-roberto.sassu@huaweicloud.com>
- <20240115181809.885385-13-roberto.sassu@huaweicloud.com> <305cd1291a73d788c497fe8f78b574d771b8ba41.camel@linux.ibm.com>
-In-Reply-To: <305cd1291a73d788c497fe8f78b574d771b8ba41.camel@linux.ibm.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Mon, 12 Feb 2024 16:16:59 -0500
-Message-ID: <CAHC9VhQ7DgPJtNTRCYneu_XnpRmuwfPCW+FqVuS=k6U5-F6pJw@mail.gmail.com>
-Subject: Re: [PATCH v9 12/25] security: Introduce file_post_open hook
-To: Mimi Zohar <zohar@linux.ibm.com>
-Cc: Roberto Sassu <roberto.sassu@huaweicloud.com>, viro@zeniv.linux.org.uk, 
-	brauner@kernel.org, chuck.lever@oracle.com, jlayton@kernel.org, neilb@suse.de, 
-	kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com, jmorris@namei.org, 
-	serge@hallyn.com, dmitry.kasatkin@gmail.com, eric.snowberg@oracle.com, 
-	dhowells@redhat.com, jarkko@kernel.org, stephen.smalley.work@gmail.com, 
-	eparis@parisplace.org, casey@schaufler-ca.com, shuah@kernel.org, 
-	mic@digikod.net, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Roberto Sassu <roberto.sassu@huawei.com>, Stefan Berger <stefanb@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <65ca861e14779_5a7f2949e@dwillia2-xfh.jf.intel.com.notmuch>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Mon, Feb 12, 2024 at 4:06=E2=80=AFPM Mimi Zohar <zohar@linux.ibm.com> wr=
-ote:
->
-> Hi Roberto,
->
->
-> > diff --git a/security/security.c b/security/security.c
-> > index d9d2636104db..f3d92bffd02f 100644
-> > --- a/security/security.c
-> > +++ b/security/security.c
-> > @@ -2972,6 +2972,23 @@ int security_file_open(struct file *file)
-> >       return fsnotify_perm(file, MAY_OPEN);  <=3D=3D=3D  Conflict
->
-> Replace with "return fsnotify_open_perm(file);"
->
-> >  }
-> >
->
-> The patch set doesn't apply cleaning to 6.8-rcX without this change.  Unl=
-ess
-> there are other issues, I can make the change.
+On Mon, Feb 12, 2024 at 12:57:02PM -0800, Dan Williams wrote:
+> Lukas Wunner wrote:
+> > On Mon, Feb 12, 2024 at 11:07:06AM -0800, Dan Williams wrote:
+> > > Lukas Wunner wrote:
+> > > > In x509_cert_parse(), add a hint for the compiler that kzalloc()
+> > > > never returns an ERR_PTR().  Otherwise the compiler adds a gratuitous
+> > > > IS_ERR() check on return.  Introduce a handy assume() macro for this
+> > > > which can be re-used elsewhere in the kernel to provide hints for the
+> > > > compiler.
+> 
+> Might I suggest the following:
+> 
+> > diff --git a/include/linux/compiler.h b/include/linux/compiler.h
+> > index bb1339c..384803e 100644
+> > --- a/include/linux/compiler.h
+> > +++ b/include/linux/compiler.h
+> > @@ -139,6 +139,8 @@ void ftrace_likely_update(struct ftrace_likely_data *f, int val,
+> >  } while (0)
+> >  #endif
+> >  
+> > +#define assume(cond) do if(!(cond)) __builtin_unreachable(); while(0)
+> 
+> s/__builtin_unreachable()/unreachable()/?
 
-I take it this means you want to pull this via the IMA/EVM tree?
+I tried that and it didn't work.  The superfluous IS_ERR() check
+was not optimized away by gcc.  It seemed to remove the unreachable
+portion of the code before using it for optimization of the code.
 
---=20
-paul-moore.com
+
+> Move this to cleanup.h and add extend the DEFINE_FREE() comment about
+> its usage:
+
+Yes, spreading the knowledge in this way might make sense.
+I'll wait for Peter to weigh in before submitting that though.
+
+Thanks,
+
+Lukas
 
