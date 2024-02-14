@@ -1,277 +1,242 @@
-Return-Path: <keyrings+bounces-638-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-639-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 516C5853748
-	for <lists+keyrings@lfdr.de>; Tue, 13 Feb 2024 18:23:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4C28540B8
+	for <lists+keyrings@lfdr.de>; Wed, 14 Feb 2024 01:13:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0EFB1F2352A
-	for <lists+keyrings@lfdr.de>; Tue, 13 Feb 2024 17:23:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6E0D285CD5
+	for <lists+keyrings@lfdr.de>; Wed, 14 Feb 2024 00:13:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335125FBB5;
-	Tue, 13 Feb 2024 17:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9DE8801;
+	Wed, 14 Feb 2024 00:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="N2SCqywr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gk0SvyMT"
 X-Original-To: keyrings@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBD05FDD8;
-	Tue, 13 Feb 2024 17:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6150A7F;
+	Wed, 14 Feb 2024 00:13:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845029; cv=none; b=qw//lpaHLpHnn2nGBWOw9hsPWlgHQoGpwSQQrSyBOj3/8QlMRJoid53bcvfnE0JQ9+t+fB3HTi3PPBHMVJNwaJ/DfPoPRISgvjdQ3I6o1Sjl9YhMPrzXb1WI5gb61oUhS0XJuC6Es/8jbFIWF7g3yHiLRqfzfo1M696nOR72vUQ=
+	t=1707869591; cv=none; b=l1aSW++2fRQxQMLYoElXeVlqJuG0sX/157geSGr2llHJWhqpHL20jkJqubnyuhCVk2bzKOEE2aaME3uch4NfwlgMh+be5gDSUfTkqVhHbSw+EifqNPANsU4bunVJY7A3a+JVET73sJ4I0pA6cao7vTtEc92ZyPSOT+letnXhLzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845029; c=relaxed/simple;
-	bh=Uco9el8x7+mOayx+8z5i5DfBkqWn1LaE6BiIlMrR4rA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tvyKBhrtL3cr9NO1timNbL0votyfJX/GBtoYm1ef7j2AvgojJfliFQCPZTdeGZskMXPuRiFPigD9XxtS1cYf5F1df4UJ0iThWdtCFOcm9w9Mri4B/m240qU6BNtzQu+o9L2K+r/tE7tD2L1zVUV/dVKJ6F9dHoNjomXU/+xsRwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=N2SCqywr; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1707845025;
-	bh=Uco9el8x7+mOayx+8z5i5DfBkqWn1LaE6BiIlMrR4rA=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:From;
-	b=N2SCqywrpOD5IoAvZF/RxnaPiSi48o1q2LUzaznfDsPHgej8Lxl1EQ2xqlobZ+p1G
-	 TOBThb4k5SMlxNqCvoxA5hKT+1p4Vsiy3NuAHNmhAGSeRAvnmrc+Y6KzQjv6BAVScg
-	 4UPQAQbPLc5b/BnqGG/xrNMpr3pdoJrCF0cWiaBc=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id CB9AB1281DF8;
-	Tue, 13 Feb 2024 12:23:45 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id AS5y-vryk_2n; Tue, 13 Feb 2024 12:23:45 -0500 (EST)
-Received: from lingrow.int.hansenpartnership.com (unknown [153.66.160.227])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 2A8AB1281B09;
-	Tue, 13 Feb 2024 12:23:45 -0500 (EST)
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: linux-integrity@vger.kernel.org
-Cc: Jarkko Sakkinen <jarkko@kernel.org>,
-	keyrings@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH v7 21/21] tpm: disable the TPM if NULL name changes
-Date: Tue, 13 Feb 2024 12:13:34 -0500
-Message-Id: <20240213171334.30479-22-James.Bottomley@HansenPartnership.com>
-X-Mailer: git-send-email 2.35.3
-In-Reply-To: <20240213171334.30479-1-James.Bottomley@HansenPartnership.com>
-References: <20240213171334.30479-1-James.Bottomley@HansenPartnership.com>
+	s=arc-20240116; t=1707869591; c=relaxed/simple;
+	bh=YjRxLXMYjQj3SykZc5RCVnmpptEAKVGxlOa5zDENcso=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=sQ4ISfaY/1BmdVcZUCtiTHC/9goR+xUSCRieANMat8DmoDK0k/+y7PCv6yPNkLojbDhdpjdC1yRNEYOMeyg/gvRuMafazfP+W9zNDeoc5KwV1Tk3PDZpaHVRn6AMOgNMUMa3ldD5O5fKLYGDZbN0Z295d6rb66aPD/W+TNWUV5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gk0SvyMT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D9EC433C7;
+	Wed, 14 Feb 2024 00:13:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707869591;
+	bh=YjRxLXMYjQj3SykZc5RCVnmpptEAKVGxlOa5zDENcso=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Gk0SvyMTUVbS6SW29SW6KVXh9v+1DrxuX+rFG/jLRW5N1B+Xd3KRxvHOzIiC5smMD
+	 /mR4Q0PHlAehqCr/ZhHfq5LXDs1hOuCWzPJs1KzEy9kXejBQCARgyNn8Q0j4dDeKOu
+	 88gsgobFZ96O/n6TU28k99Ajxm0QO2aHr3uncZ/ErhPUk6FrZghzbT5xzitU1Cfh68
+	 HTEauBGoExtwBPts/NjcvYgwotuMqI/g4f5ThRYzQyw8HqDk2AIGuk2lkS4vHcmxYV
+	 9GXZcb5YVF5AwJc2E0f7cvJXhpnOE4nRVqYJRoquB/EvX9d6Oi56/ye74yyYSxudNX
+	 tFczRsTCx0iow==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 14 Feb 2024 02:13:07 +0200
+Message-Id: <CZ4D8PADNQOW.2TVPZ4KW8MV5B@kernel.org>
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "James Bottomley" <James.Bottomley@HansenPartnership.com>,
+ <linux-integrity@vger.kernel.org>
+Cc: <keyrings@vger.kernel.org>, "Ard Biesheuvel" <ardb@kernel.org>
+Subject: Re: [PATCH v7 00/21] add integrity and security to TPM2
+ transactions
+X-Mailer: aerc 0.16.0
+References: <20240213171334.30479-1-James.Bottomley@HansenPartnership.com>
+In-Reply-To: <20240213171334.30479-1-James.Bottomley@HansenPartnership.com>
 
-Update tpm2_load_context() to return -EINVAL on integrity failures and
-use this as a signal when loading the NULL context that something
-might be wrong.  If the signal fails, check the name of the NULL
-primary against the one stored in the chip data and if there is a
-mismatch disable the TPM because it is likely to have suffered a reset
-attack.
+On Tue Feb 13, 2024 at 7:13 PM EET, James Bottomley wrote:
+> The interest in securing the TPM against interposers, both active and
+> passive has risen to fever pitch with the demonstration of key
+> recovery against windows bitlocker:
+>
+> https://dolosgroup.io/blog/2021/7/9/from-stolen-laptop-to-inside-the-comp=
+any-network
+>
+> And subsequently the same attack being successful against all the
+> Linux TPM based security solutions:
+>
+> https://www.secura.com/blog/tpm-sniffing-attacks-against-non-bitlocker-ta=
+rgets
+>
+> The attacks fall into two categories:
+>
+> 1. Passive Interposers, which sit on the bus and merely observe
+> 2. Active Interposers, which try to manipulate TPM transactions on the
+>    bus using man in the middle and packet stealing to create TPM state
+>    the interposer owner desires.
+>
+> Our broadest interposer target is the use of TPM_RS_PW for password
+> authorization which sends the actual password to the TPM without any
+> obfuscation and effectively hands it to any interposer. The way to fix
+> this is to use real sessions for HMAC capabilities to ensure integrity
+> and to use parameter and response encryption to ensure confidentiality
+> of the data flowing over the TPM bus.  HMAC sessions by agreeing a
+> challenge with the TPM and then giving a response which is a HMAC of
+> the password and the challenge, so the application proves knowledge of
+> the password to the TPM without ever transmitting the password itself.
+> Using HMAC sessions when sending commands to the TPM also provides
+> some measure of protection against active interposers, since the
+> interposer can't interfere with or delete a HMAC'd command (because
+> they can't manufacture a response with the correct HMAC).
+>
+> To protect TPM transactions where there isn't a shared secret
+> (i.e. the command is something like a PCR extension which doesn't
+> involve a TPM object with a password) we have to do a bit more work to
+> set up sessions with a passed in encrypted secret (called a salt) to
+> act in place of the shared secret in the HMAC.  This secret salt is
+> effectively a random number encrypted to a public key of the TPM.  The
+> final piece of the puzzle is using parameter input and response return
+> encryption, so any interposer can't see the data passing from the
+> application to the TPM and vice versa.
+>
+> The most insidious interposer attack of all is a reset attack: since
+> the interposer has access to the TPM bus, it can assert the TPM reset
+> line any time it wants.  When a TPM resets it mostly comes back in the
+> same state except that all the PCRs are reset to their initial values.
+> Controlling the reset line allows the interposer to change the PCR
+> state after the fact by resetting the TPM and then replaying PCR
+> extends to get the PCRs into a valid state to release secrets, so even
+> if an attack event was recorded, the record is erased.  This reset
+> attack violates the fundamental princible of non-repudiability of TPM
+> logs.  Defeating the reset attack involves tying all TPM operations
+> within the kernel to a property which will change detectably if the
+> TPM is reset.  For that reason, we tie all TPM sessions to the null
+> hierarchy we obtain at start of day and whose seed changes on every
+> reset.  If an active interposer asserts a TPM reset, the new null
+> primary won't match the kernel's stored one and all TPM operations
+> will start failing because of HMAC mismatches in the sessions.  So if
+> the kernel TPM code keeps operating, it guarantees that a reset hasn't
+> occurred.
+>
+> The final part of the puzzle is that the machine owner must have a
+> fixed idea of the EK of their TPM and should have certified this with
+> the TPM manufacturer.  On every boot, the certified EK public key
+> should be used to do a make credential/activate credential attestation
+> key insertion and then the null key certified with the attestation
+> key.  We can follow a trust on first use model where an OS
+> installation will extract and verify a public EK and save it to a read
+> only file.
+>
+> This patch series adds a simple API which can ensure the above
+> properties as a layered addition to the existing TPM handling code.
+> This series now includes protections for PCR extend, getting random
+> numbers from the TPM and data sealing and unsealing.  It therefore
+> eliminates all uses of TPM2_RS_PW in the kernel and adds encryption
+> protection to sensitive data flowing into and out of the TPM.  The
+> first four patches add more sophisticated buffer handling to the TPM
+> which is needed to build the more complex encryption and
+> authentication based commands.  Patch 6 adds all the generic
+> cryptography primitives and patches 7-9 use them in critical TPM
+> operations where we want to avoid or detect interposers.  Patch 10
+> exports the name of the null key we used for boot/run time
+> verification and patch 11 documents the security guarantees and
+> expectations.
+>
+> This was originally sent over four years ago, with the last iteration
+> being:
+>
+> https://lore.kernel.org/linux-integrity/1568031515.6613.31.camel@HansenPa=
+rtnership.com/
+>
+> I'm dusting it off now because various forces at Microsoft and Google
+> via the Open Compute Platform are making a lot of noise about
+> interposers and we in the linux kernel look critically lacking in that
+> regard, particularly for TPM trusted keys.
+>
+> ---
+> v2 fixes the problems smatch reported and adds more explanation about
+> the code motion in the first few patches
+> v3 rebases the encryption to be against Ard's new library function, the
+> aescfb addition of which appears as patch 1.
+> v4 refreshes Ard's patch, adds kernel doc (including a new patch to
+> add it to the moved tpm-buf functions) updates and rewords some commit
+> logs
+> v5: update to proposed tpm-buf implementation (for ease of use all
+> precursor patches are part of this series, so the actual session HMAC
+> and encryption begins at patch 10) and add review feedback
+> v6: split the original sessions patch into three and change the config
+> variable name
+> v7: Collect reviews and add extra patch to check for and disable the TPM =
+on
+> detecting a reset attack.
+>
+> James
+>
+> ---
+>
+> Ard Biesheuvel (1):
+>   crypto: lib - implement library version of AES in CFB mode
+>
+> James Bottomley (13):
+>   tpm: Move buffer handling from static inlines to real functions
+>   tpm: add buffer function to point to returned parameters
+>   tpm: export the context save and load commands
+>   tpm: Add NULL primary creation
+>   tpm: Add HMAC session start and end functions
+>   tpm: Add HMAC session name/handle append
+>   tpm: Add the rest of the session HMAC API
+>   tpm: add hmac checks to tpm2_pcr_extend()
+>   tpm: add session encryption protection to tpm2_get_random()
+>   KEYS: trusted: Add session encryption protection to the seal/unseal
+>     path
+>   tpm: add the null key name as a sysfs export
+>   Documentation: add tpm-security.rst
+>   tpm: disable the TPM if NULL name changes
+>
+> Jarkko Sakkinen (7):
+>   tpm: Remove unused tpm_buf_tag()
+>   tpm: Remove tpm_send()
+>   tpm: Update struct tpm_buf documentation comments
+>   tpm: Store the length of the tpm_buf data separately.
+>   tpm: TPM2B formatted buffers
+>   tpm: Add tpm_buf_read_{u8,u16,u32}
+>   KEYS: trusted: tpm2: Use struct tpm_buf for sized buffers
+>
+>  Documentation/security/tpm/tpm-security.rst |  216 ++++
+>  drivers/char/tpm/Kconfig                    |   14 +
+>  drivers/char/tpm/Makefile                   |    2 +
+>  drivers/char/tpm/tpm-buf.c                  |  251 ++++
+>  drivers/char/tpm/tpm-chip.c                 |    6 +
+>  drivers/char/tpm/tpm-interface.c            |   26 +-
+>  drivers/char/tpm/tpm-sysfs.c                |   18 +
+>  drivers/char/tpm/tpm.h                      |   14 +
+>  drivers/char/tpm/tpm2-cmd.c                 |   53 +-
+>  drivers/char/tpm/tpm2-sessions.c            | 1223 +++++++++++++++++++
+>  drivers/char/tpm/tpm2-space.c               |   11 +-
+>  include/crypto/aes.h                        |    5 +
+>  include/keys/trusted_tpm.h                  |    2 -
+>  include/linux/tpm.h                         |  296 +++--
+>  lib/crypto/Kconfig                          |    5 +
+>  lib/crypto/Makefile                         |    3 +
+>  lib/crypto/aescfb.c                         |  257 ++++
+>  security/keys/trusted-keys/trusted_tpm1.c   |   23 +-
+>  security/keys/trusted-keys/trusted_tpm2.c   |  136 ++-
+>  19 files changed, 2366 insertions(+), 195 deletions(-)
+>  create mode 100644 Documentation/security/tpm/tpm-security.rst
+>  create mode 100644 drivers/char/tpm/tpm-buf.c
+>  create mode 100644 drivers/char/tpm/tpm2-sessions.c
+>  create mode 100644 lib/crypto/aescfb.c
 
-Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
----
- drivers/char/tpm/tpm-chip.c      |  3 ++
- drivers/char/tpm/tpm2-sessions.c | 65 ++++++++++++++++++++++++++------
- drivers/char/tpm/tpm2-space.c    |  3 ++
- include/linux/tpm.h              |  4 +-
- 4 files changed, 62 insertions(+), 13 deletions(-)
+Thank you. I'll test this with QEMU and at least x86 before
+giving any feedback. Just denoting that I've not missed this.
+I should hopefully have bandwidth next week to achieve this.
 
-diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
-index d93937326b2e..854546000c92 100644
---- a/drivers/char/tpm/tpm-chip.c
-+++ b/drivers/char/tpm/tpm-chip.c
-@@ -158,6 +158,9 @@ int tpm_try_get_ops(struct tpm_chip *chip)
- {
- 	int rc = -EIO;
- 
-+	if (chip->flags & TPM_CHIP_FLAG_DISABLE)
-+		return rc;
-+
- 	get_device(&chip->dev);
- 
- 	down_read(&chip->ops_sem);
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index 9d6da0c9652f..60a1a8746563 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -87,6 +87,9 @@
- #define AES_KEYBITS	(AES_KEYBYTES*8)
- #define AUTH_MAX_NAMES	3
- 
-+static int tpm2_create_primary(struct tpm_chip *chip, u32 hierarchy,
-+			       u32 *handle, u8 *name);
-+
- /*
-  * This is the structure that carries all the auth information (like
-  * session handle, nonces, session key and auth) from use to use it is
-@@ -847,6 +850,37 @@ static int tpm2_parse_start_auth_session(struct tpm2_auth *auth,
- 	return 0;
- }
- 
-+static int tpm2_load_null(struct tpm_chip *chip, u32 *nullkey)
-+{
-+	int rc;
-+	unsigned int offset = 0; /* dummy offset for null seed context */
-+	u8 name[SHA256_DIGEST_SIZE + 2];
-+
-+	rc = tpm2_load_context(chip, chip->null_key_context, &offset,
-+			       nullkey);
-+	if (rc != -EINVAL)
-+		return rc;
-+
-+	/* an integrity failure may mean the TPM has been reset */
-+	dev_err(&chip->dev, "NULL key integrity failure!\n");
-+	/* check the null name against what we know */
-+	tpm2_create_primary(chip, TPM2_RH_NULL, NULL, name);
-+	if (memcmp(name, chip->null_key_name, sizeof(name)) == 0)
-+		/* name unchanged, assume transient integrity failure */
-+		return rc;
-+	/*
-+	 * Fatal TPM failure: the NULL seed has actually changed, so
-+	 * the TPM must have been illegally reset.  All in-kernel TPM
-+	 * operations will fail because the NULL primary can't be
-+	 * loaded to salt the sessions, but disable the TPM anyway so
-+	 * userspace programms can't be compromised by it.
-+	 */
-+	dev_err(&chip->dev, "NULL name has changed, disabling TPM due to interference\n");
-+	chip->flags |= TPM_CHIP_FLAG_DISABLE;
-+
-+	return rc;
-+}
-+
- /**
-  * tpm2_start_auth_session() - create a HMAC authentication session with the TPM
-  * @chip: the TPM chip structure to create the session with
-@@ -864,11 +898,9 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
- 	struct tpm_buf buf;
- 	struct tpm2_auth *auth = chip->auth;
- 	int rc;
--	unsigned int offset = 0; /* dummy offset for null seed context */
- 	u32 nullkey;
- 
--	rc = tpm2_load_context(chip, chip->null_key_context, &offset,
--			       &nullkey);
-+	rc = tpm2_load_null(chip, &nullkey);
- 	if (rc)
- 		goto out;
- 
-@@ -919,15 +951,19 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
- EXPORT_SYMBOL(tpm2_start_auth_session);
- 
- static int tpm2_parse_create_primary(struct tpm_chip *chip, struct tpm_buf *buf,
--				     u32 *nullkey)
-+				     u32 *handle, u8 *name)
- {
- 	struct tpm_header *head = (struct tpm_header *)buf->data;
- 	off_t offset_r = TPM_HEADER_SIZE, offset_t;
- 	u16 len = TPM_HEADER_SIZE;
- 	u32 tot_len = be32_to_cpu(head->length);
--	u32 val, parm_len;
-+	u32 val, parm_len, keyhandle;
-+	keyhandle = tpm_buf_read_u32(buf, &offset_r);
-+	if (handle)
-+		*handle = keyhandle;
-+	else
-+		tpm2_flush_context(chip, keyhandle);
- 
--	*nullkey = tpm_buf_read_u32(buf, &offset_r);
- 	parm_len = tpm_buf_read_u32(buf, &offset_r);
- 	/*
- 	 * parm_len doesn't include the header, but all the other
-@@ -940,9 +976,12 @@ static int tpm2_parse_create_primary(struct tpm_chip *chip, struct tpm_buf *buf,
- 		return -EINVAL;
- 	len = tpm_buf_read_u16(buf, &offset_r);
- 	offset_t = offset_r;
--	/* now we have the public area, compute the name of the object */
--	put_unaligned_be16(TPM_ALG_SHA256, chip->null_key_name);
--	sha256(&buf->data[offset_r], len, chip->null_key_name + 2);
-+	if (name) {
-+		/* now we have the public area, compute the name of
-+		 * the object */
-+		put_unaligned_be16(TPM_ALG_SHA256, name);
-+		sha256(&buf->data[offset_r], len, name + 2);
-+	}
- 
- 	/* validate the public key */
- 	val = tpm_buf_read_u16(buf, &offset_t);
-@@ -1054,7 +1093,8 @@ static int tpm2_parse_create_primary(struct tpm_chip *chip, struct tpm_buf *buf,
- 	return 0;
- }
- 
--static int tpm2_create_primary(struct tpm_chip *chip, u32 hierarchy, u32 *handle)
-+static int tpm2_create_primary(struct tpm_chip *chip, u32 hierarchy,
-+			       u32 *handle, u8 *name)
- {
- 	int rc;
- 	struct tpm_buf buf;
-@@ -1133,7 +1173,7 @@ static int tpm2_create_primary(struct tpm_chip *chip, u32 hierarchy, u32 *handle
- 			      "attempting to create NULL primary");
- 
- 	if (rc == TPM2_RC_SUCCESS)
--		rc = tpm2_parse_create_primary(chip, &buf, handle);
-+		rc = tpm2_parse_create_primary(chip, &buf, handle, name);
- 
- 	tpm_buf_destroy(&buf);
- 
-@@ -1145,7 +1185,8 @@ static int tpm2_create_null_primary(struct tpm_chip *chip)
- 	u32 nullkey;
- 	int rc;
- 
--	rc = tpm2_create_primary(chip, TPM2_RH_NULL, &nullkey);
-+	rc = tpm2_create_primary(chip, TPM2_RH_NULL, &nullkey,
-+				 chip->null_key_name);
- 
- 	if (rc == TPM2_RC_SUCCESS) {
- 		unsigned int offset = 0; /* dummy offset for null key context */
-diff --git a/drivers/char/tpm/tpm2-space.c b/drivers/char/tpm/tpm2-space.c
-index 24479a81c23c..4892d491da8d 100644
---- a/drivers/char/tpm/tpm2-space.c
-+++ b/drivers/char/tpm/tpm2-space.c
-@@ -105,6 +105,9 @@ int tpm2_load_context(struct tpm_chip *chip, u8 *buf,
- 		*handle = 0;
- 		tpm_buf_destroy(&tbuf);
- 		return -ENOENT;
-+	} else if (tpm2_rc_value(rc) == TPM2_RC_INTEGRITY) {
-+		tpm_buf_destroy(&tbuf);
-+		return -EINVAL;
- 	} else if (rc > 0) {
- 		dev_warn(&chip->dev, "%s: failed with a TPM error 0x%04X\n",
- 			 __func__, rc);
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index 9c608fac8935..4474dabfb69d 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -244,6 +244,7 @@ enum tpm2_return_codes {
- 	TPM2_RC_SUCCESS		= 0x0000,
- 	TPM2_RC_HASH		= 0x0083, /* RC_FMT1 */
- 	TPM2_RC_HANDLE		= 0x008B,
-+	TPM2_RC_INTEGRITY	= 0x009F,
- 	TPM2_RC_INITIALIZE	= 0x0100, /* RC_VER1 */
- 	TPM2_RC_FAILURE		= 0x0101,
- 	TPM2_RC_DISABLED	= 0x0120,
-@@ -342,6 +343,7 @@ enum tpm_chip_flags {
- 	TPM_CHIP_FLAG_FIRMWARE_UPGRADE		= BIT(7),
- 	TPM_CHIP_FLAG_SUSPENDED			= BIT(8),
- 	TPM_CHIP_FLAG_HWRNG_DISABLED		= BIT(9),
-+	TPM_CHIP_FLAG_DISABLE			= BIT(10),
- };
- 
- #define to_tpm_chip(d) container_of(d, struct tpm_chip, dev)
-@@ -428,7 +430,7 @@ static inline bool tpm_is_firmware_upgrade(struct tpm_chip *chip)
- 
- static inline u32 tpm2_rc_value(u32 rc)
- {
--	return (rc & BIT(7)) ? rc & 0xff : rc;
-+	return (rc & BIT(7)) ? rc & 0xbf : rc;
- }
- 
- #if defined(CONFIG_TCG_TPM) || defined(CONFIG_TCG_TPM_MODULE)
--- 
-2.35.3
-
+BR, Jarkko
 
