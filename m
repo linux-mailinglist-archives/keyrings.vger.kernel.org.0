@@ -1,78 +1,68 @@
-Return-Path: <keyrings+bounces-643-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-644-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E79A855CDC
-	for <lists+keyrings@lfdr.de>; Thu, 15 Feb 2024 09:53:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F6DD855E1C
+	for <lists+keyrings@lfdr.de>; Thu, 15 Feb 2024 10:30:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 936B61C21A90
-	for <lists+keyrings@lfdr.de>; Thu, 15 Feb 2024 08:53:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9D1C1F2170D
+	for <lists+keyrings@lfdr.de>; Thu, 15 Feb 2024 09:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F056C134D7;
-	Thu, 15 Feb 2024 08:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323531759E;
+	Thu, 15 Feb 2024 09:30:19 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
+Received: from frasgout11.his.huawei.com (frasgout11.his.huawei.com [14.137.139.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91C2134CC;
-	Thu, 15 Feb 2024 08:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6951755E;
+	Thu, 15 Feb 2024 09:30:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707987196; cv=none; b=BqyG1K78JWEWPLTsvD/67NQmhr89rj1nlxeRRmS7URpeRmrdioQE1ayWdVVaR/aJoQVEtioOQYivoe6kedzWsLrfCB4xfjGctFbBAdLWMeZDE27D9OLzOMcLDHznfZz0NXX2DnMV6GNWVktQJ1/YH8lL5CUAKa3z6alLc88Tcdg=
+	t=1707989419; cv=none; b=C71ZOkP/GuMLST6U06Kf2MYGpbx2BfJTbMPfswHf3GyeIjFxSmH68e//Y+7m3fMAeE0jhtCp9TvFeJNhKtJIWScrP4/bdtOfzV93h3m2QiaDfr5wK5PrKxhsVigI8wkGJ3/FxJtvxUfSCsr8zaqJ/5UgfPi29VNCWvVwHiu0CUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707987196; c=relaxed/simple;
-	bh=2ErJuzFWXwH+BIQszwKphBEBR2FP0kZ5Ngebxu+Vynw=;
+	s=arc-20240116; t=1707989419; c=relaxed/simple;
+	bh=Ik1XoRnguygiVaidD4Z1D3ctYb5//n0o9fEn7++ICzI=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KLwsZk8AnzxUTxUgKmu61NqP5ImpqDNz9ikM3+rl+9oYQalxB6kxNVwmPPyZzugXhC1ANsBU8J0zaGu1hnZ2Gh+aZrrjhmOTeZv4EFdrZbSMwfddCNmW+EQYfbY8Gpdnhq73bYA9FqCylDFNrXg/6c3U1fWPayswzaWnI7yHY+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
+	 Content-Type:MIME-Version; b=utx8hq4QG7oQV7fNWSaT/ZWmBkYSyY6RrxsntwoHQqK13q2uOyA+v8jznLHCJF9re7JhI9Bjysk8x5+aYwaotMZb4xG/8Un4dcdDBwh9lKdC9Osi2jo7vN5Mhr6mlJlWmb8yqyHiXkS9dpri5QOTYOGRRmNJ1sv7VVq4iyXKEng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.23
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.29])
-	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4Tb7dN3xtVz9v7bm;
-	Thu, 15 Feb 2024 16:34:00 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.51])
+	by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4Tb8XZ6KKxz9y4yW;
+	Thu, 15 Feb 2024 17:14:54 +0800 (CST)
 Received: from mail02.huawei.com (unknown [7.182.16.27])
-	by mail.maildlp.com (Postfix) with ESMTP id 60B50140631;
-	Thu, 15 Feb 2024 16:53:04 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id E5DA41408C5;
+	Thu, 15 Feb 2024 17:30:11 +0800 (CST)
 Received: from [127.0.0.1] (unknown [10.204.63.22])
-	by APP2 (Coremail) with SMTP id GxC2BwCHwCTe0M1lvlSGAg--.2343S2;
-	Thu, 15 Feb 2024 09:53:03 +0100 (CET)
-Message-ID: <a9e263becefe001ec5de4abf79bbdb49a2c35033.camel@huaweicloud.com>
-Subject: Re: [PATCH v1 5/5] sbm: SandBox Mode documentation
+	by APP2 (Coremail) with SMTP id GxC2BwDnICWT2c1lIr+GAg--.1387S2;
+	Thu, 15 Feb 2024 10:30:11 +0100 (CET)
+Message-ID: <fefdfdf75163992ecba6292cfd6ad0e8321ee74a.camel@huaweicloud.com>
+Subject: Re: [PATCH v9 19/25] integrity: Move
+ integrity_kernel_module_request() to IMA
 From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: Kent Overstreet <kent.overstreet@linux.dev>, Petr
-	=?UTF-8?Q?Tesa=C5=99=C3=ADk?=
-	 <petr@tesarici.cz>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton
- <akpm@linux-foundation.org>, Petr Tesarik <petrtesarik@huaweicloud.com>, 
- Jonathan Corbet <corbet@lwn.net>, David Kaplan <david.kaplan@amd.com>,
- Larry Dewey <larry.dewey@amd.com>, Elena Reshetova
- <elena.reshetova@intel.com>, Carlos Bilbao <carlos.bilbao@amd.com>, "Masami
- Hiramatsu (Google)" <mhiramat@kernel.org>, Randy Dunlap
- <rdunlap@infradead.org>, Petr Mladek <pmladek@suse.com>, "Paul E. McKenney"
- <paulmck@kernel.org>, Eric DeVolder <eric.devolder@oracle.com>, Marc
- =?ISO-8859-1?Q?Aur=E8le?= La France <tsi@tuyoix.net>, "Gustavo A. R. Silva"
- <gustavoars@kernel.org>, Nhat Pham <nphamcs@gmail.com>, "Christian Brauner
- (Microsoft)" <brauner@kernel.org>,  Douglas Anderson
- <dianders@chromium.org>, Luis Chamberlain <mcgrof@kernel.org>, Guenter
- Roeck <groeck@chromium.org>,  Mike Christie <michael.christie@oracle.com>,
- Maninder Singh <maninder1.s@samsung.com>, "open list:DOCUMENTATION"
- <linux-doc@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, Petr
- Tesarik <petr.tesarik1@huawei-partners.com>,
- linux-security-module@vger.kernel.org,  keyrings@vger.kernel.org
-Date: Thu, 15 Feb 2024 09:52:43 +0100
-In-Reply-To: <xg7iz7syomv3oobjktgn76fyxms4vfs66jul56ub36prwnncxm@hsjhc5m72ipq>
-References: <20240214113035.2117-1-petrtesarik@huaweicloud.com>
-	 <20240214113035.2117-6-petrtesarik@huaweicloud.com>
-	 <20240214053053.982b48d993ae99dad1d59020@linux-foundation.org>
-	 <2024021425-audition-expand-2901@gregkh>
-	 <20240214155524.719ffb15@meshulam.tesarici.cz>
-	 <2024021415-jokester-cackle-2923@gregkh>
-	 <20240214173112.138e0e29@meshulam.tesarici.cz>
-	 <g3llwlzlhatvz2a23cntx7lscqarepq4uyaq6wne6my7ddo3mk@6b64pjcnykah>
-	 <20240214210937.3a19945f@meshulam.tesarici.cz>
-	 <xg7iz7syomv3oobjktgn76fyxms4vfs66jul56ub36prwnncxm@hsjhc5m72ipq>
+To: Stefan Berger <stefanb@linux.ibm.com>, Paul Moore <paul@paul-moore.com>
+Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, chuck.lever@oracle.com, 
+	jlayton@kernel.org, neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com, 
+	tom@talpey.com, jmorris@namei.org, serge@hallyn.com, zohar@linux.ibm.com, 
+	dmitry.kasatkin@gmail.com, eric.snowberg@oracle.com, dhowells@redhat.com, 
+	jarkko@kernel.org, stephen.smalley.work@gmail.com, eparis@parisplace.org, 
+	casey@schaufler-ca.com, shuah@kernel.org, mic@digikod.net, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, 
+	selinux@vger.kernel.org, linux-kselftest@vger.kernel.org, Roberto Sassu
+	 <roberto.sassu@huawei.com>
+Date: Thu, 15 Feb 2024 10:29:52 +0100
+In-Reply-To: <1d8f8990-43e2-4afc-835e-629c7328d497@linux.ibm.com>
+References: <20240115181809.885385-1-roberto.sassu@huaweicloud.com>
+	 <20240115181809.885385-20-roberto.sassu@huaweicloud.com>
+	 <fd6ddc3d-e5d3-4b9c-b00b-ac2b1f22d653@linux.ibm.com>
+	 <CAHC9VhTY=X7z5SRQZzFe25FGB2E3FBBkuZ_YYA1+ETyr7pv=tA@mail.gmail.com>
+	 <7940b9d0-3133-4b08-b397-ad9ee34e3b34@linux.ibm.com>
+	 <b95967cd1aa2a4e751a8be3d23f72b7e1db0e4b6.camel@huaweicloud.com>
+	 <1d8f8990-43e2-4afc-835e-629c7328d497@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.44.4-0ubuntu2 
@@ -82,141 +72,126 @@ List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-CM-TRANSID:GxC2BwCHwCTe0M1lvlSGAg--.2343S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxGFWUJFWxZr48AF1rCF4rXwb_yoWrCrWfpF
-	y3Kay8Kr4DJF12yrs2yw1xXFy0vw4xAr47Wr9xGr98Zrn09r1I9rySgrWY9F92kr4xGw1j
-	vF4qqasF93WDZaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkK14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
-	c2xKxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
-	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkG
-	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6rW3Jr0E3s1lIxAIcVC2z280aVAFwI0_Jr0_
-	Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbJ73D
-	UUUUU==
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAOBF1jj5ZeaAAAsZ
+X-CM-TRANSID:GxC2BwDnICWT2c1lIr+GAg--.1387S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxur4xJFyfZw1ftw4UZw1xAFb_yoWrGr1kpF
+	W8ta95CFWUXrn8C3W8tw1xurW3K3yxGrsrWrn8JryfCrn09rnFvr42yF43uFyfCr48Jr10
+	gws7t34Iv3s8A37anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUk0b4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij
+	64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
+	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE
+	2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
+	xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv
+	6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUFYFCUUUUU
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAOBF1jj5Ze2QAAso
 
-On Wed, 2024-02-14 at 15:19 -0500, Kent Overstreet wrote:
-> On Wed, Feb 14, 2024 at 09:09:37PM +0100, Petr Tesa=C5=99=C3=ADk wrote:
-> > On Wed, 14 Feb 2024 13:54:54 -0500
-> > Kent Overstreet <kent.overstreet@linux.dev> wrote:
-> >=20
-> > > On Wed, Feb 14, 2024 at 05:31:12PM +0100, Petr Tesa=C5=99=C3=ADk wrot=
-e:
-> > > > On Wed, 14 Feb 2024 16:11:05 +0100
-> > > > Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-> > > >  =20
-> > > > > On Wed, Feb 14, 2024 at 03:55:24PM +0100, Petr Tesa=C5=99=C3=ADk =
-wrote: =20
-> > > > > > OK, so why didn't I send the whole thing?
-> > > > > >=20
-> > > > > > Decomposition of the kernel requires many more changes, e.g. in=
- linker
-> > > > > > scripts. Some of them depend on this patch series. Before I go =
-and
-> > > > > > clean up my code into something that can be submitted, I want t=
-o get
-> > > > > > feedback from guys like you, to know if the whole idea would be=
- even
-> > > > > > considered, aka "Fail Fast".   =20
-> > > > >=20
-> > > > > We can't honestly consider this portion without seeing how it wou=
-ld
-> > > > > work, as we don't even see a working implementation that uses it =
-to
-> > > > > verify it at all.
-> > > > >=20
-> > > > > The joy of adding new frameworks is that you need a user before a=
-nyone
-> > > > > can spend the time to review it, sorry. =20
+On Tue, 2024-02-13 at 11:31 -0500, Stefan Berger wrote:
+>=20
+> On 2/13/24 03:57, Roberto Sassu wrote:
+> > On Mon, 2024-02-12 at 15:28 -0500, Stefan Berger wrote:
+> > >=20
+> > > On 2/12/24 12:56, Paul Moore wrote:
+> > > > On Mon, Feb 12, 2024 at 12:48=E2=80=AFPM Stefan Berger <stefanb@lin=
+ux.ibm.com> wrote:
+> > > > > On 1/15/24 13:18, Roberto Sassu wrote:
 > > > >=20
-> > > > Thank your for a quick assessment. Will it be sufficient if I send =
-some
-> > > > code for illustration (with some quick&dirty hacks to bridge the ga=
-ps),
-> > > > or do you need clean and nice kernel code? =20
+> > > > ...
+> > > >=20
+> > > > > > +/**
+> > > > > > + * ima_kernel_module_request - Prevent crypto-pkcs1pad(rsa,*) =
+requests
+> > > > > > + * @kmod_name: kernel module name
+> > > > > > + *
+> > > > > > + * We have situation, when public_key_verify_signature() in ca=
+se of RSA > + * algorithm use alg_name to store internal information in ord=
+er to
+> > > > > > + * construct an algorithm on the fly, but crypto_larval_lookup=
+() will try
+> > > > > > + * to use alg_name in order to load kernel module with same na=
+me.
+> > > > > > + * Since we don't have any real "crypto-pkcs1pad(rsa,*)" kerne=
+l modules,
+> > > > > > + * we are safe to fail such module request from crypto_larval_=
+lookup().
+> > > > > > + *
+> > > > > > + * In this way we prevent modprobe execution during digsig ver=
+ification
+> > > > > > + * and avoid possible deadlock if modprobe and/or it's depende=
+ncies
+> > > > > > + * also signed with digsig.
+> > > > >=20
+> > > > > This text needs to some reformulation at some point..
+> > > >=20
+> > > > There is no time like the present.  If you have a suggestion I woul=
+d
+> > > > love to hear it and I'm sure Roberto would too.
+> > > >=20
 > > >=20
-> > > Given that code is going to need a rewrite to make use of this anyway=
-s -
-> > > why not just do the rewrite in Rust?
-> >=20
-> > Thank you for this question! I concur that rewriting the whole kernel
-> > in Rust would be a better option. I see two differences:
-> >=20
-> > 1. amount of work
-> > 2. regressions
-> >=20
-> > Rewriting something in Rust means pretty much writing it from scratch.
-> > Doing that necessarily introduces regressions. Old code has been used.
-> > It has been tested. In many corner cases. Lots of bugs have been found,
-> > and they=E2=80=99ve been fixed. If you write code from scratch, you los=
-e much
-> > of the accumulated knowledge.
->=20
-> But it's work that already has some growing momentum behind it,
-> especially in the area you cited - decompression algorithms.
->=20
-> > More importantly, sandbox mode can be viewed as a tool that enforces
-> > decomposition of kernel code. This decomposition is the main benefit.
-> > It requires understanding the dependencies among different parts of the
-> > kernel (both code flow and data flow), and that will in turn promote
-> > better design.
->=20
-> You see this as a tool for general purpose code...?
->=20
-> Typical kernel code tends to be quite pointer heavy.
->=20
-> > > Then you get memory safety, which seems to be what you're trying to
-> > > achieve here.
+> > > My interpretation of the issue after possibly lossy decoding of the
+> > > above sentences:
 > > >=20
-> > > Or, you say this is for when performance isn't critical - why not a u=
-ser
-> > > mode helper?
+> > > Avoid a deadlock by rejecting a virtual kernel module with the name
+> > > "crypto-pkcs1pad(rsa,*)". This module may be requested by
+> > > crypto_larval_lookup() while trying to verify an RSA signature in
+> > > public_key_verify_signature(). Since the loading of the RSA module ma=
+y
+> > > itself cause the request for an RSA signature verification it will
+> > > otherwise lead to a deadlock.
 > >=20
-> > Processes in user mode are susceptible to all kinds of attacks you may
-> > want to avoid. Sandbox mode can be used in situations where user mode
-> > does not exist, e.g. to display a boot logo or to unpack initramfs.
+> > I can be even more precise I guess (I actually reproduced it). >
+> > Avoid a verification loop where verifying the signature of the modprobe
+> > binary requires executing modprobe itself. Since the modprobe iint-
+> > > mutex is already held when the signature verification is performed, a
+> > deadlock occurs as soon as modprobe is executed within the critical
+> > region, since the same lock cannot be taken again.
 >=20
-> [citation needed]
+> When ecdsa is used for signing files it could get stuck as well and=20
+> would need this patch:
 >=20
-> Running code in the kernel does not make it more secure from attack, and
-> that's a pretty strange idea. One of the central jobs of the kernel is
-> to provide isolation between different users.
+> diff --git a/security/integrity/ima/ima_main.c=20
+> b/security/integrity/ima/ima_main.c
+> index 45f1a102c599..2e71dc977d43 100644
+> --- a/security/integrity/ima/ima_main.c
+> +++ b/security/integrity/ima/ima_main.c
+> @@ -1110,7 +1110,9 @@ EXPORT_SYMBOL_GPL(ima_measure_critical_data);
+>    */
+>   static int ima_kernel_module_request(char *kmod_name)
+>   {
+> -       if (strncmp(kmod_name, "crypto-pkcs1pad(rsa,", 20) =3D=3D 0)
+> +       if (strncmp(kmod_name, "crypto-pkcs1pad(rsa,", 20) =3D=3D 0 ||
+> +           strncmp(kmod_name, "crypto-ecdsa-nist-p", 19) =3D=3D 0 ||
+> +           strcmp(kmod_name, "cryptomgr") =3D=3D 0)
+>                  return -EINVAL;
+>=20
+>          return 0;
+>=20
+> Rejecting cryptomgr seems necessary in the ecdsa case though I am not=20
+> sure what the side effects of rejecting it all the time could be.
 
-+ linux-security-module, keyrings
-
-It is not exactly about being more secure, but more privileged.
-
-I had a question in the past:
-
-https://lore.kernel.org/linux-integrity/eb31920bd00e2c921b0aa6ebed8745cb013=
-0b0e1.camel@huaweicloud.com/
-
-
-I basically need to parse PGP keys, to verify RPM package headers,
-extract the file digests from them, and use those digests as reference
-values for the kernel to decide whether or not files can be accessed
-depending on their integrity.
-
-It is very important that, in a locked-down system, even root is
-subject to integrity checks. So, the kernel has higher privileges than
-root.
-
-Can the kernel be trusted to provide strong enough process isolation,
-even against root, in a way that it can offload a workload to a user
-space process (PGP parsing), and yet maintain its privilege level
-(which would drop to root, if isolation cannot be guaranteed)?
-
-So, since we got no as an answer, we thought about something in the
-middle, we still run the code in the kernel, to keep the higher
-privilege, but at the same time we mitigate the risk of kernel memory
-corruption.
+Thanks. Ok, let's find a proper way once IMA/EVM are moved to the LSM
+infrastructure.
 
 Roberto
+
+>     Stefan
+>=20
+> >=20
+> > This happens when public_key_verify_signature(), in case of RSA
+> > algorithm, use alg_name to store internal information in order to
+> > construct an algorithm on the fly, but crypto_larval_lookup() will try
+> > to use alg_name in order to load a kernel module with same name.
+> >=20
+> > Since we don't have any real "crypto-pkcs1pad(rsa,*)" kernel modules,
+> > we are safe to fail such module request from crypto_larval_lookup(),
+> > and avoid the verification loop.
+> >=20
+> > Roberto
+> >=20
+> >=20
 
 
