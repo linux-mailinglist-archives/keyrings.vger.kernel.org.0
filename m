@@ -1,203 +1,222 @@
-Return-Path: <keyrings+bounces-642-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-643-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5FFD855C3D
-	for <lists+keyrings@lfdr.de>; Thu, 15 Feb 2024 09:20:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E79A855CDC
+	for <lists+keyrings@lfdr.de>; Thu, 15 Feb 2024 09:53:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E68C1F22C26
-	for <lists+keyrings@lfdr.de>; Thu, 15 Feb 2024 08:20:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 936B61C21A90
+	for <lists+keyrings@lfdr.de>; Thu, 15 Feb 2024 08:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46E3F16429;
-	Thu, 15 Feb 2024 08:18:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ZiFcak6n"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F056C134D7;
+	Thu, 15 Feb 2024 08:53:16 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE2417984;
-	Thu, 15 Feb 2024 08:18:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91C2134CC;
+	Thu, 15 Feb 2024 08:53:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707985125; cv=none; b=CvXEr9K1rU3pF4Q+pPyhnmOW7ypQrWXBGkg0r4/m83VKtkJK4r13WTCv5zCAf0D+DGC3uUJJd84DyJ2gaZ6Do4ysrqd97R9wON/j7wmyhr658xGCT8gw8fUJ2U3uxdY4/TdoTsq5iOCBu8/8j1YvY2yDQO80Q+HUQ4cHnV3ofsA=
+	t=1707987196; cv=none; b=BqyG1K78JWEWPLTsvD/67NQmhr89rj1nlxeRRmS7URpeRmrdioQE1ayWdVVaR/aJoQVEtioOQYivoe6kedzWsLrfCB4xfjGctFbBAdLWMeZDE27D9OLzOMcLDHznfZz0NXX2DnMV6GNWVktQJ1/YH8lL5CUAKa3z6alLc88Tcdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707985125; c=relaxed/simple;
-	bh=tQiuOODpfiSZqbi1fSHEb7a5d1KdNB1lrpcclcbPW5o=;
+	s=arc-20240116; t=1707987196; c=relaxed/simple;
+	bh=2ErJuzFWXwH+BIQszwKphBEBR2FP0kZ5Ngebxu+Vynw=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:Mime-Version; b=gfSyCp9rQH1XZhtAh4cd8uginJshUZ57gYAIByEOgLmS2XnX+sjxDv+IvoeoIAZJLyGccbMSVpZGEMhrcoZgJzWBCTXz7HzdQ48C96PBGS0Ab2gtVls2F51sftj+3EtfkLtsXaUeDVlwmwaqieJFiwhEpMoGVFuUcn97LpTz1eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ZiFcak6n; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41F8BcoY032007;
-	Thu, 15 Feb 2024 08:18:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=xQpf4U6thY0RmYjLTmzPv/P+MlK6sZqho4klRx7+4kg=;
- b=ZiFcak6n4DVmF+NJkPnhQWWDMSj50pD72AfSoDtFmIEGzwGGSJciJIeUNtZXbr3I5epn
- i+G+F5ozsRoZE12hA8rz2FndgygnuVElri6hT1lZ9yfqBElugOTWbDHRHLD/oB2cR/OZ
- FSq2KhqKU9c93+tSH2do2g+Ro3074iav/VYcQC2bk8bzepP7OkPXeaNywF69JQ5OoEH/
- EQDhBdPUfL7wCSjsXFenIAXe85A2BN3d252Ze259y0tgfuP4bu0YdENz5GfVl65yqQNT
- zI0N7COFL41YtOH3gEgrcxSvMSGv4FpBAeDGU0WCPs0jXpA6lX72KpUaLuwzQCPtCCnB tA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w9dnd216y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Feb 2024 08:18:09 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41F8ADxQ028970;
-	Thu, 15 Feb 2024 08:18:08 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w9dnd215u-3
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Feb 2024 08:18:08 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41F7FPjv004339;
-	Thu, 15 Feb 2024 08:16:22 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3w6kv0kmte-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 15 Feb 2024 08:16:22 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41F8GJnj13173444
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 15 Feb 2024 08:16:22 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BE6CB58059;
-	Thu, 15 Feb 2024 08:16:19 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4853558057;
-	Thu, 15 Feb 2024 08:16:18 +0000 (GMT)
-Received: from li-5cd3c5cc-21f9-11b2-a85c-a4381f30c2f3.ibm.com (unknown [9.61.77.242])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 15 Feb 2024 08:16:18 +0000 (GMT)
-Message-ID: <6ffcd054ff81d64b92b52baf097ed21f8ea4d870.camel@linux.ibm.com>
-Subject: Re: [PATCH v9 12/25] security: Introduce file_post_open hook
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Paul Moore <paul@paul-moore.com>
-Cc: Roberto Sassu <roberto.sassu@huaweicloud.com>, viro@zeniv.linux.org.uk,
-        brauner@kernel.org, chuck.lever@oracle.com, jlayton@kernel.org,
-        neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com,
-        jmorris@namei.org, serge@hallyn.com, dmitry.kasatkin@gmail.com,
-        eric.snowberg@oracle.com, dhowells@redhat.com, jarkko@kernel.org,
-        stephen.smalley.work@gmail.com, eparis@parisplace.org,
-        casey@schaufler-ca.com, shuah@kernel.org, mic@digikod.net,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        selinux@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        Roberto Sassu
- <roberto.sassu@huawei.com>,
-        Stefan Berger <stefanb@linux.ibm.com>
-Date: Thu, 15 Feb 2024 03:16:17 -0500
-In-Reply-To: <CAHC9VhQGiSq2LTm7TBvCwDB_NcMe_JjORLbuHVfC4UpJQi_N4g@mail.gmail.com>
-References: <20240115181809.885385-1-roberto.sassu@huaweicloud.com>
-	 <20240115181809.885385-13-roberto.sassu@huaweicloud.com>
-	 <305cd1291a73d788c497fe8f78b574d771b8ba41.camel@linux.ibm.com>
-	 <CAHC9VhQ7DgPJtNTRCYneu_XnpRmuwfPCW+FqVuS=k6U5-F6pJw@mail.gmail.com>
-	 <05ad625b0f5a0e6c095abee5507801da255b36cd.camel@huaweicloud.com>
-	 <CAHC9VhR2M_MWHs34kn-WH3Wr0sgT09WKveecy7onkFhUb1-gEg@mail.gmail.com>
-	 <63afc94126521629bb7656b6e6783d6614ee898a.camel@linux.ibm.com>
-	 <CAHC9VhQGiSq2LTm7TBvCwDB_NcMe_JjORLbuHVfC4UpJQi_N4g@mail.gmail.com>
+	 Content-Type:MIME-Version; b=KLwsZk8AnzxUTxUgKmu61NqP5ImpqDNz9ikM3+rl+9oYQalxB6kxNVwmPPyZzugXhC1ANsBU8J0zaGu1hnZ2Gh+aZrrjhmOTeZv4EFdrZbSMwfddCNmW+EQYfbY8Gpdnhq73bYA9FqCylDFNrXg/6c3U1fWPayswzaWnI7yHY+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.18.186.29])
+	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4Tb7dN3xtVz9v7bm;
+	Thu, 15 Feb 2024 16:34:00 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.27])
+	by mail.maildlp.com (Postfix) with ESMTP id 60B50140631;
+	Thu, 15 Feb 2024 16:53:04 +0800 (CST)
+Received: from [127.0.0.1] (unknown [10.204.63.22])
+	by APP2 (Coremail) with SMTP id GxC2BwCHwCTe0M1lvlSGAg--.2343S2;
+	Thu, 15 Feb 2024 09:53:03 +0100 (CET)
+Message-ID: <a9e263becefe001ec5de4abf79bbdb49a2c35033.camel@huaweicloud.com>
+Subject: Re: [PATCH v1 5/5] sbm: SandBox Mode documentation
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+To: Kent Overstreet <kent.overstreet@linux.dev>, Petr
+	=?UTF-8?Q?Tesa=C5=99=C3=ADk?=
+	 <petr@tesarici.cz>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Petr Tesarik <petrtesarik@huaweicloud.com>, 
+ Jonathan Corbet <corbet@lwn.net>, David Kaplan <david.kaplan@amd.com>,
+ Larry Dewey <larry.dewey@amd.com>, Elena Reshetova
+ <elena.reshetova@intel.com>, Carlos Bilbao <carlos.bilbao@amd.com>, "Masami
+ Hiramatsu (Google)" <mhiramat@kernel.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Petr Mladek <pmladek@suse.com>, "Paul E. McKenney"
+ <paulmck@kernel.org>, Eric DeVolder <eric.devolder@oracle.com>, Marc
+ =?ISO-8859-1?Q?Aur=E8le?= La France <tsi@tuyoix.net>, "Gustavo A. R. Silva"
+ <gustavoars@kernel.org>, Nhat Pham <nphamcs@gmail.com>, "Christian Brauner
+ (Microsoft)" <brauner@kernel.org>,  Douglas Anderson
+ <dianders@chromium.org>, Luis Chamberlain <mcgrof@kernel.org>, Guenter
+ Roeck <groeck@chromium.org>,  Mike Christie <michael.christie@oracle.com>,
+ Maninder Singh <maninder1.s@samsung.com>, "open list:DOCUMENTATION"
+ <linux-doc@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, Petr
+ Tesarik <petr.tesarik1@huawei-partners.com>,
+ linux-security-module@vger.kernel.org,  keyrings@vger.kernel.org
+Date: Thu, 15 Feb 2024 09:52:43 +0100
+In-Reply-To: <xg7iz7syomv3oobjktgn76fyxms4vfs66jul56ub36prwnncxm@hsjhc5m72ipq>
+References: <20240214113035.2117-1-petrtesarik@huaweicloud.com>
+	 <20240214113035.2117-6-petrtesarik@huaweicloud.com>
+	 <20240214053053.982b48d993ae99dad1d59020@linux-foundation.org>
+	 <2024021425-audition-expand-2901@gregkh>
+	 <20240214155524.719ffb15@meshulam.tesarici.cz>
+	 <2024021415-jokester-cackle-2923@gregkh>
+	 <20240214173112.138e0e29@meshulam.tesarici.cz>
+	 <g3llwlzlhatvz2a23cntx7lscqarepq4uyaq6wne6my7ddo3mk@6b64pjcnykah>
+	 <20240214210937.3a19945f@meshulam.tesarici.cz>
+	 <xg7iz7syomv3oobjktgn76fyxms4vfs66jul56ub36prwnncxm@hsjhc5m72ipq>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: JPiXEt9OIAZjMDJms0hUwl0uAwRfnvqC
-X-Proofpoint-GUID: tM-IWJ0kHfrSVh4SVeDZK-a2LckzZzzM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-15_08,2024-02-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxscore=0
- suspectscore=0 mlxlogscore=999 impostorscore=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1015 adultscore=0 malwarescore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402150064
+MIME-Version: 1.0
+X-CM-TRANSID:GxC2BwCHwCTe0M1lvlSGAg--.2343S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxGFWUJFWxZr48AF1rCF4rXwb_yoWrCrWfpF
+	y3Kay8Kr4DJF12yrs2yw1xXFy0vw4xAr47Wr9xGr98Zrn09r1I9rySgrWY9F92kr4xGw1j
+	vF4qqasF93WDZaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkK14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcVAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kI
+	c2xKxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6rW3Jr0E3s1lIxAIcVC2z280aVAFwI0_Jr0_
+	Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbJ73D
+	UUUUU==
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAOBF1jj5ZeaAAAsZ
 
-On Wed, 2024-02-14 at 16:21 -0500, Paul Moore wrote:
-> On Wed, Feb 14, 2024 at 3:07 PM Mimi Zohar <zohar@linux.ibm.com> wrote:
-> > On Tue, 2024-02-13 at 10:33 -0500, Paul Moore wrote:
-> > > On Tue, Feb 13, 2024 at 7:59 AM Roberto Sassu
-> > > <roberto.sassu@huaweicloud.com> wrote:
-> > > > On Mon, 2024-02-12 at 16:16 -0500, Paul Moore wrote:
-> > > > > On Mon, Feb 12, 2024 at 4:06 PM Mimi Zohar <zohar@linux.ibm.com>
-> > > > > wrote:
-> > > > > > Hi Roberto,
-> > > > > > 
-> > > > > > 
-> > > > > > > diff --git a/security/security.c b/security/security.c
-> > > > > > > index d9d2636104db..f3d92bffd02f 100644
-> > > > > > > --- a/security/security.c
-> > > > > > > +++ b/security/security.c
-> > > > > > > @@ -2972,6 +2972,23 @@ int security_file_open(struct file *file)
-> > > > > > >       return fsnotify_perm(file, MAY_OPEN);  <===  Conflict
-> > > > > > 
-> > > > > > Replace with "return fsnotify_open_perm(file);"
-> > > > > > 
-> > > > > > >  }
-> > > > > > > 
-> > > > > > 
-> > > > > > The patch set doesn't apply cleaning to 6.8-rcX without this
-> > > > > > change.  Unless
-> > > > > > there are other issues, I can make the change.
-> > > > > 
-> > > > > I take it this means you want to pull this via the IMA/EVM tree?
-> > > > 
-> > > > Not sure about that, but I have enough changes to do to make a v10.
-> > 
-> > @Roberto:  please add my "Reviewed-by" to the remaining patches.
-> > 
-> > > Sorry, I should have been more clear, the point I was trying to
-> > > resolve was who was going to take this patchset (eventually).  There
-> > > are other patches destined for the LSM tree that touch the LSM hooks
-> > > in a way which will cause conflicts with this patchset, and if
-> > > you/Mimi are going to take this via the IMA/EVM tree - which is fine
-> > > with me - I need to take that into account when merging things in the
-> > > LSM tree during this cycle.  It's not a big deal either way, it would
-> > > just be nice to get an answer on that within the next week.
-> > 
-> > Similarly there are other changes for IMA and EVM.  If you're willing to
-> > create
-> > a topic branch for just the v10 patch set that can be merged into your tree
-> > and
-> > into my tree, I'm fine with your upstreaming v10. (I'll wait to send my pull
-> > request after yours.)  Roberto will add my Ack's to the integrity, IMA, and
-> > EVM
-> > related patches.  However if you're not willing to create a topic branch,
-> > I'll
-> > upstream the v10 patch set.
-> 
-> I'm not a big fan of sharing topic branches across different subsystem
-> trees, I'd much rather just agree that one tree or another takes the
-> patchset and the others plan accordingly.
+On Wed, 2024-02-14 at 15:19 -0500, Kent Overstreet wrote:
+> On Wed, Feb 14, 2024 at 09:09:37PM +0100, Petr Tesa=C5=99=C3=ADk wrote:
+> > On Wed, 14 Feb 2024 13:54:54 -0500
+> > Kent Overstreet <kent.overstreet@linux.dev> wrote:
+> >=20
+> > > On Wed, Feb 14, 2024 at 05:31:12PM +0100, Petr Tesa=C5=99=C3=ADk wrot=
+e:
+> > > > On Wed, 14 Feb 2024 16:11:05 +0100
+> > > > Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> > > >  =20
+> > > > > On Wed, Feb 14, 2024 at 03:55:24PM +0100, Petr Tesa=C5=99=C3=ADk =
+wrote: =20
+> > > > > > OK, so why didn't I send the whole thing?
+> > > > > >=20
+> > > > > > Decomposition of the kernel requires many more changes, e.g. in=
+ linker
+> > > > > > scripts. Some of them depend on this patch series. Before I go =
+and
+> > > > > > clean up my code into something that can be submitted, I want t=
+o get
+> > > > > > feedback from guys like you, to know if the whole idea would be=
+ even
+> > > > > > considered, aka "Fail Fast".   =20
+> > > > >=20
+> > > > > We can't honestly consider this portion without seeing how it wou=
+ld
+> > > > > work, as we don't even see a working implementation that uses it =
+to
+> > > > > verify it at all.
+> > > > >=20
+> > > > > The joy of adding new frameworks is that you need a user before a=
+nyone
+> > > > > can spend the time to review it, sorry. =20
+> > > >=20
+> > > > Thank your for a quick assessment. Will it be sufficient if I send =
+some
+> > > > code for illustration (with some quick&dirty hacks to bridge the ga=
+ps),
+> > > > or do you need clean and nice kernel code? =20
+> > >=20
+> > > Given that code is going to need a rewrite to make use of this anyway=
+s -
+> > > why not just do the rewrite in Rust?
+> >=20
+> > Thank you for this question! I concur that rewriting the whole kernel
+> > in Rust would be a better option. I see two differences:
+> >=20
+> > 1. amount of work
+> > 2. regressions
+> >=20
+> > Rewriting something in Rust means pretty much writing it from scratch.
+> > Doing that necessarily introduces regressions. Old code has been used.
+> > It has been tested. In many corner cases. Lots of bugs have been found,
+> > and they=E2=80=99ve been fixed. If you write code from scratch, you los=
+e much
+> > of the accumulated knowledge.
+>=20
+> But it's work that already has some growing momentum behind it,
+> especially in the area you cited - decompression algorithms.
+>=20
+> > More importantly, sandbox mode can be viewed as a tool that enforces
+> > decomposition of kernel code. This decomposition is the main benefit.
+> > It requires understanding the dependencies among different parts of the
+> > kernel (both code flow and data flow), and that will in turn promote
+> > better design.
+>=20
+> You see this as a tool for general purpose code...?
+>=20
+> Typical kernel code tends to be quite pointer heavy.
+>=20
+> > > Then you get memory safety, which seems to be what you're trying to
+> > > achieve here.
+> > >=20
+> > > Or, you say this is for when performance isn't critical - why not a u=
+ser
+> > > mode helper?
+> >=20
+> > Processes in user mode are susceptible to all kinds of attacks you may
+> > want to avoid. Sandbox mode can be used in situations where user mode
+> > does not exist, e.g. to display a boot logo or to unpack initramfs.
+>=20
+> [citation needed]
+>=20
+> Running code in the kernel does not make it more secure from attack, and
+> that's a pretty strange idea. One of the central jobs of the kernel is
+> to provide isolation between different users.
 
-Just curious why not?
++ linux-security-module, keyrings
 
-> Based on our previous
-> discussions I was under the impression that you wanted me to merge
-> this patchset into lsm/dev, but it looks like that is no longer the
-> case - which is okay by me.
+It is not exactly about being more secure, but more privileged.
 
-Paul, I don't recall saying that.  Please go ahead and upstream it.  Roberto can
-add my acks accordingly.
+I had a question in the past:
 
-Mimi
-
-> Assuming Roberto gets a v10 out soon, do you expect to merge the v10
-> patchset and send it up during the upcoming merge window (for v6.9),
-> or are you expecting to wait until after the upcoming merge window
-> closes and target v6.10?  Once again, either is fine, I'm just trying
-> to coordinate this with other patches.
+https://lore.kernel.org/linux-integrity/eb31920bd00e2c921b0aa6ebed8745cb013=
+0b0e1.camel@huaweicloud.com/
 
 
+I basically need to parse PGP keys, to verify RPM package headers,
+extract the file digests from them, and use those digests as reference
+values for the kernel to decide whether or not files can be accessed
+depending on their integrity.
+
+It is very important that, in a locked-down system, even root is
+subject to integrity checks. So, the kernel has higher privileges than
+root.
+
+Can the kernel be trusted to provide strong enough process isolation,
+even against root, in a way that it can offload a workload to a user
+space process (PGP parsing), and yet maintain its privilege level
+(which would drop to root, if isolation cannot be guaranteed)?
+
+So, since we got no as an answer, we thought about something in the
+middle, we still run the code in the kernel, to keep the higher
+privilege, but at the same time we mitigate the risk of kernel memory
+corruption.
+
+Roberto
 
 
