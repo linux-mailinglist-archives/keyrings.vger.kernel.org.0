@@ -1,189 +1,229 @@
-Return-Path: <keyrings+bounces-695-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-696-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB07A85863D
-	for <lists+keyrings@lfdr.de>; Fri, 16 Feb 2024 20:40:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69A558588DA
+	for <lists+keyrings@lfdr.de>; Fri, 16 Feb 2024 23:37:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B3321F22F82
-	for <lists+keyrings@lfdr.de>; Fri, 16 Feb 2024 19:40:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D58581F220A6
+	for <lists+keyrings@lfdr.de>; Fri, 16 Feb 2024 22:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B081369B3;
-	Fri, 16 Feb 2024 19:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C8014831D;
+	Fri, 16 Feb 2024 22:35:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IrNflfaR"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="TSERdHjp";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="AD9iKjE/"
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC54320F
-	for <keyrings@vger.kernel.org>; Fri, 16 Feb 2024 19:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708112430; cv=none; b=kkTgTJ99FiTU9ehictPQSiYamJqW/m0LP70/pZT7QRXih6GBIvy9Gzvh9VqItlm8IaWm1xFRL35k62EpRLHwEvkILk4/o/WAjVWpvhAq5YmcjuBskIX02ZYmDE/2IIietjQXS0WhLknoc421UMdPSQgb8aWBjT0sXijSnhGn2jk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708112430; c=relaxed/simple;
-	bh=2kEtxKUR+YXMyVhQ0XNlntdk3ty7ZikevcYC5ACSZCA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bduHMa+WASpv1tadHxFfvKaZD0gsYsTcAL+frnHOVbhX48i/UZ1usGdu76vfTobe9+Pijl4wYZyE3sGL/Tm2wNBuDVaDher7drBNn3hcdOdWOpjEJzxUQfncyyui8p4sPhMJHXrResYQ1h10wnNX+1cLK4HGyBrzP2Mk3KE9bXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IrNflfaR; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1708112427;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S3XNc86fIkfMukvVvTcsnQ6iarjT+k2RqqCdbeeV/AY=;
-	b=IrNflfaRxRGcajOh1Bq9ni7C3uh9FZu109RU++bZ/RstL06UK02mgEoxwl8LFW8X5DQX+C
-	oSVrp1x22LfrpM4m4O7VGzlVE7hoB4GD2tiiq17fgcsWorOY+NRTaqHPCoViN5qoZRSNbq
-	xi9STXuqt9AMsoz4FLikgm8YQVLhdls=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-564-fFkr-IdjM1egwg-PVVo49Q-1; Fri, 16 Feb 2024 14:40:25 -0500
-X-MC-Unique: fFkr-IdjM1egwg-PVVo49Q-1
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-42c70b8e409so64291261cf.0
-        for <keyrings@vger.kernel.org>; Fri, 16 Feb 2024 11:40:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708112425; x=1708717225;
-        h=mime-version:user-agent:content-transfer-encoding:organization
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=S3XNc86fIkfMukvVvTcsnQ6iarjT+k2RqqCdbeeV/AY=;
-        b=YRMsFJ66kYBT9C35TnBi3CGRz/u8ijO5xM95AfEm9eie2KZJQHZCvy1fCFxsCspe3n
-         Aag5lt1T3FxKUbnLC2RgzuXFwWdEr409fH7Vub0IPV4eRASdNopqXA7Y8nvoMWOdZHml
-         qLAJoMfMz9LS09WkJlBLYQQtj9/d1lEKp3Ox+lBHp/yp+1L9hegU1ce2xlQQvexR3nhM
-         tTPrIfA1SfDb92rSIdisGFQk7CxqX+9ZfhAnGS0s8tyNuIjFWTOVG/MpeX5qIKID4D+M
-         lcD3c65iAO5FXtTawD06AEekEhS2p8lm1Bpl/V3RhqOgCg7rRhOrlSL6vvZL7WPaXWCJ
-         HKmw==
-X-Forwarded-Encrypted: i=1; AJvYcCVb3aG46xmIq09S2+2sstMzqJAkLZIhs2jgmhlKE3eUNYLOmlxAW/gN9DyPNC+P5PhqrE2podLW66juvmkPQYyjd7Tm9noIuqU=
-X-Gm-Message-State: AOJu0YxV4Q5KaMSyQrucgK3kdWQpM3rESg6UYCUYbP8KuodIS6LiyWYp
-	OgV1enB0AMG7bIAHsT0fFQi8Nqi14bZxbl00WaYl1fxhaNBxwOJsH40FRF2wEuFNVAYkRswwwnH
-	CEbN/D+Y0dwWDBBvnANvUDmr0zFxc/xIRQcQWQjTybR8/m7QR5hFrIeSj
-X-Received: by 2002:ac8:584e:0:b0:42d:ac7d:a334 with SMTP id h14-20020ac8584e000000b0042dac7da334mr10657990qth.33.1708112424921;
-        Fri, 16 Feb 2024 11:40:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHGT33+1/X1VeKyj5dxhhKselaG7Wc6wazzQ604JXGpTkd5+Zr2xU/Dyyx1tXCNah0WjW6nkg==
-X-Received: by 2002:ac8:584e:0:b0:42d:ac7d:a334 with SMTP id h14-20020ac8584e000000b0042dac7da334mr10657964qth.33.1708112424634;
-        Fri, 16 Feb 2024 11:40:24 -0800 (PST)
-Received: from m8.users.ipa.redhat.com (2603-7000-9400-fe80-0000-0000-0000-0154.res6.spectrum.com. [2603:7000:9400:fe80::154])
-        by smtp.gmail.com with ESMTPSA id y5-20020ac87c85000000b0042c6c5bc47fsm207931qtv.83.2024.02.16.11.40.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Feb 2024 11:40:24 -0800 (PST)
-Message-ID: <c7feceb3a7816c2f8686a907fbea2028477464a0.camel@redhat.com>
-Subject: Re: [PATCH v2 00/14] Add support for NIST P521 to ecdsa and ecdh
-From: Simo Sorce <simo@redhat.com>
-To: Stefan Berger <stefanb@linux.ibm.com>, keyrings@vger.kernel.org, 
- linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au,
- davem@davemloft.net
-Cc: linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br
-Date: Fri, 16 Feb 2024 14:40:23 -0500
-In-Reply-To: <b507fd52-a807-4325-981b-3852f4f6190b@linux.ibm.com>
-References: <20240215231414.3857320-1-stefanb@linux.ibm.com>
-	 <3bdb1c9e0ac35c7dc3fbba1233bc7df80ac466a2.camel@redhat.com>
-	 <b507fd52-a807-4325-981b-3852f4f6190b@linux.ibm.com>
-Organization: Red Hat
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82918146904;
+	Fri, 16 Feb 2024 22:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708122958; cv=fail; b=LGtL8I8483EvqUVtIpfi/uhC5pq0xbj9bEq+FVmeQC3wKl1/7LgXAILhxf4kSZwTku6IglNaBKW/CXr1hJeMcGUdosL4sUxdAu9+Eji9V8yO+/qX9gECm9/HoaeargprQr+XGcjOSSy/zN5o4uC3egMoZUxvd0tJNUI5o3AO+NI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708122958; c=relaxed/simple;
+	bh=cIJaD1+R9P0F5yXhNQaTbMgJV9BONgaOrTJLWGjKX2g=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=eDCFYKHPja8b2VSoiT8D7zdGAEIT+fdjREbXoPYBmXOlXpKYzEsWfioreoDsyvVSRh9pEoOnLZP7TzIpFDi0hQdylTb+xa1D6y5soHpidx+x4e+9xJps907P6naSdVquT9sWNj+LH9mWcyrirAWF/gf66I0r1cRiAJGm8LZt3A8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=TSERdHjp; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=AD9iKjE/; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41GKEUu7014707;
+	Fri, 16 Feb 2024 22:35:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-id : content-transfer-encoding : mime-version; s=corp-2023-11-20;
+ bh=cIJaD1+R9P0F5yXhNQaTbMgJV9BONgaOrTJLWGjKX2g=;
+ b=TSERdHjpKK/KSnU+C8LV2jvqT06G/v30NUVeSroKMRWX6H2OL3uK4fSRL3X6cJnXgcQS
+ pm2Bcirv3OHaUNAaCWda2I4dYgkdQTAHOxvxSAGa/2jbxbWvgRch9TqZH1SLjYS7jZIu
+ G5z3/Z+elAFKUFrvMy1EkmtCyby47eKDFX3iC++TbIW4S1dl/euEj7yzVx2DgxQxliBu
+ jdpUVjHwlUJnjLgxwG4QpUc+xeARUVnBvjbcSWCd9cTnuNHyKBl1ap2oKGchsfjZCJM3
+ uv77+RJwpEuvpzlfuwiNnoxZ5SDbQzyGqCPdBNvc5HTt+eQzhdcJwegG9ljk7+eDf7C8 Rw== 
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w92s7693r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 16 Feb 2024 22:34:59 +0000
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 41GKjWqY013876;
+	Fri, 16 Feb 2024 22:34:59 GMT
+Received: from nam02-bn1-obe.outbound.protection.outlook.com (mail-bn1nam02lp2041.outbound.protection.outlook.com [104.47.51.41])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3w6apfs9sa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 16 Feb 2024 22:34:59 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YujU1n1ktxlSByBGtrJc8rDP5qfa0WwewbckLpB15bXqquBw+YAknnkN6nWPDJqGs1SHtHX9/gGX1nrmW0ua4+g/Gdi3a3xuC/lTQoi+JoUtW5hZY72h24dfgVcDlmxe05KgQqovUzsphxauswl56wdQ3wcTP48cFmobBynmmYbD99CK4m5nLOQI0Ce3o7PM/T2NF67B5KnYQS1PfZVx3A0OkY0amLYpjNkUimP99frryNzRjCMdFX3MpXi61eUBaTgbhH5d7dvnq2nbFLZGpfrjIjixFKPUu84ue0yEA/aTzGJ0O2sIdPerUmddYLhmcMR+JVfeowLUnHHEsMr8GQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cIJaD1+R9P0F5yXhNQaTbMgJV9BONgaOrTJLWGjKX2g=;
+ b=Pblh018GAGLhF0Iq8gjX/qwEogaSwVQ6zHXXddaPfloZgQZOHwal8M+ZaxRWLOKHv5k2lD3G2j6SalzACH93dL71hyP7d5XT4i6Ct794uFnc1gf6svnRuT3c/cxI85g4GUFQsXug+pMm64sYrt2BuVd8dvDVTzC2eJKbFt57FboIijZdDAqka88Qlc+WQKNARbbOHcpzu/C67OYgz9YoDqBErCmCsB8tkLSjHLkq75yMhOjTZv+608ExXNqHGIbz+u3ADMDgAr6uiHipIUAIoDcFlqUmRxUPma0QAUyWyxHcvagadHZMG1G0rhKowIHuGb949tL9rmIS00Hh32i8qw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cIJaD1+R9P0F5yXhNQaTbMgJV9BONgaOrTJLWGjKX2g=;
+ b=AD9iKjE/rJ79mlXKW96z/Rap4gSEpN08xrUuP8fWFUDdt9iaQCIYAFSFFx6411JGKVlUHfKKqDHJvunK2rS9fSVo2NQK7NIr294x8OD0HIfy+Gau+TN0st8ky+RJ0b+mfsB5d8cHFv/10/p08rigXjO3m9JJZq6nmA9KRjKfhq4=
+Received: from CH2PR10MB4150.namprd10.prod.outlook.com (2603:10b6:610:ac::13)
+ by SJ2PR10MB7016.namprd10.prod.outlook.com (2603:10b6:a03:4cf::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.31; Fri, 16 Feb
+ 2024 22:34:55 +0000
+Received: from CH2PR10MB4150.namprd10.prod.outlook.com
+ ([fe80::9ade:bfad:c78e:e1f9]) by CH2PR10MB4150.namprd10.prod.outlook.com
+ ([fe80::9ade:bfad:c78e:e1f9%7]) with mapi id 15.20.7292.029; Fri, 16 Feb 2024
+ 22:34:55 +0000
+From: Eric Snowberg <eric.snowberg@oracle.com>
+To: Roberto Sassu <roberto.sassu@huaweicloud.com>
+CC: "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>,
+        Christian Brauner
+	<brauner@kernel.org>, "jack@suse.cz" <jack@suse.cz>,
+        Chuck Lever III
+	<chuck.lever@oracle.com>,
+        Jeff Layton <jlayton@kernel.org>, "neilb@suse.de"
+	<neilb@suse.de>,
+        "kolga@netapp.com" <kolga@netapp.com>, Dai Ngo
+	<dai.ngo@oracle.com>,
+        "tom@talpey.com" <tom@talpey.com>,
+        "paul@paul-moore.com" <paul@paul-moore.com>,
+        "jmorris@namei.org"
+	<jmorris@namei.org>,
+        "serge@hallyn.com" <serge@hallyn.com>,
+        "zohar@linux.ibm.com" <zohar@linux.ibm.com>,
+        "dmitry.kasatkin@gmail.com"
+	<dmitry.kasatkin@gmail.com>,
+        "dhowells@redhat.com" <dhowells@redhat.com>,
+        "jarkko@kernel.org" <jarkko@kernel.org>,
+        "stephen.smalley.work@gmail.com"
+	<stephen.smalley.work@gmail.com>,
+        "omosnace@redhat.com"
+	<omosnace@redhat.com>,
+        "casey@schaufler-ca.com" <casey@schaufler-ca.com>,
+        "shuah@kernel.org" <shuah@kernel.org>,
+        "mic@digikod.net" <mic@digikod.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+        "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org"
+	<linux-security-module@vger.kernel.org>,
+        "linux-integrity@vger.kernel.org"
+	<linux-integrity@vger.kernel.org>,
+        "keyrings@vger.kernel.org"
+	<keyrings@vger.kernel.org>,
+        "selinux@vger.kernel.org"
+	<selinux@vger.kernel.org>,
+        "linux-kselftest@vger.kernel.org"
+	<linux-kselftest@vger.kernel.org>,
+        Roberto Sassu <roberto.sassu@huawei.com>
+Subject: Re: [PATCH v10 00/25] security: Move IMA and EVM to the LSM
+ infrastructure
+Thread-Topic: [PATCH v10 00/25] security: Move IMA and EVM to the LSM
+ infrastructure
+Thread-Index: AQHaX/o17zz0uZ0bUEuo4nwd69V4MLENkLgA
+Date: Fri, 16 Feb 2024 22:34:55 +0000
+Message-ID: <CF351A03-7B5C-4796-B597-535DF17CFD32@oracle.com>
+References: <20240215103113.2369171-1-roberto.sassu@huaweicloud.com>
+In-Reply-To: <20240215103113.2369171-1-roberto.sassu@huaweicloud.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-mailer: Apple Mail (2.3774.400.31)
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH2PR10MB4150:EE_|SJ2PR10MB7016:EE_
+x-ms-office365-filtering-correlation-id: a769e208-c31b-4b9c-d047-08dc2f3f800d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ Y6BuVC2qS+jeWJ7omycQrzi1jh6bBj3Dd7KhxvuhBmb2NPL2gAe1GdvAr42qFuW/U0410XcoxObtyA1utn/IbFVjcUzXH4xTY+809fk2fsUYV+fs45GX6o9057NEaIOd4eiMXzR7Wiv8VgRS/6vNBT8CJln02yKOBiZ08WfkW9M4Y9l+1fBY3ER9+3WncjJapr5UniitGH836Jk1EMRwHfTMQNc+tygF3P+lkxaqlzLZOorI4vmbEYvmuRy9c3G8JHjEEP19drpAv74E8J2ez+FUFgLSbGUZcbxKDIfPPB46Tx9+S7gZdhbxuiWihMB7k0hOLl4Efkd1oa4brJkp3CauaRkiW0mZ4RuW9f6bE7Wi+rYGGjatH8oj3rpNQP3XFmaz6+V8QI97k+L3jAXlW7UD3SUhbch4quNaBUbBxESN67itqrn6BP+Zb8Cm+beedyboQBsXbC+KL5Qif7aGpNa/hZwNWb1mW7qDQC0rECEf3n5n7SWOCnfPl0oZcfatiIxClF6HHv76LB3LhYSR+t+toZLvA1q/PhvRmDReC96c8YkRf6epelZfez3FBujGLUD/Y6vWu4bEwUtcauICYnwRSY7i3gXhTBUc+BoOR27u0+A7D4U8sQWkhaXy+Xc+
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR10MB4150.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(136003)(396003)(366004)(376002)(346002)(230922051799003)(186009)(1800799012)(451199024)(64100799003)(44832011)(4744005)(5660300002)(7416002)(76116006)(6916009)(66946007)(4326008)(66556008)(66446008)(64756008)(66476007)(8936002)(8676002)(316002)(2906002)(38070700009)(33656002)(122000001)(86362001)(26005)(6512007)(36756003)(71200400001)(6486002)(54906003)(38100700002)(6506007)(41300700001)(2616005)(53546011)(478600001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: 
+ =?utf-8?B?MkZGRzdyQW1oeENJMDdTNnUraG9laHFnNm5VNWhLNjVSYUlYZmZjMnhodmlH?=
+ =?utf-8?B?WWZVbjNhUTJpcmY4TGFDd1J1T1RTbzRYRlljTWdkOHp6dTUwL09RKzBzYkdD?=
+ =?utf-8?B?UlJpQ0diaU05YnljNUtkbW5NQzBDMnlPa1B2b1A5dXVVWk91Y3EwbFBZTVFK?=
+ =?utf-8?B?Z0RsL3pTNW1zTVpOdWdacWRQYmZvVkZwVTVaZ24rNXBCTzRWek5rdnlsMW5q?=
+ =?utf-8?B?TXFDVUFLakRocW1PendKZk02MkhsQTRKRS9vTmZZc1BFZEJiVklLVkdWSktt?=
+ =?utf-8?B?N0o4NS8vckZrYkJSemhkaFp4N0NNQnVWUGpFQlpNMDBGOEg3SVJ1cHhLN1ZI?=
+ =?utf-8?B?b1ZWeG85QWlpdzJyU3IvOHl4TXNKUXJxRThYOTRTNzNDU2dxUUhwTnRYODJr?=
+ =?utf-8?B?NlVCVkRBQ0grQ2pEUEV4MXprWkVwbGgvVUdQcGJVYnJBWmhGOXFtaU1ubjFn?=
+ =?utf-8?B?SVlIc2llZWk0bE1lNVRNcFRsYlloSHMvN0dQSXMvaTVSNDVrejdtVTZmaU0x?=
+ =?utf-8?B?WTFUNi9FL2hHQVlRaTRieDE3OTFSNG5ibFMvK25yREdQYUNxZmNXR1psNXc5?=
+ =?utf-8?B?citaajd3Ym1oVkl0OG1qZnh0Vzc0QlN3aCtMb1BxWFAwOStyY0k1dkNpdHo3?=
+ =?utf-8?B?U3dkMXJlVGlmTDRWR2F0MTFaWG1kQzRlVFplQVY5VzczUGhCVlV0enFWR1pu?=
+ =?utf-8?B?R0hFTlg1WVNuRVNwcFpIUGx2S3M2elpEd2dQQTRNc0lrWmh4UDg3SEJ4LzZJ?=
+ =?utf-8?B?QXlRMFdPbUhMdXhQTE9oOFhmSEFQSlJrdVowSkxDRGhnTUFWUlFXa2hqQTdy?=
+ =?utf-8?B?bDYyUEtzcExtK3JDMEEzWmJYSERkbW9JZkplSDFMdTZBV3MwRTNvYlVPRmdl?=
+ =?utf-8?B?Z3gzQitRNGI5TjZzem53MjlMaGNnRkt2UjVSUVJ2VWREVlhYQXZvc2YwMHcy?=
+ =?utf-8?B?UGd6TzNMWkxOLzM2bmp6S3JGVVlrK0ZRYzZucjlHSEJLd3BYM3ZtRXJxNUEx?=
+ =?utf-8?B?RzBFQXVlQm9tRTdRY2s5RzFPdFNsYXRBRTlrd2plUlNjRUJxbGIyeTFtRmFo?=
+ =?utf-8?B?U3I0eFFXUXMyaVdtZDU0VXp4emM5dFE4am1maGZueDJ0Z1c1NUFFNVhpUmww?=
+ =?utf-8?B?VDdoL3oyaDliRHJZTGd6VU1ZNlhndEYzdkEwNDFCbllINVJuRyt6T0pSL1dY?=
+ =?utf-8?B?MWF5U2VuRS8yUEcvRWdkblg3NERNY29qeGhvSldlOHZUZm55ZlllZkNUam5w?=
+ =?utf-8?B?Q3hmeE9rVlBmZWpGcTFNWXA1cTNPTW9OVFI3U0Q4THd1a3RXcXJzMGVSalpS?=
+ =?utf-8?B?NElHTGR5VWdDSHZkRW81NE1lSGoyN0dLYjhXSmFFNmk4MndnVmlxSzRqVTgr?=
+ =?utf-8?B?MGxPV1lKc2NNTjV0eDJUVDZRNDBWQngrQ3FSTmU3aFp1RDc4R1oxM011Y2Fk?=
+ =?utf-8?B?LzUxU3owNVNpaE1XSTl0cFdmdy80Zm9Bc1gvTWw4WkRaOUQ5cVdXVDUxREh0?=
+ =?utf-8?B?TlFvZnhxQkJJUkYvL0huWE9SWkU4dFFtY2hzbWRlbk1WRWxlSm4xRExPU3Vt?=
+ =?utf-8?B?Zi9nNGgvL2MwNEF4azA2U01MRS9DeXlvdDNpaENxYkNiUXZXbkl2elRxSUJk?=
+ =?utf-8?B?U25yVEZJdWZ1U2FpMEJMdmFXdXdaOEdJdUtBSlNJRnZadlBHWHJGUkdqYmY2?=
+ =?utf-8?B?cTdlUE4yQTF2OXFxWGpTQmNtY3hJbTVRbytXNmIwY3ZwaW1iRnZnQU4vWXNh?=
+ =?utf-8?B?OFNYdzN0aXZkM2FmMHY5VER5QzNGSDhObGx6aXlodWwrTG0wNitrWEVDQ3RM?=
+ =?utf-8?B?WThNamVpMU1OUWJqalMvOWR3RXVwdzg3NTdnUzM3aFltZFJtczE1TldYRTVq?=
+ =?utf-8?B?VGF0RjBtQ1NyOGNsSUdJeHN2ZkR1Yklnc0FsSFQ0ZHFiMWhBcncyVHNIU3Nu?=
+ =?utf-8?B?QmdmNzVzb0wrc3RPb1Q4MndhbytFMTFvYXNweFZXdFdSNlhGcFhwbDNkN3ZE?=
+ =?utf-8?B?YkZqYXlrVVkwM0J4ZFZmSTdmTzFKcUp4bXdDZjVEQXNOV00ybjQzaG4zdUFT?=
+ =?utf-8?B?bnBwNS9XUlB3UHdwbUlUOGlhaStZSnh0TDJiZXhCVEovSlU1REljSlZEbzcr?=
+ =?utf-8?B?ZWpxRGlwcUJuU0NuaWQyT04vL1hsc2F4dFg4WCtHUGdNN2tUMXRiZEVzdytN?=
+ =?utf-8?B?ckE9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <FA53A82EA4A8194197AAA8835E08ADE8@namprd10.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
+	JC1/bcCRtYE2Cz5MoNck83/fLirH/VpOrKHKy8EeiCpiX4xdCYnaKGCSR2EbcQC7rlf0el9CiAHYkf6DKbJvBfZ6SSKvEEjUWGzaf559ItVmfkEiLMn1US/3RgpSDxpaEIFRzVBabyj7ybH9DGM4oUk7T6/ikH13sO2teptYW9WuSmzKCJVLUA6KZtFHPVU2GSvoR3GGDQQERr1LCwOlKZdjfpE4/TrN0m77QWYd3gH2KDfmD3xQOyhmI2Swpo40V/OuWeaEZbKVJAEi11eYzLrj1j+czhRK6s8EnjTGFJJUhBAs/Lmm8FT64B6+hgTkes5qaa1+v+zdN+EE+Bg5NPTs1rROjC19XwH4X3ZtrvMXeDgR66hBJp+8cQYqcnMTbuSU7JUOrBvO+I8KnSOMRbGRvFqhMLm9LjHNZsFxyXfXzqh9tgotvS7j7c4gJCfpHnboEsHcq2rNMldYVOcx8wAwyMXncN9DS8GQKBKwp3hmdqiEsppkg1qxDjv82khGIyTuRVfiQzfMLjc8tcPUrd09IXourTeVhwV5xtNAA6gJ6mPw3UKOxbPxoNdGBNB1EOphfbEPWjHzBco9bwHtei5nCsxR4BdXI/wefYZknG0=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR10MB4150.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a769e208-c31b-4b9c-d047-08dc2f3f800d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Feb 2024 22:34:55.7258
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: TN4Cc8+k93vqbNlK3ezbaWNMNqboqTeC1AEZeRrPSG8texoRmPWoG539LMTBhATZtViOzVvE5jHbWU8QLgp1klNfCqRQT4tAE/KLor9SFUc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR10MB7016
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-16_22,2024-02-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
+ suspectscore=0 mlxscore=0 phishscore=0 bulkscore=0 malwarescore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402160178
+X-Proofpoint-GUID: KeDUHV_WteXHfEUoTJI4tmc6j5vU_uiP
+X-Proofpoint-ORIG-GUID: KeDUHV_WteXHfEUoTJI4tmc6j5vU_uiP
 
-On Fri, 2024-02-16 at 14:32 -0500, Stefan Berger wrote:
->=20
-> On 2/16/24 14:27, Simo Sorce wrote:
-> > On Thu, 2024-02-15 at 18:13 -0500, Stefan Berger wrote:
-> > > This series of patches adds support for the NIST P521 curve to ecdsa =
-and
-> > > ecdh. Test cases for NIST P521 are added to both modules.
-> > >=20
-> > > An issue with the current code in ecdsa and ecdh is that it assumes t=
-hat
-> > > input arrays providing key coordinates for example, are arrays of dig=
-its
-> > > (a 'digit' is a 'u64'). This works well for all currently supported
-> > > curves, such as NIST P192/256/384, but does not work for NIST P521 wh=
-ere
-> > > coordinates are 8 digits + 2 bytes long. So some of the changes deal =
-with
-> > > converting byte arrays to digits and digits to byte arrays.
-> > >=20
-> > >=20
-> > > Regards,
-> > >     Stefan
-> > >=20
-> > > v2:
-> > >   - Reformulated some patch descriptions
-> > >   - Fixed issue detected by krobot
-> > >   - Some other small changes to the code
-> > >=20
-> > > Stefan Berger (14):
-> > >    crypto: ecdsa - Convert byte arrays with key coordinates to digits
-> > >    crypto: ecdsa - Adjust tests on length of key parameters
-> > >    crypto: ecdsa - Extend res.x mod n calculation for NIST P521
-> > >    crypto: ecc - Implement vli_mmod_fast_521 for NIST p521
-> > >    crypto: ecc - For NIST P521 use vli_num_bits to get number of bits
-> > >    crypto: ecc - Add NIST P521 curve parameters
-> > >    crypto: ecdsa - Register NIST P521 and extend test suite
-> > >    x509: Add OID for NIST P521 and extend parser for it
-> > >    crypto: ecdh - Use properly formatted digits to check for valid ke=
-y
-> > >    crypto: ecc - Implement ecc_digits_to_bytes to convert digits to b=
-yte
-> > >      array
-> > >    crypto: Add nbits field to ecc_curve structure
-> > >    crypto: ecc - Implement and use ecc_curve_get_nbytes to get curve'=
-s
-> > >      nbytes
-> > >    crypto: ecdh - Use functions to copy digits from and to byte array
-> > >    crypto: ecdh - Add support for NIST P521 and add test case
-> > >=20
-> > >   crypto/asymmetric_keys/x509_cert_parser.c |   3 +
-> > >   crypto/ecc.c                              |  71 +++++--
-> > >   crypto/ecc_curve_defs.h                   |  45 +++++
-> > >   crypto/ecdh.c                             |  59 +++++-
-> > >   crypto/ecdsa.c                            |  48 ++++-
-> > >   crypto/testmgr.c                          |  14 ++
-> > >   crypto/testmgr.h                          | 225 +++++++++++++++++++=
-+++
-> > >   include/crypto/ecc_curve.h                |   3 +
-> > >   include/crypto/ecdh.h                     |   1 +
-> > >   include/crypto/internal/ecc.h             |  61 +++++-
-> > >   include/linux/oid_registry.h              |   1 +
-> > >   11 files changed, 495 insertions(+), 36 deletions(-)
-> >=20
-> > Hi Stefan,
-> > what kind of side-channel testing was performed on this code?
-> > And what is the use case you are adding it for?
->=20
-> We're using public keys for signature verification. I am not aware that
-> public key usage is critical to side channels.
->=20
-> The use case for adding it is primarily driven by closing a gap to=20
-> complete the support for the common ECDSA NIST curves.
-
-Is there an assumption the ECDH code uses exclusively ephemeral keys?
-
-Simo.
-
---=20
-Simo Sorce
-Distinguished Engineer
-RHEL Crypto Team
-Red Hat, Inc
-
-
-
-
-
-
-
-
+DQoNCj4gT24gRmViIDE1LCAyMDI0LCBhdCAzOjMw4oCvQU0sIFJvYmVydG8gU2Fzc3UgPHJvYmVy
+dG8uc2Fzc3VAaHVhd2VpY2xvdWQuY29tPiB3cm90ZToNCj4gDQo+IEZyb206IFJvYmVydG8gU2Fz
+c3UgPHJvYmVydG8uc2Fzc3VAaHVhd2VpLmNvbT4NCj4gDQo+IFRoZSBwYXRjaCBzZXQgYXBwbGll
+cyBvbiB0b3Agb2YgbHNtL25leHQsIGNvbW1pdCA5NzI4MGZhMWVkOTQgKCJBdXRvbWF0ZWQNCj4g
+bWVyZ2Ugb2YgJ2RldicgaW50byAnbmV4dCciKS4NCg0KSSBoYXZlIHRlc3RlZCB0aGUgaW1hIGFw
+cHJhaXNhbCBwb3J0aW9uIGFuZCBoYXZlIG5vdCBvYnNlcnZlZCBhbnkgcmVncmVzc2lvbnMgd2l0
+aA0KdGhpcyBzZXJpZXMuICBGb3IgdGhhdCBwYXJ0IG9mIHRoZSBjb2RlLCBpZiB5b3Ugd2FudCwg
+ZmVlbCBmcmVlIHRvIGFkZDoNCg0KVGVzdGVkLWJ5OiBFcmljIFNub3diZXJnIDxlcmljLnNub3di
+ZXJnQG9yYWNsZS5jb20+DQoNCg==
 
