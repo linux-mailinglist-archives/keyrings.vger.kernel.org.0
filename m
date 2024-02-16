@@ -1,129 +1,202 @@
-Return-Path: <keyrings+bounces-690-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-691-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B64C857709
-	for <lists+keyrings@lfdr.de>; Fri, 16 Feb 2024 08:55:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4D638585D4
+	for <lists+keyrings@lfdr.de>; Fri, 16 Feb 2024 19:53:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 791B21F25EB7
-	for <lists+keyrings@lfdr.de>; Fri, 16 Feb 2024 07:55:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F4271F24B08
+	for <lists+keyrings@lfdr.de>; Fri, 16 Feb 2024 18:53:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009351759D;
-	Fri, 16 Feb 2024 07:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709EE135A74;
+	Fri, 16 Feb 2024 18:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="VYZ5C28E"
 X-Original-To: keyrings@vger.kernel.org
-Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC8212E5D;
-	Fri, 16 Feb 2024 07:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708070115; cv=none; b=Tuj1yU/zVc8pNY8YBF0KlDuhwRYenSlyzM87DRKR0BtGrmYgZjuy6rsFR8mpIogtW6yOpTpcXKbWkLuVQ2I6zW7iCSK0t4J9up7EbNVsGdh6/O+TpeuY1AJLTjL7z0//2wVAH7FcqbagQ1AuT+o+jtDLyAyh06Lp0alK1eoxkBQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708070115; c=relaxed/simple;
-	bh=VCWiUNtrcsS5Bbg884AsO/L41fooQwqIz2TLGDos6rc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Hot16m7/KfkGTXSuaf1Gyqt+O13wp3ob/YvQXlTj4Pcrlv86z7sePTbKF/ezddsbHVjZHNgpd+1ItHnGwHhZAlRWsyO/Oj3tuRz126vToXMXlFmcvxiBjFEmm4JthxusFwTWQGGeCY04sIwTIASMdr+WkHbyV1manMum86Jsiqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.29])
-	by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4TbkNM4CT7z9y5ZF;
-	Fri, 16 Feb 2024 15:39:47 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.47])
-	by mail.maildlp.com (Postfix) with ESMTP id 13058140631;
-	Fri, 16 Feb 2024 15:54:54 +0800 (CST)
-Received: from [127.0.0.1] (unknown [10.204.63.22])
-	by APP1 (Coremail) with SMTP id LxC2BwC3YBm9FM9lcmabAg--.60113S2;
-	Fri, 16 Feb 2024 08:54:53 +0100 (CET)
-Message-ID: <45699f4ed5726fd0d9346069250cd22b04623d9a.camel@huaweicloud.com>
-Subject: Re: [PATCH v10 0/25] security: Move IMA and EVM to the LSM
- infrastructure
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: Paul Moore <paul@paul-moore.com>, viro@zeniv.linux.org.uk, 
- brauner@kernel.org, jack@suse.cz, chuck.lever@oracle.com,
- jlayton@kernel.org,  neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com,
- tom@talpey.com,  jmorris@namei.org, serge@hallyn.com, zohar@linux.ibm.com, 
- dmitry.kasatkin@gmail.com, eric.snowberg@oracle.com, dhowells@redhat.com, 
- jarkko@kernel.org, stephen.smalley.work@gmail.com, omosnace@redhat.com, 
- casey@schaufler-ca.com, shuah@kernel.org, mic@digikod.net
-Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, 
-	selinux@vger.kernel.org, linux-kselftest@vger.kernel.org, Roberto Sassu
-	 <roberto.sassu@huawei.com>
-Date: Fri, 16 Feb 2024 08:54:35 +0100
-In-Reply-To: <2cdfefc8661d0a82c28250fc22a93a47@paul-moore.com>
-References: <20240215103113.2369171-1-roberto.sassu@huaweicloud.com>
-	 <2cdfefc8661d0a82c28250fc22a93a47@paul-moore.com>
-Content-Type: text/plain; charset="UTF-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94649135A42;
+	Fri, 16 Feb 2024 18:52:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.147.86
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708109580; cv=fail; b=BQDqV07/6p5+DqmQBGTRFEfum9htuDCXyb8UvHArTEmkmXEIRX/ZI+EOjQwrockSBYPJrgRpd4NqFE9LCy2vcSnXRlCds6MUWbqNvBRVvfK2I7Rge+ECGc8t9fu8lL1W1ijhiz32SgD0V2ufyC0uE36FD4kT/PhpPpF4wDClutk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708109580; c=relaxed/simple;
+	bh=xkWg7DS9iqO6pm5VOjRltfTNm33JI0ocYZ5kUhuSN4k=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=WwOMJPnRM2jE5qpU72yTc7ZM7Pi5r1GLJm2D9ziTU2thwxLp92JlktBl6aGln0RevjBu+cZ9w5szIjETRuKDSJqd/EPi/ztUG4b/i5EzGWhqh2jI1DRx92x1BaRqlxHa2gViBlU3eS5QNl5ZSOTblKL7YdaxbiZ0H55MJaNXORI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=VYZ5C28E; arc=fail smtp.client-ip=148.163.147.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
+Received: from pps.filterd (m0150241.ppops.net [127.0.0.1])
+	by mx0a-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41GHv9v9014467;
+	Fri, 16 Feb 2024 18:48:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=from : to : cc : subject
+ : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pps0720;
+ bh=nBHfrgfFUaNH+IcMndXyGzX6WFPI2LncIk5zrMX4jz4=;
+ b=VYZ5C28EiDOL0VQttWeTIF4dn42i1cGDDK4kBjnjRq5itmxeMvDtfqRiZdzbK8p+dKP4
+ 49q1I4MriwdECExWVJOMeWcDhuh1GJ3QZ/w253XeI6EVBFvnxHBJ7iOiRKaNgH2PqsYp
+ G9CUiCX0aEnGRsFVP7lLmEabU0v+atl02cYZRojzvd4V0hP55+wPiN6++opCXq7P7cl/
+ 3+wr8y4rbeP9UXt1RaoghWiPrjNbel3PURmDSHnDw/7EXRt7z2oR0o2VAp0Li8BAR99C
+ 2lFpoRAkYvNk898Ux5rHx0fucVG0ZTk972vlsTa6Gfa91MPoS97aNfeC04mub/ArdZ6f lw== 
+Received: from p1lg14878.it.hpe.com ([16.230.97.204])
+	by mx0a-002e3701.pphosted.com (PPS) with ESMTPS id 3wa9gtkatf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 Feb 2024 18:48:41 +0000
+Received: from p1wg14926.americas.hpqcorp.net (unknown [10.119.18.115])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by p1lg14878.it.hpe.com (Postfix) with ESMTPS id 3EEA72767D;
+	Fri, 16 Feb 2024 18:48:40 +0000 (UTC)
+Received: from p1wg14924.americas.hpqcorp.net (10.119.18.113) by
+ p1wg14926.americas.hpqcorp.net (10.119.18.115) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.42; Fri, 16 Feb 2024 06:48:16 -1200
+Received: from p1wg14921.americas.hpqcorp.net (16.230.19.124) by
+ p1wg14924.americas.hpqcorp.net (10.119.18.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.42
+ via Frontend Transport; Fri, 16 Feb 2024 06:48:16 -1200
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (192.58.206.38)
+ by edge.it.hpe.com (16.230.19.124) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.42; Fri, 16 Feb 2024 06:48:16 -1200
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cBtN48W40kyXVHcwrJNm6gEdSi2Z4kFNTPbrh723VCIJeewnCtGAEuVLJRBKBXX3mb22/mybYnJr1hPLONMnNVCZiF63FFHDEQNU1v2sYwsdH1twIWiE5J+/8GsWUaHIukaEgjmh7frM1nEpURxOdzfc2lkHAtYLLXiwyOHYbhJaw3kpAfMa9QxfvFwCeDl32+2lozPhwGPbO2RO2IQtmPwseXvYQCXRlxQM3wcpvGKFbR24Eo41UgGcX7aid+k4iINmdnyemhSGoASiQoBf10oi5DIgUgHWXghFupgzvZGiEmw9rVmLJeN8H5g4GB5yJ2YWrdLLA0iLNEDxCCiTHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nBHfrgfFUaNH+IcMndXyGzX6WFPI2LncIk5zrMX4jz4=;
+ b=bsEZqpsNBMxWSLie8Yc9gUhbJaohkg7WzDuyRSDgoSgARE7yhxYndSDoazKbHaS+7I8nvXkgST6oUSeTLnLf8oK1jvula52PenS7LVpHPgnq2mJWniMA9uUATXayulhvtsrcu2vRjxwUUIez2tDjEvN5+Gyrs4QaJCJ2q6Q/s2othtF74/Bx2aTbL1BJSs7Gdqg8UP7qFRxyptHOqRByZ1iatV/5mrJ4ZTZVr/OKfC63NLi0uAurGiKaLoCh2CW0ZM4vouRlr64nGrJaZ1ztELsNib2PgCGWC/SuyNp4xo1l05U6bROd1ITWVGhAKRkkt7iaMGnooqVY4XVyTH6ocg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
+ header.d=hpe.com; arc=none
+Received: from MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:303:1c4::18)
+ by PH0PR84MB1694.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:510:172::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.31; Fri, 16 Feb
+ 2024 18:48:15 +0000
+Received: from MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::f9c4:2ca:bc63:f0d6]) by MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::f9c4:2ca:bc63:f0d6%7]) with mapi id 15.20.7292.029; Fri, 16 Feb 2024
+ 18:48:14 +0000
+From: "Elliott, Robert (Servers)" <elliott@hpe.com>
+To: Stefan Berger <stefanb@linux.ibm.com>,
+        "keyrings@vger.kernel.org"
+	<keyrings@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org"
+	<linux-crypto@vger.kernel.org>,
+        "herbert@gondor.apana.org.au"
+	<herbert@gondor.apana.org.au>,
+        "davem@davemloft.net" <davem@davemloft.net>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "saulo.alessandre@tse.jus.br" <saulo.alessandre@tse.jus.br>
+Subject: RE: [PATCH v2 06/14] crypto: ecc - Add NIST P521 curve parameters
+Thread-Topic: [PATCH v2 06/14] crypto: ecc - Add NIST P521 curve parameters
+Thread-Index: AQHaYGT5n3XQ+RCgI0uVCceBNs3BVrENS+AQ
+Date: Fri, 16 Feb 2024 18:48:14 +0000
+Message-ID: <MW5PR84MB184295E25332F1516BE10BA5AB4C2@MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM>
+References: <20240215231414.3857320-1-stefanb@linux.ibm.com>
+ <20240215231414.3857320-7-stefanb@linux.ibm.com>
+In-Reply-To: <20240215231414.3857320-7-stefanb@linux.ibm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MW5PR84MB1842:EE_|PH0PR84MB1694:EE_
+x-ms-office365-filtering-correlation-id: 3e1705c7-b962-4533-ef87-08dc2f1fd535
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: BudxKRWElGVFDy3B08DJubzZsCGgD4BB7wPrFcR7QtoCT3VB30jZxU8Mz1DOlkeXOfj1C0Qut3l/LdYVmKvWMLz+jVBq8tu3TTVwqlPiNtTNt6cFoFVDtlx8hiueeoCnFmB1nJCdFtHK+RYj232Tun2bxO4rfXbgDD5VMnSViJtO/UipzMl4G811qPKUGkWLgXWtAfIi+HPBtDalsX05+KjZRE/zcQX5hKgm9fH4+FnHxn9GTEIzHPfhnmRxBU649hU40mSmtkV1WG7IVQfFV0DpujR6bg6V8K+wPbuptXxcVf2cgJj2oRn28MCgYjUHdu9KLG9cCLcQGfdtuXXZmXw7RtAvslynEeoHPCzKdveLlQCe4ov5nx9rZx7EAHbaTfWIFGEzYSRJFkPYScZi1fYNWvLMeDhH2zUPHNQs9rZkk89MtYyBpYr0WcLQUUn5W6LVpj+Jrs4bndHCfKmkjTbUM4byDzafAHi59sSwDjzFsXj9w2tULHcHZlNqkVIUuULnLjmWYyhilHNB3y7CPqzoOUmUc73zWJ8ZhJ1hga/UglemWnI0EHweh+KHy7BDhP6DpNMV6R3WI1GSP2fefpsgfRxLIE5zRZSU7UCUBff9fC/MOLoo/+MjzrB8KqRj
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(136003)(396003)(366004)(39860400002)(346002)(376002)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(478600001)(41300700001)(53546011)(55016003)(2906002)(66476007)(8676002)(5660300002)(4744005)(76116006)(66446008)(8936002)(66556008)(66946007)(52536014)(4326008)(64756008)(71200400001)(6506007)(38070700009)(110136005)(54906003)(9686003)(316002)(26005)(7696005)(83380400001)(38100700002)(86362001)(82960400001)(33656002)(122000001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?+SPCNRYl47bOrjB7nN9XVoS8G+7v2wIHbXz7u/oQ6KBP0XNtV9QT7qoj7qg0?=
+ =?us-ascii?Q?/e91o+JgQlXpB/CYF0K2/UdlXNcwROhwB2hw1XvsNThsjycesg+vbh2pMlOU?=
+ =?us-ascii?Q?lQWwZyI4jEYgMj87ceAJ61ilfIRc+TotPfLgPkRrbLxAx+OF/WYMoOkoLpz0?=
+ =?us-ascii?Q?4h0YS1Xsa8VqLtSx+bAeJspAc67GGNVvVbQSLlNhMJwD+v+Cw9BjwkFEuTiq?=
+ =?us-ascii?Q?zuXvsK74H6JIWm9DKkkSp5FaM26eQE4wpc/CfQx31QMjjFVAtZINSvbS9Mi6?=
+ =?us-ascii?Q?u68wyUnjrTVCk9f3vP9amRDDT1i997LTgPwAiHuDH6UItQEanEF3WypH6zkt?=
+ =?us-ascii?Q?cSwkuMrRk7J7NGNaDo/isyrNtCDSZB2IAAUYUq3GHOnJphfeiYrVXoHInjKF?=
+ =?us-ascii?Q?pYntbxMPeXvJSyVkCYyIjH0J6ChkeBAzTdThsN8dLcLKt+IzKSI+P4EFcDZw?=
+ =?us-ascii?Q?LS5XQUa5hGMGGk1t1sgaezDcKWq743VQfk5QFlTY2LeDHVvlDewHWWICV0Ue?=
+ =?us-ascii?Q?qmIQRkUswmQ++6oBWKuK23tFschLk26GpUk+lqLTlRbNCcJoFs4Ffv3K0Vtz?=
+ =?us-ascii?Q?TEfgfTa0YmgQ6/NhZw8R/KlrP/Y3N/ZMqjnzwKGe4052WDf4mnTPAPTAc/Lg?=
+ =?us-ascii?Q?QOqaG2jg5fZ8i/sRbU+RouCSh8fSV5rl0swUIcoHWi71vccVfnz8ayXqiEN9?=
+ =?us-ascii?Q?8UefSOSSZo/dxFkKbZZ0V38K4z3E3jF3+coSxsZoVeIHG+otsEJZ+5/YTEro?=
+ =?us-ascii?Q?xGi/Yan6udloHiOKAzpqQ06lpXqeK2PP77i6ybnYahQLvFUQHGIwXKrxOW88?=
+ =?us-ascii?Q?IF1dShhWeQIlcrgbHn1Q95bPf9edEpNS8YqjHoYKbmRqq4/7xLmMIo6+XzBo?=
+ =?us-ascii?Q?6JZ+OlrmrFt01sCQGdC/639VrbDiSdftU2LwAHbzfiQZzkOaRwdPmEDeoPkb?=
+ =?us-ascii?Q?71BqMsDv8ZqKnBjVjtjV9BIJnaaJt8+bp18liZ/kNC1Vz6BNs/TCzy6fR8PP?=
+ =?us-ascii?Q?onjz4Jfv7MQ3YxlYc7NXoxxf/5JvvESYgZ6XRYIOnAqpKoydJ9YCh3DIC1KH?=
+ =?us-ascii?Q?GZi0ShC+KTyo6z99Dj1jgER/TsdK4lC5kuf59XYP44WDw5iNs6G/oBZs2tYD?=
+ =?us-ascii?Q?vm8S9TVgnOzTxEY2J4iqxujqZt0Bj5OmejoOmOaNtNgi33WWuQaTriZYQEAM?=
+ =?us-ascii?Q?JMLvPwXBJAM4qoIdbQc9MlNOnbR5G5tL3PbPIuY3vpCKZaupROQbXJZrmnZO?=
+ =?us-ascii?Q?qXPB17o+/0InRhE+6F0meQS3Y81WfORbNAhM1V7HmWhqxDqo+k+LHjb30Jv7?=
+ =?us-ascii?Q?lXRcoE3u/oMu7fM4QxB8VW1Q6K8XgBSI44USx5TD6vx4m7+4n3eMCIpmgBty?=
+ =?us-ascii?Q?l3JnhjNTnARsQdG2fZE4GayAns/QWlyQs/KdsfbbEeiDGQ6/wjN71HJVOivo?=
+ =?us-ascii?Q?GdTv3SYYNVWpkdepenno9adT2kHO4cbSKjP1Dv6J5bOgC/xcMFw9fyJr4uoF?=
+ =?us-ascii?Q?+YfNLBSb63tB+ZSUEABuvuJoFS4fiLBe252o4PgTXw9P/gFO58/P9TmIGaFJ?=
+ =?us-ascii?Q?9ONFWnm22BtkcUUrkJQ=3D?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-CM-TRANSID:LxC2BwC3YBm9FM9lcmabAg--.60113S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7WF4DAF1rtr18Gr13uryrtFb_yoW8Xw1DpF
-	Z7ta1UCr4qqF13Can7Zr48ua1rAwsYqr4jkry8KrWUZa45KF1ftr1xGF4j9FykWwn3ua4Y
-	q34jv3sYy34DAa7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij
-	64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
-	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE
-	2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
-	xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIE
-	c7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UAkuxUUUUU=
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAPBF1jj5ZmBQAAsN
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MW5PR84MB1842.NAMPRD84.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e1705c7-b962-4533-ef87-08dc2f1fd535
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Feb 2024 18:48:14.7237
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 105b2061-b669-4b31-92ac-24d304d195dc
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: w/ADXa4WJXEciXrDHH749VNdNQ0B3HJhhLkuXdwWkQfOZBqLFh3YQKy3cnB5YhNa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR84MB1694
+X-OriginatorOrg: hpe.com
+X-Proofpoint-ORIG-GUID: DX6onMJ87whUhqlwVZheLn-eeL-juJxw
+X-Proofpoint-GUID: DX6onMJ87whUhqlwVZheLn-eeL-juJxw
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-16_18,2024-02-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ impostorscore=0 lowpriorityscore=0 adultscore=0 spamscore=0 mlxscore=0
+ suspectscore=0 priorityscore=1501 malwarescore=0 bulkscore=0 clxscore=1011
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402160147
 
-On Thu, 2024-02-15 at 23:43 -0500, Paul Moore wrote:
-> On Feb 15, 2024 Roberto Sassu <roberto.sassu@huaweicloud.com> wrote:
-> >=20
-> > IMA and EVM are not effectively LSMs, especially due to the fact that i=
-n
-> > the past they could not provide a security blob while there is another =
-LSM
-> > active.
-> >=20
-> > That changed in the recent years, the LSM stacking feature now makes it
-> > possible to stack together multiple LSMs, and allows them to provide a
-> > security blob for most kernel objects. While the LSM stacking feature h=
-as
-> > some limitations being worked out, it is already suitable to make IMA a=
-nd
-> > EVM as LSMs.
-> >=20
-> > The main purpose of this patch set is to remove IMA and EVM function ca=
-lls,
-> > hardcoded in the LSM infrastructure and other places in the kernel, and=
- to
-> > register them as LSM hook implementations, so that those functions are
-> > called by the LSM infrastructure like other regular LSMs.
+> -----Original Message-----
+> From: Stefan Berger <stefanb@linux.ibm.com>
+> Sent: Thursday, February 15, 2024 5:14 PM
+> Subject: [PATCH v2 06/14] crypto: ecc - Add NIST P521 curve parameters
 >=20
-> As discussed earlier, I've just merged this into the lsm/dev tree; a big
-> thank you to Roberto for working on this and to all helped along the way
-> with reviews, testing, etc.  I've wanted to see IMA/EVM integrated as
-> proper LSMs for a while and I'm very happy to finally see it happening.
+> Add the parameters for the NIST P521 curve and define a new curve ID
+> for it. Make the curve available in ecc_get_curve.
+>=20
+...
+> diff --git a/crypto/ecc_curve_defs.h b/crypto/ecc_curve_defs.h
+...
+> +static struct ecc_curve nist_p521 =3D {
+> +	.name =3D "nist_521",
 
-Thank you, and thanks to all! That's an excellent news! Excited about
-that!
+Are the name fields in the ecc_curve structures used anywhere or
+exposed to userspace?
 
-> Mimi, Roberto, I'm going to hold off on merging anything into the lsm/dev
-> tree for a few days in case you decide you would prefer to take these
-> patches yourselves.  If I don't hear anything from the two of you, I'll
-> plan to send these to Linus during the next merge window.
+It'd be nice if the strings for the nist_p192, nist_p256, and nist_p384=20
+structures and this new nist_p521 structure included "p" before
+the number, better matching all the code and the NIST FIPS 186-4 names:
+    .name =3D "nist_p192"
+    .name =3D "nist_p256"
+    .name =3D "nist_p384"
+    .name =3D "nist_p521"
 
-Perfect!
-
-Roberto
 
 
