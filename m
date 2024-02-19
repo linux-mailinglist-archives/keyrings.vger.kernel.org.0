@@ -1,188 +1,134 @@
-Return-Path: <keyrings+bounces-698-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-699-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8140585A635
-	for <lists+keyrings@lfdr.de>; Mon, 19 Feb 2024 15:41:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D25A285AC5C
+	for <lists+keyrings@lfdr.de>; Mon, 19 Feb 2024 20:51:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C80E1F277A4
-	for <lists+keyrings@lfdr.de>; Mon, 19 Feb 2024 14:41:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 718651F239F8
+	for <lists+keyrings@lfdr.de>; Mon, 19 Feb 2024 19:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863DC2EB0A;
-	Mon, 19 Feb 2024 14:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD7D54BEC;
+	Mon, 19 Feb 2024 19:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="gTiUYdrp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s0TCCWWO"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00361DDFA;
-	Mon, 19 Feb 2024 14:40:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6BF54BEB
+	for <keyrings@vger.kernel.org>; Mon, 19 Feb 2024 19:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708353652; cv=none; b=nY4/f1xSZwMNn5mssqfhxE4t4jaoF+tFgdtgDVhV47TST/8S1grHRUwSv7ZZOYbXVx2XmnbQWxwVO1ivqs0SF5GXCcgVH33yEYd0qazPcsucxdYHCEzqkjLR7jwsB7aR/h/jS3GV14wh3of1Zf43fhZYI3Dr4PrZGq+wXhAWY/I=
+	t=1708372051; cv=none; b=AtxnipueHxZQTojDDUB4lRDd+an0TT4bLrjNjwE9upBkdAtCLqUx/gvMRFdUhPSwXsxRGy/GCBUTSluok30JebfEiqodYTfDg2gxAGc2lrZiihz+3XOS97CGIZSwDw/XtWzmKYr0Hp5oV/97TpHlGJmxQ00Ot5zP7+IJVZts4Uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708353652; c=relaxed/simple;
-	bh=lS6tnNIEG62vn9NZlJr0TcmEITMimGmfMmhLb4jK/Wo=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=PJXdiHxJj4o2jTT3qp1MSrJgQcR4q0W3QI5609lyrWFM/Wp05YeSa5qJIc6VJ0Z6GjPDfprqvG35PzpYFtVEGTAQfdGBQXPdEKQf4YGrCkfKYnPIfUMs15hcfGstjn1bwExfbUCUvfH7D12KHXjWqAsBn/j11Csu0v/8LX+u9L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=gTiUYdrp; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 41JDX5o6032426;
-	Mon, 19 Feb 2024 14:40:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : from : subject : to : cc : references : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=bJP5HIx5nNqhT4TUNKgIkLEZ2q/UydeD2C4sJY7sccA=;
- b=gTiUYdrpDW5hvTNopJBeamT3UzLhzbjIyQsZ//pGMtN1oNtfSVMJpYVgO91yLBAihj5q
- vtDcliz3hCzKgmWkjFqhvJKmNHejmKk12hcn+udibAOZjR+aXio8lpyNjwgKvsBXXUVM
- gv+nMnCmz4Q181/re1lj+KSSWT3hWg1UDi0QM5Ug1nFJviCGRR6LAt43H0U/Dpgf4Kzj
- Fi0mDqzsYoLxxeHv0d4RQuTMiU2o87TOdfIwgsQjAUiTsE2L9+PnwOABXx01H9Hs4np0
- XyJuCyolK3cdbq+b/ZuHWREfNSZaRs4wkRw+2XoBkLokmqYTeepoOHydw5YKzdChyktZ 1g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wc7ygt1be-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Feb 2024 14:40:43 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41JEbVpH021477;
-	Mon, 19 Feb 2024 14:40:43 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wc7ygt1b2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Feb 2024 14:40:43 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 41JEHwIN009583;
-	Mon, 19 Feb 2024 14:40:42 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wb84p1rwn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Feb 2024 14:40:42 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 41JEeduj3015676
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 19 Feb 2024 14:40:42 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DE14A58065;
-	Mon, 19 Feb 2024 14:40:39 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1574B58059;
-	Mon, 19 Feb 2024 14:40:39 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 19 Feb 2024 14:40:38 +0000 (GMT)
-Message-ID: <98005c8e-816f-4b58-9572-f2af538e6728@linux.ibm.com>
-Date: Mon, 19 Feb 2024 09:40:38 -0500
+	s=arc-20240116; t=1708372051; c=relaxed/simple;
+	bh=4QH3e7d/eW4mOC+QNadtlS7PhVUAsgqLSCjG1mRqUo0=;
+	h=Mime-Version:Content-Type:Date:Cc:Subject:From:To:Message-Id:
+	 References:In-Reply-To; b=DE8P+tRLZ+5U9to/LXyqR8+XAOLzdPq62fX6qB7Ni+uEaF+dqb+A+ZS3rXiTBcstOsmhFReIyeSB4ppDi7ZW/NPhWmoI3TtvJhM5miemiLK7X5TAQbUjypg+uIf4wOgq+fBW9U/++DWk46WY4iJWGzNrVcajFNGn6UYz/hy2Sf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s0TCCWWO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D79DFC433C7;
+	Mon, 19 Feb 2024 19:47:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708372051;
+	bh=4QH3e7d/eW4mOC+QNadtlS7PhVUAsgqLSCjG1mRqUo0=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=s0TCCWWOa1Z8UjwiurKMHvzWJAf3a7kpqo3um1HLVTvfWZSDdo34+gvOztScWk2RP
+	 nacEvA/YFI1gZkGurMY80grWyplzEytePtmg3sZSr1G/oKb3DvZc8t8N4Dbka07L4U
+	 LyumlgT2qPYuO2lAvdjjhZjCuR2a2lBB6VumMaMQlkVMuEPsjGBmC1UySFNLsaXYZe
+	 TwukXddVmiMhh+jnt/slfEEyv6cM5W1cHgkm5NpdfvNCjDmilTBndID4FCrLydZpuT
+	 FnV0INVCplobgfi/IgPJLmZSgr8Da98a4c30B3te2lr5suPd7jw0oEYctwkFk87pzr
+	 bpWO2k1Z2HKTQ==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v2 00/14] Add support for NIST P521 to ecdsa and ecdh
-To: Simo Sorce <simo@redhat.com>, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au,
-        davem@davemloft.net
-Cc: linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br
-References: <20240215231414.3857320-1-stefanb@linux.ibm.com>
- <3bdb1c9e0ac35c7dc3fbba1233bc7df80ac466a2.camel@redhat.com>
- <b507fd52-a807-4325-981b-3852f4f6190b@linux.ibm.com>
- <c7feceb3a7816c2f8686a907fbea2028477464a0.camel@redhat.com>
-Content-Language: en-US
-In-Reply-To: <c7feceb3a7816c2f8686a907fbea2028477464a0.camel@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: lj8fOMihFw8P0xDnV9dpv8Bmv_bA0JO7
-X-Proofpoint-GUID: mO5g91bceedikjZJxmsczi5AWouqqweR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-19_10,2024-02-19_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- impostorscore=0 adultscore=0 clxscore=1015 mlxscore=0 lowpriorityscore=0
- bulkscore=0 spamscore=0 mlxlogscore=999 phishscore=0 priorityscore=1501
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402190109
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 19 Feb 2024 19:47:27 +0000
+Cc: <maximilian@mbosch.me>
+Subject: Re: Allowing empty keys? or: setting attributes on keys safely
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Linus Heckemann" <linus@schreibt.jetzt>, <keyrings@vger.kernel.org>,
+ "David Howells" <dhowells@redhat.com>
+Message-Id: <CZ9B2PLX5VZS.1GPZ6W2K9UVV5@seitikki>
+X-Mailer: aerc 0.15.2
+References: <ygar0hbrm05.fsf@localhost>
+In-Reply-To: <ygar0hbrm05.fsf@localhost>
 
+On Sat Feb 17, 2024 at 6:20 PM UTC, Linus Heckemann wrote:
+> Hi all,
+>
+> We've been fiddling with the keyring functionality; I want to set up a
+> key with an expiry time safely -- i.e. the key data should never be
+> loaded without the expiry time being set.
 
+Something prevents you setting invalid payload first, and appropriate
+one later with keyctl_update?
 
-On 2/16/24 14:40, Simo Sorce wrote:
-> On Fri, 2024-02-16 at 14:32 -0500, Stefan Berger wrote:
->>
->> On 2/16/24 14:27, Simo Sorce wrote:
->>> On Thu, 2024-02-15 at 18:13 -0500, Stefan Berger wrote:
->>>> This series of patches adds support for the NIST P521 curve to ecdsa and
->>>> ecdh. Test cases for NIST P521 are added to both modules.
->>>>
->>>> An issue with the current code in ecdsa and ecdh is that it assumes that
->>>> input arrays providing key coordinates for example, are arrays of digits
->>>> (a 'digit' is a 'u64'). This works well for all currently supported
->>>> curves, such as NIST P192/256/384, but does not work for NIST P521 where
->>>> coordinates are 8 digits + 2 bytes long. So some of the changes deal with
->>>> converting byte arrays to digits and digits to byte arrays.
->>>>
->>>>
->>>> Regards,
->>>>      Stefan
->>>>
->>>> v2:
->>>>    - Reformulated some patch descriptions
->>>>    - Fixed issue detected by krobot
->>>>    - Some other small changes to the code
->>>>
->>>> Stefan Berger (14):
->>>>     crypto: ecdsa - Convert byte arrays with key coordinates to digits
->>>>     crypto: ecdsa - Adjust tests on length of key parameters
->>>>     crypto: ecdsa - Extend res.x mod n calculation for NIST P521
->>>>     crypto: ecc - Implement vli_mmod_fast_521 for NIST p521
->>>>     crypto: ecc - For NIST P521 use vli_num_bits to get number of bits
->>>>     crypto: ecc - Add NIST P521 curve parameters
->>>>     crypto: ecdsa - Register NIST P521 and extend test suite
->>>>     x509: Add OID for NIST P521 and extend parser for it
->>>>     crypto: ecdh - Use properly formatted digits to check for valid key
->>>>     crypto: ecc - Implement ecc_digits_to_bytes to convert digits to byte
->>>>       array
->>>>     crypto: Add nbits field to ecc_curve structure
->>>>     crypto: ecc - Implement and use ecc_curve_get_nbytes to get curve's
->>>>       nbytes
->>>>     crypto: ecdh - Use functions to copy digits from and to byte array
->>>>     crypto: ecdh - Add support for NIST P521 and add test case
->>>>
->>>>    crypto/asymmetric_keys/x509_cert_parser.c |   3 +
->>>>    crypto/ecc.c                              |  71 +++++--
->>>>    crypto/ecc_curve_defs.h                   |  45 +++++
->>>>    crypto/ecdh.c                             |  59 +++++-
->>>>    crypto/ecdsa.c                            |  48 ++++-
->>>>    crypto/testmgr.c                          |  14 ++
->>>>    crypto/testmgr.h                          | 225 ++++++++++++++++++++++
->>>>    include/crypto/ecc_curve.h                |   3 +
->>>>    include/crypto/ecdh.h                     |   1 +
->>>>    include/crypto/internal/ecc.h             |  61 +++++-
->>>>    include/linux/oid_registry.h              |   1 +
->>>>    11 files changed, 495 insertions(+), 36 deletions(-)
->>>
->>> Hi Stefan,
->>> what kind of side-channel testing was performed on this code?
->>> And what is the use case you are adding it for?
->>
->> We're using public keys for signature verification. I am not aware that
->> public key usage is critical to side channels.
->>
->> The use case for adding it is primarily driven by closing a gap to
->> complete the support for the common ECDSA NIST curves.
-> 
-> Is there an assumption the ECDH code uses exclusively ephemeral keys?
-> 
-It can use both, provided keys and ephemeral keys. I think at this point 
-it's best to drop ecdh support from this series.
+> I'd expect that I could create a user key with an empty payload, e.g.
+>
+> add_key("user", "some-key", NULL, 0, KEY_SPEC_SESSION_KEYRING);
+>
+> or
+>
+> add_key("user", "some-key", "", 0, KEY_SPEC_SESSION_KEYRING);
+>
+> in order to use keyctl_set_timeout to apply a timeout _before_ the
+> payload is populated using keyctl_update. However, both of these add_key
+> calls return -EINVAL.
+>
+> I found [1] which removed documentation that suggested that this would
+> be allowed, but the reason for not allowing an empty payload is unclear
+> to me; I think it would make sense for my exact use case, and placing a
+> dummy nonempty payload in the keyring first seems like it would be more
+> semantically weird and painful to deal with when reading from the keyring=
+.
+>
+> Is there any reason why this restriction is in place, and is there a
+> more sensible way to apply the timeout before a payload is loaded?
 
-    Stefan
+The function in question is user_preparse() (for reference).
 
-> Simo.
-> 
+Unless I missed a differing key type all key types seem to have the same
+zero check in their implementations of preparse. This change would make
+user key type semantics different than for other key types.
+
+[Please correct me if there is actually key type that does allow zero
+payload.]
+=20
+What I do find very confusing in the current call paths is that why this
+zero check does not already happen in key_instantiate_and_link() before
+preparse is called, i.e. why we don't have along the lines of:
+
+$ git diff
+diff --git a/security/keys/key.c b/security/keys/key.c
+index 5b10641debd5..7fa425ab5588 100644
+--- a/security/keys/key.c
++++ b/security/keys/key.c
+@@ -510,6 +510,12 @@ int key_instantiate_and_link(struct key *key,
+        prep.quotalen =3D key->type->def_datalen;
+        prep.expiry =3D TIME64_MAX;
+        if (key->type->preparse) {
++               /* Disallow zero payload: */
++               if (!data || !datalen) {
++                       ret =3D -EINVAL;
++                       goto error;
++               }
++
+                ret =3D key->type->preparse(&prep);
+                if (ret < 0)
+                        goto error;
+
+> Cheers
+> Linus
+>
+> [1]: https://lore.kernel.org/all/alpine.LNX.2.00.1603281843250.15978@sisy=
+phus/
+
+BR, Jarkko
 
