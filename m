@@ -1,46 +1,46 @@
-Return-Path: <keyrings+bounces-703-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-704-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE39885C2FF
-	for <lists+keyrings@lfdr.de>; Tue, 20 Feb 2024 18:52:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FFE585C339
+	for <lists+keyrings@lfdr.de>; Tue, 20 Feb 2024 19:00:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE4941C22ACB
-	for <lists+keyrings@lfdr.de>; Tue, 20 Feb 2024 17:52:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B81D1C20D69
+	for <lists+keyrings@lfdr.de>; Tue, 20 Feb 2024 18:00:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C81A77650;
-	Tue, 20 Feb 2024 17:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493C277648;
+	Tue, 20 Feb 2024 18:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hjiHG8Xm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sE2pq2kb"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042977764B
-	for <keyrings@vger.kernel.org>; Tue, 20 Feb 2024 17:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2194476C70;
+	Tue, 20 Feb 2024 18:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708451529; cv=none; b=SXA31W38g6LUoQcNdaFLuwOB/7V/VB5xBqnoPQzJ7B8iXEclc7N012ogdARqbkj6jm8/W8Qc1rWSJBiYiY6i/s840NhSD796+mfFqc56GgslBJTxu4lb/Ab3SuP0uU9UWR/at0cT9qGpk9WQM6PbHH9MDrjXk73ij93hC5tpWsc=
+	t=1708452047; cv=none; b=E3RTSUCE9n+Tl8TKFO/TNNt07yzpvryBJPNsDGAE3Ak2VitEYBKf6Ym4fHijp3HkMDhzMGMN0oLxhGTgyxbg7s0EP1YwNPA3YHXUmpyZXJLD+dKixFDnB8d4pHsxDx0g6TkDFPhwNMYAKz3RaBD5LgXKXZOOoSk2zRS6ZPGisr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708451529; c=relaxed/simple;
-	bh=4jYBMEi9sXIvXr9ggBtiPRCSWmRIgytekn5nyAFlaMI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=uvlhYjWZLt5EPh1eHDTVSW3lY4jOpygzJceAVLrNVr47YJhWXa94wI9dZDhxmUUQyyAJCR+oR0lhwiMzYjjelpALrZULCYyPn5q9O7eQp2lkdpL5aRmmq0s4NwUt+IGDuKruOyEMUXYsvXDrdTGD2HNOFfZPIv3iLlk4pvMZzYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hjiHG8Xm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5EAC433C7;
-	Tue, 20 Feb 2024 17:52:07 +0000 (UTC)
+	s=arc-20240116; t=1708452047; c=relaxed/simple;
+	bh=Dhhd422rIU7Fe28Juuz6Lqp97VGVe56qgQbVeLGmTwo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=S1dLlh3ariafzgWerzReowNy5YrYBcYNpF/CQ+pMPOQyN/sescT9nxXfSr9x+jz23ki+pq1vtTmYRQSvdgh+MLEWq6PVG3pKAY8HP8EbqkP3J/gLsWDaqNkXe+JS2A2w9zP/ENzwvfnIxKIOJyPLkBwRiPM7z6RxyV3F+Ymx5o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sE2pq2kb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE93C433C7;
+	Tue, 20 Feb 2024 18:00:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708451528;
-	bh=4jYBMEi9sXIvXr9ggBtiPRCSWmRIgytekn5nyAFlaMI=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=hjiHG8XmLg6NUrPDJePs8F/0jNd2eOEdnEOTLLOd2WDQY/1GIy3+Ss+wqn6fD3463
-	 7STcjqbP5QMbtsL8O/fOC6C68p+pb7bfqlcvz/TNEVPg6p04rZIlSH7zLzSSM1+O6q
-	 eGZ4fjgEBJD4IoHNqqdJ7LS+epLNEqCwV1eXwrHFuMhnebAHdBxSJoMqurQC6KUxQI
-	 o9TgOjzLtGHNvgns+s1dx3Qaq4sB4U7urFYZCwl5WkKDg6c79kiGRkJhXC2Pg/9P+d
-	 thTA1+zczwuYqMW8G5iPWDSEY/DzUGjdFH+KuPm/074Z30QmGv6r2qVIdyMZp8r9TI
-	 ud//VzDacFsvQ==
+	s=k20201202; t=1708452046;
+	bh=Dhhd422rIU7Fe28Juuz6Lqp97VGVe56qgQbVeLGmTwo=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=sE2pq2kb3nMi2cd7Rf5ZtbeaUzyD/HXPZWq+4lPvT8MJjIjV5sF+CvpDstBY+TZP1
+	 CbY7goMP47h+tHF+e274bjxghAGf+P8lhBsV3ySj8XytvyzNjO03IJT0JDp9PwCnCo
+	 lfHs2lmoOvHWuvcizBm6WT9Tsxo7xs9VXMJTDPodPEVko209DQlehJFwXNStQYNBeB
+	 N3vqQ0WCpcwti8AyMgKpFGYHrlSUC5E1lfAvizEPmBnJUZlSRL73OV5JGJrcaiCWiT
+	 tW6hPSU0PihaAP4nvNAfObkzEjZETVChMwdsErrR5qmwcaizkssUIXJirBRqLP8xZP
+	 mm4TGDShkdYkA==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,44 +49,63 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Feb 2024 17:52:05 +0000
-Message-Id: <CZA3IRO5XQW5.L44X8CN9S3T@seitikki>
-Subject: Re: Allowing empty keys? or: setting attributes on keys safely
+Date: Tue, 20 Feb 2024 18:00:41 +0000
+Message-Id: <CZA3PCY3U4YU.3R05ZC4X16EX0@seitikki>
+To: "Lukas Wunner" <lukas@wunner.de>, "David Howells" <dhowells@redhat.com>,
+ "Herbert Xu" <herbert@gondor.apana.org.au>, "David S. Miller"
+ <davem@davemloft.net>, "Jonathan Cameron" <Jonathan.Cameron@huawei.com>
+Cc: <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>, "Andy
+ Shevchenko" <andriy.shevchenko@linux.intel.com>, "Peter Zijlstra"
+ <peterz@infradead.org>, "Dan Williams" <dan.j.williams@intel.com>, "Ard
+ Biesheuvel" <ardb@kernel.org>, "Nick Desaulniers"
+ <ndesaulniers@google.com>, "Nathan Chancellor" <nathan@kernel.org>
+Subject: Re: [PATCH v3] X.509: Introduce scope-based x509_certificate
+ allocation
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Jarkko Sakkinen" <jarkko@kernel.org>, "Linus Heckemann"
- <linus@schreibt.jetzt>, <keyrings@vger.kernel.org>, "David Howells"
- <dhowells@redhat.com>
-Cc: <maximilian@mbosch.me>
 X-Mailer: aerc 0.15.2
-References: <ygar0hbrm05.fsf@localhost>
- <CZ9B2PLX5VZS.1GPZ6W2K9UVV5@seitikki> <ygale7fscvy.fsf@localhost>
- <CZA3GKLCWG7B.1Q1JLDVN989B1@seitikki>
-In-Reply-To: <CZA3GKLCWG7B.1Q1JLDVN989B1@seitikki>
+References: <63cc7ab17a5064756e26e50bc605e3ff8914f05a.1708439875.git.lukas@wunner.de>
+In-Reply-To: <63cc7ab17a5064756e26e50bc605e3ff8914f05a.1708439875.git.lukas@wunner.de>
 
-On Tue Feb 20, 2024 at 5:49 PM UTC, Jarkko Sakkinen wrote:
-> On Tue Feb 20, 2024 at 9:28 AM UTC, Linus Heckemann wrote:
-> > "Jarkko Sakkinen" <jarkko@kernel.org> writes:
-> >
-> > > On Sat Feb 17, 2024 at 6:20 PM UTC, Linus Heckemann wrote:
-> > >> Hi all,
-> > >>
-> > >> We've been fiddling with the keyring functionality; I want to set up=
- a
-> > >> key with an expiry time safely -- i.e. the key data should never be
-> > >> loaded without the expiry time being set.
-> > >
-> > > Something prevents you setting invalid payload first, and appropriate
-> > > one later with keyctl_update?
-> >
-> > Nothing, and this is the approach we're taking for now, but having a
-> > zero-length payload feels more semantically appropriate than e.g. a
-> > single NUL byte.
+On Tue Feb 20, 2024 at 3:10 PM UTC, Lukas Wunner wrote:
+> Add a DEFINE_FREE() clause for x509_certificate structs and use it in
+> x509_cert_parse() and x509_key_preparse().  These are the only functions
+> where scope-based x509_certificate allocation currently makes sense.
+> A third user will be introduced with the forthcoming SPDM library
+> (Security Protocol and Data Model) for PCI device authentication.
+
+I think you are adding scope-based memory management and not
+DEFINE_FREE(). Otherwise, this would be one-liner patch.
+
+I'm not sure if the last sentence adds more than clutter as this
+patch has nothing to do with SPDM changes per se.
+
+> Unlike most other DEFINE_FREE() clauses, this one checks for IS_ERR()
+> instead of NULL before calling x509_free_certificate() at end of scope.
+> That's because the "constructor" of x509_certificate structs,
+> x509_cert_parse(), returns a valid pointer or an ERR_PTR(), but never
+> NULL.
 >
-> What is the actual problem then, other than feelings?
+> I've compared the Assembler output before/after and they are identical,
+> save for the fact that gcc-12 always generates two return paths when
+> __cleanup() is used, one for the success case and one for the error case.
 
-I mean API semantics almost never should not been changed, even if
-it is "stupid" one way or another. So threshold to do anything at=20
-all should have bar set to quite high...
+Use passive as commit message is not a personal letter.
+
+>
+> In x509_cert_parse(), add a hint for the compiler that kzalloc() never
+> returns an ERR_PTR().  Otherwise the compiler adds a gratuitous IS_ERR()
+> check on return.  Introduce a handy assume() macro for this which can be
+> re-used elsewhere in the kernel to provide hints for the compiler.
+
+Does not explain why it is "handy".
+
+I don't see a story here but instead I see bunch of disordered tecnical
+terms.
+
+We have the code diff for detailed technical stuff. The commit message
+should simply explain why we want this and what it does for us. And we
+zero care about PCI changes in the scope of this patch, especially since
+this is not part of such patch set.
 
 BR, Jarkko
 
