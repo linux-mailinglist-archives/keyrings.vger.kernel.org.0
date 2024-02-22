@@ -1,124 +1,315 @@
-Return-Path: <keyrings+bounces-705-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-706-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729D885C343
-	for <lists+keyrings@lfdr.de>; Tue, 20 Feb 2024 19:03:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CCCB85F5E6
+	for <lists+keyrings@lfdr.de>; Thu, 22 Feb 2024 11:40:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02BC3B2445F
-	for <lists+keyrings@lfdr.de>; Tue, 20 Feb 2024 18:03:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82F8C1C23FE4
+	for <lists+keyrings@lfdr.de>; Thu, 22 Feb 2024 10:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82A776C9F;
-	Tue, 20 Feb 2024 18:03:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AOw0sgVg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271F73BB35;
+	Thu, 22 Feb 2024 10:40:21 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE08C76C83;
-	Tue, 20 Feb 2024 18:03:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C5439854
+	for <keyrings@vger.kernel.org>; Thu, 22 Feb 2024 10:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708452188; cv=none; b=i5Q8Bq5l1XsZZEkollUoXw0WgytT0ennN184KqvvfpJ0aY0e4f/V5/VlWDOmtWWsip0y/gfztv76DBrgT5i0sapZM4Tqp8mLJ68tphRGhFCjRnsQR0AuSx2zQ2rGJec9VcNAuLfWKtORlpfV8SVyY27zu6ThRHcCO+EkfOhVDqE=
+	t=1708598421; cv=none; b=EZgqjODeAsa0xxLsf4rJj9Xq5NH3cMgEDGh5oWvTViUaqOnbxhT2pQk/Sdq0MzoZkKZ9DJRZJ5VkHg1m+/UT5F6PEqy4Lj2BWKtrFwM1mu/EKUD6b76X4UwdwPgIOQW1Ix3Z13z6qjMlOav5lFkmgFqrwlM6qsumGNcNadJ4eFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708452188; c=relaxed/simple;
-	bh=yPSlryxt4R8pj3MxRFRtP46K8MzZYDku9kbAxbJ3Otk=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Sdg1DiMGbLWDKcAoKkv0ckMe4xP/WjYNanfM+u6/LcEaRETs2a8mwyvLrirE3+Z48S4SvNPeFG0w9uwx4bqKKdzZycLLW5qYnHTXquGcutrvsqRe4V7K2//eAqR79pfWksx8g8hEVtKzcdn1nhdWBVDPagkDgpew2AxXtrwoP6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AOw0sgVg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1483EC433F1;
-	Tue, 20 Feb 2024 18:03:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708452188;
-	bh=yPSlryxt4R8pj3MxRFRtP46K8MzZYDku9kbAxbJ3Otk=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=AOw0sgVg1wZzwis6jy7i+48gWccEwvAKQ5XzAiSMdjdvIwecnoKrGJ3CJrRAIcxMk
-	 ESLoHXy8xOfVx/f1dk0xyGE0qGGdvcXdrcqnq1zStYYnl4C+3Ab+7Vnyn8Eru9z9kG
-	 WloTdBOA9uVO+4lAKClLHUZSXDRSLTFVSQp9w/2ondklXbqO4PMB+P8WLfG+kIwWrS
-	 Zszw1DtlKXZyL99jF7tIRkqUseioutq79fzQBeRhOtp7E4G+PDkL7xXf5NiYdeQoAY
-	 Ct9e3+OO6SzIflZ4b+Qsz+4q75FFwyFDnO6+phbnpINmLAQM9XIRLvEQQDQGHGjnJ1
-	 U2w3URs4IL2lg==
+	s=arc-20240116; t=1708598421; c=relaxed/simple;
+	bh=yOq/F5lrHLbv8kTb1NmnZwZhvg4kJr/2pUJpVytSurA=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=tgXLZiMXpS9nwDcIaGuQtogcSo/8wwgFGXefDPOwgLjdFQ7QB/0pDHPzoNWOwS8lyE1+dO7iEinkkxypJLRZPvZrqFv9+Moz2Mo0BOjjv+mMwTu+u7ZNdOtxwP35d4Z5lhPV12ICHwFPMuEZhrRfc/VKpKjvB5O+tyOGyfe/VSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-7c7857e6d5dso28271239f.1
+        for <keyrings@vger.kernel.org>; Thu, 22 Feb 2024 02:40:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708598418; x=1709203218;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fGZmgCGQPYg+enOxdJBtbBRxSgvIs5n8H5eEy4TMjOA=;
+        b=oUEVok2UjHIb15PU2xf1Or3+1gCzl0F2hJ6/L/N8bIF2tpkuhk7bRxHN7JM4JJtn2/
+         qDhDlj9MfYnf0d0AGi5Crrshtf9CEECBOWBKHPXzzktKMI8vJbLFbpZ/diH+zbGBIzwA
+         alND00I8+iyEx80H8IMAyyXMpEoWTKiGvBNnnMH5Db8ITcmH0EIESjFrQLquJksIaWqO
+         OlN7ibelEgMvHfmhP9nogvIM41SSr9q33uEAjWV02cHJFWr5qNo+uvRE/GgDtVp9B4wc
+         jdwjCitk12TZUKwZz6GANX4qi8WXVXmWZYSmR9qcsDbt3tIDwkqyAa9QaDRln8o0ESCt
+         2zAw==
+X-Forwarded-Encrypted: i=1; AJvYcCWH9yiCP6fykGQJFw7RwLORGyetuSu1eZontIDdDx9B9a8QykA9Nu2q3eJyhSt6GXbjmOo5rcir24IONdloUpNH3GCwSAWBK3s=
+X-Gm-Message-State: AOJu0YxgQ8Bm2t5kUrFModTt/taHPSlZtx1vRIr5AxZ91fpHWb7XRRiA
+	x9uE9ULPDVwcbmGIwBe+fJMlrU+xZyUjTLE/gwO7YiiR+51AkGrUfSlyZYv+B3zbvuZDslFijAm
+	fsoyMmBQdaZnazDbY6OC3o9Hq/rWOuieOvv2QV6WkLWVxId2EwcEWqr4=
+X-Google-Smtp-Source: AGHT+IEU6uJv3gWErXDvxmoghtLwMWZ9rKcAN+gJTcytMv80TE4WiA4y6tWQUIBsSj2HJ5orkMmqp9pnytxE8M4Y0ymku/FiqZ6C
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 20 Feb 2024 18:03:02 +0000
-Message-Id: <CZA3R5R9CVYD.1HH1S662FW2RX@seitikki>
-Cc: <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>, "Andy
- Shevchenko" <andriy.shevchenko@linux.intel.com>, "Peter Zijlstra"
- <peterz@infradead.org>, "Dan Williams" <dan.j.williams@intel.com>, "Ard
- Biesheuvel" <ardb@kernel.org>, "Nick Desaulniers"
- <ndesaulniers@google.com>, "Nathan Chancellor" <nathan@kernel.org>
-Subject: Re: [PATCH v3] X.509: Introduce scope-based x509_certificate
- allocation
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Jarkko Sakkinen" <jarkko@kernel.org>, "Lukas Wunner" <lukas@wunner.de>,
- "David Howells" <dhowells@redhat.com>, "Herbert Xu"
- <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
- "Jonathan Cameron" <Jonathan.Cameron@huawei.com>
-X-Mailer: aerc 0.15.2
-References: <63cc7ab17a5064756e26e50bc605e3ff8914f05a.1708439875.git.lukas@wunner.de> <CZA3PCY3U4YU.3R05ZC4X16EX0@seitikki>
-In-Reply-To: <CZA3PCY3U4YU.3R05ZC4X16EX0@seitikki>
+MIME-Version: 1.0
+X-Received: by 2002:a05:6e02:1d09:b0:365:26e3:6e47 with SMTP id
+ i9-20020a056e021d0900b0036526e36e47mr920061ila.0.1708598418451; Thu, 22 Feb
+ 2024 02:40:18 -0800 (PST)
+Date: Thu, 22 Feb 2024 02:40:18 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000cbb7860611f61147@google.com>
+Subject: [syzbot] [keyrings?] [lsm?] KASAN: slab-out-of-bounds Read in
+ key_task_permission (2)
+From: syzbot <syzbot+5b415c07907a2990d1a3@syzkaller.appspotmail.com>
+To: dhowells@redhat.com, jarkko@kernel.org, jmorris@namei.org, 
+	keyrings@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, paul@paul-moore.com, serge@hallyn.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue Feb 20, 2024 at 6:00 PM UTC, Jarkko Sakkinen wrote:
-> On Tue Feb 20, 2024 at 3:10 PM UTC, Lukas Wunner wrote:
-> > Add a DEFINE_FREE() clause for x509_certificate structs and use it in
-> > x509_cert_parse() and x509_key_preparse().  These are the only function=
-s
-> > where scope-based x509_certificate allocation currently makes sense.
-> > A third user will be introduced with the forthcoming SPDM library
-> > (Security Protocol and Data Model) for PCI device authentication.
->
-> I think you are adding scope-based memory management and not
-> DEFINE_FREE(). Otherwise, this would be one-liner patch.
->
-> I'm not sure if the last sentence adds more than clutter as this
-> patch has nothing to do with SPDM changes per se.
->
-> > Unlike most other DEFINE_FREE() clauses, this one checks for IS_ERR()
-> > instead of NULL before calling x509_free_certificate() at end of scope.
-> > That's because the "constructor" of x509_certificate structs,
-> > x509_cert_parse(), returns a valid pointer or an ERR_PTR(), but never
-> > NULL.
-> >
-> > I've compared the Assembler output before/after and they are identical,
-> > save for the fact that gcc-12 always generates two return paths when
-> > __cleanup() is used, one for the success case and one for the error cas=
-e.
->
-> Use passive as commit message is not a personal letter.
->
-> >
-> > In x509_cert_parse(), add a hint for the compiler that kzalloc() never
-> > returns an ERR_PTR().  Otherwise the compiler adds a gratuitous IS_ERR(=
-)
-> > check on return.  Introduce a handy assume() macro for this which can b=
-e
-> > re-used elsewhere in the kernel to provide hints for the compiler.
->
-> Does not explain why it is "handy".
->
-> I don't see a story here but instead I see bunch of disordered tecnical
-> terms.
->
-> We have the code diff for detailed technical stuff. The commit message
-> should simply explain why we want this and what it does for us. And we
-> zero care about PCI changes in the scope of this patch, especially since
-> this is not part of such patch set.
+Hello,
 
-I mean think it this way.
+syzbot found the following issue on:
 
-What is the most important function of a commit message? Well, it comes
-when the commit is in the mainline. It reminds of the *reasons* why a
-change was made and this commit message does not really serve well in
-that role.
+HEAD commit:    ced590523156 Merge tag 'driver-core-6.8-rc5' of git://git...
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=141f44b4180000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=caa42dd2796e3ac1
+dashboard link: https://syzkaller.appspot.com/bug?extid=5b415c07907a2990d1a3
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+userspace arch: i386
 
-BR, Jarkko
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/b9d2a78bf6dc/disk-ced59052.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/ebca9790f4fc/vmlinux-ced59052.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/f8c19c4f852d/bzImage-ced59052.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+5b415c07907a2990d1a3@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KASAN: slab-out-of-bounds in key_task_permission+0x3eb/0x4f0 security/keys/permission.c:54
+Read of size 4 at addr ffff88801e9cc5e0 by task syz-executor.0/3778
+
+CPU: 1 PID: 3778 Comm: syz-executor.0 Not tainted 6.8.0-rc4-syzkaller-00388-gced590523156 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1e7/0x2e0 lib/dump_stack.c:106
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x167/0x540 mm/kasan/report.c:488
+ kasan_report+0x142/0x180 mm/kasan/report.c:601
+ key_task_permission+0x3eb/0x4f0 security/keys/permission.c:54
+ search_nested_keyrings+0x94d/0x1190 security/keys/keyring.c:793
+ keyring_search_rcu+0x198/0x290 security/keys/keyring.c:922
+ search_cred_keyrings_rcu+0x4a1/0x600 security/keys/process_keys.c:501
+ search_process_keyrings_rcu+0x1e/0x2b0 security/keys/process_keys.c:544
+ request_key_and_link+0x5a6/0x19c0 security/keys/request_key.c:618
+ __do_sys_request_key security/keys/keyctl.c:222 [inline]
+ __se_sys_request_key+0x271/0x3b0 security/keys/keyctl.c:167
+ do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
+ __do_fast_syscall_32+0xbd/0x120 arch/x86/entry/common.c:321
+ do_fast_syscall_32+0x33/0x70 arch/x86/entry/common.c:346
+ entry_SYSENTER_compat_after_hwframe+0x7c/0x86
+RIP: 0023:0xf72d9579
+Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 002b:00000000f5ed35ac EFLAGS: 00000206 ORIG_RAX: 000000000000011f
+RAX: ffffffffffffffda RBX: 0000000020000100 RCX: 0000000020000240
+RDX: 0000000020000300 RSI: 00000000fffffffc RDI: 0000000000000000
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+
+Allocated by task 3659:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:372 [inline]
+ __kasan_kmalloc+0x98/0xb0 mm/kasan/common.c:389
+ kasan_kmalloc include/linux/kasan.h:211 [inline]
+ __do_kmalloc_node mm/slub.c:3981 [inline]
+ __kmalloc+0x22e/0x490 mm/slub.c:3994
+ kmalloc include/linux/slab.h:594 [inline]
+ kzalloc include/linux/slab.h:711 [inline]
+ tomoyo_encode2 security/tomoyo/realpath.c:45 [inline]
+ tomoyo_encode+0x26f/0x540 security/tomoyo/realpath.c:80
+ tomoyo_realpath_from_path+0x59e/0x5e0 security/tomoyo/realpath.c:283
+ tomoyo_get_realpath security/tomoyo/file.c:151 [inline]
+ tomoyo_check_open_permission+0x255/0x500 security/tomoyo/file.c:771
+ security_file_open+0x69/0x570 security/security.c:2933
+ do_dentry_open+0x327/0x15a0 fs/open.c:940
+ do_open fs/namei.c:3641 [inline]
+ path_openat+0x285f/0x3240 fs/namei.c:3798
+ do_filp_open+0x234/0x490 fs/namei.c:3825
+ do_sys_openat2+0x13e/0x1d0 fs/open.c:1404
+ do_sys_open fs/open.c:1419 [inline]
+ __do_compat_sys_openat fs/open.c:1479 [inline]
+ __se_compat_sys_openat fs/open.c:1477 [inline]
+ __ia32_compat_sys_openat+0x23f/0x290 fs/open.c:1477
+ do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
+ __do_fast_syscall_32+0xbd/0x120 arch/x86/entry/common.c:321
+ do_fast_syscall_32+0x33/0x70 arch/x86/entry/common.c:346
+ entry_SYSENTER_compat_after_hwframe+0x7c/0x86
+
+Freed by task 3659:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
+ kasan_save_free_info+0x4e/0x60 mm/kasan/generic.c:640
+ poison_slab_object+0xa6/0xe0 mm/kasan/common.c:241
+ __kasan_slab_free+0x34/0x70 mm/kasan/common.c:257
+ kasan_slab_free include/linux/kasan.h:184 [inline]
+ slab_free_hook mm/slub.c:2121 [inline]
+ slab_free mm/slub.c:4299 [inline]
+ kfree+0x14a/0x380 mm/slub.c:4409
+ tomoyo_check_open_permission+0x376/0x500 security/tomoyo/file.c:786
+ security_file_open+0x69/0x570 security/security.c:2933
+ do_dentry_open+0x327/0x15a0 fs/open.c:940
+ do_open fs/namei.c:3641 [inline]
+ path_openat+0x285f/0x3240 fs/namei.c:3798
+ do_filp_open+0x234/0x490 fs/namei.c:3825
+ do_sys_openat2+0x13e/0x1d0 fs/open.c:1404
+ do_sys_open fs/open.c:1419 [inline]
+ __do_compat_sys_openat fs/open.c:1479 [inline]
+ __se_compat_sys_openat fs/open.c:1477 [inline]
+ __ia32_compat_sys_openat+0x23f/0x290 fs/open.c:1477
+ do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
+ __do_fast_syscall_32+0xbd/0x120 arch/x86/entry/common.c:321
+ do_fast_syscall_32+0x33/0x70 arch/x86/entry/common.c:346
+ entry_SYSENTER_compat_after_hwframe+0x7c/0x86
+
+The buggy address belongs to the object at ffff88801e9cc580
+ which belongs to the cache kmalloc-32 of size 32
+The buggy address is located 64 bytes to the right of
+ allocated 32-byte region [ffff88801e9cc580, ffff88801e9cc5a0)
+
+The buggy address belongs to the physical page:
+page:ffffea00007a7300 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1e9cc
+anon flags: 0xfff00000000800(slab|node=0|zone=1|lastcpupid=0x7ff)
+page_type: 0xffffffff()
+raw: 00fff00000000800 ffff888014c41500 ffffea0001e6a540 dead000000000005
+raw: 0000000000000000 0000000000200020 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 0, migratetype Unmovable, gfp_mask 0x112c40(GFP_NOFS|__GFP_NOWARN|__GFP_NORETRY|__GFP_HARDWALL), pid 5090, tgid 5090 (syz-executor.4), ts 103426494498, free_ts 103421611023
+ set_page_owner include/linux/page_owner.h:31 [inline]
+ post_alloc_hook+0x1ea/0x210 mm/page_alloc.c:1533
+ prep_new_page mm/page_alloc.c:1540 [inline]
+ get_page_from_freelist+0x33ea/0x3580 mm/page_alloc.c:3311
+ __alloc_pages+0x255/0x680 mm/page_alloc.c:4567
+ __alloc_pages_node include/linux/gfp.h:238 [inline]
+ alloc_pages_node include/linux/gfp.h:261 [inline]
+ alloc_slab_page+0x5f/0x160 mm/slub.c:2190
+ allocate_slab mm/slub.c:2354 [inline]
+ new_slab+0x84/0x2f0 mm/slub.c:2407
+ ___slab_alloc+0xd17/0x13e0 mm/slub.c:3540
+ __slab_alloc mm/slub.c:3625 [inline]
+ __slab_alloc_node mm/slub.c:3678 [inline]
+ slab_alloc_node mm/slub.c:3850 [inline]
+ __do_kmalloc_node mm/slub.c:3980 [inline]
+ __kmalloc+0x2e0/0x490 mm/slub.c:3994
+ kmalloc include/linux/slab.h:594 [inline]
+ kzalloc include/linux/slab.h:711 [inline]
+ tomoyo_encode2 security/tomoyo/realpath.c:45 [inline]
+ tomoyo_encode+0x26f/0x540 security/tomoyo/realpath.c:80
+ tomoyo_realpath_from_path+0x59e/0x5e0 security/tomoyo/realpath.c:283
+ tomoyo_get_realpath security/tomoyo/file.c:151 [inline]
+ tomoyo_path_number_perm+0x23a/0x880 security/tomoyo/file.c:723
+ security_file_ioctl_compat+0x75/0xb0 security/security.c:2744
+ __do_compat_sys_ioctl fs/ioctl.c:923 [inline]
+ __se_compat_sys_ioctl+0xd6/0xbf0 fs/ioctl.c:914
+ do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
+ __do_fast_syscall_32+0xbd/0x120 arch/x86/entry/common.c:321
+ do_fast_syscall_32+0x33/0x70 arch/x86/entry/common.c:346
+ entry_SYSENTER_compat_after_hwframe+0x7c/0x86
+page last free pid 6815 tgid 6813 stack trace:
+ reset_page_owner include/linux/page_owner.h:24 [inline]
+ free_pages_prepare mm/page_alloc.c:1140 [inline]
+ free_unref_page_prepare+0x968/0xa90 mm/page_alloc.c:2346
+ free_unref_page+0x37/0x3f0 mm/page_alloc.c:2486
+ tlb_batch_list_free mm/mmu_gather.c:114 [inline]
+ tlb_finish_mmu+0x11f/0x200 mm/mmu_gather.c:395
+ exit_mmap+0x4b6/0xd40 mm/mmap.c:3292
+ __mmput+0x115/0x3c0 kernel/fork.c:1343
+ exit_mm+0x21f/0x310 kernel/exit.c:569
+ do_exit+0x9af/0x2740 kernel/exit.c:858
+ do_group_exit+0x206/0x2c0 kernel/exit.c:1020
+ get_signal+0x176d/0x1850 kernel/signal.c:2893
+ arch_do_signal_or_restart+0x96/0x860 arch/x86/kernel/signal.c:310
+ exit_to_user_mode_loop kernel/entry/common.c:105 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:201 [inline]
+ syscall_exit_to_user_mode+0xc8/0x370 kernel/entry/common.c:212
+ __do_fast_syscall_32+0xcf/0x120 arch/x86/entry/common.c:324
+ do_fast_syscall_32+0x33/0x70 arch/x86/entry/common.c:346
+ entry_SYSENTER_compat_after_hwframe+0x7c/0x86
+
+Memory state around the buggy address:
+ ffff88801e9cc480: fa fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff88801e9cc500: 00 00 00 00 fc fc fc fc fc fc fc fc fc fc fc fc
+>ffff88801e9cc580: fa fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
+                                                       ^
+ ffff88801e9cc600: fa fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff88801e9cc680: fa fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
+==================================================================
+----------------
+Code disassembly (best guess), 2 bytes skipped:
+   0:	10 06                	adc    %al,(%rsi)
+   2:	03 74 b4 01          	add    0x1(%rsp,%rsi,4),%esi
+   6:	10 07                	adc    %al,(%rdi)
+   8:	03 74 b0 01          	add    0x1(%rax,%rsi,4),%esi
+   c:	10 08                	adc    %cl,(%rax)
+   e:	03 74 d8 01          	add    0x1(%rax,%rbx,8),%esi
+  1e:	00 51 52             	add    %dl,0x52(%rcx)
+  21:	55                   	push   %rbp
+  22:	89 e5                	mov    %esp,%ebp
+  24:	0f 34                	sysenter
+  26:	cd 80                	int    $0x80
+* 28:	5d                   	pop    %rbp <-- trapping instruction
+  29:	5a                   	pop    %rdx
+  2a:	59                   	pop    %rcx
+  2b:	c3                   	ret
+  2c:	90                   	nop
+  2d:	90                   	nop
+  2e:	90                   	nop
+  2f:	90                   	nop
+  30:	90                   	nop
+  31:	90                   	nop
+  32:	90                   	nop
+  33:	90                   	nop
+  34:	90                   	nop
+  35:	90                   	nop
+  36:	90                   	nop
+  37:	90                   	nop
+  38:	90                   	nop
+  39:	90                   	nop
+  3a:	90                   	nop
+  3b:	90                   	nop
+  3c:	90                   	nop
+  3d:	90                   	nop
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
