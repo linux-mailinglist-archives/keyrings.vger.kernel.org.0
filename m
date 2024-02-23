@@ -1,315 +1,691 @@
-Return-Path: <keyrings+bounces-706-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-707-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CCCB85F5E6
-	for <lists+keyrings@lfdr.de>; Thu, 22 Feb 2024 11:40:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB2386164C
+	for <lists+keyrings@lfdr.de>; Fri, 23 Feb 2024 16:51:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82F8C1C23FE4
-	for <lists+keyrings@lfdr.de>; Thu, 22 Feb 2024 10:40:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D65111C223AF
+	for <lists+keyrings@lfdr.de>; Fri, 23 Feb 2024 15:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271F73BB35;
-	Thu, 22 Feb 2024 10:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD31E82C8D;
+	Fri, 23 Feb 2024 15:51:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CIJK3Km4"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C5439854
-	for <keyrings@vger.kernel.org>; Thu, 22 Feb 2024 10:40:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9389C8288F;
+	Fri, 23 Feb 2024 15:51:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708598421; cv=none; b=EZgqjODeAsa0xxLsf4rJj9Xq5NH3cMgEDGh5oWvTViUaqOnbxhT2pQk/Sdq0MzoZkKZ9DJRZJ5VkHg1m+/UT5F6PEqy4Lj2BWKtrFwM1mu/EKUD6b76X4UwdwPgIOQW1Ix3Z13z6qjMlOav5lFkmgFqrwlM6qsumGNcNadJ4eFA=
+	t=1708703480; cv=none; b=UFXnPGgv0/MHq8uN8RVhmY3gZeIa/a+4JnPwpvamVfkjdLfOgwgeOI+BDUDTyCW2rnJj/GxvVp/Hf405P2T6874gqhTlzCfkN9RPSh1hF1M4K4Niy/9AOLGFEFD6e4nY2p/exLkHf3AVw7I/oYqavbg606zsJbolPdkkuu/BG90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708598421; c=relaxed/simple;
-	bh=yOq/F5lrHLbv8kTb1NmnZwZhvg4kJr/2pUJpVytSurA=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=tgXLZiMXpS9nwDcIaGuQtogcSo/8wwgFGXefDPOwgLjdFQ7QB/0pDHPzoNWOwS8lyE1+dO7iEinkkxypJLRZPvZrqFv9+Moz2Mo0BOjjv+mMwTu+u7ZNdOtxwP35d4Z5lhPV12ICHwFPMuEZhrRfc/VKpKjvB5O+tyOGyfe/VSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-7c7857e6d5dso28271239f.1
-        for <keyrings@vger.kernel.org>; Thu, 22 Feb 2024 02:40:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708598418; x=1709203218;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fGZmgCGQPYg+enOxdJBtbBRxSgvIs5n8H5eEy4TMjOA=;
-        b=oUEVok2UjHIb15PU2xf1Or3+1gCzl0F2hJ6/L/N8bIF2tpkuhk7bRxHN7JM4JJtn2/
-         qDhDlj9MfYnf0d0AGi5Crrshtf9CEECBOWBKHPXzzktKMI8vJbLFbpZ/diH+zbGBIzwA
-         alND00I8+iyEx80H8IMAyyXMpEoWTKiGvBNnnMH5Db8ITcmH0EIESjFrQLquJksIaWqO
-         OlN7ibelEgMvHfmhP9nogvIM41SSr9q33uEAjWV02cHJFWr5qNo+uvRE/GgDtVp9B4wc
-         jdwjCitk12TZUKwZz6GANX4qi8WXVXmWZYSmR9qcsDbt3tIDwkqyAa9QaDRln8o0ESCt
-         2zAw==
-X-Forwarded-Encrypted: i=1; AJvYcCWH9yiCP6fykGQJFw7RwLORGyetuSu1eZontIDdDx9B9a8QykA9Nu2q3eJyhSt6GXbjmOo5rcir24IONdloUpNH3GCwSAWBK3s=
-X-Gm-Message-State: AOJu0YxgQ8Bm2t5kUrFModTt/taHPSlZtx1vRIr5AxZ91fpHWb7XRRiA
-	x9uE9ULPDVwcbmGIwBe+fJMlrU+xZyUjTLE/gwO7YiiR+51AkGrUfSlyZYv+B3zbvuZDslFijAm
-	fsoyMmBQdaZnazDbY6OC3o9Hq/rWOuieOvv2QV6WkLWVxId2EwcEWqr4=
-X-Google-Smtp-Source: AGHT+IEU6uJv3gWErXDvxmoghtLwMWZ9rKcAN+gJTcytMv80TE4WiA4y6tWQUIBsSj2HJ5orkMmqp9pnytxE8M4Y0ymku/FiqZ6C
+	s=arc-20240116; t=1708703480; c=relaxed/simple;
+	bh=yujGdTXbiMO7zXVwAIVrsA48Z+lcBTqAUs3ROhvmWXg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=iQ3OrsTX/f4WuhitaXVupPYhx2nOLt8QcrA/6SGg7qdZYhGZCqS5Xl/WdUcD+m4hcCfhZfPxdOJM2cjpcb3Bj/pinbEdSixR1+rVIc7himj/MAf2BJbpjsbAQbakdy0FvZlOW5xK3RkXik3cMHyKZX4ObHigfW9cNMcX/KLdNVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CIJK3Km4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E06C433F1;
+	Fri, 23 Feb 2024 15:51:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708703480;
+	bh=yujGdTXbiMO7zXVwAIVrsA48Z+lcBTqAUs3ROhvmWXg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CIJK3Km4ekhthkNHoFV9u7rZHv6Nw0EMV70orph/boX+yCCbaFCm7W+iWIbYmBHMo
+	 /6NzUlokKM8JTMXNzZw1o+WfgkL7nR73wtIe6ZDpBFJi9JrHKEgrtqBKuOO6yA+fZk
+	 sx5sQN4uzYU6TaRXGoiQkaVjSR65ovwTujvHXVzxIozSyw10xDOYceU6UDbvAjqDx2
+	 sEq06Kp0RKZEgodfXDSHQ+HkyTa3ZfJKGJi6/CBTE/uEaVdGDI69XK3uiI1vBq/RQX
+	 Qk8Tm7DJ0zLd4zNoe4SuzX4fHeYapaY9oiknwU5Mj95VSLB6YZykFvOI84SaDumyDG
+	 zIOmVqA+R3kzw==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1d09:b0:365:26e3:6e47 with SMTP id
- i9-20020a056e021d0900b0036526e36e47mr920061ila.0.1708598418451; Thu, 22 Feb
- 2024 02:40:18 -0800 (PST)
-Date: Thu, 22 Feb 2024 02:40:18 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <000000000000cbb7860611f61147@google.com>
-Subject: [syzbot] [keyrings?] [lsm?] KASAN: slab-out-of-bounds Read in
- key_task_permission (2)
-From: syzbot <syzbot+5b415c07907a2990d1a3@syzkaller.appspotmail.com>
-To: dhowells@redhat.com, jarkko@kernel.org, jmorris@namei.org, 
-	keyrings@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, paul@paul-moore.com, serge@hallyn.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 23 Feb 2024 17:51:17 +0200
+Message-Id: <CZCKTWU6ZCC9.2UTEQPEVICYHL@suppilovahvero>
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "James Bottomley" <James.Bottomley@HansenPartnership.com>,
+ <linux-integrity@vger.kernel.org>
+Cc: <keyrings@vger.kernel.org>, "Ard Biesheuvel" <ardb@kernel.org>
+Subject: Re: [PATCH v7 12/21] tpm: Add NULL primary creation
+X-Mailer: aerc 0.15.2
+References: <20240213171334.30479-1-James.Bottomley@HansenPartnership.com>
+ <20240213171334.30479-13-James.Bottomley@HansenPartnership.com>
+In-Reply-To: <20240213171334.30479-13-James.Bottomley@HansenPartnership.com>
 
-Hello,
+On Tue Feb 13, 2024 at 7:13 PM EET, James Bottomley wrote:
+> The session handling code uses a "salted" session, meaning a session
+> whose salt is encrypted to the public part of another TPM key so an
+> observer cannot obtain it (and thus deduce the session keys).  This
+> patch creates and context saves in the tpm_chip area the primary key
+> of the NULL hierarchy for this purpose.
+>
+> Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+>
+> ---
+> v6: split out of original HMAC patch update config name
+> v7: rename null seed parameters
+> ---
+>  drivers/char/tpm/Kconfig         |  11 ++
+>  drivers/char/tpm/Makefile        |   1 +
+>  drivers/char/tpm/tpm.h           |  10 ++
+>  drivers/char/tpm/tpm2-cmd.c      |   5 +
+>  drivers/char/tpm/tpm2-sessions.c | 276 +++++++++++++++++++++++++++++++
+>  include/linux/tpm.h              |  49 ++++++
+>  6 files changed, 352 insertions(+)
+>  create mode 100644 drivers/char/tpm/tpm2-sessions.c
+>
+> diff --git a/drivers/char/tpm/Kconfig b/drivers/char/tpm/Kconfig
+> index 927088b2c3d3..e3c39a83171b 100644
+> --- a/drivers/char/tpm/Kconfig
+> +++ b/drivers/char/tpm/Kconfig
+> @@ -27,6 +27,17 @@ menuconfig TCG_TPM
+> =20
+>  if TCG_TPM
+> =20
+> +config TCG_TPM2_HMAC
+> +	bool "Use encrypted and HMACd transactions on the TPM bus"
 
-syzbot found the following issue on:
+How about simply "Use HMAC-encrypted transactions"
 
-HEAD commit:    ced590523156 Merge tag 'driver-core-6.8-rc5' of git://git...
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=141f44b4180000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=caa42dd2796e3ac1
-dashboard link: https://syzkaller.appspot.com/bug?extid=5b415c07907a2990d1a3
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
-userspace arch: i386
+The details are anyway in the description.
 
-Unfortunately, I don't have any reproducer for this issue yet.
+> +	default y
+> +	help
+> +          Setting this causes us to deploy a scheme which uses request
+          ~~~
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/b9d2a78bf6dc/disk-ced59052.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/ebca9790f4fc/vmlinux-ced59052.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/f8c19c4f852d/bzImage-ced59052.xz
+extra spaces
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+5b415c07907a2990d1a3@syzkaller.appspotmail.com
+> +	  and response HMACs in addition to encryption for
+> +	  communicating with the TPM to prevent or detect bus snooping
+> +	  and interposer attacks (see tpm-security.rst).  Saying Y
+> +	  here adds some encryption overhead to all kernel to TPM
+> +	  transactions.
+> +
+>  config HW_RANDOM_TPM
+>  	bool "TPM HW Random Number Generator support"
+>  	depends on TCG_TPM && HW_RANDOM && !(TCG_TPM=3Dy && HW_RANDOM=3Dm)
+> diff --git a/drivers/char/tpm/Makefile b/drivers/char/tpm/Makefile
+> index ad3594e383e1..4c695b0388f3 100644
+> --- a/drivers/char/tpm/Makefile
+> +++ b/drivers/char/tpm/Makefile
+> @@ -17,6 +17,7 @@ tpm-y +=3D eventlog/tpm1.o
+>  tpm-y +=3D eventlog/tpm2.o
+>  tpm-y +=3D tpm-buf.o
+> =20
+> +tpm-$(CONFIG_TCG_TPM2_HMAC) +=3D tpm2-sessions.o
+>  tpm-$(CONFIG_ACPI) +=3D tpm_ppi.o eventlog/acpi.o
+>  tpm-$(CONFIG_EFI) +=3D eventlog/efi.o
+>  tpm-$(CONFIG_OF) +=3D eventlog/of.o
+> diff --git a/drivers/char/tpm/tpm.h b/drivers/char/tpm/tpm.h
+> index cbc9d1e2974d..6b8b9956ba69 100644
+> --- a/drivers/char/tpm/tpm.h
+> +++ b/drivers/char/tpm/tpm.h
+> @@ -321,4 +321,14 @@ void tpm_bios_log_setup(struct tpm_chip *chip);
+>  void tpm_bios_log_teardown(struct tpm_chip *chip);
+>  int tpm_dev_common_init(void);
+>  void tpm_dev_common_exit(void);
+> +
+> +#ifdef CONFIG_TCG_TPM2_HMAC
+> +int tpm2_sessions_init(struct tpm_chip *chip);
 
-==================================================================
-BUG: KASAN: slab-out-of-bounds in key_task_permission+0x3eb/0x4f0 security/keys/permission.c:54
-Read of size 4 at addr ffff88801e9cc5e0 by task syz-executor.0/3778
+I'm sorry but "sessions" and "init" are the worst possible terminology I
+could every pick when trying to make a function that self-documents
+itself :-)
 
-CPU: 1 PID: 3778 Comm: syz-executor.0 Not tainted 6.8.0-rc4-syzkaller-00388-gced590523156 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x1e7/0x2e0 lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x167/0x540 mm/kasan/report.c:488
- kasan_report+0x142/0x180 mm/kasan/report.c:601
- key_task_permission+0x3eb/0x4f0 security/keys/permission.c:54
- search_nested_keyrings+0x94d/0x1190 security/keys/keyring.c:793
- keyring_search_rcu+0x198/0x290 security/keys/keyring.c:922
- search_cred_keyrings_rcu+0x4a1/0x600 security/keys/process_keys.c:501
- search_process_keyrings_rcu+0x1e/0x2b0 security/keys/process_keys.c:544
- request_key_and_link+0x5a6/0x19c0 security/keys/request_key.c:618
- __do_sys_request_key security/keys/keyctl.c:222 [inline]
- __se_sys_request_key+0x271/0x3b0 security/keys/keyctl.c:167
- do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
- __do_fast_syscall_32+0xbd/0x120 arch/x86/entry/common.c:321
- do_fast_syscall_32+0x33/0x70 arch/x86/entry/common.c:346
- entry_SYSENTER_compat_after_hwframe+0x7c/0x86
-RIP: 0023:0xf72d9579
-Code: b8 01 10 06 03 74 b4 01 10 07 03 74 b0 01 10 08 03 74 d8 01 00 00 00 00 00 00 00 00 00 00 00 00 00 51 52 55 89 e5 0f 34 cd 80 <5d> 5a 59 c3 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
-RSP: 002b:00000000f5ed35ac EFLAGS: 00000206 ORIG_RAX: 000000000000011f
-RAX: ffffffffffffffda RBX: 0000000020000100 RCX: 0000000020000240
-RDX: 0000000020000300 RSI: 00000000fffffffc RDI: 0000000000000000
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-
-Allocated by task 3659:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
- poison_kmalloc_redzone mm/kasan/common.c:372 [inline]
- __kasan_kmalloc+0x98/0xb0 mm/kasan/common.c:389
- kasan_kmalloc include/linux/kasan.h:211 [inline]
- __do_kmalloc_node mm/slub.c:3981 [inline]
- __kmalloc+0x22e/0x490 mm/slub.c:3994
- kmalloc include/linux/slab.h:594 [inline]
- kzalloc include/linux/slab.h:711 [inline]
- tomoyo_encode2 security/tomoyo/realpath.c:45 [inline]
- tomoyo_encode+0x26f/0x540 security/tomoyo/realpath.c:80
- tomoyo_realpath_from_path+0x59e/0x5e0 security/tomoyo/realpath.c:283
- tomoyo_get_realpath security/tomoyo/file.c:151 [inline]
- tomoyo_check_open_permission+0x255/0x500 security/tomoyo/file.c:771
- security_file_open+0x69/0x570 security/security.c:2933
- do_dentry_open+0x327/0x15a0 fs/open.c:940
- do_open fs/namei.c:3641 [inline]
- path_openat+0x285f/0x3240 fs/namei.c:3798
- do_filp_open+0x234/0x490 fs/namei.c:3825
- do_sys_openat2+0x13e/0x1d0 fs/open.c:1404
- do_sys_open fs/open.c:1419 [inline]
- __do_compat_sys_openat fs/open.c:1479 [inline]
- __se_compat_sys_openat fs/open.c:1477 [inline]
- __ia32_compat_sys_openat+0x23f/0x290 fs/open.c:1477
- do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
- __do_fast_syscall_32+0xbd/0x120 arch/x86/entry/common.c:321
- do_fast_syscall_32+0x33/0x70 arch/x86/entry/common.c:346
- entry_SYSENTER_compat_after_hwframe+0x7c/0x86
-
-Freed by task 3659:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
- kasan_save_free_info+0x4e/0x60 mm/kasan/generic.c:640
- poison_slab_object+0xa6/0xe0 mm/kasan/common.c:241
- __kasan_slab_free+0x34/0x70 mm/kasan/common.c:257
- kasan_slab_free include/linux/kasan.h:184 [inline]
- slab_free_hook mm/slub.c:2121 [inline]
- slab_free mm/slub.c:4299 [inline]
- kfree+0x14a/0x380 mm/slub.c:4409
- tomoyo_check_open_permission+0x376/0x500 security/tomoyo/file.c:786
- security_file_open+0x69/0x570 security/security.c:2933
- do_dentry_open+0x327/0x15a0 fs/open.c:940
- do_open fs/namei.c:3641 [inline]
- path_openat+0x285f/0x3240 fs/namei.c:3798
- do_filp_open+0x234/0x490 fs/namei.c:3825
- do_sys_openat2+0x13e/0x1d0 fs/open.c:1404
- do_sys_open fs/open.c:1419 [inline]
- __do_compat_sys_openat fs/open.c:1479 [inline]
- __se_compat_sys_openat fs/open.c:1477 [inline]
- __ia32_compat_sys_openat+0x23f/0x290 fs/open.c:1477
- do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
- __do_fast_syscall_32+0xbd/0x120 arch/x86/entry/common.c:321
- do_fast_syscall_32+0x33/0x70 arch/x86/entry/common.c:346
- entry_SYSENTER_compat_after_hwframe+0x7c/0x86
-
-The buggy address belongs to the object at ffff88801e9cc580
- which belongs to the cache kmalloc-32 of size 32
-The buggy address is located 64 bytes to the right of
- allocated 32-byte region [ffff88801e9cc580, ffff88801e9cc5a0)
-
-The buggy address belongs to the physical page:
-page:ffffea00007a7300 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1e9cc
-anon flags: 0xfff00000000800(slab|node=0|zone=1|lastcpupid=0x7ff)
-page_type: 0xffffffff()
-raw: 00fff00000000800 ffff888014c41500 ffffea0001e6a540 dead000000000005
-raw: 0000000000000000 0000000000200020 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 0, migratetype Unmovable, gfp_mask 0x112c40(GFP_NOFS|__GFP_NOWARN|__GFP_NORETRY|__GFP_HARDWALL), pid 5090, tgid 5090 (syz-executor.4), ts 103426494498, free_ts 103421611023
- set_page_owner include/linux/page_owner.h:31 [inline]
- post_alloc_hook+0x1ea/0x210 mm/page_alloc.c:1533
- prep_new_page mm/page_alloc.c:1540 [inline]
- get_page_from_freelist+0x33ea/0x3580 mm/page_alloc.c:3311
- __alloc_pages+0x255/0x680 mm/page_alloc.c:4567
- __alloc_pages_node include/linux/gfp.h:238 [inline]
- alloc_pages_node include/linux/gfp.h:261 [inline]
- alloc_slab_page+0x5f/0x160 mm/slub.c:2190
- allocate_slab mm/slub.c:2354 [inline]
- new_slab+0x84/0x2f0 mm/slub.c:2407
- ___slab_alloc+0xd17/0x13e0 mm/slub.c:3540
- __slab_alloc mm/slub.c:3625 [inline]
- __slab_alloc_node mm/slub.c:3678 [inline]
- slab_alloc_node mm/slub.c:3850 [inline]
- __do_kmalloc_node mm/slub.c:3980 [inline]
- __kmalloc+0x2e0/0x490 mm/slub.c:3994
- kmalloc include/linux/slab.h:594 [inline]
- kzalloc include/linux/slab.h:711 [inline]
- tomoyo_encode2 security/tomoyo/realpath.c:45 [inline]
- tomoyo_encode+0x26f/0x540 security/tomoyo/realpath.c:80
- tomoyo_realpath_from_path+0x59e/0x5e0 security/tomoyo/realpath.c:283
- tomoyo_get_realpath security/tomoyo/file.c:151 [inline]
- tomoyo_path_number_perm+0x23a/0x880 security/tomoyo/file.c:723
- security_file_ioctl_compat+0x75/0xb0 security/security.c:2744
- __do_compat_sys_ioctl fs/ioctl.c:923 [inline]
- __se_compat_sys_ioctl+0xd6/0xbf0 fs/ioctl.c:914
- do_syscall_32_irqs_on arch/x86/entry/common.c:165 [inline]
- __do_fast_syscall_32+0xbd/0x120 arch/x86/entry/common.c:321
- do_fast_syscall_32+0x33/0x70 arch/x86/entry/common.c:346
- entry_SYSENTER_compat_after_hwframe+0x7c/0x86
-page last free pid 6815 tgid 6813 stack trace:
- reset_page_owner include/linux/page_owner.h:24 [inline]
- free_pages_prepare mm/page_alloc.c:1140 [inline]
- free_unref_page_prepare+0x968/0xa90 mm/page_alloc.c:2346
- free_unref_page+0x37/0x3f0 mm/page_alloc.c:2486
- tlb_batch_list_free mm/mmu_gather.c:114 [inline]
- tlb_finish_mmu+0x11f/0x200 mm/mmu_gather.c:395
- exit_mmap+0x4b6/0xd40 mm/mmap.c:3292
- __mmput+0x115/0x3c0 kernel/fork.c:1343
- exit_mm+0x21f/0x310 kernel/exit.c:569
- do_exit+0x9af/0x2740 kernel/exit.c:858
- do_group_exit+0x206/0x2c0 kernel/exit.c:1020
- get_signal+0x176d/0x1850 kernel/signal.c:2893
- arch_do_signal_or_restart+0x96/0x860 arch/x86/kernel/signal.c:310
- exit_to_user_mode_loop kernel/entry/common.c:105 [inline]
- exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:201 [inline]
- syscall_exit_to_user_mode+0xc8/0x370 kernel/entry/common.c:212
- __do_fast_syscall_32+0xcf/0x120 arch/x86/entry/common.c:324
- do_fast_syscall_32+0x33/0x70 arch/x86/entry/common.c:346
- entry_SYSENTER_compat_after_hwframe+0x7c/0x86
-
-Memory state around the buggy address:
- ffff88801e9cc480: fa fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
- ffff88801e9cc500: 00 00 00 00 fc fc fc fc fc fc fc fc fc fc fc fc
->ffff88801e9cc580: fa fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
-                                                       ^
- ffff88801e9cc600: fa fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
- ffff88801e9cc680: fa fb fb fb fc fc fc fc fc fc fc fc fc fc fc fc
-==================================================================
-----------------
-Code disassembly (best guess), 2 bytes skipped:
-   0:	10 06                	adc    %al,(%rsi)
-   2:	03 74 b4 01          	add    0x1(%rsp,%rsi,4),%esi
-   6:	10 07                	adc    %al,(%rdi)
-   8:	03 74 b0 01          	add    0x1(%rax,%rsi,4),%esi
-   c:	10 08                	adc    %cl,(%rax)
-   e:	03 74 d8 01          	add    0x1(%rax,%rbx,8),%esi
-  1e:	00 51 52             	add    %dl,0x52(%rcx)
-  21:	55                   	push   %rbp
-  22:	89 e5                	mov    %esp,%ebp
-  24:	0f 34                	sysenter
-  26:	cd 80                	int    $0x80
-* 28:	5d                   	pop    %rbp <-- trapping instruction
-  29:	5a                   	pop    %rdx
-  2a:	59                   	pop    %rcx
-  2b:	c3                   	ret
-  2c:	90                   	nop
-  2d:	90                   	nop
-  2e:	90                   	nop
-  2f:	90                   	nop
-  30:	90                   	nop
-  31:	90                   	nop
-  32:	90                   	nop
-  33:	90                   	nop
-  34:	90                   	nop
-  35:	90                   	nop
-  36:	90                   	nop
-  37:	90                   	nop
-  38:	90                   	nop
-  39:	90                   	nop
-  3a:	90                   	nop
-  3b:	90                   	nop
-  3c:	90                   	nop
-  3d:	90                   	nop
+I'd like to see here well-scoped name so that it is easy to connect
+this to its purpose when reviewing some other patches.
 
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+> +#else
+> +static inline int tpm2_sessions_init(struct tpm_chip *chip)
+> +{
+> +	return 0;
+> +}
+> +#endif
+> +
+>  #endif
+> diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
+> index 93545be190a5..b0e72fb563d9 100644
+> --- a/drivers/char/tpm/tpm2-cmd.c
+> +++ b/drivers/char/tpm/tpm2-cmd.c
+> @@ -759,6 +759,11 @@ int tpm2_auto_startup(struct tpm_chip *chip)
+>  		rc =3D 0;
+>  	}
+> =20
+> +	if (rc)
+> +		goto out;
+> +
+> +	rc =3D tpm2_sessions_init(chip);
+> +
+>  out:
+>  	/*
+>  	 * Infineon TPM in field upgrade mode will return no data for the numbe=
+r
+> diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-ses=
+sions.c
+> new file mode 100644
+> index 000000000000..9fc263ee02c2
+> --- /dev/null
+> +++ b/drivers/char/tpm/tpm2-sessions.c
+> @@ -0,0 +1,276 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * Copyright (C) 2018 James.Bottomley@HansenPartnership.com
+> + *
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+useless extra line in the commment
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
+> + */
+> +
+> +#include "tpm.h"
+> +
 
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
+spurious newline
 
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
+> +#include <asm/unaligned.h>
 
-If you want to undo deduplication, reply with:
-#syz undup
+spurious newline
+> +
+> +#include <crypto/aes.h>
+
+spurious newline
+> +
+> +/* if you change to AES256, you only need change this */
+> +#define AES_KEYBYTES	AES_KEYSIZE_128
+
+AES_KEY_BYTES. Also the comment is talking about changing something
+without documenting what it is. Even not having the comment at all
+would be less confusing.
+
+> +
+spurious newline
+
+> +#define AES_KEYBITS	(AES_KEYBYTES*8)
+
+AES_KEY_BITS
+
+Also, documentation missing.
+
+> +
+
+Documentation missing for "tpm2_parse_create_primary". It is a complex
+function despite being not exported so definitely needs documentation.
+
+
+> +static int tpm2_parse_create_primary(struct tpm_chip *chip, struct tpm_b=
+uf *buf,
+> +				     u32 *nullkey)
+                                          ~~~~~~~
+					  null_key
+
+> +{
+> +	struct tpm_header *head =3D (struct tpm_header *)buf->data;
+> +	off_t offset_r =3D TPM_HEADER_SIZE, offset_t;
+> +	u16 len =3D TPM_HEADER_SIZE;
+> +	u32 tot_len =3D be32_to_cpu(head->length);
+
+no good reason to use more confusing namme "tot_len", instead of more
+readable "total_len".
+
+> +	u32 val, parm_len;
+> +
+> +	*nullkey =3D tpm_buf_read_u32(buf, &offset_r);
+> +	parm_len =3D tpm_buf_read_u32(buf, &offset_r);
+        ~~~~~~~~
+	param_len
+
+> +	/*
+> +	 * parm_len doesn't include the header, but all the other
+> +	 * lengths and offsets do, so add it to parm len to make
+> +	 * the comparisons easier
+> +	 */
+> +	parm_len +=3D TPM_HEADER_SIZE;
+> +
+> +	if (parm_len + 8 > tot_len)
+> +		return -EINVAL;
+> +	len =3D tpm_buf_read_u16(buf, &offset_r);
+> +	offset_t =3D offset_r;
+> +	/* now we have the public area, compute the name of the object */
+> +	put_unaligned_be16(TPM_ALG_SHA256, chip->null_key_name);
+> +	sha256(&buf->data[offset_r], len, chip->null_key_name + 2);
+> +
+> +	/* validate the public key */
+> +	val =3D tpm_buf_read_u16(buf, &offset_t);
+> +	/* key type (must be what we asked for) */
+> +	if (val !=3D TPM_ALG_ECC)
+> +		return -EINVAL;
+> +	val =3D tpm_buf_read_u16(buf, &offset_t);
+> +	/* name algorithm */
+> +	if (val !=3D TPM_ALG_SHA256)
+> +		return -EINVAL;
+> +	val =3D tpm_buf_read_u32(buf, &offset_t);
+> +	/* object properties */
+> +	if (val !=3D (TPM2_OA_NO_DA |
+> +		    TPM2_OA_FIXED_TPM |
+> +		    TPM2_OA_FIXED_PARENT |
+> +		    TPM2_OA_SENSITIVE_DATA_ORIGIN |
+> +		    TPM2_OA_USER_WITH_AUTH |
+> +		    TPM2_OA_DECRYPT |
+> +		    TPM2_OA_RESTRICTED))
+
+Please make define a mask constant for these bits and use it here
+instead. There's just too many and make the code really unredable.
+I'd even suggesting documenting that constant with some rationale
+for the mask.
+
+Here the logic is obviously to fix the primary key to the exact
+chip and make unmovable (cannot be migrated), isn't it? That would
+perfectly sufficient documentation for the constant, or along the
+lines.
+
+
+> +		return -EINVAL;
+> +	/* auth policy (empty) */
+> +	val =3D tpm_buf_read_u16(buf, &offset_t);
+> +	if (val !=3D 0)
+> +		return -EINVAL;
+
+I'd add empty line betwen each of these checks to make it more
+readable.
+
+> +	/* symmetric key parameters */
+> +	val =3D tpm_buf_read_u16(buf, &offset_t);
+> +	if (val !=3D TPM_ALG_AES)
+> +		return -EINVAL;
+> +	/* symmetric key length */
+> +	val =3D tpm_buf_read_u16(buf, &offset_t);
+> +	if (val !=3D AES_KEYBITS)
+> +		return -EINVAL;
+> +	/* symmetric encryption scheme */
+> +	val =3D tpm_buf_read_u16(buf, &offset_t);
+> +	if (val !=3D TPM_ALG_CFB)
+> +		return -EINVAL;
+> +	/* signing scheme */
+> +	val =3D tpm_buf_read_u16(buf, &offset_t);
+> +	if (val !=3D TPM_ALG_NULL)
+> +		return -EINVAL;
+> +	/* ECC Curve */
+> +	val =3D tpm_buf_read_u16(buf, &offset_t);
+> +	if (val !=3D TPM2_ECC_NIST_P256)
+> +		return -EINVAL;
+> +	/* KDF Scheme */
+> +	val =3D tpm_buf_read_u16(buf, &offset_t);
+> +	if (val !=3D TPM_ALG_NULL)
+> +		return -EINVAL;
+> +	/* x point */
+> +	val =3D tpm_buf_read_u16(buf, &offset_t);
+> +	if (val !=3D EC_PT_SZ)
+> +		return -EINVAL;
+> +	memcpy(chip->null_ec_key_x, &buf->data[offset_t], val);
+> +	offset_t +=3D val;
+> +	val =3D tpm_buf_read_u16(buf, &offset_t);
+> +	if (val !=3D EC_PT_SZ)
+> +		return -EINVAL;
+> +	memcpy(chip->null_ec_key_y, &buf->data[offset_t], val);
+> +	offset_t +=3D val;
+> +
+> +	/* original length of the whole TPM2B */
+> +	offset_r +=3D len;
+> +
+> +	/* should have exactly consumed the TPM2B public structure */
+> +	if (offset_t !=3D offset_r)
+> +		return -EINVAL;
+> +	if (offset_r > parm_len)
+> +		return -EINVAL;
+> +	/* creation data (skip) */
+> +	len =3D tpm_buf_read_u16(buf, &offset_r);
+> +	offset_r +=3D len;
+> +	if (offset_r > parm_len)
+> +		return -EINVAL;
+> +	/* creation digest (must be sha256) */
+> +	len =3D tpm_buf_read_u16(buf, &offset_r);
+> +	offset_r +=3D len;
+> +	if (len !=3D SHA256_DIGEST_SIZE || offset_r > parm_len)
+> +		return -EINVAL;
+> +	/* TPMT_TK_CREATION follows */
+> +	/* tag, must be TPM_ST_CREATION (0x8021) */
+> +	val =3D tpm_buf_read_u16(buf, &offset_r);
+> +	if (val !=3D TPM2_ST_CREATION || offset_r > parm_len)
+> +		return -EINVAL;
+> +	/* hierarchy (must be NULL) */
+> +	val =3D tpm_buf_read_u32(buf, &offset_r);
+> +	if (val !=3D TPM2_RH_NULL || offset_r > parm_len)
+> +		return -EINVAL;
+> +	/* the ticket digest HMAC (might not be sha256) */
+> +	len =3D tpm_buf_read_u16(buf, &offset_r);
+> +	offset_r +=3D len;
+> +	if (offset_r > parm_len)
+> +		return -EINVAL;
+> +	/*
+> +	 * finally we have the name, which is a sha256 digest plus a 2
+> +	 * byte algorithm type
+> +	 */
+> +	len =3D tpm_buf_read_u16(buf, &offset_r);
+> +	if (offset_r + len !=3D parm_len + 8)
+> +		return -EINVAL;
+> +	if (len !=3D SHA256_DIGEST_SIZE + 2)
+> +		return -EINVAL;
+> +
+> +	if (memcmp(chip->null_key_name, &buf->data[offset_r],
+> +		   SHA256_DIGEST_SIZE + 2) !=3D 0) {
+> +		dev_err(&chip->dev, "NULL Seed name comparison failed\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+>
+
+documentation missing:
+
+> +static int tpm2_create_primary(struct tpm_chip *chip, u32 hierarchy, u32=
+ *handle)
+> +{
+> +	int rc;
+> +	struct tpm_buf buf;
+> +	struct tpm_buf template;
+> +
+> +	rc =3D tpm_buf_init(&buf, TPM2_ST_SESSIONS, TPM2_CC_CREATE_PRIMARY);
+> +	if (rc)
+> +		return rc;
+> +
+> +	rc =3D tpm_buf_init_sized(&template);
+> +	if (rc) {
+> +		tpm_buf_destroy(&buf);
+> +		return rc;
+> +	}
+> +
+> +	/*
+> +	 * create the template.  Note: in order for userspace to
+> +	 * verify the security of the system, it will have to create
+> +	 * and certify this NULL primary, meaning all the template
+> +	 * parameters will have to be identical, so conform exactly to
+> +	 * the TCG TPM v2.0 Provisioning Guidance for the SRK ECC
+> +	 * key
+> +	 */
+> +
+> +	/* key type */
+> +	tpm_buf_append_u16(&template, TPM_ALG_ECC);
+> +	/* name algorithm */
+> +	tpm_buf_append_u16(&template, TPM_ALG_SHA256);
+> +	/* object properties */
+> +	tpm_buf_append_u32(&template, TPM2_OA_NO_DA |
+> +			   TPM2_OA_FIXED_TPM |
+> +			   TPM2_OA_FIXED_PARENT |
+> +			   TPM2_OA_SENSITIVE_DATA_ORIGIN |
+> +			   TPM2_OA_USER_WITH_AUTH |
+> +			   TPM2_OA_DECRYPT |
+> +			   TPM2_OA_RESTRICTED);
+> +	/* sauth policy (empty) */
+> +	tpm_buf_append_u16(&template, 0);
+> +
+> +	/* BEGIN parameters: key specific; for ECC*/
+> +	/* symmetric algorithm */
+> +	tpm_buf_append_u16(&template, TPM_ALG_AES);
+> +	/* bits for symmetric algorithm */
+> +	tpm_buf_append_u16(&template, 128);
+> +	/* algorithm mode (must be CFB) */
+> +	tpm_buf_append_u16(&template, TPM_ALG_CFB);
+> +	/* scheme (NULL means any scheme) */
+> +	tpm_buf_append_u16(&template, TPM_ALG_NULL);
+> +	/* ECC Curve ID */
+> +	tpm_buf_append_u16(&template, TPM2_ECC_NIST_P256);
+> +	/* KDF Scheme */
+> +	tpm_buf_append_u16(&template, TPM_ALG_NULL);
+> +	/* unique: key specific; for ECC it is two points */
+> +	tpm_buf_append_u16(&template, 0);
+> +	tpm_buf_append_u16(&template, 0);
+> +	/* END parameters */
+> +
+> +	/* primary handle */
+> +	tpm_buf_append_u32(&buf, hierarchy);
+> +	tpm_buf_append_empty_auth(&buf, TPM2_RS_PW);
+> +	/* sensitive create size is 4 for two empty buffers */
+> +	tpm_buf_append_u16(&buf, 4);
+> +	/* sensitive create auth data (empty) */
+> +	tpm_buf_append_u16(&buf, 0);
+> +	/* sensitive create sensitive data (empty) */
+> +	tpm_buf_append_u16(&buf, 0);
+> +	/* the public template */
+> +	tpm_buf_append(&buf, template.data, template.length);
+> +	tpm_buf_destroy(&template);
+> +	/* outside info (empty) */
+> +	tpm_buf_append_u16(&buf, 0);
+> +	/* creation PCR (none) */
+> +	tpm_buf_append_u32(&buf, 0);
+> +
+> +	rc =3D tpm_transmit_cmd(chip, &buf, 0,
+> +			      "attempting to create NULL primary");
+> +
+> +	if (rc =3D=3D TPM2_RC_SUCCESS)
+> +		rc =3D tpm2_parse_create_primary(chip, &buf, handle);
+> +
+> +	tpm_buf_destroy(&buf);
+> +
+> +	return rc;
+> +}
+> +
+> +static int tpm2_create_null_primary(struct tpm_chip *chip)
+> +{
+> +	u32 nullkey;
+            ~~~~~~~
+	    null_key
+  =20
+
+> +	int rc;
+> +
+> +	rc =3D tpm2_create_primary(chip, TPM2_RH_NULL, &nullkey);
+> +
+> +	if (rc =3D=3D TPM2_RC_SUCCESS) {
+> +		unsigned int offset =3D 0; /* dummy offset for null key context */
+> +
+> +		rc =3D tpm2_save_context(chip, nullkey, chip->null_key_context,
+> +				       sizeof(chip->null_key_context), &offset);
+> +		tpm2_flush_context(chip, nullkey);
+> +	}
+> +
+> +	return rc;
+> +}
+> +
+> +/**
+> + * tpm2_sessions_init() - start of day initialization for the sessions c=
+ode
+> + * @chip: TPM chip
+> + *
+> + * Derive and context save the null primary and allocate memory in the
+> + * struct tpm_chip for the authorizations.
+
+isn't this exactly for HMAC authorization at least in the patch set
+scope? plural confuses me here.
+
+> + */
+> +int tpm2_sessions_init(struct tpm_chip *chip)
+> +{
+> +	int rc;
+> +
+> +	rc =3D tpm2_create_null_primary(chip);
+> +	if (rc)
+> +		dev_err(&chip->dev, "TPM: security failed (NULL seed derivation): %d\n=
+", rc);
+> +
+> +	return rc;
+> +}
+> +EXPORT_SYMBOL(tpm2_sessions_init);
+> diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+> index 6be263509e81..3060ab794afb 100644
+> --- a/include/linux/tpm.h
+> +++ b/include/linux/tpm.h
+> @@ -35,12 +35,15 @@ struct trusted_key_options;
+>  enum tpm_algorithms {
+>  	TPM_ALG_ERROR		=3D 0x0000,
+>  	TPM_ALG_SHA1		=3D 0x0004,
+> +	TPM_ALG_AES		=3D 0x0006,
+>  	TPM_ALG_KEYEDHASH	=3D 0x0008,
+>  	TPM_ALG_SHA256		=3D 0x000B,
+>  	TPM_ALG_SHA384		=3D 0x000C,
+>  	TPM_ALG_SHA512		=3D 0x000D,
+>  	TPM_ALG_NULL		=3D 0x0010,
+>  	TPM_ALG_SM3_256		=3D 0x0012,
+> +	TPM_ALG_ECC		=3D 0x0023,
+> +	TPM_ALG_CFB		=3D 0x0043,
+>  };
+> =20
+>  /*
+> @@ -49,6 +52,11 @@ enum tpm_algorithms {
+>   */
+>  #define TPM_MAX_HASHES	5
+> =20
+> +enum tpm2_curves {
+> +	TPM2_ECC_NONE		=3D 0x0000,
+> +	TPM2_ECC_NIST_P256	=3D 0x0003,
+> +};
+> +
+>  struct tpm_digest {
+>  	u16 alg_id;
+>  	u8 digest[TPM_MAX_DIGEST_SIZE];
+> @@ -116,6 +124,20 @@ struct tpm_chip_seqops {
+>  	const struct seq_operations *seqops;
+>  };
+> =20
+> +/* fixed define for the curve we use which is NIST_P256 */
+> +#define EC_PT_SZ	32
+> +
+> +/*
+> + * fixed define for the size of a name.  This is actually HASHALG size
+> + * plus 2, so 32 for SHA256
+> + */
+> +#define TPM2_NAME_SIZE	34
+> +
+> +/*
+> + * The maximum size for an object context
+> + */
+> +#define TPM2_MAX_CONTEXT_SIZE 4096
+> +
+>  struct tpm_chip {
+>  	struct device dev;
+>  	struct device devs;
+> @@ -170,6 +192,14 @@ struct tpm_chip {
+> =20
+>  	/* active locality */
+>  	int locality;
+> +
+> +#ifdef CONFIG_TCG_TPM2_HMAC
+> +	/* details for communication security via sessions */
+> +	u8 null_key_context[TPM2_MAX_CONTEXT_SIZE]; /* context for NULL seed */
+
+	/* Saved context of the null seed: */
+
+I like the description on top because they suffer less alignment
+issues and can have more verbose explanation. "context for NULL
+seed" is good as no comment at all./
+
+> +	u8 null_key_name[TPM2_NAME_SIZE];	 /* name of NULL seed */
+
+	/* Digest of the public area: */
+
+This is not totally accurate but way more documenting than the
+current description, which is tautology, i.e. you are saying that
+"name is name" in the comment leaving the reader questioning what
+the heck is name.
+
+Not totally accurate i.e. missing concatenated alg identifier but
+good enough...
+
+
+> +	u8 null_ec_key_x[EC_PT_SZ];
+> +	u8 null_ec_key_y[EC_PT_SZ];
+> +#endif
+
+this is now very nice clean and udnerstandable:
+
+I'd prefer tho this formatting:
+
+	/* Name of the NULL seed: */
+	u8 null_key_name[TPM2_NAME_SIZE];
+
+
+>  };
+> =20
+>  #define TPM_HEADER_SIZE		10
+> @@ -194,6 +224,7 @@ enum tpm2_timeouts {
+>  enum tpm2_structures {
+>  	TPM2_ST_NO_SESSIONS	=3D 0x8001,
+>  	TPM2_ST_SESSIONS	=3D 0x8002,
+> +	TPM2_ST_CREATION	=3D 0x8021,
+>  };
+> =20
+>  /* Indicates from what layer of the software stack the error comes from =
+*/
+> @@ -243,6 +274,7 @@ enum tpm2_command_codes {
+>  };
+> =20
+>  enum tpm2_permanent_handles {
+> +	TPM2_RH_NULL		=3D 0x40000007,
+>  	TPM2_RS_PW		=3D 0x40000009,
+>  };
+> =20
+> @@ -318,7 +350,11 @@ struct tpm_buf {
+>  enum tpm2_object_attributes {
+>  	TPM2_OA_FIXED_TPM		=3D BIT(1),
+>  	TPM2_OA_FIXED_PARENT		=3D BIT(4),
+> +	TPM2_OA_SENSITIVE_DATA_ORIGIN	=3D BIT(5),
+>  	TPM2_OA_USER_WITH_AUTH		=3D BIT(6),
+> +	TPM2_OA_NO_DA			=3D BIT(10),
+> +	TPM2_OA_RESTRICTED		=3D BIT(16),
+> +	TPM2_OA_DECRYPT			=3D BIT(17),
+>  };
+> =20
+
+Here would be a great place to declarate aforementioned mask.
+
+>  enum tpm2_session_attributes {
+> @@ -373,6 +409,15 @@ extern int tpm_pcr_extend(struct tpm_chip *chip, u32=
+ pcr_idx,
+>  extern int tpm_get_random(struct tpm_chip *chip, u8 *data, size_t max);
+>  extern struct tpm_chip *tpm_default_chip(void);
+>  void tpm2_flush_context(struct tpm_chip *chip, u32 handle);
+
+please add empty line here.
+
+> +static inline void tpm_buf_append_empty_auth(struct tpm_buf *buf, u32 ha=
+ndle)
+> +{
+> +	/* simple authorization for empty auth */
+> +	tpm_buf_append_u32(buf, 9);		/* total length of auth */
+> +	tpm_buf_append_u32(buf, handle);
+> +	tpm_buf_append_u16(buf, 0);		/* nonce len */
+> +	tpm_buf_append_u8(buf, 0);		/* attributes */
+> +	tpm_buf_append_u16(buf, 0);		/* hmac len */
+> +}
+>  #else
+>  static inline int tpm_is_tpm2(struct tpm_chip *chip)
+>  {
+> @@ -399,5 +444,9 @@ static inline struct tpm_chip *tpm_default_chip(void)
+>  {
+>  	return NULL;
+>  }
+> +
+> +static inline void tpm_buf_append_empty_auth(struct tpm_buf *buf, u32 ha=
+ndle)
+> +{
+> +}
+>  #endif
+>  #endif
+
+I skipped first eleven patches because they are completed. This patch
+will be finished once all the numerous style issues have been fixed.
+Approach is totally correct...
+
+BR, Jarkko
 
