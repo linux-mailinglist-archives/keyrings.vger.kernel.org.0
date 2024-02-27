@@ -1,79 +1,88 @@
-Return-Path: <keyrings+bounces-729-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-732-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0BF2868942
-	for <lists+keyrings@lfdr.de>; Tue, 27 Feb 2024 07:53:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C73F86A0BC
+	for <lists+keyrings@lfdr.de>; Tue, 27 Feb 2024 21:23:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98580284C6D
-	for <lists+keyrings@lfdr.de>; Tue, 27 Feb 2024 06:53:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9C791F24021
+	for <lists+keyrings@lfdr.de>; Tue, 27 Feb 2024 20:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D504854BE3;
-	Tue, 27 Feb 2024 06:52:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sonic.net header.i=@sonic.net header.b="RryI5HNK"
-X-Original-To: keyrings+subscribe@vger.kernel.org
-Received: from c.mail.sonic.net (c.mail.sonic.net [64.142.111.80])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BFE14A0A8;
+	Tue, 27 Feb 2024 20:23:48 +0000 (UTC)
+X-Original-To: keyrings@vger.kernel.org
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397691E4AE;
-	Tue, 27 Feb 2024 06:52:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.142.111.80
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88921D6A8;
+	Tue, 27 Feb 2024 20:23:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709016747; cv=none; b=JJrN/mapIG5U+HeST4xVSZCjiayV0+/dwkZt1EZ6DhRVqlAxEvzuNNBl44tv9FVd6AmARZlR30kvdd9wO8VpITPvoqB465el0aUMIc0svBkmFuiZKaXbevpqtghOCxwDAIhC6tEbyRpRXz0AQRGOMmRJvbEmGn8ldr6JcjboMb4=
+	t=1709065428; cv=none; b=kldx9SWlqytSmz/CBmjvAorBti+NoRTZUDMwRCLDkerMOCJzTz+Zjqt+Vh2yUFc3RJyXSeqpXT4hAft5IZFpfHW7d4ucAx0eNF3vxROsQs5o8+T9uCJXxnxVr8LK8SVHTd7LHofVlpzY0NSdojzpLNBd6F98RLQhNBpDvNA7m5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709016747; c=relaxed/simple;
-	bh=bIkL3j1SUti+mxRknWXsGzjEHfZ++LfAOrCAj6OvBfk=;
-	h=From:To:Date:MIME-Version:Subject:Message-ID:Content-type; b=T4Q/DuzrOUW8f02ago/DUIh6kxzpbMNU75qYK2qUXzLjAxjwbYGoeuk2okarAiwNPkFRSVeQBDBTbzhXXss8vnIsdmKsxGsqTF8BVaF7yb2xltaEwu+wQlIe7rntrtCKuuD3xrYa9lSNNToQ0MVJxrg/0PESjHQex1Pvn32H8Pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sonic.net; spf=pass smtp.mailfrom=sonic.net; dkim=pass (2048-bit key) header.d=sonic.net header.i=@sonic.net header.b=RryI5HNK; arc=none smtp.client-ip=64.142.111.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sonic.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sonic.net
-Received: from [192.168.1.94] (45-23-117-7.lightspeed.livnmi.sbcglobal.net [45.23.117.7])
-	(authenticated bits=0)
-	by c.mail.sonic.net (8.16.1/8.16.1) with ESMTPSA id 41R6qJT4030968
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 26 Feb 2024 22:52:24 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sonic.net; s=net23;
-	t=1709016745; bh=bIkL3j1SUti+mxRknWXsGzjEHfZ++LfAOrCAj6OvBfk=;
-	h=From:To:Date:MIME-Version:Subject:Message-ID:From:Subject;
-	b=RryI5HNKNEyjYr7+X8KqDiWVWJzcyo8ij+ZPPjcsQeB7K/U9PPmALtG8lrgq9qICU
-	 hkhs3oFgydBSkT4PEDSYxszJZYT/bAqgmYtIUmH49RIDXGo5N3Y/pb2BnkCLJdz1UZ
-	 6PevrJN1tHVqlIPNfV/ecM+uAOnlCOBvi4t1Y7jgdNhFXi60Ji47quI1LkiEgK5TNC
-	 XFGmFXhJDRQSgJ19iE8Dov4JxTo+fj8Y+wcVTCe2WF/UuhWrxwAu/ZA/cE7VUEAtaQ
-	 MPJ9JITTijo1khW2fgmjZMllDNhbGG0vX6CfUyl5ba48tPKMIV1L/SiRTi7am2JQWp
-	 USbpoDvj1znww==
-From: delyan@sonic.net
-To: keyrings+subscribe@vger.kernel.org, keyrings+unsubscribe@vger.kernel.org,
-        keyrings@vger.kernel.org, kvm+subscribe@vger.kernel.org,
-        kvm+unsubscribe@vger.kernel.org, kvm@vger.kernel.org,
-        kvm-ppc+subscribe@vger.kernel.org, kvm-ppc+unsubscribe@vger.kernel.org,
-        kvm-ppc@vger.kernel.org, lartc+subscribe@vger.kernel.org,
-        lartc+unsubscribe@vger.kernel.org, lartc@vger.kernel.org,
-        linux-acpi+subscribe@vger.kernel.org,
-        linux-acpi+unsubscribe@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-alpha+subscribe@vger.kernel.org,
-        linux-alpha+unsubscribe@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-api+subscribe@vger.kernel.org
-Date: Tue, 27 Feb 2024 01:52:19 -0500
+	s=arc-20240116; t=1709065428; c=relaxed/simple;
+	bh=irdNq1Mm9AfgWRQih82uRLxz7KfkC+JUxWNIWOC5zx0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FRTbdigH8ZNxuRSEbk1VX1EXKokAGnAP+fK4Bg01RBeGkrxsAVtnW6ck1pLfD1Vqd/JoGvr9lG5RrFmVjNjCntghktrewUmCtCJ0EzDyDUCY8VQMZbx/4wCE6lRpEYp3VF9nFs3BSzGWsU+JcQ9N5DVlSGtdooTTFhTZxNE3QUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 82110300002C4;
+	Tue, 27 Feb 2024 21:15:52 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 756A15D8259; Tue, 27 Feb 2024 21:15:52 +0100 (CET)
+Date: Tue, 27 Feb 2024 21:15:52 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Stefan Berger <stefanb@linux.ibm.com>
+Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+	herbert@gondor.apana.org.au, davem@davemloft.net,
+	linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br
+Subject: Re: [PATCH v3 06/10] crypte: ecc - Implement ecc_curve_get_nbits to
+ get number of bits
+Message-ID: <20240227201552.GA32765@wunner.de>
+References: <20240223204149.4055630-1-stefanb@linux.ibm.com>
+ <20240223204149.4055630-7-stefanb@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: subscribe
-Message-ID: <65DD86A3.29102.445FAD58@delyan.sonic.net>
-Priority: normal
-X-mailer: Pegasus Mail for Windows (4.80.1028)
-Content-type: text/plain; charset=US-ASCII
-Content-transfer-encoding: 7BIT
-Content-description: Mail message body
-X-Sonic-CAuth: UmFuZG9tSVb9BhkJFO5Qzxh9/2zjUGyXXhnB3/s3jWtRqanB/qbw6f3MkzmhbdENIxm4Y9AyyS5E0DBDjnQuGwsxhW8HegI8
-X-Sonic-ID: C;Cr9LwDzV7hGbeC5nR+6Zsg== M;UtgZwzzV7hGbeC5nR+6Zsg==
-X-Spam-Flag: Unknown
-X-Sonic-Spam-Details: not scanned (too big) by cerberusd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240223204149.4055630-7-stefanb@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-subscribe
+On Fri, Feb 23, 2024 at 03:41:45PM -0500, Stefan Berger wrote:
+> --- a/include/crypto/internal/ecc.h
+> +++ b/include/crypto/internal/ecc.h
+> @@ -75,6 +75,17 @@ static inline void ecc_digits_from_bytes(const u8 *in, unsigned int nbytes,
+>  	ecc_swap_digits(tmp, out, ndigits);
+>  }
+>  
+> +/**
+> + * ecc_curve_get_nbits() - Get the number of bits of the curve
+> + * @curve:    The curve
+> + */
+> +static inline unsigned int ecc_curve_get_nbits(const struct ecc_curve *curve)
+> +{
+> +	if (curve->nbits)
+> +		return curve->nbits;
+> +	return curve->g.ndigits << ECC_DIGITS_TO_BYTES_SHIFT * 8;
+> +}
+
+Since you're amending struct ecc_curve with an extra nbits value anyway,
+why not statically fill it in for all curves, instead of adding this
+extra complexity in the code?
+
+Thanks,
+
+Lukas
 
