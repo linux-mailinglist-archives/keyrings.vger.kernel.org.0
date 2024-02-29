@@ -1,54 +1,54 @@
-Return-Path: <keyrings+bounces-732-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-733-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C73F86A0BC
-	for <lists+keyrings@lfdr.de>; Tue, 27 Feb 2024 21:23:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 451D586C490
+	for <lists+keyrings@lfdr.de>; Thu, 29 Feb 2024 10:11:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9C791F24021
-	for <lists+keyrings@lfdr.de>; Tue, 27 Feb 2024 20:23:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 489E31C2099A
+	for <lists+keyrings@lfdr.de>; Thu, 29 Feb 2024 09:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70BFE14A0A8;
-	Tue, 27 Feb 2024 20:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07AE35810E;
+	Thu, 29 Feb 2024 09:11:18 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88921D6A8;
-	Tue, 27 Feb 2024 20:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B355810B;
+	Thu, 29 Feb 2024 09:11:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709065428; cv=none; b=kldx9SWlqytSmz/CBmjvAorBti+NoRTZUDMwRCLDkerMOCJzTz+Zjqt+Vh2yUFc3RJyXSeqpXT4hAft5IZFpfHW7d4ucAx0eNF3vxROsQs5o8+T9uCJXxnxVr8LK8SVHTd7LHofVlpzY0NSdojzpLNBd6F98RLQhNBpDvNA7m5M=
+	t=1709197877; cv=none; b=nu2w3FKQC+e+q0rNrwvaMK7GfnVZmc/lumxiQWRF05hzacogfyFvK9JyeN7hB6JnKi9gNYnrZddJET7npikiDjIDOlEgZm9FhRsTrTrMdGfOsASjFYMKEtlCJRUoYMU1uTjSy0yJIGXcTN2VTQuhXGNyJ7Ckx+AaI58VK84vKAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709065428; c=relaxed/simple;
-	bh=irdNq1Mm9AfgWRQih82uRLxz7KfkC+JUxWNIWOC5zx0=;
+	s=arc-20240116; t=1709197877; c=relaxed/simple;
+	bh=iIH1ah9G+zFyTlqxkBJJeg8/4Q1M35aDXxtZ20ZjMe0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FRTbdigH8ZNxuRSEbk1VX1EXKokAGnAP+fK4Bg01RBeGkrxsAVtnW6ck1pLfD1Vqd/JoGvr9lG5RrFmVjNjCntghktrewUmCtCJ0EzDyDUCY8VQMZbx/4wCE6lRpEYp3VF9nFs3BSzGWsU+JcQ9N5DVlSGtdooTTFhTZxNE3QUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
+	 Content-Type:Content-Disposition:In-Reply-To; b=Jv+j2p8G/HPM4E4JZRx7BXN2K6RskLTKN4LOUiDgbJvDRYoo/+oXFD2mSFg9V3qKZ+ivVKJB/cKKTdppR83hZgRTLjG3WMwCX3C2aQ1HsNabvufrz2yOqcJzJLLI6vTnmGR3ofiEDmxwvOixcd9zxbOm6Cqqu9YZiWg3rUddLfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
 	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
 	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 82110300002C4;
-	Tue, 27 Feb 2024 21:15:52 +0100 (CET)
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id C26B4100E2018;
+	Thu, 29 Feb 2024 10:11:05 +0100 (CET)
 Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 756A15D8259; Tue, 27 Feb 2024 21:15:52 +0100 (CET)
-Date: Tue, 27 Feb 2024 21:15:52 +0100
+	id 97603527B51; Thu, 29 Feb 2024 10:11:05 +0100 (CET)
+Date: Thu, 29 Feb 2024 10:11:05 +0100
 From: Lukas Wunner <lukas@wunner.de>
 To: Stefan Berger <stefanb@linux.ibm.com>
 Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
 	herbert@gondor.apana.org.au, davem@davemloft.net,
 	linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br
-Subject: Re: [PATCH v3 06/10] crypte: ecc - Implement ecc_curve_get_nbits to
- get number of bits
-Message-ID: <20240227201552.GA32765@wunner.de>
+Subject: Re: [PATCH v3 01/10] crypto: ecdsa - Convert byte arrays with key
+ coordinates to digits
+Message-ID: <20240229091105.GA29363@wunner.de>
 References: <20240223204149.4055630-1-stefanb@linux.ibm.com>
- <20240223204149.4055630-7-stefanb@linux.ibm.com>
+ <20240223204149.4055630-2-stefanb@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -57,30 +57,33 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240223204149.4055630-7-stefanb@linux.ibm.com>
+In-Reply-To: <20240223204149.4055630-2-stefanb@linux.ibm.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Fri, Feb 23, 2024 at 03:41:45PM -0500, Stefan Berger wrote:
-> --- a/include/crypto/internal/ecc.h
-> +++ b/include/crypto/internal/ecc.h
-> @@ -75,6 +75,17 @@ static inline void ecc_digits_from_bytes(const u8 *in, unsigned int nbytes,
->  	ecc_swap_digits(tmp, out, ndigits);
->  }
->  
-> +/**
-> + * ecc_curve_get_nbits() - Get the number of bits of the curve
-> + * @curve:    The curve
-> + */
-> +static inline unsigned int ecc_curve_get_nbits(const struct ecc_curve *curve)
+On Fri, Feb 23, 2024 at 03:41:40PM -0500, Stefan Berger wrote:
+> +static inline void ecc_digits_from_bytes(const u8 *in, unsigned int nbytes,
+> +					 u64 *out, unsigned int ndigits)
 > +{
-> +	if (curve->nbits)
-> +		return curve->nbits;
-> +	return curve->g.ndigits << ECC_DIGITS_TO_BYTES_SHIFT * 8;
+> +	unsigned int sz = ndigits << ECC_DIGITS_TO_BYTES_SHIFT;
+> +	u8 tmp[ECC_MAX_DIGITS << ECC_DIGITS_TO_BYTES_SHIFT];
+> +	unsigned int o = sz - nbytes;
+> +
+> +	memset(tmp, 0, o);
+> +	memcpy(&tmp[o], in, nbytes);
+> +	ecc_swap_digits(tmp, out, ndigits);
 > +}
 
-Since you're amending struct ecc_curve with an extra nbits value anyway,
-why not statically fill it in for all curves, instead of adding this
-extra complexity in the code?
+Copying the whole key into tmp seems inefficient.  You only need
+special handling for the first few bytes of "in" (6 bytes in the
+P521 case) and could use ecc_swap_digits() to convert the rest
+of "in" directly to "out" without using tmp.
+
+So it would be sufficient to allocate the first digit on the stack,
+memset + memcpy, then convert that to native byte order into "in[0]"
+and use ecc_swap_digits() for the rest.
+
+And the special handling would be conditional on "!o", so is skipped
+for existing curves.
 
 Thanks,
 
