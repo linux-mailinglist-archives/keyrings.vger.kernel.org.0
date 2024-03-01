@@ -1,46 +1,46 @@
-Return-Path: <keyrings+bounces-756-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-757-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2977086EA49
-	for <lists+keyrings@lfdr.de>; Fri,  1 Mar 2024 21:26:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E548C86EA5F
+	for <lists+keyrings@lfdr.de>; Fri,  1 Mar 2024 21:36:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5881C1C25017
-	for <lists+keyrings@lfdr.de>; Fri,  1 Mar 2024 20:26:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D981289549
+	for <lists+keyrings@lfdr.de>; Fri,  1 Mar 2024 20:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982553C49B;
-	Fri,  1 Mar 2024 20:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8D83CF6D;
+	Fri,  1 Mar 2024 20:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="suEoBXOv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q+pgumSP"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF793C470;
-	Fri,  1 Mar 2024 20:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7216F3CF5D;
+	Fri,  1 Mar 2024 20:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709324793; cv=none; b=UoiBNmCzEtkhMUqNfXEkb2iUzsvMa46q8KELJrapP9Mdv8ZOXI3oR05eugQqmZFSg5ezs6iApAgB30HT4hXxRTDIsRJe+K4opcvMPsQ6p8necIHzdCqShe8yI/wxBK/4T3XJTwVcP2vnXj/QYaGzlgcU6whYHL0dONoZXxtm6uE=
+	t=1709325392; cv=none; b=EC+UYVqDzcVOJjdnvfoo6pCNF2VofEe5YH1JEKWa+lZ4sfXdeTgvP0RwHjkSvYW2gC32X8SsuwBNANAJo/gzZulhlskQWZkMOB3kpOXVdmsXWirkC6UMSdH9dcqm10hjH1fzmhmah2NUq6P6cxmUeRkYxO0Hmcp7ETlpSSjf7gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709324793; c=relaxed/simple;
-	bh=PrJ3aVeOXXr6ChkhosX0KQsUPRlQeGLh2zV6DSxUaAw=;
-	h=Mime-Version:Content-Type:Date:Subject:From:To:Cc:Message-Id:
-	 References:In-Reply-To; b=CgCjJ+4b6gZA30WFxzOJfl3Jp1pvzHLBwlXCpXB+gXuTp9kdIFu+s2A2EMCEe8Kg6Dbf7RmZtiEoCe9UKu9iDpX1C+7+4zORMpgA7qCyfvp93tuFjwqu7a8byw9YMwBp/S3hAiteewwrqYsyxQIBbtnt2D8tX9JZiogMw+tj960=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=suEoBXOv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96EAEC433F1;
-	Fri,  1 Mar 2024 20:26:31 +0000 (UTC)
+	s=arc-20240116; t=1709325392; c=relaxed/simple;
+	bh=WDsGuB3hsDm+lPKKQjS9A7bzXYwwHm0Ut6KHfEl37OU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=lPdU1DOsxL0ZJcuvX8U5a9aBGn/9dGMsKyz8it3YxvgHcnDVHuFX1tZdUjSZHmAg4t9HEs0sqdMFVLw+/AbMxrExtrMDurOn7Vj/B7SAo0rqbCpAKBMyk4FKswyQq82WZQv3FXphz5N94XuebNmhTisZX4APIsrMRDTNpMF9o2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q+pgumSP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA34BC433F1;
+	Fri,  1 Mar 2024 20:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709324793;
-	bh=PrJ3aVeOXXr6ChkhosX0KQsUPRlQeGLh2zV6DSxUaAw=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=suEoBXOvlqG4qAZ3jekNNeljlAYHrPsJh6fR6LYNf/nXwWORCnJ90dMd+VgUybDla
-	 LUWLkUUn7sIPKDhK54MQZoTOMNtmWdySLbBDM7ziR5xEJ8eK0OxZHY+jaQOk+TDJmw
-	 a0wqaGOAbG65tmeI/W7VNls4nyTpWx1Sr4skloCYei7/jBFRQESWhaVkSVc/3Tn6G6
-	 MfxgKWbb65y3xQHVFxmRmAb5woFOk3JI05GkF1+wFFLJGbTCcE6+5C/P2VAreW2kub
-	 mq8vTYMgeHp+gRYF29A/6uaqutoIRlUX+kxSNQYhnbXuiEb4KV0z3ztp9Pvf6XujJu
-	 q7TL/Ss+pvcKg==
+	s=k20201202; t=1709325392;
+	bh=WDsGuB3hsDm+lPKKQjS9A7bzXYwwHm0Ut6KHfEl37OU=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=Q+pgumSPQib7pKFvehmimPR72IWsE1P6U+gXDksISrwdM/+BWVTneFY0OyMDiz7Sc
+	 ZCBYUPO92217AZQiGucFlX31kRTT3nUPmLWC/cowJl+IpPm9oJcx426p4+NXHHQ1PP
+	 Fn9BCnGbWg0KJqI39NGDp2veV5sEtbR0tM7jkDRUoBQ67TEPNdnqXfd62Iei4jsEl8
+	 KsthP1JBFLQTvlsBnPOZs6B+ihvU2F8xgppVdMcPpjJxFMudIqy7vejQbC19YOrRYM
+	 bURlr1VKCKUHDc/e2ry6pk7PikrxKapEX2Gg2ADNVBTYFcnwtiALlvhLq2YJBRLZGD
+	 TKYW9v0VAH05A==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,86 +49,114 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 01 Mar 2024 22:26:29 +0200
-Subject: Re: [PATCH v3 01/10] crypto: ecdsa - Convert byte arrays with key
+Date: Fri, 01 Mar 2024 22:36:28 +0200
+Message-Id: <CZIPA2YV5AUI.3MS4AUWRD516P@suppilovahvero>
+Cc: <linux-kernel@vger.kernel.org>, <saulo.alessandre@tse.jus.br>,
+ <lukas@wunner.de>
+Subject: Re: [PATCH v4 01/12] crypto: ecdsa - Convert byte arrays with key
  coordinates to digits
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Stefan Berger" <stefanb@linux.ibm.com>, "Lukas Wunner"
- <lukas@wunner.de>
-Cc: <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
- <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
- <linux-kernel@vger.kernel.org>, <saulo.alessandre@tse.jus.br>
-Message-Id: <CZIOY02QS2QC.LV0A0HNT7VKM@suppilovahvero>
+To: "Stefan Berger" <stefanb@linux.ibm.com>, <keyrings@vger.kernel.org>,
+ <linux-crypto@vger.kernel.org>, <herbert@gondor.apana.org.au>,
+ <davem@davemloft.net>
 X-Mailer: aerc 0.15.2
-References: <20240223204149.4055630-1-stefanb@linux.ibm.com>
- <20240223204149.4055630-2-stefanb@linux.ibm.com>
- <20240229091105.GA29363@wunner.de>
- <aabeec7b-618c-4d15-b033-4162b6e54f6a@linux.ibm.com>
-In-Reply-To: <aabeec7b-618c-4d15-b033-4162b6e54f6a@linux.ibm.com>
+References: <20240301022007.344948-1-stefanb@linux.ibm.com>
+ <20240301022007.344948-2-stefanb@linux.ibm.com>
+In-Reply-To: <20240301022007.344948-2-stefanb@linux.ibm.com>
 
-On Thu Feb 29, 2024 at 4:57 PM EET, Stefan Berger wrote:
+On Fri Mar 1, 2024 at 4:19 AM EET, Stefan Berger wrote:
+> For NIST P192/256/384 the public key's x and y parameters could be copied
+> directly from a given array since both parameters filled 'ndigits' of
+> digits (a 'digit' is a u64). For support of NIST P521 the key parameters
+> need to have leading zeros prepended to the most significant digit since
+> only 2 bytes of the most significant digit are provided.
 >
+> Therefore, implement ecc_digits_from_bytes to convert a byte array into a=
+n
+> array of digits and use this function in ecdsa_set_pub_key where an input
+> byte array needs to be converted into digits.
 >
-> On 2/29/24 04:11, Lukas Wunner wrote:
-> > On Fri, Feb 23, 2024 at 03:41:40PM -0500, Stefan Berger wrote:
-> >> +static inline void ecc_digits_from_bytes(const u8 *in, unsigned int n=
-bytes,
-> >> +					 u64 *out, unsigned int ndigits)
-> >> +{
-> >> +	unsigned int sz =3D ndigits << ECC_DIGITS_TO_BYTES_SHIFT;
-> >> +	u8 tmp[ECC_MAX_DIGITS << ECC_DIGITS_TO_BYTES_SHIFT];
-> >> +	unsigned int o =3D sz - nbytes;
-> >> +
-> >> +	memset(tmp, 0, o);
-> >> +	memcpy(&tmp[o], in, nbytes);
-> >> +	ecc_swap_digits(tmp, out, ndigits);
-> >> +}
-> >=20
-> > Copying the whole key into tmp seems inefficient.  You only need
-> > special handling for the first few bytes of "in" (6 bytes in the
-> > P521 case) and could use ecc_swap_digits() to convert the rest
-> > of "in" directly to "out" without using tmp.
-> >=20
-> > So it would be sufficient to allocate the first digit on the stack,
-> > memset + memcpy, then convert that to native byte order into "in[0]"
-> > and use ecc_swap_digits() for the rest.
-> >=20
-> > And the special handling would be conditional on "!o", so is skipped
-> > for existing curves.
+> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> ---
+>  crypto/ecdsa.c                | 14 +++++++++-----
+>  include/crypto/internal/ecc.h | 25 +++++++++++++++++++++++++
+>  2 files changed, 34 insertions(+), 5 deletions(-)
 >
-> Thanks. It looks like this now:
->
-> static inline void ecc_digits_from_bytes(const u8 *in, unsigned int nbyte=
-s,
->                                           u64 *out, unsigned int ndigits)
-> {
->          unsigned int o =3D nbytes & 7;
->          u64 msd =3D 0;
->          size_t i;
->
->          if (o =3D=3D 0) {
->                  ecc_swap_digits(in, out, ndigits);
->          } else {
->                  for (i =3D 0; i < o; i++)
->                          msd =3D (msd << 8) | in[i];
->                  out[ndigits - 1] =3D msd;
->                  ecc_swap_digits(&in[o], out, ndigits - 1);
+> diff --git a/crypto/ecdsa.c b/crypto/ecdsa.c
+> index fbd76498aba8..6653dec17327 100644
+> --- a/crypto/ecdsa.c
+> +++ b/crypto/ecdsa.c
+> @@ -222,9 +222,8 @@ static int ecdsa_ecc_ctx_reset(struct ecc_ctx *ctx)
+>  static int ecdsa_set_pub_key(struct crypto_akcipher *tfm, const void *ke=
+y, unsigned int keylen)
+>  {
+>  	struct ecc_ctx *ctx =3D akcipher_tfm_ctx(tfm);
+> +	unsigned int digitlen, ndigits;
+>  	const unsigned char *d =3D key;
+> -	const u64 *digits =3D (const u64 *)&d[1];
+> -	unsigned int ndigits;
+>  	int ret;
+> =20
+>  	ret =3D ecdsa_ecc_ctx_reset(ctx);
+> @@ -238,12 +237,17 @@ static int ecdsa_set_pub_key(struct crypto_akcipher=
+ *tfm, const void *key, unsig
+>  		return -EINVAL;
+> =20
+>  	keylen--;
+> -	ndigits =3D (keylen >> 1) / sizeof(u64);
+> +	digitlen =3D keylen >> 1;
+> +
+> +	ndigits =3D DIV_ROUND_UP(digitlen, sizeof(u64));
+>  	if (ndigits !=3D ctx->curve->g.ndigits)
+>  		return -EINVAL;
+> =20
+> -	ecc_swap_digits(digits, ctx->pub_key.x, ndigits);
+> -	ecc_swap_digits(&digits[ndigits], ctx->pub_key.y, ndigits);
+> +	d++;
+> +
+> +	ecc_digits_from_bytes(d, digitlen, ctx->pub_key.x, ndigits);
+> +	ecc_digits_from_bytes(&d[digitlen], digitlen, ctx->pub_key.y, ndigits);
+> +
+>  	ret =3D ecc_is_pubkey_valid_full(ctx->curve, &ctx->pub_key);
+> =20
+>  	ctx->pub_key_set =3D ret =3D=3D 0;
+> diff --git a/include/crypto/internal/ecc.h b/include/crypto/internal/ecc.=
+h
+> index 4f6c1a68882f..48a04605da7f 100644
+> --- a/include/crypto/internal/ecc.h
+> +++ b/include/crypto/internal/ecc.h
+> @@ -56,6 +56,31 @@ static inline void ecc_swap_digits(const void *in, u64=
+ *out, unsigned int ndigit
+>  		out[i] =3D get_unaligned_be64(&src[ndigits - 1 - i]);
+>  }
+> =20
+> +/**
+> + * ecc_digits_from_bytes() - Create ndigits-sized digits array from byte=
+ array
+> + * @in:       Input byte array
+> + * @nbytes    Size of input byte array
+> + * @out       Output digits array
+> + * @ndigits:  Number of digits to create from byte array
+> + */
+> +static inline void ecc_digits_from_bytes(const u8 *in, unsigned int nbyt=
+es,
+> +					 u64 *out, unsigned int ndigits)
+> +{
+> +	unsigned int o =3D nbytes & 7;
+> +	u64 msd =3D 0;
+> +	size_t i;
+> +
+> +	if (o =3D=3D 0) {
+> +		ecc_swap_digits(in, out, ndigits);
+> +	} else {
+> +		/* if key length is not a multiple of 64 bits (NIST P521) */
+> +		for (i =3D 0; i < o; i++)
+> +			msd =3D (msd << 8) | in[i];
+> +		out[ndigits - 1] =3D msd;
+> +		ecc_swap_digits(&in[o], out, (nbytes - o) >> 3);
+> +	}
 
-This would be more stream-lined IMHO:
-
-        unsigned int o =3D nbytes & 7;
-	unsigned int n =3D ndigits;
-        u64 msd =3D 0;
-        size_t i;
-
-        if (o !=3D 0) {
-                for (i =3D 0; i < o; i++)
-                        msd =3D (msd << 8) | in[i];
-
-                out[--n] =3D msd;
-        }
-
-        ecc_swap_digits(in, out, n);
+https://lore.kernel.org/keyrings/CZIOY02QS2QC.LV0A0HNT7VKM@suppilovahvero/
 
 BR, Jarkko
 
