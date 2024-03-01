@@ -1,83 +1,134 @@
-Return-Path: <keyrings+bounces-755-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-756-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA6586DF05
-	for <lists+keyrings@lfdr.de>; Fri,  1 Mar 2024 11:11:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2977086EA49
+	for <lists+keyrings@lfdr.de>; Fri,  1 Mar 2024 21:26:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBD821C2084D
-	for <lists+keyrings@lfdr.de>; Fri,  1 Mar 2024 10:11:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5881C1C25017
+	for <lists+keyrings@lfdr.de>; Fri,  1 Mar 2024 20:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E5D6A8BC;
-	Fri,  1 Mar 2024 10:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982553C49B;
+	Fri,  1 Mar 2024 20:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="suEoBXOv"
 X-Original-To: keyrings@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424DB69D0B;
-	Fri,  1 Mar 2024 10:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF793C470;
+	Fri,  1 Mar 2024 20:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709287859; cv=none; b=eotGCurQFMTnwkqfjTpWdgUz+ceTGi3/UKeSA8Lt7S1GRi4SD1hLQaMWrONgE7z0horBU34WxvI1p9ZNoKy9Ywj1eOoxwZlF5Z41/lKbl2Je6h8hk7ek1h35Uy8xVQJnt9hy32EukbBuPDAEBFsiblp1WwKfca3s28+NKoutR6w=
+	t=1709324793; cv=none; b=UoiBNmCzEtkhMUqNfXEkb2iUzsvMa46q8KELJrapP9Mdv8ZOXI3oR05eugQqmZFSg5ezs6iApAgB30HT4hXxRTDIsRJe+K4opcvMPsQ6p8necIHzdCqShe8yI/wxBK/4T3XJTwVcP2vnXj/QYaGzlgcU6whYHL0dONoZXxtm6uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709287859; c=relaxed/simple;
-	bh=EzcF9ZQTKezu3ctCnmIcVfuJobPV12/FVjM3b5XLDeQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NAbXqBj9/nOVH0mn4T3TOjrFKAOCRQeuQBRt8OAY3vBR54Y0eO8biE3quGgtlnazjNyTpPcodcqE37ik2ZDMe085WOSFCi1Q2rg7yy/L/HkmKQYvMt2bJH+/whtW4Khl6D2kWnEtcXVjjYEghx/4sy8CRl8MOB2XlNPWWQu3xDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-	id 1rfzqM-002Gfn-7x; Fri, 01 Mar 2024 18:10:19 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 01 Mar 2024 18:10:33 +0800
-Date: Fri, 1 Mar 2024 18:10:33 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: David Howells <dhowells@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: Re: [PATCH v3] X.509: Introduce scope-based x509_certificate
- allocation
-Message-ID: <ZeGpmbawHkLNcwFy@gondor.apana.org.au>
-References: <63cc7ab17a5064756e26e50bc605e3ff8914f05a.1708439875.git.lukas@wunner.de>
+	s=arc-20240116; t=1709324793; c=relaxed/simple;
+	bh=PrJ3aVeOXXr6ChkhosX0KQsUPRlQeGLh2zV6DSxUaAw=;
+	h=Mime-Version:Content-Type:Date:Subject:From:To:Cc:Message-Id:
+	 References:In-Reply-To; b=CgCjJ+4b6gZA30WFxzOJfl3Jp1pvzHLBwlXCpXB+gXuTp9kdIFu+s2A2EMCEe8Kg6Dbf7RmZtiEoCe9UKu9iDpX1C+7+4zORMpgA7qCyfvp93tuFjwqu7a8byw9YMwBp/S3hAiteewwrqYsyxQIBbtnt2D8tX9JZiogMw+tj960=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=suEoBXOv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96EAEC433F1;
+	Fri,  1 Mar 2024 20:26:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709324793;
+	bh=PrJ3aVeOXXr6ChkhosX0KQsUPRlQeGLh2zV6DSxUaAw=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=suEoBXOvlqG4qAZ3jekNNeljlAYHrPsJh6fR6LYNf/nXwWORCnJ90dMd+VgUybDla
+	 LUWLkUUn7sIPKDhK54MQZoTOMNtmWdySLbBDM7ziR5xEJ8eK0OxZHY+jaQOk+TDJmw
+	 a0wqaGOAbG65tmeI/W7VNls4nyTpWx1Sr4skloCYei7/jBFRQESWhaVkSVc/3Tn6G6
+	 MfxgKWbb65y3xQHVFxmRmAb5woFOk3JI05GkF1+wFFLJGbTCcE6+5C/P2VAreW2kub
+	 mq8vTYMgeHp+gRYF29A/6uaqutoIRlUX+kxSNQYhnbXuiEb4KV0z3ztp9Pvf6XujJu
+	 q7TL/Ss+pvcKg==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <63cc7ab17a5064756e26e50bc605e3ff8914f05a.1708439875.git.lukas@wunner.de>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 01 Mar 2024 22:26:29 +0200
+Subject: Re: [PATCH v3 01/10] crypto: ecdsa - Convert byte arrays with key
+ coordinates to digits
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Stefan Berger" <stefanb@linux.ibm.com>, "Lukas Wunner"
+ <lukas@wunner.de>
+Cc: <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+ <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+ <linux-kernel@vger.kernel.org>, <saulo.alessandre@tse.jus.br>
+Message-Id: <CZIOY02QS2QC.LV0A0HNT7VKM@suppilovahvero>
+X-Mailer: aerc 0.15.2
+References: <20240223204149.4055630-1-stefanb@linux.ibm.com>
+ <20240223204149.4055630-2-stefanb@linux.ibm.com>
+ <20240229091105.GA29363@wunner.de>
+ <aabeec7b-618c-4d15-b033-4162b6e54f6a@linux.ibm.com>
+In-Reply-To: <aabeec7b-618c-4d15-b033-4162b6e54f6a@linux.ibm.com>
 
-On Tue, Feb 20, 2024 at 04:10:39PM +0100, Lukas Wunner wrote:
+On Thu Feb 29, 2024 at 4:57 PM EET, Stefan Berger wrote:
 >
-> In x509_cert_parse(), add a hint for the compiler that kzalloc() never
-> returns an ERR_PTR().  Otherwise the compiler adds a gratuitous IS_ERR()
-> check on return.  Introduce a handy assume() macro for this which can be
-> re-used elsewhere in the kernel to provide hints for the compiler.
+>
+> On 2/29/24 04:11, Lukas Wunner wrote:
+> > On Fri, Feb 23, 2024 at 03:41:40PM -0500, Stefan Berger wrote:
+> >> +static inline void ecc_digits_from_bytes(const u8 *in, unsigned int n=
+bytes,
+> >> +					 u64 *out, unsigned int ndigits)
+> >> +{
+> >> +	unsigned int sz =3D ndigits << ECC_DIGITS_TO_BYTES_SHIFT;
+> >> +	u8 tmp[ECC_MAX_DIGITS << ECC_DIGITS_TO_BYTES_SHIFT];
+> >> +	unsigned int o =3D sz - nbytes;
+> >> +
+> >> +	memset(tmp, 0, o);
+> >> +	memcpy(&tmp[o], in, nbytes);
+> >> +	ecc_swap_digits(tmp, out, ndigits);
+> >> +}
+> >=20
+> > Copying the whole key into tmp seems inefficient.  You only need
+> > special handling for the first few bytes of "in" (6 bytes in the
+> > P521 case) and could use ecc_swap_digits() to convert the rest
+> > of "in" directly to "out" without using tmp.
+> >=20
+> > So it would be sufficient to allocate the first digit on the stack,
+> > memset + memcpy, then convert that to native byte order into "in[0]"
+> > and use ecc_swap_digits() for the rest.
+> >=20
+> > And the special handling would be conditional on "!o", so is skipped
+> > for existing curves.
+>
+> Thanks. It looks like this now:
+>
+> static inline void ecc_digits_from_bytes(const u8 *in, unsigned int nbyte=
+s,
+>                                           u64 *out, unsigned int ndigits)
+> {
+>          unsigned int o =3D nbytes & 7;
+>          u64 msd =3D 0;
+>          size_t i;
+>
+>          if (o =3D=3D 0) {
+>                  ecc_swap_digits(in, out, ndigits);
+>          } else {
+>                  for (i =3D 0; i < o; i++)
+>                          msd =3D (msd << 8) | in[i];
+>                  out[ndigits - 1] =3D msd;
+>                  ecc_swap_digits(&in[o], out, ndigits - 1);
 
-Would it be possible to move the use of assume into the kzalloc
-declaration instead? Perhaps by turning it into a static inline
-wrapper that does the "assume"?
+This would be more stream-lined IMHO:
 
-Otherwise as time goes on we'll have a proliferation of these
-"assume"s all over the place.
+        unsigned int o =3D nbytes & 7;
+	unsigned int n =3D ndigits;
+        u64 msd =3D 0;
+        size_t i;
 
-Thanks,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+        if (o !=3D 0) {
+                for (i =3D 0; i < o; i++)
+                        msd =3D (msd << 8) | in[i];
+
+                out[--n] =3D msd;
+        }
+
+        ecc_swap_digits(in, out, n);
+
+BR, Jarkko
 
