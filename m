@@ -1,177 +1,106 @@
-Return-Path: <keyrings+bounces-760-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-761-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B87586EA9D
-	for <lists+keyrings@lfdr.de>; Fri,  1 Mar 2024 21:48:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8410486EAB1
+	for <lists+keyrings@lfdr.de>; Fri,  1 Mar 2024 21:50:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD73328FDDE
-	for <lists+keyrings@lfdr.de>; Fri,  1 Mar 2024 20:48:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27B0028FF0B
+	for <lists+keyrings@lfdr.de>; Fri,  1 Mar 2024 20:50:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F40653387;
-	Fri,  1 Mar 2024 20:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 641355339E;
+	Fri,  1 Mar 2024 20:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JHtXErIc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BGuF872W"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F60B5337B;
-	Fri,  1 Mar 2024 20:48:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E434778B;
+	Fri,  1 Mar 2024 20:50:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709326126; cv=none; b=gwV9JxjeljWkORO34wWRWIS3VEHrmM3JKrbDDoDD64juq1NxmcJ5q/jmHGOuemR8wZquQ+XGOCkzNCctxXtfTNIYaKDV1Eu7eKpYKt+XxWHFHEU72Imssjyo1gEOoxhdIKLh8GAHQj9sMwY+0LzaKzUfmuYdI/9tdgGjus1m9EI=
+	t=1709326234; cv=none; b=k7ygv6fQQRK2/ts9fj0KuxTiXwXp3N9FQkDiXjJXp+6L+nis78+fcKBlUNdaahlwS3IC678y+pGEV34CGsvXOcIg28GA5BglD4dJWdY0VWBcNjglxFbUrnL2a/f7kEkbKNHcin4UtW2oV5NMIW6dy30Zd+EKNx3OmCJXeN2YqcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709326126; c=relaxed/simple;
-	bh=+ebwOYoTVz9opdDkPoQlWXYXH71gZ3PmbdRZzQLy1B4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n57YIgjYCK2WnCSlamHiopWj7vQa6tNdW9gDYPaAMcHgmeKECfqaHqa+IzjN73abEmQBRGtkmrN2/Sb7xqzkycPNC5hqCu0C5l+LWAO0LLaM+UkgpN797KYmk/FUDy0/SKseZyndtzGXdkTXbqb+rnS4OqzkHJud8f8Xf0iDEbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JHtXErIc; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 421KTx7x006699;
-	Fri, 1 Mar 2024 20:48:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=Gjs+X61ERp7aMcqKFOVF5kpM2JM+Tyj248qb3Xu8te4=;
- b=JHtXErIc3I1iLV8fHrv48r2RNTH7FPYCSUahGo0oG4ush0lJk9/mRb5C78D06AAZohQh
- ZF1Y5UGPJX3zeoyF0HAVWlfYP5kHUrkgIS8paheNzfnFRzltR/UNhllTF/gZ2fhkMFZ9
- CAwmXIWFP7Wpi1f7ZgKZVPW0aDi6UIBCMQpgbKymlmnnmQ9umUvWLtDZtptmD94QJGk/
- JCsv6iH5kC4BCuHc5fFJqIdchUPMXn/hTvSQ/nZs7XAZcgcC3OKMIT8skkRDaFzLBKUj
- 7YrbrKOFg00KaSE9BeaoF32QdzYsGlfEuURBm0PJ0qdjhmRiuGXha8ZQdctdDJl99WkK dw== 
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wknpu0vw4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Mar 2024 20:48:33 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 421J3RI5021762;
-	Fri, 1 Mar 2024 20:48:32 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wfu60q3dm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Mar 2024 20:48:32 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 421KmUq44063768
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 1 Mar 2024 20:48:32 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0650B5805B;
-	Fri,  1 Mar 2024 20:48:30 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DDC065806A;
-	Fri,  1 Mar 2024 20:48:28 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  1 Mar 2024 20:48:28 +0000 (GMT)
-Message-ID: <8d33a745-ac77-4965-8d1d-35061b027f33@linux.ibm.com>
-Date: Fri, 1 Mar 2024 15:48:28 -0500
+	s=arc-20240116; t=1709326234; c=relaxed/simple;
+	bh=xiRQIQKWzL8HL+E4B306OoPqqut4uAJB06QRhmBx0Xg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=ZlAVUzd7RaGW6xp23lwNsFP1Th/IkApfaGy0e1kAjPg4xp1lDS4ubzZ5BiO91nRU5q9fwcdSPUmOrivVL0YPE9Q1PJuXEJ0r0rQ6/T4+JyMW768CvYZdSmIKGTnUZpu1dc/R2Zd+skYTgyVLwfuo+13ItweX2iVJGH3j4fDwa5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BGuF872W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FF3C43394;
+	Fri,  1 Mar 2024 20:50:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709326233;
+	bh=xiRQIQKWzL8HL+E4B306OoPqqut4uAJB06QRhmBx0Xg=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=BGuF872WTUt6SdMMWkfMzQAWp44BAozagiJDNIoUR+2q+898RRu71HaF4LrquvJEz
+	 PLzU8WVLr9s4TeWZeImZmF3J24B+3VuJhAaSGiJ3MvGDd0bhTyWKledaKF3LmJMI6F
+	 4gCOfGNT8p50dhLjIbvp2vu2B3ucnf+qH6OHUm8jImBoodVlqUzpWj/wJ3OfgPGsfY
+	 vWt7vonqVCAYwK16iCXQO7C7bUua8QHXqpmEiDYK7RmMua/y/5K7cNv3vyP54JOkoP
+	 ZayfIZzJW6zyFUn8IxY8dHqnO0qysliap3XZlUSO0zfka8Ir2qC3VUTKLOQTVTS4Io
+	 Yk88IxNNuXIRA==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/10] crypto: ecdsa - Convert byte arrays with key
- coordinates to digits
-Content-Language: en-US
-To: Jarkko Sakkinen <jarkko@kernel.org>, Lukas Wunner <lukas@wunner.de>
-Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        herbert@gondor.apana.org.au, davem@davemloft.net,
-        linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br
-References: <20240223204149.4055630-1-stefanb@linux.ibm.com>
- <20240223204149.4055630-2-stefanb@linux.ibm.com>
- <20240229091105.GA29363@wunner.de>
- <aabeec7b-618c-4d15-b033-4162b6e54f6a@linux.ibm.com>
- <CZIOY02QS2QC.LV0A0HNT7VKM@suppilovahvero>
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <CZIOY02QS2QC.LV0A0HNT7VKM@suppilovahvero>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: lE8FWyWYQ6cGIPHuEQWRNiN7etT_4rpv
-X-Proofpoint-GUID: lE8FWyWYQ6cGIPHuEQWRNiN7etT_4rpv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-01_21,2024-03-01_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- mlxlogscore=999 clxscore=1015 adultscore=0 spamscore=0 phishscore=0
- bulkscore=0 suspectscore=0 mlxscore=0 malwarescore=0 priorityscore=1501
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2403010173
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 01 Mar 2024 22:50:30 +0200
+Message-Id: <CZIPKTL42F1Z.2U4Q28IIQ159K@suppilovahvero>
+Cc: <linux-kernel@vger.kernel.org>, <saulo.alessandre@tse.jus.br>,
+ <lukas@wunner.de>
+Subject: Re: [PATCH v4 09/12] crypto: ecdsa - Rename keylen to bufsize where
+ necessary
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Stefan Berger" <stefanb@linux.ibm.com>, <keyrings@vger.kernel.org>,
+ <linux-crypto@vger.kernel.org>, <herbert@gondor.apana.org.au>,
+ <davem@davemloft.net>
+X-Mailer: aerc 0.15.2
+References: <20240301022007.344948-1-stefanb@linux.ibm.com>
+ <20240301022007.344948-10-stefanb@linux.ibm.com>
+ <CZIPDP0W9TOP.3CCT8QUB0R4L3@suppilovahvero>
+ <90606a3c-1384-407b-8270-dd76dccc700b@linux.ibm.com>
+In-Reply-To: <90606a3c-1384-407b-8270-dd76dccc700b@linux.ibm.com>
 
+On Fri Mar 1, 2024 at 10:47 PM EET, Stefan Berger wrote:
+>
+>
+> On 3/1/24 15:41, Jarkko Sakkinen wrote:
+> > On Fri Mar 1, 2024 at 4:20 AM EET, Stefan Berger wrote:
+> >> In some cases the name keylen does not reflect the purpose of the vari=
+able
+> >> anymore once NIST P521 is used but it is the size of the buffer. There=
+-
+> >> for, rename keylen to bufsize where appropriate.
+> >>
+> >> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> >> ---
+> >>   crypto/ecdsa.c | 12 ++++++------
+> >>   1 file changed, 6 insertions(+), 6 deletions(-)
+> >>
+> >> diff --git a/crypto/ecdsa.c b/crypto/ecdsa.c
+> >> index 4daefb40c37a..4e847b59622a 100644
+> >> --- a/crypto/ecdsa.c
+> >> +++ b/crypto/ecdsa.c
+> >> @@ -35,8 +35,8 @@ struct ecdsa_signature_ctx {
+> >>   static int ecdsa_get_signature_rs(u64 *dest, size_t hdrlen, unsigned=
+ char tag,
+> >>   				  const void *value, size_t vlen, unsigned int ndigits)
+> >>   {
+> >> -	size_t keylen =3D ndigits * sizeof(u64);
+> >> -	ssize_t diff =3D vlen - keylen;
+> >> +	size_t bufsize =3D ndigits * sizeof(u64);
+> >=20
+> > why not just "* 8"? using sizeof here makes this function only unreadab=
+le.
+>
+> 'unreadable' is a 'strong' word ...
 
+so what is the gain when writing sizeof(u64)?
 
-On 3/1/24 15:26, Jarkko Sakkinen wrote:
-> On Thu Feb 29, 2024 at 4:57 PM EET, Stefan Berger wrote:
->>
->>
->> On 2/29/24 04:11, Lukas Wunner wrote:
->>> On Fri, Feb 23, 2024 at 03:41:40PM -0500, Stefan Berger wrote:
->>>> +static inline void ecc_digits_from_bytes(const u8 *in, unsigned int nbytes,
->>>> +					 u64 *out, unsigned int ndigits)
->>>> +{
->>>> +	unsigned int sz = ndigits << ECC_DIGITS_TO_BYTES_SHIFT;
->>>> +	u8 tmp[ECC_MAX_DIGITS << ECC_DIGITS_TO_BYTES_SHIFT];
->>>> +	unsigned int o = sz - nbytes;
->>>> +
->>>> +	memset(tmp, 0, o);
->>>> +	memcpy(&tmp[o], in, nbytes);
->>>> +	ecc_swap_digits(tmp, out, ndigits);
->>>> +}
->>>
->>> Copying the whole key into tmp seems inefficient.  You only need
->>> special handling for the first few bytes of "in" (6 bytes in the
->>> P521 case) and could use ecc_swap_digits() to convert the rest
->>> of "in" directly to "out" without using tmp.
->>>
->>> So it would be sufficient to allocate the first digit on the stack,
->>> memset + memcpy, then convert that to native byte order into "in[0]"
->>> and use ecc_swap_digits() for the rest.
->>>
->>> And the special handling would be conditional on "!o", so is skipped
->>> for existing curves.
->>
->> Thanks. It looks like this now:
->>
->> static inline void ecc_digits_from_bytes(const u8 *in, unsigned int nbytes,
->>                                            u64 *out, unsigned int ndigits)
->> {
->>           unsigned int o = nbytes & 7;
->>           u64 msd = 0;
->>           size_t i;
->>
->>           if (o == 0) {
->>                   ecc_swap_digits(in, out, ndigits);
->>           } else {
->>                   for (i = 0; i < o; i++)
->>                           msd = (msd << 8) | in[i];
->>                   out[ndigits - 1] = msd;
->>                   ecc_swap_digits(&in[o], out, ndigits - 1);
-> 
-> This would be more stream-lined IMHO:
-> 
->          unsigned int o = nbytes & 7;
-> 	unsigned int n = ndigits;
->          u64 msd = 0;
->          size_t i;
-> 
->          if (o != 0) {
->                  for (i = 0; i < o; i++)
->                          msd = (msd << 8) | in[i];
-> 
->                  out[--n] = msd;
->          }
-> 
->          ecc_swap_digits(in, out, n);
-
-You forgot to advance 'in'.
-
-> 
-> BR, Jarkko
-> 
+BR, Jarkko
 
