@@ -1,54 +1,60 @@
-Return-Path: <keyrings+bounces-767-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-768-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9E6986F28C
-	for <lists+keyrings@lfdr.de>; Sat,  2 Mar 2024 22:34:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1C8286F28F
+	for <lists+keyrings@lfdr.de>; Sat,  2 Mar 2024 22:36:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B7041F22493
-	for <lists+keyrings@lfdr.de>; Sat,  2 Mar 2024 21:34:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2896F1C212A4
+	for <lists+keyrings@lfdr.de>; Sat,  2 Mar 2024 21:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A55C41740;
-	Sat,  2 Mar 2024 21:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1912C4122C;
+	Sat,  2 Mar 2024 21:36:14 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4F91F16B;
-	Sat,  2 Mar 2024 21:34:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4309D1F16B;
+	Sat,  2 Mar 2024 21:36:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709415273; cv=none; b=Tcl6tbfjQR/emzFHQlNtJ+K8QnXggd2Pc9rZ1n9wSZY/qVnUcIPO4CP6zPhAVAUw7grku9KBDTUfHU+63kE3H5qMLuvg6UwwQS/OgcDkWIlkOr0tTcV3SRyOu3PcPaQqY/G8FRCe5ev/spnIJy2UaQQiWZs5/1hy3CEA6vlVE0c=
+	t=1709415374; cv=none; b=kO+8k4fgZ/agSDodANBJwumVJdsFFP/AdA1o2qooNY618hnewkwq7IqHNcQKQeia+b6qL2l3uq1ANzSvKhnzkp2Ijt8qlKGNSXl4Qp/OAvxW5DazkJsZzgmqKCiJnQSxzvTiXv7qX7sO6txUx2r8vNRmh/PNxCdSUIZm55d+w5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709415273; c=relaxed/simple;
-	bh=qa67s/52VE4paDCQ+GpC5YuWdKmXNoqBaJKRgm4xFWg=;
+	s=arc-20240116; t=1709415374; c=relaxed/simple;
+	bh=SOgGtqCOG6kLc+wOCnICsfw03Np5zFBG8Isa7pVYA/M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DWeXy0dhW33U8ihdv1ugnj35JrXsuVuxScHcTHeDQsisv+MxCOWvHZ3aVrKYd/S39mmFQn2/+IARQx2s4UvRU1fQoKPYrP5X02ion8KBDzGGbSrfJFWrsIQIewJpvTQCjafQNo2af3ZgNfj5lgkLlnTTXp0PO0Vxy9txbcfkOSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
+	 Content-Type:Content-Disposition:In-Reply-To; b=kPjn4fYHYFn4y2m16/i6XUqmJ7mXomoqpFe1L5IvU0CHApcO5MTlnOd4HN5jCwHdXDgH82gz8hPXogL+CDq9J7BzuiRwYbl1T9AKbvtDgquZXeEivIwYozr5zI6/qyUYcxaERApAUQYVXoK0QfwWVXYm5EkFR7zCo/NgNJm7pPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
 	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
 	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 5C393100D9401;
-	Sat,  2 Mar 2024 22:34:27 +0100 (CET)
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 1F698300002A1;
+	Sat,  2 Mar 2024 22:36:09 +0100 (CET)
 Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 3AD9F2E081; Sat,  2 Mar 2024 22:34:27 +0100 (CET)
-Date: Sat, 2 Mar 2024 22:34:27 +0100
+	id 157B42E09D; Sat,  2 Mar 2024 22:36:09 +0100 (CET)
+Date: Sat, 2 Mar 2024 22:36:09 +0100
 From: Lukas Wunner <lukas@wunner.de>
 To: Stefan Berger <stefanb@linux.ibm.com>
-Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-	herbert@gondor.apana.org.au, davem@davemloft.net,
-	linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br
-Subject: Re: [PATCH v4 01/12] crypto: ecdsa - Convert byte arrays with key
+Cc: Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au,
+	davem@davemloft.net, linux-kernel@vger.kernel.org,
+	saulo.alessandre@tse.jus.br
+Subject: Re: [PATCH v3 01/10] crypto: ecdsa - Convert byte arrays with key
  coordinates to digits
-Message-ID: <20240302213427.GA30938@wunner.de>
-References: <20240301022007.344948-1-stefanb@linux.ibm.com>
- <20240301022007.344948-2-stefanb@linux.ibm.com>
+Message-ID: <20240302213609.GB30938@wunner.de>
+References: <20240223204149.4055630-1-stefanb@linux.ibm.com>
+ <20240223204149.4055630-2-stefanb@linux.ibm.com>
+ <20240229091105.GA29363@wunner.de>
+ <aabeec7b-618c-4d15-b033-4162b6e54f6a@linux.ibm.com>
+ <CZIOY02QS2QC.LV0A0HNT7VKM@suppilovahvero>
+ <20240302140001.GA3095@wunner.de>
+ <f5dacc38-bf53-4dc7-95cf-54b8b13dd1d7@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -57,47 +63,30 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240301022007.344948-2-stefanb@linux.ibm.com>
+In-Reply-To: <f5dacc38-bf53-4dc7-95cf-54b8b13dd1d7@linux.ibm.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Thu, Feb 29, 2024 at 09:19:56PM -0500, Stefan Berger wrote:
-> --- a/crypto/ecdsa.c
-> +++ b/crypto/ecdsa.c
-> @@ -222,9 +222,8 @@ static int ecdsa_ecc_ctx_reset(struct ecc_ctx *ctx)
->  static int ecdsa_set_pub_key(struct crypto_akcipher *tfm, const void *key, unsigned int keylen)
->  {
->  	struct ecc_ctx *ctx = akcipher_tfm_ctx(tfm);
-> +	unsigned int digitlen, ndigits;
->  	const unsigned char *d = key;
-> -	const u64 *digits = (const u64 *)&d[1];
-> -	unsigned int ndigits;
->  	int ret;
->  
->  	ret = ecdsa_ecc_ctx_reset(ctx);
+On Sat, Mar 02, 2024 at 04:19:49PM -0500, Stefan Berger wrote:
+> On 3/2/24 09:00, Lukas Wunner wrote:
+> > Maybe eliminate the for-loop as well?
+> > 
+> > 	unsigned int o = nbytes & 7;
+> > 	u64 msd = 0;
+> > 
+> > 	if (o != 0) {
+> > 		/* if key length is not a multiple of 64 bits (NIST P521) */
+> > 		memcpy((u8 *)&msd + sizeof(msd) - o, in, o);
+> > 		out[--ndigits] = be64_to_cpu(msd);
+> > 		in += o;
+> > 	}
+> > 
+> > 	ecc_swap_digits(in, out, ndigits);
+> 
+> Will take this for v5 with your Suggested-by:, ok?
 
-Hm, the removal of digits isn't strictly necessary.  If you would keep it,
-the patch would become simpler (fewer lines changes).
+Sure, feel free to, but better test it because I haven't. :-)
 
-
-> @@ -238,12 +237,17 @@ static int ecdsa_set_pub_key(struct crypto_akcipher *tfm, const void *key, unsig
->  		return -EINVAL;
->  
->  	keylen--;
-> -	ndigits = (keylen >> 1) / sizeof(u64);
-> +	digitlen = keylen >> 1;
-> +
-> +	ndigits = DIV_ROUND_UP(digitlen, sizeof(u64));
-
-Instead of introducing an additional digitlen variable, you could just
-use keylen.  It seems it's not used in the remainder of the function,
-so modifying it is harmless:
-
- 	keylen--;
-+ 	keylen >>= 1;
--	ndigits = (keylen >> 1) / sizeof(u64);
-+	ndigits = DIV_ROUND_UP(digitlen, sizeof(u64));
-
-Just a suggestion.
+I'll look through the rest of the series tomorrow. %-)
 
 Thanks,
 
