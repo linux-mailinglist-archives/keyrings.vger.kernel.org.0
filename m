@@ -1,74 +1,74 @@
-Return-Path: <keyrings+bounces-774-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-775-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B936286F61F
-	for <lists+keyrings@lfdr.de>; Sun,  3 Mar 2024 17:32:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E8EC86F625
+	for <lists+keyrings@lfdr.de>; Sun,  3 Mar 2024 17:35:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB2C61C2206F
-	for <lists+keyrings@lfdr.de>; Sun,  3 Mar 2024 16:32:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9049C1C220CF
+	for <lists+keyrings@lfdr.de>; Sun,  3 Mar 2024 16:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90AEA67A14;
-	Sun,  3 Mar 2024 16:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E3C6BB37;
+	Sun,  3 Mar 2024 16:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="V72ISdt/"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="dhfEA0Co"
 X-Original-To: keyrings@vger.kernel.org
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD9D67A15;
-	Sun,  3 Mar 2024 16:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D062266B5F;
+	Sun,  3 Mar 2024 16:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709483549; cv=none; b=azWhxMkekpCVH1k49m+6X738FUtwcYWL0Lie2sf8b5v3nOvkQZ+nTFbrDNmaDvOJmNkE4eAltt/BwlBdd8CGnnGlYC0bob8Mu2hbdIwifDKWh5VcL12rGkwG0AIjxKhwwGSU+ZsmSoDGOxyQH4wXA3Uizjz+v+0yHKkTN28S4WI=
+	t=1709483701; cv=none; b=NW/rBQXD8eiQtcGuB2W3WykqY6b2eY/fkFqtcgBXPlc0n7Vumpqoxw5plz88Z5lpeOI9LKRNXpxv6ElTZofxsOAGh0Q+uTBQT3abhl3NwiCDAtGVE2T/alWsBU92bP9Mr9zBmJ0l7fgebqAxTxEhwQe/6lFB8Eytj7PdFtVMUDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709483549; c=relaxed/simple;
-	bh=SKj+VnHOUfyEr19GbAiqSGhuJ8zLHTnLNigbNj40on8=;
+	s=arc-20240116; t=1709483701; c=relaxed/simple;
+	bh=2825eaZss1IHkN+3rVm4G15pyNS+UryEWrk3AiEzljI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YAhylLfrmhCzyKjhbYBzCZdBoeTV8UZkT1k9X2ICervBQOurtEGBVn0C2w3kjy1m7pjlywUhHRqxXHegrLSnjJ0HgHhPWEVMkuUoFDnToug1d55YljAJuUbxSwtR47Yk5AwrZ4M4uzhz4VjuOt+IbX608QSDPRCwDXrqrQARkak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=V72ISdt/; arc=none smtp.client-ip=148.163.156.1
+	 In-Reply-To:Content-Type; b=X8w7LxMJccNZ5jTtzlNxj7s2gbjQq9XL3RW4qdppK6xYC9UqunsM9vK5g0QTdP6xpEC12+6cpY85UOj/u1sbj5r2EZHfXeAXT469cLtFpfN6S1K9mle+K4aSxnqzkNEUuRIfHzWeav55jggP7VnvaCly9Wdfzki/An6j2EJrMnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=dhfEA0Co; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 423GRNwH000409;
-	Sun, 3 Mar 2024 16:32:22 GMT
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 423GWJWL012301;
+	Sun, 3 Mar 2024 16:34:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
  mime-version : subject : to : cc : references : from : in-reply-to :
  content-type : content-transfer-encoding; s=pp1;
- bh=opxkQnDDAmub1KG6kyMupLiC97U3WYNkEGs85W0ALvg=;
- b=V72ISdt/h4iCAUcKEeo0xYMJZqGfq4OUSKexZHoxwSKVq0gapnfG/CDkuBPZV2a5iAwF
- EKl4+jIFa1jZUBbUu1nc2Z7w8PzSdypNZhiM1y4xBhDSEOcDKvkfz2dhyC09bY5ZWQGH
- n7CN4jTDwxPHJvEnPQzLxBE43oNFbCcsl3sOFnZU9P05ZJ2eXIeJp5E+Vpm64pCi5CiC
- Wnyvuz8hKo3Q7volS0IP/YzBNAEHt1SrJ8G+hJxXZGnda0shNIAgxuAvCDe+iqDdp8hP
- HlUGu6c9znxXmOS4/7fzc0gUowpitKz/DbD1IDLQMTH4CnzCU0gK0Mpg4gXnDdyNO6H+ gg== 
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wmvr0r32w-1
+ bh=41iZvq4eVdevoNfTtBHjCCDQIdJbG0eX+7Gd0Vpc0BM=;
+ b=dhfEA0Co6RO/7yi53GXTWDpZl57n2JE+PshldFOrv1ezgl2XZ8r6q3U/bZyoKE+FNIo1
+ xJz1ZTtt6dTcx0/ce+3reetZ0PhnwTfvCT1quFefHhVw8LiCkM4+1xqiby5a3fIRjOdJ
+ JWDAMw9/AMjIoxB1cqYRSsii1qtq4xNdVtfJGy2ulPBOaOLgeXBO6Bs3c1VpQ17pKalE
+ 0HwKTreWuYKToPOMWqbWeRLeDFAXclWOZ4ZoeQCuf9Tpe+W1pMEjV7LA6X9Tp47Q7kDJ
+ 5NcI3LkSlT7CwHjDZGuP19sn4ZNgRJUC+zWYLbmzBEQozITgSPSexAakuohhnxpo7vVT 3w== 
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wmvth80tq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 03 Mar 2024 16:32:22 +0000
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 423GQK45026296;
-	Sun, 3 Mar 2024 16:32:21 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wmfenbgm6-1
+	Sun, 03 Mar 2024 16:34:54 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 423D9thD020596;
+	Sun, 3 Mar 2024 16:34:53 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wmfxkbc8b-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 03 Mar 2024 16:32:21 +0000
+	Sun, 03 Mar 2024 16:34:53 +0000
 Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 423GWIFo8389338
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 423GYo8s8651282
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 3 Mar 2024 16:32:20 GMT
+	Sun, 3 Mar 2024 16:34:52 GMT
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4CBF058066;
-	Sun,  3 Mar 2024 16:32:18 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id B0D6858066;
+	Sun,  3 Mar 2024 16:34:50 +0000 (GMT)
 Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9C2615805B;
-	Sun,  3 Mar 2024 16:32:17 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 0A1F05804B;
+	Sun,  3 Mar 2024 16:34:50 +0000 (GMT)
 Received: from [9.47.158.152] (unknown [9.47.158.152])
 	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Sun,  3 Mar 2024 16:32:17 +0000 (GMT)
-Message-ID: <8ef01d48-2f42-4764-b256-e5cfd922022c@linux.ibm.com>
-Date: Sun, 3 Mar 2024 11:32:17 -0500
+	Sun,  3 Mar 2024 16:34:49 +0000 (GMT)
+Message-ID: <66333389-1d5e-4d86-bfc6-119bfa6b393d@linux.ibm.com>
+Date: Sun, 3 Mar 2024 11:34:49 -0500
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -76,55 +76,80 @@ List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/12] crypto: ecc - Add nbits field to ecc_curve
- structure
+Subject: Re: [PATCH v4 01/12] crypto: ecdsa - Convert byte arrays with key
+ coordinates to digits
 Content-Language: en-US
 To: Lukas Wunner <lukas@wunner.de>
 Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
         herbert@gondor.apana.org.au, davem@davemloft.net,
         linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br
 References: <20240301022007.344948-1-stefanb@linux.ibm.com>
- <20240301022007.344948-6-stefanb@linux.ibm.com>
- <20240303110705.GB394@wunner.de>
+ <20240301022007.344948-2-stefanb@linux.ibm.com>
+ <20240302213427.GA30938@wunner.de>
 From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20240303110705.GB394@wunner.de>
+In-Reply-To: <20240302213427.GA30938@wunner.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: PiAJCathCHs0XnT_4GCHsRpq9FyUAxoK
-X-Proofpoint-ORIG-GUID: PiAJCathCHs0XnT_4GCHsRpq9FyUAxoK
+X-Proofpoint-GUID: ssrt6So7zSWUQifCxZX0VWQEYuo_nNM4
+X-Proofpoint-ORIG-GUID: ssrt6So7zSWUQifCxZX0VWQEYuo_nNM4
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-03-03_07,2024-03-01_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- phishscore=0 mlxlogscore=866 spamscore=0 malwarescore=0 priorityscore=1501
- impostorscore=0 bulkscore=0 mlxscore=0 clxscore=1015 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ adultscore=0 priorityscore=1501 spamscore=0 malwarescore=0 phishscore=0
+ impostorscore=0 mlxlogscore=999 lowpriorityscore=0 clxscore=1015
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.12.0-2311290000 definitions=main-2403030139
 
 
 
-On 3/3/24 06:07, Lukas Wunner wrote:
-> On Thu, Feb 29, 2024 at 09:20:00PM -0500, Stefan Berger wrote:
->> Add the number of bits a curve has to the ecc_curve definition and set it
->> on all cruve definitions.
+On 3/2/24 16:34, Lukas Wunner wrote:
+> On Thu, Feb 29, 2024 at 09:19:56PM -0500, Stefan Berger wrote:
+>> --- a/crypto/ecdsa.c
+>> +++ b/crypto/ecdsa.c
+>> @@ -222,9 +222,8 @@ static int ecdsa_ecc_ctx_reset(struct ecc_ctx *ctx)
+>>   static int ecdsa_set_pub_key(struct crypto_akcipher *tfm, const void *key, unsigned int keylen)
+>>   {
+>>   	struct ecc_ctx *ctx = akcipher_tfm_ctx(tfm);
+>> +	unsigned int digitlen, ndigits;
+>>   	const unsigned char *d = key;
+>> -	const u64 *digits = (const u64 *)&d[1];
+>> -	unsigned int ndigits;
+>>   	int ret;
+>>   
+>>   	ret = ecdsa_ecc_ctx_reset(ctx);
 > 
-> Nit: s/cruve/curve/
+> Hm, the removal of digits isn't strictly necessary.  If you would keep it,
+> the patch would become simpler (fewer lines changes).
 > 
 > 
->> --- a/include/crypto/ecc_curve.h
->> +++ b/include/crypto/ecc_curve.h
->> @@ -23,6 +23,8 @@ struct ecc_point {
->>    * struct ecc_curve - definition of elliptic curve
->>    *
->>    * @name:	Short name of the curve.
->> + * @nbits:      Curves that do not use all bits in their ndigits must specify
->> + *              their number of bits here, otherwise can leave at 0.
->>    * @g:		Generator point of the curve.
->>    * @p:		Prime number, if Barrett's reduction is used for this curve
->>    *		pre-calculated value 'mu' is appended to the @p after ndigits.
+>> @@ -238,12 +237,17 @@ static int ecdsa_set_pub_key(struct crypto_akcipher *tfm, const void *key, unsig
+>>   		return -EINVAL;
+>>   
+>>   	keylen--;
+>> -	ndigits = (keylen >> 1) / sizeof(u64);
+>> +	digitlen = keylen >> 1;
+>> +
+>> +	ndigits = DIV_ROUND_UP(digitlen, sizeof(u64));
 > 
-> Nit: Looks like this kernel-doc uses 1 tab instead of blanks.
+> Instead of introducing an additional digitlen variable, you could just
+> use keylen.  It seems it's not used in the remainder of the function,
+> so modifying it is harmless:
 > 
-Fixed.
+>   	keylen--;
+> + 	keylen >>= 1;
+> -	ndigits = (keylen >> 1) / sizeof(u64);
+> +	ndigits = DIV_ROUND_UP(digitlen, sizeof(u64));
+> 
+> Just a suggestion.
+
+I would prefer 'digitlen' rather than repurposing keylen and giving it a 
+different meaning...
+
+    Stefan
+> 
+> Thanks,
+> 
+> Lukas
 
