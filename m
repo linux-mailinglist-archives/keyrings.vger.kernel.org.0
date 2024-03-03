@@ -1,83 +1,163 @@
-Return-Path: <keyrings+bounces-772-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-773-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F4C86F491
-	for <lists+keyrings@lfdr.de>; Sun,  3 Mar 2024 12:07:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 758C386F610
+	for <lists+keyrings@lfdr.de>; Sun,  3 Mar 2024 17:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50B371F21AA8
-	for <lists+keyrings@lfdr.de>; Sun,  3 Mar 2024 11:07:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 050B41F221A3
+	for <lists+keyrings@lfdr.de>; Sun,  3 Mar 2024 16:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40ACCBA27;
-	Sun,  3 Mar 2024 11:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE5D6BB39;
+	Sun,  3 Mar 2024 16:29:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QoEOphom"
 X-Original-To: keyrings@vger.kernel.org
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72E5BA46;
-	Sun,  3 Mar 2024 11:07:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E440E6BB54;
+	Sun,  3 Mar 2024 16:29:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709464037; cv=none; b=b9peFl2jfyYNlM+xSLLFAfqh9nvsbm9IfHOdQxY0sjpcI+/UuS2rjS3eq1eLRZF4NwKXZabvuMrDmB1gepj6f3O1k0D9qkNn5ziYsqN98pTc9+xmt7d1PIBNVJQUqGM9d3qCKSuwfffqG7U5b75xksbL3TTH9AwglO+Sz9bY0hk=
+	t=1709483374; cv=none; b=okx7sVsGQNaewODf80B3zRXCrLm1Y6Y9v8W64MtiegG9iF5SAMBxyZFloudb45q0JaXkZ4tAidHkVyuOPOuniIDbtfGhh6n1/jIOM9SYuaVwsA7rFUf6bFpuUJMnLkRi25qPZ3V+4Shy0pHu4mjcfG9itvuquL3zUbBUhLbV168=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709464037; c=relaxed/simple;
-	bh=I43RMyn6osBtg686uYMwi4dhcpjKKvp1hXc4tbwIK0c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qfCyW9RgEHye5vFaD6DlwZ8hiCTPUq3nYuc8alafI73kUxLkVloptHWCOm8UyVpjqas8ABsvr7Tist8GDyV9TdlxWzWJLnXiV3L0h49QB7GE2o1yspKvPSogs93Ac3InG49srFZ5/177kUsJDVzId2GLNcCO7uFQjdWsFSW5OXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 1CBD8100DA1C4;
-	Sun,  3 Mar 2024 12:07:06 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id DAAC82E321; Sun,  3 Mar 2024 12:07:05 +0100 (CET)
-Date: Sun, 3 Mar 2024 12:07:05 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Stefan Berger <stefanb@linux.ibm.com>
-Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-	herbert@gondor.apana.org.au, davem@davemloft.net,
-	linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br
-Subject: Re: [PATCH v4 05/12] crypto: ecc - Add nbits field to ecc_curve
- structure
-Message-ID: <20240303110705.GB394@wunner.de>
-References: <20240301022007.344948-1-stefanb@linux.ibm.com>
- <20240301022007.344948-6-stefanb@linux.ibm.com>
+	s=arc-20240116; t=1709483374; c=relaxed/simple;
+	bh=nbHPpTb3GQKNcQWO0cM8aQ3+g8DNJ7t8r0CI63vv1S8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CfZ9z5PaB0CO08kw3u4GotkuYk4KlRLY8rh4P0+Y6dbQ4uMeP4PRFBdtUeNA5CBIeNeugRBrorZHp2PEZoX8ZNGpc7UwubcQdlcvtTx6RuPY6rJMfK2poyIDJ2g886Pz7/5pDjshhIqyjwfB8UJHl/vAEaaXMpODk0HnxrK7Ydk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QoEOphom; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 423FvPqN031577;
+	Sun, 3 Mar 2024 16:29:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=nD8h3h1clP6zp7keCyh967DVxpyNyWD1f76i9MCLW9Q=;
+ b=QoEOphomgSpSZxyDk7PIOqHZ5K6kDx5wZOAlrzncwm3x3z3Wbto7i9o7xFibyxmIcWV3
+ mF4xDeFmhvDmT19rsejZBreivzWTJj8XcOzMsTSuw9IwpSlu0+7XghDXbiz6+kLsGRSC
+ iJg+cuT7laehJ9fRTYXU6dfptgE7Vod0cNeDdd/gq9oKDELFHmk1hV4JiwKXPlAnfNtl
+ /bhxvbS3npMauvSYYe5YMgXEnF+1yh67zBQrnYSon1upKMZ0Og22zeGID1LkFzFyuFFz
+ QD2RcYjhH8KY0Xve+Hrb8EFcb4yeil1MW7QGqJ2pSvJSGtduDnE+5M/3eY+ahTTFM9Fs cg== 
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wmva20btu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 03 Mar 2024 16:29:25 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 423DAXlW020667;
+	Sun, 3 Mar 2024 16:29:23 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3wmfxkbbdg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 03 Mar 2024 16:29:23 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 423GTLTT49349096
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 3 Mar 2024 16:29:23 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6B86558055;
+	Sun,  3 Mar 2024 16:29:21 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 964455804B;
+	Sun,  3 Mar 2024 16:29:20 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Sun,  3 Mar 2024 16:29:20 +0000 (GMT)
+Message-ID: <06a094f0-658e-4fb8-9177-3624b8aa760b@linux.ibm.com>
+Date: Sun, 3 Mar 2024 11:29:20 -0500
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240301022007.344948-6-stefanb@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 04/12] crypto: ecc - Implement vli_mmod_fast_521 for
+ NIST p521
+Content-Language: en-US
+To: Lukas Wunner <lukas@wunner.de>
+Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br
+References: <20240301022007.344948-1-stefanb@linux.ibm.com>
+ <20240301022007.344948-5-stefanb@linux.ibm.com>
+ <20240303110511.GA394@wunner.de>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20240303110511.GA394@wunner.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: OI6_Nf9C9sDZnPu6tuyLRIHCL7jge32j
+X-Proofpoint-GUID: OI6_Nf9C9sDZnPu6tuyLRIHCL7jge32j
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-03_06,2024-03-01_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
+ spamscore=0 priorityscore=1501 mlxlogscore=984 mlxscore=0 impostorscore=0
+ malwarescore=0 lowpriorityscore=0 clxscore=1015 suspectscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2403030138
 
-On Thu, Feb 29, 2024 at 09:20:00PM -0500, Stefan Berger wrote:
-> Add the number of bits a curve has to the ecc_curve definition and set it
-> on all cruve definitions.
-
-Nit: s/cruve/curve/
 
 
-> --- a/include/crypto/ecc_curve.h
-> +++ b/include/crypto/ecc_curve.h
-> @@ -23,6 +23,8 @@ struct ecc_point {
->   * struct ecc_curve - definition of elliptic curve
->   *
->   * @name:	Short name of the curve.
-> + * @nbits:      Curves that do not use all bits in their ndigits must specify
-> + *              their number of bits here, otherwise can leave at 0.
->   * @g:		Generator point of the curve.
->   * @p:		Prime number, if Barrett's reduction is used for this curve
->   *		pre-calculated value 'mu' is appended to the @p after ndigits.
+On 3/3/24 06:05, Lukas Wunner wrote:
+> On Thu, Feb 29, 2024 at 09:19:59PM -0500, Stefan Berger wrote:
+>> +static void vli_mmod_fast_521(u64 *result, const u64 *product,
+>> +				const u64 *curve_prime, u64 *tmp)
+>> +{
+>> +	const unsigned int ndigits = 9;
+>> +	size_t i;
+>> +
+>> +	for (i = 0; i < ndigits; i++)
+>> +		tmp[i] = product[i];
+>> +	tmp[8] &= 0x1ff;
+> 
+> Hm, the other vli_mmod_fast_*() functions manually unroll those loops.
+> Wondering if that would make sense here as well?  It's also possible
 
-Nit: Looks like this kernel-doc uses 1 tab instead of blanks.
+Why would we do this? One could also argue why not use vli_set() instead 
+of the loop...
+
+> to tell gcc to unroll a loop with a per-function...
+> 
+>      __attribute__((optimize("unroll-loops")))
+> 
+> ...but I'm not sure about clang portability. >
+> 
+>> @@ -941,6 +966,12 @@ static bool vli_mmod_fast(u64 *result, u64 *product,
+>> +	case 9:
+>> +		if (!strcmp(curve->name, "nist_521")) {
+>> +			vli_mmod_fast_521(result, product, curve_prime, tmp);
+>> +			break;
+>> +		}
+>> +		fallthrough;
+> 
+> If you reorder patch 4 and 5, you could check for curve->nbits == 521 here,
+> which might be cheaper than the string comparison.
+
+Sure. I thought it's a nist spec for this particular curve, so compare 
+against 'nist' in the string. Though comparing against nbits also works, 
+of course.
+
+> 
+> 
+>> -#define ECC_MAX_DIGITS              (512 / 64) /* due to ecrdsa */
+>> +#define ECC_MAX_DIGITS              (576 / 64) /* due to NIST P521 */
+> 
+> Maybe DIV_ROUND_UP(521, 64) for clarity?
+
+Ok, will adjust.
+
+Regards,
+    Stefan
+
+> 
+> Thanks,
+> 
+> Lukas
+> 
 
