@@ -1,76 +1,124 @@
-Return-Path: <keyrings+bounces-776-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-777-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB92786F695
-	for <lists+keyrings@lfdr.de>; Sun,  3 Mar 2024 19:47:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A97086F71C
+	for <lists+keyrings@lfdr.de>; Sun,  3 Mar 2024 22:03:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F230E1C20B6A
-	for <lists+keyrings@lfdr.de>; Sun,  3 Mar 2024 18:47:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EC1C1C20970
+	for <lists+keyrings@lfdr.de>; Sun,  3 Mar 2024 21:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3306B6CDC0;
-	Sun,  3 Mar 2024 18:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095BC79DBF;
+	Sun,  3 Mar 2024 21:03:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ODy+0TXT"
 X-Original-To: keyrings@vger.kernel.org
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A661EB37;
-	Sun,  3 Mar 2024 18:47:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163C52F844;
+	Sun,  3 Mar 2024 21:03:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709491672; cv=none; b=ZQ0NLv63T/ru57qtTg/DrknAtHpZaVMzhJaylDUBDfXqnaf6YYUjaFhLl/OqBmGyzFZZf9/ANbJoBl/KC0petxhHD8Wtcr0PyoZQC/MKu6ou+ORWvi7NHjj3tuwLjjANn0dqH7P7OWFC58N1p/XzowM84c4Kqwj435SIxOKBlLs=
+	t=1709499796; cv=none; b=UmObmAb96x9FXVgdNPOTE+H4A/fQsqgn/t7awUL5fSqYzNhsigvaUt2U+QwjFIj4CG+YeXk9t5LXw3XvPT7QX5kaXa2aPx/TjxXgoWrkYiDcF6az7omY1TBXDiiHs1UrwxxiqTWxrn1+rTk7GunCKKUNBYwPxXxn2Is6D4eYOCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709491672; c=relaxed/simple;
-	bh=VWOFm4tp/nqIq4iUaCjVanBK0FPgSR4195k+RyVBmTU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Egi5eowX2kl2rHMkk72CiOZ6syXAdU5MgkEu8Xifmi244qR6vCEse4BS28nQEvycaTY46QRN6poV0o+Ax44UNcKk2vrkK6GtXsPRbArud32QzWvvVweGRx3UTfGAdb8PEt7x+E8jhyFboTjcE1BqW2cwAPzfzxKihFxT1NTwJHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 9F536100DA1A6;
-	Sun,  3 Mar 2024 19:47:45 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 6A666353E6; Sun,  3 Mar 2024 19:47:45 +0100 (CET)
-Date: Sun, 3 Mar 2024 19:47:45 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Stefan Berger <stefanb@linux.ibm.com>
-Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-	herbert@gondor.apana.org.au, davem@davemloft.net,
-	linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br
-Subject: Re: [PATCH v4 11/12] crypto: asymmetric_keys - Adjust signature size
- calculation for NIST P521
-Message-ID: <20240303184745.GA9392@wunner.de>
-References: <20240301022007.344948-1-stefanb@linux.ibm.com>
- <20240301022007.344948-12-stefanb@linux.ibm.com>
+	s=arc-20240116; t=1709499796; c=relaxed/simple;
+	bh=Q1SlwDX2IPHS63/TeBvyFRgdP7QEewyNH57bHy4Jg+0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BEECHYi6FFX8dYp63Ug5/zrbNre6fWUsfjYLkxoIcHYcLAqCm2+VjpmltwqSrpystzBviJz/i1wLGnDMWFxD7WJrOgz3QivhN3eQGwxXdp8YN5f+lJbMFOnWW6NdKmZhV0PUTtPfcBiHwGyuB5GcYS0GP4K5ycij7UpXuzuLKwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ODy+0TXT; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 423KWKDb012105;
+	Sun, 3 Mar 2024 21:03:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=1O7XTeLo80WEdjsYTG8xbnDjbah2VcPOv5sifLZlx30=;
+ b=ODy+0TXTIVuv//Eh1lRYBkiFzQZY9UH8a1YRWsYpAhgO8Y05nHgu8HryhXRGj2ePKtLh
+ 77SkuSAejLTjPJBaFKvOzbQAqraL7+0P37Q4OF9gMk2s7rq9/dHzQXNTT70sqoN/VNll
+ N/pjvz37PnmL2mHzSJxigmErDbHUsFRwWZYJAk9pCz/5kdk/wcKBTJsh7V8B43uddvtP
+ s8VbRRj7LoZy3LZ2spLwHDH9VIIafnJCEdLwJDOZeitB9MM+48vr8SJZrB/8g/C5/6Os
+ SaObH4V9P59eVfLYC0X9EMlpXbYOBfqzv9bhVDVmu0LGLUbIW1mDcCCMTUat6VEaFdyA sw== 
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wn0b0gehf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 03 Mar 2024 21:03:07 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 423IEN9R010910;
+	Sun, 3 Mar 2024 21:03:07 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wmh51v375-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 03 Mar 2024 21:03:07 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 423L34wd14942878
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 3 Mar 2024 21:03:06 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 436EB58070;
+	Sun,  3 Mar 2024 21:03:04 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 393AF58055;
+	Sun,  3 Mar 2024 21:03:03 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Sun,  3 Mar 2024 21:03:03 +0000 (GMT)
+Message-ID: <24151f46-e7b3-434b-88e3-b53ac783eb13@linux.ibm.com>
+Date: Sun, 3 Mar 2024 16:03:02 -0500
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240301022007.344948-12-stefanb@linux.ibm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 11/12] crypto: asymmetric_keys - Adjust signature size
+ calculation for NIST P521
+Content-Language: en-US
+To: Lukas Wunner <lukas@wunner.de>
+Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        herbert@gondor.apana.org.au, davem@davemloft.net,
+        linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br
+References: <20240301022007.344948-1-stefanb@linux.ibm.com>
+ <20240301022007.344948-12-stefanb@linux.ibm.com>
+ <20240303184745.GA9392@wunner.de>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20240303184745.GA9392@wunner.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 01j3a4jF8HoaSlz1sMeq-Ray_McknfV9
+X-Proofpoint-GUID: 01j3a4jF8HoaSlz1sMeq-Ray_McknfV9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-03_11,2024-03-01_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 mlxlogscore=872 phishscore=0 impostorscore=0
+ lowpriorityscore=0 adultscore=0 spamscore=0 bulkscore=0 malwarescore=0
+ clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2403030178
 
-On Thu, Feb 29, 2024 at 09:20:06PM -0500, Stefan Berger wrote:
-> Adjust the calculation of the maximum signature size for support of
-> NIST P521. While existing curves may prepend a 0 byte to their coordinates
-> (to make the number positive), NIST P521 will not do this since only the
-> first bit in the most significant byte is used.
-> 
-> If the encoding of the x & y coordinates requires more than 128 bytes then
-> an additional byte is needed for the encoding of the length. Take this into
-> account when calculating the maximum signature size.
-> 
-> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
 
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
+
+On 3/3/24 13:47, Lukas Wunner wrote:
+> On Thu, Feb 29, 2024 at 09:20:06PM -0500, Stefan Berger wrote:
+>> Adjust the calculation of the maximum signature size for support of
+>> NIST P521. While existing curves may prepend a 0 byte to their coordinates
+>> (to make the number positive), NIST P521 will not do this since only the
+>> first bit in the most significant byte is used.
+>>
+>> If the encoding of the x & y coordinates requires more than 128 bytes then
+>> an additional byte is needed for the encoding of the length. Take this into
+>> account when calculating the maximum signature size.
+>>
+>> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> 
+> Reviewed-by: Lukas Wunner <lukas@wunner.de>
+> 
+Thanks. I have to adjust the commit text and comment in the patch, 
+though. It should be '... requires at least 128 bytes then ...'
 
