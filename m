@@ -1,116 +1,103 @@
-Return-Path: <keyrings+bounces-770-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-771-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEFF486F3CF
-	for <lists+keyrings@lfdr.de>; Sun,  3 Mar 2024 07:37:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E141D86F48E
+	for <lists+keyrings@lfdr.de>; Sun,  3 Mar 2024 12:05:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B3E3B22C86
-	for <lists+keyrings@lfdr.de>; Sun,  3 Mar 2024 06:37:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61CA41F21BEE
+	for <lists+keyrings@lfdr.de>; Sun,  3 Mar 2024 11:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2CB8F45;
-	Sun,  3 Mar 2024 06:37:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="K1qlQmq2";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="K1qlQmq2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D95C2E9;
+	Sun,  3 Mar 2024 11:05:24 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7B78BF3;
-	Sun,  3 Mar 2024 06:37:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057DEC153;
+	Sun,  3 Mar 2024 11:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709447843; cv=none; b=Dd9DiNZh/b/OBn0BGNyP9qPCePdhhlgnf9URlYBLKgPxhSAP0dgnis4gQ/nJsJDEIfF7kJYXwZFhnJB+UWgCcttDUpPK4bB4Zvi7Ww0uiqPsszor2yTSdhBH/cTmY0Y6tA0K5eeusQfme/LqEB9gVhmQkq9Hh8jdcnTwGXhHrJ0=
+	t=1709463924; cv=none; b=Nx5pFQndT4m9V6JeprdRrwL6KB/E5EQ8DNQV8wBcKbg0aT7XSiTX4UdbBMKGtgjIJrky95VRoLAcf4o0DLJgNMTtC72SQj4MLJtAewN2RfPR+X8u2x/YwDRdyEp3x/Q0HUgAn/WFNUkquaIyYBmqyIusFOINw9e0ywybsRMJy0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709447843; c=relaxed/simple;
-	bh=Mi/1sj0+EwyDTN7bDczKsKPQ5d8sXsTdgkNDwNjo7u8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UJGfj7nNLrh0XcV8uhaK6juq/t1I+WmqLf6RnE67jrmECTO8qAjL3WyDHEnpdxutILIEQALcNpuxm341qMBz1YYzikjcwJMNR9Fmu7hYqxr8ru9mdt3WBmIKNdvQRwTzinnKDbxF1PTUnwrkgikBLtP8lEAijHCxZQ1LwjNOhRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=K1qlQmq2; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=K1qlQmq2; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1709447840;
-	bh=Mi/1sj0+EwyDTN7bDczKsKPQ5d8sXsTdgkNDwNjo7u8=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=K1qlQmq2ZgLYGQE2Y7p53QE3LjGwYBigLKKyz6tlNIlQ24KGyL5boMI4CMkmH6EL9
-	 HnFt619DD4D8mfzxGTuC78ShdKZdyDA6+DLoq4cBWP5+9jMKMtZtm2Fv9nILFS2alg
-	 PA71UbUk2w/x9IZAIslQBYA7Qt/t9vVOa7S3y+M4=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id BF3B712864AB;
-	Sun,  3 Mar 2024 01:37:20 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id NNLYqV4Cspjy; Sun,  3 Mar 2024 01:37:20 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1709447840;
-	bh=Mi/1sj0+EwyDTN7bDczKsKPQ5d8sXsTdgkNDwNjo7u8=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=K1qlQmq2ZgLYGQE2Y7p53QE3LjGwYBigLKKyz6tlNIlQ24KGyL5boMI4CMkmH6EL9
-	 HnFt619DD4D8mfzxGTuC78ShdKZdyDA6+DLoq4cBWP5+9jMKMtZtm2Fv9nILFS2alg
-	 PA71UbUk2w/x9IZAIslQBYA7Qt/t9vVOa7S3y+M4=
-Received: from [10.0.15.72] (unknown [49.231.15.39])
+	s=arc-20240116; t=1709463924; c=relaxed/simple;
+	bh=0Ucxmc8XIBQv/c4SKVqs/cboWHWLAU1sKtOIHKnFW2s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=liWJV2ndbdcTAv7mvoZeMuT0nQ9ktGLckYBW2mQOkw8DaG99hKtVCtX/Q7Csba97rKz2xu0ZsLIS/IbTPqCYggPypHHAfSOHzO4H9QO+PkmL3i9JJ8j7CyhDdDL8kBqGBymIAW0FlJfnbzRTdkLi1PW29YFhTJ+YqtyuGLE65bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 9AFF5128646B;
-	Sun,  3 Mar 2024 01:37:17 -0500 (EST)
-Message-ID: <5227f58bb2caf9ce76e131b4d775df4755a0cafb.camel@HansenPartnership.com>
-Subject: Re: [PATCH v4 01/12] crypto: ecdsa - Convert byte arrays with key
- coordinates to digits
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Lukas Wunner <lukas@wunner.de>, Stefan Berger <stefanb@linux.ibm.com>
-Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org, 
- herbert@gondor.apana.org.au, davem@davemloft.net,
- linux-kernel@vger.kernel.org,  saulo.alessandre@tse.jus.br
-Date: Sun, 03 Mar 2024 13:37:10 +0700
-In-Reply-To: <20240302213427.GA30938@wunner.de>
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id D6B3F30000085;
+	Sun,  3 Mar 2024 12:05:11 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id BFC4A323EC; Sun,  3 Mar 2024 12:05:11 +0100 (CET)
+Date: Sun, 3 Mar 2024 12:05:11 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Stefan Berger <stefanb@linux.ibm.com>
+Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+	herbert@gondor.apana.org.au, davem@davemloft.net,
+	linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br
+Subject: Re: [PATCH v4 04/12] crypto: ecc - Implement vli_mmod_fast_521 for
+ NIST p521
+Message-ID: <20240303110511.GA394@wunner.de>
 References: <20240301022007.344948-1-stefanb@linux.ibm.com>
-	 <20240301022007.344948-2-stefanb@linux.ibm.com>
-	 <20240302213427.GA30938@wunner.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+ <20240301022007.344948-5-stefanb@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240301022007.344948-5-stefanb@linux.ibm.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Sat, 2024-03-02 at 22:34 +0100, Lukas Wunner wrote:
-> On Thu, Feb 29, 2024 at 09:19:56PM -0500, Stefan Berger wrote:
-[...]
-> > @@ -238,12 +237,17 @@ static int ecdsa_set_pub_key(struct
-> > crypto_akcipher *tfm, const void *key, unsig
-> >                 return -EINVAL;
-> >  
-> >         keylen--;
-> > -       ndigits = (keylen >> 1) / sizeof(u64);
-> > +       digitlen = keylen >> 1;
-> > +
-> > +       ndigits = DIV_ROUND_UP(digitlen, sizeof(u64));
-> 
-> Instead of introducing an additional digitlen variable, you could
-> just use keylen.  It seems it's not used in the remainder of the
-> function, so modifying it is harmless:
-> 
->         keylen--;
-> +       keylen >>= 1;
-> -       ndigits = (keylen >> 1) / sizeof(u64);
-> +       ndigits = DIV_ROUND_UP(digitlen, sizeof(u64));
-> 
-> Just a suggestion.
+On Thu, Feb 29, 2024 at 09:19:59PM -0500, Stefan Berger wrote:
+> +static void vli_mmod_fast_521(u64 *result, const u64 *product,
+> +				const u64 *curve_prime, u64 *tmp)
+> +{
+> +	const unsigned int ndigits = 9;
+> +	size_t i;
+> +
+> +	for (i = 0; i < ndigits; i++)
+> +		tmp[i] = product[i];
+> +	tmp[8] &= 0x1ff;
 
-The compiler will optimize the variables like this anyway (reuse
-registers or frames after a current consumer becomes unused) so there's
-no requirement to do this for efficiency, the only real question is
-whether using digitlen is clearer than reusing keylen, which I'll leave
-to the author.
+Hm, the other vli_mmod_fast_*() functions manually unroll those loops.
+Wondering if that would make sense here as well?  It's also possible
+to tell gcc to unroll a loop with a per-function...
 
-James
+    __attribute__((optimize("unroll-loops")))
 
+...but I'm not sure about clang portability.
+
+
+> @@ -941,6 +966,12 @@ static bool vli_mmod_fast(u64 *result, u64 *product,
+> +	case 9:
+> +		if (!strcmp(curve->name, "nist_521")) {
+> +			vli_mmod_fast_521(result, product, curve_prime, tmp);
+> +			break;
+> +		}
+> +		fallthrough;
+
+If you reorder patch 4 and 5, you could check for curve->nbits == 521 here,
+which might be cheaper than the string comparison.
+
+
+> -#define ECC_MAX_DIGITS              (512 / 64) /* due to ecrdsa */
+> +#define ECC_MAX_DIGITS              (576 / 64) /* due to NIST P521 */
+
+Maybe DIV_ROUND_UP(521, 64) for clarity?
+
+Thanks,
+
+Lukas
 
