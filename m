@@ -1,147 +1,161 @@
-Return-Path: <keyrings+bounces-819-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-820-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C52E8756E8
-	for <lists+keyrings@lfdr.de>; Thu,  7 Mar 2024 20:18:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 805808756FC
+	for <lists+keyrings@lfdr.de>; Thu,  7 Mar 2024 20:21:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE5271C21022
-	for <lists+keyrings@lfdr.de>; Thu,  7 Mar 2024 19:18:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB7F81F22517
+	for <lists+keyrings@lfdr.de>; Thu,  7 Mar 2024 19:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536C1135A46;
-	Thu,  7 Mar 2024 19:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160F913665B;
+	Thu,  7 Mar 2024 19:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GsYbuPqd"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="MrwwIH4D"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF7D1CABF;
-	Thu,  7 Mar 2024 19:18:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341D2135A7E;
+	Thu,  7 Mar 2024 19:20:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709839136; cv=none; b=GMz1+Tab24gqEkBivSHRhk0+K+eAeP/Iz3caYnHhQqrNuTgvS0E4d7LU2Y4i+jfUIjiMpkt8iRlbDBDGKMNCGeN6LyUWOm+PNI10Hu3vOc2cY19bnyFj1oBCc1Pr0mlUWDeONil6tVpoH5xbvVH4EgHezkPVGPeoPN2izYeHZq8=
+	t=1709839235; cv=none; b=hVXTw3/eHURBaD/7XiOUoGc388Kbc05EWaohb5Z7JUgc6Uqlh7PI58rCj8svn26M9mK+qPn9IN/BsFJbJN+f5w69lnyYgC0zAL5fmA+Z9RoWTZuyy8cmWjXWPgJLRfvIzYspM6AkBcGBXIjsoyQGNNtVVzHnoB02xIOzL+ACcB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709839136; c=relaxed/simple;
-	bh=UmjhrkViRfYvnwNPTg4KjivwfkIXHV+bTjbmQkJG3QE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=ooAE/KEQmdbxYqQ3LG/eiLXBrjgdkXfTlC6KbyLunLfStEruliveu6CufH5++uW2/Ol1k7mvZ681TRHVzzPhI4mmtk0FVEEY/kBvHjyhW+nUhynysmyj+0ERWWrFi+ve4AX1CadDSUlyMr6+lo/jrmUSFOTJ/f96Y6BAqYatrRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GsYbuPqd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D6DC433F1;
-	Thu,  7 Mar 2024 19:18:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709839135;
-	bh=UmjhrkViRfYvnwNPTg4KjivwfkIXHV+bTjbmQkJG3QE=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=GsYbuPqd3fCdj4s8kchOPQYbaLbxtrXW6h3gy9vPfaNLhUe2catGJWd2GxYb3NuoO
-	 IGi0toRCifY8UmbJzwvhKj1NcK/EcwDhBAqm2suJuEI3scWffUHglU0K74dKwiEbZO
-	 oBgOhuCt0fVooZ6o8hW2l1ueFvbCYPCsYuCP4jQbx7fnZsT0C/+90T89+VVVcENpYA
-	 F5MdQj8IXGKC5KcPLi3pQqdjkbxELHamaG0+hmwv6A2mUbGYQ/4ZKNtSkprM8OYt+9
-	 lPHyIKvoXFpQQRy4cXKm/Gk6t3VGMkEA8C56YjIFD48mC/Hp0Kp5bbC1kqYcl/oGjp
-	 StYDquug39NcA==
+	s=arc-20240116; t=1709839235; c=relaxed/simple;
+	bh=9IU5mpnakOs+5J1LevBlkxNvYwaZJfrw6QKmQ6NaSSI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OUgfVa+e0DWJbXjq7sgoNvHX8XYeBG73LKVg5SID1g4Hr9Atuai5WAMBw/8BLMYTekUO0GNHDhkO8kGsreeHXTSDLvi37erJczq0uAzeXvo3Wik74af92bHzpeKEUkqPur+t2Ja4gEQaadY5Q3YOc9a5ApimT70TO83l4if6gLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=MrwwIH4D; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 427JGu7g025966;
+	Thu, 7 Mar 2024 19:20:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=Vk4QugbaeYKAnB1a540+QpoGeFz71wRAP+xSfPiVcZk=;
+ b=MrwwIH4Du1ZeN8EKx0J/Efb0gDySc9iuFsDTpaVZBzjYcnwxqNzthL2iQh33tefRxGpg
+ VjYqnRnSoxrs26hnpU87/+8grq/cyIpNxAgGy7ZT2IyNyaxMkBaOlYajCARBYFx0oMKs
+ 3MrWcjLAfn0WD3emz522jzZ07ZL7GZhvYYesQnjRM5SKb5OeL5YvEMQ8tq7jHRheOJZZ
+ BQu83YLKzlb3ASKuh9tfeSLBRY9K0A2jXmWJl8KzytW1Us1dJp2KkxF7Qv3mv15Tq5+Q
+ Dreacqbv/rpn+EU0QrMlhQGLanEDPPoRpNQYsKkHYvY3YYe8muOTeaLZh0dfe2Ggijuo NA== 
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wqkbwgab1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Mar 2024 19:20:17 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 427Ii6VB006051;
+	Thu, 7 Mar 2024 19:20:16 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wmeetfxhg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Mar 2024 19:20:16 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 427JKDG130867814
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 7 Mar 2024 19:20:16 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CF59F58069;
+	Thu,  7 Mar 2024 19:20:13 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B402158053;
+	Thu,  7 Mar 2024 19:20:12 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  7 Mar 2024 19:20:12 +0000 (GMT)
+Message-ID: <571aa199-00cc-4153-9424-0012d20dc6f6@linux.ibm.com>
+Date: Thu, 7 Mar 2024 14:20:12 -0500
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 07 Mar 2024 21:18:47 +0200
-Message-Id: <CZNRDVE0QD88.TXELW2XQC0XF@kernel.org>
-Cc: "Shawn Guo" <shawnguo@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>,
- "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
- <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "NXP Linux
- Team" <linux-imx@nxp.com>, "Ahmad Fatoum" <a.fatoum@pengutronix.de>, "sigma
- star Kernel Team" <upstream+dcp@sigma-star.at>, "David Howells"
- <dhowells@redhat.com>, "Li Yang" <leoyang.li@nxp.com>, "Paul Moore"
- <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
- Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Randy
- Dunlap" <rdunlap@infradead.org>, "Catalin Marinas"
- <catalin.marinas@arm.com>, "Rafael J. Wysocki"
- <rafael.j.wysocki@intel.com>, "Tejun Heo" <tj@kernel.org>, "Steven Rostedt
- (Google)" <rostedt@goodmis.org>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-integrity@vger.kernel.org>,
- <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, <linuxppc-dev@lists.ozlabs.org>,
- <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH v6 2/6] KEYS: trusted: improve scalability of trust
- source config
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "David Gstir" <david@sigma-star.at>, "Mimi Zohar" <zohar@linux.ibm.com>,
- "James Bottomley" <jejb@linux.ibm.com>, "Herbert Xu"
- <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>
-X-Mailer: aerc 0.17.0
-References: <20240307153842.80033-1-david@sigma-star.at>
- <20240307153842.80033-3-david@sigma-star.at>
-In-Reply-To: <20240307153842.80033-3-david@sigma-star.at>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 09/12] crypto: ecdsa - Rename keylen to bufsize where
+ necessary
+Content-Language: en-US
+To: Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
+        linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au,
+        davem@davemloft.net
+Cc: linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br, lukas@wunner.de
+References: <20240306222257.979304-1-stefanb@linux.ibm.com>
+ <20240306222257.979304-10-stefanb@linux.ibm.com>
+ <CZNR9UY8J7Q0.2R1YYTOO4Z92G@kernel.org>
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <CZNR9UY8J7Q0.2R1YYTOO4Z92G@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: CCXseWuHPD1wYyiCkKCweDSlPR_abUD9
+X-Proofpoint-ORIG-GUID: CCXseWuHPD1wYyiCkKCweDSlPR_abUD9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-07_14,2024-03-06_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
+ suspectscore=0 spamscore=0 adultscore=0 bulkscore=0 phishscore=0
+ lowpriorityscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2311290000 definitions=main-2403070135
 
-On Thu Mar 7, 2024 at 5:38 PM EET, David Gstir wrote:
-> Enabling trusted keys requires at least one trust source implementation
-> (currently TPM, TEE or CAAM) to be enabled. Currently, this is
-> done by checking each trust source's config option individually.
-> This does not scale when more trust sources like the one for DCP
-> are added.
 
-nit: just to complete sentence and tie up the story "added because ..."
 
->
-> Add config HAVE_TRUSTED_KEYS which is set to true by each trust source
-> once its enabled and adapt the check for having at least one active trust
-> source to use this option. Whenever a new trust source is added, it now
-> needs to select HAVE_TRUSTED_KEYS.
->
-> Signed-off-by: David Gstir <david@sigma-star.at>
-> ---
->  security/keys/trusted-keys/Kconfig | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
->
-> diff --git a/security/keys/trusted-keys/Kconfig b/security/keys/trusted-k=
-eys/Kconfig
-> index dbfdd8536468..553dc117f385 100644
-> --- a/security/keys/trusted-keys/Kconfig
-> +++ b/security/keys/trusted-keys/Kconfig
-> @@ -1,3 +1,6 @@
-> +config HAVE_TRUSTED_KEYS
-> +	bool
-> +
->  config TRUSTED_KEYS_TPM
->  	bool "TPM-based trusted keys"
->  	depends on TCG_TPM >=3D TRUSTED_KEYS
-> @@ -9,6 +12,7 @@ config TRUSTED_KEYS_TPM
->  	select ASN1_ENCODER
->  	select OID_REGISTRY
->  	select ASN1
-> +	select HAVE_TRUSTED_KEYS
->  	help
->  	  Enable use of the Trusted Platform Module (TPM) as trusted key
->  	  backend. Trusted keys are random number symmetric keys,
-> @@ -20,6 +24,7 @@ config TRUSTED_KEYS_TEE
->  	bool "TEE-based trusted keys"
->  	depends on TEE >=3D TRUSTED_KEYS
->  	default y
-> +	select HAVE_TRUSTED_KEYS
->  	help
->  	  Enable use of the Trusted Execution Environment (TEE) as trusted
->  	  key backend.
-> @@ -29,10 +34,11 @@ config TRUSTED_KEYS_CAAM
->  	depends on CRYPTO_DEV_FSL_CAAM_JR >=3D TRUSTED_KEYS
->  	select CRYPTO_DEV_FSL_CAAM_BLOB_GEN
->  	default y
-> +	select HAVE_TRUSTED_KEYS
->  	help
->  	  Enable use of NXP's Cryptographic Accelerator and Assurance Module
->  	  (CAAM) as trusted key backend.
-> =20
-> -if !TRUSTED_KEYS_TPM && !TRUSTED_KEYS_TEE && !TRUSTED_KEYS_CAAM
-> -comment "No trust source selected!"
-> +if !HAVE_TRUSTED_KEYS
-> +	comment "No trust source selected!"
->  endif
+On 3/7/24 14:13, Jarkko Sakkinen wrote:
+> On Thu Mar 7, 2024 at 12:22 AM EET, Stefan Berger wrote:
+>> In some cases the name keylen does not reflect the purpose of the variable
+>> anymore once NIST P521 is used but it is the size of the buffer. There-
+>> for, rename keylen to bufsize where appropriate.
+>>
+>> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+>> Tested-by: Lukas Wunner <lukas@wunner.de>
+>> ---
+>>   crypto/ecdsa.c | 12 ++++++------
+>>   1 file changed, 6 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/crypto/ecdsa.c b/crypto/ecdsa.c
+>> index 4daefb40c37a..4e847b59622a 100644
+>> --- a/crypto/ecdsa.c
+>> +++ b/crypto/ecdsa.c
+>> @@ -35,8 +35,8 @@ struct ecdsa_signature_ctx {
+>>   static int ecdsa_get_signature_rs(u64 *dest, size_t hdrlen, unsigned char tag,
+>>   				  const void *value, size_t vlen, unsigned int ndigits)
+>>   {
+>> -	size_t keylen = ndigits * sizeof(u64);
+> 
+> nit: still don't get why "* sizeof(u64)" would ever be more readable
+> thean "* 8".
 
-otherwise, it is in reasonable shape and form.
+Because existing code in crypto uses sizeof(u64) when converting ndigits 
+to number of bytes and '8' is not used for converting to bytes. Do we 
+need to change this now ? No, I think it's better to conform to existing 
+code.
 
-BR, Jarkko
+# grep -rI ndigits crypto/ | grep sizeof\(u64\)
+crypto/ecrdsa.c:        unsigned int ndigits = req->dst_len / sizeof(u64);
+crypto/ecrdsa.c:            req->dst_len != ctx->curve->g.ndigits * 
+sizeof(u64) ||
+crypto/ecrdsa.c:        vli_from_be64(r, sig + ndigits * sizeof(u64), 
+ndigits);
+crypto/ecrdsa.c:            ctx->curve->g.ndigits * sizeof(u64) != 
+ctx->digest_len)
+crypto/ecrdsa.c:            ctx->key_len != ctx->curve->g.ndigits * 
+sizeof(u64) * 2)
+crypto/ecrdsa.c:        ndigits = ctx->key_len / sizeof(u64) / 2;
+crypto/ecrdsa.c:        vli_from_le64(ctx->pub_key.y, ctx->key + ndigits 
+* sizeof(u64),
+crypto/ecrdsa.c:        return ctx->pub_key.ndigits * sizeof(u64);
+crypto/ecdh.c:      params.key_size > sizeof(u64) * ctx->ndigits)
+crypto/ecc.c:   size_t len = ndigits * sizeof(u64);
+crypto/ecc.c:           num_bits = sizeof(u64) * ndigits * 8 + 1;
+crypto/ecdsa.c: size_t bufsize = ndigits * sizeof(u64);
+crypto/ecdsa.c: size_t bufsize = ctx->curve->g.ndigits * sizeof(u64);
+crypto/ecdsa.c: ndigits = DIV_ROUND_UP(digitlen, sizeof(u64));
+
+    Stefan
+
+> 
+> BR, Jarkko
 
