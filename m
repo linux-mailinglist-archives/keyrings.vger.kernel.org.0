@@ -1,46 +1,46 @@
-Return-Path: <keyrings+bounces-816-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-817-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B3888756C4
-	for <lists+keyrings@lfdr.de>; Thu,  7 Mar 2024 20:11:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFEE68756D2
+	for <lists+keyrings@lfdr.de>; Thu,  7 Mar 2024 20:13:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DEB11C20E3F
-	for <lists+keyrings@lfdr.de>; Thu,  7 Mar 2024 19:11:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 708E7282C29
+	for <lists+keyrings@lfdr.de>; Thu,  7 Mar 2024 19:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89E11350CD;
-	Thu,  7 Mar 2024 19:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D677813666E;
+	Thu,  7 Mar 2024 19:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oqi4kDuB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pYiCp55t"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC0412FF8C;
-	Thu,  7 Mar 2024 19:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844D3136666;
+	Thu,  7 Mar 2024 19:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709838702; cv=none; b=SuKskkIjEQnDsY6XQWS9D/YaZXlZnAoy52nlXk0hprVfuqcKSIwvGRFjhKY+LVJ3feg0y2kInym/FUv6NxCo1Qg2lsBMF9tCRXwaElNt8C4jBJ3sjekhiEj3drNcu1QrsE33PDKeVCIcDAcJScXqQT4EG6nmj8VSoMMhlLP3OIo=
+	t=1709838817; cv=none; b=pXgnVNP1mvUGuR79BfuM2y2ywmUiNBDzMay4QE+OpHIChDv1DX/MBWZNPg0wZkHB/RGn0PsHelTIfXyCcpDgePIX4YnQxhFKKd3qK3AVd0wBeG0nqoyyMAE929udfJGlzY/eH5X6ItAufxKQcH/C2BUqMW9LrD/bbKT8n2IcI4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709838702; c=relaxed/simple;
-	bh=fol1BOoCpwI0WdVUr7vg75bkd5E3nq3lMKDX8NsltnI=;
+	s=arc-20240116; t=1709838817; c=relaxed/simple;
+	bh=9zJnmGMsLqUQsUEkdPNsU0n9rJJ1agrvxLcltIkf3ps=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=nUVGUdptYM7uvHLRCsMcn0RrVyWgbJwhzMlIyhp0KJZocijvIrOBH51RC9eCFGO5Zgrm0udFffkhCODoxnFIfJn4tYSNTgUhJ7HcCfGSiYUyRRpfpTIliRNRTAnn7ZTymMHLsBqMDoaGqO2gh10QOdFPjTpsX3ldAe4YEZ3Jb80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oqi4kDuB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E084C43390;
-	Thu,  7 Mar 2024 19:11:39 +0000 (UTC)
+	 References:In-Reply-To; b=ji4EPlBBofVzLRJZZ82LEjl9DM0HhqexDitdp9VIZGPDbT3KglXPId1BqBTEeqfAwYYXChq13qyxqChXIsVCkbaNaybStwJQMoS2jzkhKFCUimravhOJ98KU2JF+OMDtcZjMa7X+h2By7UQhRIg7voj6Tv5nV4wRTRic6dwRWyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pYiCp55t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5197EC433F1;
+	Thu,  7 Mar 2024 19:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709838701;
-	bh=fol1BOoCpwI0WdVUr7vg75bkd5E3nq3lMKDX8NsltnI=;
+	s=k20201202; t=1709838817;
+	bh=9zJnmGMsLqUQsUEkdPNsU0n9rJJ1agrvxLcltIkf3ps=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=Oqi4kDuBIkpmoJLiq5UO2jFg1qrAFcaNp2FJuhOGN5KFWq/Thfo1ARYh6zgu1OMdG
-	 Z35ed1XE0wsQGqdoRBNGCoXLj7woNMZkaCiUrlEKvmMI3b1vQQx9g4gPmzgCq/tIA7
-	 NIdxN5tIr0bdilHFvnaKYpiewL48KYRQk0X7wvrQH43bEFYgFR0cmvohpyz3kGI5ug
-	 /InWYjYuAcQ/nztUWZTmkdWfVoYqhNOvVbSDgUovfOv0hiLwQmZ6Rdw0gGCqVbr8D8
-	 FjbKESSifY2UbCduxYIrq0Ug8Jkyv1rwJVPQFlmR/ctwK8zpzU1JxLuqYHcMdowPdU
-	 RME2vS5NoSo3A==
+	b=pYiCp55t6UoXb1ucGc0PMkLkkWFX44KYJUbznnyx/c036BYLyLl/zv9GZwCp1AQKk
+	 3dx05UcrloDd3FypVFDY0aag56FKHT3Eo0/Dr2+O7ygFY8O0LBBJ/UkhGbXLIlpkyT
+	 fPaLjkUVLMo8U/VCXlsraOQyk+LqSYCHdXoo2RQ4zIyJ5wsYWNJCHCKeYbKlNnwV/Y
+	 dQsgk3pBOPS/OJoo//upW/+67tXh8WVaDTOwr48nbbNA0voxoFFWy4Se+0rCNdE3fL
+	 6CH/Gm8UcCcAa3Ef2swupuinGvX8++Feqlc023feGCOwH2BlRGYJjC2+rE3TWGX3st
+	 e0hZFVXHHGEFQ==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,113 +49,46 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 07 Mar 2024 21:11:37 +0200
-Message-Id: <CZNR8E07IQ14.301SKAK0CJX1G@kernel.org>
+Date: Thu, 07 Mar 2024 21:13:33 +0200
+Message-Id: <CZNR9UY8J7Q0.2R1YYTOO4Z92G@kernel.org>
 Cc: <linux-kernel@vger.kernel.org>, <saulo.alessandre@tse.jus.br>,
  <lukas@wunner.de>
-Subject: Re: [PATCH v5 05/12] crypto: ecc - Implement vli_mmod_fast_521 for
- NIST p521
+Subject: Re: [PATCH v5 09/12] crypto: ecdsa - Rename keylen to bufsize where
+ necessary
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
 To: "Stefan Berger" <stefanb@linux.ibm.com>, <keyrings@vger.kernel.org>,
  <linux-crypto@vger.kernel.org>, <herbert@gondor.apana.org.au>,
  <davem@davemloft.net>
 X-Mailer: aerc 0.17.0
 References: <20240306222257.979304-1-stefanb@linux.ibm.com>
- <20240306222257.979304-6-stefanb@linux.ibm.com>
-In-Reply-To: <20240306222257.979304-6-stefanb@linux.ibm.com>
+ <20240306222257.979304-10-stefanb@linux.ibm.com>
+In-Reply-To: <20240306222257.979304-10-stefanb@linux.ibm.com>
 
 On Thu Mar 7, 2024 at 12:22 AM EET, Stefan Berger wrote:
-> Implement vli_mmod_fast_521 following the description for how to calculat=
+> In some cases the name keylen does not reflect the purpose of the variabl=
 e
-> the modulus for NIST P521 in the NIST publication "Recommendations for
-> Discrete Logarithm-Based Cryptography: Elliptic Curve Domain Parameters"
-> section G.1.4.
->
-> NIST p521 requires 9 64bit digits, so increase the ECC_MAX_DIGITS so that
-> arrays fit the larger numbers.
+> anymore once NIST P521 is used but it is the size of the buffer. There-
+> for, rename keylen to bufsize where appropriate.
 >
 > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
 > Tested-by: Lukas Wunner <lukas@wunner.de>
 > ---
->  crypto/ecc.c                  | 31 +++++++++++++++++++++++++++++++
->  include/crypto/internal/ecc.h |  2 +-
->  2 files changed, 32 insertions(+), 1 deletion(-)
+>  crypto/ecdsa.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 >
-> diff --git a/crypto/ecc.c b/crypto/ecc.c
-> index f53fb4d6af99..373660e7b19d 100644
-> --- a/crypto/ecc.c
-> +++ b/crypto/ecc.c
-> @@ -902,6 +902,31 @@ static void vli_mmod_fast_384(u64 *result, const u64=
- *product,
->  #undef AND64H
->  #undef AND64L
-> =20
-> +/* Computes result =3D product % curve_prime
+> diff --git a/crypto/ecdsa.c b/crypto/ecdsa.c
+> index 4daefb40c37a..4e847b59622a 100644
+> --- a/crypto/ecdsa.c
+> +++ b/crypto/ecdsa.c
+> @@ -35,8 +35,8 @@ struct ecdsa_signature_ctx {
+>  static int ecdsa_get_signature_rs(u64 *dest, size_t hdrlen, unsigned cha=
+r tag,
+>  				  const void *value, size_t vlen, unsigned int ndigits)
+>  {
+> -	size_t keylen =3D ndigits * sizeof(u64);
 
-Missing empty comment line:
-
-/*
- *
-
-> + * from "Recommendations for Discrete Logarithm-Based Cryptography:
-> + *       Elliptic Curve Domain Parameters" G.1.4
-> + */
-> +static void vli_mmod_fast_521(u64 *result, const u64 *product,
-> +				const u64 *curve_prime, u64 *tmp)
-> +{
-> +	const unsigned int ndigits =3D 9;
-> +	size_t i;
-> +
-> +	for (i =3D 0; i < ndigits; i++)
-> +		tmp[i] =3D product[i];
-> +	tmp[8] &=3D 0x1ff;
-> +
-> +	vli_set(result, tmp, ndigits);
-> +
-> +
-> +	for (i =3D 0; i < ndigits; i++)
-> +		tmp[i] =3D (product[8 + i] >> 9) | (product[9 + i] << 55);
-> +	tmp[8] &=3D 0x1ff;
-> +
-> +	vli_mod_add(result, result, tmp, curve_prime, ndigits);
-> +}
-> +
-> +
->  /* Computes result =3D product % curve_prime for different curve_primes.
->   *
->   * Note that curve_primes are distinguished just by heuristic check and
-> @@ -941,6 +966,12 @@ static bool vli_mmod_fast(u64 *result, u64 *product,
->  	case 6:
->  		vli_mmod_fast_384(result, product, curve_prime, tmp);
->  		break;
-> +	case 9:
-> +		if (curve->nbits =3D=3D 521) {
-
-Missing inline comment about the branching decision, and has a magic
-number.
-
-> +			vli_mmod_fast_521(result, product, curve_prime, tmp);
-> +			break;
-> +		}
-> +		fallthrough;
->  	default:
->  		pr_err_ratelimited("ecc: unsupported digits size!\n");
->  		return false;
-> diff --git a/include/crypto/internal/ecc.h b/include/crypto/internal/ecc.=
-h
-> index 4a556b41873e..de17bcdeb53a 100644
-> --- a/include/crypto/internal/ecc.h
-> +++ b/include/crypto/internal/ecc.h
-> @@ -33,7 +33,7 @@
->  #define ECC_CURVE_NIST_P192_DIGITS  3
->  #define ECC_CURVE_NIST_P256_DIGITS  4
->  #define ECC_CURVE_NIST_P384_DIGITS  6
-> -#define ECC_MAX_DIGITS              (512 / 64) /* due to ecrdsa */
-> +#define ECC_MAX_DIGITS              DIV_ROUND_UP(521, 64) /* NIST P521 *=
-/
-> =20
->  #define ECC_DIGITS_TO_BYTES_SHIFT 3
-> =20
+nit: still don't get why "* sizeof(u64)" would ever be more readable
+thean "* 8".
 
 BR, Jarkko
 
