@@ -1,72 +1,72 @@
-Return-Path: <keyrings+bounces-814-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-815-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319C1875376
-	for <lists+keyrings@lfdr.de>; Thu,  7 Mar 2024 16:40:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDA3A87537D
+	for <lists+keyrings@lfdr.de>; Thu,  7 Mar 2024 16:41:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B75A91F27FAC
-	for <lists+keyrings@lfdr.de>; Thu,  7 Mar 2024 15:40:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A30EB286F1E
+	for <lists+keyrings@lfdr.de>; Thu,  7 Mar 2024 15:41:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A63312EBEA;
-	Thu,  7 Mar 2024 15:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB81131E33;
+	Thu,  7 Mar 2024 15:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b="VAEefIaw"
+	dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b="sjs3jCdP"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DEC130AF1
-	for <keyrings@vger.kernel.org>; Thu,  7 Mar 2024 15:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CD4130E5D
+	for <keyrings@vger.kernel.org>; Thu,  7 Mar 2024 15:39:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709825955; cv=none; b=uxDboTuK7ujhwz9QXO2RUZxEWfig7dwzf90CHXlKWCn0fVBtebQeSmRjRjWw5zn37quQld5t4t17sbz6MKqhX6pUzNNXMy9N20OHTK/T9uC8n7SIXIcIpMbBZdGFoSc0aZh9RD9i6oCHT3YGg23cS/JCceE0w4lzv4nqna5hAM8=
+	t=1709825958; cv=none; b=TaRStuCPQJ3Cy/QLf+cxkqzDENj6whfXgIIoq3yAd6umhA7+r4WGPOgnul5DRgQb0sUtD3P6b9ChBLts6iEFFq13SPzL9G3e8dzLbj53dI4KYXOr1UIOI5j+Y4W2SIIW/vd7mYWw+bNdDwfS2Xa9vXvC81zfL1KP3QpKGNGkxYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709825955; c=relaxed/simple;
-	bh=IoJ5PhDwmkZFYUe1jIRt3XY+XYejXNxDc1GhQecxiN0=;
+	s=arc-20240116; t=1709825958; c=relaxed/simple;
+	bh=FDOPf3xlGpDAEZuAPeTmAaGWnb+6zG3xNnz2qq7Ohj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vj/jjz39BwzBENY36BC0HRUpyb4hNF8XbuKOJMxHbwP2JfMzR0+24oShPxhS8IBFbBwgR468uDDgaYVjuH1hqDz6ejw0cjlPzMLT8bzmZjs3hqq+6BWcz5S/1XF95liIRfOCecjVaFp0pWln0oU4lEiPRQcxpNhwKmCubGWNwgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at; spf=pass smtp.mailfrom=sigma-star.at; dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b=VAEefIaw; arc=none smtp.client-ip=209.85.208.48
+	 MIME-Version; b=OGkj+K7RJ4BWnWTpYpqnhl2SZbaQbk595UCZXmJMWMyQftVOMKEo1Fugfqm2Cx4CH1KGTA4rQ/i0dE6TUdt76b9Wg4W3LCa8LDL9dUKQ5yxDiIfzD1UtslSsYr8jO+T5UV+hmLpAB3QlThSA3KxNLIGnRCnfnam0wgezTLdk4As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at; spf=pass smtp.mailfrom=sigma-star.at; dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b=sjs3jCdP; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigma-star.at
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-563c403719cso1287757a12.2
-        for <keyrings@vger.kernel.org>; Thu, 07 Mar 2024 07:39:12 -0800 (PST)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a45670f9508so153820566b.0
+        for <keyrings@vger.kernel.org>; Thu, 07 Mar 2024 07:39:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1709825951; x=1710430751; darn=vger.kernel.org;
+        d=sigma-star.at; s=google; t=1709825954; x=1710430754; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=q95Pv5eUd7/PCCDIkGY46bAHfemcttBtSKECUmP8rbg=;
-        b=VAEefIawjg3T0EMzO060miLSluQ2j4JanLZgMzl00mJvqwgSMPPKXwZ9BJepZgjYkQ
-         QnE4IS13xqUFvGK/2SHXykv0Q2biLLRBi42Remc8PMD3TpTDfEqELcub0UTe3QMJ8bfz
-         YexEZi0lkba5r3Cs+Pqm9bKpVZJoXHAxhuZRGHQTpHvayfDeftj1wvQKNU2Sceroy1NT
-         1KQEERpIUAQnwIsVZTSegM4nk9MruwD1nsyByloMl/GBV0to/nq/js1vzS9g0pU7QbJ6
-         4YVNTeaWfcXV9e8J7rHqVVrjXliJKq/rIXFJU2EOOfXSsGHEj1AV81nfKfFknFeDaqkG
-         9r+w==
+        bh=otEyEh5HNjpSjKJb9y7tWHyWPlbFploqEwD1jDd84X0=;
+        b=sjs3jCdP7dH5vpL4YGv9lDljTeNNuXddCY6dq+AreMUQOIXVq2a2TGW9VQI9QxXPsX
+         CjBq0GR/sIjoE1egqdYWZawVDJWfYxfZyluaZppTzqGcpFNGx9ZEmmYNGLTJ/y3ipWm0
+         7ltZI6abJf6ITBdyKM3WCXcTbHElLzwxFi6F2wX6aNNqCFLswee2zjeqvg4lHJsr7Pp6
+         XktHNs4F7lHnxTx6IXiKlVFXcm0oIK+qWmXG9zI708OYFcj1PDZ42C1jZVDbgLCObuVN
+         g9j7lMiM0Iuop1qe7PoRi4Zu6OJF9hRtcN0GtziD+22aXAoDogtK+jD+m+f4t+d82pky
+         x09A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709825951; x=1710430751;
+        d=1e100.net; s=20230601; t=1709825954; x=1710430754;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=q95Pv5eUd7/PCCDIkGY46bAHfemcttBtSKECUmP8rbg=;
-        b=LrVGCnrWZ4Q5Jw9GPxyk9xTa7be422YSuAJUBs39z/5iR14wVQwVQHrZSG7a9oIxZf
-         xWgGtC/DONqzYAqeQx/VrEvneV0bXqeXYxVU+iFFufldrHA6DSwmLe2Y3POtXokZK15D
-         4VJovirh7ZbtsrpNL6qG3+SCkKsVTCc/qpN2Zpv+hk+eZwNx6spC/A2ja/rjcHhGoHh6
-         vHxtJqbPZ4vaaFUyUjWUOu3XubnKiI2xUVmZstoa32n5oVmgvAitVNy/spd7tbexreNG
-         X1fc7GWaEKiyB/jxjrZp/94aeLDc2J3LlwMaePAvpcZfuYFvSRtKNA0WcK6TSC3xnOAV
-         wb8w==
-X-Forwarded-Encrypted: i=1; AJvYcCV7nweZmDKNgoGC9JGNavvIqmhKTwdq9cjWDfb2jaMpbER+JFfWOWT2yq+Vl5ePJrHIamuG4Jz4UPpBjRg3HtbiY78uqamTMbs=
-X-Gm-Message-State: AOJu0YyzoKsN6FCywcouySH7AxOWnba+tON7tBvypaEmlm172Z/Vdd1c
-	9EHPyONAwq3KmckxbMntPTqih7QzsHJDTLLEI4/7YeCv0oHCeJ6Yy9y2OU3UlIs=
-X-Google-Smtp-Source: AGHT+IFQim0IlvlrKFx/Yx6UJFZNUGR3Suw118WkReabIIWNHe5La99iFLjJ/8OXFgt0a3qNMqW7EQ==
-X-Received: by 2002:a50:d514:0:b0:564:5c90:f521 with SMTP id u20-20020a50d514000000b005645c90f521mr115786edi.14.1709825951647;
-        Thu, 07 Mar 2024 07:39:11 -0800 (PST)
+        bh=otEyEh5HNjpSjKJb9y7tWHyWPlbFploqEwD1jDd84X0=;
+        b=YD1/fZF75mUhhVPkZ22kd3iH1xVBmI5eJkhLLjbnrocmCV1Hpb0NGxt9wdVzcizAyU
+         ac9OaiqlzChVmiVt6+lIDKtbI8tJJ3EUBXUCSkRPrvoBvPZGbthr6J4rOu+GfAeWWobX
+         cspQNHUyQTq9hGjZEc/nVVpO3qxu9Kio3R/yzkxpaRdcVuX30KTpUZ4DcR+SnYtOGbZs
+         /inAN6P3ylsm1+yUF9achm3FtAy5kbBRFVWdJaRKoPBA8okR9XXGPDNd2XOwtdqPG/CS
+         eMyx0eCfMSSdB5hL3lljCKtjshUcsbodL6lU+itu2Bx5I3F73EMIC3rTWYN5WaePCw4o
+         IF/A==
+X-Forwarded-Encrypted: i=1; AJvYcCWeySorpBFyBRILUCVYgIuj7lPNtPJ4b1jwNua0oFVlKzfaFCp2/bUd0zePvzme8sXuQB5GUEbULtrKzn7qRxHs16em3LiLr5s=
+X-Gm-Message-State: AOJu0YwyMeM2O17N677k3ua5dxPHT1SY4CPZupJj0C/JRR9xtr7Aaic6
+	31P5toBrEethkKRbuuG8VwzOG6lEUqNUM7wj9TRtIDBIYoZ3ryUsXsMycSWJrhM=
+X-Google-Smtp-Source: AGHT+IGsaSLKrDE4I3zR6qIDlCmgXdtrCR2biVKtmdoA2/l2u1GzA6EG7n4kCloBhq5bUg/JUttFCw==
+X-Received: by 2002:a17:906:d215:b0:a3f:1f0b:57d9 with SMTP id w21-20020a170906d21500b00a3f1f0b57d9mr11698671ejz.1.1709825954205;
+        Thu, 07 Mar 2024 07:39:14 -0800 (PST)
 Received: from localhost ([82.150.214.1])
-        by smtp.gmail.com with UTF8SMTPSA id a26-20020a50c31a000000b00567f9d21b7csm1617918edb.94.2024.03.07.07.39.09
+        by smtp.gmail.com with UTF8SMTPSA id tj10-20020a170907c24a00b00a444526962asm8260070ejc.128.2024.03.07.07.39.12
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Mar 2024 07:39:11 -0800 (PST)
+        Thu, 07 Mar 2024 07:39:13 -0800 (PST)
 From: David Gstir <david@sigma-star.at>
 To: Mimi Zohar <zohar@linux.ibm.com>,
 	James Bottomley <jejb@linux.ibm.com>,
@@ -103,9 +103,9 @@ Cc: David Gstir <david@sigma-star.at>,
 	linux-security-module@vger.kernel.org,
 	Richard Weinberger <richard@nod.at>,
 	David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Subject: [PATCH v6 5/6] docs: document DCP-backed trusted keys kernel params
-Date: Thu,  7 Mar 2024 16:38:32 +0100
-Message-ID: <20240307153842.80033-6-david@sigma-star.at>
+Subject: [PATCH v6 6/6] docs: trusted-encrypted: add DCP as new trust source
+Date: Thu,  7 Mar 2024 16:38:33 +0100
+Message-ID: <20240307153842.80033-7-david@sigma-star.at>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240307153842.80033-1-david@sigma-star.at>
 References: <20240307153842.80033-1-david@sigma-star.at>
@@ -117,8 +117,12 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Document the kernel parameters trusted.dcp_use_otp_key
-and trusted.dcp_skip_zk_test for DCP-backed trusted keys.
+Update the documentation for trusted and encrypted KEYS with DCP as new
+trust source:
+
+- Describe security properties of DCP trust source
+- Describe key usage
+- Document blob format
 
 Co-developed-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Richard Weinberger <richard@nod.at>
@@ -126,40 +130,144 @@ Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
 Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
 Signed-off-by: David Gstir <david@sigma-star.at>
 ---
- Documentation/admin-guide/kernel-parameters.txt | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ .../security/keys/trusted-encrypted.rst       | 85 +++++++++++++++++++
+ 1 file changed, 85 insertions(+)
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 24c02c704049..b6944e57768a 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -6698,6 +6698,7 @@
- 			- "tpm"
- 			- "tee"
- 			- "caam"
-+			- "dcp"
- 			If not specified then it defaults to iterating through
- 			the trust source list starting with TPM and assigns the
- 			first trust source as a backend which is initialized
-@@ -6713,6 +6714,18 @@
- 			If not specified, "default" is used. In this case,
- 			the RNG's choice is left to each individual trust source.
+diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
+index e989b9802f92..81fb3540bb20 100644
+--- a/Documentation/security/keys/trusted-encrypted.rst
++++ b/Documentation/security/keys/trusted-encrypted.rst
+@@ -42,6 +42,14 @@ safe.
+          randomly generated and fused into each SoC at manufacturing time.
+          Otherwise, a common fixed test key is used instead.
  
-+	trusted.dcp_use_otp_key
-+			This is intended to be used in combination with
-+			trusted.source=dcp and will select the DCP OTP key
-+			instead of the DCP UNIQUE key blob encryption.
++     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
 +
-+	trusted.dcp_skip_zk_test
-+			This is intended to be used in combination with
-+			trusted.source=dcp and will disable the check if all
-+			the blob key is zero'ed. This is helpful for situations where
-+			having this key zero'ed is acceptable. E.g. in testing
-+			scenarios.
++         Rooted to a one-time programmable key (OTP) that is generally burnt
++         in the on-chip fuses and is accessible to the DCP encryption engine only.
++         DCP provides two keys that can be used as root of trust: the OTP key
++         and the UNIQUE key. Default is to use the UNIQUE key, but selecting
++         the OTP key can be done via a module parameter (dcp_use_otp_key).
 +
- 	tsc=		Disable clocksource stability checks for TSC.
- 			Format: <string>
- 			[x86] reliable: mark tsc clocksource as reliable, this
+   *  Execution isolation
+ 
+      (1) TPM
+@@ -57,6 +65,12 @@ safe.
+ 
+          Fixed set of operations running in isolated execution environment.
+ 
++     (4) DCP
++
++         Fixed set of cryptographic operations running in isolated execution
++         environment. Only basic blob key encryption is executed there.
++         The actual key sealing/unsealing is done on main processor/kernel space.
++
+   * Optional binding to platform integrity state
+ 
+      (1) TPM
+@@ -79,6 +93,11 @@ safe.
+          Relies on the High Assurance Boot (HAB) mechanism of NXP SoCs
+          for platform integrity.
+ 
++     (4) DCP
++
++         Relies on Secure/Trusted boot process (called HAB by vendor) for
++         platform integrity.
++
+   *  Interfaces and APIs
+ 
+      (1) TPM
+@@ -94,6 +113,11 @@ safe.
+ 
+          Interface is specific to silicon vendor.
+ 
++     (4) DCP
++
++         Vendor-specific API that is implemented as part of the DCP crypto driver in
++         ``drivers/crypto/mxs-dcp.c``.
++
+   *  Threat model
+ 
+      The strength and appropriateness of a particular trust source for a given
+@@ -129,6 +153,13 @@ selected trust source:
+      CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure the device
+      is probed.
+ 
++  *  DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
++
++     The DCP hardware device itself does not provide a dedicated RNG interface,
++     so the kernel default RNG is used. SoCs with DCP like the i.MX6ULL do have
++     a dedicated hardware RNG that is independent from DCP which can be enabled
++     to back the kernel RNG.
++
+ Users may override this by specifying ``trusted.rng=kernel`` on the kernel
+ command-line to override the used RNG with the kernel's random number pool.
+ 
+@@ -231,6 +262,19 @@ Usage::
+ CAAM-specific format.  The key length for new keys is always in bytes.
+ Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
+ 
++Trusted Keys usage: DCP
++-----------------------
++
++Usage::
++
++    keyctl add trusted name "new keylen" ring
++    keyctl add trusted name "load hex_blob" ring
++    keyctl print keyid
++
++"keyctl print" returns an ASCII hex copy of the sealed key, which is in format
++specific to this DCP key-blob implementation.  The key length for new keys is
++always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
++
+ Encrypted Keys usage
+ --------------------
+ 
+@@ -426,3 +470,44 @@ string length.
+ privkey is the binary representation of TPM2B_PUBLIC excluding the
+ initial TPM2B header which can be reconstructed from the ASN.1 octed
+ string length.
++
++DCP Blob Format
++---------------
++
++The Data Co-Processor (DCP) provides hardware-bound AES keys using its
++AES encryption engine only. It does not provide direct key sealing/unsealing.
++To make DCP hardware encryption keys usable as trust source, we define
++our own custom format that uses a hardware-bound key to secure the sealing
++key stored in the key blob.
++
++Whenever a new trusted key using DCP is generated, we generate a random 128-bit
++blob encryption key (BEK) and 128-bit nonce. The BEK and nonce are used to
++encrypt the trusted key payload using AES-128-GCM.
++
++The BEK itself is encrypted using the hardware-bound key using the DCP's AES
++encryption engine with AES-128-ECB. The encrypted BEK, generated nonce,
++BEK-encrypted payload and authentication tag make up the blob format together
++with a version number, payload length and authentication tag::
++
++    /*
++     * struct dcp_blob_fmt - DCP BLOB format.
++     *
++     * @fmt_version: Format version, currently being %1
++     * @blob_key: Random AES 128 key which is used to encrypt @payload,
++     *            @blob_key itself is encrypted with OTP or UNIQUE device key in
++     *            AES-128-ECB mode by DCP.
++     * @nonce: Random nonce used for @payload encryption.
++     * @payload_len: Length of the plain text @payload.
++     * @payload: The payload itself, encrypted using AES-128-GCM and @blob_key,
++     *           GCM auth tag of size AES_BLOCK_SIZE is attached at the end of it.
++     *
++     * The total size of a DCP BLOB is sizeof(struct dcp_blob_fmt) + @payload_len +
++     * AES_BLOCK_SIZE.
++     */
++    struct dcp_blob_fmt {
++            __u8 fmt_version;
++            __u8 blob_key[AES_KEYSIZE_128];
++            __u8 nonce[AES_KEYSIZE_128];
++            __le32 payload_len;
++            __u8 payload[];
++    } __packed;
 -- 
 2.35.3
 
