@@ -1,151 +1,124 @@
-Return-Path: <keyrings+bounces-863-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-865-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E29D879BA3
-	for <lists+keyrings@lfdr.de>; Tue, 12 Mar 2024 19:39:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9783487A442
+	for <lists+keyrings@lfdr.de>; Wed, 13 Mar 2024 09:52:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 900C21C22BE0
-	for <lists+keyrings@lfdr.de>; Tue, 12 Mar 2024 18:39:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79AB9B21424
+	for <lists+keyrings@lfdr.de>; Wed, 13 Mar 2024 08:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87DB144053;
-	Tue, 12 Mar 2024 18:37:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="AcdJyQDx"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CABC1946B;
+	Wed, 13 Mar 2024 08:52:21 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17838142630;
-	Tue, 12 Mar 2024 18:37:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B311912E73;
+	Wed, 13 Mar 2024 08:52:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710268678; cv=none; b=aJjps/FWVYu4AfpPeYPu/nPDi9/x4nvmoTHrKihLXSE3NsZZiu2j6kE3YayqFMissH1Yts0nr2AHc3Ip4y1huWc5I/0CrEP/fNmvJerl26VDsW7rJrny0xkZNlozAGbpcEG9yNlZ+PUKblr/Ey9za1FmnnB7/wPdOs/wrmyRG6s=
+	t=1710319941; cv=none; b=ho1gzQ+Q8wj1jSxBMVrPkOQMo3lRxo9+SnVlNFaFIYXLjzSqUZxHUXzWX25sTof/Xqgn9Np2T2szmn1Kq+FDSCUk1+Ab3JHWjKZe6ILZLZa5+R4SZ7RbYgcIayUKM0w49kwe7BXF+n5xF5FJP4TeFY72Bu7/7ojvaVhi8TtYSmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710268678; c=relaxed/simple;
-	bh=RGzYtkq3koJ+IYtBiPKa/zCvRRqct8hCOumMlCZ0lu8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o3Wv8io/rn+Qx6BC1H64qOlAHq//6jm3GFM/SAwJfTkCBnEEPhsAxHhfI1A1zwSPUD5GEzF2YqdEQKVFvBp452Ibvc+0XfQDuXiuV91zFJ1xkM+FArYV0M1Tx1TH0kP1W+8AbQXiqaNhpAblOxDoz0r3GGsJ7c83c3jsbJBAdI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; spf=none smtp.mailfrom=linux.vnet.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=AcdJyQDx; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.vnet.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42CIW0m0011605;
-	Tue, 12 Mar 2024 18:36:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=HYtIQQmQyi2J8b6s2DXbCXcJus8U+wP4ZhU7m7CSRUA=;
- b=AcdJyQDxglcJ0wWtwM6na0FBNVRTLkUiqqNu2bfark5ulieKAu/gP6+KxET+uCOW39XA
- 7vhHq0anqvj30ED0leXy+jNSAKMFD1rNZfPAZsQ2nICZMqU8uAImAcy/AgqXlZmjDwnr
- XpZNXzyaea1ZyGj+6mDW5LgU+Cy03D+qKjk38erjLZtXXlQSDIwiUeRlujgniYGfl1da
- 0UqZZNz4eIsz1FZBjS2mOqneNYwyWxkErP44qDP7/WEr2Fa+NiE/v1jJ6IA4SMRxUwIg
- KjmaI8jw2/ARv4zvIj6xrcCqsaJw2xnGYeCWLxwfCaRVOyEveL/S++u2cgk6AAY4/y4W 4Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wtsaputc0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Mar 2024 18:36:39 +0000
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42CIac84022396;
-	Tue, 12 Mar 2024 18:36:38 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3wtsaputbt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Mar 2024 18:36:38 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42CIJl9D020435;
-	Tue, 12 Mar 2024 18:36:38 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ws3km0ren-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 12 Mar 2024 18:36:38 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42CIaZaL18547162
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 12 Mar 2024 18:36:37 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0752758056;
-	Tue, 12 Mar 2024 18:36:35 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 067C858060;
-	Tue, 12 Mar 2024 18:36:34 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 12 Mar 2024 18:36:33 +0000 (GMT)
-From: Stefan Berger <stefanb@linux.vnet.ibm.com>
-To: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        herbert@gondor.apana.org.au, davem@davemloft.net
-Cc: linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br, lukas@wunner.de,
-        bbhushan2@marvell.com, jarkko@kernel.org,
-        Stefan Berger <stefanb@linux.ibm.com>,
-        David Howells <dhowells@redhat.com>
-Subject: [PATCH v6 13/13] crypto: x509 - Add OID for NIST P521 and extend parser for it
-Date: Tue, 12 Mar 2024 14:36:18 -0400
-Message-ID: <20240312183618.1211745-14-stefanb@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240312183618.1211745-1-stefanb@linux.vnet.ibm.com>
-References: <20240312183618.1211745-1-stefanb@linux.vnet.ibm.com>
+	s=arc-20240116; t=1710319941; c=relaxed/simple;
+	bh=+NePArLWJMB57UThWlpn3BKXqneliUUo+Wa39GBb6SQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:To:From:
+	 In-Reply-To; b=HXQ6SUGto9CJzXQDIifpc0tJNK/1/aqdmypyOYL0oZEQ3srdY5TXDjd2A4QgHcMDeBMPaS2+cofvuxoXo/TOaaOGm3+RAJHj4koN4wyvpkkWL+2Lm6ssjEHHHlRq0VPqgCuuSgO6xiFyKA6hyNMvv0piwY67oNLzx7ujR1g1XqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
+	serial F5FD910E8FE2121B897F7E55B84E351D
+	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
+	auth type TLS.CUNI
+Received: from localhost (koleje-wifi-0013.koleje.cuni.cz [78.128.191.13])
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 42D8neSJ059445
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Wed, 13 Mar 2024 09:49:41 +0100 (CET)
+	(envelope-from balejk@matfyz.cz)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: lcengRLdxZm4iBzPJ4JF2j8PG8dxzR0s
-X-Proofpoint-GUID: ocG_9iP6VjEYR4oQNpVm_KIspBilBW8F
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-12_11,2024-03-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 mlxscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
- suspectscore=0 clxscore=1015 phishscore=0 mlxlogscore=986 impostorscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2403120139
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 13 Mar 2024 09:50:11 +0100
+Message-Id: <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>
+Cc: <alexandre.torgue@foss.st.com>, <davem@davemloft.net>,
+        <dhowells@redhat.com>, <herbert@gondor.apana.org.au>,
+        <keyrings@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-modules@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>, <mcgrof@kernel.org>,
+        <mcoquelin.stm32@gmail.com>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>
+Subject: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
+To: <dimitri.ledkov@canonical.com>,
+        "Johannes Berg"
+ <johannes@sipsolutions.net>
+From: "Karel Balej" <balejk@matfyz.cz>
+In-Reply-To: <20231010212240.61637-1-dimitri.ledkov@canonical.com>
 
-From: Stefan Berger <stefanb@linux.ibm.com>
+Dimitri, Johannes,
 
-Enable the x509 parser to accept NIST P521 certificates and add the
-OID for ansip521r1, which is the identifier for NIST P521.
+ever since upgrading to Linux v6.7 I am unable to connect to a 802.1X
+wireless network (specifically, eduroam). In my dmesg, the following
+messages appear:
 
-Cc: David Howells <dhowells@redhat.com>
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-Tested-by: Lukas Wunner <lukas@wunner.de>
----
- crypto/asymmetric_keys/x509_cert_parser.c | 3 +++
- include/linux/oid_registry.h              | 1 +
- 2 files changed, 4 insertions(+)
+	[   68.161621] wlan0: authenticate with xx:xx:xx:xx:xx:xx (local address=
+=3Dxx:xx:xx:xx:xx:xx)
+	[   68.163733] wlan0: send auth to xx:xx:xx:xx:xx:xx (try 1/3)
+	[   68.165773] wlan0: authenticated
+	[   68.166785] wlan0: associate with xx:xx:xx:xx:xx:xx (try 1/3)
+	[   68.168498] wlan0: RX AssocResp from xx:xx:xx:xx:xx:xx (capab=3D0x1411 =
+status=3D0 aid=3D4)
+	[   68.172445] wlan0: associated
+	[   68.204956] wlan0: Limiting TX power to 23 (23 - 0) dBm as advertised b=
+y xx:xx:xx:xx:xx:xx
+	[   70.262032] wlan0: deauthenticated from xx:xx:xx:xx:xx:xx (Reason: 23=
+=3DIEEE8021X_FAILED)
+	[   73.065966] wlan0: authenticate with xx:xx:xx:xx:xx:xx (local address=
+=3Dxx:xx:xx:xx:xx:xx)
+	[   73.068006] wlan0: send auth to xx:xx:xx:xx:xx:xx (try 1/3)
+	[   73.070166] wlan0: authenticated
+	[   73.070756] wlan0: associate with xx:xx:xx:xx:xx:xx (try 1/3)
+	[   73.072807] wlan0: RX AssocResp from xx:xx:xx:xx:xx:xx (capab=3D0x1411 =
+status=3D0 aid=3D4)
+	[   73.076676] wlan0: associated
+	[   73.120396] wlan0: Limiting TX power to 23 (23 - 0) dBm as advertised b=
+y xx:xx:xx:xx:xx:xx
+	[   75.148376] wlan0: deauthenticating from xx:xx:xx:xx:xx:xx by local cho=
+ice (Reason: 23=3DIEEE8021X_FAILED)
+	[   77.718016] wlan0: authenticate with xx:xx:xx:xx:xx:xx (local address=
+=3Dxx:xx:xx:xx:xx:xx)
+	[   77.720137] wlan0: send auth to xx:xx:xx:xx:xx:xx (try 1/3)
+	[   77.722670] wlan0: authenticated
+	[   77.724737] wlan0: associate with xx:xx:xx:xx:xx:xx (try 1/3)
+	[   77.726172] wlan0: RX AssocResp from xx:xx:xx:xx:xx:xx (capab=3D0x1411 =
+status=3D0 aid=3D4)
+	[   77.730822] wlan0: associated
+	[   77.830763] wlan0: Limiting TX power to 23 (23 - 0) dBm as advertised b=
+y xx:xx:xx:xx:xx:xx
+	[   79.784199] wlan0: deauthenticating from xx:xx:xx:xx:xx:xx by local cho=
+ice (Reason: 23=3DIEEE8021X_FAILED)
 
-diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
-index 487204d39426..99f809b7910b 100644
---- a/crypto/asymmetric_keys/x509_cert_parser.c
-+++ b/crypto/asymmetric_keys/x509_cert_parser.c
-@@ -538,6 +538,9 @@ int x509_extract_key_data(void *context, size_t hdrlen,
- 		case OID_id_ansip384r1:
- 			ctx->cert->pub->pkey_algo = "ecdsa-nist-p384";
- 			break;
-+		case OID_id_ansip521r1:
-+			ctx->cert->pub->pkey_algo = "ecdsa-nist-p521";
-+			break;
- 		default:
- 			return -ENOPKG;
- 		}
-diff --git a/include/linux/oid_registry.h b/include/linux/oid_registry.h
-index 3921fbed0b28..af16d96fbbf2 100644
---- a/include/linux/oid_registry.h
-+++ b/include/linux/oid_registry.h
-@@ -65,6 +65,7 @@ enum OID {
- 	OID_Scram,			/* 1.3.6.1.5.5.14 */
- 	OID_certAuthInfoAccess,		/* 1.3.6.1.5.5.7.1.1 */
- 	OID_id_ansip384r1,		/* 1.3.132.0.34 */
-+	OID_id_ansip521r1,		/* 1.3.132.0.35 */
- 	OID_sha256,			/* 2.16.840.1.101.3.4.2.1 */
- 	OID_sha384,			/* 2.16.840.1.101.3.4.2.2 */
- 	OID_sha512,			/* 2.16.840.1.101.3.4.2.3 */
--- 
-2.43.0
+The connection works fine with v6.6 and I have bisected the problem to
+the revision introduced by this patch (16ab7cb5825f mainline).
 
+My wireless kernel driver is iwlwifi and I use iwd. I started the bisect
+with a config copied from my distribution package [1].
+
+Would you please help me with this? Please let me know if I forgot to
+mention something which could be helpful in resolving this.
+
+[1] https://raw.githubusercontent.com/void-linux/void-packages/master/srcpk=
+gs/linux6.6/files/x86_64-dotconfig
+
+Thank you very much, kind regards,
+K. B.
 
