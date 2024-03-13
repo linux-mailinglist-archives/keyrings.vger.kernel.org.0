@@ -1,96 +1,122 @@
-Return-Path: <keyrings+bounces-867-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-868-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFDE687A7A9
-	for <lists+keyrings@lfdr.de>; Wed, 13 Mar 2024 13:37:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 843B787AFFC
+	for <lists+keyrings@lfdr.de>; Wed, 13 Mar 2024 19:40:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AB002831EA
-	for <lists+keyrings@lfdr.de>; Wed, 13 Mar 2024 12:37:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE0CCB27BF9
+	for <lists+keyrings@lfdr.de>; Wed, 13 Mar 2024 18:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B645F1392;
-	Wed, 13 Mar 2024 12:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B16882867;
+	Wed, 13 Mar 2024 17:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fInGw5xX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ih/RA9K2"
 X-Original-To: keyrings@vger.kernel.org
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C5C137E
-	for <keyrings@vger.kernel.org>; Wed, 13 Mar 2024 12:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C69823D0;
+	Wed, 13 Mar 2024 17:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710333464; cv=none; b=BcRSC7TI10kbG0rZCvu2cYJaanxrNc8STuxodPFklBQplHz7qRi88CL8pmDStnhHaGmmT4J58DGW6zJXOQWzTyDVw9HbzGVw9u6A0QPe+zmEjxGEmvtmQ9eZYGToQofDeFKpqBX1X9+tzm0JhsIJTkXIEVI1aO6YUGatpjj4P7k=
+	t=1710350773; cv=none; b=JKiclYvZz1YAvmyLFiI99I00XL1kFol8T6RuuILJtwpRUks9CPuPlE4AWDWnVEm4+/PHbnE82vF1nej6hyLSE9EC89A64Hg4oFaue+NY36vA9Nn+wLuyxTyTKAg3+VbMJNuhWjEDLgqTS5bM/n2LM9XRWkSiV/GlE0zJFQKCw5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710333464; c=relaxed/simple;
-	bh=cJmBnz6k0xIESxKWJRuBLNMa0QNfz2uY9clGq3EDUVQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Cmq4k/2OsIq9jGp4B6SmYwLcTMmfM5l9tHbEuUxDLskdkwk4GNDqDJ8FwvshdmMoyYdP3aU6iDDC5OL6Hs0DRsncZV5vkJYJ8hcKmDHGI4KP6bTJqr0iaSuGq5YuTmf8Ancpj7bYa10pLJiIQ18ipOxNMiDZldyEFFygTtXtQrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fInGw5xX; arc=none smtp.client-ip=91.218.175.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1710333460;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bipwNNYQZsUwmH59oT8QYK6cVW89ev95iLM0rdBUuqM=;
-	b=fInGw5xXVTRYJ1qjuUcNkBZiJMycCkBRBhXx9nLHcUrmkIyYQAXiWt77q/o2jE7/HsKtfU
-	zxAk8ChyOT0lSOrc22twwnsNf9opCDC1P33gcN2WBxo/2zBgcTP88YEsPxr1EsH5o9nJVl
-	UvC7Yq0BAY5XTja+ceTh3rsLC3Aogvo=
-From: Luis Henriques <luis.henriques@linux.dev>
-To: David Howells <dhowells@redhat.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>,  Eric Biggers
- <ebiggers@kernel.org>,  keyrings@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] keys: update key quotas in key_put()
-In-Reply-To: <87il33f24c.fsf@suse.de> (Luis Henriques's message of "Mon, 05
-	Feb 2024 13:54:11 +0000")
-References: <20240130101344.28936-1-lhenriques@suse.de>
-	<3007646.1707134664@warthog.procyon.org.uk> <87il33f24c.fsf@suse.de>
-Date: Wed, 13 Mar 2024 12:37:38 +0000
-Message-ID: <87msr2qpd9.fsf@brahms.olymp>
+	s=arc-20240116; t=1710350773; c=relaxed/simple;
+	bh=pHdBbxIGCsn6bga9ZUWJIdqQzQ/NGDwpmOuAP2belZo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ibx26gv1Mj/Xtquvv7wHvPBXz5wvd8YFw3V3kOrcyUFWvUaSNViukZ8tVe4T48raWir0bxeJI+57M6veZCmYC5WBpO2canfvevzHGlXwyTkRNg2Uux0DyZ9aPux8ChVDUYdyBYrm0CPLH+DF+TszTr2cXpYBCdJeUHHZ6pf3Yao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ih/RA9K2; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-788598094c4so5260685a.0;
+        Wed, 13 Mar 2024 10:26:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710350770; x=1710955570; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/xlPdDv6yvSDgUYLn/3ttkYWsR7atQ5kgTqz8H924Zg=;
+        b=ih/RA9K2TpucD0A8pA6vOGj9e4ua/89FjLztujfp+MObcS6sHjzdTD4V2y03sGUViV
+         i4NtKtEWQgFU+D30OVanaxcXUpLvUPifvTOeVh+Orw42h7O8mM31avL9dM0GiaTpYNX8
+         j6fu5qDupiMnOJP28RpUUMPWfqEhC1Y5d8JGruSWx+U7DFnGucoT1lVXgTHisueicQpG
+         5yZho8mUottLpWQiG2uPItRPouijwVyOo7WWfKIB50c9vNPwryJm6sRnleih+begoJq4
+         CN4cZUsrdtiBfjuBvovONrkGFEyt8/d65g4ztbabkbAC767KOT0Kwhsj+urEWCOAEcOB
+         1Sxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710350770; x=1710955570;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/xlPdDv6yvSDgUYLn/3ttkYWsR7atQ5kgTqz8H924Zg=;
+        b=l2sPbEtEXDR/ZzjWkb4lZirt95S6+HtbpsJ4YH2qAw2C+5XVYDeM23nfdzdbkGNf1O
+         ebxbUwDalEW5FHvXVPixRPvFmG1lsNalGRRcktKen4Tc+Ib4FXc9qaZX6yj+NwfwmOnk
+         zil3GodIdC2dsbl3FT6nGQ4DXqgnSFvMVtMyY+4EUgX8q9DBvTmCyixtZCBXTYii2ACS
+         P+7T/tBCCuJsUvv5/0QUj0mWPltMuPKCHyDmXVuO2q6Rds4hbpVeGLh3ahT++9sX+QI9
+         MqdibHSqvWO4YyEtC5oajnGo4HevHaVSmEVr5PWy7of0rsiOb2WBWjiPAiRCs8ZXn6oy
+         GCcA==
+X-Forwarded-Encrypted: i=1; AJvYcCVtE4uApdPj7Yyod1FQX0vhaaX+0aFzdWcm+ca9H4ZwFQNbsgSp2wfuphEHVxMVbypgBMWrPaEHoGxk49Z0lkIifwgz+YM3YKvnxJy7pwtIDGXvIIQ7lrXto5IewspRLWDfHjKOJQPH8pm1ekpO8rqkgn3NfiGGtRmc1w7f4e0wXGNRD60uI96Oi24qW6u28MtI96UYlMz6WEbwC3QoewzYLluFlVOoVHhM++Xrseyhe+CiLXJz2ZMXOytL6MWazRZRsv0bb3kQiJ55nyDF1iutQAKjnVOQMkmtbLM=
+X-Gm-Message-State: AOJu0YzfUlNScLe8t9U5ISTys6i3l55qhlJv3bIerPSkcROfz9rucFPA
+	+eJbwsv2qztSddrDgz26fl6eR0lQE8tIYXea7Uo417XUHo2C6rV9
+X-Google-Smtp-Source: AGHT+IFyyiGiWin6XQHjnKeLqB0dBkLVo4kmfRKf8luDrrfr/cY3NN2DX7JZ46wiVXxtXIKQSkqJLg==
+X-Received: by 2002:a05:620a:178e:b0:787:a83a:cfed with SMTP id ay14-20020a05620a178e00b00787a83acfedmr607731qkb.70.1710350770507;
+        Wed, 13 Mar 2024 10:26:10 -0700 (PDT)
+Received: from [10.102.4.159] ([208.195.13.130])
+        by smtp.gmail.com with ESMTPSA id yf23-20020a05620a3bd700b007884b14b0b4sm4888800qkn.51.2024.03.13.10.26.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 13 Mar 2024 10:26:10 -0700 (PDT)
+Message-ID: <f2dcbe55-0f0e-4173-8e21-f899c6fc802a@gmail.com>
+Date: Wed, 13 Mar 2024 10:26:06 -0700
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
+To: Johannes Berg <johannes@sipsolutions.net>, Karel Balej
+ <balejk@matfyz.cz>, dimitri.ledkov@canonical.com
+Cc: alexandre.torgue@foss.st.com, davem@davemloft.net, dhowells@redhat.com,
+ herbert@gondor.apana.org.au, keyrings@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, mcgrof@kernel.org,
+ mcoquelin.stm32@gmail.com, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, iwd@lists.linux.dev
+References: <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>
+ <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>
+Content-Language: en-US
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Luis Henriques <lhenriques@suse.de> writes:
+Hi,
 
-> David Howells <dhowells@redhat.com> writes:
+On 3/13/24 1:56 AM, Johannes Berg wrote:
+> Not sure why you're CC'ing the world, but I guess adding a few more
+> doesn't hurt ...
 >
->> Luis Henriques <lhenriques@suse.de> wrote:
->>
->>> Delaying key quotas update when key's refcount reaches 0 in key_put() h=
-as
->>> been causing some issues in fscrypt testing, specifically in fstest
->>> generic/581.  This commit fixes this test flakiness by dealing with the
->>> quotas immediately, and leaving all the other clean-ups to the key garb=
-age
->>> collector.
->>
->> Okay, I'll accept this.
->>
+> On Wed, 2024-03-13 at 09:50 +0100, Karel Balej wrote:
+>>   and I use iwd
+> This is your problem, the wireless stack in the kernel doesn't use any
+> kernel crypto code for 802.1X.
+
+Yes, the wireless stack has zero bearing on the issue. I think that's 
+what you meant by "problem".
+
+IWD has used the kernel crypto API forever which was abruptly broken, 
+that is the problem.
+
+The original commit says it was to remove support for sha1 signed kernel 
+modules, but it did more than that and broke the keyctl API.
+
 >
-> That's awesome, thanks a lot David.  And, as Eric requested, I'll send out
-> shortly a follow-up fscrypt-specific patch, which will make generic/581
-> fstest finally pass.
-
-Ping.  Looks like this fell through the cracks...?
-
-I took a quick look at some git trees ('jarkko' and 'dhowells') but
-couldn't see this patch anywhere.
-
-Cheers,
---=20
-Lu=C3=ADs
+> I suppose iwd wants to use the kernel infrastructure but has no
+> fallbacks to other implementations.
+> johannes
+>
 
