@@ -1,214 +1,97 @@
-Return-Path: <keyrings+bounces-880-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-881-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3806287B548
-	for <lists+keyrings@lfdr.de>; Thu, 14 Mar 2024 00:40:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5842187B91F
+	for <lists+keyrings@lfdr.de>; Thu, 14 Mar 2024 09:11:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B57921F21908
-	for <lists+keyrings@lfdr.de>; Wed, 13 Mar 2024 23:40:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F3FB284A70
+	for <lists+keyrings@lfdr.de>; Thu, 14 Mar 2024 08:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78DEB5D729;
-	Wed, 13 Mar 2024 23:40:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kf54dss+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC545D47E;
+	Thu, 14 Mar 2024 08:11:04 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp1.ms.mff.cuni.cz (smtp-in1.ms.mff.cuni.cz [195.113.20.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9C81E480;
-	Wed, 13 Mar 2024 23:40:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FEE5DF0F;
+	Thu, 14 Mar 2024 08:11:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.113.20.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710373217; cv=none; b=OqJAynWQSGqbNRIbp1p4hq3zmGGrt9Eiw19RCKYemPJb0jR0cK+eSAhvuoUIGiQYYt2n7dsyDP1Sjw5IOZ8Iu3XnWvJjq7gOpcCV/w4PJLm/BcvYlsBD49ovd499zW2JWEPJ5qnbNGSQHT2N24+ZTBOvG9My0lhMPJB3Oqb80aI=
+	t=1710403864; cv=none; b=SYT5XfZaZgDkodQmqWyVu/QMoIFh1c4ney4L1sMizX7sy56CpNqjYtBgDSheixkHzWftaFTMiHbXKRbHZY66BZioYJV/zC+RFUoG2+YT9x4GeOIXXiOyNA1wNXOhzwFs5aOTo8cfIs3B6T/SXRjZC/YxdIQSUr3AJ4RehFBHWdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710373217; c=relaxed/simple;
-	bh=bBevQkb7YPP8eKXiiVLEbs+eoJqadIbqmY4sDTHH91U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NzNwIHHTTbEkqXV+MFktPijoS2fyqoHIIJK+I30RXywPqwJC34fk3inh17Adj86wcFjEDQQ38pydss2hGhn0e22hhK1Xx80pMEQpT3e4iVpBTtw409ocWRc7IG+qWOPkkUShPHHR+AHnK3rWyHPFFzoPC1EIfma5AjhROuI3smI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kf54dss+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0878DC433F1;
-	Wed, 13 Mar 2024 23:40:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710373216;
-	bh=bBevQkb7YPP8eKXiiVLEbs+eoJqadIbqmY4sDTHH91U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Kf54dss+n/ABSmoGiqBZk5BGhEFnb/GVhwE2XJSpcFjDV7sBDNotMk3B2fbqiBjjb
-	 6PZKh0HevT03rhSPcYkuHOQmCx0/PKSxXdZnDhkBhhZd+2N56JPzid+hqVNHRayKkI
-	 FnBmZuzjOnx+cZI7f68vVrx2QrYuOegAUpbCQs79vu+ScEo7OOiI6xx5CBa/B+Y5kk
-	 6mNZHQ62LXYkvqbrYdncoh3+K23s8oYm58gIcq69VAlDtjgqrvDR8XDPF6XmTwob4m
-	 gXTOGVN1zNt2Nefl5ThAvxHg4csNsah8RiP/eN2/zcYe5K+58NJT0P3ER8XDrbx9oR
-	 g1QCsE91bTI2w==
-Date: Wed, 13 Mar 2024 16:40:14 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: James Prestwood <prestwoj@gmail.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Karel Balej <balejk@matfyz.cz>, dimitri.ledkov@canonical.com,
-	alexandre.torgue@foss.st.com, davem@davemloft.net,
-	dhowells@redhat.com, herbert@gondor.apana.org.au,
-	keyrings@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com, mcgrof@kernel.org,
-	mcoquelin.stm32@gmail.com, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, iwd@lists.linux.dev
-Subject: Re: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
-Message-ID: <20240313234014.GE1111@sol.localdomain>
-References: <CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz>
- <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>
- <f2dcbe55-0f0e-4173-8e21-f899c6fc802a@gmail.com>
- <20240313194423.GA1111@sol.localdomain>
- <b838e729-dc30-4e18-b928-c34c16b08606@gmail.com>
- <20240313202223.GB1111@sol.localdomain>
- <db86cba4-0e61-441d-8e66-405a13b61a3c@gmail.com>
- <20240313221043.GC1111@sol.localdomain>
- <f0492c92-1015-48e3-bfce-598c7a4843d1@quicinc.com>
- <20240313230611.GD1111@sol.localdomain>
+	s=arc-20240116; t=1710403864; c=relaxed/simple;
+	bh=49yIHFFM4D8uhYFoMXrapMVE1Go2KxtcaF5olJvsteM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Cc:Subject:
+	 References:In-Reply-To; b=UC/tHadfCkuGtMcBAGKOv3ZJf4QFJFbU6zAnBTAms57MrWeYKxB2bOMP1ZrpuB4jqVjtrtDEQw/VDrDNIz9jw3tAcgDAc5n1Nzu2au8bqVLTglvvooBoWuKFqhDYD3jrUqX+hDp+iXgme2FNEfZnMCIeVibOrfAR0x01U9U9xw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz; spf=pass smtp.mailfrom=matfyz.cz; arc=none smtp.client-ip=195.113.20.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=matfyz.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=matfyz.cz
+X-SubmittedBy: id balejk@matfyz.cz subject /postalCode=110+2000/O=Univerzita+20Karlova/street=Ovocn+5CxC3+5CxBD+20trh+20560/5/ST=Praha,+20Hlavn+5CxC3+5CxAD+20m+5CxC4+5Cx9Bsto/C=CZ/CN=Karel+20Balej/emailAddress=balejk@matfyz.cz
+	serial F5FD910E8FE2121B897F7E55B84E351D
+	issued by /C=NL/O=GEANT+20Vereniging/CN=GEANT+20Personal+20CA+204
+	auth type TLS.CUNI
+Received: from localhost (koleje-wifi-0013.koleje.cuni.cz [78.128.191.13])
+	(authenticated)
+	by smtp1.ms.mff.cuni.cz (8.16.1/8.16.1) with ESMTPS id 42E8AbKT011126
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Thu, 14 Mar 2024 09:10:39 +0100 (CET)
+	(envelope-from balejk@matfyz.cz)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240313230611.GD1111@sol.localdomain>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 14 Mar 2024 09:11:08 +0100
+Message-Id: <CZTBKHQZXJTR.3VMFEA8MZSP5W@matfyz.cz>
+To: "Eric Biggers" <ebiggers@kernel.org>
+From: "Karel Balej" <balejk@matfyz.cz>
+Cc: <keyrings@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+        <iwd@lists.linux.dev>, "James Prestwood" <prestwoj@gmail.com>,
+        "Dimitri
+ John Ledkov" <dimitri.ledkov@canonical.com>,
+        <linux-crypto@vger.kernel.org>,
+        "Herbert Xu" <herbert@gondor.apana.org.au>
+Subject: Re: [PATCH] Revert "crypto: pkcs7 - remove sha1 support"
+References: <20240313233227.56391-1-ebiggers@kernel.org>
+In-Reply-To: <20240313233227.56391-1-ebiggers@kernel.org>
 
-On Wed, Mar 13, 2024 at 04:06:11PM -0700, Eric Biggers wrote:
-> On Wed, Mar 13, 2024 at 03:51:10PM -0700, Jeff Johnson wrote:
-> > On 3/13/2024 3:10 PM, Eric Biggers wrote:
-> > > On Wed, Mar 13, 2024 at 02:17:29PM -0700, James Prestwood wrote:
-> > >> Hi,
-> > >>
-> > >> On 3/13/24 1:22 PM, Eric Biggers wrote:
-> > >>> On Wed, Mar 13, 2024 at 01:12:54PM -0700, James Prestwood wrote:
-> > >>>> Hi,
-> > >>>>
-> > >>>> On 3/13/24 12:44 PM, Eric Biggers wrote:
-> > >>>>> On Wed, Mar 13, 2024 at 10:26:06AM -0700, James Prestwood wrote:
-> > >>>>>> Hi,
-> > >>>>>>
-> > >>>>>> On 3/13/24 1:56 AM, Johannes Berg wrote:
-> > >>>>>>> Not sure why you're CC'ing the world, but I guess adding a few more
-> > >>>>>>> doesn't hurt ...
-> > >>>>>>>
-> > >>>>>>> On Wed, 2024-03-13 at 09:50 +0100, Karel Balej wrote:
-> > >>>>>>>>     and I use iwd
-> > >>>>>>> This is your problem, the wireless stack in the kernel doesn't use any
-> > >>>>>>> kernel crypto code for 802.1X.
-> > >>>>>> Yes, the wireless stack has zero bearing on the issue. I think that's what
-> > >>>>>> you meant by "problem".
-> > >>>>>>
-> > >>>>>> IWD has used the kernel crypto API forever which was abruptly broken, that
-> > >>>>>> is the problem.
-> > >>>>>>
-> > >>>>>> The original commit says it was to remove support for sha1 signed kernel
-> > >>>>>> modules, but it did more than that and broke the keyctl API.
-> > >>>>>>
-> > >>>>> Which specific API is iwd using that is relevant here?
-> > >>>>> I cloned https://kernel.googlesource.com/pub/scm/network/wireless/iwd
-> > >>>>> and grepped for keyctl and AF_ALG, but there are no matches.
-> > >>>> IWD uses ELL for its crypto, which uses the AF_ALG API:
-> > >>>>
-> > >>>> https://git.kernel.org/pub/scm/libs/ell/ell.git/
-> > >>> Thanks for pointing out that the relevant code is really in that separate
-> > >>> repository.  Note, it seems that keyctl() is the problem here, not AF_ALG.  The
-> > >>> blamed commit didn't change anything for AF_ALG.
-> > >>>
-> > >>>> I believe the failure is when calling:
-> > >>>>
-> > >>>> KEYCTL_PKEY_QUERY enc="x962" hash="sha1"
-> > >>>>
-> > >>>>  From logs Michael posted on the IWD list, the ELL API that fails is:
-> > >>>>
-> > >>>> l_key_get_info (ell.git/ell/key.c:416)
-> > >>> Okay, I guess that's what's actually causing the problem.  KEYCTL_PKEY_* are a
-> > >>> weird set of APIs where userspace can ask the kernel to do asymmetric key
-> > >>> operations.  It's unclear why they exist, as the same functionality is available
-> > >>> in userspace crypto libraries.
-> > >>>
-> > >>> I suppose that the blamed commit, or at least part of it, will need to be
-> > >>> reverted to keep these weird keyctls working.
-> > >>>
-> > >>> For the future, why doesn't iwd just use a userspace crypto library such as
-> > >>> OpenSSL?
-> > >>
-> > >> I was not around when the original decision was made, but a few reasons I
-> > >> know we don't use openSSL:
-> > >>
-> > >>  - IWD has virtually zero dependencies.
-> > > 
-> > > Depending on something in the kernel does not eliminate a dependency; it just
-> > > adds that particular kernel UAPI to your list of dependencies.  The reason that
-> > > we're having this discussion in the first place is because iwd is depending on
-> > > an obscure kernel UAPI that is not well defined.  Historically it's been hard to
-> > > avoid "breaking" changes in these crypto-related UAPIs because of the poor
-> > > design where a huge number of algorithms are potentially supported, but the list
-> > > is undocumented and it varies from one system to another based on configuration.
-> > > Also due to their obscurity many kernel developers don't know that these UAPIs
-> > > even exist.  (The reaction when someone finds out is usually "Why!?")
-> > > 
-> > > It may be worth looking at if iwd should make a different choice for this
-> > > dependency.  It's understandable to blame dependencies when things go wrong, but
-> > > at the same time the choice of dependency is very much a choice, and some
-> > > choices can be more technically sound and cause fewer problems than others...
-> > > 
-> > >>  - OpenSSL + friends are rather large libraries.
-> > > 
-> > > The Linux kernel is also large, and it's made larger by having to support
-> > > obsolete crypto algorithms for backwards compatibility with iwd.
-> > > 
-> > >>  - AF_ALG has transparent hardware acceleration (not sure if openSSL does
-> > >> too).
-> > > 
-> > > OpenSSL takes advantage of CPU-based hardware acceleration, e.g. AES-NI.
-> > > 
-> > >> Another consideration is once you support openSSL someone wants wolfSSL,
-> > >> then boringSSL etc. Even if users implement support it just becomes a huge
-> > >> burden to carry for the project. Just look at wpa_supplicant's src/crypto/
-> > >> folder, nearly 40k LOC in there, compared to ELL's crypto modules which is
-> > >> ~5k. You have to sort out all the nitty gritty details of each library, and
-> > >> provide a common driver/API for the core code, differences between openssl
-> > >> versions, the list goes on.
-> > > 
-> > > What is the specific functionality that you're actually relying on that you
-> > > think would need 40K lines of code to replace, even using OpenSSL?  I see you
-> > > are using KEYCTL_PKEY_*, but what specifically are you using them for?  What
-> > > operations are being performed, and with which algorithms and key formats?
-> > > Also, is the kernel behavior that you're relying on documented anywhere?  There
-> > > are man pages for those keyctls, but they don't say anything about any
-> > > particular hash algorithm, SHA-1 or otherwise, being supported.
-> > 
-> > <https://lore.kernel.org/all/CA+55aFxW7NMAMvYhkvz1UPbUTUJewRt6Yb51QAx5RtrWOwjebg@mail.gmail.com/>
-> > "And we simply do not break user space."
-> > -Linus Torvalds
-> > 
-> > Is this no longer applicable?
-> > 
-> 
-> As I said, the commit, or at least the part of it that broke iwd (it's not clear
-> that it's the whole commit), needs to be reverted.
-> 
-> I just hope that, simultaneously, the iwd developers will consider improving the
-> design of iwd to avoid this type of recurring issue in the future.  After all,
-> this may be the only real chance for such a discussion before the next time iwd
-> breaks.
-> 
-> Also, part of the reason I'm asking about what functionality that iwd is relying
-> on is so that, if necessary, it can be properly documented and supported...
-> 
-> If we don't know what we are supporting, it is very hard to support it.
+Eric,
 
-I ended up just sending out a patch that does a full revert:
-https://lore.kernel.org/linux-crypto/20240313233227.56391-1-ebiggers@kernel.org
+Eric Biggers, 2024-03-13T16:32:27-07:00:
+> From: Eric Biggers <ebiggers@google.com>
+>
+> This reverts commit 16ab7cb5825fc3425c16ad2c6e53d827f382d7c6 because it
+> broke iwd.  iwd uses the KEYCTL_PKEY_* UAPIs via its dependency libell,
+> and apparently it is relying on SHA-1 signature support.  These UAPIs
+> are fairly obscure, and their documentation does not mention which
+> algorithms they support.  iwd really should be using a properly
+> supported userspace crypto library instead.  Regardless, since something
+> broke we have to revert the change.
+>
+> It may be possible that some parts of this commit can be reinstated
+> without breaking iwd (e.g. probably the removal of MODULE_SIG_SHA1), but
+> for now this just does a full revert to get things working again.
+>
+> Reported-by: Karel Balej <balejk@matfyz.cz>
+> Closes: https://lore.kernel.org/r/CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz
+> Cc: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
 
-Again, regardless of that, these issues with iwd have been recurring, and it is
-still worth discussing the best way from a technical perspective to prevent them
-from happening in the future...  There's a fairly clear path to achieve that.
+thank you very much for the revert. I have compiled 6.8 with this patch
+and attest that it solves my eduroam connection issue.
 
-- Eric
+Tested-by: Karel Balej <balejk@matfyz.cz>
+
+May I please ask, though, why you did not Cc stable (and add a Fixes
+trailer for that matter)? It seems like something that would be nice to
+see fixed in 6.7.y and 6.8.y too as soon as possible.
+
+Kind regards,
+K. B.
 
