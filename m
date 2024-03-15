@@ -1,182 +1,136 @@
-Return-Path: <keyrings+bounces-886-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-887-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE2887C683
-	for <lists+keyrings@lfdr.de>; Fri, 15 Mar 2024 00:39:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 459B387CB9E
+	for <lists+keyrings@lfdr.de>; Fri, 15 Mar 2024 11:49:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFF4B1C20321
-	for <lists+keyrings@lfdr.de>; Thu, 14 Mar 2024 23:39:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E2F21C220BF
+	for <lists+keyrings@lfdr.de>; Fri, 15 Mar 2024 10:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD0E101E6;
-	Thu, 14 Mar 2024 23:38:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SowCYaPC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD26618EB8;
+	Fri, 15 Mar 2024 10:49:11 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB84113FE7;
-	Thu, 14 Mar 2024 23:38:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E032917C6A;
+	Fri, 15 Mar 2024 10:49:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710459539; cv=none; b=Nv6m7LKbpHiTfU7SYeprMQLT3x/qrEKT4P6uOtsGb5bRwC9JJKzMnzU0AEjQVZd+rP/oqI1/uQD1CWZTjF1/L4k+xmSreoBaqurYtILR+A6oHwzDnmnf/XHC467zeMBkswJC6sosCIxyN27oEjW7oioE9Lgn5NpcXD7+95CEkno=
+	t=1710499751; cv=none; b=YLSH3I94TcXTw8XAY8rlkU0W9cVU0OCQa1BEYCQzxPI6v2f9l0KSQiTBB7jBxIhC8FBEFiSqU6Ixn7+MhFkY9AhcHu3EQYBPXuHlp5moHZ/HrrgH0xL3h2uoGl6MjVDx0U8bpl+3IL8IZsKYwC8VcvuQJJOk1DRk64GhdtTXpSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710459539; c=relaxed/simple;
-	bh=ToO7+GC40SPPq/DJBkYHMz5VkP5cIZgxtl9+T1qyeNw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FX4en9A/QOie8YbNpuWQN/z2ef0M8KeubaF9OiBzH7ymaaGPgdhX1XOqr4EHPpSUTHZZlky0dOtMQGih/pOC8Z8QLTjp++TWB2xEqOqx5ZeF7XU26Syr98VovRFh4fEXmgD0UTTocR9GFNhVDoMeELa2+AGH3S+NaY7iJCt06yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SowCYaPC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957B9C43601;
-	Thu, 14 Mar 2024 23:38:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710459538;
-	bh=ToO7+GC40SPPq/DJBkYHMz5VkP5cIZgxtl9+T1qyeNw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=SowCYaPCOLjEnDgHQ2XC7R0LqG8iVH1tSpqaCRt02cjOZBaHctbbQFmzEqjRcvhmj
-	 i/Zv0c3M92heLQdOgfA7NRi08RATmBjbXeesA48ueQQzaTtz4oMZJC+BryGvTZ5lm3
-	 hO56AiCBUqrXAEan0fgh5ziDS9R32mi6gkiDZJxFX6Tr8T275Z2BSpkjdh5qiRIEDa
-	 /g22lzM98Iq3qxplKJI1PJDely87LNSOCGJT/fh/f8iXg2Z/v7lVh3UzAkWK6HdC8Z
-	 bvJhRgLIhynwbMDwZicreJqGkqeTdLFI23xGNjsyjPB+cNlOpR29hGWDtjed/bGmM8
-	 7bHtbgf2uwG1Q==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2d4360ab3daso19976631fa.3;
-        Thu, 14 Mar 2024 16:38:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWd2Px/Af6sDtDIT8cbm+QE6lgHKXyCWAQCf3vBqr8tyO8+A83j8fPqfatAzq+Ag/2pojYzm1AWZC60+oeOL/mkfrRaHWXYHVwDYLb1JCaBy1pb1RChTMzSoCCSbD9/Hh6FewnSjf+JaeyqVrtTZXtEZrRP+z0P5DhCqugdfBPeBsb7+wNFI5dz8df9kf4iLenMbUMbo9j2FmGL7p+cEuKYnikYyOmUFVhwvknmgSPLXAhREwx7PhAV8mTuR9UTq37e0FXoKHQwfqByE7+6GBt1pmmaEJx41LIWL7c=
-X-Gm-Message-State: AOJu0YxhxQM6KkgZsEklxfjW5qw2KmMnrPUoyl9vT+Le4EedwOsVwDeO
-	d8u/W51X0Z7sa1wwOfOfPwffsTtzDfYNQQ1+/aKnGGeJoniGAAAIFLIbcYajObokB4O3c5TcpdA
-	RHU6s4MximEJPvz2HYU3TJcLUZxE=
-X-Google-Smtp-Source: AGHT+IF2/ImKbZWGcxV6yAg7OxnoINqcxhfzgB5aBbVZi8+MbYBftvaXns5kzEnVc2lBbJ0XnQ1q0SLbGXlAKuS4j2k=
-X-Received: by 2002:a2e:9a8a:0:b0:2d2:3fac:5fdc with SMTP id
- p10-20020a2e9a8a000000b002d23fac5fdcmr2171806lji.10.1710459536886; Thu, 14
- Mar 2024 16:38:56 -0700 (PDT)
+	s=arc-20240116; t=1710499751; c=relaxed/simple;
+	bh=jivNuqXQZCWLHn2VX0XziwfCEypg4DNg5PJ4X9qRCeI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IUtIVbb6O4ox/p/wfXSNz8qcV32ciXQ7pgUy7q0x1R3m3DlrH5fMUpRsCI9YczBknX2UMCMy/IeE72AWRL1lh4/r38D94oxTNmHO8GwuBGq8wstTg93JDfHGsSKIILXtE5E0+ubtDe4PRvWP6++Eg5d8hg+QNT7Ef4pWk9UBaVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from localhost.localdomain (78.37.41.175) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Fri, 15 Mar
+ 2024 13:33:49 +0300
+From: Roman Smirnov <r.smirnov@omp.ru>
+To: David Howells <dhowells@redhat.com>, Herbert Xu
+	<herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
+	Jarkko Sakkinen <jarkko@kernel.org>, Andrew Zaborowski
+	<andrew.zaborowski@intel.com>
+CC: Roman Smirnov <r.smirnov@omp.ru>, <keyrings@vger.kernel.org>,
+	<linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>, Sergey Shtylyov <s.shtylyov@omp.ru>
+Subject: [PATCH] KEYS: prevent NULL pointer dereference in find_asymmetric_key()
+Date: Fri, 15 Mar 2024 13:33:20 +0300
+Message-ID: <20240315103320.18754-1-r.smirnov@omp.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <005f998ec59e27633b1b99fdf929e40ccfd401c1.camel@sipsolutions.net>
- <f2dcbe55-0f0e-4173-8e21-f899c6fc802a@gmail.com> <20240313194423.GA1111@sol.localdomain>
- <b838e729-dc30-4e18-b928-c34c16b08606@gmail.com> <20240313202223.GB1111@sol.localdomain>
- <db86cba4-0e61-441d-8e66-405a13b61a3c@gmail.com> <20240313221043.GC1111@sol.localdomain>
- <f0492c92-1015-48e3-bfce-598c7a4843d1@quicinc.com> <20240313230611.GD1111@sol.localdomain>
- <a4d24b2c-7dbf-4354-9514-f8a253aac14b@gmail.com> <20240314202011.GB1132@sol.localdomain>
-In-Reply-To: <20240314202011.GB1132@sol.localdomain>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 15 Mar 2024 00:38:45 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXGxxRs6Rkhevm9NSY6TaJUsOmF3UqdHUo=NRg9kQKtSBA@mail.gmail.com>
-Message-ID: <CAMj1kXGxxRs6Rkhevm9NSY6TaJUsOmF3UqdHUo=NRg9kQKtSBA@mail.gmail.com>
-Subject: Re: [REGRESSION] Re: [PATCH] crypto: pkcs7: remove sha1 support
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: James Prestwood <prestwoj@gmail.com>, Jeff Johnson <quic_jjohnson@quicinc.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Karel Balej <balejk@matfyz.cz>, 
-	dimitri.ledkov@canonical.com, alexandre.torgue@foss.st.com, 
-	davem@davemloft.net, dhowells@redhat.com, herbert@gondor.apana.org.au, 
-	keyrings@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-modules@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	mcgrof@kernel.org, mcoquelin.stm32@gmail.com, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, iwd@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.0, Database issued on: 03/15/2024 10:13:53
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 184188 [Mar 15 2024]
+X-KSE-AntiSpam-Info: Version: 6.1.0.4
+X-KSE-AntiSpam-Info: Envelope from: r.smirnov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 10 0.3.10
+ 53c821b925e16276b831986eabc71d60ab82ee60
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info:
+	d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;omp.ru:7.1.1;127.0.0.199:7.1.2;78.37.41.175:7.1.2
+X-KSE-AntiSpam-Info: ApMailHostAddress: 78.37.41.175
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 03/15/2024 10:18:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 3/15/2024 6:29:00 AM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-On Thu, 14 Mar 2024 at 21:20, Eric Biggers <ebiggers@kernel.org> wrote:
->
-> On Thu, Mar 14, 2024 at 04:52:47AM -0700, James Prestwood wrote:
-> > IWD uses AF_ALG/keyctl for _all_ its crypto, cipher, and checksum needs.
-> > Anything that wifi requires as far as crypto goes IWD uses the kernel,
-> > except ECC is the only exception. The entire list of crypto requirements
-> > (for full support at least) for IWD is here:
-> >
-> > https://git.kernel.org/pub/scm/network/wireless/iwd.git/tree/tools/test_runner_kernel_config
->
-> That's quite an extensive list, and it's not documented in the iwd README.
-> Don't you get bug reports from users who are running a kernel that's missing one
-> of those options?
->
-> > For KEYCTL_PKEY_* specifically we use it for all asymmetric crypto
-> > operations, (query), encrypt, decrypt, sign, verify.
-> >
-> > I'll be honest, the AF_ALG/keyctl support in ELL was mostly done by the time
-> > I started working on IWD so I was not aware the documentation was so poor.
-> > That is an entirely separate issue than this IMO, and I'm happy to help with
-> > getting docs updated to include a proper list of supported features. In
-> > addition maybe some automated testing that gets run on kernel builds which
-> > actually exercises this API so it doesn't get accidentally get broken in the
-> > future? Docs/tests IMO are the proper "fix" here, not telling someone to
-> > stop using an API that has existed a long time.
->
-> I looked into the history, and it seems the KEYCTL_PKEY_* APIs were added as a
-> collaboration between the iwd developers and the kernel keyrings maintainer.
-> So, as far as I can tell, it's not that the kernel had an existing API that iwd
-> started using.  It's that iwd got some APIs added to the kernel for themselves.
-> KEYCTL_PKEY_* don't seem to have been adopted elsewhere; Debian Code Search
-> doesn't return any notable results.  keyctl does provide a command-line
-> interface to them, but I can't find any users of the keyctl commands either.
->
-> Then, everyone disappeared and it got dumped on the next generation of kernel
-> developers, who often don't know that this API even exists.  And since the API
-> is also poorly specified and difficult to maintain (e.g., changing a seemingly
-> unrelated part of the kernel can break it), the results are predictable...  And
-> of course the only thing that breaks is iwd, since it's the only user.
->
-> It would be worth taking a step back and looking at the overall system
-> architecture here.  Is this the best way to ensure a reliable wireless
-> experience for Linux users?
->
-> Maybe it's time to admit that KEYCTL_PKEY_* was basically an experiment, and a
-> different direction (e.g. using OpenSSL) should be taken...
->
-> (Another issue with the kernel keyrings stuff is that provides a significant
-> attack surface for the kernel to be exploited.)
->
-> If you do decide to continue with the status quo, it may be necessary for the
-> iwd developers to take a more active role in maintaining this API in order to
-> ensure it continues working properly for you.
->
-> AF_ALG is on *slightly* firmer ground since it's been around for longer, is
-> properly part of the crypto subsystem, and has a few other users.  Unfortunately
-> it still suffers from the same issues though, just to a slightly lesser degree.
->
+With the current code, in case all NULLs are passed in id_{0,1,2},
+the kernel will first print out a WARNING and then have an oops
+because id_2 gets dereferenced anyway.
+Note that WARN_ON() is also considered harmful by Greg Kroah-
+Hartman since it causes the Android kernels to panic as they
+get booted with the panic_on_warn option.
 
-We dropped MD4 because there are no users in the kernel. It is not the
-kernel's job to run code on behalf of user space if it does not
-require any privileges and can therefore execute in user space
-directly.
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-The fact that AF_ALG permits this is a huge oversight on the part of
-the kernel community, and a major maintenance burden. The point of
-AF_ALG was to expose hardware crypto accelerators (which are shared
-resources that /need/ to be managed by the kernel) to user space, and
-we inadvertently ended up allowing the kernel's pure-software
-algorithms to be used in the same way.
+Fixes: 7d30198ee24f ("keys: X.509 public key issuer lookup without AKID")
+Suggested-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+---
+ crypto/asymmetric_keys/asymmetric_type.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-The fact that we even added APIs to the kernel to accommodate iwd is
-even worse. It means system call overhead (which has become worse due
-to all the speculation mitigations) to execute some code that could
-execute in user space just as well, which is a bad idea for other
-reasons too (for instance, accelerated crypto that uses SIMD in the
-kernel disables preemption on many architectures, resulting in
-scheduling jitter)
+diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
+index a5da8ccd353e..f5cbd6ff14e2 100644
+--- a/crypto/asymmetric_keys/asymmetric_type.c
++++ b/crypto/asymmetric_keys/asymmetric_type.c
+@@ -60,17 +60,17 @@ struct key *find_asymmetric_key(struct key *keyring,
+ 	char *req, *p;
+ 	int len;
+ 
+-	WARN_ON(!id_0 && !id_1 && !id_2);
+-
+ 	if (id_0) {
+ 		lookup = id_0->data;
+ 		len = id_0->len;
+ 	} else if (id_1) {
+ 		lookup = id_1->data;
+ 		len = id_1->len;
+-	} else {
++	} else if (id_2) {
+ 		lookup = id_2->data;
+ 		len = id_2->len;
++	} else {
++		return ERR_PTR(-EINVAL);
+ 	}
+ 
+ 	/* Construct an identifier "id:<keyid>". */
+-- 
+2.34.1
 
-Note that in the case of iwd, it is unlikely that the use of AF_ALG
-could ever result in meaningful use of hardware accelerators: today's
-wireless interfaces don't use software crypto for the bulk of the data
-(i.e., the packets themselves) and the wireless key exchange protocols
-etc are unlikely to be supported in generic crypto accelerators, and
-even if they were, the latency would likely result in worse
-performance overall than a software implementation.
-
-So iwd's deliberate choice to use the kernel as a crypto library is
-severely misguided. I have made the same point 4 years ago when I
-replaced iwd's use of the kernel's ecb(arc4) code with a suitable
-software implementation (3 files changed, 53 insertions, 40
-deletions). Of course, replacing other algorithms will take more work
-than that, but it is the only sensible approach. We all know the cat
-is out of the bag when it comes to AF_ALG, and we simply have to
-retain all those broken algorithms as executable code at the kernel's
-privileged execution level, just in case some user space is still
-around that relies on it. But that doesn't mean we cannot be very
-clear about our preferred way forward.
 
