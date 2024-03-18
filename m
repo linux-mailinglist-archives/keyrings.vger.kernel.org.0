@@ -1,46 +1,46 @@
-Return-Path: <keyrings+bounces-920-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-921-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C4087F3FB
-	for <lists+keyrings@lfdr.de>; Tue, 19 Mar 2024 00:27:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2154B87F428
+	for <lists+keyrings@lfdr.de>; Tue, 19 Mar 2024 00:39:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BDAEDB2171B
-	for <lists+keyrings@lfdr.de>; Mon, 18 Mar 2024 23:27:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC00D281018
+	for <lists+keyrings@lfdr.de>; Mon, 18 Mar 2024 23:39:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02AA5F544;
-	Mon, 18 Mar 2024 23:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E4BA5F85F;
+	Mon, 18 Mar 2024 23:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sZ9De5F4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fRxQxe1v"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24755EE8D;
-	Mon, 18 Mar 2024 23:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712655F859;
+	Mon, 18 Mar 2024 23:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710804468; cv=none; b=gngeMNvp/MNcy7RWXZnlPO+hM7mbtjg4+AIAprnoyxWAtOSnlV+8ujBEjWgUUBwdOqb5aqyEBONNhgC1tHiaxBJ+DfC3gsy5TKKYyN93zK4twzLuMaMA6pFuqvaSCZqDzv1nA5grXQIAgTZelw7D4Jz/KP0Zqci55cu8cY21m2Y=
+	t=1710805145; cv=none; b=AuQp2vawRqTbW1j3sdmUNtrryyUVomPepuhgnZ3S0Rsv/jlMpm8nKhDbveBp2EMCdK6frS0y6oQywY2GC5Zc9gbM5rov35N6WClS2WdOOYFoLvI+S66kl+XdLkxTaDw84aokJW3FC0lpdq17TzHzMSMG2BQ31acZvClALvQ33qY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710804468; c=relaxed/simple;
-	bh=0S9Y9rj/bpBXjc+MXn4SjJDwIYcQoHrs8PTRftXmKbg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=V2Y/KHeTLFzPKE2S6FWtLfJLE4H2258bRkqD2SvE87WkEH7kahyIp/ARats6j5vFT4lWSJ+7TDD8Dgd3o4qLC796DatVMESZlYFVzUTgVRsWrhnvVbWy9SxQluBUDjnqdhMUpQ9usi4jcGYImqNLYFMBlzaFlFjQ4zK9uLOyuPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sZ9De5F4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89F4C433C7;
-	Mon, 18 Mar 2024 23:27:46 +0000 (UTC)
+	s=arc-20240116; t=1710805145; c=relaxed/simple;
+	bh=vNPV+Zm1jo6GQke9UBMxQprrLogWyW6mK1dZOZf+eZ4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=AASBViRejV7jwIgjj+TW5gZgGwB0qUAp1iLUrDulUylYjECAxz/P/xpSgTfAUl/s/DVSzj0cigz0oLs0XeTXN6N3BBd4sm2vTBkmJ5Q52ofxcE2psyFY/eZLXg2fcYhj22p24gXlNMaK7ZmO2ngODUV+TXWPlMqnAeml/QHT4uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fRxQxe1v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A9FC433F1;
+	Mon, 18 Mar 2024 23:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710804468;
-	bh=0S9Y9rj/bpBXjc+MXn4SjJDwIYcQoHrs8PTRftXmKbg=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=sZ9De5F4jx9EWCCKHHN68q69J893Wu0LXedrHo0Pd7sshJ4F0LaIa1U2P1QAKLPou
-	 fnz7dOYTgXxkorf/6bxIhpwstJRGMjqRkJYndfWtOmPOR5zPr6hRSAPB7XExg+vL01
-	 /yS9SZWixBhulgLuF2um2WOovtaOAMINgbfuOzO8PQwYBnJvk1ixED+ZR7gA+5m8nu
-	 ESkRmitczgmM8K9NgH5/qK+SKrcIBHJd8ELdV1GHURKz7VGQTpAeLQ7poja+1txgOz
-	 x7jw+0f+PlxJoAqj7cfi7iFbZ9aCJ5/Dd4U9A/lyBcWxrDS21sRV0cNX8bKOKOPkC6
-	 AGS6ByrRim3SA==
+	s=k20201202; t=1710805144;
+	bh=vNPV+Zm1jo6GQke9UBMxQprrLogWyW6mK1dZOZf+eZ4=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=fRxQxe1vX8gFA4H4/tqhTxyx1PTwtyNbL63yiwezOezdjGrGu2yUxdzdrO6YfwvDJ
+	 Gy2MYnigaGTllxZyONLD/zOrf14lQ9QxcUqxZc4DwlWfec16z2A2zYb3Ja7d2ggEAj
+	 SDGtivMXm0puj/iglEDdFF7AJBHiljiYpaCvuaopqHnubCGqrkbs+ijVyhNaALqQpb
+	 jFacRouvnfhdEc9PNNd1FFZquD0pWYM6LXBh7iot2GreTyHec1jci00jEH0FwPmum/
+	 C8QpZe/h539LeIGNqtwghhAZzX2XYyqzRk3f2Hd6ddNmiBkELNZuQjVwWXXvGPs1JW
+	 6Z436URGh79cA==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,65 +49,96 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 19 Mar 2024 01:27:45 +0200
-Message-Id: <CZX9KHAO8163.2IASOXWIT4OZ5@kernel.org>
-Subject: Re: [PATCH] keys: Fix overwrite of key expiration on instantiation
+Date: Tue, 19 Mar 2024 01:39:00 +0200
+Message-Id: <CZX9T3TU6YU0.3JE9M7M3ENUE0@kernel.org>
+Cc: <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>, "Sergey
+ Shtylyov" <s.shtylyov@omp.ru>
+Subject: Re: [PATCH] KEYS: prevent NULL pointer dereference in
+ find_asymmetric_key()
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Silvio Gissi" <sifonsec@amazon.com>, "David Howells"
- <dhowells@redhat.com>
-Cc: "Hazem Mohamed Abuelfotoh" <abuehaze@amazon.com>,
- <linux-afs@lists.infradead.org>, <linux-cifs@vger.kernel.org>,
- <keyrings@vger.kernel.org>, <netdev@vger.kernel.org>,
- <stable@vger.kernel.org>
+To: "Roman Smirnov" <r.smirnov@omp.ru>, "David Howells"
+ <dhowells@redhat.com>, "Herbert Xu" <herbert@gondor.apana.org.au>, "David
+ S. Miller" <davem@davemloft.net>, "Andrew Zaborowski"
+ <andrew.zaborowski@intel.com>
 X-Mailer: aerc 0.15.2
-References: <20240315190539.1976-1-sifonsec@amazon.com>
-In-Reply-To: <20240315190539.1976-1-sifonsec@amazon.com>
+References: <20240315103320.18754-1-r.smirnov@omp.ru>
+In-Reply-To: <20240315103320.18754-1-r.smirnov@omp.ru>
 
-On Fri Mar 15, 2024 at 9:05 PM EET, Silvio Gissi wrote:
-> The expiry time of a key is unconditionally overwritten during
-> instantiation, defaulting to turn it permanent. This causes a problem
-> for DNS resolution as the expiration set by user-space is overwritten to
-> TIME64_MAX, disabling further DNS updates. Fix this by restoring the
-> condition that key_set_expiry is only called when the pre-parser sets a
-> specific expiry.
+On Fri Mar 15, 2024 at 12:33 PM EET, Roman Smirnov wrote:
+> With the current code, in case all NULLs are passed in id_{0,1,2},
+
+"current code" is not unambigious reference of any part of the kernel
+tree. Please just write down the function name instead.
+
+> the kernel will first print out a WARNING and then have an oops
+> because id_2 gets dereferenced anyway.
+
+Would be more exact":
+
+s/print out a WARNING/emit WARN/
+
+> Note that WARN_ON() is also considered harmful by Greg Kroah-
+> Hartman since it causes the Android kernels to panic as they
+> get booted with the panic_on_warn option.
+
+Despite full respect to Greg, and agreeing what he had said about
+the topic (which you are lacking lore link meaning that in all
+cases the current description is incomplete), the only thing that
+should be documented should be that since WARN_ON() can emit
+panic when panic_on_warn is set in the *kernel command-line*
+(not "option") this condition should be relaxed.
+
 >
-> Fixes: 39299bdd2546 ("keys, dns: Allow key types (eg. DNS) to be reclaime=
-d immediately on expiry")
-> Signed-off-by: Silvio Gissi <sifonsec@amazon.com>
-> cc: David Howells <dhowells@redhat.com>
-> cc: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
-> cc: linux-afs@lists.infradead.org
-> cc: linux-cifs@vger.kernel.org
-> cc: keyrings@vger.kernel.org
-> cc: netdev@vger.kernel.org
-> cc: stable@vger.kernel.org
+> Found by Linux Verification Center (linuxtesting.org) with Svace.
+
+I'm not sure if this should be part of the commit message.
+
+>
+> Fixes: 7d30198ee24f ("keys: X.509 public key issuer lookup without AKID")
+> Suggested-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+
+Should be reported-by.
+
+> Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+> Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
 > ---
->  security/keys/key.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  crypto/asymmetric_keys/asymmetric_type.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >
-> diff --git a/security/keys/key.c b/security/keys/key.c
-> index 560790038329..0aa5f01d16ff 100644
-> --- a/security/keys/key.c
-> +++ b/security/keys/key.c
-> @@ -463,7 +463,8 @@ static int __key_instantiate_and_link(struct key *key=
-,
->  			if (authkey)
->  				key_invalidate(authkey);
+> diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric=
+_keys/asymmetric_type.c
+> index a5da8ccd353e..f5cbd6ff14e2 100644
+> --- a/crypto/asymmetric_keys/asymmetric_type.c
+> +++ b/crypto/asymmetric_keys/asymmetric_type.c
+> @@ -60,17 +60,17 @@ struct key *find_asymmetric_key(struct key *keyring,
+>  	char *req, *p;
+>  	int len;
 > =20
-> -			key_set_expiry(key, prep->expiry);
-> +			if (prep->expiry !=3D TIME64_MAX)
-> +				key_set_expiry(key, prep->expiry);
->  		}
+> -	WARN_ON(!id_0 && !id_1 && !id_2);
+> -
+
+Weird, I recall discussing about this issue in the past. Unfortunately
+could not find the thread from lore.
+
+Anyway I agree with the code change.
+
+>  	if (id_0) {
+>  		lookup =3D id_0->data;
+>  		len =3D id_0->len;
+>  	} else if (id_1) {
+>  		lookup =3D id_1->data;
+>  		len =3D id_1->len;
+> -	} else {
+> +	} else if (id_2) {
+>  		lookup =3D id_2->data;
+>  		len =3D id_2->len;
+> +	} else {
+> +		return ERR_PTR(-EINVAL);
 >  	}
 > =20
+>  	/* Construct an identifier "id:<keyid>". */
 
-I checked the original commit and reflected to the fix:
-
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-
-David, I can pick this one too as I'm anyway sending PR for rc2?
-
-[1] https://lore.kernel.org/keyrings/CZX77XLG67HZ.UAU4NUQO27JP@kernel.org/
 
 BR, Jarkko
 
