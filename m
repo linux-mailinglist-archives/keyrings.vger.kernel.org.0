@@ -1,67 +1,67 @@
-Return-Path: <keyrings+bounces-891-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-892-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC4587E356
-	for <lists+keyrings@lfdr.de>; Mon, 18 Mar 2024 06:48:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A55B587E369
+	for <lists+keyrings@lfdr.de>; Mon, 18 Mar 2024 06:58:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34E741F21712
-	for <lists+keyrings@lfdr.de>; Mon, 18 Mar 2024 05:48:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C0951F21127
+	for <lists+keyrings@lfdr.de>; Mon, 18 Mar 2024 05:58:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E8A21A06;
-	Mon, 18 Mar 2024 05:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582D921A1C;
+	Mon, 18 Mar 2024 05:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b="PLAHcyR3"
+	dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b="a1xO4zSz"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3883219FD;
-	Mon, 18 Mar 2024 05:48:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ACCD4C84;
+	Mon, 18 Mar 2024 05:58:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.156.173
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710740897; cv=fail; b=ZNQ8/TgyiFg5T4UjKGaXHE1gXRHHX+2TYIA0LXk90WrjdpV6nj2LEdokUZPaHU/KMsXor1LQcUWJoD50v1lJnwo1+a860+0yeC/HogD4SHMkQg5y7Q1WVPrGwri6loYCGmwVEeca9lY2C92dat96Dqky56Q9btc4RbBKIvLW2XQ=
+	t=1710741524; cv=fail; b=RDVLV53DsJNd9vEudriFTQKNqgwZZ6XMTIRjUsS5eTggfwIPSu+G3vK/iiqDaIW9xZytKokCY4oMOtELf6jj3KPyV/0wYx6JF5zT5wqQ1hOnk6KFs39g+5mkxS6fm8FAB6o2jX1uLKiFEL5oqfXWgOuAuUR+MEHilMeAfzeCLS8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710740897; c=relaxed/simple;
-	bh=1SL6dYvJ+SiEZThpIuKUg5+XVkzewA1bEWLG6VuAniI=;
+	s=arc-20240116; t=1710741524; c=relaxed/simple;
+	bh=vZMhh1tS57E3I1BwHYWnfEq2ayIKr3xRX73KypGpo+Y=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=B1AyLXeN7UuAFunSKM9A8HTIQ3gebH9O+76Z5Y1v96yp/S1Z804bUxZxBKGAcowNMxdI/9D0PTM+4T8s36Y/9BH0IcyeIYa7IhJlSivAQ7osPo0f4YXf19EwDs2/gGZQioQSIMn0tXThi5fdanMX8jmdqX4J+TYREF+8OPzAaq4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b=PLAHcyR3; arc=fail smtp.client-ip=67.231.148.174
+	 Content-Type:MIME-Version; b=fVi1MIiV/JfPrQAEVnFjaLN4914NNRpk2qOVmwpCzrTFPqrBt6CWzNoRp9M0aq0jEa+gVDFxFUeecETaxSfuzQ8bHcnBGK+VC2TuQGRxOaXS+KFkix7uT5Q/YH/5XfJbpAdAj8Lus4uD9hXiQ7YjpB0ZZxGSXAmMgfHOBQFJj8Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (1024-bit key) header.d=marvell.com header.i=@marvell.com header.b=a1xO4zSz; arc=fail smtp.client-ip=67.231.156.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42HN1L3A032363;
-	Sun, 17 Mar 2024 22:48:00 -0700
-Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam02lp2040.outbound.protection.outlook.com [104.47.56.40])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 3ww8skm18u-1
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42HN11HT016545;
+	Sun, 17 Mar 2024 22:58:27 -0700
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2169.outbound.protection.outlook.com [104.47.58.169])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 3wwaxgbq50-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 17 Mar 2024 22:48:00 -0700 (PDT)
+	Sun, 17 Mar 2024 22:58:27 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AIoU0KTgKBAyOPhORVeSDrNUvj2AHJdILB/p4eBPiZHjWjPHkpl4k5qP++6vWPW5VVnsvNbWGOo7FE7oEvXi8ZUsiXPzTK9lqb+nupRWdD4EQ6vf7MR0mc0OgOlbdxZwr4QQTu4ml5dZJwIfgRB5ExmnzpzamPIob2L61jeMkZ7XvnX8kHRFO5DpiQJ/C1sH+0WhzvNiOUf6dW82rfoP/oPbX6Sf46BHx69jzIFlWOCWP/l3IVM4uHnimalwIbrg/7P6nA3I9lU3TgZMxLGzhWfvRp+IT0068lwJVsqwmW84RdBdFParFQNpamCljVHzZ/tv0rSjqVYM8pVx7nKkIQ==
+ b=ZcdP2JFMSBf9bdvIu0uEbuMnkR/+eTcCrZdRsxWGhZMNWYdRSFN5MAG7yN7vTF2TUawuhqcuNXFQ5sNWTi9BjSAxTdDPaSd8weRQeMtIIHveP3j+LDtZSRn+ROBA4RJU5XDKs4P7EUy13aHPYL+V0SS4BHmuXzyEFSgYiXazkphGW4aeSDwdf+bCeGYmyjLOOdpU096q+S1T5yO7JdnCR6CNXkzC6r7KdnX2GzZwZVYTJDGpcX2JSqdGOpOpCAVxOljvCqmhIUgNFc0MRjpZEAIe2lWazZtuM7pwvwemO02UV5T+BrMByx4nx85i2vYTMMHH0iNoD1Vq5VVObZ4oCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0Qjkf2rtVCsRvLPxj16IyiUHy8QtvawTUOmaxZRF35M=;
- b=Teb4E5wO8BdZV5/vtjIZlT4wJ0aZaDfyM9k4ew4sVNSQlg9IlLmm/XKTss/9EQD8YFPsMOI2MJnOZIKoS2E22MR9qg84KtlPaupfEOLVUW1o7sROgzbQxwMBSLbzcUQ1JQJ74n1IuwNs6ez0xhHaRfJnl7UelVHDyxjJZnyY5JejvhIUmnhLtz+Ac8J9ZlCMsfhIurC+lnFdCPvcIuD7iP8ylmlIbJ1M1kmBF546fcpEP0+oVLD2XxqEMP+RJBtbCrGcDwej+7pejnh/923iO8Ic44DRX7FaSpHNKoC8aV7Xmv4dybdi3eWxiS+xcfz5vub0GpaGQJeOPskcYjBLYw==
+ bh=QFEMSMFIro3fNxCwZgs8wiXil/NHez/Kyhq6J4r/H7U=;
+ b=GtZ8SCBwkAJIdN0AvNqwUvl9v02tYoBQ6JQtcn23bJ5/ee84/QtwSlIK5fBw53DUKvkif5zaK/BbtvC3X5muKTjpNvajWhtA5edBWlUHgwRlBjpmB73JO5Xjp4tBuE6uSVAOSUrE1+cYRwCWT4acn1jZQYq6PW6xGywctrFxFzbXeqmtT8yQavcMVQPcmYnA4Ldd0WkXaZ/S8z5UealKd/cb5e/cTz7+ZRiPrpDWabqqrV5DPbcqUewzZmGHcjnIXaf/3/ps9IOrcc3wA06dZBQCWOfgVpnn4EIvLweIIhe/xwHl75pEoohvcs4iwMvkelEd+ah+5gK4CM72Qs8wWQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
  dkim=pass header.d=marvell.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0Qjkf2rtVCsRvLPxj16IyiUHy8QtvawTUOmaxZRF35M=;
- b=PLAHcyR3f8usFGV+AHvOfaTpVHFHklcN+b4bubXctILePe0e46Guw2z437dTNmXHR69TzOzMWY/U1n0eR416gZaPOd2b9oixddD8T5tBSCvOavi8jSn1fh7wiLk1Yc8D9yI20iCzOA8E8jmmAv8PbXX5bpRyX1hFuu6+HzLaJhg=
+ bh=QFEMSMFIro3fNxCwZgs8wiXil/NHez/Kyhq6J4r/H7U=;
+ b=a1xO4zSzGh1dYgC5qAsgG1Zyi7urgCI5+e6osVffkZjoHEFKkUKSdMQfS6WW0uMwB7v1boEsnWM7v2vnoSsHNkUcr8k9eDlEZFlVL06iJVAswWhxVduTVdxBa5qpJqktACJU/4k9sP2QEykD2f2xlmTLLJT9E27chtLARcdTPP4=
 Received: from SN7PR18MB5314.namprd18.prod.outlook.com (2603:10b6:806:2ef::8)
- by CH3PR18MB5600.namprd18.prod.outlook.com (2603:10b6:610:199::18) with
+ by DM8PR18MB4503.namprd18.prod.outlook.com (2603:10b6:8:3e::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.26; Mon, 18 Mar
- 2024 05:47:55 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.27; Mon, 18 Mar
+ 2024 05:58:24 +0000
 Received: from SN7PR18MB5314.namprd18.prod.outlook.com
  ([fe80::926a:6eb8:6d4b:656a]) by SN7PR18MB5314.namprd18.prod.outlook.com
  ([fe80::926a:6eb8:6d4b:656a%7]) with mapi id 15.20.7386.025; Mon, 18 Mar 2024
- 05:47:54 +0000
+ 05:58:23 +0000
 From: Bharat Bhushan <bbhushan2@marvell.com>
 To: Stefan Berger <stefanb@linux.vnet.ibm.com>,
         "keyrings@vger.kernel.org"
@@ -76,60 +76,60 @@ CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         "lukas@wunner.de" <lukas@wunner.de>,
         "jarkko@kernel.org" <jarkko@kernel.org>,
         Stefan Berger <stefanb@linux.ibm.com>
-Subject: RE: [EXTERNAL] [PATCH v6 06/13] crypto: ecc - Implement
- vli_mmod_fast_521 for NIST p521
-Thread-Topic: [EXTERNAL] [PATCH v6 06/13] crypto: ecc - Implement
- vli_mmod_fast_521 for NIST p521
-Thread-Index: AQHadKxnItlGMkulP0OOPNqggLqEwLE9BMsA
-Date: Mon, 18 Mar 2024 05:47:54 +0000
+Subject: RE: [EXTERNAL] [PATCH v6 12/13] crypto: asymmetric_keys - Adjust
+ signature size calculation for NIST P521
+Thread-Topic: [EXTERNAL] [PATCH v6 12/13] crypto: asymmetric_keys - Adjust
+ signature size calculation for NIST P521
+Thread-Index: AQHadKxnbxR4a5LtXUqbsGZIoA/WRLE9CEiw
+Date: Mon, 18 Mar 2024 05:58:23 +0000
 Message-ID: 
- <SN7PR18MB5314CB6B4CF9678BDDF0D012E32D2@SN7PR18MB5314.namprd18.prod.outlook.com>
+ <SN7PR18MB531481F0A287ADCED3711193E32D2@SN7PR18MB5314.namprd18.prod.outlook.com>
 References: <20240312183618.1211745-1-stefanb@linux.vnet.ibm.com>
- <20240312183618.1211745-7-stefanb@linux.vnet.ibm.com>
-In-Reply-To: <20240312183618.1211745-7-stefanb@linux.vnet.ibm.com>
+ <20240312183618.1211745-13-stefanb@linux.vnet.ibm.com>
+In-Reply-To: <20240312183618.1211745-13-stefanb@linux.vnet.ibm.com>
 Accept-Language: en-IN, en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN7PR18MB5314:EE_|CH3PR18MB5600:EE_
-x-ms-office365-filtering-correlation-id: b295589e-0e27-4967-b328-08dc470ef534
+x-ms-traffictypediagnostic: SN7PR18MB5314:EE_|DM8PR18MB4503:EE_
+x-ms-office365-filtering-correlation-id: 4680eb97-6b2c-4661-3113-08dc47106c1f
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
 x-microsoft-antispam-message-info: 
- IK7XwKm/AMfNXL5TgbMZCOjI79keJR0wdRhfgXQKSmM1t5euFlnUdZJVB500cVpmwYlft6sIHCZR0XossudKKk7RpVyMqZY+L6tyJih6S05i+2nVz5PmB48yFaMt+iimOsedSkh7heq9EjcEbH7LYDDP8qLqxg3d1KccMph6ziLMjoaqfbpBYY3hRSQfl1S8AQhA8lWHwy/NDh3wE6x+rrV4qJnb3d4VHRhGGto2KE+ZuIlkFTkSy8J3v1f5CK74aLMqkOlvgfR5j76rRSum8PMsm5pfF7QA1p35sq9bu31PYLpuEKFMRGL6Dro8WvTdm0Y1fHdUJbvjcS6L8ljOXwA3K32lskTzRGpjo0UE2oOBNo7Y6LsubVmA6V1jfrqS0J6PieTGGsv+kWd/C5cjR89LPqV3ZZ+DD42f40hXSOaNMs4ry2U3pEMSPyXSFlzNJf27ImfyRwMdlm8w/c+N4apIw9CYV3wQfGP3MYkbjVmIeT4AyY4vTTuVyvjUA9OU4AcE/77MOF3PkgcOnP7NH7VuOE26g0/NjuFP+h1pICQ1BxjckseikMZOeHUeIJwsOAyf535G7ZLDFR85JFWIu4vfSRkzxzvCt70d5ScCtL0Ko7G3HQBXAcs5AzoA/uzmqt/4iviiIl4L5He5CXUC9O586YwEVupSibEF/XrYURJlD420Tn02azGW/y0HZeeGHOLC7N5OeVk5Rrpsjbd81mrZEOzBCeogs8efznepH+g=
+ yrrDh0F5+5z/uswH9NYKE5uoo2l2k8f4XEIomw2DMZv4Pud8klAXuKujMac1Xtai8F2HozfhU/U4ZUfP/I07lEe+rpI6svnlSG5g6onx9ki82O2f+kxe+mjFgEVPLu6Co3gahSXAglkCABTXF5kjZ9TZ00W39TDCU8YXMNmMRMQoXL422P45HS6HB5MuUtRpCM9nfQCHnWJ0PeZpuHUTGYwnDPCWtup/Tb5q9jXCFz7aYxzloCaYQDyeaRuULWX4cGOOtV9MVcE95J12wDMZNOUSBj7kGaMuJOuMkx7vSz52f6BsDEy4VZgan06w8g7K0KRiXZbFLUytIcig7bBwH8saYIpwajDuh/6Tx0s9Rj8uTep+HpY4wcFcz3EtWclYj8NQrE+jcgdUewsKM185qdxsCY9GINtsGq9G23d9XhFTQJkT7HP51Xl+dEtL8uAd+PyNLfqKUwvQPGNbsMb5T/HWJOhB3L3tghesEG863Oic5J0+80eisaYdJqT8o9o3b8iT6RR9J8dKsUzQ7kOHTaX5gc5cNMhLl9Jh30rbYc8i9lRai7kupeWz8ELpWk8bTKEqQuAamYURSSR6iIy6mpyqNU8CEI/rjaQpgcjWvFTK0VlomKycPQZ7gqn7gA9djDQ06paMpkyRkCy+bLD8+t/1Gp2IQxjdEpWoXRmpIcUrXDk/gsK7mG250CKciG5RJ0X91q6goo8e0k1DQz+bQ0Sdirvrxky5r6b5g5MOkxw=
 x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR18MB5314.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(7416005)(366007)(376005)(38070700009);DIR:OUT;SFP:1102;
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR18MB5314.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(7416005)(1800799015)(366007)(38070700009);DIR:OUT;SFP:1102;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
 x-ms-exchange-antispam-messagedata-0: 
- =?us-ascii?Q?Ocq4HdmnO3AWJUWVLhiMT1NpxfVDiAkd2mDpU+H9Yt41RfAQZZMuiUf/BrhO?=
- =?us-ascii?Q?fA4gH7ZTiJQMavl3OFjXcro7ZCy7nVEc0kxL7AHoUzjfGDrNjkUVu0iVbQAY?=
- =?us-ascii?Q?5+L/OQcthF0TlL55f3RqKm/evHR/R5UiFlaaKLGVgkO4P79D0nm0c2czngMS?=
- =?us-ascii?Q?1Q0HzI7Xv/T7xmJkYeJEpGyW7n4tY3wUDEcrAvAdl0DZYHTfk2J4afQcHIkf?=
- =?us-ascii?Q?Ztic3zxa+dT9LD5NU4x++xeiW8bw2cl6qqtG0dnqSBCij+sdw7WFreXjkOlr?=
- =?us-ascii?Q?zsmIckDseXMCo3+e9YwWDZpE0nxMg29ryZ8Y1dhXWfZ8UL16wNb7ouaC5jiw?=
- =?us-ascii?Q?U8jHt923TZwP4poZCfP4QxdAdRSCLlPAyreW6AiOXAgO8KMi1xcJn9Dog7hp?=
- =?us-ascii?Q?DkQPLsgTjFnc9Gn+2P6SMheCrniNawwi+l7QMnUgyG7mR6tKCg4jfQ3VoVot?=
- =?us-ascii?Q?opvTHqXIT4g6VRBB+6Hrk971RVO/6VLTI+O3BddoMNRdkX5BUOAdUjmKbIZt?=
- =?us-ascii?Q?g9x2w2c0oHF4oZFpfm0ckSveHufevSvPdF1KA6DXWFA39HohsZd8/7ZQJEF8?=
- =?us-ascii?Q?UQlHGzpKQjZyPhIdGeXlVlB2MzgKKqLPb793wEJbhbALolGjclKtJMYgyWwz?=
- =?us-ascii?Q?Do2sI1Jve4PPaxs/SZjM5nhflMzje+MAyGqCbLeM/Zwjzn73KE/BjZuC3D2C?=
- =?us-ascii?Q?vFLonOjnf/cFnCwrfc32YoQUuXMWTlHqhp5snNvN2Esc15NzVd685MQPm4dl?=
- =?us-ascii?Q?G2wOMIucBVtlCYrWA2i+l3oX2qdabMH4ou1HSsmZq3iN5HUfYuewdEPvoWwg?=
- =?us-ascii?Q?U/o48jXYJYli6Ju1s3U0+7+PGEoADjl7wphCEgZ7+XkMgV21kRiRq4h8/rqF?=
- =?us-ascii?Q?67xvdtNEJc6+6OUBIKW7t3qALcGd3WHUxs9ULGSQ2tD5up30NLH5puT/D225?=
- =?us-ascii?Q?ZZfOf0EIAmwe/6LVSlT4NMtH02B/yo7kaBS3BF4BNovLGSwsQbBHjOhh9UGo?=
- =?us-ascii?Q?9YPbr2QDxwTlYrsnp3YlpoaMmR58xu65h7Sub4GLaw8V1vNhX16jzxt4hOg/?=
- =?us-ascii?Q?t3vrxIllQtFTYqS5ksm5mL2yzx1OctJeiSHf3GZW44j2xZd8cZzHOezWznzE?=
- =?us-ascii?Q?6H4wkp0Qjjkrb6I+KhYTFto4QjRnPrmUic7hquMbdTb3qx5uMuC4t6GRoxqb?=
- =?us-ascii?Q?rUbqVXvVNHfB0emBtc0Z6nPmIzAnhbSsTl15ihO7cGiGj1btvIfE39Aw2clT?=
- =?us-ascii?Q?OocPmiMFqjyCPONfkQtOug93mRph6+u/JyNzFNJErZKptvwxjiQNYo6lqjIR?=
- =?us-ascii?Q?vQm9U+/gJFnaS1Dzwy3n0oNrIG9D7zY/8U15D2fICNeToJv+Q+1uYuxeO9E+?=
- =?us-ascii?Q?8DjGCdkt0MNTMySlhQJdk1pkd+Ry8UJvSBSiXCM9XIcjHpvilfHwjwMX1FW+?=
- =?us-ascii?Q?38kkX0tnM2N36SkBgw47im9jwIZ9hgEzPK2LNr95I9imOHwV6alCcpZUhAkT?=
- =?us-ascii?Q?Bh7t8eqmRrRs219D1an1VmE7dHyRflRoPNhycSa7u8ItyQQcjK5U5rx4lqak?=
- =?us-ascii?Q?DjyzGofF3qfRJ7CZKfOqQUUSDEkL8YPRyFd+bruQ?=
+ =?us-ascii?Q?1ss7uPV5gvIBO550qtCCqrKRSe7UWLRnTUDJjoYGYJSmGag7UhA/dwih4GqT?=
+ =?us-ascii?Q?esDbR1AL5BkLJTdaiL9wf+gGZL1qwh7hWF+5ZOPIqWa3/A4ewP9PDBrpkYEV?=
+ =?us-ascii?Q?1MyhA/gcBrCwM3p30meQ4FcjiA/lZwW43kqugX5pSDEg9W1SEttmFn5klVJX?=
+ =?us-ascii?Q?YMpBm1RsqVmdR0o5CwJx9wh2BLVc6upDmiVfsRFpsD74p44KWZBbiB6g51DG?=
+ =?us-ascii?Q?LWsEv+d3vDIZiDQ+XmPhrtY/h/IFbVfHJ8GIEThGUKoxvAcc/el5duGzR22h?=
+ =?us-ascii?Q?BIv/VBFZ+2Um8hL4sKvBvmFB2H2o+PP6uuWwoC8g3i4/N/EUT4elXfaUM+qI?=
+ =?us-ascii?Q?oeHe2z0LEmTUTUcS8C8J+eEXpcUZ+RdJBZwx0QxzBHqqZqhgT/hIVBeUhRsy?=
+ =?us-ascii?Q?dOAuujhd7zQdq3iKhmFVni6wzurzkPtxO0Lc+V7ZcBLR1aqtUQS6S7gp3agN?=
+ =?us-ascii?Q?MbKwCODcqRmlEinDvauvoFxxTDHlb1Oyu1Nt613teAnG4lwCEClobD00bRqM?=
+ =?us-ascii?Q?133GK0TZ2fud1NuGGwsDM55+25VQ8dZu58PSAdqJn9h0v7Jtmw8mSCHtiYc5?=
+ =?us-ascii?Q?DptVSROakVcmky0BSd9MTc405BtB2+EeEYdNqHN7W5/D3W7m+IriXOGibveA?=
+ =?us-ascii?Q?hZIA3OY1Tups3U2H+u0yaGqGhmSpt5s6sTZmZHchrfyl5AgyI4fNU5zRvHg8?=
+ =?us-ascii?Q?Uz24ClkS20Bz3z3Uqqi2OLwS4p8i1WrqES35Rahm/UA6NXVteqXzM58Fovie?=
+ =?us-ascii?Q?toAbDZztV4utwEm734KqE5Lx95OUSwAWiaIcrv7uAsn06oLnOOCyU3IVryoJ?=
+ =?us-ascii?Q?dMuELvAMxMXMJwj7WOkXOv8xWnurRQrpAhDYAnx3RM4sLsreZR+P0MhaDIs1?=
+ =?us-ascii?Q?GcWDTBpcqLxoy8Hu+4m4udcKzoO6CvsoTreOYx1fIfbIHbwTnrj/flQoAZBP?=
+ =?us-ascii?Q?SdI+CWqDUKSlRJGSiaMocQme8qeNDUoTo6+ifMSbuXSvxlgyepSigOB/moIA?=
+ =?us-ascii?Q?98YVnCS70BY+yRHd+YzNCISF2FmFfINkGhd4BXiwakoYx2Os8C+1QOuis+dN?=
+ =?us-ascii?Q?inMrGWo8YMC5oh+bhL0U/OMlcW3rDum4DmxX0xb2hbKMWBX0KSiy6Z7+QIz7?=
+ =?us-ascii?Q?htUskiv5uMOg33ezRu9YeLJrQ6Bp5l4vajaGgcxwcx741nnmgBXbx1lIGtHW?=
+ =?us-ascii?Q?bKYmrp0WrffE4QdSOVQST2AGPiTuNjA1hExe0JWSScptDsyFKk+2Q2qfDwIJ?=
+ =?us-ascii?Q?ENr12xDnYdM8occyGFmPjPNF30rewGWvZuYDjjsHxDzhb7ZaqwIZm7rGhPJb?=
+ =?us-ascii?Q?V9y9fPfVUn7mTuQme32vPyWz4OsCVLiJNsJ/WTmStBghP9EtCqpTakwsbSDE?=
+ =?us-ascii?Q?2/eOBRelxEDGU/Ubvk5TGEd8OZw5dXBpdioXijr6S2JJYVhH2ADo7oNoFHZ1?=
+ =?us-ascii?Q?fxaACznROT1z1TeC9/6W8Q6o4apEqsCFcO4hYhaIKISZwHhLaKCT21rr/8A4?=
+ =?us-ascii?Q?a4oKyWTFVhRKM6D9RAsHAauO9GQ8QWLhx5BuPFfn2OUC+6hRsiC3CDIl/A7G?=
+ =?us-ascii?Q?9pxtVASDrcfvlqIppn7GryYQdyU5dLwX1802O3ZK?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -141,16 +141,16 @@ MIME-Version: 1.0
 X-OriginatorOrg: marvell.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: SN7PR18MB5314.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b295589e-0e27-4967-b328-08dc470ef534
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2024 05:47:54.8140
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4680eb97-6b2c-4661-3113-08dc47106c1f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2024 05:58:23.8749
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 80y3OfRrBIlFWkEgzZWIBOW1eemHf3Oxbx8KY3VyJTKBS3ziFIVKUYV+nKqqbcwOA+8LaZqjy2garPgsp7e+TQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR18MB5600
-X-Proofpoint-ORIG-GUID: pMzwvcDGoADjVqXYFcGcP-Mm7mwtU8UV
-X-Proofpoint-GUID: pMzwvcDGoADjVqXYFcGcP-Mm7mwtU8UV
+X-MS-Exchange-CrossTenant-userprincipalname: kvp99VZglZS1YcJ/e4khNUuEg4FqJvfVHBPF3tZj9XhRaPqKUIhniSYp9Pn3WohFxcNSVwceLvyR64uTnWDzTQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR18MB4503
+X-Proofpoint-GUID: OaINCsPMB36j2AXaSvgLH4J5FRK4RvuC
+X-Proofpoint-ORIG-GUID: OaINCsPMB36j2AXaSvgLH4J5FRK4RvuC
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-03-17_12,2024-03-15_01,2023-05-22_02
@@ -165,103 +165,72 @@ X-Proofpoint-Virus-Version: vendor=baseguard
 > Cc: linux-kernel@vger.kernel.org; saulo.alessandre@tse.jus.br;
 > lukas@wunner.de; Bharat Bhushan <bbhushan2@marvell.com>;
 > jarkko@kernel.org; Stefan Berger <stefanb@linux.ibm.com>
-> Subject: [EXTERNAL] [PATCH v6 06/13] crypto: ecc - Implement
-> vli_mmod_fast_521 for NIST p521
->=20
-> Prioritize security for external emails: Confirm sender and content safet=
-y
-> before clicking links or opening attachments
->=20
+> Subject: [EXTERNAL] [PATCH v6 12/13] crypto: asymmetric_keys - Adjust
+> signature size calculation for NIST P521
 > ----------------------------------------------------------------------
 > From: Stefan Berger <stefanb@linux.ibm.com>
 >=20
-> Implement vli_mmod_fast_521 following the description for how to calculat=
-e
-> the modulus for NIST P521 in the NIST publication "Recommendations for
-> Discrete Logarithm-Based Cryptography: Elliptic Curve Domain Parameters"
-> section G.1.4.
+> Adjust the calculation of the maximum signature size for support of NIST
+> P521. While existing curves may prepend a 0 byte to their coordinates (to
+> make the number positive), NIST P521 will not do this since only the firs=
+t bit in
+> the most significant byte is used.
 >=20
-> NIST p521 requires 9 64bit digits, so increase the ECC_MAX_DIGITS so that
-> arrays fit the larger numbers.
+> If the encoding of the x & y coordinates requires at least 128 bytes then=
+ an
+> additional byte is needed for the encoding of the length. Take this into =
+account
+> when calculating the maximum signature size.
 >=20
 > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> Reviewed-by: Lukas Wunner <lukas@wunner.de>
+> Tested-by: Lukas Wunner <lukas@wunner.de>
 > ---
->  crypto/ecc.c                  | 25 +++++++++++++++++++++++++
->  include/crypto/internal/ecc.h |  3 ++-
->  2 files changed, 27 insertions(+), 1 deletion(-)
+>  crypto/asymmetric_keys/public_key.c | 14 +++++++++++++-
+>  1 file changed, 13 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/crypto/ecc.c b/crypto/ecc.c index 415a2f4e7291..99d41887c005
-> 100644
-> --- a/crypto/ecc.c
-> +++ b/crypto/ecc.c
-> @@ -902,6 +902,28 @@ static void vli_mmod_fast_384(u64 *result, const
-> u64 *product,  #undef AND64H  #undef AND64L
+> diff --git a/crypto/asymmetric_keys/public_key.c
+> b/crypto/asymmetric_keys/public_key.c
+> index e5f22691febd..16cc0be28929 100644
+> --- a/crypto/asymmetric_keys/public_key.c
+> +++ b/crypto/asymmetric_keys/public_key.c
+> @@ -233,6 +233,7 @@ static int software_key_query(const struct
+> kernel_pkey_params *params,
+>  	info->key_size =3D len * 8;
 >=20
-> +/*
-> + * Computes result =3D product % curve_prime
-> + * from "Recommendations for Discrete Logarithm-Based Cryptography:
-> + *       Elliptic Curve Domain Parameters" section G.1.4
-> + */
-> +static void vli_mmod_fast_521(u64 *result, const u64 *product,
-> +			      const u64 *curve_prime, u64 *tmp) {
-> +	const unsigned int ndigits =3D ECC_CURVE_NIST_P521_DIGITS;
-> +	size_t i;
-> +
-> +	/* Initialize result with lowest 521 bits from product */
-> +	vli_set(result, product, ndigits);
-> +	result[8] &=3D 0x1ff;
-> +
-> +	for (i =3D 0; i < ndigits; i++)
-> +		tmp[i] =3D (product[8 + i] >> 9) | (product[9 + i] << 55);
-> +	tmp[8] &=3D 0x1ff;
+>  	if (strncmp(pkey->pkey_algo, "ecdsa", 5) =3D=3D 0) {
+> +		int slen =3D len;
+>  		/*
+>  		 * ECDSA key sizes are much smaller than RSA, and thus could
+>  		 * operate on (hashed) inputs that are larger than key size.
+> @@ -246,8 +247,19 @@ static int software_key_query(const struct
+> kernel_pkey_params *params,
+>  		 * Verify takes ECDSA-Sig (described in RFC 5480) as input,
+>  		 * which is actually 2 'key_size'-bit integers encoded in
+>  		 * ASN.1.  Account for the ASN.1 encoding overhead here.
+> +		 *
+> +		 * NIST P192/256/384 may prepend a '0' to a coordinate to
+> +		 * indicate a positive integer. NIST P521 never needs it.
+>  		 */
+> -		info->max_sig_size =3D 2 * (len + 3) + 2;
+> +		if (strcmp(pkey->pkey_algo, "ecdsa-nist-p521") !=3D 0)
+> +			slen +=3D 1;
+> +		/* Length of encoding the x & y coordinates */
+> +		slen =3D 2 * (slen + 2);
+> +		/*
+> +		 * If coordinate encoding takes at least 128 bytes then an
+> +		 * additional byte for length encoding is needed.
+> +		 */
+> +		info->max_sig_size =3D 1 + (slen >=3D 128) + 1 + slen;
 
-Can we get away from this hardcoding, like 9, 55, 0x1ff etc.
-Or at least add comment about these.
-
-> +
-> +	vli_mod_add(result, result, tmp, curve_prime, ndigits); }
-> +
->  /* Computes result =3D product % curve_prime for different curve_primes.
->   *
->   * Note that curve_primes are distinguished just by heuristic check and =
-@@ -
-> 941,6 +963,9 @@ static bool vli_mmod_fast(u64 *result, u64 *product,
->  	case ECC_CURVE_NIST_P384_DIGITS:
->  		vli_mmod_fast_384(result, product, curve_prime, tmp);
->  		break;
-> +	case ECC_CURVE_NIST_P521_DIGITS:
-> +		vli_mmod_fast_521(result, product, curve_prime, tmp);
-> +		break;
->  	default:
->  		pr_err_ratelimited("ecc: unsupported digits size!\n");
->  		return false;
-> diff --git a/include/crypto/internal/ecc.h b/include/crypto/internal/ecc.=
-h index
-> ab722a8986b7..4e2f5f938e91 100644
-> --- a/include/crypto/internal/ecc.h
-> +++ b/include/crypto/internal/ecc.h
-> @@ -33,7 +33,8 @@
->  #define ECC_CURVE_NIST_P192_DIGITS  3
->  #define ECC_CURVE_NIST_P256_DIGITS  4
->  #define ECC_CURVE_NIST_P384_DIGITS  6
-> -#define ECC_MAX_DIGITS              (512 / 64) /* due to ecrdsa */
-> +#define ECC_CURVE_NIST_P521_DIGITS  9
-
-Maybe these can be defined as:
-#define ECC_CURVE_NIST_P521_DIGITS  (DIV_ROUND_UP(521, 64) /* NIST P521 */)
-
-> +#define ECC_MAX_DIGITS              DIV_ROUND_UP(521, 64) /* NIST P521 *=
-/
-
-/* NIST_P521 is max digits */
-#define ECC_MAX_DIGITS              ECC_CURVE_ _DIGITS
+Is "(slen >=3D 128)" valid for P192/256/384 also?
 
 Thanks
 -Bharat
 
->=20
->  #define ECC_DIGITS_TO_BYTES_SHIFT 3
->=20
+>  	} else {
+>  		info->max_data_size =3D len;
+>  		info->max_sig_size =3D len;
 > --
 > 2.43.0
 
