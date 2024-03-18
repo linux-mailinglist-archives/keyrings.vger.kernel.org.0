@@ -1,113 +1,95 @@
-Return-Path: <keyrings+bounces-898-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-899-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF07787F11A
-	for <lists+keyrings@lfdr.de>; Mon, 18 Mar 2024 21:25:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9743E87F122
+	for <lists+keyrings@lfdr.de>; Mon, 18 Mar 2024 21:32:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A44C1C21E46
-	for <lists+keyrings@lfdr.de>; Mon, 18 Mar 2024 20:25:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44F23283F9B
+	for <lists+keyrings@lfdr.de>; Mon, 18 Mar 2024 20:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A0158ADF;
-	Mon, 18 Mar 2024 20:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iio9cFPL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B817D1D522;
+	Mon, 18 Mar 2024 20:32:14 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73ED958ADC;
-	Mon, 18 Mar 2024 20:25:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F8E1862C;
+	Mon, 18 Mar 2024 20:32:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710793531; cv=none; b=Ae3i4sLOstWrneoDI8g5Cat2LwLh4PlAkCqeEDeXk0MCP96FAq8AAL08d50b9C7petsQi6t9f66Odygtf+/bjzM55Fnt7qi7v9ZcUkiL/3/egMMznpnwDJ1ZTanPGCtVSexaOfesczIi9ZJjkQyynGI04C49o9wsV8MRMn/3egc=
+	t=1710793934; cv=none; b=PsST1OMaReDSp3M8jPksWwRkXn/LhGNT3iAUKZ4EfBOVxi6/8FUDJX1KQ0J6+dTmS75pkDFOeHUEE8yfZxC4vql4fwC9BJaE1ynLAkSViFCTKhzx5hy0Bk2ZNwbf0OQl5T2xx0ZRDR0+Hzh8l3R/5a+hDcR0dJqlmU2ZAn5Q0P0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710793531; c=relaxed/simple;
-	bh=2stzGV5oU86VEYrRJ34cr2uIrX78RtkSF1aPSOD9NEE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=qjmbfp7DnLHlVYX1unUNBc89yyAH4116W1p56+XK3NmCzd/e83P5tPmJLon7c6FWR8YsEkfep4AoH1QfGwA6ryGvNZsMyOY+6lx1l71WtAr4+uEw6S+9VUP/52A3SVXcxOYiQcoFXBncICeBEPwXKNlfQXrxQeurExbfKhUpDKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iio9cFPL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB3EC433C7;
-	Mon, 18 Mar 2024 20:25:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710793530;
-	bh=2stzGV5oU86VEYrRJ34cr2uIrX78RtkSF1aPSOD9NEE=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=iio9cFPLHBlDDn1U6QSiH9Np/kk7DSy+g5YOEpIC287+3XnT3XJafxQ1Iy7QPheuW
-	 Z3W6VyHpHq+GEoaBfQaHnz9toxupb83iFFGUT8HdNSuxB+ruhO4emrqe5cWrn9TaYy
-	 qwEgrD4qE1u7OwgpvSzqmMbpMJPhLzQG4QGPAsVyIRZ3iQxQGl3X8qqY+/khz1PeEq
-	 xDiNzYt9KrGo3g1ZfQ9s1uksEOz1Dh7Ed6yOTTcrk/ROuL6f0vuJK4a9HRFfuMbJrp
-	 xVmaGyBe9FyKYNnoIjmNNjHbGq4JTAPFSSgfq1hUoNRP5BYL2wKqGd3dxlPbMN313/
-	 8AXLl4iy5ewSQ==
+	s=arc-20240116; t=1710793934; c=relaxed/simple;
+	bh=vceyYmbAy7tWecXsdFzfdfLb/afM7QOoYmaWc8dBrHg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f4Bo2fo+0YBNcOPAeHFSHXHpgG45G5+EEazbh60vRJU8DOE2VDBLo03i848ILQRkw7Wye4/+/Zs/eojkxRIrz2QHTIrvU89fz2zbXTVuHyrVOL22kZOOGgtNAu/X+xcRIMHY91h75IOZp6fK439Xt8m1pnYaEkmnEEbq/bpJNn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id D6E12100DCEFE;
+	Mon, 18 Mar 2024 21:32:02 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 9687F3A1A1A; Mon, 18 Mar 2024 21:32:02 +0100 (CET)
+Date: Mon, 18 Mar 2024 21:32:02 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Stefan Berger <stefanb@linux.vnet.ibm.com>, keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au,
+	davem@davemloft.net, linux-kernel@vger.kernel.org,
+	saulo.alessandre@tse.jus.br, bbhushan2@marvell.com,
+	Stefan Berger <stefanb@linux.ibm.com>
+Subject: Re: [PATCH v6 03/13] crypto: ecdsa - Adjust tests on length of key
+ parameters
+Message-ID: <Zfikwi0v0_R58uNT@wunner.de>
+References: <20240312183618.1211745-1-stefanb@linux.vnet.ibm.com>
+ <20240312183618.1211745-4-stefanb@linux.vnet.ibm.com>
+ <CZX5OW9RVXGQ.2MBG8AQKHRKSE@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 18 Mar 2024 22:25:26 +0200
-Message-Id: <CZX5OW9RVXGQ.2MBG8AQKHRKSE@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <saulo.alessandre@tse.jus.br>,
- <lukas@wunner.de>, <bbhushan2@marvell.com>, "Stefan Berger"
- <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v6 03/13] crypto: ecdsa - Adjust tests on length of key
- parameters
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Stefan Berger" <stefanb@linux.vnet.ibm.com>,
- <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
- <herbert@gondor.apana.org.au>, <davem@davemloft.net>
-X-Mailer: aerc 0.15.2
-References: <20240312183618.1211745-1-stefanb@linux.vnet.ibm.com>
- <20240312183618.1211745-4-stefanb@linux.vnet.ibm.com>
-In-Reply-To: <20240312183618.1211745-4-stefanb@linux.vnet.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CZX5OW9RVXGQ.2MBG8AQKHRKSE@kernel.org>
 
-On Tue Mar 12, 2024 at 8:36 PM EET, Stefan Berger wrote:
-> From: Stefan Berger <stefanb@linux.ibm.com>
->
-> In preparation for support of NIST P521, adjust the basic tests on the
-> length of the provided key parameters to only ensure that the length of t=
-he
-> x plus y coordinates parameter array is not an odd number and that each
-> coordinate fits into an array of 'ndigits' digits. Mathematical tests on
-> the key's parameters are then done in ecc_is_pubkey_valid_full rejecting
-> invalid keys.
->
-> The change is necessary since NIST P521 keys do not have keys with
-> coordinates that each fully require 'full' digits (=3D u64), unlike
-> NIST P192/256/384 that all require multiple 'full' digits.
+On Mon, Mar 18, 2024 at 10:25:26PM +0200, Jarkko Sakkinen wrote:
+> On Tue Mar 12, 2024 at 8:36 PM EET, Stefan Berger wrote:
+> > From: Stefan Berger <stefanb@linux.ibm.com>
+> >
+> > In preparation for support of NIST P521, adjust the basic tests on the
+> > length of the provided key parameters to only ensure that the length of the
+> > x plus y coordinates parameter array is not an odd number and that each
+> > coordinate fits into an array of 'ndigits' digits. Mathematical tests on
+> > the key's parameters are then done in ecc_is_pubkey_valid_full rejecting
+> > invalid keys.
+> >
+> > The change is necessary since NIST P521 keys do not have keys with
+> > coordinates that each fully require 'full' digits (= u64), unlike
+> > NIST P192/256/384 that all require multiple 'full' digits.
+> 
+> This sentence is not really comprehendable English sentence. Can you
+> just write the rationale in understandable form?
+> 
+> "fully require full digits (= u64)" is something totally alien to me
+> tbh.
 
-This sentence is not really comprehendable English sentence. Can you
-just write the rationale in understandable form?
+It is proper English, but requires an understanding of how large integers
+are handled by crypto/ecdsa.c:  They're a sequence of u64.  For P192, P256
+and P384 all u64 in the sequence are used to their full extent because the
+key size is divisable by 64.  That's not the case for P521, where the most
+significant u64 is not fully used (only 2 out of 8 bytes are used).
 
-"fully require full digits (=3D u64)" is something totally alien to me
-tbh.
+Thanks,
 
->
-> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> Tested-by: Lukas Wunner <lukas@wunner.de>
-> ---
->  crypto/ecdsa.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/crypto/ecdsa.c b/crypto/ecdsa.c
-> index 6653dec17327..64e1e69d53ba 100644
-> --- a/crypto/ecdsa.c
-> +++ b/crypto/ecdsa.c
-> @@ -230,7 +230,7 @@ static int ecdsa_set_pub_key(struct crypto_akcipher *=
-tfm, const void *key, unsig
->  	if (ret < 0)
->  		return ret;
-> =20
-> -	if (keylen < 1 || (((keylen - 1) >> 1) % sizeof(u64)) !=3D 0)
-> +	if (keylen < 1 || ((keylen - 1) & 1) !=3D 0)
->  		return -EINVAL;
->  	/* we only accept uncompressed format indicated by '4' */
->  	if (d[0] !=3D 4)
-
-
-BR, Jarkko
+Lukas
 
