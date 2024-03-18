@@ -1,102 +1,90 @@
-Return-Path: <keyrings+bounces-913-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-914-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5283487F254
-	for <lists+keyrings@lfdr.de>; Mon, 18 Mar 2024 22:38:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8BEF87F307
+	for <lists+keyrings@lfdr.de>; Mon, 18 Mar 2024 23:19:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DC822814FD
-	for <lists+keyrings@lfdr.de>; Mon, 18 Mar 2024 21:38:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 600871F218CB
+	for <lists+keyrings@lfdr.de>; Mon, 18 Mar 2024 22:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A376C5A113;
-	Mon, 18 Mar 2024 21:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8924459B77;
+	Mon, 18 Mar 2024 22:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="G+cV+Zud"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="REvq95K6"
 X-Original-To: keyrings@vger.kernel.org
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37895A102
-	for <keyrings@vger.kernel.org>; Mon, 18 Mar 2024 21:38:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5766159B6D;
+	Mon, 18 Mar 2024 22:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710797893; cv=none; b=YDmF00qNSAuLbvOWft4LTs/Y1LdfMkAs6dqUnYMysm8kc1SrEbLF2VnB8PaI5Aqi3I36LZXzivPTSa/8EBlrf1rTMV3OuOUo6qK9vH9rz7dUF6WTRPY4pDYgSoPIZkh2Yz5+5QM5e0lrpg4ASZe/qUHfc/783Pd5UyTFKn+pWLI=
+	t=1710800346; cv=none; b=FnJwzCTG6vjRNdmOl3dX2GEV/wQr0vLV7c+021kdzNRSgF/29OqpJBWMWxMO3TdW/VykiBF/eulx1I9/ojAq+W+7o+NxVa1EtFAFswkxdMc5V/ffmkr8eGyKI+sebBgXIfpfxhP7nrp4fVOlG8yEl+Alr6MCq9TJO/WfLVTac8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710797893; c=relaxed/simple;
-	bh=EfBl7JuECHz7HlqxR5vRgZJaunMWQ9dYHiogpv1qmMo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ahmHlhzgaPaO2hvoxOeLGFkstRcZZEk2xFm7dBt2Zgfd9JC+2W/Vfg1p4P/XMp4eGW7WiaJACbOA6Yb5Ydka7W9Ha+sQVMemK3A5pr5+eqcYdDzJexmZALkW2zHDe6ICTTSOw4sy0tjxm8IRBsSSkfZceHoY6BGbk4fVR/UaD54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=G+cV+Zud; arc=none smtp.client-ip=91.218.175.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1710797889;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P0SOW6+g0gbF8DU5iHpH960YQxkLq5Ws1it0zmKAALc=;
-	b=G+cV+ZudHb99EOjOkEyYkRbNweyknEYF0BiWBTEx7dWWxiblPSPAh7duJ2+LHdgItIbn6M
-	TAd6gKys5aTGgPyteoXBTcyCivHuPdyRatBMpeppVL3fuT+nIq2C3aM1Vj9bFCGAR47Aj3
-	uRzT77InOc8li8Ta6WbMvqIAxG4VjYM=
-From: Luis Henriques <luis.henriques@linux.dev>
-To: "Jarkko Sakkinen" <jarkko@kernel.org>
-Cc: "David Howells" <dhowells@redhat.com>,  "Eric Biggers"
- <ebiggers@kernel.org>,  <keyrings@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3] keys: update key quotas in key_put()
-In-Reply-To: <CZX6QS05JAHA.M82GVT11TIQC@kernel.org> (Jarkko Sakkinen's message
-	of "Mon, 18 Mar 2024 23:14:55 +0200")
-References: <20240130101344.28936-1-lhenriques@suse.de>
-	<3007646.1707134664@warthog.procyon.org.uk> <87il33f24c.fsf@suse.de>
-	<87msr2qpd9.fsf@brahms.olymp> <CZX6QS05JAHA.M82GVT11TIQC@kernel.org>
-Date: Mon, 18 Mar 2024 21:38:05 +0000
-Message-ID: <87plvr9q6a.fsf@camandro.org>
+	s=arc-20240116; t=1710800346; c=relaxed/simple;
+	bh=bBUdjSqAYdT3A5Fi0UHHxuEbnI27V0nxpNkqe+gPutg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=LNRmna9APNXZE6c9B6Bou8srhqAOKe0dTCtz5MdcAJjSiJLzkBmmb2QJEwicKrVfOhk+LuhVVSK+TjZJXktJxzWEu8AOJdqEyDTYfkAFiu9Rh8pATWriT8cZKXazTqKTmpbdfzgIP39+0KcD/H+/avrwC3S7v4vzMtNYgxHMqbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=REvq95K6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C04C433C7;
+	Mon, 18 Mar 2024 22:19:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710800345;
+	bh=bBUdjSqAYdT3A5Fi0UHHxuEbnI27V0nxpNkqe+gPutg=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=REvq95K6gh9vgQXGpO8my+dqQwJp56Hd8M4yJKDMoK6gryKTdlUJ5SMg4qUXNme/Y
+	 T9Vk4oanJQ8NJ7N0vw+HNNgCKweengGZIKvctyUYuO4/anoh9UvzRFv20HXlOK7vAW
+	 axiD+V7AZy9ghpASkVVx+B4cZZU6bWXhk7+noQTDWr3Ho3mE7o7NAFs6R6fRwIcJuO
+	 S3ityzFzwq7+SiFS87zDrrH+G77OH6cs42Hg9Hq/VDkoqyfpEnOvfgwp5a25gPdraw
+	 qfWDgb6kgse6gb5nawFkzAfv0ZFZ2NJS2Ld09MixUvrRqz0IrcBY22EfytIiA9MoZv
+	 yBL3d1R0+5eJA==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 19 Mar 2024 00:19:01 +0200
+Message-Id: <CZX83UT326IV.3KOKLZ23UH9EZ@kernel.org>
+Subject: Re: [PATCH v6 04/13] crypto: ecdsa - Extend res.x mod n calculation
+ for NIST P521
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Lukas Wunner" <lukas@wunner.de>
+Cc: "Stefan Berger" <stefanb@linux.vnet.ibm.com>,
+ <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+ <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+ <linux-kernel@vger.kernel.org>, <saulo.alessandre@tse.jus.br>,
+ <bbhushan2@marvell.com>, "Stefan Berger" <stefanb@linux.ibm.com>
+X-Mailer: aerc 0.15.2
+References: <20240312183618.1211745-1-stefanb@linux.vnet.ibm.com>
+ <20240312183618.1211745-5-stefanb@linux.vnet.ibm.com>
+ <CZX5VA5Q4NYY.34VCD8R3ND3KL@kernel.org> <ZfimcDtBNQ42UEqB@wunner.de>
+In-Reply-To: <ZfimcDtBNQ42UEqB@wunner.de>
 
-"Jarkko Sakkinen" <jarkko@kernel.org> writes:
-
-> On Wed Mar 13, 2024 at 2:37 PM EET, Luis Henriques wrote:
->> Luis Henriques <lhenriques@suse.de> writes:
->>
->> > David Howells <dhowells@redhat.com> writes:
->> >
->> >> Luis Henriques <lhenriques@suse.de> wrote:
->> >>
->> >>> Delaying key quotas update when key's refcount reaches 0 in key_put() has
->> >>> been causing some issues in fscrypt testing, specifically in fstest
->> >>> generic/581.  This commit fixes this test flakiness by dealing with the
->> >>> quotas immediately, and leaving all the other clean-ups to the key garbage
->> >>> collector.
->> >>
->> >> Okay, I'll accept this.
->> >>
->> >
->> > That's awesome, thanks a lot David.  And, as Eric requested, I'll send out
->> > shortly a follow-up fscrypt-specific patch, which will make generic/581
->> > fstest finally pass.
->>
->> Ping.  Looks like this fell through the cracks...?
->>
->> I took a quick look at some git trees ('jarkko' and 'dhowells') but
->> couldn't see this patch anywhere.
->>
->> Cheers,
+On Mon Mar 18, 2024 at 10:39 PM EET, Lukas Wunner wrote:
+> On Mon, Mar 18, 2024 at 10:33:47PM +0200, Jarkko Sakkinen wrote:
+> > On Tue Mar 12, 2024 at 8:36 PM EET, Stefan Berger wrote:
+> > > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> > > Tested-by: Lukas Wunner <lukas@wunner.de>
+> >=20
+> > What was there to test in this anyway? I see only comment change below.
 >
-> My bad! I'll pick this up now.
+> The full series was tested, irrespective of the content of the individual
+> patches.
 
-Awesome, thanks a lot Jarkko.
+Tested-by's should be per patch, and in this patch tested-by has no
+meaning at all.
 
-Cheers,
--- 
-Luis
+In order to determine which patches tested-by is applicable it can
+be derived on what was actually tested.
+
+This looks as tested-by was used in place of acked/reviewed-by, which
+is not how it should be used.
+
+BR, Jarkko
 
