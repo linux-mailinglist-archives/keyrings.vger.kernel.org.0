@@ -1,46 +1,46 @@
-Return-Path: <keyrings+bounces-928-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-929-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D93FC8804B4
-	for <lists+keyrings@lfdr.de>; Tue, 19 Mar 2024 19:23:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F3A8804BA
+	for <lists+keyrings@lfdr.de>; Tue, 19 Mar 2024 19:25:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E48E1F2183A
-	for <lists+keyrings@lfdr.de>; Tue, 19 Mar 2024 18:23:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECC321F213C6
+	for <lists+keyrings@lfdr.de>; Tue, 19 Mar 2024 18:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DF32D60F;
-	Tue, 19 Mar 2024 18:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F1733CCF;
+	Tue, 19 Mar 2024 18:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rfj7fYwt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RcXTYQ26"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7CB2D057;
-	Tue, 19 Mar 2024 18:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178B2339BC;
+	Tue, 19 Mar 2024 18:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710872575; cv=none; b=K6isjFeKEBlETcfjTklpECOrSczm3RSoeOWeUR8KinWb0cH/wWuE6ROd/M92PR17Oqb/ePYP+uU1dGaDWx73S/6aqZrrwcxBrdKzlVh1f/NE69WexdsVxSOUDhbocP4/oEKSC8YStCZiwLSM0AVBFobc2VKwPwiNiJ1IX4TRWBw=
+	t=1710872709; cv=none; b=mfhUN0nOwXRQN93/EHbaLM2xeiqt4Q/kqbVaAOg28bg4EvqPp73IWEij7Dg6DSUW6/nNpLAiZg82x+ODKB1G6nr4iZTT8WLRZ24euAYB4hSTESOZZZ5eQ4gXHo9lx+F/3wgRMknltzTgx44YWUPThfWKf+IvG994WmpfwXsqa3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710872575; c=relaxed/simple;
-	bh=juBnuniA9yajO1DOk7FH88boKK9ZBvrpw9aQ3lq3Qu8=;
+	s=arc-20240116; t=1710872709; c=relaxed/simple;
+	bh=VKrNllH2AFGJvg3hAc1HYUrygyZEZIltrFzYnyeojws=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=JWWpzheGlD7tHLzK0JltWVjJ59jAa0ABFEdtenMDOhutEwDEnFauMjvdrth8dOjD//mY7etGpSieJltNA0Vm/40CDR2IR6qM5Zw2CNdxpgprAdH9xpRd6cW8CX4a+x72EaOMdBwsdZubmPeGaNKLxwfLMe6UoReKuXuTa0qzc+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rfj7fYwt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1836C433C7;
-	Tue, 19 Mar 2024 18:22:52 +0000 (UTC)
+	 References:In-Reply-To; b=mLQmmbygT1JL4rEqkqmNxByo/i2dvvsG66A3OtnArklvxdWipWHzxMfliXiQHaYg/TrPb5Rr85HWnTER5FRigM1uqtJY8/pFMYT5TCODSBY1680G+CGh3YMNwoYVutUMg80MnjSDr5HIgw5hv8gfDtrlWC5wpIjHNTrgwEphH/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RcXTYQ26; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87228C433F1;
+	Tue, 19 Mar 2024 18:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710872574;
-	bh=juBnuniA9yajO1DOk7FH88boKK9ZBvrpw9aQ3lq3Qu8=;
+	s=k20201202; t=1710872708;
+	bh=VKrNllH2AFGJvg3hAc1HYUrygyZEZIltrFzYnyeojws=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=rfj7fYwtzJbablHoWtMImT8M6gZDPiGDvqign+J4OFXuqEbP8Ml6RZk/WetNVvbpm
-	 ofyhYvospIqLGTBSFz9AsatvqH+26M6ApJq2XwEDttcfGSrstK9FOoL4NwgkSw3DvV
-	 5zchzz6monwJxPCVm8/jBUkgR0ijWxiF5VvaeZWJdJehyunopwOE+bQhD5pRYWiHhk
-	 E3qm8NgYYmuecnvD3VbM//a208IE8RtJJqwGmGia1XU2I+J7CreVC+6WQaTdewIZyf
-	 BLsN8sQZZk6P0VVl38wcrk/uxyrSjImi5PKFtfoGM21j9jFKmS0fItIQ11VXYMKQ9+
-	 6oYI0MOvtODxA==
+	b=RcXTYQ26zoSnkyq2mcJW3SH5SwcvRBL+n4CJCFpMqqdPq4t1vEEF9OXYuJBCRRFtv
+	 DmbBurcetvx7dhcXbhDmzrgzttsy5jAtmopBxxueMavaRmnr3MVkFVl45yQUKSmFyo
+	 nq5W+lbty+wyiSYbSHkMSfiWd2XfV73ZYB6GRfAr94mUSt508SKsPfrpIKkaaSpKse
+	 V5FgawWk162CaDGdkBwa4ARSXlnCuasNhoKtjpY4I3KpKcU563RlwWimsEalMpVGIB
+	 jqkESEtQMGz7zDZw2DdzZ41q3APenBmvCgNZie5BYHtR+sfCM0hVaZKjy+ejFDMwPx
+	 PQOfXN6EKy+sA==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,40 +49,51 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 19 Mar 2024 20:22:51 +0200
-Message-Id: <CZXXPKTAUUM9.35VZUFITJWF6A@kernel.org>
+Date: Tue, 19 Mar 2024 20:25:04 +0200
+Message-Id: <CZXXRA9PVPXI.2X41IISN77CUV@kernel.org>
 Cc: <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
  <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
  <linux-kernel@vger.kernel.org>, <saulo.alessandre@tse.jus.br>,
  <bbhushan2@marvell.com>
 Subject: Re: [PATCH v6 00/13] Add support for NIST P521 to ecdsa
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Stefan Berger" <stefanb@linux.ibm.com>, "Lukas Wunner"
- <lukas@wunner.de>, "Stefan Berger" <stefanb@linux.vnet.ibm.com>
+To: "Jarkko Sakkinen" <jarkko@kernel.org>, "Stefan Berger"
+ <stefanb@linux.ibm.com>, "Lukas Wunner" <lukas@wunner.de>, "Stefan Berger"
+ <stefanb@linux.vnet.ibm.com>
 X-Mailer: aerc 0.15.2
 References: <20240312183618.1211745-1-stefanb@linux.vnet.ibm.com>
  <ZfiMhi9D2Rhh89BI@wunner.de>
  <d02eda40-2d3a-43a2-a3a9-cb79055acda7@linux.ibm.com>
-In-Reply-To: <d02eda40-2d3a-43a2-a3a9-cb79055acda7@linux.ibm.com>
+ <CZXXPKTAUUM9.35VZUFITJWF6A@kernel.org>
+In-Reply-To: <CZXXPKTAUUM9.35VZUFITJWF6A@kernel.org>
 
-On Tue Mar 19, 2024 at 12:42 AM EET, Stefan Berger wrote:
+On Tue Mar 19, 2024 at 8:22 PM EET, Jarkko Sakkinen wrote:
+> On Tue Mar 19, 2024 at 12:42 AM EET, Stefan Berger wrote:
+> >
+> >
+> > On 3/18/24 14:48, Lukas Wunner wrote:
+> > > On Tue, Mar 12, 2024 at 02:36:05PM -0400, Stefan Berger wrote:
+> > >> This series adds support for the NIST P521 curve to the ecdsa module
+> > >> to enable signature verification with it.
+> > >=20
+> > > v6 of this series is still
+> > >=20
+> > > Tested-by: Lukas Wunner <lukas@wunner.de>
+> >
+> > Thanks.
 >
+> This has been discussed before in LKML but generally tested-by for
+> series does not have semantical meaning.
 >
-> On 3/18/24 14:48, Lukas Wunner wrote:
-> > On Tue, Mar 12, 2024 at 02:36:05PM -0400, Stefan Berger wrote:
-> >> This series adds support for the NIST P521 curve to the ecdsa module
-> >> to enable signature verification with it.
-> >=20
-> > v6 of this series is still
-> >=20
-> > Tested-by: Lukas Wunner <lukas@wunner.de>
->
-> Thanks.
+> Please apply only for patches that were tested.
 
-This has been discussed before in LKML but generally tested-by for
-series does not have semantical meaning.
+How to implement this in practice or place tested-by correctly?
 
-Please apply only for patches that were tested.
+I'd place the tested-by to the patch which contains the uapi trigger
+to which for testing was done.
+
+By having this granularity that also does help fixing bugs later on
+so it is really not just "plain bureacracy".
 
 BR, Jarkko
 
