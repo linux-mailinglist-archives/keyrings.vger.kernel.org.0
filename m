@@ -1,46 +1,46 @@
-Return-Path: <keyrings+bounces-931-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-932-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E49880547
-	for <lists+keyrings@lfdr.de>; Tue, 19 Mar 2024 20:14:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 189F28805F0
+	for <lists+keyrings@lfdr.de>; Tue, 19 Mar 2024 21:14:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 090861F230D1
-	for <lists+keyrings@lfdr.de>; Tue, 19 Mar 2024 19:14:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A20CC2848E3
+	for <lists+keyrings@lfdr.de>; Tue, 19 Mar 2024 20:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624C939FD1;
-	Tue, 19 Mar 2024 19:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93CE35A0E5;
+	Tue, 19 Mar 2024 20:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YUIs1Fb9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W/9TEUv5"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354A139FCF;
-	Tue, 19 Mar 2024 19:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663CB59B76;
+	Tue, 19 Mar 2024 20:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710875661; cv=none; b=UDYJ1Ji0Brl2cgLkzTK3Q/IPTwAiNhFRrXQj7A7oZKrV8yOmfiiMLwJALOTjcD6y6SEtHhEyMuCiQiDerEF8Q5irkrkOSxRjHoZNnvIW42BH0lhHBfA88/yYNN6e9ozLgZo5n17MG3ei+SUACTZvxdnf6ns0jpKsJs82yzz8utc=
+	t=1710879266; cv=none; b=V0n1qSW33E7Ay6L+H6XTsRh1rtCt3Yfs+j8PMcxb+lEnGFdwlU1IHkV6ksGlZrzFD/xxqjJaqVy4n3GLJzLPqxn9MV0q2upF59C31ZqUiuvEGi+zwr8YUPhY0HdPfUDvSd1j7dRwd5G84ctw4hLoNZolK6NbYGan0QZpTe6zhlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710875661; c=relaxed/simple;
-	bh=AskgniET8Tqn44PIKtPuXBtGixttuBhuyMYiySvc3B8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=TptAkXrRwznfPu8wE0zEmaOcDsRK3EQtJPxjRAioePTWcHPIRTnjovXSsrstMocXyv/8bBWjsdmS4kTKWmcPX7ymGB61xCrScB75TvrV+4qyxbyChx8qTfDyxHcQGgLkIojBdpIwgCVQES2cz63+R0WL8G+0w6O4orYIGr7LJaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YUIs1Fb9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53C9C433C7;
-	Tue, 19 Mar 2024 19:14:18 +0000 (UTC)
+	s=arc-20240116; t=1710879266; c=relaxed/simple;
+	bh=ebwK4AewbvdYrlguygz1sCJD50ZNfG7LlT4UwBmSljg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=WIgQ7+0oi9TWbrShXSmnuC0tdhNmKo3kWPuWEfse7WgJ7wnC0bBPEzC0M0PyQ5AxbkvmmH5VXmOpou1PTGFJVm8arys5LzbEpsoM8G+aTcpKIISJepMCueVYJZB+9l6ZtXCat5SdY5jRSFhAt6BVxJQ2Df6ieEkZyNty72H2WO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W/9TEUv5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9564C433F1;
+	Tue, 19 Mar 2024 20:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710875660;
-	bh=AskgniET8Tqn44PIKtPuXBtGixttuBhuyMYiySvc3B8=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=YUIs1Fb9rqLF3FLp3OpW0j9RsDAvrhWxCYYoiGl7okUDJLvDb5RI9c/kfSQ8BjEIQ
-	 g8nWGHyb2V5OiEWK0wW1uDTur1zE80yTmWpCjrnFFYaL8hNgnFTyX5UfkJGlqbUW5x
-	 +rfXhOc5D0UVwVmufbnMzWH2JshjKLP/cYvSOv+RMIA/yJZz27x9oZdPM5P5eeOyaE
-	 oFHjwm4GerzAYHtZJT9RbA+l76/bU1wzvhy6qc74n6snKI/eN9JBYvYIoSQZOKb2xV
-	 yuuegtG8sOdHPfqYXMn2VfOTSJQrXzrkbuBSaQbUdjylgEy7p4MPzikAlx2jO51QHC
-	 kyeUH4M+MN5aQ==
+	s=k20201202; t=1710879265;
+	bh=ebwK4AewbvdYrlguygz1sCJD50ZNfG7LlT4UwBmSljg=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=W/9TEUv5ynQeNhTOcfb5QoEObpcmBWvia6XYBn0FLbNSN3hZv63Qpb76WuNoxliWu
+	 APAX8cfWjuIvY/SXyvxtMV2Jabbfy6oxq7Kbv5Na95o4QEZYAANhu94OUfwsVRm33q
+	 8Y+aMTZSYeRXnDPFMz0RXPxHQ8hWgALaTRknAIo32VfpVxdbGy9OIE6Tv+s9vPXBaN
+	 TcusYv4E4tuHh7P6CM3EPeMN10G86kGWqSQ0eBtTzu1ztpqVbDoaBmQsrTlT3HNzcc
+	 G82rAYsI8jkHMnOp1IZaQHEGMn5oIP79MibfDT7NlNg9jonJPf5QS8kTy3L5dzf8Lg
+	 81PaAeOqG5ckQ==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,65 +49,88 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 19 Mar 2024 21:14:16 +0200
-Message-Id: <CZXYSYBHZ0XD.1XYUMR2DZ3I0O@kernel.org>
-Subject: Re: [PATCH v6 00/13] Add support for NIST P521 to ecdsa
+Date: Tue, 19 Mar 2024 22:14:22 +0200
+Message-Id: <CZY02YNBTGYQ.3KG8NLH8X3RQE@kernel.org>
+Cc: "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+ "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>, "Sergey
+ Shtylyov" <s.shtylyov@omp.ru>
+Subject: Re: [PATCH] KEYS: prevent NULL pointer dereference in
+ find_asymmetric_key()
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Stefan Berger" <stefanb@linux.ibm.com>, "Lukas Wunner"
- <lukas@wunner.de>, "Stefan Berger" <stefanb@linux.vnet.ibm.com>
-Cc: <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
- <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
- <linux-kernel@vger.kernel.org>, <saulo.alessandre@tse.jus.br>,
- <bbhushan2@marvell.com>
+To: "Roman Smirnov" <r.smirnov@omp.ru>, "David Howells"
+ <dhowells@redhat.com>, "Herbert Xu" <herbert@gondor.apana.org.au>, "David
+ S. Miller" <davem@davemloft.net>, "Andrew Zaborowski"
+ <andrew.zaborowski@intel.com>
 X-Mailer: aerc 0.15.2
-References: <20240312183618.1211745-1-stefanb@linux.vnet.ibm.com>
- <ZfiMhi9D2Rhh89BI@wunner.de>
- <d02eda40-2d3a-43a2-a3a9-cb79055acda7@linux.ibm.com>
- <CZXXPKTAUUM9.35VZUFITJWF6A@kernel.org>
- <026ad747-eb04-44e6-9c1e-cb1a56a6e0e3@linux.ibm.com>
-In-Reply-To: <026ad747-eb04-44e6-9c1e-cb1a56a6e0e3@linux.ibm.com>
+References: <20240315103320.18754-1-r.smirnov@omp.ru>
+ <CZX9T3TU6YU0.3JE9M7M3ENUE0@kernel.org>
+ <b5f21d1175c142efb52e68a24bc4165a@omp.ru>
+In-Reply-To: <b5f21d1175c142efb52e68a24bc4165a@omp.ru>
 
-On Tue Mar 19, 2024 at 8:55 PM EET, Stefan Berger wrote:
->
->
-> On 3/19/24 14:22, Jarkko Sakkinen wrote:
-> > On Tue Mar 19, 2024 at 12:42 AM EET, Stefan Berger wrote:
-> >>
-> >>
-> >> On 3/18/24 14:48, Lukas Wunner wrote:
-> >>> On Tue, Mar 12, 2024 at 02:36:05PM -0400, Stefan Berger wrote:
-> >>>> This series adds support for the NIST P521 curve to the ecdsa module
-> >>>> to enable signature verification with it.
-> >>>
-> >>> v6 of this series is still
-> >>>
-> >>> Tested-by: Lukas Wunner <lukas@wunner.de>
-> >>
-> >> Thanks.
+On Tue Mar 19, 2024 at 4:44 PM EET, Roman Smirnov wrote:
+> On Tue, 19 Mar 2024 01:39:00 +0200 Jarkko Sakkinen wrote:
+> > On Fri Mar 15, 2024 at 12:33 PM EET, Roman Smirnov wrote:
+> > > With the current code, in case all NULLs are passed in id_{0,1,2},
 > >=20
-> > This has been discussed before in LKML but generally tested-by for
-> > series does not have semantical meaning.
+> > "current code" is not unambigious reference of any part of the kernel
+> > tree. Please just write down the function name instead.
 > >=20
-> > Please apply only for patches that were tested.
+> > > the kernel will first print out a WARNING and then have an oops
+> > > because id_2 gets dereferenced anyway.
+> >=20
+> > Would be more exact":
+> >=20
+> > s/print out a WARNING/emit WARN/
 >
-> Ok, I will remove the Tested-by tag.
+> Okay, I'll prepare a second version of the patch.
 >
-> However, patch 4/13, that only changes a comment, can also be tested in=
-=20
-> so far as to check whether the code is correct as-is for the tests that=
-=20
-> 'I' ran and no further modifications are needed for NIST P521. In this=20
-> case it would mean that a single subtraction of 'n' from res.x seems=20
-> sufficient and existing code is good as described by the modified comment=
-.
+> > > Note that WARN_ON() is also considered harmful by Greg Kroah-
+> > > Hartman since it causes the Android kernels to panic as they
+> > > get booted with the panic_on_warn option.
+> >=20
+> > Despite full respect to Greg, and agreeing what he had said about
+> > the topic (which you are lacking lore link meaning that in all
+> > cases the current description is incomplete), the only thing that
+> > should be documented should be that since WARN_ON() can emit
+> > panic when panic_on_warn is set in the *kernel command-line*
+> > (not "option") this condition should be relaxed.
+>
+> Here's a link to the discussion:
+> https://lore.kernel.org/all/2024011213-situated-augmented-64a4@gregkh/
+> From the context, I thought WARN_ON() would be better removed.
 
-So, since all patches are required to test anything at all, I think that
-putting tested-by to 13/13 would be the most appropriate, right?
+Not sure what you are trying to claim here that goes against what I
+just said.
 
-I without enabling this x509 parser, there is nothing to test, I'd
-presume.
+>
+> > >
+> > > Found by Linux Verification Center (linuxtesting.org) with Svace.
+> >=20
+> > I'm not sure if this should be part of the commit message.
+>
+> I have already submitted patches with this line, some have been
+> accepted. It is important for the Linux Verification Center to mark
+> patches as closing issues found with Svace.
+>
+> > >
+> > > Fixes: 7d30198ee24f ("keys: X.509 public key issuer lookup without AK=
+ID")
+> > > Suggested-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+> >=20
+> > Should be reported-by.
+>
+> The suggested-by tag belongs to Sergey because he suggested the fix,
+> subject/description of the patch. The tag reported-by belongs to
+> Svace tool.
 
-It doesn't have to be more complicated than this.
+1. I did not see any reported-by tags in this which is requirement.
+2. Who did find the issue using that tool? I don't put reported-by to
+   GDB even if I use that find the bug.
+>
+> Thank you for the reply.
+
 
 BR, Jarkko
 
