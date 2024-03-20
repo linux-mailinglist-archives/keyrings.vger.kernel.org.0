@@ -1,136 +1,109 @@
-Return-Path: <keyrings+bounces-932-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-933-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 189F28805F0
-	for <lists+keyrings@lfdr.de>; Tue, 19 Mar 2024 21:14:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E477880ABD
+	for <lists+keyrings@lfdr.de>; Wed, 20 Mar 2024 06:40:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A20CC2848E3
-	for <lists+keyrings@lfdr.de>; Tue, 19 Mar 2024 20:14:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 558D61C20C1F
+	for <lists+keyrings@lfdr.de>; Wed, 20 Mar 2024 05:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93CE35A0E5;
-	Tue, 19 Mar 2024 20:14:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W/9TEUv5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF8914291;
+	Wed, 20 Mar 2024 05:40:45 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663CB59B76;
-	Tue, 19 Mar 2024 20:14:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E33EA4;
+	Wed, 20 Mar 2024 05:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710879266; cv=none; b=V0n1qSW33E7Ay6L+H6XTsRh1rtCt3Yfs+j8PMcxb+lEnGFdwlU1IHkV6ksGlZrzFD/xxqjJaqVy4n3GLJzLPqxn9MV0q2upF59C31ZqUiuvEGi+zwr8YUPhY0HdPfUDvSd1j7dRwd5G84ctw4hLoNZolK6NbYGan0QZpTe6zhlw=
+	t=1710913245; cv=none; b=cd0PtrE7kYphMCgoADdxwWBljwQs/r1oozmfFvVuYtE0bMt62hz9ItX02kYDX+ZKggN2sDHrJDnKofqEcFpWdGw/bOyfDB0Kp7eleqL4mIX7tisbxjjHM+0lEGCSnlqVqVoeRZYV5DJXeljLXO7g1JMx3q44B/eMZBWJi8O7mLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710879266; c=relaxed/simple;
-	bh=ebwK4AewbvdYrlguygz1sCJD50ZNfG7LlT4UwBmSljg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=WIgQ7+0oi9TWbrShXSmnuC0tdhNmKo3kWPuWEfse7WgJ7wnC0bBPEzC0M0PyQ5AxbkvmmH5VXmOpou1PTGFJVm8arys5LzbEpsoM8G+aTcpKIISJepMCueVYJZB+9l6ZtXCat5SdY5jRSFhAt6BVxJQ2Df6ieEkZyNty72H2WO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W/9TEUv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9564C433F1;
-	Tue, 19 Mar 2024 20:14:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710879265;
-	bh=ebwK4AewbvdYrlguygz1sCJD50ZNfG7LlT4UwBmSljg=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=W/9TEUv5ynQeNhTOcfb5QoEObpcmBWvia6XYBn0FLbNSN3hZv63Qpb76WuNoxliWu
-	 APAX8cfWjuIvY/SXyvxtMV2Jabbfy6oxq7Kbv5Na95o4QEZYAANhu94OUfwsVRm33q
-	 8Y+aMTZSYeRXnDPFMz0RXPxHQ8hWgALaTRknAIo32VfpVxdbGy9OIE6Tv+s9vPXBaN
-	 TcusYv4E4tuHh7P6CM3EPeMN10G86kGWqSQ0eBtTzu1ztpqVbDoaBmQsrTlT3HNzcc
-	 G82rAYsI8jkHMnOp1IZaQHEGMn5oIP79MibfDT7NlNg9jonJPf5QS8kTy3L5dzf8Lg
-	 81PaAeOqG5ckQ==
+	s=arc-20240116; t=1710913245; c=relaxed/simple;
+	bh=Bfc7Wsju5l0WRaJyl54eJPl6pzsuIqPCIaOoxiZ/Aho=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KmUybhhC7lWZH9V6bmZwx1iXsHY+gnvj3cxv5+o+pRWqcExDLV8PWw7Hf5PaQEFMTdmcZQJA0G+2dOuev0YWqFZoZ3bMj+A2GzeSNxtwVoZzQmzS1Cjj7wBbgyw52V5j8WjXIkF9kVUJu8E0kaQzRGUHu5PuGdjoOaqbta57fyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id EA24B300002AA;
+	Wed, 20 Mar 2024 06:40:33 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id C46FC44E6C; Wed, 20 Mar 2024 06:40:33 +0100 (CET)
+Date: Wed, 20 Mar 2024 06:40:33 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Stefan Berger <stefanb@linux.ibm.com>,
+	Stefan Berger <stefanb@linux.vnet.ibm.com>,
+	keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+	herbert@gondor.apana.org.au, davem@davemloft.net,
+	linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br,
+	bbhushan2@marvell.com
+Subject: Re: [PATCH v6 00/13] Add support for NIST P521 to ecdsa
+Message-ID: <Zfp20bLB0onXo7FV@wunner.de>
+References: <20240312183618.1211745-1-stefanb@linux.vnet.ibm.com>
+ <ZfiMhi9D2Rhh89BI@wunner.de>
+ <d02eda40-2d3a-43a2-a3a9-cb79055acda7@linux.ibm.com>
+ <CZXXPKTAUUM9.35VZUFITJWF6A@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 19 Mar 2024 22:14:22 +0200
-Message-Id: <CZY02YNBTGYQ.3KG8NLH8X3RQE@kernel.org>
-Cc: "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
- "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>, "Sergey
- Shtylyov" <s.shtylyov@omp.ru>
-Subject: Re: [PATCH] KEYS: prevent NULL pointer dereference in
- find_asymmetric_key()
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Roman Smirnov" <r.smirnov@omp.ru>, "David Howells"
- <dhowells@redhat.com>, "Herbert Xu" <herbert@gondor.apana.org.au>, "David
- S. Miller" <davem@davemloft.net>, "Andrew Zaborowski"
- <andrew.zaborowski@intel.com>
-X-Mailer: aerc 0.15.2
-References: <20240315103320.18754-1-r.smirnov@omp.ru>
- <CZX9T3TU6YU0.3JE9M7M3ENUE0@kernel.org>
- <b5f21d1175c142efb52e68a24bc4165a@omp.ru>
-In-Reply-To: <b5f21d1175c142efb52e68a24bc4165a@omp.ru>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CZXXPKTAUUM9.35VZUFITJWF6A@kernel.org>
 
-On Tue Mar 19, 2024 at 4:44 PM EET, Roman Smirnov wrote:
-> On Tue, 19 Mar 2024 01:39:00 +0200 Jarkko Sakkinen wrote:
-> > On Fri Mar 15, 2024 at 12:33 PM EET, Roman Smirnov wrote:
-> > > With the current code, in case all NULLs are passed in id_{0,1,2},
-> >=20
-> > "current code" is not unambigious reference of any part of the kernel
-> > tree. Please just write down the function name instead.
-> >=20
-> > > the kernel will first print out a WARNING and then have an oops
-> > > because id_2 gets dereferenced anyway.
-> >=20
-> > Would be more exact":
-> >=20
-> > s/print out a WARNING/emit WARN/
->
-> Okay, I'll prepare a second version of the patch.
->
-> > > Note that WARN_ON() is also considered harmful by Greg Kroah-
-> > > Hartman since it causes the Android kernels to panic as they
-> > > get booted with the panic_on_warn option.
-> >=20
-> > Despite full respect to Greg, and agreeing what he had said about
-> > the topic (which you are lacking lore link meaning that in all
-> > cases the current description is incomplete), the only thing that
-> > should be documented should be that since WARN_ON() can emit
-> > panic when panic_on_warn is set in the *kernel command-line*
-> > (not "option") this condition should be relaxed.
->
-> Here's a link to the discussion:
-> https://lore.kernel.org/all/2024011213-situated-augmented-64a4@gregkh/
-> From the context, I thought WARN_ON() would be better removed.
+On Tue, Mar 19, 2024 at 08:22:51PM +0200, Jarkko Sakkinen wrote:
+> On Tue Mar 19, 2024 at 12:42 AM EET, Stefan Berger wrote:
+> > On 3/18/24 14:48, Lukas Wunner wrote:
+> > > On Tue, Mar 12, 2024 at 02:36:05PM -0400, Stefan Berger wrote:
+> > >> This series adds support for the NIST P521 curve to the ecdsa module
+> > >> to enable signature verification with it.
+> > > 
+> > > v6 of this series is still
+> > > 
+> > > Tested-by: Lukas Wunner <lukas@wunner.de>
+> >
+> > Thanks.
+> 
+> This has been discussed before in LKML but generally tested-by for
+> series does not have semantical meaning.
 
-Not sure what you are trying to claim here that goes against what I
-just said.
+I believe that notion is outdated.
 
->
-> > >
-> > > Found by Linux Verification Center (linuxtesting.org) with Svace.
-> >=20
-> > I'm not sure if this should be part of the commit message.
->
-> I have already submitted patches with this line, some have been
-> accepted. It is important for the Linux Verification Center to mark
-> patches as closing issues found with Svace.
->
-> > >
-> > > Fixes: 7d30198ee24f ("keys: X.509 public key issuer lookup without AK=
-ID")
-> > > Suggested-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-> >=20
-> > Should be reported-by.
->
-> The suggested-by tag belongs to Sergey because he suggested the fix,
-> subject/description of the patch. The tag reported-by belongs to
-> Svace tool.
+It seems to be becoming the norm that maintainers apply patches with
+"b4 am --apply-cover-trailers", which automatically picks up Acked-by,
+Reviewed-by, Tested-by and other tags sent in-reply-to the cover letter
+and adds them to all patches in the series.
 
-1. I did not see any reported-by tags in this which is requirement.
-2. Who did find the issue using that tool? I don't put reported-by to
-   GDB even if I use that find the bug.
->
-> Thank you for the reply.
+Consequently, providing such tags in-reply-to the cover letter is not
+unusual and nothing to object to.
 
+If Herbert applies patches with "b4 am --apply-cover-trailers" or
+"b4 shazam --apply-cover-trailers" (I don't know if he does),
+it is completely irrelevant whether Stefan strips my Tested-by from
+individual patches:  It will automatically be re-added when the
+series gets applied.
 
-BR, Jarkko
+I have only tested the collection of *all* patches in this series and
+can thus only vouch for correct functioning of the *entire* series,
+hence providing the Tested-by in-reply-to the cover letter is the only
+thing that makes sense to me.
+
+Either way, I don't think arguing over which patch to apply a Tested-by
+to is a productive use of everyone's time.
+
+Thanks,
+
+Lukas
 
