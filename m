@@ -1,109 +1,116 @@
-Return-Path: <keyrings+bounces-933-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-934-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E477880ABD
-	for <lists+keyrings@lfdr.de>; Wed, 20 Mar 2024 06:40:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A198880CF1
+	for <lists+keyrings@lfdr.de>; Wed, 20 Mar 2024 09:22:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 558D61C20C1F
-	for <lists+keyrings@lfdr.de>; Wed, 20 Mar 2024 05:40:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E79F1F21334
+	for <lists+keyrings@lfdr.de>; Wed, 20 Mar 2024 08:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF8914291;
-	Wed, 20 Mar 2024 05:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 107C4364BE;
+	Wed, 20 Mar 2024 08:22:10 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E33EA4;
-	Wed, 20 Mar 2024 05:40:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FAF11720;
+	Wed, 20 Mar 2024 08:22:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710913245; cv=none; b=cd0PtrE7kYphMCgoADdxwWBljwQs/r1oozmfFvVuYtE0bMt62hz9ItX02kYDX+ZKggN2sDHrJDnKofqEcFpWdGw/bOyfDB0Kp7eleqL4mIX7tisbxjjHM+0lEGCSnlqVqVoeRZYV5DJXeljLXO7g1JMx3q44B/eMZBWJi8O7mLQ=
+	t=1710922930; cv=none; b=abwN9zCRHbNNaJT513Dp6+9Jvt6+72IL289nu9lMgZDeiMc9pnvqNTS779wlhBj7qeQl06yvUuyVR+IBMo/vuTKNQJSPDH559UP3lYCDnIjnlY7rbmK65QKQxFGSXQSKDgY4uXeHo3S60/xdyD7rtQ28X+DFZjAPJTOZ8elSPRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710913245; c=relaxed/simple;
-	bh=Bfc7Wsju5l0WRaJyl54eJPl6pzsuIqPCIaOoxiZ/Aho=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KmUybhhC7lWZH9V6bmZwx1iXsHY+gnvj3cxv5+o+pRWqcExDLV8PWw7Hf5PaQEFMTdmcZQJA0G+2dOuev0YWqFZoZ3bMj+A2GzeSNxtwVoZzQmzS1Cjj7wBbgyw52V5j8WjXIkF9kVUJu8E0kaQzRGUHu5PuGdjoOaqbta57fyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout1.hostsharing.net (Postfix) with ESMTPS id EA24B300002AA;
-	Wed, 20 Mar 2024 06:40:33 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id C46FC44E6C; Wed, 20 Mar 2024 06:40:33 +0100 (CET)
-Date: Wed, 20 Mar 2024 06:40:33 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Stefan Berger <stefanb@linux.ibm.com>,
-	Stefan Berger <stefanb@linux.vnet.ibm.com>,
-	keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-	herbert@gondor.apana.org.au, davem@davemloft.net,
-	linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br,
-	bbhushan2@marvell.com
-Subject: Re: [PATCH v6 00/13] Add support for NIST P521 to ecdsa
-Message-ID: <Zfp20bLB0onXo7FV@wunner.de>
-References: <20240312183618.1211745-1-stefanb@linux.vnet.ibm.com>
- <ZfiMhi9D2Rhh89BI@wunner.de>
- <d02eda40-2d3a-43a2-a3a9-cb79055acda7@linux.ibm.com>
- <CZXXPKTAUUM9.35VZUFITJWF6A@kernel.org>
+	s=arc-20240116; t=1710922930; c=relaxed/simple;
+	bh=9yBbHSOJlL9pdcEYP8Hk+lnve6pJYkw0t1O5f/G/TDo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=FP+cFuCt6rDteQzw/1XsJdkbNGnf6GEuI121vFecMj7P68qHERAleBTOWLfIVuPRT46kn22pg0Vepot7dfExiEoP92OToqIfNaeNXc/9ol4rOuZ2GWyfBC2MRECAN1QbF8SPvx6uMzDvYIfcg1fvYUIc0I0euSJx5jpP0czjf6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from msexch01.omp.ru (10.188.4.12) by msexch02.omp.ru (10.188.4.13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Wed, 20 Mar
+ 2024 11:21:56 +0300
+Received: from msexch01.omp.ru ([fe80::485b:1c4a:fb7f:c753]) by
+ msexch01.omp.ru ([fe80::485b:1c4a:fb7f:c753%5]) with mapi id 15.02.1258.012;
+ Wed, 20 Mar 2024 11:21:56 +0300
+From: Roman Smirnov <r.smirnov@omp.ru>
+To: Jarkko Sakkinen <jarkko@kernel.org>, David Howells <dhowells@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller"
+	<davem@davemloft.net>, Andrew Zaborowski <andrew.zaborowski@intel.com>
+CC: "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>, "Sergey
+ Shtylyov" <s.shtylyov@omp.ru>
+Subject: Re: [PATCH] KEYS: prevent NULL pointer dereference in
+ find_asymmetric_key()
+Thread-Topic: [PATCH] KEYS: prevent NULL pointer dereference in
+ find_asymmetric_key()
+Thread-Index: AQHadsRHcr0dJekxEkCC6oTcOjjyP7E9+xQAgAEukF2AACqYAIAA/WFj
+Date: Wed, 20 Mar 2024 08:21:56 +0000
+Message-ID: <7fd0f2a8252d4a6aa295adc1e76bc0e2@omp.ru>
+References: <20240315103320.18754-1-r.smirnov@omp.ru>
+ <CZX9T3TU6YU0.3JE9M7M3ENUE0@kernel.org>
+ <b5f21d1175c142efb52e68a24bc4165a@omp.ru>,<CZY02YNBTGYQ.3KG8NLH8X3RQE@kernel.org>
+In-Reply-To: <CZY02YNBTGYQ.3KG8NLH8X3RQE@kernel.org>
+Accept-Language: ru-RU, en-US
+Content-Language: ru-RU
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-kse-serverinfo: msexch02.omp.ru, 9
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: Clean, bases: 3/20/2024 4:50:00 AM
+x-kse-attachment-filter-triggered-rules: Clean
+x-kse-attachment-filter-triggered-filters: Clean
+x-kse-bulkmessagesfiltering-scan-result: InTheLimit
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CZXXPKTAUUM9.35VZUFITJWF6A@kernel.org>
 
-On Tue, Mar 19, 2024 at 08:22:51PM +0200, Jarkko Sakkinen wrote:
-> On Tue Mar 19, 2024 at 12:42 AM EET, Stefan Berger wrote:
-> > On 3/18/24 14:48, Lukas Wunner wrote:
-> > > On Tue, Mar 12, 2024 at 02:36:05PM -0400, Stefan Berger wrote:
-> > >> This series adds support for the NIST P521 curve to the ecdsa module
-> > >> to enable signature verification with it.
-> > > 
-> > > v6 of this series is still
-> > > 
-> > > Tested-by: Lukas Wunner <lukas@wunner.de>
+On Tue, 19 Mar 2024 22:14:22 +0200 Jarkko Sakkinen wrote:
+> On Tue Mar 19, 2024 at 4:44 PM EET, Roman Smirnov wrote:
+> > On Tue, 19 Mar 2024 01:39:00 +0200 Jarkko Sakkinen wrote:
+> > > On Fri Mar 15, 2024 at 12:33 PM EET, Roman Smirnov wrote:
+[...]
+> > > >
+> > > > Found by Linux Verification Center (linuxtesting.org) with Svace.
+> > >=20
+> > > I'm not sure if this should be part of the commit message.
 > >
-> > Thanks.
-> 
-> This has been discussed before in LKML but generally tested-by for
-> series does not have semantical meaning.
+> > I have already submitted patches with this line, some have been
+> > accepted. It is important for the Linux Verification Center to mark
+> > patches as closing issues found with Svace.
+> >
+> > > >
+> > > > Fixes: 7d30198ee24f ("keys: X.509 public key issuer lookup without =
+AKID")
+> > > > Suggested-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+> > >=20
+> > > Should be reported-by.
+> >
+> > The suggested-by tag belongs to Sergey because he suggested the fix,
+> > subject/description of the patch. The tag reported-by belongs to
+> > Svace tool.
+>
+> 1. I did not see any reported-by tags in this which is requirement.
+> 2. Who did find the issue using that tool? I don't put reported-by to
+>    GDB even if I use that find the bug.
 
-I believe that notion is outdated.
+Svace is an automated bug finding tool. This error was found during
+source code analysis by the program, so the tag reported-by does not
+belong to any person. I don't know what to do in such a situation,
+but write something like:
 
-It seems to be becoming the norm that maintainers apply patches with
-"b4 am --apply-cover-trailers", which automatically picks up Acked-by,
-Reviewed-by, Tested-by and other tags sent in-reply-to the cover letter
-and adds them to all patches in the series.
+    Reported-by: Svace
 
-Consequently, providing such tags in-reply-to the cover letter is not
-unusual and nothing to object to.
-
-If Herbert applies patches with "b4 am --apply-cover-trailers" or
-"b4 shazam --apply-cover-trailers" (I don't know if he does),
-it is completely irrelevant whether Stefan strips my Tested-by from
-individual patches:  It will automatically be re-added when the
-series gets applied.
-
-I have only tested the collection of *all* patches in this series and
-can thus only vouch for correct functioning of the *entire* series,
-hence providing the Tested-by in-reply-to the cover letter is the only
-thing that makes sense to me.
-
-Either way, I don't think arguing over which patch to apply a Tested-by
-to is a productive use of everyone's time.
-
-Thanks,
-
-Lukas
+would be weird. I think that the line "Found by Linux ... with Svace"
+could be a substitute for the tag.=
 
