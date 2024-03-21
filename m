@@ -1,46 +1,46 @@
-Return-Path: <keyrings+bounces-975-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-976-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEE37885F78
-	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 18:17:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 379B3885F7E
+	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 18:18:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E05028229E
-	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 17:17:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E836C281E54
+	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 17:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE6F11B599;
-	Thu, 21 Mar 2024 17:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF61D20DE5;
+	Thu, 21 Mar 2024 17:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RBlmFhni"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I+MJN64d"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A17AAC2E9;
-	Thu, 21 Mar 2024 17:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B6E79E0;
+	Thu, 21 Mar 2024 17:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711041440; cv=none; b=Lj7cpLqHGy491RhbxWKQVfXRFKqen7EAULj2KJG6tooW0gCYpQe0KtG+nO6ZfeZMZcmp3MQK+z5SA0xchy0QwQoaqMjPGxQTeZ+VWCuNLDenT0loNq57ycfQ/0f7h+dBFuRz11rDBSQ+FQVpnGQVSV31v6aZybJgLE8bSXPZP00=
+	t=1711041526; cv=none; b=lhg9vvUul/JQjxe3M1JO7Nn2H1K1wfPj6GtXSvDm4F5Qe8EXS77+l029HJZLQVfQR88xrm7M5GaMz4j41p6rBDuIzdE/pd7ewVDYW6Ia/KMRhB0l3adwfcULruC8l68F2j8OCPcQAPcHHqD/XIV+SNcu/8Ql9r7qjt+Bxqy4fec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711041440; c=relaxed/simple;
-	bh=9ac2pFm45Vkb4zyIlPdYjwUY5c7XpoySPr8khkoLHbY=;
+	s=arc-20240116; t=1711041526; c=relaxed/simple;
+	bh=MYnh+31E98SgBIrjhR594cbuy75Zbq1Yl+5mK+4i7kM=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=fQwq6tEY4qMkigKB9PhqVbp22KlehFFTDz4AvCskrVELTk2g/WmE3qEDrGDGgqxOzhQiJk3FzggjO0/dDdmI4xEomMswYy5g1k1zKwlCMRjt67C5Ka0VDwhM+Iam4Gy/IZcvm2sed3eijNmUKI3z+QTPFHW1HbXpNTWktyaDAYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RBlmFhni; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616D0C433F1;
-	Thu, 21 Mar 2024 17:17:18 +0000 (UTC)
+	 References:In-Reply-To; b=CAqx1rxc+UMEfhaq2Y/96eFVipCKVardAeAgxuYEPZuldfLlPHGsYaAqqQ2y+GERpkNVjBD9146JegmEbH5HmaS9AwHK7DM/eOpvV99r/81M0wItJxpYE660uPpWIfwz104N2grhDjd6ZU8T2rZmjczKHcHbDMyo2KVtWuhjlbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I+MJN64d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5844DC43390;
+	Thu, 21 Mar 2024 17:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711041440;
-	bh=9ac2pFm45Vkb4zyIlPdYjwUY5c7XpoySPr8khkoLHbY=;
+	s=k20201202; t=1711041526;
+	bh=MYnh+31E98SgBIrjhR594cbuy75Zbq1Yl+5mK+4i7kM=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=RBlmFhnivZexbInTZDJc+eICAX81KkmJawXjaNdXrtVnjPUjVqsp6kfe4fdNYXUzX
-	 yFGOQux2Ncm1+jaBSKCQ7wwJWKYleWIf5qxy/iZsADTfjVDY9rVU1kXTmMQBcgEC63
-	 Z1eyYHGwH6TBnKbzPgUcUAxotQjwIGldeB+5ed8bdcS4Ud6Y+GpqhxCwDNMRNxyavY
-	 uuCQSABxCBPTb+DGGVOB0t/Uk4+7911qdL67fqAWOjL9jrMJsdjJfdF8BqrHYD7hd7
-	 meIfWlby2JRU3OrdZgs97i7psq853pKXMrnmZQv+AxmN0QAOb2XUgjTWV9mU50gieZ
-	 JRQJHrBJOTWxw==
+	b=I+MJN64dUWgymtd+VwDW15uSGG84tvCmNMtawhrQ+mHDB97VER0hOwQq/VH+qxl3e
+	 +v4SJ/H/cLVsi3GgqlnW5MtSquSYSb82gl41UDrd/z19swG8Y018SBFoSmUoWZYZAh
+	 q0fEkZRbcopWLqTbCXhMUnVkmjgqMkpiYhex5pFGZ0vrcLU+C1RTuLdcXGdKwMDarQ
+	 M2WV/4N8miAqHehPWNiivnHv5a8kJPc0mFzxOEIU7KXrXFxX5C2el+3bk+g6Cu5ufG
+	 Ru89/OfML0T708Vm11t9EINIYvQEITETskcdVSTg7CqwUKOP5SVMNaMNXqxMSh+8f0
+	 OYFMIUuhh6+1w==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,146 +49,101 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 21 Mar 2024 19:17:16 +0200
-Message-Id: <CZZLKGMM0B9E.7J1CGE8EIGQX@kernel.org>
+Date: Thu, 21 Mar 2024 19:18:42 +0200
+Message-Id: <CZZLLJZZ65UD.1KGYIWJ2KJT1X@kernel.org>
 Cc: <linux-kernel@vger.kernel.org>, <saulo.alessandre@tse.jus.br>,
  <lukas@wunner.de>, <bbhushan2@marvell.com>
-Subject: Re: [PATCH v7 05/13] crypto: ecc - Add nbits field to ecc_curve
- structure
+Subject: Re: [PATCH v7 06/13] crypto: ecc - Implement vli_mmod_fast_521 for
+ NIST p521
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
 To: "Stefan Berger" <stefanb@linux.ibm.com>, <keyrings@vger.kernel.org>,
  <linux-crypto@vger.kernel.org>, <herbert@gondor.apana.org.au>,
  <davem@davemloft.net>
 X-Mailer: aerc 0.17.0
 References: <20240320114725.1644921-1-stefanb@linux.ibm.com>
- <20240320114725.1644921-6-stefanb@linux.ibm.com>
-In-Reply-To: <20240320114725.1644921-6-stefanb@linux.ibm.com>
+ <20240320114725.1644921-7-stefanb@linux.ibm.com>
+In-Reply-To: <20240320114725.1644921-7-stefanb@linux.ibm.com>
 
 On Wed Mar 20, 2024 at 1:47 PM EET, Stefan Berger wrote:
-> Add the number of bits a curve has to the ecc_curve definition to be able
-> to derive the number of bytes a curve requires for its coordinates from i=
-t.
-> It also allows one to identify a curve by its particular size. Set the
-> number of bits on all curve definitions.
+> Implement vli_mmod_fast_521 following the description for how to calculat=
+e
+> the modulus for NIST P521 in the NIST publication "Recommendations for
+> Discrete Logarithm-Based Cryptography: Elliptic Curve Domain Parameters"
+> section G.1.4.
+>
+> NIST p521 requires 9 64bit digits, so increase the ECC_MAX_DIGITS so that
+> the vli digit array provides enough elements to fit the larger integers
+> required by this curve.
 >
 > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
 > Tested-by: Lukas Wunner <lukas@wunner.de>
 > ---
->  crypto/ecc_curve_defs.h    | 4 ++++
->  crypto/ecrdsa_defs.h       | 5 +++++
->  include/crypto/ecc_curve.h | 2 ++
->  3 files changed, 11 insertions(+)
+>  crypto/ecc.c                  | 25 +++++++++++++++++++++++++
+>  include/crypto/internal/ecc.h |  3 ++-
+>  2 files changed, 27 insertions(+), 1 deletion(-)
 >
-> diff --git a/crypto/ecc_curve_defs.h b/crypto/ecc_curve_defs.h
-> index 9719934c9428..ab1ef3d94be5 100644
-> --- a/crypto/ecc_curve_defs.h
-> +++ b/crypto/ecc_curve_defs.h
-> @@ -17,6 +17,7 @@ static u64 nist_p192_b[] =3D { 0xFEB8DEECC146B9B1ull, 0=
-x0FA7E9AB72243049ull,
->  				0x64210519E59C80E7ull };
->  static struct ecc_curve nist_p192 =3D {
->  	.name =3D "nist_192",
-> +	.nbits =3D 192,
->  	.g =3D {
->  		.x =3D nist_p192_g_x,
->  		.y =3D nist_p192_g_y,
-> @@ -43,6 +44,7 @@ static u64 nist_p256_b[] =3D { 0x3BCE3C3E27D2604Bull, 0=
-x651D06B0CC53B0F6ull,
->  				0xB3EBBD55769886BCull, 0x5AC635D8AA3A93E7ull };
->  static struct ecc_curve nist_p256 =3D {
->  	.name =3D "nist_256",
-> +	.nbits =3D 256,
->  	.g =3D {
->  		.x =3D nist_p256_g_x,
->  		.y =3D nist_p256_g_y,
-> @@ -75,6 +77,7 @@ static u64 nist_p384_b[] =3D { 0x2a85c8edd3ec2aefull, 0=
-xc656398d8a2ed19dull,
->  				0x988e056be3f82d19ull, 0xb3312fa7e23ee7e4ull };
->  static struct ecc_curve nist_p384 =3D {
->  	.name =3D "nist_384",
-> +	.nbits =3D 384,
->  	.g =3D {
->  		.x =3D nist_p384_g_x,
->  		.y =3D nist_p384_g_y,
-> @@ -95,6 +98,7 @@ static u64 curve25519_a[] =3D { 0x000000000001DB41, 0x0=
-000000000000000,
->  				0x0000000000000000, 0x0000000000000000 };
->  static const struct ecc_curve ecc_25519 =3D {
->  	.name =3D "curve25519",
-> +	.nbits =3D 255,
->  	.g =3D {
->  		.x =3D curve25519_g_x,
->  		.ndigits =3D 4,
-> diff --git a/crypto/ecrdsa_defs.h b/crypto/ecrdsa_defs.h
-> index 0056335b9d03..1c2c2449e331 100644
-> --- a/crypto/ecrdsa_defs.h
-> +++ b/crypto/ecrdsa_defs.h
-> @@ -47,6 +47,7 @@ static u64 cp256a_b[] =3D {
+> diff --git a/crypto/ecc.c b/crypto/ecc.c
+> index 415a2f4e7291..99d41887c005 100644
+> --- a/crypto/ecc.c
+> +++ b/crypto/ecc.c
+> @@ -902,6 +902,28 @@ static void vli_mmod_fast_384(u64 *result, const u64=
+ *product,
+>  #undef AND64H
+>  #undef AND64L
 > =20
->  static struct ecc_curve gost_cp256a =3D {
->  	.name =3D "cp256a",
-> +	.nbits =3D 256,
->  	.g =3D {
->  		.x =3D cp256a_g_x,
->  		.y =3D cp256a_g_y,
-> @@ -80,6 +81,7 @@ static u64 cp256b_b[] =3D {
-> =20
->  static struct ecc_curve gost_cp256b =3D {
->  	.name =3D "cp256b",
-> +	.nbits =3D 256,
->  	.g =3D {
->  		.x =3D cp256b_g_x,
->  		.y =3D cp256b_g_y,
-> @@ -117,6 +119,7 @@ static u64 cp256c_b[] =3D {
-> =20
->  static struct ecc_curve gost_cp256c =3D {
->  	.name =3D "cp256c",
-> +	.nbits =3D 256,
->  	.g =3D {
->  		.x =3D cp256c_g_x,
->  		.y =3D cp256c_g_y,
-> @@ -166,6 +169,7 @@ static u64 tc512a_b[] =3D {
-> =20
->  static struct ecc_curve gost_tc512a =3D {
->  	.name =3D "tc512a",
-> +	.nbits =3D 512,
->  	.g =3D {
->  		.x =3D tc512a_g_x,
->  		.y =3D tc512a_g_y,
-> @@ -211,6 +215,7 @@ static u64 tc512b_b[] =3D {
-> =20
->  static struct ecc_curve gost_tc512b =3D {
->  	.name =3D "tc512b",
-> +	.nbits =3D 512,
->  	.g =3D {
->  		.x =3D tc512b_g_x,
->  		.y =3D tc512b_g_y,
-> diff --git a/include/crypto/ecc_curve.h b/include/crypto/ecc_curve.h
-> index 70964781eb68..63d5754e7614 100644
-> --- a/include/crypto/ecc_curve.h
-> +++ b/include/crypto/ecc_curve.h
-> @@ -23,6 +23,7 @@ struct ecc_point {
->   * struct ecc_curve - definition of elliptic curve
+> +/*
+> + * Computes result =3D product % curve_prime
+> + * from "Recommendations for Discrete Logarithm-Based Cryptography:
+> + *       Elliptic Curve Domain Parameters" section G.1.4
+> + */
+> +static void vli_mmod_fast_521(u64 *result, const u64 *product,
+> +			      const u64 *curve_prime, u64 *tmp)
+> +{
+> +	const unsigned int ndigits =3D ECC_CURVE_NIST_P521_DIGITS;
+> +	size_t i;
+> +
+> +	/* Initialize result with lowest 521 bits from product */
+> +	vli_set(result, product, ndigits);
+> +	result[8] &=3D 0x1ff;
+> +
+> +	for (i =3D 0; i < ndigits; i++)
+> +		tmp[i] =3D (product[8 + i] >> 9) | (product[9 + i] << 55);
+> +	tmp[8] &=3D 0x1ff;
+> +
+> +	vli_mod_add(result, result, tmp, curve_prime, ndigits);
+> +}
+> +
+>  /* Computes result =3D product % curve_prime for different curve_primes.
 >   *
->   * @name:	Short name of the curve.
-> + * @nbits:	The number of bits of a curve.
->   * @g:		Generator point of the curve.
->   * @p:		Prime number, if Barrett's reduction is used for this curve
->   *		pre-calculated value 'mu' is appended to the @p after ndigits.
-> @@ -34,6 +35,7 @@ struct ecc_point {
->   */
->  struct ecc_curve {
->  	char *name;
-> +	unsigned int nbits;
+>   * Note that curve_primes are distinguished just by heuristic check and
+> @@ -941,6 +963,9 @@ static bool vli_mmod_fast(u64 *result, u64 *product,
+>  	case ECC_CURVE_NIST_P384_DIGITS:
+>  		vli_mmod_fast_384(result, product, curve_prime, tmp);
+>  		break;
+> +	case ECC_CURVE_NIST_P521_DIGITS:
+> +		vli_mmod_fast_521(result, product, curve_prime, tmp);
+> +		break;
+>  	default:
+>  		pr_err_ratelimited("ecc: unsupported digits size!\n");
+>  		return false;
+> diff --git a/include/crypto/internal/ecc.h b/include/crypto/internal/ecc.=
+h
+> index ab722a8986b7..4e2f5f938e91 100644
+> --- a/include/crypto/internal/ecc.h
+> +++ b/include/crypto/internal/ecc.h
+> @@ -33,7 +33,8 @@
+>  #define ECC_CURVE_NIST_P192_DIGITS  3
+>  #define ECC_CURVE_NIST_P256_DIGITS  4
+>  #define ECC_CURVE_NIST_P384_DIGITS  6
+> -#define ECC_MAX_DIGITS              (512 / 64) /* due to ecrdsa */
+> +#define ECC_CURVE_NIST_P521_DIGITS  9
+> +#define ECC_MAX_DIGITS              DIV_ROUND_UP(521, 64) /* NIST P521 *=
+/
+> =20
+>  #define ECC_DIGITS_TO_BYTES_SHIFT 3
+> =20
 
-Nit:
-
-Hmm not strongly opionated here but wouldn't it be more consistent to
-use u32 here as the types below are also exact bitsize types?
-
->  	struct ecc_point g;
->  	u64 *p;
->  	u64 *n;
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
 BR, Jarkko
 
