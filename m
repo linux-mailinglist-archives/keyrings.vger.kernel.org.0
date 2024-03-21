@@ -1,46 +1,46 @@
-Return-Path: <keyrings+bounces-969-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-970-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01AD0885EE6
-	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 17:58:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EAC9885F14
+	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 18:05:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E46E2839CD
-	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 16:58:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B142B1F2408B
+	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 17:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD45F1332A5;
-	Thu, 21 Mar 2024 16:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013C51332AA;
+	Thu, 21 Mar 2024 16:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C1uIKI2x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S8ekIH4h"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E5C13174B;
-	Thu, 21 Mar 2024 16:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C31A71332A1;
+	Thu, 21 Mar 2024 16:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711039830; cv=none; b=JfkTaaUQQUQsjiN9WiZg+o8ljTV7g6L+ayIeEJPshFYrkV7ZBS8hJpZuGnqZ9Cfd2xjvpS4niNO11q1ERp9+cAYdd0FLR1mbp+0+7SWmD1xcipR3LJSUbsn4ia4+wJNgHHQdWR5tlvtOJTteKEPQ8nzRYq9RM7atS2EhKm6cbjE=
+	t=1711040057; cv=none; b=TyrE75oT839QXgNvucqKBJWHnrAe3sId90kzB7pzAddZ1bKGLv+oRgA6UcJClA2tDXHQwGD2W/GXGo1SBz17j2bEjRjThUXE4Po/gi+6Uon0vIzlhIuMwpAwP3KniKJjYZG7O5aML9VfefcTAnpWt7yhIAyr+zZ7MmX/x4OJoS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711039830; c=relaxed/simple;
-	bh=tNuHZJKyhybA+h0H/rFDTN4oQHxgp+RHik+5RM1pSFA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=eOwD0UKsR2/Ks9WwRfXvSQ/M+G7evE6nRRQndVqpOOBbsXEwNs1jz2V9wU4prcbOiTYaugqv4Sho07MglobRo+mrBQ626FvSWDhfbMbeHTId8djzjBma6Y+ZlB80eJFTfiHtJHNkVwqX5vB8kFMaWRyqx/Nj/M2oWYASQB5iy8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C1uIKI2x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F257C433C7;
-	Thu, 21 Mar 2024 16:50:27 +0000 (UTC)
+	s=arc-20240116; t=1711040057; c=relaxed/simple;
+	bh=em8npsP5TRLXP8z7MrWac1dI0o9nJYKSt1+DzV4vxn8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=bzyIl3qJzUUj6lCFngRyRDGC6KxGDUdJi8jHv/s0smkMvjXa7cmx2XiDeBv4Bf566o6qMvfEU8/bb2RmUvmjqa8S65nFELpWUYnBFLipUElN43zoJAaC4yXxRR7B/iSUDI5S3ri//zHQ/VTqs3neXCjCzJfUp10khlflDmriKkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S8ekIH4h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA39CC433C7;
+	Thu, 21 Mar 2024 16:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711039830;
-	bh=tNuHZJKyhybA+h0H/rFDTN4oQHxgp+RHik+5RM1pSFA=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=C1uIKI2xevaptJ90Hqq1QUXxuZHAEmTHqvo+FVf/fEqhFKGZqT2ZlLw3u7F0S/g28
-	 hDwkTlc58ISAZxpmvBoQC2eOCtWp3i9ly7hkhhvS+w5E7Qt/5pdd9iruAWfryoUp6L
-	 eHMcGYefUvPDxIHevws0UZmC0kp+922W/r8hAlrJaVlGQC1BlWnxAitca2Jx574ZUg
-	 SiwW91UlmL3GUJaixS5LwpwNpy0CBTBjdc2rVZ1kT8HJRHsQDmWI+zcvwEhUFOAEGO
-	 wDK6vVdnc4Ay/K8aOEgJxrSA7/eNYxLyf0G69iBpBw+KXNwkS/gYx8JzPLBIxQzp6P
-	 eGUDJ93F1kw1A==
+	s=k20201202; t=1711040057;
+	bh=em8npsP5TRLXP8z7MrWac1dI0o9nJYKSt1+DzV4vxn8=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=S8ekIH4hsj/trg10VRDeDAnxuZdvBgg2HKZ/x34KzSJtfHtlQbzmXEWDB2XW8tuw/
+	 meEeqhIWPwLvLnSCyuKE4nUS0hDRH7E2h9tn31NBmM9DApHQaTaANglzZE8hvO18vT
+	 cMCPs/LUOKLaEoBYLxVKsNrUa12R0pmWwu6c24aHWD5Udc4FlSgYauCEYnsE6PrTDw
+	 3tKoiBRe6L4NG1QhDubHE7/Km4Nm7RQcw4Jd4dB2uSQBAeE/YE/aKZ+020NtPBSsWu
+	 Snu1GT60Q8UQ479pIMPQcByLmJvc2ALvcF/REx/t7donD7iEc6mOkwL4Bh0albTdOP
+	 KvE9hMdLeMavw==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,45 +49,41 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 21 Mar 2024 18:50:26 +0200
-Message-Id: <CZZKZWV6FOIW.31F7VSV9I578I@kernel.org>
-Subject: Re: [PATCH v6 00/13] Add support for NIST P521 to ecdsa
+Date: Thu, 21 Mar 2024 18:54:13 +0200
+Message-Id: <CZZL2SXZSRV0.2MGG3O8JXBFC5@kernel.org>
+Cc: "Jonathan Corbet" <corbet@lwn.net>, "Daniel P . Smith"
+ <dpsmith@apertussolutions.com>, "Lino Sanfilippo"
+ <l.sanfilippo@kunbus.com>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Peter Huewe"
+ <peterhuewe@gmx.de>, "James Bottomley"
+ <James.Bottomley@HansenPartnership.com>, "Alexander Steffen"
+ <Alexander.Steffen@infineon.com>, <keyrings@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Randy Dunlap"
+ <rdunlap@infradead.org>
+Subject: Re: [PATCH v3] Documentation: tpm_tis
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Stefan Berger" <stefanb@linux.ibm.com>, "Konstantin Ryabitsev"
- <konstantin@linuxfoundation.org>, "Lukas Wunner" <lukas@wunner.de>
-Cc: "Stefan Berger" <stefanb@linux.vnet.ibm.com>,
- <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
- <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
- <linux-kernel@vger.kernel.org>, <saulo.alessandre@tse.jus.br>,
- <bbhushan2@marvell.com>
+To: "Jarkko Sakkinen" <jarkko@kernel.org>, <linux-integrity@vger.kernel.org>
 X-Mailer: aerc 0.17.0
-References: <20240312183618.1211745-1-stefanb@linux.vnet.ibm.com>
- <ZfiMhi9D2Rhh89BI@wunner.de>
- <d02eda40-2d3a-43a2-a3a9-cb79055acda7@linux.ibm.com>
- <CZXXPKTAUUM9.35VZUFITJWF6A@kernel.org> <Zfp20bLB0onXo7FV@wunner.de>
- <20240320-quirky-truthful-manul-da6eb9@lemur>
- <CZZKAZB5K1PD.2UKMDD28AUCEC@kernel.org>
- <CZZKCJGKVP5N.3GUU48O4Y62KQ@kernel.org>
- <cce10484-99cb-4c2e-9768-862fc35a6725@linux.ibm.com>
-In-Reply-To: <cce10484-99cb-4c2e-9768-862fc35a6725@linux.ibm.com>
+References: <20240321164314.14732-1-jarkko@kernel.org>
+In-Reply-To: <20240321164314.14732-1-jarkko@kernel.org>
 
-On Thu Mar 21, 2024 at 6:36 PM EET, Stefan Berger wrote:
-> >=20
-> > Putting tested-by to every possible patch only degrades the quality
-> > of the commit log.
->
-> I would still be interested how one would test individual patches in a=20
-> series so they are worthy of a Tested-by tag.
+On Thu Mar 21, 2024 at 6:43 PM EET, Jarkko Sakkinen wrote:
+> Based recent discussions on LKML, provide preliminary bits of tpm_tis_cor=
+e
+> dependent drivers. Includes only bare essentials but can be extended late=
+r
+> on case by case. This way some people may even want to read it later on.
 
-I've at least said this twice in this thread.
+$ pdftotext PC-Client-Specific-Platform-TPM-Profile-for-TPM-2p0-v1p05p_r14_=
+pub.pdf
+$ grep -ci 'FIFO interface' PC-Client-Specific-Platform-TPM-Profile-for-TPM=
+-2p0-v1p05p_r14_pub.txt=20
+55
 
-I.e. in a feature you most likely test the uapi so 13/13.
+$ grep -ci 'TIS interface' PC-Client-Specific-Platform-TPM-Profile-for-TPM-=
+2p0-v1p05p_r14_pub.txt
+2
 
-In a bug fix you test kernel with and without the patch. Generally you
-test stuff that you can observe.
-
-You can also test non-uapi behaviour with e.g. kprobes or measure
-e.g. performance, depending on patch.
+55 > 2 so that pretty much nails this terminology.
 
 BR, Jarkko
 
