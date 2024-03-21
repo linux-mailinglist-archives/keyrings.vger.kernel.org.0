@@ -1,223 +1,118 @@
-Return-Path: <keyrings+bounces-959-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-960-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FE77885D0A
-	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 17:10:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D4FD885D19
+	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 17:13:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C3D31C2191A
-	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 16:10:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E8741C20810
+	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 16:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94C912BF30;
-	Thu, 21 Mar 2024 16:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33A2312BF26;
+	Thu, 21 Mar 2024 16:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="dAhpKMau"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TPtqcps1"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F4F12BF23;
-	Thu, 21 Mar 2024 16:09:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0180676052;
+	Thu, 21 Mar 2024 16:13:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711037399; cv=none; b=IzxLOt6Cmt9cj13kPkD5e8o19B/xbb5IT+p5Syby8KtyNTJcddGq1WxAJFWjoSwIM6I8wydipSWYn9zQReiFVOD9F6tnHDH7O8n5eh1FpvCMk1Beaf9I2sc7VGaBQywaVB+9Kj6ipq3f5h6EMRs4b8VZhEpr4oFHgLmuEj+pJyA=
+	t=1711037581; cv=none; b=SXqtk1s8HLUaxWELPJ2dRUvp3GFiTI/alB5u+cH/3vrx3iXTvFixqkfcTLbgpyPzcIQEOXi91GZ+x7eq4CBJJQzc4BlcrQd1AYg2iV/81ipYVa2NuBm2OBh1Bvh3v+Sw/YVzVS0e0ENj5nuAXXTG2ILOzJB0d9COYGHSaLfpgTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711037399; c=relaxed/simple;
-	bh=st0jyZD6fF0/ceWO3qsXCDcdlU28KeOqhR8RwZFHnqw=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Tj9HB7t84/+fsEn5jWsbB9kg1ie8k+4L+ANse0KduwwYVCEjVlw6m/anNuIIKs0HBx1rOj8XBwSjB9fiE/5GWVZoXDIMW/x14siIn3eFpwbPilP25SSmnhIrMn4HsSPjNkPJoQ4NYqQmq9b26mi4ZfHrciNFFfyZ/K5h8WW33p8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=dAhpKMau; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 42LFph7b011971;
-	Thu, 21 Mar 2024 16:09:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=vTNZJe0IJWDIMN1SbdzAB6ehGYLIFRs8Ff9IeHLNYtA=;
- b=dAhpKMaumPYzgeaXGcRz3+01DkOtPhvksdFiVh8TGtkFRAb/IqpxXB4MsrV9uToy1kOV
- UquqfsPRYvqL/saQ5GJBfVTKNMDbRpCS7HdTBPJrZwB0t1gq0h86r93GRYBqf0mM3HdZ
- yXYvl6Lukh2RoXLoq09vqDfaMvj3WZGpD8jsNyzFba3WYGJzGJ+8tE+i7butysP6F/5o
- 0TVkN2IclH4HPIEh7GewCcGlzAJHMZZurAVqccyypqe/J6wsNrSK5ZLO0jBGl5JHLlY/
- kUWBYffiPTco3lA0qOwsrN7gCJOwCQNZECWihURnsJp6CGNEA85Tre9hsXmKS1sXx/bi pA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x0nq48epm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 Mar 2024 16:09:36 +0000
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 42LG9asD009100;
-	Thu, 21 Mar 2024 16:09:36 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x0nq48epg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 Mar 2024 16:09:36 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 42LDwf7R002773;
-	Thu, 21 Mar 2024 16:09:35 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3wwrf2wtqu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 Mar 2024 16:09:35 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 42LG9Wpk58851816
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 Mar 2024 16:09:34 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7963458055;
-	Thu, 21 Mar 2024 16:09:32 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 62BF85804B;
-	Thu, 21 Mar 2024 16:09:31 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 21 Mar 2024 16:09:31 +0000 (GMT)
-Message-ID: <d957dbd3-4975-48d7-abc5-1a01c0959ea3@linux.ibm.com>
-Date: Thu, 21 Mar 2024 12:09:30 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Documentation: tpm_tis
-Content-Language: en-US
-To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org
-Cc: Jonathan Corbet <corbet@lwn.net>,
-        "Daniel P . Smith" <dpsmith@apertussolutions.com>,
-        Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Peter Huewe <peterhuewe@gmx.de>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Alexander Steffen <Alexander.Steffen@infineon.com>,
-        keyrings@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>
-References: <20240320085601.40450-1-jarkko@kernel.org>
- <afc9471c-1c28-4384-82c1-29464ca1fb1f@linux.ibm.com>
- <CZZJQR121P7H.3QS68A6320S32@kernel.org>
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <CZZJQR121P7H.3QS68A6320S32@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: SD3MVmc3-Va9D44QCOqk-nRPCX-gp5VX
-X-Proofpoint-GUID: k7P-IGXBL7-en4PS3OqwZqkLuLHcI3iB
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	s=arc-20240116; t=1711037581; c=relaxed/simple;
+	bh=tUZSPagVnxlSPXiCUxy39X6cj4+GA0/zLIHYPdPCTX8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=ANORgEKY/+10nZl8VmSBYno3T/0yrVpR202igzzWepFhWoQUCZ060sjjFbShGv9CljIo4jrcptf0bHWlicD/o53wdJO6iyfqXFVPpxoX24falhoRaIjk5N50+ZVDUTUJuxct6T5lxzgFePXEF1FUlO7tias0NiSD2hTLDjC50K8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TPtqcps1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721D4C433F1;
+	Thu, 21 Mar 2024 16:12:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711037580;
+	bh=tUZSPagVnxlSPXiCUxy39X6cj4+GA0/zLIHYPdPCTX8=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=TPtqcps1MVy2J4Z6DJQPSJv6c7n+WkGgwhEz4ZETzPDJJGTcbsEuiKmuamXzbaQaA
+	 upbVqtDp01fHcD5PCDsHkI/FSdq+OF/sB1CaDZ5xasTuOaSz78EzNQ3pWSErBnM21R
+	 5QPODJ4yvanZC+2v0OrX7zeCUQ+2AMM9x72x9ygYzu5B3o1TmJcabEhRxcJbG1FLfS
+	 Y9e3JQti6ZVs/1giuyBzkFcu7mEQ9dtmGgRRLe7xTLJ5gm48eGqqTXrnes+SvqP/jZ
+	 7iTrABtAGzFPWnz4/SAfkoiQrsceiSk4MdfWQeersX/GcbAQxqUDNRXIuthnSsA3PL
+	 YIwnQTTaJbOqA==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-21_10,2024-03-21_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- lowpriorityscore=0 suspectscore=0 bulkscore=0 impostorscore=0 phishscore=0
- priorityscore=1501 spamscore=0 mlxscore=0 mlxlogscore=995 malwarescore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2403140000 definitions=main-2403210117
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 21 Mar 2024 18:12:56 +0200
+Message-Id: <CZZK77BY3FK4.2WMP1X5H9GTL1@kernel.org>
+Subject: Re: [PATCH] KEYS: prevent NULL pointer dereference in
+ find_asymmetric_key()
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Roman Smirnov" <r.smirnov@omp.ru>, "David Howells"
+ <dhowells@redhat.com>, "Herbert Xu" <herbert@gondor.apana.org.au>, "David
+ S. Miller" <davem@davemloft.net>, "Andrew Zaborowski"
+ <andrew.zaborowski@intel.com>
+Cc: "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+ "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>, "Sergey
+ Shtylyov" <s.shtylyov@omp.ru>
+X-Mailer: aerc 0.17.0
+References: <20240315103320.18754-1-r.smirnov@omp.ru>
+ <CZX9T3TU6YU0.3JE9M7M3ENUE0@kernel.org>
+ <b5f21d1175c142efb52e68a24bc4165a@omp.ru>
+ <CZY02YNBTGYQ.3KG8NLH8X3RQE@kernel.org>
+ <7fd0f2a8252d4a6aa295adc1e76bc0e2@omp.ru>
+In-Reply-To: <7fd0f2a8252d4a6aa295adc1e76bc0e2@omp.ru>
 
+On Wed Mar 20, 2024 at 10:21 AM EET, Roman Smirnov wrote:
+> On Tue, 19 Mar 2024 22:14:22 +0200 Jarkko Sakkinen wrote:
+> > On Tue Mar 19, 2024 at 4:44 PM EET, Roman Smirnov wrote:
+> > > On Tue, 19 Mar 2024 01:39:00 +0200 Jarkko Sakkinen wrote:
+> > > > On Fri Mar 15, 2024 at 12:33 PM EET, Roman Smirnov wrote:
+> [...]
+> > > > >
+> > > > > Found by Linux Verification Center (linuxtesting.org) with Svace.
+> > > >=20
+> > > > I'm not sure if this should be part of the commit message.
+> > >
+> > > I have already submitted patches with this line, some have been
+> > > accepted. It is important for the Linux Verification Center to mark
+> > > patches as closing issues found with Svace.
+> > >
+> > > > >
+> > > > > Fixes: 7d30198ee24f ("keys: X.509 public key issuer lookup withou=
+t AKID")
+> > > > > Suggested-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+> > > >=20
+> > > > Should be reported-by.
+> > >
+> > > The suggested-by tag belongs to Sergey because he suggested the fix,
+> > > subject/description of the patch. The tag reported-by belongs to
+> > > Svace tool.
+> >
+> > 1. I did not see any reported-by tags in this which is requirement.
+> > 2. Who did find the issue using that tool? I don't put reported-by to
+> >    GDB even if I use that find the bug.
+>
+> Svace is an automated bug finding tool. This error was found during
+> source code analysis by the program, so the tag reported-by does not
+> belong to any person. I don't know what to do in such a situation,
+> but write something like:
+>
+>     Reported-by: Svace
+>
+> would be weird. I think that the line "Found by Linux ... with Svace"
+> could be a substitute for the tag.
 
+I'd prefer a person here that used the tool as it is not korg hosted
+automated tool.
 
-On 3/21/24 11:51, Jarkko Sakkinen wrote:
-> On Wed Mar 20, 2024 at 6:15 PM EET, Stefan Berger wrote:
->>
->>
->> On 3/20/24 04:56, Jarkko Sakkinen wrote:
->>> Based recent discussions on LKML, provide preliminary bits of tpm_tis_core
->>> dependent drivers. Includes only bare essentials but can be extended later
->>> on case by case. This way some people may even want to read it later on.
->>>
->>> Cc: Jonathan Corbet <corbet@lwn.net>
->>> CC: Daniel P. Smith <dpsmith@apertussolutions.com>
->>> Cc: Lino Sanfilippo <l.sanfilippo@kunbus.com>
->>> Cc: Jason Gunthorpe <jgg@ziepe.ca>
->>> Cc: Peter Huewe <peterhuewe@gmx.de>
->>> Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
->>> Cc: Alexander Steffen <Alexander.Steffen@infineon.com>
->>> Cc: keyrings@vger.kernel.org
->>> Cc: linux-doc@vger.kernel.org
->>> Cc: linux-kernel@vger.kernel.org
->>> Cc: linux-integrity@vger.kernel.org
->>> Cc: Randy Dunlap <rdunlap@infradead.org>
->>> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
->>> ---
->>> v2:
->>> - Fixed errors reported by Randy:
->>>     https://lore.kernel.org/all/aed28265-d677-491a-a045-24b351854b24@infradead.org/
->>> - Improved the text a bit to have a better presentation.
->>> ---
->>>    Documentation/security/tpm/index.rst   |  1 +
->>>    Documentation/security/tpm/tpm_tis.rst | 30 ++++++++++++++++++++++++++
->>>    2 files changed, 31 insertions(+)
->>>    create mode 100644 Documentation/security/tpm/tpm_tis.rst
->>>
->>> diff --git a/Documentation/security/tpm/index.rst b/Documentation/security/tpm/index.rst
->>> index fc40e9f23c85..f27a17f60a96 100644
->>> --- a/Documentation/security/tpm/index.rst
->>> +++ b/Documentation/security/tpm/index.rst
->>> @@ -5,6 +5,7 @@ Trusted Platform Module documentation
->>>    .. toctree::
->>>    
->>>       tpm_event_log
->>> +   tpm_tis
->>>       tpm_vtpm_proxy
->>>       xen-tpmfront
->>>       tpm_ftpm_tee
->>> diff --git a/Documentation/security/tpm/tpm_tis.rst b/Documentation/security/tpm/tpm_tis.rst
->>> new file mode 100644
->>> index 000000000000..b331813b3c45
->>> --- /dev/null
->>> +++ b/Documentation/security/tpm/tpm_tis.rst
->>> @@ -0,0 +1,30 @@
->>> +.. SPDX-License-Identifier: GPL-2.0
->>> +
->>> +=========================
->>> +TPM FIFO interface Driver
->>> +=========================
->>> +
->>> +FIFO (First-In-First-Out) is the name of the hardware interface used by the
->>
->> FIFO is the type. I am surprised you call it a 'name'. I would say TIS
->> is the 'name'.
-> 
-> It's what the official specification calls it [1].
-> 
-> 
->>
->>> +tpm_tis_core dependent drivers. The prefix "tis" comes from the TPM Interface
->>
->> tis is a tla -- a three letter *acronym*. You aren't using it as a 'prefix'.
-> 
-> I don't know what "tla" means.
-> 
->>
->>> +Specification, which is the hardware interface specification for TPM 1.x chips.
->>
->> It's also available for TPM2.
->   
-> Yes, but TIS is the name used by the legacy specification.
-
-
-The point is that TIS is not just a TPM 1.x interface but also used for 
-TPM 2.
-> 
->>
->>> +
->>> +Communication is based on a 5 KiB buffer shared by the TPM chip through a
->>
->> I thought it was typically 4 KiB.
-> 
-> You are basing this on table 9 in [1]?
-
-Yes. See below.
-
-> 
->>
->>> +hardware bus or memory map, depending on the physical wiring. The buffer is
->>> +further split into five equal-size buffers, which provide equivalent sets of
-
-If you are referring to the MMIO region between 0xfed4 0000 and 0xfed4 
-4fff as a buffer then you are talking about a **20kb** MMIO region 
-(0x5000) that is **split** into equal-sized MMIO regions, each having 
-4kb (0x1000). Yes, that's the 4kb then but there that one is no 5kb 
-'further split into five equal-sized buffers' of presumably 1kb each. 
-Each locality has a 0x1000 sized MMIO region.
+BR, Jarkko
 
