@@ -1,46 +1,46 @@
-Return-Path: <keyrings+bounces-964-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-965-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11DDA885D62
-	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 17:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B371885D7E
+	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 17:33:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A600FB2227C
-	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 16:26:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99D82B23BE3
+	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 16:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3B912CD9A;
-	Thu, 21 Mar 2024 16:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68BFEF9FD;
+	Thu, 21 Mar 2024 16:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nqxnzxD/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mKM3agjN"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A0F12BF2E;
-	Thu, 21 Mar 2024 16:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6D3C2E9;
+	Thu, 21 Mar 2024 16:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711038368; cv=none; b=XedDjt//T166t0IuPutCYPIQzLyx+mfGIgADp4Dl3LIcW20U/I7SEaMYoNbi7IZksiIDfsEHq6lpcfWGNQWAH7/Pwii8A0I1TFjth/wTqDnjd+zcMU1okKoRENFwpQP3qQpCQo8EDpQn5cUZxC5rQgC/8OvPP7+BrQS2tJhK6f8=
+	t=1711038765; cv=none; b=gH4m6Ws8t+daCzsHj0EDjbN6Ro9njHAKDUCIBLy9gU8ICvcmTVPESlC0TI5VBuN7cOVI/r+cMFZAe4gEA7a9ZGgr8ZrYuU3opezJzJ8ixpDiGmxcPPlZjIaY9jIoV+dmS+yI66MFU46P+4Xp7k+sZdeGmZsVEni2pBClh+eERsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711038368; c=relaxed/simple;
-	bh=o03R27T3nyhgHJSk8Nx5JFM1w/gztzsuOCe0SoTCrAQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=pg28s3pK6q0x3Kcj2DZo2B6hRJSnpHFtymCBHKySW8sHw/Eyr7ddVxf3Q8mTGRc30AhWMl5e+J82RrtJlqEDmxCKvkhYb0CPT5A3DHKFQ3weHvvcUWAAUhOlLviaqjE4jD0Dj3619hVkXDPRU63GtbwF6hMV5gkWPwpFXbTtS6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nqxnzxD/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54328C433C7;
-	Thu, 21 Mar 2024 16:26:04 +0000 (UTC)
+	s=arc-20240116; t=1711038765; c=relaxed/simple;
+	bh=/e5J656lgf7Nf4pNZzEd1EaQ77TPACnuex7LThUtq8Q=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=kiu6v40sZqxGYf7GhwesIoQ/PQ4Lm65jKi2U0tfdVrrjzK6CGFMUGLuMo+lU1+/WIcrxsKM07fLToP/mgF6u1K+UVYsUaHJIrQsGQnsMadY9qgCdfNC0WadwSqx1Pfj0xK6rGiFbCWSJ7ADl+x5gTuyJWSQLY5zh9v2GObFJbV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mKM3agjN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B16C433C7;
+	Thu, 21 Mar 2024 16:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711038366;
-	bh=o03R27T3nyhgHJSk8Nx5JFM1w/gztzsuOCe0SoTCrAQ=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=nqxnzxD/O7UelVXyOYeBjfH76lNFXycIDL6vIsdi91LcDS3WK1sCL+bGDOUQth5du
-	 EXPMXZAXZEZ6LgH54rRJZr/o+UH/u8SLCj9ddwu/eDk7O6qvLGxoXHbzUlxtrwX9Ji
-	 Eu756KAePUUNqbKLltLXhlLt6Un1zCVe7JbIAlTmMq3i2GEvbrN5rrGieEdUMJKXJ/
-	 7gEFyCs8X7SeLTAvEPGTPaVvuwgnRpUlO9wrQsLl5TIGb+lx7YEdznH4jnKEYgKqut
-	 BZIHC7fYIlr0y6Czvmp+0tTazxIm9AgDKU0PAaly8rx9hkoaMT7tOkwA1uIQP8Htpw
-	 174xKpw4bRkqA==
+	s=k20201202; t=1711038764;
+	bh=/e5J656lgf7Nf4pNZzEd1EaQ77TPACnuex7LThUtq8Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mKM3agjNhdaGVD54sCnIr2T4jmd4qB8L9BWTjU32qEByYKAjKzm9D1M06ZYKYp2N4
+	 qHQ4e+ctSdvvsm+uUQ6HLJe0WsUiDBAdVSYw2GJzPX8XFqGNFcV0wIvaLtkvsK2VhM
+	 QKp5gWdoNZCMqR5qBADX29F35/CaBeNv1JA+NunyCIJt978uwF2Zhq7fgcXOzhs39V
+	 kzNFAniXu2hFQ0Sh7EGOCCDZG3xghllrnkbWzqeHEqyuM0Lu05x6xnmVwziOxZcHMU
+	 +xC3DBpR6ErAd8jO4TFoXSEs+7iO0V8lMy9oX2qZNFjW68O4saww22rbJN8l1SCF08
+	 E82jqlhaPIpyg==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,70 +49,139 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 21 Mar 2024 18:26:02 +0200
-Message-Id: <CZZKH8G2XPIF.1G895LUGG0JWS@kernel.org>
-Cc: <linux-crypto@vger.kernel.org>, "Herbert Xu"
- <herbert@gondor.apana.org.au>, <keyrings@vger.kernel.org>,
- <linux-wireless@vger.kernel.org>, <iwd@lists.linux.dev>, "James Prestwood"
- <prestwoj@gmail.com>, "Dimitri John Ledkov" <dimitri.ledkov@canonical.com>,
- "Karel Balej" <balejk@matfyz.cz>
-Subject: Re: [PATCH] Revert "crypto: pkcs7 - remove sha1 support"
+Date: Thu, 21 Mar 2024 18:32:40 +0200
+Message-Id: <CZZKMB1B4P0T.26A4YJHD9VJCP@kernel.org>
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Eric Biggers" <ebiggers@kernel.org>
+To: "Jarkko Sakkinen" <jarkko@kernel.org>, "Stefan Berger"
+ <stefanb@linux.ibm.com>, <linux-integrity@vger.kernel.org>
+Cc: "Jonathan Corbet" <corbet@lwn.net>, "Daniel P . Smith"
+ <dpsmith@apertussolutions.com>, "Lino Sanfilippo"
+ <l.sanfilippo@kunbus.com>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Peter Huewe"
+ <peterhuewe@gmx.de>, "James Bottomley"
+ <James.Bottomley@HansenPartnership.com>, "Alexander Steffen"
+ <Alexander.Steffen@infineon.com>, <keyrings@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Randy Dunlap"
+ <rdunlap@infradead.org>
+Subject: Re: [PATCH v2] Documentation: tpm_tis
 X-Mailer: aerc 0.17.0
-References: <20240313233227.56391-1-ebiggers@kernel.org>
- <CZXWE5J2QMIN.1L4QKQU7C7UMN@kernel.org>
- <20240321041015.GB2387@sol.localdomain>
-In-Reply-To: <20240321041015.GB2387@sol.localdomain>
+References: <20240320085601.40450-1-jarkko@kernel.org>
+ <afc9471c-1c28-4384-82c1-29464ca1fb1f@linux.ibm.com>
+ <CZZJQR121P7H.3QS68A6320S32@kernel.org>
+ <d957dbd3-4975-48d7-abc5-1a01c0959ea3@linux.ibm.com>
+ <CZZKGEUSMI8F.CKFDVBIF1S4R@kernel.org>
+In-Reply-To: <CZZKGEUSMI8F.CKFDVBIF1S4R@kernel.org>
 
-On Thu Mar 21, 2024 at 6:10 AM EET, Eric Biggers wrote:
-> On Tue, Mar 19, 2024 at 07:20:54PM +0200, Jarkko Sakkinen wrote:
-> > > diff --git a/crypto/asymmetric_keys/mscode_parser.c b/crypto/asymmetr=
-ic_keys/mscode_parser.c
-> > > index 05402ef8964e..8aecbe4637f3 100644
-> > > --- a/crypto/asymmetric_keys/mscode_parser.c
-> > > +++ b/crypto/asymmetric_keys/mscode_parser.c
-> > > @@ -73,10 +73,13 @@ int mscode_note_digest_algo(void *context, size_t=
- hdrlen,
-> > >  	char buffer[50];
-> > >  	enum OID oid;
-> > > =20
-> > >  	oid =3D look_up_OID(value, vlen);
-> > >  	switch (oid) {
-> > > +	case OID_sha1:
-> > > +		ctx->digest_algo =3D "sha1";
-> > > +		break;
-> >=20
-> > I fully agree with the change BUT...
-> >=20
-> > IMHO it would make sense to e.g either add inline comment about iwd
-> > dependency or link to the bug report here.
-> >=20
-> > I'd like to think that there is common will to eventually get rid of
-> > all of SHA-1, and thus in cases where it is not yet possible it would
-> > make sense to guide what to needs to be done to make it happen, right?
-> >=20
-> > BR, Jarkko
+On Thu Mar 21, 2024 at 6:24 PM EET, Jarkko Sakkinen wrote:
+> On Thu Mar 21, 2024 at 6:09 PM EET, Stefan Berger wrote:
+> >
+> >
+> > On 3/21/24 11:51, Jarkko Sakkinen wrote:
+> > > On Wed Mar 20, 2024 at 6:15 PM EET, Stefan Berger wrote:
+> > >>
+> > >>
+> > >> On 3/20/24 04:56, Jarkko Sakkinen wrote:
+> > >>> Based recent discussions on LKML, provide preliminary bits of tpm_t=
+is_core
+> > >>> dependent drivers. Includes only bare essentials but can be extende=
+d later
+> > >>> on case by case. This way some people may even want to read it late=
+r on.
+> > >>>
+> > >>> Cc: Jonathan Corbet <corbet@lwn.net>
+> > >>> CC: Daniel P. Smith <dpsmith@apertussolutions.com>
+> > >>> Cc: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+> > >>> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> > >>> Cc: Peter Huewe <peterhuewe@gmx.de>
+> > >>> Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
+> > >>> Cc: Alexander Steffen <Alexander.Steffen@infineon.com>
+> > >>> Cc: keyrings@vger.kernel.org
+> > >>> Cc: linux-doc@vger.kernel.org
+> > >>> Cc: linux-kernel@vger.kernel.org
+> > >>> Cc: linux-integrity@vger.kernel.org
+> > >>> Cc: Randy Dunlap <rdunlap@infradead.org>
+> > >>> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > >>> ---
+> > >>> v2:
+> > >>> - Fixed errors reported by Randy:
+> > >>>     https://lore.kernel.org/all/aed28265-d677-491a-a045-24b351854b2=
+4@infradead.org/
+> > >>> - Improved the text a bit to have a better presentation.
+> > >>> ---
+> > >>>    Documentation/security/tpm/index.rst   |  1 +
+> > >>>    Documentation/security/tpm/tpm_tis.rst | 30 ++++++++++++++++++++=
+++++++
+> > >>>    2 files changed, 31 insertions(+)
+> > >>>    create mode 100644 Documentation/security/tpm/tpm_tis.rst
+> > >>>
+> > >>> diff --git a/Documentation/security/tpm/index.rst b/Documentation/s=
+ecurity/tpm/index.rst
+> > >>> index fc40e9f23c85..f27a17f60a96 100644
+> > >>> --- a/Documentation/security/tpm/index.rst
+> > >>> +++ b/Documentation/security/tpm/index.rst
+> > >>> @@ -5,6 +5,7 @@ Trusted Platform Module documentation
+> > >>>    .. toctree::
+> > >>>   =20
+> > >>>       tpm_event_log
+> > >>> +   tpm_tis
+> > >>>       tpm_vtpm_proxy
+> > >>>       xen-tpmfront
+> > >>>       tpm_ftpm_tee
+> > >>> diff --git a/Documentation/security/tpm/tpm_tis.rst b/Documentation=
+/security/tpm/tpm_tis.rst
+> > >>> new file mode 100644
+> > >>> index 000000000000..b331813b3c45
+> > >>> --- /dev/null
+> > >>> +++ b/Documentation/security/tpm/tpm_tis.rst
+> > >>> @@ -0,0 +1,30 @@
+> > >>> +.. SPDX-License-Identifier: GPL-2.0
+> > >>> +
+> > >>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+> > >>> +TPM FIFO interface Driver
+> > >>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
+> > >>> +
+> > >>> +FIFO (First-In-First-Out) is the name of the hardware interface us=
+ed by the
+> > >>
+> > >> FIFO is the type. I am surprised you call it a 'name'. I would say T=
+IS
+> > >> is the 'name'.
+> > >=20
+> > > It's what the official specification calls it [1].
+> > >=20
+> > >=20
+> > >>
+> > >>> +tpm_tis_core dependent drivers. The prefix "tis" comes from the TP=
+M Interface
+> > >>
+> > >> tis is a tla -- a three letter *acronym*. You aren't using it as a '=
+prefix'.
+> > >=20
+> > > I don't know what "tla" means.
+> > >=20
+> > >>
+> > >>> +Specification, which is the hardware interface specification for T=
+PM 1.x chips.
+> > >>
+> > >> It's also available for TPM2.
+> > >  =20
+> > > Yes, but TIS is the name used by the legacy specification.
+> >
+> >
+> > The point is that TIS is not just a TPM 1.x interface but also used for=
+=20
+> > TPM 2.
 >
-> This is supposed to just be a revert, so it's best not to mess around wit=
-h
-> adding additional stuff that wasn't in the original commit.  The sha1 sig=
-natures
-> are also not unique; iwd is also forcing the kernel to keep supporting MD=
-4, RC4,
-> KEYCTL_DH_COMPUTE, KEYCTL_PKEY_{QUERY,ENCRYPT,DECRYPT,SIGN,VERIFY}, etc.
-> Probably more than I don't know about.  I guess all of this should be doc=
-umented
-> in the code in appropriate places.  Probably the iwd folks should step in=
- to do
-> this, as they know best what they're using and they got a lot of this add=
-ed to
-> the kernel in the first place.
 >
-> - Eric
+> FIFO interface is what is  used in the spec so I'll stick to that.
 
-OK, fair point.
+E.g. Table 15 - *FIFO* Interface Identifier Register
 
+Not *TIS* Inteface Identifier Register.
+
+I don't want to invent my own terminology here and this the spec
+that we usually refer in every possible discussion around the topic.
 
 BR, Jarkko
 
