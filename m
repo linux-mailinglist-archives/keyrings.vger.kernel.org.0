@@ -1,134 +1,227 @@
-Return-Path: <keyrings+bounces-956-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-957-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 726AF885B11
-	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 15:44:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A15B6885C93
+	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 16:51:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11D8E1F22ED1
-	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 14:44:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49D96285948
+	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 15:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E03B85277;
-	Thu, 21 Mar 2024 14:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F29F8626B;
+	Thu, 21 Mar 2024 15:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="dAn9q1GT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AlfcfTh0"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B337556B87;
-	Thu, 21 Mar 2024 14:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3943A86261;
+	Thu, 21 Mar 2024 15:51:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711032284; cv=none; b=luTufoPkSjkbC4c78+xvYp/eOuU2PEVq/wINlhZq88MHido3nTqNSbQ2aBMkUhv8N5FiZvkjD1kLQX2nkP9fEGS6KljhgfsgsT6h/YCxEB5SN6i8YTmy2KTokHbbSL2NMs6YFuUS7hKFE7t3flI6HL/uJFH8qH+tHiNIISKieWs=
+	t=1711036292; cv=none; b=WRr9AmUdOTy8ihuRex2HnvYHqKzOYJAkMohMpjYECjmJDhYjkWZ67La6uH8v1RYT7YqY6DVjlZlb1g5O0VJWl89byQYpoCOp3dPAbOI0DSZq0XfmyKOzkcudO3CMItDKOhmAxVREcdTSA5o8TZGpbEOPtOchudv09uiNBDNrxCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711032284; c=relaxed/simple;
-	bh=GHV19E+IBElV1HjhsoN0rUYno6v+PERuBg5m8iwesa4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TvsV3tuAh6rvKLU9VqdvNEBugCa5i3rrDs5bmoWZktg1YlBqq0Fi+8FTH6aJ+wjq1ItAjzAqkwWl9HELEiHPwFzc7P6en8ISzlDBi76Vxhj6oeo5sloLxnzP2buoK3gW+m9DHEGP0iRF2KvSN9261mwUiI+xowomD2ewE48ubNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=dAn9q1GT; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2d109e82bd0so14161231fa.3;
-        Thu, 21 Mar 2024 07:44:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1711032281; x=1711637081; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=b8VpfnYNXxRvaolQUnhnA+r2PHKQUq2ZHCH8gy6DqyQ=;
-        b=dAn9q1GTzvccJ67zFZDF2Fn6QS/PSXrZQzMdLoVTuZgML9iBrbPEAy2c59FbAmhthT
-         luCRALA1cEGmSAq0+yvTuo+vtAzqoTRKVKs7w8+KADWWjqDaEahrv5era5RhWeX/O3LR
-         MiuPFyfQs+aWltNoLhj30OW1enm84iWqswW8OcAvHtoV40lsXbkK5mbqzfY4BmZYQiOE
-         IYinb6adb1oynXK6+TphJBTyH9pxcwDPG8Sg13jImhcaj2TszeL7GFHTp3O5KOEJ+j0D
-         FMEdmLUcnDOl+kHBPqT9aeVLT9XpSRSiu794VUbyKQtcLcquLI7CjoB6mwPdcOYNMCaC
-         5qTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711032281; x=1711637081;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=b8VpfnYNXxRvaolQUnhnA+r2PHKQUq2ZHCH8gy6DqyQ=;
-        b=uhfjLrm2Le2g7MAsYa6RSJVXiyganp6wYmVouqb7wiV923eGes6/JcZrds1qqjM6wC
-         KfB2dVKFQ+C8qZGMHaLSvRXMrppE8D0femFWAgVJBgZV/g69pNbtB9/Yx8RWjASz2W4v
-         nJPDnvVokYG8OArO34oE6PjPC0dQNqXrQJW5edNrQrFjC0W0+9BRxBAd0k4CpHJvU4wT
-         UeMr2//tlyMTx/knaEfsYSW2ADsRxI8rsVe6opWlkjzECovuniHM2QSzJSrR4+6/PGEc
-         xReoiRVkNonRSmkb1oAsJtQ20ewDkM7bFYgx9lNQpSucK23v9r0XWV4zN+dQ6dAFXMwP
-         Ji4g==
-X-Forwarded-Encrypted: i=1; AJvYcCUe/jFMb/zfdbhTCryJkHBNUsNRbBcebyGjpcTJUrNm93Dlvtzsl2H74ekyxTWh3h6TBHfsq9Hj8CaIfj7XhMosR9vpf6rsT6aM2qqCgmPS36XTxGbyq72GeGVdDDm9Np0lZsHxfkaR+Fj3OOzeoWFZf4jZGRdsIY4WFWgH0Cz7Pjbg8fXpHA==
-X-Gm-Message-State: AOJu0YwUXS5C46tlhvLPYe2ylvSYCv9qgeLEBvcLgPns9rGeQ874l6fm
-	NARSrgoThCprjpSiy78pyp/oLxoal8IKDAefJOUKA+sSHpdZ2R4ZEk5mW8aZuiCPciAHRjTgf3D
-	lbRWHd+37ppicvdmnPs/89/VxJo8=
-X-Google-Smtp-Source: AGHT+IGr1ms4JR4kYjpeJV3wIcwJsEiCRzYihEA1mukdW2EGaSm7U9CLw3TEXhqJsiavO3Z/lPGBgFwwkyrqLk1Q6Qw=
-X-Received: by 2002:a2e:a0d2:0:b0:2d6:90e4:1ced with SMTP id
- f18-20020a2ea0d2000000b002d690e41cedmr3750172ljm.22.1711032280632; Thu, 21
- Mar 2024 07:44:40 -0700 (PDT)
+	s=arc-20240116; t=1711036292; c=relaxed/simple;
+	bh=L+ezlLpknXEsEQmDMvyoEjsnzgAHFu4Z1IjpCnTiL2E=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=iVuZsTPaUAqNBtm/gV6JSFlCUuk418eZZGdfa+ShRurWbee2QawJGA8o9TyisGfaHP3RFQikbNY3TUKFlwMJYVuay/0QwDLyo6rBVAsvUL4yxk7bnaCubesgKcHnIJ/dA0SIA7HSN9DZYwShtQvZA7XMPS9p+CGnnkZ5sxXIDcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AlfcfTh0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27AA9C433F1;
+	Thu, 21 Mar 2024 15:51:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711036291;
+	bh=L+ezlLpknXEsEQmDMvyoEjsnzgAHFu4Z1IjpCnTiL2E=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=AlfcfTh01ISixGjDcDgIRSwydLeh5ZF8jX8uFZzxsIRZZi6Ktg07imY+eCoGmUOVx
+	 MNTP7MtIERvRNFTLQ9TvOSkDDD0q/gufWcvtgBvVkFIWeVWFJIHLX2FNUf5+Ji6N1L
+	 zWxJIqlrOO4Af0/F1R9S0W63/ZwAfUbmTtdf8WMXlq/UKMTOyvdQLDliUbNbm0FXNq
+	 x17Bl3oDr0H/7RnuMRMsHWuyt/Bwfu4ZXRl7RchcMmB7j8JTF9tBAnai71o/qiTb4h
+	 fe0F9PAED4RhS96LpR3seCSdmqDR/tR+EVjPDSuJ0l23kv9aBg2NTpkoedObt1EVCv
+	 I2RTaokxbIORg==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240313233227.56391-1-ebiggers@kernel.org> <CZXWE5J2QMIN.1L4QKQU7C7UMN@kernel.org>
- <20240321041015.GB2387@sol.localdomain>
-In-Reply-To: <20240321041015.GB2387@sol.localdomain>
-From: Andrew Zaborowski <balrogg@googlemail.com>
-Date: Thu, 21 Mar 2024 15:44:28 +0100
-Message-ID: <CAOq732+nyLtnafARgfx_dByRNxdw9E0hE8zWvKrPayUrx+MNgg@mail.gmail.com>
-Subject: Re: [PATCH] Revert "crypto: pkcs7 - remove sha1 support"
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>, linux-crypto@vger.kernel.org, 
-	Herbert Xu <herbert@gondor.apana.org.au>, keyrings@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, iwd@lists.linux.dev, 
-	James Prestwood <prestwoj@gmail.com>, Dimitri John Ledkov <dimitri.ledkov@canonical.com>, 
-	Karel Balej <balejk@matfyz.cz>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 21 Mar 2024 17:51:27 +0200
+Message-Id: <CZZJQR121P7H.3QS68A6320S32@kernel.org>
+Cc: "Jonathan Corbet" <corbet@lwn.net>, "Daniel P . Smith"
+ <dpsmith@apertussolutions.com>, "Lino Sanfilippo"
+ <l.sanfilippo@kunbus.com>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Peter Huewe"
+ <peterhuewe@gmx.de>, "James Bottomley"
+ <James.Bottomley@HansenPartnership.com>, "Alexander Steffen"
+ <Alexander.Steffen@infineon.com>, <keyrings@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Randy Dunlap"
+ <rdunlap@infradead.org>
+Subject: Re: [PATCH v2] Documentation: tpm_tis
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Stefan Berger" <stefanb@linux.ibm.com>,
+ <linux-integrity@vger.kernel.org>
+X-Mailer: aerc 0.17.0
+References: <20240320085601.40450-1-jarkko@kernel.org>
+ <afc9471c-1c28-4384-82c1-29464ca1fb1f@linux.ibm.com>
+In-Reply-To: <afc9471c-1c28-4384-82c1-29464ca1fb1f@linux.ibm.com>
 
-On Thu, 21 Mar 2024 at 05:10, Eric Biggers <ebiggers@kernel.org> wrote:
-> On Tue, Mar 19, 2024 at 07:20:54PM +0200, Jarkko Sakkinen wrote:
-> > I'd like to think that there is common will to eventually get rid of
-> > all of SHA-1, and thus in cases where it is not yet possible it would
-> > make sense to guide what to needs to be done to make it happen, right?
-> >
-> > BR, Jarkko
+On Wed Mar 20, 2024 at 6:15 PM EET, Stefan Berger wrote:
 >
-> This is supposed to just be a revert, so it's best not to mess around with
-> adding additional stuff that wasn't in the original commit.  The sha1 signatures
-> are also not unique; iwd is also forcing the kernel to keep supporting MD4, RC4,
-> KEYCTL_DH_COMPUTE, KEYCTL_PKEY_{QUERY,ENCRYPT,DECRYPT,SIGN,VERIFY}, etc.
-> Probably more than I don't know about.  I guess all of this should be documented
-> in the code in appropriate places.  Probably the iwd folks should step in to do
-> this, as they know best what they're using and they got a lot of this added to
-> the kernel in the first place.
+>
+> On 3/20/24 04:56, Jarkko Sakkinen wrote:
+> > Based recent discussions on LKML, provide preliminary bits of tpm_tis_c=
+ore
+> > dependent drivers. Includes only bare essentials but can be extended la=
+ter
+> > on case by case. This way some people may even want to read it later on=
+.
+> >=20
+> > Cc: Jonathan Corbet <corbet@lwn.net>
+> > CC: Daniel P. Smith <dpsmith@apertussolutions.com>
+> > Cc: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+> > Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> > Cc: Peter Huewe <peterhuewe@gmx.de>
+> > Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
+> > Cc: Alexander Steffen <Alexander.Steffen@infineon.com>
+> > Cc: keyrings@vger.kernel.org
+> > Cc: linux-doc@vger.kernel.org
+> > Cc: linux-kernel@vger.kernel.org
+> > Cc: linux-integrity@vger.kernel.org
+> > Cc: Randy Dunlap <rdunlap@infradead.org>
+> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > ---
+> > v2:
+> > - Fixed errors reported by Randy:
+> >    https://lore.kernel.org/all/aed28265-d677-491a-a045-24b351854b24@inf=
+radead.org/
+> > - Improved the text a bit to have a better presentation.
+> > ---
+> >   Documentation/security/tpm/index.rst   |  1 +
+> >   Documentation/security/tpm/tpm_tis.rst | 30 +++++++++++++++++++++++++=
++
+> >   2 files changed, 31 insertions(+)
+> >   create mode 100644 Documentation/security/tpm/tpm_tis.rst
+> >=20
+> > diff --git a/Documentation/security/tpm/index.rst b/Documentation/secur=
+ity/tpm/index.rst
+> > index fc40e9f23c85..f27a17f60a96 100644
+> > --- a/Documentation/security/tpm/index.rst
+> > +++ b/Documentation/security/tpm/index.rst
+> > @@ -5,6 +5,7 @@ Trusted Platform Module documentation
+> >   .. toctree::
+> >  =20
+> >      tpm_event_log
+> > +   tpm_tis
+> >      tpm_vtpm_proxy
+> >      xen-tpmfront
+> >      tpm_ftpm_tee
+> > diff --git a/Documentation/security/tpm/tpm_tis.rst b/Documentation/sec=
+urity/tpm/tpm_tis.rst
+> > new file mode 100644
+> > index 000000000000..b331813b3c45
+> > --- /dev/null
+> > +++ b/Documentation/security/tpm/tpm_tis.rst
+> > @@ -0,0 +1,30 @@
+> > +.. SPDX-License-Identifier: GPL-2.0
+> > +
+> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+> > +TPM FIFO interface Driver
+> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+> > +
+> > +FIFO (First-In-First-Out) is the name of the hardware interface used b=
+y the
+>
+> FIFO is the type. I am surprised you call it a 'name'. I would say TIS=20
+> is the 'name'.
 
-As far as I know none of these were added specifically for iwd but I
-could be wrong.  RC4 is not in the kernel anymore.
+It's what the official specification calls it [1].
 
-With regards to SHA1 it is used by iwd directly through an API but
-more importantly it's a dependency for x509 support in practice.
-Outside of module signing most x509 certificates in the wild use SHA1:
-wifi, https.  This thread originally talked about the removal of SHA1
-access through some API, not SHA1 in general.
 
-Regarding the use of the kernel crypto in iwd, IIRC some of the motivation was:
+>
+> > +tpm_tis_core dependent drivers. The prefix "tis" comes from the TPM In=
+terface
+>
+> tis is a tla -- a three letter *acronym*. You aren't using it as a 'prefi=
+x'.
 
-* to avoid duplication.  On a small system it's hard to justify having
-the same algorithms in the kernel and in userspace.  openssl is
-probably larger than all of ell+iwd.
+I don't know what "tla" means.
 
-* (various arguments can be made about how duplication doesn't help
-security, but an argument can be made the other way as well)
+>
+> > +Specification, which is the hardware interface specification for TPM 1=
+.x chips.
+>
+> It's also available for TPM2.
+=20
+Yes, but TIS is the name used by the legacy specification.
 
-* there is (was?) a plan to use the kernel keys API to abstract
-passing keys/keyrings between processes to greatly reduce the presence
-of the actual key contents in memory/filesystem.  Network Manager
-could load a key from file or a PKCS11 device and pass its kernel
-handle to iwd or other userspace instead of file paths, with the files
-necessarily being readable by multiple processes and loaded multiple
-times into memory.  The keys could also be loaded once on boot.  Or
-the keys could be in TPM and never be seen in main memory, only their
-API handles.
+>
+> > +
+> > +Communication is based on a 5 KiB buffer shared by the TPM chip throug=
+h a
+>
+> I thought it was typically 4 KiB.
 
-Best regards
+You are basing this on table 9 in [1]?
+
+>
+> > +hardware bus or memory map, depending on the physical wiring. The buff=
+er is
+> > +further split into five equal-size buffers, which provide equivalent s=
+ets of
+>
+> equal-sized MMIO regions?
+
+I'm not sure what spec you are referring to but [1] defines also other
+communication paths.
+
+>
+> > +registers for communication between the CPU and TPM. These communicati=
+on
+> > +endpoints are called localities in the TCG terminology.
+> > +
+> > +When the kernel wants to send commands to the TPM chip, it first reser=
+ves
+> > +locality 0 by setting the requestUse bit in the TPM_ACCESS register. T=
+he bit is
+> > +cleared by the chip when the access is granted. Once it completes its
+> > +communication, the kernel writes the TPM_ACCESS.activeLocality bit. Th=
+is
+> > +informs the chip that the locality has been relinquished.
+> > +
+> > +Pending localities are served in order by the chip in descending order=
+, one at
+> > +a time:
+>
+> I think I know what pending localities are because I have worked with=20
+> this device but I am not sure whether the user can deduce this from the=
+=20
+> paragraph above. Also, why this particular detail when the driver only=20
+> uses locality 0 and nobody is competing about access to localities?
+
+This is pretty good summary that is IMHO somewhat useful.
+
+You are welcome to contribute to the documentation but it has to start
+from something.
+
+>
+> > +
+> > +- Locality 0 has the lowest priority.
+> > +- Locality 5 has the highest priority.
+> > +
+> > +Further information on the purpose and meaning of the localities can b=
+e found
+> > +in section 3.2 of the TCG PC Client Platform TPM Profile Specification=
+.
+o
+
+
+[1] https://trustedcomputinggroup.org/resource/pc-client-platform-tpm-profi=
+le-ptp-specification/
+
+BR, Jarkko
 
