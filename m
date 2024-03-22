@@ -1,127 +1,92 @@
-Return-Path: <keyrings+bounces-984-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-985-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3FBD886079
-	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 19:25:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A56886B73
+	for <lists+keyrings@lfdr.de>; Fri, 22 Mar 2024 12:45:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DD6B1F22291
-	for <lists+keyrings@lfdr.de>; Thu, 21 Mar 2024 18:25:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33C8D1F21230
+	for <lists+keyrings@lfdr.de>; Fri, 22 Mar 2024 11:45:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948E61332BB;
-	Thu, 21 Mar 2024 18:25:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Omyzrrfr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2DD3F9CC;
+	Fri, 22 Mar 2024 11:45:02 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BC479C3;
-	Thu, 21 Mar 2024 18:25:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279AE3F8F4;
+	Fri, 22 Mar 2024 11:44:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711045526; cv=none; b=Mks2a4aLmgLr/ZEDSOn8S08d2GBGjdrwTJbr8eRPPzg3QmZikiz69G8pUeCJlC3vteW7WzVP0tG4Ruf/cMMD6meNiHze4OF8miQ5LIC7v/06W0IUM9Zdhz34boOyMgAruDfO2GBXK/ATALujdQb+6wxIgi6foE2Mhp1cVRw0fAg=
+	t=1711107902; cv=none; b=tCC8bFI8XJoR4T6c6K7iaUiVNGBLkTO0I758ikqMt9bvfO1jzex3KA4oYjiAPglMaWbl2QUG0NTyzAGqu2wPP/w0IgKJw6QNM3QMlBqseglq73iVoh8DaRbreygyyYGj042Xgwe4zbSF85nR9WSNIDKOqXkGwEPch/4lu9CDYKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711045526; c=relaxed/simple;
-	bh=GSm30TNvJb3WRtML6WpgbGZ659hB6xOjASeoFE5AicI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=GG3cW6PXjvyTwXbYypLc4KVuaurnhEmnia34JOna9WxzOEA/EK1yc7ReF8bC1U5xDm/G1tEvzGX+pYuC/n7+31F0zkmoZIv7gxVwwvtjYqDYG1E2lQLZZJGbiNvuRcaFX6FgL06zAYmLnIk5Hf8xQNngnj6+kI0qTwfrpZdBuII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Omyzrrfr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83A2C433C7;
-	Thu, 21 Mar 2024 18:25:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711045525;
-	bh=GSm30TNvJb3WRtML6WpgbGZ659hB6xOjASeoFE5AicI=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=OmyzrrfrgBYAsSaQSWU4pA/fRi563CAGY/aoIPyzl78XLfH3G1Sq+Te0Xl7IpO07b
-	 4i0Kf9hPbDbpO05M2Y/daA7DOy3bR+/7TXlkSyATk7XVSfW2b1nbiicGD605uS1Gxs
-	 rwK2jSgRL4st1o5V12W+0k07kPWbQ9uDkuPkoPUFzDXztr1YwbFrFBICZ+9cxQCl1Q
-	 cO/kXYk+FxpmUP8L7vEiVK9Dv6nVEOY2/5BHZWWHAmUdqn82FbAsn6eBzcnXHNsJIQ
-	 L4wGjGJuuFeCap0xUdoH/XZNaSa4wIDMvV7HjkHKpucMCeSwO9SvSxs6+GBL4c5kFH
-	 /OiYAwEOMxQVA==
+	s=arc-20240116; t=1711107902; c=relaxed/simple;
+	bh=3TzN2Lt6QPOtvQCHtJ7t44fnCg8LERCTZqdH35s6BEY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E/3xWJZ636Xmd1z9dFFBrxlD3Y2/vBZbQRBIuemvw7sHrGCb+UrWHyUjW02YRnitxc9VIJvOKFX8Ug/4s5NIxaTS1kJTI64oZPAqTUgRZuBo/DP8AYcCIK3GvvGS2O91zfnFllF+U5w5WQuPmsDyiIYLct6nbs/BBzsGUMdSxOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
+	id 1rndKP-009XMk-Km; Fri, 22 Mar 2024 19:44:54 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 22 Mar 2024 19:45:09 +0800
+Date: Fri, 22 Mar 2024 19:45:09 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
+	linux-wireless@vger.kernel.org, iwd@lists.linux.dev,
+	James Prestwood <prestwoj@gmail.com>,
+	Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
+	Karel Balej <balejk@matfyz.cz>
+Subject: Re: [PATCH] Revert "crypto: pkcs7 - remove sha1 support"
+Message-ID: <Zf1vRbvwYvj1KcTS@gondor.apana.org.au>
+References: <20240313233227.56391-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 21 Mar 2024 20:25:22 +0200
-Message-Id: <CZZN0LEJ6DA6.1CGFPODVM7RCH@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <saulo.alessandre@tse.jus.br>,
- <lukas@wunner.de>, <bbhushan2@marvell.com>, "David Howells"
- <dhowells@redhat.com>
-Subject: Re: [PATCH v7 13/13] crypto: x509 - Add OID for NIST P521 and
- extend parser for it
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Stefan Berger" <stefanb@linux.ibm.com>, <keyrings@vger.kernel.org>,
- <linux-crypto@vger.kernel.org>, <herbert@gondor.apana.org.au>,
- <davem@davemloft.net>
-X-Mailer: aerc 0.17.0
-References: <20240320114725.1644921-1-stefanb@linux.ibm.com>
- <20240320114725.1644921-14-stefanb@linux.ibm.com>
- <CZZLN3B7TMG5.1A0518I6Z3MEA@kernel.org>
- <0216c143-445b-472d-a62a-57cbe8b19c24@linux.ibm.com>
-In-Reply-To: <0216c143-445b-472d-a62a-57cbe8b19c24@linux.ibm.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240313233227.56391-1-ebiggers@kernel.org>
 
-On Thu Mar 21, 2024 at 7:42 PM EET, Stefan Berger wrote:
->
->
-> On 3/21/24 13:20, Jarkko Sakkinen wrote:
-> > On Wed Mar 20, 2024 at 1:47 PM EET, Stefan Berger wrote:
-> >> Enable the x509 parser to accept NIST P521 certificates and add the
-> >> OID for ansip521r1, which is the identifier for NIST P521.
-> >>
-> >> Cc: David Howells <dhowells@redhat.com>
-> >> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> >> Tested-by: Lukas Wunner <lukas@wunner.de>
-> >> ---
-> >>   crypto/asymmetric_keys/x509_cert_parser.c | 3 +++
-> >>   include/linux/oid_registry.h              | 1 +
-> >>   2 files changed, 4 insertions(+)
-> >>
-> >> diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymme=
-tric_keys/x509_cert_parser.c
-> >> index 487204d39426..99f809b7910b 100644
-> >> --- a/crypto/asymmetric_keys/x509_cert_parser.c
-> >> +++ b/crypto/asymmetric_keys/x509_cert_parser.c
-> >> @@ -538,6 +538,9 @@ int x509_extract_key_data(void *context, size_t hd=
-rlen,
-> >>   		case OID_id_ansip384r1:
-> >>   			ctx->cert->pub->pkey_algo =3D "ecdsa-nist-p384";
-> >>   			break;
-> >> +		case OID_id_ansip521r1:
-> >> +			ctx->cert->pub->pkey_algo =3D "ecdsa-nist-p521";
-> >> +			break;
-> >>   		default:
-> >>   			return -ENOPKG;
-> >>   		}
-> >> diff --git a/include/linux/oid_registry.h b/include/linux/oid_registry=
-.h
-> >> index 3921fbed0b28..af16d96fbbf2 100644
-> >> --- a/include/linux/oid_registry.h
-> >> +++ b/include/linux/oid_registry.h
-> >> @@ -65,6 +65,7 @@ enum OID {
-> >>   	OID_Scram,			/* 1.3.6.1.5.5.14 */
-> >>   	OID_certAuthInfoAccess,		/* 1.3.6.1.5.5.7.1.1 */
-> >>   	OID_id_ansip384r1,		/* 1.3.132.0.34 */
-> >> +	OID_id_ansip521r1,		/* 1.3.132.0.35 */
-> >>   	OID_sha256,			/* 2.16.840.1.101.3.4.2.1 */
-> >>   	OID_sha384,			/* 2.16.840.1.101.3.4.2.2 */
-> >>   	OID_sha512,			/* 2.16.840.1.101.3.4.2.3 */
-> >=20
-> > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> >=20
-> > BR, Jarkko
->
->
-> Thanks for the tags.
+On Wed, Mar 13, 2024 at 04:32:27PM -0700, Eric Biggers wrote:
+> From: Eric Biggers <ebiggers@google.com>
+> 
+> This reverts commit 16ab7cb5825fc3425c16ad2c6e53d827f382d7c6 because it
+> broke iwd.  iwd uses the KEYCTL_PKEY_* UAPIs via its dependency libell,
+> and apparently it is relying on SHA-1 signature support.  These UAPIs
+> are fairly obscure, and their documentation does not mention which
+> algorithms they support.  iwd really should be using a properly
+> supported userspace crypto library instead.  Regardless, since something
+> broke we have to revert the change.
+> 
+> It may be possible that some parts of this commit can be reinstated
+> without breaking iwd (e.g. probably the removal of MODULE_SIG_SHA1), but
+> for now this just does a full revert to get things working again.
+> 
+> Reported-by: Karel Balej <balejk@matfyz.cz>
+> Closes: https://lore.kernel.org/r/CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz
+> Cc: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
+> ---
+>  crypto/asymmetric_keys/mscode_parser.c    |  3 +
+>  crypto/asymmetric_keys/pkcs7_parser.c     |  4 ++
+>  crypto/asymmetric_keys/public_key.c       |  3 +-
+>  crypto/asymmetric_keys/signature.c        |  2 +-
+>  crypto/asymmetric_keys/x509_cert_parser.c |  8 +++
+>  crypto/testmgr.h                          | 80 +++++++++++++++++++++++
+>  include/linux/oid_registry.h              |  4 ++
+>  kernel/module/Kconfig                     |  5 ++
+>  8 files changed, 107 insertions(+), 2 deletions(-)
 
-Sure, at least the noise I've made is the sign that someone actually did
-read through all the code changes, right? :-)
-
-BR, Jarkko
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
