@@ -1,92 +1,173 @@
-Return-Path: <keyrings+bounces-985-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-986-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A56886B73
-	for <lists+keyrings@lfdr.de>; Fri, 22 Mar 2024 12:45:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 131F3886C30
+	for <lists+keyrings@lfdr.de>; Fri, 22 Mar 2024 13:36:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33C8D1F21230
-	for <lists+keyrings@lfdr.de>; Fri, 22 Mar 2024 11:45:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 455DC1C225E9
+	for <lists+keyrings@lfdr.de>; Fri, 22 Mar 2024 12:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2DD3F9CC;
-	Fri, 22 Mar 2024 11:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F6B3FE35;
+	Fri, 22 Mar 2024 12:35:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u/P+vTaH"
 X-Original-To: keyrings@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279AE3F8F4;
-	Fri, 22 Mar 2024 11:44:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590322F844;
+	Fri, 22 Mar 2024 12:35:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711107902; cv=none; b=tCC8bFI8XJoR4T6c6K7iaUiVNGBLkTO0I758ikqMt9bvfO1jzex3KA4oYjiAPglMaWbl2QUG0NTyzAGqu2wPP/w0IgKJw6QNM3QMlBqseglq73iVoh8DaRbreygyyYGj042Xgwe4zbSF85nR9WSNIDKOqXkGwEPch/4lu9CDYKo=
+	t=1711110950; cv=none; b=GBP633D0mUZBXJU15Rmcqqhx/W2pjsmbXvAv0HZGaztR27kFnDhBXzmDfrIuCNFIuhWoSk/5ZT+Cq5wiroukp3q6gmcAf7gX3xWXHWPeb5tiVpd+gid3H8FAAc7RyjSFkFNwdDXQeDcll6lkW9kILu2xjkaSbLihLVSFoN1tDUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711107902; c=relaxed/simple;
-	bh=3TzN2Lt6QPOtvQCHtJ7t44fnCg8LERCTZqdH35s6BEY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E/3xWJZ636Xmd1z9dFFBrxlD3Y2/vBZbQRBIuemvw7sHrGCb+UrWHyUjW02YRnitxc9VIJvOKFX8Ug/4s5NIxaTS1kJTI64oZPAqTUgRZuBo/DP8AYcCIK3GvvGS2O91zfnFllF+U5w5WQuPmsDyiIYLct6nbs/BBzsGUMdSxOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-	id 1rndKP-009XMk-Km; Fri, 22 Mar 2024 19:44:54 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 22 Mar 2024 19:45:09 +0800
-Date: Fri, 22 Mar 2024 19:45:09 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
-	linux-wireless@vger.kernel.org, iwd@lists.linux.dev,
-	James Prestwood <prestwoj@gmail.com>,
-	Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
-	Karel Balej <balejk@matfyz.cz>
-Subject: Re: [PATCH] Revert "crypto: pkcs7 - remove sha1 support"
-Message-ID: <Zf1vRbvwYvj1KcTS@gondor.apana.org.au>
-References: <20240313233227.56391-1-ebiggers@kernel.org>
+	s=arc-20240116; t=1711110950; c=relaxed/simple;
+	bh=DIU/riHW7d/Q828EtRoJMXqE8kp8ZnSjYwedK5XPRbA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W7C3pUp6GAb9CYmMtAcJX3YTiXoXZGay86lpN+DotnckeUPvFCOobBi56peNtzZK6xovrxfd8sK07z+M5KyI8cGQAsXSr6RF4gCm7DJ/pVAd9tncs98ynRovyFLyM6hx368SXdS7trCr1RZ4oN5BJ/ltgZjGmngm0evi5df0cCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u/P+vTaH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF17C433F1;
+	Fri, 22 Mar 2024 12:35:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711110949;
+	bh=DIU/riHW7d/Q828EtRoJMXqE8kp8ZnSjYwedK5XPRbA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=u/P+vTaHBL1Qwg9rMUybG08tJuaCL6vcumDRR7PHiRZWZa0Ku+VsguA6Jz/oYwY/Y
+	 qNNIoY2JogVZ1Ih34hgni6rT+X0sJF9I3IoX44804pCZ7LbSe3umt2A5+eqqmmLAiM
+	 AUmjdLAmJGbLoBKHalDymv2gFjrcc/2aEUdPpgJpY2wEqv2Rq7FOxNtzSv0t8bS7cC
+	 AncIoFdtkl1HZmLT46qeG+GrUD80IwC58ceIku1ALmyCFxfPw6P6JRGyzbAMvlCjWC
+	 97XsAbbG1AQeTTAN6L4XZNUyXSmtZnEbDSZ33HwDvGBjmNtvCJ428TANpIUMF1rXwd
+	 Z9ItmEWNNiCQQ==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-integrity@vger.kernel.org
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	"Daniel P . Smith" <dpsmith@apertussolutions.com>,
+	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Peter Huewe <peterhuewe@gmx.de>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Alexander Steffen <Alexander.Steffen@infineon.com>,
+	keyrings@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	netdev@vger.kernel.org (open list:PTP HARDWARE CLOCK SUPPORT:Keyword:(?:\b|_)ptp(?:\b|_))
+Subject: [PATCH v4] Documentation: tpm_tis
+Date: Fri, 22 Mar 2024 14:35:36 +0200
+Message-ID: <20240322123542.24158-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240313233227.56391-1-ebiggers@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 13, 2024 at 04:32:27PM -0700, Eric Biggers wrote:
-> From: Eric Biggers <ebiggers@google.com>
-> 
-> This reverts commit 16ab7cb5825fc3425c16ad2c6e53d827f382d7c6 because it
-> broke iwd.  iwd uses the KEYCTL_PKEY_* UAPIs via its dependency libell,
-> and apparently it is relying on SHA-1 signature support.  These UAPIs
-> are fairly obscure, and their documentation does not mention which
-> algorithms they support.  iwd really should be using a properly
-> supported userspace crypto library instead.  Regardless, since something
-> broke we have to revert the change.
-> 
-> It may be possible that some parts of this commit can be reinstated
-> without breaking iwd (e.g. probably the removal of MODULE_SIG_SHA1), but
-> for now this just does a full revert to get things working again.
-> 
-> Reported-by: Karel Balej <balejk@matfyz.cz>
-> Closes: https://lore.kernel.org/r/CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz
-> Cc: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
-> ---
->  crypto/asymmetric_keys/mscode_parser.c    |  3 +
->  crypto/asymmetric_keys/pkcs7_parser.c     |  4 ++
->  crypto/asymmetric_keys/public_key.c       |  3 +-
->  crypto/asymmetric_keys/signature.c        |  2 +-
->  crypto/asymmetric_keys/x509_cert_parser.c |  8 +++
->  crypto/testmgr.h                          | 80 +++++++++++++++++++++++
->  include/linux/oid_registry.h              |  4 ++
->  kernel/module/Kconfig                     |  5 ++
->  8 files changed, 107 insertions(+), 2 deletions(-)
+Based recent discussions on LKML, provide preliminary bits of tpm_tis_core
+dependent drivers. Includes only bare essentials but can be extended later
+on case by case. This way some people may even want to read it later on.
 
-Patch applied.  Thanks.
+Cc: Jonathan Corbet <corbet@lwn.net>
+CC: Daniel P. Smith <dpsmith@apertussolutions.com>
+Cc: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Peter Huewe <peterhuewe@gmx.de>
+Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Alexander Steffen <Alexander.Steffen@infineon.com>
+Cc: keyrings@vger.kernel.org
+Cc: linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-integrity@vger.kernel.org
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+v4:
+- Extended the text to address some of Stefan's concerns with v2.
+- Had to unfortunately remove Randy's reviewed-by because of this, given
+  the amount of text added.
+v3:
+- Fixed incorrect buffer size:
+  https://lore.kernel.org/linux-integrity/d957dbd3-4975-48d7-abc5-1a01c0959ea3@linux.ibm.com/
+v2:
+- Fixed errors reported by Randy:
+  https://lore.kernel.org/all/aed28265-d677-491a-a045-24b351854b24@infradead.org/
+- Improved the text a bit to have a better presentation.
+---
+ Documentation/security/tpm/index.rst   |  1 +
+ Documentation/security/tpm/tpm_tis.rst | 46 ++++++++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
+ create mode 100644 Documentation/security/tpm/tpm_tis.rst
+
+diff --git a/Documentation/security/tpm/index.rst b/Documentation/security/tpm/index.rst
+index fc40e9f23c85..f27a17f60a96 100644
+--- a/Documentation/security/tpm/index.rst
++++ b/Documentation/security/tpm/index.rst
+@@ -5,6 +5,7 @@ Trusted Platform Module documentation
+ .. toctree::
+ 
+    tpm_event_log
++   tpm_tis
+    tpm_vtpm_proxy
+    xen-tpmfront
+    tpm_ftpm_tee
+diff --git a/Documentation/security/tpm/tpm_tis.rst b/Documentation/security/tpm/tpm_tis.rst
+new file mode 100644
+index 000000000000..b448ea3db71d
+--- /dev/null
++++ b/Documentation/security/tpm/tpm_tis.rst
+@@ -0,0 +1,46 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++=========================
++TPM FIFO interface driver
++=========================
++
++TCG PTP Specification defines two interface types: FIFO and CRB. The former is
++based on sequenced read and write operations,  and the latter is based on a
++buffer containing the full command or response.
++
++FIFO (First-In-First-Out) interface is used by the tpm_tis_core dependent
++drivers. Originally Linux had only a driver called tpm_tis, which covered
++memory mapped (aka MMIO) interface but it was later on extended to cover other
++physical interfaces supported by the TCG standard.
++
++For legacy compliance the original MMIO driver is called tpm_tis and the
++framework for FIFO drivers is named as tpm_tis_core. The postfix "tis" in
++tpm_tis comes from the TPM Interface Specification, which is the hardware
++interface specification for TPM 1.x chips.
++
++Communication is based on a 20 KiB buffer shared by the TPM chip through a
++hardware bus or memory map, depending on the physical wiring. The buffer is
++further split into five equal-size 4 KiB buffers, which provide equivalent
++sets of registers for communication between the CPU and TPM. These
++communication endpoints are called localities in the TCG terminology.
++
++When the kernel wants to send commands to the TPM chip, it first reserves
++locality 0 by setting the requestUse bit in the TPM_ACCESS register. The bit is
++cleared by the chip when the access is granted. Once it completes its
++communication, the kernel writes the TPM_ACCESS.activeLocality bit. This
++informs the chip that the locality has been relinquished.
++
++Pending localities are served in order by the chip in descending order, one at
++a time:
++
++- Locality 0 has the lowest priority.
++- Locality 5 has the highest priority.
++
++Further information on the purpose and meaning of the localities can be found
++in section 3.2 of the TCG PC Client Platform TPM Profile Specification.
++
++References
++==========
++
++TCG PC Client Platform TPM Profile (PTP) Specification
++https://trustedcomputinggroup.org/resource/pc-client-platform-tpm-profile-ptp-specification/
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.43.0
+
 
