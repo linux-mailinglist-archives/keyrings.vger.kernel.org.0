@@ -1,103 +1,80 @@
-Return-Path: <keyrings+bounces-992-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-993-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20852887B64
-	for <lists+keyrings@lfdr.de>; Sun, 24 Mar 2024 03:14:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E61688AFAA
+	for <lists+keyrings@lfdr.de>; Mon, 25 Mar 2024 20:18:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21C43280E00
-	for <lists+keyrings@lfdr.de>; Sun, 24 Mar 2024 02:14:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E1DB1C23B61
+	for <lists+keyrings@lfdr.de>; Mon, 25 Mar 2024 19:18:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3AE17C8;
-	Sun, 24 Mar 2024 02:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bc96guzj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739D112B79;
+	Mon, 25 Mar 2024 19:18:50 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2464D81E;
-	Sun, 24 Mar 2024 02:14:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C137112B6C;
+	Mon, 25 Mar 2024 19:18:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711246483; cv=none; b=dKN3vc6aYyRMFRGtImvbk4vt6GzFLQACYyFHMCorlkMqMLrMBIAW5XowM3Jl2VG7QdxwYrFASpDz7Pi4DRqL4sL+23Xc7pGgNxI6KWicgNFfp5/njxMEm9V0+5+lX8j0/bGqWmnlNnhiliWSyBTgVMXhDSmzieK2rfdD9whP3Hg=
+	t=1711394330; cv=none; b=tdk2FJOEc8+Rc2NGZGm/nwwBNaSxFhclfJVoh5QDxExSO5qZOAcXL9MNjZ8RjG+3QfJsWkss3kV5okTLhUwi93r1fRYJGn/JR5kxeETQwhUuws/hP5HVk6UTpzkl3QG4HT+KuqnaCQ115uanc346Cqod4x2bPtYTNG1/IcZUQDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711246483; c=relaxed/simple;
-	bh=4i4BgjkutHOyxQNBbaoCLs26rtfvwXtsWOZ6p4wy4TA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=CUP/7swT3ngGLTsqr23LDxt25j+WMjXUJJtMsTCRiUw495DQnykwp7gL7d5VJd/K1aIHo1isfSNEtqsVLVpN6/xZE8LkzX8Al6Ay0KJFELrGKFiFbSEcd/CQxuQaQXh30G51jU1YBhf7Y+6m9hCD+heR2wLC2ho1+WisZA4Nrqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bc96guzj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775F5C433C7;
-	Sun, 24 Mar 2024 02:14:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711246482;
-	bh=4i4BgjkutHOyxQNBbaoCLs26rtfvwXtsWOZ6p4wy4TA=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=bc96guzjjAsYjbVDO+YyU4yBxKS1Ck/FggYXeZl8u1pK2+3HPIawKkdEbN36ROUbo
-	 YGU2GFGInWBVOFdVyTJDlTNuPrT91E2pX0y8TTX5xnRHSV1A2rGBDLgITEGDb6EiET
-	 wklKd4ULsv3bZNePrujdNvd4G2Vx5803sOW97gUJScFhMUFpIgssAC4dNUUO0Tp1aF
-	 GtbitDPA26U/a3WdxcbNexfQ7CTjKAAmZDh2VQrgE/XbQ4YlIrIGoYqu6b8sGLATfJ
-	 PHf6jQPq5JDl9H80ylo0VTLYIomQobjwN5p8oi7muAzHeSmYpvR+SGyrtFS4BmO5p+
-	 7ITEHSUQTNmcg==
+	s=arc-20240116; t=1711394330; c=relaxed/simple;
+	bh=eo8SEgIiydINJpLrrNpDWriCqpURl3Xcf6eqpBDXGTc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VWO4QxFu5lBkxc45NKuBWlFGNRCK8DsOdAQ7vl0om1Geh6YVHnPD3rYRS+7rGS1iPkLTnYWNAIZXTdB1TQEqeSa88VmBa3QG5i0GfAqnnXeQW2mcEOzY5oSE8ULguF2NvZau7dc/tY8kFmgV696c2dYeN4+FSePU99quO3U/HMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 899E82800BBDF;
+	Mon, 25 Mar 2024 20:18:37 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 744B170E41A; Mon, 25 Mar 2024 20:18:37 +0100 (CET)
+Date: Mon, 25 Mar 2024 20:18:37 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Stefan Berger <stefanb@linux.ibm.com>
+Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+	herbert@gondor.apana.org.au, davem@davemloft.net,
+	linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br,
+	bbhushan2@marvell.com, jarkko@kernel.org
+Subject: Re: [PATCH v7 00/13] Add support for NIST P521 to ecdsa
+Message-ID: <ZgHODQL-XLxTDO4b@wunner.de>
+References: <20240320114725.1644921-1-stefanb@linux.ibm.com>
+ <5c6c5f51-125b-4cc7-ac27-5a5358d514c7@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 24 Mar 2024 04:14:36 +0200
-Message-Id: <D01M8YKG5ZG0.287OTMCUU2KP5@kernel.org>
-Subject: Re: [PATCH v4] Documentation: tpm_tis
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Jarkko Sakkinen" <jarkko@kernel.org>, "Daniel P. Smith"
- <dpsmith@apertussolutions.com>, <linux-integrity@vger.kernel.org>
-Cc: "Jonathan Corbet" <corbet@lwn.net>, "Lino Sanfilippo"
- <l.sanfilippo@kunbus.com>, "Jason Gunthorpe" <jgg@ziepe.ca>, "Peter Huewe"
- <peterhuewe@gmx.de>, "James Bottomley"
- <James.Bottomley@HansenPartnership.com>, "Alexander Steffen"
- <Alexander.Steffen@infineon.com>, <keyrings@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Randy Dunlap"
- <rdunlap@infradead.org>, "Richard Cochran" <richardcochran@gmail.com>,
- "open list:PTP HARDWARE CLOCK SUPPORT:Keyword:(?:b|_)ptp(?:b|_)"
- <netdev@vger.kernel.org>
-X-Mailer: aerc 0.17.0
-References: <20240322123542.24158-1-jarkko@kernel.org>
- <5a494de5-b004-440c-bcdf-7bdfa3a8c508@apertussolutions.com>
- <D01CLI2TC5SZ.1A48PDHM5F3UA@kernel.org>
-In-Reply-To: <D01CLI2TC5SZ.1A48PDHM5F3UA@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5c6c5f51-125b-4cc7-ac27-5a5358d514c7@linux.ibm.com>
 
-On Sat Mar 23, 2024 at 8:40 PM EET, Jarkko Sakkinen wrote:
-> > Would it be worth clarifying here that one of those interfaces is=20
-> > defined in the Mobile TPM specification, which also refers to its=20
-> > interface as the CRB interface. In the past, this has caused great=20
-> > confusion when working with individuals from the embedded community,=20
-> > e.g., Arm. The Mobile TPM CRB interface, which can also be found being=
-=20
-> > used by some generations of AMD fTPM, is a doorbell style interface=20
-> > using general-purpose memory. I would also point out that the Mobile TP=
-M=20
-> > CRB interface does not provide for the concept of localities.
->
-> I don't necessarily disagree but it is out of scope for this. I'm not
-> sure tho why "mobile" CRB would ever need that sort of separate
-> dicussion.
->
-> Some CRB implementations have localities some don't, and also fTPM
-> implementations on x86 vary, no need to state that separately for
-> mobile.
+On Wed, Mar 20, 2024 at 08:44:52AM -0400, Stefan Berger wrote:
+> On 3/20/24 07:47, Stefan Berger wrote:
+> > This series adds support for the NIST P521 curve to the ecdsa module
+> > to enable signature verification with it.
+> > 
+> > An issue with the current code in ecdsa is that it assumes that input
+> > arrays providing key coordinates for example, are arrays of digits
+> > (a 'digit' is a 'u64'). This works well for all currently supported
+> > curves, such as NIST P192/256/384, but does not work for NIST P521 where
+> > coordinates are 8 digits + 2 bytes long. So some of the changes deal with
+> > converting byte arrays to digits and adjusting tests on input byte
+> > array lengths to tolerate arrays not providing multiples of 8 bytes.
 
-I.e. the variance exist but it is not "mobile" specific.
+I've tested the whole series successfully on v6.9-rc1 by authenticating
+a PCI device with a NIST P521 certificate using my PCI/CMA development
+branch: https://github.com/l1k/linux/commits/doe
 
-E.g. when I developed tpm_crb in 2014 at that time Intel PTT only
-had a single locality (AFAIK later multiple localities were added
-to support TXT).
-
-In all cases this tpm_crb discussion is not really part of tpm_tis
-discussion.
-
-BR, Jarkko
+Tested-by: Lukas Wunner <lukas@wunner.de>
 
