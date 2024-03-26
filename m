@@ -1,80 +1,100 @@
-Return-Path: <keyrings+bounces-993-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-994-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E61688AFAA
-	for <lists+keyrings@lfdr.de>; Mon, 25 Mar 2024 20:18:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54D5688C54F
+	for <lists+keyrings@lfdr.de>; Tue, 26 Mar 2024 15:38:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E1DB1C23B61
-	for <lists+keyrings@lfdr.de>; Mon, 25 Mar 2024 19:18:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E391F1F34C78
+	for <lists+keyrings@lfdr.de>; Tue, 26 Mar 2024 14:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739D112B79;
-	Mon, 25 Mar 2024 19:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4501513C3D2;
+	Tue, 26 Mar 2024 14:38:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dm3l7G6E"
 X-Original-To: keyrings@vger.kernel.org
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C137112B6C;
-	Mon, 25 Mar 2024 19:18:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAEC763E6;
+	Tue, 26 Mar 2024 14:38:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711394330; cv=none; b=tdk2FJOEc8+Rc2NGZGm/nwwBNaSxFhclfJVoh5QDxExSO5qZOAcXL9MNjZ8RjG+3QfJsWkss3kV5okTLhUwi93r1fRYJGn/JR5kxeETQwhUuws/hP5HVk6UTpzkl3QG4HT+KuqnaCQ115uanc346Cqod4x2bPtYTNG1/IcZUQDM=
+	t=1711463934; cv=none; b=hrr+sKA6Dv5etX2McQZQ4EC21VMPpVZDBLWQ6poydK0Wm+WEA0aB/ZAvH882rgD2AU9rtHZ+cn77Nlz0qysXAG4Ort65oTT78wrSH5XuPh5viwHjYkooDapOsosvbyeWKNA1OmTpQG9a/Pr4jfabHGSP0ho3gSBOHHtui8VHZgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711394330; c=relaxed/simple;
-	bh=eo8SEgIiydINJpLrrNpDWriCqpURl3Xcf6eqpBDXGTc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VWO4QxFu5lBkxc45NKuBWlFGNRCK8DsOdAQ7vl0om1Geh6YVHnPD3rYRS+7rGS1iPkLTnYWNAIZXTdB1TQEqeSa88VmBa3QG5i0GfAqnnXeQW2mcEOzY5oSE8ULguF2NvZau7dc/tY8kFmgV696c2dYeN4+FSePU99quO3U/HMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 899E82800BBDF;
-	Mon, 25 Mar 2024 20:18:37 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 744B170E41A; Mon, 25 Mar 2024 20:18:37 +0100 (CET)
-Date: Mon, 25 Mar 2024 20:18:37 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Stefan Berger <stefanb@linux.ibm.com>
-Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-	herbert@gondor.apana.org.au, davem@davemloft.net,
-	linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br,
-	bbhushan2@marvell.com, jarkko@kernel.org
-Subject: Re: [PATCH v7 00/13] Add support for NIST P521 to ecdsa
-Message-ID: <ZgHODQL-XLxTDO4b@wunner.de>
-References: <20240320114725.1644921-1-stefanb@linux.ibm.com>
- <5c6c5f51-125b-4cc7-ac27-5a5358d514c7@linux.ibm.com>
+	s=arc-20240116; t=1711463934; c=relaxed/simple;
+	bh=gHroWCuJnf1md1YwPUVsD4d9qdV4yVBD8yNFmcL2YKQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mdcpqOgEXjG4ZzlFtBJPkymQIYGR+u5KzdO9nYnkCBALx/Dk+IrF0BUZ672v9HGhVaxS/7IBJULwq0StN3Ko2wO4ddBIjCD1+Hn3ihQPEK8f29sx4AS8sPAdUk+is16pXIs2omv9SchYE8Rfb+r0KaCihnXy23baNjT3Yn6dwl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dm3l7G6E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1919EC433C7;
+	Tue, 26 Mar 2024 14:38:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711463933;
+	bh=gHroWCuJnf1md1YwPUVsD4d9qdV4yVBD8yNFmcL2YKQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Dm3l7G6E8mDC6tvoPT/wB+izw+2N3ZOY2F9KPUAfngDhcSdUtxSCb572pfdHBv0LX
+	 2i7NzljIDb57F4M5WXuq4431cCRc9c7eNkwMmp8x/EtafbI59vkm5O4YJlJnQ9CpT9
+	 QXIs0usjGPWNJvn/eYrrxp69+/Nd2jRRXZZ1CyvVJkBWdIZRcPEep51pBRgBYxVcBL
+	 02x80CUtU5E4RcI/oAmAkwg7FVlN3B7/2CkZccVhZAVPvefirqjHbAm2yqY6BQZ2Jw
+	 /strzW7gCnt02yjIgE8P4fzhRIdfmLkqI9zsKLt5xRCKQjvegX3ygs5MGPXmmYfRQv
+	 SysaWSi1f540g==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	David Howells <dhowells@redhat.com>,
+	linux-integrity@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	keyrings@vger.kernel.org
+Subject: [GIT PULL] tpmdd changes for v6.9-rc2
+Date: Tue, 26 Mar 2024 16:38:38 +0200
+Message-ID: <20240326143838.15076-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5c6c5f51-125b-4cc7-ac27-5a5358d514c7@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 20, 2024 at 08:44:52AM -0400, Stefan Berger wrote:
-> On 3/20/24 07:47, Stefan Berger wrote:
-> > This series adds support for the NIST P521 curve to the ecdsa module
-> > to enable signature verification with it.
-> > 
-> > An issue with the current code in ecdsa is that it assumes that input
-> > arrays providing key coordinates for example, are arrays of digits
-> > (a 'digit' is a 'u64'). This works well for all currently supported
-> > curves, such as NIST P192/256/384, but does not work for NIST P521 where
-> > coordinates are 8 digits + 2 bytes long. So some of the changes deal with
-> > converting byte arrays to digits and adjusting tests on input byte
-> > array lengths to tolerate arrays not providing multiples of 8 bytes.
+  Merge tag 'gfs2-v6.8-fix' of git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2 (2024-03-25 10:53:39 -0700)
 
-I've tested the whole series successfully on v6.9-rc1 by authenticating
-a PCI device with a NIST P521 certificate using my PCI/CMA development
-branch: https://github.com/l1k/linux/commits/doe
+are available in the Git repository at:
 
-Tested-by: Lukas Wunner <lukas@wunner.de>
+  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-v6.9-rc2
+
+for you to fetch changes up to 6999f8229e5998e8286e6a960779b6c202d878da:
+
+  keys: Fix overwrite of key expiration on instantiation (2024-03-26 16:24:53 +0200)
+
+----------------------------------------------------------------
+Hi,
+
+This pull request contains just a couple of unintrusive changes for
+v6.9.
+
+Note that "keys: update key quotas in key_put()" makes quotas less racy
+by updating qnkeys and qnbytes already in key_put(). It is not exactly a
+bug fix but does make overall kerrnel behaviour more stable and
+consistent. Just adding this because I try to keep follow-up PR's for
+kernel releases bug fix only but I think here it makes sense to make an
+exception.
+
+BR, Jarkko
+
+----------------------------------------------------------------
+Luis Henriques (1):
+      keys: update key quotas in key_put()
+
+Silvio Gissi (1):
+      keys: Fix overwrite of key expiration on instantiation
+
+ security/keys/gc.c     |  8 --------
+ security/keys/key.c    | 35 ++++++++++++++++++++++++-----------
+ security/keys/keyctl.c | 11 ++++++-----
+ 3 files changed, 30 insertions(+), 24 deletions(-)
 
