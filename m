@@ -1,289 +1,357 @@
-Return-Path: <keyrings+bounces-1004-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1005-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC7EF88E984
-	for <lists+keyrings@lfdr.de>; Wed, 27 Mar 2024 16:42:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B591188F9AC
+	for <lists+keyrings@lfdr.de>; Thu, 28 Mar 2024 09:06:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43E981F30DA4
-	for <lists+keyrings@lfdr.de>; Wed, 27 Mar 2024 15:42:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D887D1C2BA68
+	for <lists+keyrings@lfdr.de>; Thu, 28 Mar 2024 08:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61A0B130A5B;
-	Wed, 27 Mar 2024 15:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB5E57898;
+	Thu, 28 Mar 2024 08:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WevJ7zL2"
+	dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b="WaP4xcod"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4E6130A4F;
-	Wed, 27 Mar 2024 15:40:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594FE57879
+	for <keyrings@vger.kernel.org>; Thu, 28 Mar 2024 08:05:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711554020; cv=none; b=QPqO5Tzan/tlquBK9wxXbB/yEL5oFyrhr3Xpu6KmMRuyfMlKdoUg2UfY8Ij5bLDosrBdTEojuZw0sJDogoq1o84i4pO/tPU3ewhZiH9arapjTi3lacSijn/APF0EAqtp6o8ZGLbGqkB5VxOknIhnN8jjGOJ8EhkVugkEVjPP7xY=
+	t=1711613142; cv=none; b=IU44gOlEgfIaTxFqZQ0o4y2KlzFORQYo/9WFjBVlUU56NltTJsZ2a98zezd+nRB2uf/+dEw61mmW1yV17VHg0Q+A0gW5LTforH1bQq8ozXE8Pyy3mLW2XqIxObhVy/pPv/iaGV/4m3D3xKmhTAPVtbLd8f2/hbeNe6wBLaxae94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711554020; c=relaxed/simple;
-	bh=0kU1Y1g7b5S7SzsNPgZKwi7JQaJEmDAsXvKCtpVKdQI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=M6Gjx2Fkdf4IDjFb6WeqHlWtyxmHk1kkAwCmbnBMK/g27QhdQvjnBXEkup1vX8BvLQ4wyFS4Ca5mSfg7y4w5DPc8S7P13v4KcuomMQps6q0yEOjaRA4jxYsExkqDmskyY2PwmYDWZG5hg9Mj6zraIqNrhq/tRoVwwyeTwzUG+Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WevJ7zL2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2B8C433C7;
-	Wed, 27 Mar 2024 15:40:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711554019;
-	bh=0kU1Y1g7b5S7SzsNPgZKwi7JQaJEmDAsXvKCtpVKdQI=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=WevJ7zL2SbneDrByZF4xuhxghlDU0PwsMnc75tQheSw2fbENgrL/WTKvlrn86wr8k
-	 tfwpXXuyIlggJd0lUame2pkRb2yrpEiJkgjALyUJgan0RJLEl3QRdTufbHgc3lNCWm
-	 qWsGQJar+deai9SBnqn5wj2jxTHN/c6htYxJaS7FpeEJfduk7IweGaDdm0zKrVM3Gv
-	 Vj5FfArk0sKufcVVKFNwE+IcwwirRu4Oocz3PhGjflHNyIOqFFOzhzkrtHAwHWtMEM
-	 rlBWmNdj9so1KCAJo28yXf7e4D92yzkmrBOgpCnEl8NWL6h87AG6R2pcw8ayo+W2JU
-	 dJ3K6mIOrX/+Q==
+	s=arc-20240116; t=1711613142; c=relaxed/simple;
+	bh=yjnhXmaMnVEbDN87O8WMVQMObw//YS/XVKq+IiQQtI0=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=WZ/2uiCuPSJNHw4rqJWAY5ZF/qO5ZxLfAvhcA9pRWva4/FWcauY8vDC6YIu1AOnii8WT8k6u0vVqFPsvG7i5oC8SamsV2JFVzGPJHzP7KYyrrOnxKbjdyzH1HjfU9pwWsBr5lLebgEScyDyoMoDeJqx1fcWyWkMVTgb6mptpG1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at; spf=pass smtp.mailfrom=sigma-star.at; dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b=WaP4xcod; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigma-star.at
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-513cf9bacf1so747106e87.0
+        for <keyrings@vger.kernel.org>; Thu, 28 Mar 2024 01:05:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sigma-star.at; s=google; t=1711613137; x=1712217937; darn=vger.kernel.org;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HjvmSG9QLL+8JxFPMAhTrQfWNaL+EODKgEV1lHWuZn0=;
+        b=WaP4xcoddk73Nw4PJr7tcYsjC8ODRZbNEVLML3noy2BGlgMUOq7AFj6D3+3jh2f8kx
+         uMrbU9cKr/pyFviAp7nXuTD69BJAeFJVU7r1Sn5nKvIHj74Vs5e4WrBxDjsPmOIWX383
+         UXnziBdZQtmpIPZaGvUiFs38rtz9zgczH7yyy3B0QMDdKmbKNzKvPL0JmNUUI3kCQ8y+
+         EE/cVPx8sMk+38vWaqrk4ypO18Tu6amGI67p4P6lLep29uIR2lBGEKrwUAHr3GeQnXF2
+         vHeLtlrv1dBqKwQWAaC+YAmrvnClqF0JPDqUDg4pD6PB9kcHLA2A6UGIw2rsLe9rGsXD
+         J2eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711613137; x=1712217937;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HjvmSG9QLL+8JxFPMAhTrQfWNaL+EODKgEV1lHWuZn0=;
+        b=ZBXOz47rhvZdnRtagdQTa7qND3VvfnV9Wb2gLt8HSm6dCSfGsobcqAG/VAYzy4AvIf
+         /bZJ3T2A1QkV4G+9Fw+4gcP/0DFGATZxKKpbr8TrQImFLByQgGD9OkU93awNR1+FCXF0
+         UqZEMu/inimJb8GZGExzhQrtmEZHuSDR3/mffqGiYeAj0DK1M31EDdTYBUY7kGH7MlZ9
+         cPnqK8kRvJ2vJSWHVBWEQSKANdqwL9QO1a19w+fPqZQehIv4FsWsHxftzXmOmf3CdG9S
+         NS7XuwoSSizjvQgvDGrJTJBuPmbyEr+IfL1RfJxdDuntOfRKCFuDJiXalclvrEDiA8aH
+         39Wg==
+X-Forwarded-Encrypted: i=1; AJvYcCWkGKbFyZYycnFuQ3aa7hghI7CE6JURuy4UvtH6dMRVWuY3AQ5ArFk1drBURHVnb7XCqt1QYrGcvM2X42kWNRg7p4GvhZddynE=
+X-Gm-Message-State: AOJu0Yw9XJFQO45wRhlNuwTJ+oP0TxIkT3dYzcIVBacdYDQR9hj9E8dp
+	dwktl+3FwL6dbdHFfoYr6/zqxDGCs88NgeO6xHy9/nzU4tYhyeEPwssHF5hzgCM=
+X-Google-Smtp-Source: AGHT+IFrYwSIqg79NLq2byoG3OlkUZikLzETvtMHvIzq87EemGEvn6YgogXjKDwDSMwvzIJu/C/jBA==
+X-Received: by 2002:a05:6512:312d:b0:513:4a0c:b83d with SMTP id p13-20020a056512312d00b005134a0cb83dmr1263720lfd.46.1711613137216;
+        Thu, 28 Mar 2024 01:05:37 -0700 (PDT)
+Received: from smtpclient.apple ([82.150.214.1])
+        by smtp.gmail.com with ESMTPSA id p12-20020a05600c468c00b00413eb5aa694sm1444424wmo.38.2024.03.28.01.05.35
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 28 Mar 2024 01:05:36 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 27 Mar 2024 17:40:11 +0200
-Message-Id: <D04N9E61QWYB.3IPEEGVPY6V8L@kernel.org>
-Cc: "Shawn Guo" <shawnguo@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>,
- "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
- <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "NXP Linux
- Team" <linux-imx@nxp.com>, "Ahmad Fatoum" <a.fatoum@pengutronix.de>, "sigma
- star Kernel Team" <upstream+dcp@sigma-star.at>, "David Howells"
- <dhowells@redhat.com>, "Li Yang" <leoyang.li@nxp.com>, "Paul Moore"
- <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
- Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Randy
- Dunlap" <rdunlap@infradead.org>, "Catalin Marinas"
- <catalin.marinas@arm.com>, "Rafael J. Wysocki"
- <rafael.j.wysocki@intel.com>, "Tejun Heo" <tj@kernel.org>, "Steven Rostedt
- (Google)" <rostedt@goodmis.org>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-integrity@vger.kernel.org>,
- <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, <linuxppc-dev@lists.ozlabs.org>,
- <linux-security-module@vger.kernel.org>, "Richard Weinberger"
- <richard@nod.at>, "David Oberhollenzer" <david.oberhollenzer@sigma-star.at>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
 Subject: Re: [PATCH v7 6/6] docs: trusted-encrypted: add DCP as new trust
  source
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "David Gstir" <david@sigma-star.at>, "Mimi Zohar" <zohar@linux.ibm.com>,
- "James Bottomley" <jejb@linux.ibm.com>, "Herbert Xu"
- <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>
-X-Mailer: aerc 0.17.0
+From: David Gstir <david@sigma-star.at>
+In-Reply-To: <D04N9E61QWYB.3IPEEGVPY6V8L@kernel.org>
+Date: Thu, 28 Mar 2024 09:05:24 +0100
+Cc: Mimi Zohar <zohar@linux.ibm.com>,
+ James Bottomley <jejb@linux.ibm.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>,
+ Shawn Guo <shawnguo@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>,
+ NXP Linux Team <linux-imx@nxp.com>,
+ Ahmad Fatoum <a.fatoum@pengutronix.de>,
+ sigma star Kernel Team <upstream+dcp@sigma-star.at>,
+ David Howells <dhowells@redhat.com>,
+ Li Yang <leoyang.li@nxp.com>,
+ Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>,
+ "Paul E. McKenney" <paulmck@kernel.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+ Tejun Heo <tj@kernel.org>,
+ "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+ linux-doc@vger.kernel.org,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+ "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+ "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+ linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org,
+ "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>,
+ Richard Weinberger <richard@nod.at>,
+ David Oberhollenzer <david.oberhollenzer@sigma-star.at>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <A3831544-E47C-4AEB-9963-536F0B1EE8FD@sigma-star.at>
 References: <20240327082454.13729-1-david@sigma-star.at>
  <20240327082454.13729-7-david@sigma-star.at>
-In-Reply-To: <20240327082454.13729-7-david@sigma-star.at>
+ <D04N9E61QWYB.3IPEEGVPY6V8L@kernel.org>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+X-Mailer: Apple Mail (2.3774.500.171.1.1)
 
-On Wed Mar 27, 2024 at 10:24 AM EET, David Gstir wrote:
-> Update the documentation for trusted and encrypted KEYS with DCP as new
-> trust source:
->
-> - Describe security properties of DCP trust source
-> - Describe key usage
-> - Document blob format
->
-> Co-developed-by: Richard Weinberger <richard@nod.at>
-> Signed-off-by: Richard Weinberger <richard@nod.at>
-> Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-> Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-> Signed-off-by: David Gstir <david@sigma-star.at>
-> ---
->  .../security/keys/trusted-encrypted.rst       | 85 +++++++++++++++++++
->  1 file changed, 85 insertions(+)
->
-> diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Document=
-ation/security/keys/trusted-encrypted.rst
-> index e989b9802f92..81fb3540bb20 100644
-> --- a/Documentation/security/keys/trusted-encrypted.rst
-> +++ b/Documentation/security/keys/trusted-encrypted.rst
-> @@ -42,6 +42,14 @@ safe.
->           randomly generated and fused into each SoC at manufacturing tim=
-e.
->           Otherwise, a common fixed test key is used instead.
-> =20
-> +     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs=
-)
-> +
-> +         Rooted to a one-time programmable key (OTP) that is generally b=
-urnt
-> +         in the on-chip fuses and is accessible to the DCP encryption en=
-gine only.
-> +         DCP provides two keys that can be used as root of trust: the OT=
-P key
-> +         and the UNIQUE key. Default is to use the UNIQUE key, but selec=
-ting
-> +         the OTP key can be done via a module parameter (dcp_use_otp_key=
-).
-> +
->    *  Execution isolation
-> =20
->       (1) TPM
-> @@ -57,6 +65,12 @@ safe.
-> =20
->           Fixed set of operations running in isolated execution environme=
-nt.
-> =20
-> +     (4) DCP
-> +
-> +         Fixed set of cryptographic operations running in isolated execu=
-tion
-> +         environment. Only basic blob key encryption is executed there.
-> +         The actual key sealing/unsealing is done on main processor/kern=
-el space.
-> +
->    * Optional binding to platform integrity state
-> =20
->       (1) TPM
-> @@ -79,6 +93,11 @@ safe.
->           Relies on the High Assurance Boot (HAB) mechanism of NXP SoCs
->           for platform integrity.
-> =20
-> +     (4) DCP
-> +
-> +         Relies on Secure/Trusted boot process (called HAB by vendor) fo=
-r
-> +         platform integrity.
-> +
->    *  Interfaces and APIs
-> =20
->       (1) TPM
-> @@ -94,6 +113,11 @@ safe.
-> =20
->           Interface is specific to silicon vendor.
-> =20
-> +     (4) DCP
-> +
-> +         Vendor-specific API that is implemented as part of the DCP cryp=
-to driver in
-> +         ``drivers/crypto/mxs-dcp.c``.
-> +
->    *  Threat model
-> =20
->       The strength and appropriateness of a particular trust source for a=
- given
-> @@ -129,6 +153,13 @@ selected trust source:
->       CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure the devic=
-e
->       is probed.
-> =20
-> +  *  DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
-> +
-> +     The DCP hardware device itself does not provide a dedicated RNG int=
-erface,
-> +     so the kernel default RNG is used. SoCs with DCP like the i.MX6ULL =
-do have
-> +     a dedicated hardware RNG that is independent from DCP which can be =
-enabled
-> +     to back the kernel RNG.
-> +
->  Users may override this by specifying ``trusted.rng=3Dkernel`` on the ke=
-rnel
->  command-line to override the used RNG with the kernel's random number po=
-ol.
-> =20
-> @@ -231,6 +262,19 @@ Usage::
->  CAAM-specific format.  The key length for new keys is always in bytes.
->  Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-> =20
-> +Trusted Keys usage: DCP
-> +-----------------------
-> +
-> +Usage::
-> +
-> +    keyctl add trusted name "new keylen" ring
-> +    keyctl add trusted name "load hex_blob" ring
-> +    keyctl print keyid
-> +
-> +"keyctl print" returns an ASCII hex copy of the sealed key, which is in =
-format
-> +specific to this DCP key-blob implementation.  The key length for new ke=
-ys is
-> +always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-> +
->  Encrypted Keys usage
->  --------------------
-> =20
-> @@ -426,3 +470,44 @@ string length.
->  privkey is the binary representation of TPM2B_PUBLIC excluding the
->  initial TPM2B header which can be reconstructed from the ASN.1 octed
->  string length.
-> +
-> +DCP Blob Format
-> +---------------
-> +
-> +The Data Co-Processor (DCP) provides hardware-bound AES keys using its
-> +AES encryption engine only. It does not provide direct key sealing/unsea=
-ling.
-> +To make DCP hardware encryption keys usable as trust source, we define
-> +our own custom format that uses a hardware-bound key to secure the seali=
-ng
-> +key stored in the key blob.
-> +
-> +Whenever a new trusted key using DCP is generated, we generate a random =
-128-bit
-> +blob encryption key (BEK) and 128-bit nonce. The BEK and nonce are used =
-to
-> +encrypt the trusted key payload using AES-128-GCM.
-> +
-> +The BEK itself is encrypted using the hardware-bound key using the DCP's=
- AES
-> +encryption engine with AES-128-ECB. The encrypted BEK, generated nonce,
-> +BEK-encrypted payload and authentication tag make up the blob format tog=
-ether
-> +with a version number, payload length and authentication tag::
-> +
-> +    /*
-> +     * struct dcp_blob_fmt - DCP BLOB format.
-> +     *
-> +     * @fmt_version: Format version, currently being %1
-> +     * @blob_key: Random AES 128 key which is used to encrypt @payload,
-> +     *            @blob_key itself is encrypted with OTP or UNIQUE devic=
-e key in
-> +     *            AES-128-ECB mode by DCP.
-> +     * @nonce: Random nonce used for @payload encryption.
-> +     * @payload_len: Length of the plain text @payload.
-> +     * @payload: The payload itself, encrypted using AES-128-GCM and @bl=
-ob_key,
-> +     *           GCM auth tag of size AES_BLOCK_SIZE is attached at the =
-end of it.
-> +     *
-> +     * The total size of a DCP BLOB is sizeof(struct dcp_blob_fmt) + @pa=
-yload_len +
-> +     * AES_BLOCK_SIZE.
-> +     */
-> +    struct dcp_blob_fmt {
-> +            __u8 fmt_version;
-> +            __u8 blob_key[AES_KEYSIZE_128];
-> +            __u8 nonce[AES_KEYSIZE_128];
-> +            __le32 payload_len;
-> +            __u8 payload[];
-> +    } __packed;
+Jarkko,
 
-I'm thinking here given that you need to replicate the same thing that
-is in the source files. E.g. Documentation/gpu/i915.rst.
+> On 27.03.2024, at 16:40, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+>=20
+> On Wed Mar 27, 2024 at 10:24 AM EET, David Gstir wrote:
+>> Update the documentation for trusted and encrypted KEYS with DCP as =
+new
+>> trust source:
+>>=20
+>> - Describe security properties of DCP trust source
+>> - Describe key usage
+>> - Document blob format
+>>=20
+>> Co-developed-by: Richard Weinberger <richard@nod.at>
+>> Signed-off-by: Richard Weinberger <richard@nod.at>
+>> Co-developed-by: David Oberhollenzer =
+<david.oberhollenzer@sigma-star.at>
+>> Signed-off-by: David Oberhollenzer =
+<david.oberhollenzer@sigma-star.at>
+>> Signed-off-by: David Gstir <david@sigma-star.at>
+>> ---
+>> .../security/keys/trusted-encrypted.rst       | 85 =
++++++++++++++++++++
+>> 1 file changed, 85 insertions(+)
+>>=20
+>> diff --git a/Documentation/security/keys/trusted-encrypted.rst =
+b/Documentation/security/keys/trusted-encrypted.rst
+>> index e989b9802f92..81fb3540bb20 100644
+>> --- a/Documentation/security/keys/trusted-encrypted.rst
+>> +++ b/Documentation/security/keys/trusted-encrypted.rst
+>> @@ -42,6 +42,14 @@ safe.
+>>          randomly generated and fused into each SoC at manufacturing =
+time.
+>>          Otherwise, a common fixed test key is used instead.
+>>=20
+>> +     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX =
+SoCs)
+>> +
+>> +         Rooted to a one-time programmable key (OTP) that is =
+generally burnt
+>> +         in the on-chip fuses and is accessible to the DCP =
+encryption engine only.
+>> +         DCP provides two keys that can be used as root of trust: =
+the OTP key
+>> +         and the UNIQUE key. Default is to use the UNIQUE key, but =
+selecting
+>> +         the OTP key can be done via a module parameter =
+(dcp_use_otp_key).
+>> +
+>>   *  Execution isolation
+>>=20
+>>      (1) TPM
+>> @@ -57,6 +65,12 @@ safe.
+>>=20
+>>          Fixed set of operations running in isolated execution =
+environment.
+>>=20
+>> +     (4) DCP
+>> +
+>> +         Fixed set of cryptographic operations running in isolated =
+execution
+>> +         environment. Only basic blob key encryption is executed =
+there.
+>> +         The actual key sealing/unsealing is done on main =
+processor/kernel space.
+>> +
+>>   * Optional binding to platform integrity state
+>>=20
+>>      (1) TPM
+>> @@ -79,6 +93,11 @@ safe.
+>>          Relies on the High Assurance Boot (HAB) mechanism of NXP =
+SoCs
+>>          for platform integrity.
+>>=20
+>> +     (4) DCP
+>> +
+>> +         Relies on Secure/Trusted boot process (called HAB by =
+vendor) for
+>> +         platform integrity.
+>> +
+>>   *  Interfaces and APIs
+>>=20
+>>      (1) TPM
+>> @@ -94,6 +113,11 @@ safe.
+>>=20
+>>          Interface is specific to silicon vendor.
+>>=20
+>> +     (4) DCP
+>> +
+>> +         Vendor-specific API that is implemented as part of the DCP =
+crypto driver in
+>> +         ``drivers/crypto/mxs-dcp.c``.
+>> +
+>>   *  Threat model
+>>=20
+>>      The strength and appropriateness of a particular trust source =
+for a given
+>> @@ -129,6 +153,13 @@ selected trust source:
+>>      CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure the =
+device
+>>      is probed.
+>>=20
+>> +  *  DCP (Data Co-Processor: crypto accelerator of various i.MX =
+SoCs)
+>> +
+>> +     The DCP hardware device itself does not provide a dedicated RNG =
+interface,
+>> +     so the kernel default RNG is used. SoCs with DCP like the =
+i.MX6ULL do have
+>> +     a dedicated hardware RNG that is independent from DCP which can =
+be enabled
+>> +     to back the kernel RNG.
+>> +
+>> Users may override this by specifying ``trusted.rng=3Dkernel`` on the =
+kernel
+>> command-line to override the used RNG with the kernel's random number =
+pool.
+>>=20
+>> @@ -231,6 +262,19 @@ Usage::
+>> CAAM-specific format.  The key length for new keys is always in =
+bytes.
+>> Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
+>>=20
+>> +Trusted Keys usage: DCP
+>> +-----------------------
+>> +
+>> +Usage::
+>> +
+>> +    keyctl add trusted name "new keylen" ring
+>> +    keyctl add trusted name "load hex_blob" ring
+>> +    keyctl print keyid
+>> +
+>> +"keyctl print" returns an ASCII hex copy of the sealed key, which is =
+in format
+>> +specific to this DCP key-blob implementation.  The key length for =
+new keys is
+>> +always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 =
+bits).
+>> +
+>> Encrypted Keys usage
+>> --------------------
+>>=20
+>> @@ -426,3 +470,44 @@ string length.
+>> privkey is the binary representation of TPM2B_PUBLIC excluding the
+>> initial TPM2B header which can be reconstructed from the ASN.1 octed
+>> string length.
+>> +
+>> +DCP Blob Format
+>> +---------------
+>> +
+>> +The Data Co-Processor (DCP) provides hardware-bound AES keys using =
+its
+>> +AES encryption engine only. It does not provide direct key =
+sealing/unsealing.
+>> +To make DCP hardware encryption keys usable as trust source, we =
+define
+>> +our own custom format that uses a hardware-bound key to secure the =
+sealing
+>> +key stored in the key blob.
+>> +
+>> +Whenever a new trusted key using DCP is generated, we generate a =
+random 128-bit
+>> +blob encryption key (BEK) and 128-bit nonce. The BEK and nonce are =
+used to
+>> +encrypt the trusted key payload using AES-128-GCM.
+>> +
+>> +The BEK itself is encrypted using the hardware-bound key using the =
+DCP's AES
+>> +encryption engine with AES-128-ECB. The encrypted BEK, generated =
+nonce,
+>> +BEK-encrypted payload and authentication tag make up the blob format =
+together
+>> +with a version number, payload length and authentication tag::
+>> +
+>> +    /*
+>> +     * struct dcp_blob_fmt - DCP BLOB format.
+>> +     *
+>> +     * @fmt_version: Format version, currently being %1
+>> +     * @blob_key: Random AES 128 key which is used to encrypt =
+@payload,
+>> +     *            @blob_key itself is encrypted with OTP or UNIQUE =
+device key in
+>> +     *            AES-128-ECB mode by DCP.
+>> +     * @nonce: Random nonce used for @payload encryption.
+>> +     * @payload_len: Length of the plain text @payload.
+>> +     * @payload: The payload itself, encrypted using AES-128-GCM and =
+@blob_key,
+>> +     *           GCM auth tag of size AES_BLOCK_SIZE is attached at =
+the end of it.
+>> +     *
+>> +     * The total size of a DCP BLOB is sizeof(struct dcp_blob_fmt) + =
+@payload_len +
+>> +     * AES_BLOCK_SIZE.
+>> +     */
+>> +    struct dcp_blob_fmt {
+>> +            __u8 fmt_version;
+>> +            __u8 blob_key[AES_KEYSIZE_128];
+>> +            __u8 nonce[AES_KEYSIZE_128];
+>> +            __le32 payload_len;
+>> +            __u8 payload[];
+>> +    } __packed;
+>=20
+> I'm thinking here given that you need to replicate the same thing that
+> is in the source files. E.g. Documentation/gpu/i915.rst.
+>=20
+> The rationale would so many sources so maybe it would make sense to
+> maintain this in the source code.
+>=20
+> Also this documents how to generally insert documentation inline:
+> https://docs.kernel.org/doc-guide/kernel-doc.html
+>=20
+> I.e. I'm feeling that this is good time to improve scalability so that
+> documentation will keep up to date. Also then backend specific patches
+> mostly go to their subdirectories and not to Documentation/ subtree
+> (or that would be more rare case).
+>=20
+> So a good chance to do more than just a new backend for the benefit
+> of the trusted keys subsystem :-)
+>=20
+> Also, later on if something is changed e.g. in the above struct you
+> don't have to do matching update to the documentation so it will save
+> time too (over time).
 
-The rationale would so many sources so maybe it would make sense to
-maintain this in the source code.
+sound good! I=E2=80=99ll maintain the blob format documentation to the =
+source and insert=20
+a reference in the documentation. Thanks for pointing that out!
 
-Also this documents how to generally insert documentation inline:
-https://docs.kernel.org/doc-guide/kernel-doc.html
+Is there anything else I can improve for this patchset? I=E2=80=99d like =
+to include that in v8
+too and make it the last iteration of this patchset.
 
-I.e. I'm feeling that this is good time to improve scalability so that
-documentation will keep up to date. Also then backend specific patches
-mostly go to their subdirectories and not to Documentation/ subtree
-(or that would be more rare case).
-
-So a good chance to do more than just a new backend for the benefit
-of the trusted keys subsystem :-)
-
-Also, later on if something is changed e.g. in the above struct you
-don't have to do matching update to the documentation so it will save
-time too (over time).
-
-BR, Jarkko
+Thanks,
+David=
 
