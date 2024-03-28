@@ -1,357 +1,279 @@
-Return-Path: <keyrings+bounces-1005-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1006-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B591188F9AC
-	for <lists+keyrings@lfdr.de>; Thu, 28 Mar 2024 09:06:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE78D890425
+	for <lists+keyrings@lfdr.de>; Thu, 28 Mar 2024 16:59:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D887D1C2BA68
-	for <lists+keyrings@lfdr.de>; Thu, 28 Mar 2024 08:06:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE9A61C26CEB
+	for <lists+keyrings@lfdr.de>; Thu, 28 Mar 2024 15:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB5E57898;
-	Thu, 28 Mar 2024 08:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C60131BAA;
+	Thu, 28 Mar 2024 15:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b="WaP4xcod"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZeXxNdYd"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594FE57879
-	for <keyrings@vger.kernel.org>; Thu, 28 Mar 2024 08:05:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0A5131740;
+	Thu, 28 Mar 2024 15:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711613142; cv=none; b=IU44gOlEgfIaTxFqZQ0o4y2KlzFORQYo/9WFjBVlUU56NltTJsZ2a98zezd+nRB2uf/+dEw61mmW1yV17VHg0Q+A0gW5LTforH1bQq8ozXE8Pyy3mLW2XqIxObhVy/pPv/iaGV/4m3D3xKmhTAPVtbLd8f2/hbeNe6wBLaxae94=
+	t=1711641545; cv=none; b=H5mPKrwSdTH6HWTwbVt1DTYvq8dQbJHKgzap88APujKekGVCEvwz0Pm8sm6sIK3g0CheUdOLkZeml0ULM6dBeZ0mvnBpG8ve7B1ikUXolllg0yqKx4Xnm/pS0CCtnzAjwdJ0wuJtZWEuN7m/nDrU+EHv9RXSHrByiXQz96g5Y7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711613142; c=relaxed/simple;
-	bh=yjnhXmaMnVEbDN87O8WMVQMObw//YS/XVKq+IiQQtI0=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=WZ/2uiCuPSJNHw4rqJWAY5ZF/qO5ZxLfAvhcA9pRWva4/FWcauY8vDC6YIu1AOnii8WT8k6u0vVqFPsvG7i5oC8SamsV2JFVzGPJHzP7KYyrrOnxKbjdyzH1HjfU9pwWsBr5lLebgEScyDyoMoDeJqx1fcWyWkMVTgb6mptpG1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at; spf=pass smtp.mailfrom=sigma-star.at; dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b=WaP4xcod; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigma-star.at
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-513cf9bacf1so747106e87.0
-        for <keyrings@vger.kernel.org>; Thu, 28 Mar 2024 01:05:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1711613137; x=1712217937; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HjvmSG9QLL+8JxFPMAhTrQfWNaL+EODKgEV1lHWuZn0=;
-        b=WaP4xcoddk73Nw4PJr7tcYsjC8ODRZbNEVLML3noy2BGlgMUOq7AFj6D3+3jh2f8kx
-         uMrbU9cKr/pyFviAp7nXuTD69BJAeFJVU7r1Sn5nKvIHj74Vs5e4WrBxDjsPmOIWX383
-         UXnziBdZQtmpIPZaGvUiFs38rtz9zgczH7yyy3B0QMDdKmbKNzKvPL0JmNUUI3kCQ8y+
-         EE/cVPx8sMk+38vWaqrk4ypO18Tu6amGI67p4P6lLep29uIR2lBGEKrwUAHr3GeQnXF2
-         vHeLtlrv1dBqKwQWAaC+YAmrvnClqF0JPDqUDg4pD6PB9kcHLA2A6UGIw2rsLe9rGsXD
-         J2eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711613137; x=1712217937;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HjvmSG9QLL+8JxFPMAhTrQfWNaL+EODKgEV1lHWuZn0=;
-        b=ZBXOz47rhvZdnRtagdQTa7qND3VvfnV9Wb2gLt8HSm6dCSfGsobcqAG/VAYzy4AvIf
-         /bZJ3T2A1QkV4G+9Fw+4gcP/0DFGATZxKKpbr8TrQImFLByQgGD9OkU93awNR1+FCXF0
-         UqZEMu/inimJb8GZGExzhQrtmEZHuSDR3/mffqGiYeAj0DK1M31EDdTYBUY7kGH7MlZ9
-         cPnqK8kRvJ2vJSWHVBWEQSKANdqwL9QO1a19w+fPqZQehIv4FsWsHxftzXmOmf3CdG9S
-         NS7XuwoSSizjvQgvDGrJTJBuPmbyEr+IfL1RfJxdDuntOfRKCFuDJiXalclvrEDiA8aH
-         39Wg==
-X-Forwarded-Encrypted: i=1; AJvYcCWkGKbFyZYycnFuQ3aa7hghI7CE6JURuy4UvtH6dMRVWuY3AQ5ArFk1drBURHVnb7XCqt1QYrGcvM2X42kWNRg7p4GvhZddynE=
-X-Gm-Message-State: AOJu0Yw9XJFQO45wRhlNuwTJ+oP0TxIkT3dYzcIVBacdYDQR9hj9E8dp
-	dwktl+3FwL6dbdHFfoYr6/zqxDGCs88NgeO6xHy9/nzU4tYhyeEPwssHF5hzgCM=
-X-Google-Smtp-Source: AGHT+IFrYwSIqg79NLq2byoG3OlkUZikLzETvtMHvIzq87EemGEvn6YgogXjKDwDSMwvzIJu/C/jBA==
-X-Received: by 2002:a05:6512:312d:b0:513:4a0c:b83d with SMTP id p13-20020a056512312d00b005134a0cb83dmr1263720lfd.46.1711613137216;
-        Thu, 28 Mar 2024 01:05:37 -0700 (PDT)
-Received: from smtpclient.apple ([82.150.214.1])
-        by smtp.gmail.com with ESMTPSA id p12-20020a05600c468c00b00413eb5aa694sm1444424wmo.38.2024.03.28.01.05.35
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 28 Mar 2024 01:05:36 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1711641545; c=relaxed/simple;
+	bh=qoqinQw63fGFh+6IC/Y5pgVTD9GppSO7nESSrP07adE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=fsWGo9rR+5XOCX5Aim42rOLO8ll4CT2hG+ctpve0TvQZimWGtBtjU8IEDauI72eCTqNfDGutXVgwb1IZE4c9SW2pZl44du9FJ8Rx/KRIm4B4R5flC/7vgWLMv1pzdv6C4FqEj44xicl1XmHVbcyDQD5yyqm1VccP3MSIjvtUbDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZeXxNdYd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3262FC433B2;
+	Thu, 28 Mar 2024 15:59:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711641545;
+	bh=qoqinQw63fGFh+6IC/Y5pgVTD9GppSO7nESSrP07adE=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=ZeXxNdYdDpyc+XN31Wm34tBo8zyeQVjgDnJmmZw7SqlPg/zj94JVdBp6iabFK0Gw2
+	 ITV4o/QB4aAtXsNpLjBnbnj2kuDX6I1b1ezlRqufzDzV165JDLOtFPbnIC11FikLCJ
+	 GAqPNRfOsmxNEYDT3tz45gmm0cFTLKOr4n3vjooe/XqU/VyHBpATYmAS+7paJezM2K
+	 9FDJEoWq38AGZ1DKjmwp613+zoL2lGeqIxkb2zRXnwlWVQFL269SZ0hQpir3GsQaC7
+	 Rk1FT4Lf1yvo+YLMWPF194Ct83ik0RLug0gOTvHd5ilV4AMRJk8qEOG7Hqpejk+g3c
+	 sE+IDJ1Ruargg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F760CD1284;
+	Thu, 28 Mar 2024 15:59:05 +0000 (UTC)
+From: Joel Granados via B4 Relay <devnull+j.granados.samsung.com@kernel.org>
+Subject: [PATCH 0/7] sysctl: Remove sentinel elements from misc directories
+Date: Thu, 28 Mar 2024 16:57:47 +0100
+Message-Id: <20240328-jag-sysctl_remset_misc-v1-0-47c1463b3af2@samsung.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
-Subject: Re: [PATCH v7 6/6] docs: trusted-encrypted: add DCP as new trust
- source
-From: David Gstir <david@sigma-star.at>
-In-Reply-To: <D04N9E61QWYB.3IPEEGVPY6V8L@kernel.org>
-Date: Thu, 28 Mar 2024 09:05:24 +0100
-Cc: Mimi Zohar <zohar@linux.ibm.com>,
- James Bottomley <jejb@linux.ibm.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>,
- Shawn Guo <shawnguo@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- NXP Linux Team <linux-imx@nxp.com>,
- Ahmad Fatoum <a.fatoum@pengutronix.de>,
- sigma star Kernel Team <upstream+dcp@sigma-star.at>,
- David Howells <dhowells@redhat.com>,
- Li Yang <leoyang.li@nxp.com>,
- Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Tejun Heo <tj@kernel.org>,
- "Steven Rostedt (Google)" <rostedt@goodmis.org>,
- linux-doc@vger.kernel.org,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
- "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
- "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
- linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org,
- "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>,
- Richard Weinberger <richard@nod.at>,
- David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <A3831544-E47C-4AEB-9963-536F0B1EE8FD@sigma-star.at>
-References: <20240327082454.13729-1-david@sigma-star.at>
- <20240327082454.13729-7-david@sigma-star.at>
- <D04N9E61QWYB.3IPEEGVPY6V8L@kernel.org>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-X-Mailer: Apple Mail (2.3774.500.171.1.1)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHuTBWYC/x3MSQqAMAxA0atI1hZqncCriEhoo0acaIoo4t0tL
+ t/i/weEPJNAkzzg6WThfYvI0gTshNtIil00GG0KnRutZhyV3GLD0ntahUK/sliFpsqGEmvnCCH
+ Gh6eBr3/cdu/7AeaEmhloAAAA
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Muchun Song <muchun.song@linux.dev>, Miaohe Lin <linmiaohe@huawei.com>, 
+ Naoya Horiguchi <naoya.horiguchi@nec.com>, 
+ John Johansen <john.johansen@canonical.com>, 
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+ "Serge E. Hallyn" <serge@hallyn.com>, David Howells <dhowells@redhat.com>, 
+ Jarkko Sakkinen <jarkko@kernel.org>, Kees Cook <keescook@chromium.org>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, 
+ "David S. Miller" <davem@davemloft.net>, Jens Axboe <axboe@kernel.dk>, 
+ Pavel Begunkov <asml.silence@gmail.com>, 
+ Atish Patra <atishp@atishpatra.org>, Anup Patel <anup@brainfault.org>, 
+ Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
+ keyrings@vger.kernel.org, linux-crypto@vger.kernel.org, 
+ io-uring@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ linux-arm-kernel@lists.infradead.org, 
+ Joel Granados <j.granados@samsung.com>
+X-Mailer: b4 0.13-dev-2d940
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7724;
+ i=j.granados@samsung.com; h=from:subject:message-id;
+ bh=C5ExU42iQIATTNjm61dOO7nRB4VDW70Mylk1Ch/NE2k=;
+ b=owJ4nAHtARL+kA0DAAoBupfNUreWQU8ByyZiAGYFk8MCISRyCsZWM39FGDZLGap6umXikDNpN
+ y/UcPPR1cdsxokBswQAAQoAHRYhBK5HCVcl5jElzssnkLqXzVK3lkFPBQJmBZPDAAoJELqXzVK3
+ lkFPlNgL/iKOshbA23YN0uTNsvODr8xCuFjrnb+cdNlPZz3c0ZsZEs5Jf4Nxrtz/mlIPM5CYrgb
+ tLxFHPzllWFljQyXlDt32Y6gBMKvvahcSPUMYzTREmR8avBZLhtO6IfFElpBHSjMWrkXnb0C9Ri
+ PMKWSRBukVgiBwuXHUKP5CqBTyi4HiIRxR7xfZ67tjbUqXdfbYI0+VRHr3eLLxniXJpqrhfzcnE
+ 0V2TanI13+QxTYeLlJPfyaUtoRpA8dD+K0fSpJjqWSSXyMg/iTgIT7LcZA5YHBiD2IkdPBpRoxO
+ SiPAXXa8zmVB3zMHZSQ0Jg5pEtcpkiev1frtqj1lqKsY1UNsRbSIr8hP3CAFbTO8ueuhwNkKo6W
+ E3W+KMVsmBqPCtOPOlDHiYOKMT+7xbeb+UJdmFN9o/cZ3j5KLnp/oEHmEao0VQCY6K4m9vK94UU
+ kMsVPtIH5meae8MuCInGSeeP3ti3V5gT+4o+lm1hKsUJLVQHWrrUSwQjkDWS2DV8z8prsF+g6n5
+ UE=
+X-Developer-Key: i=j.granados@samsung.com; a=openpgp;
+ fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
+X-Endpoint-Received: by B4 Relay for j.granados@samsung.com/default with
+ auth_id=70
+X-Original-From: Joel Granados <j.granados@samsung.com>
+Reply-To: j.granados@samsung.com
 
-Jarkko,
+From: Joel Granados <j.granados@samsung.com>
 
-> On 27.03.2024, at 16:40, Jarkko Sakkinen <jarkko@kernel.org> wrote:
->=20
-> On Wed Mar 27, 2024 at 10:24 AM EET, David Gstir wrote:
->> Update the documentation for trusted and encrypted KEYS with DCP as =
-new
->> trust source:
->>=20
->> - Describe security properties of DCP trust source
->> - Describe key usage
->> - Document blob format
->>=20
->> Co-developed-by: Richard Weinberger <richard@nod.at>
->> Signed-off-by: Richard Weinberger <richard@nod.at>
->> Co-developed-by: David Oberhollenzer =
-<david.oberhollenzer@sigma-star.at>
->> Signed-off-by: David Oberhollenzer =
-<david.oberhollenzer@sigma-star.at>
->> Signed-off-by: David Gstir <david@sigma-star.at>
->> ---
->> .../security/keys/trusted-encrypted.rst       | 85 =
-+++++++++++++++++++
->> 1 file changed, 85 insertions(+)
->>=20
->> diff --git a/Documentation/security/keys/trusted-encrypted.rst =
-b/Documentation/security/keys/trusted-encrypted.rst
->> index e989b9802f92..81fb3540bb20 100644
->> --- a/Documentation/security/keys/trusted-encrypted.rst
->> +++ b/Documentation/security/keys/trusted-encrypted.rst
->> @@ -42,6 +42,14 @@ safe.
->>          randomly generated and fused into each SoC at manufacturing =
-time.
->>          Otherwise, a common fixed test key is used instead.
->>=20
->> +     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX =
-SoCs)
->> +
->> +         Rooted to a one-time programmable key (OTP) that is =
-generally burnt
->> +         in the on-chip fuses and is accessible to the DCP =
-encryption engine only.
->> +         DCP provides two keys that can be used as root of trust: =
-the OTP key
->> +         and the UNIQUE key. Default is to use the UNIQUE key, but =
-selecting
->> +         the OTP key can be done via a module parameter =
-(dcp_use_otp_key).
->> +
->>   *  Execution isolation
->>=20
->>      (1) TPM
->> @@ -57,6 +65,12 @@ safe.
->>=20
->>          Fixed set of operations running in isolated execution =
-environment.
->>=20
->> +     (4) DCP
->> +
->> +         Fixed set of cryptographic operations running in isolated =
-execution
->> +         environment. Only basic blob key encryption is executed =
-there.
->> +         The actual key sealing/unsealing is done on main =
-processor/kernel space.
->> +
->>   * Optional binding to platform integrity state
->>=20
->>      (1) TPM
->> @@ -79,6 +93,11 @@ safe.
->>          Relies on the High Assurance Boot (HAB) mechanism of NXP =
-SoCs
->>          for platform integrity.
->>=20
->> +     (4) DCP
->> +
->> +         Relies on Secure/Trusted boot process (called HAB by =
-vendor) for
->> +         platform integrity.
->> +
->>   *  Interfaces and APIs
->>=20
->>      (1) TPM
->> @@ -94,6 +113,11 @@ safe.
->>=20
->>          Interface is specific to silicon vendor.
->>=20
->> +     (4) DCP
->> +
->> +         Vendor-specific API that is implemented as part of the DCP =
-crypto driver in
->> +         ``drivers/crypto/mxs-dcp.c``.
->> +
->>   *  Threat model
->>=20
->>      The strength and appropriateness of a particular trust source =
-for a given
->> @@ -129,6 +153,13 @@ selected trust source:
->>      CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure the =
-device
->>      is probed.
->>=20
->> +  *  DCP (Data Co-Processor: crypto accelerator of various i.MX =
-SoCs)
->> +
->> +     The DCP hardware device itself does not provide a dedicated RNG =
-interface,
->> +     so the kernel default RNG is used. SoCs with DCP like the =
-i.MX6ULL do have
->> +     a dedicated hardware RNG that is independent from DCP which can =
-be enabled
->> +     to back the kernel RNG.
->> +
->> Users may override this by specifying ``trusted.rng=3Dkernel`` on the =
-kernel
->> command-line to override the used RNG with the kernel's random number =
-pool.
->>=20
->> @@ -231,6 +262,19 @@ Usage::
->> CAAM-specific format.  The key length for new keys is always in =
-bytes.
->> Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
->>=20
->> +Trusted Keys usage: DCP
->> +-----------------------
->> +
->> +Usage::
->> +
->> +    keyctl add trusted name "new keylen" ring
->> +    keyctl add trusted name "load hex_blob" ring
->> +    keyctl print keyid
->> +
->> +"keyctl print" returns an ASCII hex copy of the sealed key, which is =
-in format
->> +specific to this DCP key-blob implementation.  The key length for =
-new keys is
->> +always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 =
-bits).
->> +
->> Encrypted Keys usage
->> --------------------
->>=20
->> @@ -426,3 +470,44 @@ string length.
->> privkey is the binary representation of TPM2B_PUBLIC excluding the
->> initial TPM2B header which can be reconstructed from the ASN.1 octed
->> string length.
->> +
->> +DCP Blob Format
->> +---------------
->> +
->> +The Data Co-Processor (DCP) provides hardware-bound AES keys using =
-its
->> +AES encryption engine only. It does not provide direct key =
-sealing/unsealing.
->> +To make DCP hardware encryption keys usable as trust source, we =
-define
->> +our own custom format that uses a hardware-bound key to secure the =
-sealing
->> +key stored in the key blob.
->> +
->> +Whenever a new trusted key using DCP is generated, we generate a =
-random 128-bit
->> +blob encryption key (BEK) and 128-bit nonce. The BEK and nonce are =
-used to
->> +encrypt the trusted key payload using AES-128-GCM.
->> +
->> +The BEK itself is encrypted using the hardware-bound key using the =
-DCP's AES
->> +encryption engine with AES-128-ECB. The encrypted BEK, generated =
-nonce,
->> +BEK-encrypted payload and authentication tag make up the blob format =
-together
->> +with a version number, payload length and authentication tag::
->> +
->> +    /*
->> +     * struct dcp_blob_fmt - DCP BLOB format.
->> +     *
->> +     * @fmt_version: Format version, currently being %1
->> +     * @blob_key: Random AES 128 key which is used to encrypt =
-@payload,
->> +     *            @blob_key itself is encrypted with OTP or UNIQUE =
-device key in
->> +     *            AES-128-ECB mode by DCP.
->> +     * @nonce: Random nonce used for @payload encryption.
->> +     * @payload_len: Length of the plain text @payload.
->> +     * @payload: The payload itself, encrypted using AES-128-GCM and =
-@blob_key,
->> +     *           GCM auth tag of size AES_BLOCK_SIZE is attached at =
-the end of it.
->> +     *
->> +     * The total size of a DCP BLOB is sizeof(struct dcp_blob_fmt) + =
-@payload_len +
->> +     * AES_BLOCK_SIZE.
->> +     */
->> +    struct dcp_blob_fmt {
->> +            __u8 fmt_version;
->> +            __u8 blob_key[AES_KEYSIZE_128];
->> +            __u8 nonce[AES_KEYSIZE_128];
->> +            __le32 payload_len;
->> +            __u8 payload[];
->> +    } __packed;
->=20
-> I'm thinking here given that you need to replicate the same thing that
-> is in the source files. E.g. Documentation/gpu/i915.rst.
->=20
-> The rationale would so many sources so maybe it would make sense to
-> maintain this in the source code.
->=20
-> Also this documents how to generally insert documentation inline:
-> https://docs.kernel.org/doc-guide/kernel-doc.html
->=20
-> I.e. I'm feeling that this is good time to improve scalability so that
-> documentation will keep up to date. Also then backend specific patches
-> mostly go to their subdirectories and not to Documentation/ subtree
-> (or that would be more rare case).
->=20
-> So a good chance to do more than just a new backend for the benefit
-> of the trusted keys subsystem :-)
->=20
-> Also, later on if something is changed e.g. in the above struct you
-> don't have to do matching update to the documentation so it will save
-> time too (over time).
+What?
+These commits remove the sentinel element (last empty element) from the
+sysctl arrays of all the files under the "mm/", "security/", "ipc/",
+"init/", "io_uring/", "drivers/perf/" and "crypto/" directories that
+register a sysctl array. The inclusion of [4] to mainline allows the
+removal of sentinel elements without behavioral change. This is safe
+because the sysctl registration code (register_sysctl() and friends) use
+the array size in addition to checking for a sentinel [1].
 
-sound good! I=E2=80=99ll maintain the blob format documentation to the =
-source and insert=20
-a reference in the documentation. Thanks for pointing that out!
+Why?
+By removing the sysctl sentinel elements we avoid kernel bloat as
+ctl_table arrays get moved out of kernel/sysctl.c into their own
+respective subsystems. This move was started long ago to avoid merge
+conflicts; the sentinel removal bit came after Mathew Wilcox suggested
+it to avoid bloating the kernel by one element as arrays moved out. This
+patchset will reduce the overall build time size of the kernel and run
+time memory bloat by about ~64 bytes per declared ctl_table array (more
+info here [5]).
 
-Is there anything else I can improve for this patchset? I=E2=80=99d like =
-to include that in v8
-too and make it the last iteration of this patchset.
+When are we done?
+There are 4 patchest (25 commits [2]) that are still outstanding to
+completely remove the sentinels: files under "net/", files under
+"kernel/" dir, misc dirs (this patchset) and the final set that removes
+the unneeded check for ->procname == NULL.
 
-Thanks,
-David=
+Testing:
+* Ran sysctl selftests (./tools/testing/selftests/sysctl/sysctl.sh)
+* Ran this through 0-day with no errors or warnings
+
+Savings in vmlinux:
+  A total of 64 bytes per sentinel is saved after removal; I measured in
+  x86_64 to give an idea of the aggregated savings. The actual savings
+  will depend on individual kernel configuration.
+    * bloat-o-meter
+        - The "yesall" config saves 963 bytes (bloat-o-meter output [6])
+        - A reduced config [3] saves 452 bytes (bloat-o-meter output [7])
+
+Savings in allocated memory:
+  None in this set but will occur when the superfluous allocations are
+  removed from proc_sysctl.c. I include it here for context. The
+  estimated savings during boot for config [3] are 6272 bytes. See [8]
+  for how to measure it.
+
+Comments/feedback greatly appreciated
+
+Best
+
+Joel
+
+[1] https://lore.kernel.org/all/20230809105006.1198165-1-j.granados@samsung.com/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/joel.granados/linux.git/tag/?h=sysctl_remove_empty_elem_v5
+[3] https://gist.github.com/Joelgranados/feaca7af5537156ca9b73aeaec093171
+[4] https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/
+
+[5]
+Links Related to the ctl_table sentinel removal:
+* Good summaries from Luis:
+  https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/
+  https://lore.kernel.org/all/ZMFizKFkVxUFtSqa@bombadil.infradead.org/
+* Patches adjusting sysctl register calls:
+  https://lore.kernel.org/all/20230302204612.782387-1-mcgrof@kernel.org/
+  https://lore.kernel.org/all/20230302202826.776286-1-mcgrof@kernel.org/
+* Discussions about expectations and approach
+  https://lore.kernel.org/all/20230321130908.6972-1-frank.li@vivo.com
+  https://lore.kernel.org/all/20220220060626.15885-1-tangmeng@uniontech.com
+
+[6]
+add/remove: 0/0 grow/shrink: 0/16 up/down: 0/-963 (-963)
+Function                                     old     new   delta
+setup_mq_sysctls                             502     499      -3
+yama_sysctl_table                            128      64     -64
+vm_page_writeback_sysctls                    512     448     -64
+vm_oom_kill_table                            256     192     -64
+vm_compaction                                320     256     -64
+page_alloc_sysctl_table                      576     512     -64
+mq_sysctls                                   384     320     -64
+memory_failure_table                         192     128     -64
+loadpin_sysctl_table                         128      64     -64
+key_sysctls                                  448     384     -64
+kernel_io_uring_disabled_table               192     128     -64
+kern_do_mounts_initrd_table                  128      64     -64
+ipc_sysctls                                  832     768     -64
+hugetlb_vmemmap_sysctls                      128      64     -64
+hugetlb_table                                320     256     -64
+apparmor_sysctl_table                        256     192     -64
+Total: Before=440605433, After=440604470, chg -0.00%
+
+[7]
+add/remove: 0/0 grow/shrink: 0/8 up/down: 0/-452 (-452)
+Function                                     old     new   delta
+setup_ipc_sysctls                            306     302      -4
+vm_page_writeback_sysctls                    512     448     -64
+vm_oom_kill_table                            256     192     -64
+page_alloc_sysctl_table                      384     320     -64
+key_sysctls                                  384     320     -64
+kernel_io_uring_disabled_table               192     128     -64
+ipc_sysctls                                  640     576     -64
+hugetlb_table                                256     192     -64
+Total: Before=8523801, After=8523349, chg -0.01%
+
+[8]
+To measure the in memory savings apply this on top of this patchset.
+
+"
+diff --git i/fs/proc/proc_sysctl.c w/fs/proc/proc_sysctl.c
+index 37cde0efee57..896c498600e8 100644
+--- i/fs/proc/proc_sysctl.c
++++ w/fs/proc/proc_sysctl.c
+@@ -966,6 +966,7 @@ static struct ctl_dir *new_dir(struct ctl_table_set *set,
+        table[0].procname = new_name;
+        table[0].mode = S_IFDIR|S_IRUGO|S_IXUGO;
+        init_header(&new->header, set->dir.header.root, set, node, table, 1);
++       printk("%ld sysctl saved mem kzalloc\n", sizeof(struct ctl_table));
+
+        return new;
+ }
+@@ -1189,6 +1190,7 @@ static struct ctl_table_header *new_links(struct ctl_dir *dir, s>
+                link_name += len;
+                link++;
+        }
++       printk("%ld sysctl saved mem kzalloc\n", sizeof(struct ctl_table));
+        init_header(links, dir->header.root, dir->header.set, node, link_table,
+                    head->ctl_table_size);
+        links->nreg = nr_entries;
+"
+and then run the following bash script in the kernel:
+
+accum=0
+for n in $(dmesg | grep kzalloc | awk '{print $3}') ; do
+    accum=$(calc "$accum + $n")
+done
+echo $accum
+
+Signed-off-by: Joel Granados <j.granados@samsung.com>
+
+--
+
+---
+Joel Granados (7):
+      memory: Remove the now superfluous sentinel element from ctl_table array
+      security: Remove the now superfluous sentinel element from ctl_table array
+      crypto: Remove the now superfluous sentinel element from ctl_table array
+      initrd: Remove the now superfluous sentinel element from ctl_table array
+      ipc: Remove the now superfluous sentinel element from ctl_table array
+      io_uring: Remove the now superfluous sentinel elements from ctl_table array
+      drivers: perf: Remove the now superfluous sentinel elements from ctl_table array
+
+ crypto/fips.c                | 1 -
+ drivers/perf/riscv_pmu_sbi.c | 1 -
+ init/do_mounts_initrd.c      | 1 -
+ io_uring/io_uring.c          | 1 -
+ ipc/ipc_sysctl.c             | 1 -
+ ipc/mq_sysctl.c              | 1 -
+ mm/compaction.c              | 1 -
+ mm/hugetlb.c                 | 1 -
+ mm/hugetlb_vmemmap.c         | 1 -
+ mm/memory-failure.c          | 1 -
+ mm/oom_kill.c                | 1 -
+ mm/page-writeback.c          | 1 -
+ mm/page_alloc.c              | 1 -
+ security/apparmor/lsm.c      | 1 -
+ security/keys/sysctl.c       | 1 -
+ security/loadpin/loadpin.c   | 1 -
+ security/yama/yama_lsm.c     | 1 -
+ 17 files changed, 17 deletions(-)
+---
+base-commit: 4cece764965020c22cff7665b18a012006359095
+change-id: 20240320-jag-sysctl_remset_misc-a261f5a7ddea
+
+Best regards,
+-- 
+Joel Granados <j.granados@samsung.com>
+
+
 
