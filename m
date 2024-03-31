@@ -1,46 +1,46 @@
-Return-Path: <keyrings+bounces-1027-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1028-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AFF4893210
-	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 17:36:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B5A8893219
+	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 17:44:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A1D6281E90
-	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 15:36:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45EB11C20473
+	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 15:44:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84038145333;
-	Sun, 31 Mar 2024 15:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91674145333;
+	Sun, 31 Mar 2024 15:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BcaeLPw3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ph86thnc"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B7814532F;
-	Sun, 31 Mar 2024 15:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC6A42AA8;
+	Sun, 31 Mar 2024 15:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711899409; cv=none; b=XGXBGhLGc7rVTgbQUWboLROSuPKYk8Aedsql7ZUfaO7nkoVRiZ/m2HzE8At3uw53ChQ1pfcCMVfbCwkp/hFVEz9md6Gf4+zdDgbz9HkxKPRiSQ/JXRBB6gqsRggP75tTpuxEssPPcdQJN2xodJJjEwsMygIm6DZ1KhCstTm1Avo=
+	t=1711899863; cv=none; b=QJXUM2iB5zjRRPQ3m5vNs93AnQ8PinYcFREE606oAKvIJ/dzvq6RE855c4ROgiN0vSOX94JTQpcQ9EcPKhviTy6DBjnNt1Nlt7BfwclXCWn+bICz5mc47SomPZ60rjGeaehQvmECyxufuJlE7QllMVT/jMzp1FkN/8ny6qGwQaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711899409; c=relaxed/simple;
-	bh=EO0diDbRgsZEbN2TcPtZ7YLdJoEklsL6WFWb3kUz6HI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=GV0X/CAf41Kz7pNs0R6/F3+/gPYd0e96N8+GRQXlEAymN8XmPcJP3xJVszePwitmz2S+/9FxXU+v5YkL6VK56NbgjZkZlGbw7Otfn5m4p0SJQm00Y8iSRSdiwMkykmKBdU1Zb8TTwY7WCyD25ZeUGuicYGUoNqs3cu7CwsXdT7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BcaeLPw3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D0AC433C7;
-	Sun, 31 Mar 2024 15:36:46 +0000 (UTC)
+	s=arc-20240116; t=1711899863; c=relaxed/simple;
+	bh=q1Npa18Wizh6/4uiTHvbZ8rFvZTNTBODkLJ1YPWT1FI=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=evdSzpTNmhegsmF57kJlJ7jtwxlMCgotPQzvg8uuYsDSOsmc0YCx7HWWdSIsWNpuK4VpqWS1XVvM+NzWOU7EcNrrIFHYFNItFekNjDnMf3D5hdfc+7aKViSORyjOkYt0Wn0O4IwFBaax24QXvZw/LFob3AUINobr8GVwYMjUOFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ph86thnc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC13C433F1;
+	Sun, 31 Mar 2024 15:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711899408;
-	bh=EO0diDbRgsZEbN2TcPtZ7YLdJoEklsL6WFWb3kUz6HI=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=BcaeLPw36L04BNIfVEGloxji4Zr3k542ti7bKCWs+oUhFfDM2oNUEEoyvQh41ZOI4
-	 5ZZ+R/ZDo0VZGIO4I+Z7zAh5WCU5MIHwavTwvsMgvVKPiM7ugac3z6jZIbV8AOCG5h
-	 YQNYb7TnChvt1vHryDczJ+Q57oDSAOiQ8+GYg+6yK4lLcBIorcWqddTCf2tYhFxQxs
-	 tDvXr83DGvY2l9Z4bwd/HlFtHmm7Wjwtos3Is32h8Ygdj+ARLcmmRyeeW7zBLBuqJA
-	 hfOxXOjHNo+uKqmu9ydW0WlTNuSExLM3Ul/YLb6K0CrWj7l5DPvjGxW07Sqp+4EhiM
-	 aU8hj1IxNPZjw==
+	s=k20201202; t=1711899863;
+	bh=q1Npa18Wizh6/4uiTHvbZ8rFvZTNTBODkLJ1YPWT1FI=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=Ph86thnclnSfEqHvIDP9jW7oEn3M6Lhdxx/k4DYJc8TGRfTpg5gDW8aCOXmVWR3b1
+	 dvZFTWq6k6S+n3NoIo9/ewowefwouVuUH2Lsrmdi4QKxB8E31QMbQ1QMw1cpOSV9nM
+	 ETH7HoScRTcq6diU12g5ql8AcaCmZfgcoQV6igmkNEwDYc0lizCHC56/knbFZHxdMk
+	 e2Oj5J5c5u+P9wIqZX7/OdA6DT+/vbp2b6Fo4FcC9Bk+bq8TNBx9A32Z2wDD/HjyBm
+	 0J8Hhj1caIReMGxz54trt7au1YJFRul/wTev7lFnctxi7lcOMOLcqbabQPZZS/ZOGO
+	 VAnx17AKB9RnA==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,54 +49,88 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sun, 31 Mar 2024 18:36:45 +0300
-Message-Id: <D081OXSNVFWG.3QW7GEWS2QYAB@kernel.org>
-Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
- <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <keyrings@vger.kernel.org>
-Subject: Re: [GIT PULL] tpmdd changes for v6.9-rc2
+Date: Sun, 31 Mar 2024 18:44:19 +0300
+Message-Id: <D081UQF5758Q.3TO9YN0PEQ0O1@kernel.org>
+To: "James Bottomley" <James.Bottomley@HansenPartnership.com>, "Eric
+ Biggers" <ebiggers@kernel.org>, "Zhang Yiqun" <zhangyiqun@phytium.com.cn>
+Cc: <dhowells@redhat.com>, <corbet@lwn.net>, <keyrings@vger.kernel.org>,
+ <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-crypto@vger.kernel.org>
+Subject: Re: [PATCH] KEYS: Add ECDH support
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Jarkko Sakkinen" <jarkko@kernel.org>, "Linus Torvalds"
- <torvalds@linux-foundation.org>, <dhowells@redhat.com>
 X-Mailer: aerc 0.17.0
-References: <20240326143838.15076-1-jarkko@kernel.org>
- <CAHk-=wgNpPQFJyLe5dwEVH66ubviuiwM1_tjbyzQv4BytPw7dQ@mail.gmail.com>
- <D07PD5NTOXSQ.30D5V19O6KMQS@kernel.org>
-In-Reply-To: <D07PD5NTOXSQ.30D5V19O6KMQS@kernel.org>
+References: <20240330065506.3146-1-zhangyiqun@phytium.com.cn>
+ <20240330070436.GA2116@sol.localdomain>
+ <087bbfcf95c9014ee8f87d482773244f0833b892.camel@HansenPartnership.com>
+In-Reply-To: <087bbfcf95c9014ee8f87d482773244f0833b892.camel@HansenPartnership.com>
 
-On Sun Mar 31, 2024 at 8:57 AM EEST, Jarkko Sakkinen wrote:
-> On Sun Mar 31, 2024 at 12:32 AM EET, Linus Torvalds wrote:
-> > On Tue, 26 Mar 2024 at 07:38, Jarkko Sakkinen <jarkko@kernel.org> wrote=
-:
-> > >
-> > >   git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.gi=
-t tags/tpmdd-v6.9-rc2
-> >
-> > So I haven't pulled this, because the subject line (and tag name)
-> > talks about tpmdd, but this is clearly about key handling.
+On Sat Mar 30, 2024 at 3:09 PM EET, James Bottomley wrote:
+> On Sat, 2024-03-30 at 00:04 -0700, Eric Biggers wrote:
+> > [+Cc linux-crypto]
+> >=20
+> > On Sat, Mar 30, 2024 at 02:55:06PM +0800, Zhang Yiqun wrote:
+> > > This patch is to introduce ECDH into keyctl syscall for
+> > > userspace usage, containing public key generation and
+> > > shared secret computation.
+> > >=20
+> > > It is mainly based on dh code, so it has the same condition
+> > > to the input which only user keys is supported. The output
+> > > result is storing into the buffer with the provided length.
+> > >=20
+> > > Signed-off-by: Zhang Yiqun <zhangyiqun@phytium.com.cn>
+> > > ---
+> > > =C2=A0Documentation/security/keys/core.rst |=C2=A0 62 ++++++
+> > > =C2=A0include/linux/compat.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 4 +
+> > > =C2=A0include/uapi/linux/keyctl.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 |=C2=A0 11 +
+> > > =C2=A0security/keys/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 12 +
+> > > =C2=A0security/keys/Makefile=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 2 +
+> > > =C2=A0security/keys/compat_ecdh.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 |=C2=A0 50 +++++
+> > > =C2=A0security/keys/ecdh.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 318
+> > > +++++++++++++++++++++++++++
+> > > =C2=A0security/keys/internal.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 44 ++++
+> > > =C2=A0security/keys/keyctl.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 10 +
+> > > =C2=A09 files changed, 513 insertions(+)
+> > > =C2=A0create mode 100644 security/keys/compat_ecdh.c
+> > > =C2=A0create mode 100644 security/keys/ecdh.c
+> >=20
+> > Nacked-by: Eric Biggers <ebiggers@google.com>
+> >=20
+> > The existing KEYCTL_PKEY_*, KEYCTL_DH_COMPUTE, and AF_ALG are causing
+> > enough problems.=C2=A0 We do not need any more UAPIs like this.=C2=A0 T=
+hey are
+> > hard to maintain, break often, not properly documented, increase the
+> > kernel's attack surface, and what they do is better done in
+> > userspace.
 >
-> OK, point taken and it is evolutionary issue really but definitely
-> needs to be fixed.
+> Actually that's not entirely true.  There is a use case for keys which
+> is where you'd like to harden unwrapped key handling and don't have the
+> ability to use a device.  The kernel provides a harder exfiltration
+> environment than user space, so there is a use case for getting the
+> kernel to handle operations on unwrapped keys for the protection it
+> affords the crytpographic key material.
 >
-> I review and test most of the stuff that goes to keyring but other
-> than trusted keys, I usually pick only few patches every now and
-> then to my tree.
+> For instance there are people who use the kernel keyring to replace
+> ssh-agent and thus *reduce* the attack surface they have for storing
+> ssh keys:
 >
-> So obviously we need better grounds for putting this content together.
-> So probably fastest path to that would be if e.g. David just opens me
-> push rights to his tree, and then i push the stuff that makes sense
-> to me to some branch in that tree.
+> https://blog.cloudflare.com/the-linux-kernel-key-retention-service-and-wh=
+y-you-should-use-it-in-your-next-application/
 >
-> In other words: David would take care of sending the final PR.
->
-> As per trusted keys, should I start to make a separate "trusted keys
-> PR" with its own separate tag? It's fine with me but I just need to
-> know how to move forward. E.g. now there is one new hardware backend
-> upcoming for trusted keys so now it is good to realig if any need.
+> The same thing could be done with gpg keys or the gnome keyring.
 
-Also using separate tag works for me. These changes are synced
-in all cases (I sync up with David or vice-versa) so that is
-equally good as far as I'm concerned.
+Eric has a correct standing given that the commit message does not have
+motivation part at all.=20
+
+With a description of the problem that this patch is supposed to solve
+this would be more meaningful to review.
 
 BR, Jarkko
 
