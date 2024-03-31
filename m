@@ -1,106 +1,164 @@
-Return-Path: <keyrings+bounces-1022-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1023-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACBB7892DA2
-	for <lists+keyrings@lfdr.de>; Sat, 30 Mar 2024 23:32:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0019A892E25
+	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 01:48:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA4F3282DBD
-	for <lists+keyrings@lfdr.de>; Sat, 30 Mar 2024 22:32:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34B331C20BA2
+	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 00:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C59335BC;
-	Sat, 30 Mar 2024 22:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C2F389;
+	Sun, 31 Mar 2024 00:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Ft0qMpZG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HnnxChoe"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB6D22092
-	for <keyrings@vger.kernel.org>; Sat, 30 Mar 2024 22:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35546383;
+	Sun, 31 Mar 2024 00:48:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711837947; cv=none; b=qcurnOsck1hNZXtQtWnTNRxgjDBuQ6oygX/KVRUMW2C++47VJcIeUZqVrGjwHmg3JM/duD8JX00EpCPgE1MmIi4ewywbMios+3SeDiZRf+SFxuiGExb0qFs+AD+DqBXDaq0bKVze0u4x/CwVKm+NzvAIv6qWp7VtsUQASXoxhQE=
+	t=1711846127; cv=none; b=BZKqmTrdl/RN0V2FsGHWhIP578b9eDgzTT5Fk0PkW/O4wMO8zMJpx3mkUnaNVQURJUmyBpqFGLvg1D4lvDHMq6T2qJM8IBceiGw3yneAT31L0Cg4UYPSv0ZNwOt/inMG8Mj5xys3VjNbkH5Ivlm+GzopgHK7JVWqahwQASY5yy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711837947; c=relaxed/simple;
-	bh=U43Wuq55vMxCLBzqGRdkR/mMGx+zO2GmUgWVZu6Gawg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MC2kKYr7hZxlvL4KY6eIEyVXE7a7fBRrGhPrDC0/4KsNGWlhsMhIj4cXEGurZOT0YSKrAxzHJWIz9Vk7XbeQZguP+jmFM20dS23QbMdlZHlCeFtpqxpfuheSfe6YkBVGB1lsv0z3cmlb1gvf8abB75czUYTMAg6dXTIlGZM4UfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Ft0qMpZG; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-515c3eeea5dso3295106e87.1
-        for <keyrings@vger.kernel.org>; Sat, 30 Mar 2024 15:32:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1711837944; x=1712442744; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qh7m7AzKE9zxgcmaZLpWEMMQFO2AQlI5WB3LlhW1I44=;
-        b=Ft0qMpZGU9No1lDtNY6m+QEK9VUB3iCBlXDau5eoyGUjPfc6s69wYnViDKOvrtDhts
-         4cteyZ0It7eEa6xzoND8JiNqN5EYI1zb+xyCXMFw7oyiXZJ0e159qI4flnyp2Dpvbz+y
-         8Jle660pX/0lAxvng8Eu5kDc0+bfz5sKol1pg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711837944; x=1712442744;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Qh7m7AzKE9zxgcmaZLpWEMMQFO2AQlI5WB3LlhW1I44=;
-        b=CfgcwJqM5HT4yg6UMUNxEhGSRoOHbh77Zo/dU+By0PkgEhxmqQ2zO+O53xhQv8Hi6p
-         WL3ZzNdLb2TqwAE8hMdsOTQ028NUb2cYQsFhgzNj+41xozARSbTKj1o7FieQr5i/eT5o
-         vmwJLxCNKKdMfIMyuIBP7hlxP9BlDuO/1E+jWDnOqvO8LPN3/wGo/qbRortIwmOADSTI
-         0bv/n1Y+2hDl6CIlFKRVu18GsSdcRKBqI5KWZrFjUpUArHjedvGHiy2u9f4RZv2au3ep
-         W0/uoH0qHSjkK/CUsqIDh+O/+5sqCN7BVisWnEHFs+g/TnHljidmviSjWsS2Spky5lhg
-         N7Ow==
-X-Forwarded-Encrypted: i=1; AJvYcCWingowvZ4PVAy4cTLOoaesj+aBs6XmLuFWqEsPkmmiiNKe4k7VySxETUfYbUlqt47cVN+er1NkTCe/8f3ISDhfcw2h9RAsxPU=
-X-Gm-Message-State: AOJu0YyvT51Bg2CanCXHKI7+yTYoyQNUlz5xVcrhh2R/bVfJqTJbPGpK
-	Zm4NJo+Pa0cF+3qyiBQXP8Kr+x/1PRD6E9Bz9H7/K95hQ0udMqCJdqP0FnpszOYVrBsqDq3bW4+
-	9xA4=
-X-Google-Smtp-Source: AGHT+IHQwgg+Gc6ybUWDXgEez8g7KNpMTUIzD2C5lgGr7UbPoMyD8sWJ32b66EaAcczYymjg0zYQew==
-X-Received: by 2002:ac2:5eca:0:b0:513:403c:d887 with SMTP id d10-20020ac25eca000000b00513403cd887mr3774760lfq.38.1711837943679;
-        Sat, 30 Mar 2024 15:32:23 -0700 (PDT)
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com. [209.85.208.169])
-        by smtp.gmail.com with ESMTPSA id f15-20020ac24e4f000000b005159fb35a9fsm1003923lfr.38.2024.03.30.15.32.22
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 30 Mar 2024 15:32:22 -0700 (PDT)
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2d4a8bddc21so39639721fa.0
-        for <keyrings@vger.kernel.org>; Sat, 30 Mar 2024 15:32:22 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVrYjtNv1aprUccAxFd9efUlkcKQC5RA/ezJ9ay5ILDV+wpyJegdjDMlux7JUObTBl4AABUa7ei79NZ56lZZGQgyqsxYBxHOTo=
-X-Received: by 2002:a19:5517:0:b0:515:90e5:4555 with SMTP id
- n23-20020a195517000000b0051590e54555mr3507469lfe.16.1711837942133; Sat, 30
- Mar 2024 15:32:22 -0700 (PDT)
+	s=arc-20240116; t=1711846127; c=relaxed/simple;
+	bh=5R/y/M+p05y5G7U6Q0i8lhl8d1NWN6ZRPceQTVGsVrI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S622OIFwgXW/vLRK1N/i7M0+QXecyfPK2oSHoe8TBkMRMRCieJ7jSF/eKf5/sY1488lSTdHzW2rbjJbSOzIOjZwkaJLP2WFc7Xy8mn7G/e8c7YSnIyXhsVUQQgJz9cgAHbCmG1DvPpP/bvW2so8c/XOw6Tppt4EbNqYdPeBPuKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HnnxChoe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72A51C433C7;
+	Sun, 31 Mar 2024 00:48:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711846126;
+	bh=5R/y/M+p05y5G7U6Q0i8lhl8d1NWN6ZRPceQTVGsVrI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HnnxChoe6PD0c253FzpqzrGbGakgdwsrko83C1NyXCjMlc/PkIYrqVejJGzJnRubB
+	 SLh08seHoHgJPf+qCjJqbfUC5LZS3KmneiZh/vCoGOPs9LPhZFp5mRnRTKzAjHQOVw
+	 G/Qnzd/pDbFPQBIBcBVgBp0Ev0HUtGqAt1a+lCPHKpuE4GXTrs2IFjjKGYd+BqYjjR
+	 ixOvthPzaXJ0azrzgMB/UozGCbk2SPB3SpOVWfe0H7eHgF3u8HoH/36lYd8Vp+FFMl
+	 trrs/8GeDhb6fOZFacgfmEzzuYVsjcsBiFUMyvUyyrujhffg/T0MHmMiChmiDDkww6
+	 Q7QKPIw9ue+Gg==
+Date: Sat, 30 Mar 2024 17:48:44 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Zhang Yiqun <zhangyiqun@phytium.com.cn>, dhowells@redhat.com,
+	jarkko@kernel.org, corbet@lwn.net, keyrings@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org
+Subject: Re: [PATCH] KEYS: Add ECDH support
+Message-ID: <20240331004844.GA104623@sol.localdomain>
+References: <20240330065506.3146-1-zhangyiqun@phytium.com.cn>
+ <20240330070436.GA2116@sol.localdomain>
+ <087bbfcf95c9014ee8f87d482773244f0833b892.camel@HansenPartnership.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240326143838.15076-1-jarkko@kernel.org>
-In-Reply-To: <20240326143838.15076-1-jarkko@kernel.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 30 Mar 2024 15:32:05 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgNpPQFJyLe5dwEVH66ubviuiwM1_tjbyzQv4BytPw7dQ@mail.gmail.com>
-Message-ID: <CAHk-=wgNpPQFJyLe5dwEVH66ubviuiwM1_tjbyzQv4BytPw7dQ@mail.gmail.com>
-Subject: Re: [GIT PULL] tpmdd changes for v6.9-rc2
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>, 
-	linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	keyrings@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <087bbfcf95c9014ee8f87d482773244f0833b892.camel@HansenPartnership.com>
 
-On Tue, 26 Mar 2024 at 07:38, Jarkko Sakkinen <jarkko@kernel.org> wrote:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-v6.9-rc2
+On Sat, Mar 30, 2024 at 09:09:51AM -0400, James Bottomley wrote:
+> On Sat, 2024-03-30 at 00:04 -0700, Eric Biggers wrote:
+> > [+Cc linux-crypto]
+> > 
+> > On Sat, Mar 30, 2024 at 02:55:06PM +0800, Zhang Yiqun wrote:
+> > > This patch is to introduce ECDH into keyctl syscall for
+> > > userspace usage, containing public key generation and
+> > > shared secret computation.
+> > > 
+> > > It is mainly based on dh code, so it has the same condition
+> > > to the input which only user keys is supported. The output
+> > > result is storing into the buffer with the provided length.
+> > > 
+> > > Signed-off-by: Zhang Yiqun <zhangyiqun@phytium.com.cn>
+> > > ---
+> > >  Documentation/security/keys/core.rst |  62 ++++++
+> > >  include/linux/compat.h               |   4 +
+> > >  include/uapi/linux/keyctl.h          |  11 +
+> > >  security/keys/Kconfig                |  12 +
+> > >  security/keys/Makefile               |   2 +
+> > >  security/keys/compat_ecdh.c          |  50 +++++
+> > >  security/keys/ecdh.c                 | 318
+> > > +++++++++++++++++++++++++++
+> > >  security/keys/internal.h             |  44 ++++
+> > >  security/keys/keyctl.c               |  10 +
+> > >  9 files changed, 513 insertions(+)
+> > >  create mode 100644 security/keys/compat_ecdh.c
+> > >  create mode 100644 security/keys/ecdh.c
+> > 
+> > Nacked-by: Eric Biggers <ebiggers@google.com>
+> > 
+> > The existing KEYCTL_PKEY_*, KEYCTL_DH_COMPUTE, and AF_ALG are causing
+> > enough problems.  We do not need any more UAPIs like this.  They are
+> > hard to maintain, break often, not properly documented, increase the
+> > kernel's attack surface, and what they do is better done in
+> > userspace.
+> 
+> Actually that's not entirely true.  There is a use case for keys which
+> is where you'd like to harden unwrapped key handling and don't have the
+> ability to use a device.  The kernel provides a harder exfiltration
+> environment than user space, so there is a use case for getting the
+> kernel to handle operations on unwrapped keys for the protection it
+> affords the crytpographic key material.
+> 
+> For instance there are people who use the kernel keyring to replace
+> ssh-agent and thus *reduce* the attack surface they have for storing
+> ssh keys:
+> 
+> https://blog.cloudflare.com/the-linux-kernel-key-retention-service-and-why-you-should-use-it-in-your-next-application/
+> 
+> The same thing could be done with gpg keys or the gnome keyring.
 
-So I haven't pulled this, because the subject line (and tag name)
-talks about tpmdd, but this is clearly about key handling.
+First, that blog post never actually said that the "replace ssh-agent with
+kernel keyrings" idea was deployed.  It sounds like a proof of concept idea that
+someone thought was interesting and decided to blog about.  Upstream OpenSSH has
+no support for Linux keyrings.  It seems unlikely it would get added, especially
+given the OpenSSH developers' healthy skepticism of using broken Linux-isms.
+You're welcome to bring it up on openssh-unix-dev and get their buy-in first.
 
-Also, the actual contents seem to be very much an "update", not fixes.
-And it doesn't seem to be an actual improvement, in how it now does
-things from interrupts. That seems to be going backward rather than
-forward.
+Second, as mentioned by the blog post, the kernel also does not support private
+keys in the default OpenSSH format.  That sort of thing is an example of the
+fundamental problem with trying to make the kernel support every cryptographic
+protocol and format in existence.  Userspace simply has much more flexibility to
+implement whatever it happens to need.
 
-            Linus
+Third, ssh-agent is already a separate process, and like any other process the
+kernel enforces isolation of its address space.  The potential loopholes are
+ptrace and coredumps, which ssh-agent already disables, except for ptrace by
+root which it can't do alone, but the system administrator can do that by
+setting the ptrace_scope sysctl to 3 or by using SELinux.
+
+Amusingly, the existing KEYCTL_DH_* APIs, and the KEYCTL_ECDH_* APIs proposed by
+this patch, only operate on user keys that the process has READ access to.  This
+means that the keys can be trivially extracted by a shell script running in your
+user session.  That's *less* secure than using an isolated process...
+
+That's not to mention that merging this will likely add vulnerabilities
+reachable by unprivileged users, just as the original KEYCTL_DH_* did.  I had to
+fix some of them last time around (e.g. commits 12d41a023efb, bbe240454d86,
+3619dec5103d, 1d9ddde12e3c, ccd9888f14a8, 199512b1234f).  I don't really feel
+like doing it again. (Wait, was this supposed to *improve* security?)
+
+> > Please refer to the recent thread
+> > https://lore.kernel.org/linux-crypto/CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.cz/T/#u
+> > where these issues were discussed in detail.
+> 
+> This thread was talking about using the kernel for handling the
+> algorithms themselves (which is probably best done in userspace) and
+> didn't address using the kernel to harden the key protection
+> environment.
+
+This patch is about using the kernel to handle a class of algorithm,
+Elliptic-Curve Diffie-Hellman.  Which specific algorithm in that class (i.e.
+which elliptic curve), who knows.  Just like the existing APIs like this, it's
+undocumented which algorithm(s) are actually supported.
+
+- Eric
 
