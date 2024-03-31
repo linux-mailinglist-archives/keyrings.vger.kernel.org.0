@@ -1,111 +1,109 @@
-Return-Path: <keyrings+bounces-1024-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1025-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44620892E5A
-	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 04:38:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A576F892EB2
+	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 07:57:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C9F31C20B97
-	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 02:38:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D44822821D9
+	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 05:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C54DD10E3;
-	Sun, 31 Mar 2024 02:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14AB63D5;
+	Sun, 31 Mar 2024 05:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XleIRPSp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oNclNJZg"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A6C181;
-	Sun, 31 Mar 2024 02:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16751FA5;
+	Sun, 31 Mar 2024 05:57:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711852689; cv=none; b=gXNEolHo55cI9s9E0fe7uOOSm88Jz7dwj3ls8ge3nw8RDM4vYnsK3QkV/TYCu8HKWXSxelrGFg26OaTa0ta2xAeaumLm+bNicuklMkDBxzgMakTmXxNf8xfV/uZLU1lr3i868qhdgUvfJgx0ptM9DjM8hr8IuQzNZ6hDb2tE66w=
+	t=1711864632; cv=none; b=ZW38HUr/o+jkA9B2bu3be2rcYegaVKJ7VRduTVbk8apTeqHnOWVh/j/XtOh8bmN/YLRAnBIYs0tTHYJQTs4gj2bZyve4Oo1xhWgfmaDrkCeu/JI6W/omwCDTJtu6+nUnLYyzHT/SdapbZTyNekRvVy3nuMW2cYz5jOYgshHxm4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711852689; c=relaxed/simple;
-	bh=SNeN2CYj+6bo6yYIrP8F5A4iIl0/Q9yGn+qoKYRUWH4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WX0BCLiJLkXYSF23cXoAUUoCaN3U++73B96a084d5eByR6abt19vx+RRgPeFHn/FNkK/J6TmDIJzyF4IYk3FZTEjQ9I/pyxKjnmYqJBhqHBxbDk+/e+NGJ90rlOfa4MF1hGhvlAequCF3PKJT9TuvWJc3UIpKmFlHj11ZC0GCMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XleIRPSp; arc=none smtp.client-ip=209.85.161.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5a47cecb98bso2073304eaf.0;
-        Sat, 30 Mar 2024 19:38:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711852687; x=1712457487; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lUs6NaIvupBIrN3kNgIHykr6WEWtZD3EhPX18G9uddY=;
-        b=XleIRPSp55P9VHB7a2r/titnJwBaAjVmwFFWncW/trJnpln7+XtSjSvi9uqMgHENno
-         mXoHhat/Z/Iu/etVc504MD8mbcqjpCdo92CyUAjqoOvDmqxWOTlUEoKSZpMXMU1tjGDE
-         XbpXwWhrrBDGTCSBhMimQlOAAiFIgIn6MMASG45+bZdtNZH3XVRJ5bVJUjjXsZsqVSuD
-         EAr0yLfv7Xw4ek1Nrgh1EsDej1shKOAN+fHmpmCt2k67uc0kQqgZTsLvlgNdkJABYumM
-         NqMAc3CT/Ikjfg8Q4m9fVK1ahVo7HmKBBnIuDdfrFTz3L4Mf85eUXTvDWIq6NjILU5Zk
-         EE5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711852687; x=1712457487;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lUs6NaIvupBIrN3kNgIHykr6WEWtZD3EhPX18G9uddY=;
-        b=dR8iI2wu/bgmWoKgd3fQy1Qs3x8Gg8zaFnPHbg0FZVEZ0RXNeEaOyPNYJ1aIfjy24D
-         15h1F4+67W51lrSYAej/3JXzlWZZfwN+sEoBc+2m+UdBjvHf18AI150uR/j7E1kwLdbX
-         sGYqzl76u5sQvTr0S681UIXwuJI8SbyuckQSRFHBqVNDfJVH0TIeYJflzO0R6FpSMC8R
-         9zz21UCZ3xMyhIWChGyQmc7Wt48iBBORmO2pxhHMcl7c4qiPRydQGd654U39D+gB3weL
-         ELldBLvIApWZmFYYutf7AN/jmQk6rSAo74Gm8P8UkZUIxFx+1qy0xVLs34o8roNuo1WX
-         +QIg==
-X-Forwarded-Encrypted: i=1; AJvYcCVwL3cU3nCsvXYDTwS66oYsIOZe9xNTNPxXhx+b5LI0hF4hupv8P5wIUYO2JPUDl0WepDijhDJPYBg1N560PbnJ5RAa4R88i26Vu9VypwbBZecB5aqbsTeOFXgu4wuUSU6yA7yyNW3bsx+drdJwvoi1WZf5gLyATZ+18fbURnSBI4TAocIuILlIqVomkqoToJcDzLA9S5fTrbiTCkqMZeE=
-X-Gm-Message-State: AOJu0YyW7TJsviPHgdYwWIVD+v3Bv1LiX1phxqUeZ9O5THjJ2TKywZ9M
-	IdQhsJIEEtX7xf5p5m/dh/a51J+VTrkHVZa0tY90NWObJeeGoGmG
-X-Google-Smtp-Source: AGHT+IG8y/mw6Sg+NJ68AiBnOVhIGZhncP4yQFjwCnn6QvLTTTIKr8wBQM2lppgPQLGZ1h9+K7oVJA==
-X-Received: by 2002:a05:6820:260e:b0:5a5:639a:2fb8 with SMTP id cy14-20020a056820260e00b005a5639a2fb8mr6074835oob.4.1711852687375;
-        Sat, 30 Mar 2024 19:38:07 -0700 (PDT)
-Received: from [192.168.1.22] (070-114-247-242.res.spectrum.com. [70.114.247.242])
-        by smtp.googlemail.com with ESMTPSA id bf14-20020a056820174e00b005a4bcb155basm1611035oob.23.2024.03.30.19.38.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 30 Mar 2024 19:38:07 -0700 (PDT)
-Message-ID: <aae9bc89-ca34-400f-9c5e-44be1df2befa@gmail.com>
-Date: Sat, 30 Mar 2024 21:38:05 -0500
+	s=arc-20240116; t=1711864632; c=relaxed/simple;
+	bh=7w6jg6OmB2qnyRYmKgtEEoQj+UdPBhumHjjeDUqYjNY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=rB5TJDhtssy3jucUc+g9QkgXF1MRY+EmSJZosQfSjeOpsqmUTzbPscwawV1mBoF+8IxvKsPPIg6a5lg6TvSO8Z3C9g6/QD1PbsFYnI4vz/SbK/NTFzoj0WkkPmv/1T247/JWTwOWLoAat/O2IIZ72zx3omIbuzphRhkUaML4q9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oNclNJZg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B460C433C7;
+	Sun, 31 Mar 2024 05:57:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711864632;
+	bh=7w6jg6OmB2qnyRYmKgtEEoQj+UdPBhumHjjeDUqYjNY=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=oNclNJZgbWqAMSgkEDQHSPMGSQ3TqFZHv2rvBYS5H5kRsUYKc+7fR5zCcSn9YKwLl
+	 Zn7aWKzFzNUwOR9yQS+yW57zFcJHE6hHCuBibUA4kluUTjhMH0kSjKBX+CO7pby76a
+	 BnmnasM/Lr0JgqpAuMX1SSgsuxpRbI5KKCi0qf5FQ+69nxHzNEW5kGTG2R2fybrzE6
+	 iMf8UzGu42xxw+IV3+TbbQbjkuU2UdfHlAaLXcwKqufWke9CnDo9zW5JtAzoJ54G+Q
+	 yxHYw7w65f4pE8ObZg/iXeyTMYX9SHimMlNYvwF1GdzcHuVtIGqZ1FGney2qBl8+QZ
+	 0SKLvwis3CS4g==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KEYS: Add ECDH support
-Content-Language: en-US
-To: Eric Biggers <ebiggers@kernel.org>,
- James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Zhang Yiqun <zhangyiqun@phytium.com.cn>, dhowells@redhat.com,
- jarkko@kernel.org, corbet@lwn.net, keyrings@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-crypto@vger.kernel.org
-References: <20240330065506.3146-1-zhangyiqun@phytium.com.cn>
- <20240330070436.GA2116@sol.localdomain>
- <087bbfcf95c9014ee8f87d482773244f0833b892.camel@HansenPartnership.com>
- <20240331004844.GA104623@sol.localdomain>
-From: Denis Kenzior <denkenz@gmail.com>
-In-Reply-To: <20240331004844.GA104623@sol.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sun, 31 Mar 2024 08:57:08 +0300
+Message-Id: <D07PD5NTOXSQ.30D5V19O6KMQS@kernel.org>
+Subject: Re: [GIT PULL] tpmdd changes for v6.9-rc2
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Linus Torvalds" <torvalds@linux-foundation.org>, <dhowells@redhat.com>
+Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
+ "David Howells" <dhowells@redhat.com>, <linux-integrity@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <keyrings@vger.kernel.org>
+X-Mailer: aerc 0.17.0
+References: <20240326143838.15076-1-jarkko@kernel.org>
+ <CAHk-=wgNpPQFJyLe5dwEVH66ubviuiwM1_tjbyzQv4BytPw7dQ@mail.gmail.com>
+In-Reply-To: <CAHk-=wgNpPQFJyLe5dwEVH66ubviuiwM1_tjbyzQv4BytPw7dQ@mail.gmail.com>
 
-Hi Eric,
+On Sun Mar 31, 2024 at 12:32 AM EET, Linus Torvalds wrote:
+> On Tue, 26 Mar 2024 at 07:38, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> >
+> >   git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git =
+tags/tpmdd-v6.9-rc2
+>
+> So I haven't pulled this, because the subject line (and tag name)
+> talks about tpmdd, but this is clearly about key handling.
 
-> 
-> Amusingly, the existing KEYCTL_DH_* APIs, and the KEYCTL_ECDH_* APIs proposed by
-> this patch, only operate on user keys that the process has READ access to.  This
-> means that the keys can be trivially extracted by a shell script running in your
-> user session.  That's *less* secure than using an isolated process...
-> 
+OK, point taken and it is evolutionary issue really but definitely
+needs to be fixed.
 
-I can see this being true for user or session keys, but I don't think this is 
-true of process or thread specific keys.  At least I couldn't read any keys out 
-of a test app when I tried.
+I review and test most of the stuff that goes to keyring but other
+than trusted keys, I usually pick only few patches every now and
+then to my tree.
 
-Regards,
--Denis
+So obviously we need better grounds for putting this content together.
+So probably fastest path to that would be if e.g. David just opens me
+push rights to his tree, and then i push the stuff that makes sense
+to me to some branch in that tree.
+
+In other words: David would take care of sending the final PR.
+
+As per trusted keys, should I start to make a separate "trusted keys
+PR" with its own separate tag? It's fine with me but I just need to
+know how to move forward. E.g. now there is one new hardware backend
+upcoming for trusted keys so now it is good to realig if any need.
+
+
+
+
+>
+> Also, the actual contents seem to be very much an "update", not fixes.
+> And it doesn't seem to be an actual improvement, in how it now does
+> things from interrupts. That seems to be going backward rather than
+> forward.
+
+That's fine and can cope with this np but yeah the first paragraph is
+something we need to tackle now :-)
+
+>
+>             Linus
+
+BR, Jarkko
 
