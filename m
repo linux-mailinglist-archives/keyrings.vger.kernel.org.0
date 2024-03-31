@@ -1,114 +1,106 @@
-Return-Path: <keyrings+bounces-1035-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1033-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8017893494
-	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 19:08:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07C72893427
+	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 18:57:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B90E1F2159C
-	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 17:08:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7395FB24368
+	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 16:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B231F15F3F3;
-	Sun, 31 Mar 2024 16:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8497F159587;
+	Sun, 31 Mar 2024 16:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Ft0qMpZG"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HnnxChoe"
 X-Original-To: keyrings@vger.kernel.org
 Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0226814A4D8;
-	Sun, 31 Mar 2024 16:43:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8D015957A;
+	Sun, 31 Mar 2024 16:41:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=62.96.220.36
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711903429; cv=pass; b=SvjIyddp0btRcvwlpucA+LzEpJ/+/2Pyrf6kaoK3kAhmEo93QL0M1Od0CnEz9HgVQsKaVak+42vaY09IEq61evgZ/rx7Oy/Kh7Tg9HYb42Q4dAOJNdI8OJaYNTSRoULd06j8/SwpiTBnVT4Svr7z5MJmhjk6u8U0Gpbf3Mgb3E4=
+	t=1711903273; cv=fail; b=NDQKg18OglhtILdZ5G6S8sW9/HGvDjwzFkrWaIkbM077MkEKcJ7NfV45thpVqe8ZveUpNLh6yVmPpqCQE6ZjrMOXfg35B/D3qzD4h4bEMtr1FjCbRGHku9eZqXNNRcZ1C1Pp3KaOtXtQ2L9arbAqp2rK40GkKaC5bT+qIEmMz7w=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711903429; c=relaxed/simple;
-	bh=U43Wuq55vMxCLBzqGRdkR/mMGx+zO2GmUgWVZu6Gawg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lbpUM4u9MWori+3Z9/89dh3BkdybqHf2DfYSBITk2KbCi0omMB+jO47vrQsw3jO3QeGuVzvJ9CjwJoc//ZSubfS4mDZPQOYi3ieJXJ6SiyTaxsKeIM0o7zzJwgY7E/uJs5irETrwEzrDVTJQ2GC0SLhKtLx+ZY462H8wqDsqiU8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=fail smtp.mailfrom=linux-foundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Ft0qMpZG; arc=none smtp.client-ip=209.85.167.52; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; arc=pass smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=linux-foundation.org
+	s=arc-20240116; t=1711903273; c=relaxed/simple;
+	bh=YVgu6j1j0isPy4AXtAhtK7ZyY09vAr2lZa5WjLrIggg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cIb9Nu3ZNjEcqUxfYtf9Tn7tOYRiK/hFbbhS+jhaznHkJisPhtPBZCfP3sgQvY+OTAiy0yVpZXTzTZIaDQf3w/78taKCv8k+LA6tqnwcMqQeyR9HorCsPpKnyvs1obwfJ01NSQVh+QBtfJN3SeE7lA4a+Ch668FSwo4FOPiKl/Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; dkim=fail (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HnnxChoe reason="signature verification failed"; arc=none smtp.client-ip=10.30.226.201; arc=fail smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
 Received: from localhost (localhost [127.0.0.1])
-	by a.mx.secunet.com (Postfix) with ESMTP id 55E74208D7;
-	Sun, 31 Mar 2024 18:43:45 +0200 (CEST)
+	by a.mx.secunet.com (Postfix) with ESMTP id 580A820897;
+	Sun, 31 Mar 2024 18:41:10 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from a.mx.secunet.com ([127.0.0.1])
 	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id ylLn7vdyrTRC; Sun, 31 Mar 2024 18:43:44 +0200 (CEST)
+	with ESMTP id h78xvcjVnktK; Sun, 31 Mar 2024 18:41:09 +0200 (CEST)
 Received: from mailout1.secunet.com (mailout1.secunet.com [62.96.220.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by a.mx.secunet.com (Postfix) with ESMTPS id A3F03208D1;
-	Sun, 31 Mar 2024 18:43:44 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com A3F03208D1
+	by a.mx.secunet.com (Postfix) with ESMTPS id 6B593207D5;
+	Sun, 31 Mar 2024 18:41:09 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 6B593207D5
 Received: from cas-essen-01.secunet.de (unknown [10.53.40.201])
-	by mailout1.secunet.com (Postfix) with ESMTP id 972D5800061;
-	Sun, 31 Mar 2024 18:43:44 +0200 (CEST)
+	by mailout1.secunet.com (Postfix) with ESMTP id 5EB1C80005E;
+	Sun, 31 Mar 2024 18:41:09 +0200 (CEST)
 Received: from mbx-essen-01.secunet.de (10.53.40.197) by
  cas-essen-01.secunet.de (10.53.40.201) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Sun, 31 Mar 2024 18:43:44 +0200
+ 15.1.2507.35; Sun, 31 Mar 2024 18:41:09 +0200
 Received: from Pickup by mbx-essen-01.secunet.de with Microsoft SMTP Server id
- 15.1.2507.17; Sun, 31 Mar 2024 16:36:24 +0000
-X-sender: <linux-kernel+bounces-125901-steffen.klassert=secunet.com@vger.kernel.org>
+ 15.1.2507.17; Sun, 31 Mar 2024 16:36:27 +0000
+X-sender: <linux-crypto+bounces-3139-steffen.klassert=secunet.com@vger.kernel.org>
 X-Receiver: <steffen.klassert@secunet.com>
  ORCPT=rfc822;steffen.klassert@secunet.com NOTIFY=NEVER;
  X-ExtendedProps=BQAVABYAAgAAAAUAFAARAPDFCS25BAlDktII2g02frgPADUAAABNaWNyb3NvZnQuRXhjaGFuZ2UuVHJhbnNwb3J0LkRpcmVjdG9yeURhdGEuSXNSZXNvdXJjZQIAAAUAagAJAAEAAAAAAAAABQAWAAIAAAUAQwACAAAFAEYABwADAAAABQBHAAIAAAUAEgAPAGIAAAAvbz1zZWN1bmV0L291PUV4Y2hhbmdlIEFkbWluaXN0cmF0aXZlIEdyb3VwIChGWURJQk9IRjIzU1BETFQpL2NuPVJlY2lwaWVudHMvY249U3RlZmZlbiBLbGFzc2VydDY4YwUACwAXAL4AAACheZxkHSGBRqAcAp3ukbifQ049REI2LENOPURhdGFiYXNlcyxDTj1FeGNoYW5nZSBBZG1pbmlzdHJhdGl2ZSBHcm91cCAoRllESUJPSEYyM1NQRExUKSxDTj1BZG1pbmlzdHJhdGl2ZSBHcm91cHMsQ049c2VjdW5ldCxDTj1NaWNyb3NvZnQgRXhjaGFuZ2UsQ049U2VydmljZXMsQ049Q29uZmlndXJhdGlvbixEQz1zZWN1bmV0LERDPWRlBQAOABEABiAS9uuMOkqzwmEZDvWNNQUAHQAPAAwAAABtYngtZXNzZW4tMDIFADwAAgAADwA2AAAATWljcm9zb2Z0LkV4Y2hhbmdlLlRyYW5zcG9ydC5NYWlsUmVjaXBpZW50LkRpc3BsYXlOYW1lDwARAAAAS2xhc3NlcnQsIFN0ZWZmZW4FAAwAAgAABQBsAAIAAAUAWAAXAEoAAADwxQktuQQJQ5LSCNoNNn64Q049S2xhc3NlcnQgU3RlZmZlbixPVT1Vc2VycyxPVT1NaWdyYXRpb24sREM9c2VjdW5ldCxEQz1kZQUAJgACAAEFACIADwAxAAAAQXV0b1Jlc3BvbnNlU3VwcHJlc3M6IDANClRyYW5zbWl0SGlzdG9ye
 	TogRmFsc2UNCg8ALwAAAE1pY3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuRXhwYW5zaW9uR3JvdXBUeXBlDwAVAAAATWVtYmVyc0dyb3VwRXhwYW5zaW9uBQAjAAIAAQ==
 X-CreatedBy: MSExchange15
-X-HeloDomain: a.mx.secunet.com
-X-ExtendedProps: BQBjAAoAsGUFfe5Q3AgFAGEACAABAAAABQA3AAIAAA8APAAAAE1pY3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuTWFpbFJlY2lwaWVudC5Pcmdhbml6YXRpb25TY29wZREAAAAAAAAAAAAAAAAAAAAAAAUASQACAAEFAAQAFCABAAAAHAAAAHN0ZWZmZW4ua2xhc3NlcnRAc2VjdW5ldC5jb20FAAYAAgABBQApAAIAAQ8ACQAAAENJQXVkaXRlZAIAAQUAAgAHAAEAAAAFAAMABwAAAAAABQAFAAIAAQUAYgAKAEcAAADligAABQBkAA8AAwAAAEh1Yg==
+X-HeloDomain: b.mx.secunet.com
+X-ExtendedProps: BQBjAAoAmWkFfe5Q3AgFAGEACAABAAAABQA3AAIAAA8APAAAAE1pY3Jvc29mdC5FeGNoYW5nZS5UcmFuc3BvcnQuTWFpbFJlY2lwaWVudC5Pcmdhbml6YXRpb25TY29wZREAAAAAAAAAAAAAAAAAAAAAAAUASQACAAEFAAQAFCABAAAAHAAAAHN0ZWZmZW4ua2xhc3NlcnRAc2VjdW5ldC5jb20FAAYAAgABBQApAAIAAQ8ACQAAAENJQXVkaXRlZAIAAQUAAgAHAAEAAAAFAAMABwAAAAAABQAFAAIAAQUAYgAKAEUAAADoigAABQBkAA8AAwAAAEh1Yg==
 X-Source: SMTP:Default MBX-ESSEN-02
-X-SourceIPAddress: 62.96.220.36
-X-EndOfInjectedXHeaders: 12931
+X-SourceIPAddress: 62.96.220.37
+X-EndOfInjectedXHeaders: 20328
 X-Virus-Scanned: by secunet
-Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=147.75.80.249; helo=am.mirrors.kernel.org; envelope-from=linux-kernel+bounces-125901-steffen.klassert=secunet.com@vger.kernel.org; receiver=steffen.klassert@secunet.com 
-DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 49D7F20764
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+Received-SPF: Pass (sender SPF authorized) identity=mailfrom; client-ip=139.178.88.99; helo=sv.mirrors.kernel.org; envelope-from=linux-crypto+bounces-3139-steffen.klassert=secunet.com@vger.kernel.org; receiver=steffen.klassert@secunet.com 
+DKIM-Filter: OpenDKIM Filter v2.11.0 b.mx.secunet.com 998F92025D
+Authentication-Results: b.mx.secunet.com;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HnnxChoe"
+X-Original-To: linux-crypto@vger.kernel.org
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal: i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711837947; cv=none; b=l77b8FAmwJ8Y8V69wffkCvCFVgIbXNyD9D+KiXjKsaajQzhtMiSZh018iDhqaIb9s8MJeW44fHVNxLZLN2WcMjRahR5Ly/fg6UvtYYZGLJj4Rf5QX4zSmgKr0fmjfbfUsDmzib4zdYpvdQ4mgJNLvK1RTa7cDu6tdZPcfO+JDeg=
+	t=1711846127; cv=none; b=BZKqmTrdl/RN0V2FsGHWhIP578b9eDgzTT5Fk0PkW/O4wMO8zMJpx3mkUnaNVQURJUmyBpqFGLvg1D4lvDHMq6T2qJM8IBceiGw3yneAT31L0Cg4UYPSv0ZNwOt/inMG8Mj5xys3VjNbkH5Ivlm+GzopgHK7JVWqahwQASY5yy4=
 ARC-Message-Signature: i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711837947; c=relaxed/simple;
-	bh=U43Wuq55vMxCLBzqGRdkR/mMGx+zO2GmUgWVZu6Gawg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MC2kKYr7hZxlvL4KY6eIEyVXE7a7fBRrGhPrDC0/4KsNGWlhsMhIj4cXEGurZOT0YSKrAxzHJWIz9Vk7XbeQZguP+jmFM20dS23QbMdlZHlCeFtpqxpfuheSfe6YkBVGB1lsv0z3cmlb1gvf8abB75czUYTMAg6dXTIlGZM4UfQ=
-ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Ft0qMpZG; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1711837944; x=1712442744; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qh7m7AzKE9zxgcmaZLpWEMMQFO2AQlI5WB3LlhW1I44=;
-        b=Ft0qMpZGU9No1lDtNY6m+QEK9VUB3iCBlXDau5eoyGUjPfc6s69wYnViDKOvrtDhts
-         4cteyZ0It7eEa6xzoND8JiNqN5EYI1zb+xyCXMFw7oyiXZJ0e159qI4flnyp2Dpvbz+y
-         8Jle660pX/0lAxvng8Eu5kDc0+bfz5sKol1pg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711837944; x=1712442744;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Qh7m7AzKE9zxgcmaZLpWEMMQFO2AQlI5WB3LlhW1I44=;
-        b=lfEMUAM+dMfzcY41f91KYBX547+RMogvPRR0PjQthWIlWhVSHWzIbwu7sEvxNquojo
-         LB9IdfqF7Sm8FICm+WmB0pCA4jmHGzgIViUkkm15cPbsACrO/Rzo5Ja4vMs5oNhVcgk4
-         MkJO/+y/904AjaDmotytwZxTZYGjgskf/j7JctLiERKKeT6mWpapV9SWD0H5wQZZb3k7
-         HOoUrseuSrH/0v6ScKt5HBJWm+BiD7Ck1JaRNkxYirwQYQrQLNGH8/h0UNxHsCFv5eGP
-         IS/GcKEr7g5izm/yG0edogzyieh653U0f9kVQKXlzLaTIVqtVBE4TCOvy6jxqr1H/eMH
-         ev9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWgHYXXaMb6fNrOJJkuIza8qYpc1wrqXuou0RBLd9Do6Wm6uoSeDMn5CZg335KAstRhbrKrj9lW9iFwGMP6S3Kt/FUIil/G0L/oEC+Z
-X-Gm-Message-State: AOJu0YzLZA9EfTj3MVzMmppFC5ocFfs2cesfB3JMWxpoPSgYJbsMrUBq
-	Ui28Vf1vt9y7O8yuAVV004t7K0Hb13QJkre3vxhFl5oFMRgoG9iI/yjP/HVDzEP9wcoG+G8rh+u
-	O7B0=
-X-Google-Smtp-Source: AGHT+IHoEYY8SM7e1gU0DYFywT6hL16F+O6qLec/790twgFmLR5wjHT0zheJNExGWw5wy0xsQ6bvtA==
-X-Received: by 2002:a05:6512:2389:b0:515:be10:e288 with SMTP id c9-20020a056512238900b00515be10e288mr5056125lfv.21.1711837943767;
-        Sat, 30 Mar 2024 15:32:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXpZgzHfgiD06oGxEh+SAIJtRDeaSVAgKt6Q0rmso6FMfCAg/o+v5pJRZERHqSsk56AxUVqxa6akcQBhVuIML+7SL24kKzphr39Qi2L
-X-Received: by 2002:a19:5517:0:b0:515:90e5:4555 with SMTP id
- n23-20020a195517000000b0051590e54555mr3507469lfe.16.1711837942133; Sat, 30
- Mar 2024 15:32:22 -0700 (PDT)
+	s=arc-20240116; t=1711846127; c=relaxed/simple;
+	bh=5R/y/M+p05y5G7U6Q0i8lhl8d1NWN6ZRPceQTVGsVrI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S622OIFwgXW/vLRK1N/i7M0+QXecyfPK2oSHoe8TBkMRMRCieJ7jSF/eKf5/sY1488lSTdHzW2rbjJbSOzIOjZwkaJLP2WFc7Xy8mn7G/e8c7YSnIyXhsVUQQgJz9cgAHbCmG1DvPpP/bvW2so8c/XOw6Tppt4EbNqYdPeBPuKg=
+ARC-Authentication-Results: i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HnnxChoe; arc=none smtp.client-ip=10.30.226.201
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711846126;
+	bh=5R/y/M+p05y5G7U6Q0i8lhl8d1NWN6ZRPceQTVGsVrI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HnnxChoe6PD0c253FzpqzrGbGakgdwsrko83C1NyXCjMlc/PkIYrqVejJGzJnRubB
+	 SLh08seHoHgJPf+qCjJqbfUC5LZS3KmneiZh/vCoGOPs9LPhZFp5mRnRTKzAjHQOVw
+	 G/Qnzd/pDbFPQBIBcBVgBp0Ev0HUtGqAt1a+lCPHKpuE4GXTrs2IFjjKGYd+BqYjjR
+	 ixOvthPzaXJ0azrzgMB/UozGCbk2SPB3SpOVWfe0H7eHgF3u8HoH/36lYd8Vp+FFMl
+	 trrs/8GeDhb6fOZFacgfmEzzuYVsjcsBiFUMyvUyyrujhffg/T0MHmMiChmiDDkww6
+	 Q7QKPIw9ue+Gg==
+Date: Sat, 30 Mar 2024 17:48:44 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: Zhang Yiqun <zhangyiqun@phytium.com.cn>, dhowells@redhat.com,
+	jarkko@kernel.org, corbet@lwn.net, keyrings@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org
+Subject: Re: [PATCH] KEYS: Add ECDH support
+Message-ID: <20240331004844.GA104623@sol.localdomain>
+References: <20240330065506.3146-1-zhangyiqun@phytium.com.cn>
+ <20240330070436.GA2116@sol.localdomain>
+ <087bbfcf95c9014ee8f87d482773244f0833b892.camel@HansenPartnership.com>
 Precedence: bulk
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
@@ -116,32 +108,137 @@ List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240326143838.15076-1-jarkko@kernel.org>
-In-Reply-To: <20240326143838.15076-1-jarkko@kernel.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 30 Mar 2024 15:32:05 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgNpPQFJyLe5dwEVH66ubviuiwM1_tjbyzQv4BytPw7dQ@mail.gmail.com>
-Message-ID: <CAHk-=wgNpPQFJyLe5dwEVH66ubviuiwM1_tjbyzQv4BytPw7dQ@mail.gmail.com>
-Subject: Re: [GIT PULL] tpmdd changes for v6.9-rc2
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>, 
-	linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	keyrings@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <087bbfcf95c9014ee8f87d482773244f0833b892.camel@HansenPartnership.com>
 X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-On Tue, 26 Mar 2024 at 07:38, Jarkko Sakkinen <jarkko@kernel.org> wrote:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-v6.9-rc2
+On Sat, Mar 30, 2024 at 09:09:51AM -0400, James Bottomley wrote:
+> On Sat, 2024-03-30 at 00:04 -0700, Eric Biggers wrote:
+> > [+Cc linux-crypto]
+> >=20
+> > On Sat, Mar 30, 2024 at 02:55:06PM +0800, Zhang Yiqun wrote:
+> > > This patch is to introduce ECDH into keyctl syscall for
+> > > userspace usage, containing public key generation and
+> > > shared secret computation.
+> > >=20
+> > > It is mainly based on dh code, so it has the same condition
+> > > to the input which only user keys is supported. The output
+> > > result is storing into the buffer with the provided length.
+> > >=20
+> > > Signed-off-by: Zhang Yiqun <zhangyiqun@phytium.com.cn>
+> > > ---
+> > > =A0Documentation/security/keys/core.rst |=A0 62 ++++++
+> > > =A0include/linux/compat.h=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=
+=A0=A0 4 +
+> > > =A0include/uapi/linux/keyctl.h=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0 11 +
+> > > =A0security/keys/Kconfig=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+ |=A0 12 +
+> > > =A0security/keys/Makefile=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=
+=A0=A0 2 +
+> > > =A0security/keys/compat_ecdh.c=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0 50 +++=
+++
+> > > =A0security/keys/ecdh.c=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0 | 318
+> > > +++++++++++++++++++++++++++
+> > > =A0security/keys/internal.h=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=A0 =
+44 ++++
+> > > =A0security/keys/keyctl.c=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 |=
+=A0 10 +
+> > > =A09 files changed, 513 insertions(+)
+> > > =A0create mode 100644 security/keys/compat_ecdh.c
+> > > =A0create mode 100644 security/keys/ecdh.c
+> >=20
+> > Nacked-by: Eric Biggers <ebiggers@google.com>
+> >=20
+> > The existing KEYCTL_PKEY_*, KEYCTL_DH_COMPUTE, and AF_ALG are causing
+> > enough problems.=A0 We do not need any more UAPIs like this.=A0 They ar=
+e
+> > hard to maintain, break often, not properly documented, increase the
+> > kernel's attack surface, and what they do is better done in
+> > userspace.
+>=20
+> Actually that's not entirely true.  There is a use case for keys which
+> is where you'd like to harden unwrapped key handling and don't have the
+> ability to use a device.  The kernel provides a harder exfiltration
+> environment than user space, so there is a use case for getting the
+> kernel to handle operations on unwrapped keys for the protection it
+> affords the crytpographic key material.
+>=20
+> For instance there are people who use the kernel keyring to replace
+> ssh-agent and thus *reduce* the attack surface they have for storing
+> ssh keys:
+>=20
+> https://blog.cloudflare.com/the-linux-kernel-key-retention-service-and-wh=
+y-you-should-use-it-in-your-next-application/
+>=20
+> The same thing could be done with gpg keys or the gnome keyring.
 
-So I haven't pulled this, because the subject line (and tag name)
-talks about tpmdd, but this is clearly about key handling.
+First, that blog post never actually said that the "replace ssh-agent with
+kernel keyrings" idea was deployed.  It sounds like a proof of concept idea=
+ that
+someone thought was interesting and decided to blog about.  Upstream OpenSS=
+H has
+no support for Linux keyrings.  It seems unlikely it would get added, espec=
+ially
+given the OpenSSH developers' healthy skepticism of using broken Linux-isms=
+.
+You're welcome to bring it up on openssh-unix-dev and get their buy-in firs=
+t.
 
-Also, the actual contents seem to be very much an "update", not fixes.
-And it doesn't seem to be an actual improvement, in how it now does
-things from interrupts. That seems to be going backward rather than
-forward.
+Second, as mentioned by the blog post, the kernel also does not support pri=
+vate
+keys in the default OpenSSH format.  That sort of thing is an example of th=
+e
+fundamental problem with trying to make the kernel support every cryptograp=
+hic
+protocol and format in existence.  Userspace simply has much more flexibili=
+ty to
+implement whatever it happens to need.
 
-            Linus
+Third, ssh-agent is already a separate process, and like any other process =
+the
+kernel enforces isolation of its address space.  The potential loopholes ar=
+e
+ptrace and coredumps, which ssh-agent already disables, except for ptrace b=
+y
+root which it can't do alone, but the system administrator can do that by
+setting the ptrace_scope sysctl to 3 or by using SELinux.
+
+Amusingly, the existing KEYCTL_DH_* APIs, and the KEYCTL_ECDH_* APIs propos=
+ed by
+this patch, only operate on user keys that the process has READ access to. =
+ This
+means that the keys can be trivially extracted by a shell script running in=
+ your
+user session.  That's *less* secure than using an isolated process...
+
+That's not to mention that merging this will likely add vulnerabilities
+reachable by unprivileged users, just as the original KEYCTL_DH_* did.  I h=
+ad to
+fix some of them last time around (e.g. commits 12d41a023efb, bbe240454d86,
+3619dec5103d, 1d9ddde12e3c, ccd9888f14a8, 199512b1234f).  I don't really fe=
+el
+like doing it again. (Wait, was this supposed to *improve* security?)
+
+> > Please refer to the recent thread
+> > https://lore.kernel.org/linux-crypto/CZSHRUIJ4RKL.34T4EASV5DNJM@matfyz.=
+cz/T/#u
+> > where these issues were discussed in detail.
+>=20
+> This thread was talking about using the kernel for handling the
+> algorithms themselves (which is probably best done in userspace) and
+> didn't address using the kernel to harden the key protection
+> environment.
+
+This patch is about using the kernel to handle a class of algorithm,
+Elliptic-Curve Diffie-Hellman.  Which specific algorithm in that class (i.e=
+.
+which elliptic curve), who knows.  Just like the existing APIs like this, i=
+t's
+undocumented which algorithm(s) are actually supported.
+
+- Eric
 
 
