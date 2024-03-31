@@ -1,109 +1,143 @@
-Return-Path: <keyrings+bounces-1025-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1026-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A576F892EB2
-	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 07:57:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 736F68931A3
+	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 15:01:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D44822821D9
-	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 05:57:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E845BB21194
+	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 13:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14AB63D5;
-	Sun, 31 Mar 2024 05:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4404A144D27;
+	Sun, 31 Mar 2024 13:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oNclNJZg"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="La0soKW7";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="LIaNafrJ"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16751FA5;
-	Sun, 31 Mar 2024 05:57:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB92144D13;
+	Sun, 31 Mar 2024 13:01:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711864632; cv=none; b=ZW38HUr/o+jkA9B2bu3be2rcYegaVKJ7VRduTVbk8apTeqHnOWVh/j/XtOh8bmN/YLRAnBIYs0tTHYJQTs4gj2bZyve4Oo1xhWgfmaDrkCeu/JI6W/omwCDTJtu6+nUnLYyzHT/SdapbZTyNekRvVy3nuMW2cYz5jOYgshHxm4Y=
+	t=1711890091; cv=none; b=WvPUzngRrOueRnV2Pefx7mhU0th7omOAAc1MJxjuJSUf32+EJx8TepY8Fc8CQsxJGE2OazLxCc6eKXZRETcm9d9izt7jpXVnayY8hFQrEQ3zeo4znXKJXTe3Qmt7XkNH2cjMZsu66ouqeZT54uGco7AYaN50ebJJGlVK2yF84SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711864632; c=relaxed/simple;
-	bh=7w6jg6OmB2qnyRYmKgtEEoQj+UdPBhumHjjeDUqYjNY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=rB5TJDhtssy3jucUc+g9QkgXF1MRY+EmSJZosQfSjeOpsqmUTzbPscwawV1mBoF+8IxvKsPPIg6a5lg6TvSO8Z3C9g6/QD1PbsFYnI4vz/SbK/NTFzoj0WkkPmv/1T247/JWTwOWLoAat/O2IIZ72zx3omIbuzphRhkUaML4q9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oNclNJZg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B460C433C7;
-	Sun, 31 Mar 2024 05:57:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711864632;
-	bh=7w6jg6OmB2qnyRYmKgtEEoQj+UdPBhumHjjeDUqYjNY=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=oNclNJZgbWqAMSgkEDQHSPMGSQ3TqFZHv2rvBYS5H5kRsUYKc+7fR5zCcSn9YKwLl
-	 Zn7aWKzFzNUwOR9yQS+yW57zFcJHE6hHCuBibUA4kluUTjhMH0kSjKBX+CO7pby76a
-	 BnmnasM/Lr0JgqpAuMX1SSgsuxpRbI5KKCi0qf5FQ+69nxHzNEW5kGTG2R2fybrzE6
-	 iMf8UzGu42xxw+IV3+TbbQbjkuU2UdfHlAaLXcwKqufWke9CnDo9zW5JtAzoJ54G+Q
-	 yxHYw7w65f4pE8ObZg/iXeyTMYX9SHimMlNYvwF1GdzcHuVtIGqZ1FGney2qBl8+QZ
-	 0SKLvwis3CS4g==
+	s=arc-20240116; t=1711890091; c=relaxed/simple;
+	bh=sDzCySBGc78kD08nnzcKeQyX2gLEvAv/rzqBNe7+CzE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JAUKzYw/ASKD64KJvM7Xd0b5VY226JCVMy8cTgvY5DPDVHki8JuJuIpSDniIMzQ2nQnyZYPGtMx6sQnr7lGP9wUa0gWccOerz7z5lCeiK5Vp/mosWK7T9MjxDT0fH5qF3xlyYNm9U3xgFtHlYW17DPut+uMZyi2Syu4nOL6ZmLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=La0soKW7; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=LIaNafrJ; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1711890086;
+	bh=sDzCySBGc78kD08nnzcKeQyX2gLEvAv/rzqBNe7+CzE=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=La0soKW7NsRuUh/rimdDOLzAak0a7z/Qw3VmW2h3qshwBezBO5N3vU/HF9TuASSWc
+	 0qt0SsBU/ZTMqwKWrILa0XyIzUDlKvvMNKcysxp8NWXhobpVolWbTiYflaiOrH0m0C
+	 47Tzc2C90RKkz2eV4O1rxIxzuAkw2yv48odeT06E=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 73D90128681D;
+	Sun, 31 Mar 2024 09:01:26 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id AfUzaoxOPFxH; Sun, 31 Mar 2024 09:01:26 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1711890085;
+	bh=sDzCySBGc78kD08nnzcKeQyX2gLEvAv/rzqBNe7+CzE=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=LIaNafrJKwQC0PlYtqfoiToK8eAAYjZpQpkUkk1ND3I5lmO3goivsbWpHTLCHbvPX
+	 w7fy0842lTmLlXDwWGLvY5ZQRMnkraJJcVByghLoNujPf+1fHAuB5xXh6FTMV4STZD
+	 1XLB/XMN63MHZOyGAlVmsFDA4kzSgKOx1V4MjlpY=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 1659512867AB;
+	Sun, 31 Mar 2024 09:01:25 -0400 (EDT)
+Message-ID: <fbc4bb78b39ab5b088b215cf854487022e59bbb4.camel@HansenPartnership.com>
+Subject: Re: [PATCH] KEYS: Add ECDH support
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: Zhang Yiqun <zhangyiqun@phytium.com.cn>, dhowells@redhat.com, 
+	jarkko@kernel.org, corbet@lwn.net, keyrings@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-crypto@vger.kernel.org
+Date: Sun, 31 Mar 2024 09:01:22 -0400
+In-Reply-To: <20240331004844.GA104623@sol.localdomain>
+References: <20240330065506.3146-1-zhangyiqun@phytium.com.cn>
+	 <20240330070436.GA2116@sol.localdomain>
+	 <087bbfcf95c9014ee8f87d482773244f0833b892.camel@HansenPartnership.com>
+	 <20240331004844.GA104623@sol.localdomain>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 31 Mar 2024 08:57:08 +0300
-Message-Id: <D07PD5NTOXSQ.30D5V19O6KMQS@kernel.org>
-Subject: Re: [GIT PULL] tpmdd changes for v6.9-rc2
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Linus Torvalds" <torvalds@linux-foundation.org>, <dhowells@redhat.com>
-Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
- "David Howells" <dhowells@redhat.com>, <linux-integrity@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <keyrings@vger.kernel.org>
-X-Mailer: aerc 0.17.0
-References: <20240326143838.15076-1-jarkko@kernel.org>
- <CAHk-=wgNpPQFJyLe5dwEVH66ubviuiwM1_tjbyzQv4BytPw7dQ@mail.gmail.com>
-In-Reply-To: <CAHk-=wgNpPQFJyLe5dwEVH66ubviuiwM1_tjbyzQv4BytPw7dQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Sun Mar 31, 2024 at 12:32 AM EET, Linus Torvalds wrote:
-> On Tue, 26 Mar 2024 at 07:38, Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> >
-> >   git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git =
-tags/tpmdd-v6.9-rc2
->
-> So I haven't pulled this, because the subject line (and tag name)
-> talks about tpmdd, but this is clearly about key handling.
+On Sat, 2024-03-30 at 17:48 -0700, Eric Biggers wrote:
+> On Sat, Mar 30, 2024 at 09:09:51AM -0400, James Bottomley wrote:
+[...]
+> > For instance there are people who use the kernel keyring to replace
+> > ssh-agent and thus *reduce* the attack surface they have for
+> > storing
+> > ssh keys:
+> > 
+> > https://blog.cloudflare.com/the-linux-kernel-key-retention-service-and-why-you-should-use-it-in-your-next-application/
+> > 
+> > The same thing could be done with gpg keys or the gnome keyring.
+> 
+> First, that blog post never actually said that the "replace ssh-agent
+> with kernel keyrings" idea was deployed.  It sounds like a proof of
+> concept idea that someone thought was interesting and decided to blog
+> about.  Upstream OpenSSH has no support for Linux keyrings.
 
-OK, point taken and it is evolutionary issue really but definitely
-needs to be fixed.
+The openssh community is incredibly resistant to out of house
+innovation.  It has no support for engine or provider keys, for TPM
+keys, or for that systemd start patch xz just exploited ...
 
-I review and test most of the stuff that goes to keyring but other
-than trusted keys, I usually pick only few patches every now and
-then to my tree.
+>   It seems unlikely it would get added, especially given the OpenSSH
+> developers' healthy skepticism of using broken Linux-isms.
+> You're welcome to bring it up on openssh-unix-dev and get their buy-
+> in first.
 
-So obviously we need better grounds for putting this content together.
-So probably fastest path to that would be if e.g. David just opens me
-push rights to his tree, and then i push the stuff that makes sense
-to me to some branch in that tree.
+I also didn't say just openssh.  You picked the one you apparently know
+hardly ever accepts anyone else's ideas.  I don't disagree that finding
+implementors is reasonable ... I just wouldn't pick openssh as the
+first upstream target.
 
-In other words: David would take care of sending the final PR.
+> Second, as mentioned by the blog post, the kernel also does not
+> support private keys in the default OpenSSH format.  That sort of
+> thing is an example of the fundamental problem with trying to make
+> the kernel support every cryptographic protocol and format in
+> existence.  Userspace simply has much more flexibility to implement
+> whatever it happens to need.
 
-As per trusted keys, should I start to make a separate "trusted keys
-PR" with its own separate tag? It's fine with me but I just need to
-know how to move forward. E.g. now there is one new hardware backend
-upcoming for trusted keys so now it is good to realig if any need.
+That's a complete red herring.  You don't need the kernel keyrings to
+support every format, you just need a user space converter to import to
+the kernel keyring format.  Every device or token that can replace key
+handling has their own internal format and they all come with importers
+that do conversion.
 
+> Third, ssh-agent is already a separate process, and like any other
+> process the kernel enforces isolation of its address space.  The
+> potential loopholes are ptrace and coredumps, which ssh-agent already
+> disables, except for ptrace by root which it can't do alone, but the
+> system administrator can do that by setting the ptrace_scope sysctl
+> to 3 or by using SELinux.
 
+Well, a) this doesn't survive privilege escalation and b) I don't think
+many people would buy into the notion that we should remove security
+functions from the kernel and give them to userspace daemons because
+it's safer.
 
+James
 
->
-> Also, the actual contents seem to be very much an "update", not fixes.
-> And it doesn't seem to be an actual improvement, in how it now does
-> things from interrupts. That seems to be going backward rather than
-> forward.
-
-That's fine and can cope with this np but yeah the first paragraph is
-something we need to tackle now :-)
-
->
->             Linus
-
-BR, Jarkko
 
