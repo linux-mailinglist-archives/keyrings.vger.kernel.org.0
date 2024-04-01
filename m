@@ -1,117 +1,120 @@
-Return-Path: <keyrings+bounces-1037-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1038-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06FFF89352C
-	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 19:24:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADEFD8937BA
+	for <lists+keyrings@lfdr.de>; Mon,  1 Apr 2024 05:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6594287AC5
-	for <lists+keyrings@lfdr.de>; Sun, 31 Mar 2024 17:24:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 110CD2819D4
+	for <lists+keyrings@lfdr.de>; Mon,  1 Apr 2024 03:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80ED145B11;
-	Sun, 31 Mar 2024 17:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE1B522E;
+	Mon,  1 Apr 2024 03:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="NfXBnRD8"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Lq6Z0jMS"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4AB1F5F5
-	for <keyrings@vger.kernel.org>; Sun, 31 Mar 2024 17:01:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C01D138C
+	for <keyrings@vger.kernel.org>; Mon,  1 Apr 2024 03:22:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711904491; cv=none; b=WkhOyeXFdj+2m6PfY/7OBLZeQbePGmNiQvzK3gGpz7hrI+I3NWmibRykyJg8RWanAWlrwG7PguNk69AZpkTDA+s2zKxz7UoOFDrgVq/y5hPOQRIL1OXd4AVBsxX67n4Prn8R0T1dKhgPxIQ+JZ5o5xrahnd/m07voOgoEHsA+pU=
+	t=1711941734; cv=none; b=HwkR3W4X92DqmdaUFEHSf1ImTfYiNJ69SK53Xu04i0IWUk+oxXdOWIlKfqCK13M3SutFMqUsVdmcoK0vDVUgil0jSQdzNkwHZkBb6qGKjVPSlEdh2oLLPF70zI3ipxD3Y0LHD+A9MRttm4TfQ2zE2y4+Vk6bV6rHj6D8Ww/Kk/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711904491; c=relaxed/simple;
-	bh=6uRCnk6Hmq5Dim0u91a9tFMVKCUDB8cTj8Vol5lOhkg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nCKHsMJ/uhtV3GQ0jZJB6mi12TkslZoA6oMocsXaqZIDoSe4u19AYMS86CA6dCtGmkcuKpJ8fITDlG2Uh0OLLBk1vpVvnaoFBymhjtY82kf2cM0+UnB7PHn/PObDtEdGEqoh3L9Mz1q4tfEF6YwrGliCj8LHSoJzeEJaAzfexUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=NfXBnRD8; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a468226e135so403283266b.0
-        for <keyrings@vger.kernel.org>; Sun, 31 Mar 2024 10:01:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1711904488; x=1712509288; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=/YqF1343zKRwGc00uFMCul0bKtQh7G+6n9UiA2naOCg=;
-        b=NfXBnRD83dnuv9Lw6DneKVlxP/L3r4Uy1eYwMMS7DDS5+TddwFOB6cgO54MlWBl4QH
-         o7VEnclPwwxQYbjR23Bj8vHZ5r+ZKjpWENdp7+G+Ut+Qu2oaLZDqbwIhJIponwEJSVTQ
-         E+R+RKQLP8jJMIWJkoDBA6eTO6gWKjElSBJwY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711904488; x=1712509288;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/YqF1343zKRwGc00uFMCul0bKtQh7G+6n9UiA2naOCg=;
-        b=CefV+NtUooia2YkIVmda+EwWX9tT9P6OJP/HbmVxDsy0OGUHftZPFLGrsqhc08oKOS
-         PjmqOnf9hJmk4k4ylRw/8fxVUCcpao5lwvsPrigfSAiJY3IMFRpC9auHkx2ci+4eX1ei
-         qy/rKk0+WT5dgbmJ5qgG4ZsFwA54boftWRCozfYwBY+tqV1dB1fz1LdZy0y6kGVqrjCE
-         fZVCFZG0SlKGJ0r/OOTuMHbshfjrAkzodDUsxSUeMgFo/9iwO+0+WCXIh3wtpTb2SF5+
-         gchkuYIcrxpefmUYyqIJ00RJF4Y8kJxykNmNkhIh5LUK99+qcwXgFizhy65hrUcnNRpi
-         SdPA==
-X-Forwarded-Encrypted: i=1; AJvYcCVw6Y/mVHVlYVOB1jcJxfTW8gQwJ3SWvMeMZCeDZcYNeARFBMfEgMBksUdFCl/T6AF/dZ+UduJ+Vr+qDpXXCscVUqJgh2nf3pw=
-X-Gm-Message-State: AOJu0Yw5vKMbCL5y7hFErjvUFjP/3G4NhKLFjKDxYDdX/sujSTbHVWPD
-	pP9jCzkSxig2Iq4NyEzzTEQ2F2pjh3KfB0+8db9D7y/76OTuMLPeDCRyoxj6VDO0YNkTyV0QByr
-	jxfj0iA==
-X-Google-Smtp-Source: AGHT+IHJ1pr1BmP3u1kYtn4h+zBAQmwPaVAJp830mmXJ+hW/VwqOKr2lWadkMBMLS+B15r/g6vLXpw==
-X-Received: by 2002:a17:906:474a:b0:a3f:1b49:c92b with SMTP id j10-20020a170906474a00b00a3f1b49c92bmr5115639ejs.48.1711904488130;
-        Sun, 31 Mar 2024 10:01:28 -0700 (PDT)
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com. [209.85.218.52])
-        by smtp.gmail.com with ESMTPSA id ds17-20020a170907725100b00a471b5b25b9sm4341555ejc.127.2024.03.31.10.01.27
-        for <keyrings@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 31 Mar 2024 10:01:27 -0700 (PDT)
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a468226e135so403281766b.0
-        for <keyrings@vger.kernel.org>; Sun, 31 Mar 2024 10:01:27 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXe6bhWmkvrxls8qLJINJGjLmkWObu27m91jmCCaE7YutiLJeAUprL5zQcY+L/HlJ5hpORicyPjajmBqXexSXDFnw75Km66hxQ=
-X-Received: by 2002:a17:907:31ca:b0:a4e:44b7:50ef with SMTP id
- xf10-20020a17090731ca00b00a4e44b750efmr3944048ejb.9.1711904486771; Sun, 31
- Mar 2024 10:01:26 -0700 (PDT)
+	s=arc-20240116; t=1711941734; c=relaxed/simple;
+	bh=bFZG8fdwOXmY5gp/Ygvlq6Ww6X3u42PHaZcD+BB2dRk=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=G5RiaaAL/9jY35762iCDxnxx/AdnkW4n4bwtTJWz8zigdp5OCKSeiICvgaQYwAIJKrdnyl0Tc0mNVZgT/NrKxR/vOz7fsXKhCgf9cmLIuUH7MWHmBHw8zUoTroAOCLH5Ipi26vEiVyfsyb/9E57ccH6utyMz/LtmHIDqrO3E5M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Lq6Z0jMS; arc=none smtp.client-ip=95.215.58.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1711941730;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bFZG8fdwOXmY5gp/Ygvlq6Ww6X3u42PHaZcD+BB2dRk=;
+	b=Lq6Z0jMSLgfpkaXPiKGWrriY+Gir/Xdh6UbGT4GOVc3DljvxjojyAz/WMXSFeg72CkUJox
+	Ryhzo98vQSuKrUnjbCYI1z1BXBJSyb0ixueDHg/Sbn+FM9pMnRQJEeyycz/xoIV6NoULX4
+	xon7jCh0byFYcLVQ0RihpPUJD9jS87E=
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240326143838.15076-1-jarkko@kernel.org> <CAHk-=wgNpPQFJyLe5dwEVH66ubviuiwM1_tjbyzQv4BytPw7dQ@mail.gmail.com>
- <D07PD5NTOXSQ.30D5V19O6KMQS@kernel.org>
-In-Reply-To: <D07PD5NTOXSQ.30D5V19O6KMQS@kernel.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sun, 31 Mar 2024 10:01:10 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wi-VWatwU5Gi6n74LF66dRWCo4dUozwj_DwTBRO-wDFcA@mail.gmail.com>
-Message-ID: <CAHk-=wi-VWatwU5Gi6n74LF66dRWCo4dUozwj_DwTBRO-wDFcA@mail.gmail.com>
-Subject: Re: [GIT PULL] tpmdd changes for v6.9-rc2
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: dhowells@redhat.com, Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	keyrings@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Subject: Re: [PATCH 1/7] memory: Remove the now superfluous sentinel element
+ from ctl_table array
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20240328-jag-sysctl_remset_misc-v1-1-47c1463b3af2@samsung.com>
+Date: Mon, 1 Apr 2024 11:21:25 +0800
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <naoya.horiguchi@nec.com>,
+ John Johansen <john.johansen@canonical.com>,
+ Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>,
+ David Howells <dhowells@redhat.com>,
+ Jarkko Sakkinen <jarkko@kernel.org>,
+ Kees Cook <keescook@chromium.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>,
+ Jens Axboe <axboe@kernel.dk>,
+ Pavel Begunkov <asml.silence@gmail.com>,
+ Atish Patra <atishp@atishpatra.org>,
+ Anup Patel <anup@brainfault.org>,
+ Will Deacon <will@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>,
+ Luis Chamberlain <mcgrof@kernel.org>,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org,
+ apparmor@lists.ubuntu.com,
+ linux-security-module@vger.kernel.org,
+ keyrings@vger.kernel.org,
+ linux-crypto@vger.kernel.org,
+ io-uring@vger.kernel.org,
+ linux-riscv@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <8E19B519-9035-42E0-92DC-7C21471543D8@linux.dev>
+References: <20240328-jag-sysctl_remset_misc-v1-0-47c1463b3af2@samsung.com>
+ <20240328-jag-sysctl_remset_misc-v1-1-47c1463b3af2@samsung.com>
+To: j.granados@samsung.com
+X-Migadu-Flow: FLOW_OUT
 
-On Sat, 30 Mar 2024 at 22:57, Jarkko Sakkinen <jarkko@kernel.org> wrote:
->
-> OK, point taken and it is evolutionary issue really but definitely
-> needs to be fixed.
->
-> I review and test most of the stuff that goes to keyring but other
-> than trusted keys, I usually pick only few patches every now and
-> then to my tree.
 
-It's perfectly fine if you send me key updates - you're listed as
-maintainer etc, that's not a problem.
 
-But when I get a tag name that says "tpmdd" and a subject that says
-"tpmdd", I'm noty expecting to then see key updates in the pull.
+> On Mar 28, 2024, at 23:57, Joel Granados via B4 Relay =
+<devnull+j.granados.samsung.com@kernel.org> wrote:
+>=20
+> From: Joel Granados <j.granados@samsung.com>
+>=20
+> This commit comes at the tail end of a greater effort to remove the
+> empty elements at the end of the ctl_table arrays (sentinels) which =
+will
+> reduce the overall build time size of the kernel and run time memory
+> bloat by ~64 bytes per sentinel (further information Link :
+> =
+https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/)
+>=20
+> Remove sentinel from all files under mm/ that register a sysctl table.
+>=20
+> Signed-off-by: Joel Granados <j.granados@samsung.com>
 
-So that part of my issue was literally just that your subject line and
-tag name didn't match the contents, and that just makes me go "there's
-something wrong here".
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
 
-So keys coming through your tree is fine per se, it's just that I want
-the subject line etc to actually make sense.
+THanks.
 
-                    Linus
 
