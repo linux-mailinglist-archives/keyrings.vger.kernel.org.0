@@ -1,195 +1,139 @@
-Return-Path: <keyrings+bounces-1039-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1040-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD3808937D3
-	for <lists+keyrings@lfdr.de>; Mon,  1 Apr 2024 05:41:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB00893B29
+	for <lists+keyrings@lfdr.de>; Mon,  1 Apr 2024 14:57:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D86E31C208F4
-	for <lists+keyrings@lfdr.de>; Mon,  1 Apr 2024 03:41:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 450101C20E06
+	for <lists+keyrings@lfdr.de>; Mon,  1 Apr 2024 12:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0DBA522E;
-	Mon,  1 Apr 2024 03:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B963E485;
+	Mon,  1 Apr 2024 12:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nNWxs89d"
 X-Original-To: keyrings@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985351362;
-	Mon,  1 Apr 2024 03:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA6C21A0C;
+	Mon,  1 Apr 2024 12:57:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711942883; cv=none; b=cBdL2RuEzA/koJRdUPuV6T2xqU70H2ACc/v2somBMvRqirbeRVbyER34qTexEsgTcT5fgO1Whr177Sm7mJ5gsUcKRb7jbnMOauzNAlFqDioSlqAlnkiTcYS2Pko5LNE+SsD46o3rcQmYD5RrI5M1pVE8O9jYiNhiuMvdDLxtUac=
+	t=1711976246; cv=none; b=nmazU7stpQB5GJqxSiJLAPtcmqyIfnqJoKlRBpg6kxDnoTDecynT9yE6xMClIH9vAbjrWghWB4EFJWoBibmIs2QjAP3LmoMUJ/6N9O+vP+iEtJp7zxsfctNgHrR6oFWM1ErLwhB0KYZ0YAT1EjlpKlGnE0klAh1mTqoAmFsxAtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711942883; c=relaxed/simple;
-	bh=Y+C6YOutpzawaB9+UJw3qAWVjD/gimExt0e/uFbsI/M=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=mY7Zk+TlqPu+lrZp7JFB4o4xRLuTe0T0l5lwKEyf/RlZzxfTwzOgGUlk8z4t+NoeFia2/2U+Fo20XeD6iK7KPJdITlUistow2/yNUhTmp+S6Q2SNpTnNIHVbMnJEUrRSLoNWXULJForu/DemB62v3kznoGkHCly12w2wz5N6ENM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4V7Gvt1Wpsz1xtQy;
-	Mon,  1 Apr 2024 11:39:06 +0800 (CST)
-Received: from canpemm500002.china.huawei.com (unknown [7.192.104.244])
-	by mail.maildlp.com (Postfix) with ESMTPS id C7BCE1A016F;
-	Mon,  1 Apr 2024 11:41:11 +0800 (CST)
-Received: from [10.173.135.154] (10.173.135.154) by
- canpemm500002.china.huawei.com (7.192.104.244) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 1 Apr 2024 11:41:10 +0800
-Subject: Re: [PATCH 1/7] memory: Remove the now superfluous sentinel element
- from ctl_table array
-To: <j.granados@samsung.com>
-CC: Luis Chamberlain <mcgrof@kernel.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<apparmor@lists.ubuntu.com>, <linux-security-module@vger.kernel.org>,
-	<keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-	<io-uring@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
-	<linux-arm-kernel@lists.infradead.org>, Andrew Morton
-	<akpm@linux-foundation.org>, Muchun Song <muchun.song@linux.dev>, Naoya
- Horiguchi <naoya.horiguchi@nec.com>, John Johansen
-	<john.johansen@canonical.com>, Paul Moore <paul@paul-moore.com>, James Morris
-	<jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, David Howells
-	<dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>, Kees Cook
-	<keescook@chromium.org>, Herbert Xu <herbert@gondor.apana.org.au>, "David S.
- Miller" <davem@davemloft.net>, Jens Axboe <axboe@kernel.dk>, Pavel Begunkov
-	<asml.silence@gmail.com>, Atish Patra <atishp@atishpatra.org>, Anup Patel
-	<anup@brainfault.org>, Will Deacon <will@kernel.org>, Mark Rutland
-	<mark.rutland@arm.com>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
- Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>
-References: <20240328-jag-sysctl_remset_misc-v1-0-47c1463b3af2@samsung.com>
- <20240328-jag-sysctl_remset_misc-v1-1-47c1463b3af2@samsung.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <0e35e88d-3ea1-4f62-77e4-eb12e9f51583@huawei.com>
-Date: Mon, 1 Apr 2024 11:41:09 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	s=arc-20240116; t=1711976246; c=relaxed/simple;
+	bh=gpOFSkLnqzB3ioyi0XC96FzcBU/X4d1xrYS8Qc2h4Jw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=TFAgJLXo6O7Dho3q3ysEv41ZTW7oEeOGVOEUFCNrXkHbCn8Ywz9LQpi1Omkub9KHpAJKY/tq49hqZczTDMCJQNmpaFnCWnacb6kraNfPqb8KLf6cPvVM6mrggMJWzcKjPPsm4seHHwOox1GsTY9ffHg3zMqI8QBghG87BedZdOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nNWxs89d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF95DC433F1;
+	Mon,  1 Apr 2024 12:57:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711976246;
+	bh=gpOFSkLnqzB3ioyi0XC96FzcBU/X4d1xrYS8Qc2h4Jw=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=nNWxs89dn6spYlKmu52vsv4hTKtSyvEHlnp33uNmkC1SsxjK3zohuQFM9d1R5aEsV
+	 GMhu+UFbjKV5XHJvFzngiDD3zvHxrbEh/nJd4G6CSTpqZuqXtO3uNWnTNNKYseqdeP
+	 JZivGVmjRnh8B1CB33K5Xsrqc3/tvLCz/WEEfOnjEkGSN48tGhTImcvU+LWRjZQW68
+	 4M6wDr8lQ/rJVhQe22AYmZjryKhBPxaj56HXIAAXLh7bmbkQwsZboyoG94XGqpw2i/
+	 qRKQ45ggK2RFMa5uibmrTaRFi9405YXfeIsztAYnPweq2LIAeXDyalew9jnO22LeU+
+	 EPwWxS/BXxx2g==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <20240328-jag-sysctl_remset_misc-v1-1-47c1463b3af2@samsung.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- canpemm500002.china.huawei.com (7.192.104.244)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 01 Apr 2024 15:57:22 +0300
+Message-Id: <D08SXGNWN4PG.8KW3OIV7WTIK@kernel.org>
+Subject: Re: [PATCH v7 12/21] tpm: Add NULL primary creation
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: =?utf-8?q?Gabr=C3=ADel_Arth=C3=BAr_P=C3=A9tursson?= <gabriel@system.is>,
+ "James Bottomley" <James.Bottomley@HansenPartnership.com>,
+ <linux-integrity@vger.kernel.org>
+Cc: <keyrings@vger.kernel.org>, "Ard Biesheuvel" <ardb@kernel.org>
+X-Mailer: aerc 0.17.0
+References: <20240213171334.30479-1-James.Bottomley@HansenPartnership.com>
+ <20240213171334.30479-13-James.Bottomley@HansenPartnership.com>
+ <05c7d10b23e74269efd720eedbb1773931b0ad46.camel@system.is>
+ <D08273C2C8HD.2QT57ZPAWPS9H@kernel.org>
+ <ea2a3a9a2bea2f1af5565ed32e9584caee2fbecf.camel@system.is>
+In-Reply-To: <ea2a3a9a2bea2f1af5565ed32e9584caee2fbecf.camel@system.is>
 
-On 2024/3/28 23:57, Joel Granados via B4 Relay wrote:
-> From: Joel Granados <j.granados@samsung.com>
-> 
-> This commit comes at the tail end of a greater effort to remove the
-> empty elements at the end of the ctl_table arrays (sentinels) which will
-> reduce the overall build time size of the kernel and run time memory
-> bloat by ~64 bytes per sentinel (further information Link :
-> https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/)
-> 
-> Remove sentinel from all files under mm/ that register a sysctl table.
-> 
-> Signed-off-by: Joel Granados <j.granados@samsung.com>
+On Sun Mar 31, 2024 at 7:52 PM EEST, Gabr=C3=ADel Arth=C3=BAr P=C3=A9tursso=
+n wrote:
+> On Sun, 2024-03-31 at 19:00 +0300, Jarkko Sakkinen wrote:
+> > Null key is not provisioned, what is the motivation here?
+>
+> The terms here, to create a key and to provision a key, are almost
+> interchangeable. The latter merely implies the additional step of
+> saving the key to NVRAM and making it available through a persistent
+> handle.
+>
+> The template, aside from defining what kind of key we want to create,
+> is fed into the TPM's KDF used to generate the key. Different template,
+> different key.
+>
+> Userspace will want to recreate the same key the kernel has, thus must
+> use the same template. Which template shall be used then?
 
-Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
+I don't disagree with you, nor did when sending the first response :-)
 
-Thanks.
+Downstream seems to break that guide tho. E.g. Ubuntu uses 0x80100001
+NV index for storage key unsealing the key slot with PCR values. I did
+some time ago a quick VM install of Ubuntu just to see how it uses TPM2.
 
-> ---
->  mm/compaction.c      | 1 -
->  mm/hugetlb.c         | 1 -
->  mm/hugetlb_vmemmap.c | 1 -
->  mm/memory-failure.c  | 1 -
->  mm/oom_kill.c        | 1 -
->  mm/page-writeback.c  | 1 -
->  mm/page_alloc.c      | 1 -
->  7 files changed, 7 deletions(-)
-> 
-> diff --git a/mm/compaction.c b/mm/compaction.c
-> index 807b58e6eb68..e8a047afca22 100644
-> --- a/mm/compaction.c
-> +++ b/mm/compaction.c
-> @@ -3345,7 +3345,6 @@ static struct ctl_table vm_compaction[] = {
->  		.extra1		= SYSCTL_ZERO,
->  		.extra2		= SYSCTL_ONE,
->  	},
-> -	{ }
->  };
->  
->  static int __init kcompactd_init(void)
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 23ef240ba48a..7ac5240a197d 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -5045,7 +5045,6 @@ static struct ctl_table hugetlb_table[] = {
->  		.mode		= 0644,
->  		.proc_handler	= hugetlb_overcommit_handler,
->  	},
-> -	{ }
->  };
->  
->  static void hugetlb_sysctl_init(void)
-> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-> index da177e49d956..b9a55322e52c 100644
-> --- a/mm/hugetlb_vmemmap.c
-> +++ b/mm/hugetlb_vmemmap.c
-> @@ -679,7 +679,6 @@ static struct ctl_table hugetlb_vmemmap_sysctls[] = {
->  		.mode		= 0644,
->  		.proc_handler	= proc_dobool,
->  	},
-> -	{ }
->  };
->  
->  static int __init hugetlb_vmemmap_init(void)
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index 9349948f1abf..6a112f9ecf91 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -141,7 +141,6 @@ static struct ctl_table memory_failure_table[] = {
->  		.extra1		= SYSCTL_ZERO,
->  		.extra2		= SYSCTL_ONE,
->  	},
-> -	{ }
->  };
->  
->  /*
-> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> index 8d6a207c3c59..4d7a0004df2c 100644
-> --- a/mm/oom_kill.c
-> +++ b/mm/oom_kill.c
-> @@ -724,7 +724,6 @@ static struct ctl_table vm_oom_kill_table[] = {
->  		.mode		= 0644,
->  		.proc_handler	= proc_dointvec,
->  	},
-> -	{}
->  };
->  #endif
->  
-> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> index 3e19b87049db..fba324e1a010 100644
-> --- a/mm/page-writeback.c
-> +++ b/mm/page-writeback.c
-> @@ -2291,7 +2291,6 @@ static struct ctl_table vm_page_writeback_sysctls[] = {
->  		.mode		= 0644,
->  		.proc_handler	= proc_dointvec_jiffies,
->  	},
-> -	{}
->  };
->  #endif
->  
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 14d39f34d336..8b9820620fe3 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -6211,7 +6211,6 @@ static struct ctl_table page_alloc_sysctl_table[] = {
->  		.extra2		= SYSCTL_ONE_HUNDRED,
->  	},
->  #endif
-> -	{}
->  };
->  
->  void __init page_alloc_sysctl_init(void)
-> 
+I got:
 
+$ sudo tpm2_getcap handles-persistent
+- 0x81000001
+- 0x81010001
+
+0x81010001 is according to provisioning guide EK handle but Ubuntu uses
+it for completely different purpose.
+
+What I would like to understand when it comes to the provisioning guide
+is how important it is in reality? I have no information at this point
+is e.g. systemd-boot going to follow it but would like to know.
+
+
+>
+> +	/*
+> +	 * create the template.  Note: in order for userspace to
+> +	 * verify the security of the system, it will have to create
+> +	 * and certify this NULL primary, meaning all the template
+> +	 * parameters will have to be identical, so conform exactly to
+> +	 * the TCG TPM v2.0 Provisioning Guidance for the SRK ECC
+> +	 * key
+> +	 */
+>
+> The TPM specifications have a standardized set of templates for the
+> Endorsement Keys, and a recommendation on a template to
+> create/provision the shared SRK.
+>
+> Why not use that one then, above something else? We are required to use
+> a template for key generation after all, might as well pick the one
+> most fitting from the standards.
+>
+> That's at least my understanding of the author's motivation.
+
+Yeah, not necessarily disagree with this or I'm somewhat aligned to this
+view. Ubuntu's architecture confuses me so would like to understand the
+magnitude of the provisioning guide.
+
+>
+> > So for the time being the patch set is NAK just because we lack
+> > clear definition of done here. I revisit it only when I know how
+> > to test it.
+>
+> I want to note that I'm not affiliated with the patches' author. I'm
+> merely an outside observer who has taken interest in the proposed
+> changes. Wanted to share my thoughts.
+
+BR, Jarkko
 
