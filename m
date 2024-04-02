@@ -1,115 +1,122 @@
-Return-Path: <keyrings+bounces-1046-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1047-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 254F989465B
-	for <lists+keyrings@lfdr.de>; Mon,  1 Apr 2024 23:00:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D38B895C93
+	for <lists+keyrings@lfdr.de>; Tue,  2 Apr 2024 21:30:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8299D28211B
-	for <lists+keyrings@lfdr.de>; Mon,  1 Apr 2024 20:59:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D9AA1F26DEA
+	for <lists+keyrings@lfdr.de>; Tue,  2 Apr 2024 19:30:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0B154746;
-	Mon,  1 Apr 2024 20:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C122E15B96C;
+	Tue,  2 Apr 2024 19:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pq8hvnS2"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="A+ld4brv"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649F8537F7;
-	Mon,  1 Apr 2024 20:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A49D15B964;
+	Tue,  2 Apr 2024 19:30:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712005196; cv=none; b=j95oigWnF6zTTjBYZpqoZRl4NWZ+XLmW6giX2n40iD5tWR/bP6qW5L/WJ+AeHnjzzVDqrHKYaGKi4/iyeM66uDfPt6qgjRV4txrDlXDeBJ1QiPpR5op6jsGm95qeC10EL4lpe3bVRghW3aa0D/N6qMAPpQKJ7Xm/xhjXFszPwvo=
+	t=1712086233; cv=none; b=ujakWtC1X1bQfA5sEMZRsiiCEqjoKk/btVkDvfTiG5ln0E4vIlRA/T43ibZTSAozlAr2l9JloCqSFLnuvkQYEFGVrL+0BxiUSQtnQUrxMcY9F2mOjQtIuFPZoxro6Prqzx7chSAtW8DMVE256h7GCTLQovQUFWS9+TsVyP0eDUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712005196; c=relaxed/simple;
-	bh=YRY64A6rKA9DfDT62fDPRWdJ1EBdYlzRg5MxrAyMg4c=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=ZcTL5EqMB4WcScZCJ2gdkL7w75F16SsSA2GYGlaPVSTKBOKW0FvP2UJ4QDHREmiZPH2tSjJY+IDYgteATDlqWZ3lK1pbDPD00UgxUxqzd1ZZw/BHvzhinRnjJ8gCIdl8Kor3oPg0MGbsfYoY9LRddWb0lvLo3LEQnUHM+8Ywx5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pq8hvnS2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABECC433F1;
-	Mon,  1 Apr 2024 20:59:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712005195;
-	bh=YRY64A6rKA9DfDT62fDPRWdJ1EBdYlzRg5MxrAyMg4c=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=Pq8hvnS2rz/lMa2+Cd7RmvvghSv6Ls/wABEWkm8hDERAnS3LASbOk5G3alT1m0S3w
-	 Wj2U8Zy8VSayiWkIkvoMLyhazjjtGCHBPMIxPviSUTIktv725KkZzWCmhD9b4xskGi
-	 wAnJcRNwOTU3NK+fCTx4f1ulzU1/OgDuti9t/dqa8sfFjjJDhWwLFKpfBydCe6DoTM
-	 KA3OJn4IMuXQ+uT9RPZcLGhKVrdNah/rfL5jdcXTjeQYVMZIc6oLVirAt3WQX7gyiX
-	 A69da/qvJLQRWk4qlaqVCxeDgrGnryD99hagDisc7sTD2Aew6NEsQhZZbjoETagoNJ
-	 wRIltkz4z9URw==
+	s=arc-20240116; t=1712086233; c=relaxed/simple;
+	bh=vRWeZ4wLl6K6OAEg47hnNnPSj1tZrLt7BHdvAHXaxbc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tm7eA6Jjz8DV1tkewR1av0nr4Z+gu/cm5R0Qcpf3LFn+yi/0k4ffKKY2RmHGDrz6aLZWcg9i7e6oxPAGiV+rw0NSrJCCE20VGj7eB3gv5+yaiqlZUHPCGDi8u9un0fFW1t2IJaQ5VLgF9+jLB6RuiaSxB4a3FmbUIAhSwcaREvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=A+ld4brv; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 432JOkmM029203;
+	Tue, 2 Apr 2024 19:30:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=FLKcoy4KD5ED4v2BnCoO/X4hnM4GQdSh3uwIQkosmQ4=;
+ b=A+ld4brvDFVKBuYUMaQbLr801BffuyuZCROWBrGOGkHOjONQjlZ/nt63WMCamee10A/q
+ vHnH8wSHH7yBu7Omkr6UpslcKz2rF+SsAqA5+8CqqZ2xvT4TBlyD8HDaH38OUYP68szW
+ EiMgBcrqZsTRv2qkVsrC5MyZ3XeSamcZ+uqb4xV3zoih8DNbHT06ojh4P2BgmHTgU42c
+ nVM4g0XiTHoUR62DJvo1F/NiW0vcelXnM8P04qQbYdNPIBb4H55DcesfOFI6yklHx1ci
+ HSWDPN/a3MCdWOiBzAx6ABZJihVkI2XZX9Hf8KA19UdxkeBywcG+AlfyddEl2p60k3Ey Ig== 
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x8quy025c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Apr 2024 19:30:19 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 432ISwld008422;
+	Tue, 2 Apr 2024 19:30:18 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3x6w2u0yr7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 02 Apr 2024 19:30:18 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 432JUFes25887408
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 2 Apr 2024 19:30:17 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 452DB58083;
+	Tue,  2 Apr 2024 19:30:15 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E25795805F;
+	Tue,  2 Apr 2024 19:30:14 +0000 (GMT)
+Received: from [9.2.202.85] (unknown [9.2.202.85])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  2 Apr 2024 19:30:14 +0000 (GMT)
+Message-ID: <2fb01074-e7a2-403c-8d46-d2b2323c231e@linux.ibm.com>
+Date: Tue, 2 Apr 2024 15:30:13 -0400
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 01 Apr 2024 23:59:52 +0300
-Message-Id: <D0936VZCIT54.ALWDWWEF33OI@kernel.org>
-Cc: <keyrings@vger.kernel.org>, "Ard Biesheuvel" <ardb@kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v7 12/21] tpm: Add NULL primary creation
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Jarkko Sakkinen" <jarkko@kernel.org>, "James Bottomley"
- <James.Bottomley@HansenPartnership.com>,
- =?utf-8?q?Gabr=C3=ADel_Arth=C3=BAr_P=C3=A9tursson?= <gabriel@system.is>,
- <linux-integrity@vger.kernel.org>
-X-Mailer: aerc 0.17.0
+To: =?UTF-8?B?R2FicsOtZWwgQXJ0aMO6ciBQw6l0dXJzc29u?= <gabriel@system.is>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        James Bottomley <James.Bottomley@HansenPartnership.com>,
+        linux-integrity@vger.kernel.org
+Cc: keyrings@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
 References: <20240213171334.30479-1-James.Bottomley@HansenPartnership.com>
  <20240213171334.30479-13-James.Bottomley@HansenPartnership.com>
  <05c7d10b23e74269efd720eedbb1773931b0ad46.camel@system.is>
- <ad409aa8834c37d7bfe2666e03520dd777afd288.camel@HansenPartnership.com>
- <b60d9761e6afdb483c35949eb4184330f42b9dcc.camel@HansenPartnership.com>
- <D0932R78GETC.BN1J006Y9WAD@kernel.org>
-In-Reply-To: <D0932R78GETC.BN1J006Y9WAD@kernel.org>
+ <D08273C2C8HD.2QT57ZPAWPS9H@kernel.org>
+ <ea2a3a9a2bea2f1af5565ed32e9584caee2fbecf.camel@system.is>
+Content-Language: en-US
+From: Ken Goldman <kgold@linux.ibm.com>
+In-Reply-To: <ea2a3a9a2bea2f1af5565ed32e9584caee2fbecf.camel@system.is>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: GMeB6XCmwZMmneqqs8nC2mHVyUaS0XXm
+X-Proofpoint-ORIG-GUID: GMeB6XCmwZMmneqqs8nC2mHVyUaS0XXm
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-02_12,2024-04-01_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ bulkscore=0 mlxlogscore=798 lowpriorityscore=0 adultscore=0 spamscore=0
+ malwarescore=0 mlxscore=0 phishscore=0 impostorscore=0 clxscore=1011
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2403210000 definitions=main-2404020143
 
-On Mon Apr 1, 2024 at 11:54 PM EEST, Jarkko Sakkinen wrote:
-> On Mon Apr 1, 2024 at 7:55 PM EEST, James Bottomley wrote:
-> > On Mon, 2024-04-01 at 10:19 -0400, James Bottomley wrote:
-> > > So I'm not really sure how to solve this.=C2=A0 At the moment the ker=
-nel
-> > > doesn't use permanent handles for keys, but it should and it should
-> > > follow what all of the industry is doing for interoperability (i.e.
-> > > zero size points), which means the NULL primary should also follow
-> > > it.
-> >
-> > Actually, it turns out this is already solved by the TCG.  The template
-> > we're using is the correct one (zero size points).  Apparently they
-> > regretted their earlier decision to zero fill and issued this guidance:
-> >
-> >    2.2.1.2.2 EK Template
-> >   =20
-> >    An EK Template is stored in an NV Index as a TPMT_PUBLIC structure
-> >    marshaled as described in the TPM 2.0 Library Specification [1]. The
-> >    default EK Templates are defined in annex B. The EK Template NV Inde=
-x
-> >    MUST be Populated if non-default values are used. It SHOULD be Absen=
-t
-> >    if default values are used.
-> >   =20
-> >    The EK Template unique field buffer size(s) SHOULD be zero.
-> >   =20
-> > But since they can't revoke the previous guidance, we now have two
-> > templates defined: the L one which has the old n bytes of zeros and the
-> > new (and recommended) H one which has zero size unique field.
-> >
-> > https://trustedcomputinggroup.org/resource/http-trustedcomputinggroup-o=
-rg-wp-content-uploads-tcg-ek-credential-profile-v-2-5-r2_published-pdf/
-> >
-> > So in other words, we're doing the later correct thing and there's no
-> > problem.  I'll update the ASN.1 draft
-> >
-> > https://www.hansenpartnership.com/draft-bottomley-tpm2-keys.html
->
-> First time I'm seeing this document or URL.
+On 3/31/2024 12:52 PM, Gabríel Arthúr Pétursson wrote:
+> The TPM specifications have a standardized set of templates for the
+> Endorsement Keys, and a recommendation on a template to
+> create/provision the shared SRK.
 
-Anyway, only thing that we align with is the latest in kernel
-documentation, outside URL's are ignored. I.e. the legit ref
-is trusted-encrypted.rst.
+The original TCG guidance document for an SRK used arrays of zeros for 
+the unique field.
 
-BR, Jarkko
+This was either a holdover from TPM 1.2, where arrays were 20 bytes,
+or a misinterpretation of text that said: NULL.
+
+The reality is that it's a TPM2B, and the size(s) can be zero.
+
+The answer for the EK is different. It has to use the TCG
+standard.  The EK is not a 'guidance document'.
 
