@@ -1,274 +1,188 @@
-Return-Path: <keyrings+bounces-1057-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1059-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4538897456
-	for <lists+keyrings@lfdr.de>; Wed,  3 Apr 2024 17:48:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B02498989CE
+	for <lists+keyrings@lfdr.de>; Thu,  4 Apr 2024 16:20:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AFCF1F2416C
-	for <lists+keyrings@lfdr.de>; Wed,  3 Apr 2024 15:48:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65E511F2EFF0
+	for <lists+keyrings@lfdr.de>; Thu,  4 Apr 2024 14:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD8514A4F0;
-	Wed,  3 Apr 2024 15:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 175F8129E7C;
+	Thu,  4 Apr 2024 14:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dYo0Q27d"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Q+jF/OX7"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1675714A4E0;
-	Wed,  3 Apr 2024 15:47:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33100126F11;
+	Thu,  4 Apr 2024 14:19:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712159280; cv=none; b=SdBt3zm/tClmgCO0cnZZD3Nr7ZG9R8orDWvDw1P24X5ajibDQhi7qmgu6t5CK8lR5Ava9x2qXr0QXwsX36cDkVKyiHC1aPCYPKHYkGEkynPTvenP31iPAr01WzPgxccxlOH53lM8gb82f6jcP0CwKwasF+Xyw/NzZTJ9uGAsdto=
+	t=1712240391; cv=none; b=LwWqBMd7W6PKmzNu0ko0E/4Pj3d9VFQuD5mpaMwkKAGYfVgT44TxX3JDX2IqcWCIWqs/pEUETVJeI+aVwyFxQ7hXImf9E3Zj9OZ6ShC+y7/1XMvcxFwNg9GqA2HvOg1J4PEX+UPp/m41SeINjoK7nu5JkkjTLp7kM/DUg5Hujt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712159280; c=relaxed/simple;
-	bh=rrCR4x657hJj+9Z7FfIwTOL0bKqYr1iVATWuKVnBvdc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=IfaYXXHYKBzEF6hzXXR0y75ac5wwXSIeqeBlBf/82IoNYEa8tnAHz4cD+Ckpz9spJLRhlVwqBaFS//MXMIJiodhTaCYkokEofnOdphDXd/Uut2B7WfuGaETPlyXJs+xCyIeGEkun3MkLVROOSsJLxOUvZ7CpLhJbAS2ISxWIU/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dYo0Q27d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13591C433C7;
-	Wed,  3 Apr 2024 15:47:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712159279;
-	bh=rrCR4x657hJj+9Z7FfIwTOL0bKqYr1iVATWuKVnBvdc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dYo0Q27dSQQ3Ch8t1bv/4TDEGdVvlFtZiK/Zz2pAtDrV2dGg+D+XOJblloji6lf8f
-	 AT/1G9mjWsRaJTEV3z+NlLz40f+kBk5nFmcrUtgEA41qda5WwW4i8s4RLr/MzdF5zi
-	 YoTjxsD9V0zKYX4yL4N07X1LoysvapSXkS7G6OsnvSJFKJeNikI8cMxk3axKsNBB+y
-	 P6Adfksr8JnIG1LemgmEFRN0C6BpU/ZKYmBXXWJOohD4naX0Imdw+22KIlCXUWOohl
-	 YL80cR6IKID87Ymp816wKnW4iT/VyBYwP0nq6oFeuIpysRTK4u+RGJb+IBGt3Xt9x0
-	 vxIbwg0cDWVFw==
+	s=arc-20240116; t=1712240391; c=relaxed/simple;
+	bh=dDoRuXR0h/UtIUwsNQvukoc7HzlkJPZrSDTAfMTCPIo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a0xlCG3KOeLI2OcH89Tg3gfo5Km9Mlr1Ae141t3fEF8jY3QPRm3W8aqkzlMZwMBn9IpxZSue+3uQ/9/bDqkUzcrZJOKgWT58iVPiMaPu2397O4hhTxxy4trNOPEs5Exto+ozyufwQ07yafmZIrUGG/Z+TQ9qhKGS1Bgdfb537wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Q+jF/OX7; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 434DWku4009020;
+	Thu, 4 Apr 2024 14:19:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=nC4LM1YC9XZZrDEMUOi7ZLDOpXNISdt4owGoR3qHMQ8=;
+ b=Q+jF/OX7k091kTbijHJTkSYk9owSXmfVnvvGqBDlT5z8JvsSJiXbCxi442hEbbK11sfV
+ QBRgK1B//XlviHvPOFbpO0u38Sg1Zw0/fudEtFbaNdxXzfC1lDzjVXU7zKz9BAjVfX1G
+ WMEsHxnCGNtecP5n6u2UaMdKhuZWjdQWqvefguYn7b1RUMR/ZbLihvoIqJuxRFtwXuIc
+ WgoQXKIOsFScnrDIkPxUZwbRPSS3RO62ZoMPw/NInssUrpVg1JxqPgXKE3e7fpS83Itj
+ NSJ5ihcCh0E9Q2o5eu3Ez4X1UxPl1Pk9oxfRFFr4WUWNg55j/EG/OOarOUZ6cxNEizdk EA== 
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3x9w65g4t6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Apr 2024 14:19:34 +0000
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 434Dsu5R003627;
+	Thu, 4 Apr 2024 14:19:33 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3x9epyck0a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Apr 2024 14:19:33 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 434EJU1258327462
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 4 Apr 2024 14:19:33 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E08105803F;
+	Thu,  4 Apr 2024 14:19:30 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0CDF058056;
+	Thu,  4 Apr 2024 14:19:30 +0000 (GMT)
+Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  4 Apr 2024 14:19:29 +0000 (GMT)
+From: Stefan Berger <stefanb@linux.ibm.com>
+To: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        herbert@gondor.apana.org.au, davem@davemloft.net
+Cc: linux-kernel@vger.kernel.org, saulo.alessandre@tse.jus.br, lukas@wunner.de,
+        bbhushan2@marvell.com, jarkko@kernel.org,
+        Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PATCH v8 00/13] Add support for NIST P521 to ecdsa
+Date: Thu,  4 Apr 2024 10:18:43 -0400
+Message-ID: <20240404141856.2399142-1-stefanb@linux.ibm.com>
+X-Mailer: git-send-email 2.44.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ie4Z9mw2pqhOHgXIy7ssFXzNnWcoeRGM
+X-Proofpoint-GUID: ie4Z9mw2pqhOHgXIy7ssFXzNnWcoeRGM
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 03 Apr 2024 18:47:51 +0300
-Message-Id: <D0ALT2QCUIYB.8NFTE7Z18JKN@kernel.org>
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "David Gstir" <david@sigma-star.at>, "Mimi Zohar" <zohar@linux.ibm.com>,
- "James Bottomley" <jejb@linux.ibm.com>, "Herbert Xu"
- <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>
-Cc: "Shawn Guo" <shawnguo@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>,
- "Sascha Hauer" <s.hauer@pengutronix.de>, "Pengutronix Kernel Team"
- <kernel@pengutronix.de>, "Fabio Estevam" <festevam@gmail.com>, "NXP Linux
- Team" <linux-imx@nxp.com>, "Ahmad Fatoum" <a.fatoum@pengutronix.de>, "sigma
- star Kernel Team" <upstream+dcp@sigma-star.at>, "David Howells"
- <dhowells@redhat.com>, "Li Yang" <leoyang.li@nxp.com>, "Paul Moore"
- <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
- Hallyn" <serge@hallyn.com>, "Paul E. McKenney" <paulmck@kernel.org>, "Randy
- Dunlap" <rdunlap@infradead.org>, "Catalin Marinas"
- <catalin.marinas@arm.com>, "Rafael J. Wysocki"
- <rafael.j.wysocki@intel.com>, "Tejun Heo" <tj@kernel.org>, "Steven Rostedt
- (Google)" <rostedt@goodmis.org>, <linux-doc@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-integrity@vger.kernel.org>,
- <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, <linuxppc-dev@lists.ozlabs.org>,
- <linux-security-module@vger.kernel.org>, "Richard Weinberger"
- <richard@nod.at>, "David Oberhollenzer" <david.oberhollenzer@sigma-star.at>
-Subject: Re: [PATCH v8 6/6] docs: trusted-encrypted: add DCP as new trust
- source
-X-Mailer: aerc 0.17.0
-References: <20240403072131.54935-1-david@sigma-star.at>
- <20240403072131.54935-7-david@sigma-star.at>
-In-Reply-To: <20240403072131.54935-7-david@sigma-star.at>
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-04_10,2024-04-04_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=999 priorityscore=1501 bulkscore=0 spamscore=0 clxscore=1011
+ malwarescore=0 adultscore=0 lowpriorityscore=0 impostorscore=0
+ phishscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2404010000 definitions=main-2404040098
 
-On Wed Apr 3, 2024 at 10:21 AM EEST, David Gstir wrote:
-> Update the documentation for trusted and encrypted KEYS with DCP as new
-> trust source:
->
-> - Describe security properties of DCP trust source
-> - Describe key usage
-> - Document blob format
->
-> Co-developed-by: Richard Weinberger <richard@nod.at>
-> Signed-off-by: Richard Weinberger <richard@nod.at>
-> Co-developed-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-> Signed-off-by: David Oberhollenzer <david.oberhollenzer@sigma-star.at>
-> Signed-off-by: David Gstir <david@sigma-star.at>
-> ---
->  .../security/keys/trusted-encrypted.rst       | 53 +++++++++++++++++++
->  security/keys/trusted-keys/trusted_dcp.c      | 19 +++++++
->  2 files changed, 72 insertions(+)
->
-> diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Document=
-ation/security/keys/trusted-encrypted.rst
-> index e989b9802f92..f4d7e162d5e4 100644
-> --- a/Documentation/security/keys/trusted-encrypted.rst
-> +++ b/Documentation/security/keys/trusted-encrypted.rst
-> @@ -42,6 +42,14 @@ safe.
->           randomly generated and fused into each SoC at manufacturing tim=
-e.
->           Otherwise, a common fixed test key is used instead.
-> =20
-> +     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs=
-)
-> +
-> +         Rooted to a one-time programmable key (OTP) that is generally b=
-urnt
-> +         in the on-chip fuses and is accessible to the DCP encryption en=
-gine only.
-> +         DCP provides two keys that can be used as root of trust: the OT=
-P key
-> +         and the UNIQUE key. Default is to use the UNIQUE key, but selec=
-ting
-> +         the OTP key can be done via a module parameter (dcp_use_otp_key=
-).
-> +
->    *  Execution isolation
-> =20
->       (1) TPM
-> @@ -57,6 +65,12 @@ safe.
-> =20
->           Fixed set of operations running in isolated execution environme=
-nt.
-> =20
-> +     (4) DCP
-> +
-> +         Fixed set of cryptographic operations running in isolated execu=
-tion
-> +         environment. Only basic blob key encryption is executed there.
-> +         The actual key sealing/unsealing is done on main processor/kern=
-el space.
-> +
->    * Optional binding to platform integrity state
-> =20
->       (1) TPM
-> @@ -79,6 +93,11 @@ safe.
->           Relies on the High Assurance Boot (HAB) mechanism of NXP SoCs
->           for platform integrity.
-> =20
-> +     (4) DCP
-> +
-> +         Relies on Secure/Trusted boot process (called HAB by vendor) fo=
-r
-> +         platform integrity.
-> +
->    *  Interfaces and APIs
-> =20
->       (1) TPM
-> @@ -94,6 +113,11 @@ safe.
-> =20
->           Interface is specific to silicon vendor.
-> =20
-> +     (4) DCP
-> +
-> +         Vendor-specific API that is implemented as part of the DCP cryp=
-to driver in
-> +         ``drivers/crypto/mxs-dcp.c``.
-> +
->    *  Threat model
-> =20
->       The strength and appropriateness of a particular trust source for a=
- given
-> @@ -129,6 +153,13 @@ selected trust source:
->       CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure the devic=
-e
->       is probed.
-> =20
-> +  *  DCP (Data Co-Processor: crypto accelerator of various i.MX SoCs)
-> +
-> +     The DCP hardware device itself does not provide a dedicated RNG int=
-erface,
-> +     so the kernel default RNG is used. SoCs with DCP like the i.MX6ULL =
-do have
-> +     a dedicated hardware RNG that is independent from DCP which can be =
-enabled
-> +     to back the kernel RNG.
-> +
->  Users may override this by specifying ``trusted.rng=3Dkernel`` on the ke=
-rnel
->  command-line to override the used RNG with the kernel's random number po=
-ol.
-> =20
-> @@ -231,6 +262,19 @@ Usage::
->  CAAM-specific format.  The key length for new keys is always in bytes.
->  Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-> =20
-> +Trusted Keys usage: DCP
-> +-----------------------
-> +
-> +Usage::
-> +
-> +    keyctl add trusted name "new keylen" ring
-> +    keyctl add trusted name "load hex_blob" ring
-> +    keyctl print keyid
-> +
-> +"keyctl print" returns an ASCII hex copy of the sealed key, which is in =
-format
-> +specific to this DCP key-blob implementation.  The key length for new ke=
-ys is
-> +always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-> +
->  Encrypted Keys usage
->  --------------------
-> =20
-> @@ -426,3 +470,12 @@ string length.
->  privkey is the binary representation of TPM2B_PUBLIC excluding the
->  initial TPM2B header which can be reconstructed from the ASN.1 octed
->  string length.
-> +
-> +DCP Blob Format
-> +---------------
-> +
-> +.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
-> +   :doc: dcp blob format
-> +
-> +.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
-> +   :identifiers: struct dcp_blob_fmt
-> diff --git a/security/keys/trusted-keys/trusted_dcp.c b/security/keys/tru=
-sted-keys/trusted_dcp.c
-> index 16c44aafeab3..b5f81a05be36 100644
-> --- a/security/keys/trusted-keys/trusted_dcp.c
-> +++ b/security/keys/trusted-keys/trusted_dcp.c
-> @@ -19,6 +19,25 @@
->  #define DCP_BLOB_VERSION 1
->  #define DCP_BLOB_AUTHLEN 16
-> =20
-> +/**
-> + * DOC: dcp blob format
-> + *
-> + * The Data Co-Processor (DCP) provides hardware-bound AES keys using it=
-s
-> + * AES encryption engine only. It does not provide direct key sealing/un=
-sealing.
-> + * To make DCP hardware encryption keys usable as trust source, we defin=
-e
-> + * our own custom format that uses a hardware-bound key to secure the se=
-aling
-> + * key stored in the key blob.
-> + *
-> + * Whenever a new trusted key using DCP is generated, we generate a rand=
-om 128-bit
-> + * blob encryption key (BEK) and 128-bit nonce. The BEK and nonce are us=
-ed to
-> + * encrypt the trusted key payload using AES-128-GCM.
-> + *
-> + * The BEK itself is encrypted using the hardware-bound key using the DC=
-P's AES
-> + * encryption engine with AES-128-ECB. The encrypted BEK, generated nonc=
-e,
-> + * BEK-encrypted payload and authentication tag make up the blob format =
-together
-> + * with a version number, payload length and authentication tag.
-> + */
-> +
->  /**
->   * struct dcp_blob_fmt - DCP BLOB format.
->   *
+This series adds support for the NIST P521 curve to the ecdsa module
+to enable signature verification with it.
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+An issue with the current code in ecdsa is that it assumes that input
+arrays providing key coordinates for example, are arrays of digits
+(a 'digit' is a 'u64'). This works well for all currently supported
+curves, such as NIST P192/256/384, but does not work for NIST P521 where
+coordinates are 8 digits + 2 bytes long. So some of the changes deal with
+converting byte arrays to digits and adjusting tests on input byte
+array lengths to tolerate arrays not providing multiples of 8 bytes.
 
-I can only test that this does not break a machine without the
-hardware feature.
+Regards,
+   Stefan
 
-Is there anyone who could possibly peer test these patches?
+v8:
+ - Changed nbits from unsigned int to u32 (5/13)
+ - Added MODULE_ALIAS_CRYPTO("ecdsa-nist-p521") (11/13)
+ - Applied R-b & T-b tags from Jarkko
+ - Rebased on master branch at
+   https://git.kernel.org/pub/scm/linux/kernel/git/herbert/cryptodev-2.6.git
 
-BR, Jarkko
+v7:
+ - Applied T-b tag from Christian to all patches
+ - Applied R-b tag from Jarkko to some patches
+ - Rephrased some patch descriptions per Jarkko's request
+
+v6:
+ - Use existing #defines for number of digits rather than plain numbers
+   (1/13, 6/13) following Bharat's suggestion
+ - Initialize result from lowest 521 bits of product rather than going
+   through tmp variable (6/13)
+
+v5:
+ - Simplified ecc_digits_from_bytes as suggested by Lukas (1/12)
+ - Using nbits == 521 to detect NIST P521 curve rather than strcmp()
+   (5,6/12)
+ - Nits in patch description and comments (11/12)
+
+v4:
+ - Followed suggestions by Lukas Wummer (1,5,8/12)
+ - Use nbits rather than ndigits where needed (8/12)
+ - Renaming 'keylen' variablest to bufsize where necessary (9/12)
+ - Adjust signature size calculation for NIST P521 (11/12)
+
+v3:
+ - Dropped ecdh support
+ - Use ecc_get_curve_nbits for getting number of bits in NIST P521 curve
+   in ecc_point_mult (7/10)
+
+v2:
+ - Reformulated some patch descriptions
+ - Fixed issue detected by krobot
+ - Some other small changes to the code
+
+
+Stefan Berger (13):
+  crypto: ecc - Use ECC_CURVE_NIST_P192/256/384_DIGITS where possible
+  crypto: ecdsa - Convert byte arrays with key coordinates to digits
+  crypto: ecdsa - Adjust tests on length of key parameters
+  crypto: ecdsa - Extend res.x mod n calculation for NIST P521
+  crypto: ecc - Add nbits field to ecc_curve structure
+  crypto: ecc - Implement vli_mmod_fast_521 for NIST p521
+  crypto: ecc - Add special case for NIST P521 in ecc_point_mult
+  crypto: ecc - Add NIST P521 curve parameters
+  crypto: ecdsa - Replace ndigits with nbits where precision is needed
+  crypto: ecdsa - Rename keylen to bufsize where necessary
+  crypto: ecdsa - Register NIST P521 and extend test suite
+  crypto: asymmetric_keys - Adjust signature size calculation for NIST
+    P521
+  crypto: x509 - Add OID for NIST P521 and extend parser for it
+
+ crypto/asymmetric_keys/public_key.c       |  14 ++-
+ crypto/asymmetric_keys/x509_cert_parser.c |   3 +
+ crypto/ecc.c                              |  44 +++++--
+ crypto/ecc_curve_defs.h                   |  49 ++++++++
+ crypto/ecdsa.c                            |  63 +++++++---
+ crypto/ecrdsa_defs.h                      |   5 +
+ crypto/testmgr.c                          |   7 ++
+ crypto/testmgr.h                          | 146 ++++++++++++++++++++++
+ include/crypto/ecc_curve.h                |   2 +
+ include/crypto/ecdh.h                     |   1 +
+ include/crypto/internal/ecc.h             |  24 +++-
+ include/linux/oid_registry.h              |   1 +
+ 12 files changed, 336 insertions(+), 23 deletions(-)
+
+
+base-commit: a9a72140536fe02d98bce72a608ccf3ba9008a71
+-- 
+2.43.0
+
 
