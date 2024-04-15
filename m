@@ -1,127 +1,128 @@
-Return-Path: <keyrings+bounces-1093-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1094-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDC618A570E
-	for <lists+keyrings@lfdr.de>; Mon, 15 Apr 2024 18:07:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A2338A5A4A
+	for <lists+keyrings@lfdr.de>; Mon, 15 Apr 2024 21:03:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49F3DB22E79
-	for <lists+keyrings@lfdr.de>; Mon, 15 Apr 2024 16:07:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 042D4284CA1
+	for <lists+keyrings@lfdr.de>; Mon, 15 Apr 2024 19:03:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67DAD7F7F2;
-	Mon, 15 Apr 2024 16:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CDC156228;
+	Mon, 15 Apr 2024 19:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="O8xv1am3"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="gpnU87sC"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075647F7FA
-	for <keyrings@vger.kernel.org>; Mon, 15 Apr 2024 16:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41031155A25
+	for <keyrings@vger.kernel.org>; Mon, 15 Apr 2024 19:02:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713197202; cv=none; b=H7VE8ym8Y2xDRQQC7KvDQ+VI0ZD+//5AOjn5A+69xhuyqRnSPXnBoCOjWoE2vLEytVtSwDJS5k4daVi1Bv/SmUjc5qznSbVoXKYnQPRoiGVT6SJUNjqXqes+OZs+Qe/s7OrRezogzYNHdio60Twww+Ha6RAzbts+OjUXAHmYB6I=
+	t=1713207777; cv=none; b=J5SVyk98LRXHxkqAqWi/5tpodnAI8C976MTPfcLayZYwVGtGzFvAHIy7Nn2FiONP8NGeurhbM6cBFcDTlhTuEoSTN2xkanaKYaqMRXIFuuHUpw0oAbZFzU/Xdf2zB+XuZcxOxWjwSOTdHhciB32k/dLLzf7+nDo+h4gnfyIKHHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713197202; c=relaxed/simple;
-	bh=TbkoZcrC73ReILBlLCzDk8hBya5REumqV3/XGRD0RBM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A7XbET735NBV4hX/BC+Rjd9FjFKY540VcYxb1AlqokU8sggVSR/DN8dkup/s6pmMbdbtgQxbF5nmA0fkmbESq07arJ7C9DUVOt/Qwg93j8dTLIyq+sjfe1wmDTXkkoQTu3F7WDxyQtX+mAbuFPm8DReJNFBRjUD2jotT3mudpJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=O8xv1am3; arc=none smtp.client-ip=209.85.215.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-5ce9555d42eso2059631a12.2
-        for <keyrings@vger.kernel.org>; Mon, 15 Apr 2024 09:06:40 -0700 (PDT)
+	s=arc-20240116; t=1713207777; c=relaxed/simple;
+	bh=+Sl0KDp+f88KlkN5sL9qL6tcIvj36qePcyg1XNCcTOc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B/LPC+PHHGi/hOALLzqOf7yMNSryGfSdgZZtO9VsrCjE0Th6NN/5fhZ2CSrVlg0PZ0J33tzSLrzlo7rQY6ywAFs8l7svRf92gG2nikUtlPxQXOKtyfA2mw+/3yIRtjbReLB36DXFiKt0ZgubJZWJWMxeZezepRaSyptiGhG+nqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=gpnU87sC; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-6e0f43074edso2545976a34.1
+        for <keyrings@vger.kernel.org>; Mon, 15 Apr 2024 12:02:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1713197200; x=1713802000; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=W9YkT2PBxlsTiQpc9k80Xb2w2qGzzlQLFXvx15ENFSo=;
-        b=O8xv1am3Lk+DQ59W9cNWa2OG2Fks5PZkZcv6Z6Pfi7Uv5Oy1Av7RnTmnxj3FUYOm5V
-         yx4o1he5W90asuV36XyOe0antbXBxeK6gi/EVqhCphP56lqegAsztJrs5wGp912uqAFQ
-         L131duRGarDG1vumEdOdHiU0czbOW9+JxRfTA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713197200; x=1713802000;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=paul-moore.com; s=google; t=1713207774; x=1713812574; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=W9YkT2PBxlsTiQpc9k80Xb2w2qGzzlQLFXvx15ENFSo=;
-        b=JJycNPGsOaXvA6D38A/FNVj/XR2nZl5KQf8j/8o6gupKVcp6clJix7ocjllEJbwO3v
-         QW2FuNuS2izjkIy30LJyhtGtscBN+L82awfQpZdQEdk2JnemXRs8YfKZ5PvKFx2GZXvl
-         HiH3AaiDJi5rxS/kauQ52wABtoTn/cFIQ52WkW2H4xLLoHRfNa0Cp9WTSYYkrkrjS7Ez
-         1iiS+il9qNhvGlOy6z5KSLNksYrOMKPN/z8GiSNzjaav95+IAqehSt2dccFVq875S+re
-         VhV8v4MPtSgvJxt73+TUHcmv+wvgaOqa9YNtTDyMDo6NV4C7exdePm4Y6gec0BGP6AIu
-         qCFw==
-X-Forwarded-Encrypted: i=1; AJvYcCWcUtnPZFsJlueNkhYi5OnRaeOOR3hw4fc1mvB2tmhkNicgHwhG06HoYAbM2OlUsOMrsFY+ZIDLvzxRtsRRyneWtY3Gd8Uub0g=
-X-Gm-Message-State: AOJu0YzVteJwy7aWHWVTs8h/8hscbQEFAijqDNwDbeM3jH02rCdOSqwM
-	U5CAJYnMXFL+Q6RaGbYd7wpgmAA1aS6jj0+vsBe0ooQ1Dslw9nl3nmFOuPejYA==
-X-Google-Smtp-Source: AGHT+IEOd/x1N/CPtx25Nf+PUqf1rfZqa2mTy1XxaxcS7HXEzP+ucQDv/NhrafY/fDlqqKtbbV3LWA==
-X-Received: by 2002:a17:90b:3d3:b0:2a5:ba9d:a06b with SMTP id go19-20020a17090b03d300b002a5ba9da06bmr10113697pjb.5.1713197200332;
-        Mon, 15 Apr 2024 09:06:40 -0700 (PDT)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id l6-20020a17090a49c600b002a46b925e99sm8796108pjm.18.2024.04.15.09.06.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Apr 2024 09:06:39 -0700 (PDT)
-Date: Mon, 15 Apr 2024 09:06:39 -0700
-From: Kees Cook <keescook@chromium.org>
-To: j.granados@samsung.com
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <naoya.horiguchi@nec.com>,
-	John Johansen <john.johansen@canonical.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jens Axboe <axboe@kernel.dk>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Atish Patra <atishp@atishpatra.org>,
-	Anup Patel <anup@brainfault.org>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Luis Chamberlain <mcgrof@kernel.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
-	keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-	io-uring@vger.kernel.org, linux-riscv@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/7] security: Remove the now superfluous sentinel
- element from ctl_table array
-Message-ID: <202404150906.C37D8D9DA1@keescook>
-References: <20240328-jag-sysctl_remset_misc-v1-0-47c1463b3af2@samsung.com>
- <20240328-jag-sysctl_remset_misc-v1-2-47c1463b3af2@samsung.com>
+        bh=Qnuzy4YohZRKFHiloeA4mVaIUDCwUMILHZ7C0FksI2Q=;
+        b=gpnU87sCjG2A+yB1sR0hx6yrIJCj3mqA1/XkVLX+KUMZzWfSj3yqLc2mLJAUp5+r98
+         QzW7bEDH38MDio36RdPPhAjeB03vh2jCKtmE1aThRdtB1m3dXIFOmTi6T7eAxaER1S/V
+         hEArF/ktmVVsN6/O6kanNscl75ylDXidH+BMuhQkDrKp6IW4OmlvEpI+4c5dh9Hmz29B
+         jnP9U+DQItj04Grz+HTaMAmnDee1np67V6Vni6ARWGADAvrbN5a6rmMsmPAiEXJebXQy
+         Ultkl7CXrG6qSmavylnPPb+gf6OGkqoFMGoMK7e3fOfO+F7u60dYs6PQlCzLmVCV+trO
+         UWug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713207774; x=1713812574;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Qnuzy4YohZRKFHiloeA4mVaIUDCwUMILHZ7C0FksI2Q=;
+        b=kYsNHAUadtRWZb5NI1ZwRCquJYbP9rUZXlS8z5Y4IGIrbaOnLUrhiNJL9wp80NYmpr
+         abdzxnnA/5SbQs3ipAfXc927r5F2308Q14QB8IQqm9b0hRTFOUS0BmL7nLzbppVIqm2o
+         trulHG3XMMp6yfYspTR30tHst6JxEzFYL6Jafx296ZqnzCzXVHL9fgbbEI3Vd+LxffRZ
+         gSyPP08NxBJ3N2QVCzKgBh+d96CtuX14+yTD065I7DkUN7t+3QGF/jGbtk6CKwsq2in+
+         acp3RquF+PQ2KVvMQkYhYXBhbNRI6O3e6OP6dg1KF+/oITjsmdAkV1wyiJoRS2W+WVsb
+         vDIg==
+X-Forwarded-Encrypted: i=1; AJvYcCW7UUbRgnyelOGbJSYgz6i9lxXvAriZ4FnLfOwFWGoNZqPyXE08kR9RimD8fcwnitPWDfTmCfeQSHt0hcSbgvDJuIXiyW20+iM=
+X-Gm-Message-State: AOJu0YwFdBaqskbjxJYVcTrR9Afq8aPavhCLqq77C8i5BCIRytkAV/6K
+	Hg6LfOVt4aXPkg6WR6CrcTpOxoojdlE9LKuPZPHTuZQc7Ev1Y5PV1pe8xC9W0lgChqV1AUkzYLP
+	zaZ0wMMg76vvqbbQB3tAR3CI2SdlkzRoAkSuo
+X-Google-Smtp-Source: AGHT+IEZFN4hbYjCj1ww/D1sjvqe8pOqx7vvJkr0xZqROOpJDxITAIMHtAwtRNrZa/YLYN0XY/RRnGvMJysW4KwpFmQ=
+X-Received: by 2002:a05:6830:1484:b0:6ea:386a:44d8 with SMTP id
+ s4-20020a056830148400b006ea386a44d8mr11138794otq.3.1713207774198; Mon, 15 Apr
+ 2024 12:02:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240328-jag-sysctl_remset_misc-v1-2-47c1463b3af2@samsung.com>
+References: <20240328-jag-sysctl_remset_misc-v1-0-47c1463b3af2@samsung.com>
+ <CGME20240328155911eucas1p23472e0c6505ca73df5c76fe019fdd483@eucas1p2.samsung.com>
+ <20240328-jag-sysctl_remset_misc-v1-2-47c1463b3af2@samsung.com>
+ <20240415134406.5l6ygkl55yvioxgs@joelS2.panther.com> <CAHC9VhTE+85xLytWD8LYrmdV8xcXdi-Tygy5fVvokaLCfk9bUQ@mail.gmail.com>
+In-Reply-To: <CAHC9VhTE+85xLytWD8LYrmdV8xcXdi-Tygy5fVvokaLCfk9bUQ@mail.gmail.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Mon, 15 Apr 2024 15:02:43 -0400
+Message-ID: <CAHC9VhT1ykCKnijSbsgPXO9o-5_LHAtSm=q=cdQ8N9QH+WA+tw@mail.gmail.com>
+Subject: Re: [PATCH 2/7] security: Remove the now superfluous sentinel element
+ from ctl_table array
+To: Joel Granados <j.granados@samsung.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Muchun Song <muchun.song@linux.dev>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <naoya.horiguchi@nec.com>, 
+	John Johansen <john.johansen@canonical.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, David Howells <dhowells@redhat.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Kees Cook <keescook@chromium.org>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
+	Jens Axboe <axboe@kernel.dk>, Pavel Begunkov <asml.silence@gmail.com>, 
+	Atish Patra <atishp@atishpatra.org>, Anup Patel <anup@brainfault.org>, 
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Luis Chamberlain <mcgrof@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
+	keyrings@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	io-uring@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 28, 2024 at 04:57:49PM +0100, Joel Granados via B4 Relay wrote:
-> From: Joel Granados <j.granados@samsung.com>
-> 
-> This commit comes at the tail end of a greater effort to remove the
-> empty elements at the end of the ctl_table arrays (sentinels) which will
-> reduce the overall build time size of the kernel and run time memory
-> bloat by ~64 bytes per sentinel (further information Link :
-> https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/)
-> 
-> Remove the sentinel from all files under security/ that register a
-> sysctl table.
-> 
-> Signed-off-by: Joel Granados <j.granados@samsung.com>
+On Mon, Apr 15, 2024 at 10:17=E2=80=AFAM Paul Moore <paul@paul-moore.com> w=
+rote:
+> On Mon, Apr 15, 2024 at 9:44=E2=80=AFAM Joel Granados <j.granados@samsung=
+.com> wrote:
+> >
+> > Hey
+> >
+> > This is the only patch that I have not seen added to the next tree.
+> > I'll put this in the sysctl-next
+> > https://git.kernel.org/pub/scm/linux/kernel/git/sysctl/sysctl.git/log/?=
+h=3Dsysctl-next
+> > for testing. Please let me know if It is lined up to be upstream throug=
+h
+> > another path.
+>
+> I was hoping to see some ACKs from the associated LSM maintainers, but
+> it's minor enough I'll go ahead and pull it into the lsm/dev tree this
+> week.  I'll send a note later when I do the merge.
 
-Acked-by: Kees Cook <keescook@chromium.org> # loadpin & yama
+... and now it's merged, it should be in the next cut of the
+linux-next tree.  Thanks!
 
--- 
-Kees Cook
+--=20
+paul-moore.com
 
