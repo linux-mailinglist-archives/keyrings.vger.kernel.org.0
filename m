@@ -1,121 +1,127 @@
-Return-Path: <keyrings+bounces-1092-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1093-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A6BB8A52E5
-	for <lists+keyrings@lfdr.de>; Mon, 15 Apr 2024 16:18:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC618A570E
+	for <lists+keyrings@lfdr.de>; Mon, 15 Apr 2024 18:07:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AC4AB2143F
-	for <lists+keyrings@lfdr.de>; Mon, 15 Apr 2024 14:18:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49F3DB22E79
+	for <lists+keyrings@lfdr.de>; Mon, 15 Apr 2024 16:07:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B727757FB;
-	Mon, 15 Apr 2024 14:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67DAD7F7F2;
+	Mon, 15 Apr 2024 16:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="GxYCA+wE"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="O8xv1am3"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5106D74E0C
-	for <keyrings@vger.kernel.org>; Mon, 15 Apr 2024 14:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 075647F7FA
+	for <keyrings@vger.kernel.org>; Mon, 15 Apr 2024 16:06:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713190691; cv=none; b=I4M+KLSwyh656NPvs28+nq61x1WTQEg9PHMzSLcvZoTApXpyWo4/xhf/RjspWySnqYoVYGupUHKPG9jBVMKPEuzYjxL7OLUyzXjZrhZANnaFWBFgMDSHusJFxYcyPb6xaw4wgOX4LS0l8h0y76SANWQZUoHdh/b2dZbkoI0aI0g=
+	t=1713197202; cv=none; b=H7VE8ym8Y2xDRQQC7KvDQ+VI0ZD+//5AOjn5A+69xhuyqRnSPXnBoCOjWoE2vLEytVtSwDJS5k4daVi1Bv/SmUjc5qznSbVoXKYnQPRoiGVT6SJUNjqXqes+OZs+Qe/s7OrRezogzYNHdio60Twww+Ha6RAzbts+OjUXAHmYB6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713190691; c=relaxed/simple;
-	bh=s7Xj9xi+J3VOaPxS9cliZyr2iTz57B5HKKp5IrSvKlo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FIfubMDxIEeDZws+24B/5ofbmt/ItEZqChkxLP3g+qZ8zy4JeHcNqkqRcC4sYxfYSQsVWO4Wta/0/0t//58IMna9HHLtxSJ6D49MJVwWV563519H8/tehM9hC48E/0XfnTb1StU+PQPFSWts4sTpmyy6PwHHRCVLGYn7KCr8BKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=GxYCA+wE; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-61ad5f2c231so9366497b3.2
-        for <keyrings@vger.kernel.org>; Mon, 15 Apr 2024 07:18:09 -0700 (PDT)
+	s=arc-20240116; t=1713197202; c=relaxed/simple;
+	bh=TbkoZcrC73ReILBlLCzDk8hBya5REumqV3/XGRD0RBM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A7XbET735NBV4hX/BC+Rjd9FjFKY540VcYxb1AlqokU8sggVSR/DN8dkup/s6pmMbdbtgQxbF5nmA0fkmbESq07arJ7C9DUVOt/Qwg93j8dTLIyq+sjfe1wmDTXkkoQTu3F7WDxyQtX+mAbuFPm8DReJNFBRjUD2jotT3mudpJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=O8xv1am3; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-5ce9555d42eso2059631a12.2
+        for <keyrings@vger.kernel.org>; Mon, 15 Apr 2024 09:06:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1713190688; x=1713795488; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mqqqjCa8OZ82zdxbWAvkpK8zvR3ppQ2NndSIF2x4rXo=;
-        b=GxYCA+wEVdEIjjWzJWYg+WtDHHIliDSd8tKsr7BV7/MNn1GAfzIGGsjaYd1K1nC47x
-         vSDYX4sAGl3dWOguqWAOzQsiR3l2a5GCXoMgNM60CbTbnQU4DYOtkdtqEGzpNJ1M0YZG
-         uQw5KNJcmYoJdcaPUXYHVNp3fe+w7CGUJ/SPJ96v3rXFwkPh6f3QXK91XZOF32M12JQC
-         Ji8q8ysobl0MyXu0MqYf8ztHm+RuXlZSrC84cqaRtpeht1x8CxcwMPIAYXaT4Z+hGC7+
-         rVG2YJ4JyNKKpzlG7HNhuL8+NZugo/5Ayugwl9nKzsB0LSuLDrRKrkXS0JcMorbjGX6N
-         OF+w==
+        d=chromium.org; s=google; t=1713197200; x=1713802000; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=W9YkT2PBxlsTiQpc9k80Xb2w2qGzzlQLFXvx15ENFSo=;
+        b=O8xv1am3Lk+DQ59W9cNWa2OG2Fks5PZkZcv6Z6Pfi7Uv5Oy1Av7RnTmnxj3FUYOm5V
+         yx4o1he5W90asuV36XyOe0antbXBxeK6gi/EVqhCphP56lqegAsztJrs5wGp912uqAFQ
+         L131duRGarDG1vumEdOdHiU0czbOW9+JxRfTA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713190688; x=1713795488;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mqqqjCa8OZ82zdxbWAvkpK8zvR3ppQ2NndSIF2x4rXo=;
-        b=eU7p0e4IHTcS245UoHv1VskOtaA9aSieH+xpzmNLrrN7o1iJTpAURMbWTFWEqmSsB2
-         Y7o0T3ylfx51+h+gh/t70qeMbAwWX8C+7mHoftkjff23ag/3cgme6+O3SZde6k0cYGrJ
-         0anHUZvDTen41LLJSHB8TVlyPFxdWDqE4Cl6ETN+SADXKq3/1cE+60Utq2a+GL89TTMI
-         nkxGj3eBCGpz0VZdbqteNceF/3GhOWQygxoLDEmpIHT/EtZ9Q/vRi2kLgfn1eAVU5gbd
-         nNDXyuaMEqjqUPtQvfpbbvWX/GMLomVVJBDJGwnE8PkhffwclEBhn782w1w6y87rQUk7
-         mSZg==
-X-Forwarded-Encrypted: i=1; AJvYcCVdIYsd7JKayKJKAPp75xcvgc5aKPDxrQDY9Wlz4r4dsbbop9AFFo3ptnhJZ52iCX0XLSJFXiGpBzgl1X/ilYN9toEN3hkA8zM=
-X-Gm-Message-State: AOJu0YwckyECG+2BPw6V6oz2U4Ss+MEv8dNpcK/j0L0d/AfvTbMeI9uT
-	Jsh2R5SjZnySUNHINLCicXXdqrT/YhoIzlpOwuOeqrD97clbH99HyX4JI/9X7g4v6gB5rhLDYSv
-	VHozEsJqS5L0/G241a4+ak/r9Ze6LHojoJ2PD
-X-Google-Smtp-Source: AGHT+IFLkqpounEUU/2bE6dJh6q9whX/HjDtCGadHGTvaVHifyPAFZys4Iq+yJ+GbVJMCc2FKsEdAoulZVngTb0CJTg=
-X-Received: by 2002:a0d:eb02:0:b0:615:3996:5c86 with SMTP id
- u2-20020a0deb02000000b0061539965c86mr9873358ywe.21.1713190688256; Mon, 15 Apr
- 2024 07:18:08 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1713197200; x=1713802000;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W9YkT2PBxlsTiQpc9k80Xb2w2qGzzlQLFXvx15ENFSo=;
+        b=JJycNPGsOaXvA6D38A/FNVj/XR2nZl5KQf8j/8o6gupKVcp6clJix7ocjllEJbwO3v
+         QW2FuNuS2izjkIy30LJyhtGtscBN+L82awfQpZdQEdk2JnemXRs8YfKZ5PvKFx2GZXvl
+         HiH3AaiDJi5rxS/kauQ52wABtoTn/cFIQ52WkW2H4xLLoHRfNa0Cp9WTSYYkrkrjS7Ez
+         1iiS+il9qNhvGlOy6z5KSLNksYrOMKPN/z8GiSNzjaav95+IAqehSt2dccFVq875S+re
+         VhV8v4MPtSgvJxt73+TUHcmv+wvgaOqa9YNtTDyMDo6NV4C7exdePm4Y6gec0BGP6AIu
+         qCFw==
+X-Forwarded-Encrypted: i=1; AJvYcCWcUtnPZFsJlueNkhYi5OnRaeOOR3hw4fc1mvB2tmhkNicgHwhG06HoYAbM2OlUsOMrsFY+ZIDLvzxRtsRRyneWtY3Gd8Uub0g=
+X-Gm-Message-State: AOJu0YzVteJwy7aWHWVTs8h/8hscbQEFAijqDNwDbeM3jH02rCdOSqwM
+	U5CAJYnMXFL+Q6RaGbYd7wpgmAA1aS6jj0+vsBe0ooQ1Dslw9nl3nmFOuPejYA==
+X-Google-Smtp-Source: AGHT+IEOd/x1N/CPtx25Nf+PUqf1rfZqa2mTy1XxaxcS7HXEzP+ucQDv/NhrafY/fDlqqKtbbV3LWA==
+X-Received: by 2002:a17:90b:3d3:b0:2a5:ba9d:a06b with SMTP id go19-20020a17090b03d300b002a5ba9da06bmr10113697pjb.5.1713197200332;
+        Mon, 15 Apr 2024 09:06:40 -0700 (PDT)
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id l6-20020a17090a49c600b002a46b925e99sm8796108pjm.18.2024.04.15.09.06.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Apr 2024 09:06:39 -0700 (PDT)
+Date: Mon, 15 Apr 2024 09:06:39 -0700
+From: Kees Cook <keescook@chromium.org>
+To: j.granados@samsung.com
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <naoya.horiguchi@nec.com>,
+	John Johansen <john.johansen@canonical.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	David Howells <dhowells@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jens Axboe <axboe@kernel.dk>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Atish Patra <atishp@atishpatra.org>,
+	Anup Patel <anup@brainfault.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Luis Chamberlain <mcgrof@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
+	keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+	io-uring@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 2/7] security: Remove the now superfluous sentinel
+ element from ctl_table array
+Message-ID: <202404150906.C37D8D9DA1@keescook>
+References: <20240328-jag-sysctl_remset_misc-v1-0-47c1463b3af2@samsung.com>
+ <20240328-jag-sysctl_remset_misc-v1-2-47c1463b3af2@samsung.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240328-jag-sysctl_remset_misc-v1-0-47c1463b3af2@samsung.com>
- <CGME20240328155911eucas1p23472e0c6505ca73df5c76fe019fdd483@eucas1p2.samsung.com>
- <20240328-jag-sysctl_remset_misc-v1-2-47c1463b3af2@samsung.com> <20240415134406.5l6ygkl55yvioxgs@joelS2.panther.com>
-In-Reply-To: <20240415134406.5l6ygkl55yvioxgs@joelS2.panther.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Mon, 15 Apr 2024 10:17:57 -0400
-Message-ID: <CAHC9VhTE+85xLytWD8LYrmdV8xcXdi-Tygy5fVvokaLCfk9bUQ@mail.gmail.com>
-Subject: Re: [PATCH 2/7] security: Remove the now superfluous sentinel element
- from ctl_table array
-To: Joel Granados <j.granados@samsung.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Muchun Song <muchun.song@linux.dev>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <naoya.horiguchi@nec.com>, 
-	John Johansen <john.johansen@canonical.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, David Howells <dhowells@redhat.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Kees Cook <keescook@chromium.org>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	Jens Axboe <axboe@kernel.dk>, Pavel Begunkov <asml.silence@gmail.com>, 
-	Atish Patra <atishp@atishpatra.org>, Anup Patel <anup@brainfault.org>, 
-	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Luis Chamberlain <mcgrof@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
-	keyrings@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	io-uring@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240328-jag-sysctl_remset_misc-v1-2-47c1463b3af2@samsung.com>
 
-On Mon, Apr 15, 2024 at 9:44=E2=80=AFAM Joel Granados <j.granados@samsung.c=
-om> wrote:
->
-> Hey
->
-> This is the only patch that I have not seen added to the next tree.
-> I'll put this in the sysctl-next
-> https://git.kernel.org/pub/scm/linux/kernel/git/sysctl/sysctl.git/log/?h=
-=3Dsysctl-next
-> for testing. Please let me know if It is lined up to be upstream through
-> another path.
+On Thu, Mar 28, 2024 at 04:57:49PM +0100, Joel Granados via B4 Relay wrote:
+> From: Joel Granados <j.granados@samsung.com>
+> 
+> This commit comes at the tail end of a greater effort to remove the
+> empty elements at the end of the ctl_table arrays (sentinels) which will
+> reduce the overall build time size of the kernel and run time memory
+> bloat by ~64 bytes per sentinel (further information Link :
+> https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/)
+> 
+> Remove the sentinel from all files under security/ that register a
+> sysctl table.
+> 
+> Signed-off-by: Joel Granados <j.granados@samsung.com>
 
-I was hoping to see some ACKs from the associated LSM maintainers, but
-it's minor enough I'll go ahead and pull it into the lsm/dev tree this
-week.  I'll send a note later when I do the merge.
+Acked-by: Kees Cook <keescook@chromium.org> # loadpin & yama
 
---=20
-paul-moore.com
+-- 
+Kees Cook
 
