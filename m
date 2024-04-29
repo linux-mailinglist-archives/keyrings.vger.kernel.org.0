@@ -1,394 +1,140 @@
-Return-Path: <keyrings+bounces-1114-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1115-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA1858B56DE
-	for <lists+keyrings@lfdr.de>; Mon, 29 Apr 2024 13:36:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF33C8B5994
+	for <lists+keyrings@lfdr.de>; Mon, 29 Apr 2024 15:13:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB7ADB25FF1
-	for <lists+keyrings@lfdr.de>; Mon, 29 Apr 2024 11:36:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0D361C249EE
+	for <lists+keyrings@lfdr.de>; Mon, 29 Apr 2024 13:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081425026C;
-	Mon, 29 Apr 2024 11:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77FB954905;
+	Mon, 29 Apr 2024 13:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b="Y2/ZO4/b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ig0PRhPy"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EB04EB42
-	for <keyrings@vger.kernel.org>; Mon, 29 Apr 2024 11:35:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2C7C127;
+	Mon, 29 Apr 2024 13:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714390522; cv=none; b=apoTknouN9/t6Y2dNVLR8Zndmfm2RFVu0oUm0vw2lMELjvqgvjXy2x+VpbwnLdwAf/8sMECF7SRb3ASPoSDaRz0jKXJBI+M+1k7BvBCPC5eEyN3uzb56O+S6NgzF9gVSZ4Rbn6tiGQiQStjJjZkv7BKD23iXK7I7tB0Wp1I64Wg=
+	t=1714396378; cv=none; b=aHbvp80mB6EXK0EtJtfsDpiPow3i760gBWtS52kFJRWRmIuy4fn4QgzKASe1uz+LYbM97FwKxoxqO8R/VKzHwsbFUeeK/n/6dfR1BcHUh1KSALkEvMK8C8Zcr7Sb2zYmj8SkGGy2kwgoRTyhT/k7+ND399W2VERsryJrb7n8k04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714390522; c=relaxed/simple;
-	bh=vAhtXuwNFG+GZ7D8ebLoJFvhPq1//2wzkcaCoqzZqvU=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=iMAQNxhiOaz942lUnzIvCK9ADBWG06ac+cgXgFBMmo8NiEx8ld7d2u4hLMqdsI2rFoh05pizx1UFiZdvwCVm483b2/35D7X4ZecQVk6O+iwxqBEvDrc6eDdfRjNrUgiSDgm/JxYaOzAeQCFLVuLxZGx0LTLHA6KeqXdG5BwmVMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at; spf=pass smtp.mailfrom=sigma-star.at; dkim=pass (2048-bit key) header.d=sigma-star.at header.i=@sigma-star.at header.b=Y2/ZO4/b; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sigma-star.at
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sigma-star.at
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2df848f9325so28186991fa.1
-        for <keyrings@vger.kernel.org>; Mon, 29 Apr 2024 04:35:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1714390517; x=1714995317; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FfGzQB1xZB8xBXRUtcLsXtsSVhNRLi0+5fwIT5ItXxQ=;
-        b=Y2/ZO4/biFVkDlLdxSioJm42UrudnhZkdk4ses2t4OaWrN05Gev8/n+dd2Fau20vdN
-         8XBfyoRICezlwLe0nQjawGoCViUZB/c7TSg4HWEbvfvgahhGmAHLS3vnjCxp2i8Hir3s
-         wWxlbVL9ssGrBiwQwZNborK7nJE+rCZysCadpXiAWu/Q3t93N34c86SIfnde3FXk7QUG
-         0qg4fLIQyzQGdHOxhaAM+5/wTI5iJFcayexV6vT4DQCE0uuUHzI6XmOdC+YJJa8Pqb/L
-         bxLN0K+wrknWiZR4in/LSnjzdMC1pYfCbtwtpp73L7dyQRIMQDm2ekW18FtfHslwAa6J
-         tOfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714390517; x=1714995317;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FfGzQB1xZB8xBXRUtcLsXtsSVhNRLi0+5fwIT5ItXxQ=;
-        b=SEenK8TI8XtCsc/LjMOA4ij+frFs5ZnhpMGrMfqi2fHRLaFtaKHQ6yd9X0gs+C+XQb
-         jBNbaqY2yl6TPzaZZIIxYkyi5LwItQwG9DTWZuixwThZuU8BptL//NTHn9VivQ6sV+Z/
-         eCQqVB2oDsAXLkZpWnGDMRAi//KqcgWVuvohRsEvVm49op+ZMnovd9LtKcqkssNfO1tp
-         RaRSmLHik1Yy58r6n310VTdVowVyei2za6tmHGzO9jYyCnBOVFomlI1N6qjdMiKoaESD
-         G9TafWGZ8et+cRpZU4QIZl9tHtYss21/LXBBsF+i7wYFD4ah8OpF42OycyLN6FFkgHio
-         q+Xw==
-X-Forwarded-Encrypted: i=1; AJvYcCWeoRw0oD0MKH5+IX8A6/HVKDdDuFYgVMJYQCw70Dd0AhIJTprglltp8PNwls1BdMnjxejhJeLAx0K+QHbRKNWNDO6eKss6PI8=
-X-Gm-Message-State: AOJu0Yx4ILTjynpkxPT0EM3XhPQkz2JGPcS3H/GDKmUZfrFjdO2vmXXT
-	klspwk4HEXBfCDioL8S2ffRLoHzo8ZninLyNcnmTJAAd/AeSusLMs/kmY4yKc64=
-X-Google-Smtp-Source: AGHT+IGw2Ek0i5lSqjv/2CHs1TiQwOEm213t8IkDWkoV+quS2g6sI4vXDerOpOiRvHBEgiO62ZzKtw==
-X-Received: by 2002:a2e:968b:0:b0:2d8:63a2:50d2 with SMTP id q11-20020a2e968b000000b002d863a250d2mr6603309lji.6.1714390516956;
-        Mon, 29 Apr 2024 04:35:16 -0700 (PDT)
-Received: from smtpclient.apple ([82.150.214.1])
-        by smtp.gmail.com with ESMTPSA id b8-20020adfe308000000b003436a3cae6dsm29249925wrj.98.2024.04.29.04.35.15
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 29 Apr 2024 04:35:16 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1714396378; c=relaxed/simple;
+	bh=C/1/HgtOPadIccfda7rkD/uKMPU+S43i6YXTEI9RK70=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=HRm8tx3sWr97aAvdRZaBXXJEP4voPbK66vGvqZWfvgQytrVDiVX33gb9Cvv+R2CcfJJgSJoAyZBdf/gfDdfkIT6qKZnzGdqFY7TvYrgVPonb11ENSKTx0LBhy/0Jn/ALH0Or7FfGFQBjsxoSTc7RMqGw/m7FuZMX8C3TjyyEQZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ig0PRhPy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97814C113CD;
+	Mon, 29 Apr 2024 13:12:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714396378;
+	bh=C/1/HgtOPadIccfda7rkD/uKMPU+S43i6YXTEI9RK70=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=Ig0PRhPyyWkKOwe/eu5h8ET0VfrmwbqvRZfWKTAHn4yuxUXHHxyb4S0POuhUwQs2o
+	 FUw3mdPX8kjdylv3ZVICMGb/q/ITOv4pahl3dRxc7MpDFNLfgSeisZHBjxgW8dP2Q9
+	 yxxUuR1e7MYyf6ZxgwfxUS8rXgtsu29Lh1zFTi8ZyUJFmrPmEpSuaJOpJmUt/+CRC0
+	 tdCdH9c+uEU448gyCCi419nAm0rCnBbfnGvNassirpClrb7dJt7qGvOcjeKThSBTry
+	 WrwBkwK4y6DsPkCoz9ifJ2dzK4hIeBWT0MpDaqTn59D8xD0QznHnuDP5Cir/ielRcV
+	 qwHCcOz9CCsDw==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.500.171.1.1\))
-Subject: Re: [EXT] [PATCH v8 6/6] docs: trusted-encrypted: add DCP as new
- trust source
-From: David Gstir <david@sigma-star.at>
-In-Reply-To: <DB6PR04MB3190F6B78FF3760EBCC14E758F072@DB6PR04MB3190.eurprd04.prod.outlook.com>
-Date: Mon, 29 Apr 2024 13:35:04 +0200
-Cc: Jarkko Sakkinen <jarkko@kernel.org>,
- Mimi Zohar <zohar@linux.ibm.com>,
- James Bottomley <jejb@linux.ibm.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>,
- Shawn Guo <shawnguo@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>,
- dl-linux-imx <linux-imx@nxp.com>,
- Ahmad Fatoum <a.fatoum@pengutronix.de>,
- sigma star Kernel Team <upstream+dcp@sigma-star.at>,
- David Howells <dhowells@redhat.com>,
- Li Yang <leoyang.li@nxp.com>,
- Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>,
- "Paul E. McKenney" <paulmck@kernel.org>,
- Randy Dunlap <rdunlap@infradead.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
- Tejun Heo <tj@kernel.org>,
- "Steven Rostedt (Google)" <rostedt@goodmis.org>,
- "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
- "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
- "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-security-module@vger.kernel.org" <linux-security-module@vger.kernel.org>,
- Richard Weinberger <richard@nod.at>,
- David Oberhollenzer <david.oberhollenzer@sigma-star.at>,
- Varun Sethi <V.Sethi@nxp.com>,
- Gaurav Jain <gaurav.jain@nxp.com>,
- Pankaj Gupta <pankaj.gupta@nxp.com>
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <7783BAE9-87DA-4DD5-ADFA-15A9B55EEF39@sigma-star.at>
-References: <20240403072131.54935-1-david@sigma-star.at>
- <20240403072131.54935-7-david@sigma-star.at>
- <D0ALT2QCUIYB.8NFTE7Z18JKN@kernel.org>
- <DB6PR04MB3190F6B78FF3760EBCC14E758F072@DB6PR04MB3190.eurprd04.prod.outlook.com>
-To: Kshitiz Varshney <kshitiz.varshney@nxp.com>
-X-Mailer: Apple Mail (2.3774.500.171.1.1)
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 29 Apr 2024 16:12:54 +0300
+Message-Id: <D0WMSLWS0GIR.149P7U2PJBUV1@kernel.org>
+Cc: <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+ <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] crypto: ecc - Protect ecc_digits_from_bytes from
+ reading too many bytes
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Stefan Berger" <stefanb@linux.ibm.com>, "Lukas Wunner"
+ <lukas@wunner.de>
+X-Mailer: aerc 0.17.0
+References: <20240426225553.3038070-1-stefanb@linux.ibm.com>
+ <D0W3MTR0CY08.Q2UIYE4N274L@kernel.org> <Zi8UXS1MD5V58dnN@wunner.de>
+ <D0WIZTMRKHSJ.1Z4ZV54DLVWAB@kernel.org>
+ <8109c35b-344e-4d98-8245-77f4919624a1@linux.ibm.com>
+In-Reply-To: <8109c35b-344e-4d98-8245-77f4919624a1@linux.ibm.com>
 
-Hi Kshitiz,
+On Mon Apr 29, 2024 at 2:11 PM EEST, Stefan Berger wrote:
+>
+>
+> On 4/29/24 06:14, Jarkko Sakkinen wrote:
+> > On Mon Apr 29, 2024 at 6:30 AM EEST, Lukas Wunner wrote:
+> >> On Mon, Apr 29, 2024 at 01:12:00AM +0300, Jarkko Sakkinen wrote:
+> >>> On Sat Apr 27, 2024 at 1:55 AM EEST, Stefan Berger wrote:
+> >>>> Protect ecc_digits_from_bytes from reading too many bytes from the i=
+nput
+> >>>> byte array in case an insufficient number of bytes is provided to fi=
+ll the
+> >>>> output digit array of ndigits. Therefore, initialize the most signif=
+icant
+> >>>> digits with 0 to avoid trying to read too many bytes later on.
+> >>>>
+> >>>> If too many bytes are provided on the input byte array the extra byt=
+es
+> >>>> are ignored since the input variable 'ndigits' limits the number of =
+digits
+> >>>> that will be filled.
+> >>>>
+> >>>> Fixes: d67c96fb97b5 ("crypto: ecdsa - Convert byte arrays with key c=
+oordinates to digits")
+> >>>> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+> >>>> ---
+> >>>>   include/crypto/internal/ecc.h | 7 +++++++
+> >>>>   1 file changed, 7 insertions(+)
+> >>>>
+> >>>> diff --git a/include/crypto/internal/ecc.h b/include/crypto/internal=
+/ecc.h
+> >>>> index 7ca1f463d1ec..56215f14ff96 100644
+> >>>> --- a/include/crypto/internal/ecc.h
+> >>>> +++ b/include/crypto/internal/ecc.h
+> >>>> @@ -67,9 +67,16 @@ static inline void ecc_swap_digits(const void *in=
+, u64 *out, unsigned int ndigit
+> >>>>   static inline void ecc_digits_from_bytes(const u8 *in, unsigned in=
+t nbytes,
+> >>>>   					 u64 *out, unsigned int ndigits)
+> >>>>   {
+> >>>> +	int diff =3D ndigits - DIV_ROUND_UP(nbytes, sizeof(u64));
+> >>>>   	unsigned int o =3D nbytes & 7;
+> >>>>   	__be64 msd =3D 0;
+> >>>>  =20
+> >>>> +	/* diff > 0: not enough input bytes: set most significant digits t=
+o 0 */
+> >>>> +	while (diff > 0) {
+> >>>> +		out[--ndigits] =3D 0;
+> >>>> +		diff--;
+> >>>> +	}
+> >>>
+> >>> Could be just trivial for-loop:
+> >>>
+> >>> for (i =3D 0; i < diff; i++)
+> >>> 	out[--ndigits] =3D 0;
+> >>>
+> >>> Or also simpler while-loop could work:
+> >>>
+> >>> while (diff-- > 0)
+> >>> 	out[--ndigits] =3D 0;
+> >>
+> >> Or just use memset(), which uses optimized instructions on many arches=
+.
+> >=20
+> > Yeah, sure, that would be even better, or even memzero_explicit()?
+>
+> Thanks. The function isn't getting too big for an inline?
 
-> On 09.04.2024, at 11:48, Kshitiz Varshney <kshitiz.varshney@nxp.com> =
-wrote:
->=20
-> Hi Jarkko,
->=20
->=20
->> -----Original Message-----
->> From: Jarkko Sakkinen <jarkko@kernel.org>
->> Sent: Wednesday, April 3, 2024 9:18 PM
->> To: David Gstir <david@sigma-star.at>; Mimi Zohar =
-<zohar@linux.ibm.com>;
->> James Bottomley <jejb@linux.ibm.com>; Herbert Xu
->> <herbert@gondor.apana.org.au>; David S. Miller <davem@davemloft.net>
->> Cc: Shawn Guo <shawnguo@kernel.org>; Jonathan Corbet
->> <corbet@lwn.net>; Sascha Hauer <s.hauer@pengutronix.de>; Pengutronix
->> Kernel Team <kernel@pengutronix.de>; Fabio Estevam
->> <festevam@gmail.com>; dl-linux-imx <linux-imx@nxp.com>; Ahmad Fatoum
->> <a.fatoum@pengutronix.de>; sigma star Kernel Team
->> <upstream+dcp@sigma-star.at>; David Howells <dhowells@redhat.com>; Li
->> Yang <leoyang.li@nxp.com>; Paul Moore <paul@paul-moore.com>; James
->> Morris <jmorris@namei.org>; Serge E. Hallyn <serge@hallyn.com>; Paul =
-E.
->> McKenney <paulmck@kernel.org>; Randy Dunlap <rdunlap@infradead.org>;
->> Catalin Marinas <catalin.marinas@arm.com>; Rafael J. Wysocki
->> <rafael.j.wysocki@intel.com>; Tejun Heo <tj@kernel.org>; Steven =
-Rostedt
->> (Google) <rostedt@goodmis.org>; linux-doc@vger.kernel.org; linux-
->> kernel@vger.kernel.org; linux-integrity@vger.kernel.org;
->> keyrings@vger.kernel.org; linux-crypto@vger.kernel.org; linux-arm-
->> kernel@lists.infradead.org; linuxppc-dev@lists.ozlabs.org; =
-linux-security-
->> module@vger.kernel.org; Richard Weinberger <richard@nod.at>; David
->> Oberhollenzer <david.oberhollenzer@sigma-star.at>
->> Subject: [EXT] Re: [PATCH v8 6/6] docs: trusted-encrypted: add DCP as =
-new
->> trust source
->>=20
->> Caution: This is an external email. Please take care when clicking =
-links or
->> opening attachments. When in doubt, report the message using the =
-'Report
->> this email' button
->>=20
->>=20
->> On Wed Apr 3, 2024 at 10:21 AM EEST, David Gstir wrote:
->>> Update the documentation for trusted and encrypted KEYS with DCP as
->>> new trust source:
->>>=20
->>> - Describe security properties of DCP trust source
->>> - Describe key usage
->>> - Document blob format
->>>=20
->>> Co-developed-by: Richard Weinberger <richard@nod.at>
->>> Signed-off-by: Richard Weinberger <richard@nod.at>
->>> Co-developed-by: David Oberhollenzer
->>> <david.oberhollenzer@sigma-star.at>
->>> Signed-off-by: David Oberhollenzer =
-<david.oberhollenzer@sigma-star.at>
->>> Signed-off-by: David Gstir <david@sigma-star.at>
->>> ---
->>> .../security/keys/trusted-encrypted.rst       | 53 =
-+++++++++++++++++++
->>> security/keys/trusted-keys/trusted_dcp.c      | 19 +++++++
->>> 2 files changed, 72 insertions(+)
->>>=20
->>> diff --git a/Documentation/security/keys/trusted-encrypted.rst
->>> b/Documentation/security/keys/trusted-encrypted.rst
->>> index e989b9802f92..f4d7e162d5e4 100644
->>> --- a/Documentation/security/keys/trusted-encrypted.rst
->>> +++ b/Documentation/security/keys/trusted-encrypted.rst
->>> @@ -42,6 +42,14 @@ safe.
->>>          randomly generated and fused into each SoC at manufacturing =
-time.
->>>          Otherwise, a common fixed test key is used instead.
->>>=20
->>> +     (4) DCP (Data Co-Processor: crypto accelerator of various i.MX
->>> + SoCs)
->>> +
->>> +         Rooted to a one-time programmable key (OTP) that is =
-generally
->> burnt
->>> +         in the on-chip fuses and is accessible to the DCP =
-encryption engine
->> only.
->>> +         DCP provides two keys that can be used as root of trust: =
-the OTP
->> key
->>> +         and the UNIQUE key. Default is to use the UNIQUE key, but =
-selecting
->>> +         the OTP key can be done via a module parameter
->> (dcp_use_otp_key).
->>> +
->>>   *  Execution isolation
->>>=20
->>>      (1) TPM
->>> @@ -57,6 +65,12 @@ safe.
->>>=20
->>>          Fixed set of operations running in isolated execution =
-environment.
->>>=20
->>> +     (4) DCP
->>> +
->>> +         Fixed set of cryptographic operations running in isolated =
-execution
->>> +         environment. Only basic blob key encryption is executed =
-there.
->>> +         The actual key sealing/unsealing is done on main =
-processor/kernel
->> space.
->>> +
->>>   * Optional binding to platform integrity state
->>>=20
->>>      (1) TPM
->>> @@ -79,6 +93,11 @@ safe.
->>>          Relies on the High Assurance Boot (HAB) mechanism of NXP =
-SoCs
->>>          for platform integrity.
->>>=20
->>> +     (4) DCP
->>> +
->>> +         Relies on Secure/Trusted boot process (called HAB by =
-vendor) for
->>> +         platform integrity.
->>> +
->>>   *  Interfaces and APIs
->>>=20
->>>      (1) TPM
->>> @@ -94,6 +113,11 @@ safe.
->>>=20
->>>          Interface is specific to silicon vendor.
->>>=20
->>> +     (4) DCP
->>> +
->>> +         Vendor-specific API that is implemented as part of the DCP =
-crypto
->> driver in
->>> +         ``drivers/crypto/mxs-dcp.c``.
->>> +
->>>   *  Threat model
->>>=20
->>>      The strength and appropriateness of a particular trust source
->>> for a given @@ -129,6 +153,13 @@ selected trust source:
->>>      CAAM HWRNG, enable CRYPTO_DEV_FSL_CAAM_RNG_API and ensure
->> the device
->>>      is probed.
->>>=20
->>> +  *  DCP (Data Co-Processor: crypto accelerator of various i.MX =
-SoCs)
->>> +
->>> +     The DCP hardware device itself does not provide a dedicated =
-RNG
->> interface,
->>> +     so the kernel default RNG is used. SoCs with DCP like the =
-i.MX6ULL do
->> have
->>> +     a dedicated hardware RNG that is independent from DCP which =
-can be
->> enabled
->>> +     to back the kernel RNG.
->>> +
->>> Users may override this by specifying ``trusted.rng=3Dkernel`` on =
-the
->>> kernel  command-line to override the used RNG with the kernel's =
-random
->> number pool.
->>>=20
->>> @@ -231,6 +262,19 @@ Usage::
->>> CAAM-specific format.  The key length for new keys is always in =
-bytes.
->>> Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
->>>=20
->>> +Trusted Keys usage: DCP
->>> +-----------------------
->>> +
->>> +Usage::
->>> +
->>> +    keyctl add trusted name "new keylen" ring
->>> +    keyctl add trusted name "load hex_blob" ring
->>> +    keyctl print keyid
->>> +
->>> +"keyctl print" returns an ASCII hex copy of the sealed key, which =
-is
->>> +in format specific to this DCP key-blob implementation.  The key
->>> +length for new keys is always in bytes. Trusted Keys can be 32 - =
-128 bytes
->> (256 - 1024 bits).
->>> +
->>> Encrypted Keys usage
->>> --------------------
->>>=20
->>> @@ -426,3 +470,12 @@ string length.
->>> privkey is the binary representation of TPM2B_PUBLIC excluding the
->>> initial TPM2B header which can be reconstructed from the ASN.1 octed
->>> string length.
->>> +
->>> +DCP Blob Format
->>> +---------------
->>> +
->>> +.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
->>> +   :doc: dcp blob format
->>> +
->>> +.. kernel-doc:: security/keys/trusted-keys/trusted_dcp.c
->>> +   :identifiers: struct dcp_blob_fmt
->>> diff --git a/security/keys/trusted-keys/trusted_dcp.c
->>> b/security/keys/trusted-keys/trusted_dcp.c
->>> index 16c44aafeab3..b5f81a05be36 100644
->>> --- a/security/keys/trusted-keys/trusted_dcp.c
->>> +++ b/security/keys/trusted-keys/trusted_dcp.c
->>> @@ -19,6 +19,25 @@
->>> #define DCP_BLOB_VERSION 1
->>> #define DCP_BLOB_AUTHLEN 16
->>>=20
->>> +/**
->>> + * DOC: dcp blob format
->>> + *
->>> + * The Data Co-Processor (DCP) provides hardware-bound AES keys =
-using
->>> +its
->>> + * AES encryption engine only. It does not provide direct key
->> sealing/unsealing.
->>> + * To make DCP hardware encryption keys usable as trust source, we
->>> +define
->>> + * our own custom format that uses a hardware-bound key to secure =
-the
->>> +sealing
->>> + * key stored in the key blob.
->>> + *
->>> + * Whenever a new trusted key using DCP is generated, we generate a
->>> +random 128-bit
->>> + * blob encryption key (BEK) and 128-bit nonce. The BEK and nonce =
-are
->>> +used to
->>> + * encrypt the trusted key payload using AES-128-GCM.
->>> + *
->>> + * The BEK itself is encrypted using the hardware-bound key using =
-the
->>> +DCP's AES
->>> + * encryption engine with AES-128-ECB. The encrypted BEK, generated
->>> +nonce,
->>> + * BEK-encrypted payload and authentication tag make up the blob
->>> +format together
->>> + * with a version number, payload length and authentication tag.
->>> + */
->>> +
->>> /**
->>>  * struct dcp_blob_fmt - DCP BLOB format.
->>>  *
->>=20
->> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
->>=20
->> I can only test that this does not break a machine without the =
-hardware
->> feature.
->>=20
->> Is there anyone who could possibly peer test these patches?
-> I am already working on testing this patchset on i.MX6 platform.
+Hmm... so as far as I'm concerned you pick what works for you. Just
+was pointing out at it would make to simplify the original a bit :-)
 
-Did you get around to testing this?
-I=E2=80=99d greatly appreciate a Tested-by for this. :-)
-
-Thanks!
-BR, David
-
+BR, Jarkko
 
