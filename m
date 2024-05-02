@@ -1,111 +1,240 @@
-Return-Path: <keyrings+bounces-1167-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1168-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545EC8B82E8
-	for <lists+keyrings@lfdr.de>; Wed,  1 May 2024 01:11:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F13FF8B9DAC
+	for <lists+keyrings@lfdr.de>; Thu,  2 May 2024 17:42:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F4E6B23CCC
-	for <lists+keyrings@lfdr.de>; Tue, 30 Apr 2024 23:10:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1B11B20E61
+	for <lists+keyrings@lfdr.de>; Thu,  2 May 2024 15:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF13129E72;
-	Tue, 30 Apr 2024 23:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VacM079c"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3388315B554;
+	Thu,  2 May 2024 15:42:29 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849F786126;
-	Tue, 30 Apr 2024 23:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DEEC15B11D
+	for <keyrings@vger.kernel.org>; Thu,  2 May 2024 15:42:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714518656; cv=none; b=lrfS7exwKsoVvAYnSjAvkYuh3DeCOzQVYGUsuZjwOAeOwVVWSP5gS/ZTKQap/7RUuC4LiRU9bkbSxwGNL/qMlxd2D4GdOjRcUd9DbTW68keiTkR3c+gY+Vfqf2Ez0gAMYwL+DmQIgxz1b0CzGJsm2EwsH9xQ4r/09hxOLPP+Xao=
+	t=1714664549; cv=none; b=AqlcZH9g0yMO0h2TDGr9tiws40xKtosEobLQ/Py8M7Tlt41xw1LTcOqR9vCvkgfY/SHI9gPmh5OuN9tQz3lgHkErlO5JHnuyeifN0rTTyCVh26BnQFTZwLTXi0Nmk8A6bAhF//ipJThmvniRaDwumRTGv/uXuhDPj/AXQzUAO4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714518656; c=relaxed/simple;
-	bh=3ozd/dLNcaXnTupI3HAH0T+oR/ZIay1YmFEmUpy28xo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=kV90m1kCq72++lxNw0F528UUlFQZN9jeT5KIIMaPQrkQM4h5p74uybJ8ZsPsBy+EiDAU1Br5xK0bt7zKowQ9Qo0Nmgiv5W8WpzUEKJMJ8z2VG0R2lierL4yMhPwTGAsSX7+LmOqup8AKPlzifNFY0Rvem6TcPAo6FTqaw34BQck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VacM079c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8874C2BBFC;
-	Tue, 30 Apr 2024 23:10:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714518656;
-	bh=3ozd/dLNcaXnTupI3HAH0T+oR/ZIay1YmFEmUpy28xo=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=VacM079cPoTyPXAUN9PlNLBJXYLMcy1bq3KX++VvFj5beHChjaRBwsgve8wrlCfIP
-	 aYY2yugdE2B3JmwImqANpbJBZDWwJMLHYx3tdjTcZDStnmqpWDLlXC2lPzb0n4WCm6
-	 RRQ8vSwVa45aKUm9I3tbO3j+p/0vw3qeexfcDFHXcIDoEkmcSjMOPhlTv1fr5JBNum
-	 3HauCoYf840uCb5JRdZufCbpchsWtY9irV/WH/suzVIyMJs5YxT6pkKe4z9ynZ5rke
-	 W2b7Aa2Q6aXvkj0zOHMZaRe2IyWri6MAESKZWt8a84/FP/TldviO+a1QIVf4vPryKR
-	 KIVck1KEV0i3A==
+	s=arc-20240116; t=1714664549; c=relaxed/simple;
+	bh=SlEz3XjKzROMvi3l4BzF2CGRUkGfSg3FEbjb94Ym+lI=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=rwkJmlVd8dcNh9cD0MRCizkIeYzuFbdHQR1uvFoEyTUM7RCu4FJKN3VXtKer2HiaNcIJhvXQo1rgipzAJ/e/u5SVxwKYC8qoTKIl+w9sRBqbRU6l523VIFNVM7iVev7FX+p+zr3IVf4AqNyNOqC5L+1oiNk/eGxprfmhYFbdI8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-7ddf08e17e4so159422539f.0
+        for <keyrings@vger.kernel.org>; Thu, 02 May 2024 08:42:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714664547; x=1715269347;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=b5fUISXd7Zqy3cTRarK7NciYHklQ9WyhHFcj68u208k=;
+        b=b0lai+uendUrGU2yO30cncogxYlyFmxzF+lUxMnS5LqKEmaac7/zyi+GdTuwfnuAOP
+         sf9N/SdyNAZhrkRfGigxPgCLk6Lr+2ki8FFJmXxPN7aRjrOR407xAjHUBHcWTSiq2sla
+         iwzjG0ANeS3rHHVtAR8RomtmVWNfFZGTJn3/i7CBQgYio5J1h+Jkt3nEwLviqS0aLhYF
+         JT4Y7ZJ3CYvBmYXN5njrQDUz2xlBLVjqbhvOxrmJ1acJ4NwD1RWyoXBomPd7WixY8XVb
+         4DYep660kBjq5Z0u4RpoWPDVP67VS8dAdM0WJH93baATTSjcJ74cmFdp2z/y1IzE0pXQ
+         HQkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVWME/qHIZ7PmXNOqp0YTbV5R/Mna1b5eLXTndxn5USovbNnym7Cb6AMoRmQVQ/wZC/SomGp9o/Hx+EvOgjt7jgCtWVd+P5EV8=
+X-Gm-Message-State: AOJu0YzDxXT9ZzaIW/WQXUjYkDMc40p4KKjMNL5re3zgOU6av39yX1Df
+	mj2RZ2llzaKClwmMObnHGbr7fE9NG79FAVSE5wYnt0BOQc6rpXKIhFuMKKr2jLtRF1dzwIiLgdt
+	ahgi2ps9brBclCZTSy2MSu2GLPdYQuwVY6O4RDt4crpwqrkKlkaUxS0Y=
+X-Google-Smtp-Source: AGHT+IFiLWfYFFqZNjO3yvW/yptU+aEV0DV+7Fo0Fd/GyVoYQsmRkFC21NAjZc08BDjIS5BrNHKedxRcxvNorw6bmPb0Ht380lvN
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 01 May 2024 02:10:53 +0300
-Message-Id: <D0XU4ZTRCD68.2EMZX03QA4I4@kernel.org>
-To: "Jarkko Sakkinen" <jarkko@kernel.org>, "James Bottomley"
- <James.Bottomley@HansenPartnership.com>, <linux-integrity@vger.kernel.org>
-Cc: <keyrings@vger.kernel.org>, "Ard Biesheuvel" <ardb@kernel.org>
-Subject: Re: [PATCH v8 00/22] add integrity and security to TPM2
- transactions
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-X-Mailer: aerc 0.17.0
-References: <20240429202811.13643-1-James.Bottomley@HansenPartnership.com>
- <D0WYH9UDXCZC.3OZ9MSOVTDBE1@kernel.org>
- <eef3292f4680c22b817021f973a34a1657b82c86.camel@HansenPartnership.com>
- <D0XSE6G33OHS.1B4OFPN0NCEIM@kernel.org>
- <c175a43a1c33a9513e3319e7b29e3985a140b4da.camel@HansenPartnership.com>
- <D0XTMODYQ0MO.38N6NKD1SYOXI@kernel.org>
-In-Reply-To: <D0XTMODYQ0MO.38N6NKD1SYOXI@kernel.org>
+MIME-Version: 1.0
+X-Received: by 2002:a05:6638:830c:b0:484:802a:a787 with SMTP id
+ io12-20020a056638830c00b00484802aa787mr129624jab.3.1714664546853; Thu, 02 May
+ 2024 08:42:26 -0700 (PDT)
+Date: Thu, 02 May 2024 08:42:26 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000039727706177a7395@google.com>
+Subject: [syzbot] [keyrings?] [lsm?] possible deadlock in keyring_clear
+From: syzbot <syzbot+7e7ae1ea0744f1adce1a@syzkaller.appspotmail.com>
+To: dhowells@redhat.com, jarkko@kernel.org, jmorris@namei.org, 
+	keyrings@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, paul@paul-moore.com, serge@hallyn.com, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed May 1, 2024 at 1:46 AM EEST, Jarkko Sakkinen wrote:
-> On Wed May 1, 2024 at 1:31 AM EEST, James Bottomley wrote:
-> > On Wed, 2024-05-01 at 00:48 +0300, Jarkko Sakkinen wrote:
-> > > On Tue Apr 30, 2024 at 10:23 PM EEST, James Bottomley wrote:
-> > > > On Tue, 2024-04-30 at 01:22 +0300, Jarkko Sakkinen wrote:
-> > [...]
-> > > > > Since I could not find the email subthread I neither have the
-> > > > > patch nor do know the baseline. So if you could help with these
-> > > > > details then we can move forward.
-> > > > >=20
-> > > > > I can also work with QEMU Git fork if you have one and point out
-> > > > > QEMU_OVERRIDE_SRCDIR to the clone.
-> > > >=20
-> > > > I only have the patches in a local git repository, but I could push
-> > > > qemu up onto kernel.org if it would help?
-> > >=20
-> > > That definitely does help. I can point out my build to that
-> > > repository, (or actually clone of it).
-> >
-> > OK, it's the mssim branch here:
-> >
-> > https://git.kernel.org/pub/scm/linux/kernel/git/jejb/qemu.git/log/?h=3D=
-mssim
-> >
-> > It's based on qemu head, but it works for me.
-> >
-> > James
->
-> OK, cool. I'll test this on Thursday as tomorrow is national holiday
-> in Finland. However, I'll quickly just try it in my host before going
-> to sleep (if there is any feedback to be given).
->
-> I happen to run Tumbleweed nowadays so I can just install ibmswtpm2
-> package, i.e. should take only a short while.
+Hello,
 
-OK, so I got to the point that I can startup a VM with mssim so I'll
-do the "final test" Thursday :-)
+syzbot found the following issue on:
 
-I have no time to review the qemu patches but you could add my
-tested-by if you want to those.
+HEAD commit:    2c8159388952 Merge tag 'rust-fixes-6.9' of https://github...
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1682a8a7180000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=3d46aa9d7a44f40d
+dashboard link: https://syzkaller.appspot.com/bug?extid=7e7ae1ea0744f1adce1a
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
 
-BR, Jarkko
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/a4173768ac07/disk-2c815938.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/060f21ef407d/vmlinux-2c815938.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/a38eae39bb35/bzImage-2c815938.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+7e7ae1ea0744f1adce1a@syzkaller.appspotmail.com
+
+======================================================
+WARNING: possible circular locking dependency detected
+6.9.0-rc5-syzkaller-00355-g2c8159388952 #0 Not tainted
+------------------------------------------------------
+kswapd0/87 is trying to acquire lock:
+ffff88802cd46e98 (&type->lock_class){+.+.}-{3:3}, at: keyring_clear+0xb2/0x350 security/keys/keyring.c:1655
+
+but task is already holding lock:
+ffffffff8e428cc0 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat mm/vmscan.c:6782 [inline]
+ffffffff8e428cc0 (fs_reclaim){+.+.}-{0:0}, at: kswapd+0xb20/0x30c0 mm/vmscan.c:7164
+
+which lock already depends on the new lock.
+
+
+the existing dependency chain (in reverse order) is:
+
+-> #1 (fs_reclaim){+.+.}-{0:0}:
+       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5754
+       __fs_reclaim_acquire mm/page_alloc.c:3698 [inline]
+       fs_reclaim_acquire+0x88/0x140 mm/page_alloc.c:3712
+       might_alloc include/linux/sched/mm.h:312 [inline]
+       slab_pre_alloc_hook mm/slub.c:3746 [inline]
+       slab_alloc_node mm/slub.c:3827 [inline]
+       kmalloc_trace+0x47/0x360 mm/slub.c:3992
+       kmalloc include/linux/slab.h:628 [inline]
+       kzalloc include/linux/slab.h:749 [inline]
+       assoc_array_insert+0xfe/0x3390 lib/assoc_array.c:980
+       __key_link_begin+0xe5/0x1f0 security/keys/keyring.c:1314
+       __key_create_or_update+0x570/0xc70 security/keys/key.c:861
+       key_create_or_update+0x42/0x60 security/keys/key.c:1005
+       x509_load_certificate_list+0x149/0x270 crypto/asymmetric_keys/x509_loader.c:31
+       do_one_initcall+0x248/0x880 init/main.c:1245
+       do_initcall_level+0x157/0x210 init/main.c:1307
+       do_initcalls+0x3f/0x80 init/main.c:1323
+       kernel_init_freeable+0x435/0x5d0 init/main.c:1555
+       kernel_init+0x1d/0x2b0 init/main.c:1444
+       ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+-> #0 (&type->lock_class){+.+.}-{3:3}:
+       check_prev_add kernel/locking/lockdep.c:3134 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3253 [inline]
+       validate_chain+0x18cb/0x58e0 kernel/locking/lockdep.c:3869
+       __lock_acquire+0x1346/0x1fd0 kernel/locking/lockdep.c:5137
+       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5754
+       down_write+0x3a/0x50 kernel/locking/rwsem.c:1579
+       keyring_clear+0xb2/0x350 security/keys/keyring.c:1655
+       fscrypt_put_master_key+0xc8/0x180 fs/crypto/keyring.c:79
+       put_crypt_info+0x275/0x320 fs/crypto/keysetup.c:548
+       fscrypt_put_encryption_info+0x40/0x60 fs/crypto/keysetup.c:753
+       ext4_clear_inode+0x15b/0x1c0 fs/ext4/super.c:1536
+       ext4_evict_inode+0xabc/0xf50 fs/ext4/inode.c:318
+       evict+0x2a8/0x630 fs/inode.c:667
+       __dentry_kill+0x20d/0x630 fs/dcache.c:603
+       shrink_kill+0xa9/0x2c0 fs/dcache.c:1048
+       shrink_dentry_list+0x2c0/0x5b0 fs/dcache.c:1075
+       prune_dcache_sb+0x10f/0x180 fs/dcache.c:1156
+       super_cache_scan+0x34f/0x4b0 fs/super.c:221
+       do_shrink_slab+0x705/0x1160 mm/shrinker.c:435
+       shrink_slab_memcg mm/shrinker.c:548 [inline]
+       shrink_slab+0x883/0x14d0 mm/shrinker.c:626
+       shrink_node_memcgs mm/vmscan.c:5875 [inline]
+       shrink_node+0x11f5/0x2d60 mm/vmscan.c:5908
+       kswapd_shrink_node mm/vmscan.c:6704 [inline]
+       balance_pgdat mm/vmscan.c:6895 [inline]
+       kswapd+0x1a25/0x30c0 mm/vmscan.c:7164
+       kthread+0x2f0/0x390 kernel/kthread.c:388
+       ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+other info that might help us debug this:
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(fs_reclaim);
+                               lock(&type->lock_class);
+                               lock(fs_reclaim);
+  lock(&type->lock_class);
+
+ *** DEADLOCK ***
+
+2 locks held by kswapd0/87:
+ #0: ffffffff8e428cc0 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat mm/vmscan.c:6782 [inline]
+ #0: ffffffff8e428cc0 (fs_reclaim){+.+.}-{0:0}, at: kswapd+0xb20/0x30c0 mm/vmscan.c:7164
+ #1: ffff88818bb7e0e0 (&type->s_umount_key#31){++++}-{3:3}, at: super_trylock_shared fs/super.c:561 [inline]
+ #1: ffff88818bb7e0e0 (&type->s_umount_key#31){++++}-{3:3}, at: super_cache_scan+0x94/0x4b0 fs/super.c:196
+
+stack backtrace:
+CPU: 0 PID: 87 Comm: kswapd0 Not tainted 6.9.0-rc5-syzkaller-00355-g2c8159388952 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/27/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:114
+ check_noncircular+0x36a/0x4a0 kernel/locking/lockdep.c:2187
+ check_prev_add kernel/locking/lockdep.c:3134 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3253 [inline]
+ validate_chain+0x18cb/0x58e0 kernel/locking/lockdep.c:3869
+ __lock_acquire+0x1346/0x1fd0 kernel/locking/lockdep.c:5137
+ lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5754
+ down_write+0x3a/0x50 kernel/locking/rwsem.c:1579
+ keyring_clear+0xb2/0x350 security/keys/keyring.c:1655
+ fscrypt_put_master_key+0xc8/0x180 fs/crypto/keyring.c:79
+ put_crypt_info+0x275/0x320 fs/crypto/keysetup.c:548
+ fscrypt_put_encryption_info+0x40/0x60 fs/crypto/keysetup.c:753
+ ext4_clear_inode+0x15b/0x1c0 fs/ext4/super.c:1536
+ ext4_evict_inode+0xabc/0xf50 fs/ext4/inode.c:318
+ evict+0x2a8/0x630 fs/inode.c:667
+ __dentry_kill+0x20d/0x630 fs/dcache.c:603
+ shrink_kill+0xa9/0x2c0 fs/dcache.c:1048
+ shrink_dentry_list+0x2c0/0x5b0 fs/dcache.c:1075
+ prune_dcache_sb+0x10f/0x180 fs/dcache.c:1156
+ super_cache_scan+0x34f/0x4b0 fs/super.c:221
+ do_shrink_slab+0x705/0x1160 mm/shrinker.c:435
+ shrink_slab_memcg mm/shrinker.c:548 [inline]
+ shrink_slab+0x883/0x14d0 mm/shrinker.c:626
+ shrink_node_memcgs mm/vmscan.c:5875 [inline]
+ shrink_node+0x11f5/0x2d60 mm/vmscan.c:5908
+ kswapd_shrink_node mm/vmscan.c:6704 [inline]
+ balance_pgdat mm/vmscan.c:6895 [inline]
+ kswapd+0x1a25/0x30c0 mm/vmscan.c:7164
+ kthread+0x2f0/0x390 kernel/kthread.c:388
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
