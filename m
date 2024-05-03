@@ -1,46 +1,46 @@
-Return-Path: <keyrings+bounces-1174-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1175-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A7D78BB86E
-	for <lists+keyrings@lfdr.de>; Sat,  4 May 2024 01:45:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A10408BB87F
+	for <lists+keyrings@lfdr.de>; Sat,  4 May 2024 01:50:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AEFDB21782
-	for <lists+keyrings@lfdr.de>; Fri,  3 May 2024 23:45:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FDD71F23F12
+	for <lists+keyrings@lfdr.de>; Fri,  3 May 2024 23:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0455584D30;
-	Fri,  3 May 2024 23:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CFCE84DE3;
+	Fri,  3 May 2024 23:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BZoQANMu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bytY8/uF"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5B550297;
-	Fri,  3 May 2024 23:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E54F58ACC;
+	Fri,  3 May 2024 23:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714779915; cv=none; b=oSTMq9GG4h37BMi1NRTULlqt77jTZBITzTPmFXc8x33/Zw7J6WOVFpiWstHD2srIBan/GKY3tnnROY/Oj5oCuZHP5Yhjn2OeVOMlI7YneNZKpz44W+Cjim0jVB/3moRS0PI4DhcA+9D+B2ImwJNeLNdrrgrwwiF1e4y0Nuvlqiw=
+	t=1714780202; cv=none; b=R3OBF8TA6RzOEbgM1EdhTSr4iPQYgEVseBkJzEKgIe4VOAAB4wvrTuHm9iYbdCemV34UfwmfvR6KvSIVUk5SOIKQuIur9Yl5BlCsPgrEsLtZ0f+H1IzgI1TPAg3uKvVeAghIegH4EfGlmi4kGU0T0M8dL5j0mN/m/ZdiqYPOfN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714779915; c=relaxed/simple;
-	bh=DlRlFVsHUqhvPdkfip9DnPPB8Y/bNEuxfZL0IMIFLYk=;
+	s=arc-20240116; t=1714780202; c=relaxed/simple;
+	bh=2YpmUB6M3pSqN3NzsLH/1Ao0GXXtZMFte53gEx/HtJU=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=IK2dpdmna/eH20gp4kR7W/eFBiJlHaCnkgIzOhkq+NmzuTz2HPTNTkm++MB85lh9SE6dVoaQ+TIPCOMegadBRVf1VdzgpVIhodFR5/+Kf2synHhoTG6jegBj7VIzNVlD3DVpGkivinLfytkJweWMPI0XtN5sfv3TtsKSLQR5s/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BZoQANMu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2F4C116B1;
-	Fri,  3 May 2024 23:45:07 +0000 (UTC)
+	 References:In-Reply-To; b=bG9P5qkFAhHLfXHipBaBIV61PUJ17QZQfMK+xPFc/ENom9H2LXydjyPRaB/IETUcx3aJBWV5ISu3CHt+AzG4OsZY3CqMC4T8LayW4CXZq+W4IQ5vfqYJ+hKIviSuB3nO9VBWDP0SIOUxtFmnxC3cIhWoFOLblBclsn5IWanNRgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bytY8/uF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4487FC116B1;
+	Fri,  3 May 2024 23:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714779915;
-	bh=DlRlFVsHUqhvPdkfip9DnPPB8Y/bNEuxfZL0IMIFLYk=;
+	s=k20201202; t=1714780201;
+	bh=2YpmUB6M3pSqN3NzsLH/1Ao0GXXtZMFte53gEx/HtJU=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=BZoQANMu5xxuHXX714j4tlKziMZOQFhvYDjQLmlnL6HneFF17oZkflc23OPLrUjm6
-	 l96OiS8KxIKEs5kczliHGVnsn10tT68fYsWkcfAYPWXZ1XvmzGoHvUkp1ZxmKrWpDC
-	 s7td0SjDAOIEg2AzAYplNdCnrGMHYph1oVDt7Xqi8J5CfL0NaerWmmjCQ7oBTxZkFN
-	 hi9mYVwSgjD715rrjl4RTDFa7RFivlIKP+ftuX65ggz1X4tvvvHVoGTWJAtpHvh7Rc
-	 WVqUjjU2Mp8QltWKiPa2PEtJQ3MsGF6I9PdUxd++kH3e/soRIgYBMoF7CMkgpxB3MJ
-	 71FCga1RH5W5w==
+	b=bytY8/uFZrCn37wOWEy3wId3z3QN5E14L9yhJt0D+EYhIdXPHW10GivvdAUibjWAA
+	 77KVVH3Tr9z7QsqxN0i872jVu1dAILURmwjlJTWvaar2F8qu8RxIOl8G77Aqoaqa/0
+	 aqyVah3WabniMmvfn87oH4SsqR89Jl3PoOTVaDzrRS5e9wj1Z3/XgEsgVdimvLPJnV
+	 SuCq3OGEbTxS6eIfgRhzEM9EWoCrrb8enpHUWhY3BtcZ3z31i+NGloYB8XJBC8I67u
+	 ASayxzLM3AoyBfXDr47x+3Y7ijNWI1FocxZmes/1RWmOfLQL90MMjOEADJmZ3PvaUf
+	 ksE3KLiIxNtfQ==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,81 +49,32 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 04 May 2024 02:45:05 +0300
-Message-Id: <D10EQTNQXQYO.1QBNX5LMFU8NK@kernel.org>
-Cc: "Mimi Zohar" <zohar@linux.ibm.com>, "James Bottomley"
- <jejb@linux.ibm.com>, "Herbert Xu" <herbert@gondor.apana.org.au>, "David S.
- Miller" <davem@davemloft.net>, "Kshitiz Varshney"
- <kshitiz.varshney@nxp.com>, "Shawn Guo" <shawnguo@kernel.org>, "Jonathan
- Corbet" <corbet@lwn.net>, "Sascha Hauer" <s.hauer@pengutronix.de>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>, "Fabio Estevam"
- <festevam@gmail.com>, "dl-linux-imx" <linux-imx@nxp.com>, "Ahmad Fatoum"
- <a.fatoum@pengutronix.de>, "sigma star Kernel Team"
- <upstream+dcp@sigma-star.at>, "David Howells" <dhowells@redhat.com>, "Li
- Yang" <leoyang.li@nxp.com>, "Paul Moore" <paul@paul-moore.com>, "James
- Morris" <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, "Paul E.
- McKenney" <paulmck@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>,
- "Catalin Marinas" <catalin.marinas@arm.com>, "Rafael J. Wysocki"
- <rafael.j.wysocki@intel.com>, "Tejun Heo" <tj@kernel.org>, "Steven Rostedt
- (Google)" <rostedt@goodmis.org>, "linux-doc@vger.kernel.org"
- <linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, "linux-integrity@vger.kernel.org"
- <linux-integrity@vger.kernel.org>, "keyrings@vger.kernel.org"
- <keyrings@vger.kernel.org>, "linux-crypto@vger.kernel.org"
- <linux-crypto@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "linuxppc-dev@lists.ozlabs.org"
- <linuxppc-dev@lists.ozlabs.org>, "linux-security-module@vger.kernel.org"
- <linux-security-module@vger.kernel.org>, "Richard Weinberger"
- <richard@nod.at>, "David Oberhollenzer"
- <david.oberhollenzer@sigma-star.at>, "Varun Sethi" <V.Sethi@nxp.com>,
- "Gaurav Jain" <gaurav.jain@nxp.com>, "Pankaj Gupta" <pankaj.gupta@nxp.com>
-Subject: Re: [EXT] [PATCH v8 6/6] docs: trusted-encrypted: add DCP as new
- trust source
+Date: Sat, 04 May 2024 02:49:58 +0300
+Message-Id: <D10EUK2TUF57.1E87NSEA2ZYU@kernel.org>
+Cc: "Lukas Wunner" <lukas@wunner.de>, "Stefan Berger"
+ <stefanb@linux.ibm.com>, <keyrings@vger.kernel.org>,
+ <linux-crypto@vger.kernel.org>, <davem@davemloft.net>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] crypto: ecc - Protect ecc_digits_from_bytes from
+ reading too many bytes
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "David Gstir" <david@sigma-star.at>
+To: "Herbert Xu" <herbert@gondor.apana.org.au>
 X-Mailer: aerc 0.17.0
-References: <20240403072131.54935-1-david@sigma-star.at>
- <20240403072131.54935-7-david@sigma-star.at>
- <D0ALT2QCUIYB.8NFTE7Z18JKN@kernel.org>
- <DB6PR04MB3190F6B78FF3760EBCC14E758F072@DB6PR04MB3190.eurprd04.prod.outlook.com> <7783BAE9-87DA-4DD5-ADFA-15A9B55EEF39@sigma-star.at> <DB6PR04MB319062F2A19A250BA22C12D48F1A2@DB6PR04MB3190.eurprd04.prod.outlook.com> <DB9357A7-0B20-4E57-AF66-3DD0F55ED538@sigma-star.at>
-In-Reply-To: <DB9357A7-0B20-4E57-AF66-3DD0F55ED538@sigma-star.at>
+References: <20240426225553.3038070-1-stefanb@linux.ibm.com>
+ <D0W3MTR0CY08.Q2UIYE4N274L@kernel.org> <Zi8UXS1MD5V58dnN@wunner.de>
+ <D0WIZTMRKHSJ.1Z4ZV54DLVWAB@kernel.org>
+ <ZjS83WIPglXiUH3n@gondor.apana.org.au>
+In-Reply-To: <ZjS83WIPglXiUH3n@gondor.apana.org.au>
 
-On Tue Apr 30, 2024 at 3:03 PM EEST, David Gstir wrote:
-> Hi Jarkko,
->
-> > On 30.04.2024, at 13:48, Kshitiz Varshney <kshitiz.varshney@nxp.com> wr=
-ote:
+On Fri May 3, 2024 at 1:30 PM EEST, Herbert Xu wrote:
+> On Mon, Apr 29, 2024 at 01:14:15PM +0300, Jarkko Sakkinen wrote:
 > >=20
-> > Hi David,
-> >=20
-> >> -----Original Message-----
-> >> From: David Gstir <david@sigma-star.at>
-> >> Sent: Monday, April 29, 2024 5:05 PM
-> >> To: Kshitiz Varshney <kshitiz.varshney@nxp.com>
+> > Yeah, sure, that would be even better, or even memzero_explicit()?
 >
->
-> >>=20
-> >> Did you get around to testing this?
-> >> I=E2=80=99d greatly appreciate a Tested-by for this. :-)
-> >>=20
-> >> Thanks!
-> >> BR, David
-> >=20
-> > Currently, I am bit busy with other priority activities. It will take t=
-ime to test this patch set.
->
-> How should we proceed here?
-> Do we have to miss another release cycle, because of a Tested-by?
->
-> If any bugs pop up I=E2=80=99ll happily fix them, but at the moment it ap=
-pears to be more of a formality.
-> IMHO the patch set itself is rather small and has been thoroughly reviewe=
-d to ensure that any huge
-> issues would already have been caught by now.
+> memzero_explicit should only be used for stack memory.
 
-I don't mind picking this actually since unless you consume it,
-it should not get in the way. I'll pick it during the weekend.
-Thanks for reminding.
+BTW, is this in kernel documentation? It's a guideline really
+and would be nice to have reminder, that's all.
 
 BR, Jarkko
 
