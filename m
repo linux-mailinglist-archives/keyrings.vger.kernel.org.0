@@ -1,171 +1,185 @@
-Return-Path: <keyrings+bounces-1183-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1184-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 907478C173A
-	for <lists+keyrings@lfdr.de>; Thu,  9 May 2024 22:25:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71BA38C1C45
+	for <lists+keyrings@lfdr.de>; Fri, 10 May 2024 03:59:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AA042852FD
-	for <lists+keyrings@lfdr.de>; Thu,  9 May 2024 20:25:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A37F281939
+	for <lists+keyrings@lfdr.de>; Fri, 10 May 2024 01:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA0C14C590;
-	Thu,  9 May 2024 20:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D15A13B797;
+	Fri, 10 May 2024 01:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DZGSXJzU"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="fI3dHeba"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01463129A68;
-	Thu,  9 May 2024 20:04:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867AE33CD1;
+	Fri, 10 May 2024 01:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715285048; cv=none; b=uSGKwvn6S9imxKizH773tmgI7wspkriEzWTdJM8zG8ZLIKTjgT+GY0zCJrshOyMe+8wj2jUkVFkAn6+YU8bTYK45Ap/eO8v1dvslJs/1hSLqlpTRuQPf4FZ6WpP3EGl2h4wxORzuAggNrxrm6t2I1PQGnJb0FSOddJNMXUfWDBA=
+	t=1715306387; cv=none; b=FeQUq7MupVFP+alDRcutXdZei/F7jrfz9sEdWNDjvX2nZWegqi1fLcq1CT74rRXiwjDyTyir25OoWamFNTx6hGcZQ3MersY2t61juuHT0qp/xT/vmPWgwrl67nOZtZLHM64HiOLtKQHEKmJ09tT+J/vkBSIIkB/7ZawsabkX0P8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715285048; c=relaxed/simple;
-	bh=LTGAalsVHpHpS5kUBwPeinahoR1Fg29UOnSYLyQsWm8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To; b=SOULK/eL/ey/A0KnWeYanYLp78y7mSQnpUhWbEwNFoPdiY+LrbWXhOcbw0cmlSicCtblYB+I1U/3bK0Tt3tswFfosMXtAa2UbUgaclEJTy1FQxR1eV7ELD1AShrZmyOFXXqxjoguHQDPpfMPIlEOc0V4AD/iEAemcN5RiTH1tRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DZGSXJzU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A8D2C3277B;
-	Thu,  9 May 2024 20:04:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715285047;
-	bh=LTGAalsVHpHpS5kUBwPeinahoR1Fg29UOnSYLyQsWm8=;
-	h=Date:Cc:Subject:From:To:From;
-	b=DZGSXJzUlXWtqZ08KEc16seehl3da9D7WSUTOFxgddVb2emt334emFMc546tW77KV
-	 oF8RBgTkJ4wDQHiLvoIYMUBFuhnew1BjTqNRWDNlzBj18vT5uQxAi+WQfEavMz1DBz
-	 jXO68LqxOx5IsKZ8qlru4xzcpEt4hsquDZtutRm3gXJaO+RocvzARPyAchuzqR/4FB
-	 eWfGYdwMeW3v99Fs5JAoIGUsbZlg3eaG8UJX8c6+mpT1jtrdHhfAr9zml4QM6UJyoo
-	 oAo2VfHOqATgmLRn2xL76lSK1GP5ELBmx/NefeWWeWzenXaOnTAXYXDMUaU2ZU7BHf
-	 6WBc1vNaVjkuw==
+	s=arc-20240116; t=1715306387; c=relaxed/simple;
+	bh=1zvBhO11KU07W6//cXwWC2aMDcPdVMYA8rYU21wJ2M4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RfdNjo+8honSO/fV0VU0JiFGV/CHugtKPsVjXy3xv42QIl1yXDp+kpDp/JOvWJZUO8QrXov94I7jfiOpIBsDm3DmTFpcbiCZurG7+cnRi+Tt2Pdcx9PoWB/dHFQdBdq/z4eo8MFn54yux4D271WalR/W6NH3B0m7Gmtu+VvA49U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fI3dHeba; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44A1lenh017504;
+	Fri, 10 May 2024 01:59:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=6hQdQWIJQzQJKZkddUQqTAvsAlR93yaL2HeF+Kt++gM=;
+ b=fI3dHebaSoPgdeo5SWBQxMdoME/WtTPJAhMDH8wd8I7e1aFBR1+hHtP2hmvNlBOz125A
+ TuQVPxWFQqZ83p3SMKPICox2DWSJ1qfVDYpWIzaJtMjnjcLR0mFmXxIJmh7V8jkqBNsY
+ ECgk+23EAzt9aJnYEjVCSVFQ2kgl4Sft7x8GjbuTExhlLW4uIJDevvV4C5hfttsf1YAM
+ CZynZsTno/nbIabtHZJECjrwRm5pake0aACvzhlTHg+gG9IRT3FK6UzEkFAlX12aVP3k
+ x/U8H/WtXEUeXYH7QCuTk2uqg6QuYQfkwQe0e+rOgi16PbuMxLqQTQTmWx9N9MHD57f4 3g== 
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3y1a7p80jx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 May 2024 01:59:31 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44A0Y2ZQ026745;
+	Fri, 10 May 2024 01:59:30 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3xysfwxerx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 May 2024 01:59:30 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44A1xRHY10355390
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 10 May 2024 01:59:30 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BF00C58061;
+	Fri, 10 May 2024 01:59:27 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 503105803F;
+	Fri, 10 May 2024 01:59:27 +0000 (GMT)
+Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 10 May 2024 01:59:27 +0000 (GMT)
+From: Stefan Berger <stefanb@linux.ibm.com>
+To: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        herbert@gondor.apana.org.au, davem@davemloft.net
+Cc: linux-kernel@vger.kernel.org, lukas@wunner.de, jarkko@kernel.org,
+        Stefan Berger <stefanb@linux.ibm.com>
+Subject: [PATCH v3] crypto: ecc - Prevent ecc_digits_from_bytes from reading too many bytes
+Date: Thu,  9 May 2024 21:59:21 -0400
+Message-ID: <20240510015921.179175-1-stefanb@linux.ibm.com>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 09 May 2024 23:04:04 +0300
-Message-Id: <D15DSV117DQZ.3GJOTXCTGZHE9@kernel.org>
-Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
- "David Howells" <dhowells@redhat.com>, <keyrings@vger.kernel.org>,
- <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.10-rc1
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Linus Torvalds" <torvalds@linux-foundation.org>
-X-Mailer: aerc 0.17.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: OWCrg3R4g_-Y7GN8ak5RkX8wPvR2PPAC
+X-Proofpoint-ORIG-GUID: OWCrg3R4g_-Y7GN8ak5RkX8wPvR2PPAC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-10_01,2024-05-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 phishscore=0
+ adultscore=0 spamscore=0 priorityscore=1501 impostorscore=0 suspectscore=0
+ bulkscore=0 mlxlogscore=999 malwarescore=0 lowpriorityscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
+ definitions=main-2405100012
 
-The following changes since commit 45db3ab70092637967967bfd8e6144017638563c=
-:
+Prevent ecc_digits_from_bytes from reading too many bytes from the input
+byte array in case an insufficient number of bytes is provided to fill the
+output digit array of ndigits. Therefore, initialize the most significant
+digits with 0 to avoid trying to read too many bytes later on. Convert the
+function into a regular function since it is getting too big for an inline
+function.
 
-  Merge tag '6.9-rc7-ksmbd-fixes' of git://git.samba.org/ksmbd (2024-05-08 =
-10:39:53 -0700)
+If too many bytes are provided on the input byte array the extra bytes
+are ignored since the input variable 'ndigits' limits the number of digits
+that will be filled.
 
-are available in the Git repository at:
+Fixes: d67c96fb97b5 ("crypto: ecdsa - Convert byte arrays with key coordinates to digits")
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags=
-/tpmdd-next-6.10-rc1
+---
+v3:
+ - Applied Jarkko's tag
 
-for you to fetch changes up to 1d479e3cd6520085832a6b432d521eeead2691ba:
+v2:
+ - un-inline function
+ - use memset
+---
+ crypto/ecc.c                  | 22 ++++++++++++++++++++++
+ include/crypto/internal/ecc.h | 15 ++-------------
+ 2 files changed, 24 insertions(+), 13 deletions(-)
 
-  Documentation: tpm: Add TPM security docs toctree entry (2024-05-09 22:30=
-:52 +0300)
+diff --git a/crypto/ecc.c b/crypto/ecc.c
+index c1d2e884be1e..fe761256e335 100644
+--- a/crypto/ecc.c
++++ b/crypto/ecc.c
+@@ -68,6 +68,28 @@ const struct ecc_curve *ecc_get_curve(unsigned int curve_id)
+ }
+ EXPORT_SYMBOL(ecc_get_curve);
+ 
++void ecc_digits_from_bytes(const u8 *in, unsigned int nbytes,
++			   u64 *out, unsigned int ndigits)
++{
++	int diff = ndigits - DIV_ROUND_UP(nbytes, sizeof(u64));
++	unsigned int o = nbytes & 7;
++	__be64 msd = 0;
++
++	/* diff > 0: not enough input bytes: set most significant digits to 0 */
++	if (diff > 0) {
++		ndigits -= diff;
++		memset(&out[ndigits - 1], 0, diff * sizeof(u64));
++	}
++
++	if (o) {
++		memcpy((u8 *)&msd + sizeof(msd) - o, in, o);
++		out[--ndigits] = be64_to_cpu(msd);
++		in += o;
++	}
++	ecc_swap_digits(in, out, ndigits);
++}
++EXPORT_SYMBOL(ecc_digits_from_bytes);
++
+ static u64 *ecc_alloc_digits_space(unsigned int ndigits)
+ {
+ 	size_t len = ndigits * sizeof(u64);
+diff --git a/include/crypto/internal/ecc.h b/include/crypto/internal/ecc.h
+index 7ca1f463d1ec..f7e75e1e71f3 100644
+--- a/include/crypto/internal/ecc.h
++++ b/include/crypto/internal/ecc.h
+@@ -64,19 +64,8 @@ static inline void ecc_swap_digits(const void *in, u64 *out, unsigned int ndigit
+  * @out       Output digits array
+  * @ndigits:  Number of digits to create from byte array
+  */
+-static inline void ecc_digits_from_bytes(const u8 *in, unsigned int nbytes,
+-					 u64 *out, unsigned int ndigits)
+-{
+-	unsigned int o = nbytes & 7;
+-	__be64 msd = 0;
+-
+-	if (o) {
+-		memcpy((u8 *)&msd + sizeof(msd) - o, in, o);
+-		out[--ndigits] = be64_to_cpu(msd);
+-		in += o;
+-	}
+-	ecc_swap_digits(in, out, ndigits);
+-}
++void ecc_digits_from_bytes(const u8 *in, unsigned int nbytes,
++			   u64 *out, unsigned int ndigits);
+ 
+ /**
+  * ecc_is_key_valid() - Validate a given ECDH private key
+-- 
+2.43.0
 
-----------------------------------------------------------------
-Hi,
-
-These are the changes for the TPM driver with a single major new
-feature: TPM bus encryption and integrity protection. The key pair
-on TPM side is generated from so called null random seed per power
-on of the machine [1]. This supports the TPM encryption of the hard
-drive by adding layer of protection against bus interposer attacks.
-
-Other than the pull request a few minor fixes and documentation for
-tpm_tis to clarify basics of TPM localities for future patch review
-discussions (will be extended and refined over times, just a seed).
-
-[1] https://lore.kernel.org/linux-integrity/20240429202811.13643-1-James.Bo=
-ttomley@HansenPartnership.com/
-
-BR, Jarkko
-
-----------------------------------------------------------------
-Ard Biesheuvel (1):
-      crypto: lib - implement library version of AES in CFB mode
-
-Bagas Sanjaya (1):
-      Documentation: tpm: Add TPM security docs toctree entry
-
-Colin Ian King (1):
-      tpm/eventlog: remove redundant assignment to variabel ret
-
-James Bottomley (14):
-      tpm: Move buffer handling from static inlines to real functions
-      tpm: add buffer function to point to returned parameters
-      tpm: export the context save and load commands
-      tpm: Add NULL primary creation
-      tpm: Add TCG mandated Key Derivation Functions (KDFs)
-      tpm: Add HMAC session start and end functions
-      tpm: Add HMAC session name/handle append
-      tpm: Add the rest of the session HMAC API
-      tpm: add hmac checks to tpm2_pcr_extend()
-      tpm: add session encryption protection to tpm2_get_random()
-      KEYS: trusted: Add session encryption protection to the seal/unseal p=
-ath
-      tpm: add the null key name as a sysfs export
-      Documentation: add tpm-security.rst
-      tpm: disable the TPM if NULL name changes
-
-Jarkko Sakkinen (8):
-      Documentation: tpm_tis
-      tpm: Remove unused tpm_buf_tag()
-      tpm: Remove tpm_send()
-      tpm: Update struct tpm_buf documentation comments
-      tpm: Store the length of the tpm_buf data separately.
-      tpm: TPM2B formatted buffers
-      tpm: Add tpm_buf_read_{u8,u16,u32}
-      KEYS: trusted: tpm2: Use struct tpm_buf for sized buffers
-
-Michael Haener (1):
-      dt-bindings: tpm: Add st,st33ktpm2xi2c
-
-Niklas Schnelle (2):
-      char: tpm: handle HAS_IOPORT dependencies
-      char: tpm: Keep TPM_INF_IO_PORT define for HAS_IOPORT=3Dn
-
- .../devicetree/bindings/tpm/tcg,tpm-tis-i2c.yaml   |    1 +
- Documentation/security/tpm/index.rst               |    2 +
- Documentation/security/tpm/tpm-security.rst        |  216 ++++
- Documentation/security/tpm/tpm_tis.rst             |   46 +
- drivers/char/tpm/Kconfig                           |   17 +-
- drivers/char/tpm/Makefile                          |    2 +
- drivers/char/tpm/eventlog/acpi.c                   |    1 -
- drivers/char/tpm/tpm-buf.c                         |  252 ++++
- drivers/char/tpm/tpm-chip.c                        |    6 +
- drivers/char/tpm/tpm-interface.c                   |   26 +-
- drivers/char/tpm/tpm-sysfs.c                       |   18 +
- drivers/char/tpm/tpm.h                             |   14 +
- drivers/char/tpm/tpm2-cmd.c                        |   53 +-
- drivers/char/tpm/tpm2-sessions.c                   | 1286 ++++++++++++++++=
-++++
- drivers/char/tpm/tpm2-space.c                      |   11 +-
- drivers/char/tpm/tpm_infineon.c                    |   14 +-
- drivers/char/tpm/tpm_tis_core.c                    |   19 +-
- include/crypto/aes.h                               |    5 +
- include/keys/trusted_tpm.h                         |    2 -
- include/linux/tpm.h                                |  316 +++--
- lib/crypto/Kconfig                                 |    5 +
- lib/crypto/Makefile                                |    3 +
- lib/crypto/aescfb.c                                |  257 ++++
- security/keys/trusted-keys/trusted_tpm1.c          |   23 +-
- security/keys/trusted-keys/trusted_tpm2.c          |  136 ++-
- 25 files changed, 2519 insertions(+), 212 deletions(-)
- create mode 100644 Documentation/security/tpm/tpm-security.rst
- create mode 100644 Documentation/security/tpm/tpm_tis.rst
- create mode 100644 drivers/char/tpm/tpm-buf.c
- create mode 100644 drivers/char/tpm/tpm2-sessions.c
- create mode 100644 lib/crypto/aescfb.c
 
