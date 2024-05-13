@@ -1,115 +1,222 @@
-Return-Path: <keyrings+bounces-1195-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1198-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D92968C499E
-	for <lists+keyrings@lfdr.de>; Tue, 14 May 2024 00:33:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9588C4AFE
+	for <lists+keyrings@lfdr.de>; Tue, 14 May 2024 03:44:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEEE51C212B1
-	for <lists+keyrings@lfdr.de>; Mon, 13 May 2024 22:33:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B4CE1F22B69
+	for <lists+keyrings@lfdr.de>; Tue, 14 May 2024 01:44:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7005D2AF09;
-	Mon, 13 May 2024 22:33:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="QHc/v/Dd";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="QHc/v/Dd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1AE1869;
+	Tue, 14 May 2024 01:44:02 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C6B4F883;
-	Mon, 13 May 2024 22:33:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC31D17F7;
+	Tue, 14 May 2024 01:43:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715639625; cv=none; b=QjbwMaujx0Z8msN0frV7H+4S2UJ1vc0q7rXAyb0CJS4P+EM17vgISJMy/mUx/cBXR7p6s71URsu3MwtBPo1lHKHMh24OU7XvU80aRBJ25uL6fL7TNZuAA4dKvMH7qqIDDYbzkR38DeEr5o9cbJnUTfKiGQY2t2ts5geOCmITyrI=
+	t=1715651042; cv=none; b=OWNKt7R3rDqvHtnpUnf++Am0Zd/3zua2TWuDFNWgieA416IYs0osNLQJInVCCtqd2qmtkMXe2LrsqeQd6uNWGj3kXVu9kRDqLo/xtN/H9pfGbWx4k9ZGdJAjeLZy8uIflD5lfmo7CqvkNcPBIEQkkYakC9EBwMGikrWjvgC5GOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715639625; c=relaxed/simple;
-	bh=VCTPQ8CjvvoriPIr3qUhR8Tme9pCRlLe8w6LPLPTQXo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=si/4xDCs924q8ecBruKhHzCaVK/rQK/XcvES9Ia+OUeSZdenJEegQALliVm/V+RaUobKBCwatelXBQ0SxyHmtmhLH14uWLIHzj91Kkljl0zpvtQPxMFqQTkkw1QBmnLUGk3TKHnL3Vu4ItunskWBZOgxWr8T785BIvJ31dlNxlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=QHc/v/Dd; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=QHc/v/Dd; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1715639622;
-	bh=VCTPQ8CjvvoriPIr3qUhR8Tme9pCRlLe8w6LPLPTQXo=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=QHc/v/DdsDmJ2xXElFQP7TWQ+IsfpUeTJ1RtWB5BUu5tMwochUlZUVWw5ARQa72U6
-	 mJx29a5MeI0nQr8rXU89ZlYbgWhG9ElFNKBEj23oOf4KHjQ/CMcbxXZUPpf/hCcNjT
-	 kFW+oHVeg8oBIVTh24wPlxtu7ZwNojnZX4/e7kgk=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 6392612868FA;
-	Mon, 13 May 2024 18:33:42 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id EGxPfShCTr4e; Mon, 13 May 2024 18:33:42 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1715639622;
-	bh=VCTPQ8CjvvoriPIr3qUhR8Tme9pCRlLe8w6LPLPTQXo=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=QHc/v/DdsDmJ2xXElFQP7TWQ+IsfpUeTJ1RtWB5BUu5tMwochUlZUVWw5ARQa72U6
-	 mJx29a5MeI0nQr8rXU89ZlYbgWhG9ElFNKBEj23oOf4KHjQ/CMcbxXZUPpf/hCcNjT
-	 kFW+oHVeg8oBIVTh24wPlxtu7ZwNojnZX4/e7kgk=
-Received: from [172.21.4.27] (unknown [50.204.89.31])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 9FDBD12868BA;
-	Mon, 13 May 2024 18:33:41 -0400 (EDT)
-Message-ID: <44cd50b60a0a4e376d01544d25187556b8badf94.camel@HansenPartnership.com>
-Subject: Re: [RFC PATCH 0/2] TPM derived keys
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Ignat Korchagin <ignat@cloudflare.com>, Jarkko Sakkinen
- <jarkko@kernel.org>,  Ben Boeckel <me@benboeckel.net>
-Cc: Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, 
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
- serge@hallyn.com,  linux-integrity@vger.kernel.org,
- keyrings@vger.kernel.org,  linux-kernel@vger.kernel.org,
- kernel-team@cloudflare.com
-Date: Mon, 13 May 2024 16:33:40 -0600
-In-Reply-To: <CALrw=nFLa5=bPbYKijNsEo0Kk77_TEpdPmPe3CJ3VJqGNMmBeg@mail.gmail.com>
-References: <20240503221634.44274-1-ignat@cloudflare.com>
-	 <D10FIGJ84Q71.2VT5MH1VUDP0R@kernel.org> <ZjY-UU8pROnwlTuH@farprobe>
-	 <D10Y0V64JXG8.1F6S3OZDACCGF@kernel.org>
-	 <D10YYQKT9P1S.25CE053K7MQKI@kernel.org>
-	 <CALrw=nFLa5=bPbYKijNsEo0Kk77_TEpdPmPe3CJ3VJqGNMmBeg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1715651042; c=relaxed/simple;
+	bh=CUweIuQ1rzDmMP6JnYIvt1GcMSb/adaEqcvAoAgcPck=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VZr471kEuWTtk58NtTxbOX4tXg1CF1sPSUv9ysQMgz/jZ8PvS5PSgs39qlxo/wmSZ2nvosNZurkqeSrpwOnkaDwSQnWH4q5jvEJ1ry9LJheibK6kWnfhNFvBmX1JwtrcsFAmiEhOa4UALqbvcdo4OYm8Oc4uxLF8+PwmYUVc56I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4VdfHh71gGz1xrV6;
+	Tue, 14 May 2024 09:42:40 +0800 (CST)
+Received: from kwepemm600010.china.huawei.com (unknown [7.193.23.86])
+	by mail.maildlp.com (Postfix) with ESMTPS id 43B311A016C;
+	Tue, 14 May 2024 09:43:51 +0800 (CST)
+Received: from localhost.localdomain (10.175.104.170) by
+ kwepemm600010.china.huawei.com (7.193.23.86) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 14 May 2024 09:43:50 +0800
+From: Huaxin Lu <luhuaxin1@huawei.com>
+To: David Howells <dhowells@redhat.com>, Herbert Xu
+	<herbert@gondor.apana.org.au>, "David S . Miller" <davem@davemloft.net>,
+	<keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>
+CC: <xiujianfeng@huawei.com>, <wangweiyang2@huawei.com>,
+	<yiyang13@huawei.com>, <zhujianwei7@huawei.com>, <shenyining@huawei.com>,
+	<luhuaxin1@huawei.com>
+Subject: [PATCH] Move SM2 digest calculation to signature verification
+Date: Tue, 14 May 2024 07:07:18 +0800
+Message-ID: <20240513230718.447895-1-luhuaxin1@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemm600010.china.huawei.com (7.193.23.86)
 
-On Mon, 2024-05-13 at 18:09 +0100, Ignat Korchagin wrote:
-[...]
-> TPM derived keys attempt to address the above use cases by allowing
-> applications to deterministically derive unique cryptographic keys
-> for their own purposes directly from the TPM seed in the owner
-> hierarchy. The idea is that when an application requests a new key,
-> instead of generating a random key and wrapping it with the TPM, the
-> implementation generates a key via KDF(hierarchy seed, application
-> specific info). Therefore, the resulting keys will always be
-> cryptographically bound to the application itself and the device they
-> were generated on.
+In the commit of e5221fa6a355 ("KEYS: asymmetric: Move sm2 code into
+x509_public_key"), the SM2 digest hashing is moved to the process of
+certificate loading. It cause the SM2 certificate chain validation
+failure. For example, when importing a SM2 IMA certificate (x509_ima.der)
+verified by the trusted kering. The import fails due to the wrong Z value
+calculating. Because he Z value should be calculated from the public key
+of the signing certificate, not from the public key of the certificate
+itself (reference: datatracker.ietf.org/doc/html/draft-shen-sm2-ecdsa-02).
 
-So I think what confuses me is what the expected cryptographic secrecy
-properties of the derived keys are.  I get they're a KDF of seed and
-deterministic properties, but if those mixing values are well known (as
-the path or binary checksum cases) then anyone with access to the TPM
-can derive the key from user space because they can easily obtain the
-mixing parameters and there's no protection to the TPM keyed hash
-operation.
+This commit partially revert the previous commit. Restore SM2 digest value
+calculating into the signature verification process, and use the right
+information to calculate Z value and SM2 digest.
 
-Consider the use case where two users are using derived keys on the
-same system (so same TPM).  Assuming they use them to protect sensitive
-information, what prevents user1 from simply deriving user2's key and
-getting the information, or am I missing the point of this?
+Fixes: e5221fa6a355 ("KEYS: asymmetric: Move sm2 code into x509_public_key")
+Signed-off-by: Huaxin Lu <luhuaxin1@huawei.com>
+---
+ crypto/asymmetric_keys/public_key.c      | 57 ++++++++++++++++++++++++
+ crypto/asymmetric_keys/x509_public_key.c | 20 +++------
+ include/crypto/public_key.h              |  2 +
+ 3 files changed, 64 insertions(+), 15 deletions(-)
 
-James
+diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+index e314fd57e..647a03e00 100644
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -9,8 +9,11 @@
+ 
+ #define pr_fmt(fmt) "PKEY: "fmt
+ #include <crypto/akcipher.h>
++#include <crypto/hash.h>
+ #include <crypto/public_key.h>
+ #include <crypto/sig.h>
++#include <crypto/sm2.h>
++#include <crypto/sm3.h>
+ #include <keys/asymmetric-subtype.h>
+ #include <linux/asn1.h>
+ #include <linux/err.h>
+@@ -376,6 +379,54 @@ static int software_key_eds_op(struct kernel_pkey_params *params,
+ 	return ret;
+ }
+ 
++#if IS_REACHABLE(CONFIG_CRYPTO_SM2)
++static int cert_sig_digest_update(const struct public_key_signature *sig,
++				  void *pkey, size_t pkey_len)
++{
++	struct crypto_shash *tfm;
++	struct shash_desc *desc;
++	size_t desc_size;
++	unsigned char dgst[SM3_DIGEST_SIZE];
++	int ret;
++
++	BUG_ON(!sig->data);
++
++	/* SM2 signatures always use the SM3 hash algorithm */
++	if (!sig->hash_algo || strcmp(sig->hash_algo, "sm3") != 0)
++		return -EINVAL;
++
++	tfm = crypto_alloc_shash(sig->hash_algo, 0, 0);
++	if (IS_ERR(tfm))
++		return PTR_ERR(tfm);
++
++	desc_size = crypto_shash_descsize(tfm) + sizeof(*desc);
++	desc = kzalloc(desc_size, GFP_KERNEL);
++	if (!desc) {
++		crypto_free_shash(tfm);
++		return -ENOMEM;
++	}
++
++	desc->tfm = tfm;
++
++	ret = crypto_shash_init(desc) ?:
++	      sm2_compute_z_digest(desc, pkey, pkey_len, dgst) ?:
++	      crypto_shash_init(desc) ?:
++	      crypto_shash_update(desc, dgst, SM3_DIGEST_SIZE) ?:
++	      crypto_shash_finup(desc, sig->data, sig->data_size, sig->digest);
++
++	kfree(desc);
++	crypto_free_shash(tfm);
++	return ret;
++}
++#else
++static inline int cert_sig_digest_update(
++	const struct public_key_signature *sig,
++	void *pkey, size_t pkey_len)
++{
++	return -ENOTSUPP;
++}
++#endif /* ! IS_REACHABLE(CONFIG_CRYPTO_SM2) */
++
+ /*
+  * Verify a signature using a public key.
+  */
+@@ -439,6 +490,12 @@ int public_key_verify_signature(const struct public_key *pkey,
+ 	if (ret)
+ 		goto error_free_key;
+ 
++	if (strcmp(pkey->pkey_algo, "sm2") == 0 && sig->data_size) {
++		ret = cert_sig_digest_update(sig, key, pkey->keylen);
++		if (ret)
++			goto error_free_key;
++	}
++
+ 	ret = crypto_sig_verify(tfm, sig->s, sig->s_size,
+ 				sig->digest, sig->digest_size);
+ 
+diff --git a/crypto/asymmetric_keys/x509_public_key.c b/crypto/asymmetric_keys/x509_public_key.c
+index 6a4f00be2..54738af7d 100644
+--- a/crypto/asymmetric_keys/x509_public_key.c
++++ b/crypto/asymmetric_keys/x509_public_key.c
+@@ -32,6 +32,9 @@ int x509_get_sig_params(struct x509_certificate *cert)
+ 
+ 	pr_devel("==>%s()\n", __func__);
+ 
++	sig->data = cert->tbs;
++	sig->data_size = cert->tbs_size;
++
+ 	sig->s = kmemdup(cert->raw_sig, cert->raw_sig_size, GFP_KERNEL);
+ 	if (!sig->s)
+ 		return -ENOMEM;
+@@ -64,21 +67,8 @@ int x509_get_sig_params(struct x509_certificate *cert)
+ 
+ 	desc->tfm = tfm;
+ 
+-	if (strcmp(cert->pub->pkey_algo, "sm2") == 0) {
+-		ret = strcmp(sig->hash_algo, "sm3") != 0 ? -EINVAL :
+-		      crypto_shash_init(desc) ?:
+-		      sm2_compute_z_digest(desc, cert->pub->key,
+-					   cert->pub->keylen, sig->digest) ?:
+-		      crypto_shash_init(desc) ?:
+-		      crypto_shash_update(desc, sig->digest,
+-					  sig->digest_size) ?:
+-		      crypto_shash_finup(desc, cert->tbs, cert->tbs_size,
+-					 sig->digest);
+-	} else {
+-		ret = crypto_shash_digest(desc, cert->tbs, cert->tbs_size,
+-					  sig->digest);
+-	}
+-
++	ret = crypto_shash_digest(desc, cert->tbs, cert->tbs_size,
++				  sig->digest);
+ 	if (ret < 0)
+ 		goto error_2;
+ 
+diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
+index b7f308977..fce68803b 100644
+--- a/include/crypto/public_key.h
++++ b/include/crypto/public_key.h
+@@ -49,6 +49,8 @@ struct public_key_signature {
+ 	const char *pkey_algo;
+ 	const char *hash_algo;
+ 	const char *encoding;
++	const void *data;
++	unsigned int data_size;
+ };
+ 
+ extern void public_key_signature_free(struct public_key_signature *sig);
+-- 
+2.33.0
 
 
