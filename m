@@ -1,79 +1,119 @@
-Return-Path: <keyrings+bounces-1193-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1194-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 359D18C467A
-	for <lists+keyrings@lfdr.de>; Mon, 13 May 2024 19:51:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 173348C46F2
+	for <lists+keyrings@lfdr.de>; Mon, 13 May 2024 20:35:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E653D286D98
-	for <lists+keyrings@lfdr.de>; Mon, 13 May 2024 17:50:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 477191C21842
+	for <lists+keyrings@lfdr.de>; Mon, 13 May 2024 18:35:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9E833080;
-	Mon, 13 May 2024 17:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E198C381BD;
+	Mon, 13 May 2024 18:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oUVDU8bh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kdUm4mLd"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753E22C1A0;
-	Mon, 13 May 2024 17:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA0A2E631;
+	Mon, 13 May 2024 18:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715622651; cv=none; b=oVctUpar5ae1KeY1LnEvfbpRpC5QFxLrphM6mV0bbA1z5GT8LbbR+Kv6VD5iQzNq04y6fNHRFf+4PY/S2cv/2n78hpfO1Sw9+2kV4IRBE1VIHU7WxDbT46ylNhr/btFEl/skJ6EO38MjAdgU/PcBXZMYt5Frq9qVyvl4sAHrJZY=
+	t=1715625328; cv=none; b=IYby7TbTNFjVUhBQwADROvk27K64T2+oqbvGONBjLv5NwkrIwaYfrENOckQ8s3yLJh/THXs46pGck7WZvWNuFEYOvkSRfXU52Sj94VIoBsogU2sus8foGr08SzybwF7q+6qdbqYRFXv/fNFiIOJA6e2hL3DAz7Ps3pNXCsUJK4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715622651; c=relaxed/simple;
-	bh=sorOqKKQzlPlj81aXlKqUF4fhbygrU4LdHfsRxZb6ps=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=bEveujnUdDJ0S6YpaPMRs+0/70sNAw7T+5Mv9LWm5sP1znXWw3d8FjYYwCHYA7bQNs8Qzueqjn+RjMzTZfjXMFUiAeGUXh6olpJkG/HH9CFse9nYX6IFH64uPCa2AoYDJshAdpHHOEcaO2udoi/3GBzLyJ+P45XPJH0KH4NZ8KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oUVDU8bh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0969AC113CC;
-	Mon, 13 May 2024 17:50:51 +0000 (UTC)
+	s=arc-20240116; t=1715625328; c=relaxed/simple;
+	bh=YKbPkKlqAwoRaNZqki6fpfGRkig5wtpfRBksExN/W+4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GyEn7lw523Mjm3Sf1bd5N0EHQrexyruyxNfoM/BYPjTmgG7Gs6jwbgWSHSRt26O1vPCYBWHe2ZufXgxZ5337Py3OyYXI4/Wfe4kswyNKIZmV5vusSTW64ovuFGaiFuo+XCSDygThhL37V+DE6/9u/v2WWAibnKLO1Mkbw0PkeA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kdUm4mLd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3E4C113CC;
+	Mon, 13 May 2024 18:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715622651;
-	bh=sorOqKKQzlPlj81aXlKqUF4fhbygrU4LdHfsRxZb6ps=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=oUVDU8bh4VukF++5TWp31mmmpbNqtplFwlqd63ViwgiZd4WSJranGYL9hlZsw+dov
-	 q15dr0J9a0FroZleM0C+s4yXEmkJ2YEETx++9sb5ZTgaG40lj58e+maMoNO7SvdqVC
-	 g2K9QQyVobUseL72bcf7H4KBgdxoCXmRo2DR8MAfWnpxc1tfvacuDN9YIIcEYhtk1M
-	 Wrt07QfpywtHxFpJHEo9ucERFWHcSR0AQxHUmvKDSLwHyPRSoaCB8GTwn6MY1CMNkl
-	 TpNhdOqBKJ36tNuGxHjYHxBjz93WAAvAGLIELgSoXdKD0B3MvQUV61GwtPJWKRJE8u
-	 HJzf/z1i7oMyQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 02041C433E9;
-	Mon, 13 May 2024 17:50:51 +0000 (UTC)
-Subject: Re: [GIT PULL] keys changes for v6.10-rc1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20240509142517.2787-1-jarkko@kernel.org>
-References: <20240509142517.2787-1-jarkko@kernel.org>
-X-PR-Tracked-List-Id: <keyrings.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20240509142517.2787-1-jarkko@kernel.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/keys-next-6.10-rc1
-X-PR-Tracked-Commit-Id: 9da27fb65a14c18efd4473e2e82b76b53ba60252
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 25c73642cc5baea5b91bbb9b1f5fcd93672bfa08
-Message-Id: <171562265100.10937.11267638500736998467.pr-tracker-bot@kernel.org>
-Date: Mon, 13 May 2024 17:50:51 +0000
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Jarkko Sakkinen <jarkko@kernel.org>, Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>, linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
+	s=k20201202; t=1715625328;
+	bh=YKbPkKlqAwoRaNZqki6fpfGRkig5wtpfRBksExN/W+4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=kdUm4mLdt6zonDi2uj1fC/4yvUuFv7+8Yf1ocwHVZVTXuoGnZ1WetV+VPrITiJ00/
+	 0ArlywI8B0iDrEvkfZaMVc+Gd6cDtnD3nnlD2sT3ut3tfJ+gjzgtRXlvI0DhQ2N1Wb
+	 yRcv/KFQUloyZ6eDmhGQlKxZHP/TVwagCOVArll6rUlUWcaz2yxxjgcnvtwxkOtG8C
+	 4M1v47TFLU8EKmW9BDwdDkzpn29CqRZoCnXbFJH3G4t9zDP2r98iHWvQhPHHLPF9Qf
+	 ckas1s2zW6jNAP0wWeqNsNxt90ijUwYzEuz92SyUmAkM6vhY/naqjDZhZQfi9rX6eG
+	 9BobUVT2+XpDg==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-integrity@vger.kernel.org
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	stable@vger.kernel.org,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	keyrings@vger.kernel.org (open list:KEYS-TRUSTED),
+	linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] KEYS: trusted: Do not use WARN when encode fails
+Date: Mon, 13 May 2024 21:35:17 +0300
+Message-ID: <20240513183518.10922-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-The pull request you sent on Thu,  9 May 2024 17:25:17 +0300:
+Error on asn1_encode_sequence() is handled with a WARN incorrectly
+because:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/keys-next-6.10-rc1
+1. asn1_encode_sequence() is not an internal function (located
+   in lib/asn1_encode.c).
+2. Location on known, which makes the stack trace useless.
+3. Results a crash if panic_on_warn is set.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/25c73642cc5baea5b91bbb9b1f5fcd93672bfa08
+It is also noteworthy that the use of WARN is undocumented, and it
+should be avoided unless there is carefully considered rationale to use
+it, which is now non-existent.
 
-Thank you!
+Replace WARN with pr_err, and print the return value instead, which is
+only useful piece of information (and was not printed).
 
+Cc: stable@vger.kernel.org # v5.13+
+Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+ security/keys/trusted-keys/trusted_tpm2.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+index c8d8fdefbd8d..e31fe53822a1 100644
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -39,6 +39,7 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+ 	u8 *end_work = scratch + SCRATCH_SIZE;
+ 	u8 *priv, *pub;
+ 	u16 priv_len, pub_len;
++	int ret;
+ 
+ 	priv_len = get_unaligned_be16(src) + 2;
+ 	priv = src;
+@@ -80,8 +81,11 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+ 	work1 = payload->blob;
+ 	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
+ 				     scratch, work - scratch);
+-	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed"))
+-		return PTR_ERR(work1);
++	if (IS_ERR(work1)) {
++		ret = PTR_ERR(work1);
++		pr_err("ASN.1 encode error %d\n", ret);
++		return ret;
++	}
+ 
+ 	return work1 - payload->blob;
+ }
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.45.0
+
 
