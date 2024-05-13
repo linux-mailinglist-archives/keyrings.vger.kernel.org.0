@@ -1,249 +1,197 @@
-Return-Path: <keyrings+bounces-1189-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1190-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24B48C45B8
-	for <lists+keyrings@lfdr.de>; Mon, 13 May 2024 19:10:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C2F8C45C6
+	for <lists+keyrings@lfdr.de>; Mon, 13 May 2024 19:11:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36CBEB24094
-	for <lists+keyrings@lfdr.de>; Mon, 13 May 2024 17:10:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3A181F21CB9
+	for <lists+keyrings@lfdr.de>; Mon, 13 May 2024 17:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155851CABD;
-	Mon, 13 May 2024 17:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55EBD208D4;
+	Mon, 13 May 2024 17:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="G96N8MGM"
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="IFWjGER5"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DE31CAAE
-	for <keyrings@vger.kernel.org>; Mon, 13 May 2024 17:09:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9FB1CF8B
+	for <keyrings@vger.kernel.org>; Mon, 13 May 2024 17:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715620199; cv=none; b=kXKNLt3aqzbKFHVctOArrA85t1RxBl4Jyk2Z0u/RAyWqkawv0PoYAEBxcS7hNGntGanhZ8m3BqH9tkzpBxJpUpld6yeZD2fPQSTg5kPCSF2hgbu/LtXsstHg50icKGELajH2lmiJLfqF6iD7DT2MRgIXwP6E7szOq8KrbXMc6u8=
+	t=1715620296; cv=none; b=dcESe1dDSLu/izTBiNVejWH1yt+35NSxl2rHuPzmX7auyYj6FHfMYP9mxHi8Nsb+stnZY2SeTQGhyNAiI7QGjc15/G/T74K2mjNyvj01/P0zgHzuxSKseZCeyGWQWcynxvLMzxyMW+9QmGqLFVNOk7kXYP+qEAcqo8oiY0SsZfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715620199; c=relaxed/simple;
-	bh=XSJBROMVrc2KsRXPebm2mlHLU3yXkxYWeY5FcmrQi0A=;
+	s=arc-20240116; t=1715620296; c=relaxed/simple;
+	bh=QsU9VcO38mCO6VHiLHRMzidjKsNaDCBvegm7dClhejw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HaJC8RQRYfm7odb+8wyNedB06QOqYmd0aXS5NJHX4+ppveDqtnpo3qr2XZgLCaj9f3RaulJh+PWL4i57CoipPohqLpHaTq3Hpa28TX6vrJPK3gcOXMBMiuTrBBNMdYWaXqQZQOmqsFPjBNlq57FzCBcHRmydw2fol175tSqwuAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=G96N8MGM; arc=none smtp.client-ip=209.85.214.170
+	 To:Cc:Content-Type; b=s3mUtggZ3DKZqKdesJAItIRARfWHnWzKxhNJqGu3YEAzItlKoIKwo9wUAVKLka0E8jmw5O2axUVjfLQ7cMY5uVXyvxCeq5NRu6Y5vh6Mfpmkr0SZTh55JBljEkENitXeq8H54E5NL9r2Prpf+OJ9GobRIgtP9WiOJ6KzHG6Z4uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=IFWjGER5; arc=none smtp.client-ip=209.85.215.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1ee7963db64so38617085ad.1
-        for <keyrings@vger.kernel.org>; Mon, 13 May 2024 10:09:57 -0700 (PDT)
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-620e30d8f37so3923773a12.2
+        for <keyrings@vger.kernel.org>; Mon, 13 May 2024 10:11:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1715620196; x=1716224996; darn=vger.kernel.org;
+        d=cloudflare.com; s=google09082023; t=1715620293; x=1716225093; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pU8HU9DBiLf4SlmtDsASYOmsafllI/JgYmU6D8EfnDY=;
-        b=G96N8MGMtNINUdTBOeIHZH8chWezv49g2YgBh5BVTk1Ykg+k6Gv1mceY+C/2D+TJft
-         PZSoqlSvsp33n1fpjU+X/d9nTzz98Y3zWv05d0FXgVmGLOv7tVX6h9dXS4iQYlcWQTH8
-         jEYRfaWRDh78UYFNj2PwTx+90YmFE3Wnlee8jYmkajbBikZn++BX5SLq5eDE4vUL0L+d
-         emTCF4NYBy6LLiTrNZE8hf3I9dOCFv5z/tcXnoWK7pekm626CGJFi5WWfVl95YDXeMYA
-         fsTCBL6qqQCsIyhkY46B1oa/6wK7dY5tqNblzHk+iUudEcoCpaS/VKC+JjKqaDqEqhG8
-         493Q==
+        bh=a2nC+uuvv/kRsKZflGqdXg7bseQO84xpSJ4IIawyz0U=;
+        b=IFWjGER5jHfitMBcU1X+1It5hiaRxvqwPncN+RzvvWT9YfPvUX1yYtlnCky69UhiO5
+         0xhYsIQPgF99WkhRIgZycGXgJlb7a4oBD474zo+DuEAor00fjNyS1tvjRd/WfIaC07qJ
+         MOw+m6PkTQCDR7Yc/jpPh8yybgmj7Fovh7eyL2l30fbnn8GQ+xRgQB/YAgfaGb4TQXAU
+         BctEWZ0G+sRUndZxefYeWdme+8pk8kXa6/+2l/kFyy93dUKjFuM3c/xMTSTvIhaj2tGO
+         X+iVjBHSGsHUweqFiqB45xzkYEpxT2fH0JTXJU78Afe0GDpDWpqBvDu6VsSXtQjwQ0NW
+         5EEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715620196; x=1716224996;
+        d=1e100.net; s=20230601; t=1715620293; x=1716225093;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pU8HU9DBiLf4SlmtDsASYOmsafllI/JgYmU6D8EfnDY=;
-        b=FzuX/q7hKbQ4CjSk7gTXr2eYczWvcLD5XDBswpgf/JFmkDu0cXX2JSgkVWdU+yf0zS
-         PNDWMtz65qldAQouyrubuSbOdwW/wfYoaJq2PjUhQuk5cGrVDnt94rRQAvVdbV9qAxin
-         M5FRvAXcFwtLTWxB10o/hojqOkixO8J0P0eUT45dSUW2RQ1lRBYGMEgx+M8oWE5th2AA
-         dPhevdVCc/5pYwP1rqveK0r/w+U5BhFJV50hA6eismHIyCWqPNcUXPR6cQamUe4Y7cM/
-         O6TjiutqTcOWilEsCqZ3/N5bl4hsI5K4AKye3nDNIu7EneOwJ0tN08eLKzeE+jIdGKRo
-         jJBw==
-X-Forwarded-Encrypted: i=1; AJvYcCWYXyw9KDUmU/lIKSptGpD6gyV43x+CcjVo4yrjW+OTof/TzGnY/X9GKfMTx2Bo+W9GSg4QsE5CNUkucIFSfLwELuSFjwzQJ44=
-X-Gm-Message-State: AOJu0YytQUrQPd4NDrn8/SNmDgVn1JWM+YPYxHVWOdlvMAmgkmdBPGib
-	k677kJLOp+pWLq80lBvj68Q1Rw8TXk9vIPdDKJ2JijOm8LAMaXZ7iJgELLD9A3WgNSK04v3zwnz
-	vfhlSk3hSXQ7zyhoHDzIUgiDd9ri+YgKlTVRyTw==
-X-Google-Smtp-Source: AGHT+IHl2oHRFMJLef//4FI386W05SMQHXZdf4eeeBI3rSCCVptCoUj/vhx/CQlx2KdYKMNAhSEcpwhyhzFU3/w7nP0=
-X-Received: by 2002:a17:90a:5318:b0:2a5:8ff:9d1 with SMTP id
- 98e67ed59e1d1-2b6cc4547efmr9662680a91.14.1715620196414; Mon, 13 May 2024
- 10:09:56 -0700 (PDT)
+        bh=a2nC+uuvv/kRsKZflGqdXg7bseQO84xpSJ4IIawyz0U=;
+        b=inXohna44tV49ft0f7UUjXAvGK/QfZLsEsMiSy+lHdQ1mk2blGIE3VT1jVm+mOTGkg
+         /T5a16nNSY44iR57VfckLK/Q3rV9GvkTU9G/aSRs3Qkx3yTKuiBnJb2ZCfLiNGWysEwd
+         x5n9Na/HxHRopVYHxXMnhPDFiA/i/pOjQ8u1hViyGPDBSB0Io1sCdttpEr8GWrupwZ0M
+         TasoxVLNbzlILGb2wRl2PXZhVN/F/y/+3Bk28GEvaaKqZF+usFpjZGOWaFIsN8qx4ciF
+         vtfNi4dQPyGCCKkZmF27ZRG9YeeViLzcbmE6vRexi9tJlbxYWv80dh2RH8jLH3sWxlAy
+         oK/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXED6GE+0rY8y/rN6ClA7fehwlWCU63D5XIZ2a3/bazDrtJPpQwqOeAdisl6uwVOeSkCAnjUZK92hUysJcRO7gFn75yoId14do=
+X-Gm-Message-State: AOJu0YyNQJjiTgzB2ZlJrXcl0cjwBULabBP8oNth9PQerulFKzXU0bQQ
+	ht1lhxlMVxw7jK2H+5HvkPq+gY1yevShGLeWQPrXCYE+JJEipYjfdKFMEPxhF9sPzvA4cF0a53J
+	bH81D0MVbpV1AQ2vPP4FMexR2blEzOI2Gawh0bw==
+X-Google-Smtp-Source: AGHT+IFTVnywRERo05UfjqnKp/fXeBOJVobi68u/z/rIvk5ypHQIt5iRrvoBgYRgGLWTlmX/7+scABzTI91vJy6uznI=
+X-Received: by 2002:a17:90b:3848:b0:2b8:5bf0:115e with SMTP id
+ 98e67ed59e1d1-2b85bf01370mr7491728a91.5.1715620292566; Mon, 13 May 2024
+ 10:11:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240503221634.44274-1-ignat@cloudflare.com> <D10FIGJ84Q71.2VT5MH1VUDP0R@kernel.org>
- <ZjY-UU8pROnwlTuH@farprobe> <D10Y0V64JXG8.1F6S3OZDACCGF@kernel.org> <D10YYQKT9P1S.25CE053K7MQKI@kernel.org>
-In-Reply-To: <D10YYQKT9P1S.25CE053K7MQKI@kernel.org>
+References: <20240503221634.44274-1-ignat@cloudflare.com>
+In-Reply-To: <20240503221634.44274-1-ignat@cloudflare.com>
 From: Ignat Korchagin <ignat@cloudflare.com>
-Date: Mon, 13 May 2024 18:09:44 +0100
-Message-ID: <CALrw=nFLa5=bPbYKijNsEo0Kk77_TEpdPmPe3CJ3VJqGNMmBeg@mail.gmail.com>
+Date: Mon, 13 May 2024 18:11:21 +0100
+Message-ID: <CALrw=nGhgRrhJ5mWWC6sV2WYWoijvD9WgFzMfOe6mHmqnza-Hw@mail.gmail.com>
 Subject: Re: [RFC PATCH 0/2] TPM derived keys
-To: Jarkko Sakkinen <jarkko@kernel.org>, Ben Boeckel <me@benboeckel.net>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+To: James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>, 
 	David Howells <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>, 
 	James Morris <jmorris@namei.org>, serge@hallyn.com, linux-integrity@vger.kernel.org, 
-	keyrings@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel-team@cloudflare.com
+	keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: kernel-team@cloudflare.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, May 4, 2024 at 5:35=E2=80=AFPM Jarkko Sakkinen <jarkko@kernel.org> =
-wrote:
+On Fri, May 3, 2024 at 11:16=E2=80=AFPM Ignat Korchagin <ignat@cloudflare.c=
+om> wrote:
 >
-> On Sat May 4, 2024 at 5:51 PM EEST, Jarkko Sakkinen wrote:
-> > On Sat May 4, 2024 at 4:55 PM EEST, Ben Boeckel wrote:
-> > > On Sat, May 04, 2024 at 03:21:11 +0300, Jarkko Sakkinen wrote:
-> > > > I have no idea for what the key created with this is even used, whi=
-ch
-> > > > makes this impossible to review.
-> > >
-> > > Additionally, there is nothing in Documentation/ for how userspace mi=
-ght
-> > > use or create them. This includes things like their description forma=
-t
-> > > and describing available options.
-> >
-> > The whole user story is plain out broken. Documenting a feature that ha=
-s
-> > no provable use case won't fix that part.
-> >
-> > So it is better to start with the cover letter. With the *existing*
-> > knowledge of the *real* issue I don't think we need this tbh.
+> TPM derived keys get their payload from an HMAC primary key in the owner
+> hierarchy mixed with some metadata from the requesting process.
 >
-> As for code I'd suggest the "Describe your changes" part from
+> They are similar to trusted keys in the sense that the key security is ro=
+oted
+> in the TPM, but may provide easier key management for some use-cases.
 >
->   https://www.kernel.org/doc/html/latest/process/submitting-patches.html
+> One inconvenience with trusted keys is that the cryptographic material sh=
+ould
+> be provided externally. This means either wrapping the key to the TPM on =
+the
+
+I would like to point out to myself I was wrong: it is possible to ask
+the kernel to generate a trusted key inside the kernel locally with
+"keyctl add trusted kmk "new 32" @u"
+
+> executing system (which briefly exposes plaintext cryptographic material =
+to
+> userspace) or creating the wrapped blob externally, but then we need to g=
+ather
+> and transfer the TPM public key to the remote system, which may be a logi=
+stical
+> problem sometimes.
 >
-> and most essentially how to split them properly.
+> Moreover, we need to store the wrapped key blob somewhere, and if we lose=
+ it,
+> the application cannot recover its data anymore.
 >
-> My best bet could something along the lines that perhaps there is some
-> issue to be sorted out but I don't honestly believe that this will ever
-> be a solution for any possible problem that exist in this planet.
-
-Sorry, I must admit I wrote the description hastingly and too
-high-level (it was pre-travelling, so probably not the right focus and
-in a rush). Let me restart from scratch and describe particular
-use-cases we're concerned about:
-
-Trusted and encrypted keys are a great way to manage cryptographic
-keys inside the kernel, while never exposing plaintext cryptographic
-material to userspace: keys can only be read to userspace as encrypted
-blobs and with trusted keys - these blobs are created with the TPM, so
-only the TPM can unwrap the blobs.
-
-One of the simplest way to create a trusted key is for an application
-to request the kernel to generate a new one [1], like below with the
-help of keyctl utility from keyutils:
-$ keyctl add trusted kmk "new 32 keyhandle=3D0x81000001" @u
-
-However, after the application generates a trusted key, it is the
-responsibility of the application to manage/store it. For example, if
-the application wants to reuse the key after a reboot, it needs to
-read the key into userspace as an encrypted blob and store it on
-persistent storage. This is challenging and sometimes not possible for
-stateless/immutable/ephemeral systems, so such systems are effectively
-locked out from using hardware-protected cryptographic keys.
-
-Another point: while the fact that the application can't read the
-plaintext cryptographic material into userspace is a feature of
-trusted keys, it can also be a disadvantage. Since keys in plaintext
-exist only in kernel context, they are useful mostly for in-kernel
-systems, like dm-crypt, IMA, ecryptfs. Applications cannot easily use
-trusted keys for cryptographic purposes for their own workloads: for
-example, generating encrypted or MACed configuration files or
-encrypting in-transit data. While since commit 7984ceb134bf ("crypto:
-af_alg - Support symmetric encryption via keyring keys") it is
-possible to use a trusted key via Linux Crypto API userspace interface
-[2], it might not always be practical/desirable:
-  * due to limitations in the Linux Crypto API implementation it is
-not possible to process more than ~64Kb of data using AEAD ciphers [3]
-  * needed algorithm implementations might not be enabled in the
-kernel configuration file
-  * compliance constraints: the utilised cryptographic implementation
-must be FIPS-validated
-  * performance constraints: passing large blobs of data to the kernel
-for encryption is slow even with Crypto API's "zero-copy" interface
-[3]
-
-TPM derived keys attempt to address the above use cases by allowing
-applications to deterministically derive unique cryptographic keys for
-their own purposes directly from the TPM seed in the owner hierarchy.
-The idea is that when an application requests a new key, instead of
-generating a random key and wrapping it with the TPM, the
-implementation generates a key via KDF(hierarchy seed, application
-specific info). Therefore, the resulting keys will always be
-cryptographically bound to the application itself and the device they
-were generated on.
-
-The applications then may either use in-kernel facilities, like [2],
-to do crypto operations inside the kernel, so the generated
-cryptographic material is never exposed to userspace (similar to
-trusted/encrypted keys). Or, if they are subject to
-performance/compliance/other constraints mentioned above, they can
-read the key material to userspace and use a userspace crypto library.
-Even with the latter approach they still get the benefit of using a
-key, security of which is rooted in the TPM.
-
-TPM derived keys also address the key storage problem for
-stateless/immutable/ephemeral systems: since the derivation process is
-deterministic, the same application can always re-create their keys on
-the same system and doesn't need to store or back up any wrapped key
-blobs. One notable use case (ironically not for a stateless system)
-can be setting up proper full-disk encryption (dm-crypt plain mode
-without a LUKS header), for example, to provide deniable encryption or
-better resiliency to damage of encrypted media [4].
-
-Current implementation provides two options for KDF's input for
-application specific info to ensure key uniqueness:
-
-1. A key, which is unique to a filesystem path:
-$ keyctl add derived test '32 path'
-
-Above will derive a 32 byte key based on the TPM seed and the
-filesystem path of the requesting application. That is /usr/bin/keyctl
-and /opt/bin/keyctl would generate different keys.
-
-2. A key, which is cryptographically bound to the code of the
-requesting application:
-$ keyctl add derived test '32 csum'
-
-Above will derive a 32 byte key based on the TPM seed and the IMA
-measurement of the requesting application. That is /usr/bin/keyctl and
-/opt/bin/keyctl would generate the same key if and only if their code
-exactly matches bit for bit. The implementation does not measure the
-requesting binary itself, but rather relies on already available
-measurement. This means for this mode to work IMA needs to be enabled
-and configured for requesting applications. For example:
-# echo 'audit func=3DBPRM_CHECK' > \
-   /sys/kernel/security/integrity/ima/policy
-
-Open questions:
-  * should any other modes/derivation parameters be considered as part
-of application specific info?
-  * apparently in checksum mode, when calling keyring syscalls from
-scripts, we mix in the measurement of the interpreter, not the script
-itself. Is there any way to improve this?
-
-I would like to mention that in Cloudflare we have found large
-infrastructure key management based on derived keys from per-device
-unique seeds quite convenient and almost infinitely scalable and I
-believe TPM derived keys can be the next evolution bringing hardware
-security to the table. I understand that folks here are not required
-to follow links for additional information, but if someone is
-interested in more details for our approach, which has been working
-well for almost 9 years, see [5].
-
-Hope it is better this time.
-
-Ignat
-
-[1]: https://www.kernel.org/doc/html/latest/security/keys/trusted-encrypted=
-.html#examples-of-trusted-and-encrypted-key-usage
-[2]: https://www.kernel.org/doc/html/latest/crypto/userspace-if.html
-[3]: https://blog.cloudflare.com/the-linux-crypto-api-for-user-applications
-[4]: https://wiki.archlinux.org/title/Dm-crypt/Encrypting_an_entire_system#=
-Plain_dm-crypt
-[5]: https://youtu.be/2RPcIbP2xsM?si=3DnKbyY0gss50i04CG
-
-> BR, Jarkko
+> TPM derived keys may make key management for applications easier, especia=
+lly on
+> stateless systems as the application can always recreate its keys and the
+> encrypted data is bound to the device and its TPM. They allow the applica=
+tion
+> to wrap/unwrap some data to the device without worrying too much about ke=
+y
+> management and provisioning. They are similar in a sense to device unique=
+ keys
+> present on many mobile devices and some IoT systems, but even better as e=
+very
+> application has its own unique device key.
+>
+> It is also easy to quickly "wipe" all the application keys by just resett=
+ing
+> the TPM owner hierarchy.
+>
+> It is worth mentioning that this functionality can be implemented in user=
+space
+> as a /sbin/request-key plugin. However, the advantage of the in-kernel
+> implementation is that the derived key material never leaves the kernel s=
+pace
+> (unless explicitly read into userspace with proper permissions).
+>
+> Current implementation supports two modes (as demonstrated by the keyctl
+> userspace tool):
+>   1. keyctl add derived test '32 path' - will derive a 32 byte key based =
+on
+>      the TPM seed and the filesystem path of the requesting application. =
+That
+>      is /usr/bin/keyctl and /opt/bin/keyctl would generate different keys=
+.
+>
+>   2. keyctl add derived test '32 csum' - will derive a 32 byte key based =
+on the
+>      TPM seed and the IMA measurement of the requesting application. That=
+ is
+>      /usr/bin/keyctl and /opt/bin/keyctl would generate the same key IFF =
+their
+>      code exactly matches bit for bit. The implementation does not measur=
+e the
+>      requesting binary itself, but rather relies on already available
+>      measurement. This means for this mode to work IMA needs to be enable=
+d and
+>      configured for requesting applications. For example:
+>        # echo 'audit func=3DBPRM_CHECK' > \
+>          /sys/kernel/security/integrity/ima/policy
+>
+> Open questions (apart from the obvious "is this useful?"):
+>   * should any other modes/derivation parameters be considered?
+>   * apparently in checksum mode, when calling keyring syscalls from scrip=
+ts,
+>     we mix in the measurement of the interpreter, not the script itself. =
+Is
+>     there any way to improve this?
+>
+>
+> Ignat Korchagin (2):
+>   tpm: add some algorithm and constant definitions from the TPM spec
+>   KEYS: implement derived keys
+>
+>  include/linux/tpm.h                     |  16 +-
+>  security/keys/Kconfig                   |  16 ++
+>  security/keys/Makefile                  |   1 +
+>  security/keys/derived-keys/Makefile     |   8 +
+>  security/keys/derived-keys/derived.c    | 226 +++++++++++++++++++++
+>  security/keys/derived-keys/derived.h    |   4 +
+>  security/keys/derived-keys/tpm2_shash.c | 257 ++++++++++++++++++++++++
+>  7 files changed, 524 insertions(+), 4 deletions(-)
+>  create mode 100644 security/keys/derived-keys/Makefile
+>  create mode 100644 security/keys/derived-keys/derived.c
+>  create mode 100644 security/keys/derived-keys/derived.h
+>  create mode 100644 security/keys/derived-keys/tpm2_shash.c
+>
+> --
+> 2.39.2
+>
 
