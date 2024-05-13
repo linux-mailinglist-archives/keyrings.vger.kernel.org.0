@@ -1,197 +1,79 @@
-Return-Path: <keyrings+bounces-1190-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1191-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C2F8C45C6
-	for <lists+keyrings@lfdr.de>; Mon, 13 May 2024 19:11:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 106CD8C4676
+	for <lists+keyrings@lfdr.de>; Mon, 13 May 2024 19:50:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3A181F21CB9
-	for <lists+keyrings@lfdr.de>; Mon, 13 May 2024 17:11:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40EC01C22F68
+	for <lists+keyrings@lfdr.de>; Mon, 13 May 2024 17:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55EBD208D4;
-	Mon, 13 May 2024 17:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7297E2575B;
+	Mon, 13 May 2024 17:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="IFWjGER5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NhvSuWMy"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9FB1CF8B
-	for <keyrings@vger.kernel.org>; Mon, 13 May 2024 17:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D752E646;
+	Mon, 13 May 2024 17:50:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715620296; cv=none; b=dcESe1dDSLu/izTBiNVejWH1yt+35NSxl2rHuPzmX7auyYj6FHfMYP9mxHi8Nsb+stnZY2SeTQGhyNAiI7QGjc15/G/T74K2mjNyvj01/P0zgHzuxSKseZCeyGWQWcynxvLMzxyMW+9QmGqLFVNOk7kXYP+qEAcqo8oiY0SsZfE=
+	t=1715622651; cv=none; b=tH13sxvxmVMnVC2CRhwC51VKoq5nkmglJrB5T+zJStOiqhiCrjzYLzgE6VscfU4C1V6XAiBg4r+QVPFckuh4/v65RcpWWO8NKUGcreIGOZuS9muZhe2rlRjGg1W5IJXpLGnNjRBbnminMbUnB/CMJntM8wwLbyktQd46ULkIKNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715620296; c=relaxed/simple;
-	bh=QsU9VcO38mCO6VHiLHRMzidjKsNaDCBvegm7dClhejw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s3mUtggZ3DKZqKdesJAItIRARfWHnWzKxhNJqGu3YEAzItlKoIKwo9wUAVKLka0E8jmw5O2axUVjfLQ7cMY5uVXyvxCeq5NRu6Y5vh6Mfpmkr0SZTh55JBljEkENitXeq8H54E5NL9r2Prpf+OJ9GobRIgtP9WiOJ6KzHG6Z4uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=IFWjGER5; arc=none smtp.client-ip=209.85.215.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-620e30d8f37so3923773a12.2
-        for <keyrings@vger.kernel.org>; Mon, 13 May 2024 10:11:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1715620293; x=1716225093; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a2nC+uuvv/kRsKZflGqdXg7bseQO84xpSJ4IIawyz0U=;
-        b=IFWjGER5jHfitMBcU1X+1It5hiaRxvqwPncN+RzvvWT9YfPvUX1yYtlnCky69UhiO5
-         0xhYsIQPgF99WkhRIgZycGXgJlb7a4oBD474zo+DuEAor00fjNyS1tvjRd/WfIaC07qJ
-         MOw+m6PkTQCDR7Yc/jpPh8yybgmj7Fovh7eyL2l30fbnn8GQ+xRgQB/YAgfaGb4TQXAU
-         BctEWZ0G+sRUndZxefYeWdme+8pk8kXa6/+2l/kFyy93dUKjFuM3c/xMTSTvIhaj2tGO
-         X+iVjBHSGsHUweqFiqB45xzkYEpxT2fH0JTXJU78Afe0GDpDWpqBvDu6VsSXtQjwQ0NW
-         5EEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715620293; x=1716225093;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=a2nC+uuvv/kRsKZflGqdXg7bseQO84xpSJ4IIawyz0U=;
-        b=inXohna44tV49ft0f7UUjXAvGK/QfZLsEsMiSy+lHdQ1mk2blGIE3VT1jVm+mOTGkg
-         /T5a16nNSY44iR57VfckLK/Q3rV9GvkTU9G/aSRs3Qkx3yTKuiBnJb2ZCfLiNGWysEwd
-         x5n9Na/HxHRopVYHxXMnhPDFiA/i/pOjQ8u1hViyGPDBSB0Io1sCdttpEr8GWrupwZ0M
-         TasoxVLNbzlILGb2wRl2PXZhVN/F/y/+3Bk28GEvaaKqZF+usFpjZGOWaFIsN8qx4ciF
-         vtfNi4dQPyGCCKkZmF27ZRG9YeeViLzcbmE6vRexi9tJlbxYWv80dh2RH8jLH3sWxlAy
-         oK/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXED6GE+0rY8y/rN6ClA7fehwlWCU63D5XIZ2a3/bazDrtJPpQwqOeAdisl6uwVOeSkCAnjUZK92hUysJcRO7gFn75yoId14do=
-X-Gm-Message-State: AOJu0YyNQJjiTgzB2ZlJrXcl0cjwBULabBP8oNth9PQerulFKzXU0bQQ
-	ht1lhxlMVxw7jK2H+5HvkPq+gY1yevShGLeWQPrXCYE+JJEipYjfdKFMEPxhF9sPzvA4cF0a53J
-	bH81D0MVbpV1AQ2vPP4FMexR2blEzOI2Gawh0bw==
-X-Google-Smtp-Source: AGHT+IFTVnywRERo05UfjqnKp/fXeBOJVobi68u/z/rIvk5ypHQIt5iRrvoBgYRgGLWTlmX/7+scABzTI91vJy6uznI=
-X-Received: by 2002:a17:90b:3848:b0:2b8:5bf0:115e with SMTP id
- 98e67ed59e1d1-2b85bf01370mr7491728a91.5.1715620292566; Mon, 13 May 2024
- 10:11:32 -0700 (PDT)
+	s=arc-20240116; t=1715622651; c=relaxed/simple;
+	bh=cGU21muLomTx6b3RkpnRSQSH1EbqgueeEZN/mflhJ8c=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=natMeRof897PQ0B7vstpWAG3/03lEfU8/oxEuGuexPb0ffjFRElaY7MxcSWCTJR8mseGeiZ5x5z5qCphOPLPbuyF9By22MNIKCFJewbrdAveXMHIizR8wjBbrWFZGK+jFH7mYJYONFh1KsCar2JlZA1DQtulkGY+kCkogNR1pJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NhvSuWMy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 247B7C32786;
+	Mon, 13 May 2024 17:50:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715622651;
+	bh=cGU21muLomTx6b3RkpnRSQSH1EbqgueeEZN/mflhJ8c=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=NhvSuWMyfpucJ1FaJxzF0F1B06/beOV5AbHHVlq3k2ea+lWeRg8/88fDVqAO/8SKE
+	 czwvmo5kvRpqEJlkmBdfiJNSnN60v2/Srnwb6uwDhvXjdsPvCLg/YQRz0duaMu8YCd
+	 kFkYs7IpqxpO4h0wshIN8PO9Kg2yNltZwVVuHf5cCpwVYrapwUopnFHtGtuClPllBr
+	 Xcp+v5UgEujE91iw4A9v24R1t0m2n09aIW0UB/7OAB/oBXfiICtow+djzUwVNO6cgv
+	 pdPxI3Mlu8WwfqAoKAkcBNOTyhU66UFN2zTKDHjLVer/vtRFRgKK8N6XEC0nA1Kz0I
+	 ee8MmAC3EerYQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 19C98C433F2;
+	Mon, 13 May 2024 17:50:51 +0000 (UTC)
+Subject: Re: [GIT PULL] trusted keys changes for v6.10-rc1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20240509154751.25983-1-jarkko@kernel.org>
+References: <20240509154751.25983-1-jarkko@kernel.org>
+X-PR-Tracked-List-Id: <keyrings.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20240509154751.25983-1-jarkko@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/keys-trusted-next-6.10-rc1
+X-PR-Tracked-Commit-Id: 28c5f596ae3d1790cdc96fa5fc7370f934abfb2e
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: c024814828f72b1ae9cc2c338997b2d9826c80f6
+Message-Id: <171562265110.10937.17676739352918213107.pr-tracker-bot@kernel.org>
+Date: Mon, 13 May 2024 17:50:51 +0000
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Jarkko Sakkinen <jarkko@kernel.org>, Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>, linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org, keyrings@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240503221634.44274-1-ignat@cloudflare.com>
-In-Reply-To: <20240503221634.44274-1-ignat@cloudflare.com>
-From: Ignat Korchagin <ignat@cloudflare.com>
-Date: Mon, 13 May 2024 18:11:21 +0100
-Message-ID: <CALrw=nGhgRrhJ5mWWC6sV2WYWoijvD9WgFzMfOe6mHmqnza-Hw@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/2] TPM derived keys
-To: James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>, 
-	David Howells <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>, 
-	James Morris <jmorris@namei.org>, serge@hallyn.com, linux-integrity@vger.kernel.org, 
-	keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: kernel-team@cloudflare.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 3, 2024 at 11:16=E2=80=AFPM Ignat Korchagin <ignat@cloudflare.c=
-om> wrote:
->
-> TPM derived keys get their payload from an HMAC primary key in the owner
-> hierarchy mixed with some metadata from the requesting process.
->
-> They are similar to trusted keys in the sense that the key security is ro=
-oted
-> in the TPM, but may provide easier key management for some use-cases.
->
-> One inconvenience with trusted keys is that the cryptographic material sh=
-ould
-> be provided externally. This means either wrapping the key to the TPM on =
-the
+The pull request you sent on Thu,  9 May 2024 18:47:51 +0300:
 
-I would like to point out to myself I was wrong: it is possible to ask
-the kernel to generate a trusted key inside the kernel locally with
-"keyctl add trusted kmk "new 32" @u"
+> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/keys-trusted-next-6.10-rc1
 
-> executing system (which briefly exposes plaintext cryptographic material =
-to
-> userspace) or creating the wrapped blob externally, but then we need to g=
-ather
-> and transfer the TPM public key to the remote system, which may be a logi=
-stical
-> problem sometimes.
->
-> Moreover, we need to store the wrapped key blob somewhere, and if we lose=
- it,
-> the application cannot recover its data anymore.
->
-> TPM derived keys may make key management for applications easier, especia=
-lly on
-> stateless systems as the application can always recreate its keys and the
-> encrypted data is bound to the device and its TPM. They allow the applica=
-tion
-> to wrap/unwrap some data to the device without worrying too much about ke=
-y
-> management and provisioning. They are similar in a sense to device unique=
- keys
-> present on many mobile devices and some IoT systems, but even better as e=
-very
-> application has its own unique device key.
->
-> It is also easy to quickly "wipe" all the application keys by just resett=
-ing
-> the TPM owner hierarchy.
->
-> It is worth mentioning that this functionality can be implemented in user=
-space
-> as a /sbin/request-key plugin. However, the advantage of the in-kernel
-> implementation is that the derived key material never leaves the kernel s=
-pace
-> (unless explicitly read into userspace with proper permissions).
->
-> Current implementation supports two modes (as demonstrated by the keyctl
-> userspace tool):
->   1. keyctl add derived test '32 path' - will derive a 32 byte key based =
-on
->      the TPM seed and the filesystem path of the requesting application. =
-That
->      is /usr/bin/keyctl and /opt/bin/keyctl would generate different keys=
-.
->
->   2. keyctl add derived test '32 csum' - will derive a 32 byte key based =
-on the
->      TPM seed and the IMA measurement of the requesting application. That=
- is
->      /usr/bin/keyctl and /opt/bin/keyctl would generate the same key IFF =
-their
->      code exactly matches bit for bit. The implementation does not measur=
-e the
->      requesting binary itself, but rather relies on already available
->      measurement. This means for this mode to work IMA needs to be enable=
-d and
->      configured for requesting applications. For example:
->        # echo 'audit func=3DBPRM_CHECK' > \
->          /sys/kernel/security/integrity/ima/policy
->
-> Open questions (apart from the obvious "is this useful?"):
->   * should any other modes/derivation parameters be considered?
->   * apparently in checksum mode, when calling keyring syscalls from scrip=
-ts,
->     we mix in the measurement of the interpreter, not the script itself. =
-Is
->     there any way to improve this?
->
->
-> Ignat Korchagin (2):
->   tpm: add some algorithm and constant definitions from the TPM spec
->   KEYS: implement derived keys
->
->  include/linux/tpm.h                     |  16 +-
->  security/keys/Kconfig                   |  16 ++
->  security/keys/Makefile                  |   1 +
->  security/keys/derived-keys/Makefile     |   8 +
->  security/keys/derived-keys/derived.c    | 226 +++++++++++++++++++++
->  security/keys/derived-keys/derived.h    |   4 +
->  security/keys/derived-keys/tpm2_shash.c | 257 ++++++++++++++++++++++++
->  7 files changed, 524 insertions(+), 4 deletions(-)
->  create mode 100644 security/keys/derived-keys/Makefile
->  create mode 100644 security/keys/derived-keys/derived.c
->  create mode 100644 security/keys/derived-keys/derived.h
->  create mode 100644 security/keys/derived-keys/tpm2_shash.c
->
-> --
-> 2.39.2
->
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/c024814828f72b1ae9cc2c338997b2d9826c80f6
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
