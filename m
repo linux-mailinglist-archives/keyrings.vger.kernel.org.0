@@ -1,115 +1,182 @@
-Return-Path: <keyrings+bounces-1227-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1228-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D65178C62D2
-	for <lists+keyrings@lfdr.de>; Wed, 15 May 2024 10:27:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 098118C660C
+	for <lists+keyrings@lfdr.de>; Wed, 15 May 2024 14:00:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43482B222F3
-	for <lists+keyrings@lfdr.de>; Wed, 15 May 2024 08:27:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5C721F221D4
+	for <lists+keyrings@lfdr.de>; Wed, 15 May 2024 12:00:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE924E1C9;
-	Wed, 15 May 2024 08:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A605A788;
+	Wed, 15 May 2024 12:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cwxgy+og"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R5vW6wGW"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AE34D9E0;
-	Wed, 15 May 2024 08:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F1F14AB4;
+	Wed, 15 May 2024 12:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715761623; cv=none; b=jA2/UKAo0TyZEsFlCd99f6sZa+bDrhzq7zIG4D38W9ZhFUXNWScUiAyB35sGNmASlHvZYGesu1Nv0mLRxcAXR0OyebUZxh/oVTPq8j/RlRqZLxCsekANj1Z5stXNxgASTaNF8SyWHjcHOPe/eEzcTb9tCm/eHz0Nj++vL6PiyOI=
+	t=1715774417; cv=none; b=sF8+xEd50IRXlbLnCQog4oigS/jnrpmBJmD+GvUeganVuWKSlNfak9Pip6raoe2TPYIAKBoiJ/ifPvp06/yXn0H7d1+IiXtUj2DbIw0IYaz7tWtewVmogUE03wWZR6CQLBkjml6Km1boblnZKp4T1pgv4a4VM/3/O5eEHiiGE6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715761623; c=relaxed/simple;
-	bh=ynBlYuCFA5cv9VHYEdN8WUXOBWZ+lNuedFoHg+2tP+s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e895j4hKzv5DKO41DnXKcHxuS06i+Cl/Mjgc5FbM6EwNIs38ImmvNnqVonjdmWFcf4Uf9RDLIVQ4xYVYdhZZ0pIMPh8hfe+2BibN2Sx4GV5knc2KVClGUnFVegR3z3jzFPbGKKhtUI1zEL/tKXayuu3kz+JBnVRxDD/wO+umHeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cwxgy+og; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D05C116B1;
-	Wed, 15 May 2024 08:27:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1715761622;
-	bh=ynBlYuCFA5cv9VHYEdN8WUXOBWZ+lNuedFoHg+2tP+s=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cwxgy+ogS3lJTQ3V23eeRlgDp8RGxMz9sHg6dUuY4VUV/XZAi9e5y0YbcUZGS50dk
-	 RAs7bLZX59Yio3rZpkPZWg7DfXBf6ji+uDdoKFldgqIoGYoNoKEwqyPRhFsmi2KHQI
-	 uYn7N5TWePGqkpG8E93tECZzrePpxQiTtPY6uTbw=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Silvio Gissi <sifonsec@amazon.com>,
-	David Howells <dhowells@redhat.com>,
-	Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>,
-	linux-afs@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	keyrings@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.9 4/5] keys: Fix overwrite of key expiration on instantiation
-Date: Wed, 15 May 2024 10:26:41 +0200
-Message-ID: <20240515082346.076396212@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240515082345.213796290@linuxfoundation.org>
-References: <20240515082345.213796290@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1715774417; c=relaxed/simple;
+	bh=fIyxcnkjrOli+Uk3bndx9D9k4fUWSo6ZOhd9rATHI44=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Ekcmyx18sWm6zTlKqI+IJUVfRWv+Y3Y2l9boCYUjxkc4Y4i1Mn/Km0ZeO8Vd0f2q0/qFPLGoph1UBMUySVcj4vvmISbh5v1Dp1SiGRfyaBeeFbr2j3F+/UMJC8NdS1eACXUb7po6ADaOeqoDdErh4hLpXCvCVhFpjRAQdoMIQTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R5vW6wGW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBCC9C116B1;
+	Wed, 15 May 2024 12:00:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715774417;
+	bh=fIyxcnkjrOli+Uk3bndx9D9k4fUWSo6ZOhd9rATHI44=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=R5vW6wGW7WwOxYDdVl1GDdN9+ti1CI9HK3NnZJ3RpfZPoQP+xkgs4ILI+ojoulmu7
+	 ZkyEynJEq0gjFD3IJmou85CbPpQtQ4zsepl/0NSRZOOZebeeJSfep8lDHbeMbUsn0X
+	 oBOQDir4i+VGvp/7D7fYi0h/OLclY4j3PVw0b9bT0mFOGEzk8dleEUUBJCm98pSMNF
+	 Gtjinz8Tt+SSu3QxG/kDsQkft9N1ltXvQnloMMKEdoll+Cvon6zN9TXz8DHm1fwMfw
+	 CmezXUBvQvlRM1oCNuigXvzQjnseIp+GDDVJcd/WxirOI93nJ29THWz8VYAFpV+W11
+	 kbvpva46XCqEQ==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 15 May 2024 15:00:12 +0300
+Message-Id: <D1A79NQ33IGG.OYIRO9S4YWZS@kernel.org>
+Cc: "James Bottomley" <James.Bottomley@hansenpartnership.com>, "Mimi Zohar"
+ <zohar@linux.ibm.com>, "David Howells" <dhowells@redhat.com>, "Paul Moore"
+ <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>,
+ <serge@hallyn.com>, <linux-integrity@vger.kernel.org>,
+ <keyrings@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <kernel-team@cloudflare.com>
+Subject: Re: [RFC PATCH 2/2] KEYS: implement derived keys
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Ignat Korchagin" <ignat@cloudflare.com>
+X-Mailer: aerc 0.17.0
+References: <20240503221634.44274-1-ignat@cloudflare.com>
+ <20240503221634.44274-3-ignat@cloudflare.com>
+ <D19QW70177QG.2YC9XL0FT7VME@kernel.org>
+ <D19RM0OV7YUW.1ZEI72XQUREMQ@kernel.org>
+ <CALrw=nEnqBCBQKhK9ACc7tbicqkXaDD+Bjc1d90xizMvbb--oA@mail.gmail.com>
+In-Reply-To: <CALrw=nEnqBCBQKhK9ACc7tbicqkXaDD+Bjc1d90xizMvbb--oA@mail.gmail.com>
 
-6.9-stable review patch.  If anyone has any objections, please let me know.
+On Wed May 15, 2024 at 9:44 AM EEST, Ignat Korchagin wrote:
+> On Wed, May 15, 2024 at 12:44=E2=80=AFAM Jarkko Sakkinen <jarkko@kernel.o=
+rg> wrote:
+> >
+> > On Wed May 15, 2024 at 2:10 AM EEST, Jarkko Sakkinen wrote:
+> > > On Sat May 4, 2024 at 1:16 AM EEST, Ignat Korchagin wrote:
+> > > > Derived keys are similar to user keys, but their payload is derived=
+ from the
+> > > > primary TPM seed and some metadata of the requesting process. This =
+way every
+> > >
+> > > What is exactly "some metadata"?
+> > >
+> > > > application can get a unique secret/key, which is cryptographically=
+ bound to
+> > >
+> > > What is "cryptographically bound". Please go straight to the point an=
+d
+> > > cut out *all* white paper'ish phrases. We do not need it and will mak=
+e
+> > > painful to backtrack this commit once in the mainline.
+> > >
+> > > > the TPM without the need to provide the key material externally (un=
+like trusted
+> > > > keys). Also, the whole key derivation process is deterministic, so =
+as long as
+> > >
+> > > Why trusted keys is inside braces. It is not important for the point
+> > > you are trying to make here?
+> > >
+> > > > the TPM is available, applications can always recover their keys, w=
+hich may
+> > > > allow for easier key management on stateless systems.
+> > >
+> > > Please drop "stateless system" unless you provide a rigid definition
+> > > what it is. I have no idea what you mean by it. Probably not that
+> > > important, right?
+> > >
+> > > >
+> > > > In this implementation the following factors will be used as a key =
+derivation
+> > > > factor:
+> > > >   * requested key length
+> > > >   * requesting process effective user id
+> > > >   * either the application executable path or the application integ=
+rity
+> > > >     metadata (if available)
+> > >
+> > > NAK for path for any possible key derivation. They are racy and
+> > > and ambiguous.
+> > >
+> > > This should have been in the beginning instead of "some data". What
+> > > other implementations exist. For me "this implementation" implies
+> > > that this one competing alternative to multiple implementations
+> > > of the same thing.
+> > >
+> > > I do not like this science/white paper style at all. Just express
+> > > short, open code everything right at start when you need and cut
+> > > extras like "stateless system" unless you can provide exact, sound
+> > > and unambiguous definiton of it.
+> > >
+> > > Just want to underline how this really needs a complete rewrite with
+> > > clear and concise explanation :-) This won't ever work.
+> > >
+> > > >
+> > > > Key length is used so requests for keys with different sizes result=
+ in keys
+> > > > with different cryptographic material.
+> > >
+> > > What is "key length"? Please refer the exact attribute.
+> > >
+> > > >
+> > > > User id is mixed, so different users get different keys even when e=
+xecuting the
+> > >
+> > > First of all it would be more clear to just s/User id/UID/
+> > >
+> > > And make obvious whether we are talking about ruid or euid and how
+> > > this interacts with GIDs.
+> > >
+> > > I'll look at the code change next round if the commit message starts
+> > > making any sense.
+> >
+> > Right and neither UIDs and GIDs are applicable for key derivation for
+> > quite obvious reasons. So NAK for that too.
+>
+> Can you, please, clarify a bit here? Not very obvious for me. I added
+> euid for two reasons:
+>   * an unprivileged user might run a normally privileged application,
+> for example /usr/sbin/sshd, and depending on the code could "leak" the
+> key
+>   * without it and with unprivileged user namespaces it is possible to
+> create an unprivileged container with code at the same path as a
+> privileged application
+>
+> Why do you think UIDs/GIDs are not applicable as mixins?
 
-------------------
+I did as much clarification as I possibly can.
 
-From: Silvio Gissi <sifonsec@amazon.com>
+Also, if you look at confidential computing platforms there's exactly
+two assets that they use lock into machine:
 
-commit 9da27fb65a14c18efd4473e2e82b76b53ba60252 upstream.
+- Binary
+- CPU material
 
-The expiry time of a key is unconditionally overwritten during
-instantiation, defaulting to turn it permanent. This causes a problem
-for DNS resolution as the expiration set by user-space is overwritten to
-TIME64_MAX, disabling further DNS updates. Fix this by restoring the
-condition that key_set_expiry is only called when the pre-parser sets a
-specific expiry.
+Only carved into stone immutable material for key derivation.
 
-Fixes: 39299bdd2546 ("keys, dns: Allow key types (eg. DNS) to be reclaimed immediately on expiry")
-Signed-off-by: Silvio Gissi <sifonsec@amazon.com>
-cc: David Howells <dhowells@redhat.com>
-cc: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
-cc: linux-afs@lists.infradead.org
-cc: linux-cifs@vger.kernel.org
-cc: keyrings@vger.kernel.org
-cc: netdev@vger.kernel.org
-cc: stable@vger.kernel.org
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- security/keys/key.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+You can use mm_struct->exe_file binary if that will work out for you.
+I'm done with this version.
 
---- a/security/keys/key.c
-+++ b/security/keys/key.c
-@@ -463,7 +463,8 @@ static int __key_instantiate_and_link(st
- 			if (authkey)
- 				key_invalidate(authkey);
- 
--			key_set_expiry(key, prep->expiry);
-+			if (prep->expiry != TIME64_MAX)
-+				key_set_expiry(key, prep->expiry);
- 		}
- 	}
- 
-
-
+BR, Jarkko
 
