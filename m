@@ -1,46 +1,46 @@
-Return-Path: <keyrings+bounces-1243-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1244-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8498C7D3F
-	for <lists+keyrings@lfdr.de>; Thu, 16 May 2024 21:29:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D1548C7D45
+	for <lists+keyrings@lfdr.de>; Thu, 16 May 2024 21:32:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F3A5284EA1
-	for <lists+keyrings@lfdr.de>; Thu, 16 May 2024 19:29:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CEDA6B23446
+	for <lists+keyrings@lfdr.de>; Thu, 16 May 2024 19:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66482156F3F;
-	Thu, 16 May 2024 19:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35EE9156F3F;
+	Thu, 16 May 2024 19:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KraW8m6i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d/EThQr8"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1B914533D;
-	Thu, 16 May 2024 19:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19D114533D;
+	Thu, 16 May 2024 19:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715887752; cv=none; b=BhJj43Vdy1gd5lQ0sWtpfNz+nL92Et3PXmR0GnTgMADTlFbaOzndem5Cq3w7TMlt4pSR2JtQRCNEH8uMEs9fvT1EE54kXa+rhKNhl1/dH0qOlHQrQIxaZKIv+1Wy9Gre2IUPwLWQu2Tpl8VTF0LDt9oNHensmu0gYEPb0cM8ab4=
+	t=1715887920; cv=none; b=eR4XPBQtKZmuVT6f032YcHeOcMLQy0c8EEHRYWiAEw9u4EBKWXF53ElDNpWp6Yw/2SR2tgqhisO/RkAQRhUoggdBZqNQ4LEp9HplXkIlRRVCEXVSjMUc6PQ3O0Z7JsAel64DJXb/4A3VC8p4iqWAcs0T3lFmkGHxA9UVqGd5SbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715887752; c=relaxed/simple;
-	bh=l+TnYWVF0KiB/EPfOg0XC54NqzGKjS+BW+46urjM8Wg=;
+	s=arc-20240116; t=1715887920; c=relaxed/simple;
+	bh=QS3rWyqiNz1bMHqpo1/6vgSRC+6QfSN7Fb8rIEEX/L8=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=LHbgxEvA4JkdHTxlnnYZHNGrwxAsfCCsIb+UWUKtcJkss4nVsdBnfoYaUij4/Ckk5MhUUrqoL97fZAuXPKCf0IxGOtclm8b5XJv3BBUSLFZBSXGMGtjnVE9N0dNBL1V2YzeEVY/qyYwE04vkinJMjf2fjJ1eRZdN+a7OndE35Fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KraW8m6i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE5AC32782;
-	Thu, 16 May 2024 19:29:08 +0000 (UTC)
+	 References:In-Reply-To; b=OWUknunKcxcU3Jm5dY0/lNQjhiSAkU7PYzqAHhH/Y01oVO8RK9xyl0UI+m6NHOs3skIyGjlpsm5EQbPcGdRr2Ygc86Yp16hH3lFoDgU14o2P54IX1qHnMVEqdDzQPS0gzPGJGICqikBpX+wn0kQavkoIOPzJngoPYPcox3jgZpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d/EThQr8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3619CC32786;
+	Thu, 16 May 2024 19:31:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715887751;
-	bh=l+TnYWVF0KiB/EPfOg0XC54NqzGKjS+BW+46urjM8Wg=;
+	s=k20201202; t=1715887919;
+	bh=QS3rWyqiNz1bMHqpo1/6vgSRC+6QfSN7Fb8rIEEX/L8=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=KraW8m6ii7OcHIdzBD3dYTIf9cBeWQXW9h5fyUKVWYwV+7WH1BA3Um8zu7uVVmrIH
-	 m5djFd2CfRr6D/fV3miziNaYWvkcofGj3arGyCGLm+53p7TduIy+CLzUzkiLRJhnBE
-	 38HcTCQleuRBN+lNKAIiEVLGYn5/GA+FYdtc3IpP559X5cp6RBC6u9V5OkpBQaWnfU
-	 XBWg6vDPOMTrm38Hf4qmOaT0As/UGr3u5PopZN50+TnJjCBcGMapPse/T3jBaSyAkL
-	 obJhh367vn1OPzNiaXBrcSp7j+tUVKF/VN2E0CYiQtmzIvR1hDsXxnAuygB42jrZ5m
-	 g6SBQyDuNn4Ew==
+	b=d/EThQr8Yjxxs6XG21fXUmzllZqq+V5qpW0ltah9r9oooBwamLANJ9O7FYU6/vfyI
+	 CbiKZgNlxPOjAcapN/LASyE+XWI6rQmQhZplX9/6r4JN28JbNaNTfTEbxK8QHPA1a8
+	 WGYmvTTnmtAg3SYWP7O+Cv+Qn7I5rJt50i9ml+1CGpNFRc1tqHFctsm3q6SRWZQOHN
+	 /xPuFP2CuHOL6aIdWq4s9ALjGYe5/EgXBGGloPZ+2oylJexbmMSZNTp6q+4Pfmtpd/
+	 NT9E2YjUiJjAmlk1IweAoWmL+WNG/itEZ5D9AYTNby9ZoJSjccInht8h8uztjJ/862
+	 fqMMIL/cWAX+Q==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,40 +49,49 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 16 May 2024 22:29:06 +0300
-Message-Id: <D1BBFWKGIA94.JP53QNURY3J4@kernel.org>
+Date: Thu, 16 May 2024 22:31:54 +0300
+Message-Id: <D1BBI1LX2FMW.3MTQAHW0MA1IH@kernel.org>
 Cc: <containers@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
  <linux-fsdevel@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
  <keyrings@vger.kernel.org>
 Subject: Re: [PATCH 0/3] Introduce user namespace capabilities
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Casey Schaufler" <casey@schaufler-ca.com>, "Jonathan Calmels"
- <jcalmels@3xx0.net>, <brauner@kernel.org>, <ebiederm@xmission.com>, "Luis
- Chamberlain" <mcgrof@kernel.org>, "Kees Cook" <keescook@chromium.org>,
- "Joel Granados" <j.granados@samsung.com>, "Serge Hallyn"
- <serge@hallyn.com>, "Paul Moore" <paul@paul-moore.com>, "James Morris"
- <jmorris@namei.org>, "David Howells" <dhowells@redhat.com>
+To: "Jarkko Sakkinen" <jarkko@kernel.org>, "Casey Schaufler"
+ <casey@schaufler-ca.com>, "Jonathan Calmels" <jcalmels@3xx0.net>,
+ <brauner@kernel.org>, <ebiederm@xmission.com>, "Luis Chamberlain"
+ <mcgrof@kernel.org>, "Kees Cook" <keescook@chromium.org>, "Joel Granados"
+ <j.granados@samsung.com>, "Serge Hallyn" <serge@hallyn.com>, "Paul Moore"
+ <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "David Howells"
+ <dhowells@redhat.com>
 X-Mailer: aerc 0.17.0
 References: <20240516092213.6799-1-jcalmels@3xx0.net>
  <2804dd75-50fd-481c-8867-bc6cea7ab986@schaufler-ca.com>
-In-Reply-To: <2804dd75-50fd-481c-8867-bc6cea7ab986@schaufler-ca.com>
+ <D1BBFWKGIA94.JP53QNURY3J4@kernel.org>
+In-Reply-To: <D1BBFWKGIA94.JP53QNURY3J4@kernel.org>
 
-On Thu May 16, 2024 at 10:07 PM EEST, Casey Schaufler wrote:
-> I suggest that adding a capability set for user namespaces is a bad idea:
-> 	- It is in no way obvious what problem it solves
-> 	- It is not obvious how it solves any problem
-> 	- The capability mechanism has not been popular, and relying on a
-> 	  community (e.g. container developers) to embrace it based on this
-> 	  enhancement is a recipe for failure
-> 	- Capabilities are already more complicated than modern developers
-> 	  want to deal with. Adding another, special purpose set, is going
-> 	  to make them even more difficult to use.
+On Thu May 16, 2024 at 10:29 PM EEST, Jarkko Sakkinen wrote:
+> On Thu May 16, 2024 at 10:07 PM EEST, Casey Schaufler wrote:
+> > I suggest that adding a capability set for user namespaces is a bad ide=
+a:
+> > 	- It is in no way obvious what problem it solves
+> > 	- It is not obvious how it solves any problem
+> > 	- The capability mechanism has not been popular, and relying on a
+> > 	  community (e.g. container developers) to embrace it based on this
+> > 	  enhancement is a recipe for failure
+> > 	- Capabilities are already more complicated than modern developers
+> > 	  want to deal with. Adding another, special purpose set, is going
+> > 	  to make them even more difficult to use.
+>
+> What Inh, Prm, Eff, Bnd and Amb is not dead obvious to you? ;-)
+> One UNs cannot hurt...
+>
+> I'm not following containers that much but didn't seccomp profiles
+> supposed to be the silver bullet?
 
-What Inh, Prm, Eff, Bnd and Amb is not dead obvious to you? ;-)
-One UNs cannot hurt...
-
-I'm not following containers that much but didn't seccomp profiles
-supposed to be the silver bullet?
+Also, I think Kata Containers style way of doing containers is pretty
+solid. I've heard that some video streaming service at least in recent
+past did launch VM per stream so it's not like VM's cannot be made to
+scale I guess.
 
 BR, Jarkko
 
