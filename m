@@ -1,191 +1,136 @@
-Return-Path: <keyrings+bounces-1261-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1263-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904ED8C876A
-	for <lists+keyrings@lfdr.de>; Fri, 17 May 2024 15:44:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADFA18C88ED
+	for <lists+keyrings@lfdr.de>; Fri, 17 May 2024 17:01:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA376B207A6
-	for <lists+keyrings@lfdr.de>; Fri, 17 May 2024 13:44:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E1D2B250B1
+	for <lists+keyrings@lfdr.de>; Fri, 17 May 2024 15:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D7D54F8A;
-	Fri, 17 May 2024 13:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hWWXlJnB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FD5634EA;
+	Fri, 17 May 2024 14:59:41 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7D854BD7;
-	Fri, 17 May 2024 13:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1723665194;
+	Fri, 17 May 2024 14:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.70.13.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715953444; cv=none; b=DhYtZaJNgKATeiszOYtNgRgBV/uyj0vdxJvr4iDF+j1OyCD08G+gynXE1cZixcD515krRWjFzY08QHpsd0eqIo2rMWl1g6kjiLOjUfXJ3bGRipgHUSj1N99oUfizVAO8SF9avb/PtoXMeCHXlGjni/HQbx2w/yuMHjdmu8ZS6zc=
+	t=1715957981; cv=none; b=FRUEjW8s85prfks01xROpmRw0aaoG/OLMgWl4vUnLjI8sRrIPhO4YYtev7aP1Mc5K1flBEDg01BAAXROkT6bNBIv+9p4TRCM7qIFvWjphc4c3aZDdi49adIv3Coj+x6dj2k6PG9mjT+G+IZ4C9PESiZBA4GIo1GKVUHjP3F1Bc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715953444; c=relaxed/simple;
-	bh=wHlakEAftzoRqy+S9zZVLma5AlfLyoxivnFpssVTMqQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CohRavuLSmrnHFNHKuY2F6IO5MuXI3RL2fTxtqWbrATasaed/RzWH34Doqle+LsfInZBqQk5a6+2xS5i7ABpjMEKNL880mXFbVtYQE3f4uC+DheqB5Md19YThbcphd+haGBWUl68lR7bO4ZugCyK6nvRGc/oUdKcMtHGzG0/tbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hWWXlJnB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F747C4AF08;
-	Fri, 17 May 2024 13:44:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715953444;
-	bh=wHlakEAftzoRqy+S9zZVLma5AlfLyoxivnFpssVTMqQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=hWWXlJnBKjPw4AVdYTHn5hMjoauPPJJ06iGusrWdsejUUJlg1NlnXH8eUjcBaXJqE
-	 NMQLOLWMUnqHu6OoNQbxebDhpniREp3Q63JF/zEft1Su2UZ8Ev+yTxuzL0LH3ZOHDx
-	 muX7VqG0rcOjI6Q83lQRj/6ouoOKxJrcFLyxa2pB/ozhvutrJeTVKh5vRemXpnU8Td
-	 /m/qDbhCzXu8aQcUsWPPubP/2X17+xR4bRwuN19YlXTs6ZHI1dGxN/0mjMgq9Tz/8N
-	 agB1znHBeRARurYPf29DHfOMdjlPHbeUkeaCt/dBtsYxldkd45xtXRgztFKuNqjAui
-	 LrpXwDoV/QNPQ==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-51f174e316eso727224e87.0;
-        Fri, 17 May 2024 06:44:04 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCV9cEMKMGxnGfj2IY3zyT1lJ3wtp23lErvo9NWJU7NfSbzPnm4cwny0BXBX4/5sgVFFEDENnmJbjlLcf+rv4RHcI9POGK9zpVatsixOshaArVtVYzDA6t6Y/DVhjRnXejeMdO5HGNtwk5k=
-X-Gm-Message-State: AOJu0YzSwz77c2bE+qj6hub+zeOGhbAdBEii/EXadrNSFxzX8jPh6mM1
-	4u8wTqIi9a0j0bT71KMg5ZTVl5H5rOnC0Lt08Rho4d24lOQ/iP1oL5RPSkD6XaUkUyrLzxTVhhU
-	mhiv5+v5xzxCbSTAxNOSQCFkZ3J4=
-X-Google-Smtp-Source: AGHT+IH/OXD9B8QdSVevSFO0IJ/+f4sEJ7acLRN8aew5PmK0K/Zlth+4th3PcsrdwAYSiztvICyU18O6meK82gc5LDk=
-X-Received: by 2002:a19:f001:0:b0:51a:c28e:e52 with SMTP id
- 2adb3069b0e04-5220fe79412mr13459090e87.46.1715953442524; Fri, 17 May 2024
- 06:44:02 -0700 (PDT)
+	s=arc-20240116; t=1715957981; c=relaxed/simple;
+	bh=avilw900f6d/x8c9K8ZiuzFANTi4g2LTrG2nEouV5+A=;
+	h=From:To:Cc:References:Date:In-Reply-To:Message-ID:MIME-Version:
+	 Content-Type:Subject; b=AMxUw1V68VZCn8y1DvJP1Q4FhhHkDBsD+jnxQ/GqdmErol+DU1lXqGV5Jxu/iYbpEHre4JfZjN8kwe83qQJahkmnFx1RLjNrPM8uD9S1upzShSZDQOLWxOwMnSpzOw+jE8rPZQj8FcW8LJ+o+BgfycbiH1BKnqV0wMCBW3ou11s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xmission.com; spf=pass smtp.mailfrom=xmission.com; arc=none smtp.client-ip=166.70.13.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xmission.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xmission.com
+Received: from in02.mta.xmission.com ([166.70.13.52]:51178)
+	by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1s7yTv-00G0Ui-NK; Fri, 17 May 2024 08:22:47 -0600
+Received: from ip68-227-168-167.om.om.cox.net ([68.227.168.167]:32812 helo=email.froward.int.ebiederm.org.xmission.com)
+	by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <ebiederm@xmission.com>)
+	id 1s7yTu-00FFhy-O4; Fri, 17 May 2024 08:22:47 -0600
+From: "Eric W. Biederman" <ebiederm@xmission.com>
+To: Jonathan Calmels <jcalmels@3xx0.net>
+Cc: brauner@kernel.org,  Luis Chamberlain <mcgrof@kernel.org>,  Kees Cook
+ <keescook@chromium.org>,  Joel Granados <j.granados@samsung.com>,  Serge
+ Hallyn <serge@hallyn.com>,  Paul Moore <paul@paul-moore.com>,  James
+ Morris <jmorris@namei.org>,  David Howells <dhowells@redhat.com>,  Jarkko
+ Sakkinen <jarkko@kernel.org>,  containers@lists.linux.dev,
+  linux-kernel@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  linux-security-module@vger.kernel.org,  keyrings@vger.kernel.org
+References: <20240516092213.6799-1-jcalmels@3xx0.net>
+	<20240516092213.6799-2-jcalmels@3xx0.net>
+	<878r08brmp.fsf@email.froward.int.ebiederm.org>
+	<xv52m5xu5tgwpckkcvyjvefbvockmb7g7fvhlky5yjs2i2jhsp@dcuovgkys4eh>
+Date: Fri, 17 May 2024 09:22:23 -0500
+In-Reply-To: <xv52m5xu5tgwpckkcvyjvefbvockmb7g7fvhlky5yjs2i2jhsp@dcuovgkys4eh>
+	(Jonathan Calmels's message of "Fri, 17 May 2024 04:55:03 -0700")
+Message-ID: <87jzjsa57k.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240429202811.13643-1-James.Bottomley@HansenPartnership.com>
- <20240429202811.13643-19-James.Bottomley@HansenPartnership.com>
- <119dc5ed-f159-41be-9dda-1a056f29888d@notapiano> <0f68c283ff4bbb89b8a019d47891f798c6fff287.camel@HansenPartnership.com>
- <CAMj1kXHi4r8KY9GvX573kwqvLpMfX-J=K2hWiGAKkf5bnicwYQ@mail.gmail.com> <0d260c2f7a9f67ec8bd2305919636678d06000d1.camel@HansenPartnership.com>
-In-Reply-To: <0d260c2f7a9f67ec8bd2305919636678d06000d1.camel@HansenPartnership.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Fri, 17 May 2024 15:43:51 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFE_R_x10BVkU+8vrMz0RHiX0+rz-ZL+w08FH2CLQHZXA@mail.gmail.com>
-Message-ID: <CAMj1kXFE_R_x10BVkU+8vrMz0RHiX0+rz-ZL+w08FH2CLQHZXA@mail.gmail.com>
-Subject: Re: [PATCH v8 18/22] tpm: add session encryption protection to tpm2_get_random()
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	=?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>, 
-	linux-integrity@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>, 
-	keyrings@vger.kernel.org, regressions@lists.linux.dev, kernel@collabora.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-XM-SPF: eid=1s7yTu-00FFhy-O4;;;mid=<87jzjsa57k.fsf@email.froward.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.227.168.167;;;frm=ebiederm@xmission.com;;;spf=pass
+X-XM-AID: U2FsdGVkX18IkHUj49fRJqM7REx3ND8lhM0yvX7TxF4=
+X-SA-Exim-Connect-IP: 68.227.168.167
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-Spam-Level: *
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	*  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+	*      [score: 0.4999]
+	*  1.5 XMNoVowels Alpha-numberic number with no vowels
+	*  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+	* -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+	*      [sa06 1397; Body=1 Fuz1=1 Fuz2=1]
+X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: *;Jonathan Calmels <jcalmels@3xx0.net>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 365 ms - load_scoreonly_sql: 0.05 (0.0%),
+	signal_user_changed: 11 (3.0%), b_tie_ro: 10 (2.6%), parse: 0.86
+	(0.2%), extract_message_metadata: 19 (5.2%), get_uri_detail_list: 1.95
+	(0.5%), tests_pri_-2000: 15 (4.2%), tests_pri_-1000: 2.9 (0.8%),
+	tests_pri_-950: 1.21 (0.3%), tests_pri_-900: 1.01 (0.3%),
+	tests_pri_-90: 70 (19.1%), check_bayes: 68 (18.6%), b_tokenize: 7
+	(2.0%), b_tok_get_all: 6 (1.7%), b_comp_prob: 2.2 (0.6%),
+	b_tok_touch_all: 49 (13.5%), b_finish: 0.87 (0.2%), tests_pri_0: 231
+	(63.4%), check_dkim_signature: 0.52 (0.1%), check_dkim_adsp: 2.4
+	(0.7%), poll_dns_idle: 0.44 (0.1%), tests_pri_10: 2.1 (0.6%),
+	tests_pri_500: 7 (2.0%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH 1/3] capabilities: user namespace capabilities
+X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
+X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
 
-On Fri, 17 May 2024 at 15:35, James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
+Jonathan Calmels <jcalmels@3xx0.net> writes:
+
+> On Fri, May 17, 2024 at 06:32:46AM GMT, Eric W. Biederman wrote:
+>> 
+>> Pointers please?
+>> 
+>> That sentence sounds about 5 years out of date.
 >
-> On Fri, 2024-05-17 at 09:20 +0200, Ard Biesheuvel wrote:
-> > On Fri, 17 May 2024 at 03:59, James Bottomley
-> > <James.Bottomley@hansenpartnership.com> wrote:
-> > >
-> > > On Thu, 2024-05-16 at 20:25 -0400, N=C3=ADcolas F. R. A. Prado wrote:
-> > ...
-> > > > KernelCI has identified a new warning and I tracked it down to
-> > > > this
-> > > > commit. It
-> > > > was observed on the following platforms:
-> > > > * mt8183-kukui-jacuzzi-juniper-sku16
-> > > > * sc7180-trogdor-kingoftown
-> > > > (but probably affects all platforms that have a tpm driver with
-> > > > async
-> > > > probe)
-> > > >
-> > > > [    2.175146] Call trace:
-> > > > [    2.177587]  __request_module+0x188/0x1f4
-> > > > [    2.181596]  crypto_alg_mod_lookup+0x178/0x21c
-> > > > [    2.186042]  crypto_alloc_tfm_node+0x58/0x114
-> > > > [    2.190396]  crypto_alloc_shash+0x24/0x30
-> > > > [    2.194404]  drbg_init_hash_kernel+0x28/0xdc
-> > > > [    2.198673]  drbg_kcapi_seed+0x21c/0x420
-> > > > [    2.202593]  crypto_rng_reset+0x84/0xb4
-> > > > [    2.206425]  crypto_get_default_rng+0xa4/0xd8
-> > > > [    2.210779]  ecc_gen_privkey+0x58/0xd0
-> > > > [    2.214526]  ecdh_set_secret+0x90/0x198
-> > > > [    2.218360]  tpm_buf_append_salt+0x164/0x2dc
-> > >
-> > > This looks like a misconfiguration.  The kernel is trying to load
-> > > the
-> > > ecdh module, but it should have been selected as built in by this
-> > > in
-> > > drivers/char/tpm/Kconfig:
-> > >
-> > > config TCG_TPM2_HMAC
-> > >         bool "Use HMAC and encrypted transactions on the TPM bus"
-> > >         default y
-> > >         select CRYPTO_ECDH
-> > >         select CRYPTO_LIB_AESCFB
-> > >         select CRYPTO_LIB_SHA256
-> > >
-> >
-> > The module request is not for ECDH itself but for the DRBG it
-> > attempts
-> > to use to generate the secret.
-> >
-> > Given that CRYPTO_ECDH does not strictly require a DRBG in principle,
-> > but does in this particular case, I think it makes sense to select
-> > CRYPTO_DRBG here (or depend on it being builtin), rather than
-> > updating the Kconfig rules for CRYPTO_ECDH itself.
+> The link referenced is from last year.
+> Here are some others often cited by distributions:
 >
-> Thanks for the analysis.  If I look at how CRYPTO_ECC does it, that
-> selects CRYPTO_RNG_DEFAULT which pulls in CRYPTO_DRBG, so the fix would
-> be the attached.  Does that look right to you Ard?
+> https://nvd.nist.gov/vuln/detail/CVE-2022-0185
+> https://nvd.nist.gov/vuln/detail/CVE-2022-1015
+> https://nvd.nist.gov/vuln/detail/CVE-2022-2078
+> https://nvd.nist.gov/vuln/detail/CVE-2022-24122
+> https://nvd.nist.gov/vuln/detail/CVE-2022-25636
+>
+> Recent thread discussing this too:
+> https://seclists.org/oss-sec/2024/q2/128
 
-No it doesn't - it's CRYPTO_RNG_DEFAULT not CRYTPO_RNG_DEFAULT :-)
+My apologies perhaps I trimmed too much.
 
-With that fixed,
+I know that user namespaces enlarge the attack surface.
+How much and how serious could be debated but for unprivileged
+users the attack surface is undoubtedly enlarged.
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+As I read your introduction you were justifying the introduction
+of a new security mechanism with the observation that distributions
+were carrying distribution specific patches.
+
+To the best of my knowledge distribution specific patches and
+distributions disabling user namespaces have been gone for quite a
+while.  So if that has changed recently I would like to know.
+
+Thank you,
+Eric
 
 
-
-> And does it work
-> Nicolas?
->
-> James
->
-> ---8>8>8><8<8<8---
->
-> From 8c60ffd959eaa65627aca6596c35bb9cbfd9bee6 Mon Sep 17 00:00:00 2001
-> From: James Bottomley <James.Bottomley@HansenPartnership.com>
-> Date: Fri, 17 May 2024 06:29:31 -0700
-> Subject: [PATCH] tpm: Fix sessions cryptography requirement for Random Nu=
-mbers
-> MIME-Version: 1.0
-> Content-Type: text/plain; charset=3DUTF-8
-> Content-Transfer-Encoding: 8bit
->
-> The ECDH code in tpm2-sessions.c requires an initial random number
-> generator to generate the key pair.  If the configuration doesn't have
-> CONFIG_RNG_DEFAULT, it will try to pull this in as a module (which is
-> impossible for the early kernel boot where the TPM starts).  Fix this
-> by selecting the required RNG.
->
-> Reported-by: N=C3=ADcolas F. R. A. Prado <nfraprado@collabora.com>
-> Fixes: 1b6d7f9eb150 ("tpm: add session encryption protection to tpm2_get_=
-random()")
-> Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
-> ---
->  drivers/char/tpm/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/char/tpm/Kconfig b/drivers/char/tpm/Kconfig
-> index 4f83ee7021d0..12065eddb922 100644
-> --- a/drivers/char/tpm/Kconfig
-> +++ b/drivers/char/tpm/Kconfig
-> @@ -31,6 +31,7 @@ config TCG_TPM2_HMAC
->         bool "Use HMAC and encrypted transactions on the TPM bus"
->         default y
->         select CRYPTO_ECDH
-> +       select CRYTPO_RNG_DEFAULT
->         select CRYPTO_LIB_AESCFB
->         select CRYPTO_LIB_SHA256
->         help
-> --
-> 2.35.3
->
->
 
