@@ -1,128 +1,128 @@
-Return-Path: <keyrings+bounces-1250-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1251-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B3F8C8289
-	for <lists+keyrings@lfdr.de>; Fri, 17 May 2024 10:26:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08ED38C8452
+	for <lists+keyrings@lfdr.de>; Fri, 17 May 2024 11:56:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 135041F22592
-	for <lists+keyrings@lfdr.de>; Fri, 17 May 2024 08:26:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F5211F23C99
+	for <lists+keyrings@lfdr.de>; Fri, 17 May 2024 09:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4320922301;
-	Fri, 17 May 2024 08:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2E1286AF;
+	Fri, 17 May 2024 09:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dFahYnI8"
+	dkim=pass (2048-bit key) header.d=3xx0.net header.i=@3xx0.net header.b="SFLGcB5W";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="J76x28/z"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wflow4-smtp.messagingengine.com (wflow4-smtp.messagingengine.com [64.147.123.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CFA2208F;
-	Fri, 17 May 2024 08:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055CA262A8;
+	Fri, 17 May 2024 09:56:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715934398; cv=none; b=H+WdqRjN3id96RBRXr6T0nA8iUtYib3SFAGL+QKmzOqfl7MT6t6M1W4+u/FEf42qMBGnFaz5R/rWOnp9XvPGVxTFdhQgGqInZ0HJb3ocPa/Juo2ppYUXXeMSNsyVerYAynJiulP6CJs4YYuw0EoSce1BOQHtoD6w4fFJDzM+Xhw=
+	t=1715939764; cv=none; b=rTxgAc2ET1L3LM0pSMDgTKZRjhgiqXUotXgx22qL7Falqdkm0/5RiL8n5eiQ05aiqDfrKyIzNH4lE14M5BO1z2JHVWhH4NlqlCPOGqG91Z93PeikZBUjNn0BVkKZDmgU1gmI/R0JBwt2cWSZ8T3dJomzeD5ZDOsXn0ZWYRtAlUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715934398; c=relaxed/simple;
-	bh=b4CzBIuUjatTBApFL7zeTDMeXO1kQQLfnt2eCZBNbLM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=D3YGooqetzZrHWFv8UCk6kmobNFfFIOpKW6d5UqKdE7NgMNZ/ELY4oTLIXPYoqE8MFTnogs1GgNAC4f8i4PH5BKd6n1cJzYwTyZBGsW44LH+wF4HYJNAj0uFAzE+8jqHqRNU+uzCixZhjezVZa5T9RhIpPLE8cSBzjbgu9MR++M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dFahYnI8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A02C2BD10;
-	Fri, 17 May 2024 08:26:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715934397;
-	bh=b4CzBIuUjatTBApFL7zeTDMeXO1kQQLfnt2eCZBNbLM=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=dFahYnI8viyUXccihZsL3aSFRGse+6uwl/zuok8MimuM94Hh7rpCxmCIAtgHtyXlt
-	 xcG0g3GpN/eFcuJyzYLSh7HkwfGEHyqKTABf5b0nT3Lkncko9a2lrmlWmYRwUWuboM
-	 ZH+IN0cYTYFwHUArujOcrtwlDpUX6CiDIeHldW/eSAL1SAjfx3RtDqhhxG5I7wY+Xf
-	 ImoZq4csqGm5pann9Pq9cO3aDqXxUbeHinaPadqulcF6/6Dzlv7MbM2H4uikRFjdeR
-	 1JeEKcsNoZKteDpD9c+b26YvlSQnVmARIuZrEVLS5iaLjLc1WeeatNgdDXN14MVVpG
-	 EuPK2blWTRzCg==
+	s=arc-20240116; t=1715939764; c=relaxed/simple;
+	bh=KkGcrkmfBCDmC5wsXf5TmL47hbWnMH6ayavHpq65iaM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uUXoDdhqoJ3NcZNnqWPSGPPo8cfZj80OKv3B+wGSPlbZnJSgLxjZHyLYBO27pXOJhtAx9Yw0OsnupZBeAUtfQQbQjaPzh6QwlMIPpsDavwwpVmjD+1NEgOtjiHaTzysCxnK3kl2EDLw6YnkT8j3ONNFE5JAemcoapIRymk1Cgdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3xx0.net; spf=pass smtp.mailfrom=3xx0.net; dkim=pass (2048-bit key) header.d=3xx0.net header.i=@3xx0.net header.b=SFLGcB5W; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=J76x28/z; arc=none smtp.client-ip=64.147.123.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3xx0.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=3xx0.net
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
+	by mailflow.west.internal (Postfix) with ESMTP id 308202CC0147;
+	Fri, 17 May 2024 05:55:59 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute7.internal (MEProxy); Fri, 17 May 2024 05:56:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=3xx0.net; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1715939759; x=1715943359; bh=rzLpoh5FVD
+	3LOyLFCdIzkEcNceRgesd/v21Z/l7RZ5E=; b=SFLGcB5WertXb1V3m2fi+z4zdU
+	Jp9S90ls3K+H9voIL3aIAJvTxnNjtJnWNCzLTGwdYoRMvNdLQUPAoi53A3ZbmzFN
+	RlE8d1Snpi/dYtx6gH6uWh/wH3uKykEWklZOvuFDMZy9/o1VQ1u/O8XHKYoyzugn
+	PNKksWA0LVq6/Q2MCD7vuymOtGhnnEoIqWWzVGk1sDKavrJIp1v4QAoqpDVmxaMo
+	LSuehCvyvygU0bfbS5KroosGXeBzFTd2dfV2h/w95wS4ghWZ+QT8mX8ekacHbBmG
+	bVlUNhJ5Py3c0QJHeKaGL1DoD2S6Wf1hDEg8jJCPKyAOEf5Zd8lz2BW9eXZQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	i76614979.fm3; t=1715939759; x=1715943359; bh=rzLpoh5FVD3LOyLFCd
+	IzkEcNceRgesd/v21Z/l7RZ5E=; b=J76x28/z38Uyk36WUZXKSl0R9o1g4tW23+
+	JtnPiGE6MbZgwvdz6mfgHIEWv8388bFiJkRd2c16WvW6fEqe8sUpcmbqBODF1uFY
+	eeTIYBjuqbDDoX32oeXKr75JT++SadWSHuS99rk21COe4YdU/lKTw8K+eyDpknRr
+	iz+aN4cHZGX8NvVtu3eVKEn7WNC71wiKzKRdvpr5FmtEtfxmhc94xpcXnmoNOBYF
+	WviHE/W0ubivbnhaj4fgvYQSmuQL1jxMmelMgA3//R6WaDgu41IEGAi5paEhbS2A
+	NGpaB3RPwBHmGBkJaygKFl07N6z9pb/BgAx+9ncpIGegZG+cmBMQ==
+X-ME-Sender: <xms:rilHZj0FM99tlirSD41vgsWEJEEdqQTGO29OwOru8OwDwnqzlZ8aWg>
+    <xme:rilHZiEloOFsYNCyshssEqC-7yh12MJxICZMxyzRlcPiTYlG5zU42E7EH2wqDIN0Y
+    51tssm036N2jKPFSdk>
+X-ME-Received: <xmr:rilHZj7NV8Ly8xSd9EsBVvlug2QPKNmcEcVlkiU83xlv63_xTWVyLIA_iWkhPP-lwQ9ozA6_CiDU6MAV3nNtBBY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdehfedgjeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtsfdttddtjeenucfhrhhomheplfhonhgr
+    thhhrghnucevrghlmhgvlhhsuceojhgtrghlmhgvlhhsseefgiigtddrnhgvtheqnecugg
+    ftrfgrthhtvghrnhepkeekteegfefgvdefgfefffeufeffjedvudeijeehjeehffekjeek
+    leffueelgffgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepjhgtrghlmhgvlhhsseefgiigtddrnhgvth
+X-ME-Proxy: <xmx:rilHZo2D099dIZwbXk55mk2SKAngP2oXBOENCkmjh4DAJPwZ6w9qAw>
+    <xmx:rilHZmF1fx2MHJyoHxM7X06m7qiNCl2lJ54lmveuB-S7nBZFGwm_MQ>
+    <xmx:rilHZp-8DOew53kGbq6lGMvcv9iRDw_tJJ6fxxzywkDXukR7zGxhnw>
+    <xmx:rilHZjm7FAk5hNjKBn5SYAxY8cqgB5IB51w2jF76ZbiZk-WmM0c6kQ>
+    <xmx:rylHZiHgiPuOWpTUiiuyl2BhNMuqGhKfsDpvzi0N3-Wb5eFH1SyQQIzm>
+Feedback-ID: i76614979:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 17 May 2024 05:55:57 -0400 (EDT)
+Date: Fri, 17 May 2024 03:00:58 -0700
+From: Jonathan Calmels <jcalmels@3xx0.net>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Ben Boeckel <me@benboeckel.net>, brauner@kernel.org, 
+	ebiederm@xmission.com, Luis Chamberlain <mcgrof@kernel.org>, 
+	Kees Cook <keescook@chromium.org>, Joel Granados <j.granados@samsung.com>, 
+	Serge Hallyn <serge@hallyn.com>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, David Howells <dhowells@redhat.com>, containers@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, keyrings@vger.kernel.org
+Subject: Re: [PATCH 0/3] Introduce user namespace capabilities
+Message-ID: <lkgjtvvbhiaern2fkcsholu4yaypsykfdpxim3k3mug2oko5iq@hoyossca24y5>
+References: <20240516092213.6799-1-jcalmels@3xx0.net>
+ <ZkYKgNltq2hlBzbx@farprobe>
+ <D1B3XN42A6DR.1RSMLZ6R7VRHT@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 17 May 2024 11:26:33 +0300
-Message-Id: <D1BRZ60B9O5S.3NAT20QPQE6KH@kernel.org>
-Cc: =?utf-8?b?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>,
- <linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>,
- <regressions@lists.linux.dev>, <kernel@collabora.com>
-Subject: Re: [PATCH v8 18/22] tpm: add session encryption protection to
- tpm2_get_random()
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Ard Biesheuvel" <ardb@kernel.org>, "James Bottomley"
- <James.Bottomley@hansenpartnership.com>, "Linux Crypto Mailing List"
- <linux-crypto@vger.kernel.org>, "Herbert Xu" <herbert@gondor.apana.org.au>
-X-Mailer: aerc 0.17.0
-References: <20240429202811.13643-1-James.Bottomley@HansenPartnership.com>
- <20240429202811.13643-19-James.Bottomley@HansenPartnership.com>
- <119dc5ed-f159-41be-9dda-1a056f29888d@notapiano>
- <0f68c283ff4bbb89b8a019d47891f798c6fff287.camel@HansenPartnership.com>
- <CAMj1kXHi4r8KY9GvX573kwqvLpMfX-J=K2hWiGAKkf5bnicwYQ@mail.gmail.com>
-In-Reply-To: <CAMj1kXHi4r8KY9GvX573kwqvLpMfX-J=K2hWiGAKkf5bnicwYQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <D1B3XN42A6DR.1RSMLZ6R7VRHT@kernel.org>
 
-On Fri May 17, 2024 at 10:20 AM EEST, Ard Biesheuvel wrote:
-> On Fri, 17 May 2024 at 03:59, James Bottomley
-> <James.Bottomley@hansenpartnership.com> wrote:
+On Thu, May 16, 2024 at 04:36:07PM GMT, Jarkko Sakkinen wrote:
+> On Thu May 16, 2024 at 4:30 PM EEST, Ben Boeckel wrote:
+> > I note a lack of any changes to `Documentation/` which seems quite
+> > glaring for something with such a userspace visibility aspect to it.
 > >
-> > On Thu, 2024-05-16 at 20:25 -0400, N=C3=ADcolas F. R. A. Prado wrote:
-> ...
-> > > KernelCI has identified a new warning and I tracked it down to this
-> > > commit. It
-> > > was observed on the following platforms:
-> > > * mt8183-kukui-jacuzzi-juniper-sku16
-> > > * sc7180-trogdor-kingoftown
-> > > (but probably affects all platforms that have a tpm driver with async
-> > > probe)
-> > >
-> > > [    2.175146] Call trace:
-> > > [    2.177587]  __request_module+0x188/0x1f4
-> > > [    2.181596]  crypto_alg_mod_lookup+0x178/0x21c
-> > > [    2.186042]  crypto_alloc_tfm_node+0x58/0x114
-> > > [    2.190396]  crypto_alloc_shash+0x24/0x30
-> > > [    2.194404]  drbg_init_hash_kernel+0x28/0xdc
-> > > [    2.198673]  drbg_kcapi_seed+0x21c/0x420
-> > > [    2.202593]  crypto_rng_reset+0x84/0xb4
-> > > [    2.206425]  crypto_get_default_rng+0xa4/0xd8
-> > > [    2.210779]  ecc_gen_privkey+0x58/0xd0
-> > > [    2.214526]  ecdh_set_secret+0x90/0x198
-> > > [    2.218360]  tpm_buf_append_salt+0x164/0x2dc
-> >
-> > This looks like a misconfiguration.  The kernel is trying to load the
-> > ecdh module, but it should have been selected as built in by this in
-> > drivers/char/tpm/Kconfig:
-> >
-> > config TCG_TPM2_HMAC
-> >         bool "Use HMAC and encrypted transactions on the TPM bus"
-> >         default y
-> >         select CRYPTO_ECDH
-> >         select CRYPTO_LIB_AESCFB
-> >         select CRYPTO_LIB_SHA256
-> >
->
-> The module request is not for ECDH itself but for the DRBG it attempts
-> to use to generate the secret.
->
-> Given that CRYPTO_ECDH does not strictly require a DRBG in principle,
-> but does in this particular case, I think it makes sense to select
-> CRYPTO_DRBG here (or depend on it being builtin), rather than updating
-> the Kconfig rules for CRYPTO_ECDH itself.
+> > --Ben
+> 
+> Yeah, also in cover letter it would be nice to refresh what is
+> a bounding set. I had to xref that (recalled what it is), and
+> then got bored reading the rest :-)
 
-I can spin a new PR if James can make a fix.
+Thanks for reminding me, I actually meant to do it, just forgot.
+Having said that, `Documentation/security/credentials.rst` is not the
+best documention when it comes to capabilities. I will definitely add
+few more lines in there, but it's probably not what you're looking for.
 
-All previous 4 PR's for 6.10 were applied to Linus' tree so my queue
-is empty. Need to have both fixes and stable-tags to save my bandwidth.
+capabilities(7) is where everything is explained, I should have
+mentioned it. I could try to summarize the existing sets, but honestly I
+will probably do a worse job than the man page.
 
-Maybe for transcript just two first lines denoting that it was
-__request_module() will do. That and adding CONFIG_DRBG will take
-it away should be enough for the full disclosure, right?
-
-BR, Jarkko
+I do plan to update the man page though if it comes to that.
 
