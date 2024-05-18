@@ -1,92 +1,216 @@
-Return-Path: <keyrings+bounces-1277-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1278-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4C98C90A3
-	for <lists+keyrings@lfdr.de>; Sat, 18 May 2024 13:34:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F08C8C90C8
+	for <lists+keyrings@lfdr.de>; Sat, 18 May 2024 14:26:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCCB3282D2C
-	for <lists+keyrings@lfdr.de>; Sat, 18 May 2024 11:34:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A1BC1F21C3B
+	for <lists+keyrings@lfdr.de>; Sat, 18 May 2024 12:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF6639FEF;
-	Sat, 18 May 2024 11:34:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OiDzSSuc"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EADC637719;
+	Sat, 18 May 2024 12:26:05 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.hallyn.com (mail.hallyn.com [178.63.66.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B4D39FC1;
-	Sat, 18 May 2024 11:34:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3602CCD0;
+	Sat, 18 May 2024 12:26:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.63.66.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716032073; cv=none; b=fwbWQCth9qRRwkoGMdmyZ6WZOLddky4xOaJNljfaspTlGhAkNuANZgc4kZzPZ5kUigBOt49qcTkW6cMR5qhh0eR/kBB8uK5SRtBnoH0r6PBpYULFaNYO6NgN0iPA4LeZRHnkJJ3QaCYpv9tsnWgwRF2p5vEqg0UjaHcOcuZlx4E=
+	t=1716035165; cv=none; b=d9yKua4XiH7ZdL/v7XQMMr8dFHbVeQ9w8Dbhv3RFjprnSegPfG/7x0jPV+OF1f3wFTtCozLxM9HSdqLFsXKH9qdCIVbBMbvvXw12aJIAObFLQu1nb0sjZ+8HWpSjPYqIUsbGx6L8L9Sn1h6mBLkiJsLkDeWGx0ScSTg1UCZsL8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716032073; c=relaxed/simple;
-	bh=lh54TV2ei8xvwUkn4mkrDUhs2EQCaYP+o8zISbosFVo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pNruluUG8h/Njfq9LvG35s3sAR13vAXbZQ6cgpIdP/ezTIVaDnd/4txwzNOloheFjhqvUFPiFSfO13hBAMTeuBAUXMZxqzjo2s+a9yjqBWRTcypcAKdrBjY3IHuwY5IUhq6W52JH0upQWbxGw+YLVb7TWodeXCMdYFkURMrhMP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OiDzSSuc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2BADC113CC;
-	Sat, 18 May 2024 11:34:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716032072;
-	bh=lh54TV2ei8xvwUkn4mkrDUhs2EQCaYP+o8zISbosFVo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=OiDzSSucr/DxyvTLqvETRdx5EVpumXoBBJiMPCxfLsYaEKZgPCrWhQPjzo+8jgfhC
-	 vC3Ql87au/4nFYBr3hiOtAvIAoE36UaLXvD9BVStKz+oD8W/GoelAnoYWm/Nagbp6q
-	 7rh5LG71FshBVpSSKb6z8WwJSR8txuQQPArLvWea51iZOh2fvrYU8znCii+mAg6L4Y
-	 W2hacrzNGKepwiiqZIqTfeirpwX/b5DJL9xJ2oKXQFThGACWMGzN4Bh+cnTKYLM9Z/
-	 N/qSDoOLx4gMaL3aRAFH1gtnG2RaYVzGJQmCaCtJbnv3Nxtkhs2v9BwRJ/Jjya2DjW
-	 bh2C6zZi+y0Jw==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org
-Cc: keyrings@vger.kernel.org,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Vitor Soares <ivitro@gmail.com>,
-	Peter Huewe <peterhuewe@gmx.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] tpm: Disable TCG_TPM2_HMAC by default
-Date: Sat, 18 May 2024 14:34:24 +0300
-Message-ID: <20240518113424.13486-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.45.0
+	s=arc-20240116; t=1716035165; c=relaxed/simple;
+	bh=QcYD3TRVoSjH3YeusMUss8nu1WzsktIMJpe9lyI3rFQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lVDEfMhYMV/TTd950VVeZ59+7c6kLTKonAZQjzSdiKllzQujxD7IWm65AjId/UZX7UFUISQnzxrBO/e5sPbvYeW6wh9dp+Krj2X+DvjMmZEGzlZEVz8XT4m7q03giXNxLch2VTGSQNPHnxJ2QNkpUDU+roCP+EYwfFa2t2EZeV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hallyn.com; spf=pass smtp.mailfrom=hallyn.com; arc=none smtp.client-ip=178.63.66.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hallyn.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hallyn.com
+Received: from serge-l-PF3DENS3 (216-177-171-48.block0.gvtc.com [216.177.171.48])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: serge)
+	by mail.hallyn.com (Postfix) with ESMTPSA id CCF6C356;
+	Sat, 18 May 2024 07:20:32 -0500 (CDT)
+Date: Sat, 18 May 2024 07:20:30 -0500
+From: Serge Hallyn <serge@hallyn.com>
+To: Casey Schaufler <casey@schaufler-ca.com>
+Cc: Jonathan Calmels <jcalmels@3xx0.net>,
+	Jarkko Sakkinen <jarkko@kernel.org>, brauner@kernel.org,
+	ebiederm@xmission.com, Luis Chamberlain <mcgrof@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Joel Granados <j.granados@samsung.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	David Howells <dhowells@redhat.com>, containers@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+	serge@hallyn.com
+Subject: Re: [PATCH 0/3] Introduce user namespace capabilities
+Message-ID: <ZkidDlJwTrUXsYi9@serge-l-PF3DENS3>
+References: <20240516092213.6799-1-jcalmels@3xx0.net>
+ <2804dd75-50fd-481c-8867-bc6cea7ab986@schaufler-ca.com>
+ <D1BBFWKGIA94.JP53QNURY3J4@kernel.org>
+ <D1BBI1LX2FMW.3MTQAHW0MA1IH@kernel.org>
+ <D1BC3VWXKTNC.2DB9JIIDOFIOQ@kernel.org>
+ <jvy3npdptyro3m2q2junvnokbq2fjlffljxeqitd55ff37cydc@b7mwtquys6im>
+ <df3c9e5c-b0e7-4502-8c36-c5cb775152c0@schaufler-ca.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <df3c9e5c-b0e7-4502-8c36-c5cb775152c0@schaufler-ca.com>
 
-Causes performance drop in initialization so needs to be opt-in.
-Distributors are capable of opt-in enabling this. Could be also handled by
-kernel-command line in the future.
+On Fri, May 17, 2024 at 10:53:24AM -0700, Casey Schaufler wrote:
+> On 5/17/2024 4:42 AM, Jonathan Calmels wrote:
+> >>>> On Thu May 16, 2024 at 10:07 PM EEST, Casey Schaufler wrote:
+> >>>>> I suggest that adding a capability set for user namespaces is a bad idea:
+> >>>>> 	- It is in no way obvious what problem it solves
+> >>>>> 	- It is not obvious how it solves any problem
+> >>>>> 	- The capability mechanism has not been popular, and relying on a
+> >>>>> 	  community (e.g. container developers) to embrace it based on this
+> >>>>> 	  enhancement is a recipe for failure
+> >>>>> 	- Capabilities are already more complicated than modern developers
+> >>>>> 	  want to deal with. Adding another, special purpose set, is going
+> >>>>> 	  to make them even more difficult to use.
+> > Sorry if the commit wasn't clear enough.
+> 
+> While, as others have pointed out, the commit description left
+> much to be desired, that isn't the biggest problem with the change
+> you're proposing.
+> 
+> >  Basically:
+> >
+> > - Today user namespaces grant full capabilities.
+> 
+> Of course they do. I have been following the use of capabilities
+> in Linux since before they were implemented. The uptake has been
+> disappointing in all use cases.
+> 
+> >   This behavior is often abused to attack various kernel subsystems.
+> 
+> Yes. The problems of a single, all powerful root privilege scheme are
+> well documented.
+> 
+> >   Only option
+> 
+> Hardly.
+> 
+> >  is to disable them altogether which breaks a lot of
+> >   userspace stuff.
+> 
+> Updating userspace components to behave properly in a capabilities
+> environment has never been a popular activity, but is the right way
+> to address this issue. And before you start on the "no one can do that,
+> it's too hard", I'll point out that multiple UNIX systems supported
+> rootless, all capabilities based systems back in the day. 
+> 
+> >   This goes against the least privilege principle.
+> 
+> If you're going to run userspace that *requires* privilege, you have
+> to have a way to *allow* privilege. If the userspace insists on a root
+> based privilege model, you're stuck supporting it. Regardless of your
+> principles.
 
-Reported-by: Vitor Soares <ivitro@gmail.com>
-Closes: https://lore.kernel.org/linux-integrity/bf67346ef623ff3c452c4f968b7d900911e250c3.camel@gmail.com/#t
-Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
- drivers/char/tpm/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Casey,
 
-diff --git a/drivers/char/tpm/Kconfig b/drivers/char/tpm/Kconfig
-index e63a6a17793c..db41301e63f2 100644
---- a/drivers/char/tpm/Kconfig
-+++ b/drivers/char/tpm/Kconfig
-@@ -29,7 +29,7 @@ if TCG_TPM
- 
- config TCG_TPM2_HMAC
- 	bool "Use HMAC and encrypted transactions on the TPM bus"
--	default y
-+	default n
- 	select CRYPTO_ECDH
- 	select CRYPTO_LIB_AESCFB
- 	select CRYPTO_LIB_SHA256
--- 
-2.45.0
+I might be wrong, but I think you're misreading this patchset.  It is not
+about limiting capabilities in the init user ns at all.  It's about limiting
+the capabilities which a process in a child userns can get.
 
+Any unprivileged task can create a new userns, and get a process with
+all capabilities in that namespace.  Always.  User namespaces were a
+great success in that we can do this without any resulting privilege
+against host owned resources.  The unaddressed issue is the expanded
+kernel code surface area.
+
+You say, above, (quoting out of place here)
+
+> Updating userspace components to behave properly in a capabilities
+> environment has never been a popular activity, but is the right way
+> to address this issue. And before you start on the "no one can do that,
+> it's too hard", I'll point out that multiple UNIX systems supported
+
+He's not saying no one can do that.  He's saying, correctly, that the
+kernel currently offers no way for userspace to do this limiting.  His
+patchset offers two ways: one system wide capability mask (which applies
+only to non-initial user namespaces) and on per-process inherited one
+which - yay - userspace can use to limit what its children will be
+able to get if they unshare a user namespace.
+
+> > - It adds a new capability set.
+> 
+> Which is a really, really bad idea. The equation for calculating effective
+> privilege is already more complicated than userspace developers are generally
+> willing to put up with.
+
+This is somewhat true, but I think the semantics of what is proposed here are
+about as straightforward as you could hope for, and you can basically reason
+about them completely independently of the other sets.  Only when reasoning
+about the correctness of this code do you need to consider the other sets.  Not
+when administering a system.
+
+If you want root in a child user namespace to not have CAP_MAC_ADMIN, you drop
+it from your pU.  Simple as that.
+
+> >   This set dictates what capabilities are granted in namespaces (instead
+> >   of always getting full caps).
+> 
+> I would not expect container developers to be eager to learn how to use
+> this facility.
+
+I'm a container developer, and I'm excited about it :)
+
+> >   This brings namespaces in line with the rest of the system, user
+> >   namespaces are no more "special".
+> 
+> I'm sorry, but this makes no sense to me whatsoever. You want to introduce
+> a capability set explicitly for namespaces in order to make them less
+> special?
+
+Yes, exactly.
+
+> Maybe I'm just old and cranky.
+
+That's fine.
+
+> >   They now work the same way as say a transition to root does with
+> >   inheritable caps.
+> 
+> That needs some explanation.
+> 
+> >
+> > - This isn't intended to be used by end users per se (although they could).
+> >   This would be used at the same places where existing capabalities are
+> >   used today (e.g. init system, pam, container runtime, browser
+> >   sandbox), or by system administrators.
+> 
+> I understand that. It is for containers. Containers are not kernel entities.
+
+User namespaces are.
+
+This patch set provides userspace a way of limiting the kernel code exposed
+to untrusted children, which currently does not exist.
+
+> > To give you some ideas of things you could do:
+> >
+> > # E.g. prevent alice from getting CAP_NET_ADMIN in user namespaces under SSH
+> > echo "auth optional pam_cap.so" >> /etc/pam.d/sshd
+> > echo "!cap_net_admin alice" >> /etc/security/capability.conf.
+> >
+> > # E.g. prevent any Docker container from ever getting CAP_DAC_OVERRIDE
+> > systemd-run -p CapabilityBoundingSet=~CAP_DAC_OVERRIDE \
+> >             -p SecureBits=userns-strict-caps \
+> >             /usr/bin/dockerd
+> >
+> > # E.g. kernel could be vulnerable to CAP_SYS_RAWIO exploits
+> > # Prevent users from ever gaining it
+> > sysctl -w cap_bound_userns_mask=0x1fffffdffff
 
