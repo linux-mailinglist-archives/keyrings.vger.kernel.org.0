@@ -1,46 +1,46 @@
-Return-Path: <keyrings+bounces-1273-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1274-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E4508C9083
-	for <lists+keyrings@lfdr.de>; Sat, 18 May 2024 13:04:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D22BC8C9088
+	for <lists+keyrings@lfdr.de>; Sat, 18 May 2024 13:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57D932826B8
-	for <lists+keyrings@lfdr.de>; Sat, 18 May 2024 11:04:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7466D1F2159F
+	for <lists+keyrings@lfdr.de>; Sat, 18 May 2024 11:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA8F1BC59;
-	Sat, 18 May 2024 11:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9312030B;
+	Sat, 18 May 2024 11:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nXmJ2jLo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MIvX89AP"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C8A1B95B;
-	Sat, 18 May 2024 11:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E5C2E3FE;
+	Sat, 18 May 2024 11:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716030263; cv=none; b=UfOFMH2L7ZzC3uM98jMF5d+ho0M4yg4St37bJpJ+VA+SF+iEguB//BLA7+en0WqJj9+Te8kPu6nHgjf63jZVkOXdun2tSXMENWXQI/TtTgH1/RUzrM4r9Yv1DdmXyNkegjaH/BNAup4i01nSakmX5n2q8rCUem5Yymr9v6fUegk=
+	t=1716030496; cv=none; b=SJ3RX0OMFqCMybf4M8fqyf6NhssIjo2cwE82sO9/++jvmh3iWz8VJvVA+uYJQe479jvYrC1KKR/BgZQyQ5uN+f0/7xNwGQC23m1PRSLX0zbjPaCSl2FNG0n8gqC2W/x8Lyr3F8qqj0OTf4+mCZVCrSETZTUXIjQrOxxVIEDfH3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716030263; c=relaxed/simple;
-	bh=rYsvq9af1ElTO55bIIOmCkL8EzQiQvpxZzQSooTJeao=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=FqJ5xwrfujvMkL2uH71h9hJqoyu3ZYe7evkj7FbZWqXOszdy8aZteRn6u/PBMdwuvJDAunroCbwZ95OSA+QWAzLkqLk6DwEpFpWnOt9M2KCOWgFwFrC5VbRiIitQaVjtSYgMw//YH9coiyrGmHbhSXKdO+7Hy+vGeahZVc/IBYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nXmJ2jLo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06A6C113CC;
-	Sat, 18 May 2024 11:04:20 +0000 (UTC)
+	s=arc-20240116; t=1716030496; c=relaxed/simple;
+	bh=HXbBUzug7U+V2vfPNBsz3+xipJXzt7YurgJFoKWIqEY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=pQA6Q9lGwB7HjqXcXm+psMkasU7FLnPqjiW4S3OXY+qO4lxJ7POIpYDflKgQWBdo0VsJ5aKAAkgd5rCxcI0DzECy5e2YuSbkoZCSQ3E4Pv4V2Z8ADthOkmQ69rXT1inde0OYbvy/pd9d/6SRHuJetySs5TdEfKXifg6A8HWhots=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MIvX89AP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A66C113CC;
+	Sat, 18 May 2024 11:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716030263;
-	bh=rYsvq9af1ElTO55bIIOmCkL8EzQiQvpxZzQSooTJeao=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=nXmJ2jLoQyJEokvaO+wsoUaYyZ3TABkEIV47lr3GOirywjGFltECefkJM+BalDP7j
-	 j4Mkhx529MULMgRY6w8XoYc6KyDT9IchSdaL7TCOiGF4qLk0tvuR7lT/7M+Vojn+Nc
-	 sjcDUlRMQN2oM+yrzBpxZmfURKoK6grYHBp0pQw/FWVe8ySo+M96aM/ZCDRIOywiED
-	 S3PSe3gLaHyUHzjZYFbzNV1LaNg7CONlCjgugPAjNl562mqZyBwMC42ax6PwaOzsA3
-	 MUzgHlXmHvJ4uF7cDetMzkfogvcvrqmxTAN3gwIM63HsTwxBAxDdoHDn8xUQ6SraUb
-	 clT8lyNLnaCXA==
+	s=k20201202; t=1716030495;
+	bh=HXbBUzug7U+V2vfPNBsz3+xipJXzt7YurgJFoKWIqEY=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=MIvX89AP8dU1e/0W56FnUOvYR2BFANvmkcxTg2AB4Wnt120QafMqu6ehIH5wtutsp
+	 dpA4LSS4tO/2rqt2FrV3umvujxDxwyzQsFe3oGQLH83pqZdOXa+MuTrEVZwAU2fbQ9
+	 Ht2e/3ir19vOGbCjsWFfds8D/JYEwJJMiDTXo5Zf2i/gxq56OWSCvkBH0meGFq1f4H
+	 ZS1P4e6txqfRk72du09hjUJPsdfJKvioOypaDP7GFkkmPBVuFosDwDDdIz/j9eOf2V
+	 M5LKNG1L7i0ifUk6/8uilS2EdBe4EOS8Q3lvvIwcmwOdIdtbks9O/XWqRnb+v180pN
+	 aH53POQPngOhQ==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,47 +49,44 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Sat, 18 May 2024 14:04:18 +0300
-Message-Id: <D1CPYHVR94JS.1DIGZUQ2H3NCI@kernel.org>
-Cc: =?utf-8?b?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>,
- "James Bottomley" <James.Bottomley@hansenpartnership.com>, "Ard Biesheuvel"
- <ardb@kernel.org>, "Linux Crypto Mailing List"
- <linux-crypto@vger.kernel.org>, <linux-integrity@vger.kernel.org>,
- <keyrings@vger.kernel.org>, <regressions@lists.linux.dev>,
- <kernel@collabora.com>
-Subject: Re: [PATCH] crypto: api - Do not load modules until algapi is ready
+Date: Sat, 18 May 2024 14:08:09 +0300
+Message-Id: <D1CQ1FZ72NIW.2U7ZH0GU6C5W5@kernel.org>
+Subject: Re: [PATCH 0/3] Introduce user namespace capabilities
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Herbert Xu" <herbert@gondor.apana.org.au>, "Eric Biggers"
- <ebiggers@kernel.org>
+To: "Jonathan Calmels" <jcalmels@3xx0.net>, "Casey Schaufler"
+ <casey@schaufler-ca.com>
+Cc: <brauner@kernel.org>, <ebiederm@xmission.com>, "Luis Chamberlain"
+ <mcgrof@kernel.org>, "Kees Cook" <keescook@chromium.org>, "Joel Granados"
+ <j.granados@samsung.com>, "Serge Hallyn" <serge@hallyn.com>, "Paul Moore"
+ <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "David Howells"
+ <dhowells@redhat.com>, <containers@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-security-module@vger.kernel.org>, <keyrings@vger.kernel.org>
 X-Mailer: aerc 0.17.0
-References: <20240429202811.13643-19-James.Bottomley@HansenPartnership.com>
- <119dc5ed-f159-41be-9dda-1a056f29888d@notapiano>
- <0f68c283ff4bbb89b8a019d47891f798c6fff287.camel@HansenPartnership.com>
- <CAMj1kXHi4r8KY9GvX573kwqvLpMfX-J=K2hWiGAKkf5bnicwYQ@mail.gmail.com>
- <0d260c2f7a9f67ec8bd2305919636678d06000d1.camel@HansenPartnership.com>
- <CAMj1kXFE_R_x10BVkU+8vrMz0RHiX0+rz-ZL+w08FH2CLQHZXA@mail.gmail.com>
- <66ec985f3ee229135bf748f1b0874d5367a74d7f.camel@HansenPartnership.com>
- <dfb0d930-7cbe-46c5-be19-d132b4906ecf@notapiano>
- <D1C2NPOBHAHK.20O4IME8OK1FH@kernel.org>
- <20240518043115.GA53815@sol.localdomain>
- <ZkhS1zrobNwAuANI@gondor.apana.org.au>
-In-Reply-To: <ZkhS1zrobNwAuANI@gondor.apana.org.au>
+References: <20240516092213.6799-1-jcalmels@3xx0.net>
+ <2804dd75-50fd-481c-8867-bc6cea7ab986@schaufler-ca.com>
+ <D1BBFWKGIA94.JP53QNURY3J4@kernel.org>
+ <D1BBI1LX2FMW.3MTQAHW0MA1IH@kernel.org>
+ <D1BC3VWXKTNC.2DB9JIIDOFIOQ@kernel.org>
+ <jvy3npdptyro3m2q2junvnokbq2fjlffljxeqitd55ff37cydc@b7mwtquys6im>
+ <df3c9e5c-b0e7-4502-8c36-c5cb775152c0@schaufler-ca.com>
+ <vhpmew3kyay3xq4h3di3euauo43an22josvvz6assex4op3gzw@xeq63mqb2lmh>
+In-Reply-To: <vhpmew3kyay3xq4h3di3euauo43an22josvvz6assex4op3gzw@xeq63mqb2lmh>
 
-On Sat May 18, 2024 at 10:03 AM EEST, Herbert Xu wrote:
-> When the Crypto API is built into the kernel, it may be invoked
-> during system initialisation before modules can be loaded.  Ensure
-> that it doesn't load modules if this is the case by checking
-> crypto_boot_test_finished().
+On Fri May 17, 2024 at 10:11 PM EEST, Jonathan Calmels wrote:
+> On Fri, May 17, 2024 at 10:53:24AM GMT, Casey Schaufler wrote:
+> > Of course they do. I have been following the use of capabilities
+> > in Linux since before they were implemented. The uptake has been
+> > disappointing in all use cases.
 >
-> Add a call to wait_for_device_probe so that the drivers that may
-> call into the Crypto API have finished probing.
->
-> Reported-by: N=C3=ADcolas F. R. A. Prado" <nfraprado@collabora.com>
-> Reported-by: Eric Biggers <ebiggers@kernel.org>
-> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+> Why "Of course"?
+> What if they should not get *all* privileges?
 
-Right does this mean for TPM driver that a crypto API invocation not
-having everthing needed loaded will block until this is not the case?
+They do the job given a real-world workload and stress test.
+
+Here the problem is based on a theory and an experiment.
+
+Even a formal model does not necessarily map all "unknown unknowns".
 
 BR, Jarkko
 
