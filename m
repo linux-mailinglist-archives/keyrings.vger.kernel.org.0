@@ -1,101 +1,97 @@
-Return-Path: <keyrings+bounces-1310-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1311-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A871D8C9F02
-	for <lists+keyrings@lfdr.de>; Mon, 20 May 2024 16:50:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 315978C9FF0
+	for <lists+keyrings@lfdr.de>; Mon, 20 May 2024 17:44:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AD731F2358D
-	for <lists+keyrings@lfdr.de>; Mon, 20 May 2024 14:50:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62C341C20D53
+	for <lists+keyrings@lfdr.de>; Mon, 20 May 2024 15:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373D6136669;
-	Mon, 20 May 2024 14:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9407137756;
+	Mon, 20 May 2024 15:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="D+kk4AG0";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="D+kk4AG0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QpJG34v/"
 X-Original-To: keyrings@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546591E878;
-	Mon, 20 May 2024 14:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F4613774C;
+	Mon, 20 May 2024 15:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716216633; cv=none; b=nmXlPKO+tCkr26RCVNlXfO0sd9eoyjB8DYEi4cnWxYbpj5AhVX+N1IGsBSgjD5rj1fOU1HdKjSjDNhXuacImTXMueYPG9E7xJLRchLwvJvqv1XuUzzTFf7eC/BmPwhbLZ+UQJ8FCMG7gSEvO5JcHUBLM+lT5YIqGKpk2tNrUIIQ=
+	t=1716219867; cv=none; b=WpR0USPVVzKlGFsmMdixYvomdcMZ0ipP3yAq/DvEZuR/UGfSBWVORPORjRgoXzdYlw6YT23NjBZds4xeFrMGzykMmlk5zEWBstqTZsfGFQ7xnDIjiSnzk9NsU/0AwKxEzGWu8Q0fUKlUdxadytQuOSu57wGX2qkyq6QnBrQAUi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716216633; c=relaxed/simple;
-	bh=a3b4/nDS8pHPvnKT7j0QAuoDnWKmn0konKkL0z8d35c=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KEIhNv9oK4paCPmtDeUQnFcnfzZD0tZNKbXPVfVBiR92C3lohbpClvuAXUhu8N44ZZricN76ulonkniQ1dYCVBV3MLFAbHS5XEBTH8HJK4EzXVBUWrlWbA4m9J0LRbV3DDF3hhw8l1OBtEdpn2xHTsPGXkm/6eshyjimA4XW8jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=D+kk4AG0; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=D+kk4AG0; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1716216630;
-	bh=a3b4/nDS8pHPvnKT7j0QAuoDnWKmn0konKkL0z8d35c=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=D+kk4AG0QoCIjSouaPRINcQbpA2n+ukVzkMHBxe++5m1vX8AvqhxpMnBcRzOOikgI
-	 byZL9IzE/WUXrRlY0lX90yiIcYTRhToUfCIrc8Gvw5jOyP1qBe5MQr8Zs1iYzzml54
-	 tVjmfvHbT1zsC7Rcuz2/P3siTEz0gxntrf5pt1t0=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 5F2941285FA1;
-	Mon, 20 May 2024 10:50:30 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id Da-M4TCAyMMp; Mon, 20 May 2024 10:50:30 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1716216630;
-	bh=a3b4/nDS8pHPvnKT7j0QAuoDnWKmn0konKkL0z8d35c=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=D+kk4AG0QoCIjSouaPRINcQbpA2n+ukVzkMHBxe++5m1vX8AvqhxpMnBcRzOOikgI
-	 byZL9IzE/WUXrRlY0lX90yiIcYTRhToUfCIrc8Gvw5jOyP1qBe5MQr8Zs1iYzzml54
-	 tVjmfvHbT1zsC7Rcuz2/P3siTEz0gxntrf5pt1t0=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 88E8B1280773;
-	Mon, 20 May 2024 10:50:29 -0400 (EDT)
-Message-ID: <41466b65a30a351d57869042e9f130cdb68aab5b.camel@HansenPartnership.com>
-Subject: Re: [PATCH] tpm: Disable TCG_TPM2_HMAC by default
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org
-Cc: keyrings@vger.kernel.org, Vitor Soares <ivitro@gmail.com>, Peter Huewe
-	 <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, open list
-	 <linux-kernel@vger.kernel.org>
-Date: Mon, 20 May 2024 10:50:28 -0400
-In-Reply-To: <20240518113424.13486-1-jarkko@kernel.org>
-References: <20240518113424.13486-1-jarkko@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1716219867; c=relaxed/simple;
+	bh=/L4FskE1HfAHScBbUruTM2tjBuSCUX2t8pOV7GehlYs=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=MF3vDxQxzbNxwe+O3Z9973AIXR+QEEHZzmyw+mm/Df8X0g/H7n2qHzWQ/jzC1Haa8fGpOCe1cBTOY/W92QzbAeP/osNpKmRZRC/uRbveu26EQkUIv41YOfvmmgHGCZQtNWejwGQNZ0m6q4JzQskLE7zolbk0HeOsHkAMn2D/ZTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QpJG34v/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CC2C2BD10;
+	Mon, 20 May 2024 15:44:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716219867;
+	bh=/L4FskE1HfAHScBbUruTM2tjBuSCUX2t8pOV7GehlYs=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=QpJG34v/lOIJWRMRp1RBRrkH8ymaB5o0UPDpba70rf0d/jvmQlr5AoBK4PwxPHniS
+	 89NvhOyKftO/PSEHPid9ByD2VGBSs961xR4bmeCjUyrmO6wcORpw+Hw7snZQH7Mj6W
+	 FW4inGyvSKXQ3FKftp/NNbco3CNTsfNlMkyh95GZ5GlXi9n0iRRCUK7uk4xbvcloI4
+	 lWDMwKwz5RKyaE2z5uKVBP9NZluUXNCOmT5RKyqVaxaYl+nSFoF6tPsMsoOyelBMXi
+	 3WLer03ddSQ84LQCw3EzdTRWo3QfG80Tt38qIwqwLjHnbtjyVJc7OGfZRIoqOoin87
+	 xFIZsqi6c7oRw==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 20 May 2024 18:44:24 +0300
+Message-Id: <D1EL6195XVCO.1T6R5B5AYTQQZ@kernel.org>
+Cc: <keyrings@vger.kernel.org>, "Vitor Soares" <ivitro@gmail.com>, "Peter
+ Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>, "open list"
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] tpm: Disable TCG_TPM2_HMAC by default
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "James Bottomley" <James.Bottomley@HansenPartnership.com>,
+ <linux-integrity@vger.kernel.org>
+X-Mailer: aerc 0.17.0
+References: <20240518113424.13486-1-jarkko@kernel.org>
+ <41466b65a30a351d57869042e9f130cdb68aab5b.camel@HansenPartnership.com>
+In-Reply-To: <41466b65a30a351d57869042e9f130cdb68aab5b.camel@HansenPartnership.com>
 
-On Sat, 2024-05-18 at 14:34 +0300, Jarkko Sakkinen wrote:
-> Causes performance drop in initialization so needs to be opt-in.
-> Distributors are capable of opt-in enabling this. Could be also
-> handled by kernel-command line in the future.
-> 
-> Reported-by: Vitor Soares <ivitro@gmail.com>
-> Closes:
-> https://lore.kernel.org/linux-integrity/bf67346ef623ff3c452c4f968b7d900911e250c3.camel@gmail.com/#t
+On Mon May 20, 2024 at 5:50 PM EEST, James Bottomley wrote:
+> On Sat, 2024-05-18 at 14:34 +0300, Jarkko Sakkinen wrote:
+> > Causes performance drop in initialization so needs to be opt-in.
+> > Distributors are capable of opt-in enabling this. Could be also
+> > handled by kernel-command line in the future.
+> >=20
+> > Reported-by: Vitor Soares <ivitro@gmail.com>
+> > Closes:
+> > https://lore.kernel.org/linux-integrity/bf67346ef623ff3c452c4f968b7d900=
+911e250c3.camel@gmail.com/#t
+>
+> Hey, there's no response on that thread verifying the primary
+> generation is the culprit.  Could we at least wait for a reply before
+> taking such drastic action based on surmise?
+>
+> I'd be really surprised if it is primary generation.  If I used an RSA
+> primary it would be a problem (My oldest TPM takes a couple of minutes
+> to generate one) but the longest I've seen an EC primary take to
+> generate is still less than a second.
+>
+> James
 
-Hey, there's no response on that thread verifying the primary
-generation is the culprit.  Could we at least wait for a reply before
-taking such drastic action based on surmise?
+Nothing is going to happen before rc1 is out, it would be earliest rc2.
 
-I'd be really surprised if it is primary generation.  If I used an RSA
-primary it would be a problem (My oldest TPM takes a couple of minutes
-to generate one) but the longest I've seen an EC primary take to
-generate is still less than a second.
+ECDSA should be always faster than RSA so you're right that it does not
+necessarily make much sense, unless there are TPM2 chips with only RSA.
 
-James
+It might make sense to have at least a command-line option to disable
+hmac.
 
+BR, Jarkko
 
