@@ -1,78 +1,139 @@
-Return-Path: <keyrings+bounces-1324-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1325-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0B958CA355
-	for <lists+keyrings@lfdr.de>; Mon, 20 May 2024 22:36:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E137F8CA3B4
+	for <lists+keyrings@lfdr.de>; Mon, 20 May 2024 23:13:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B1822813E7
-	for <lists+keyrings@lfdr.de>; Mon, 20 May 2024 20:36:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1085A1C20F02
+	for <lists+keyrings@lfdr.de>; Mon, 20 May 2024 21:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37533139CE6;
-	Mon, 20 May 2024 20:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7982139CFB;
+	Mon, 20 May 2024 21:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rnQOFHgd"
+	dkim=pass (2048-bit key) header.d=tycho.pizza header.i=@tycho.pizza header.b="Z46utTAB";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ql3G1jPi"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wfout2-smtp.messagingengine.com (wfout2-smtp.messagingengine.com [64.147.123.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E8ED27A;
-	Mon, 20 May 2024 20:36:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1569313959D;
+	Mon, 20 May 2024 21:13:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716237367; cv=none; b=m8joTydnDE11uyV1bdvNjC2p9kAdFWLPHOx7gvvypQkyBA495t1M9Kw+sjLkez7UDgrmx1FJ2KShE8OlZn1dnkXzjm3pI66nl/EESdUc8SspJmHqcrpKKu8yB/oawi6Q/+Xj/NTBsNqOsFwwoWJw0TUn5CAx3vtx2hJ8m/kh00c=
+	t=1716239615; cv=none; b=pQaho4Xzm3ZZ0GDtK3cm3MIpElvyoa5n0mbqipaggUP504fUlGpVg8unO9liOHE4gjBM80R/kHVGaOi+h4WrdoLfd/vNCp0hvxKmXCeN5J+jalyN9SFo43N2nYETvAxHB4PZJJ7WZ5Rn9Rn6C7dIB+mA8y/PO0l1ivEniahGdw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716237367; c=relaxed/simple;
-	bh=+VY1j3n1YoqE2DUlZ1stU+E39GkhX9GJ33huspw8fe4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=c541VcuFEPXijLKV25/xzpIh8A/RSEXR+nY0NNZu0xbs/NLU/NOmNrBDgipP92JQEHgXj07wsG45HMF2BYvVUPyAnvisiyGFJxf9SmG3ag+mSQdEIJOXeWXr5fu5+ppk28nC6h+xuaUyqyM2ExJoInpwBSadfP5+7JqP2egtdYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rnQOFHgd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C90C2BD10;
-	Mon, 20 May 2024 20:36:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716237366;
-	bh=+VY1j3n1YoqE2DUlZ1stU+E39GkhX9GJ33huspw8fe4=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=rnQOFHgdoqphfLmE7gSbyjiBhXSet2VuuzXxCMx2Y3o1WSps+jHFWC1HQDknzf39M
-	 nPogvKeP0EVogt0BZeYryYq/TebcHfuWmNmmI5GsTkrqJOQt97xSk4OWtZMSFeLdKY
-	 Jwb+8EJbXvwsNHbV+8wczgzcWTZzL7FRPWTdbvHmY03D1cG2DUyeFMaG52A2KEJjUP
-	 BvrBBjwdLKUdbPevF0HQ3g8hCq//j5kxbbQ1e9yX2OGAAd2LlMgo/uYPEILvnbQyWj
-	 tU0PiQWi8PO9QXl7didzAfS3WsKS841qSmWix8C5dOKz8S5DL4OcIrIYiHCCi1LX5V
-	 Kl/wmhf1YBDCQ==
+	s=arc-20240116; t=1716239615; c=relaxed/simple;
+	bh=Bx+sj8t9HNxybi1oDttghAMxvT+D/0RgxzOubry0jmg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IBu1BUiGV8YaaJN7mLmbIIlk/9EDntc7n/FJmqIO6VGMCnKpUy8mW+y14Hu8KsJ7PCOXlRWi3gX7su7ycTL4+OJQF+KwMcQbh8qF4AeEn28fdVEmMiCyqUIQpJt/eYkr/GhrX0YeOZkvlE9aqmHHzcPglUJmAxzqBN0/uCq45qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tycho.pizza; spf=pass smtp.mailfrom=tycho.pizza; dkim=pass (2048-bit key) header.d=tycho.pizza header.i=@tycho.pizza header.b=Z46utTAB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ql3G1jPi; arc=none smtp.client-ip=64.147.123.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tycho.pizza
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tycho.pizza
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailfout.west.internal (Postfix) with ESMTP id 4F0C51C000FB;
+	Mon, 20 May 2024 17:13:32 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Mon, 20 May 2024 17:13:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tycho.pizza; h=
+	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1716239611; x=1716326011; bh=07dLT5mWE9
+	IVMfZYh0BeXqhtBVnvUCmQKUtwX9bMrAY=; b=Z46utTABbFWDgQmbCaMIfWNGWU
+	Muz0cl/JbRhW/QLp3km+gIKTXsOCzbpzFD+SWjP+BMcX+49S1YmH/5wAB9L/SqxA
+	prw9Eaw7tJ7QJ2YZkfDbqFyiT8c37stsX4sWRY7ls5aXJF1kC+W0OL7j3qBysVa4
+	wbPIJ+IXPVjBCwHQQE5Htjn5/Ec4t3vye967rgbuI1ppFaIHh4MMWeCIUEYoz6Aw
+	L3kba1Nf1q3u4K5Z2zWBfojaZiBSpuJvM3PrjU0p1IA/kTXsanZM+PWqdYmRDiJL
+	Pws//zBG0gqzAsk2g2NeirpzkjNKPSz4+URusHvpr33eyBbDURr4radZcinQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1716239611; x=1716326011; bh=07dLT5mWE9IVMfZYh0BeXqhtBVnv
+	UCmQKUtwX9bMrAY=; b=Ql3G1jPiI4SktfG12x4b39mgwqhaF/2ra9OY8hIfZ369
+	FgawflV1v7+BWhjQbVHfdWzJujUpRUBR1wd/eNVLmcjKthUuKauaNTanGkrei1OE
+	vCHyQzo2fgEOmMwNdWdEO93L45bV/6DDDryOA6S2bNvboieP6p+T6bnvSnLTQc3Q
+	d6uh9vG9oU63V1LhrUfYgnD+7Gf3SR7Ldj454noVyRKmpuc/wKqh27WoGIVfK3iT
+	v8dg9HmTLoFgm+oB0P6HA5i8O60FG79VYpe5tvxl+DxRudDMmz/yGvDNVsNhI1eM
+	NraLVmhZMP3dtqOB5vFB+XIb1tYkGYcJG2afGPVvsg==
+X-ME-Sender: <xms:-rxLZuwi3fdH7B4nQz3r5YrvCyUdiHW6DN68Rpq5ANnGpkuG-yZssg>
+    <xme:-rxLZqQCDli3I3S3ptJXThrp5l2QCMbMYP1JB_TLF7IqaaSLAE4LLrUn721L9v-tW
+    j-Jo1jAj5dk1QYmlMc>
+X-ME-Received: <xmr:-rxLZgXQ5rLZsDf3SKZFGnUJtqixF8cJZE7ukHZu6xzzNH1XE1EtfLpXgE0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeitddgudeffecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefvhigt
+    hhhoucetnhguvghrshgvnhcuoehthigthhhosehthigthhhordhpihiiiigrqeenucggtf
+    frrghtthgvrhhnpeeutedttefgjeefffehffffkeejueevieefudelgeejuddtfeffteek
+    lefhleelteenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpehthigthhhosehthigthhhordhpihiiiigr
+X-ME-Proxy: <xmx:-rxLZkh8quqXExI6E37pQD-9ivdWceVTcKAAyeit9eZKMLJDYVZavA>
+    <xmx:-rxLZgBf41SAm_EiNoHj__AfvIVtkjYm86BiN0mmYSdB4gc9D7Vxeg>
+    <xmx:-rxLZlIPEIHv2BFBgwAJGweaR8HGEKY3tHZG_VMtK-9pH-0WaCWniA>
+    <xmx:-rxLZnDDzw-CeTIZPgvIe0_J4_Sb8kwVOV2WVmASCXmq1AIjtFhviA>
+    <xmx:-7xLZqz6yYdr3UaxUMhGusn9Mc5lvvpyBcGCs33ZjVXNMyTtDP0H9ZBz>
+Feedback-ID: i21f147d5:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 20 May 2024 17:13:27 -0400 (EDT)
+Date: Mon, 20 May 2024 15:13:23 -0600
+From: Tycho Andersen <tycho@tycho.pizza>
+To: Jonathan Calmels <jcalmels@3xx0.net>
+Cc: brauner@kernel.org, ebiederm@xmission.com,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
+	Joel Granados <j.granados@samsung.com>,
+	Serge Hallyn <serge@hallyn.com>, Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	David Howells <dhowells@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>, containers@lists.linux.dev,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-security-module@vger.kernel.org, keyrings@vger.kernel.org
+Subject: Re: [PATCH 3/3] capabilities: add cap userns sysctl mask
+Message-ID: <Zku8839xgFRAEcl+@tycho.pizza>
+References: <20240516092213.6799-1-jcalmels@3xx0.net>
+ <20240516092213.6799-4-jcalmels@3xx0.net>
+ <ZktQZi5iCwxcU0qs@tycho.pizza>
+ <ptixqmplbovxmqy3obybwphsie2xaybfj46xyafdnol7bme4z4@4kwdljmrkdpn>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 20 May 2024 23:36:02 +0300
-Message-Id: <D1ERDC16XLUO.578U4ZE7VXW@kernel.org>
-Cc: <linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>,
- <Andreas.Fuchs@infineon.com>, "James Prestwood" <prestwoj@gmail.com>,
- "David Woodhouse" <dwmw2@infradead.org>, "David S. Miller"
- <davem@davemloft.net>, "open list:CRYPTO API"
- <linux-crypto@vger.kernel.org>, "open list" <linux-kernel@vger.kernel.org>,
- "Eric Biggers" <ebiggers@kernel.org>
-Subject: Re: [PATCH 0/6] KEYS: asymmetric: tpm2_key_rsa
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Jarkko Sakkinen" <jarkko@kernel.org>, "Herbert Xu"
- <herbert@gondor.apana.org.au>
-X-Mailer: aerc 0.17.0
-References: <20240520184727.22038-1-jarkko@kernel.org>
-In-Reply-To: <20240520184727.22038-1-jarkko@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ptixqmplbovxmqy3obybwphsie2xaybfj46xyafdnol7bme4z4@4kwdljmrkdpn>
 
-On Mon May 20, 2024 at 9:47 PM EEST, Jarkko Sakkinen wrote:
-> ## Overview
->
-> Introduce tpm2_key_rsa implementing asymmetric TPM RSA key. This key type
-> can be enabled with CONFIG_ASYMMETRIC_TPM2_KEY_RSA_SUBTYPE config option.
-> Carves groundwork for similar modules in future, such as tpm2_key_ecdsa.
+On Mon, May 20, 2024 at 12:25:27PM -0700, Jonathan Calmels wrote:
+> On Mon, May 20, 2024 at 07:30:14AM GMT, Tycho Andersen wrote:
+> > there is an ongoing effort (started at [0]) to constify the first arg
+> > here, since you're not supposed to write to it. Your usage looks
+> > correct to me, so I think all it needs is a literal "const" here.
+> 
+> Will do, along with the suggestions from Jarkko
+> 
+> > > +	struct ctl_table t;
+> > > +	unsigned long mask_array[2];
+> > > +	kernel_cap_t new_mask, *mask;
+> > > +	int err;
+> > > +
+> > > +	if (write && (!capable(CAP_SETPCAP) ||
+> > > +		      !capable(CAP_SYS_ADMIN)))
+> > > +		return -EPERM;
+> > 
+> > ...why CAP_SYS_ADMIN? You mention it in the changelog, but don't
+> > explain why.
+> 
+> No reason really, I was hoping we could decide what we want here.
+> UMH uses CAP_SYS_MODULE, Serge mentioned adding a new cap maybe.
 
-Cc to Eric (forgot).
+I don't have a strong preference between SETPCAP and a new capability,
+but I do think it should be just one. SYS_ADMIN is already god mode
+enough, IMO.
 
-BR, Jarkko
+Tycho
 
