@@ -1,110 +1,174 @@
-Return-Path: <keyrings+bounces-1303-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1304-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D1C18C9779
-	for <lists+keyrings@lfdr.de>; Mon, 20 May 2024 01:52:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B5A8C9793
+	for <lists+keyrings@lfdr.de>; Mon, 20 May 2024 02:49:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 535111F21146
-	for <lists+keyrings@lfdr.de>; Sun, 19 May 2024 23:52:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0ED211F2110D
+	for <lists+keyrings@lfdr.de>; Mon, 20 May 2024 00:49:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08337757EF;
-	Sun, 19 May 2024 23:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FE723DE;
+	Mon, 20 May 2024 00:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l3Lb2162"
+	dkim=pass (2048-bit key) header.d=3xx0.net header.i=@3xx0.net header.b="klpf68pR";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="eSww0ioe"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wflow3-smtp.messagingengine.com (wflow3-smtp.messagingengine.com [64.147.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC327319C;
-	Sun, 19 May 2024 23:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F544431;
+	Mon, 20 May 2024 00:49:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716162700; cv=none; b=rXaSUy07TWHam0tr6IUN+EmA4/qsLcPeKbIcX8Wlla3IR1G5yiTg/3JOixhbx+8dYo0vhG52KCmeMhRgifRbj3LFNr1ovqnwk4b70pVvPLGUSahLUAAlEtttxFfBWKclHV6sNSmISgJ0PbdXp9keKUWTeffUPtulAkuXUVhzJw4=
+	t=1716166174; cv=none; b=cIKujs99xzhrh3EBUvYH0EOHVeXo6uEUQC9eVDXRX2fg8pQ7OvipksMqarb/YTkhWewhSGk4WmpGcXlPDXas6QnPsgWgnAg593L5H2Jjs6XkyjARDAfM6PAokrinilIZBgqQDxGkYHJLaZ926GYfdWKiD99lpAGdR96poghMNEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716162700; c=relaxed/simple;
-	bh=zjmdVHD9xhS/1n4Rw9BcJgcMBhyRpG01mLSj2X8CQ7M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AfkvPHxlCk0ASx4yH5WlbhBbvG0mRmuNyVKUWj+kYfj397+xuxcf4usYAuFhdL8duhSOZPU8g4bbpJNCXTr/fG4Hc+E19ZQIurtpZcZhLTdlESO9RBiAqT6IZQIxAjRCGBQcFJDExksnDqAQKocPztbLpZIshdnwaBLm60GUfb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l3Lb2162; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E683C32781;
-	Sun, 19 May 2024 23:51:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716162700;
-	bh=zjmdVHD9xhS/1n4Rw9BcJgcMBhyRpG01mLSj2X8CQ7M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l3Lb2162/JhmAcr52fdxBYIVFT0E0WJqupbELbdF7J/L+4DQ1f/B9o3012H8g6c9w
-	 wmzLSzMjwFDWWSduTDLjbgXWQPATveMALp4SZS9CoGD5KKynYXO/5RZjc+oUw0tcJM
-	 +qGBxmFCEoN0bV8fdKxLceFd634RgcK8cxUhrZsNjLUp75m+NkuCJ0FLQQfT++0Rqd
-	 owCILHuxNo0OQIyE+FPI+Rp7j5sW2ox4LFyHkMopYAkFIfvMCHQ4WyuJD5/pVsYROf
-	 xOSU455i/+We96q/x+a2PtLZdZC98DgKk+zaqCjCZ/abHOJQLVG7XVHGGFs3FABQHe
-	 Y9tJ0LMP5TeCw==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org
-Cc: keyrings@vger.kernel.org,
-	James.Bottomley@HansenPartnership.com,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	stable@vger.kernel.org,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/3] KEYS: trusted: Do not use WARN when encode fails
-Date: Mon, 20 May 2024 02:51:21 +0300
-Message-ID: <20240519235122.3380-4-jarkko@kernel.org>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240519235122.3380-1-jarkko@kernel.org>
-References: <20240519235122.3380-1-jarkko@kernel.org>
+	s=arc-20240116; t=1716166174; c=relaxed/simple;
+	bh=CyRV9ILozf4Lntq5G/bNlTgHb6HrAA/zKXB/WqFeBT4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dBf6yj8lCYIfx7dvWnNFqGWvS9XIa2VwnU8F4fGDkizLR54li8rm4GwM1M9Y+nQ5g31LGEnPivuA4Pm1uGi2tsldyEWwehs/a0oGX0rOQ5j5C0+1kHT0ibwwOvtqE25HxkAhOzEo6463EDZZrx64Tvee1G6MlYC8dCwxthD/6ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3xx0.net; spf=pass smtp.mailfrom=3xx0.net; dkim=pass (2048-bit key) header.d=3xx0.net header.i=@3xx0.net header.b=klpf68pR; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=eSww0ioe; arc=none smtp.client-ip=64.147.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=3xx0.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=3xx0.net
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailflow.west.internal (Postfix) with ESMTP id B54C52CC015A;
+	Sun, 19 May 2024 20:49:30 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Sun, 19 May 2024 20:49:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=3xx0.net; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1716166170; x=1716169770; bh=CyRV9ILozf
+	4Lntq5G/bNlTgHb6HrAA/zKXB/WqFeBT4=; b=klpf68pR983Umz/iMgT4y+ak04
+	n8kwlI8xnnbrnJaKaPnN8jzHHCo870IYXfQdY5ovbS5nfN8+SoAyY1omj9fYWYxy
+	9h9hZGEUAWUNMpao+N0biLGN9dU7EiGBneK0jiTywGV0Td0bREhUOpNmsYWCabOD
+	KgLdZgCbLsgq9pbhd+cfZYVkecyFKBqAv1NxWcrxpYiAFyhJ2MIxpCX3MFWD4hFG
+	leq5CoxnGSkT1yVtIiALfsBK14Bz6uRkvoFCEW/ZIeuoWpOw48FyS28BWCnWN+Zp
+	ykXXRqXE2kFJSHpFwfhRAmo8mmxSL3q6OZOFNt7IhKLWnughIBAmhqJtX+1w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	i76614979.fm1; t=1716166170; x=1716169770; bh=CyRV9ILozf4Lntq5G/
+	bNlTgHb6HrAA/zKXB/WqFeBT4=; b=eSww0ioeIWbQ0Sk25DnYNgGXUAyXLvIvxl
+	KsVsfen8yaGLUrUGKnsSVL9xuDZ8WH3zrh+L9Oh+3oCouC/+/GyrltOWzFQSr9VN
+	+FzrjWTZU4FzaNNNtaPLsX5sOLezJMQ3nEIkPaQkj+QHjJnQGvcBtvZL44ADt8N/
+	e93HP14LmO5DN8yIlOr0bbD4IdQu9Q8QFtzCAUATUsjayWibc+mF6c0au/88nmm4
+	u1IC/k7OIXYQnw71EsRdiOCgw2Ze+UpI/lgIW9F8w/3FvXPIoBZCJo4TwXi7PzWj
+	xRq3z5k3k9ND/dZ0AcRDdhRQV7ZbN9Bge4W08KhAtCt8lrojJmzQ==
+X-ME-Sender: <xms:GJ5KZqRwF-Hmrd_yns_Mk6Mx7Xd4pz1klZb8lQd5YR1_KVDVtqzWVA>
+    <xme:GJ5KZvxpVD0vBJtI6bIvKlzINXnQlBMjfmffdDJ3fjqPTv539QfgCn6-l3CfL49Kg
+    PniH2dcBJXyVAHmQNc>
+X-ME-Received: <xmr:GJ5KZn3g2SePJsmPjv_lL1o9JiTGL3jepRa2FNBvw3l_7BFIYW9-HBms3Mv9trDWGvoA22v28letiaQsofVjBk4>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdehledgfeekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtsfdttddtjeenucfhrhhomheplfhonhgr
+    thhhrghnucevrghlmhgvlhhsuceojhgtrghlmhgvlhhsseefgiigtddrnhgvtheqnecugg
+    ftrfgrthhtvghrnhepkeekteegfefgvdefgfefffeufeffjedvudeijeehjeehffekjeek
+    leffueelgffgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepjhgtrghlmhgvlhhsseefgiigtddrnhgvth
+X-ME-Proxy: <xmx:GJ5KZmBPlFW2A-8gZTo0fZw_4OAm5z68khPRoHSXKN0PpurrtTYZbQ>
+    <xmx:GJ5KZjjQOVhrXpqMIu3qX8sA9OHU9wc-gzKYThConkTcb7Hv3agYMA>
+    <xmx:GJ5KZiqUNoZd9eA-_Koz0muherzhe6-eI1CqTzfbj729hJJ64GC9BQ>
+    <xmx:GJ5KZmhjsKPJdXKBIG_jz_nLPQfr4LYRx_iGFZJREt9FKM_xhsv3zg>
+    <xmx:Gp5KZuQ8e6YZc8xP1W7wHecBEsVSVBdrx2L-LybB3XCoxVjdDmmvGXj_>
+Feedback-ID: i76614979:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 19 May 2024 20:49:27 -0400 (EDT)
+Date: Sun, 19 May 2024 17:54:29 -0700
+From: Jonathan Calmels <jcalmels@3xx0.net>
+To: Casey Schaufler <casey@schaufler-ca.com>
+Cc: Serge Hallyn <serge@hallyn.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	brauner@kernel.org, ebiederm@xmission.com, Luis Chamberlain <mcgrof@kernel.org>, 
+	Kees Cook <keescook@chromium.org>, Joel Granados <j.granados@samsung.com>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	David Howells <dhowells@redhat.com>, containers@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, keyrings@vger.kernel.org
+Subject: Re: [PATCH 0/3] Introduce user namespace capabilities
+Message-ID: <r44h5pcqg7rh6sbd2yohjrqz2lwaakth7bshmu6qnut3mju6tl@tb5hsz5cdc42>
+References: <20240516092213.6799-1-jcalmels@3xx0.net>
+ <2804dd75-50fd-481c-8867-bc6cea7ab986@schaufler-ca.com>
+ <D1BBFWKGIA94.JP53QNURY3J4@kernel.org>
+ <D1BBI1LX2FMW.3MTQAHW0MA1IH@kernel.org>
+ <D1BC3VWXKTNC.2DB9JIIDOFIOQ@kernel.org>
+ <jvy3npdptyro3m2q2junvnokbq2fjlffljxeqitd55ff37cydc@b7mwtquys6im>
+ <df3c9e5c-b0e7-4502-8c36-c5cb775152c0@schaufler-ca.com>
+ <ZkidDlJwTrUXsYi9@serge-l-PF3DENS3>
+ <799f3963-1f24-47a1-9e19-8d0ad3a49e45@schaufler-ca.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <799f3963-1f24-47a1-9e19-8d0ad3a49e45@schaufler-ca.com>
 
-When asn1_encode_sequence() fails, WARN is not the correct solution.
+On Sun, May 19, 2024 at 10:03:29AM GMT, Casey Schaufler wrote:
+> I do understand that. My objection is not to the intent, but to the approach.
+> Adding a capability set to the general mechanism in support of a limited, specific
+> use case seems wrong to me. I would rather see a mechanism in userns to limit
+> the capabilities in a user namespace than a mechanism in capabilities that is
+> specific to user namespaces.
 
-1. asn1_encode_sequence() is not an internal function (located
-   in lib/asn1_encode.c).
-2. Location is known, which makes the stack trace useless.
-3. Results a crash if panic_on_warn is set.
+> An option to clone() then, to limit the capabilities available?
+> I honestly can't recall if that has been suggested elsewhere, and
+> apologize if it's already been dismissed as a stoopid idea.
 
-It is also noteworthy that the use of WARN is undocumented, and it
-should be avoided unless there is a carefully considered rationale to
-use it.
+No and you're right, this would also make sense. This was considered as
+well as things like ioctl_ns() (basically introducing the concept of
+capabilities in the user_namespace struct). I also considered reusing
+the existing sets with various schemes to no avail.
 
-Replace WARN with pr_err, and print the return value instead, which is
-only useful piece of information.
+The main issue with this approach is that you've to consider how this is
+going to be used. This ties into the other thread we've had with John
+and Eric.
+Basically, we're coming from a model where things are wide open and
+we're trying to tighten things down.
 
-Cc: stable@vger.kernel.org # v5.13+
-Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
- security/keys/trusted-keys/trusted_tpm2.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Quoting John here:
 
-diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-index c6882f5d094f..8b7dd73d94c1 100644
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -84,8 +84,9 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
- 	work1 = payload->blob;
- 	work1 = asn1_encode_sequence(work1, work1 + sizeof(payload->blob),
- 				     scratch, work - scratch);
--	if (WARN(IS_ERR(work1), "BUG: ASN.1 encoder failed")) {
-+	if (IS_ERR(work1)) {
- 		ret = PTR_ERR(work1);
-+		pr_err("BUG: ASN.1 encoder failed with %d\n", ret);
- 		goto err;
- 	}
- 
--- 
-2.45.1
+> We are starting from a different posture here. Where applications have
+> assumed that user namespaces where safe and no measures were needed.
+> Tools like unshare and bwrap if set to allow user namespaces in their
+> fcaps will allow exploits a trivial by-pass.
 
+We can't really expect userspace to patch every single userns callsite
+and opt-in this new security mechanism.
+You said it well yourself:
+
+> Capabilities are already more complicated than modern developers
+> want to deal with.
+
+Moreover, policies are not necessarily enforced at said callsites. Take
+for example a service like systemd-machined, or a PAM session. Those
+need to be able to place restrictions on any processes spawned under
+them.
+
+If we do this in clone() (or similar), we'll also need to come up with
+inheritance rules, being able to query capabilities, etc.
+At this point we're just reinventing capability sets.
+
+Finally the nice thing about having it as a capability set, is that we
+can easily define rules between them. Patch 2 is a good example of this.
+It constrains the userns set to the bounding set of a task. Thus,
+requiring minimal/no change to userspace, and helping with adoption.
+
+> Yes, I understand. I would rather see a change to userns in support of a userns
+> specific need than a change to capabilities for a userns specific need.
+
+Valid point, but at the end of the day, those are really just tasks'
+capabilities. The unshare() just happens to trigger specific rules when it
+comes to the tasks' creds. This isn't so different than the other sets
+and their specific rules for execve() or UID 0.
+
+This could also be reframed as:
+
+Why would setting capabilities on taks in a userns be so different than
+tasks outside of it?
 
