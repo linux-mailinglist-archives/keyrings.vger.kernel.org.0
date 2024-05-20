@@ -1,46 +1,45 @@
-Return-Path: <keyrings+bounces-1326-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1327-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 316D28CA45E
-	for <lists+keyrings@lfdr.de>; Tue, 21 May 2024 00:13:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D77BA8CA531
+	for <lists+keyrings@lfdr.de>; Tue, 21 May 2024 01:47:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF5252823BB
-	for <lists+keyrings@lfdr.de>; Mon, 20 May 2024 22:13:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A2BCB213FA
+	for <lists+keyrings@lfdr.de>; Mon, 20 May 2024 23:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413911384A2;
-	Mon, 20 May 2024 22:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D993481A4;
+	Mon, 20 May 2024 23:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jv+Yqjwe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uZPV7Uc8"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1891CD3B;
-	Mon, 20 May 2024 22:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6AF1847;
+	Mon, 20 May 2024 23:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716243183; cv=none; b=qXHoj6ujtHrjTKaqWp2TQFFdanDdL49QX2etbyd1CoD7NpIJ9JKCHroSB0wLwYLXuxHn75P+UWHtGDo7PhgWVxeh4qfNQINeHidJkAd0PGPX0Tt5BOrfTsep4GZUZ3QgLYiUP5uPGIWeVS/bVUBsJQHZ/MELJInnHv3gXSrAAXE=
+	t=1716248832; cv=none; b=LPVDHm+QJzd6hCIA1SNe7NV4iQZa6mqfvDvGbVBtCANVIJI2us3gqbIKbSD6/W1hOKZ4mSSn89tKAsQTSY3D9mixo+lI5RP9mdFFb7W6E33emD/5ToMUOTfDa4Fa2j0/ub7MCWX4CboNT/pI0nNQeOOVrqhFYEfPfHGWtlqCzBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716243183; c=relaxed/simple;
-	bh=g67Au3Gl3mqSp0DalxfSQ7ydt1TQGOl6Vi8oRqoOvyE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=IfSGOjk8znDm4ZX9aDMqdZx8t3pKgqWga28Z/D3mq2NesX72w4EEcjOjpe5Z3axkgbTpyeViREAhx58khXaCjsb0Fg0PfFGMBKWXKGhBzlQ2LgHsSdz4er2RBwui2dKGguCVlxIrNCrh/QNMs9XydF5A09icmuVInY8pvoqZz7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jv+Yqjwe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D6AC2BD10;
-	Mon, 20 May 2024 22:12:59 +0000 (UTC)
+	s=arc-20240116; t=1716248832; c=relaxed/simple;
+	bh=0wjefISUoN96mAPBLJ0rNJILfk9c7am3GfkpyKaDm+M=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To; b=EFF4RzVk+DfCB+duGg4QgsIhJTmCDwG4XRJM1pV1qF8JvzatHH9UdsBhxIh1J8KIDnOVOnrjl/7sc2tedtEVBJjoUyzkzIuq/lXlAVIEJzoWTJkzf2LgbAwlt0XOF9QqmraKKj0PsKiamZ0fXr4h/qsUAfpapz8g+IpGDUvdh9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uZPV7Uc8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31227C2BD10;
+	Mon, 20 May 2024 23:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716243182;
-	bh=g67Au3Gl3mqSp0DalxfSQ7ydt1TQGOl6Vi8oRqoOvyE=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=jv+YqjweWfOJ58Q3rWlPlQFpRXdnf0erK6kTjwm69gsovWdMmwxN9rknV5ZxWSN6B
-	 Fqs8WiDOHc9qevF1/3ks8cLHz5bTvsGWiabm9jjGikcvnZZG1qt/aDXy8jxdg4uG4c
-	 z1WKhAGZceld4lkmUZbrOQKQJqV+ed++z5zKsq63KAs98UAwUtpJ5ALf4kCvQnVLuH
-	 iFAoYHnk66FrFIo3UhnKZKeGaFUfJvXUnMuZH2soK+u2t7rJxRqxV2iqQEemdJT6BQ
-	 uLCZIxjwrjwVmECgZ02bXTlOH/TcfCevAYf2khb2XBVuWXd0po3UYUMOSBHAy6kQ9L
-	 aWJlEPVroniqQ==
+	s=k20201202; t=1716248831;
+	bh=0wjefISUoN96mAPBLJ0rNJILfk9c7am3GfkpyKaDm+M=;
+	h=Date:Cc:Subject:From:To:From;
+	b=uZPV7Uc8vj1Ur/v/dph3TgINjob4sC3XuILj8TppLdP7C3/YuhLBmDNZBSpb9aSWS
+	 dx1cUF1O9JMCBECBGl0L4og9DbCMITI4eFtm4LcSyGaUqBXQYDVdDBGZutRnfVmMo1
+	 LrzX2arzOnh0ba2JKOAWj72jA2NsTrEhcOdyZtXyvK+wOw4zJ+kyuL9Dj9+DQSta1o
+	 m8gvLrwDDoW+bzupm6J4bHMSyDiQPiFLA5C5BfG2Z0rnmIlWYKLIugY6l1bEifAiSI
+	 ooDAWgRxFiM8zJI6fwr+ARvE2U1vVq2btWc77mNF7W5L2Rh3xoHTWcYb3ZyKPo2iNO
+	 1eKqag9JModHA==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,66 +48,55 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 21 May 2024 01:12:57 +0300
-Message-Id: <D1ETFJFE9Y48.1T8I7SIPGFMQ2@kernel.org>
-Cc: <brauner@kernel.org>, <ebiederm@xmission.com>, "Luis Chamberlain"
- <mcgrof@kernel.org>, "Kees Cook" <keescook@chromium.org>, "Joel Granados"
- <j.granados@samsung.com>, "Serge Hallyn" <serge@hallyn.com>, "Paul Moore"
- <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "David Howells"
- <dhowells@redhat.com>, <containers@lists.linux.dev>,
- <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-security-module@vger.kernel.org>, <keyrings@vger.kernel.org>
-Subject: Re: [PATCH 3/3] capabilities: add cap userns sysctl mask
+Date: Tue, 21 May 2024 02:47:08 +0300
+Message-Id: <D1EVFNB6HJZ8.2ZRZB8Y0K3TV5@kernel.org>
+Cc: "Jason Gunthorpe" <jgg@ziepe.ca>, "David Howells" <dhowells@redhat.com>,
+ <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "James
+ Bottomley" <James.Bottomley@HansenPartnership.com>, "Mimi Zohar"
+ <zohar@linux.ibm.com>, <keyrings@vger.kernel.org>
+Subject: [GIT PULL] KEYS-TRUSTED: keys-trusted-next-6.10-rc1-part2
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Tycho Andersen" <tycho@tycho.pizza>, "Jonathan Calmels"
- <jcalmels@3xx0.net>
+To: "Linus Torvalds" <torvalds@linux-foundation.org>
 X-Mailer: aerc 0.17.0
-References: <20240516092213.6799-1-jcalmels@3xx0.net>
- <20240516092213.6799-4-jcalmels@3xx0.net> <ZktQZi5iCwxcU0qs@tycho.pizza>
- <ptixqmplbovxmqy3obybwphsie2xaybfj46xyafdnol7bme4z4@4kwdljmrkdpn>
- <Zku8839xgFRAEcl+@tycho.pizza>
-In-Reply-To: <Zku8839xgFRAEcl+@tycho.pizza>
 
-On Tue May 21, 2024 at 12:13 AM EEST, Tycho Andersen wrote:
-> On Mon, May 20, 2024 at 12:25:27PM -0700, Jonathan Calmels wrote:
-> > On Mon, May 20, 2024 at 07:30:14AM GMT, Tycho Andersen wrote:
-> > > there is an ongoing effort (started at [0]) to constify the first arg
-> > > here, since you're not supposed to write to it. Your usage looks
-> > > correct to me, so I think all it needs is a literal "const" here.
-> >=20
-> > Will do, along with the suggestions from Jarkko
-> >=20
-> > > > +	struct ctl_table t;
-> > > > +	unsigned long mask_array[2];
-> > > > +	kernel_cap_t new_mask, *mask;
-> > > > +	int err;
-> > > > +
-> > > > +	if (write && (!capable(CAP_SETPCAP) ||
-> > > > +		      !capable(CAP_SYS_ADMIN)))
-> > > > +		return -EPERM;
-> > >=20
-> > > ...why CAP_SYS_ADMIN? You mention it in the changelog, but don't
-> > > explain why.
-> >=20
-> > No reason really, I was hoping we could decide what we want here.
-> > UMH uses CAP_SYS_MODULE, Serge mentioned adding a new cap maybe.
->
-> I don't have a strong preference between SETPCAP and a new capability,
-> but I do think it should be just one. SYS_ADMIN is already god mode
-> enough, IMO.
+The following changes since commit 8f6a15f095a63a83b096d9b29aaff4f0fbe6f6e6=
+:
 
-Sometimes I think would it make more sense to invent something
-completely new like capabilities but more modern and robust, instead of
-increasing complexity of a broken mechanism (especially thanks to
-CAP_MAC_ADMIN).
+  Merge tag 'cocci-for-6.10' of git://git.kernel.org/pub/scm/linux/kernel/g=
+it/jlawall/linux (2024-05-20 16:00:04 -0700)
 
-I kind of liked the idea of privilege tokens both in Symbian and Maemo
-(have been involved professionally in both). Emphasis on the idea not
-necessarily on implementation.
+are available in the Git repository at:
 
-Not an LSM but like something that you could use in the place of POSIX
-caps. Probably quite tedious effort tho because you would need to pull
-the whole industry with the new thing...
+  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags=
+/keys-trusted-next-6.10-rc1-part2
+
+for you to fetch changes up to 050bf3c793a07f96bd1e2fd62e1447f731ed733b:
+
+  KEYS: trusted: Do not use WARN when encode fails (2024-05-21 02:35:10 +03=
+00)
+
+----------------------------------------------------------------
+Hi,
+
+These are couple of bugs I found from trusted keys while working on a new
+asymmetric key type for TPM2 [1]. Both originate form v5.13. Memory leak is
+more crucial but I don't think it is either good idea if kernel throws WARN
+when ASN.1 parser fails, even if it is related to programming error, as it
+is not that mature code yet.
+
+There's at least two WARN's in that code but I picked just the one more
+likely to trigger. Planning to fix the other one too over time.
 
 BR, Jarkko
+
+[1] https://lore.kernel.org/linux-integrity/D1ERDC16XLUO.578U4ZE7VXW@kernel=
+.org/T/#t
+
+----------------------------------------------------------------
+Jarkko Sakkinen (2):
+      KEYS: trusted: Fix memory leak in tpm2_key_encode()
+      KEYS: trusted: Do not use WARN when encode fails
+
+ security/keys/trusted-keys/trusted_tpm2.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
