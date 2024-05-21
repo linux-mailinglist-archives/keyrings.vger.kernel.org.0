@@ -1,119 +1,103 @@
-Return-Path: <keyrings+bounces-1354-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1355-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28B8C8CB01A
-	for <lists+keyrings@lfdr.de>; Tue, 21 May 2024 16:12:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 403D88CB021
+	for <lists+keyrings@lfdr.de>; Tue, 21 May 2024 16:13:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A71C5B252FD
-	for <lists+keyrings@lfdr.de>; Tue, 21 May 2024 14:12:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70F7D1C21949
+	for <lists+keyrings@lfdr.de>; Tue, 21 May 2024 14:13:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D95A7F48F;
-	Tue, 21 May 2024 14:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2DF7F7C1;
+	Tue, 21 May 2024 14:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JrIGLAzs"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="hKdhyU7g";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="hKdhyU7g"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0101535B7;
-	Tue, 21 May 2024 14:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C677F490;
+	Tue, 21 May 2024 14:13:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716300741; cv=none; b=fHj0uaLMQMl2o4N53p1mO6+YyiEOpRux3snY/tdnNUwRr8M5/vtC/Ta0oRTC7k2UcrwdF80G537hvChQibTeQ2i0W1YuV3ZapZRyDc+fGn3bSuEvEKjY/o22QHttQ0ZyAIt8cgwjzBPfO1smtJKx5zEPYtOXTPoveOZx+zkhw6c=
+	t=1716300833; cv=none; b=YZSy/OvjNSeDQZ0r0Yw6ih0bL/QKuqpVxZLB1zVPI0n2MgJh2o4XU1MuAU22oz3FLCIAV4uei4N+xyhKIAuDmjsRLyPJQMKPLF04HeKiksslXt+YugfcTMgUbURLrNfVE9O0wxw9RUHPlnxVdJVCf88CeRBfKAT1hWB990YfqBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716300741; c=relaxed/simple;
-	bh=wZtYXcGZzSQS0F0yeoqFidLr8irNWnwUfGi6pl/72k0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=HKzj1dAdA+A05Da6DHMKKKZVa2IkuEOTbPegyHUP1pMHEKj0gBRdbaofDNineRcU5MgMRKGy5NT7qgeS5nlCOz9YgP5S2h/gDnZicdNDyHBlKEf9gs2ls5RfQQ6Qwgvijd0y+3ZJCDpQVRnBMPtzutvcimw5HgG8Z0uw4WP3edM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JrIGLAzs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFCC9C4AF13;
-	Tue, 21 May 2024 14:12:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716300741;
-	bh=wZtYXcGZzSQS0F0yeoqFidLr8irNWnwUfGi6pl/72k0=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=JrIGLAzsfEwXHnF4TBlNEh/ojwF8O6M+gyeuZLu8pnogmhiVqczyd7u/A7hVRG3HL
-	 9FDZ72VEm/uTsI8XttNZIju+adLcvpkyMfgClLZurMViRZSj+uvSzHljqQtjk5jLQh
-	 amVhBSlxMZrElIq7BOOIPkur1EnDRbdpFPOB5woC/ssmfnV18pD1A0zc/N5krICMPi
-	 fE9ad7Q4eGkZWX26254cX5t3pSPmuLWHmTpWOR4dFInouPY3VvanxNZNHR1EAmO7mU
-	 YmT7N8bI7Xp0164viij+Sx42F9xeET58DuFwWTzzpppKKpNT9xxLC6Qhfrn/DYPFsf
-	 PmbD5t4MPiJ3Q==
+	s=arc-20240116; t=1716300833; c=relaxed/simple;
+	bh=hICR39jC/rtypA7CGipOBlXUxk7CPTosvfiEBMKeYQw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=o4lpm0ILzQ/itvsecp0sj0QGQbymeJ4Z7jXRAUtC6Va1pYEt7TtokcVUbyAqoJAa//E0cnhOubGCWrTN1scqbt3CZ+0MbxHdJx9OnKosEib2kiTw4lh3ZHitnaMOW8PFIltrKixwUtnCPNx9umq4WG7+q2K11tzSypjO1IFAbOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=hKdhyU7g; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=hKdhyU7g; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1716300830;
+	bh=hICR39jC/rtypA7CGipOBlXUxk7CPTosvfiEBMKeYQw=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=hKdhyU7guQxWzoC89oEBKj2f+GC6rmiQcrinFXd16Wa72r/f8ZpijL7AumuM8o+r6
+	 Og6Y8bnl6anGdpFNoH/srSRXBP8lNd6d1EigenRaKa1QgzV+C4Jpr2J2t3yOM/ke3R
+	 eKxGAdl6TMyrE2bhRs0yUat0EAx8B1iNvWirs7mA=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id E1D43128716B;
+	Tue, 21 May 2024 10:13:50 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id kiRxAjhcGZ42; Tue, 21 May 2024 10:13:50 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1716300830;
+	bh=hICR39jC/rtypA7CGipOBlXUxk7CPTosvfiEBMKeYQw=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=hKdhyU7guQxWzoC89oEBKj2f+GC6rmiQcrinFXd16Wa72r/f8ZpijL7AumuM8o+r6
+	 Og6Y8bnl6anGdpFNoH/srSRXBP8lNd6d1EigenRaKa1QgzV+C4Jpr2J2t3yOM/ke3R
+	 eKxGAdl6TMyrE2bhRs0yUat0EAx8B1iNvWirs7mA=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id A89F412870E5;
+	Tue, 21 May 2024 10:13:49 -0400 (EDT)
+Message-ID: <854fa2e1634eb116b979dab499243e40917c637c.camel@HansenPartnership.com>
+Subject: Re: [PATCH] tpm: enable HMAC encryption for only x86-64 and aarch64
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org
+Cc: keyrings@vger.kernel.org, Peter Huewe <peterhuewe@gmx.de>, Jason
+ Gunthorpe <jgg@ziepe.ca>, Mimi Zohar <zohar@linux.ibm.com>, David Howells
+ <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>, James Morris
+ <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
+Date: Tue, 21 May 2024 10:13:45 -0400
+In-Reply-To: <D1FDMULT5YRK.GZOPJ9FZ325R@kernel.org>
+References: <20240521130921.15028-1-jarkko@kernel.org>
+	 <236606947b691049c650bdf82c37324084662147.camel@HansenPartnership.com>
+	 <D1FDMULT5YRK.GZOPJ9FZ325R@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 21 May 2024 17:12:16 +0300
-Message-Id: <D1FDU1C3W974.2BXBDS10OB8CB@kernel.org>
-Cc: <brauner@kernel.org>, <ebiederm@xmission.com>, "Luis Chamberlain"
- <mcgrof@kernel.org>, "Kees Cook" <keescook@chromium.org>, "Joel Granados"
- <j.granados@samsung.com>, "Serge Hallyn" <serge@hallyn.com>, "Paul Moore"
- <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "David Howells"
- <dhowells@redhat.com>, <containers@lists.linux.dev>,
- <linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-security-module@vger.kernel.org>, <keyrings@vger.kernel.org>
-Subject: Re: [PATCH 0/3] Introduce user namespace capabilities
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "John Johansen" <john.johansen@canonical.com>, "Jonathan Calmels"
- <jcalmels@3xx0.net>, "Casey Schaufler" <casey@schaufler-ca.com>
-X-Mailer: aerc 0.17.0
-References: <20240516092213.6799-1-jcalmels@3xx0.net>
- <2804dd75-50fd-481c-8867-bc6cea7ab986@schaufler-ca.com>
- <D1BBFWKGIA94.JP53QNURY3J4@kernel.org>
- <D1BBI1LX2FMW.3MTQAHW0MA1IH@kernel.org>
- <D1BC3VWXKTNC.2DB9JIIDOFIOQ@kernel.org>
- <jvy3npdptyro3m2q2junvnokbq2fjlffljxeqitd55ff37cydc@b7mwtquys6im>
- <df3c9e5c-b0e7-4502-8c36-c5cb775152c0@schaufler-ca.com>
- <vhpmew3kyay3xq4h3di3euauo43an22josvvz6assex4op3gzw@xeq63mqb2lmh>
- <D1CQ1FZ72NIW.2U7ZH0GU6C5W5@kernel.org>
- <D1CQ8J60S7L4.1OVRIWBERNM5Y@kernel.org>
- <D1CQC0PTK1G0.124QCO3S041Q@kernel.org>
- <1b0d222a-b556-48b0-913f-cdd5c30f8d27@canonical.com>
-In-Reply-To: <1b0d222a-b556-48b0-913f-cdd5c30f8d27@canonical.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Tue May 21, 2024 at 4:57 PM EEST, John Johansen wrote:
-> > One tip: I think this is wrong forum to present namespace ideas in the
-> > first place. It would be probably better to talk about this with e.g.
-> > systemd or podman developers, and similar groups. There's zero evidence
-> > of the usefulness. Then when you go that route and come back with actua=
-l
-> > users, things click much more easily. Now this is all in the void.
-> >=20
-> > BR, Jarkko
->
-> Jarkko,
->
-> this is very much the right forum. User namespaces exist today. This
-> is a discussion around trying to reduce the exposed kernel surface
-> that is being used to attack the kernel.
+On Tue, 2024-05-21 at 17:02 +0300, Jarkko Sakkinen wrote:
+> Secondly, it also roots to the null key if a parent is not given. So
+> it covers all the basic features of the HMAC patch set.
 
-Agreed, that was harsh way to put it. What I mean is that if this
-feature was included, would it be enabled by distributions?
+I don't think that can work.  The key file would be wrapped to the
+parent and the null seed (and hence the wrapping) changes with every
+reboot.  If you want a permanent key, it has to be in one of the
+accessible permanent hierarchies (storage ideally or endorsement).
 
-This user base part or potential user space part is not very well
-described in the cover letter. I.e. "motivation" to put it short.
+The spec has a mechanism for deriving the key from a permanent handle
+if the system doesn't have it in-place.  I do have patches to use that
+because that's the way most sealed objects and keys are generated
+today.  I'll post them (although there'll be a bit of fixing up to do).
 
-I mean the technical details are really in detail in this patch set but
-it would help to digest them if there was some even rough description
-how this would be deployed.
+Regards,
 
-If the motivation should be obvious, then it is beyond me, and thus
-would be nice if that obvious thing was stated that everyone else gets.
+James
 
-E.g. I like to sometimes just test quite alien patch sets for the sake
-of learning and fun (or not so fun, depends) but this patch set does not
-deliver enough information to do anything at all.
-
-Hope this clears a bit where I stand. IMHO a good patch set should bring
-the details to the specialists on the topic but also have some wider
-audience motivational stuff in order to make clear where it fits in this
-world :-)
-
-BR, Jarkko
 
