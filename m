@@ -1,153 +1,125 @@
-Return-Path: <keyrings+bounces-1361-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1362-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEBA58CB0AD
-	for <lists+keyrings@lfdr.de>; Tue, 21 May 2024 16:46:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC088CB0D1
+	for <lists+keyrings@lfdr.de>; Tue, 21 May 2024 16:56:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78E1E1F21C81
-	for <lists+keyrings@lfdr.de>; Tue, 21 May 2024 14:46:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F7ACB20C44
+	for <lists+keyrings@lfdr.de>; Tue, 21 May 2024 14:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A1AD7EF02;
-	Tue, 21 May 2024 14:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375A77EEED;
+	Tue, 21 May 2024 14:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bTfMZ3+n"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="BkLcEJQC";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="BkLcEJQC"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D745A1CD32;
-	Tue, 21 May 2024 14:45:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFA81E87C;
+	Tue, 21 May 2024 14:56:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716302758; cv=none; b=QmBUV0aTegrohR1HT1attII7UZ8UB5s6XIElBwpaOd3V9UUhFTeoYZQ321ekjtC7xI+pz4MFLmW/HG+qpUraoPhBVeCpzBZT2ojx4ls0YR2x9SW7o0KAOOeK+nzYlHpPMHgaRviy8RL1a05ij1pIb7B3yq/suuKmQnRwMIMMo/c=
+	t=1716303394; cv=none; b=nDuDVjZPn5Gzc9/Z6pPqsL0VQ1nGlT6Vh92NprsyKuvrkV9d778uiiDfQLbJ5z7xllPZXjqPYHu4ROXJKt859icKZaxSYqPIeGFLqLLMAPnz5Mc2WNZHlY3u1tt2SbBspCiYalFzOSsQVRrGpw3gaU0XQzM6rTMnkQ+bS7HQpA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716302758; c=relaxed/simple;
-	bh=h56f1QL3jb+GHUV4CymHSyb4E4n54peG+Qn4CsaG9Ts=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=hovhlnMbpxvTx4NgzMVrZQ3SCV4qBpfVBf2tXmDCJwf8JzQ3kvdS7dx+IXDxqvIUGur0mVTjreDKyJ73yfHLnSx49FUom3X85xXj/L593Qw9S7zytKIy9qOCVBpIJsTQYpEXKJiZ/RI7g64wu8DkK7Z1bndUi5wrzVCPuaySw4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bTfMZ3+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186EFC2BD11;
-	Tue, 21 May 2024 14:45:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716302757;
-	bh=h56f1QL3jb+GHUV4CymHSyb4E4n54peG+Qn4CsaG9Ts=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=bTfMZ3+ncJE7OLdODIqNXZ6D9GrNsCumq/EQpRt77Z9Zv7L06eor07wgeqfv89scD
-	 Uu5zX7o+SWFtkq9wHB9lE/UtUdRmwKpQBgwRnvvp2cHsqRR8vyS2nNzlR1KKKnWhLp
-	 8bBJbDfB1DCxyn5/IIE7YnJq/C6naem9KgEpliUFexiziI0pbrWlMRHmeziBo4ys97
-	 8TadNnKqkHCElBZv7jUzucCHAqq2gyM3nonTLdTBj0hKRr34OgEyAkBVe01MumVDa8
-	 Q2k7oOBbEXFe5GZyAZnviDypZ41Kw/7IZhkms94HsIXqgAiMA3oqJQfIWDASrPv1zd
-	 qFAIt4azUjK/A==
+	s=arc-20240116; t=1716303394; c=relaxed/simple;
+	bh=Sm/mlcq4N0CjbXbXms+PR2JhxxOwu8RQ4iQWhN0v6DE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rQSh1bYxH+o4DDe1/8W2qbwk53tEuGILq1ufjYEsGpoXDuud4Gi367PAWZnN7TjCZe/7ygIIYxSE7FexuoGgBlTZ0DXgbZpHn916Ac+6nDn17d0iQ3pxrZtmKS9OCRFjw21ojkfkdHFhe4Ef4P6RuHb3FlBnH1E3bRruJ7qEtLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=BkLcEJQC; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=BkLcEJQC; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1716303389;
+	bh=Sm/mlcq4N0CjbXbXms+PR2JhxxOwu8RQ4iQWhN0v6DE=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=BkLcEJQCjQ/Tn8vfiRNAYOFowecqJtj5cpfdt5HhDPQW3fuYzexbBWDc/9e9lrDgW
+	 XE8/4mjeIc+DDEGe8Pav9v+Q5XzXPFmyb7wbKanJ2ARuzaEKCV1SzptbRYr3Be3MRt
+	 fWFykveWPfa6fGAq1a1J9+92QH3fjeozhsVnBQao=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id DDFC712813BC;
+	Tue, 21 May 2024 10:56:29 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id R_nsAii9qvM6; Tue, 21 May 2024 10:56:29 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1716303389;
+	bh=Sm/mlcq4N0CjbXbXms+PR2JhxxOwu8RQ4iQWhN0v6DE=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=BkLcEJQCjQ/Tn8vfiRNAYOFowecqJtj5cpfdt5HhDPQW3fuYzexbBWDc/9e9lrDgW
+	 XE8/4mjeIc+DDEGe8Pav9v+Q5XzXPFmyb7wbKanJ2ARuzaEKCV1SzptbRYr3Be3MRt
+	 fWFykveWPfa6fGAq1a1J9+92QH3fjeozhsVnBQao=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 4880F1280728;
+	Tue, 21 May 2024 10:56:28 -0400 (EDT)
+Message-ID: <0da89df455617f4dc1c7fdb8890e3219cfce4f7b.camel@HansenPartnership.com>
+Subject: Re: [PATCH] tpm: enable HMAC encryption for only x86-64 and aarch64
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org
+Cc: keyrings@vger.kernel.org, Peter Huewe <peterhuewe@gmx.de>, Jason
+ Gunthorpe <jgg@ziepe.ca>, Mimi Zohar <zohar@linux.ibm.com>, David Howells
+ <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>, James Morris
+ <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
+Date: Tue, 21 May 2024 10:56:26 -0400
+In-Reply-To: <D1FEC6TB7660.2XD9X21W46X7V@kernel.org>
+References: <20240521130921.15028-1-jarkko@kernel.org>
+	 <236606947b691049c650bdf82c37324084662147.camel@HansenPartnership.com>
+	 <D1FDMULT5YRK.GZOPJ9FZ325R@kernel.org>
+	 <854fa2e1634eb116b979dab499243e40917c637c.camel@HansenPartnership.com>
+	 <D1FE58VX0KL4.70F6U9Y6HPQC@kernel.org>
+	 <D1FEC6TB7660.2XD9X21W46X7V@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 21 May 2024 17:45:52 +0300
-Message-Id: <D1FEJRLKVVXK.2GSTW5LNF9OFY@kernel.org>
-Subject: Re: [PATCH 3/3] capabilities: add cap userns sysctl mask
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Tycho Andersen" <tycho@tycho.pizza>
-Cc: "Jonathan Calmels" <jcalmels@3xx0.net>, <brauner@kernel.org>,
- <ebiederm@xmission.com>, "Luis Chamberlain" <mcgrof@kernel.org>, "Kees
- Cook" <keescook@chromium.org>, "Joel Granados" <j.granados@samsung.com>,
- "Serge Hallyn" <serge@hallyn.com>, "Paul Moore" <paul@paul-moore.com>,
- "James Morris" <jmorris@namei.org>, "David Howells" <dhowells@redhat.com>,
- <containers@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <linux-fsdevel@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
- <keyrings@vger.kernel.org>
-X-Mailer: aerc 0.17.0
-References: <20240516092213.6799-1-jcalmels@3xx0.net>
- <20240516092213.6799-4-jcalmels@3xx0.net> <ZktQZi5iCwxcU0qs@tycho.pizza>
- <ptixqmplbovxmqy3obybwphsie2xaybfj46xyafdnol7bme4z4@4kwdljmrkdpn>
- <Zku8839xgFRAEcl+@tycho.pizza> <D1ETFJFE9Y48.1T8I7SIPGFMQ2@kernel.org>
- <Zkyvz122pigJGgEw@tycho.pizza>
-In-Reply-To: <Zkyvz122pigJGgEw@tycho.pizza>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue May 21, 2024 at 5:29 PM EEST, Tycho Andersen wrote:
-> On Tue, May 21, 2024 at 01:12:57AM +0300, Jarkko Sakkinen wrote:
-> > On Tue May 21, 2024 at 12:13 AM EEST, Tycho Andersen wrote:
-> > > On Mon, May 20, 2024 at 12:25:27PM -0700, Jonathan Calmels wrote:
-> > > > On Mon, May 20, 2024 at 07:30:14AM GMT, Tycho Andersen wrote:
-> > > > > there is an ongoing effort (started at [0]) to constify the first=
- arg
-> > > > > here, since you're not supposed to write to it. Your usage looks
-> > > > > correct to me, so I think all it needs is a literal "const" here.
-> > > >=20
-> > > > Will do, along with the suggestions from Jarkko
-> > > >=20
-> > > > > > +	struct ctl_table t;
-> > > > > > +	unsigned long mask_array[2];
-> > > > > > +	kernel_cap_t new_mask, *mask;
-> > > > > > +	int err;
-> > > > > > +
-> > > > > > +	if (write && (!capable(CAP_SETPCAP) ||
-> > > > > > +		      !capable(CAP_SYS_ADMIN)))
-> > > > > > +		return -EPERM;
-> > > > >=20
-> > > > > ...why CAP_SYS_ADMIN? You mention it in the changelog, but don't
-> > > > > explain why.
-> > > >=20
-> > > > No reason really, I was hoping we could decide what we want here.
-> > > > UMH uses CAP_SYS_MODULE, Serge mentioned adding a new cap maybe.
-> > >
-> > > I don't have a strong preference between SETPCAP and a new capability=
-,
-> > > but I do think it should be just one. SYS_ADMIN is already god mode
-> > > enough, IMO.
-> >=20
-> > Sometimes I think would it make more sense to invent something
-> > completely new like capabilities but more modern and robust, instead of
-> > increasing complexity of a broken mechanism (especially thanks to
-> > CAP_MAC_ADMIN).
-> >=20
-> > I kind of liked the idea of privilege tokens both in Symbian and Maemo
-> > (have been involved professionally in both). Emphasis on the idea not
-> > necessarily on implementation.
-> >=20
-> > Not an LSM but like something that you could use in the place of POSIX
-> > caps. Probably quite tedious effort tho because you would need to pull
-> > the whole industry with the new thing...
->
-> And then we have LSM hooks, (ns_)capable(), __secure_computing() plus
-> a new set of hooks for this new thing sprinkled around. I guess
-> kernel developers wouldn't be excited about it, let alone the rest of
-> the industry :)
->
-> Thinking out loud: I wonder if fixing the seccomp TOCTOU against
-> pointers would help here. I guess you'd still have issues where your
-> policy engine resolves a path arg to open() and that inode changes
-> between the decision and the actual vfs access, you have just changed
-> the TOCTOU.
->
-> Or even scarier: what if you could change the return value at any
-> kprobe? :)
+On Tue, 2024-05-21 at 17:35 +0300, Jarkko Sakkinen wrote:
+> On Tue May 21, 2024 at 5:26 PM EEST, Jarkko Sakkinen wrote:
+> > On Tue May 21, 2024 at 5:13 PM EEST, James Bottomley wrote:
+> > > On Tue, 2024-05-21 at 17:02 +0300, Jarkko Sakkinen wrote:
+> > > > Secondly, it also roots to the null key if a parent is not
+> > > > given. So it covers all the basic features of the HMAC patch
+> > > > set.
+> > > 
+> > > I don't think that can work.  The key file would be wrapped to
+> > > the parent and the null seed (and hence the wrapping) changes
+> > > with every reboot.  If you want a permanent key, it has to be in
+> > > one of the accessible permanent hierarchies (storage ideally or
+> > > endorsement).
+> > 
+> > I'm fully aware that null seed is randomized per power cycle.
 
-I had one crazy idea related to seccomp filters once.
+OK, as long as this gets documented, I'm OK with it
 
-What if there was way to compose tokens that would be just a seccomp
-filter like the one that you pass to PR_SET_SECCOMP but presented with a
-file descriptor?
+> > The fallback was inherited from James Prestwood's original code and
+> > I decided to keep it as a testing feature, and also to test HMAC
+> > changes.
+> > 
+> > If you look at the testing transcript in the cover letter, it
+> > should beobvious that a primary key is created in my basic test.
+> 
+> I think what could be done to it in v3 would be to return -EOPNOTSUPP
+> if parent is not defined. I.e. rationale here is that this way the
+> empty option is still usable for something in future kernel releases.
 
-Then you could send these with SCM_RIGHTS to other processes and they
-could upgrade their existing filter with them. So it would be a kind of
-extension mechanism for a seccomp filter.
+You can absolutely have null derived parent keys (I use them for
+testing as well).  However, the spec says the parent handle in that
+case should be TPM_RH_NULL (i.e. 0x40000007) not zero:
 
-Not something I'm seriously suggesting but though to flush this out now
-that we are on these topics anyhow ;-)
+https://www.hansenpartnership.com/draft-bottomley-tpm2-keys.html#name-parent
 
-> Tycho
+James
 
-PS. Sorry if my language was a bit harsh earlier but I think I had also
-a point related to at least to the patch set presentation. I.e. you
-are very precise describing the mechanism but motivation and bringing
-topic somehow to a context is equally important :-)
-
-BR, Jarkko
 
