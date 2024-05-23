@@ -1,112 +1,250 @@
-Return-Path: <keyrings+bounces-1412-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1413-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A164D8CD078
-	for <lists+keyrings@lfdr.de>; Thu, 23 May 2024 12:41:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8312E8CD33B
+	for <lists+keyrings@lfdr.de>; Thu, 23 May 2024 15:08:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 432B71F23C4C
-	for <lists+keyrings@lfdr.de>; Thu, 23 May 2024 10:41:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E98931F22031
+	for <lists+keyrings@lfdr.de>; Thu, 23 May 2024 13:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDB51411CC;
-	Thu, 23 May 2024 10:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA0014A4C1;
+	Thu, 23 May 2024 13:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="obwQ+HW3"
 X-Original-To: keyrings@vger.kernel.org
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5651411C2;
-	Thu, 23 May 2024 10:41:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5360D13B7BC;
+	Thu, 23 May 2024 13:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716460862; cv=none; b=JvBwxAcMB9ciyvfmemoLD1rB9ebX5uD2Tt8M19gV0imeD1zW46FKbUzIef1hF8FnTZuHsulaX12EgiYrVyx9w9gccb9GXgk7VJT8PKQP/59L6kF4D0QgkGhrb5ToPNoMtFKkoVkAdIVDg607naJmdk7EqH9tC8ulfvdzDKBK/eo=
+	t=1716469730; cv=none; b=E8QLTW9oeSPa7m9dDi7gW2sjWYC6pkrnsq4zpBz4p6EgAihK34yaIUhQ8SkzUir3T1tosb922gWoyU0IDWSzLeSAb9PjzZ28PFjzGj72aDfLE86kaukkSxxfSFDhnb81z3OQHYY7sYnyXfNUGAG3T4WvjY12EwaNPxcXdLtSz9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716460862; c=relaxed/simple;
-	bh=eXRSHwUvy8ISV/ZF5NEQa0Kx5OLcz4a9q9ZU1a3C/gk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ly/QUq62YsaWYT+APwTG67o8xQqYAtBgakJlTPNITxtXn2tmtMsQcjLNOzusMsWbUHN8KHYKobXZbDZ/9Ap3T3fDCiabvDCzq9M0THp4g9xe935bc3MVtUdfNO5aK3FbXhryxUntDK/BylAIhTPSe1KvWWvLxUy4lDcTpzn80qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 107)
-	id 3D0D568D09; Thu, 23 May 2024 12:40:57 +0200 (CEST)
-X-Spam-Level: 
-Received: from blackhole.lan (p5b33fb10.dip0.t-ipconnect.de [91.51.251.16])
-	by verein.lst.de (Postfix) with ESMTPSA id 5E39267373;
-	Thu, 23 May 2024 12:40:36 +0200 (CEST)
-Date: Thu, 23 May 2024 12:40:32 +0200
-From: Torsten Duwe <duwe@lst.de>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, "=?UTF-8?B?TsOtY29s?=
- =?UTF-8?B?YXM=?= F. R. A. Prado" <nfraprado@collabora.com>, Eric Biggers
- <ebiggers@kernel.org>, Jarkko Sakkinen <jarkko@kernel.org>, James Bottomley
- <James.Bottomley@hansenpartnership.com>, Ard Biesheuvel <ardb@kernel.org>,
- Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
- linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
- regressions@lists.linux.dev, kernel@collabora.com, Tejun Heo
- <tj@kernel.org>, Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Kees Cook <keescook@chromium.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Theodore Ts'o <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>
-Subject: Re: [v3 PATCH] hwrng: core - Remove add_early_randomness
-Message-ID: <20240523123954.5e42bd93@blackhole.lan>
-In-Reply-To: <Zk7K7hw-XIHmPs26@gondor.apana.org.au>
-References: <66ec985f3ee229135bf748f1b0874d5367a74d7f.camel@HansenPartnership.com>
-	<dfb0d930-7cbe-46c5-be19-d132b4906ecf@notapiano>
-	<D1C2NPOBHAHK.20O4IME8OK1FH@kernel.org>
-	<20240518043115.GA53815@sol.localdomain>
-	<ZkhS1zrobNwAuANI@gondor.apana.org.au>
-	<00bcfa65-384d-46ae-ab8b-30f12487928b@notapiano>
-	<ZkwMnrTR_CbXcjWe@gondor.apana.org.au>
-	<07512097-8198-4a84-b166-ef9809c2913b@notapiano>
-	<Zk2Eso--FVsZ5AF3@gondor.apana.org.au>
-	<CAHk-=wi7vwgzD4hdBzMrt1u3L2JyoctB91B7NLq-kVHrYXoTGA@mail.gmail.com>
-	<Zk7K7hw-XIHmPs26@gondor.apana.org.au>
-Organization: LST e.V.
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-suse-linux-gnu)
+	s=arc-20240116; t=1716469730; c=relaxed/simple;
+	bh=5x2a4GM3brTtaycRNakzuLxHq3n5FCWmESOoxOPKfDg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PFxiQmoYRWCSgxc2jL/++tI6NIkK5UsD/BqmAj1ZxPMF+E7N1wDbEH7mQPTY+cvW2TizTAY9Dyjjkbk3DAudx2v0l4Q3fkYtx2Z3/tzrJqa8y9B0woRMXo2tYDYO1vy3QVksGELjUpeP7bE32OaBmZf8j/uvCZ+u5D3Zz2NkgMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=obwQ+HW3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56226C2BD10;
+	Thu, 23 May 2024 13:08:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716469729;
+	bh=5x2a4GM3brTtaycRNakzuLxHq3n5FCWmESOoxOPKfDg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=obwQ+HW3dkBtcZ2A7SnkC9L0Csk8Z3mlB8nmpNniwjdIiufbdTCQo56oh4HCPaWqg
+	 gEmXAmN1/XFKQamXKamiG0EiecKHbxM74ffFuv1M1CFqqQ5d270zshNA9U6d9JvHEr
+	 xMLoKSllvP4XLwdLtjxmE6QqRB/Zhj3TV5R64qVgqmfnJ7zMWuMfcnsxBlK+PjB0eN
+	 K6QKqzPMv3XUgWJtJYzHQsQqc7AE2cu9x8lbgMxBfJVks5GfhOu9pD6CSLWJnAxLTW
+	 enWO6FfGpHLuFMcAtS9ukesEZZl2OPpxXVNFGMHFWMkiJgihPF5C46koke1xoUSkmt
+	 SQuShp1g9Zd5w==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-integrity@vger.kernel.org
+Cc: keyrings@vger.kernel.org,
+	David Woodhouse <dwmw2@infradead.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	linux-crypto@vger.kernel.org (open list:CRYPTO API),
+	linux-kernel@vger.kernel.org (open list),
+	linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM)
+Subject: [PATCH] KEYS: trusted: Use ASN.1 encoded OID
+Date: Thu, 23 May 2024 16:08:35 +0300
+Message-ID: <20240523130839.31265-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 23 May 2024 12:49:50 +0800
-Herbert Xu <herbert@gondor.apana.org.au> wrote:
+There's no reason to encode OID_TPMSealedData at run-time, as it never
+changes.
 
-> On Wed, May 22, 2024 at 03:53:23PM -0700, Linus Torvalds wrote:
-> > 
-> > That said, looking at the code in question, there are other oddities
-> > going on. Even the "we found a favorite new rng" case looks rather
-> > strange. The thread we use - nice and asynchronous - seems to sleep
-> > only if the randomness source is emptied.
-> > 
-> > What if you have a really good source of hw randomness? That looks
-> > like a busy loop to me, but hopefully I'm missing something obvious.
-> 
-> Yes that does look strange.  So I dug up the original patch at
-> 
-> 	https://lore.kernel.org/all/20140317165012.GC1763@lst.de/
-> 
-> and therein lies the answer.  It's relying on random.c to push back
-> when the amount of new entropy exceeds what it needs.  IOW we will
-> sleep via add_hwgenerator_randomness when random.c decides that
-> enough is enough.
+Replace it with the encoded version, which has exactly the same size:
 
-Yes, I thought that this was the obvious choice, the lesser evil. If it
-just discarded the excess and returned immediately I had expected some
-kernel threads to spin constantly.
+	67 81 05 0A 01 05
 
->  In fact the rate is much less now compared to
-> when the patch was first applied.
+Include OBJECT IDENTIFIER (0x06) tag and length as the epilogue so that
+the OID can be simply copied to the blob.
 
-You mean the rate of required entropy? Doesn't that make things worse?
-Maybe redesign the API to use a pull scheme? RNGs register at the
-randomness facility with a callback that can be used when there is a
-need for fresh entropy?
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+ include/linux/asn1_encoder.h              |  4 -
+ lib/asn1_encoder.c                        | 91 -----------------------
+ security/keys/trusted-keys/trusted_tpm2.c | 10 ++-
+ 3 files changed, 7 insertions(+), 98 deletions(-)
 
-	Torsten
+diff --git a/include/linux/asn1_encoder.h b/include/linux/asn1_encoder.h
+index 08cd0c2ad34f..afeefdfe2525 100644
+--- a/include/linux/asn1_encoder.h
++++ b/include/linux/asn1_encoder.h
+@@ -8,14 +8,10 @@
+ #include <linux/asn1_ber_bytecode.h>
+ #include <linux/bug.h>
+ 
+-#define asn1_oid_len(oid) (sizeof(oid)/sizeof(u32))
+ unsigned char *
+ asn1_encode_integer(unsigned char *data, const unsigned char *end_data,
+ 		    s64 integer);
+ unsigned char *
+-asn1_encode_oid(unsigned char *data, const unsigned char *end_data,
+-		u32 oid[], int oid_len);
+-unsigned char *
+ asn1_encode_tag(unsigned char *data, const unsigned char *end_data,
+ 		u32 tag, const unsigned char *string, int len);
+ unsigned char *
+diff --git a/lib/asn1_encoder.c b/lib/asn1_encoder.c
+index 0fd3c454a468..c0db3cbebe89 100644
+--- a/lib/asn1_encoder.c
++++ b/lib/asn1_encoder.c
+@@ -85,97 +85,6 @@ asn1_encode_integer(unsigned char *data, const unsigned char *end_data,
+ }
+ EXPORT_SYMBOL_GPL(asn1_encode_integer);
+ 
+-/* calculate the base 128 digit values setting the top bit of the first octet */
+-static int asn1_encode_oid_digit(unsigned char **_data, int *data_len, u32 oid)
+-{
+-	unsigned char *data = *_data;
+-	int start = 7 + 7 + 7 + 7;
+-	int ret = 0;
+-
+-	if (*data_len < 1)
+-		return -EINVAL;
+-
+-	/* quick case */
+-	if (oid == 0) {
+-		*data++ = 0x80;
+-		(*data_len)--;
+-		goto out;
+-	}
+-
+-	while (oid >> start == 0)
+-		start -= 7;
+-
+-	while (start > 0 && *data_len > 0) {
+-		u8 byte;
+-
+-		byte = oid >> start;
+-		oid = oid - (byte << start);
+-		start -= 7;
+-		byte |= 0x80;
+-		*data++ = byte;
+-		(*data_len)--;
+-	}
+-
+-	if (*data_len > 0) {
+-		*data++ = oid;
+-		(*data_len)--;
+-	} else {
+-		ret = -EINVAL;
+-	}
+-
+- out:
+-	*_data = data;
+-	return ret;
+-}
+-
+-/**
+- * asn1_encode_oid() - encode an oid to ASN.1
+- * @data:	position to begin encoding at
+- * @end_data:	end of data pointer, points one beyond last usable byte in @data
+- * @oid:	array of oids
+- * @oid_len:	length of oid array
+- *
+- * this encodes an OID up to ASN.1 when presented as an array of OID values
+- */
+-unsigned char *
+-asn1_encode_oid(unsigned char *data, const unsigned char *end_data,
+-		u32 oid[], int oid_len)
+-{
+-	int data_len = end_data - data;
+-	unsigned char *d = data + 2;
+-	int i, ret;
+-
+-	if (WARN(oid_len < 2, "OID must have at least two elements"))
+-		return ERR_PTR(-EINVAL);
+-
+-	if (WARN(oid_len > 32, "OID is too large"))
+-		return ERR_PTR(-EINVAL);
+-
+-	if (IS_ERR(data))
+-		return data;
+-
+-
+-	/* need at least 3 bytes for tag, length and OID encoding */
+-	if (data_len < 3)
+-		return ERR_PTR(-EINVAL);
+-
+-	data[0] = _tag(UNIV, PRIM, OID);
+-	*d++ = oid[0] * 40 + oid[1];
+-
+-	data_len -= 3;
+-
+-	for (i = 2; i < oid_len; i++) {
+-		ret = asn1_encode_oid_digit(&d, &data_len, oid[i]);
+-		if (ret < 0)
+-			return ERR_PTR(ret);
+-	}
+-
+-	data[1] = d - data - 2;
+-
+-	return d;
+-}
+-EXPORT_SYMBOL_GPL(asn1_encode_oid);
+-
+ /**
+  * asn1_encode_length() - encode a length to follow an ASN.1 tag
+  * @data: pointer to encode at
+diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+index 8b7dd73d94c1..dadeed35627c 100644
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -26,7 +26,8 @@ static struct tpm2_hash tpm2_hash_map[] = {
+ 	{HASH_ALGO_SM3_256, TPM_ALG_SM3_256},
+ };
+ 
+-static u32 tpm2key_oid[] = { 2, 23, 133, 10, 1, 5 };
++/* Encoded OID_TPMSealedData. */
++static u8 OID_TPMSealedData_ASN1[] = {0x06, 0x06, 0x67, 0x81, 0x05, 0x0a, 0x01 0x05};
+ 
+ static int tpm2_key_encode(struct trusted_key_payload *payload,
+ 			   struct trusted_key_options *options,
+@@ -51,8 +52,8 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+ 	if (!scratch)
+ 		return -ENOMEM;
+ 
+-	work = asn1_encode_oid(work, end_work, tpm2key_oid,
+-			       asn1_oid_len(tpm2key_oid));
++	work = memcpy(work, OID_TPMSealedData_ASN1, sizeof(OID_TPMSealedData_ASN1));
++	work += OID_TPMSealedData_ASN1;
+ 
+ 	if (options->blobauth_len == 0) {
+ 		unsigned char bool[3], *w = bool;
+@@ -90,6 +91,9 @@ static int tpm2_key_encode(struct trusted_key_payload *payload,
+ 		goto err;
+ 	}
+ 
++	print_hex_dump(KERN_INFO, "", DUMP_PREFIX_NONE, 16, 1,
++		       payload->blob, work1 - payload->blob, 0);
++
+ 	kfree(scratch);
+ 	return work1 - payload->blob;
+ 
+-- 
+2.45.1
 
 
