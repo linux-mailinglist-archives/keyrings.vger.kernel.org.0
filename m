@@ -1,148 +1,100 @@
-Return-Path: <keyrings+bounces-1513-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1514-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CEFB8D2A17
-	for <lists+keyrings@lfdr.de>; Wed, 29 May 2024 03:50:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ABF18D3635
+	for <lists+keyrings@lfdr.de>; Wed, 29 May 2024 14:20:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C4EAB256E4
-	for <lists+keyrings@lfdr.de>; Wed, 29 May 2024 01:50:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2004E1F266F3
+	for <lists+keyrings@lfdr.de>; Wed, 29 May 2024 12:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FFB913E40C;
-	Wed, 29 May 2024 01:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7F4181303;
+	Wed, 29 May 2024 12:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="W86N+DVI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AhqUIqsF"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891E054F95;
-	Wed, 29 May 2024 01:50:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEB3180A97;
+	Wed, 29 May 2024 12:20:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716947452; cv=none; b=Qy+lipWvWIu2Qx/WupksUgUM0njuayPZzcXvUcHVzqQZj9GoTRh4zXpTabUsgV8lZC5oe4FlUMvktoHAaSNSZbDzdtml3laFx83xgdwO50acqnM/epDnq3dRCyzOC1SXki5CXmaLH+xdIgypEb3Bd59nw5fA5W5qiY+JlrqpshU=
+	t=1716985231; cv=none; b=iGhrBg+udyZLInOQIbXNhY8E2ouZHQ15qfSepkLSoFkfiH1ZiDmLv5gCrjoi1MvgvM6+9JKS1Ef6pnu3HDevyoAUAoZHLK7telGoiLJ8jpR5S7iXsVZoGBdmE3l6LdDABNMQ3EhuJSm44ANRbIkP38mHBlYAjJ2VSznqoLAMbDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716947452; c=relaxed/simple;
-	bh=/qtOjP1RlF/FN7zclhrsBp1avL7HC78PDggKJ48KInE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q6IIok+4wb0lCm+5SRaWTl+ARa4TTx2snGVuTyYhpl3fYwBBHs+rLNllbuGHW40mZyTp7Vk+gX7FH+W8FOtVv3swe9vhZilOLfxw6C4p+P6tyeJKLeNFmU3FDjbFYHn7z3nKEv2VHAH54oQzkCVGN+qUu2g4ZjKrNL+5YmFjSP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=W86N+DVI; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353723.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44T1J2ur016581;
-	Wed, 29 May 2024 01:50:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc :
- content-transfer-encoding : content-type : date : from : in-reply-to :
- message-id : mime-version : references : subject : to; s=pp1;
- bh=18e5f2V5wYwa//AXQoETnqRxYbmEXog+v0GD6re4QDI=;
- b=W86N+DVICq0EzEVAV3nQjeBONDQUkfzD82w+kaeC4ASU2EvSkXlaMtP2Hh+x0UZWlnVd
- WL32qdO/mb+RXrNJOVWWyBd8yz9NHytWPFcotR56mYdMDP7iJPnO57CTX8TEQJmxDZSS
- MbunYHpic8O9dE6h5KNaMILdW4NJsIiFAzXywoUSbi7Dy7YL6n++Tx9yn8rNg+CZgqG0
- l28rjgyDeuVRwQcohnPx4QL83pC9HXdgKv9u8eLXw7XrNPP5CCht4i3xgK8AU4zcQHFF
- M8pHWbVFhiuOYzUwqUprCDRNtx0M9K/eb6jV0+syZAryFbu7duX51rsFptHyyLiYaW3B fA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ydtk3g220-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 May 2024 01:50:21 +0000
-Received: from m0353723.ppops.net (m0353723.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44T1oK7t030265;
-	Wed, 29 May 2024 01:50:20 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ydtk3g21w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 May 2024 01:50:20 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44T0NX0o026733;
-	Wed, 29 May 2024 01:50:19 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ydpd2h6x4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 May 2024 01:50:19 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44T1oHN723069022
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 29 May 2024 01:50:19 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EC2835806D;
-	Wed, 29 May 2024 01:50:16 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E57D058055;
-	Wed, 29 May 2024 01:50:14 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 29 May 2024 01:50:14 +0000 (GMT)
-Message-ID: <14d0baf4-fa41-4a08-925d-90f028117352@linux.ibm.com>
-Date: Tue, 28 May 2024 21:50:13 -0400
+	s=arc-20240116; t=1716985231; c=relaxed/simple;
+	bh=VpHIdGNzMITuTJTo8IHKIYXLIDv6AXCePiPAEtOFDFo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=uWe2y1AS3vrIWaV3mf0lqb9Ur7v6l+lULXqtcmfx+/TI1QIshBgWIoQI7iSCAGZKPM1X4OhTUokilCT6Mh2+JfQ9z1pjrm3tYDceD3wwrjjmMJpUUz1CJMpE4MV705xRZcVrLFIhHfptwJyu0UxH2SpzPv9iO4hrpxayPgsGAoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AhqUIqsF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66876C2BD10;
+	Wed, 29 May 2024 12:20:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716985231;
+	bh=VpHIdGNzMITuTJTo8IHKIYXLIDv6AXCePiPAEtOFDFo=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=AhqUIqsFLYOCebwLbUCnjjUx4VRWTD0BnXxREMkocMYUA64uSMLDspnGAE5xJYbTk
+	 SKotVExoVXb+3cXSp9SmBqPsJWhEs9sfZ8J/MWbC1fW21KUnPN55O21n7nOtem/RsD
+	 eXUaBO6NSuijG9knpgRAZJljAdYrfu1RHxGw8itCCd2HtGX5Y/HanvlZVfgNhI8UOL
+	 cICgXQvSVZGJKY/G129/QZkCx1dV1KQOLnPpjw8Jk1r5yaAKa3Zs3HQgiWy/nH6rQG
+	 mIQZbx18PK5VazXv6QgRoxNq7E79hjWos1ByswqeC7hmLiGCGgtf8z4QLDjuV3VKvV
+	 dbL8l4DMLdfPw==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 29 May 2024 15:20:25 +0300
+Message-Id: <D1M4GRF0RL2W.3QHTBXZWNW9RW@kernel.org>
+To: "Stefan Berger" <stefanb@linux.ibm.com>, "Herbert Xu"
+ <herbert@gondor.apana.org.au>
+Cc: <linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>,
+ <Andreas.Fuchs@infineon.com>, "James Prestwood" <prestwoj@gmail.com>,
+ "David Woodhouse" <dwmw2@infradead.org>, "Eric Biggers"
+ <ebiggers@kernel.org>, "James Bottomley"
+ <James.Bottomley@hansenpartnership.com>, <linux-crypto@vger.kernel.org>,
+ "Lennart Poettering" <lennart@poettering.net>, "David S. Miller"
+ <davem@davemloft.net>, "open list" <linux-kernel@vger.kernel.org>, "Mimi
+ Zohar" <zohar@linux.ibm.com>, "David Howells" <dhowells@redhat.com>, "Paul
+ Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
+ Hallyn" <serge@hallyn.com>, "open list:SECURITY SUBSYSTEM"
+ <linux-security-module@vger.kernel.org>
 Subject: Re: [PATCH v7 2/5] KEYS: trusted: Change -EINVAL to -E2BIG
-To: Jarkko Sakkinen <jarkko@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Cc: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        Andreas.Fuchs@infineon.com, James Prestwood <prestwoj@gmail.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Eric Biggers <ebiggers@kernel.org>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        linux-crypto@vger.kernel.org,
-        Lennart Poettering <lennart@poettering.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        open list <linux-kernel@vger.kernel.org>,
-        Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>,
-        Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        "open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+X-Mailer: aerc 0.17.0
 References: <20240528210823.28798-1-jarkko@kernel.org>
  <20240528210823.28798-3-jarkko@kernel.org>
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20240528210823.28798-3-jarkko@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: PQ-J8mJnvVf2cN96SS9-nuPuwfKldJRy
-X-Proofpoint-ORIG-GUID: _qkRw_-n6ewNKIshDIJmVzW32UTOKZno
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-28_14,2024-05-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- priorityscore=1501 mlxscore=0 adultscore=0 spamscore=0 impostorscore=0
- clxscore=1011 lowpriorityscore=0 bulkscore=0 suspectscore=0
- mlxlogscore=794 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2405010000 definitions=main-2405290010
+ <14d0baf4-fa41-4a08-925d-90f028117352@linux.ibm.com>
+In-Reply-To: <14d0baf4-fa41-4a08-925d-90f028117352@linux.ibm.com>
 
+On Wed May 29, 2024 at 4:50 AM EEST, Stefan Berger wrote:
+>
+>
+> On 5/28/24 17:08, Jarkko Sakkinen wrote:
+> > Report -E2BIG instead of -EINVAL when too large size for the key blob i=
+s
+> > requested.
+> >=20
+> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+>
+> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 
+Thank you.
 
-On 5/28/24 17:08, Jarkko Sakkinen wrote:
-> Report -E2BIG instead of -EINVAL when too large size for the key blob is
-> requested.
-> 
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Hmm... I'd like to add even:
 
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+Cc: stable@vger.kernel.org # v5.13+
+Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format fo=
+r the blobs")
 
-> ---
->   security/keys/trusted-keys/trusted_tpm2.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
-> index 8b7dd73d94c1..06c8fa7b21ae 100644
-> --- a/security/keys/trusted-keys/trusted_tpm2.c
-> +++ b/security/keys/trusted-keys/trusted_tpm2.c
-> @@ -122,7 +122,7 @@ static int tpm2_key_decode(struct trusted_key_payload *payload,
->   		return ret;
->   
->   	if (ctx.priv_len + ctx.pub_len > MAX_BLOB_SIZE)
-> -		return -EINVAL;
-> +		return -E2BIG;
->   
->   	blob = kmalloc(ctx.priv_len + ctx.pub_len + 4, GFP_KERNEL);
->   	if (!blob)
+It turned out to be useful error message and would be useful also for
+stable kernels. So if no decent counter-arguments, I'll just pick it
+to my master branch.
+
+BR, Jarkko
 
