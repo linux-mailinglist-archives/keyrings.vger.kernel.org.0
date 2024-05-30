@@ -1,123 +1,94 @@
-Return-Path: <keyrings+bounces-1521-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1522-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C661F8D42A3
-	for <lists+keyrings@lfdr.de>; Thu, 30 May 2024 03:02:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5686C8D44AD
+	for <lists+keyrings@lfdr.de>; Thu, 30 May 2024 07:08:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68B091F21F90
-	for <lists+keyrings@lfdr.de>; Thu, 30 May 2024 01:02:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADD78284E31
+	for <lists+keyrings@lfdr.de>; Thu, 30 May 2024 05:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB2CD520;
-	Thu, 30 May 2024 01:02:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C008714389C;
+	Thu, 30 May 2024 05:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="UvSQLrq0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Glcw5yIo"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E628128FA;
-	Thu, 30 May 2024 01:02:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC632BD0F;
+	Thu, 30 May 2024 05:08:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717030943; cv=none; b=V9OJi21rx9EeAui4akXUxDIKTbiOFtSxpbzcr4lukoa6wKwPkS9cNC/Or1qGpONNXPs+DUtrc7IuDqAfOYB3UXhH5hpt0nm2FEy79KpXmiMWhzp7lAcL9+ihVFmHvjV2omMJYJ1n777IvZVKtzI242LDgVoG9bUkBBMt7Q0eaB8=
+	t=1717045708; cv=none; b=L3VOd8EoXIop0T6bkpL/mNtkcNhj9937DSE6/zTJFgaHUrpfUWcGxRvTnRxY6dN5S0TDt0DnwcrXbMxO8Zya1gIOuHN/faRygsNyHsLQDNVw+DiD4WxXo3ME5kWmS4l1flkXy6kIrL8whSH/ev0Tuzh/wsgkOY1S9U8U+XUip9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717030943; c=relaxed/simple;
-	bh=B8P4cw0Ri7T3pjh0FXJ7HxJGptxOJd5wZrnUVn9xPII=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=Gpi3zn2UC2Msg5Yrqjbs/7nTJIVseO0tQEUpldhB3PLufe2JVDg2YLYJSA+ifoXurx+Sw4JIG5KsFqvZKNPAVbFkCl5qBz5iedfp+F31CohZgJHw6vR6uaZcrS2CsKirN0TOzwbgn2f9hgyV6w6GzrACXYDHRKdcSikHwEA10fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=UvSQLrq0; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44TJ0aji006748;
-	Thu, 30 May 2024 01:02:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=SqQCY9K/42kZL4O4lFD+1J
-	zxmmzC9e7N8NRzPD0Ux6o=; b=UvSQLrq0HdfS+EnO/YSEptx3attwCTJno1NNw8
-	G8vcTj5xGy+j/R8y8qkV5leKmnU1IzEeD2qTmoThMlKQlkWopCW7ls6wyUTc9Q0Q
-	nRai1zmGGa0pOHezOw+aax4JSGup5Y5Gr9YKtY7jbQEPm/ffCouayBHEyZ3CkzBT
-	pJYL6QjbSgbuloIrRPt3CaEOCrrrt+V+O40XF5DCVLclS9Sk4IwBkMDJd0pBrpp8
-	58M3h6ozMeaY9c1oh65aZDZEYwiw5yyj29cdnLCFx8Ja9Xful9f3Mr9yNRa+tQNe
-	W4s6wflw6AHw2lcsxjajHsyig9vzsBK5AsmHSigR/WHueZsA==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ybadxasap-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 May 2024 01:02:04 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 44U123t6004114
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 May 2024 01:02:03 GMT
-Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 29 May
- 2024 18:02:02 -0700
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Date: Wed, 29 May 2024 18:02:01 -0700
-Subject: [PATCH] KEYS: trusted: add MODULE_DESCRIPTION()
+	s=arc-20240116; t=1717045708; c=relaxed/simple;
+	bh=gBDuLudmfbZqPlaV0ny+HEdAMRPxPbpiX0rPhaTiNrA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=Zhew+zYfi/WuJqTcFJMO8WNvlC4kul4o+47VtZkaa/Sa0j6lDVEZN21dWPFU+zjlVycA/mXCLnf5sMYgawTiv4VfsBYYBNipOS0WZUWVqaLrNLtXjK8hkuTnTGHkJ6WavwAElOk4E3IhCu7+dGHgi9OusqquYjfSUDn9qIfCPpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Glcw5yIo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3789C2BBFC;
+	Thu, 30 May 2024 05:08:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717045708;
+	bh=gBDuLudmfbZqPlaV0ny+HEdAMRPxPbpiX0rPhaTiNrA=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=Glcw5yIo6MMcWYrzrdTrjkd414NngIclvaDqVWtkot9kMBN4WOCe2Srlm6IUPHuDO
+	 IZLaij8L3CPCUye/e1nYu5RfUx+g7BD8SmGuxJmP8tMjrp/2yrT8xRZJoHLeJ/OadO
+	 OLuYAgFj+GkDjZwDjt+jaPfGBs1iyI6A+yDFDFakdxigEtwXggfhoE2GdXkJn8ZgFB
+	 LxifjrHRZ78ck0v+t5Q5eUbcdS9EsIsw2kbn6EWwWoohyNphIR8yT7m44mNjO3o+iB
+	 Exf68EdfLJrE/Ozy9cKlPPsZ5sV9/zrKfQKOEemzfY43heMMaXUBvLpOA2uXzYNz2I
+	 KnWgBlkqOqVFg==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240529-md-trusted-v1-1-56c9a0ae8e28@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAAjQV2YC/x3MQQrCQAxA0auUrA3UoAPjVcTFtEltwI6StKVQe
- nejy7f4fwcXU3G4NTuYrOr6roHzqYF+LPUpqBwGaunSXinjxDjb4rMwJkkDU6KcC0MEH5NBt//
- s/gh3xQU7K7Uff4uX1mXDqURrcBxfy/A7k3sAAAA=
-To: James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Jarkko Sakkinen
-	<jarkko@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
-        David Howells
-	<dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>,
-        James Morris
-	<jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>
-CC: <linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>,
-        <linux-security-module@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-X-Mailer: b4 0.13.0
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: y6llrNSiIkMm6FuLwUOu4CgG1z4r9vag
-X-Proofpoint-GUID: y6llrNSiIkMm6FuLwUOu4CgG1z4r9vag
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-29_16,2024-05-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 phishscore=0
- impostorscore=0 bulkscore=0 mlxlogscore=834 malwarescore=0
- priorityscore=1501 mlxscore=0 suspectscore=0 spamscore=0
- lowpriorityscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2405170001 definitions=main-2405300006
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 30 May 2024 08:08:22 +0300
+Message-Id: <D1MPWI6C2ZCW.F08I9ILD63L4@kernel.org>
+Cc: <linux-kernel@vger.kernel.org>, <lukas@wunner.de>
+Subject: Re: [PATCH 0/2] ecdsa: Use ecc_digits_from_bytes to simplify code
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Stefan Berger" <stefanb@linux.ibm.com>, <keyrings@vger.kernel.org>,
+ <linux-crypto@vger.kernel.org>, <herbert@gondor.apana.org.au>,
+ <davem@davemloft.net>
+X-Mailer: aerc 0.17.0
+References: <20240529230827.379111-1-stefanb@linux.ibm.com>
+In-Reply-To: <20240529230827.379111-1-stefanb@linux.ibm.com>
 
-Fix the 'make W=1' warning:
-WARNING: modpost: missing MODULE_DESCRIPTION() in security/keys/trusted-keys/trusted.o
+On Thu May 30, 2024 at 2:08 AM EEST, Stefan Berger wrote:
+> Simplify two functions that were using temporary byte arrays for
+> converting too-short input byte arrays to digits. Use ecc_digits_from_byt=
+es
+> since this function can now handle an input byte array that provides
+> less bytes than what a coordinate of a curve requires - the function
+> provides zeros for the missing (leading) bytes.
+>
+> See: c6ab5c915da4 ("crypto: ecc - Prevent ecc_digits_from_bytes from read=
+ing too many bytes")
+>
+> Regards,
+>    Stefan
+>
+> Stefan Berger (2):
+>   crypto: ecdsa - Use ecc_digits_from_bytes to create hash digits array
+>   crypto: ecdsa - Use ecc_digits_from_bytes to convert signature
+>
+>  crypto/ecdsa.c | 29 ++++++-----------------------
+>  1 file changed, 6 insertions(+), 23 deletions(-)
 
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
----
- security/keys/trusted-keys/trusted_core.c | 1 +
- 1 file changed, 1 insertion(+)
+BTW, would it make sense split ecdsa signature encoding to its own patch
+in my next patch set version and name it ecdsa_* style and put it to
+ecdsa.c?
 
-diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
-index 5113aeae5628..f4ab16d59663 100644
---- a/security/keys/trusted-keys/trusted_core.c
-+++ b/security/keys/trusted-keys/trusted_core.c
-@@ -395,4 +395,5 @@ static void __exit cleanup_trusted(void)
- late_initcall(init_trusted);
- module_exit(cleanup_trusted);
- 
-+MODULE_DESCRIPTION("Trusted Key support");
- MODULE_LICENSE("GPL");
+Just asking this because the part should be the same same for any ECDSA
+signature. It must scale also to all NIST variants before my patch set
+can land.
 
----
-base-commit: 4a4be1ad3a6efea16c56615f31117590fd881358
-change-id: 20240529-md-trusted-6e6fd26299ad
-
+BR, Jarkko
 
