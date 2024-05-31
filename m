@@ -1,755 +1,951 @@
-Return-Path: <keyrings+bounces-1539-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1540-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09EF68D573F
-	for <lists+keyrings@lfdr.de>; Fri, 31 May 2024 02:44:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 321AC8D57A0
+	for <lists+keyrings@lfdr.de>; Fri, 31 May 2024 03:11:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5FF6287684
-	for <lists+keyrings@lfdr.de>; Fri, 31 May 2024 00:43:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A93EA1F2478E
+	for <lists+keyrings@lfdr.de>; Fri, 31 May 2024 01:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3482F7483;
-	Fri, 31 May 2024 00:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1682963C7;
+	Fri, 31 May 2024 01:10:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="dQFXSXb9"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E1D6AB6;
-	Fri, 31 May 2024 00:41:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717116116; cv=fail; b=GRooIyGzj4qNqx94OSU1VMNvg0uxQ5THf0Lbv/es7ReASo1Y/ZcaIM1VjpTOJuZdeEjgOOLbUcczYBMlMfbg4gOjy4ZVPHBRSmgHkakaEAdoGj+Stb52u+QXoyVWQ+86vC+Ydy/d0igw7l8MyyigfpEAywdnke88thWjMe9o9fM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717116116; c=relaxed/simple;
-	bh=13OTUR1JrftSdz5wTB2uNsIEZyqLRxhWrLppd0Mkd80=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ClTibDulNljUueFfIGCmiCPKYadSU/kPNReRrzIk3HfubkC0kPN8c9n7Hcr7SDe/Bnct/enTpIiLc4+a7lvUzqx7ZgduXXyrBFWMLSmLDgionqmKFkxHsrcVAauNFdahQZ5VL2gaAKjtuFBCAgKgZoTfS/ea0eX+bgs/6BQ/x3o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44UFdpQj018500;
-	Fri, 31 May 2024 00:40:27 GMT
-DKIM-Signature: =?UTF-8?Q?v=3D1;_a=3Drsa-sha256;_c=3Drelaxed/relaxed;_d=3Doracle.com;_h?=
- =?UTF-8?Q?=3Dcc:content-transfer-encoding:content-type:date:from:in-reply?=
- =?UTF-8?Q?-to:message-id:mime-version:references:subject:to;_s=3Dcorp-202?=
- =?UTF-8?Q?3-11-20;_bh=3D6tVqAtBqVCFaMj0ujhY0KcsI0reA3mIzS4BhuUtBP1E=3D;_b?=
- =?UTF-8?Q?=3DbF381lwTJuR7N54QZNwN5rw5hZJjq1pGOkBrY9Q05S3gxSxRbHRhSthrMueg?=
- =?UTF-8?Q?Y7V8TZds_9haEgEBuQt7jgxPMVa92ZPu7lWW69yF7megzkCpSPuJncBeLnGLX+C?=
- =?UTF-8?Q?hUqGkSEGAaxKbG_vHVFoN82RFSkT4ZhzxZyWIF/96eWoZGX+zETuFT+2bWMvePc?=
- =?UTF-8?Q?rYuhVFvSP2M/pVbgcPeB_U43ZSuPLKH86o0PNwiBkiXOYPDzqZDfW8LgfdxX0bt?=
- =?UTF-8?Q?oULUhBUrBxOU8XVFyhgo5HNIUP_zGJi5N7WG4R3eQMmmAxizAuspseu1dt6V41j?=
- =?UTF-8?Q?BjGuBmI9EvBJWYZGFYOVDnZ+66Exo9te_Wg=3D=3D_?=
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3yb8j8a214-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 31 May 2024 00:40:27 +0000
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 44UMCOER026633;
-	Fri, 31 May 2024 00:40:26 GMT
-Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2168.outbound.protection.outlook.com [104.47.59.168])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3yc5098j24-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 31 May 2024 00:40:25 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DA79pFu2OgpYmo2m6jFUBTUMixEhLbDRu08YV1fcWqfvT/VD8Bs6Hovt/5C8yR0bi7sO0FXNw3TYscdA5cFpA19dtRCdKoVtV4KYCT4la7pFkseBU6+mQNQqqVarwqGZaA3kmEkz71Adg+anTJ9XE3e2ZqTw4trFZNtnru14LTZRlZC9Fu4nYkug0hxr4aWI5znjh+om0ZHElxv3T/hdnEI35WJi07tOeN9aiXWuEtqRb8HPrtLi0Voam8ulVPWFAVxQpgO5Cah629fruLZ4t+T4CfdwdknrVgLy3gG9I7wOFsqHv1M9MLI7qdbtJkyQ+zA8gAWj+0ncfHm/75vH4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6tVqAtBqVCFaMj0ujhY0KcsI0reA3mIzS4BhuUtBP1E=;
- b=VepUCVUt/808xSH4ToX9e4aU5044IgTmDeBX5dT/rLhafVKEaFvMvdywl8SOmCZ9OE1MdlYX0N/MkhiYDY6VoXIgJLLmFqtFqXRAFP4rruq/cPaK/PgEm8LIJxcU9UteFL5te0YmQEWywOOvEQ2zeqBhaRYdpUmoGDBp8Yxo79gDAkqOXI+2/HMl+FXY8Bma90t1ZtDzu7tDcNtSbxG7axBCR6mHMNptaIcoiKpcp2SGj13pLIsiLIdlII++miV0Sru1tO5ORTilCroKF3WYFn++jmXavqKpI6k0L0ITTuE56K+DIuMfprWfKn8DJAkoeFJkpWtkiemNsMfj0vBOqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6tVqAtBqVCFaMj0ujhY0KcsI0reA3mIzS4BhuUtBP1E=;
- b=rwMotToZZFvmKP1o5ZSIujKHxaaNqwF+R1Q/hO/n75vfbD+3IptiUfcR3j/mOKqZhXIPt5ZTZfeTgXDeIOsRwUWPS19E2/wPoUMZjvFhsQKgFtKt9o+w3vAMr2Pz8p2Kt5iCB67PkpJA8+ftrHybEICoYSNjDbwoRToYOsZlMYc=
-Received: from CH2PR10MB4150.namprd10.prod.outlook.com (2603:10b6:610:ac::13)
- by BY5PR10MB4274.namprd10.prod.outlook.com (2603:10b6:a03:206::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.22; Fri, 31 May
- 2024 00:40:23 +0000
-Received: from CH2PR10MB4150.namprd10.prod.outlook.com
- ([fe80::5527:ab55:d1e7:9c9a]) by CH2PR10MB4150.namprd10.prod.outlook.com
- ([fe80::5527:ab55:d1e7:9c9a%4]) with mapi id 15.20.7633.018; Fri, 31 May 2024
- 00:40:23 +0000
-From: Eric Snowberg <eric.snowberg@oracle.com>
-To: linux-security-module@vger.kernel.org
-Cc: dhowells@redhat.com, dwmw2@infradead.org, herbert@gondor.apana.org.au,
-        davem@davemloft.net, ardb@kernel.org, jarkko@kernel.org,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        zohar@linux.ibm.com, roberto.sassu@huawei.com,
-        dmitry.kasatkin@gmail.com, mic@digikod.net, casey@schaufler-ca.com,
-        stefanb@linux.ibm.com, eric.snowberg@oracle.com, ebiggers@kernel.org,
-        rdunlap@infradead.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
-Subject: [RFC PATCH v2 8/8] clavis: Introduce new LSM called clavis
-Date: Thu, 30 May 2024 18:39:45 -0600
-Message-ID: <20240531003945.44594-9-eric.snowberg@oracle.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240531003945.44594-1-eric.snowberg@oracle.com>
-References: <20240531003945.44594-1-eric.snowberg@oracle.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P123CA0109.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:192::6) To CH2PR10MB4150.namprd10.prod.outlook.com
- (2603:10b6:610:ac::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE136613D;
+	Fri, 31 May 2024 01:10:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717117858; cv=none; b=AQyHdHel4LG0PnzSNSQ3r0M8X26T2RZG8kNyOSPfMcbq9Cp5qqw61Su5e6sBHz3/UMML5mVL+PIKc8IDL+5H2la70q3E4rs+piv2/w3i1J58znmnRGLBcXL1MCtBTZmnRUKx8jY83tRXGWjtBGx2k7rMqsPoRP+zMjyyCCSFPw8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717117858; c=relaxed/simple;
+	bh=iwaxhxlxqGfD6wSzA6FLZreS6T0rbksPWmxIRSRD8sY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BPA6O1g34gzgYQnqpjD0AxXepZNomSbQcnbdVUxtCRLUh9HGMxoa0VENiJHqrg5i7hn7VnPnE4xpHIwl31rnCxcmh0oHsQQnYa2G64FRcvQvgp8366zg2jyYllKJX4u4ZaE9/suYj9wtyjSWH6p72BluZHZfMnWFpSCmZp3tP04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=dQFXSXb9; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 44V17OY0015944;
+	Fri, 31 May 2024 01:10:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc :
+ content-transfer-encoding : content-type : date : from : in-reply-to :
+ message-id : mime-version : references : subject : to; s=pp1;
+ bh=TnV+e4ZFPmtzuREVAkwSxlPd5oa3w7qCOfdisPFdO1Y=;
+ b=dQFXSXb9QNt+7FQrVOIxoMVt+3sUqzSlmHL/SlZmJzxJn1iW9dogZT2uXkQ2EekniHjI
+ /KpV/wy161bS3fjM656bRP0rV1h5GPg0QUvagBWgUrSfqW+wSCl1VrXbF/snc3z+g/4n
+ CzgBxyzCFEOHZgTQKM+IJRgluJcZ/k7K+zIluH9tFkO97lzlLgxeS32FzYiO9pACbDsa
+ lUQWNhy0vT/h9onsIpPynpJH5CiF+PfgDm5i4ZIq+Kt+276xNqjMpsEPuE83GJtb9k1i
+ F5Kmd+37/OK7Kx/SF9Ypow/7elAl5KVtsx5Qd0JZJ72tLNvxRxmLMGe8+srAFf+1Qjch Hg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yf4kvg0c7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 31 May 2024 01:10:36 +0000
+Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 44V1AZEV021269;
+	Fri, 31 May 2024 01:10:35 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yf4kvg0c0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 31 May 2024 01:10:35 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 44UM0NUk024727;
+	Fri, 31 May 2024 01:10:34 GMT
+Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3ydphqw1re-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 31 May 2024 01:10:34 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 44V1AWFb58065336
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 31 May 2024 01:10:34 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DD0455805B;
+	Fri, 31 May 2024 01:10:31 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7B7DA58058;
+	Fri, 31 May 2024 01:10:30 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 31 May 2024 01:10:30 +0000 (GMT)
+Message-ID: <8a13796d-1274-4cb0-b5aa-08f366d95ed7@linux.ibm.com>
+Date: Thu, 30 May 2024 21:10:30 -0400
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PR10MB4150:EE_|BY5PR10MB4274:EE_
-X-MS-Office365-Filtering-Correlation-Id: cc87c4e1-a954-4257-50e9-08dc810a4175
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|366007|376005|7416005|1800799015;
-X-Microsoft-Antispam-Message-Info: 
-	=?us-ascii?Q?0eKBoPX4qEBAiVq6TT+4LAMa/IFpxEfEQcVTJzpR9sTTghecQ3AErzwkh3TI?=
- =?us-ascii?Q?8MdqggQSB47RjfYYEvjmNIKWz7v0637VTWOU0mI62dPIdy5JIGET8GyriYTQ?=
- =?us-ascii?Q?rjzF0fJo5/+0SJK+nFysefEWIecvrRYthZsbC8ZrS5JgyLp9USOuY3tx1Wpk?=
- =?us-ascii?Q?mxolMLevKu7ffisYVpneXRlkdOL9KngcU/kcTYJZBBvvjTSAJ6B9eQebYNUz?=
- =?us-ascii?Q?HJ+tAqrttKJfdwzBA33YbyczRgtF7efwawpFLk9xyMQi2SvYK+AJhbisjhyk?=
- =?us-ascii?Q?mv4RleMJPduCId4ORgBt/e2+cDhFr7gbaIOnTHFnMAB6GRcaPp9D6tvKy6d3?=
- =?us-ascii?Q?dFiBD1MnMf2Apm6Wtpxkx/9bg7jkzxQj+ieAZhIqiqO7JfnMSQEfeghzaP/F?=
- =?us-ascii?Q?ER2INEbpXcAdJ2JViuW+78WdP5QN7wCulMEsUP+Sz5uu1HtLRqTKtUAIZ/1h?=
- =?us-ascii?Q?sBViErjzjFhynKXbFEuBeI4JXZEbJtWK3WtcqqO0krnlsLdj2ZVOW0tjRFBM?=
- =?us-ascii?Q?1EsX2awcy5hTEOgLHAUEP7WmXhxJSZpAv57l84CEF2EAPcz0FJ89pME0EClY?=
- =?us-ascii?Q?8DLTxF3qXHz/XJp2OynjmUO3SXpaOjVIY4e63SDztKdeHGe5hEhB7Z239mW3?=
- =?us-ascii?Q?cIutMSYJ4V0BsXS2uBHkvmIZmwjfMBA6exRjeQt6xR9FNHjkZoij6VRXm2sO?=
- =?us-ascii?Q?8PE2AiwzFKBg4MBrqm9pNGyM02CR/c8ybvs3fDnnFtWGgNnJJIqR13ZPHWS4?=
- =?us-ascii?Q?BK+xBqAxt1Afpk2CoIq5Oyby++T1mNRHm7nYs15+GGv/Nfsughm0nzr4oBBs?=
- =?us-ascii?Q?+Ew8zPJg2PJf+ZPPz4mZdQk+/vmCVsJDbauS5xiK1o5VMeNDpZgsMIH7ZNzG?=
- =?us-ascii?Q?pxF+rMipOYL627WMVhB0Ymof/wdeWf7QhRLMXe02mBRn7ZNTovjIH5/0a5EP?=
- =?us-ascii?Q?hSmH1JLZfAJRdtGY3SZVlfkvOtK5t4y2U/LiDYbnNpeKUTGGIF5bsk1XCY5I?=
- =?us-ascii?Q?YOIgL2l/rJC0l095aflflRuQD2c2ueZOtE7Yl+pVW9wenzDN75dkjHvqu6SP?=
- =?us-ascii?Q?S/bSrCsh6PmUyPP9+V45C6UWEm+W9Hh0uy0CmcFhqMsKOL0vzJ5JzusUamJG?=
- =?us-ascii?Q?ZD45vj2SxMGS9yk4jPzKBluSkwVi4XAf71xDWsfdC69sXi0G7PocT60NG4XX?=
- =?us-ascii?Q?Fbb8xx3Gc5KTvcr6/9ImvWMDJzAsn7+/SipTM0N56b1zvdult06QSusbedQw?=
- =?us-ascii?Q?MHqKK+V4sQKmDuGX8temTzMy9QJ18z6rhJbS6p8J3w=3D=3D?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR10MB4150.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(7416005)(1800799015);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?Lyu5279BsBR7QJNq5dyZhkgcLeQfMP4/GwdHk25jBcR9ynBYSB5YoZ5X4sPs?=
- =?us-ascii?Q?YQN5Jzb32Q+W3RbLcJc7Z5qUYsL1kxJPcyAZXeBmEQjC36fyYqCzY8D2B6K2?=
- =?us-ascii?Q?goT8KyXXfhlGZLxAYpIzxkwCDzOj0rj7GD2zWswRiEvhVsNW8dAjqdDCtzya?=
- =?us-ascii?Q?L1Da+JMrC14HPvz1D0Xl4XD9KoQOa4ipFF4XeusDjg+3prho4+KJBWC4mb8L?=
- =?us-ascii?Q?QtufNhISjNtyMhDrRIF2CbIIsNR7G8De6ZoSHuGLINT+abhYXld8ZscY1lfW?=
- =?us-ascii?Q?KzKqtXhgZ2x+4c/9kiyWPZgf2LPSqC0a8dnHVPtN4WkaXVfvP6qm095kVjzp?=
- =?us-ascii?Q?hyDdfo4+GcoYQ2SPVaNBix3GvFxOQWxDJl1SSLUT7qRKQFju0ri3shfbr2cK?=
- =?us-ascii?Q?5ob/Af8ggNSK43B4ICk8MLTjAwIdujaCNh4uvm9InLnGevvVrbOcnf3vW/op?=
- =?us-ascii?Q?4BSyyQ0A06nNVNTA3bQcv8zgbaiFD4pnM1vPW8SSmGjgATNmt6MBGAcWd+gy?=
- =?us-ascii?Q?qL/MSktYb7u4MX27qyrwxkPKKT15+r6FgwgPYWDGy4ygJQZi5+KSDIwZP2+u?=
- =?us-ascii?Q?W5JdUPfoqRKqt87icOG8Czwg7MdFIkAidQE7fdK9VGJTUKP9PaB8G6OeZrs3?=
- =?us-ascii?Q?T5vTnB4BS66G2Zet5Moa6dUiytR0BMNUKns2jwLunmIZct1CvVbh9Yj7KF2W?=
- =?us-ascii?Q?LxYZJGHFZ70g12sb+/1UvihCmMbxrVNWBmxeLXhEX/YfmCbTjyZe0JaTzPIa?=
- =?us-ascii?Q?HijDP4XpL8x6g3lSYtMijYUpJI2mW8oIdgHepdTFxAZWx+jsomwPPqNh6z0q?=
- =?us-ascii?Q?2WyO8XFWUJ34Zf2CaYRQdV6joo0n3jhbKKS2v2PwT3ZUolbi6L1emOb/tJt2?=
- =?us-ascii?Q?fE0N+gP6u8mGRCzfo3ZOo2WTflXlrGdjER/5tfFWTOQAb5bkhpk05tiIBm3W?=
- =?us-ascii?Q?b49fjTQnTbdIO1m5DAj5N3wrvLCxfzsl48Xglm13oPoda1A5j0tylnSzObKT?=
- =?us-ascii?Q?XQNczE9Qz80HteHiAOsZLdn4V+c1Gi2dXQw46pcTsZDOoZf5yeaVThGI1B42?=
- =?us-ascii?Q?wb2nJV8AKY4YVFZGwxXwaN7nrhWdTgmgl3LmDgsrwX33mAYty57UD0+V0MAx?=
- =?us-ascii?Q?UM7QKnFn2AC6w+82HeprE009lvrKISRxl3AN9R2tz6xTsiYe8N+Eg/xIYbRn?=
- =?us-ascii?Q?tGvFxMyWAaZZaQN55VHKBW1e/6KCt7HNqTfJ9LwKqng877mMVyy6Va6AySpJ?=
- =?us-ascii?Q?G6sQDgMrcz+N/JmXuylo1BDM9uFbNuv9RREvb/AjPFeYatWXReYAVtUjmT49?=
- =?us-ascii?Q?jIQdZPA2VoubLkffRICJpFi0KkE19kPhT44LP6M0tGJZCwrqswewd4eOvIqt?=
- =?us-ascii?Q?2x7fYJR0OZ/NjSa8C+7k/DPxCEjx1+F4AIcaXctD89wvuDhldAw0fqyQbUM2?=
- =?us-ascii?Q?eoFdY5FlPdEvLoVCIjtlipCx+1MlvekXydCvxuY8xvK6CJykZc5vuJXL/6oP?=
- =?us-ascii?Q?3bIfjjiyCtboF/z0sF2eMP68ib4bg4oUrbDs98W+t25DP4S48ptN5yP/DWh4?=
- =?us-ascii?Q?EuF2ebqG3Ql5MBIaH/JWzRcYZnAOqGKr7kYfjsET6spvCMETlN8VwZhgb1xb?=
- =?us-ascii?Q?qg=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	pEscxjtV8TimaJamTzAViwalNTjiS1z4VWu4R2Ra42oAxE+LolW/UNQfBlVV/yLWEUwH0zLtr1Hs7vytzBcc+qXbFHGve6WrkK1mIcntLHpacszErmSSXMJAnKkYRflEtf+jyaKolS56xvUXrZdITtCL9gqxNH7pWn3xYXeARCnjJhMVm+NJV/97bOTdJvYK3PkNg5xOXnadBr5bh3WizH1oZNyUR2OTIFvCnZ8FW63v933MIblFH6O/lVufd3Dtq9T/lltRD/oYrABDotUWSDwbkS9IbzUq5htzknkNmu1BpZtEhmoStFq4BjlZtNhdfJFN7xZWOHz3y2EX3zhBwYA+zjXA7nkT7NIdbDKfzluUn4It47VsnuYIAaAJy7kXZ9GabVRAcLc+WUsbyiapLAbNmSwM0D7AHtsSV2/VnwJSgs8NhhPEOSfvkrb1HiivMdAaqXopvOkTFYygT19NWnTkGgRws2kjvhrH/60aos/NIMmmE8H3dCICfnB00J3tUaa2vDIQyhXva/dpG+LYW40f6y2RHlFon+iKFcCm5zpAlnr/zvLeLUlsk9btDFNLyu/mlElVveOx9S575jByzM7gwQ3vDCBHc4q2OIYqyWM=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cc87c4e1-a954-4257-50e9-08dc810a4175
-X-MS-Exchange-CrossTenant-AuthSource: CH2PR10MB4150.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2024 00:40:23.0875
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fHhwoRvvpERLFS+JKySIyuqGAGidERpWcHljWO6Fr7f2MislN2ONv1hdQZGkZuBE8HCDEzo85WH+svP6h3kJECttKHTkYY5GG9QrsUvStgA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR10MB4274
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 4/5] keys: asymmetric: Add tpm2_key_rsa
+To: Jarkko Sakkinen <jarkko@kernel.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+Cc: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+        Andreas.Fuchs@infineon.com, James Prestwood <prestwoj@gmail.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Eric Biggers <ebiggers@kernel.org>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        linux-crypto@vger.kernel.org,
+        Lennart Poettering <lennart@poettering.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        open list <linux-kernel@vger.kernel.org>,
+        David Howells
+ <dhowells@redhat.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>
+References: <20240528210823.28798-1-jarkko@kernel.org>
+ <20240528210823.28798-5-jarkko@kernel.org>
+Content-Language: en-US
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20240528210823.28798-5-jarkko@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: AWIJCOUi_fbz_DUA8DzXnqQtNUXkXBGr
+X-Proofpoint-GUID: t29yPC5usei1svXjg3mO__L7dh6B3hKd
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
  definitions=2024-05-30_21,2024-05-30_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 mlxscore=0 adultscore=0
- suspectscore=0 malwarescore=0 phishscore=0 bulkscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2405010000
- definitions=main-2405310002
-X-Proofpoint-ORIG-GUID: 1Qx6XI1MA_-Q0I-Nfp1LAHeCOVytpgqf
-X-Proofpoint-GUID: 1Qx6XI1MA_-Q0I-Nfp1LAHeCOVytpgqf
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
+ mlxlogscore=999 mlxscore=0 priorityscore=1501 bulkscore=0 clxscore=1015
+ lowpriorityscore=0 adultscore=0 phishscore=0 suspectscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2405010000 definitions=main-2405310007
 
-Introduce a new LSM called clavis.  The motivation behind this LSM is to
-provide access control for system keys.  The access control list is
-contained within a keyring call .clavis.  During boot if the clavis= boot
-arg is supplied with a key id contained within any of the current system
-keyrings (builtin, secondary, machine, or platform) it shall be used as
-the root of trust for validating anything that is added to the ACL list.
 
-The first restriction introduced with this LSM is the ability to enforce
-key usage.  The kernel already has a notion of tracking key usage.  This
-LSM adds the ability to enforce this usage based on the system owners
-configuration.
 
-Each system key may have one or more uses defined within the ACL list.
-When this LSM is enabled, only the builtin keys are available for loading
-kernel modules and doing a kexec.  Until an entry is added to the .clavis
-keyring, no other system key may be used for any other purpose.
+On 5/28/24 17:08, Jarkko Sakkinen wrote:
+> * Asymmetric TPM2 RSA key with signing and verification.
+> * Encryption and decryption when pcks1 encoding is used.
+> * Enabled with CONFIG_ASYMMETRIC_TPM2_KEY_ECDSA_SUBTYPE.
 
-In the future it is envisioned this LSM could be enhanced to provide
-access control for UEFI Secure Boot Advanced Targeting (SBAT).  Using
-the same clavis= boot param and storing the additional contents within
-the new Runtime Services UEFI var, SBAT restrictions could be maintained
-across kexec.
+s/ECDSA/RSA !
 
-Signed-off-by: Eric Snowberg <eric.snowberg@oracle.com>
----
- Documentation/admin-guide/LSM/clavis.rst | 198 +++++++++++++++++++++++
- MAINTAINERS                              |   7 +
- crypto/asymmetric_keys/signature.c       |   4 +
- include/linux/lsm_hook_defs.h            |   2 +
- include/linux/security.h                 |   7 +
- include/uapi/linux/lsm.h                 |   1 +
- security/Kconfig                         |  10 +-
- security/clavis/Makefile                 |   1 +
- security/clavis/clavis.c                 |  25 +++
- security/clavis/clavis.h                 |   4 +
- security/clavis/clavis_keyring.c         |  83 ++++++++++
- security/security.c                      |  16 +-
- 12 files changed, 352 insertions(+), 6 deletions(-)
- create mode 100644 Documentation/admin-guide/LSM/clavis.rst
- create mode 100644 security/clavis/clavis.c
+> 
+> Signed-off-by: James Prestwood <prestwoj@gmail.com>
+> Co-developed-by: Jarkko Sakkinen <jarkko@kernel.org>
+> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> ---
+> v6:
+> * Validate RSA parameters, and also that the blob has space for
+>    them.
+> * Fix tpm2_key_rsa_destroy() memory corruption: cast to tpm2_key_rsa
+> * Allocate temporary buffers from heap.
+> * Rename tpm2_key_rsa_extract_pub to tpm2_key_rsa_probe.
+> * While pre-parsing, return -EBADMSG when the probing fails. This
+>    translates to "not detected" for the framework, i.e. should not
+>    be considered as an error but instead "move on". E.g. TPM_ALG_RSA
+>    is checked and if it is instead TPM_ALG_ECDSA, then it is passed
+>    to that module.
+> v5:
+> * akcipher has two *undocumented* parameters. Document this clearly.
+> * Remove unused variable.
+> v4:
+> * Just put the values to the buffer instead of encoding them.
+> * Adjust buffer sizes.
+> * Make tpm2_rsa_key_encode() not to allocate from heap and simplify
+>    the serialization.
+> v3:
+> * Drop the special case for null handle i.e. do not define policy.
+> * Remove extra empty line.
+> v2:
+> * Remove two spurios pr_info() messsages that I forgot to remove.
+> * Clean up padding functions and add additional checks for length
+>    also in tpm2_unpad_pcks1().
+> * Add the missing success check kzalloc() in tpm2_key_rsa_decrypt().
+> * Check that params->out_len for capacity before copying the result.
+> ---
+>   crypto/asymmetric_keys/Kconfig        |  15 +
+>   crypto/asymmetric_keys/Makefile       |   1 +
+>   crypto/asymmetric_keys/tpm2_key_rsa.c | 678 ++++++++++++++++++++++++++
+>   include/linux/tpm.h                   |   2 +
+>   4 files changed, 696 insertions(+)
+>   create mode 100644 crypto/asymmetric_keys/tpm2_key_rsa.c
+> 
+> diff --git a/crypto/asymmetric_keys/Kconfig b/crypto/asymmetric_keys/Kconfig
+> index e1345b8f39f1..9d88c1190621 100644
+> --- a/crypto/asymmetric_keys/Kconfig
+> +++ b/crypto/asymmetric_keys/Kconfig
+> @@ -15,6 +15,7 @@ config ASYMMETRIC_PUBLIC_KEY_SUBTYPE
+>   	select MPILIB
+>   	select CRYPTO_HASH_INFO
+>   	select CRYPTO_AKCIPHER
+> +	select CRYPTO_RSA
+>   	select CRYPTO_SIG
+>   	select CRYPTO_HASH
+>   	help
+> @@ -23,6 +24,20 @@ config ASYMMETRIC_PUBLIC_KEY_SUBTYPE
+>   	  appropriate hash algorithms (such as SHA-1) must be available.
+>   	  ENOPKG will be reported if the requisite algorithm is unavailable.
+>   
+> +config ASYMMETRIC_TPM2_KEY_RSA_SUBTYPE
+> +	tristate "Asymmetric TPM2 RSA crypto algorithm subtype"
+> +	depends on TCG_TPM
+> +	select CRYPTO_RSA
+> +	select CRYPTO_SHA256
+> +	select CRYPTO_HASH_INFO
+> +	select CRYPTO_TPM2_KEY
+> +	select ASN1
+> +	help
+> +	  This option provides support for asymmetric TPM2 key type handling.
+> +	  If signature generation and/or verification are to be used,
+> +	  appropriate hash algorithms (such as SHA-256) must be available.
+> +	  ENOPKG will be reported if the requisite algorithm is unavailable.
+> +
 
-diff --git a/Documentation/admin-guide/LSM/clavis.rst b/Documentation/admin-guide/LSM/clavis.rst
-new file mode 100644
-index 000000000000..d1641e3ef38b
---- /dev/null
-+++ b/Documentation/admin-guide/LSM/clavis.rst
-@@ -0,0 +1,198 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+======
-+Clavis
-+======
-+
-+Clavis is a Linux Security Module that provides mandatory access control to
-+system kernel keys (i.e. builtin, secondary, machine and platform). These
-+restrictions will prohibit keys from being used for validation. Upon boot, the
-+Clavis LSM is provided a key id as a boot param.  This single key is then
-+used as the root of trust for any access control modifications made going
-+forward. Access control updates must be signed and validated by this key.
-+
-+Clavis has its own keyring.  All ACL updates are applied through this keyring.
-+The update must be signed by the single root of trust key.
-+
-+When enabled, all system keys are prohibited from being used until an ACL is
-+added for them. There is two exceptions to this rule, builtin keys may be used
-+to validate both signed kernels and modules.
-+
-+Adding system kernel keys can only be performed by the machine owner; this
-+could be through the Machine Owner Key (MOK) or the UEFI Secure Boot DB. It
-+is possible the machine owner and system administrator may be different
-+people. The system administrator will not be able to make ACL updates without
-+them being signed by the machine owner.
-+
-+On UEFI platforms, the root of trust key shall survive a kexec. Trying to
-+defeat or change it from the command line is not allowed.  The original boot
-+param is stored in UEFI and will always be referenced following a kexec.
-+
-+The Clavis LSM contains a system keyring call .clavis.  It contains a single
-+asymmetric key that is use to validate anything added to it.  This key can only
-+be added during boot and must be a preexisting system kernel key.  If the
-+``clavis=`` boot param is not used, the keyring does not exist and the feature
-+can not be used until the next reboot.
-+
-+The only user space components are OpenSSL and the keyctl utility. A new
-+key type call ``clavis_key_acl`` is used for ACL updates. Any number of signed
-+``clavis_key_acl`` entries may be added to the .clavis keyring. The
-+``clavis_key_acl`` contains the subject key identifier along with the allowed
-+usage type for
-+the key.
-+
-+The format is as follows:
-+
-+.. code-block:: console
-+
-+  XX:YYYYYYYYYYY
-+
-+  XX - Single byte of the key type
-+	VERIFYING_MODULE_SIGNATURE            00
-+	VERIFYING_FIRMWARE_SIGNATURE          01
-+	VERIFYING_KEXEC_PE_SIGNATURE          02
-+	VERIFYING_KEY_SIGNATURE               03
-+	VERIFYING_KEY_SELF_SIGNATURE          04
-+	VERIFYING_UNSPECIFIED_SIGNATURE       05
-+  :  - ASCII colon
-+  YY - Even number of hexadecimal characters representing the key id
-+
-+The ``clavis_key_acl`` must be S/MIME signed by the sole asymmetric key contained
-+within the .clavis keyring.
-+
-+In the future if new features are added, new key types could be created.
-+
-+Usage Examples
-+==============
-+
-+How to create a signing key:
-+----------------------------
-+
-+.. code-block:: bash
-+
-+  cat <<EOF > clavis-lsm.genkey
-+  [ req ]
-+  default_bits = 4096
-+  distinguished_name = req_distinguished_name
-+  prompt = no
-+  string_mask = utf8only
-+  x509_extensions = v3_ca
-+  [ req_distinguished_name ]
-+  O = TEST
-+  CN = Clavis LSM key
-+  emailAddress = user@example.com
-+  [ v3_ca ]
-+  basicConstraints=CA:TRUE
-+  subjectKeyIdentifier=hash
-+  authorityKeyIdentifier=keyid:always,issuer
-+  keyUsage=digitalSignature
-+  EOF
-+
-+  openssl req -new -x509 -utf8 -sha256 -days 3650 -batch \
-+        -config clavis-lsm.genkey -outform DER \
-+        -out clavis-lsm.x509 -keyout clavis-lsm.priv
-+
-+How to get the Subject Key Identifier
-+-------------------------------------
-+
-+.. code-block:: bash
-+
-+  openssl x509 -in ./clavis-lsm.x509 -inform der \
-+        -ext subjectKeyIdentifier  -nocert \
-+        | tail -n +2 | cut -f2 -d '='| tr -d ':'
-+  4a00ab9f35c9dc3aed7c225d22bafcbd9285e1e8
-+
-+How to enroll the signing key into the MOK
-+------------------------------------------
-+
-+The key must now be added to the machine or platform keyrings.  This
-+indicates the key was added by the system owner. To add to the machine
-+keyring on x86 do:
-+
-+.. code-block:: bash
-+
-+  mokutil --import ./clavis-lsm.x509
-+
-+and then reboot and enroll the key through the MokManager.
-+
-+How to enable the Clavis LSM
-+----------------------------
-+
-+Add the key id to the ``clavis=`` boot param.  With the example above the
-+key id is the subject key identifier: 4a00ab9f35c9dc3aed7c225d22bafcbd9285e1e8
-+
-+Add the following boot param:
-+
-+.. code-block:: console
-+
-+  clavis=4a00ab9f35c9dc3aed7c225d22bafcbd9285e1e8
-+
-+After booting there will be a single key contained in the .clavis keyring:
-+
-+.. code-block:: bash
-+
-+  keyctl show %:.clavis
-+  Keyring
-+    254954913 ----swrv      0     0  keyring: .clavis
-+    301905375 ---lswrv      0     0   \_ asymmetric: TEST: Clavis LSM key: 4a00ab9f35c9dc3aed7c225d22bafcbd9285e1e8
-+
-+The original ``clavis=`` boot param will persist across any kexec. Changing it or
-+removing it has no effect.
-+
-+
-+How to sign an entry to be added to the .clavis keyring:
-+--------------------------------------------------------
-+
-+In this example we have 3 keys in the machine keyring.  Our Clavis LSM key, a
-+key we want to use for kernel verification and a key we want to use for module
-+verification.
-+
-+.. code-block:: bash
-+
-+  keyctl show %:.machine
-+  Keyring
-+    999488265 ---lswrv      0     0  keyring: .machine
-+    912608009 ---lswrv      0     0   \_ asymmetric: TEST: Module Key: 17eb8c5bf766364be094c577625213700add9471
-+    646229664 ---lswrv      0     0   \_ asymmetric: TEST: Kernel Key: b360d113c848ace3f1e6a80060b43d1206f0487d
-+   1073737099 ---lswrv      0     0   \_ asymmetric: TEST: Clavis LSM key: 4a00ab9f35c9dc3aed7c225d22bafcbd9285e1e8
-+
-+To update the .clavis kerying ACL list.  First create a file containing the
-+key usage type followed by a colon and the key id that we want to allow to
-+validate that usage.  In the first example we are saying key
-+17eb8c5bf766364be094c577625213700add9471 is allowed to validate kernel modules.
-+In the second example we are saying key b360d113c848ace3f1e6a80060b43d1206f0487d
-+is allowed to validate signed kernels.
-+
-+.. code-block:: bash
-+
-+  echo "00:17eb8c5bf766364be094c577625213700add9471" > module-acl.txt
-+  echo "02:b360d113c848ace3f1e6a80060b43d1206f0487d" > kernel-acl.txt
-+
-+Now both these files must be signed by the key contained in the .clavis keyring:
-+
-+.. code-block:: bash
-+
-+  openssl smime -sign -signer clavis-lsm.x509 -inkey clavis-lsm.priv -in module-acl.txt \
-+        -out module-acl.pkcs7 -binary -outform DER -nodetach -noattr
-+
-+  openssl smime -sign -signer clavis-lsm.x509 -inkey clavis-lsm.priv -in kernel-acl.txt \
-+        -out kernel-acl.pkcs7 -binary -outform DER -nodetach -noattr
-+
-+Afterwards the ACL list in the clavis keyring can be updated:
-+
-+.. code-block:: bash
-+
-+  keyctl padd clavis_key_acl "" %:.clavis < module-acl.pkcs7
-+  keyctl padd clavis_key_acl "" %:.clavis < kernel-acl.pkcs7
-+
-+  keyctl show %:.clavis
-+
-+  Keyring
-+    254954913 ----swrv      0     0  keyring: .clavis
-+    301905375 ---lswrv      0     0   \_ asymmetric: TEST: Clavis LSM key: 4a00ab9f35c9dc3aed7c225d22bafcbd9285e1e8
-+   1013065475 --alswrv      0     0   \_ clavis_key_acl: 02:b360d113c848ace3f1e6a80060b43d1206f0487d
-+    445581284 --alswrv      0     0   \_ clavis_key_acl: 00:17eb8c5bf766364be094c577625213700add9471
-+
-+Now the 17eb8c5bf766364be094c577625213700add9471 key can be used for
-+validating kernel modules and the b360d113c848ace3f1e6a80060b43d1206f0487d
-+key can be used to validate signed kernels.
-diff --git a/MAINTAINERS b/MAINTAINERS
-index d6c90161c7bf..edf28dee71f2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -5326,6 +5326,13 @@ F:	scripts/Makefile.clang
- F:	scripts/clang-tools/
- K:	\b(?i:clang|llvm)\b
- 
-+CLAVIS LINUX SECURITY MODULE
-+M:	Eric Snowberg <eric.snowberg@oracle.com>
-+L:	linux-security-module@vger.kernel.org
-+S:	Maintained
-+F:	Documentation/admin-guide/LSM/clavis.rst
-+F:	security/clavis
-+
- CLK API
- M:	Russell King <linux@armlinux.org.uk>
- L:	linux-clk@vger.kernel.org
-diff --git a/crypto/asymmetric_keys/signature.c b/crypto/asymmetric_keys/signature.c
-index 2deff81f8af5..7e3a78650a93 100644
---- a/crypto/asymmetric_keys/signature.c
-+++ b/crypto/asymmetric_keys/signature.c
-@@ -13,6 +13,7 @@
- #include <linux/err.h>
- #include <linux/slab.h>
- #include <linux/keyctl.h>
-+#include <linux/security.h>
- #include <crypto/public_key.h>
- #include <keys/user-type.h>
- #include "asymmetric_keys.h"
-@@ -153,6 +154,9 @@ int verify_signature(const struct key *key,
- 
- 	ret = subtype->verify_signature(key, sig);
- 
-+	if (!ret)
-+		ret = security_key_verify_signature(key, sig);
-+
- 	pr_devel("<==%s() = %d\n", __func__, ret);
- 	return ret;
- }
-diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-index f804b76cde44..6534af90d8db 100644
---- a/include/linux/lsm_hook_defs.h
-+++ b/include/linux/lsm_hook_defs.h
-@@ -409,6 +409,8 @@ LSM_HOOK(int, 0, key_getsecurity, struct key *key, char **buffer)
- LSM_HOOK(void, LSM_RET_VOID, key_post_create_or_update, struct key *keyring,
- 	 struct key *key, const void *payload, size_t payload_len,
- 	 unsigned long flags, bool create)
-+LSM_HOOK(int, 0, key_verify_signature, const struct key *key,
-+	 const struct public_key_signature *sig)
- #endif /* CONFIG_KEYS */
- 
- #ifdef CONFIG_AUDIT
-diff --git a/include/linux/security.h b/include/linux/security.h
-index 21cf70346b33..c5474e9260e0 100644
---- a/include/linux/security.h
-+++ b/include/linux/security.h
-@@ -63,6 +63,7 @@ enum fs_value_type;
- struct watch;
- struct watch_notification;
- struct lsm_ctx;
-+struct public_key_signature;
- 
- /* Default (no) options for the capable function */
- #define CAP_OPT_NONE 0x0
-@@ -2009,6 +2010,7 @@ void security_key_post_create_or_update(struct key *keyring, struct key *key,
- 					const void *payload, size_t payload_len,
- 					unsigned long flags, bool create);
- 
-+int security_key_verify_signature(const struct key *key, const struct public_key_signature *sig);
- #else
- 
- static inline int security_key_alloc(struct key *key,
-@@ -2043,6 +2045,11 @@ static inline void security_key_post_create_or_update(struct key *keyring,
- 						      bool create)
- { }
- 
-+static inline int security_key_verify_signature(const struct key *key,
-+						const struct public_key_signature *sig)
-+{
-+	return 0;
-+}
- #endif
- #endif /* CONFIG_KEYS */
- 
-diff --git a/include/uapi/linux/lsm.h b/include/uapi/linux/lsm.h
-index 33d8c9f4aa6b..3a60c4ff5186 100644
---- a/include/uapi/linux/lsm.h
-+++ b/include/uapi/linux/lsm.h
-@@ -64,6 +64,7 @@ struct lsm_ctx {
- #define LSM_ID_LANDLOCK		110
- #define LSM_ID_IMA		111
- #define LSM_ID_EVM		112
-+#define LSM_ID_CLAVIS		113
- 
- /*
-  * LSM_ATTR_XXX definitions identify different LSM attributes
-diff --git a/security/Kconfig b/security/Kconfig
-index b9ad8e580b96..7df8b2a4941f 100644
---- a/security/Kconfig
-+++ b/security/Kconfig
-@@ -232,11 +232,11 @@ endchoice
- 
- config LSM
- 	string "Ordered list of enabled LSMs"
--	default "landlock,lockdown,yama,loadpin,safesetid,smack,selinux,tomoyo,apparmor,bpf" if DEFAULT_SECURITY_SMACK
--	default "landlock,lockdown,yama,loadpin,safesetid,apparmor,selinux,smack,tomoyo,bpf" if DEFAULT_SECURITY_APPARMOR
--	default "landlock,lockdown,yama,loadpin,safesetid,tomoyo,bpf" if DEFAULT_SECURITY_TOMOYO
--	default "landlock,lockdown,yama,loadpin,safesetid,bpf" if DEFAULT_SECURITY_DAC
--	default "landlock,lockdown,yama,loadpin,safesetid,selinux,smack,tomoyo,apparmor,bpf"
-+	default "clavis,landlock,lockdown,yama,loadpin,safesetid,smack,selinux,tomoyo,apparmor,bpf" if DEFAULT_SECURITY_SMACK
-+	default "clavis,landlock,lockdown,yama,loadpin,safesetid,apparmor,selinux,smack,tomoyo,bpf" if DEFAULT_SECURITY_APPARMOR
-+	default "clavis,landlock,lockdown,yama,loadpin,safesetid,tomoyo,bpf" if DEFAULT_SECURITY_TOMOYO
-+	default "clavis,landlock,lockdown,yama,loadpin,safesetid,bpf" if DEFAULT_SECURITY_DAC
-+	default "clavis,landlock,lockdown,yama,loadpin,safesetid,selinux,smack,tomoyo,apparmor,bpf"
- 	help
- 	  A comma-separated list of LSMs, in initialization order.
- 	  Any LSMs left off this list, except for those with order
-diff --git a/security/clavis/Makefile b/security/clavis/Makefile
-index 2b2b3bc8eef4..441c70c6b78a 100644
---- a/security/clavis/Makefile
-+++ b/security/clavis/Makefile
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- obj-$(CONFIG_SECURITY_CLAVIS) += clavis_keyring.o
-+obj-$(CONFIG_SECURITY_CLAVIS) += clavis.o
- ifeq ($(CONFIG_EFI),y)
- obj-$(CONFIG_SECURITY_CLAVIS) += clavis_efi.o
- endif
-diff --git a/security/clavis/clavis.c b/security/clavis/clavis.c
-new file mode 100644
-index 000000000000..040337dbd8d9
---- /dev/null
-+++ b/security/clavis/clavis.c
-@@ -0,0 +1,25 @@
-+// SPDX-License-Identifier: GPL-2.0
-+//
-+#include <linux/lsm_hooks.h>
-+#include <uapi/linux/lsm.h>
-+#include "clavis.h"
-+
-+static struct security_hook_list clavis_hooks[] __ro_after_init = {
-+	LSM_HOOK_INIT(key_verify_signature, clavis_sig_verify),
-+};
-+
-+const struct lsm_id clavis_lsmid = {
-+	.name = "clavis",
-+	.id = LSM_ID_CLAVIS,
-+};
-+
-+static int __init clavis_lsm_init(void)
-+{
-+	security_add_hooks(clavis_hooks, ARRAY_SIZE(clavis_hooks), &clavis_lsmid);
-+	return 0;
-+};
-+
-+DEFINE_LSM(clavis) = {
-+	.name = "clavis",
-+	.init = clavis_lsm_init,
-+};
-diff --git a/security/clavis/clavis.h b/security/clavis/clavis.h
-index 708dd0b1cc76..2a2fe2525c7c 100644
---- a/security/clavis/clavis.h
-+++ b/security/clavis/clavis.h
-@@ -2,6 +2,8 @@
- #ifndef _SECURITY_CLAVIS_H_
- #define _SECURITY_CLAVIS_H_
- 
-+struct key;
-+struct public_key_signature;
- struct asymmetric_key_id;
- 
- #ifdef CONFIG_EFI
-@@ -13,4 +15,6 @@ static inline int __init clavis_efi_param(struct asymmetric_key_id *kid, int len
- }
- #endif
- 
-+int clavis_sig_verify(const struct key *key, const struct public_key_signature *sig);
-+
- #endif /* _SECURITY_CLAVIS_H_ */
-diff --git a/security/clavis/clavis_keyring.c b/security/clavis/clavis_keyring.c
-index 9b3db299acef..736bdadd9000 100644
---- a/security/clavis/clavis_keyring.c
-+++ b/security/clavis/clavis_keyring.c
-@@ -13,6 +13,7 @@
- static struct key *clavis_keyring;
- static struct asymmetric_key_id *setup_keyid;
- 
-+static int clavis_init;
- #define MAX_ASCII_KID 64
- #define MAX_BIN_KID   32
- 
-@@ -228,4 +229,86 @@ void __init late_init_clavis_setup(void)
- 
- 	clavis_keyring_init();
- 	system_key_link(clavis_keyring, keyid);
-+	clavis_init = true;
-+}
-+
-+int clavis_sig_verify(const struct key *key, const struct public_key_signature *sig)
-+{
-+	const struct asymmetric_key_ids *kids = asymmetric_key_ids(key);
-+	const struct asymmetric_key_subtype *subtype;
-+	const struct asymmetric_key_id *newkid;
-+	char *buf_ptr, *ptr;
-+	key_ref_t ref;
-+	int i, buf_len;
-+
-+	if (!clavis_init)
-+		return 0;
-+
-+	if (key->type != &key_type_asymmetric)
-+		return -EKEYREJECTED;
-+	subtype = asymmetric_key_subtype(key);
-+	if (!subtype || !key->payload.data[0])
-+		return -EKEYREJECTED;
-+	if (!subtype->verify_signature)
-+		return -EKEYREJECTED;
-+
-+	/* Allow sig validation when not using a system keyring */
-+	if (!test_bit(PKS_USAGE_SET, &sig->usage_flags))
-+		return 0;
-+
-+	if (test_bit(KEY_FLAG_BUILTIN, &key->flags) && sig->usage == VERIFYING_MODULE_SIGNATURE)
-+		return 0;
-+
-+	if (test_bit(KEY_FLAG_BUILTIN, &key->flags) && sig->usage == VERIFYING_KEXEC_PE_SIGNATURE)
-+		return 0;
-+
-+	/* The previous sig validation is enough to get on the clavis keyring */
-+	if (sig->usage == VERIFYING_CLAVIS_SIGNATURE)
-+		return 0;
-+
-+	if (test_bit(PKS_REVOCATION_PASS, &sig->usage_flags))
-+		return 0;
-+
-+	for (i = 0, buf_len = 0; i < 3; i++) {
-+		if (kids->id[i]) {
-+			newkid = (struct asymmetric_key_id *)kids->id[i];
-+			if (newkid->len > buf_len)
-+				buf_len = newkid->len;
-+		}
-+	}
-+
-+	if (!buf_len)
-+		return -EKEYREJECTED;
-+
-+	/* Allocate enough space for the conversion to ascii plus the header. */
-+	buf_ptr = kmalloc(buf_len * 2 + 4, GFP_KERNEL | __GFP_ZERO);
-+
-+	if (!buf_ptr)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < 3; i++) {
-+		if (kids->id[i]) {
-+			newkid = (struct asymmetric_key_id *)kids->id[i];
-+			if (!newkid->len)
-+				continue;
-+
-+			ptr = buf_ptr;
-+			ptr = bin2hex(ptr, &sig->usage, 1);
-+			*ptr++ = ':';
-+			ptr = bin2hex(ptr, newkid->data, newkid->len);
-+			*ptr = 0;
-+			ref = keyring_search(make_key_ref(clavis_keyring, true), &clavis_key_acl,
-+					     buf_ptr, false);
-+
-+			if (!IS_ERR(ref))
-+				break;
-+		}
-+	}
-+
-+	kfree(buf_ptr);
-+
-+	if (IS_ERR(ref))
-+		return -EKEYREJECTED;
-+
-+	return 0;
- }
-diff --git a/security/security.c b/security/security.c
-index e5da848c50b9..bd2e13a8f01b 100644
---- a/security/security.c
-+++ b/security/security.c
-@@ -51,7 +51,8 @@
- 	(IS_ENABLED(CONFIG_BPF_LSM) ? 1 : 0) + \
- 	(IS_ENABLED(CONFIG_SECURITY_LANDLOCK) ? 1 : 0) + \
- 	(IS_ENABLED(CONFIG_IMA) ? 1 : 0) + \
--	(IS_ENABLED(CONFIG_EVM) ? 1 : 0))
-+	(IS_ENABLED(CONFIG_EVM) ? 1 : 0) + \
-+	(IS_ENABLED(CONFIG_SECURITY_CLAVIS) ? 1 : 0))
- 
- /*
-  * These are descriptions of the reasons that can be passed to the
-@@ -5323,6 +5324,19 @@ void security_key_post_create_or_update(struct key *keyring, struct key *key,
- 	call_void_hook(key_post_create_or_update, keyring, key, payload,
- 		       payload_len, flags, create);
- }
-+
-+/**
-+ * security_key_verify_signature - verify signature
-+ * @key: key
-+ * @sig: signature
-+ *
-+ * See whether signature verification is allowed based on the ACL for
-+ * key usage.
-+ */
-+int security_key_verify_signature(const struct key *key, const struct public_key_signature *sig)
-+{
-+	return call_int_hook(key_verify_signature, key, sig);
-+}
- #endif	/* CONFIG_KEYS */
- 
- #ifdef CONFIG_AUDIT
--- 
-2.43.0
+s/requisite/required ?
 
+>   config X509_CERTIFICATE_PARSER
+>   	tristate "X.509 certificate parser"
+>   	depends on ASYMMETRIC_PUBLIC_KEY_SUBTYPE
+> diff --git a/crypto/asymmetric_keys/Makefile b/crypto/asymmetric_keys/Makefile
+> index bc65d3b98dcb..c6da84607824 100644
+> --- a/crypto/asymmetric_keys/Makefile
+> +++ b/crypto/asymmetric_keys/Makefile
+> @@ -11,6 +11,7 @@ asymmetric_keys-y := \
+>   	signature.o
+>   
+>   obj-$(CONFIG_ASYMMETRIC_PUBLIC_KEY_SUBTYPE) += public_key.o
+> +obj-$(CONFIG_ASYMMETRIC_TPM2_KEY_RSA_SUBTYPE) += tpm2_key_rsa.o
+>   
+>   #
+>   # X.509 Certificate handling
+> diff --git a/crypto/asymmetric_keys/tpm2_key_rsa.c b/crypto/asymmetric_keys/tpm2_key_rsa.c
+> new file mode 100644
+> index 000000000000..4bc322580037
+> --- /dev/null
+> +++ b/crypto/asymmetric_keys/tpm2_key_rsa.c
+> @@ -0,0 +1,678 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/* TPM2 asymmetric public-key crypto subtype
+> + *
+> + * Asymmetric TPM2 RSA key:
+> + * - Decrypts RSA with TPM2_RSA_Decrypt.
+> + * - Signs with PKCS#1 1.5 padding. Signing is implemented with
+> + *   TPM2_RSA_Decrypt operation.
+> + * - Encrypts with the akcipher rsa-pcks1pad.
+
+s/pcks1pad/pkcs1pad !
+
+
+> + *
+> + * See Documentation/crypto/asymmetric-keys.rst
+> + *
+> + * Copyright (c) 2020 Intel Corporation
+> + */
+> +
+> +#include <asm/unaligned.h>
+> +#include <crypto/akcipher.h>
+> +#include <crypto/public_key.h>
+> +#include <crypto/rsa-pkcs1pad.h>
+> +#include <crypto/tpm2_key.h>
+> +#include <keys/asymmetric-parser.h>
+> +#include <keys/asymmetric-subtype.h>
+> +#include <keys/trusted-type.h>
+> +#include <linux/keyctl.h>
+> +#include <linux/module.h>
+> +#include <linux/scatterlist.h>
+> +#include <linux/slab.h>
+> +#include <linux/tpm.h>
+> +
+> +#undef pr_fmt
+> +#define pr_fmt(fmt) "tpm2_key_rsa: "fmt
+> +
+> +#define PKCS1_PAD_MIN_SIZE 11
+> +
+> +/* TPM2 Structures 12.2.3.5: TPMS_RSA_PARMS */
+> +struct tpm2_rsa_parms {
+> +	__be16 symmetric;
+> +	__be16 scheme;
+> +	__be16 key_bits;
+> +	__be32 exponent;
+> +	__be16 modulus_size;
+> +} __packed;
+> +
+> +/*
+> + * Fill the data with PKCS#1 v1.5 padding.
+> + */
+> +static int tpm2_pad_pkcs1(const u8 *in, int in_len, u8 *out, int out_len)
+> +{
+> +	unsigned int prefix_len = out_len - in_len - 3;
+> +
+> +	if (in_len > out_len - PKCS1_PAD_MIN_SIZE)
+> +		return -EBADMSG;
+> +
+> +	/* prefix */
+> +	out[0] = 0;
+> +	out[1] = 1;
+> +	memset(&out[2], 0xff, prefix_len);
+> +	out[2 + prefix_len] = 0;
+> +	/* payload */
+> +	memcpy(&out[2 + prefix_len + 1], in, in_len);
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * RFC 3447 - Section 7.2.2
+> + * Size of the input data should be checked against public key size by
+> + * the caller.
+> + */
+> +static const u8 *tpm2_unpad_pkcs1(const u8 *in, int in_len, int *out_len)
+> +{
+> +	int i;
+> +
+> +	if (in[0] != 0 || in[1] != 2)
+> +		return NULL;
+> +
+> +	i = 2;
+> +	while (in[i] != 0 && i < in_len)
+> +		i++;
+> +
+> +	if (i == in_len || i < (PKCS1_PAD_MIN_SIZE - 1))
+> +		return NULL;
+> +
+> +	*out_len = in_len - i - 1;
+> +	return in + i + 1;
+> +}
+> +
+> +/*
+> + * Outputs the cipher algorithm name on success, and retuns -ENOPKG
+> + * on failure.
+> + */
+> +static int tpm2_key_get_akcipher(const char *encoding, const char *hash_algo,
+> +				 char *cipher)
+> +{
+> +	ssize_t ret;
+> +
+> +	if (strcmp(encoding, "pkcs1") == 0) {
+> +		if (!hash_algo) {
+> +			strcpy(cipher, "pkcs1pad(rsa)");
+> +			return 0;
+> +		}
+> +
+> +		ret = snprintf(cipher, CRYPTO_MAX_ALG_NAME,
+> +			       "pkcs1pad(rsa,%s)",
+> +			       hash_algo);
+> +		if (ret >= CRYPTO_MAX_ALG_NAME)
+> +			return -ENOPKG;
+> +
+> +		return 0;
+> +	}
+> +
+> +	if (strcmp(encoding, "raw") == 0) {
+> +		strcpy(cipher, "rsa");
+> +		return 0;
+> +	}
+> +
+> +	return -ENOPKG;
+> +}
+> +
+> +static int tpm2_key_rsa_encode(const struct tpm2_key *key, u8 *buf)
+> +{
+> +	const off_t o = key->priv_len + 2 + sizeof(*key->desc);
+> +	const struct tpm2_rsa_parms *p =
+> +		(const struct tpm2_rsa_parms *)&key->data[o];
+> +	const u16 mod_size = be16_to_cpu(p->modulus_size);
+> +	const void *mod = &key->data[o + sizeof(*p)];
+> +
+> +	u8 *start = &buf[4];
+> +	u8 *work = &buf[4];
+> +	u32 seq_len;
+> +
+> +	work[0] = 0x02;			/* INTEGER */
+> +	work[1] = 0x82;			/* u16 */
+> +	work[2] = mod_size >> 8;
+> +	work[3] = mod_size & 0xff;
+> +	work = &work[4];
+> +	memcpy(work, mod, mod_size);
+> +	work = &work[mod_size];
+> +	work[0] = 0x02;			/* INTEGER */
+> +	work[1] = 3;			/* < 128 */
+> +	work[2] = 1;			/* 65537 */
+> +	work[3] = 0;
+> +	work[4]	= 1;
+> +	work = &work[5];
+> +	seq_len = work - start;
+> +	buf[0] = 0x30;			/* SEQUENCE */
+> +	buf[1] = 0x82;			/* u16 */
+> +	buf[2] = seq_len >> 8;
+> +	buf[3] = seq_len & 0xff;
+> +
+> +	/*
+> +	 * ABI requires this according include/crypto/akcipher.h, which says
+
+according to
+
+> +	 * that there is epilogue with algorithm OID and parameters length.
+
+is an epilogue
+
+> +	 * Neither size nor semantics is documented *anywhere*, and there's no
+> +	 * struct to hold them.
+> +	 *
+> +	 * So zeroing out the last eight bytes after the key blob seems like the
+> +	 * best bet, given no better (or any) information. The size of the
+> +	 * parameters (two u32's) was found from crypto/asymmetric/public_key.c.
+> +	 */
+> +	memset(work, 0, 8);
+> +
+> +	return seq_len + 4;
+> +}
+> +
+> +/*
+> + * Encryption operation is performed with the public key.  Hence it is done
+> + * in software
+> + */
+> +static int tpm2_key_rsa_encrypt(struct tpm2_key *key,
+> +				struct kernel_pkey_params *params,
+> +				const void *in, void *out)
+> +{
+> +	char cipher[CRYPTO_MAX_ALG_NAME];
+> +	struct scatterlist in_sg, out_sg;
+> +	struct akcipher_request *req;
+> +	struct crypto_akcipher *tfm;
+> +	struct crypto_wait cwait;
+> +	u8 *buf;
+> +	int ret;
+> +
+> +	buf = kzalloc(TPM2_KEY_BYTES_MAX, GFP_KERNEL);
+> +	if (!buf)
+> +		return -ENOMEM;
+> +
+> +	ret = tpm2_key_get_akcipher(params->encoding, params->hash_algo, cipher);
+> +	if (ret < 0)
+> +		goto err_buf;
+> +
+> +	tfm = crypto_alloc_akcipher(cipher, 0, 0);
+> +	if (IS_ERR(tfm)) {
+> +		ret = PTR_ERR(tfm);
+> +		goto err_buf;
+> +	}
+> +
+> +	ret = tpm2_key_rsa_encode(key, buf);
+> +	if (ret < 0)
+> +		goto err_tfm;
+> +
+> +	ret = crypto_akcipher_set_pub_key(tfm, buf, ret);
+> +	if (ret < 0)
+> +		goto err_tfm;
+> +
+> +	req = akcipher_request_alloc(tfm, GFP_KERNEL);
+> +	if (!req) {
+> +		ret = -ENOMEM;
+> +		goto err_tfm;
+> +	}
+> +
+> +	sg_init_one(&in_sg, in, params->in_len);
+> +	sg_init_one(&out_sg, out, params->out_len);
+> +	akcipher_request_set_crypt(req, &in_sg, &out_sg, params->in_len,
+> +				   params->out_len);
+> +
+> +	crypto_init_wait(&cwait);
+> +	akcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
+> +				      CRYPTO_TFM_REQ_MAY_SLEEP,
+> +				      crypto_req_done, &cwait);
+> +
+> +	ret = crypto_akcipher_encrypt(req);
+> +	if (ret)
+> +		goto err_tfm;
+> +
+> +	ret = crypto_wait_req(ret, &cwait);
+> +	if (!ret)
+> +		ret = req->dst_len;
+> +
+> +	akcipher_request_free(req);
+> +
+> +err_tfm:
+> +	crypto_free_akcipher(tfm);
+> +
+> +err_buf:
+> +	kfree(buf);
+> +	return ret;
+> +}
+> +
+> +static int __tpm2_key_rsa_decrypt(struct tpm_chip *chip,
+> +				  struct tpm2_key *key,
+> +				  struct kernel_pkey_params *params,
+> +				  const void *in, int in_len, void *out)
+> +{
+> +	u32 key_handle = 0;
+> +	struct tpm_buf buf;
+> +	u16 decrypted_len;
+> +	u8 *pos;
+> +	int ret;
+> +
+> +	ret = tpm_try_get_ops(chip); > +	if (ret)
+
+if (ret < 0)
+
+> +		return ret;
+> +
+> +	ret = tpm2_start_auth_session(chip);
+> +	if (ret)
+
+Uh, this one can return TPM error codes it seems from 
+tpm_transmit_cmd()? You probably have to do something with ret here in 
+case it's positive because I saw a caller of __tpm2_key_rsa_decrypt 
+relying on ret < 0 as error.
+
+> +		goto err_ops;
+> +
+> +	ret = tpm_buf_init(&buf, TPM2_ST_SESSIONS, TPM2_CC_LOAD);
+> +	if (ret < 0)
+> +		goto err_auth;
+> +
+> +	tpm_buf_append_name(chip, &buf, key->parent, NULL);
+> +	tpm_buf_append_hmac_session(chip, &buf, TPM2_SA_CONTINUE_SESSION |
+> +				    TPM2_SA_ENCRYPT, NULL, 0);
+> +	tpm_buf_append(&buf, &key->data[0], key->priv_len + key->pub_len);
+> +	if (buf.flags & TPM_BUF_OVERFLOW) {
+> +		ret = -E2BIG;
+> +		goto err_buf;
+> +	}
+> +	tpm_buf_fill_hmac_session(chip, &buf);
+> +	ret = tpm_transmit_cmd(chip, &buf, 4, "TPM2_CC_LOAD");
+> +	ret = tpm_buf_check_hmac_response(chip, &buf, ret);
+> +	if (ret) {
+> +		ret = -EIO;
+> +		goto err_buf;
+> +	}
+> +	key_handle = be32_to_cpup((__be32 *)&buf.data[TPM_HEADER_SIZE]);
+> +
+> +	tpm_buf_reset(&buf, TPM2_ST_SESSIONS, TPM2_CC_RSA_DECRYPT);
+> +	tpm_buf_append_name(chip, &buf, key_handle, NULL);
+> +	tpm_buf_append_hmac_session(chip, &buf, TPM2_SA_DECRYPT, NULL, 0);
+> +	tpm_buf_append_u16(&buf, in_len);
+> +	tpm_buf_append(&buf, in, in_len);
+> +	tpm_buf_append_u16(&buf, TPM_ALG_NULL);
+> +	tpm_buf_append_u16(&buf, 0);
+> +	tpm_buf_fill_hmac_session(chip, &buf);
+> +	ret = tpm_transmit_cmd(chip, &buf, 4, "TPM2_RSA_DECRYPT");
+> +	ret = tpm_buf_check_hmac_response(chip, &buf, ret);
+> +	if (ret) {
+> +		ret = -EIO;
+> +		goto err_blob;
+> +	}
+> +
+> +	pos = buf.data + TPM_HEADER_SIZE + 4;
+> +	decrypted_len = be16_to_cpup((__be16 *)pos);
+> +	pos += 2;
+> +
+> +	if (params->out_len < decrypted_len) {
+> +		ret = -EMSGSIZE;
+> +		goto err_blob;
+> +	}
+> +
+> +	memcpy(out, pos, decrypted_len);
+> +	ret = decrypted_len;
+> +
+> +err_blob:
+> +	tpm2_flush_context(chip, key_handle);
+> +
+> +err_buf:
+> +	tpm_buf_destroy(&buf);
+> +
+> +err_auth:
+> +	if (ret < 0)
+> +		tpm2_end_auth_session(chip);
+> +
+> +err_ops:
+> +	tpm_put_ops(chip);
+> +	return ret;
+> +}
+> +
+> +static int tpm2_key_rsa_decrypt(struct tpm_chip *chip, struct tpm2_key *key,
+> +				struct kernel_pkey_params *params,
+> +				const void *in, void *out)
+> +{
+> +	const u8 *ptr;
+> +	int out_len;
+> +	u8 *work;
+> +	int ret;
+> +
+> +	work = kzalloc(TPM2_KEY_BYTES_MAX, GFP_KERNEL);
+> +	if (!work)
+> +		return -ENOMEM;
+> +
+> +	ret = __tpm2_key_rsa_decrypt(chip, key, params, in, params->in_len,
+> +				     work);
+> +	if (ret < 0)
+> +		goto err;
+> +
+> +	ptr = tpm2_unpad_pkcs1(work, ret, &out_len);
+> +	if (!ptr) {
+> +		ret = -EINVAL;
+> +		goto err;
+> +	}
+> +
+> +	if (out_len > params->out_len) {
+
+I suppose params->out_len describes the size of void *out buffer..
+
+> +		ret = -EMSGSIZE;
+> +		goto err;
+> +	}
+> +
+> +	memcpy(out, ptr, out_len);
+> +	kfree(work);
+> +	return out_len;
+> +
+> +err:
+> +	kfree(work);
+> +	return ret;
+> +}
+> +
+> +/*
+> + * Sign operation is an encryption using the TPM's private key. With RSA the
+> + * only difference between encryption and decryption is where the padding goes.
+> + * Since own padding can be used, TPM2_RSA_Decrypt can be repurposed to do
+> + * encryption.
+> + */
+> +static int tpm2_key_rsa_sign(struct tpm_chip *chip, struct tpm2_key *key,
+> +			     struct kernel_pkey_params *params,
+> +			     const void *in, void *out)
+> +{
+> +	const off_t o = key->priv_len + 2 + sizeof(*key->desc);
+> +	const struct tpm2_rsa_parms *p =
+> +		(const struct tpm2_rsa_parms *)&key->data[o];
+> +	const u16 mod_size = be16_to_cpu(p->modulus_size);
+> +	const struct rsa_asn1_template *asn1;
+> +	u32 in_len = params->in_len;
+> +	void *asn1_wrapped = NULL;
+> +	u8 *padded;
+> +	int ret;
+> +
+> +	if (strcmp(params->encoding, "pkcs1") != 0) {
+> +		ret = -ENOPKG;
+> +		goto err;
+> +	}
+> +
+> +	if (params->hash_algo) {
+> +		asn1 = rsa_lookup_asn1(params->hash_algo);
+> +		if (!asn1) {
+> +			ret = -ENOPKG;
+> +			goto err;
+> +		}
+> +
+> +		/* Request enough space for the ASN.1 template + input hash */
+> +		asn1_wrapped = kzalloc(in_len + asn1->size, GFP_KERNEL);
+> +		if (!asn1_wrapped) {
+> +			ret = -ENOMEM;
+> +			goto err;
+> +		}
+> +
+> +		/* Copy ASN.1 template, then the input */
+> +		memcpy(asn1_wrapped, asn1->data, asn1->size);
+> +		memcpy(asn1_wrapped + asn1->size, in, in_len);
+> +
+> +		in = asn1_wrapped;
+> +		in_len += asn1->size;
+> +	}
+> +
+> +	/* with padding: * > +	padded = kmalloc(mod_size, GFP_KERNEL);
+
+check NULL pointer?
+
+> +	tpm2_pad_pkcs1(in, in_len, padded, mod_size);
+> +	ret = __tpm2_key_rsa_decrypt(chip, key, params, padded, mod_size, out);
+> +	kfree(padded);
+> +
+> +err:
+> +	kfree(asn1_wrapped);
+> +	return ret;
+> +}
+> +
+> +static void tpm2_key_rsa_describe(const struct key *asymmetric_key,
+> +				  struct seq_file *m)
+> +{
+> +	struct tpm2_key *key = asymmetric_key->payload.data[asym_crypto];
+> +
+> +	if (!key) {
+> +		pr_err("key blob missing");
+> +		return;
+> +	}
+> +
+> +	seq_puts(m, "TPM2/RSA");
+> +}
+> +
+> +static void tpm2_key_rsa_destroy(void *payload0, void *payload3)
+> +{
+> +	struct tpm2_key *key = payload0;
+> +
+> +	if (!key)
+> +		return;
+
+This seems unnecessary.
+
+> +
+> +	kfree(key);
+> +}
+> +
+> +static int tpm2_key_rsa_eds_op(struct kernel_pkey_params *params,
+> +			       const void *in, void *out)
+> +{
+> +	struct tpm2_key *key = params->key->payload.data[asym_crypto];
+> +	struct tpm_chip *chip = tpm_default_chip();
+> +
+> +	if (!chip)
+> +		return -ENODEV;
+> +
+> +	switch (params->op) {
+> +	case kernel_pkey_encrypt:
+> +		return tpm2_key_rsa_encrypt(key, params, in, out);
+> +	case kernel_pkey_decrypt:
+> +		return tpm2_key_rsa_decrypt(chip, key, params, in, out);
+> +	case kernel_pkey_sign:
+> +		return tpm2_key_rsa_sign(chip, key, params, in, out);
+
+Missing verify here?
+
+> +	default:
+> +		return -EOPNOTSUPP;
+> +	}
+> +}
+> +
+> +static int tpm2_key_rsa_verify(const struct key *key,
+> +			       const struct public_key_signature *sig)
+> +{
+> +	const struct tpm2_key *tpm2_key = key->payload.data[asym_crypto];
+> +	char alg_name[CRYPTO_MAX_ALG_NAME];
+> +	struct akcipher_request *req;
+> +	struct scatterlist src_sg[2];
+> +	struct crypto_akcipher *tfm;
+> +	struct crypto_wait cwait;
+> +	u8 *buf;
+> +	int ret;
+> +
+> +	if (!sig->digest)
+> +		return -ENOPKG;
+> +
+> +	ret = tpm2_key_get_akcipher(sig->encoding, sig->hash_algo, alg_name);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	buf = kzalloc(TPM2_KEY_BYTES_MAX, GFP_KERNEL);
+> +	if (!buf)
+> +		return -ENOMEM;
+> +
+> +	tfm = crypto_alloc_akcipher(alg_name, 0, 0);
+> +	if (IS_ERR(tfm)) {
+> +		ret = PTR_ERR(tfm);
+> +		goto err_buf;
+> +	}
+> +
+> +	ret = tpm2_key_rsa_encode(tpm2_key, buf);
+> +	if (ret < 0)
+> +		goto err_tfm;
+> +
+> +	ret = crypto_akcipher_set_pub_key(tfm, buf, ret);
+> +	if (ret < 0)
+> +		goto err_tfm;
+> +
+> +	ret = -ENOMEM;
+> +	req = akcipher_request_alloc(tfm, GFP_KERNEL);
+> +	if (!req)
+> +		goto err_tfm;
+> +
+> +	sg_init_table(src_sg, 2);
+> +	sg_set_buf(&src_sg[0], sig->s, sig->s_size);
+> +	sg_set_buf(&src_sg[1], sig->digest, sig->digest_size);
+> +	akcipher_request_set_crypt(req, src_sg, NULL, sig->s_size,
+> +				   sig->digest_size);
+> +	crypto_init_wait(&cwait);
+> +	akcipher_request_set_callback(req, CRYPTO_TFM_REQ_MAY_BACKLOG |
+> +				      CRYPTO_TFM_REQ_MAY_SLEEP,
+> +				      crypto_req_done, &cwait);
+> +	ret = crypto_wait_req(crypto_akcipher_verify(req), &cwait);
+> +
+> +	akcipher_request_free(req);
+> +
+> +err_tfm:
+> +	crypto_free_akcipher(tfm);
+> +
+> +err_buf:
+> +	kfree(buf);
+> +	return ret;
+> +}
+> +
+> +static int tpm2_key_rsa_query(const struct kernel_pkey_params *params,
+> +			      struct kernel_pkey_query *info)
+> +{
+> +	const struct tpm2_key *key = params->key->payload.data[asym_crypto];
+> +	const off_t o = key->priv_len + 2 + sizeof(*key->desc);
+> +	const struct tpm2_rsa_parms *p =
+> +		(const struct tpm2_rsa_parms *)&key->data[o];
+> +	const u16 mod_size = be16_to_cpu(p->modulus_size);
+> +	char alg_name[CRYPTO_MAX_ALG_NAME];
+> +	struct crypto_akcipher *tfm;
+> +	unsigned int len;
+> +	u8 *buf;
+> +	int ret;
+> +
+> +	ret = tpm2_key_get_akcipher(params->encoding, params->hash_algo, alg_name);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	buf = kzalloc(TPM2_KEY_BYTES_MAX, GFP_KERNEL);
+> +	if (!buf)
+> +		return -ENOMEM;
+> +
+> +	tfm = crypto_alloc_akcipher(alg_name, 0, 0);
+> +	if (IS_ERR(tfm)) {
+> +		ret = PTR_ERR(tfm);
+> +		goto err_buf;
+> +	}
+> +
+> +	ret = tpm2_key_rsa_encode(key, buf);
+> +	if (ret < 0)
+> +		goto err_tfm;
+> +
+> +	ret = crypto_akcipher_set_pub_key(tfm, buf, ret);
+> +	if (ret < 0)
+> +		goto err_tfm;
+> +
+> +	len = crypto_akcipher_maxsize(tfm);
+> +
+> +	info->key_size = mod_size * 8;
+> +	info->max_data_size = mod_size;
+> +	info->max_sig_size = len;
+> +	info->max_enc_size = len;
+> +	info->max_dec_size = mod_size;
+> +
+> +	info->supported_ops = KEYCTL_SUPPORTS_SIGN | KEYCTL_SUPPORTS_VERIFY;
+> +
+> +	if (!strcmp(params->encoding, "pkcs1")) {
+> +		pr_info("pkcs1\n");
+> +		info->supported_ops =
+> +			KEYCTL_SUPPORTS_ENCRYPT | KEYCTL_SUPPORTS_DECRYPT;
+> +	}
+> +
+> +err_tfm:
+> +	crypto_free_akcipher(tfm);
+> +	return ret;
+> +
+> +err_buf:
+> +	kfree(buf);
+> +	return ret;
+> +}
+> +
+> +struct asymmetric_key_subtype tpm2_key_rsa_subtype = {
+> +	.owner			= THIS_MODULE,
+> +	.name			= "tpm2_key_rsa",
+> +	.name_len		= sizeof("tpm2_key_rsa") - 1,
+> +	.describe		= tpm2_key_rsa_describe,
+> +	.destroy		= tpm2_key_rsa_destroy,
+> +	.query			= tpm2_key_rsa_query,
+> +	.eds_op			= tpm2_key_rsa_eds_op,
+> +	.verify_signature	= tpm2_key_rsa_verify,
+> +};
+> +EXPORT_SYMBOL_GPL(tpm2_key_rsa_subtype);
+> +
+> +static int __tpm2_key_rsa_preparse(struct tpm2_key *key)
+> +{
+> +	const off_t o = key->priv_len + 2 + sizeof(*key->desc);
+> +	const struct tpm2_rsa_parms *p =
+> +		(const struct tpm2_rsa_parms *)&key->data[o];
+> +
+> +	if (tpm2_key_type(key) != TPM_ALG_RSA)
+> +		return -EBADMSG;
+> +
+> +	if (tpm2_key_policy_size(key) != 0)
+> +		return -EBADMSG;
+> +
+> +	if (be16_to_cpu(p->symmetric) != TPM_ALG_NULL)
+> +		return -EBADMSG;
+> +
+> +	if (be16_to_cpu(p->scheme) != TPM_ALG_NULL)
+> +		return -EBADMSG;
+> +
+> +	if (be16_to_cpu(p->key_bits) != 2048 &&
+> +	    be16_to_cpu(p->key_bits) != 3072 &&
+> +	    be16_to_cpu(p->key_bits) != 4096)
+> +		return -EBADMSG;
+> +
+> +	if (be32_to_cpu(p->exponent) != 0x00000000 &&
+> +	    be32_to_cpu(p->exponent) != 0x00010001)
+> +		return -EBADMSG;
+> +
+> +	pr_debug("modulus_size=%u\n", be16_to_cpu(p->modulus_size));
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Attempt to parse a data blob for a key as a TPM private key blob.
+> + */
+> +static int tpm2_key_rsa_preparse(struct key_preparsed_payload *prep)
+> +{
+> +	struct tpm2_key *key;
+> +	int ret;
+> +
+> +	key = tpm2_key_decode(prep->data, prep->datalen);
+> +	if (IS_ERR(key))
+> +		return ret;
+> +
+> +	if (key->oid != OID_TPMLoadableKey) {
+> +		kfree(key);
+> +		return -EBADMSG;
+> +	}
+> +
+> +	ret = __tpm2_key_rsa_preparse(key);
+> +	if (ret < 0) {
+> +		kfree(key);
+> +		return ret;
+> +	}
+> +
+> +	prep->payload.data[asym_subtype] = &tpm2_key_rsa_subtype;
+> +	prep->payload.data[asym_key_ids] = NULL;
+> +	prep->payload.data[asym_crypto] = key;
+> +	prep->payload.data[asym_auth] = NULL;
+> +	prep->quotalen = 100;
+> +
+> +	return 0;
+> +}
+> +
+> +static struct asymmetric_key_parser tpm2_key_rsa_parser = {
+> +	.owner	= THIS_MODULE,
+> +	.name	= "tpm2_key_rsa_parser",
+> +	.parse	= tpm2_key_rsa_preparse,
+> +};
+> +
+> +static int __init tpm2_key_rsa_init(void)
+> +{
+> +	return register_asymmetric_key_parser(&tpm2_key_rsa_parser);
+> +}
+> +
+> +static void __exit tpm2_key_rsa_exit(void)
+> +{
+> +	unregister_asymmetric_key_parser(&tpm2_key_rsa_parser);
+> +}
+> +
+> +module_init(tpm2_key_rsa_init);
+> +module_exit(tpm2_key_rsa_exit);
+> +
+> +MODULE_DESCRIPTION("Asymmetric TPM2 RSA key");
+> +MODULE_LICENSE("GPL");
+> diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+> index 21a67dc9efe8..d0860af7a56d 100644
+> --- a/include/linux/tpm.h
+> +++ b/include/linux/tpm.h
+> @@ -43,6 +43,7 @@ enum tpm2_session_types {
+>   /* if you add a new hash to this, increment TPM_MAX_HASHES below */
+>   enum tpm_algorithms {
+>   	TPM_ALG_ERROR		= 0x0000,
+> +	TPM_ALG_RSA		= 0x0001,
+>   	TPM_ALG_SHA1		= 0x0004,
+>   	TPM_ALG_AES		= 0x0006,
+>   	TPM_ALG_KEYEDHASH	= 0x0008,
+> @@ -271,6 +272,7 @@ enum tpm2_command_codes {
+>   	TPM2_CC_NV_READ                 = 0x014E,
+>   	TPM2_CC_CREATE		        = 0x0153,
+>   	TPM2_CC_LOAD		        = 0x0157,
+> +	TPM2_CC_RSA_DECRYPT	        = 0x0159,
+>   	TPM2_CC_SEQUENCE_UPDATE         = 0x015C,
+>   	TPM2_CC_UNSEAL		        = 0x015E,
+>   	TPM2_CC_CONTEXT_LOAD	        = 0x0161,
 
