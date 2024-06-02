@@ -1,917 +1,1838 @@
-Return-Path: <keyrings+bounces-1542-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1543-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 054FD8D5F7F
-	for <lists+keyrings@lfdr.de>; Fri, 31 May 2024 12:20:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD0188D8B5D
+	for <lists+keyrings@lfdr.de>; Mon,  3 Jun 2024 23:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF519289DDA
-	for <lists+keyrings@lfdr.de>; Fri, 31 May 2024 10:20:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DC2328B39D
+	for <lists+keyrings@lfdr.de>; Mon,  3 Jun 2024 21:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86448155A5C;
-	Fri, 31 May 2024 10:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9067813C682;
+	Mon,  3 Jun 2024 21:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PWKHCDoD"
 X-Original-To: keyrings@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217EC1514CE;
-	Fri, 31 May 2024 10:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FD013BC18;
+	Mon,  3 Jun 2024 21:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717150821; cv=none; b=kc7N6gzPebqZt7xMDTqOWrR+RMAaSZRdQFDD8EizDeTE9nj9xRpEQfmWceqg+8qSLMDBNqEM2i8WxA+apS+LeyX1ramOVuVUYBECY8RnixxjZZAouw6uZdBLtPRIwLi6te30uqkWtfskuMxbk811NNk4pkg1SsfXVC4rQsVooJE=
+	t=1717449401; cv=none; b=PN9iwjycQk6m7ZbpnA17m7nD+uONUkG7jHapEzLpcGURTYonMc2psKyBYBu7nKsnweP4YhzN1mex12a9jlZ89kywrJszTaqwAW5vhIirCCFkoCLGOAfYc8m2NPKj5yclrmLBWfd8zrcrZLH3QDtia1yOTJXq6EWd8hLPZ/7DD14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717150821; c=relaxed/simple;
-	bh=1eJi1WQWqfYZwZAKCTyRZGB2/dWJ67hjqSbjuS1o9v8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KQQsxFK/dV1+sIXZkzbPkhzU9JeLmdK+4FCRjNa1XtEys4hvbLg1d9VxqfliZy01n+Y6As3ixAcAI8+zcUgKeXGObhdR0RKjKNMoeNoeS3X9uQfBWJyovemFHyoEIy2M+rOwB9klxVOCuHxpL37xRg+3q+Ocsf/DKaVLRnGrgyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1sCzMf-004Agn-0E;
-	Fri, 31 May 2024 18:20:02 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 31 May 2024 18:20:03 +0800
-Date: Fri, 31 May 2024 18:20:03 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Huaxin Lu <luhuaxin1@huawei.com>
-Cc: David Howells <dhowells@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org, xiujianfeng@huawei.com,
-	wangweiyang2@huawei.com, yiyang13@huawei.com,
-	zhujianwei7@huawei.com, shenyining@huawei.com,
-	Jarkko Sakkinen <jarkko@kernel.org>,
+	s=arc-20240116; t=1717449401; c=relaxed/simple;
+	bh=tlqIk89T8jQQSVmtTnCrE2nqrUqZQzhWeOmNMFsrflE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OyWljY979YlzndeEWp5tEVvg+OV8D/ztxxSUHpkFhsy5+9BI3aPPOqxXJu9FdwcHXYZbRsymBSfDn42wGSrh2T1Yp3BprsBUsRnx8/tINgxYjEnfsW/gBk/qyZ9maJxqSKjXZkNMDhwuMt41jgWTOdfN3FCJnUlE/40qEIKeJfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PWKHCDoD; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717449396; x=1748985396;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=tlqIk89T8jQQSVmtTnCrE2nqrUqZQzhWeOmNMFsrflE=;
+  b=PWKHCDoDbDXM9HNbqQY7PnN/sWYS4uVz8JNU1gsmL7FtjrSxGtChTzlc
+   aazyvmC3J6/t98FvCMg1NBg3FKFrh1IQryCvGWcYSN7EYEMnXCMDXIgUg
+   Al1wjipxPwIBYR5RcOXCH/sWNaQwI+eXDJYiMXvknOq0WIexz9/HNDl+q
+   igXiqYdBhMu3er2aiZSbmd2q1pNfrIO0IGnMdslbbgMfaalhuuEz6nFga
+   Aw4ZZteJGN0S83QXaElITk5PrJ7r6znLZh+cErA3LZJO2sYL6wOrvvdn5
+   kWAJiAuvlA/l4zNkeXR/KFoWirNrJqWbMdvvToS4/bR3EpQxgqUIExPXE
+   A==;
+X-CSE-ConnectionGUID: wWmFIa5qSimrC8srEjKBSQ==
+X-CSE-MsgGUID: GdgGdBy1RgK91ef/Fw/bww==
+X-IronPort-AV: E=McAfee;i="6600,9927,11092"; a="39371007"
+X-IronPort-AV: E=Sophos;i="6.08,212,1712646000"; 
+   d="scan'208";a="39371007"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jun 2024 14:16:33 -0700
+X-CSE-ConnectionGUID: Ro89wKy1S32lZHOIDDKz0w==
+X-CSE-MsgGUID: KMZiU8UuQE+FFwXdeyOmGw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,212,1712646000"; 
+   d="scan'208";a="36890744"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa007.fm.intel.com with ESMTP; 03 Jun 2024 14:16:23 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id B2EE11C9; Tue, 04 Jun 2024 00:16:21 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Corey Minyard <minyard@acm.org>,
+	Allen Pais <apais@linux.microsoft.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Perry Yuan <perry.yuan@amd.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Lee Jones <lee@kernel.org>,
+	Samuel Holland <samuel@sholland.org>,
+	Elad Nachman <enachman@marvell.com>,
+	Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Robert Richter <rrichter@amd.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Chunfeng Yun <chunfeng.yun@mediatek.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Nikita Kravets <teackot@gmail.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Stanley Chang <stanley_chang@realtek.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Abdel Alkuor <abdelalkuor@geotab.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Eric Biggers <ebiggers@google.com>,
+	Kees Cook <keescook@chromium.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Daniel Bristot de Oliveira <bristot@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Hugh Dickins <hughd@google.com>,
+	Abel Wu <wuyun.abel@bytedance.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Mimi Zohar <zohar@linux.ibm.com>,
+	Stefan Berger <stefanb@linux.ibm.com>,
 	Roberto Sassu <roberto.sassu@huawei.com>,
-	linux-integrity@vger.kernel.org
-Subject: [PATCH] crypto: sm2 - Remove sm2 algorithm
-Message-ID: <ZlmkU7h3O2pS-vvw@gondor.apana.org.au>
-References: <20240513230718.447895-1-luhuaxin1@huawei.com>
- <Zkc1nsG9H1ajhCl_@gondor.apana.org.au>
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Mark Brown <broonie@kernel.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-ide@vger.kernel.org,
+	openipmi-developer@lists.sourceforge.net,
+	linux-clk@vger.kernel.org,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-tegra@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	qat-linux@intel.com,
+	dri-devel@lists.freedesktop.org,
+	intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org,
+	linux-hwmon@vger.kernel.org,
+	linux-i2c@vger.kernel.org,
+	linux-leds@vger.kernel.org,
+	linux-sunxi@lists.linux.dev,
+	linux-omap@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	linux-mtd@lists.infradead.org,
+	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	linux-phy@lists.infradead.org,
+	linux-gpio@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	linux-usb@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	linux-bcachefs@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	apparmor@lists.ubuntu.com,
+	linux-security-module@vger.kernel.org,
+	linux-integrity@vger.kernel.org,
+	alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	David Howells <dhowells@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Daniel Scally <djrscally@gmail.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>,
+	Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Peter De Schrijver <pdeschrijver@nvidia.com>,
+	Prashant Gaikwad <pgaikwad@nvidia.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Huang Rui <ray.huang@amd.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Karol Herbst <kherbst@redhat.com>,
+	Lyude Paul <lyude@redhat.com>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Jean Delvare <jdelvare@suse.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Pavel Machek <pavel@ucw.cz>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Hu Ziji <huziji@marvell.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Potnuri Bharat Teja <bharat@chelsio.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	"Oliver O'Halloran" <oohall@gmail.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	JC Kuo <jckuo@nvidia.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Sebastian Reichel <sre@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Helge Deller <deller@gmx.de>,
+	Brian Foster <bfoster@redhat.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Tejun Heo <tj@kernel.org>,
+	Zefan Li <lizefan.x@bytedance.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Daniel Bristot de Oliveira <bristot@redhat.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Jason Baron <jbaron@akamai.com>,
+	Jim Cromie <jim.cromie@gmail.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Clemens Ladisch <clemens@ladisch.de>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH v1 1/1] treewide: Align match_string() with sysfs_match_string()
+Date: Sun,  2 Jun 2024 18:57:12 +0300
+Message-ID: <20240603211538.289765-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zkc1nsG9H1ajhCl_@gondor.apana.org.au>
+Content-Transfer-Encoding: 8bit
 
-The SM2 algorithm has a single user in the kernel.  However, it's
-never been integrated properly with that user: asymmetric_keys.
+Make two APIs look similar. Hence convert match_string() to be
+a 2-argument macro. In order to avoid unneeded churn, convert
+all users as well. There is no functional change intended.
 
-The crux of the issue is that the way it computes its digest with
-sm3 does not fit into the architecture of asymmetric_keys.  As no
-solution has been proposed, remove this algorithm.
-
-It can be resubmitted when it is integrated properly into the
-asymmetric_keys subsystem.
-
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- crypto/Kconfig                            |  18 -
- crypto/Makefile                           |   8 -
- crypto/asymmetric_keys/pkcs7_parser.c     |   4 -
- crypto/asymmetric_keys/public_key.c       |   7 -
- crypto/asymmetric_keys/x509_cert_parser.c |  16 -
- crypto/asymmetric_keys/x509_public_key.c  |  17 +-
- crypto/sm2.c                              | 498 ----------------------
- crypto/sm2signature.asn1                  |   4 -
- crypto/testmgr.c                          |   6 -
- crypto/testmgr.h                          |  59 ---
- include/crypto/sm2.h                      |  28 --
- security/integrity/digsig_asymmetric.c    |   3 +-
- 12 files changed, 3 insertions(+), 665 deletions(-)
- delete mode 100644 crypto/sm2.c
- delete mode 100644 crypto/sm2signature.asn1
- delete mode 100644 include/crypto/sm2.h
 
-diff --git a/crypto/Kconfig b/crypto/Kconfig
-index 5688d42a59c2..72e2decb8c6a 100644
---- a/crypto/Kconfig
-+++ b/crypto/Kconfig
-@@ -313,24 +313,6 @@ config CRYPTO_ECRDSA
- 	  One of the Russian cryptographic standard algorithms (called GOST
- 	  algorithms). Only signature verification is implemented.
+Compile tested with `make allyesconfig` and `make allmodconfig`
+on x86_64, arm, aarch64, powerpc64 (8 builds total).
+
+I guess the best is to apply it to Linus' tree directly.
+And now it seems a good timing as there are no new users
+of this API either in v6.10-rcX, or in Linux Next.
+
+But if you think differently, tell me.
+
+ arch/powerpc/xmon/xmon.c                      |  5 ++--
+ arch/x86/kernel/cpu/mtrr/if.c                 |  4 +--
+ crypto/asymmetric_keys/pkcs7_verify.c         |  4 +--
+ drivers/acpi/scan.c                           |  4 +--
+ drivers/ata/pata_hpt366.c                     |  2 +-
+ drivers/ata/pata_hpt37x.c                     |  2 +-
+ drivers/base/property.c                       |  6 ++--
+ drivers/char/ipmi/ipmi_msghandler.c           |  2 +-
+ drivers/char/ipmi/ipmi_si_hardcode.c          |  2 +-
+ drivers/clk/bcm/clk-bcm2835.c                 |  4 +--
+ drivers/clk/rockchip/clk.c                    |  4 +--
+ drivers/clk/tegra/clk-tegra124-emc.c          |  7 ++---
+ drivers/cpufreq/amd-pstate.c                  |  4 +--
+ drivers/cpufreq/intel_pstate.c                |  2 +-
+ .../intel/qat/qat_common/adf_cfg_services.c   |  5 ++--
+ .../gpu/drm/drm_panel_orientation_quirks.c    |  2 +-
+ drivers/gpu/drm/i915/display/intel_pipe_crc.c |  2 +-
+ drivers/gpu/drm/nouveau/dispnv04/tvnv17.c     |  4 +--
+ drivers/gpu/drm/nouveau/dispnv50/crc.c        |  2 +-
+ drivers/hwmon/ltc4282.c                       | 14 ++++-----
+ drivers/hwmon/nct6775-platform.c              |  6 ++--
+ drivers/hwtracing/intel_th/msu.c              |  2 +-
+ drivers/i2c/busses/i2c-i801.c                 |  4 +--
+ drivers/leds/leds-sun50i-a100.c               |  2 +-
+ drivers/mfd/omap-usb-host.c                   |  2 +-
+ drivers/mmc/host/sdhci-xenon-phy.c            | 13 ++++-----
+ drivers/mtd/nand/raw/nand_macronix.c          | 10 ++-----
+ .../net/ethernet/chelsio/cxgb4/cudbg_lib.c    |  6 ++--
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  |  2 +-
+ drivers/pci/pcie/aer.c                        |  2 +-
+ drivers/phy/mediatek/phy-mtk-tphy.c           |  8 ++---
+ drivers/phy/tegra/xusb.c                      |  4 +--
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c   |  6 ++--
+ drivers/pinctrl/pinmux.c                      |  6 ++--
+ drivers/platform/x86/hp/hp-wmi.c              | 29 +++++++------------
+ drivers/platform/x86/msi-ec.c                 |  4 +--
+ drivers/power/supply/ab8500_btemp.c           |  2 +-
+ drivers/power/supply/ab8500_chargalg.c        |  2 +-
+ drivers/power/supply/ab8500_charger.c         |  2 +-
+ drivers/power/supply/ab8500_fg.c              |  2 +-
+ drivers/staging/gdm724x/gdm_tty.c             |  5 ++--
+ .../int340x_thermal/processor_thermal_rfim.c  |  4 +--
+ .../processor_thermal_wt_req.c                |  2 +-
+ drivers/usb/common/common.c                   |  8 ++---
+ drivers/usb/dwc3/dwc3-rtk.c                   |  2 +-
+ drivers/usb/typec/class.c                     | 14 ++++-----
+ drivers/usb/typec/tipd/core.c                 |  3 +-
+ drivers/video/fbdev/pxafb.c                   |  4 +--
+ fs/bcachefs/compress.c                        |  2 +-
+ fs/bcachefs/opts.c                            |  4 +--
+ fs/bcachefs/util.c                            |  4 +--
+ fs/ubifs/auth.c                               |  8 ++---
+ include/linux/string.h                        | 12 +++++++-
+ kernel/cgroup/rdma.c                          |  2 +-
+ kernel/sched/debug.c                          |  2 +-
+ kernel/trace/trace.c                          |  4 +--
+ kernel/trace/trace_osnoise.c                  |  4 +--
+ lib/dynamic_debug.c                           |  5 ++--
+ lib/string_helpers.c                          |  6 ++--
+ mm/mempolicy.c                                |  4 +--
+ mm/vmpressure.c                               |  4 +--
+ security/apparmor/lsm.c                       |  9 +++---
+ security/integrity/ima/ima_main.c             |  2 +-
+ security/integrity/ima/ima_policy.c           |  2 +-
+ sound/firewire/oxfw/oxfw.c                    |  2 +-
+ sound/pci/oxygen/oxygen_mixer.c               |  2 +-
+ sound/soc/codecs/max98088.c                   |  2 +-
+ sound/soc/codecs/max98095.c                   |  2 +-
+ sound/soc/soc-dapm.c                          |  5 ++--
+ 69 files changed, 150 insertions(+), 174 deletions(-)
+
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index bd4813bad317..f479cc62674a 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -3478,8 +3478,7 @@ skipbl(void)
+ 	return c;
+ }
  
--config CRYPTO_SM2
--	tristate "SM2 (ShangMi 2)"
--	select CRYPTO_SM3
--	select CRYPTO_AKCIPHER
--	select CRYPTO_MANAGER
--	select MPILIB
--	select ASN1
--	help
--	  SM2 (ShangMi 2) public key algorithm
--
--	  Published by State Encryption Management Bureau, China,
--	  as specified by OSCCA GM/T 0003.1-2012 -- 0003.5-2012.
--
--	  References:
--	  https://datatracker.ietf.org/doc/draft-shen-sm2-ecdsa/
--	  http://www.oscca.gov.cn/sca/xxgk/2010-12/17/content_1002386.shtml
--	  http://www.gmbz.org.cn/main/bzlb.html
--
- config CRYPTO_CURVE25519
- 	tristate "Curve25519"
- 	select CRYPTO_KPP
-diff --git a/crypto/Makefile b/crypto/Makefile
-index edbbaa3ffef5..4c99e5d376f6 100644
---- a/crypto/Makefile
-+++ b/crypto/Makefile
-@@ -50,14 +50,6 @@ rsa_generic-y += rsa_helper.o
- rsa_generic-y += rsa-pkcs1pad.o
- obj-$(CONFIG_CRYPTO_RSA) += rsa_generic.o
+-#define N_PTREGS	44
+-static const char *regnames[N_PTREGS] = {
++static const char *regnames[] = {
+ 	"r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7",
+ 	"r8", "r9", "r10", "r11", "r12", "r13", "r14", "r15",
+ 	"r16", "r17", "r18", "r19", "r20", "r21", "r22", "r23",
+@@ -3514,7 +3513,7 @@ scanhex(unsigned long *vp)
+ 			regname[i] = c;
+ 		}
+ 		regname[i] = 0;
+-		i = match_string(regnames, N_PTREGS, regname);
++		i = match_string(regnames, regname);
+ 		if (i < 0) {
+ 			printf("invalid register name '%%%s'\n", regname);
+ 			return 0;
+diff --git a/arch/x86/kernel/cpu/mtrr/if.c b/arch/x86/kernel/cpu/mtrr/if.c
+index a5c506f6da7f..9b749b848123 100644
+--- a/arch/x86/kernel/cpu/mtrr/if.c
++++ b/arch/x86/kernel/cpu/mtrr/if.c
+@@ -4,8 +4,8 @@
+ #include <linux/uaccess.h>
+ #include <linux/proc_fs.h>
+ #include <linux/ctype.h>
+-#include <linux/string.h>
+ #include <linux/slab.h>
++#include <linux/string_helpers.h>
+ #include <linux/init.h>
  
--$(obj)/sm2signature.asn1.o: $(obj)/sm2signature.asn1.c $(obj)/sm2signature.asn1.h
--$(obj)/sm2.o: $(obj)/sm2signature.asn1.h
--
--sm2_generic-y += sm2signature.asn1.o
--sm2_generic-y += sm2.o
--
--obj-$(CONFIG_CRYPTO_SM2) += sm2_generic.o
--
- $(obj)/ecdsasignature.asn1.o: $(obj)/ecdsasignature.asn1.c $(obj)/ecdsasignature.asn1.h
- $(obj)/ecdsa.o: $(obj)/ecdsasignature.asn1.h
- ecdsa_generic-y += ecdsa.o
-diff --git a/crypto/asymmetric_keys/pkcs7_parser.c b/crypto/asymmetric_keys/pkcs7_parser.c
-index 231ad7b3789d..423d13c47545 100644
---- a/crypto/asymmetric_keys/pkcs7_parser.c
-+++ b/crypto/asymmetric_keys/pkcs7_parser.c
-@@ -292,10 +292,6 @@ int pkcs7_sig_note_pkey_algo(void *context, size_t hdrlen,
- 		ctx->sinfo->sig->pkey_algo = "ecdsa";
- 		ctx->sinfo->sig->encoding = "x962";
- 		break;
--	case OID_SM2_with_SM3:
--		ctx->sinfo->sig->pkey_algo = "sm2";
--		ctx->sinfo->sig->encoding = "raw";
--		break;
- 	case OID_gost2012PKey256:
- 	case OID_gost2012PKey512:
- 		ctx->sinfo->sig->pkey_algo = "ecrdsa";
-diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
-index 3474fb34ded9..422940a6706a 100644
---- a/crypto/asymmetric_keys/public_key.c
-+++ b/crypto/asymmetric_keys/public_key.c
-@@ -124,13 +124,6 @@ software_key_determine_akcipher(const struct public_key *pkey,
- 		    strcmp(hash_algo, "sha3-384") != 0 &&
- 		    strcmp(hash_algo, "sha3-512") != 0)
- 			return -EINVAL;
--	} else if (strcmp(pkey->pkey_algo, "sm2") == 0) {
--		if (strcmp(encoding, "raw") != 0)
--			return -EINVAL;
--		if (!hash_algo)
--			return -EINVAL;
--		if (strcmp(hash_algo, "sm3") != 0)
--			return -EINVAL;
- 	} else if (strcmp(pkey->pkey_algo, "ecrdsa") == 0) {
- 		if (strcmp(encoding, "raw") != 0)
- 			return -EINVAL;
-diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
-index 25cc4273472f..ee2fdab42334 100644
---- a/crypto/asymmetric_keys/x509_cert_parser.c
-+++ b/crypto/asymmetric_keys/x509_cert_parser.c
-@@ -257,10 +257,6 @@ int x509_note_sig_algo(void *context, size_t hdrlen, unsigned char tag,
- 	case OID_gost2012Signature512:
- 		ctx->cert->sig->hash_algo = "streebog512";
- 		goto ecrdsa;
--
--	case OID_SM2_with_SM3:
--		ctx->cert->sig->hash_algo = "sm3";
--		goto sm2;
+ #define LINE_SIZE 80
+@@ -139,7 +139,7 @@ mtrr_write(struct file *file, const char __user *buf, size_t len, loff_t * ppos)
+ 		return -EINVAL;
+ 	ptr = skip_spaces(ptr + 5);
+ 
+-	i = match_string(mtrr_strings, MTRR_NUM_TYPES, ptr);
++	i = match_string(mtrr_strings, ptr);
+ 	if (i < 0)
+ 		return i;
+ 
+diff --git a/crypto/asymmetric_keys/pkcs7_verify.c b/crypto/asymmetric_keys/pkcs7_verify.c
+index f0d4ff3c20a8..1139d9d1c89a 100644
+--- a/crypto/asymmetric_keys/pkcs7_verify.c
++++ b/crypto/asymmetric_keys/pkcs7_verify.c
+@@ -141,8 +141,8 @@ int pkcs7_get_digest(struct pkcs7_message *pkcs7, const u8 **buf, u32 *len,
+ 	*buf = sinfo->sig->digest;
+ 	*len = sinfo->sig->digest_size;
+ 
+-	i = match_string(hash_algo_name, HASH_ALGO__LAST,
+-			 sinfo->sig->hash_algo);
++	i = __match_string(hash_algo_name, HASH_ALGO__LAST,
++			   sinfo->sig->hash_algo);
+ 	if (i >= 0)
+ 		*hash_algo = i;
+ 
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index 503773707e01..9cb350de30f0 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -798,7 +798,7 @@ static bool acpi_info_matches_ids(struct acpi_device_info *info,
+ 	if (!(info->valid & ACPI_VALID_HID))
+ 		return false;
+ 
+-	index = match_string(ids, -1, info->hardware_id.string);
++	index = __match_string(ids, -1, info->hardware_id.string);
+ 	if (index >= 0)
+ 		return true;
+ 
+@@ -809,7 +809,7 @@ static bool acpi_info_matches_ids(struct acpi_device_info *info,
+ 		return false;
+ 
+ 	for (i = 0; i < cid_list->count; i++) {
+-		index = match_string(ids, -1, cid_list->ids[i].string);
++		index = __match_string(ids, -1, cid_list->ids[i].string);
+ 		if (index >= 0)
+ 			return true;
+ 	}
+diff --git a/drivers/ata/pata_hpt366.c b/drivers/ata/pata_hpt366.c
+index bdccd1ba1524..8134f9290791 100644
+--- a/drivers/ata/pata_hpt366.c
++++ b/drivers/ata/pata_hpt366.c
+@@ -178,7 +178,7 @@ static int hpt_dma_blacklisted(const struct ata_device *dev, char *modestr,
+ 
+ 	ata_id_c_string(dev->id, model_num, ATA_ID_PROD, sizeof(model_num));
+ 
+-	i = match_string(list, -1, model_num);
++	i = __match_string(list, -1, model_num);
+ 	if (i >= 0) {
+ 		ata_dev_warn(dev, "%s is not supported for %s\n", modestr, list[i]);
+ 		return 1;
+diff --git a/drivers/ata/pata_hpt37x.c b/drivers/ata/pata_hpt37x.c
+index c0329cf01135..2d0b659bbd65 100644
+--- a/drivers/ata/pata_hpt37x.c
++++ b/drivers/ata/pata_hpt37x.c
+@@ -226,7 +226,7 @@ static int hpt_dma_blacklisted(const struct ata_device *dev, char *modestr,
+ 
+ 	ata_id_c_string(dev->id, model_num, ATA_ID_PROD, sizeof(model_num));
+ 
+-	i = match_string(list, -1, model_num);
++	i = __match_string(list, -1, model_num);
+ 	if (i >= 0) {
+ 		ata_dev_warn(dev, "%s is not supported for %s\n",
+ 			     modestr, list[i]);
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 837d77e3af2b..075c9dbd7aa5 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -15,7 +15,7 @@
+ #include <linux/property.h>
+ #include <linux/phy.h>
+ #include <linux/slab.h>
+-#include <linux/string.h>
++#include <linux/string_helpers.h>
+ #include <linux/types.h>
+ 
+ struct fwnode_handle *__dev_fwnode(struct device *dev)
+@@ -489,7 +489,7 @@ int fwnode_property_match_string(const struct fwnode_handle *fwnode,
+ 	if (ret < 0)
+ 		goto out_free;
+ 
+-	ret = match_string(values, nval, string);
++	ret = __match_string(values, nval, string);
+ 	if (ret < 0)
+ 		ret = -ENODATA;
+ 
+@@ -526,7 +526,7 @@ int fwnode_property_match_property_string(const struct fwnode_handle *fwnode,
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = match_string(array, n, string);
++	ret = __match_string(array, n, string);
+ 	if (ret < 0)
+ 		ret = -ENOENT;
+ 
+diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
+index e12b531f5c2f..c7526eb1e963 100644
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -78,7 +78,7 @@ static int panic_op_write_handler(const char *val,
+ 	int e;
+ 
+ 	strscpy(valcp, val, sizeof(valcp));
+-	e = match_string(ipmi_panic_event_str, -1, strstrip(valcp));
++	e = __match_string(ipmi_panic_event_str, -1, strstrip(valcp));
+ 	if (e < 0)
+ 		return e;
+ 
+diff --git a/drivers/char/ipmi/ipmi_si_hardcode.c b/drivers/char/ipmi/ipmi_si_hardcode.c
+index 0c92fa3eee88..4d3275374a53 100644
+--- a/drivers/char/ipmi/ipmi_si_hardcode.c
++++ b/drivers/char/ipmi/ipmi_si_hardcode.c
+@@ -70,7 +70,7 @@ static void __init ipmi_hardcode_init_one(const char *si_type_str,
+ 	if (!si_type_str || !*si_type_str) {
+ 		p.type = SI_KCS;
+ 	} else {
+-		t = match_string(si_to_str, -1, si_type_str);
++		t = __match_string(si_to_str, -1, si_type_str);
+ 		if (t < 0) {
+ 			pr_warn("Interface type specified for interface %d, was invalid: %s\n",
+ 				i, si_type_str);
+diff --git a/drivers/clk/bcm/clk-bcm2835.c b/drivers/clk/bcm/clk-bcm2835.c
+index fb04734afc80..9446422d5fa8 100644
+--- a/drivers/clk/bcm/clk-bcm2835.c
++++ b/drivers/clk/bcm/clk-bcm2835.c
+@@ -1447,9 +1447,7 @@ static struct clk_hw *bcm2835_register_clock(struct bcm2835_cprman *cprman,
+ 	for (i = 0; i < clock_data->num_mux_parents; i++) {
+ 		parents[i] = clock_data->parents[i];
+ 
+-		ret = match_string(cprman_parent_names,
+-				   ARRAY_SIZE(cprman_parent_names),
+-				   parents[i]);
++		ret = match_string(cprman_parent_names, parents[i]);
+ 		if (ret >= 0)
+ 			parents[i] = cprman->real_parent_names[ret];
+ 	}
+diff --git a/drivers/clk/rockchip/clk.c b/drivers/clk/rockchip/clk.c
+index 73d2cbdc716b..30414d081f46 100644
+--- a/drivers/clk/rockchip/clk.c
++++ b/drivers/clk/rockchip/clk.c
+@@ -266,8 +266,8 @@ static struct clk *rockchip_clk_register_frac_branch(
+ 		struct clk *mux_clk;
+ 		int ret;
+ 
+-		frac->mux_frac_idx = match_string(child->parent_names,
+-						  child->num_parents, name);
++		frac->mux_frac_idx = __match_string(child->parent_names,
++						    child->num_parents, name);
+ 		frac->mux_ops = &clk_mux_ops;
+ 		frac->clk_nb.notifier_call = rockchip_clk_frac_notifier_cb;
+ 
+diff --git a/drivers/clk/tegra/clk-tegra124-emc.c b/drivers/clk/tegra/clk-tegra124-emc.c
+index 2a6db0434281..a2709ed60ee7 100644
+--- a/drivers/clk/tegra/clk-tegra124-emc.c
++++ b/drivers/clk/tegra/clk-tegra124-emc.c
+@@ -20,7 +20,7 @@
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
+ #include <linux/sort.h>
+-#include <linux/string.h>
++#include <linux/string_helpers.h>
+ 
+ #include <soc/tegra/fuse.h>
+ 
+@@ -413,13 +413,12 @@ static int load_one_timing_from_dt(struct tegra_clk_emc *tegra,
  	}
  
- rsa_pkcs1:
-@@ -273,11 +269,6 @@ int x509_note_sig_algo(void *context, size_t hdrlen, unsigned char tag,
- 	ctx->cert->sig->encoding = "raw";
- 	ctx->sig_algo = ctx->last_oid;
- 	return 0;
--sm2:
--	ctx->cert->sig->pkey_algo = "sm2";
--	ctx->cert->sig->encoding = "raw";
--	ctx->sig_algo = ctx->last_oid;
--	return 0;
- ecdsa:
- 	ctx->cert->sig->pkey_algo = "ecdsa";
- 	ctx->cert->sig->encoding = "x962";
-@@ -309,7 +300,6 @@ int x509_note_signature(void *context, size_t hdrlen,
+ 	timing->parent_index = 0xff;
+-	i = match_string(emc_parent_clk_names, ARRAY_SIZE(emc_parent_clk_names),
+-			 __clk_get_name(timing->parent));
++	i = match_string(emc_parent_clk_names, __clk_get_name(timing->parent));
+ 	if (i < 0) {
+ 		pr_err("timing %pOF: %s is not a valid parent\n",
+ 		       node, __clk_get_name(timing->parent));
+ 		clk_put(timing->parent);
+-		return -EINVAL;
++		return i;
+ 	}
  
- 	if (strcmp(ctx->cert->sig->pkey_algo, "rsa") == 0 ||
- 	    strcmp(ctx->cert->sig->pkey_algo, "ecrdsa") == 0 ||
--	    strcmp(ctx->cert->sig->pkey_algo, "sm2") == 0 ||
- 	    strcmp(ctx->cert->sig->pkey_algo, "ecdsa") == 0) {
- 		/* Discard the BIT STRING metadata */
- 		if (vlen < 1 || *(const u8 *)value != 0)
-@@ -514,17 +504,11 @@ int x509_extract_key_data(void *context, size_t hdrlen,
- 	case OID_gost2012PKey512:
- 		ctx->cert->pub->pkey_algo = "ecrdsa";
- 		break;
--	case OID_sm2:
--		ctx->cert->pub->pkey_algo = "sm2";
--		break;
- 	case OID_id_ecPublicKey:
- 		if (parse_OID(ctx->params, ctx->params_size, &oid) != 0)
- 			return -EBADMSG;
+ 	timing->parent_index = i;
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index 1b7e82a0ad2e..b6f52f44625f 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -1117,9 +1117,9 @@ static ssize_t store_energy_performance_preference(
+ 	if (ret != 1)
+ 		return -EINVAL;
  
- 		switch (oid) {
--		case OID_sm2:
--			ctx->cert->pub->pkey_algo = "sm2";
--			break;
- 		case OID_id_prime192v1:
- 			ctx->cert->pub->pkey_algo = "ecdsa-nist-p192";
- 			break;
-diff --git a/crypto/asymmetric_keys/x509_public_key.c b/crypto/asymmetric_keys/x509_public_key.c
-index 00ac7159fba2..8409d7d36cb4 100644
---- a/crypto/asymmetric_keys/x509_public_key.c
-+++ b/crypto/asymmetric_keys/x509_public_key.c
-@@ -7,7 +7,6 @@
- 
- #define pr_fmt(fmt) "X.509: "fmt
- #include <crypto/hash.h>
--#include <crypto/sm2.h>
- #include <keys/asymmetric-parser.h>
- #include <keys/asymmetric-subtype.h>
- #include <keys/system_keyring.h>
-@@ -64,20 +63,8 @@ int x509_get_sig_params(struct x509_certificate *cert)
- 
- 	desc->tfm = tfm;
- 
--	if (strcmp(cert->pub->pkey_algo, "sm2") == 0) {
--		ret = strcmp(sig->hash_algo, "sm3") != 0 ? -EINVAL :
--		      crypto_shash_init(desc) ?:
--		      sm2_compute_z_digest(desc, cert->pub->key,
--					   cert->pub->keylen, sig->digest) ?:
--		      crypto_shash_init(desc) ?:
--		      crypto_shash_update(desc, sig->digest,
--					  sig->digest_size) ?:
--		      crypto_shash_finup(desc, cert->tbs, cert->tbs_size,
--					 sig->digest);
--	} else {
--		ret = crypto_shash_digest(desc, cert->tbs, cert->tbs_size,
--					  sig->digest);
--	}
-+	ret = crypto_shash_digest(desc, cert->tbs, cert->tbs_size,
-+				  sig->digest);
- 
+-	ret = match_string(energy_perf_strings, -1, str_preference);
++	ret = __match_string(energy_perf_strings, -1, str_preference);
  	if (ret < 0)
- 		goto error_2;
-diff --git a/crypto/sm2.c b/crypto/sm2.c
-deleted file mode 100644
-index 5ab120d74c59..000000000000
---- a/crypto/sm2.c
-+++ /dev/null
-@@ -1,498 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--/*
-- * SM2 asymmetric public-key algorithm
-- * as specified by OSCCA GM/T 0003.1-2012 -- 0003.5-2012 SM2 and
-- * described at https://tools.ietf.org/html/draft-shen-sm2-ecdsa-02
-- *
-- * Copyright (c) 2020, Alibaba Group.
-- * Authors: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-- */
--
--#include <linux/module.h>
--#include <linux/mpi.h>
--#include <crypto/internal/akcipher.h>
--#include <crypto/akcipher.h>
--#include <crypto/hash.h>
--#include <crypto/rng.h>
--#include <crypto/sm2.h>
--#include "sm2signature.asn1.h"
--
--/* The default user id as specified in GM/T 0009-2012 */
--#define SM2_DEFAULT_USERID "1234567812345678"
--#define SM2_DEFAULT_USERID_LEN 16
--
--#define MPI_NBYTES(m)   ((mpi_get_nbits(m) + 7) / 8)
--
--struct ecc_domain_parms {
--	const char *desc;           /* Description of the curve.  */
--	unsigned int nbits;         /* Number of bits.  */
--	unsigned int fips:1; /* True if this is a FIPS140-2 approved curve */
--
--	/* The model describing this curve.  This is mainly used to select
--	 * the group equation.
--	 */
--	enum gcry_mpi_ec_models model;
--
--	/* The actual ECC dialect used.  This is used for curve specific
--	 * optimizations and to select encodings etc.
--	 */
--	enum ecc_dialects dialect;
--
--	const char *p;              /* The prime defining the field.  */
--	const char *a, *b;          /* The coefficients.  For Twisted Edwards
--				     * Curves b is used for d.  For Montgomery
--				     * Curves (a,b) has ((A-2)/4,B^-1).
--				     */
--	const char *n;              /* The order of the base point.  */
--	const char *g_x, *g_y;      /* Base point.  */
--	unsigned int h;             /* Cofactor.  */
--};
--
--static const struct ecc_domain_parms sm2_ecp = {
--	.desc = "sm2p256v1",
--	.nbits = 256,
--	.fips = 0,
--	.model = MPI_EC_WEIERSTRASS,
--	.dialect = ECC_DIALECT_STANDARD,
--	.p   = "0xfffffffeffffffffffffffffffffffffffffffff00000000ffffffffffffffff",
--	.a   = "0xfffffffeffffffffffffffffffffffffffffffff00000000fffffffffffffffc",
--	.b   = "0x28e9fa9e9d9f5e344d5a9e4bcf6509a7f39789f515ab8f92ddbcbd414d940e93",
--	.n   = "0xfffffffeffffffffffffffffffffffff7203df6b21c6052b53bbf40939d54123",
--	.g_x = "0x32c4ae2c1f1981195f9904466a39c9948fe30bbff2660be1715a4589334c74c7",
--	.g_y = "0xbc3736a2f4f6779c59bdcee36b692153d0a9877cc62a474002df32e52139f0a0",
--	.h = 1
--};
--
--static int __sm2_set_pub_key(struct mpi_ec_ctx *ec,
--			     const void *key, unsigned int keylen);
--
--static int sm2_ec_ctx_init(struct mpi_ec_ctx *ec)
--{
--	const struct ecc_domain_parms *ecp = &sm2_ecp;
--	MPI p, a, b;
--	MPI x, y;
--	int rc = -EINVAL;
--
--	p = mpi_scanval(ecp->p);
--	a = mpi_scanval(ecp->a);
--	b = mpi_scanval(ecp->b);
--	if (!p || !a || !b)
--		goto free_p;
--
--	x = mpi_scanval(ecp->g_x);
--	y = mpi_scanval(ecp->g_y);
--	if (!x || !y)
--		goto free;
--
--	rc = -ENOMEM;
--
--	ec->Q = mpi_point_new(0);
--	if (!ec->Q)
--		goto free;
--
--	/* mpi_ec_setup_elliptic_curve */
--	ec->G = mpi_point_new(0);
--	if (!ec->G) {
--		mpi_point_release(ec->Q);
--		goto free;
--	}
--
--	mpi_set(ec->G->x, x);
--	mpi_set(ec->G->y, y);
--	mpi_set_ui(ec->G->z, 1);
--
--	rc = -EINVAL;
--	ec->n = mpi_scanval(ecp->n);
--	if (!ec->n) {
--		mpi_point_release(ec->Q);
--		mpi_point_release(ec->G);
--		goto free;
--	}
--
--	ec->h = ecp->h;
--	ec->name = ecp->desc;
--	mpi_ec_init(ec, ecp->model, ecp->dialect, 0, p, a, b);
--
--	rc = 0;
--
--free:
--	mpi_free(x);
--	mpi_free(y);
--free_p:
--	mpi_free(p);
--	mpi_free(a);
--	mpi_free(b);
--
--	return rc;
--}
--
--static void sm2_ec_ctx_deinit(struct mpi_ec_ctx *ec)
--{
--	mpi_ec_deinit(ec);
--
--	memset(ec, 0, sizeof(*ec));
--}
--
--/* RESULT must have been initialized and is set on success to the
-- * point given by VALUE.
-- */
--static int sm2_ecc_os2ec(MPI_POINT result, MPI value)
--{
--	int rc;
--	size_t n;
--	unsigned char *buf;
--	MPI x, y;
--
--	n = MPI_NBYTES(value);
--	buf = kmalloc(n, GFP_KERNEL);
--	if (!buf)
--		return -ENOMEM;
--
--	rc = mpi_print(GCRYMPI_FMT_USG, buf, n, &n, value);
--	if (rc)
--		goto err_freebuf;
--
--	rc = -EINVAL;
--	if (n < 1 || ((n - 1) % 2))
--		goto err_freebuf;
--	/* No support for point compression */
--	if (*buf != 0x4)
--		goto err_freebuf;
--
--	rc = -ENOMEM;
--	n = (n - 1) / 2;
--	x = mpi_read_raw_data(buf + 1, n);
--	if (!x)
--		goto err_freebuf;
--	y = mpi_read_raw_data(buf + 1 + n, n);
--	if (!y)
--		goto err_freex;
--
--	mpi_normalize(x);
--	mpi_normalize(y);
--	mpi_set(result->x, x);
--	mpi_set(result->y, y);
--	mpi_set_ui(result->z, 1);
--
--	rc = 0;
--
--	mpi_free(y);
--err_freex:
--	mpi_free(x);
--err_freebuf:
--	kfree(buf);
--	return rc;
--}
--
--struct sm2_signature_ctx {
--	MPI sig_r;
--	MPI sig_s;
--};
--
--int sm2_get_signature_r(void *context, size_t hdrlen, unsigned char tag,
--				const void *value, size_t vlen)
--{
--	struct sm2_signature_ctx *sig = context;
--
--	if (!value || !vlen)
 -		return -EINVAL;
--
--	sig->sig_r = mpi_read_raw_data(value, vlen);
--	if (!sig->sig_r)
--		return -ENOMEM;
--
--	return 0;
--}
--
--int sm2_get_signature_s(void *context, size_t hdrlen, unsigned char tag,
--				const void *value, size_t vlen)
--{
--	struct sm2_signature_ctx *sig = context;
--
--	if (!value || !vlen)
--		return -EINVAL;
--
--	sig->sig_s = mpi_read_raw_data(value, vlen);
--	if (!sig->sig_s)
--		return -ENOMEM;
--
--	return 0;
--}
--
--static int sm2_z_digest_update(struct shash_desc *desc,
--			       MPI m, unsigned int pbytes)
--{
--	static const unsigned char zero[32];
--	unsigned char *in;
--	unsigned int inlen;
--	int err;
--
--	in = mpi_get_buffer(m, &inlen, NULL);
--	if (!in)
--		return -EINVAL;
--
--	if (inlen < pbytes) {
--		/* padding with zero */
--		err = crypto_shash_update(desc, zero, pbytes - inlen) ?:
--		      crypto_shash_update(desc, in, inlen);
--	} else if (inlen > pbytes) {
--		/* skip the starting zero */
--		err = crypto_shash_update(desc, in + inlen - pbytes, pbytes);
--	} else {
--		err = crypto_shash_update(desc, in, inlen);
--	}
--
--	kfree(in);
--	return err;
--}
--
--static int sm2_z_digest_update_point(struct shash_desc *desc,
--				     MPI_POINT point, struct mpi_ec_ctx *ec,
--				     unsigned int pbytes)
--{
--	MPI x, y;
--	int ret = -EINVAL;
--
--	x = mpi_new(0);
--	y = mpi_new(0);
--
--	ret = mpi_ec_get_affine(x, y, point, ec) ? -EINVAL :
--	      sm2_z_digest_update(desc, x, pbytes) ?:
--	      sm2_z_digest_update(desc, y, pbytes);
--
--	mpi_free(x);
--	mpi_free(y);
--	return ret;
--}
--
--int sm2_compute_z_digest(struct shash_desc *desc,
--			 const void *key, unsigned int keylen, void *dgst)
--{
--	struct mpi_ec_ctx *ec;
--	unsigned int bits_len;
--	unsigned int pbytes;
--	u8 entl[2];
--	int err;
--
--	ec = kmalloc(sizeof(*ec), GFP_KERNEL);
--	if (!ec)
--		return -ENOMEM;
--
--	err = sm2_ec_ctx_init(ec);
--	if (err)
--		goto out_free_ec;
--
--	err = __sm2_set_pub_key(ec, key, keylen);
--	if (err)
--		goto out_deinit_ec;
--
--	bits_len = SM2_DEFAULT_USERID_LEN * 8;
--	entl[0] = bits_len >> 8;
--	entl[1] = bits_len & 0xff;
--
--	pbytes = MPI_NBYTES(ec->p);
--
--	/* ZA = H256(ENTLA | IDA | a | b | xG | yG | xA | yA) */
--	err = crypto_shash_init(desc);
--	if (err)
--		goto out_deinit_ec;
--
--	err = crypto_shash_update(desc, entl, 2);
--	if (err)
--		goto out_deinit_ec;
--
--	err = crypto_shash_update(desc, SM2_DEFAULT_USERID,
--				  SM2_DEFAULT_USERID_LEN);
--	if (err)
--		goto out_deinit_ec;
--
--	err = sm2_z_digest_update(desc, ec->a, pbytes) ?:
--	      sm2_z_digest_update(desc, ec->b, pbytes) ?:
--	      sm2_z_digest_update_point(desc, ec->G, ec, pbytes) ?:
--	      sm2_z_digest_update_point(desc, ec->Q, ec, pbytes);
--	if (err)
--		goto out_deinit_ec;
--
--	err = crypto_shash_final(desc, dgst);
--
--out_deinit_ec:
--	sm2_ec_ctx_deinit(ec);
--out_free_ec:
--	kfree(ec);
--	return err;
--}
--EXPORT_SYMBOL_GPL(sm2_compute_z_digest);
--
--static int _sm2_verify(struct mpi_ec_ctx *ec, MPI hash, MPI sig_r, MPI sig_s)
--{
--	int rc = -EINVAL;
--	struct gcry_mpi_point sG, tP;
--	MPI t = NULL;
--	MPI x1 = NULL, y1 = NULL;
--
--	mpi_point_init(&sG);
--	mpi_point_init(&tP);
--	x1 = mpi_new(0);
--	y1 = mpi_new(0);
--	t = mpi_new(0);
--
--	/* r, s in [1, n-1] */
--	if (mpi_cmp_ui(sig_r, 1) < 0 || mpi_cmp(sig_r, ec->n) > 0 ||
--		mpi_cmp_ui(sig_s, 1) < 0 || mpi_cmp(sig_s, ec->n) > 0) {
--		goto leave;
--	}
--
--	/* t = (r + s) % n, t == 0 */
--	mpi_addm(t, sig_r, sig_s, ec->n);
--	if (mpi_cmp_ui(t, 0) == 0)
--		goto leave;
--
--	/* sG + tP = (x1, y1) */
--	rc = -EBADMSG;
--	mpi_ec_mul_point(&sG, sig_s, ec->G, ec);
--	mpi_ec_mul_point(&tP, t, ec->Q, ec);
--	mpi_ec_add_points(&sG, &sG, &tP, ec);
--	if (mpi_ec_get_affine(x1, y1, &sG, ec))
--		goto leave;
--
--	/* R = (e + x1) % n */
--	mpi_addm(t, hash, x1, ec->n);
--
--	/* check R == r */
--	rc = -EKEYREJECTED;
--	if (mpi_cmp(t, sig_r))
--		goto leave;
--
--	rc = 0;
--
--leave:
--	mpi_point_free_parts(&sG);
--	mpi_point_free_parts(&tP);
--	mpi_free(x1);
--	mpi_free(y1);
--	mpi_free(t);
--
--	return rc;
--}
--
--static int sm2_verify(struct akcipher_request *req)
--{
--	struct crypto_akcipher *tfm = crypto_akcipher_reqtfm(req);
--	struct mpi_ec_ctx *ec = akcipher_tfm_ctx(tfm);
--	unsigned char *buffer;
--	struct sm2_signature_ctx sig;
--	MPI hash;
--	int ret;
--
--	if (unlikely(!ec->Q))
--		return -EINVAL;
--
--	buffer = kmalloc(req->src_len + req->dst_len, GFP_KERNEL);
--	if (!buffer)
--		return -ENOMEM;
--
--	sg_pcopy_to_buffer(req->src,
--		sg_nents_for_len(req->src, req->src_len + req->dst_len),
--		buffer, req->src_len + req->dst_len, 0);
--
--	sig.sig_r = NULL;
--	sig.sig_s = NULL;
--	ret = asn1_ber_decoder(&sm2signature_decoder, &sig,
--				buffer, req->src_len);
--	if (ret)
--		goto error;
--
--	ret = -ENOMEM;
--	hash = mpi_read_raw_data(buffer + req->src_len, req->dst_len);
--	if (!hash)
--		goto error;
--
--	ret = _sm2_verify(ec, hash, sig.sig_r, sig.sig_s);
--
--	mpi_free(hash);
--error:
--	mpi_free(sig.sig_r);
--	mpi_free(sig.sig_s);
--	kfree(buffer);
--	return ret;
--}
--
--static int sm2_set_pub_key(struct crypto_akcipher *tfm,
--			const void *key, unsigned int keylen)
--{
--	struct mpi_ec_ctx *ec = akcipher_tfm_ctx(tfm);
--
--	return __sm2_set_pub_key(ec, key, keylen);
--
--}
--
--static int __sm2_set_pub_key(struct mpi_ec_ctx *ec,
--			     const void *key, unsigned int keylen)
--{
--	MPI a;
--	int rc;
--
--	/* include the uncompressed flag '0x04' */
--	a = mpi_read_raw_data(key, keylen);
--	if (!a)
--		return -ENOMEM;
--
--	mpi_normalize(a);
--	rc = sm2_ecc_os2ec(ec->Q, a);
--	mpi_free(a);
--
--	return rc;
--}
--
--static unsigned int sm2_max_size(struct crypto_akcipher *tfm)
--{
--	/* Unlimited max size */
--	return PAGE_SIZE;
--}
--
--static int sm2_init_tfm(struct crypto_akcipher *tfm)
--{
--	struct mpi_ec_ctx *ec = akcipher_tfm_ctx(tfm);
--
--	return sm2_ec_ctx_init(ec);
--}
--
--static void sm2_exit_tfm(struct crypto_akcipher *tfm)
--{
--	struct mpi_ec_ctx *ec = akcipher_tfm_ctx(tfm);
--
--	sm2_ec_ctx_deinit(ec);
--}
--
--static struct akcipher_alg sm2 = {
--	.verify = sm2_verify,
--	.set_pub_key = sm2_set_pub_key,
--	.max_size = sm2_max_size,
--	.init = sm2_init_tfm,
--	.exit = sm2_exit_tfm,
--	.base = {
--		.cra_name = "sm2",
--		.cra_driver_name = "sm2-generic",
--		.cra_priority = 100,
--		.cra_module = THIS_MODULE,
--		.cra_ctxsize = sizeof(struct mpi_ec_ctx),
--	},
--};
--
--static int __init sm2_init(void)
--{
--	return crypto_register_akcipher(&sm2);
--}
--
--static void __exit sm2_exit(void)
--{
--	crypto_unregister_akcipher(&sm2);
--}
--
--subsys_initcall(sm2_init);
--module_exit(sm2_exit);
--
--MODULE_LICENSE("GPL");
--MODULE_AUTHOR("Tianjia Zhang <tianjia.zhang@linux.alibaba.com>");
--MODULE_DESCRIPTION("SM2 generic algorithm");
--MODULE_ALIAS_CRYPTO("sm2-generic");
-diff --git a/crypto/sm2signature.asn1 b/crypto/sm2signature.asn1
-deleted file mode 100644
-index ab8c0b754d21..000000000000
---- a/crypto/sm2signature.asn1
-+++ /dev/null
-@@ -1,4 +0,0 @@
--Sm2Signature ::= SEQUENCE {
--	sig_r	INTEGER ({ sm2_get_signature_r }),
--	sig_s	INTEGER ({ sm2_get_signature_s })
--}
-diff --git a/crypto/testmgr.c b/crypto/testmgr.c
-index 00f5a6cf341a..f71bdba5597f 100644
---- a/crypto/testmgr.c
-+++ b/crypto/testmgr.c
-@@ -5589,12 +5589,6 @@ static const struct alg_test_desc alg_test_descs[] = {
- 		.suite = {
- 			.hash = __VECS(sha512_tv_template)
- 		}
--	}, {
--		.alg = "sm2",
--		.test = alg_test_akcipher,
--		.suite = {
--			.akcipher = __VECS(sm2_tv_template)
--		}
- 	}, {
- 		.alg = "sm3",
- 		.test = alg_test_hash,
-diff --git a/crypto/testmgr.h b/crypto/testmgr.h
-index 5350cfd9d325..9b38501a17b2 100644
---- a/crypto/testmgr.h
-+++ b/crypto/testmgr.h
-@@ -5774,65 +5774,6 @@ static const struct hash_testvec hmac_streebog512_tv_template[] = {
- 	},
++		return ret;
+ 
+ 	mutex_lock(&amd_pstate_limits_lock);
+ 	ret = amd_pstate_set_energy_pref_index(cpudata, ret);
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index 4b986c044741..1c2ee10415a2 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -832,7 +832,7 @@ static ssize_t store_energy_performance_preference(
+ 	if (ret != 1)
+ 		return -EINVAL;
+ 
+-	ret = match_string(energy_perf_strings, -1, str_preference);
++	ret = __match_string(energy_perf_strings, -1, str_preference);
+ 	if (ret < 0) {
+ 		if (!boot_cpu_has(X86_FEATURE_HWP_EPP))
+ 			return ret;
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_cfg_services.c b/drivers/crypto/intel/qat/qat_common/adf_cfg_services.c
+index 268052294468..4b8c45e8b164 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_cfg_services.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_cfg_services.c
+@@ -3,7 +3,7 @@
+ 
+ #include <linux/export.h>
+ #include <linux/pci.h>
+-#include <linux/string.h>
++#include <linux/string_helpers.h>
+ #include "adf_cfg.h"
+ #include "adf_cfg_services.h"
+ #include "adf_cfg_strings.h"
+@@ -35,8 +35,7 @@ int adf_get_service_enabled(struct adf_accel_dev *accel_dev)
+ 		return ret;
+ 	}
+ 
+-	ret = match_string(adf_cfg_services, ARRAY_SIZE(adf_cfg_services),
+-			   services);
++	ret = match_string(adf_cfg_services, services);
+ 	if (ret < 0)
+ 		dev_err(&GET_DEV(accel_dev),
+ 			"Invalid value of " ADF_SERVICES_ENABLED " param: %s\n",
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index aa93129c3397..624743caac4c 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -481,7 +481,7 @@ int drm_get_panel_orientation_quirk(int width, int height)
+ 		if (!bios_date)
+ 			continue;
+ 
+-		i = match_string(data->bios_dates, -1, bios_date);
++		i = __match_string(data->bios_dates, -1, bios_date);
+ 		if (i >= 0)
+ 			return data->orientation;
+ 	}
+diff --git a/drivers/gpu/drm/i915/display/intel_pipe_crc.c b/drivers/gpu/drm/i915/display/intel_pipe_crc.c
+index 5a468ed6e26c..f9e7c66fd538 100644
+--- a/drivers/gpu/drm/i915/display/intel_pipe_crc.c
++++ b/drivers/gpu/drm/i915/display/intel_pipe_crc.c
+@@ -426,7 +426,7 @@ display_crc_ctl_parse_source(const char *buf, enum intel_pipe_crc_source *s)
+ 		return 0;
+ 	}
+ 
+-	i = match_string(pipe_crc_sources, ARRAY_SIZE(pipe_crc_sources), buf);
++	i = match_string(pipe_crc_sources, buf);
+ 	if (i < 0)
+ 		return i;
+ 
+diff --git a/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c b/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
+index 670c9739e5e1..7fb9f5345654 100644
+--- a/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
++++ b/drivers/gpu/drm/nouveau/dispnv04/tvnv17.c
+@@ -645,8 +645,8 @@ static int nv17_tv_create_resources(struct drm_encoder *encoder,
+ 	int i;
+ 
+ 	if (nouveau_tv_norm) {
+-		i = match_string(nv17_tv_norm_names, num_tv_norms,
+-				 nouveau_tv_norm);
++		i = __match_string(nv17_tv_norm_names, num_tv_norms,
++				   nouveau_tv_norm);
+ 		if (i < 0)
+ 			NV_WARN(drm, "Invalid TV norm setting \"%s\"\n",
+ 				nouveau_tv_norm);
+diff --git a/drivers/gpu/drm/nouveau/dispnv50/crc.c b/drivers/gpu/drm/nouveau/dispnv50/crc.c
+index 5936b6b3b15d..ea35d283b2d2 100644
+--- a/drivers/gpu/drm/nouveau/dispnv50/crc.c
++++ b/drivers/gpu/drm/nouveau/dispnv50/crc.c
+@@ -38,7 +38,7 @@ static int nv50_crc_parse_source(const char *buf, enum nv50_crc_source *s)
+ 		return 0;
+ 	}
+ 
+-	i = match_string(nv50_crc_sources, ARRAY_SIZE(nv50_crc_sources), buf);
++	i = match_string(nv50_crc_sources, buf);
+ 	if (i < 0)
+ 		return i;
+ 
+diff --git a/drivers/hwmon/ltc4282.c b/drivers/hwmon/ltc4282.c
+index 4f608a3790fb..3546f5a7e7bd 100644
+--- a/drivers/hwmon/ltc4282.c
++++ b/drivers/hwmon/ltc4282.c
+@@ -21,7 +21,7 @@
+ #include <linux/mutex.h>
+ #include <linux/regmap.h>
+ #include <linux/property.h>
+-#include <linux/string.h>
++#include <linux/string_helpers.h>
+ #include <linux/units.h>
+ #include <linux/util_macros.h>
+ 
+@@ -1282,8 +1282,7 @@ static int ltc4282_gpio_setup(struct ltc4282_state *st, struct device *dev)
+ 
+ 	ret = device_property_read_string(dev, "adi,gpio1-mode", &func);
+ 	if (!ret) {
+-		ret = match_string(ltc4282_gpio1_modes,
+-				   ARRAY_SIZE(ltc4282_gpio1_modes), func);
++		ret = match_string(ltc4282_gpio1_modes, func);
+ 		if (ret < 0)
+ 			return dev_err_probe(dev, ret,
+ 					     "Invalid func(%s) for gpio1\n",
+@@ -1298,8 +1297,7 @@ static int ltc4282_gpio_setup(struct ltc4282_state *st, struct device *dev)
+ 
+ 	ret = device_property_read_string(dev, "adi,gpio2-mode", &func);
+ 	if (!ret) {
+-		ret = match_string(ltc4282_gpio2_modes,
+-				   ARRAY_SIZE(ltc4282_gpio2_modes), func);
++		ret = match_string(ltc4282_gpio2_modes, func);
+ 		if (ret < 0)
+ 			return dev_err_probe(dev, ret,
+ 					     "Invalid func(%s) for gpio2\n",
+@@ -1463,8 +1461,7 @@ static int ltc4282_setup(struct ltc4282_state *st, struct device *dev)
+ 	ret = device_property_read_string(dev, "adi,overvoltage-dividers",
+ 					  &divider);
+ 	if (!ret) {
+-		int div = match_string(ltc4282_dividers,
+-				       ARRAY_SIZE(ltc4282_dividers), divider);
++		int div = match_string(ltc4282_dividers, divider);
+ 		if (div < 0)
+ 			return dev_err_probe(dev, -EINVAL,
+ 					     "Invalid val(%s) for adi,overvoltage-divider\n",
+@@ -1478,8 +1475,7 @@ static int ltc4282_setup(struct ltc4282_state *st, struct device *dev)
+ 	ret = device_property_read_string(dev, "adi,undervoltage-dividers",
+ 					  &divider);
+ 	if (!ret) {
+-		int div = match_string(ltc4282_dividers,
+-				       ARRAY_SIZE(ltc4282_dividers), divider);
++		int div = match_string(ltc4282_dividers, divider);
+ 		if (div < 0)
+ 			return dev_err_probe(dev, -EINVAL,
+ 					     "Invalid val(%s) for adi,undervoltage-divider\n",
+diff --git a/drivers/hwmon/nct6775-platform.c b/drivers/hwmon/nct6775-platform.c
+index 9aa4dcf4a6f3..eb7eef9d2a76 100644
+--- a/drivers/hwmon/nct6775-platform.c
++++ b/drivers/hwmon/nct6775-platform.c
+@@ -1514,13 +1514,11 @@ static int __init sensors_nct6775_platform_init(void)
+ 
+ 	if (board_name && board_vendor &&
+ 	    !strcmp(board_vendor, "ASUSTeK COMPUTER INC.")) {
+-		err = match_string(asus_wmi_boards, ARRAY_SIZE(asus_wmi_boards),
+-				   board_name);
++		err = match_string(asus_wmi_boards, board_name);
+ 		if (err >= 0)
+ 			access = nct6775_determine_access(ASUSWMI_DEVICE_UID);
+ 
+-		err = match_string(asus_msi_boards, ARRAY_SIZE(asus_msi_boards),
+-				   board_name);
++		err = match_string(asus_msi_boards, board_name);
+ 		if (err >= 0)
+ 			access = nct6775_determine_access(ASUSMSI_DEVICE_UID);
+ 	}
+diff --git a/drivers/hwtracing/intel_th/msu.c b/drivers/hwtracing/intel_th/msu.c
+index be63d5b8f193..b083f1360111 100644
+--- a/drivers/hwtracing/intel_th/msu.c
++++ b/drivers/hwtracing/intel_th/msu.c
+@@ -1901,7 +1901,7 @@ mode_store(struct device *dev, struct device_attribute *attr, const char *buf,
+ 	if (!mode)
+ 		return -ENOMEM;
+ 
+-	i = match_string(msc_mode, ARRAY_SIZE(msc_mode), mode);
++	i = match_string(msc_mode, mode);
+ 	if (i >= 0) {
+ 		kfree(mode);
+ 		goto found;
+diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
+index d2d2a6dbe29f..0eccb636b2fe 100644
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -111,7 +111,7 @@
+ #include <linux/io.h>
+ #include <linux/dmi.h>
+ #include <linux/slab.h>
+-#include <linux/string.h>
++#include <linux/string_helpers.h>
+ #include <linux/completion.h>
+ #include <linux/err.h>
+ #include <linux/platform_device.h>
+@@ -1186,7 +1186,7 @@ static acpi_status check_acpi_smo88xx_device(acpi_handle obj_handle,
+ 	if (!hid)
+ 		goto smo88xx_not_found;
+ 
+-	i = match_string(acpi_smo8800_ids, ARRAY_SIZE(acpi_smo8800_ids), hid);
++	i = match_string(acpi_smo8800_ids, hid);
+ 	if (i < 0)
+ 		goto smo88xx_not_found;
+ 
+diff --git a/drivers/leds/leds-sun50i-a100.c b/drivers/leds/leds-sun50i-a100.c
+index 119eff9471f0..4220f1f8a503 100644
+--- a/drivers/leds/leds-sun50i-a100.c
++++ b/drivers/leds/leds-sun50i-a100.c
+@@ -256,7 +256,7 @@ static int sun50i_a100_ledc_parse_format(struct device *dev,
+ 
+ 	device_property_read_string(dev, "allwinner,pixel-format", &format);
+ 
+-	i = match_string(sun50i_a100_ledc_formats, ARRAY_SIZE(sun50i_a100_ledc_formats), format);
++	i = match_string(sun50i_a100_ledc_formats, format);
+ 	if (i < 0)
+ 		return dev_err_probe(dev, i, "Bad pixel format '%s'\n", format);
+ 
+diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
+index 949feb03d4f8..06c208d8a992 100644
+--- a/drivers/mfd/omap-usb-host.c
++++ b/drivers/mfd/omap-usb-host.c
+@@ -498,7 +498,7 @@ static int usbhs_omap_get_dt_pdata(struct device *dev,
+ 			continue;
+ 
+ 		/* get 'enum usbhs_omap_port_mode' from port mode string */
+-		ret = match_string(port_modes, ARRAY_SIZE(port_modes), mode);
++		ret = match_string(port_modes, mode);
+ 		if (ret < 0) {
+ 			dev_warn(dev, "Invalid port%d-mode \"%s\" in device tree\n",
+ 					i, mode);
+diff --git a/drivers/mmc/host/sdhci-xenon-phy.c b/drivers/mmc/host/sdhci-xenon-phy.c
+index cc9d28b75eb9..1865e26ae736 100644
+--- a/drivers/mmc/host/sdhci-xenon-phy.c
++++ b/drivers/mmc/host/sdhci-xenon-phy.c
+@@ -135,15 +135,14 @@ struct xenon_emmc_phy_regs {
+ 	u32 logic_timing_val;
  };
  
--/*
-- * SM2 test vectors.
-- */
--static const struct akcipher_testvec sm2_tv_template[] = {
--	{ /* Generated from openssl */
--	.key =
--	"\x04"
--	"\x8e\xa0\x33\x69\x91\x7e\x3d\xec\xad\x8e\xf0\x45\x5e\x13\x3e\x68"
--	"\x5b\x8c\xab\x5c\xc6\xc8\x50\xdf\x91\x00\xe0\x24\x73\x4d\x31\xf2"
--	"\x2e\xc0\xd5\x6b\xee\xda\x98\x93\xec\xd8\x36\xaa\xb9\xcf\x63\x82"
--	"\xef\xa7\x1a\x03\xed\x16\xba\x74\xb8\x8b\xf9\xe5\x70\x39\xa4\x70",
--	.key_len = 65,
--	.param_len = 0,
--	.c =
--	"\x30\x45"
--	"\x02\x20"
--	"\x70\xab\xb6\x7d\xd6\x54\x80\x64\x42\x7e\x2d\x05\x08\x36\xc9\x96"
--	"\x25\xc2\xbb\xff\x08\xe5\x43\x15\x5e\xf3\x06\xd9\x2b\x2f\x0a\x9f"
--	"\x02\x21"
--	"\x00"
--	"\xbf\x21\x5f\x7e\x5d\x3f\x1a\x4d\x8f\x84\xc2\xe9\xa6\x4c\xa4\x18"
--	"\xb2\xb8\x46\xf4\x32\x96\xfa\x57\xc6\x29\xd4\x89\xae\xcc\xda\xdb",
--	.c_size = 71,
--	.algo = OID_SM2_with_SM3,
--	.m =
--	"\x47\xa7\xbf\xd3\xda\xc4\x79\xee\xda\x8b\x4f\xe8\x40\x94\xd4\x32"
--	"\x8f\xf1\xcd\x68\x4d\xbd\x9b\x1d\xe0\xd8\x9a\x5d\xad\x85\x47\x5c",
--	.m_size = 32,
--	.public_key_vec = true,
--	.siggen_sigver_test = true,
--	},
--	{ /* From libgcrypt */
--	.key =
--	"\x04"
--	"\x87\x59\x38\x9a\x34\xaa\xad\x07\xec\xf4\xe0\xc8\xc2\x65\x0a\x44"
--	"\x59\xc8\xd9\x26\xee\x23\x78\x32\x4e\x02\x61\xc5\x25\x38\xcb\x47"
--	"\x75\x28\x10\x6b\x1e\x0b\x7c\x8d\xd5\xff\x29\xa9\xc8\x6a\x89\x06"
--	"\x56\x56\xeb\x33\x15\x4b\xc0\x55\x60\x91\xef\x8a\xc9\xd1\x7d\x78",
--	.key_len = 65,
--	.param_len = 0,
--	.c =
--	"\x30\x44"
--	"\x02\x20"
--	"\xd9\xec\xef\xe8\x5f\xee\x3c\x59\x57\x8e\x5b\xab\xb3\x02\xe1\x42"
--	"\x4b\x67\x2c\x0b\x26\xb6\x51\x2c\x3e\xfc\xc6\x49\xec\xfe\x89\xe5"
--	"\x02\x20"
--	"\x43\x45\xd0\xa5\xff\xe5\x13\x27\x26\xd0\xec\x37\xad\x24\x1e\x9a"
--	"\x71\x9a\xa4\x89\xb0\x7e\x0f\xc4\xbb\x2d\x50\xd0\xe5\x7f\x7a\x68",
--	.c_size = 70,
--	.algo = OID_SM2_with_SM3,
--	.m =
--	"\x11\x22\x33\x44\x55\x66\x77\x88\x99\xaa\xbb\xcc\xdd\xee\xff\x00"
--	"\x12\x34\x56\x78\x9a\xbc\xde\xf0\x12\x34\x56\x78\x9a\xbc\xde\xf0",
--	.m_size = 32,
--	.public_key_vec = true,
--	.siggen_sigver_test = true,
--	},
+-static const char * const phy_types[] = {
+-	"emmc 5.0 phy",
+-	"emmc 5.1 phy"
 -};
 -
- /* Example vectors below taken from
-  * http://www.oscca.gov.cn/UpFile/20101222141857786.pdf
-  *
-diff --git a/include/crypto/sm2.h b/include/crypto/sm2.h
-deleted file mode 100644
-index 04a92c1013c8..000000000000
---- a/include/crypto/sm2.h
-+++ /dev/null
-@@ -1,28 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-or-later */
--/*
-- * sm2.h - SM2 asymmetric public-key algorithm
-- * as specified by OSCCA GM/T 0003.1-2012 -- 0003.5-2012 SM2 and
-- * described at https://tools.ietf.org/html/draft-shen-sm2-ecdsa-02
-- *
-- * Copyright (c) 2020, Alibaba Group.
-- * Written by Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
-- */
+ enum xenon_phy_type_enum {
+ 	EMMC_5_0_PHY,
+ 	EMMC_5_1_PHY,
+-	NR_PHY_TYPES
++};
++
++static const char * const phy_types[] = {
++	[EMMC_5_0_PHY] = "emmc 5.0 phy",
++	[EMMC_5_1_PHY] = "emmc 5.1 phy",
+ };
+ 
+ enum soc_pad_ctrl_type {
+@@ -852,7 +851,7 @@ static int xenon_add_phy(struct device *dev, struct sdhci_host *host,
+ 	struct xenon_priv *priv = sdhci_pltfm_priv(pltfm_host);
+ 	int ret;
+ 
+-	priv->phy_type = match_string(phy_types, NR_PHY_TYPES, phy_name);
++	priv->phy_type = match_string(phy_types, phy_name);
+ 	if (priv->phy_type < 0) {
+ 		dev_err(mmc_dev(host->mmc),
+ 			"Unable to determine PHY name %s. Use default eMMC 5.1 PHY\n",
+diff --git a/drivers/mtd/nand/raw/nand_macronix.c b/drivers/mtd/nand/raw/nand_macronix.c
+index e229de32ff50..8b3fb2c72bd6 100644
+--- a/drivers/mtd/nand/raw/nand_macronix.c
++++ b/drivers/mtd/nand/raw/nand_macronix.c
+@@ -178,8 +178,7 @@ static void macronix_nand_fix_broken_get_timings(struct nand_chip *chip)
+ 	if (!chip->parameters.supports_set_get_features)
+ 		return;
+ 
+-	i = match_string(broken_get_timings, ARRAY_SIZE(broken_get_timings),
+-			 chip->parameters.model);
++	i = match_string(broken_get_timings, chip->parameters.model);
+ 	if (i < 0)
+ 		return;
+ 
+@@ -317,8 +316,7 @@ static void macronix_nand_deep_power_down_support(struct nand_chip *chip)
+ 		"MX30UF4G28AD",
+ 	};
+ 
+-	i = match_string(deep_power_down_dev, ARRAY_SIZE(deep_power_down_dev),
+-			 chip->parameters.model);
++	i = match_string(deep_power_down_dev, chip->parameters.model);
+ 	if (i < 0)
+ 		return;
+ 
+@@ -461,9 +459,7 @@ static void macronix_nand_setup_otp(struct nand_chip *chip)
+ 	};
+ 	struct mtd_info *mtd;
+ 
+-	if (match_string(supported_otp_models,
+-			 ARRAY_SIZE(supported_otp_models),
+-			 chip->parameters.model) < 0)
++	if (match_string(supported_otp_models, chip->parameters.model) < 0)
+ 		return;
+ 
+ 	if (!chip->parameters.supports_set_get_features)
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.c b/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.c
+index 557c591a6ce3..cff23dc56641 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cudbg_lib.c
+@@ -4,7 +4,7 @@
+  */
+ 
+ #include <linux/sort.h>
+-#include <linux/string.h>
++#include <linux/string_helpers.h>
+ 
+ #include "t4_regs.h"
+ #include "cxgb4.h"
+@@ -1191,9 +1191,9 @@ static int cudbg_get_mem_region(struct adapter *padap,
+ 	if (rc)
+ 		return rc;
+ 
+-	i = match_string(cudbg_region, ARRAY_SIZE(cudbg_region), region_name);
++	i = match_string(cudbg_region, region_name);
+ 	if (i < 0)
+-		return -EINVAL;
++		return i;
+ 
+ 	idx = i;
+ 	for (i = 0; i < meminfo->mem_c; i++) {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+index 79f4ac8cbc72..58388ca9ecfa 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+@@ -724,7 +724,7 @@ iwl_dbgfs_bt_force_ant_write(struct iwl_mvm *mvm, char *buf,
+ 	};
+ 	int ret, bt_force_ant_mode;
+ 
+-	ret = match_string(modes_str, ARRAY_SIZE(modes_str), buf);
++	ret = match_string(modes_str, buf);
+ 	if (ret < 0)
+ 		return ret;
+ 
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index ac6293c24976..2d317c7e1cea 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -210,7 +210,7 @@ void pcie_ecrc_get_policy(char *str)
+ {
+ 	int i;
+ 
+-	i = match_string(ecrc_policy_str, ARRAY_SIZE(ecrc_policy_str), str);
++	i = match_string(ecrc_policy_str, str);
+ 	if (i < 0)
+ 		return;
+ 
+diff --git a/drivers/phy/mediatek/phy-mtk-tphy.c b/drivers/phy/mediatek/phy-mtk-tphy.c
+index 25b86bbb9cec..762674acb7fc 100644
+--- a/drivers/phy/mediatek/phy-mtk-tphy.c
++++ b/drivers/phy/mediatek/phy-mtk-tphy.c
+@@ -389,7 +389,7 @@ static int u2_phy_params_show(struct seq_file *sf, void *unused)
+ 	u32 val = 0;
+ 	int ret;
+ 
+-	ret = match_string(u2_phy_files, ARRAY_SIZE(u2_phy_files), fname);
++	ret = match_string(u2_phy_files, fname);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -464,7 +464,7 @@ static ssize_t u2_phy_params_write(struct file *file, const char __user *ubuf,
+ 	if (rc)
+ 		return rc;
+ 
+-	ret = match_string(u2_phy_files, ARRAY_SIZE(u2_phy_files), fname);
++	ret = match_string(u2_phy_files, fname);
+ 	if (ret < 0)
+ 		return (ssize_t)ret;
+ 
+@@ -530,7 +530,7 @@ static int u3_phy_params_show(struct seq_file *sf, void *unused)
+ 	u32 tmp;
+ 	int ret;
+ 
+-	ret = match_string(u3_phy_files, ARRAY_SIZE(u3_phy_files), fname);
++	ret = match_string(u3_phy_files, fname);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -590,7 +590,7 @@ static ssize_t u3_phy_params_write(struct file *file, const char __user *ubuf,
+ 	if (rc)
+ 		return rc;
+ 
+-	ret = match_string(u3_phy_files, ARRAY_SIZE(u3_phy_files), fname);
++	ret = match_string(u3_phy_files, fname);
+ 	if (ret < 0)
+ 		return (ssize_t)ret;
+ 
+diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
+index cfdb54b6070a..5fb8656aa31d 100644
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -123,7 +123,7 @@ int tegra_xusb_lane_parse_dt(struct tegra_xusb_lane *lane,
+ 	if (err < 0)
+ 		return err;
+ 
+-	err = match_string(lane->soc->funcs, lane->soc->num_funcs, function);
++	err = __match_string(lane->soc->funcs, lane->soc->num_funcs, function);
+ 	if (err < 0) {
+ 		dev_err(dev, "invalid function \"%s\" for lane \"%pOFn\"\n",
+ 			function, np);
+@@ -748,7 +748,7 @@ static int tegra_xusb_usb2_port_parse_dt(struct tegra_xusb_usb2_port *usb2)
+ 	usb2->internal = of_property_read_bool(np, "nvidia,internal");
+ 
+ 	if (!of_property_read_string(np, "mode", &mode)) {
+-		int err = match_string(modes, ARRAY_SIZE(modes), mode);
++		int err = match_string(modes, mode);
+ 		if (err < 0) {
+ 			dev_err(&port->dev, "invalid value %s for \"mode\"\n",
+ 				mode);
+diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+index 4c4ada06423d..55b5464595b5 100644
+--- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
++++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+@@ -352,7 +352,7 @@ static int armada_37xx_pmx_set_by_name(struct pinctrl_dev *pctldev,
+ 
+ 	dev_dbg(dev, "enable function %s group %s\n", name, grp->name);
+ 
+-	func = match_string(grp->funcs, NB_FUNCS, name);
++	func = match_string(grp->funcs, name);
+ 	if (func < 0)
+ 		return -ENOTSUPP;
+ 
+@@ -885,7 +885,7 @@ static int armada_37xx_fill_group(struct armada_37xx_pinctrl *info)
+ 		for (j = 0; j < grp->extra_npins; j++)
+ 			grp->pins[i+j] = grp->extra_pin + j;
+ 
+-		for (f = 0; (f < NB_FUNCS) && grp->funcs[f]; f++) {
++		for (f = 0; (f < ARRAY_SIZE(grp->funcs)) && grp->funcs[f]; f++) {
+ 			int ret;
+ 			/* check for unique functions and count groups */
+ 			ret = armada_37xx_add_function(info->funcs, &funcsize,
+@@ -937,7 +937,7 @@ static int armada_37xx_fill_func(struct armada_37xx_pinctrl *info)
+ 			struct armada_37xx_pin_group *gp = &info->groups[g];
+ 			int f;
+ 
+-			f = match_string(gp->funcs, NB_FUNCS, name);
++			f = match_string(gp->funcs, name);
+ 			if (f < 0)
+ 				continue;
+ 
+diff --git a/drivers/pinctrl/pinmux.c b/drivers/pinctrl/pinmux.c
+index addba55334d9..af2334b16b94 100644
+--- a/drivers/pinctrl/pinmux.c
++++ b/drivers/pinctrl/pinmux.c
+@@ -23,7 +23,7 @@
+ #include <linux/radix-tree.h>
+ #include <linux/seq_file.h>
+ #include <linux/slab.h>
+-#include <linux/string.h>
++#include <linux/string_helpers.h>
+ 
+ #include <linux/pinctrl/machine.h>
+ #include <linux/pinctrl/pinctrl.h>
+@@ -376,7 +376,7 @@ int pinmux_map_to_setting(const struct pinctrl_map *map,
+ 	}
+ 	if (map->data.mux.group) {
+ 		group = map->data.mux.group;
+-		ret = match_string(groups, num_groups, group);
++		ret = __match_string(groups, num_groups, group);
+ 		if (ret < 0) {
+ 			dev_err(pctldev->dev,
+ 				"invalid group \"%s\" for function \"%s\"\n",
+@@ -730,7 +730,7 @@ static ssize_t pinmux_select_write(struct file *file, const char __user *user_bu
+ 		goto exit_free_buf;
+ 	}
+ 
+-	ret = match_string(groups, num_groups, gname);
++	ret = __match_string(groups, num_groups, gname);
+ 	if (ret < 0) {
+ 		dev_err(pctldev->dev, "invalid group %s", gname);
+ 		goto exit_free_buf;
+diff --git a/drivers/platform/x86/hp/hp-wmi.c b/drivers/platform/x86/hp/hp-wmi.c
+index 5fa553023842..ad7a9063c5d2 100644
+--- a/drivers/platform/x86/hp/hp-wmi.c
++++ b/drivers/platform/x86/hp/hp-wmi.c
+@@ -25,7 +25,7 @@
+ #include <linux/hwmon.h>
+ #include <linux/acpi.h>
+ #include <linux/rfkill.h>
+-#include <linux/string.h>
++#include <linux/string_helpers.h>
+ #include <linux/dmi.h>
+ 
+ MODULE_AUTHOR("Matthew Garrett <mjg59@srcf.ucam.org>");
+@@ -443,18 +443,15 @@ static int hp_wmi_get_tablet_mode(void)
+ {
+ 	char system_device_mode[4] = { 0 };
+ 	const char *chassis_type;
+-	bool tablet_found;
+ 	int ret;
+ 
+ 	chassis_type = dmi_get_system_info(DMI_CHASSIS_TYPE);
+ 	if (!chassis_type)
+ 		return -ENODEV;
+ 
+-	tablet_found = match_string(tablet_chassis_types,
+-				    ARRAY_SIZE(tablet_chassis_types),
+-				    chassis_type) >= 0;
+-	if (!tablet_found)
+-		return -ENODEV;
++	ret = match_string(tablet_chassis_types, chassis_type);
++	if (ret < 0)
++		return ret;
+ 
+ 	ret = hp_wmi_perform_query(HPWMI_SYSTEM_DEVICE_MODE, HPWMI_READ,
+ 				   system_device_mode, zero_if_sup(system_device_mode),
+@@ -490,9 +487,7 @@ static bool is_omen_thermal_profile(void)
+ 	if (!board_name)
+ 		return false;
+ 
+-	return match_string(omen_thermal_profile_boards,
+-			    ARRAY_SIZE(omen_thermal_profile_boards),
+-			    board_name) >= 0;
++	return match_string(omen_thermal_profile_boards, board_name) >= 0;
+ }
+ 
+ static int omen_get_thermal_policy_version(void)
+@@ -503,9 +498,9 @@ static int omen_get_thermal_policy_version(void)
+ 	const char *board_name = dmi_get_system_info(DMI_BOARD_NAME);
+ 
+ 	if (board_name) {
+-		int matches = match_string(omen_thermal_profile_force_v0_boards,
+-			ARRAY_SIZE(omen_thermal_profile_force_v0_boards),
+-			board_name);
++		int matches;
++
++		matches = match_string(omen_thermal_profile_force_v0_boards, board_name);
+ 		if (matches >= 0)
+ 			return 0;
+ 	}
+@@ -1230,9 +1225,7 @@ static bool has_omen_thermal_profile_ec_timer(void)
+ 	if (!board_name)
+ 		return false;
+ 
+-	return match_string(omen_timed_thermal_profile_boards,
+-			    ARRAY_SIZE(omen_timed_thermal_profile_boards),
+-			    board_name) >= 0;
++	return match_string(omen_timed_thermal_profile_boards, board_name) >= 0;
+ }
+ 
+ inline int omen_thermal_profile_ec_flags_set(enum hp_thermal_profile_omen_flags flags)
+@@ -1376,9 +1369,7 @@ static bool is_victus_thermal_profile(void)
+ 	if (!board_name)
+ 		return false;
+ 
+-	return match_string(victus_thermal_profile_boards,
+-			    ARRAY_SIZE(victus_thermal_profile_boards),
+-			    board_name) >= 0;
++	return match_string(victus_thermal_profile_boards, board_name) >= 0;
+ }
+ 
+ static int platform_profile_victus_get(struct platform_profile_handler *pprof,
+diff --git a/drivers/platform/x86/msi-ec.c b/drivers/platform/x86/msi-ec.c
+index f19504dbf164..a1b2dbb1a10f 100644
+--- a/drivers/platform/x86/msi-ec.c
++++ b/drivers/platform/x86/msi-ec.c
+@@ -25,7 +25,7 @@
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/seq_file.h>
+-#include <linux/string.h>
++#include <linux/string_helpers.h>
+ 
+ #define SM_ECO_NAME		"eco"
+ #define SM_COMFORT_NAME		"comfort"
+@@ -1316,7 +1316,7 @@ static int __init load_configuration(void)
+ 
+ 	/* load the suitable configuration, if exists */
+ 	for (int i = 0; CONFIGS[i]; i++) {
+-		if (match_string(CONFIGS[i]->allowed_fw, -1, fw_version) != -EINVAL) {
++		if (__match_string(CONFIGS[i]->allowed_fw, -1, fw_version) >= 0) {
+ 			conf = *CONFIGS[i];
+ 			conf.allowed_fw = NULL;
+ 			return 0;
+diff --git a/drivers/power/supply/ab8500_btemp.c b/drivers/power/supply/ab8500_btemp.c
+index 56f136b2d071..824c71965150 100644
+--- a/drivers/power/supply/ab8500_btemp.c
++++ b/drivers/power/supply/ab8500_btemp.c
+@@ -556,7 +556,7 @@ static int ab8500_btemp_get_ext_psy_data(struct device *dev, void *data)
+ 	 * For all psy where the name of your driver
+ 	 * appears in any supplied_to
+ 	 */
+-	j = match_string(supplicants, ext->num_supplicants, psy->desc->name);
++	j = __match_string(supplicants, ext->num_supplicants, psy->desc->name);
+ 	if (j < 0)
+ 		return 0;
+ 
+diff --git a/drivers/power/supply/ab8500_chargalg.c b/drivers/power/supply/ab8500_chargalg.c
+index 55ab7a28056e..230a4efee210 100644
+--- a/drivers/power/supply/ab8500_chargalg.c
++++ b/drivers/power/supply/ab8500_chargalg.c
+@@ -857,7 +857,7 @@ static int ab8500_chargalg_get_ext_psy_data(struct device *dev, void *data)
+ 	psy = (struct power_supply *)data;
+ 	di = power_supply_get_drvdata(psy);
+ 	/* For all psy where the driver name appears in any supplied_to */
+-	j = match_string(supplicants, ext->num_supplicants, psy->desc->name);
++	j = __match_string(supplicants, ext->num_supplicants, psy->desc->name);
+ 	if (j < 0)
+ 		return 0;
+ 
+diff --git a/drivers/power/supply/ab8500_charger.c b/drivers/power/supply/ab8500_charger.c
+index 9b34d1a60f66..5eae14ca92fe 100644
+--- a/drivers/power/supply/ab8500_charger.c
++++ b/drivers/power/supply/ab8500_charger.c
+@@ -1902,7 +1902,7 @@ static int ab8500_charger_get_ext_psy_data(struct device *dev, void *data)
+ 	 * in practice what we will find will always be "ab8500_fg" as
+ 	 * the fuel gauge is responsible of keeping track of VBAT.
+ 	 */
+-	j = match_string(supplicants, ext->num_supplicants, psy->desc->name);
++	j = __match_string(supplicants, ext->num_supplicants, psy->desc->name);
+ 	if (j < 0)
+ 		return 0;
+ 
+diff --git a/drivers/power/supply/ab8500_fg.c b/drivers/power/supply/ab8500_fg.c
+index 2ccaf6116c09..c3bc2833fc7e 100644
+--- a/drivers/power/supply/ab8500_fg.c
++++ b/drivers/power/supply/ab8500_fg.c
+@@ -2197,7 +2197,7 @@ static int ab8500_fg_get_ext_psy_data(struct device *dev, void *data)
+ 	 * For all psy where the name of your driver
+ 	 * appears in any supplied_to
+ 	 */
+-	j = match_string(supplicants, ext->num_supplicants, psy->desc->name);
++	j = __match_string(supplicants, ext->num_supplicants, psy->desc->name);
+ 	if (j < 0)
+ 		return 0;
+ 
+diff --git a/drivers/staging/gdm724x/gdm_tty.c b/drivers/staging/gdm724x/gdm_tty.c
+index 15c246d3b1a3..e87987a93860 100644
+--- a/drivers/staging/gdm724x/gdm_tty.c
++++ b/drivers/staging/gdm724x/gdm_tty.c
+@@ -53,10 +53,9 @@ static int gdm_tty_install(struct tty_driver *driver, struct tty_struct *tty)
+ 	struct gdm *gdm = NULL;
+ 	int ret;
+ 
+-	ret = match_string(DRIVER_STRING, TTY_MAX_COUNT,
+-			   tty->driver->driver_name);
++	ret = match_string(DRIVER_STRING, tty->driver->driver_name);
+ 	if (ret < 0)
+-		return -ENODEV;
++		return ret;
+ 
+ 	mutex_lock(&gdm_table_lock);
+ 	gdm = gdm_table[ret][tty->index];
+diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_rfim.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_rfim.c
+index e56db75a94fb..dbd176b0fb1f 100644
+--- a/drivers/thermal/intel/int340x_thermal/processor_thermal_rfim.c
++++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_rfim.c
+@@ -111,7 +111,7 @@ static ssize_t suffix##_show(struct device *dev,\
+ 		match_strs = (const char **)fivr_strings;\
+ 		mmio_regs = tgl_fivr_mmio_regs;\
+ 	} \
+-	ret = match_string(match_strs, -1, attr->attr.name);\
++	ret = __match_string(match_strs, -1, attr->attr.name);\
+ 	if (ret < 0)\
+ 		return ret;\
+ 	reg_val = readl((void __iomem *) (proc_priv->mmio_base + mmio_regs[ret].offset));\
+@@ -145,7 +145,7 @@ static ssize_t suffix##_store(struct device *dev,\
+ 		mmio_regs = tgl_fivr_mmio_regs;\
+ 	} \
+ 	\
+-	ret = match_string(match_strs, -1, attr->attr.name);\
++	ret = __match_string(match_strs, -1, attr->attr.name);\
+ 	if (ret < 0)\
+ 		return ret;\
+ 	if (mmio_regs[ret].read_only)\
+diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_wt_req.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_wt_req.c
+index f298e7442662..57f456befb34 100644
+--- a/drivers/thermal/intel/int340x_thermal/processor_thermal_wt_req.c
++++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_wt_req.c
+@@ -50,7 +50,7 @@ static ssize_t workload_type_store(struct device *dev,
+ 	if (ret != 1)
+ 		return -EINVAL;
+ 
+-	ret = match_string(workload_types, -1, str_preference);
++	ret = __match_string(workload_types, -1, str_preference);
+ 	if (ret < 0)
+ 		return ret;
+ 
+diff --git a/drivers/usb/common/common.c b/drivers/usb/common/common.c
+index b84efae26e15..657be0162dd9 100644
+--- a/drivers/usb/common/common.c
++++ b/drivers/usb/common/common.c
+@@ -114,11 +114,11 @@ enum usb_device_speed usb_get_maximum_speed(struct device *dev)
+ 	if (ret < 0)
+ 		return USB_SPEED_UNKNOWN;
+ 
+-	ret = match_string(ssp_rate, ARRAY_SIZE(ssp_rate), maximum_speed);
++	ret = match_string(ssp_rate, maximum_speed);
+ 	if (ret > 0)
+ 		return USB_SPEED_SUPER_PLUS;
+ 
+-	ret = match_string(speed_names, ARRAY_SIZE(speed_names), maximum_speed);
++	ret = match_string(speed_names, maximum_speed);
+ 	return (ret < 0) ? USB_SPEED_UNKNOWN : ret;
+ }
+ EXPORT_SYMBOL_GPL(usb_get_maximum_speed);
+@@ -141,7 +141,7 @@ enum usb_ssp_rate usb_get_maximum_ssp_rate(struct device *dev)
+ 	if (ret < 0)
+ 		return USB_SSP_GEN_UNKNOWN;
+ 
+-	ret = match_string(ssp_rate, ARRAY_SIZE(ssp_rate), maximum_speed);
++	ret = match_string(ssp_rate, maximum_speed);
+ 	return (ret < 0) ? USB_SSP_GEN_UNKNOWN : ret;
+ }
+ EXPORT_SYMBOL_GPL(usb_get_maximum_ssp_rate);
+@@ -184,7 +184,7 @@ static enum usb_dr_mode usb_get_dr_mode_from_string(const char *str)
+ {
+ 	int ret;
+ 
+-	ret = match_string(usb_dr_modes, ARRAY_SIZE(usb_dr_modes), str);
++	ret = match_string(usb_dr_modes, str);
+ 	return (ret < 0) ? USB_DR_MODE_UNKNOWN : ret;
+ }
+ 
+diff --git a/drivers/usb/dwc3/dwc3-rtk.c b/drivers/usb/dwc3/dwc3-rtk.c
+index 3cd6b184551c..90cee91f4ff9 100644
+--- a/drivers/usb/dwc3/dwc3-rtk.c
++++ b/drivers/usb/dwc3/dwc3-rtk.c
+@@ -185,7 +185,7 @@ static enum usb_device_speed __get_dwc3_maximum_speed(struct device_node *np)
+ 	if (ret < 0)
+ 		goto out;
+ 
+-	ret = match_string(speed_names, ARRAY_SIZE(speed_names), maximum_speed);
++	ret = match_string(speed_names, maximum_speed);
+ 
+ out:
+ 	of_node_put(dwc3_np);
+diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
+index 9610e647a8d4..7bc4695f8d0b 100644
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -1986,8 +1986,7 @@ EXPORT_SYMBOL_GPL(typec_set_pwr_opmode);
+  */
+ int typec_find_pwr_opmode(const char *name)
+ {
+-	return match_string(typec_pwr_opmodes,
+-			    ARRAY_SIZE(typec_pwr_opmodes), name);
++	return match_string(typec_pwr_opmodes, name);
+ }
+ EXPORT_SYMBOL_GPL(typec_find_pwr_opmode);
+ 
+@@ -2001,8 +2000,7 @@ EXPORT_SYMBOL_GPL(typec_find_pwr_opmode);
+  */
+ int typec_find_orientation(const char *name)
+ {
+-	return match_string(typec_orientations, ARRAY_SIZE(typec_orientations),
+-			    name);
++	return match_string(typec_orientations, name);
+ }
+ EXPORT_SYMBOL_GPL(typec_find_orientation);
+ 
+@@ -2016,8 +2014,7 @@ EXPORT_SYMBOL_GPL(typec_find_orientation);
+  */
+ int typec_find_port_power_role(const char *name)
+ {
+-	return match_string(typec_port_power_roles,
+-			    ARRAY_SIZE(typec_port_power_roles), name);
++	return match_string(typec_port_power_roles, name);
+ }
+ EXPORT_SYMBOL_GPL(typec_find_port_power_role);
+ 
+@@ -2031,7 +2028,7 @@ EXPORT_SYMBOL_GPL(typec_find_port_power_role);
+  */
+ int typec_find_power_role(const char *name)
+ {
+-	return match_string(typec_roles, ARRAY_SIZE(typec_roles), name);
++	return match_string(typec_roles, name);
+ }
+ EXPORT_SYMBOL_GPL(typec_find_power_role);
+ 
+@@ -2045,8 +2042,7 @@ EXPORT_SYMBOL_GPL(typec_find_power_role);
+  */
+ int typec_find_port_data_role(const char *name)
+ {
+-	return match_string(typec_port_data_roles,
+-			    ARRAY_SIZE(typec_port_data_roles), name);
++	return match_string(typec_port_data_roles, name);
+ }
+ EXPORT_SYMBOL_GPL(typec_find_port_data_role);
+ 
+diff --git a/drivers/usb/typec/tipd/core.c b/drivers/usb/typec/tipd/core.c
+index ad76dbd20e65..2ce2d355a039 100644
+--- a/drivers/usb/typec/tipd/core.c
++++ b/drivers/usb/typec/tipd/core.c
+@@ -722,8 +722,7 @@ static int tps6598x_check_mode(struct tps6598x *tps)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = match_string(modes, ARRAY_SIZE(modes), mode);
 -
--#ifndef _CRYPTO_SM2_H
--#define _CRYPTO_SM2_H
--
--struct shash_desc;
--
--#if IS_REACHABLE(CONFIG_CRYPTO_SM2)
--int sm2_compute_z_digest(struct shash_desc *desc,
--			 const void *key, unsigned int keylen, void *dgst);
--#else
--static inline int sm2_compute_z_digest(struct shash_desc *desc,
--				       const void *key, unsigned int keylen,
--				       void *dgst)
--{
--	return -ENOTSUPP;
--}
--#endif
--
--#endif /* _CRYPTO_SM2_H */
-diff --git a/security/integrity/digsig_asymmetric.c b/security/integrity/digsig_asymmetric.c
-index de603cf42ac7..457c0a396caf 100644
---- a/security/integrity/digsig_asymmetric.c
-+++ b/security/integrity/digsig_asymmetric.c
-@@ -114,8 +114,7 @@ int asymmetric_verify(struct key *keyring, const char *sig,
- 	} else if (!strncmp(pk->pkey_algo, "ecdsa-", 6)) {
- 		/* edcsa-nist-p192 etc. */
- 		pks.encoding = "x962";
--	} else if (!strcmp(pk->pkey_algo, "ecrdsa") ||
--		   !strcmp(pk->pkey_algo, "sm2")) {
-+	} else if (!strcmp(pk->pkey_algo, "ecrdsa")) {
- 		pks.encoding = "raw";
++	ret = match_string(modes, mode);
+ 	switch (ret) {
+ 	case TPS_MODE_APP:
+ 	case TPS_MODE_PTCH:
+diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
+index 2ef56fa28aff..f1b562b94744 100644
+--- a/drivers/video/fbdev/pxafb.c
++++ b/drivers/video/fbdev/pxafb.c
+@@ -37,9 +37,9 @@
+ #include <linux/kernel.h>
+ #include <linux/sched.h>
+ #include <linux/errno.h>
+-#include <linux/string.h>
+ #include <linux/interrupt.h>
+ #include <linux/slab.h>
++#include <linux/string_helpers.h>
+ #include <linux/mm.h>
+ #include <linux/fb.h>
+ #include <linux/delay.h>
+@@ -2107,7 +2107,7 @@ static int of_get_pxafb_display(struct device *dev, struct device_node *disp,
+ 	if (ret)
+ 		s = "color-tft";
+ 
+-	i = match_string(lcd_types, -1, s);
++	i = __match_string(lcd_types, -1, s);
+ 	if (i < 0) {
+ 		dev_err(dev, "lcd-type %s is unknown\n", s);
+ 		return i;
+diff --git a/fs/bcachefs/compress.c b/fs/bcachefs/compress.c
+index 1410365a8891..a62c5dd5b470 100644
+--- a/fs/bcachefs/compress.c
++++ b/fs/bcachefs/compress.c
+@@ -667,7 +667,7 @@ int bch2_opt_compression_parse(struct bch_fs *c, const char *_val, u64 *res,
+ 	type_str = strsep(&p, ":");
+ 	level_str = p;
+ 
+-	ret = match_string(bch2_compression_opts, -1, type_str);
++	ret = __match_string(bch2_compression_opts, -1, type_str);
+ 	if (ret < 0 && err)
+ 		prt_str(err, "invalid compression type");
+ 	if (ret < 0)
+diff --git a/fs/bcachefs/opts.c b/fs/bcachefs/opts.c
+index bb068fd72465..cbe4e820419f 100644
+--- a/fs/bcachefs/opts.c
++++ b/fs/bcachefs/opts.c
+@@ -122,7 +122,7 @@ static int bch2_opt_fix_errors_parse(struct bch_fs *c, const char *val, u64 *res
+ 	if (!val) {
+ 		*res = FSCK_FIX_yes;
  	} else {
- 		ret = -ENOPKG;
+-		int ret = match_string(bch2_fsck_fix_opts, -1, val);
++		int ret = __match_string(bch2_fsck_fix_opts, -1, val);
+ 
+ 		if (ret < 0 && err)
+ 			prt_str(err, "fix_errors: invalid selection");
+@@ -366,7 +366,7 @@ int bch2_opt_parse(struct bch_fs *c,
+ 			return -EINVAL;
+ 		}
+ 
+-		ret = match_string(opt->choices, -1, val);
++		ret = __match_string(opt->choices, -1, val);
+ 		if (ret < 0) {
+ 			if (err)
+ 				prt_printf(err, "%s: invalid selection",
+diff --git a/fs/bcachefs/util.c b/fs/bcachefs/util.c
+index de331dec2a99..8cef641a38fb 100644
+--- a/fs/bcachefs/util.c
++++ b/fs/bcachefs/util.c
+@@ -19,7 +19,7 @@
+ #include <linux/preempt.h>
+ #include <linux/random.h>
+ #include <linux/seq_file.h>
+-#include <linux/string.h>
++#include <linux/string_helpers.h>
+ #include <linux/types.h>
+ #include <linux/sched/clock.h>
+ 
+@@ -215,7 +215,7 @@ u64 bch2_read_flag_list(char *opt, const char * const list[])
+ 	s = strim(d);
+ 
+ 	while ((p = strsep(&s, ","))) {
+-		int flag = match_string(list, -1, p);
++		int flag = __match_string(list, -1, p);
+ 
+ 		if (flag < 0) {
+ 			ret = -1;
+diff --git a/fs/ubifs/auth.c b/fs/ubifs/auth.c
+index a4a0158f712d..fc0da18bfa65 100644
+--- a/fs/ubifs/auth.c
++++ b/fs/ubifs/auth.c
+@@ -264,13 +264,13 @@ int ubifs_init_authentication(struct ubifs_info *c)
+ 		return -EINVAL;
+ 	}
+ 
+-	c->auth_hash_algo = match_string(hash_algo_name, HASH_ALGO__LAST,
+-					 c->auth_hash_name);
+-	if ((int)c->auth_hash_algo < 0) {
++	err = __match_string(hash_algo_name, HASH_ALGO__LAST, c->auth_hash_name);
++	if (err < 0) {
+ 		ubifs_err(c, "Unknown hash algo %s specified",
+ 			  c->auth_hash_name);
+-		return -EINVAL;
++		return err;
+ 	}
++	c->auth_hash_algo = err;
+ 
+ 	snprintf(hmac_name, CRYPTO_MAX_ALG_NAME, "hmac(%s)",
+ 		 c->auth_hash_name);
+diff --git a/include/linux/string.h b/include/linux/string.h
+index 60168aa2af07..92fc7631f6a4 100644
+--- a/include/linux/string.h
++++ b/include/linux/string.h
+@@ -303,8 +303,18 @@ extern unsigned long long memparse(const char *ptr, char **retptr);
+ extern bool parse_option_str(const char *str, const char *option);
+ extern char *next_arg(char *args, char **param, char **val);
+ 
++int __match_string(const char * const *array, size_t n, const char *string);
++
++/**
++ * match_string - matches given string in an array
++ * @_a: array of strings
++ * @_s: string to match with
++ *
++ * Helper for __match_string(). Calculates the size of @a automatically.
++ */
++#define match_string(_a, _s) __match_string(_a, ARRAY_SIZE(_a), _s)
++
+ extern bool sysfs_streq(const char *s1, const char *s2);
+-int match_string(const char * const *array, size_t n, const char *string);
+ int __sysfs_match_string(const char * const *array, size_t n, const char *s);
+ 
+ /**
+diff --git a/kernel/cgroup/rdma.c b/kernel/cgroup/rdma.c
+index ef5878fb2005..10105cfc5981 100644
+--- a/kernel/cgroup/rdma.c
++++ b/kernel/cgroup/rdma.c
+@@ -366,7 +366,7 @@ static int parse_resource(char *c, int *intval)
+ 	if (!name || !value)
+ 		return -EINVAL;
+ 
+-	i = match_string(rdmacg_resource_names, RDMACG_RESOURCE_MAX, name);
++	i = match_string(rdmacg_resource_names, name);
+ 	if (i < 0)
+ 		return i;
+ 
+diff --git a/kernel/sched/debug.c b/kernel/sched/debug.c
+index c1eb9a1afd13..b6238341e3c0 100644
+--- a/kernel/sched/debug.c
++++ b/kernel/sched/debug.c
+@@ -105,7 +105,7 @@ static int sched_feat_set(char *cmp)
+ 		cmp += 3;
+ 	}
+ 
+-	i = match_string(sched_feat_names, __SCHED_FEAT_NR, cmp);
++	i = __match_string(sched_feat_names, __SCHED_FEAT_NR, cmp);
+ 	if (i < 0)
+ 		return i;
+ 
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 578a49ff5c32..13c0a1fa30cd 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -32,7 +32,6 @@
+ #include <linux/percpu.h>
+ #include <linux/splice.h>
+ #include <linux/kdebug.h>
+-#include <linux/string.h>
+ #include <linux/mount.h>
+ #include <linux/rwsem.h>
+ #include <linux/slab.h>
+@@ -45,6 +44,7 @@
+ #include <linux/trace.h>
+ #include <linux/sched/clock.h>
+ #include <linux/sched/rt.h>
++#include <linux/string_helpers.h>
+ #include <linux/fsnotify.h>
+ #include <linux/irq_work.h>
+ #include <linux/workqueue.h>
+@@ -5309,7 +5309,7 @@ int trace_set_options(struct trace_array *tr, char *option)
+ 	mutex_lock(&event_mutex);
+ 	mutex_lock(&trace_types_lock);
+ 
+-	ret = match_string(trace_options, -1, cmp);
++	ret = __match_string(trace_options, -1, cmp);
+ 	/* If no option could be set, test the specific tracer options */
+ 	if (ret < 0)
+ 		ret = set_tracer_option(tr, cmp, neg);
+diff --git a/kernel/trace/trace_osnoise.c b/kernel/trace/trace_osnoise.c
+index a8e28f9b9271..7bed499effd3 100644
+--- a/kernel/trace/trace_osnoise.c
++++ b/kernel/trace/trace_osnoise.c
+@@ -2230,9 +2230,9 @@ static ssize_t osnoise_options_write(struct file *filp, const char __user *ubuf,
+ 		enable = false;
+ 	}
+ 
+-	option = match_string(osnoise_options_str, OSN_MAX, option_str);
++	option = match_string(osnoise_options_str, option_str);
+ 	if (option < 0)
+-		return -EINVAL;
++		return option;
+ 
+ 	/*
+ 	 * trace_types_lock is taken to avoid concurrency on start/stop.
+diff --git a/lib/dynamic_debug.c b/lib/dynamic_debug.c
+index f2c5e7910bb1..cd4fbcea38ba 100644
+--- a/lib/dynamic_debug.c
++++ b/lib/dynamic_debug.c
+@@ -24,7 +24,6 @@
+ #include <linux/list.h>
+ #include <linux/sysctl.h>
+ #include <linux/ctype.h>
+-#include <linux/string.h>
+ #include <linux/parser.h>
+ #include <linux/string_helpers.h>
+ #include <linux/uaccess.h>
+@@ -154,7 +153,7 @@ static struct ddebug_class_map *ddebug_find_valid_class(struct ddebug_table cons
+ 	int idx;
+ 
+ 	list_for_each_entry(map, &dt->maps, link) {
+-		idx = match_string(map->class_names, map->length, class_string);
++		idx = __match_string(map->class_names, map->length, class_string);
+ 		if (idx >= 0) {
+ 			*class_id = idx + map->base;
+ 			return map;
+@@ -665,7 +664,7 @@ static int param_set_dyndbg_classnames(const char *instr, const struct kernel_pa
+ 			if (*cl_str == '+')
+ 				cl_str++;
+ 		}
+-		cls_id = match_string(map->class_names, map->length, cl_str);
++		cls_id = __match_string(map->class_names, map->length, cl_str);
+ 		if (cls_id < 0) {
+ 			pr_err("%s unknown to %s\n", cl_str, KP_NAME(kp));
+ 			continue;
+diff --git a/lib/string_helpers.c b/lib/string_helpers.c
+index 69ba49b853c7..d3d0d2154146 100644
+--- a/lib/string_helpers.c
++++ b/lib/string_helpers.c
+@@ -898,7 +898,7 @@ bool sysfs_streq(const char *s1, const char *s2)
+ EXPORT_SYMBOL(sysfs_streq);
+ 
+ /**
+- * match_string - matches given string in an array
++ * __match_string - matches given string in an array
+  * @array:	array of strings
+  * @n:		number of strings in the array or -1 for NULL terminated arrays
+  * @string:	string to match with
+@@ -914,7 +914,7 @@ EXPORT_SYMBOL(sysfs_streq);
+  * Return:
+  * index of a @string in the @array if matches, or %-EINVAL otherwise.
+  */
+-int match_string(const char * const *array, size_t n, const char *string)
++int __match_string(const char * const *array, size_t n, const char *string)
+ {
+ 	int index;
+ 	const char *item;
+@@ -929,7 +929,7 @@ int match_string(const char * const *array, size_t n, const char *string)
+ 
+ 	return -EINVAL;
+ }
+-EXPORT_SYMBOL(match_string);
++EXPORT_SYMBOL(__match_string);
+ 
+ /**
+  * __sysfs_match_string - matches given string in an array
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index aec756ae5637..89c132170431 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -89,7 +89,6 @@
+ #include <linux/nodemask.h>
+ #include <linux/cpuset.h>
+ #include <linux/slab.h>
+-#include <linux/string.h>
+ #include <linux/export.h>
+ #include <linux/nsproxy.h>
+ #include <linux/interrupt.h>
+@@ -103,6 +102,7 @@
+ #include <linux/ksm.h>
+ #include <linux/rmap.h>
+ #include <linux/security.h>
++#include <linux/string_helpers.h>
+ #include <linux/syscalls.h>
+ #include <linux/ctype.h>
+ #include <linux/mm_inline.h>
+@@ -3183,7 +3183,7 @@ int mpol_parse_str(char *str, struct mempolicy **mpol)
+ 	} else
+ 		nodes_clear(nodes);
+ 
+-	mode = match_string(policy_modes, MPOL_MAX, str);
++	mode = match_string(policy_modes, str);
+ 	if (mode < 0)
+ 		goto out;
+ 
+diff --git a/mm/vmpressure.c b/mm/vmpressure.c
+index bd5183dfd879..eaaa133ce12b 100644
+--- a/mm/vmpressure.c
++++ b/mm/vmpressure.c
+@@ -388,7 +388,7 @@ int vmpressure_register_event(struct mem_cgroup *memcg,
+ 
+ 	/* Find required level */
+ 	token = strsep(&spec, ",");
+-	ret = match_string(vmpressure_str_levels, VMPRESSURE_NUM_LEVELS, token);
++	ret = match_string(vmpressure_str_levels, token);
+ 	if (ret < 0)
+ 		goto out;
+ 	level = ret;
+@@ -396,7 +396,7 @@ int vmpressure_register_event(struct mem_cgroup *memcg,
+ 	/* Find optional mode */
+ 	token = strsep(&spec, ",");
+ 	if (token) {
+-		ret = match_string(vmpressure_str_modes, VMPRESSURE_NUM_MODES, token);
++		ret = match_string(vmpressure_str_modes, token);
+ 		if (ret < 0)
+ 			goto out;
+ 		mode = ret;
+diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
+index 6239777090c4..e3fc94b4c7e5 100644
+--- a/security/apparmor/lsm.c
++++ b/security/apparmor/lsm.c
+@@ -1820,9 +1820,9 @@ static int param_set_audit(const char *val, const struct kernel_param *kp)
+ 	if (apparmor_initialized && !aa_current_policy_admin_capable(NULL))
+ 		return -EPERM;
+ 
+-	i = match_string(audit_mode_names, AUDIT_MAX_INDEX, val);
++	i = __match_string(audit_mode_names, AUDIT_MAX_INDEX, val);
+ 	if (i < 0)
+-		return -EINVAL;
++		return i;
+ 
+ 	aa_g_audit = i;
+ 	return 0;
+@@ -1849,10 +1849,9 @@ static int param_set_mode(const char *val, const struct kernel_param *kp)
+ 	if (apparmor_initialized && !aa_current_policy_admin_capable(NULL))
+ 		return -EPERM;
+ 
+-	i = match_string(aa_profile_mode_names, APPARMOR_MODE_NAMES_MAX_INDEX,
+-			 val);
++	i = __match_string(aa_profile_mode_names, APPARMOR_MODE_NAMES_MAX_INDEX, val);
+ 	if (i < 0)
+-		return -EINVAL;
++		return i;
+ 
+ 	aa_g_profile_mode = i;
+ 	return 0;
+diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+index f04f43af651c..49d6e9cc3387 100644
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -64,7 +64,7 @@ static int __init hash_setup(char *str)
+ 		goto out;
+ 	}
+ 
+-	i = match_string(hash_algo_name, HASH_ALGO__LAST, str);
++	i = __match_string(hash_algo_name, HASH_ALGO__LAST, str);
+ 	if (i < 0) {
+ 		pr_err("invalid hash algorithm \"%s\"", str);
+ 		return 1;
+diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
+index c0556907c2e6..fa67c5794071 100644
+--- a/security/integrity/ima/ima_policy.c
++++ b/security/integrity/ima/ima_policy.c
+@@ -1380,7 +1380,7 @@ static unsigned int ima_parse_appraise_algos(char *arg)
+ 	char *token;
+ 
+ 	while ((token = strsep(&arg, ",")) != NULL) {
+-		idx = match_string(hash_algo_name, HASH_ALGO__LAST, token);
++		idx = __match_string(hash_algo_name, HASH_ALGO__LAST, token);
+ 
+ 		if (idx < 0) {
+ 			pr_err("unknown hash algorithm \"%s\"",
+diff --git a/sound/firewire/oxfw/oxfw.c b/sound/firewire/oxfw/oxfw.c
+index 98ae0e8cba87..5b38069daa0a 100644
+--- a/sound/firewire/oxfw/oxfw.c
++++ b/sound/firewire/oxfw/oxfw.c
+@@ -59,7 +59,7 @@ static bool detect_loud_models(struct fw_unit *unit)
+ 	if (err < 0)
+ 		return false;
+ 
+-	return match_string(models, ARRAY_SIZE(models), model) >= 0;
++	return match_string(models, model) >= 0;
+ }
+ 
+ static int name_card(struct snd_oxfw *oxfw, const struct ieee1394_device_id *entry)
+diff --git a/sound/pci/oxygen/oxygen_mixer.c b/sound/pci/oxygen/oxygen_mixer.c
+index eb3aca16359c..73e15d5d6be9 100644
+--- a/sound/pci/oxygen/oxygen_mixer.c
++++ b/sound/pci/oxygen/oxygen_mixer.c
+@@ -1074,7 +1074,7 @@ static int add_controls(struct oxygen *chip,
+ 		err = snd_ctl_add(chip->card, ctl);
+ 		if (err < 0)
+ 			return err;
+-		j = match_string(known_ctl_names, CONTROL_COUNT, ctl->id.name);
++		j = match_string(known_ctl_names, ctl->id.name);
+ 		if (j >= 0) {
+ 			chip->controls[j] = ctl;
+ 			ctl->private_free = oxygen_any_ctl_free;
+diff --git a/sound/soc/codecs/max98088.c b/sound/soc/codecs/max98088.c
+index 8b56ee550c09..4736a4ba0e1f 100644
+--- a/sound/soc/codecs/max98088.c
++++ b/sound/soc/codecs/max98088.c
+@@ -1414,7 +1414,7 @@ static int max98088_get_channel(struct snd_soc_component *component, const char
+ {
+ 	int ret;
+ 
+-	ret = match_string(eq_mode_name, ARRAY_SIZE(eq_mode_name), name);
++	ret = match_string(eq_mode_name, name);
+ 	if (ret < 0)
+ 		dev_err(component->dev, "Bad EQ channel name '%s'\n", name);
+ 	return ret;
+diff --git a/sound/soc/codecs/max98095.c b/sound/soc/codecs/max98095.c
+index 7e525d49328d..430bce3333a9 100644
+--- a/sound/soc/codecs/max98095.c
++++ b/sound/soc/codecs/max98095.c
+@@ -1627,7 +1627,7 @@ static int max98095_get_bq_channel(struct snd_soc_component *component,
+ {
+ 	int ret;
+ 
+-	ret = match_string(bq_mode_name, ARRAY_SIZE(bq_mode_name), name);
++	ret = match_string(bq_mode_name, name);
+ 	if (ret < 0)
+ 		dev_err(component->dev, "Bad biquad channel name '%s'\n", name);
+ 	return ret;
+diff --git a/sound/soc/soc-dapm.c b/sound/soc/soc-dapm.c
+index 16dad4a45443..7064f4cae549 100644
+--- a/sound/soc/soc-dapm.c
++++ b/sound/soc/soc-dapm.c
+@@ -769,14 +769,13 @@ static int dapm_connect_mux(struct snd_soc_dapm_context *dapm,
+ 		item = 0;
+ 	}
+ 
+-	i = match_string(e->texts, e->items, control_name);
++	i = __match_string(e->texts, e->items, control_name);
+ 	if (i < 0)
+-		return -ENODEV;
++		return i;
+ 
+ 	path->name = e->texts[i];
+ 	path->connect = (i == item);
+ 	return 0;
+-
+ }
+ 
+ /* set up initial codec paths */
 -- 
-2.39.2
+2.43.0.rc1.1336.g36b5255a03ac
 
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
