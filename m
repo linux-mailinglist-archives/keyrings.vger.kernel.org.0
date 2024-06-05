@@ -1,46 +1,45 @@
-Return-Path: <keyrings+bounces-1566-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1567-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE3CF8FBEF9
-	for <lists+keyrings@lfdr.de>; Wed,  5 Jun 2024 00:33:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6578FC193
+	for <lists+keyrings@lfdr.de>; Wed,  5 Jun 2024 04:14:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A97A1F21442
-	for <lists+keyrings@lfdr.de>; Tue,  4 Jun 2024 22:33:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47320B25B1E
+	for <lists+keyrings@lfdr.de>; Wed,  5 Jun 2024 02:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC20814291B;
-	Tue,  4 Jun 2024 22:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F3560B96;
+	Wed,  5 Jun 2024 02:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G/nfl/5c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AJA12w1F"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8341A28DC7;
-	Tue,  4 Jun 2024 22:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6FB5FB9A;
+	Wed,  5 Jun 2024 02:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717540418; cv=none; b=DfyDTsi0Ae7lRUVb8UPmYBZlqJ4N+2jWRYGTEcYory4V/6DW93mZVPOrVeUBdY9AodqHMkEz1PohM7hLzP17tF/NDM+5OueDnOp1YyH8SX18MJMMk5iWPkIkOo6mx6iYniunVpp3yZMFYSba2nOncHb34R4IWa4+uM3MQ1DWScM=
+	t=1717553661; cv=none; b=ijDAawlI6k8NdR7nHAhk31JJumYDVGqxaL/hNZPopUN/gsLjodBNefsYOgMAzLsFrMSFGgOjFNA/ECm5CW6XLCfrxE8H1mgRr4z1+ZM/bGm+HEEJtbM9obhf75fc24mMs0o264D82L242NEG37VDTD7GD60tP4LEG/aFHRpZ4cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717540418; c=relaxed/simple;
-	bh=vKk54H5hajLqoyQvgP+yXe9n5V6epR2sgSb7GL/pKD0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=JhbobHZ4nsJ+vulHff510SYYrkLuQuRNhPdmxR5BeWa9z+ZrYL6081UVOQVOPl4/QWHG76+fTwj4DbsnswDRk8rAzn+OwO8f6k+Yf1LqBS76EdX5a4pT5jmGyRKJ0BjHJHO0fbcBKyxoGs/6BR43uSI70iBqPm1TPO4jSBDqA0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G/nfl/5c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AD4AC3277B;
-	Tue,  4 Jun 2024 22:33:34 +0000 (UTC)
+	s=arc-20240116; t=1717553661; c=relaxed/simple;
+	bh=DfOmbOsoVpdt5DZ7XX2y5JZCI4+dggteYFy2x1p+b1o=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To; b=QliaoPeYNihP5yLiuP1HaSJZ3V1vUAbCbCxy0HS3MZMf49jhIcrwQiTGiy2y5ps51UTaQos2Tenl9SacEguc0nyAgFP9KXk13gIYomZWfaGfotvLPCd2vIPmMPK7dOul0WSKw3hNaJ20dcc95Cj6OiXbk88qQ+BO+BHY7LOuhCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AJA12w1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EBB0C2BBFC;
+	Wed,  5 Jun 2024 02:14:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717540417;
-	bh=vKk54H5hajLqoyQvgP+yXe9n5V6epR2sgSb7GL/pKD0=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=G/nfl/5cR0PwMZa8J22uWo0KSFIzBt74P8cN/OEhgB/00aKhX9xMV9qd8jZhHm//G
-	 teAehz1lQgqYECpI7jnVW/ck4etFZDkML6JfvX0Py2zN5rt8amp2VC1/cG5MGHCGlq
-	 2hojjdMPUs+seAOX6ZZvyAKv+vOXSbj+WIOqZ10Uhf4PWrzmnTGr+7KvmoPvcDdxqV
-	 7AxsIxMbgqtXMSNHPZ5mlHYXIYYPAtvp8uPjBjmTgZl6P7gMDUPHztTT4BJmgasNko
-	 KEBdo7wgfp6PWKv/P3yqQ6I3UyhVdjviylkfGi4XEzuMxN+BqIisBrKAVC7rOpnDwD
-	 /6PeY1X9SDS5A==
+	s=k20201202; t=1717553661;
+	bh=DfOmbOsoVpdt5DZ7XX2y5JZCI4+dggteYFy2x1p+b1o=;
+	h=Date:Cc:Subject:From:To:From;
+	b=AJA12w1FtdJ0hlABYJXJPA3ZyjjXULY8OADGY9Yk/mczKPMxjmgWWwP6YBM4KbP92
+	 hwiFKOHDI0Y8ucAIwyj8r91bVtiPu3C7DRAf8xJwC0IWbxo62E6uU697HFmJ33wsir
+	 ZBjjaFJcfD8J1SZq7VwDsB6zLOlR75Ew4jV5ulMtvYUj8bmha0b5i9hJI8Euh74MY/
+	 aOu3ZpLsiRaAAJmpb4oh88H+XMgwiKVfHNWUzNziiaErP+hmnUyunIrVAfd7dy/irC
+	 xJnC96KhOb+Uv5NwgQaqMrVJ8I4hQ0J5caUmgXTYEOX2perIlJQ9XrSSMMRW6/XlSk
+	 7p98IUx6XOUEA==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,70 +48,51 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 05 Jun 2024 01:33:32 +0300
-Message-Id: <D1RL9GZKU6Y3.2HFU56T053FQB@kernel.org>
-Cc: <linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>,
- <Andreas.Fuchs@infineon.com>, "James Prestwood" <prestwoj@gmail.com>,
- "David Woodhouse" <dwmw2@infradead.org>, "Eric Biggers"
- <ebiggers@kernel.org>, "James Bottomley"
- <James.Bottomley@hansenpartnership.com>, <linux-crypto@vger.kernel.org>,
- "Lennart Poettering" <lennart@poettering.net>, "David S. Miller"
- <davem@davemloft.net>, "open list" <linux-kernel@vger.kernel.org>, "Mimi
- Zohar" <zohar@linux.ibm.com>, "David Howells" <dhowells@redhat.com>, "Paul
- Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
- Hallyn" <serge@hallyn.com>, "open list:SECURITY SUBSYSTEM"
- <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH v7 3/5] crypto: tpm2_key: Introduce a TPM2 key type
+Date: Wed, 05 Jun 2024 05:14:17 +0300
+Message-Id: <D1RPYHQDJIOG.2KAI4PDY90PD0@kernel.org>
+Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
+ "David Howells" <dhowells@redhat.com>, <keyrings@vger.kernel.org>,
+ <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Tony
+ Luck" <tony.luck@intel.com>, "Jan Beulich" <jbeulich@suse.com>
+Subject: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.10-rc3
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Stefan Berger" <stefanb@linux.ibm.com>, "Herbert Xu"
- <herbert@gondor.apana.org.au>
+To: "Linus Torvalds" <torvalds@linux-foundation.org>
 X-Mailer: aerc 0.17.0
-References: <20240528210823.28798-1-jarkko@kernel.org>
- <20240528210823.28798-4-jarkko@kernel.org>
- <97dd7485-51bf-4e47-83ab-957710fc2182@linux.ibm.com>
- <D1REOCZ2XHRY.4U47RZ20QET1@kernel.org>
- <6f0e04c2-4602-4407-9af5-f72610021a6a@linux.ibm.com>
-In-Reply-To: <6f0e04c2-4602-4407-9af5-f72610021a6a@linux.ibm.com>
 
-On Tue Jun 4, 2024 at 9:41 PM EEST, Stefan Berger wrote:
->
->
-> On 6/4/24 13:23, Jarkko Sakkinen wrote:
-> > On Fri May 31, 2024 at 3:35 AM EEST, Stefan Berger wrote:
-> >>
->
-> >>>   =20
-> >>> -	rc =3D tpm2_key_decode(payload, options, &blob);
-> >>> -	if (rc) {
-> >>> -		/* old form */
-> >>> +	key =3D tpm2_key_decode(payload->blob, payload->blob_len);
-> >>> +	if (IS_ERR(key)) {
-> >>> +		/* Get the error code and reset the pointer to the key: */
-> >>> +		rc =3D PTR_ERR(key);
-> >>> +		key =3D NULL;
-> >>> +
-> >>> +		if (rc =3D=3D -ENOMEM)
-> >>> +			return -ENOMEM;
-> >>> +
-> >>> +		/* A sanity check, as only -EBADMSG or -ENOMEM are expected: */
-> >>> +		if (rc !=3D -EBADMSG)
-> >>> +			pr_err("tpm2_key_decode(): spurious error code %d\n", rc);
-> >>
-> >> tpm2_key_decode seems simple enough that it only returns key, -ENOMEM =
-or
-> >> EBADMSG.
-> >=20
-> > So what is your suggestion here?
->
-> You can remove the check resuling in pr_err().
+The following changes since commit 32f88d65f01bf6f45476d7edbe675e44fb9e1d58=
+:
 
-OK, I think so too. Just had to (sanity) check.
+  Merge tag 'linux_kselftest-fixes-6.10-rc3' of git://git.kernel.org/pub/sc=
+m/linux/kernel/git/shuah/linux-kselftest (2024-06-04 10:34:13 -0700)
 
->
-> >=20
-> > The reasoning here is that asymmetric keys use -EBADMSG not only as
-> > error but also iterator, when probing which can load a specific key.
-> >=20
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags=
+/tpmdd-next-6.10-rc3
+
+for you to fetch changes up to f071d02ecad4cfbf3ab41807c90bd1fef1cbfd3f:
+
+  tpm: Switch to new Intel CPU model defines (2024-06-05 04:55:04 +0300)
+
+----------------------------------------------------------------
+Hi,
+
+The bug fix for tpm_tis_core_init() is not that critical but still makes
+sense to get into release for the sake of better quality. I included the
+Intel CPU model define change mainly to help Tony just a bit, as for this
+subsystem it cannot realistically speaking cause any possible harm.
 
 BR, Jarkko
+
+----------------------------------------------------------------
+Jan Beulich (1):
+      tpm_tis: Do *not* flush uninitialized work
+
+Tony Luck (1):
+      tpm: Switch to new Intel CPU model defines
+
+ drivers/char/tpm/tpm.h          | 2 +-
+ drivers/char/tpm/tpm_tis_core.c | 3 ++-
+ drivers/char/tpm/tpm_tis_core.h | 2 +-
+ 3 files changed, 4 insertions(+), 3 deletions(-)
 
