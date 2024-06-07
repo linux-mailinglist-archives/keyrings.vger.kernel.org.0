@@ -1,129 +1,104 @@
-Return-Path: <keyrings+bounces-1574-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1577-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E284E8FF9A9
-	for <lists+keyrings@lfdr.de>; Fri,  7 Jun 2024 03:47:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37AE890015A
+	for <lists+keyrings@lfdr.de>; Fri,  7 Jun 2024 12:59:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E141A1C21D7B
-	for <lists+keyrings@lfdr.de>; Fri,  7 Jun 2024 01:47:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D707A1F2247D
+	for <lists+keyrings@lfdr.de>; Fri,  7 Jun 2024 10:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E09110799;
-	Fri,  7 Jun 2024 01:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="WOdn/kkw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49CA187322;
+	Fri,  7 Jun 2024 10:58:48 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEF64C76;
-	Fri,  7 Jun 2024 01:47:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FAE8186E26;
+	Fri,  7 Jun 2024 10:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717724848; cv=none; b=WJWMAqbNpWriiTBO0yVxczYY4pJCYcdQrrveZ26+IZxE01MnkVz24Mpk8ZLB8ApqMwIwfvJFjQMAMCSsWZoXwOiBtRoNDuvoslVvrKxS4+kCsXPk7Zr36d1dl9m2OCi4T3CwqsfgfO9YUc5OsmYFMk5KLfhtGKhZJ/5xJ+eM1Fg=
+	t=1717757928; cv=none; b=k5MFWZFiDgf51ezNUTPW5TwTUfCgjZL6w16YARQQGY16XUkfMwFOJIKuZWYojopxi+09q/hZ1x8jyKwLlN7C+Vq41CZx4tqF+Y72oVBABy3TO7dxBPBS9bCgwwFea9CHP057oj9QAooLWvF1HCRSqTZWBDxsHy+8ajvep0bjBcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717724848; c=relaxed/simple;
-	bh=vEQGruV7vNomyN1/16lhy+/kKw+pGXABrWp8XaCgJ3k=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=GV/4RgnpcmhQNOFEe0S4/x0s9xC9mATC2FCDfyiYlpamZGbMGmzXAV7zDz89POop3UD0Kn5QNbAJuvavbPmC4p0XHgNiDrjakyHbmkxkMYZ47uaC2A+aLtecYRsB2o6S21c4sAfX6FjVdrgsH9iqwZy8dFUB5C64zgjYK+/lg90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=WOdn/kkw; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 456LprOG009857;
-	Fri, 7 Jun 2024 01:47:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	m8ztMMV0XfBkGZrE/9oEW6+dpAh7sNaqLenUpmWCesk=; b=WOdn/kkw+i/Fe4MJ
-	0oeav343TfBBklbLWxUwoM895bMIY+9T5dfHkCnkOlqWQfc6eM0TqBDCIUsSOZBj
-	Zdv3QrUca+RKyMnswy2k6RyLPekOhobpRDbrnie8gzOTHKKBDvhEMXdXGa/u6p6D
-	7P6bWge/WCTNLU+OWAoNdwfURMMxEl+74HfQQDuSKPb347KuQm8SUt0W1mXOlrNI
-	BwBI6/F83wGC20u7q3aAyVxkTbj6EHuMaFYkEQspwm8Soir3FV/2pBpfprghjK0E
-	yvytFsvk91jLJknS1Pf9YuZ1B2U8e+kfK16Yl0VWfxFEIEuDQcX/rIt5J9AwvhmY
-	AEC1wQ==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yjh3tw0fs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Jun 2024 01:47:10 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4571l9s0004936
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 7 Jun 2024 01:47:09 GMT
-Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 6 Jun 2024
- 18:47:08 -0700
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Date: Thu, 6 Jun 2024 18:47:07 -0700
-Subject: [PATCH v3 2/2] KEYS: encrypted: add missing MODULE_DESCRIPTION()
+	s=arc-20240116; t=1717757928; c=relaxed/simple;
+	bh=gj9rHGiqEtVhgMyKf1T0aWkSra6juadP60PhESLNEog=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Coovq8uTJOM+wj5yb3A8P1kfRzSEjOtt96yRcOYOqWnnVVQoDpN40w0WTwely4/x8w63epX9cUkcvuADOSU9dya656r/R94Irs0xN4SMDVHYDOv9kByfiGUGNeNxMK8gpdjaAjgq7m838VnOOdgU5/y/ShHb6lbJGGFf2IWEIzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1sFXIW-006npX-0e;
+	Fri, 07 Jun 2024 18:58:17 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 07 Jun 2024 18:58:18 +0800
+Date: Fri, 7 Jun 2024 18:58:18 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+	Andreas.Fuchs@infineon.com, James Prestwood <prestwoj@gmail.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	linux-crypto@vger.kernel.org, Stefan Berger <stefanb@linux.ibm.com>,
+	Lennart Poettering <lennart@poettering.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	open list <linux-kernel@vger.kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: Re: [PATCH v7 4/5] keys: asymmetric: Add tpm2_key_rsa
+Message-ID: <ZmLnyp9j_QoPgj7W@gondor.apana.org.au>
+References: <20240528210823.28798-1-jarkko@kernel.org>
+ <20240528210823.28798-5-jarkko@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240606-md-trusted-v3-2-42716f15e66e@quicinc.com>
-References: <20240606-md-trusted-v3-0-42716f15e66e@quicinc.com>
-In-Reply-To: <20240606-md-trusted-v3-0-42716f15e66e@quicinc.com>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Jarkko Sakkinen
-	<jarkko@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
-        David Howells
-	<dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>,
-        James Morris
-	<jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>
-CC: <linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>,
-        <linux-security-module@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-X-Mailer: b4 0.13.0
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: k9lB1TD4tAzTUchkfJHb6CFCyNOZt2ym
-X-Proofpoint-ORIG-GUID: k9lB1TD4tAzTUchkfJHb6CFCyNOZt2ym
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-06_20,2024-06-06_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
- adultscore=0 bulkscore=0 malwarescore=0 phishscore=0 priorityscore=1501
- suspectscore=0 spamscore=0 clxscore=1015 mlxlogscore=999
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406070012
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240528210823.28798-5-jarkko@kernel.org>
 
-During kbuild, with W=1, modpost will warn when a module doesn't have
-a MODULE_DESCRIPTION(). The encrypted-keys module does not have a
-MODULE_DESCRIPTION().  But currently, even with an allmodconfig
-configuration, this module is built-in, and as a result, kbuild does
-not currently warn about the missing MODULE_DESCRIPTION().
+On Wed, May 29, 2024 at 12:08:09AM +0300, Jarkko Sakkinen wrote:
+>
+> +/*
+> + * Sign operation is an encryption using the TPM's private key. With RSA the
+> + * only difference between encryption and decryption is where the padding goes.
+> + * Since own padding can be used, TPM2_RSA_Decrypt can be repurposed to do
+> + * encryption.
+> + */
+> +static int tpm2_key_rsa_sign(struct tpm_chip *chip, struct tpm2_key *key,
+> +			     struct kernel_pkey_params *params,
+> +			     const void *in, void *out)
+> +{
+> +	const off_t o = key->priv_len + 2 + sizeof(*key->desc);
+> +	const struct tpm2_rsa_parms *p =
+> +		(const struct tpm2_rsa_parms *)&key->data[o];
+> +	const u16 mod_size = be16_to_cpu(p->modulus_size);
+> +	const struct rsa_asn1_template *asn1;
+> +	u32 in_len = params->in_len;
+> +	void *asn1_wrapped = NULL;
+> +	u8 *padded;
+> +	int ret;
+> +
+> +	if (strcmp(params->encoding, "pkcs1") != 0) {
+> +		ret = -ENOPKG;
+> +		goto err;
+> +	}
+> +
+> +	if (params->hash_algo) {
+> +		asn1 = rsa_lookup_asn1(params->hash_algo);
 
-However, just in case it is built as a module in the future, add the
-missing MODULE_DESCRIPTION() macro invocation.
+Could you please explain why this can't be done through pkcs1pad
+instead of going to raw RSA?
 
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
----
- security/keys/encrypted-keys/encrypted.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encrypted-keys/encrypted.c
-index 8af2136069d2..831cb84fd75a 100644
---- a/security/keys/encrypted-keys/encrypted.c
-+++ b/security/keys/encrypted-keys/encrypted.c
-@@ -1040,4 +1040,5 @@ static void __exit cleanup_encrypted(void)
- late_initcall(init_encrypted);
- module_exit(cleanup_encrypted);
- 
-+MODULE_DESCRIPTION("Encrypted key type");
- MODULE_LICENSE("GPL");
-
+Thanks,
 -- 
-2.42.0
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
