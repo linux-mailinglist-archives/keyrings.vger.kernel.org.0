@@ -1,43 +1,78 @@
-Return-Path: <keyrings+bounces-1593-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1594-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99BE590225B
-	for <lists+keyrings@lfdr.de>; Mon, 10 Jun 2024 15:05:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C8569029C2
+	for <lists+keyrings@lfdr.de>; Mon, 10 Jun 2024 22:12:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF14C1C20840
-	for <lists+keyrings@lfdr.de>; Mon, 10 Jun 2024 13:05:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2035A1F227F6
+	for <lists+keyrings@lfdr.de>; Mon, 10 Jun 2024 20:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7600481754;
-	Mon, 10 Jun 2024 13:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED7514F9E0;
+	Mon, 10 Jun 2024 20:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b="LYwY4ug2"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail.hallyn.com (mail.hallyn.com [178.63.66.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FD57F490;
-	Mon, 10 Jun 2024 13:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.63.66.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5921F14F132
+	for <keyrings@vger.kernel.org>; Mon, 10 Jun 2024 20:12:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718024743; cv=none; b=mms4yZnzUBSpJ8CZAqPmBrzFLlqPfkdY71YuM5QYKySHbNfUwWUixQm4MXt32bbSTgnS/bUmwNjJyROVcGKQlWUUcosHTNOKCsaE5xZWVB1PYBMoHkxMQk5+zocKlLHFnUir0FqpkE37b1JsbIE2xPYMGwNY6S5QrdnKhOMIuCY=
+	t=1718050350; cv=none; b=WvMwVM+6ps5Ptd9PwSGdxRhSqZtLhpTagUVqCI8bEdyTf4qaOrfh0lxHyLtkQFeNU7vYPwPA+eZy/7eL/+27yZVFjEUomZuAx5YR0f/lG4yr1qbcNh3QXaARwH597ggmtOyXOpDccw1qOD8JI6KLZySxqJlP0dONy2XP4BBnN90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718024743; c=relaxed/simple;
-	bh=zJgbNNJw/GCorqly4uRVoGjpIM8ilgL2XnXXEjZD+mw=;
+	s=arc-20240116; t=1718050350; c=relaxed/simple;
+	bh=b7+MwoWNMLPQ7YyhI/4+4s4P3K4STGUIbLhPZG0Mamc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FG5uoGCetUBRtRAscEyI1apKbrL9wxS1gPmPJkcysCZRa1Kn1nIfYb7EImOqnBLtDa9eGnPF+uSu+2Rz9x6BUCzDkvHPf5vzwe2OmOrlsC0T1tgPQflXNc9YBYfRL6xdf6QD60gv7/DgPoVcnGimxOd++nnkyqitww6h7yi3F2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hallyn.com; spf=pass smtp.mailfrom=mail.hallyn.com; arc=none smtp.client-ip=178.63.66.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hallyn.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.hallyn.com
-Received: by mail.hallyn.com (Postfix, from userid 1001)
-	id 4456B579; Mon, 10 Jun 2024 08:05:40 -0500 (CDT)
-Date: Mon, 10 Jun 2024 08:05:40 -0500
-From: "Serge E. Hallyn" <serge@hallyn.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=U1Ksp9aMobKGY5Nomh1ky6KiPYtSN150cpkubwM9YSQ/S0WiBGXOgi/DnELIcnwBBHtJqxZoHjJvujWFsQNDElFdhHe6QHBmqC+gi/3N28ErHv2shcjFCzAkGXG2gcRrFXC1yK+TNaQ+r7Wh4NAMG9NJ5DNsyuHlle92QUxaULY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=none smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b=LYwY4ug2; arc=none smtp.client-ip=209.85.128.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toxicpanda.com
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-62a2424ec39so49314747b3.1
+        for <keyrings@vger.kernel.org>; Mon, 10 Jun 2024 13:12:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20230601.gappssmtp.com; s=20230601; t=1718050348; x=1718655148; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=q8U88OhWZh1tCo+0WQ1tID8xLxoIwnJftDZHFtRwK3o=;
+        b=LYwY4ug2iL/vJ4DIUm0/Hp2MvpGURHFsHfCR8hKgvsmAqgzRPxBeFZzp5Tfo48EbCo
+         Euj3YFKE98R3xDK+TVi4X08MQrChZxoR0ZdwAIKYcBEyuT6J6pRA6MFIWpmGlK1QH6yk
+         ayaE24UINt0NKI07iU6nbvvP+ur4CK0DddjWE0Gtpl8JlrD2yRSechl/xjLYVx0XPb6G
+         i76retKit/NIZmraE8AuogV1B4ponmQt72v7gY3tzehh7ckEOuDJ8LHGOKzXVFo5n2E+
+         4LMkjHweMxF1v6LeN1NaZpvEMI8QBe5KxGttDTh645mywME2cc7oJs1j5M/rPYABPg7M
+         UNcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718050348; x=1718655148;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q8U88OhWZh1tCo+0WQ1tID8xLxoIwnJftDZHFtRwK3o=;
+        b=KhfgYY++DYg9nEu5lQx4DcgIkVx1tUAHyegv8hWYseo/FqX6TTNUKfmtZoc9YGIV9i
+         ucBY+3NAjGjJsQ9OYL2jwntHewaXbD9urFxbnjvH1iH+crpT9nv1guM5QjcxErNuDjod
+         iwISR90AaiwzBeOTaLaIKtp9XyLAPYuaj/LI+JESIb6oF/SMZ2a96VyuNbV18FhI88uN
+         pTsufNSfPx8N/PDTa+fvxZFiRVIxgQWj7ugblkOFYhxyPjSkpzTm0JnP2F+Dy9A4sDX1
+         wYKXY4TVKhcfJRPwfllzhqlV2pGuZe86XV3t658f8CNMyNGoJAOMqamd3Z4WR2snPHv2
+         t8MA==
+X-Forwarded-Encrypted: i=1; AJvYcCUQJNQhoT/HaYs1tmp4NQKfpsSUAFf9gII5v8oW7hMAy+1yW2+QfY9mwasMv7XBwj5Lv97SK0om2a3ZCez5YKcQGlQW5pvlMh0=
+X-Gm-Message-State: AOJu0YwvnHwqTNTG24jq41dU//Thkn/KZjU9CALKxlgm5Wr3XmhyVUv3
+	T9vbDp1KGTuDt7ErCqP8EKoeKUL3/chsW+K0s5eFVQwzoAOyIsaaM4e5wG6EYiI=
+X-Google-Smtp-Source: AGHT+IHAq2uat/BxStlvycvWIMemf9chq6bKvr5RgwVh7JekY7oKEJ33MFsCJYBOa4s18l+17nIrDA==
+X-Received: by 2002:a81:ef0e:0:b0:61a:f206:bad6 with SMTP id 00721157ae682-62cd55f6755mr90104707b3.30.1718050348318;
+        Mon, 10 Jun 2024 13:12:28 -0700 (PDT)
+Received: from localhost (syn-076-182-020-124.res.spectrum.com. [76.182.20.124])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-62ccaef2825sm17372997b3.139.2024.06.10.13.12.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jun 2024 13:12:27 -0700 (PDT)
+Date: Mon, 10 Jun 2024 16:12:27 -0400
+From: Josef Bacik <josef@toxicpanda.com>
 To: Jonathan Calmels <jcalmels@3xx0.net>
-Cc: "Serge E. Hallyn" <serge@hallyn.com>, brauner@kernel.org,
-	ebiederm@xmission.com, Jonathan Corbet <corbet@lwn.net>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	KP Singh <kpsingh@kernel.org>,
+Cc: brauner@kernel.org, ebiederm@xmission.com,
+	Jonathan Corbet <corbet@lwn.net>, Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>, KP Singh <kpsingh@kernel.org>,
 	Matt Bobrowski <mattbobrowski@google.com>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Daniel Borkmann <daniel@iogearbox.net>,
@@ -60,65 +95,75 @@ Cc: "Serge E. Hallyn" <serge@hallyn.com>, brauner@kernel.org,
 	linux-security-module@vger.kernel.org, bpf@vger.kernel.org,
 	apparmor@lists.ubuntu.com, keyrings@vger.kernel.org,
 	selinux@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] capabilities: Add securebit to restrict userns
- caps
-Message-ID: <20240610130540.GC2193924@mail.hallyn.com>
+Subject: Re: [PATCH v2 0/4] Introduce user namespace capabilities
+Message-ID: <20240610201227.GD235772@perftesting>
 References: <20240609104355.442002-1-jcalmels@3xx0.net>
- <20240609104355.442002-3-jcalmels@3xx0.net>
- <20240610023301.GA2183903@mail.hallyn.com>
- <svpbmv37f5n537seb3cfsylnlzi6ftuad4dqi5unoycylmcf7r@6knq7sibdw7w>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <svpbmv37f5n537seb3cfsylnlzi6ftuad4dqi5unoycylmcf7r@6knq7sibdw7w>
+In-Reply-To: <20240609104355.442002-1-jcalmels@3xx0.net>
 
-On Mon, Jun 10, 2024 at 02:46:06AM -0700, Jonathan Calmels wrote:
-> On Sun, Jun 09, 2024 at 09:33:01PM GMT, Serge E. Hallyn wrote:
-> > On Sun, Jun 09, 2024 at 03:43:35AM -0700, Jonathan Calmels wrote:
-> > > This patch adds a new capability security bit designed to constrain a
-> > > task’s userns capability set to its bounding set. The reason for this is
-> > > twofold:
-> > > 
-> > > - This serves as a quick and easy way to lock down a set of capabilities
-> > >   for a task, thus ensuring that any namespace it creates will never be
-> > >   more privileged than itself is.
-> > > - This helps userspace transition to more secure defaults by not requiring
-> > >   specific logic for the userns capability set, or libcap support.
-> > > 
-> > > Example:
-> > > 
-> > >     # capsh --secbits=$((1 << 8)) --drop=cap_sys_rawio -- \
-> > >             -c 'unshare -r grep Cap /proc/self/status'
-> > >     CapInh: 0000000000000000
-> > >     CapPrm: 000001fffffdffff
-> > >     CapEff: 000001fffffdffff
-> > >     CapBnd: 000001fffffdffff
-> > >     CapAmb: 0000000000000000
-> > >     CapUNs: 000001fffffdffff
-> > 
-> > But you are not (that I can see, in this or the previous patch)
-> > keeping SECURE_USERNS_STRICT_CAPS in securebits on the next
-> > level unshare.  Though I think it's ok, because by then both
-> > cap_userns and cap_bset are reduced and cap_userns can't be
-> > expanded.  (Sorry, just thinking aloud here)
+On Sun, Jun 09, 2024 at 03:43:33AM -0700, Jonathan Calmels wrote:
+> This patch series introduces a new user namespace capability set, as
+> well as some plumbing around it (i.e. sysctl, secbit, lsm support).
 > 
-> Right this is safe to reset, but maybe we do keep it if the secbit is
-> locked? This is kind of a special case compared to the other bits.
-
-I don't think it would be worth the extra complication in the
-secbits code, and it's semantically very different from the
-cap_userns.
-
-> > > +	/* Limit userns capabilities to our parent's bounding set. */
-> > 
-> > In the case of userns_install(), it will be the target user namespace
-> > creator's bounding set, right?  Not "our parent's"?
+> First patch goes over the motivations for this as well as prior art.
 > 
-> Good point, I should reword this comment.
+> In summary, while user namespaces are a great success today in that they
+> avoid running a lot of code as root, they also expand the attack surface
+> of the kernel substantially which is often abused by attackers. 
+> Methods exist to limit the creation of such namespaces [1], however,
+> application developers often need to assume that user namespaces are
+> available for various tasks such as sandboxing. Thus, instead of
+> restricting the creation of user namespaces, we offer ways for userspace
+> to limit the capabilities granted to them.
+> 
+> Why a new capability set and not something specific to the userns (e.g.
+> ioctl_ns)?
+> 
+>     1. We can't really expect userspace to patch every single callsite
+>     and opt-in this new security mechanism. 
+> 
+>     2. We don't necessarily want policies enforced at said callsites.
+>     For example a service like systemd-machined or a PAM session need to
+>     be able to place restrictions on any namespace spawned under it.
+> 
+>     3. We would need to come up with inheritance rules, querying
+>     capabilities, etc. At this point we're just reinventing capability
+>     sets.
+> 
+>     4. We can easily define interactions between capability sets, thus
+>     helping with adoption (patch 2 is an example of this)
+> 
+> Some examples of how this could be leveraged in userspace:
+> 
+>     - Prevent user from getting CAP_NET_ADMIN in user namespaces under SSH:
+>         echo "auth optional pam_cap.so" >> /etc/pam.d/sshd
+>         echo "!cap_net_admin $USER"     >> /etc/security/capability.conf
+>         capsh --secbits=$((1 << 8)) -- -c /usr/sbin/sshd
+> 
+>     - Prevent containers from ever getting CAP_DAC_OVERRIDE:
+>         systemd-run -p CapabilityBoundingSet=~CAP_DAC_OVERRIDE \
+>                     -p SecureBits=userns-strict-caps \
+>                     /usr/bin/dockerd
+>         systemd-run -p UserNSCapabilities=~CAP_DAC_OVERRIDE \
+>                     /usr/bin/incusd
+> 
+>     - Kernel could be vulnerable to CAP_SYS_RAWIO exploits, prevent it:
+>         sysctl -w cap_bound_userns_mask=0x1fffffdffff
+> 
+>     - Drop CAP_SYS_ADMIN for this shell and all the user namespaces below it:
+>         bwrap --unshare-user --cap-drop CAP_SYS_ADMIN /bin/sh
+> 
+
+Where are the tests for this patchset?  I see you updated the bpf tests for the
+bpf lsm bits, but there's nothing to validate this new behavior or exercise the
+new ioctl you've added.  Thanks,
+
+Josef
 
