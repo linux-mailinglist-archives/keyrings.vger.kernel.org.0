@@ -1,278 +1,210 @@
-Return-Path: <keyrings+bounces-1622-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1623-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C717E90F2DC
-	for <lists+keyrings@lfdr.de>; Wed, 19 Jun 2024 17:48:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CBE290F9BC
+	for <lists+keyrings@lfdr.de>; Thu, 20 Jun 2024 01:24:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55E5C1F24A51
-	for <lists+keyrings@lfdr.de>; Wed, 19 Jun 2024 15:48:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EF13B21ACF
+	for <lists+keyrings@lfdr.de>; Wed, 19 Jun 2024 23:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0081157A48;
-	Wed, 19 Jun 2024 15:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289C215B143;
+	Wed, 19 Jun 2024 23:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="A9IiR2oQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qiTphedG"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7DD1CAA2;
-	Wed, 19 Jun 2024 15:45:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045E7762C1
+	for <keyrings@vger.kernel.org>; Wed, 19 Jun 2024 23:24:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718811918; cv=none; b=B1UJMw2LH5ri9NSWmKividqvNO45jvz3CFk/KCiuQbGCbSFGZq0OEiBl0c1ObLCOFKIFj97CAm5q1D2UcoxOfuLD2TTB88ob1noT9wnM1cCGeseWaItqodnxzHWjy61DWK4Rn6EOQLMYvx9G/f+2Ru3jJnKNx78gwIYEohUqXC8=
+	t=1718839490; cv=none; b=aNR4tK2kY5YflQKXSs76Wrigp1oSoLdiEjXLLailLdgJArS49mH6rptF0vn1thhmPNLxInRSD1LJUIRa0OAEGqxYPA6uV1wA9/SbtkzHtoe5vxYAjP3KfRlPRKjw/Wt9ZOwxSOkppGETHf1x/yVHOG8phdxPw041k5ZtgP0rYoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718811918; c=relaxed/simple;
-	bh=fjs/HSbDS4tp/jn9C/h6sSXqZP5qij2ZouJdM0o1maU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=poKzomoGKW8EVLkW+8oCyo3YKiBwFyvbpbCQ8BJ5HdjYWjX/FxUY4k0H4tOAGfXNhhjcFv7GBbLOIXfxbURsrQXZOjr54tj5UD8h5VTlIrbb39FKqeKesPPO2trgbSawaeSU1lcS+EcOqpAO0+W8+nHI6h1A6N/iXyQZfLQqw3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=A9IiR2oQ; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45JEpMFC016255;
-	Wed, 19 Jun 2024 15:44:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:subject:from:to:cc:date:in-reply-to:references
-	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
-	xKFYqoB155OgWsXMwJh8/xlXL+QoRB8FAIYdLU5RO84=; b=A9IiR2oQpsG6m7iC
-	U+bvYJzwB8FTnrPmIonwnERFvsPReTKHLnnADGzsf+5Cuaxc18/yIy7iaIridZew
-	ScQU8hq631G7H9j7Tr6w8LZbZF12MfbDVRucYfE5/WMMaq+TA3iU9jHvWVYU9uDF
-	7gphVOPkEs6ltXsnLqUoLwbuXnOGpMjc1Lzkbxzw9RkG5tgwo0YgdKuIXyOTuWfC
-	Y1gdtCKE8pqSgJK7GAUMYFIhIbIzmB7sYt/ki1spMnn59XazJNB+BFk8YIiOGf4l
-	zwfxm3htdoR7SgCMO5Z+V+lKLu4MtuKkfZRqSoYwPED9UHNbWyPMiRU5mPUyMUf8
-	uE4qUg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yv14ug74j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Jun 2024 15:44:37 +0000 (GMT)
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45JFiatM003589;
-	Wed, 19 Jun 2024 15:44:36 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3yv14ug74e-2
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Jun 2024 15:44:36 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 45JEK1v7011052;
-	Wed, 19 Jun 2024 15:22:52 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3yspsndms1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Jun 2024 15:22:52 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 45JFMnYS61931950
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 Jun 2024 15:22:51 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3B65358063;
-	Wed, 19 Jun 2024 15:22:49 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1C55458052;
-	Wed, 19 Jun 2024 15:22:48 +0000 (GMT)
-Received: from li-5cd3c5cc-21f9-11b2-a85c-a4381f30c2f3.ibm.com (unknown [9.61.172.36])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 19 Jun 2024 15:22:48 +0000 (GMT)
-Message-ID: <ce7232469844231f768c2f5b4cacc4d48c2f1db3.camel@linux.ibm.com>
-Subject: Re: [RFC PATCH v2 0/8] Clavis LSM
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Eric Snowberg <eric.snowberg@oracle.com>,
-        linux-security-module@vger.kernel.org
-Cc: dhowells@redhat.com, dwmw2@infradead.org, herbert@gondor.apana.org.au,
-        davem@davemloft.net, ardb@kernel.org, jarkko@kernel.org,
-        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
-        roberto.sassu@huawei.com, dmitry.kasatkin@gmail.com, mic@digikod.net,
-        casey@schaufler-ca.com, stefanb@linux.ibm.com, ebiggers@kernel.org,
-        rdunlap@infradead.org, linux-kernel@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-        linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
-Date: Wed, 19 Jun 2024 11:22:47 -0400
-In-Reply-To: <20240531003945.44594-1-eric.snowberg@oracle.com>
-References: <20240531003945.44594-1-eric.snowberg@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-25.el8_9) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: kk3i3-PWXGW8orAzEZTBq5y_ZAUx_dRY
-X-Proofpoint-ORIG-GUID: w13BX0wkvUBrSH9H9FNy9Th8PuoH-n5q
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	s=arc-20240116; t=1718839490; c=relaxed/simple;
+	bh=qNce/350YpVRRxpaUnyqIqiLdAG42ix/dthjyuQAnog=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=PG2+vUKgqJN8/Pf8mEMfOQxvHe9bgCI0H4yz6AaTYp5mY4ItE8XHz2UaA1AHLK/e+yPzlDiEKJ1CJ79Hpe9gSBkADbWN8ekYLck2Tl+Gzv8tMxiDcGDlrfAWAIRfHh/O81IYrfL/9eMwde9X6VGfDO/C8GOgxGlf70oM+r4A0nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qiTphedG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8231C2BBFC;
+	Wed, 19 Jun 2024 23:24:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718839489;
+	bh=qNce/350YpVRRxpaUnyqIqiLdAG42ix/dthjyuQAnog=;
+	h=Date:From:To:Cc:Subject:From;
+	b=qiTphedGMrVZ2MacZPQhleCwlO8ptATBYwTin4VosqRPoQdlk1WoH1LyDcpKuk7wZ
+	 0k/yQDxycFiNKBWCpOS+unA9JV23QZVn6Z+dCImOTJA8xKSD8vLS2RNhN7WgONFmVT
+	 eDwcOoKseJuQ2rIfNEk+B8H2OpSbS2sgomXhn/Ol99iaVos2uk3a9V1TmeA9RpXL4f
+	 3j6lk+ZEjI8moVpkS8BY2uvFy6nvQIfsm2RSEjoAvQ+tA3L7I7NRv5xYNvJIS1u3SH
+	 LgFHlVG3GexqwZtQZKyuhkLwaU4HNaeAy8vNrS8KUHhTtYzDXcsK8srlAHJhpJUZNh
+	 dV2wmoSUxCedg==
+Date: Thu, 20 Jun 2024 01:24:46 +0200
+From: Alejandro Colomar <alx@kernel.org>
+To: keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Cc: Alejandro Colomar <alx@kernel.org>
+Subject: [PATCH v1 00/10] Several fixes and improvements to the manual pages
+Message-ID: <20240619232444.36444-1-alx@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-19_02,2024-06-19_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- bulkscore=0 phishscore=0 impostorscore=0 mlxlogscore=999 suspectscore=0
- lowpriorityscore=0 malwarescore=0 mlxscore=0 clxscore=1011 adultscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406190115
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="iikaefzdjqo5bbdb"
+Content-Disposition: inline
 
-Hi Eric,
 
-On Thu, 2024-05-30 at 18:39 -0600, Eric Snowberg wrote:
-> Introduce a new LSM called Clavis (Latin word meaning key).  The motivation
-> behind this LSM is to provide access control for system keys.  Before spending
-> more time on this LSM, I am sending this as an RFC to start a discussion to see
-> if the current direction taken has a possibility of being accepted in the
-> future.
-> 
-> Today the kernel has the following system keyrings: .builtin_trusted_keyring,
-> .secondary_trusted_keyring, and the .machine.  It also has the .platform
-> keyring which has limited capabilities; it can only be used to verify a kernel
-> for kexec.
+--iikaefzdjqo5bbdb
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+From: Alejandro Colomar <alx@kernel.org>
+To: keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>
+Cc: Alejandro Colomar <alx@kernel.org>
+Subject: [PATCH v1 00/10] Several fixes and improvements to the manual pages
+MIME-Version: 1.0
 
-Please start the cover letter with the problem description/motivation, not the
-solution.
+Hi David,
 
-From https://docs.kernel.org/process/submitting-patches.html: 
+Here's a set of fixes and improvements to the manual pages.  I'm
+preparing a lot more, but I'll send these already to taste the waters.
 
-"Describe your problem. Whether your patch is a one-line bug fix or 5000 lines
-of a new feature, there must be an underlying problem that motivated you to do
-this work. Convince the reviewer that there is a problem worth fixing and that
-it makes sense for them to read past the first paragraph."
+Have a lovely day!
+Alex
 
-For example,
+*** BLURB HERE ***
 
-Additional keys not built into the kernel could originally be loaded onto the
-.secondary_trusted_keyring *only* if they were signed by a key built into the
-kernel or by a key already on the .secondary_trusted_keyring.  The concern for
-using the wrong key for signature verification was minimal.  With the ability of
-loading Machine Owner Keys(MOK) keys onto the .machine keyring, which is linked
-to the .secondary_trusted_keys keyring, key usage is a real concern.
+Alejandro Colomar (10):
+  man/asymmetric-key.7: Use HISTORY instead of VERSIONS
+  man: Use the LIBRARY section
+  man: Fix TH arguments 4 and 5
+  man: Update date in TH
+  man: Use lowercase in TH 1st argument
+  man: Escape dashes in TH
+  man: Add SYNOPSYS section
+  man: Improve formatting of SYNOPSIS of commands
+  man/keyctl.1: Improve formatting
+  man: Organize manual pages in subdirectories
 
-To limit key usage ...
+ Makefile                                     |  10 +-
+ man/{ =3D> man1}/keyctl.1                      | 432 ++++++++++++++-----
+ man/{ =3D> man3}/find_key_by_type_and_name.3   |  11 +-
+ man/{ =3D> man3}/keyctl.3                      |  25 +-
+ man/{ =3D> man3}/keyctl_capabilities.3         |  13 +-
+ man/{ =3D> man3}/keyctl_chown.3                |  13 +-
+ man/{ =3D> man3}/keyctl_clear.3                |  13 +-
+ man/{ =3D> man3}/keyctl_describe.3             |  13 +-
+ man/{ =3D> man3}/keyctl_dh_compute.3           |  13 +-
+ man/{ =3D> man3}/keyctl_get_keyring_ID.3       |  13 +-
+ man/{ =3D> man3}/keyctl_get_persistent.3       |  13 +-
+ man/{ =3D> man3}/keyctl_get_security.3         |  13 +-
+ man/{ =3D> man3}/keyctl_instantiate.3          |  13 +-
+ man/{ =3D> man3}/keyctl_invalidate.3           |  13 +-
+ man/{ =3D> man3}/keyctl_join_session_keyring.3 |  13 +-
+ man/{ =3D> man3}/keyctl_link.3                 |  13 +-
+ man/{ =3D> man3}/keyctl_move.3                 |  13 +-
+ man/{ =3D> man3}/keyctl_pkey_decrypt.3         |   0
+ man/{ =3D> man3}/keyctl_pkey_encrypt.3         |  13 +-
+ man/{ =3D> man3}/keyctl_pkey_query.3           |  13 +-
+ man/{ =3D> man3}/keyctl_pkey_sign.3            |  13 +-
+ man/{ =3D> man3}/keyctl_pkey_verify.3          |   0
+ man/{ =3D> man3}/keyctl_read.3                 |  13 +-
+ man/{ =3D> man3}/keyctl_restrict_keyring.3     |  13 +-
+ man/{ =3D> man3}/keyctl_revoke.3               |  13 +-
+ man/{ =3D> man3}/keyctl_search.3               |  15 +-
+ man/{ =3D> man3}/keyctl_session_to_parent.3    |  13 +-
+ man/{ =3D> man3}/keyctl_set_reqkey_keyring.3   |  13 +-
+ man/{ =3D> man3}/keyctl_set_timeout.3          |  13 +-
+ man/{ =3D> man3}/keyctl_setperm.3              |  13 +-
+ man/{ =3D> man3}/keyctl_update.3               |  13 +-
+ man/{ =3D> man3}/keyctl_watch_key.3            |  13 +-
+ man/{ =3D> man3}/recursive_key_scan.3          |  11 +-
+ man/{ =3D> man5}/key.dns_resolver.conf.5       |   2 +-
+ man/{ =3D> man5}/request-key.conf.5            |   2 +-
+ man/{ =3D> man7}/asymmetric-key.7              |   4 +-
+ man/{ =3D> man7}/keyutils.7                    |  26 +-
+ man/{ =3D> man8}/key.dns_resolver.8            |   2 +-
+ man/{ =3D> man8}/request-key.8                 |  14 +-
+ 39 files changed, 498 insertions(+), 381 deletions(-)
+ rename man/{ =3D> man1}/keyctl.1 (89%)
+ rename man/{ =3D> man3}/find_key_by_type_and_name.3 (92%)
+ rename man/{ =3D> man3}/keyctl.3 (89%)
+ rename man/{ =3D> man3}/keyctl_capabilities.3 (94%)
+ rename man/{ =3D> man3}/keyctl_chown.3 (91%)
+ rename man/{ =3D> man3}/keyctl_clear.3 (89%)
+ rename man/{ =3D> man3}/keyctl_describe.3 (93%)
+ rename man/{ =3D> man3}/keyctl_dh_compute.3 (95%)
+ rename man/{ =3D> man3}/keyctl_get_keyring_ID.3 (92%)
+ rename man/{ =3D> man3}/keyctl_get_persistent.3 (93%)
+ rename man/{ =3D> man3}/keyctl_get_security.3 (93%)
+ rename man/{ =3D> man3}/keyctl_instantiate.3 (96%)
+ rename man/{ =3D> man3}/keyctl_invalidate.3 (90%)
+ rename man/{ =3D> man3}/keyctl_join_session_keyring.3 (91%)
+ rename man/{ =3D> man3}/keyctl_link.3 (92%)
+ rename man/{ =3D> man3}/keyctl_move.3 (92%)
+ rename man/{ =3D> man3}/keyctl_pkey_decrypt.3 (100%)
+ rename man/{ =3D> man3}/keyctl_pkey_encrypt.3 (94%)
+ rename man/{ =3D> man3}/keyctl_pkey_query.3 (94%)
+ rename man/{ =3D> man3}/keyctl_pkey_sign.3 (95%)
+ rename man/{ =3D> man3}/keyctl_pkey_verify.3 (100%)
+ rename man/{ =3D> man3}/keyctl_read.3 (94%)
+ rename man/{ =3D> man3}/keyctl_restrict_keyring.3 (91%)
+ rename man/{ =3D> man3}/keyctl_revoke.3 (89%)
+ rename man/{ =3D> man3}/keyctl_search.3 (93%)
+ rename man/{ =3D> man3}/keyctl_session_to_parent.3 (91%)
+ rename man/{ =3D> man3}/keyctl_set_reqkey_keyring.3 (93%)
+ rename man/{ =3D> man3}/keyctl_set_timeout.3 (90%)
+ rename man/{ =3D> man3}/keyctl_setperm.3 (94%)
+ rename man/{ =3D> man3}/keyctl_update.3 (91%)
+ rename man/{ =3D> man3}/keyctl_watch_key.3 (95%)
+ rename man/{ =3D> man3}/recursive_key_scan.3 (95%)
+ rename man/{ =3D> man5}/key.dns_resolver.conf.5 (95%)
+ rename man/{ =3D> man5}/request-key.conf.5 (98%)
+ rename man/{ =3D> man7}/asymmetric-key.7 (99%)
+ rename man/{ =3D> man7}/keyutils.7 (89%)
+ rename man/{ =3D> man8}/key.dns_resolver.8 (95%)
+ rename man/{ =3D> man8}/request-key.8 (92%)
 
-> 
-> Today the kernel also tracks key usage for verification done with any of these
-> keys. Current verification usage includes: VERIFYING_MODULE_SIGNATURE,
-> VERIFYING_FIRMWARE_SIGNATURE, VERIFYING_KEXEC_PE_SIGNATURE,
-> VERIFYING_KEY_SIGNATURE, VERIFYING_KEY_SELF_SIGNATURE, and
-> VERIFYING_UNSPECIFIED_SIGNATURE. After these usage types were originally
-> introduced, most additions have typically used the
-> VERIFYING_UNSPECIFIED_SIGNATURE.
-> 
-> At the moment, besides the usage enforcement for .platform keys, any key
-> contained within the system keyrings can be used for any verification
-> purpose.  For example, a key that was originally created to sign kernel
-> modules could be used for BPF verification.
-> 
-> This new LSM adds the ability to do access control for all system keys. When
-> enabled, only the .builtin_trusted_keys are available for loading kernel
-> modules and doing a kexec.  Until an ACL entry is added for a specific key, no
-> other system key may be used for any other purpose.
+Range-diff against v0:
+ -:  ------- >  1:  ec0c2fa man/asymmetric-key.7: Use HISTORY instead of VE=
+RSIONS
+ -:  ------- >  2:  8f02c27 man: Use the LIBRARY section
+ -:  ------- >  3:  e3e616f man: Fix TH arguments 4 and 5
+ -:  ------- >  4:  7762f59 man: Update date in TH
+ -:  ------- >  5:  7294951 man: Use lowercase in TH 1st argument
+ -:  ------- >  6:  3d6ef97 man: Escape dashes in TH
+ -:  ------- >  7:  5794916 man: Add SYNOPSYS section
+ -:  ------- >  8:  30c25a7 man: Improve formatting of SYNOPSIS of commands
+ -:  ------- >  9:  ae1e052 man/keyctl.1: Improve formatting
+ -:  ------- > 10:  93e44ce man: Organize manual pages in subdirectories
+--=20
+2.45.2
 
-Keys stored on the .builtin_trusted_keys keyring seem to always be permitted,
-independent of a Clavis rule, which is fine, but the above paragraph needs to be
-re-worded.
 
-> 
-> Enabling the LSM is done during initial boot by passing in a single asymmetric
-> key id within a new "clavis=" boot param. The asymmetric key id must match one
-> already contained within any of the system keyrings.  If a match is found, a
-> link is created into the new .clavis keyring.  This key shall be used as the
-> root of trust for any keyring ACL updates afterwards.
-> 
-> On UEFI systems the "clavis" boot param is mirrored into a new UEFI variable
-> within the EFI stub code. This variable will persist until the next power on
-> reset.  This same type of functionality is done within shim. Since this
-> variable is created before ExitBootServices (EBS) it will not have the NVRAM
-> bit set, signifying it was created during the Boot Services phase. This is
-> being used so the "clavis" boot param can not be changed via kexec, thereby
-> preventing a pivot of the root of trust.
+--iikaefzdjqo5bbdb
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Move this paragraph (and patch) to later.  Defining a new UEFI variable makes it
-more difficult to test.  Consider defering introducing the new UEFI variable
-patch to the end.
+-----BEGIN PGP SIGNATURE-----
 
-> 
-> As mentioned earlier, this LSM introduces a new .clavis keyring.  Following
-> boot, no new asymmetric keys can be added to this keyring and only the key
-> designated via the initial boot param may be used. This LSM can not be started
-> at any other point in time.  The .clavis keyring also holds the access control
-> list for system keys. A new key type called clavis_key_acl is being introduced.
-> This contains the usage followed by the asymmetric key id. To be added to the
-> clavis keyring, the clavis_key_acl must be S/MIME signed by the sole asymmetric
-> key contained within it. New ACL additions to the .clavis keyring may be added
-> at any time.
+iQIzBAABCgAdFiEE6jqH8KTroDDkXfJAnowa+77/2zIFAmZzaL4ACgkQnowa+77/
+2zKhWw//TnstyMGtuoR+lIQKQH0/UlUVYRj7n3tZSSwEpGaEJpEXnRJxnfdEY+9f
+UyJKt40NfpZrbxa4oLVLH6i90elcEqZC24Dy8h3/+R1qOtefi/0A03BEVlIGYUpu
+EJlVsiV8TAaOEv455sF/Ka+lOsS2gQmdDhfXPvVG+xmZrbUQctkA3achiPChIjEg
+B/0M22grV8kWMJ3C1zt2yStUu4e1ialf9rXQuQGqorlcP94t31LfVqlvkY4Rdcw5
+1Q9s4YWLcUTpDs+m+kDp/S6ZJAzx23OAP4ge91+3dmxgxp+3+kjZIyDkw5UESJMi
+ZmGryRkF/1oOQGqp2GwV7Hahs8ZO72idCyeZTqLLVtbV21Yz60MLQ8fVqRQIBSpl
+/H5I3ySA9s+kjGTCqcG3Ht8puzAsgB9uEK4/lygqG1m5/44RG1TggiUhIKr/Uffh
+jXE6OB0rNwEzfY3wHDw7ULsT8YDjWlOelpooGDHvTvoMFfvh1yEYKTjUciVZfrVU
+E8Rkyzb0eiz2BTdi2LbJuLlFAtwXFq9uvNUFqiiLKXfjEHP7nd7e4onMn5NRQW97
+bTWzhAyQ15IXoOzJkYRJzSDJoOUmjMdFgdkHGQUyE1j0DV/h/n1vj4gsRQ6qx27W
+wSpMAWR32G0jA0Z3FDB14YdLNvRyuFfqPehsR51cj7BrqCxsDL0=
+=JpcV
+-----END PGP SIGNATURE-----
 
-Ok. To summarize, the Clavis policy rules are loaded at runtime onto the .clavis
-keyring.  The Clavis rules must be signed by the key specified on the "clavis="
-boot command line.  The only key on the .clavis keyring is the one specified on
-the boot command line.
-
-As far as I'm aware, this would be the first time policy rules are stored in a
-keyring.
-
-> 
-> Currently this LSM does not require new changes or modifications to any user
-> space tools.  It also does not have a securityfs interface.  Everything is
-> done using the existing keyctl tool through the new .clavis keyring. The
-> S/MIME signing can be done with a simple OpenSSL command. If additions or
-> updates need to be added in the future, new ACL key types could be created.
-> With this approach, maintainability should not be an issue in the future
-> if missing items are identified.
-> 
-> Clavis must be configured at build time with CONFIG_SECURITY_CLAVIS=y. The list
-> of security modules enabled by default is set with CONFIG_LSM.  The kernel
-> configuration must contain CONFIG_LSM=clavis,[...] with [...] as the list of
-> other security modules for the running system.
-> 
-> For setup and usage instructions, the final patch includes an admin-guide.
-> 
-> Future enhancements to this LSM could include:
-> 
-> 1. Subsystems that currently use system keys with
->    VERIFYING_UNSPECIFIED_SIGNATURE could be updated with their specific
->    usage type.  For example, a usage type for IMA, BPF, etc could be
->    added.
-
-Being able to at least limit the key used to verify the IMA policy signature
-would be nice to have earlier, rather than later.
-
-> 
-> 2. Currently, each clavis_key_acl must be individually signed.  Add the ability
->    to sign multiple clavis_key_acl entries within the same file.
-> 
-> 3. Currently, this LSM does not place key usage restrictions on the builtin
->    keys for kexec and kernel module verification. This was done to prevent a
->    regression that could  prevent the kernel from booting.  This could be
->    changed if there was a way at compile time to pre-populate the .clavis
->    keyring. This would allow the ephemeral key used to sign the kernel
->    modules to be included within the .clavis keyring, allowing the kernel
->    to boot.
-
-I don't see a problem with trusting the builtin keys.  They should be trusted. 
-
-> 
-> 4. UEFI Secure Boot Advanced Targeting (SBAT) support. Since
->    the boot param is mirrored into UEFI before EBS is called,
->    this LSM could be enhanced to not only enforce key usage,
->    but also SBAT levels across kexec.
-> 
-> 5. Having the ability to allow platform keys to be on par with
->    all other system keys when using this LSM. This would be useful
->    for a user that controls their entire UEFI SB DB key chain and
->    doesn't want to use MOK keys.
-
-Additional comments:
-
-This patch set is dependent on CONFIG_{MODULE, KEXEC}_SIG being enabled:
-
-- with CONFIG_MODULE_SIG_FORCE and CONFIG_KEXEC_SIG_FORCE configured.
-- wit sig_enforce specified on the boot command line.
-- with either Lockdown or CONFIG_IMA_ARCH_POLICY enforcing kexec/module
-signature verification.
-
-Without CONFIG_{MODULE, KEXEC}_SIG enabled and with CONFIG_IMA_ARCH_POLICY
-enabled or similar rules, IMA would verify the kexec kernel image and kernel
-modules without Clavis enforcement.
-
-Mimi
-
+--iikaefzdjqo5bbdb--
 
