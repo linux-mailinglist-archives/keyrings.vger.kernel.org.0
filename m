@@ -1,272 +1,316 @@
-Return-Path: <keyrings+bounces-1640-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1641-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BC8891C169
-	for <lists+keyrings@lfdr.de>; Fri, 28 Jun 2024 16:46:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6527091D386
+	for <lists+keyrings@lfdr.de>; Sun, 30 Jun 2024 21:45:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3007D1C208B8
-	for <lists+keyrings@lfdr.de>; Fri, 28 Jun 2024 14:46:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 836A41C204F5
+	for <lists+keyrings@lfdr.de>; Sun, 30 Jun 2024 19:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D21D1A2579;
-	Fri, 28 Jun 2024 14:46:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="x47XdDmE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85FC01553B4;
+	Sun, 30 Jun 2024 19:45:16 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
+Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [83.223.95.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF401DDE9;
-	Fri, 28 Jun 2024 14:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=195.140.195.201
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719585967; cv=pass; b=St0k3wHZqqaS03II+fP8yVFQLnyWbdTEPjCl+RCFJVlbHlfPc8jAuE/8+dJ5rwwWaAfnvh9UJQno/oAv3LLi1lDQVEq5oMwiRuW6OmWVQfGIFXW2sjlHeTUp2ZKv56XVkm/s4Iqj9CaaUZKjQFUkOLawX/VXiRiE10T9l8sr9yU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719585967; c=relaxed/simple;
-	bh=xi3MsJ24rqKtt58ZcTwE+6ytS76F6inUaZWTbu1VV90=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=vGEO/FnIujPuFg0tzokSNPJVBWNYpQBJATcf880KVYzK0QLaI70M/f3dNqxAHzrM2p7Op9zc8ogwHmR/Hox53r94Q+2oUx3dYKAsk29l5XYq7O0Q+8QKiKsetuUSX8NOftMlZts3rNBsZ07pcovDEw7teaL7eEpxkVNHGTQq1gs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=x47XdDmE; arc=pass smtp.client-ip=195.140.195.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
-Received: from [192.168.1.215] (83-245-197-232.elisa-laajakaista.fi [83.245.197.232])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B18A38DF2;
+	Sun, 30 Jun 2024 19:45:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.204
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719776716; cv=none; b=i8Imm5BImxQWcuu6XxrhohguLBUFRhJ2JidSzDHbAOaDR+6v7lM22TS8HB99cftQcDc33tMj11KhOITnLh66NoLyz86uGNKE6mjzhTJN4Va0pBKsoU3LIxLz7/riZR4tKeSS2HQq+RQ5k+volwW664npnVzeNKlBUavvLwjQ+58=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719776716; c=relaxed/simple;
+	bh=iChmBiCH957hVqpkPbOVEM27uxwgCagWtvWjjvKqmnU=;
+	h=Message-ID:From:Date:Subject:MIME-Version:Content-Type:To:Cc; b=SJI7mTxSvLprhRmqcch1sQs8/I/uB/h5VROI7QZLu5jGfJ6W3USMe4ihEl2t6yq7H2b1RM4yBKfkDvwZbjMjeVpPIrr9cHYIwJEZVfLHb426h1JqBik19swiRngK/efau1oBX1v9tzHy9q/Ab9Tp0zZAxFjvvKESvSRQrXdhSAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.95.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by mailout1.hostsharing.net (Postfix) with ESMTPS id 019CB10190FA3;
+	Sun, 30 Jun 2024 21:35:32 +0200 (CEST)
+Received: from localhost (unknown [89.246.108.87])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: sakkinen)
-	by meesny.iki.fi (Postfix) with ESMTPSA id 4W9dXd425vzyQb;
-	Fri, 28 Jun 2024 17:45:53 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
-	t=1719585957;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WWKHLgmudvMlwluvp3Stzu4k/6CZp2skiMXIPd54CxY=;
-	b=x47XdDmEctKtaybdA5GvS+Q7kPTHMjglvlqxpd7wJ1qZCnYZAqadJrM82qWAN9hkJw9qya
-	ArcSjW2anjIUCoreelJdVL2vlkPcnKtJvRbeg/lqoTfNWYZW6xSnQg7nduh1yLA2rVbPuU
-	bnqj0zoDIACXDnSY+Uqae9B+o+mxBYk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=meesny; t=1719585957;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WWKHLgmudvMlwluvp3Stzu4k/6CZp2skiMXIPd54CxY=;
-	b=RxUpuY06Tm7bdQ+ZP2YSeV2sZ0d26kGW+yfvErGUjN0RqKtm0McdqrYuekNb0pGvzE+qm7
-	iuNlXj2O8FbpJDeehRl+K0JeKQeaRmeSYauJacKq29s6uBRrtri7KjBnhn89xVkrtvvaVt
-	5hMvMcoH5A/jWQetK3y8OT94tMYIngU=
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=sakkinen smtp.mailfrom=jarkko.sakkinen@iki.fi
-ARC-Seal: i=1; s=meesny; d=iki.fi; t=1719585957; a=rsa-sha256; cv=none;
-	b=wz7CPul/aLpW+AkOpy+q+2hOgYuNK2/HqS/jHykc4lXi7fbJVcsx4BSPq1RSy4MXAK4YCL
-	YMEG6IroCIxVWFa5vosVXJ7wmDo9nZEnRkcQT2Nc2HYn4VErl62+Oyb3XbEnCw7Tw+qsRn
-	X2ennwOnY7aYQMkNbAXIm+aPPy2PuKs=
-Message-ID: <177e16dafed37ab361cf0ccc436573be1d717d94.camel@iki.fi>
-Subject: Re: [PATCH v2 2/4] capabilities: Add securebit to restrict userns
- caps
-From: Jarkko Sakkinen <jarkko.sakkinen@iki.fi>
-To: Jonathan Calmels <jcalmels@3xx0.net>, brauner@kernel.org, 
- ebiederm@xmission.com, Jonathan Corbet <corbet@lwn.net>, Paul Moore
- <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn"
- <serge@hallyn.com>, KP Singh <kpsingh@kernel.org>, Matt Bobrowski
- <mattbobrowski@google.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
- <eddyz87@gmail.com>, Song Liu <song@kernel.org>, Yonghong Song
- <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@google.com>, Hao Luo <haoluo@google.com>, Jiri Olsa
- <jolsa@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Kees Cook
- <kees@kernel.org>, Joel Granados <j.granados@samsung.com>, John Johansen
- <john.johansen@canonical.com>, David Howells <dhowells@redhat.com>, Jarkko
- Sakkinen <jarkko@kernel.org>, Stephen Smalley
- <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
- Mykola Lysenko <mykolal@fb.com>, Shuah Khan <shuah@kernel.org>
-Cc: containers@lists.linux.dev, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-security-module@vger.kernel.org, bpf@vger.kernel.org, 
- apparmor@lists.ubuntu.com, keyrings@vger.kernel.org,
- selinux@vger.kernel.org,  linux-kselftest@vger.kernel.org
-Date: Fri, 28 Jun 2024 17:45:52 +0300
-In-Reply-To: <f4de777099b0dff819ee6277b3b7cd7e18d96c78.camel@iki.fi>
-References: <20240609104355.442002-1-jcalmels@3xx0.net>
-	 <20240609104355.442002-3-jcalmels@3xx0.net>
-	 <f4de777099b0dff819ee6277b3b7cd7e18d96c78.camel@iki.fi>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
+	by h08.hostsharing.net (Postfix) with ESMTPSA id BC69061DA802;
+	Sun, 30 Jun 2024 21:35:31 +0200 (CEST)
+X-Mailbox-Line: From ee3248f9f8d60cff9106a5a46c5f5d53ac81e60a Mon Sep 17 00:00:00 2001
+Message-ID: <cover.1719771133.git.lukas@wunner.de>
+From: Lukas Wunner <lukas@wunner.de>
+Date: Sun, 30 Jun 2024 21:35:00 +0200
+Subject: [PATCH v2 00/18] PCI device authentication
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>, Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>, James Bottomley <James.Bottomley@HansenPartnership.com>, <linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>, <linux-coco@lists.linux.dev>, <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>
+Cc: <linuxarm@huawei.com>, David Box <david.e.box@intel.com>, Dan Williams <dan.j.williams@intel.com>, "Li, Ming" <ming4.li@intel.com>, Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, Alistair Francis <alistair.francis@wdc.com>, Wilfred Mallawa <wilfred.mallawa@wdc.com>, "Damien Le Moal" <dlemoal@kernel.org>, Alexey Kardashevskiy <aik@amd.com>, Dhaval Giani <dhaval.giani@amd.com>, Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, Peter Gonda <pgonda@google.com>, Jerome Glisse <jglisse@google.com>, Sean Christopherson <seanjc@google.com>, Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>, Eric Biggers <ebiggers@google.com>, Stefan Berger <stefanb@linux.ibm.com>, Jonathan Corbet <corbet@lwn.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alan Stern <stern@rowland.harvard.edu>
 
-On Fri, 2024-06-28 at 17:43 +0300, Jarkko Sakkinen wrote:
-> On Sun, 2024-06-09 at 03:43 -0700, Jonathan Calmels wrote:
-> > This patch adds a new capability security bit designed to constrain
-> > a
->=20
->=20
-> nit: if you think of it "This patch adds" could be just "add", right?
-> :-)
->=20
-> Also name the exact thing/symbol/whatever here. This is not a HBO
-> series.
->=20
-> > task=E2=80=99s userns capability set to its bounding set. The reason fo=
-r
-> > this
-> > is
-> > twofold:
-> >=20
-> > - This serves as a quick and easy way to lock down a set of
-> > capabilities
-> > =C2=A0 for a task, thus ensuring that any namespace it creates will
-> > never
-> > be
-> > =C2=A0 more privileged than itself is.
-> > - This helps userspace transition to more secure defaults by not
-> > requiring
-> > =C2=A0 specific logic for the userns capability set, or libcap support.
-> >=20
-> > Example:
-> >=20
-> > =C2=A0=C2=A0=C2=A0 # capsh --secbits=3D$((1 << 8)) --drop=3Dcap_sys_raw=
-io -- \
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -c '=
-unshare -r grep Cap /proc/self/status'
-> > =C2=A0=C2=A0=C2=A0 CapInh: 0000000000000000
-> > =C2=A0=C2=A0=C2=A0 CapPrm: 000001fffffdffff
-> > =C2=A0=C2=A0=C2=A0 CapEff: 000001fffffdffff
-> > =C2=A0=C2=A0=C2=A0 CapBnd: 000001fffffdffff
-> > =C2=A0=C2=A0=C2=A0 CapAmb: 0000000000000000
-> > =C2=A0=C2=A0=C2=A0 CapUNs: 000001fffffdffff
-> >=20
-> > Signed-off-by: Jonathan Calmels <jcalmels@3xx0.net>
-> > ---
-> > =C2=A0include/linux/securebits.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 =
-1 +
-> > =C2=A0include/uapi/linux/securebits.h | 11 ++++++++++-
-> > =C2=A0kernel/user_namespace.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 |=C2=A0 5 +++++
-> > =C2=A03 files changed, 16 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/include/linux/securebits.h
-> > b/include/linux/securebits.h
-> > index 656528673983..5f9d85cd69c3 100644
-> > --- a/include/linux/securebits.h
-> > +++ b/include/linux/securebits.h
-> > @@ -5,4 +5,5 @@
-> > =C2=A0#include <uapi/linux/securebits.h>
-> > =C2=A0
-> > =C2=A0#define issecure(X)		(issecure_mask(X) &
-> > current_cred_xxx(securebits))
-> > +#define iscredsecure(cred, X)	(issecure_mask(X) & cred-
-> > > securebits)
-> > =C2=A0#endif /* !_LINUX_SECUREBITS_H */
-> > diff --git a/include/uapi/linux/securebits.h
-> > b/include/uapi/linux/securebits.h
-> > index d6d98877ff1a..2da3f4be4531 100644
-> > --- a/include/uapi/linux/securebits.h
-> > +++ b/include/uapi/linux/securebits.h
-> > @@ -52,10 +52,19 @@
-> > =C2=A0#define SECBIT_NO_CAP_AMBIENT_RAISE_LOCKED \
-> > =C2=A0			(issecure_mask(SECURE_NO_CAP_AMBIENT_RAISE
-> > _L
-> > OCKED))
-> > =C2=A0
-> > +/* When set, user namespace capabilities are restricted to their
-> > parent's bounding set. */
-> > +#define SECURE_USERNS_STRICT_CAPS			8
-> > +#define SECURE_USERNS_STRICT_CAPS_LOCKED		9=C2=A0 /* make
->=20
->=20
->=20
-> > bit-8 immutable */
-> > +
-> > +#define SECBIT_USERNS_STRICT_CAPS
-> > (issecure_mask(SECURE_USERNS_STRICT_CAPS))
-> > +#define SECBIT_USERNS_STRICT_CAPS_LOCKED \
-> > +			(issecure_mask(SECURE_USERNS_STRICT_CAPS_L
-> > OC
-> > KED))
-> > +
-> > =C2=A0#define
-> > SECURE_ALL_BITS		(issecure_mask(SECURE_NOROOT) | \
-> > =C2=A0			=09
-> > issecure_mask(SECURE_NO_SETUID_FIXUP) | \
-> > =C2=A0				 issecure_mask(SECURE_KEEP_CAPS) |
-> > \
-> > -			=09
-> > issecure_mask(SECURE_NO_CAP_AMBIENT_RAISE))
-> > +			=09
-> > issecure_mask(SECURE_NO_CAP_AMBIENT_RAISE) | \
-> > +			=09
->=20
-> spurious new lines in the diff
->=20
-> please as first priority aim for absolute minimal diff or at least
-> do grow diff proactively like this.
->=20
-> If we really think after that, that we need some "extras" to the
-> patch set, then we decide that. These only take energy away from
-> reviewers.
->=20
->=20
-> > issecure_mask(SECURE_USERNS_STRICT_CAPS))
-> > =C2=A0#define SECURE_ALL_LOCKS	(SECURE_ALL_BITS << 1)
-> > =C2=A0
-> > =C2=A0#endif /* _UAPI_LINUX_SECUREBITS_H */
-> > diff --git a/kernel/user_namespace.c b/kernel/user_namespace.c
-> > index 7e624607330b..53848e2b68cd 100644
-> > --- a/kernel/user_namespace.c
-> > +++ b/kernel/user_namespace.c
-> > @@ -10,6 +10,7 @@
-> > =C2=A0#include <linux/cred.h>
-> > =C2=A0#include <linux/securebits.h>
-> > =C2=A0#include <linux/security.h>
-> > +#include <linux/capability.h>
-> > =C2=A0#include <linux/keyctl.h>
-> > =C2=A0#include <linux/key-type.h>
-> > =C2=A0#include <keys/user-type.h>
-> > @@ -42,6 +43,10 @@ static void dec_user_namespaces(struct ucounts
-> > *ucounts)
-> > =C2=A0
-> > =C2=A0static void set_cred_user_ns(struct cred *cred, struct
-> > user_namespace *user_ns)
-> > =C2=A0{
-> > +	/* Limit userns capabilities to our parent's bounding set.
-> > */
-> > +	if (iscredsecure(cred, SECURE_USERNS_STRICT_CAPS))
-> > +		cred->cap_userns =3D cap_intersect(cred->cap_userns,
-> > cred->cap_bset);
-> > +
-> > =C2=A0	/* Start with the capabilities defined in the userns set.
-> > */
-> > =C2=A0	cred->cap_bset =3D cred->cap_userns;
-> > =C2=A0	cred->cap_permitted =3D cred->cap_userns;
->=20
-> Going for 4 week holiday starting for next week so focus in on nits
-> but since this is something to do access control:
->=20
-> 1. Please go surgical with the diff's because this type of patches
-> also require a surgical review. Now reviewing this like riding on=20
-> a bumpy road with a car of which suspension mechanics is broken
-> ;-)
->=20
-> Hope you grab my argument here. I only want to look at the problem
-> and solution for that not random stuff..
+PCI device authentication v2
 
-I skip the other patches because of my eager to get on holiday but
-my instinct tells me that at least some of this feedback applies
-to all of the patches.
+Authenticate PCI devices with CMA-SPDM (PCIe r6.2 sec 6.31) and
+expose the result in sysfs.
 
-So put your solution in sight, not clean ups.
+Five big changes since v1 (and many smaller ones, full list at end):
+
+* Certificates presented by a device are now exposed in sysfs
+  (new patch 12).
+
+* Per James Bottomley's request at Plumbers, a log of signatures
+  received from a device is exposed in sysfs (new patches 13-18),
+  allowing for re-verification by remote attestation services.
+  Comments welcome whether the proposed ABI makes sense.
+
+* Per Damien Le Moal's request at Plumbers, sysfs attributes are
+  now implemented in the SPDM library instead of in the PCI core.
+  Thereby, ATA and SCSI will be able to re-use them seamlessly.
+
+* I've dropped a controversial patch to grant guests exclusive control
+  of authentication of passed-through devices (old patch 12 in v1).
+  People were more interested in granting the TSM exclusive control
+  instead of the guest.  Dan Williams is driving an effort to negotiate
+  SPDM control between kernel and TSM.
+
+* The SPDM library (in patch 7) has undergone significant changes
+  to enable the above-mentioned sysfs exposure of certificates and
+  signatures:  It retrieves and caches all certificates from a device
+  and collects all exchanged SPDM messages in a transcript buffer.
+  To ease future maintenance, the code has been split into multiple
+  files in lib/spdm/.
 
 
-BR, Jarkko
+Link to v1 and subsequent Plumbers discussion:
+https://lore.kernel.org/all/cover.1695921656.git.lukas@wunner.de/
+https://lpc.events/event/17/contributions/1558/
+
+How to test with qemu:
+https://github.com/twilfredo/qemu-spdm-emulation-guide
+
+
+Changes v1 -> v2:
+
+* [PATCH 01/18] X.509: Make certificate parser public
+  * Add include guard #ifndef + #define to <keys/x509-parser.h> (Ilpo).
+
+* [PATCH 02/18] X.509: Parse Subject Alternative Name in certificates
+  * Return -EBADMSG instead of -EINVAL on duplicate Subject Alternative
+    Name, drop error message for consistency with existing code.
+
+* [PATCH 03/18] X.509: Move certificate length retrieval into new helper
+  * Use ssize_t instead of int (Ilpo).
+  * Amend commit message to explain why the helper is exported (Dan).
+
+* [PATCH 06/18] crypto: ecdsa - Support P1363 signature encoding
+  * Use idiomatic &buffer[keylen] notation.
+  * Rebase on NIST P521 curve support introduced with v6.10-rc1
+
+* [PATCH 07/18] spdm: Introduce library to authenticate devices
+  New features:
+  * In preparation for exposure of certificate chains in sysfs, retrieve
+    the certificates from *all* populated slots instead of stopping on
+    the first valid slot.  Cache certificate chains in struct spdm_state.
+  * Collect all exchanged messages of an authentication sequence in a
+    transcript buffer for exposure in sysfs.  Compute hash over this
+    transcript rather than peacemeal over each exchanged message.
+  * Support NIST P521 curve introduced with v6.10-rc1.
+  Bugs:
+  * Amend spdm_validate_cert_chain() to cope with zero length chain.
+  * Print correct error code returned from x509_cert_parse().
+  * Emit error if there are no common supported algorithms.
+  * Implicitly this causes an error if responder selects algorithms
+    not supported by requester during NEGOTIATE_ALGORITHMS exchange,
+    previously this was silently ignored (Jonathan).
+  * Refine checks of Basic Constraints and Key Usage certificate fields.
+  * Add code comment explaining those checks (Jonathan).
+  Usability:
+  * Log informational message on successful authentication (Tomi Sarvela).
+  Style:
+  * Split spdm_requester.c into spdm.h, core.c and req-authenticate.c.
+  * Use __counted_by() in struct spdm_get_version_rsp (Ilpo).
+  * Return ssize_t instead of int from spdm_transport (Ilpo).
+  * Downcase hex characters, vertically align SPDM_REQ macro (Ilpo).
+  * Upcase spdm_error_code enum, vertically align it (Ilpo).
+  * Return -ECONNRESET instead of -ERESTART from spdm_err() (Ilpo).
+  * Access versions with le16_to_cpu() instead of get_unaligned_le16()
+    in spdm_get_version() because __packed attribute already implies
+    byte-wise access (Ilpo).
+  * Add code comment in spdm_start_hash() that shash and desc
+    allocations are freed by spdm_reset(), thus seemingly leaked (Ilpo).
+  * Rename "s" and "h" members of struct spdm_state to "sig_len" and
+    "hash_len" for clarity (Ilpo).
+  * Use FIELD_GET() in spdm_create_combined_prefix() for clarity (Ilpo).
+  * Add SPDM_NONCE_SZ macro (Ilpo).
+  * Reorder error path of spdm_authenticate() for symmetry (Jonathan).
+  * Fix indentation of Kconfig entry (Jonathan).
+  * Annotate capabilities introduced with SPDM 1.1 (Jonathan).
+  * Annotate algorithms introduced with SPDM 1.2 (Jonathan).
+  * Annotate errors introduced with SPDM 1.1 and 1.2 (Jonathan).
+  * Amend algorithm #ifdef's to avoid trailing "|" (Jonathan).
+  * Add code comment explaining that some SPDM messages are enlarged
+    by fields added in new SPDM versions whereas others use reserved
+    space for new fields (Jonathan).
+  * Refine code comments on various fields in SPDM messages (Jonathan).
+  * Duplicate spdm_get_capabilities_reqrsp into separate structs (Jonathan).
+  * Document SupportedAlgorithms field at end of spdm_get_capabilities_rsp,
+    introduced with SPDM 1.3 (Jonathan).
+  * Use offsetofend() rather than offsetof() to set SPDM message size
+    based on SPDM version (Jonathan).
+  * Use cleanup.h to unwind heap allocations (Jonathan).
+  * In spdm_verify_signature(), change code comment to refer to "SPDM 1.0
+    and 1.1" instead of "Until SPDM 1.1" (Jonathan).
+  * Use namespace "SPDM" for exported symbols (Jonathan).
+  * Drop __spdm_exchange().
+  * In spdm_exchange(), do not return an error on truncation of
+    spdm_header so that callers can take care of it.
+  * Rename "SPDM_CAPS" macro to "SPDM_REQ_CAPS" to prepare for later
+    addition of responder support.
+  * Rename "SPDM_MIN_CAPS" macro to "SPDM_RSP_MIN_CAPS" and
+    rename "responder_caps" member of struct spdm_state to "rsp_caps".
+  * Rename "SPDM_REQUESTER" Kconfig symbol to "SPDM".  There is actually
+    no clear-cut separation between requester and responder code because
+    mutual authentication will require the responder to invoke requester
+    functions.
+  * Rename "slot_mask" member of struct spdm_state to "provisioned_slots"
+    to follow SPDM 1.3 spec language.
+
+* [PATCH 08/18] PCI/CMA: Authenticate devices on enumeration
+  * In pci_cma_init(), check whether pci_cma_keyring is an ERR_PTR
+    rather than checking whether it's NULL.  keyring_alloc() never
+    returns NULL.
+  * On failure to allocate keyring, emit "PCI: " and ".cma" as part of
+    error message for clarity (Bjorn).
+  * Drop superfluous curly braces around two if-blocks (Jonathan, Bjorn).
+  * Add code comment explaining why spdm_state is kept despite initial
+    authentication failure (Jonathan).
+  * Rename PCI_DOE_PROTOCOL_CMA to PCI_DOE_FEATURE_CMA for DOE r1.1
+    compliance.
+
+* [PATCH 09/18] PCI/CMA: Validate Subject Alternative Name in certificates
+  * Amend commit message with note on Reference Integrity Manifest (Jonathan).
+  * Amend commit message and code comment with note on PCIe r6.2 changes.
+  * Add SPDX identifer and IETF copyright to cma.asn1 per section 4 of:
+    https://trustee.ietf.org/documents/trust-legal-provisions/tlp-5/
+  * Pass slot number to ->validate() callback and emit it in error messages.
+  * Move all of cma-x509.c into cma.c (Bjorn).
+
+* [PATCH 10/18] PCI/CMA: Reauthenticate devices on reset and resume
+  * Drop "cma_capable" bit in struct pci_dev and instead check whether
+    "spdm_state" is a NULL pointer.  Only difference:  Devices which
+    didn't support the minimum set of capabilities on enumeration
+    are now attempted to be reauthenticated.  The rationale being that
+    they may have gained new capabilities due to a runtime firmware update.
+  * Add kernel-doc for pci_cma_reauthenticate().
+
+* [PATCH 11/18] PCI/CMA: Expose in sysfs whether devices are authenticated
+  * Change write semantics of sysfs attribute such that reauthentication
+    is triggered by writing "re" (instead of an arbitrary string).
+    This allows adding other commands down the road.
+  * Move sysfs attribute from PCI core to SPDM library for reuse by other
+    bus types such as SCSI/ATA (Damien).
+  * If DOE or CMA initialization fails, set pci_dev->spdm_state to ERR_PTR
+    instead of using additional boolean flags.
+  * Amend commit message to mention downgrade attack prevention (Ilpo,
+    Jonathan).
+  * Amend ABI documentation to mention reauthentication after downloading
+    firmware to an FPGA device.
+
+* [PATCH 12/18 to 18/18] are new in v2
+
+
+Jonathan Cameron (2):
+  spdm: Introduce library to authenticate devices
+  PCI/CMA: Authenticate devices on enumeration
+
+Lukas Wunner (16):
+  X.509: Make certificate parser public
+  X.509: Parse Subject Alternative Name in certificates
+  X.509: Move certificate length retrieval into new helper
+  certs: Create blacklist keyring earlier
+  crypto: akcipher - Support more than one signature encoding
+  crypto: ecdsa - Support P1363 signature encoding
+  PCI/CMA: Validate Subject Alternative Name in certificates
+  PCI/CMA: Reauthenticate devices on reset and resume
+  PCI/CMA: Expose in sysfs whether devices are authenticated
+  PCI/CMA: Expose certificates in sysfs
+  sysfs: Allow bin_attributes to be added to groups
+  sysfs: Allow symlinks to be added between sibling groups
+  PCI/CMA: Expose a log of received signatures in sysfs
+  spdm: Limit memory consumed by log of received signatures
+  spdm: Authenticate devices despite invalid certificate chain
+  spdm: Allow control of next requester nonce through sysfs
+
+ Documentation/ABI/testing/sysfs-devices-spdm | 247 ++++++
+ Documentation/admin-guide/sysctl/index.rst   |   2 +
+ Documentation/admin-guide/sysctl/spdm.rst    |  33 +
+ MAINTAINERS                                  |  14 +
+ certs/blacklist.c                            |   4 +-
+ crypto/akcipher.c                            |   2 +-
+ crypto/asymmetric_keys/public_key.c          |  44 +-
+ crypto/asymmetric_keys/x509_cert_parser.c    |   9 +
+ crypto/asymmetric_keys/x509_loader.c         |  38 +-
+ crypto/asymmetric_keys/x509_parser.h         |  40 +-
+ crypto/ecdsa.c                               |  18 +-
+ crypto/internal.h                            |   1 +
+ crypto/rsa-pkcs1pad.c                        |  11 +-
+ crypto/sig.c                                 |   6 +-
+ crypto/testmgr.c                             |   8 +-
+ crypto/testmgr.h                             |  20 +
+ drivers/pci/Kconfig                          |  13 +
+ drivers/pci/Makefile                         |   4 +
+ drivers/pci/cma.asn1                         |  41 +
+ drivers/pci/cma.c                            | 247 ++++++
+ drivers/pci/doe.c                            |   5 +-
+ drivers/pci/pci-driver.c                     |   1 +
+ drivers/pci/pci-sysfs.c                      |   5 +
+ drivers/pci/pci.c                            |  12 +-
+ drivers/pci/pci.h                            |  17 +
+ drivers/pci/pcie/err.c                       |   3 +
+ drivers/pci/probe.c                          |   3 +
+ drivers/pci/remove.c                         |   1 +
+ fs/sysfs/file.c                              |  69 +-
+ fs/sysfs/group.c                             |  33 +
+ include/crypto/akcipher.h                    |  10 +-
+ include/crypto/sig.h                         |   6 +-
+ include/keys/asymmetric-type.h               |   2 +
+ include/keys/x509-parser.h                   |  55 ++
+ include/linux/kernfs.h                       |   2 +
+ include/linux/oid_registry.h                 |   3 +
+ include/linux/pci-doe.h                      |   4 +
+ include/linux/pci.h                          |  16 +
+ include/linux/spdm.h                         |  46 ++
+ include/linux/sysfs.h                        |  29 +
+ lib/Kconfig                                  |  15 +
+ lib/Makefile                                 |   2 +
+ lib/spdm/Makefile                            |  11 +
+ lib/spdm/core.c                              | 442 +++++++++++
+ lib/spdm/req-authenticate.c                  | 765 +++++++++++++++++++
+ lib/spdm/req-sysfs.c                         | 619 +++++++++++++++
+ lib/spdm/spdm.h                              | 560 ++++++++++++++
+ 47 files changed, 3436 insertions(+), 102 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-devices-spdm
+ create mode 100644 Documentation/admin-guide/sysctl/spdm.rst
+ create mode 100644 drivers/pci/cma.asn1
+ create mode 100644 drivers/pci/cma.c
+ create mode 100644 include/keys/x509-parser.h
+ create mode 100644 include/linux/spdm.h
+ create mode 100644 lib/spdm/Makefile
+ create mode 100644 lib/spdm/core.c
+ create mode 100644 lib/spdm/req-authenticate.c
+ create mode 100644 lib/spdm/req-sysfs.c
+ create mode 100644 lib/spdm/spdm.h
+
+-- 
+2.43.0
+
 
