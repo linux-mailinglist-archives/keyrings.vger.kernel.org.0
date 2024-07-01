@@ -1,130 +1,213 @@
-Return-Path: <keyrings+bounces-1667-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1668-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB02A91E663
-	for <lists+keyrings@lfdr.de>; Mon,  1 Jul 2024 19:16:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA11891E87B
+	for <lists+keyrings@lfdr.de>; Mon,  1 Jul 2024 21:21:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74CAB1F24771
-	for <lists+keyrings@lfdr.de>; Mon,  1 Jul 2024 17:16:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71FE4286877
+	for <lists+keyrings@lfdr.de>; Mon,  1 Jul 2024 19:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D1216D320;
-	Mon,  1 Jul 2024 17:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E057316F278;
+	Mon,  1 Jul 2024 19:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="LoPP4ARM"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="UqjDwCGD"
 X-Original-To: keyrings@vger.kernel.org
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013B31EB2B;
-	Mon,  1 Jul 2024 17:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719854195; cv=pass; b=sfzxt7yVy3lspi3FOu0MwNe7QUCRBFFjCjXjeLu5ajSVo2LzNnjr4xywtuHT3Z5BdHTI5NJ2WljOvtkntGf7oOk3R8PkErm0Btndn1rMLXCOfflGYr0Qtj5nrR4u0AOP8od4iwtNiAPJHsrmV+7wvivSP/vmEVHvzCi8xIRFGhU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719854195; c=relaxed/simple;
-	bh=kLCG/Qv6AZ3PdQ+Sh7rpPbMHueokQ2fFIrduBi9CAw0=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=p4TU01vinY0GnDd8xeC8M1hz8C7tNrr6bM9sN7efILAKXv06XzgvWBOs4bhybwL7tydZUzljKhtvhC0SxzKw8fKKQKIw6JD3Xl9Zc5L+OpeMbIJJ9BUhJTRRoQXkdoiBlx3iz23cjhgvHdoQHVF9SUakCbKMHhHcKkiiHaT+eL0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=LoPP4ARM; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
-Received: from localhost (83-245-197-232.elisa-laajakaista.fi [83.245.197.232])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sakkinen)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4WCXkw1f7lz49PvR;
-	Mon,  1 Jul 2024 20:16:23 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1719854184;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=engAyJr/L13OdkurE10ZMaUzcfCNHcDUUv4GYMtx5tU=;
-	b=LoPP4ARMgEq7MWyXylinOBj89KnKiYnkZHFcAAIKXrJ4Wq1Tfr9vdCV3UyfFR8HYLVlZNP
-	YWExjgpG71ovUUZ9UgYvlkVm1j2lUhx4k3y1Z/PYTOnERRwgj7fiZBB7z7SFXrIg/eCHe1
-	S+kzrEGmMMH7zopiJ5GZ+uYiWO5m6fgxUJNlWfhkdjWuBMlBhLBYX9R/vJTOy1+Zr0rkEg
-	+ZpWcP6RAK8Jqs5SmuxrW1KMz1BUowzEy+hJiF7NVZVxwCM/Ub+qkAcH466jA5JiX/rwhe
-	tuPt2361FStZ39GNttUjNdlh5md17guIR/5VYg6IZxZHp6rJ/QNPfe4vYdOxeA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1719854184;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=engAyJr/L13OdkurE10ZMaUzcfCNHcDUUv4GYMtx5tU=;
-	b=bYMjwkGdaOfty3yTzipUMlUgInMgBphD6exeXlw1GmrORbSlJQ8yF7LVLtote3Gf7VJhYm
-	ie8iJUX7UCt8q6rDZla5E+ve3dB/WmV7AdOfCkV5VGVE1IGQCo/MnYu3mefRZVcQsYDnkh
-	JcOCmvz0U9gR18GbIak5NcjzF7L8UA6Xp0LQDk6pKlakULvIflHUw8q+XGObFhhtYN3NGl
-	vzRvC3loceOrT0Y9v8IRbH5uReFWdGb/w8rzjYCbT0YIbC4YpS5wfIP3B2Tf4MCAPfQhTu
-	FNVlQywJSb4/Cv28w0SueXYefJyEoTcqfaCaO5rAbS++bwd+GhvMqd8rnUCPmw==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=sakkinen smtp.mailfrom=jarkko.sakkinen@iki.fi
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1719854184; a=rsa-sha256;
-	cv=none;
-	b=dYMLmaScpJblHlphNos05yIlywqJATjS92hh83txXjRCgXUvg9IjTgw0D+FW0PDkM/V2uU
-	lvWGFnbKuaNxyn5MdO7Ryi83cPD0abRitPv2pdYaaiO5tJLRLIrQRIm94g9p6ITH9cBwcE
-	M84+KgKeHyQwazYgZm1kW1udiT9A4Y0klhOUqoeXvTATHeUmRkm86fL99LJbx74PmFBltx
-	dSTVd4b9hVwFq0ghOUBiJmE7bytrr8mZkWhtoPboRSJ3ne+4x+8T0yxRUKaBJRNvsDUrlU
-	ZVPV46rE0MEFavaQsZFYvhtO9318F5asieFV30G0ea97iR6Jxw2O5CGLNkSdqA==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0028715F3E0;
+	Mon,  1 Jul 2024 19:21:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719861692; cv=none; b=q7K3KUYjhYQu6V47HKzJ2tvEUhtRbh+F2H+D/wL5zVRlynNc8KyVhJn+0sNDi1QfImXKTeLJ/8rPqtyMSTBEtVejGJV0ZgSB/PlGLnUHjLH6namXs8PwNRd+WddcIiSBiGeELb4kwZzzXSiSavU7mZLHg+GTX4FEScyjcGG5t1s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719861692; c=relaxed/simple;
+	bh=xA4gT5jgdk/OTxA5+HmO+icyiiNsnLJsHJKqiT48Ou0=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=HD2Qa2DZGkBWOyjlqj7h07VGjHDLX8lR1+jHBbYfjGGnpumy6QywWJ5zvyJTOHzQuJ4FUgARLOZzRSirEYr/uyrk1wWHizUeHwn/nrKJY0ncrS9zFVfXiN5eEoJokOxOinXqhitxBlxTv3EE+YncfvaobS4Hux+IQ5/pvZDQIiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=UqjDwCGD; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 461Iv0HE013388;
+	Mon, 1 Jul 2024 19:21:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:subject:to:cc:references:from:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+	vwPSGgNyfB7PV/gU5mKuyglcYgFurNIMZQ4OJRpNuIs=; b=UqjDwCGD7ZPhhPfJ
+	2T6PY4BrgQHagrXZIf+zZGGzZGUfoAAodzuyCsNY0bxSrOZToKePlOHrxjrIz/Uc
+	pF54TtoFwemRyaydw+3mzwZchISj0Xq60tA8dwJY9Z8wSSaPLiodu8NrjWB/FAmk
+	nA17VDTWM4JdDXqrH+hsEENndoD/bIza/7p70dmsTF5ZdfXcYzeSMIFBtFkQmVu7
+	YxTRGSTwhtAZsXOVnUe4Ujt+iA1eQ8hnWzMN4N829hYvBXaorK5VZMYC7gmQA5jA
+	9qZOM7J2vaJGjmPzzZrvPEgOd6TvEY0Mi31+kExoiKKVK2USaLTDGULpdsEVr7nS
+	mZ3nEA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4041rw03s2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Jul 2024 19:21:16 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 461JLFUw025280;
+	Mon, 1 Jul 2024 19:21:15 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4041rw03s1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Jul 2024 19:21:15 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 461I0B4R009561;
+	Mon, 1 Jul 2024 19:21:14 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 402w00h39e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 01 Jul 2024 19:21:14 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 461JLBA256230172
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 1 Jul 2024 19:21:13 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2DFFC58055;
+	Mon,  1 Jul 2024 19:21:11 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4D36B58060;
+	Mon,  1 Jul 2024 19:21:07 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  1 Jul 2024 19:21:07 +0000 (GMT)
+Message-ID: <596c3997-6a9d-4ac4-895f-512058a2648c@linux.ibm.com>
+Date: Mon, 1 Jul 2024 15:21:06 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tpm: Check non-nullity of chip->auth
+To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+        James Bottomley <James.Bottomley@HansenPartnership.com>,
+        Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>,
+        Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>, Ard Biesheuvel <ardb@kernel.org>,
+        "open list:KEYS-TRUSTED" <keyrings@vger.kernel.org>,
+        "open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
+References: <20240701170735.109583-1-jarkko@kernel.org>
+Content-Language: en-US
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <20240701170735.109583-1-jarkko@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ZiMnc2k-AjdCMwIntE57sE603DRvScCp
+X-Proofpoint-ORIG-GUID: 1rPc_D_JYeAanSUH0ce6VrL5Yf1X5woA
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 01 Jul 2024 17:16:23 +0000
-Message-Id: <D2EDFCP44XUT.3S3KNTQK1W4XG@iki.fi>
-Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
- "David Howells" <dhowells@redhat.com>, <keyrings@vger.kernel.org>,
- <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.11-rc1
-From: "Jarkko Sakkinen" <jarkko.sakkinen@iki.fi>
-To: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jarkko Sakkinen"
- <jarkko@kernel.org>
-X-Mailer: aerc 0.17.0
-References: <D2EBML829ZJI.1XZZVLVGUXRBH@kernel.org>
- <CAHk-=wjYe22cLAF=LmZwRu3VOf80LO6XdsdYt3Lhb_TEJ0XnPA@mail.gmail.com>
-In-Reply-To: <CAHk-=wjYe22cLAF=LmZwRu3VOf80LO6XdsdYt3Lhb_TEJ0XnPA@mail.gmail.com>
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-01_19,2024-07-01_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ mlxlogscore=999 impostorscore=0 spamscore=0 clxscore=1011 bulkscore=0
+ phishscore=0 mlxscore=0 adultscore=0 priorityscore=1501 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407010141
 
-On Mon Jul 1, 2024 at 4:35 PM UTC, Linus Torvalds wrote:
-> On Mon, 1 Jul 2024 at 08:51, Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> >
-> > Contains couple of bug fixes.
->
-> This - and your keys pull - say 6.11-rc1 (and say "next"), but don't
-> really look like the usual merge window stuff.
 
-No new features are coming for this release. I had one in progress but
-decided to let it mature up until 6.12 [1]. I have one known bug fix
-upcoming [2], which I'll send after I've received feedback from Stefan
-Berger [3].
 
-The second reason for postponing features is that deploying encrypted
-bus is a substantial infrastructural change so it is better to have
-bandwidth to fix any possible issues when it ends up to production
-kernels.
+On 7/1/24 13:07, Jarkko Sakkinen wrote:
+> All exported functions lack the check for non-nullity of chip->auth. Add
+> the guard for each.
+> 
+> Link: https://lore.kernel.org/linux-integrity/9f86a167074d9b522311715c567f1c19b88e3ad4.camel@kernel.org/
+> Cc: Stefan Berger <stefanb@linux.ibm.com>
+> Cc: stable@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Fixes: 1085b8276bb4 ("tpm: Add the rest of the session HMAC API")
+> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> ---
+>   drivers/char/tpm/tpm2-sessions.c | 26 ++++++++++++++++++++++++--
+>   1 file changed, 24 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+> index 907ac9956a78..d833db20531a 100644
+> --- a/drivers/char/tpm/tpm2-sessions.c
+> +++ b/drivers/char/tpm/tpm2-sessions.c
+> @@ -377,6 +377,9 @@ void tpm_buf_append_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf,
+>   	u32 len;
+>   	struct tpm2_auth *auth = chip->auth;
+>   
+> +	if (!auth)
+> +		return;
+> +
+>   	/*
+>   	 * The Architecture Guide requires us to strip trailing zeros
+>   	 * before computing the HMAC
+> @@ -449,6 +452,9 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
+>   	u8 cphash[SHA256_DIGEST_SIZE];
+>   	struct sha256_state sctx;
+>   
+> +	if (!auth)
+> +		return;
+> +
+>   	/* save the command code in BE format */
+>   	auth->ordinal = head->ordinal;
+>   
+> @@ -639,6 +645,9 @@ void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
+>   	struct tpm2_auth *auth = chip->auth;
+>   	int slot;
+>   
+> +	if (!auth)
+> +		return;
+> +
+>   	slot = (tpm_buf_length(buf) - TPM_HEADER_SIZE)/4;
+>   	if (slot >= AUTH_MAX_NAMES) {
+>   		dev_err(&chip->dev, "TPM: too many handles\n");
+> @@ -705,6 +714,9 @@ int tpm_buf_check_hmac_response(struct tpm_chip *chip, struct tpm_buf *buf,
+>   	u32 cc = be32_to_cpu(auth->ordinal);
+>   	int parm_len, len, i, handles;
+>   
+> +	if (!auth)
+> +		return rc;
+> +
+>   	if (auth->session >= TPM_HEADER_SIZE) {
+>   		WARN(1, "tpm session not filled correctly\n");
+>   		goto out;
+> @@ -824,8 +836,13 @@ EXPORT_SYMBOL(tpm_buf_check_hmac_response);
+>    */
+>   void tpm2_end_auth_session(struct tpm_chip *chip)
+>   {
+> -	tpm2_flush_context(chip, chip->auth->handle);
+> -	memzero_explicit(chip->auth, sizeof(*chip->auth));
+> +	struct tpm2_auth *auth = chip->auth;
+> +
+> +	if (!auth)
+> +		return;
+> +
+> +	tpm2_flush_context(chip, auth->handle);
+> +	memzero_explicit(auth, sizeof(*auth));
+>   }
+>   EXPORT_SYMBOL(tpm2_end_auth_session);
+>   
+> @@ -907,6 +924,11 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
+>   	int rc;
+>   	u32 null_key;
+>   
+> +	if (!auth) {
+> +		pr_warn_once("%s: encryption is not active\n", __func__);
+> +		return 0;
+> +	}
+> +
+>   	rc = tpm2_load_null(chip, &null_key);
+>   	if (rc)
+>   		goto out;
+It looks like you got all of the chip->auth tested:
 
-So yeah, not a usual pull request, but it is still planned unusual one...
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 
->
-> Just checking.
->
->             Linus
+As I mentioned in the other email (1), it does not solve the problem on 
+ppc64.
 
-[1] https://lore.kernel.org/linux-integrity/20240528210823.28798-1-jarkko@k=
-ernel.org/T/#t
-[2] https://lore.kernel.org/linux-integrity/20240701170735.109583-1-jarkko@=
-kernel.org/T/#u
-[3] https://lore.kernel.org/linux-integrity/9f86a167074d9b522311715c567f1c1=
-9b88e3ad4.camel@kernel.org/=20
-
-BR, Jarkko
+1: 
+https://lore.kernel.org/linux-integrity/656b319fc58683e399323b880722434467cf20f2.camel@kernel.org/T/#m88892cb6f9cf8fdef875dcdd0ed3eccac1d28190
 
