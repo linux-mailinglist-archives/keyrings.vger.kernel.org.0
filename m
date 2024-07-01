@@ -1,93 +1,103 @@
-Return-Path: <keyrings+bounces-1664-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1665-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0D6B91E4AA
-	for <lists+keyrings@lfdr.de>; Mon,  1 Jul 2024 17:51:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2101291E575
+	for <lists+keyrings@lfdr.de>; Mon,  1 Jul 2024 18:36:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 050EB1C214DE
-	for <lists+keyrings@lfdr.de>; Mon,  1 Jul 2024 15:51:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD2D81F239DF
+	for <lists+keyrings@lfdr.de>; Mon,  1 Jul 2024 16:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542B916D4C0;
-	Mon,  1 Jul 2024 15:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFAF016D9C9;
+	Mon,  1 Jul 2024 16:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mcnr/rRE"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="BhWuFcOi"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247DE126F1E;
-	Mon,  1 Jul 2024 15:51:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88EF16D9D9
+	for <keyrings@vger.kernel.org>; Mon,  1 Jul 2024 16:35:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719849112; cv=none; b=RdquQ+v0hhEsSShHGIW5jJE4nb6IxOT4E5PoopaLRsN2iNzTitaKQ3MNxIrfsRMdNIyA+zYWYPJYncfsHNS6Ctry84h5NXan1ieSUSU22W7ciRpHU5uDJMKD1g+ykGRk5DNtJKgGVBOifJVl7WmZqvM23nRbOWxRTio4Q4dRV90=
+	t=1719851755; cv=none; b=Tcg2SqfCRkcFeSqugUjmtGl1VuQbYXP11TuKos7M9KLJGFfOnY9ZyGrLTMntZ4ONZ2ZqoV3vzgi5G6jxBPViMJ3rg2pFSTMxTbcT4Cow1dLa0j/YVcmCcCOLeYxHDE5Okzzbqmtd7JrYHnQzUZLj789duUxxTmjZmSmqc6YjeB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719849112; c=relaxed/simple;
-	bh=go7y+/7R+ef/tBI71iLrWGpZRU+uIzdwgbbTeOixqMY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To; b=EfRhIm8j7Es4O6jS7TOgL2dz+7FeLDZSdiPpMPdnJvH9NYLhOzNMgPfpJK/aabWoVzb8BXFplkOBsjfRjfalKTvWzdQMOXJevDyJ9FrXdtoI2/2NKUoXUDp56KvgWrre3XIxHdL+XSsgOG4wTjVcccBs0kGjEhVYcGeU/0vz0E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mcnr/rRE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD3AC116B1;
-	Mon,  1 Jul 2024 15:51:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719849111;
-	bh=go7y+/7R+ef/tBI71iLrWGpZRU+uIzdwgbbTeOixqMY=;
-	h=Date:Cc:Subject:From:To:From;
-	b=Mcnr/rRE5iNWKLLYUOSxXwc+iraO85pqjmO3jUSGnZIJw7zJEZ4qMeN078ofhzXN/
-	 9Rv6HziSrMs7NJjdQfhwfdsa9YA4rlxK37To0Dk9dmYs6RWPtY1ZXqtBmka7p6LtEn
-	 conB3EnmZ71aJtdBylbzc+dHsiqPq/YtBYVX+Jgk2n/pYR5fQlkC9ro7zcgkz9Xx6z
-	 Q8NYH9aRpJt+6h9Urfd90Ug9NJyvhtwIysy2+5vOP5Kqb3/Q5hwCV2+PFPnTqh7lC+
-	 hDjmJ099O1ap5hrH70Vezeu6HJwZoctJ9plX9yBFvHMLFkhtuvcdA/PDZiDCEN+Csd
-	 C66sl4NbdffLQ==
+	s=arc-20240116; t=1719851755; c=relaxed/simple;
+	bh=YLGmbdUVgoClE4zgm/y2rPqET0D9fHrQj2RcTVt3beo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RALTIg11Ig1faTp17TMF+/f3Rzl6ATyPn7nJ5oeL9jDty9PKeW7MYMmfxWKnyKue2TnZqYNW53vF3yFYeQujXCbCojR/YzkpuqNaflGkq/i+Muz238AWILk3ANm5Ja8bfTlzv/+r8xv2NBCvW//8rsOvIC9Hy3bHLpghjoXKit0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=BhWuFcOi; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a724440f597so393887766b.0
+        for <keyrings@vger.kernel.org>; Mon, 01 Jul 2024 09:35:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1719851752; x=1720456552; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Obs6N/BH5UkcS/x22yz2VPLEj/fFFqodHfDKGoUVc5k=;
+        b=BhWuFcOiCnoR5G3m80+TbhSTHBl1eX+HdmSwzgRU4iW2dCq6Djfw6iTd4rpAEikpwU
+         xr7WOCl8hClHoyn2OoeVnGBf0wWocdBDc1uCBPf6BBYUXeJu1aI2oJoGiUhsVZKsPtHI
+         p1VTft6GmwsIORd+8U77OPI3rerypDSZmRiVU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719851752; x=1720456552;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Obs6N/BH5UkcS/x22yz2VPLEj/fFFqodHfDKGoUVc5k=;
+        b=kIf/2t3UuAx/Oy6C1zMrZnuiZwprPROTkEG78ZpnuSYdaSaVTRTpiXk4K9yxOAT4Ov
+         ZsfLRW3qzDbfuMt5PBWLYdNtVMwsvz4v/SQpd/pUX4PaRK2oq+akZv8I4dw+P18nqaXE
+         H1iOvgedTajhrTHNHbLmWXCV7J6iduovdg1vieTzz5L2OttQsdMoaVchcdyC9TzDgM3h
+         cXiW3ga0Zts5+tCTcKKuyNHEN7Z6A8T2ZIU4KZ9q8P+g/pu8oLxWGMzTQmLLCKamyjbh
+         kkUmjSZe68AQEN/JHdxpPJJ0VC9uF+yJY1SlAJ8AQlKjlIQZOuSE24BfzBCDbJOi4Cr8
+         Olyw==
+X-Forwarded-Encrypted: i=1; AJvYcCVeFkOMucIQ1JNrxQEIMd4yofus5xUxqdvV2I6ts8lXC5ELWWr1BV3osL+4ob4f24D9D+5t5YLYnIvcw6GrGXT00SebCMy8qAw=
+X-Gm-Message-State: AOJu0Yw+iBAhmqXbg3jLfuW1F+8ZcEH2dzZNwcgFTzeUSiXOjtjA2D/w
+	4wEAmGfaVzAc2j7Y357f7TeXXk9Z5Ih+qv81LQxPgRXxG5ZnR7zTsnNiWeb0j/qvN3dtiT4hr9v
+	qSlQ24g==
+X-Google-Smtp-Source: AGHT+IF5C1nc/D4X1AVAOxZXB4IzhZei5uMWHvfnBebNcEJve16J062bp5RZ0HB2QJjon4DyLnlKJw==
+X-Received: by 2002:a17:907:3d8f:b0:a6f:576e:4d32 with SMTP id a640c23a62f3a-a751441f084mr532237266b.4.1719851752149;
+        Mon, 01 Jul 2024 09:35:52 -0700 (PDT)
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com. [209.85.218.43])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a72aafba2cesm348766466b.93.2024.07.01.09.35.51
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Jul 2024 09:35:51 -0700 (PDT)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a72477a60fbso381908766b.2
+        for <keyrings@vger.kernel.org>; Mon, 01 Jul 2024 09:35:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX6khV5eJ8WHYXfz8zhT2Im65UN110cxW8NrdYvRWLpPw/5N8p5IDRg3yjGRMaS4UrpRmmjX8VyDebFd2cfzsZYCB2lCcyWsdY=
+X-Received: by 2002:a17:907:724c:b0:a6f:5698:ab5b with SMTP id
+ a640c23a62f3a-a751441edbcmr548618366b.8.1719851750079; Mon, 01 Jul 2024
+ 09:35:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 01 Jul 2024 15:51:48 +0000
-Message-Id: <D2EBML829ZJI.1XZZVLVGUXRBH@kernel.org>
-Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
- "David Howells" <dhowells@redhat.com>, <keyrings@vger.kernel.org>,
- <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.11-rc1
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Linus Torvalds" <torvalds@linux-foundation.org>
-X-Mailer: aerc 0.17.0
+MIME-Version: 1.0
+References: <D2EBML829ZJI.1XZZVLVGUXRBH@kernel.org>
+In-Reply-To: <D2EBML829ZJI.1XZZVLVGUXRBH@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 1 Jul 2024 09:35:33 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjYe22cLAF=LmZwRu3VOf80LO6XdsdYt3Lhb_TEJ0XnPA@mail.gmail.com>
+Message-ID: <CAHk-=wjYe22cLAF=LmZwRu3VOf80LO6XdsdYt3Lhb_TEJ0XnPA@mail.gmail.com>
+Subject: Re: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.11-rc1
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>, 
+	keyrings@vger.kernel.org, linux-integrity@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-The following changes since commit 22a40d14b572deb80c0648557f4bd502d7e83826=
-:
+On Mon, 1 Jul 2024 at 08:51, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+>
+> Contains couple of bug fixes.
 
-  Linux 6.10-rc6 (2024-06-30 14:40:44 -0700)
+This - and your keys pull - say 6.11-rc1 (and say "next"), but don't
+really look like the usual merge window stuff.
 
-are available in the Git repository at:
+Just checking.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags=
-/tpmdd-next-6.11-rc1
-
-for you to fetch changes up to 0543f29408a151c1c4a12e5da07ec45c2779b9b8:
-
-  tpm_tis_spi: add missing attpm20p SPI device ID entry (2024-07-01 15:50:0=
-2 +0000)
-
-----------------------------------------------------------------
-Hi,
-
-Contains couuple of bug fixes.
-
-BR, Jarkko
-
-----------------------------------------------------------------
-Joe Hattori (1):
-      char: tpm: Fix possible memory leak in tpm_bios_measurements_open()
-
-Vitor Soares (1):
-      tpm_tis_spi: add missing attpm20p SPI device ID entry
-
- drivers/char/tpm/eventlog/common.c  | 2 ++
- drivers/char/tpm/tpm_tis_spi_main.c | 1 +
- 2 files changed, 3 insertions(+)
+            Linus
 
