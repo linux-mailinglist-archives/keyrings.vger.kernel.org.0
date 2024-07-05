@@ -1,416 +1,111 @@
-Return-Path: <keyrings+bounces-1704-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1705-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9668D927D5B
-	for <lists+keyrings@lfdr.de>; Thu,  4 Jul 2024 20:54:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA30D9287D4
+	for <lists+keyrings@lfdr.de>; Fri,  5 Jul 2024 13:23:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1F6B1C22965
-	for <lists+keyrings@lfdr.de>; Thu,  4 Jul 2024 18:54:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E66331C242FD
+	for <lists+keyrings@lfdr.de>; Fri,  5 Jul 2024 11:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928DF13C9A1;
-	Thu,  4 Jul 2024 18:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CAC14A4DE;
+	Fri,  5 Jul 2024 11:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ed6vnC+b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G2KaoXGU"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8BF13C90B;
-	Thu,  4 Jul 2024 18:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3AE1465B3;
+	Fri,  5 Jul 2024 11:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720119215; cv=none; b=BVhUy0PE3hXpriIqw1/U9FNp/033/PCgOLPSJs30Fx/5IbGeQFwO6naKMpizptH4Gzp/7Uu3YemNmDVNshXY5tASY18tB/6sD9LzTc0ZMiKBkzpbDdQ5/79tq+UFf3YaVkCKjihjSmgL99wihmfZna4CoLu2Bp3YOH0sqAnSgZQ=
+	t=1720178525; cv=none; b=BfeuIB5XFU6Oi6Igms3GpsZofXmApjHkyDSz9monwQcU4bJw1pF5Jqb2VsbcFmw3Nl+bqMGTBA/C6rEJU/OWWeSck8gJVjCZkVZntrhUCayhI1quQ3VngfLiN6jDIUKE/wnYSGaCltzZq2v+MHPcRqwj7PYzdkkd7ETePuaiFnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720119215; c=relaxed/simple;
-	bh=6dnQmoNRVdKNz5z+5LQzjfW1/goiM1Ez8Qa4oDUYHRY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hRKZbdesMLDkwJxRG5DeAceBCuvDRTlD8oAlAHF43mJ/NEuAY4u11DcAaVXO6HMD1krP6McABFpusO0Pw27juhk0WyoDWHFMaByPyOiVFtSnAoF+GhjMjys4eW9nh0OVtuOSe7ua/iJZDzUIIakjaw25aW2u7BmPD9TJfhKFgMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ed6vnC+b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C2BEC32786;
-	Thu,  4 Jul 2024 18:53:34 +0000 (UTC)
+	s=arc-20240116; t=1720178525; c=relaxed/simple;
+	bh=b6EsCXCAUPVZ6fUS4BEAH9hZNBzB1OJF44oM3EXRitk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To; b=FHlrMQA/YGZWPYvj4WzImMMxWMbU592PuR1KqsmxXRfbNGTdnGccE81c6OZiBFUBmIRI0d/bHiD99u0v2hkX+4SISM6SsWrY11fOQb9K3O+TchubATzOjty397a9dmpOU8LxLKQqEuxPbJ3ifvNkMZ5NjKVmlIX60aSN8ToTx4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G2KaoXGU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 713FDC116B1;
+	Fri,  5 Jul 2024 11:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720119215;
-	bh=6dnQmoNRVdKNz5z+5LQzjfW1/goiM1Ez8Qa4oDUYHRY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ed6vnC+bmJyT3MstBT7LGw61D23EL+ozcha/lS/DWW17xu0QortmKEK8uY2S2h/aD
-	 Ta0DNuxTMlStuK7mH/GQktbZjYBcTVbaMAGzTQg8FI62WYuL9VqDlTkYGVoxdE7wZP
-	 hqyOp2WCGpEXlXzvN4UN8jHuNdvkRiGZpPGpMclZuZa+ZmS9vM4YBAYzu3JVDQTAoo
-	 UYY9ZBHYpnjpJOpm60wHqTcz5E4DEMiIUS0lKv414437iDRSHay31Gy/G9F9Rfil0h
-	 /O09+yTyXneMURFpEOEtQFLrvw/7deWqEFRW+9UbS5Bpuzzr44K7dHB3Bzp4kefecH
-	 Bj65LfAhYBNlg==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	stable@vger.kernel.org,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v4 3/3] tpm: Address !chip->auth in tpm_buf_append_hmac_session*()
-Date: Thu,  4 Jul 2024 21:53:08 +0300
-Message-ID: <20240704185313.224318-4-jarkko@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240704185313.224318-1-jarkko@kernel.org>
-References: <20240704185313.224318-1-jarkko@kernel.org>
+	s=k20201202; t=1720178524;
+	bh=b6EsCXCAUPVZ6fUS4BEAH9hZNBzB1OJF44oM3EXRitk=;
+	h=Date:Cc:Subject:From:To:From;
+	b=G2KaoXGUqY2s194Fx6JCDC7egcc+QUc1Gb/iCNxbA0pY1QS+RJtNXYDKBU7o/eWhu
+	 tvHz3p6Ph247ksAxYN/r2gRz5idJ2ArSlsZE4IiYQJFhT9V4kyoL7W5oF1FQUSHIVR
+	 LKjrSnbDVzVRdk/oTNu5rcKqZ3SSclRIDYqXGg8uAq2i0Iuw84fbnEg/sssCAeCgN3
+	 NRn276bGQHA7RgFxNSmJxHTh873BUbBHFZJMX8AIjbKsCRw+Dygm2ESDtoR7DLPtT5
+	 KWTctc+7ZXkWH9/Gt8/H49+4b4LxAKnpdYsc2/f8O8xh4QBxtVN506qsDwNzVrbiJP
+	 NPiHtve+Ksetg==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 05 Jul 2024 14:22:00 +0300
+Message-Id: <D2HKE740MWCK.2O7S4KF56L929@kernel.org>
+Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
+ "David Howells" <dhowells@redhat.com>, <keyrings@vger.kernel.org>,
+ <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "James
+ Bottomley" <James.Bottomley@HansenPartnership.com>, "Michael Ellerman"
+ <mpe@ellerman.id.au>, "Stefan Berger" <stefanb@linux.ibm.com>
+Subject: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.10-rc7
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Linus Torvalds" <torvalds@linux-foundation.org>
+X-Mailer: aerc 0.17.0
 
-Unless tpm_chip_bootstrap() was called by the driver, !chip->auth can
-cause a null derefence in tpm_buf_hmac_session*().  Thus, address
-!chip->auth in tpm_buf_hmac_session*() and remove the fallback
-implementation for !TCG_TPM2_HMAC.
+The following changes since commit 661e504db04c6b7278737ee3a9116738536b4ed4=
+:
 
-Cc: stable@vger.kernel.org # v6.9+
-Reported-by: Stefan Berger <stefanb@linux.ibm.com>
-Closes: https://lore.kernel.org/linux-integrity/20240617193408.1234365-1-stefanb@linux.ibm.com/
-Fixes: 1085b8276bb4 ("tpm: Add the rest of the session HMAC API")
-Tested-by: Michael Ellerman <mpe@ellerman.id.au> # ppc
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
-v4:
-* Address:
-  https://lore.kernel.org/linux-integrity/CAHk-=wiM=Cyw-07EkbAH66pE50VzJiT3bVHv9CS=kYR6zz5mTQ@mail.gmail.com/
-* Added tested-by from Michael Ellerman.
-v3:
-* Address:
-  https://lore.kernel.org/linux-integrity/922603265d61011dbb23f18a04525ae973b83ffd.camel@HansenPartnership.com/
-v2:
-* Use auth in place of chip->auth.
----
- drivers/char/tpm/tpm2-sessions.c | 186 ++++++++++++++++++-------------
- include/linux/tpm.h              |  68 ++++-------
- 2 files changed, 130 insertions(+), 124 deletions(-)
+  Merge tag 'for-6.10-rc6-tag' of git://git.kernel.org/pub/scm/linux/kernel=
+/git/kdave/linux (2024-07-04 10:27:37 -0700)
 
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index b3ed35e7ec00..2281d55df545 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -272,6 +272,110 @@ void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
- }
- EXPORT_SYMBOL_GPL(tpm_buf_append_name);
- 
-+/**
-+ * tpm_buf_append_hmac_session() - Append a TPM session element
-+ * @chip: the TPM chip structure
-+ * @buf: The buffer to be appended
-+ * @attributes: The session attributes
-+ * @passphrase: The session authority (NULL if none)
-+ * @passphrase_len: The length of the session authority (0 if none)
-+ *
-+ * This fills in a session structure in the TPM command buffer, except
-+ * for the HMAC which cannot be computed until the command buffer is
-+ * complete.  The type of session is controlled by the @attributes,
-+ * the main ones of which are TPM2_SA_CONTINUE_SESSION which means the
-+ * session won't terminate after tpm_buf_check_hmac_response(),
-+ * TPM2_SA_DECRYPT which means this buffers first parameter should be
-+ * encrypted with a session key and TPM2_SA_ENCRYPT, which means the
-+ * response buffer's first parameter needs to be decrypted (confusing,
-+ * but the defines are written from the point of view of the TPM).
-+ *
-+ * Any session appended by this command must be finalized by calling
-+ * tpm_buf_fill_hmac_session() otherwise the HMAC will be incorrect
-+ * and the TPM will reject the command.
-+ *
-+ * As with most tpm_buf operations, success is assumed because failure
-+ * will be caused by an incorrect programming model and indicated by a
-+ * kernel message.
-+ */
-+void tpm_buf_append_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf,
-+				 u8 attributes, u8 *passphrase,
-+				 int passphrase_len)
-+{
-+#ifdef CONFIG_TCG_TPM2_HMAC
-+	u8 nonce[SHA256_DIGEST_SIZE];
-+	struct tpm2_auth *auth;
-+	u32 len;
-+#endif
-+
-+	if (!tpm2_chip_auth(chip)) {
-+		/* offset tells us where the sessions area begins */
-+		int offset = buf->handles * 4 + TPM_HEADER_SIZE;
-+		u32 len = 9 + passphrase_len;
-+
-+		if (tpm_buf_length(buf) != offset) {
-+			/* not the first session so update the existing length */
-+			len += get_unaligned_be32(&buf->data[offset]);
-+			put_unaligned_be32(len, &buf->data[offset]);
-+		} else {
-+			tpm_buf_append_u32(buf, len);
-+		}
-+		/* auth handle */
-+		tpm_buf_append_u32(buf, TPM2_RS_PW);
-+		/* nonce */
-+		tpm_buf_append_u16(buf, 0);
-+		/* attributes */
-+		tpm_buf_append_u8(buf, 0);
-+		/* passphrase */
-+		tpm_buf_append_u16(buf, passphrase_len);
-+		tpm_buf_append(buf, passphrase, passphrase_len);
-+		return;
-+	}
-+
-+#ifdef CONFIG_TCG_TPM2_HMAC
-+	/*
-+	 * The Architecture Guide requires us to strip trailing zeros
-+	 * before computing the HMAC
-+	 */
-+	while (passphrase && passphrase_len > 0 && passphrase[passphrase_len - 1] == '\0')
-+		passphrase_len--;
-+
-+	auth = chip->auth;
-+	auth->attrs = attributes;
-+	auth->passphrase_len = passphrase_len;
-+	if (passphrase_len)
-+		memcpy(auth->passphrase, passphrase, passphrase_len);
-+
-+	if (auth->session != tpm_buf_length(buf)) {
-+		/* we're not the first session */
-+		len = get_unaligned_be32(&buf->data[auth->session]);
-+		if (4 + len + auth->session != tpm_buf_length(buf)) {
-+			WARN(1, "session length mismatch, cannot append");
-+			return;
-+		}
-+
-+		/* add our new session */
-+		len += 9 + 2 * SHA256_DIGEST_SIZE;
-+		put_unaligned_be32(len, &buf->data[auth->session]);
-+	} else {
-+		tpm_buf_append_u32(buf, 9 + 2 * SHA256_DIGEST_SIZE);
-+	}
-+
-+	/* random number for our nonce */
-+	get_random_bytes(nonce, sizeof(nonce));
-+	memcpy(auth->our_nonce, nonce, sizeof(nonce));
-+	tpm_buf_append_u32(buf, auth->handle);
-+	/* our new nonce */
-+	tpm_buf_append_u16(buf, SHA256_DIGEST_SIZE);
-+	tpm_buf_append(buf, nonce, SHA256_DIGEST_SIZE);
-+	tpm_buf_append_u8(buf, auth->attrs);
-+	/* and put a placeholder for the hmac */
-+	tpm_buf_append_u16(buf, SHA256_DIGEST_SIZE);
-+	tpm_buf_append(buf, nonce, SHA256_DIGEST_SIZE);
-+#endif
-+}
-+EXPORT_SYMBOL_GPL(tpm_buf_append_hmac_session);
-+
- #ifdef CONFIG_TCG_TPM2_HMAC
- 
- static int tpm2_create_primary(struct tpm_chip *chip, u32 hierarchy,
-@@ -457,82 +561,6 @@ static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip *chip)
- 	crypto_free_kpp(kpp);
- }
- 
--/**
-- * tpm_buf_append_hmac_session() - Append a TPM session element
-- * @chip: the TPM chip structure
-- * @buf: The buffer to be appended
-- * @attributes: The session attributes
-- * @passphrase: The session authority (NULL if none)
-- * @passphrase_len: The length of the session authority (0 if none)
-- *
-- * This fills in a session structure in the TPM command buffer, except
-- * for the HMAC which cannot be computed until the command buffer is
-- * complete.  The type of session is controlled by the @attributes,
-- * the main ones of which are TPM2_SA_CONTINUE_SESSION which means the
-- * session won't terminate after tpm_buf_check_hmac_response(),
-- * TPM2_SA_DECRYPT which means this buffers first parameter should be
-- * encrypted with a session key and TPM2_SA_ENCRYPT, which means the
-- * response buffer's first parameter needs to be decrypted (confusing,
-- * but the defines are written from the point of view of the TPM).
-- *
-- * Any session appended by this command must be finalized by calling
-- * tpm_buf_fill_hmac_session() otherwise the HMAC will be incorrect
-- * and the TPM will reject the command.
-- *
-- * As with most tpm_buf operations, success is assumed because failure
-- * will be caused by an incorrect programming model and indicated by a
-- * kernel message.
-- */
--void tpm_buf_append_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf,
--				 u8 attributes, u8 *passphrase,
--				 int passphrase_len)
--{
--	u8 nonce[SHA256_DIGEST_SIZE];
--	u32 len;
--	struct tpm2_auth *auth = chip->auth;
--
--	/*
--	 * The Architecture Guide requires us to strip trailing zeros
--	 * before computing the HMAC
--	 */
--	while (passphrase && passphrase_len > 0
--	       && passphrase[passphrase_len - 1] == '\0')
--		passphrase_len--;
--
--	auth->attrs = attributes;
--	auth->passphrase_len = passphrase_len;
--	if (passphrase_len)
--		memcpy(auth->passphrase, passphrase, passphrase_len);
--
--	if (auth->session != tpm_buf_length(buf)) {
--		/* we're not the first session */
--		len = get_unaligned_be32(&buf->data[auth->session]);
--		if (4 + len + auth->session != tpm_buf_length(buf)) {
--			WARN(1, "session length mismatch, cannot append");
--			return;
--		}
--
--		/* add our new session */
--		len += 9 + 2 * SHA256_DIGEST_SIZE;
--		put_unaligned_be32(len, &buf->data[auth->session]);
--	} else {
--		tpm_buf_append_u32(buf, 9 + 2 * SHA256_DIGEST_SIZE);
--	}
--
--	/* random number for our nonce */
--	get_random_bytes(nonce, sizeof(nonce));
--	memcpy(auth->our_nonce, nonce, sizeof(nonce));
--	tpm_buf_append_u32(buf, auth->handle);
--	/* our new nonce */
--	tpm_buf_append_u16(buf, SHA256_DIGEST_SIZE);
--	tpm_buf_append(buf, nonce, SHA256_DIGEST_SIZE);
--	tpm_buf_append_u8(buf, auth->attrs);
--	/* and put a placeholder for the hmac */
--	tpm_buf_append_u16(buf, SHA256_DIGEST_SIZE);
--	tpm_buf_append(buf, nonce, SHA256_DIGEST_SIZE);
--}
--EXPORT_SYMBOL(tpm_buf_append_hmac_session);
--
- /**
-  * tpm_buf_fill_hmac_session() - finalize the session HMAC
-  * @chip: the TPM chip structure
-@@ -563,6 +591,9 @@ void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
- 	u8 cphash[SHA256_DIGEST_SIZE];
- 	struct sha256_state sctx;
- 
-+	if (!auth)
-+		return;
-+
- 	/* save the command code in BE format */
- 	auth->ordinal = head->ordinal;
- 
-@@ -721,6 +752,9 @@ int tpm_buf_check_hmac_response(struct tpm_chip *chip, struct tpm_buf *buf,
- 	u32 cc = be32_to_cpu(auth->ordinal);
- 	int parm_len, len, i, handles;
- 
-+	if (!auth)
-+		return rc;
-+
- 	if (auth->session >= TPM_HEADER_SIZE) {
- 		WARN(1, "tpm session not filled correctly\n");
- 		goto out;
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index 4d3071e885a0..e93ee8d936a9 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -502,10 +502,6 @@ static inline struct tpm2_auth *tpm2_chip_auth(struct tpm_chip *chip)
- 
- void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
- 			 u32 handle, u8 *name);
--
--#ifdef CONFIG_TCG_TPM2_HMAC
--
--int tpm2_start_auth_session(struct tpm_chip *chip);
- void tpm_buf_append_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf,
- 				 u8 attributes, u8 *passphrase,
- 				 int passphraselen);
-@@ -515,9 +511,27 @@ static inline void tpm_buf_append_hmac_session_opt(struct tpm_chip *chip,
- 						   u8 *passphrase,
- 						   int passphraselen)
- {
--	tpm_buf_append_hmac_session(chip, buf, attributes, passphrase,
--				    passphraselen);
-+	struct tpm_header *head;
-+	int offset;
-+
-+	if (tpm2_chip_auth(chip)) {
-+		tpm_buf_append_hmac_session(chip, buf, attributes, passphrase, passphraselen);
-+	} else  {
-+		offset = buf->handles * 4 + TPM_HEADER_SIZE;
-+		head = (struct tpm_header *)buf->data;
-+
-+		/*
-+		 * If the only sessions are optional, the command tag must change to
-+		 * TPM2_ST_NO_SESSIONS.
-+		 */
-+		if (tpm_buf_length(buf) == offset)
-+			head->tag = cpu_to_be16(TPM2_ST_NO_SESSIONS);
-+	}
- }
-+
-+#ifdef CONFIG_TCG_TPM2_HMAC
-+
-+int tpm2_start_auth_session(struct tpm_chip *chip);
- void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf);
- int tpm_buf_check_hmac_response(struct tpm_chip *chip, struct tpm_buf *buf,
- 				int rc);
-@@ -532,48 +546,6 @@ static inline int tpm2_start_auth_session(struct tpm_chip *chip)
- static inline void tpm2_end_auth_session(struct tpm_chip *chip)
- {
- }
--static inline void tpm_buf_append_hmac_session(struct tpm_chip *chip,
--					       struct tpm_buf *buf,
--					       u8 attributes, u8 *passphrase,
--					       int passphraselen)
--{
--	/* offset tells us where the sessions area begins */
--	int offset = buf->handles * 4 + TPM_HEADER_SIZE;
--	u32 len = 9 + passphraselen;
--
--	if (tpm_buf_length(buf) != offset) {
--		/* not the first session so update the existing length */
--		len += get_unaligned_be32(&buf->data[offset]);
--		put_unaligned_be32(len, &buf->data[offset]);
--	} else {
--		tpm_buf_append_u32(buf, len);
--	}
--	/* auth handle */
--	tpm_buf_append_u32(buf, TPM2_RS_PW);
--	/* nonce */
--	tpm_buf_append_u16(buf, 0);
--	/* attributes */
--	tpm_buf_append_u8(buf, 0);
--	/* passphrase */
--	tpm_buf_append_u16(buf, passphraselen);
--	tpm_buf_append(buf, passphrase, passphraselen);
--}
--static inline void tpm_buf_append_hmac_session_opt(struct tpm_chip *chip,
--						   struct tpm_buf *buf,
--						   u8 attributes,
--						   u8 *passphrase,
--						   int passphraselen)
--{
--	int offset = buf->handles * 4 + TPM_HEADER_SIZE;
--	struct tpm_header *head = (struct tpm_header *) buf->data;
--
--	/*
--	 * if the only sessions are optional, the command tag
--	 * must change to TPM2_ST_NO_SESSIONS
--	 */
--	if (tpm_buf_length(buf) == offset)
--		head->tag = cpu_to_be16(TPM2_ST_NO_SESSIONS);
--}
- static inline void tpm_buf_fill_hmac_session(struct tpm_chip *chip,
- 					     struct tpm_buf *buf)
- {
--- 
-2.45.2
+are available in the Git repository at:
 
+  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags=
+/tpmdd-next-6.10-rc7
+
+for you to fetch changes up to 7ca110f2679b7d1f3ac1afc90e6ffbf0af3edf0d:
+
+  tpm: Address !chip->auth in tpm_buf_append_hmac_session*() (2024-07-05 02=
+:12:27 +0300)
+
+----------------------------------------------------------------
+Hi
+
+Contains the fixes for !chip->auth condition, preventing the breakage
+of:
+
+* tpm_ftpm_tee.c
+* tpm_i2c_nuvoton.c
+* tpm_ibmvtpm.c
+* tpm_tis_i2c_cr50.c
+* tpm_vtpm_proxy.c
+
+All drivers will continue to work as they did in 6.9, except a single
+warning (dev_warn() not WARN()) is printed to klog only to inform that
+authenticated sessions are not enabled.
+
+BR, Jarkko
+
+Link: https://lore.kernel.org/linux-integrity/20240704185313.224318-1-jarkk=
+o@kernel.org/
+
+----------------------------------------------------------------
+Jarkko Sakkinen (3):
+      tpm: Address !chip->auth in tpm2_*_auth_session()
+      tpm: Address !chip->auth in tpm_buf_append_name()
+      tpm: Address !chip->auth in tpm_buf_append_hmac_session*()
+
+ drivers/char/tpm/Makefile        |   2 +-
+ drivers/char/tpm/tpm2-sessions.c | 419 ++++++++++++++++++++++-------------=
+----
+ include/linux/tpm.h              |  81 +++-----
+ 3 files changed, 269 insertions(+), 233 deletions(-)
 
