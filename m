@@ -1,32 +1,32 @@
-Return-Path: <keyrings+bounces-1714-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1715-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 139FC92A34C
-	for <lists+keyrings@lfdr.de>; Mon,  8 Jul 2024 14:54:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F73292A3BB
+	for <lists+keyrings@lfdr.de>; Mon,  8 Jul 2024 15:35:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A328DB22467
-	for <lists+keyrings@lfdr.de>; Mon,  8 Jul 2024 12:54:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16E2A1F211A2
+	for <lists+keyrings@lfdr.de>; Mon,  8 Jul 2024 13:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B3E8287C;
-	Mon,  8 Jul 2024 12:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7927F7C7;
+	Mon,  8 Jul 2024 13:35:50 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A510824A3;
-	Mon,  8 Jul 2024 12:54:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CC47E56B;
+	Mon,  8 Jul 2024 13:35:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720443250; cv=none; b=shzc//4TCz/ShNV6u7dDYnnfZQi0eTfdhyU2vHPO1jjKE6osdUkmG8MMV6pF8nkVbfNW+oUFbOGFputVHdE+lB1fdd28aVmzTi1W6rxFhHyxbGSgtUV4EmPgV8hqFucK8D8JappY5ykH+C3E4qpci/XcRoYa6qIMD0n2298yox8=
+	t=1720445750; cv=none; b=HrnWaFkTVAzwdy9/K2YcJZkkvgFzUrV0al77r93WFa3j2dyTq7qTdBxVDZand2NShRrNOB4q+h7Y3Ot/xwbWpC1oivC0cspGYtwh4Ppci3gxbsVeYDRqmW4iIkmna51A7a4L90Q4RqlYNkSg+flpMpRgLjSPoyJBjzw2PPoZ42Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720443250; c=relaxed/simple;
-	bh=RMVniVhF/wGXXn+M2jkcQzFQemX/je9WFzpBwZlKox4=;
+	s=arc-20240116; t=1720445750; c=relaxed/simple;
+	bh=wgD9a4DNK3P6VEZab1/0rPVhR9Z/fDFUP3wzihfV+GE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U+BjmM2SSnPhmlmLfBHwEias06XK8wYKCGJJF/2Mht3gmXnQR1YwIRnwpWvSSMihrq25fcujlw7Iley1NUGKvU9qPrE/xoKiDj9rhgdPXKcYTlFMQ0l+IMCERF/I2wqK7MIMGqj4fbP+SX6UXq4EaVVP6NF2R2nJo24o+0/o+k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
+	 Content-Type:Content-Disposition:In-Reply-To; b=DNi7HA2B7uV2Z6A59Qy0yGCL5u8Pkzx3dyvUi/SqCTDQM3G26qqPoQDCyPCBafpz0qIvfQx38Y0BCNUbukSNOTTKk3qSgmXvJC45ju7TFDvUTPkN10MTneC/cV85R+UPWVh4r1pmE6K8MC91OFUXIso/4S3Z9ggkLOq9B+zOEwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
 Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
@@ -34,11 +34,11 @@ Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
 	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
 	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 89319300000BD;
-	Mon,  8 Jul 2024 14:54:03 +0200 (CEST)
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id F044A100D9438;
+	Mon,  8 Jul 2024 15:35:39 +0200 (CEST)
 Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 713143512D; Mon,  8 Jul 2024 14:54:03 +0200 (CEST)
-Date: Mon, 8 Jul 2024 14:54:03 +0200
+	id BF9321F5CA; Mon,  8 Jul 2024 15:35:39 +0200 (CEST)
+Date: Mon, 8 Jul 2024 15:35:39 +0200
 From: Lukas Wunner <lukas@wunner.de>
 To: Alexey Kardashevskiy <aik@amd.com>
 Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
@@ -65,12 +65,14 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>,
 	Eric Biggers <ebiggers@google.com>,
-	Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v2 07/18] spdm: Introduce library to authenticate devices
-Message-ID: <Zovha33CS76PwAMF@wunner.de>
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: Re: [PATCH v2 00/18] PCI device authentication
+Message-ID: <ZovrK7GsDpOMp3Bz@wunner.de>
 References: <cover.1719771133.git.lukas@wunner.de>
- <bbbea6e1b7d27463243a0fcb871ad2953312fe3a.1719771133.git.lukas@wunner.de>
- <26715537-5dc4-46c1-bdcd-c760696dd418@amd.com>
+ <2140c4e4-6df0-47c7-8301-c6eb70ada27d@amd.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -79,56 +81,51 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <26715537-5dc4-46c1-bdcd-c760696dd418@amd.com>
+In-Reply-To: <2140c4e4-6df0-47c7-8301-c6eb70ada27d@amd.com>
 
-On Mon, Jul 08, 2024 at 07:57:02PM +1000, Alexey Kardashevskiy wrote:
-> > +	rc = spdm_exchange(spdm_state, req, req_sz, rsp, rsp_sz);
+On Mon, Jul 08, 2024 at 07:47:51PM +1000, Alexey Kardashevskiy wrote:
+> On 1/7/24 05:35, Lukas Wunner wrote:
+> > PCI device authentication v2
+> > 
+> > Authenticate PCI devices with CMA-SPDM (PCIe r6.2 sec 6.31) and
+> > expose the result in sysfs.
 > 
-> rsp_sz is 36 bytes here. And spdm_exchange() cannot return more than 36
-> because this is how pci_doe() works...
-> 
-> > +	if (rc < 0)
-> > +		return rc;
-> > +
-> > +	length = rc;
-> > +	if (length < sizeof(*rsp) ||
-> > +	    length < sizeof(*rsp) + rsp->param1 * sizeof(*req_alg_struct)) {
-> > +		dev_err(spdm_state->dev, "Truncated algorithms response\n");
-> 
-> ... but here you expect more than 36 as realistically rsp->param1 > 0.
-> How was this tested and what do I miss here?
+> What is it based on?
 
-I assume you tested this patch set against a libspdm responder
-and got a "Truncated algorithms response" error.
+This series is based on v6.10-rc1.
 
-The short answer is, it's a bug in libspdm and the issue should
-go away once you update libspdm to version 3.1.0 or newer.
+I also successfully cherry-picked the patches onto v6.10-rc6 and
+linux-next 20240628 (no merge conflicts and no issues reported by 0-day).
 
-If you need to stay at an older version, consider cherry-picking
-libspdm commits 941f0ae0d24e ("libspdm_rsp_algorithms: fixup spec
-conformance") and 065fb17b74c7 ("responder: negotiate algorithms
-conformance").
+Older kernels than v6.10-rc1 won't work because they're missing
+ecdsa-nist-p521 support as well as a few preparatory sysfs patches
+of mine that went into v6.10-rc1.
 
-The bug was found and fixed by Wilfred Mallawa when testing the
-in-kernel SPDM implementation against libspdm:
 
-https://github.com/l1k/linux/issues/3
-https://github.com/DMTF/libspdm/pull/2341
-https://github.com/DMTF/libspdm/issues/2344
-https://github.com/DMTF/libspdm/pull/2353
+> I am using https://github.com/l1k/linux.git branch cma_v2 for now but wonder
+> if that's the right one.
 
-Problem is, most SPDM-enabled products right now are based on
-libspdm (the DMTF reference implementation) and thus are bug-by-bug
-compatible.  However such a software monoculture is dangerous and
-having a from-scratch kernel implementation has already proven useful
-to identify issues like this which otherwise wouldn't have been noticed.
+Yes that's fine.
 
-The in-kernel SPDM implementation currently doesn't send any
-ReqAlgStructs and per the spec, the responder isn't supposed to
-send any RespAlgStructs which the requester didn't ask for.
-Yet libspdm always sent a hardcoded array of RespAlgStructs.
+There's now also a kernel.org repository with a testing branch:
 
-So the *reference* implementation wasn't conforming to the spec. :(
+https://git.kernel.org/pub/scm/linux/kernel/git/devsec/spdm.git/
+
+Future maintenance of the SPDM library is intended to be happening
+in that repo.  I assumed that Bjorn may not be keen on having to
+deal with SPDM patches forever, so creating a dedicated repo seemed
+to make sense.
+
+Most patches in this series with a "PCI/CMA: " subject actually
+only change very few lines in the PCI core.  The bulk of the changes
+is in the SPDM library instead.  I used that subject merely to
+highlight that at least an ack from Bjorn is required.  The only
+patches containing PCI core changes to speak of are patches 8, 9, 10.
+
+The devsec group (short for Device Security Alphabet Soup) currently
+only contains the spdm.git repo.  Going forward, further repos may be
+added below the devsec umbrella, such as tsm.git to deal with a
+vendor-neutral interface between kernel and Trusted Security Module.
 
 Thanks,
 
