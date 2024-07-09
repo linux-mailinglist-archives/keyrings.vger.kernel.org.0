@@ -1,136 +1,157 @@
-Return-Path: <keyrings+bounces-1718-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1719-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A14A692B296
-	for <lists+keyrings@lfdr.de>; Tue,  9 Jul 2024 10:49:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59A0892BDBE
+	for <lists+keyrings@lfdr.de>; Tue,  9 Jul 2024 17:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B46B91C21A09
-	for <lists+keyrings@lfdr.de>; Tue,  9 Jul 2024 08:49:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A4821C218A0
+	for <lists+keyrings@lfdr.de>; Tue,  9 Jul 2024 15:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCEE115442D;
-	Tue,  9 Jul 2024 08:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D5219D89D;
+	Tue,  9 Jul 2024 15:03:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IpIVAZdU"
 X-Original-To: keyrings@vger.kernel.org
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4842153814;
-	Tue,  9 Jul 2024 08:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15B419D89B;
+	Tue,  9 Jul 2024 15:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720514981; cv=none; b=JUA9DRf2rreRveVIFyR/zQsfQBJBmsAGmPFyT+t5lMYSXlXB7w3S2Jqw03+pNJrqiM+IhoPI4bf14ZJ+uDgLwEz7Sv7L8YBiXjZWbkUkg12eWgQiYp3thjBds6wjzLnY7xJif3wwuuIPOOgjGkC9IdYcTgxlAqyOutmmVGDUjhU=
+	t=1720537405; cv=none; b=SKRjN6ucFv5kqt0E1D9IOmSQBjHUbMoAYG6oOC2ORoGNiQZuPWpvu73kOKX9SoVOXl9GQyR98n//Ty12fPQnoSeLr2Zn0yeAH3f1VbT6/QUoSbBoLQwt1HrJLlh+qGbxgmacSd5oGzmxmzH6pxkyS9QoxW5y+INwj8oyeODVWOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720514981; c=relaxed/simple;
-	bh=1LGGttV5i62yDKUecr8vz54XeY4DPh2JWDsYY1rJrOY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UZNNbMf5Cg+qVVNZxuneJn4qX8WZbc6h/BTW1pA7KtrxLc2oHHnUFRGU+eXxyw81OwZzXSKaxbKqzjDlcUgy3LZqPGcJ5ExRmFY/mF1GX69hhaqSJ3P6OYxVG0R5aQQTunBCaTXt/ndv1zyeS7ADPF1O/L8LenNey3UWA4O3ivg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id AF9F21025A944;
-	Tue,  9 Jul 2024 10:49:36 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 7265B2D31A; Tue,  9 Jul 2024 10:49:36 +0200 (CEST)
-Date: Tue, 9 Jul 2024 10:49:36 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Woodhouse <dwmw2@infradead.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linuxarm@huawei.com,
-	David Box <david.e.box@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Li, Ming" <ming4.li@intel.com>,
-	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Dhaval Giani <dhaval.giani@amd.com>,
-	Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Peter Gonda <pgonda@google.com>,
-	Jerome Glisse <jglisse@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Stefan Berger <stefanb@linux.ibm.com>
-Subject: Re: [PATCH v2 07/18] spdm: Introduce library to authenticate devices
-Message-ID: <Zoz5oHx8HxYLTftQ@wunner.de>
-References: <cover.1719771133.git.lukas@wunner.de>
- <bbbea6e1b7d27463243a0fcb871ad2953312fe3a.1719771133.git.lukas@wunner.de>
- <26715537-5dc4-46c1-bdcd-c760696dd418@amd.com>
- <Zovha33CS76PwAMF@wunner.de>
- <ad7b3e48-2e61-476f-8fea-28424f46d306@amd.com>
+	s=arc-20240116; t=1720537405; c=relaxed/simple;
+	bh=Pve8kD2qR5k9am//RgaYXCPw5RIktwMh8PvUr5OnbUM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=RBYs8Lx7rRTeY3W7K6CKsUxR2LAIbGxeN3MEMvMy69UL8gUCJ5550Nwo315vK8/hVd4V497Hs4cy81PrNtIgT8h1RB/TyEBPLHaWhAivJx2elLkUagCsFpXOol95yd4C4X2rYDz1H9bEmvgrXHb1W1Cui5hvCxVFbpJFqCqxCVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=IpIVAZdU; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 469AX5Bj021735;
+	Tue, 9 Jul 2024 15:00:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	vrRha6v1MS8bhWVcMku5sIvVckGeI7S6pxyAygH9t40=; b=IpIVAZdU289FVNpJ
+	tZYXIkp4i6652FCJtThP3Q+1S9qxa49qSkbCGQRBUJVKi8Qtuvqxud1xlSDKIpKd
+	NwZ9fyFD0GhC8rmR/7YMm6JYPOlVqkuwkCwTv7zq5WZnwZuXdNSNH9Nvs+pPvYzS
+	fry2xreqboUesoD9BsQ4GrL6F1zxSgGLLG/DJz1cQF/KLKigFdrHgGMwPGER626n
+	iztoZr/HJpJs7aZxncaluxbjHKDzjaaqx/gPXehk++PqnOw2pqbPvSFFc+hLc1dy
+	Rc9mqTpX3fmUklcqH5f9i1FH0+LPQIr+0iQXQjOaLqftU7blP9Sa1bfxD4US/M8H
+	nZTOpg==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 406wgwprf7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jul 2024 15:00:57 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id 469F0toM025538
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 9 Jul 2024 15:00:55 GMT
+Received: from [10.81.24.74] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 9 Jul 2024
+ 08:00:54 -0700
+Message-ID: <647515b7-e5a2-46d8-9c03-a2b68c434070@quicinc.com>
+Date: Tue, 9 Jul 2024 08:00:54 -0700
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ad7b3e48-2e61-476f-8fea-28424f46d306@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 07/18] spdm: Introduce library to authenticate devices
+Content-Language: en-US
+To: Lukas Wunner <lukas@wunner.de>,
+        Jonathan Cameron
+	<Jonathan.Cameron@huawei.com>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        David
+ Howells <dhowells@redhat.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Woodhouse
+	<dwmw2@infradead.org>,
+        James Bottomley
+	<James.Bottomley@HansenPartnership.com>,
+        <linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+        <linux-coco@lists.linux.dev>, <keyrings@vger.kernel.org>,
+        <linux-crypto@vger.kernel.org>
+CC: <linuxarm@huawei.com>, David Box <david.e.box@intel.com>,
+        Dan Williams
+	<dan.j.williams@intel.com>,
+        "Li, Ming" <ming4.li@intel.com>,
+        Ilpo Jarvinen
+	<ilpo.jarvinen@linux.intel.com>,
+        Alistair Francis <alistair.francis@wdc.com>,
+        Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+        Damien Le Moal
+	<dlemoal@kernel.org>,
+        Alexey Kardashevskiy <aik@amd.com>,
+        Dhaval Giani
+	<dhaval.giani@amd.com>,
+        Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
+        Jason Gunthorpe <jgg@nvidia.com>, Peter Gonda <pgonda@google.com>,
+        Jerome
+ Glisse <jglisse@google.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>,
+        Eric
+ Biggers <ebiggers@google.com>,
+        Stefan Berger <stefanb@linux.ibm.com>
+References: <cover.1719771133.git.lukas@wunner.de>
+ <bbbea6e1b7d27463243a0fcb871ad2953312fe3a.1719771133.git.lukas@wunner.de>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <bbbea6e1b7d27463243a0fcb871ad2953312fe3a.1719771133.git.lukas@wunner.de>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: yjb8rUAeZdBFm13IhaXy-1T20LJa1kbO
+X-Proofpoint-ORIG-GUID: yjb8rUAeZdBFm13IhaXy-1T20LJa1kbO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-09_04,2024-07-09_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=787 mlxscore=0
+ adultscore=0 malwarescore=0 spamscore=0 bulkscore=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1015 priorityscore=1501 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2407090098
 
-On Tue, Jul 09, 2024 at 10:45:27AM +1000, Alexey Kardashevskiy wrote:
-> On 8/7/24 22:54, Lukas Wunner wrote:
-> > The short answer is, it's a bug in libspdm and the issue should
-> > go away once you update libspdm to version 3.1.0 or newer.
-> 
-> Easier to hack lib/spdm/req-authenticate.c just to see how far I can get
-> with my device, now it is "Malformed certificate at slot 0 offset 0".
+On 6/30/24 12:42, Lukas Wunner wrote:
+...
+> diff --git a/lib/spdm/core.c b/lib/spdm/core.c
+> new file mode 100644
+> index 000000000000..f06402f6d127
+> --- /dev/null
+> +++ b/lib/spdm/core.c
+> @@ -0,0 +1,425 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * DMTF Security Protocol and Data Model (SPDM)
+> + * https://www.dmtf.org/dsp/DSP0274
+> + *
+> + * Core routines for message exchange, message transcript,
+> + * signature verification and session state lifecycle
+> + *
+> + * Copyright (C) 2021-22 Huawei
+> + *     Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> + *
+> + * Copyright (C) 2022-24 Intel Corporation
+> + */
+...
+> +
+> +MODULE_LICENSE("GPL");
 
-In that case all (up to 8) certificate chains should have been retrieved
-and are available for examination in the certificates/ directory in sysfs
-(below the PCI device's directory).
+This is missing a MODULE_DESCRIPTION().
 
-You can use ordinary openssl tooling to examine the certificates and
-see what's wrong with them, see the ABI documentation in patch [12/18]
-for examples:
-
-https://lore.kernel.org/all/e42905e3e5f1d5be39355e833fefc349acb0b03c.1719771133.git.lukas@wunner.de/
-
-The "Malformed certificate at slot 0 offset 0" message means that the
-first certificate in the chain in slot 0 does not comply with
-requirements set forth in the SPDM spec.  (E.g. Basic Constraints CA
-value shall be false for leaf cert, true for intermediate and root certs
-per SPDM 1.3.0 table 42.)
-
-The expectation is that vendors will test their devices and fix issues
-like this, so that end users never see those messages.
-
-The error message is emitted by spdm_validate_cert_chain().
-The implementation calls that to identify a certificate chain which is
-considered valid by the kernel.  The first one found is used for
-challenge-response authentication.  If none is found valid, the kernel
-will try to perform challenge-response authentication with the first
-*provisioned* slot, regardless of its validity.  That is done to
-expose a signature in sysfs about which user space can make up its
-own mind, see patch [17/18]:
-
-https://lore.kernel.org/all/dff8bcb091a3123e1c7c685f8149595e39bbdb8f.1719771133.git.lukas@wunner.de/
-
-So despite the error message you should see a signature with full SPDM
-transcript and other ancillary data in the signatures/ directory in sysfs.
-
-Not sure yet whether that feature (exposing a signature despite
-cert chains' invalidity from the kernel POV) makes sense.
-We can also discuss adding ABI which allows user space to force
-challenge-response with a specific slot, or to declare a specific
-slot valid.
-
-Thanks,
-
-Lukas
+Building a module without a MODULE_DESCRIPTION() will result in a 
+warning when building with make W=1.
 
