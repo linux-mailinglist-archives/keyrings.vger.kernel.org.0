@@ -1,146 +1,147 @@
-Return-Path: <keyrings+bounces-1721-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1722-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64AA292C3EC
-	for <lists+keyrings@lfdr.de>; Tue,  9 Jul 2024 21:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E55B92C424
+	for <lists+keyrings@lfdr.de>; Tue,  9 Jul 2024 21:54:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E8031F22D24
-	for <lists+keyrings@lfdr.de>; Tue,  9 Jul 2024 19:33:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F44C1F231A2
+	for <lists+keyrings@lfdr.de>; Tue,  9 Jul 2024 19:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7013A1B86DE;
-	Tue,  9 Jul 2024 19:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C927318003D;
+	Tue,  9 Jul 2024 19:54:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FbZ8zPRF"
 X-Original-To: keyrings@vger.kernel.org
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC0A41B86D5;
-	Tue,  9 Jul 2024 19:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0411B86ED
+	for <keyrings@vger.kernel.org>; Tue,  9 Jul 2024 19:54:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720553589; cv=none; b=MQONhcn6CmZOHnT6ZLniYnKvNpKsG2CmxjaeWOIKZXNFCQl5vsGRkyUoZEQQ5NR2yKSpffRNwN0g8l8/9hhtVvzqPU2fAxLO4ayAUJ6UvXXJbxCOtR1SMsJ9Cl01ebIoMmAoNkKesNpKA0RQWvcy9mysGkz2jD9QfMkXdogSOX4=
+	t=1720554869; cv=none; b=frFDfCowyH4eQlG7CyMfvwwpr6tsVd7vlBduEkwJYWGIrXRQ99xHwZScDomg4J726QuoB4Ynns3JYw0/bY/ryw6xof6Yrcu9P4dEWDNrBfL9AOIzVnCRcp+Ss9OcECv5n74aIjJFVQ3UInDvV8MlrKLeUjnSU8i102tilcO2+3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720553589; c=relaxed/simple;
-	bh=hNXOWe8lteOgViqy/EYlSV9Y+hmjJwlEra6rH3zbBKc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WwMC4ISV5P6FNWlX1CL0wHtDxKNwVMDnNkUM8XX0BfuYddM3uS+OVYqts9PNvw87gOtZoxfRrcVi6tNCctci7cLU6N18yaWeopO8bOPcH/HHeAfiNF/uDov+ncQdjzwwjf0O9dRGssNeoN5JfIQMdlM1irTpq9EXctUQHaApOWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 6048210278761;
-	Tue,  9 Jul 2024 21:32:56 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id EA81C4A175; Tue,  9 Jul 2024 21:32:55 +0200 (CEST)
-Date: Tue, 9 Jul 2024 21:32:55 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Woodhouse <dwmw2@infradead.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linuxarm@huawei.com,
-	David Box <david.e.box@intel.com>, "Li, Ming" <ming4.li@intel.com>,
-	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Alexey Kardashevskiy <aik@amd.com>,
-	Dhaval Giani <dhaval.giani@amd.com>,
-	Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Peter Gonda <pgonda@google.com>,
-	Jerome Glisse <jglisse@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>
-Subject: Re: [PATCH v2 08/18] PCI/CMA: Authenticate devices on enumeration
-Message-ID: <Zo2QZ_4xkMR_Nmsf@wunner.de>
-References: <cover.1719771133.git.lukas@wunner.de>
- <6d4361f13a942efc4b4d33d22e56b564c4362328.1719771133.git.lukas@wunner.de>
- <668d7d318082b_102cc2942f@dwillia2-xfh.jf.intel.com.notmuch>
+	s=arc-20240116; t=1720554869; c=relaxed/simple;
+	bh=F2wXmRek6YBnQqYBNjjKnvx4WQZikqbxi87I6aK933Q=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=sdFmh886fX6SKLBmoJeJi+bwyT+3PXC0gYGBp53pacVZTVBTld+KrVIX+rHMlckgsTV4tmYRs2VdlxjkQh5uGEzy5aq34ZFdlPL+yIVLYXFQ5PvB94k8Wf2xG4uPFg/kvm7OAkP7gIjlcySYsxVUalWcWzQZhfXaManjkqMpDDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FbZ8zPRF; arc=none smtp.client-ip=209.85.219.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-dff17fd97b3so6202461276.2
+        for <keyrings@vger.kernel.org>; Tue, 09 Jul 2024 12:54:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720554867; x=1721159667; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DnugVKK+54l4QK1zgVw9TdK2IhYnZnX2s63RrR/MzKo=;
+        b=FbZ8zPRFqXn85bTF8K5UOk0wZ6cNZEMAbKRLV3DQOWBBQMCvAhhPdwerEMHcgG+qGo
+         SGw5BzvZkY+qqP94S7ybg5gaY6giAZSJ62p8ycG6Bssz08zaFPIpfV7HZefNXqed38R/
+         fibHCBanPcUDEd+FYbKtlPrgtgFPXWSGeM1hDzwpwEtZm/jQRQn3gJsuVwZqsKw+yjar
+         2GR8BLlHVQdwlgIwRI9gjeKIobMqqja5eEfyaTF3VGDobx68KRfjaDQVmBFKGvtsJ50U
+         GdJ3vt79rQrr3iTpxxWYxOV9lZXNZtOuwbvmDwHKrQJPZ0mMpNaCSW3oT1GmSDioWIA0
+         9N1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720554867; x=1721159667;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DnugVKK+54l4QK1zgVw9TdK2IhYnZnX2s63RrR/MzKo=;
+        b=lUVbXD+M+piUDk4o0uFwZhPwoEm8C7E2aadm3s/GYxW515efC7iWAj/qY1MnbmoJmY
+         8RJCb+kBC6yubWid1n/5P7rzr0zvGOlAo8B6uIC0q87KMjuOMkjLBP/JFFMuNGpcAMPS
+         /x7XHpIXxSl0CycW9qu6TA8SEWNFZd8t7Bmxzzn16/XwSyEMjqjyjbqcEj532rX0V7Pa
+         AxrggBiIZxqQAWIONzYP7RHF9pb2wQ8/sihEFUsFIUmf7NBAsPzv0Nm9dUxVHhtE4sKC
+         WLsgrPx4aA0FpnMbiD7RPeVQx0wh2dsPVHXXObMuD3kefF6D6vpGS0IRqIbtqgxtNugM
+         kGXg==
+X-Forwarded-Encrypted: i=1; AJvYcCVhWe+mf0rF4zI2XSLWvZdS9HLd/R69y1T9FwINoBo2XBLizx9qx0uPX5+vlR2gCR2f9JizfnzE7z0wbDvo2H/IczaOwRzP5lA=
+X-Gm-Message-State: AOJu0YyiHSd4l7CDB4YOtYuBQmb8cKtEG/7ksVkz5v3flXYBSl4qETcq
+	mmlvfcpN3gvZBqxgJhlZQr5IIUvv7dUj/uVSRfsoWAdOCEfJBup0
+X-Google-Smtp-Source: AGHT+IFfXjvvrQZHevFym1HXI7XVChyGjlfELpeucNxKkZD6n4aVWXk4ie0kDeQzEtsQXgH0cX6Esw==
+X-Received: by 2002:a25:86c1:0:b0:e03:530d:3a1a with SMTP id 3f1490d57ef6-e041b05943emr4339835276.25.1720554867073;
+        Tue, 09 Jul 2024 12:54:27 -0700 (PDT)
+Received: from ?IPV6:2602:47:d945:d000:262b:8251:6cea:1863? ([2602:47:d945:d000:262b:8251:6cea:1863])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-79f19016456sm128869185a.47.2024.07.09.12.54.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Jul 2024 12:54:26 -0700 (PDT)
+Message-ID: <50fb8adc-0827-47da-bd2b-e29ca73781af@gmail.com>
+Date: Tue, 9 Jul 2024 15:54:25 -0400
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <668d7d318082b_102cc2942f@dwillia2-xfh.jf.intel.com.notmuch>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [keyutils] Remove undefined functions afrom version.lds
+From: Nicholas Vinson <nvinson234@gmail.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
+ dhowells@redhat.com
+References: <85561febfcf0618a9280448d5c53775646f470d6.1703712863.git.nvinson234@gmail.com>
+ <CY54S7MB53ZC.1RD8JLZDE1MKF@suppilovahvero>
+ <22b2df74-ca8d-419d-8d5c-3780c1d6e26e@gmail.com>
+ <22c30a36-5e52-4602-b24e-9d02d137ccfa@gmail.com>
+Content-Language: en-US
+In-Reply-To: <22c30a36-5e52-4602-b24e-9d02d137ccfa@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 09, 2024 at 11:10:57AM -0700, Dan Williams wrote:
-> Lukas Wunner wrote:
-> > --- a/drivers/pci/Kconfig
-> > +++ b/drivers/pci/Kconfig
-> > @@ -121,6 +121,19 @@ config XEN_PCIDEV_FRONTEND
-> >  config PCI_ATS
-> >  	bool
-> >  
-> > +config PCI_CMA
-> > +	bool "Component Measurement and Authentication (CMA-SPDM)"
+
+On 3/4/24 01:06, Nicholas Vinson wrote:
 > 
-> What is driving the requirement for CMA to be built-in?
+> 
+> On 1/3/24 10:00, Nicholas Vinson wrote:
+>>
+>> On 1/3/24 09:12, Jarkko Sakkinen wrote:
+>>> On Wed Dec 27, 2023 at 11:35 PM EET, Nicholas Vinson wrote:
+>>>> Functions keyctl_restrict() and keyctl_dh_compute_kdf_alloc() are
+>>>> nodefined. Their inclusion in version.lds causes clang/llvm LTO
+>>> What does "nodefined" mean?
+>>
+>> It's a typographical error I failed to catch before sending the 
+>> email.It is supposed to say "not defined".
+>>
+>>>> optimizations to fail with error messages similar to
+>>>>
+>>>>      error: version script assignment of KEYUTILS_1.7 to symbol
+>>>>      keyctl_restrict failed: symbol not defined
+>>>>
+>>>> This patch fixes the issue by removing the symbol names from
+>>>> version.lds.
+>>>>
+>>>> Fixes Gentoo bug 914637 (https://bugs.gentoo.org/914637)
+>>> I wonder if we can uses here "Closes: <url>" similarly as with
+>>> kernel bugzilla (question to more broad audience)?
+>>>
+>>>> Signed-off-by: Nicholas Vinson<nvinson234@gmail.com>
+>>>> ---
+>>>>   version.lds | 2 --
+>>>>   1 file changed, 2 deletions(-)
+>>>>
+>>>> diff --git a/version.lds b/version.lds
+>>>> index 6c34adf..6186fb6 100644
+>>>> --- a/version.lds
+>>>> +++ b/version.lds
+>>>> @@ -76,9 +76,7 @@ KEYUTILS_1.6 {
+>>>>   KEYUTILS_1.7 {
+>>>>       /* management functions */
+>>>> -    keyctl_restrict;
+>>>>       keyctl_dh_compute_kdf;
+>>>> -    keyctl_dh_compute_kdf_alloc;
+>>>>   } KEYUTILS_1.6;
+>>> BR, Jarkko
+> 
+> May I get a status update for this PR please?
+> 
+> Thanks,
+> Nicholas Vinson
 
-There is no way to auto-load modules needed for certain PCI features.
-We'd have to call request_module() on PCI bus enumeration when
-encountering devices with specific PCI features.  But what do we do
-if module loading fails?  The PCI bus is enumerated in a subsys_initcall,
-when neither the root filesystem has been mounted nor run_init_process()
-has been called.  So any PCI core modules would have to be in the initrd.
-What if they aren't?  Kernel panic?  That question seems particularly
-pertinent for a security feature like CMA.
-
-So we've made PCI core features non-modular by default.
-In seven cases we even switched from tristate to bool because building
-as modules turned out not to be working properly:
-
-82280f7af729 ("PCI: shpchp: Convert SHPC to be builtin only")
-a4959d8c1eaa ("PCI: Remove DPC tristate module option")
-774104399459 ("PCI: Convert ioapic to be builtin only, not modular")
-67f43f38eeb3 ("s390/pci/hotplug: convert to be builtin only")
-c10cc483bf3f ("PCI: pciehp: Convert pciehp to be builtin only, not modular")
-7cd29f4b22be ("PCI: hotplug: Convert to be builtin only, not modular")
-6037a803b05e ("PCI: acpiphp: Convert acpiphp to be builtin only, not modular")
-
-There has not been a single case where we switched from bool to tristate,
-with the exception of PCI_IOAPIC with commit b95a7bd70046, but that was
-subsequently reverted back to bool with the above-listed 774104399459.
-
-
-> All of the use cases I know about to date are built around userspace
-> policy auditing devices after the fact.
-
-I think we should also support use cases where user space sets a policy
-(e.g. not to bind devices to a driver unless they authenticate) and lets
-the kernel do the rest (i.e. autonomously authenticate devices based on
-a set of trusted root certificates).  User space does not *have* to be
-the one auditing each device on a case-by-case basis, although I do see
-the usefulness of such scenarios and am open to supporting them.  In fact
-this v2 takes a step in that direction by exposing signatures received
-from the device to user space and doing so even if the kernel cannot
-validate the device's certificate chains as well-formed and trusted.
-
-In other words, I'm trying to support both:  Fully autonomous in-kernel
-authentication of certificates, but also allowing user space to make a
-decision if it wants to.  It's simply not clear to me at the moment
-what the use cases will be.  I can very well imagine that, say,
-ChromeBooks will want to authenticate Thunderbolt-attached PCI devices
-based on a keyring of trusted vendor certificates.  The fully autonomous
-in-kernel authentication caters to such a use case.  I don't want to
-preclude such use cases just because Confidential Computing in the
-cloud happens to be the buzzword du jour.
+Hello, any status updates on this? It's been about 4 months since my 
+last request and I haven't heard anything.
 
 Thanks,
-
-Lukas
+Nicholas Vinson
 
