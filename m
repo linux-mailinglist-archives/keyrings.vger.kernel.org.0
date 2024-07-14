@@ -1,358 +1,169 @@
-Return-Path: <keyrings+bounces-1739-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1740-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E3B892F5FE
-	for <lists+keyrings@lfdr.de>; Fri, 12 Jul 2024 09:12:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A08930958
+	for <lists+keyrings@lfdr.de>; Sun, 14 Jul 2024 10:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACC381F22F8A
-	for <lists+keyrings@lfdr.de>; Fri, 12 Jul 2024 07:12:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2039E1F211F1
+	for <lists+keyrings@lfdr.de>; Sun, 14 Jul 2024 08:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E562F1422AB;
-	Fri, 12 Jul 2024 07:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZEOL36/k"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B59D12E40;
+	Sun, 14 Jul 2024 08:42:54 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0212E13E88B
-	for <keyrings@vger.kernel.org>; Fri, 12 Jul 2024 07:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAEC1F5FF;
+	Sun, 14 Jul 2024 08:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720768316; cv=none; b=dtX68YlEfBbMUAu6f3hU2/UOkmeTkYJ/dBcGfrAgmLYpBgjvnaH9thlYimlxB/igmd4KVwy7SysNMIl2C6LaVk27LCTjI4fqW9fg4X+N7HYVsPxZwtkFzLW/WARx6UBNIDN2LsEAGCZuIdR3WBY92AHLsXinUnfb113Ebc874Rs=
+	t=1720946573; cv=none; b=UCsEr+H/WDftCkqFrxAzFJMlDBk59VuLH4WIKVW8Edi8rgOZmT0yBwYQvxuNo+w0ARTeAJf17O4SCaJ8fDgyKZA3ZngXy0ORFbvmzKVoctlkHBUI1wCZbXIYdXvWqm3zN2KRCPSs2dp64BOnlOqEuY892PObknFZbrWyU+cgq7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720768316; c=relaxed/simple;
-	bh=0pKCmf10r9yYFdL5aCHngbqydl66XAlUW0u7PNHEr8M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-type; b=q/WgUrlp2f0pGj6VXPppT0AFx1lQcDeBshusfv/YiQRaLlBVyO5OuL+m1j8zYCBmsQ5iVr2Xg6stOsH3lROeWzck+odLAJUCfL5aeGqs42nptJ/81NZFuqGn+Gk5TqvhAFCraiXS7XgDdhax/+OekeZQ3pHSXFuuF/KcffO27u0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZEOL36/k; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720768314;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KUlRxt+SbbdMSATIXk4T5GOnsYlIh198Ikc2D/0smXE=;
-	b=ZEOL36/kliPndipPgorCQMHsZITpdpugNnxUSRw8+wF3/37ypjqjhbV6gwjuhPQvY7Uqea
-	bHPpcrAGSQGtg7btzC8a4ouc4toVArRtWA2F7TY3LjVXdiSNq8FxLgeQfuQ+KVhc8RLdww
-	+klrt3MN1mnsHmFFWtcVV+lkdGDg4Oo=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-103-6gWCQIfiM4CfTHJ0r_jo4Q-1; Fri,
- 12 Jul 2024 03:11:52 -0400
-X-MC-Unique: 6gWCQIfiM4CfTHJ0r_jo4Q-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	s=arc-20240116; t=1720946573; c=relaxed/simple;
+	bh=r8QUsPT+q8BDUuCNRac8TuMNIQlNaaK5BIOllXFbCPs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aEyIMRB58JGFPFZYGt+6h6HesfMkFX6PHXEF1xb1kLTHuS1elnuqFF7TUg6ryLIDlYhCTM+eSi/uZHh7VMTb3QMI+BXaDgO0rVk5DdPcuKWcq/hdIoUc3XEDrO6DrRFAU/2bgoC5/9paPURVileH70OGetQ9qX08BiHZnadelYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 858B319560B3;
-	Fri, 12 Jul 2024 07:11:51 +0000 (UTC)
-Received: from t14s.redhat.com (unknown [10.45.224.7])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4DDF21955F3B;
-	Fri, 12 Jul 2024 07:11:49 +0000 (UTC)
-From: Jan Stancek <jstancek@redhat.com>
-To: dhowells@redhat.com,
-	dwmw2@infradead.org,
-	zxu@redhat.com,
-	keyrings@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	jstancek@redhat.com
-Subject: [PATCH 3/3] sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >= 3
-Date: Fri, 12 Jul 2024 09:11:16 +0200
-Message-Id: <10c0539a6103f4da2eb19765c83800594ebe2dff.1720728319.git.jstancek@redhat.com>
-In-Reply-To: <cover.1720728319.git.jstancek@redhat.com>
-References: <cover.1720728319.git.jstancek@redhat.com>
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id A8EF730000099;
+	Sun, 14 Jul 2024 10:42:41 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 8F60811DB61; Sun, 14 Jul 2024 10:42:41 +0200 (CEST)
+Date: Sun, 14 Jul 2024 10:42:41 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Woodhouse <dwmw2@infradead.org>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
+	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linuxarm@huawei.com,
+	David Box <david.e.box@intel.com>, "Li, Ming" <ming4.li@intel.com>,
+	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>,
+	Dhaval Giani <dhaval.giani@amd.com>,
+	Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Peter Gonda <pgonda@google.com>,
+	Jerome Glisse <jglisse@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>,
+	Kees Cook <kees@kernel.org>, Jann Horn <jannh@google.com>
+Subject: Re: [PATCH v2 08/18] PCI/CMA: Authenticate devices on enumeration
+Message-ID: <ZpOPgcXU6eNqEB7M@wunner.de>
+References: <Zo_zivacyWmBuQcM@wunner.de>
+ <66901b646bd44_1a7742941d@dwillia2-xfh.jf.intel.com.notmuch>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <66901b646bd44_1a7742941d@dwillia2-xfh.jf.intel.com.notmuch>
 
-ENGINE API has been deprecated since OpenSSL version 3.0 [1].
-Distros have started dropping support from headers and in future
-it will likely disappear also from library.
+[cc += Kees Cook, Jann Horn; start of thread:
+https://lore.kernel.org/all/6d4361f13a942efc4b4d33d22e56b564c4362328.1719771133.git.lukas@wunner.de/
+]
 
-It has been superseded by the PROVIDER API, so use it instead
-for OPENSSL MAJOR >= 3.
+On Thu, Jul 11, 2024 at 10:50:28AM -0700, Dan Williams wrote:
+> Lukas Wunner wrote:
+> > Resume is parallelized (see dpm_noirq_resume_devices()), so the latency
+> > is bounded by the time to authenticate a single device.
+> 
+> As far as I understand that can still be on the order of seconds, and
+> pathological cases that could be longer. [...]
+> How bad is that latency problem in practice?
 
-[1] https://github.com/openssl/openssl/blob/master/README-ENGINES.md
+I'm seeing 150 msec to authenticate a PCI device if the signature can't be
+verified (e.g. due to missing trusted root certificate) and 400 msec if
+the signature *is* verified.  This varies depending on beefiness of CPU,
+algorithm selection, key length and number of provisioned slots.
 
-Signed-off-by: Jan Stancek <jstancek@redhat.com>
----
- certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++-------------
- scripts/sign-file.c  |  95 +++++++++++++++++++++++++++------------
- 2 files changed, 140 insertions(+), 58 deletions(-)
+But I've never seen this take "on the order of seconds", I assume that's
+a misunderstanding.
 
-diff --git a/certs/extract-cert.c b/certs/extract-cert.c
-index 61bbe0085671..7d6d468ed612 100644
---- a/certs/extract-cert.c
-+++ b/certs/extract-cert.c
-@@ -21,17 +21,18 @@
- #include <openssl/bio.h>
- #include <openssl/pem.h>
- #include <openssl/err.h>
--#include <openssl/engine.h>
--
-+#if OPENSSL_VERSION_MAJOR >= 3
-+# define USE_PKCS11_PROVIDER
-+# include <openssl/provider.h>
-+# include <openssl/store.h>
-+#else
-+# if !defined(OPENSSL_NO_ENGINE) && !defined(OPENSSL_NO_DEPRECATED_3_0)
-+#  define USE_PKCS11_ENGINE
-+#  include <openssl/engine.h>
-+# endif
-+#endif
- #include "ssl-common.h"
- 
--/*
-- * OpenSSL 3.0 deprecates the OpenSSL's ENGINE API.
-- *
-- * Remove this if/when that API is no longer used
-- */
--#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
--
- #define PKEY_ID_PKCS7 2
- 
- static __attribute__((noreturn))
-@@ -61,6 +62,66 @@ static void write_cert(X509 *x509)
- 		fprintf(stderr, "Extracted cert: %s\n", buf);
- }
- 
-+static X509 *load_cert_pkcs11(const char *cert_src)
-+{
-+	X509 *cert = NULL;
-+#ifdef USE_PKCS11_PROVIDER
-+	OSSL_STORE_CTX *store;
-+
-+	if (!OSSL_PROVIDER_try_load(NULL, "pkcs11", true))
-+		ERR(1, "OSSL_PROVIDER_try_load(pkcs11)");
-+	if (!OSSL_PROVIDER_try_load(NULL, "default", true))
-+		ERR(1, "OSSL_PROVIDER_try_load(default)");
-+
-+	store = OSSL_STORE_open(cert_src, NULL, NULL, NULL, NULL);
-+	ERR(!store, "OSSL_STORE_open");
-+
-+	while (!OSSL_STORE_eof(store)) {
-+		OSSL_STORE_INFO *info = OSSL_STORE_load(store);
-+
-+		if (!info) {
-+			drain_openssl_errors(__LINE__, 0);
-+			continue;
-+		}
-+		if (OSSL_STORE_INFO_get_type(info) == OSSL_STORE_INFO_CERT) {
-+			cert = OSSL_STORE_INFO_get1_CERT(info);
-+			ERR(!cert, "OSSL_STORE_INFO_get1_CERT");
-+		}
-+		OSSL_STORE_INFO_free(info);
-+		if (cert)
-+			break;
-+	}
-+	OSSL_STORE_close(store);
-+#elif defined(USE_PKCS11_ENGINE)
-+		ENGINE *e;
-+		struct {
-+			const char *cert_id;
-+			X509 *cert;
-+		} parms;
-+
-+		parms.cert_id = cert_src;
-+		parms.cert = NULL;
-+
-+		ENGINE_load_builtin_engines();
-+		drain_openssl_errors(__LINE__, 1);
-+		e = ENGINE_by_id("pkcs11");
-+		ERR(!e, "Load PKCS#11 ENGINE");
-+		if (ENGINE_init(e))
-+			drain_openssl_errors(__LINE__, 1);
-+		else
-+			ERR(1, "ENGINE_init");
-+		if (key_pass)
-+			ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0), "Set PKCS#11 PIN");
-+		ENGINE_ctrl_cmd(e, "LOAD_CERT_CTRL", 0, &parms, NULL, 1);
-+		ERR(!parms.cert, "Get X.509 from PKCS#11");
-+		cert = parms.cert;
-+#else
-+		fprintf(stderr, "no pkcs11 engine/provider available\n");
-+		exit(1);
-+#endif
-+	return cert;
-+}
-+
- int main(int argc, char **argv)
- {
- 	char *cert_src;
-@@ -89,28 +150,10 @@ int main(int argc, char **argv)
- 		fclose(f);
- 		exit(0);
- 	} else if (!strncmp(cert_src, "pkcs11:", 7)) {
--		ENGINE *e;
--		struct {
--			const char *cert_id;
--			X509 *cert;
--		} parms;
-+		X509 *cert = load_cert_pkcs11(cert_src);
- 
--		parms.cert_id = cert_src;
--		parms.cert = NULL;
--
--		ENGINE_load_builtin_engines();
--		drain_openssl_errors(__LINE__, 1);
--		e = ENGINE_by_id("pkcs11");
--		ERR(!e, "Load PKCS#11 ENGINE");
--		if (ENGINE_init(e))
--			drain_openssl_errors(__LINE__, 1);
--		else
--			ERR(1, "ENGINE_init");
--		if (key_pass)
--			ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0), "Set PKCS#11 PIN");
--		ENGINE_ctrl_cmd(e, "LOAD_CERT_CTRL", 0, &parms, NULL, 1);
--		ERR(!parms.cert, "Get X.509 from PKCS#11");
--		write_cert(parms.cert);
-+		ERR(!cert, "load_cert_pkcs11 failed");
-+		write_cert(cert);
- 	} else {
- 		BIO *b;
- 		X509 *x509;
-diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-index bb3fdf1a617c..ba413dc69a20 100644
---- a/scripts/sign-file.c
-+++ b/scripts/sign-file.c
-@@ -27,17 +27,18 @@
- #include <openssl/evp.h>
- #include <openssl/pem.h>
- #include <openssl/err.h>
--#include <openssl/engine.h>
--
-+#if OPENSSL_VERSION_MAJOR >= 3
-+# define USE_PKCS11_PROVIDER
-+# include <openssl/provider.h>
-+# include <openssl/store.h>
-+#else
-+# if !defined(OPENSSL_NO_ENGINE) && !defined(OPENSSL_NO_DEPRECATED_3_0)
-+#  define USE_PKCS11_ENGINE
-+#  include <openssl/engine.h>
-+# endif
-+#endif
- #include "ssl-common.h"
- 
--/*
-- * OpenSSL 3.0 deprecates the OpenSSL's ENGINE API.
-- *
-- * Remove this if/when that API is no longer used
-- */
--#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
--
- /*
-  * Use CMS if we have openssl-1.0.0 or newer available - otherwise we have to
-  * assume that it's not available and its header file is missing and that we
-@@ -106,28 +107,66 @@ static int pem_pw_cb(char *buf, int len, int w, void *v)
- 	return pwlen;
- }
- 
--static EVP_PKEY *read_private_key(const char *private_key_name)
-+static EVP_PKEY *read_private_key_pkcs11(const char *private_key_name)
- {
--	EVP_PKEY *private_key;
-+	EVP_PKEY *private_key = NULL;
-+#ifdef USE_PKCS11_PROVIDER
-+	OSSL_STORE_CTX *store;
- 
--	if (!strncmp(private_key_name, "pkcs11:", 7)) {
--		ENGINE *e;
-+	if (!OSSL_PROVIDER_try_load(NULL, "pkcs11", true))
-+		ERR(1, "OSSL_PROVIDER_try_load(pkcs11)");
-+	if (!OSSL_PROVIDER_try_load(NULL, "default", true))
-+		ERR(1, "OSSL_PROVIDER_try_load(default)");
-+
-+	store = OSSL_STORE_open(private_key_name, NULL, NULL, NULL, NULL);
-+	ERR(!store, "OSSL_STORE_open");
- 
--		ENGINE_load_builtin_engines();
-+	while (!OSSL_STORE_eof(store)) {
-+		OSSL_STORE_INFO *info = OSSL_STORE_load(store);
-+
-+		if (!info) {
-+			drain_openssl_errors(__LINE__, 0);
-+			continue;
-+		}
-+		if (OSSL_STORE_INFO_get_type(info) == OSSL_STORE_INFO_PKEY) {
-+			private_key = OSSL_STORE_INFO_get1_PKEY(info);
-+			ERR(!private_key, "OSSL_STORE_INFO_get1_PKEY");
-+		}
-+		OSSL_STORE_INFO_free(info);
-+		if (private_key)
-+			break;
-+	}
-+	OSSL_STORE_close(store);
-+#elif defined(USE_PKCS11_ENGINE)
-+	ENGINE *e;
-+
-+	ENGINE_load_builtin_engines();
-+	drain_openssl_errors(__LINE__, 1);
-+	e = ENGINE_by_id("pkcs11");
-+	ERR(!e, "Load PKCS#11 ENGINE");
-+	if (ENGINE_init(e))
- 		drain_openssl_errors(__LINE__, 1);
--		e = ENGINE_by_id("pkcs11");
--		ERR(!e, "Load PKCS#11 ENGINE");
--		if (ENGINE_init(e))
--			drain_openssl_errors(__LINE__, 1);
--		else
--			ERR(1, "ENGINE_init");
--		if (key_pass)
--			ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0),
--			    "Set PKCS#11 PIN");
--		private_key = ENGINE_load_private_key(e, private_key_name,
--						      NULL, NULL);
--		ERR(!private_key, "%s", private_key_name);
-+	else
-+		ERR(1, "ENGINE_init");
-+	if (key_pass)
-+		ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0),
-+				"Set PKCS#11 PIN");
-+	private_key = ENGINE_load_private_key(e, private_key_name,
-+			NULL, NULL);
-+	ERR(!private_key, "%s", private_key_name);
-+#else
-+	fprintf(stderr, "no pkcs11 engine/provider available\n");
-+	exit(1);
-+#endif
-+	return private_key;
-+}
-+
-+static EVP_PKEY *read_private_key(const char *private_key_name)
-+{
-+	if (!strncmp(private_key_name, "pkcs11:", 7)) {
-+		return read_private_key_pkcs11(private_key_name);
- 	} else {
-+		EVP_PKEY *private_key;
- 		BIO *b;
- 
- 		b = BIO_new_file(private_key_name, "rb");
-@@ -136,9 +175,9 @@ static EVP_PKEY *read_private_key(const char *private_key_name)
- 						      NULL);
- 		ERR(!private_key, "%s", private_key_name);
- 		BIO_free(b);
--	}
- 
--	return private_key;
-+		return private_key;
-+	}
- }
- 
- static X509 *read_x509(const char *x509_name)
--- 
-2.39.3
+vmlinux size grows by 12.752 bytes with CONFIG_PCI_CMA=y on x86_64.
+The feature is disabled by default.
 
+
+> All of these are mitigated by pushing authentication management to
+> drivers.
+
+Device authentication can't be pushed to drivers.  It must be done
+*before* driver binding:
+
+Drivers are bound based on identity information in config space
+(such as Vendor ID or Device ID).  A malicious device could spoof
+identity information in config space to force binding to a specific
+(CMA-unaware) driver.
+
+The certificate contains the signed Vendor ID and Device ID of the
+device.  By validating the certificate and the signature presented
+by the device, its identity can be ascertained by the PCI core
+before a driver (the right one) starts accessing it.
+
+
+> I see no justification for the hard coded aggressive default policy
+
+I think that just preventing driver binding if a device fails
+authentication may not be good enough.  If a device is truly
+malicious, perhaps we should firewall it off.  I'm worried about
+a device laterally attacking other devices through P2PDMA or
+sending malformed TLPs upstream to the root complex. 
+
+In patch [11/18], I'm suggesting:
+
+   "Traffic from devices which failed authentication could also be
+    filtered through ACS I/O Request Blocking Enable (PCIe r6.2 sec
+    7.7.11.3) or through Link Disable (PCIe r6.2 sec 7.5.3.7)."
+
+To firewall off malicious devices, authentication should happen early on.
+The system shouldn't be exposed to those devices any longer than necessary.
+That's one reason why this patch set performs mandatory authentication
+already on enumeration:  So that we're able to catch malicious devices
+as early as possible.
+
+Patch [08/18] inserts pci_cma_init() at the end of pci_init_capabilities()
+because CMA depends on DOE.  We may want to move DOE and CMA init
+further up in the function to authenticate the device even before
+enumerating any of its other capabilities.
+
+It's probably too early to decide which actions to take if a device fails
+authentication, whether to offer a variety of actions (only prevent driver
+binding) or just stick to the harshest one (firewall off the device),
+when to perform those actions and which knobs to offer to users for
+controlling policy and overriding actions.  We may need more real-world
+experience before we can make those decisions and we may need to ask
+security folks such as Kees Cook and Jann Horn for their perspective.
+
+This patch set merely exposes to user space whether a device passed
+authentication or not.  For that alone, it would indeed be sufficient
+to authenticate asynchronously -- or delay authentication until the
+sysfs attribute is accessed.
+
+But I wanted to keep the option open to firewall off devices early on.
+And placing pci_cma_init() in pci_init_capabilities() felt natural
+because it's where all the other device capabilities are enumerated
+and initialized.
+
+Thanks,
+
+Lukas
 
