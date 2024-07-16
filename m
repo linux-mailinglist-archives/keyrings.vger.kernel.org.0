@@ -1,45 +1,45 @@
-Return-Path: <keyrings+bounces-1771-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1772-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D96932F0F
-	for <lists+keyrings@lfdr.de>; Tue, 16 Jul 2024 19:28:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC62A9330BA
+	for <lists+keyrings@lfdr.de>; Tue, 16 Jul 2024 20:52:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7321F1C21F9A
-	for <lists+keyrings@lfdr.de>; Tue, 16 Jul 2024 17:28:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D1B2B20D2B
+	for <lists+keyrings@lfdr.de>; Tue, 16 Jul 2024 18:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9435019FA90;
-	Tue, 16 Jul 2024 17:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79FFD1C6B7;
+	Tue, 16 Jul 2024 18:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LBinjmLg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Btv5GK+G"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF0A19E7D0;
-	Tue, 16 Jul 2024 17:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D42B1643A;
+	Tue, 16 Jul 2024 18:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721150887; cv=none; b=Xi74abQNtwiJ4+w8Z9o15VmI1m4coanICfjwkkMoQd8akR1a5JXohO28jcbmfIbwaaBBOY72yrCcZ9vUgcqwxAXS7JoKUYTcBp3wKAEEp5/X48c+yHm/SGBTMNEX6sQE3nF/NYToxrJUbf8NUkyYtfExzQBAaKYjnbbr8RRpXg0=
+	t=1721155955; cv=none; b=ecqTbOZVmFy4nWnck6eNPFvEb9+d5TW31BGMkEoTXu74BIBkM/mF/ZtKE5xQCD9XNnmBHZGlajwlSkbroZ9tvMC8ljOCbmFH8d2Kf89WvTUhGbIfXJsApSMzsy1xu6ILB+gufBfs7/Xk16hqlnxzQ2EiKiJq+H643O8g2fyJQlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721150887; c=relaxed/simple;
-	bh=zBxSrue6PTi9TlBB5NE2o6nu/bnjeOTBb2WxJOg2Mec=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AhRJwkbtAZyf8awE9FGaJUlM3IkrM1Tc64UVGSMi3X3oXYCu8Z261p+PTfinVX/8tACJE5leK7i56THnmaPox3OpOJN1ZbTVhu7FYFlwSUVoLuzpCbApf9jS7YYgW0JNmvBXSk1I1UaDVHdrNeFTNVpcAiChN5UUn/BUnvtL8bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LBinjmLg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C320C116B1;
-	Tue, 16 Jul 2024 17:28:06 +0000 (UTC)
+	s=arc-20240116; t=1721155955; c=relaxed/simple;
+	bh=X9OpwdZtZFTZbbC8V7nGKukaKQcflFFBotd4UiiS6jk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RT+Sfzz0t6RvqT0Zu3pW0A/RMYNjvhCVy+PvU0Xk3SVs+/4DadnpnkA4M2xVX8wL/DU+4VpJk5P2q6HuBvojXuUtbYee49cS/v0LEvjabcMYnHbGe0K2f+KVwrORb+LjDvYjppAOU7OnlkiyRWp54PS+JbUfV/81Mx4CfUKXVec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Btv5GK+G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394C8C116B1;
+	Tue, 16 Jul 2024 18:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721150886;
-	bh=zBxSrue6PTi9TlBB5NE2o6nu/bnjeOTBb2WxJOg2Mec=;
+	s=k20201202; t=1721155954;
+	bh=X9OpwdZtZFTZbbC8V7nGKukaKQcflFFBotd4UiiS6jk=;
 	h=From:To:Cc:Subject:Date:From;
-	b=LBinjmLgkYtma9BVEzMQ6nnDBRJ6lXIsi+D6INFkMmXv/WchFDusOPUHJSy9Vo2Wv
-	 17zMAI/AI5zYwxU4lEhFHk3wpyCccqTtEV7OUlOUXzxlQ2zKPWQ1kVS9U65nrU2zSj
-	 P5/Lvcs/1HvZCU73d9X6mlE3FU2BMg3o1UpH0aBZn2Fe1nV3jFTfJboGEtMRSMzpZh
-	 ERbZ+gAc8PJCc0bLRu3wMVsgTvkqxLJooRAu86PJYGAmCCSHBc9k1aKvoEImogDvpU
-	 qeO+YgFVKPkNfNfV7rvkhX9MXgh64AVsdY2LOrPBF4b8QntsJ3JTln/5vMpWgU+tHg
-	 REK9FmHi5JXjg==
+	b=Btv5GK+GHpWpFgNUGAXhwF491WnEU1qSMBJhT0aqTx3Wo0FiUPDwzz6DMf0TEcKfP
+	 69Wiqt0ydpi9IoNxqSCEHKcJQzlQ7EGH9XfSUeA+PxHkJXRNHhvLGw/9off8twSSfV
+	 RUL2dfcD7qcQozPy666ljreu4OgKwn6rK0mxbYFV1X/zahQq6tPGks0AKtNDO2PtCB
+	 DMISNjOAqeojj1esoLn04dkScVrDQ0cTw82ACQtmOVK4xqNTmb+VFdnRHHHeKboz2i
+	 JJ3BX/2fPHIA//3uDPy0EkZKWXzivS7bWvyQ7AO2snIm9xtfCw9UksZLgOqcoyEJ2O
+	 wBUwOlPNB3rsQ==
 From: Jarkko Sakkinen <jarkko@kernel.org>
 To: linux-integrity@vger.kernel.org
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
@@ -53,9 +53,9 @@ Cc: Jarkko Sakkinen <jarkko@kernel.org>,
 	keyrings@vger.kernel.org,
 	linux-security-module@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] tpm: Relocate buf->handles to appropriate place
-Date: Tue, 16 Jul 2024 20:27:52 +0300
-Message-ID: <20240716172754.397801-1-jarkko@kernel.org>
+Subject: [PATCH v3] tpm: Relocate buf->handles to appropriate place
+Date: Tue, 16 Jul 2024 21:52:24 +0300
+Message-ID: <20240716185225.873090-1-jarkko@kernel.org>
 X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
@@ -88,15 +88,20 @@ Address the issues by moving the variable to struct tpm_chip.
 Cc: stable@vger.kernel.org # v6.10+
 Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
 Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
+
+v3:
+* Reset chip->handles in the beginning of tpm2_start_auth_session()
+  so that it shows correct value, when TCG_TPM2_HMAC is enabled but
+  tpm2_sessions_init() has never been called.
 v2:
 * Was a bit more broken than I first thought, as 'handles' is only
   useful for tpm2-sessions.c and has zero relation to tpm-buf.c.
 ---
- drivers/char/tpm/tpm-buf.c       |  1 -
- drivers/char/tpm/tpm2-sessions.c | 11 +++++------
- include/linux/tpm.h              |  8 ++++----
- 3 files changed, 9 insertions(+), 11 deletions(-)
+ drivers/char/tpm/tpm-buf.c       | 1 -
+ drivers/char/tpm/tpm2-cmd.c      | 2 +-
+ drivers/char/tpm/tpm2-sessions.c | 7 ++++---
+ include/linux/tpm.h              | 8 ++++----
+ 4 files changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/char/tpm/tpm-buf.c b/drivers/char/tpm/tpm-buf.c
 index cad0048bcc3c..d06e8e063151 100644
@@ -110,8 +115,21 @@ index cad0048bcc3c..d06e8e063151 100644
  }
  EXPORT_SYMBOL_GPL(tpm_buf_reset);
  
+diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
+index 1e856259219e..b781e4406fc2 100644
+--- a/drivers/char/tpm/tpm2-cmd.c
++++ b/drivers/char/tpm/tpm2-cmd.c
+@@ -776,7 +776,7 @@ int tpm2_auto_startup(struct tpm_chip *chip)
+ 	if (rc)
+ 		goto out;
+ 
+-	rc = tpm2_sessions_init(chip);
++	/* rc = tpm2_sessions_init(chip); */
+ 
+ out:
+ 	/*
 diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index d3521aadd43e..a4ff5bca61dd 100644
+index d3521aadd43e..5e7c12d64ba8 100644
 --- a/drivers/char/tpm/tpm2-sessions.c
 +++ b/drivers/char/tpm/tpm2-sessions.c
 @@ -238,8 +238,7 @@ void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
@@ -133,20 +151,15 @@ index d3521aadd43e..a4ff5bca61dd 100644
  		u32 len = 9 + passphrase_len;
  
  		if (tpm_buf_length(buf) != offset) {
-@@ -1010,10 +1009,10 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
+@@ -963,6 +962,8 @@ int tpm2_start_auth_session(struct tpm_chip *chip)
+ 	int rc;
+ 	u32 null_key;
  
- 	tpm_buf_destroy(&buf);
- 
--	if (rc)
--		goto out;
-+	if (!rc)
-+		chip->handles = 0;
- 
-- out:
-+out:
- 	return rc;
- }
- EXPORT_SYMBOL(tpm2_start_auth_session);
++	chip->handles = 0;
++
+ 	if (!auth) {
+ 		dev_warn_once(&chip->dev, "auth session is not active\n");
+ 		return 0;
 diff --git a/include/linux/tpm.h b/include/linux/tpm.h
 index e93ee8d936a9..b664f7556494 100644
 --- a/include/linux/tpm.h
