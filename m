@@ -1,272 +1,231 @@
-Return-Path: <keyrings+bounces-1760-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1761-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32FAB931E86
-	for <lists+keyrings@lfdr.de>; Tue, 16 Jul 2024 03:35:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15E579324AC
+	for <lists+keyrings@lfdr.de>; Tue, 16 Jul 2024 13:13:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A6F01F223F6
-	for <lists+keyrings@lfdr.de>; Tue, 16 Jul 2024 01:35:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D0DB1C2235E
+	for <lists+keyrings@lfdr.de>; Tue, 16 Jul 2024 11:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F7917C2;
-	Tue, 16 Jul 2024 01:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916B3198E9F;
+	Tue, 16 Jul 2024 11:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Etal6kU4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="akmv+xLt"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765B64A32;
-	Tue, 16 Jul 2024 01:35:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721093734; cv=fail; b=ZTNnEc0JUpMd1/vQgVHXirC5d8uw/Pg+uiV8cuysXCDXVRFJjOLqGgHwa/s7bf6otu1sgJv3M34drUODSnKz01DYmSayOQu9jFs6/ArqXxlr/+yqtFCnVo4wguR6yA8KEpOgp+/0lXa+acGhla8cfYuDRrDjWx7yLR/ajj3reYc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721093734; c=relaxed/simple;
-	bh=SEhL2pqX0ZyUHcIhFVUiwo6r54fR0WouFsTDCdXPg1A=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=MgjSgIVi7u8jQcoeNFDCU3sR9JSA2Z8NvLE9GqzLDUUnr4dUQoycF6nz0187RkPd+Rcf16PfvlGqsgX4bFdrpVUpYyUd/l+tfeDeU8wn1vnpJ2Ds1wgHJdKW9uKJrM32Bsqj43UiPrqRJiiAcAg1boo6bWL0Sb3kPKIolFqbm5Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Etal6kU4; arc=fail smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1721093733; x=1752629733;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=SEhL2pqX0ZyUHcIhFVUiwo6r54fR0WouFsTDCdXPg1A=;
-  b=Etal6kU4KOvXcLCl2hAuSh4NkRyRbGGvJzmHkfrEN1+bc+Jk1/CIidbN
-   2HMPV8Q3PvoUVIL3xZjuXKvw5ZOB+sdvgsD39HbnDhNLCpWTeG+eE7dzu
-   tpcepl88ohH9ng5W+2GDow+uGOA7VUvChB7scWFGk9PlsZ3rp9utspdOk
-   EFnxKtfBYiufMS6kfAt0/Ye73HEOTxKdJqOtQmVoJszq6ulkW5zwvjl4Q
-   Wr3Y25MOQE6YD0AQdK92gFX6RTG+UoCipBFDElTBeRDyEunKfIY+2ZgSV
-   +/sG8y9HoGR/QKxnTPBogUO/AiY8zZt0u60hKgG4NTH0mQlPVpJfT0Ux4
-   Q==;
-X-CSE-ConnectionGUID: 7z3TNs7iTFq5aYMThAxDxw==
-X-CSE-MsgGUID: AplJKeaDS02LZ+h7j3fknw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11134"; a="18700934"
-X-IronPort-AV: E=Sophos;i="6.09,211,1716274800"; 
-   d="scan'208";a="18700934"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2024 18:35:32 -0700
-X-CSE-ConnectionGUID: uQ+XBCeqRV2rVmPBMmqPtQ==
-X-CSE-MsgGUID: j8MH5K4fTwq3NS7qQQ90eQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,211,1716274800"; 
-   d="scan'208";a="49910461"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 15 Jul 2024 18:35:32 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 15 Jul 2024 18:35:31 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 15 Jul 2024 18:35:30 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 15 Jul 2024 18:35:30 -0700
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.45) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 15 Jul 2024 18:35:30 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gkxXkMNnzfco+wc3bgjeJDMbqntJNWN1vHTTs8ydhgDacG1h81sIQMfeL9ThhWxutnLr7PSCrYfj+Di+42D2KgEkMepp9KBAP+c8H9v4U6Kg71iIofHgQgTK252FGh2cjkoSwUE7VJ7D9+x6u5LneXZN5PTsnVkOpJcA7Tn5RHyTsyPeCVfwyKHB7IQ7pVR5gELdLKOBwxZucNPM7E596CZ/nYlYZ4XbHV2u6tEfxaHx6RF5KbbZ4jqiM3/JvoiO8TLKuhXnnhOp8AwRhHqgy5BDvmkTOlvY2azqxibwvD7EmuEWWfB5HZCM8j49yqzJhX7pvYvueGWRCToWUgJMyg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BZV3yjCKUZ5QEwspxsFTOBNQELfBXrghDlqK5Siqolk=;
- b=iThgGu0mkSJuGvyrlWyp6w/1TLpFAJYfHW+kOrUWv2dmz4TzHnarhgHqurCI5qxPmOwPIRcvi3djUAHHJGgchTdYOiiB9PqqXDb+nTdyAzVWuad3gLx2zJJTAU310yDhrzbK8Ir2o9IUlNsxjh+I4mkpzIEV3cV/gsUXOeVOBSCiRiSOrf7r2rfLdSDeHk5HqlW1eXe/s6fttBnWpk0ZiP/cCYK30MK4caTV0LlVkfMrkCkNzydiUhabQ3uBr2q4f0mnLLgHlJfIynURs0WeKlgeQs9knhHqZB7p+XmL8/lR/OQSqWBw9hEmBPGOVgK/FilIgzkzIyDcxv8baXeAvA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by SA0PR11MB4653.namprd11.prod.outlook.com (2603:10b6:806:94::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.29; Tue, 16 Jul
- 2024 01:35:27 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.7762.027; Tue, 16 Jul 2024
- 01:35:27 +0000
-Date: Mon, 15 Jul 2024 18:35:23 -0700
-From: Dan Williams <dan.j.williams@intel.com>
-To: Jason Gunthorpe <jgg@nvidia.com>, Dan Williams <dan.j.williams@intel.com>
-CC: Kees Cook <kees@kernel.org>, Lukas Wunner <lukas@wunner.de>, "Jonathan
- Cameron" <Jonathan.Cameron@huawei.com>, Bjorn Helgaas <helgaas@kernel.org>,
-	David Howells <dhowells@redhat.com>, Herbert Xu
-	<herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, David
- Woodhouse <dwmw2@infradead.org>, James Bottomley
-	<James.Bottomley@hansenpartnership.com>, <linux-pci@vger.kernel.org>,
-	<linux-cxl@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-	<linuxarm@huawei.com>, David Box <david.e.box@intel.com>, "Li, Ming"
-	<ming4.li@intel.com>, Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, Alistair
- Francis <alistair.francis@wdc.com>, Wilfred Mallawa
-	<wilfred.mallawa@wdc.com>, Damien Le Moal <dlemoal@kernel.org>, "Alexey
- Kardashevskiy" <aik@amd.com>, Dhaval Giani <dhaval.giani@amd.com>,
-	Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>, Peter Gonda
-	<pgonda@google.com>, Jerome Glisse <jglisse@google.com>, "Sean
- Christopherson" <seanjc@google.com>, Alexander Graf <graf@amazon.com>,
-	"Samuel Ortiz" <sameo@rivosinc.com>, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH v2 08/18] PCI/CMA: Authenticate devices on enumeration
-Message-ID: <6695ce5b8cc6a_8f74d29447@dwillia2-xfh.jf.intel.com.notmuch>
-References: <66901b646bd44_1a7742941d@dwillia2-xfh.jf.intel.com.notmuch>
- <ZpOPgcXU6eNqEB7M@wunner.de>
- <202407151005.15C1D4C5E8@keescook>
- <20240715181252.GU1482543@nvidia.com>
- <66958850db394_8f74d2942b@dwillia2-xfh.jf.intel.com.notmuch>
- <20240715220206.GV1482543@nvidia.com>
- <6695a7b4a1c14_1bc83294c1@dwillia2-xfh.jf.intel.com.notmuch>
- <20240715232149.GY1482543@nvidia.com>
- <6695b29d204e4_8f74d294f8@dwillia2-xfh.jf.intel.com.notmuch>
- <20240715235510.GA1482543@nvidia.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20240715235510.GA1482543@nvidia.com>
-X-ClientProxiedBy: MW4PR03CA0357.namprd03.prod.outlook.com
- (2603:10b6:303:dc::32) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679C5197543;
+	Tue, 16 Jul 2024 11:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721128427; cv=none; b=LeUEnjAjzNf7lmbSoMLBHELkR6u1IC2xgCOqa/WwnSQ6T/gY6q1cyNDvV8lvHKY/npO7jwgU2qV7dG57WccYTLVzdXfl6PDLwwLR37wF8iKbWcHPYll6PKYIt2luPY7XRSMVn/U8djaOVLXNvb0dwD2TqDg3Xa/kWmouajP5u7s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721128427; c=relaxed/simple;
+	bh=0vdbSu1OCtFKw0qJs8Rw+nkNJ7PcbDbwEAd5tcv14T0=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=U5Rxj0rLa1c3QARXVbyrQKsyRwWy1HWskCFbdaFhRJDDf4usA3MF0CNHcx1N//4ZvDD0j4WhvIygzVhKONGnShUQPAsdlcAmsB7rTOKJBuwV/FBBmf51Oej05yp20FcjU0SV+/zUlbWSNqAbFs0MuA6q2Q5TzVedmvciYD6srcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=akmv+xLt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62627C4AF09;
+	Tue, 16 Jul 2024 11:13:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721128427;
+	bh=0vdbSu1OCtFKw0qJs8Rw+nkNJ7PcbDbwEAd5tcv14T0=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=akmv+xLt6JNjS+Ii9gDW+b3EsweQoh5yuVYNnUITdW9pAPhwA/vqc8jXNzBhACFv3
+	 kjB9oo+LXbiwFm/aGbSEmco2VdKD2HJFFWTDeHNdcpz8uUN0Oz/QRgM4eCdF4dgPyu
+	 7AchizP8/3ZdEofN3Na5sbi1AowncUq+AhzdUngGDjecxACIT35Xv2Np3qEKAuZ3ol
+	 glERXXfBLIMVzqLrsJx8PaeXu9K6fKcvItKYtbKFOoiR8wHUKsOAESz8CIbWzDNOo6
+	 tac9j9R7tLDv8Km0+r/gkzZlF5m2DQb1N+/bfQwGYWLYXnmYPh9tHcrRoLu09g5Yer
+	 8/O3BR6GwD6yw==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA0PR11MB4653:EE_
-X-MS-Office365-Filtering-Correlation-Id: 21867277-2e7c-4183-a177-08dca537925a
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?nXEPNBmYWLrcUpMvQ7TGPT0VzoCvlXrAeoIM2exr4hHbcFsjqIYuQw72dUwR?=
- =?us-ascii?Q?F/BqWzFNGMzsFj8/tp32JTH6vv9j1+ZeCor9ydHS8r4KCzj82TV78Kagw0rJ?=
- =?us-ascii?Q?CZMFSgX0B33YPOyTW/CDVZ5GepKKSULPDNMCvWB5/n6hrkbqvuELQyLcPwrU?=
- =?us-ascii?Q?wxe/qgCAThzH8vCWDxIPh7VpwcPAaoR0eht3CFRETr/uWsTgU0O10CwSant0?=
- =?us-ascii?Q?ofuxuZt6s9F43QGLKtPhX6Q0XVmPojby4lriFoXds4IPfX+4O9EFb7utFnDl?=
- =?us-ascii?Q?7Y8jBSyZ4XmpwlKGY5QJZecHZoJ/AtOZd1e3HF5HTGRxFUNbTzsn4tv42jRf?=
- =?us-ascii?Q?x6uU8s5+JKNHIYNVubFrxMn5D7JnhDNqTOExkXEsc8zoYKRrIwcNmjnaLoDG?=
- =?us-ascii?Q?HpJ2juwtJbXk0/U4OO4rZtPCZeqnHUXvee8W75QDex17UeId02cGYtm+zcsn?=
- =?us-ascii?Q?EqzCfgQuMbmzkoZ3uEdVqOG0IKg1doLvysDgRL1GAA+QLm6uk2u9pmebtM70?=
- =?us-ascii?Q?5R1l7Mkvepm0sf5dAtGUd68otynaAXgvQHHBq6dgGtIexJxxqvLd5RpZStOi?=
- =?us-ascii?Q?BnNQWpZ09YQrxlQJLUDK9spCHsBgfSEpj77KOZjrEKLN6PjleUdNhwpfIlj8?=
- =?us-ascii?Q?Qc0LkvGygYDX9V/uONFEyOdRkgsa4JZeYlziM3BB6M6wOgLODQIsICA7vssq?=
- =?us-ascii?Q?a+eHE/IGQfUUW2uvRsmOzeBPDMtgHntzHsSNLVbVW7DMDENJs1GQLmTu6F/4?=
- =?us-ascii?Q?uyv20Q4Ief9UPfYKhbxlHjJGkvVZ20hrF8x0Q9fyA1yuC1/ZEolZ0juZkDEU?=
- =?us-ascii?Q?SrjO2syeVfqrbtk2ZOUFrVnoxOhPTZ+RVAot13UdchrsNE5YxbM9Kgy4rmj+?=
- =?us-ascii?Q?f22oTQS6L6W+o1+Rrs/5XyslT6wUdx+5Mjs89DEFTuXxY1pSmXQSEIITR8g7?=
- =?us-ascii?Q?+1xJd7x//Qblvkk/ybzlg87jCPnrCgJGKU8zT52iNNg38rL/+z0hpSo77D3z?=
- =?us-ascii?Q?29VVEt7l8s+RIKvxedBIvC1SM/GiqEf8jJh9lCLC6918lywuyg5AYbWjwDF2?=
- =?us-ascii?Q?/Ne204qQ8+gsexGMraIBjmChXVmsc4kB33Q7UOWmF9LSXQdPkIVJ0fRfr5ja?=
- =?us-ascii?Q?MUXxijO6XnGxwH/zN04DOff7FzObjfMJzczxyC8bfqaWXc6qFi7f00pxUqdM?=
- =?us-ascii?Q?q4KiBazmLpgGUN6h39fscodNV/LTZ9NSGYIgIXc79oyQ5vnStX3ihIaK0lEs?=
- =?us-ascii?Q?9EcvMvvKMCFfbCgVPtg8dtWeX3+oFUO9OYumVgQeD8XjKqOKuwPMs4r6gjGH?=
- =?us-ascii?Q?z4HFp9n3QeVZQLiNihH6erWOO9Sf9i3Ts5qIZj5qHcTnAg=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?3DU+XExeR0XzlCleUbo+FCgdoebi3CJChVkZ4jttvtElYiS9XFxXaYAluXGd?=
- =?us-ascii?Q?CL1sfQ7wuNWbScBAMp4v8Xtzpo75Y03cl0ZrtC0IDbUs+6Awbj3U82XhwMCe?=
- =?us-ascii?Q?4wtDMh9jPcQ158Cnos17wbQqLzFH05nKTkJHBg09rL2ZaIespJe1k2TU3WBl?=
- =?us-ascii?Q?sIiSjA8tjPev8XYiExtsKe3mHWFB1qnXUr+7qf8oMZbbykxI70QzzhPanJ4f?=
- =?us-ascii?Q?Y/ruW8MYvYSD/ALaZjiEg8NO9kGeeMIup1gI4srMDDc96andaGyrWH9gKVS6?=
- =?us-ascii?Q?QS0CIWcWgtlq6INKiFysl5lG6ReoS6I3bSll7AGvGSSSzPTHLG3cxuXk7fl/?=
- =?us-ascii?Q?atIhxiwWu2lLaTYycvRpnJaM/JS1dbKhfUFYGDO3QFf66T59azXZ8i5Ur6xk?=
- =?us-ascii?Q?V13ZADFHKhXltCsV1WXIf622RJXmfkoI6Sd7yzh0kT49qWndD7Z81q6MqL4s?=
- =?us-ascii?Q?PZENPl2IND86UXMrqUPRZ2IRG2PsynC+Gf7ygDqHOD68GldtiDqixHvSEThn?=
- =?us-ascii?Q?E1fqXbQ6t0SxbrmAvwIJ9SEwaN2t2iXj/kZL/kgw3TnD2WZb7qGmp+R4lPQ+?=
- =?us-ascii?Q?hSJameUQNzqrXIe8ej7k4b+7YiroQ/url7pEtmu1xNmvubEZaJHXFKYmRLY8?=
- =?us-ascii?Q?6T+uJFlTrJR0FqK8y6qNUm/djW3dgWsJUN+cxxv+TOjT7crRT+54PS5dm/2r?=
- =?us-ascii?Q?uGZ1GlhH71yV0f6Yw3UMBTzJm2/BOm75HSnA86UFHJwzOfgusYvHUjhcb+F5?=
- =?us-ascii?Q?wDFdm6EsGefNqeXjaleiKHybDG/ipfJpRU4Pdl1+MRSP9W3kCAK/n4GDJQy8?=
- =?us-ascii?Q?gqfaFXxlVLVOIrrrIUFAZX+cXy5DaDWdzDZpX3dfii/r3hpu75Zcb0JijSb9?=
- =?us-ascii?Q?qTU0e/+AKpEOzHaPLbjCgt/8rqm2d2BUYIcSprjW7l1s4I4uXV5oToPrPenY?=
- =?us-ascii?Q?zI7JMVpt+9tTpSzzg40I7a9QFrE7wNkgqeNuCT+h6VkskEArHvUM10HhlidS?=
- =?us-ascii?Q?lr9HMcAnMksIsPosOkL7KuhZtb9f/LWMJI7dw8PxJrpE5wLX1TQeS1oFQDw3?=
- =?us-ascii?Q?DoSiqQ+pXtHEDhgDxihCY34aW+1G+KzSO8tuiUkrJdFaubIA4IaIU+6vC480?=
- =?us-ascii?Q?9qbmMM/CjukLoIlbPlFSANWVaEwYZsEkcKcLXJ1G7bq6yxA2thE8X3LhxUAf?=
- =?us-ascii?Q?10TbIuQaeC3SwVncmysTkz12pPT4bTIbBOFdURJRmi6CpdxQcG4657FlOiyn?=
- =?us-ascii?Q?g5wnqQQi5UAT+qWCcdeIaILSQ597OQzkkSYmFRt+PWCuN+UJqCg4Cm7ZnIKq?=
- =?us-ascii?Q?8aI4YjaslM/ukQRQKtNpfAdWUAaMc9Artk+1kNw9tB/Z8ShDoDBDZQzo6j96?=
- =?us-ascii?Q?021Ii1DmZHEl9zL/V1wU70iMn/GKGO2ceW1cChr+/0NltMQxsqPqPHWf7JG7?=
- =?us-ascii?Q?WWUO+JnSqjtiFuAvEG6OaXpn/zSWfgk4EB975uqUseffHtvNOXz2X+CzlHwH?=
- =?us-ascii?Q?ifLXvXXidFWzT3qt4Rxp5kScbR1s2M92xQ2kEeYbk2Q1yCrY2aXhJ4gs6nrJ?=
- =?us-ascii?Q?H2umynnxATPaYsDOQ92gnusjgAfCoQZPAdPjnLmJ9AYmdyseUNCKahAwakth?=
- =?us-ascii?Q?AQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 21867277-2e7c-4183-a177-08dca537925a
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Jul 2024 01:35:27.7859
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tqewHhNSf8vffkKEuhoidDz1Y3PgJ1xh8HcxmLD564Y7RmuhmYaaKwvyUuqJgdoeCims7KV2D5H5NP0R4Wm8to8GlkI0suxpn6xV/kyZkIw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4653
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 16 Jul 2024 14:13:44 +0300
+Message-Id: <D2QX3UY7MF0A.2GZRRAUVMT1ST@kernel.org>
+Cc: <keyrings@vger.kernel.org>
+Subject: Re: [PATCH 1/6] tpm: consolidate TPM to crypto hash algorithm
+ conversion
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "James Bottomley" <James.Bottomley@HansenPartnership.com>,
+ <linux-integrity@vger.kernel.org>
+X-Mailer: aerc 0.17.0
+References: <20240524130459.21510-1-James.Bottomley@HansenPartnership.com>
+ <20240524130459.21510-2-James.Bottomley@HansenPartnership.com>
+In-Reply-To: <20240524130459.21510-2-James.Bottomley@HansenPartnership.com>
 
-Jason Gunthorpe wrote:
-> On Mon, Jul 15, 2024 at 04:37:01PM -0700, Dan Williams wrote:
-> > > So from a Linux VM perspective we have a PCI device with an IOMMU,
-> > > except that IOMMU flips into IDENTITY if T=0 is used.
-> > > 
-> > > From a driver model and DMA API this is totally nutzo :)
-> > > 
-> > > Being able to flip from trusted/untrusted and keep IOMMU/DMA/etc
-> > > unaffected requires that the vIOMMU can always walk the same IO page
-> > > tables stored in trusted VM memory, regardless if the device sends a
-> > > T=0/1 TLP.
-> > 
-> > "Keep IOMMU/DMA/etc unaffected" is the hard part.
-> 
-> Yes, but that is not just "unaffected" but it is implying that there
-> is state in the VM's iommu layer too. If T=0 goes to a different
-> translation then the DMA API must change behavior while a driver is
-> bound, which is not something we do today.
-> 
-> > Implementations that want something more complicated than that, like
-> > interleave T=0 and T=1 traffic, need to demonstrate how that is possible
-> > given the iommufd maintainer declares it, *checks notes*, "totally
-> > nutzo".
-> 
-> Oh we can make the iommufd side work out, it is the VM's kernel that
-> is going to be trouble :)
-> 
-> Even in the simpler case of no-interleave but the same driver will
-> start with T=0 and change to T=1 is pretty complex:
-> 
->  dma_addr1 = dma_map()   <== Must return a bypass address because T=0
->  goto_t_1()              <== Now dma_addr1 stops being usable
->  dma_addr2 = dma_map()   <== Must return a translated address through the vIOMMU
->  dma_unmap(dma_addr1)    <== Well now you've done it. Your kernel explodes.
-> 
-> Maybe the "violance" is we have to unbind the PCI driver and rebind it
-> to get the goto_t_1() effect..
-> 
-> Changing the underlying behavior of the DMA API "in flight" while a
-> driver is bound seems really dangerous.
+Now I bandwidth to give this the first round.
 
-Agree.
+On Fri May 24, 2024 at 4:04 PM EEST, James Bottomley wrote:
+> linux crypto and the TPM use different numeric algorithm identifiers
+> for hash (and other) functions.  The conversion array for this already
 
-> My point is if we start baking in the assumption that drivers can do
-> things like the above without addressing how the VIOMMU integration
-> works we are going to have a *huge mess* to try and introduce VIOMMU
-> down the road.
-> 
-> I'd be happy if V1 forbade the above entirely.
+Please use exact names i.e. conversion is between enum tpm2_algorithms
+and enum hash_info. Much easier to lookup later on.
 
-Yes, I think the requirement to go through rebind to cross the
-untrusted/trusted boundary gives enough simplification to get started.
+> exists in two separate places.  The new policy sessions code would
+> have to add a third copy, so instead of increasing the duplication,
+> move the definition to a single consolidated place in tpm.h so the
+> policy code can use it as is.
 
-It also occurs to me that complex devices / drivers that really want
-mixed T=0 and T=1 traffic from one PF can ingest the complexity without
-burdening the Linux DMA API and IOMMU layers. Provide 2 assignable VFs
-instead of 1 and do software driver-to-driver communication between
-those trusted and untrusted drivers.
+"the new policy session code" is not an artifact.
+
+Instead, please say what needs the third instance and why. I don't
+consume white paper text.
+
+I'm fine if you just use merging two redundant copies together, with
+no reference to the third copy. In this form this unconditional NAK
+given that I have zero idea what the third copy is and where it is
+located.
+
+>
+> Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+> ---
+>  drivers/char/tpm/tpm2-cmd.c               |  8 ----
+>  include/linux/tpm.h                       | 52 ++++++++++++++++++++++-
+>  security/keys/trusted-keys/trusted_tpm2.c | 20 +--------
+>  3 files changed, 53 insertions(+), 27 deletions(-)
+>
+> diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
+> index 0cdf892ec2a7..f4428e715dd8 100644
+> --- a/drivers/char/tpm/tpm2-cmd.c
+> +++ b/drivers/char/tpm/tpm2-cmd.c
+> @@ -14,14 +14,6 @@
+>  #include "tpm.h"
+>  #include <crypto/hash_info.h>
+> =20
+> -static struct tpm2_hash tpm2_hash_map[] =3D {
+> -	{HASH_ALGO_SHA1, TPM_ALG_SHA1},
+> -	{HASH_ALGO_SHA256, TPM_ALG_SHA256},
+> -	{HASH_ALGO_SHA384, TPM_ALG_SHA384},
+> -	{HASH_ALGO_SHA512, TPM_ALG_SHA512},
+> -	{HASH_ALGO_SM3_256, TPM_ALG_SM3_256},
+> -};
+> -
+>  int tpm2_get_timeouts(struct tpm_chip *chip)
+>  {
+>  	/* Fixed timeouts for TPM2 */
+> diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+> index c17e4efbb2e5..07f532456a0c 100644
+> --- a/include/linux/tpm.h
+> +++ b/include/linux/tpm.h
+> @@ -418,11 +418,61 @@ enum tpm2_session_attributes {
+>  	TPM2_SA_AUDIT			=3D BIT(7),
+>  };
+> =20
+> -struct tpm2_hash {
+> +static const struct {
+>  	unsigned int crypto_id;
+>  	unsigned int tpm_id;
+> +} tpm2_hash_map[] =3D {
+> +	{HASH_ALGO_SHA1, TPM_ALG_SHA1},
+> +	{HASH_ALGO_SHA256, TPM_ALG_SHA256},
+> +	{HASH_ALGO_SHA384, TPM_ALG_SHA384},
+> +	{HASH_ALGO_SHA512, TPM_ALG_SHA512},
+> +	{HASH_ALGO_SM3_256, TPM_ALG_SM3_256},
+>  };
+> =20
+> +/**
+> + * tpm2_crypto_to_alg() - convert a crypto hash to a TPM alg id
+> + *
+> + * @hash: the crypto subsystem view of the hash
+> + *
+> + * Return: TPM algorithm id or -1 if no mapping was found.
+> + */
+> +static inline int tpm2_crypto_to_alg(int hash)
+> +{
+> +	int i;
+> +	int tpm_alg =3D -1;
+> +
+> +	for (i =3D 0; i < ARRAY_SIZE(tpm2_hash_map); i++) {
+> +		if (hash =3D=3D tpm2_hash_map[i].crypto_id) {
+> +			tpm_alg =3D tpm2_hash_map[i].tpm_id;
+> +			break;
+> +		}
+> +	}
+> +
+> +	return tpm_alg;
+> +}
+> +
+> +/**
+> + * tpm2_alg_to_crypto() - convert a TPM alg id to a crypto hash
+> + *
+> + * @hash: the TPM alg id view of the hash
+> + *
+> + * Return: TPM algorithm id or -1 if no mapping was found.
+> + */
+> +static inline int tpm2_alg_to_crypto(int hash)
+> +{
+> +	int i;
+> +	int crypto_hash =3D -1;
+> +
+> +	for (i =3D 0; i < ARRAY_SIZE(tpm2_hash_map); i++) {
+> +		if (hash =3D=3D tpm2_hash_map[i].tpm_id) {
+> +			crypto_hash =3D tpm2_hash_map[i].crypto_id;
+> +			break;
+> +		}
+> +	}
+> +
+> +	return crypto_hash;
+> +}
+> +
+>  int tpm_buf_init(struct tpm_buf *buf, u16 tag, u32 ordinal);
+>  void tpm_buf_reset(struct tpm_buf *buf, u16 tag, u32 ordinal);
+>  int tpm_buf_init_sized(struct tpm_buf *buf);
+> diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/tr=
+usted-keys/trusted_tpm2.c
+> index dfeec06301ce..94ff9ccae66e 100644
+> --- a/security/keys/trusted-keys/trusted_tpm2.c
+> +++ b/security/keys/trusted-keys/trusted_tpm2.c
+> @@ -18,14 +18,6 @@
+> =20
+>  #include "tpm2key.asn1.h"
+> =20
+> -static struct tpm2_hash tpm2_hash_map[] =3D {
+> -	{HASH_ALGO_SHA1, TPM_ALG_SHA1},
+> -	{HASH_ALGO_SHA256, TPM_ALG_SHA256},
+> -	{HASH_ALGO_SHA384, TPM_ALG_SHA384},
+> -	{HASH_ALGO_SHA512, TPM_ALG_SHA512},
+> -	{HASH_ALGO_SM3_256, TPM_ALG_SM3_256},
+> -};
+> -
+>  static u32 tpm2key_oid[] =3D { 2, 23, 133, 10, 1, 5 };
+> =20
+>  static int tpm2_key_encode(struct trusted_key_payload *payload,
+> @@ -231,19 +223,11 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
+>  	off_t offset =3D TPM_HEADER_SIZE;
+>  	struct tpm_buf buf, sized;
+>  	int blob_len =3D 0;
+> -	u32 hash;
+> +	int hash =3D tpm2_crypto_to_alg(options->hash);
+
+Please use reverse christmas tree order.
+
+>  	u32 flags;
+> -	int i;
+>  	int rc;
+> =20
+> -	for (i =3D 0; i < ARRAY_SIZE(tpm2_hash_map); i++) {
+> -		if (options->hash =3D=3D tpm2_hash_map[i].crypto_id) {
+> -			hash =3D tpm2_hash_map[i].tpm_id;
+> -			break;
+> -		}
+> -	}
+> -
+> -	if (i =3D=3D ARRAY_SIZE(tpm2_hash_map))
+> +	if (hash < 0)
+>  		return -EINVAL;
+> =20
+>  	if (!options->keyhandle)
+
+
+BR, Jarkko
 
