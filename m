@@ -1,55 +1,55 @@
-Return-Path: <keyrings+bounces-1798-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1799-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A889934F93
-	for <lists+keyrings@lfdr.de>; Thu, 18 Jul 2024 17:02:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C78934FAE
+	for <lists+keyrings@lfdr.de>; Thu, 18 Jul 2024 17:12:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E88BF1F24C75
-	for <lists+keyrings@lfdr.de>; Thu, 18 Jul 2024 15:02:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B15341F238B5
+	for <lists+keyrings@lfdr.de>; Thu, 18 Jul 2024 15:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B6A144304;
-	Thu, 18 Jul 2024 15:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B01614386E;
+	Thu, 18 Jul 2024 15:11:56 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A114143876;
-	Thu, 18 Jul 2024 15:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F23B3BB30;
+	Thu, 18 Jul 2024 15:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721314902; cv=none; b=byDbBw4vIk9csHHu8Q0m+Jm81vG+HsU+exsdOyx8mWJskaa0k+ZtxLIB6KvhYVc5mR8tVQCoZyEFAPISC9um4hA1iA7RiCxEO1m62bn7g3QLZ+eCoaZ9SH0BpURkyxoMKRTsKcXt+VdCbmxxCsX0zH4EF0ZPrBdbgpjeQXp59UU=
+	t=1721315516; cv=none; b=JfgfNYbf+rZPOaD+ZQi165kbyjn8/JnhIf4yu5tclDAvdQhgjkDvC9li2Kb0/liXXQPSf+OjgwCjHIYCNhaXn/K4N/pVxWvLoYvoonftHrTQA3kdzNpkwC7PfpjkJl+DB9ak/Z8srPLwZ4iNZjP+uyniOT+eDuUn7uc+jL37QFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721314902; c=relaxed/simple;
-	bh=26xRFki/++tCJSlncJH7baiLrj7Y357SkhqjVxLQ3fE=;
+	s=arc-20240116; t=1721315516; c=relaxed/simple;
+	bh=tftujqMhl3/ZpPbxEpSq7XaBUosVPf/UThN/DJ3XRn8=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AxLAN9MJmI/0ZLAyULnjENce116tycXYygSeAs/Sxzdz7Pe9zUXwvQdayjVlzqErRYx6i3ACa2D2+KcJ4ftLoaL1L2BmNksk8n55e4RYrVIF2TlNqKXe0HZ7rFCmsO+41Jjm5add4N65rAr9oVhbJPk274XifArd+QN0cXX5CN4=
+	 MIME-Version:Content-Type; b=ThBWPucy7eBHjqRsyBiG8fS3Z6pezXbjDXXQCGjdbrX6TX6tPKAe6w835pXESXvLWwg7hEyfk2Y8DoIcfxfHR8T/jpE52qgPkn8GOZEQe7Uew+9IweZmqGyD/RKFI48XC/6QvjQEgYAM/8sBTOm3QESj625UknjZi4CehmtOnkE=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WPwtw30Qfz6K9Zt;
-	Thu, 18 Jul 2024 22:59:20 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4WPx7C2kTLz6H7qS;
+	Thu, 18 Jul 2024 23:09:59 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id ABF36140B33;
-	Thu, 18 Jul 2024 23:01:36 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id A84F1140593;
+	Thu, 18 Jul 2024 23:11:50 +0800 (CST)
 Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 18 Jul
- 2024 16:01:36 +0100
-Date: Thu, 18 Jul 2024 16:01:35 +0100
+ 2024 16:11:50 +0100
+Date: Thu, 18 Jul 2024 16:11:49 +0100
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Dan Williams <dan.j.williams@intel.com>
-CC: Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <helgaas@kernel.org>, David
- Howells <dhowells@redhat.com>, Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, David Woodhouse
-	<dwmw2@infradead.org>, James Bottomley
-	<James.Bottomley@hansenpartnership.com>, <linux-pci@vger.kernel.org>,
-	<linux-cxl@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-	<linuxarm@huawei.com>, David Box <david.e.box@intel.com>, "Li, Ming"
+To: Lukas Wunner <lukas@wunner.de>
+CC: Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller"
+	<davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>, "James
+ Bottomley" <James.Bottomley@HansenPartnership.com>,
+	<linux-pci@vger.kernel.org>, <linux-cxl@vger.kernel.org>,
+	<linux-coco@lists.linux.dev>, <keyrings@vger.kernel.org>,
+	<linux-crypto@vger.kernel.org>, <linuxarm@huawei.com>, David Box
+	<david.e.box@intel.com>, Dan Williams <dan.j.williams@intel.com>, "Li, Ming"
 	<ming4.li@intel.com>, Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>, Alistair
  Francis <alistair.francis@wdc.com>, Wilfred Mallawa
 	<wilfred.mallawa@wdc.com>, Damien Le Moal <dlemoal@kernel.org>, "Alexey
@@ -57,14 +57,14 @@ CC: Lukas Wunner <lukas@wunner.de>, Bjorn Helgaas <helgaas@kernel.org>, David
 	Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>, Jason Gunthorpe
 	<jgg@nvidia.com>, Peter Gonda <pgonda@google.com>, Jerome Glisse
 	<jglisse@google.com>, Sean Christopherson <seanjc@google.com>, "Alexander
- Graf" <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>
-Subject: Re: [PATCH v2 10/18] PCI/CMA: Reauthenticate devices on reset and
- resume
-Message-ID: <20240718160135.00000e6b@Huawei.com>
-In-Reply-To: <668f17d4553_6de2294ba@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+ Graf" <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>, Jonathan Corbet
+	<corbet@lwn.net>
+Subject: Re: [PATCH v2 11/18] PCI/CMA: Expose in sysfs whether devices are
+ authenticated
+Message-ID: <20240718161149.00007748@Huawei.com>
+In-Reply-To: <8851c4d4c829dd6608f15244954e3fbe9995908b.1719771133.git.lukas@wunner.de>
 References: <cover.1719771133.git.lukas@wunner.de>
-	<bd850e8257552d47433bdb2e10fa9b0a49659a4e.1719771133.git.lukas@wunner.de>
-	<668f17d4553_6de2294ba@dwillia2-mobl3.amr.corp.intel.com.notmuch>
+	<8851c4d4c829dd6608f15244954e3fbe9995908b.1719771133.git.lukas@wunner.de>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -78,73 +78,82 @@ Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Wed, 10 Jul 2024 16:23:00 -0700
-Dan Williams <dan.j.williams@intel.com> wrote:
+On Sun, 30 Jun 2024 21:46:00 +0200
+Lukas Wunner <lukas@wunner.de> wrote:
 
-> Lukas Wunner wrote:
-> > CMA-SPDM state is lost when a device undergoes a Conventional Reset.
-> > (But not a Function Level Reset, PCIe r6.2 sec 6.6.2.)  A D3cold to D0
-> > transition implies a Conventional Reset (PCIe r6.2 sec 5.8).
-> > 
-> > Thus, reauthenticate devices on resume from D3cold and on recovery from
-> > a Secondary Bus Reset or DPC-induced Hot Reset.
-> > 
-> > The requirement to reauthenticate devices on resume from system sleep
-> > (and in the future reestablish IDE encryption) is the reason why SPDM  
+> The PCI core has just been amended to authenticate CMA-capable devices
+> on enumeration and store the result in an "authenticated" bit in struct
+> pci_dev->spdm_state.
 > 
-> TSM "connect" state also needs to be managed over reset, so stay tuned
-> for some collaboration here.
+> Expose the bit to user space through an eponymous sysfs attribute.
 > 
-> > needs to be in-kernel:  During ->resume_noirq, which is the first phase
-> > after system sleep, the PCI core walks down the hierarchy, puts each
-> > device in D0, restores its config space and invokes the driver's  
-> > ->resume_noirq callback.  The driver is afforded the right to access the  
-> > device already during this phase.  
+> Allow user space to trigger reauthentication (e.g. after it has updated
+> the CMA keyring) by writing to the sysfs attribute.
 > 
-> I agree that CMA should be in kernel, it's not clear that authentication
-> needs to be automatic, and certainly not in a way that a driver can not
-> opt-out of.
+> Implement the attribute in the SPDM library so that other bus types
+> besides PCI may take advantage of it.  They just need to add
+> spdm_attr_group to the attribute groups of their devices and amend the
+> dev_to_spdm_state() helper which retrieves the spdm_state for a given
+> device.
 > 
-> What if a use case cares about resume time latency?  What if a driver
-> knows that authentication is only needed later in the resume flow? Seems
-> presumptious for the core to assume it knows best when authentication
-> needs to happen.
-
-Feels like a policy question - maybe a static key (as Kees suggested for
-the other question).  By all means default to on, but a latency sensitive
-setup might opt out?  Or specific driver opt out might be an option
-if we are allowing a driver managed flow (and the policy allows drivers
-to opt out - we definitely want a policy option that doesn't allow
-drivers to be part of the decision and indeed does what we have here).
-
-Hope someone writes a nice guide to any policy choices that come out of
-this.  Maybe the policy hooks don't belong in a first patch set though
-as this one in particular is a performance optimization.
-
+> The helper may return an ERR_PTR if it couldn't be determined whether
+> SPDM is supported by the device.  The sysfs attribute is visible in that
+> case but returns an error on access.  This prevents downgrade attacks
+> where an attacker disturbs memory allocation or DOE communication
+> in order to create the appearance that SPDM is unsupported.
 > 
-> At a minimum I think pci_cma_reauthenticate() should do something like:
+> Subject to further discussion, a future commit might add a user-defined
+> policy to forbid driver binding to devices which failed authentication,
+> similar to the "authorized" attribute for USB.
 > 
-> /* not previously authenticated skip authentication */
-> if (!spdm_state->authenticated)
-> 	return;
+> Alternatively, authentication success might be signaled to user space
+> through a uevent, whereupon it may bind a (blacklisted) driver.
+> A uevent signaling authentication failure might similarly cause user
+> space to unbind or outright remove the potentially malicious device.
 > 
-> ...so that spdm capable devices can opt-out of automatic reauthentication.
-
-This seems reasonable as only possibility of change is that it can now
-authenticate (maybe the reset was a firmware update...) and if we accepted
-it before then no loss of security in not checking.  Userspace can then poke
-the reauthenticate and reload the driver if relevant (maybe more functionality
-will be enabled.)
-
-
-
-Note the whole always try to authenticate first was outcome of one of the LPC
-BoFs (2 years ago?).
-
-Jonathan
-
-
+> Traffic from devices which failed authentication could also be filtered
+> through ACS I/O Request Blocking Enable (PCIe r6.2 sec 7.7.11.3) or
+> through Link Disable (PCIe r6.2 sec 7.5.3.7).  Unlike an IOMMU, that
+> will not only protect the host, but also prevent malicious peer-to-peer
+> traffic to other devices.
 > 
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+
+One question on a bit of error path cleanup that I can't immediately see
+the reason for.
+
+> diff --git a/drivers/pci/doe.c b/drivers/pci/doe.c
+> index 34bb8f232799..0f94c4ed719e 100644
+> --- a/drivers/pci/doe.c
+> +++ b/drivers/pci/doe.c
+> @@ -694,6 +694,7 @@ void pci_doe_init(struct pci_dev *pdev)
+>  		if (IS_ERR(doe_mb)) {
+>  			pci_err(pdev, "[%x] failed to create mailbox: %ld\n",
+>  				offset, PTR_ERR(doe_mb));
+> +			pci_cma_disable(pdev);
+
+Why?  pci_cma_init() is currently called after pci_doe_init() so I don't
+see why we need to disable here.  If we want a default of disabled, do that
+before calling pci_doe_init() rather than in the error paths
+
+1) Set default to disabled.
+2) pci_doe_init()
+3) pci_cma_init() - now not disabled.
+
+
+>  			continue;
+>  		}
+>  
+> @@ -702,6 +703,7 @@ void pci_doe_init(struct pci_dev *pdev)
+>  			pci_err(pdev, "[%x] failed to insert mailbox: %d\n",
+>  				offset, rc);
+>  			pci_doe_destroy_mb(doe_mb);
+> +			pci_cma_disable(pdev);
+>  		}
+>  	}
+>  }
+
+
 
 
 
