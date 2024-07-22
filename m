@@ -1,199 +1,181 @@
-Return-Path: <keyrings+bounces-1812-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1813-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B00938ED1
-	for <lists+keyrings@lfdr.de>; Mon, 22 Jul 2024 14:06:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C5A938F01
+	for <lists+keyrings@lfdr.de>; Mon, 22 Jul 2024 14:20:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 385E61C20F8A
-	for <lists+keyrings@lfdr.de>; Mon, 22 Jul 2024 12:06:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 610D81F217D1
+	for <lists+keyrings@lfdr.de>; Mon, 22 Jul 2024 12:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448DD16D336;
-	Mon, 22 Jul 2024 12:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BF516C856;
+	Mon, 22 Jul 2024 12:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="HeNHSYs9"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="kw/PURPT"
 X-Original-To: keyrings@vger.kernel.org
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2079.outbound.protection.outlook.com [40.107.243.79])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF9817C69;
-	Mon, 22 Jul 2024 12:06:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.79
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721650011; cv=fail; b=YjSgn1rxXhT35t7hXOQvfkWEP17J2kDhkg4UrM5xTZ9hDpXsEfBNz6PKxobeNpwhDt+gdP+q+3oNwaG2xmMUI3jDn2Mp3MiJNRucfAO17DC39tpadLc01zMPcNdNuDzZF7mR84bCfQ5O9ZrFCyTSVAF4vDQvFGwGk4ZWbON06Ds=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721650011; c=relaxed/simple;
-	bh=rLodP0pTpBfFtGPAOzmer0turGtxJOO6NjJ/fqFvvOE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=HP9slapVxjRM3MDqeKn3H9RU4PxLrmOksiwwp7D146OjPy7t49d6VmYFOMDtesrX9NGCEc4+wcPci8pwi4SdWbHZsc7/i3gmJoHjH841x4QiR9iDLga968VHaLsSVMrGofoXJWGZN8va+y9PDxWjohSxPrJ5Lmauw+gESiwByCI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=HeNHSYs9; arc=fail smtp.client-ip=40.107.243.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=S9yS8GkIl1qgO9e9Ooi4o24ky7/I2SF0f408uKnHY3RFBYuKnW/yVtn+0MpEZJEWCoY2eELzOHPlrfejyvjnxw6fuFrVO5TeTq7x8Yt4ZZwlUvPttO67z+Mv197sb53p8tqI88m9bcCJ/pmJs+l513YWCorLITqMXG3qkicy7Q8oS2RJorg1I18h39dhiDKs7FLJD5+ra9wNOJb+I//mBRMOmJIAX0FTamt4H84AyUM8Z6SUHc3oUVB1i9mseV1du1/tmn1Y4xrBshX91Jgdun9W67iSqyDHGr7AxEIU2mrMU4T+nFhAfnXhVYQsFCkknmZJ0HzP1O3zxxi+i+5ODA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rLodP0pTpBfFtGPAOzmer0turGtxJOO6NjJ/fqFvvOE=;
- b=GRfvYpMtwgu5LoINffhisHdG+lZ5EUo2bY6IPMz7otBlXe+EJPNcchTOrKDBSB/8XvU7d9IPe20Ghs0MhLXl+hHtMHbQSi95IBC37hmREABFOByFBE8Ij/3yGu6H24Cvm8bCXJWbk1kEbGPNmWs2g6RAbLYWzanX7Q0y/cgmcIojQ8D71xedhkZT1cqUUK1UJxBaJYEzIDN62vhFqINN8WQfcMq5lAs2RB43Bj7Ae1y2OlXe4hW6EdG5NlKPq4k5088IOpKUr0nzIuIO3pQAQ45c2ZoM0AhviS/9Yjqjo9OciO1+ZMr+K4Scn0o35YF2raiE6tW+G8AFVlN7N5OZ8w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rLodP0pTpBfFtGPAOzmer0turGtxJOO6NjJ/fqFvvOE=;
- b=HeNHSYs9+mD+rCXAwr7GbW9KuhCB30SJLqFmvEgsi8b6Wi3diDPcV3Mnf6a4miAC9tuytHnMndgRHxyF5/yFblmYqzOqG6hk9rHkEoBOEfVvXKGqBVBuvtpaDQl1z09lUuthSOlF8PUbhQz0UjFDvJEzhk/MNgJGYN1P3r2yjUOz/9iwrpQMV9z1raO+tk6oNc6t2gl4jf/7xd5dXSpZGDN9ZSpmxad8lXZdIJF5HtdK1ZGdEMMDn8j6jh3VOAHHEJGw1etZMoaQUKhQu8x6AsCAYs8PcviA2ARIPXTNgpxh7/x2qacy2cl0aQtmOV7P7l60JkYfu2zgGEBbcdImlQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com (2603:10b6:5:1c7::26)
- by LV3PR12MB9165.namprd12.prod.outlook.com (2603:10b6:408:19f::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.18; Mon, 22 Jul
- 2024 12:06:45 +0000
-Received: from DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::c296:774b:a5fc:965e]) by DM6PR12MB3849.namprd12.prod.outlook.com
- ([fe80::c296:774b:a5fc:965e%4]) with mapi id 15.20.7784.016; Mon, 22 Jul 2024
- 12:06:44 +0000
-Date: Mon, 22 Jul 2024 09:06:42 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Dan Williams <dan.j.williams@intel.com>, Kees Cook <kees@kernel.org>,
-	Lukas Wunner <lukas@wunner.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Woodhouse <dwmw2@infradead.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linuxarm@huawei.com,
-	David Box <david.e.box@intel.com>, "Li, Ming" <ming4.li@intel.com>,
-	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Dhaval Giani <dhaval.giani@amd.com>,
-	Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
-	Peter Gonda <pgonda@google.com>, Jerome Glisse <jglisse@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>,
-	Jann Horn <jannh@google.com>
-Subject: Re: [PATCH v2 08/18] PCI/CMA: Authenticate devices on enumeration
-Message-ID: <20240722120642.GI1482543@nvidia.com>
-References: <ZpOPgcXU6eNqEB7M@wunner.de>
- <202407151005.15C1D4C5E8@keescook>
- <20240715181252.GU1482543@nvidia.com>
- <66958850db394_8f74d2942b@dwillia2-xfh.jf.intel.com.notmuch>
- <20240715220206.GV1482543@nvidia.com>
- <6695a7b4a1c14_1bc83294c1@dwillia2-xfh.jf.intel.com.notmuch>
- <20240715232149.GY1482543@nvidia.com>
- <6695b29d204e4_8f74d294f8@dwillia2-xfh.jf.intel.com.notmuch>
- <20240715235510.GA1482543@nvidia.com>
- <b297cfe0-c54f-4205-b102-ba53ec40344b@amd.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b297cfe0-c54f-4205-b102-ba53ec40344b@amd.com>
-X-ClientProxiedBy: BL1PR13CA0010.namprd13.prod.outlook.com
- (2603:10b6:208:256::15) To DM6PR12MB3849.namprd12.prod.outlook.com
- (2603:10b6:5:1c7::26)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9532914AD3F;
+	Mon, 22 Jul 2024 12:20:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721650811; cv=none; b=aCWeWLHJW9/Qz+KOGsqY67Sj5N94wRgnxJyICdI8ohGvfOSeZxqO13iKfKXfTCmz7QnnGyYE+vb1M8Ir+ewgMFlWYVCXRaCYoEr7RI8UGURnp9EvNuyeEKtSIcKcUi3aSFQIvo/8YWnClAfU4bIHuaWWd3Uiw/J6C1UrqSMDAvU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721650811; c=relaxed/simple;
+	bh=m5DugPP1DC1LZ2XEUi0/l+kGRbWjHA0M/x0whe3bE/8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=p3xN9SaBP/lki8ebL9D2YibjDy5Ufhzbm7wyiQ1uZNGtCiFbsLsrstwYN1+52wX279Jgz9gslSNBnmR2Dc4v1OGo0RnPqUbW4Lva3vxSoweZEAmEC+yvSaeNdj6nmDGoMpD/lJsc/Z1Xbg2d4E5wPwTHuxv0sE2ADMmImiTUWz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=kw/PURPT; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46MBQwpt025216;
+	Mon, 22 Jul 2024 12:19:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:subject:to:cc:references:from:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+	uFvmW9DpP7Xjc69hppvUAoyualI8ZPVCYAqWtlAoRtw=; b=kw/PURPTMFS/jbnG
+	6ujRl0GRIUB9R02YAg/qGE4OY4/wwia6Wh7DQBOVkkj/VQ1wPLoJ94qXo0e8PPsU
+	F4PRyXAntyh9A+yBix/IouGlEpgjfKFkwmlWUhd8o4Kssbblx1zjzOoCLFeLBVlg
+	2uTorxnT93EVlnvYsuMJjPqbVkLvMzle8P2GyD2EseIb8r8wfLpYBEm+4PUO7sQS
+	XUzDvLpDX2qWKXKnt8cC+VZuYjnVHZJoFgkZoblEeZ/bFI4rrWwiJfQGYCYJOMjl
+	T5Kyy8vKlawMuP9KrgF3zNXw4Bo4Ig4uYbyZIG3r7T6I2rzovS4IXjLJk9eEP5xS
+	6hIK7g==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40gtw42pb4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Jul 2024 12:19:46 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 46MCJkWU003879;
+	Mon, 22 Jul 2024 12:19:46 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 40gtw42pb2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Jul 2024 12:19:46 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 46M9FqPP005776;
+	Mon, 22 Jul 2024 12:19:45 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 40gy2p53rf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 22 Jul 2024 12:19:45 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 46MCJhSk9372344
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 22 Jul 2024 12:19:45 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 240CB58065;
+	Mon, 22 Jul 2024 12:19:43 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2710958043;
+	Mon, 22 Jul 2024 12:19:42 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 22 Jul 2024 12:19:42 +0000 (GMT)
+Message-ID: <6eee0c55-40cd-4e7b-8819-1a4c9596062a@linux.ibm.com>
+Date: Mon, 22 Jul 2024 08:19:41 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 02/10] crypto: Add support for ECDSA signature
+ verification
+To: Lukas Wunner <lukas@wunner.de>
+Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        davem@davemloft.net, herbert@gondor.apana.org.au, dhowells@redhat.com,
+        zohar@linux.ibm.com, jarkko@kernel.org,
+        linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, patrick@puiterwijk.org
+References: <20210316210740.1592994-1-stefanb@linux.ibm.com>
+ <20210316210740.1592994-3-stefanb@linux.ibm.com> <ZpfuqeSVC47jqme2@wunner.de>
+Content-Language: en-US
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <ZpfuqeSVC47jqme2@wunner.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: JxPgH5XzRCm_YZnQxQxY_MsvRm-z8XMR
+X-Proofpoint-ORIG-GUID: xAotsV-GmwKR1gYlGG3n10-BunaDlMsd
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6PR12MB3849:EE_|LV3PR12MB9165:EE_
-X-MS-Office365-Filtering-Correlation-Id: f2b1def3-f4e5-441f-56f7-08dcaa46c0f4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?EGg1RNugkS5imetrzJ1ffiiIW/7vVZsxi+TufAod3AGLz05Iro/HValPRGi9?=
- =?us-ascii?Q?1y+y15JXXupCEVaGY/mY/SkgQSsZkXx4hb8fRkl80IghfHtr5UhWacLkt0Ey?=
- =?us-ascii?Q?yOLnnV/+qCc0ht6rkwWcMvoym4VJi1Lrog/TZc7Z5ikW/1Nnl+I9T/kwmiJw?=
- =?us-ascii?Q?5R7oZGVm++eKUL6DFFkf5XVc8XPU7iVytoQ8EahLETErAsgGPPMyOmkp2WHR?=
- =?us-ascii?Q?CrRofHuTYOMNQwj14DSyXedMHbP6b0qIYXmDsVuW3Hh1+KrM8sP55jwI/Qa4?=
- =?us-ascii?Q?8Vecu+jl+zWhxMLH3w3k+OWYLQXto6XrBDnB4tfQMTD7XcjCIOvZQLYMxiR5?=
- =?us-ascii?Q?kXHQvZ5bsdDKnNrHVC2LlPvTRJEJkWBlWDPKelCHLunU5tY8aOTq3ge0c7Gc?=
- =?us-ascii?Q?Mzbuii9bbm7SADkuiyNKiX9+iXoIqFyusVLz4A3QuuFpGUAsgFWgz8XaGVHk?=
- =?us-ascii?Q?VEJsPSOZn4WZ0m6fTC8m57qfrEgRB+Mi7YYXeZNv73pXnHw9oK555PKvQqL9?=
- =?us-ascii?Q?eJvyzs6ILMZloik2V2UNTH95T8B2BwVjFqrlZvpZNSfOvJIOEqHgQglE3Z8M?=
- =?us-ascii?Q?EQA95/4DS98PAIweFJmCmlRI5h3aWHXGE4sg3diTF3AEqH/K25S/rvH3eKJd?=
- =?us-ascii?Q?pAW7zOwIwdynIBz4UYxUi45oFCZTbX1J9KMrJSgxIJPiG9UMBCZe8uKTNBJp?=
- =?us-ascii?Q?HC9CNg6jkGjH2FFHPkp6tdoIRNk3YAp8R+AyMzSM8cgiwZfa/L8zI+IQPquf?=
- =?us-ascii?Q?GU9TqINJskM5kebqyT02AIfHwxCPQgssn5etCDBnF0AqPfbujEpmi1HYul5z?=
- =?us-ascii?Q?A4xCKvsQ7qiFrqb0yVkXSI3I+jGOkK6eN+FUZQMzBYjnXuG+u85QRCSjpftj?=
- =?us-ascii?Q?daIAusWTBdK5EZmjKhkKUOaNXaQ7Wrmmjx6RiR8ylu9PJ+djLibyynPKdFOe?=
- =?us-ascii?Q?eeCGsIUiAV2nkPAztwzvOdsAKBMojJN3Vkw9+gBK4hEawgoJK9/J/BOyXwpo?=
- =?us-ascii?Q?3LJ9sqWO/71pZkhmx7ZxbtkmUMqcenjzdPhl31mkDgp/H0vUz9iwb8k1s60t?=
- =?us-ascii?Q?o25oEBQ3uQOb4EFkJylRxBg4p9PqRXbGdXJWU92DPZzKkJBl3dv3A/21UQCT?=
- =?us-ascii?Q?eRBmWEwh9WZKR+65a5KQd2t9Q1BZbE9HtNWACzcasw0sgBoob9ZJdDD+jKYt?=
- =?us-ascii?Q?lXb/I6n4cOjPkTPj9hRzbfcLwFjqtUFZWIPp1yAXTrhqVVExbiyiQV2Dj6xS?=
- =?us-ascii?Q?U1h2VQnEih4MLrYKuzuMNpXjXMt7QNaOj/zOCLzbn4bpFJ6wLpvbEadBwPuc?=
- =?us-ascii?Q?Birdo0ld6oA4e/ICp7nskWusRSpmY8NDxHv7l7bGVnzeSg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB3849.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?DLf8/bUENy/sbtN4MgMbwEnh3U2Ct9jkRy449wkZMQKmi2ef+SwZiTrOI/kZ?=
- =?us-ascii?Q?a8rrPhup0zOC61X6JE3duDl0NdjgWnd2LTb3WF3DjejpfH9lo1X/LXvmK1Na?=
- =?us-ascii?Q?ORev9DZkg5iAewFSIAuB8D0aZ0/6pxr+/MwJhYIgz4YZLFzZ+x1RfHrM+3fr?=
- =?us-ascii?Q?P1jW//tb4F6pKjA3n/PaTU3MTfBQROvGxmLYfWAY9o6SRPG1+xSbeHmZb9WA?=
- =?us-ascii?Q?6yz8/BzYE/31bajXdw5vKQkqIjdPUgdPe5m/GDUhzRID/1YXKYuXPoGjyxzc?=
- =?us-ascii?Q?1BDstgPWYyi+j2WNueXSZyS/iBTTCMX8PJ3ogYqCHEoxwrr2VTNBTmZ9JUja?=
- =?us-ascii?Q?UNLG/Bh7JW/XIS4S1tfL1QAlAVH38fKbEiOGLcBNvHn/i/ol3Y4YvXzTO1cy?=
- =?us-ascii?Q?eFDpu6QnIDSYwQhjkC5PYvB/JUWFtBmLVsCqbbN3pXAkwiJN6eKWHOx1gcak?=
- =?us-ascii?Q?cotKlL9Ofazlr3+KUmLGdeev1YfyZRg9ocYCADmyxta0q5xktXjznhOMK3pU?=
- =?us-ascii?Q?gYHMOgYqFvrDUYq6esiY50UbEG20D9DUOZxwLMhJfBu7k+2Icpuu95pQIzBw?=
- =?us-ascii?Q?x8Btby1ywl2a7cuqSQvivaV7IBafg5prEeA4yqbB+j0ZswEp33ZIbxGiuJ1q?=
- =?us-ascii?Q?Wy648owLgz9wIUZ2yDz4h64Dczj1NZvh7P+PmsDfQYUHrtomvHe/0QXAfF8i?=
- =?us-ascii?Q?uAwSgKHxT9cvcylMG5VZe/S9ZOvucYpE/lz2fAbLEiwfErf8Hebl6AKG2iHa?=
- =?us-ascii?Q?vsyFfsf+QcQkti2SrOofVzzVcLE0CpBpVjkenzxaXs40Bh8IHfd7qzMd80EQ?=
- =?us-ascii?Q?cynkr3OOW/7HWwY9ne55gj5a5X4tjy4cTUJNRpfIgrV6hkz1wAm8IJAoUXJD?=
- =?us-ascii?Q?xAb8IYjAnN2O4X8nqlPU8LBbE189hm5cKkYnD7UjCIlASpTU+dkD0RvysLgo?=
- =?us-ascii?Q?7nEVnytEqmtfr6jeoMXmDub14uSPgro1mtiJPIVZlWdOstSqzxQTxDcYq5AF?=
- =?us-ascii?Q?SV44YeJtOzKoSIqJHeGV6lSAmZA8RXpK+ujWH3zYOulvEc4nI+1ZlfrAEftg?=
- =?us-ascii?Q?T1DbH1VNYOsjQn+VSkqJWuMkeSs88Hf8BI1DaitjRR2ZnykS7oMZuC9kYsic?=
- =?us-ascii?Q?8UdOWyhiOQICOyT0SU5A+nzomkpV20lnNA9y6dIotsR4tVpG6SCiRuJrs1SA?=
- =?us-ascii?Q?X2UsN4LEP//sYJ/4QOLKqiuEbufMTk9tC0zkgP+MZx6Ckp5vosLvEMLZVTyJ?=
- =?us-ascii?Q?NuGGPEqgJUy0umZv5oywV5oklQe07ASRB5xUdR1478csOz1agFLJsQ2drrKO?=
- =?us-ascii?Q?fGdPVZiQdchSrVqOCaH5DYERrGw9wiNqnoiWjMDfQDSSaO71nyFvkAtQdToE?=
- =?us-ascii?Q?a3HjWajOqVLO8YZMvdXj+pknDNci8285IsaZAmJuDkAyVOzdKS5kpU24H9s/?=
- =?us-ascii?Q?1jn9ohX3Q7PKDAFuhM7d5btukbKXXnkq5tR122Ny1+3jssltYLU74qdytqaw?=
- =?us-ascii?Q?10jgAgwCLRR1fkjjTXvFojI7xVDSwbD7X4VWI3VitpBzTx91NuO54vABeE1L?=
- =?us-ascii?Q?Y6TlhVDkYO4H8Kpplqg=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2b1def3-f4e5-441f-56f7-08dcaa46c0f4
-X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB3849.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2024 12:06:44.3523
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jiehYmmUHc6Iv0TcVGw7+DKtegYKYOH55Qg2tnJGK37awbUaPXNpZ4tEcvP1ML0/
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9165
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-07-22_08,2024-07-22_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
+ phishscore=0 malwarescore=0 spamscore=0 priorityscore=1501 mlxlogscore=999
+ impostorscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
+ definitions=main-2407220090
 
-On Mon, Jul 22, 2024 at 08:19:23PM +1000, Alexey Kardashevskiy wrote:
 
-> If there is vIOMMU, then the driver in the VM can decide whether it wants
-> private or shared memory for DMA, pass that new flag to dma_map() and 1)
-> have DMA memory allocated from the private pool (== no page state changes)
-> and 2) have C-bit set in the vIOMMU page table (which is in the VM memory).
 
-Not all HW supports a flow like that.
+On 7/17/24 12:17, Lukas Wunner wrote:
+> Hi Stefan,
+> 
+> On Tue, Mar 16, 2021 at 05:07:32PM -0400, Stefan Berger wrote:
+>> +/*
+>> + * Get the r and s components of a signature from the X509 certificate.
+>> + */
+>> +static int ecdsa_get_signature_rs(u64 *dest, size_t hdrlen, unsigned char tag,
+>> +				  const void *value, size_t vlen, unsigned int ndigits)
+>> +{
+>> +	size_t keylen = ndigits * sizeof(u64);
+>> +	ssize_t diff = vlen - keylen;
+>> +	const char *d = value;
+>> +	u8 rs[ECC_MAX_BYTES];
+>> +
+>> +	if (!value || !vlen)
+>> +		return -EINVAL;
+>> +
+>> +	/* diff = 0: 'value' has exacly the right size
+>> +	 * diff > 0: 'value' has too many bytes; one leading zero is allowed that
+>> +	 *           makes the value a positive integer; error on more
+>> +	 * diff < 0: 'value' is missing leading zeros, which we add
+>> +	 */
+>> +	if (diff > 0) {
+>> +		/* skip over leading zeros that make 'value' a positive int */
+>> +		if (*d == 0) {
+>> +			vlen -= 1;
+>> +			diff--;
+>> +			d++;
+>> +		}
+>> +		if (diff)
+>> +			return -EINVAL;
+>> +	}
+>> +	if (-diff >= keylen)
+>> +		return -EINVAL;
+> 
+> I'm in the process of creating a crypto_template for decoding an x962
+> signature as requested by Herbert:
+> 
+> https://lore.kernel.org/all/ZoHXyGwRzVvYkcTP@gondor.apana.org.au/
+> 
+> I intend to move the above code to the template and to do so I'm
+> trying to understand what it's doing.
+> 
+> There's an oddity in the above-quoted function.  The check ...
+> 
+> +	if (-diff >= keylen)
+> +		return -EINVAL;
+> 
+> ... seems superfluous. diff is assigned the following value at the
+> top of the function:
+> 
+> +	ssize_t diff = vlen - keylen;
+> 
+> This means that:  -diff == keylen - vlen.
+> 
+> Now, if vlen is zero, -diff would equal keylen and then the
+> "-diff >= keylen" check would be true.  However at the top of
+> the function, there's already a !vlen check.  No need to check
+> the same thing again!
 
-> My V1 says "all IOVA below X are private and above - shared" (which is a hw
-> knob in absence of vIOMMU) and I set the X to all '1's just to mark it all
-> private.
+You're right, this check is not necessary.
 
-Is that portable to other implementations?
-
-Jason
+    Stefan
 
