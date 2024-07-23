@@ -1,1206 +1,226 @@
-Return-Path: <keyrings+bounces-1815-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1816-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 818B29396DD
-	for <lists+keyrings@lfdr.de>; Tue, 23 Jul 2024 01:20:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11FCD9398DD
+	for <lists+keyrings@lfdr.de>; Tue, 23 Jul 2024 06:26:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F28B1C21890
-	for <lists+keyrings@lfdr.de>; Mon, 22 Jul 2024 23:20:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C46BB21A41
+	for <lists+keyrings@lfdr.de>; Tue, 23 Jul 2024 04:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85B9849645;
-	Mon, 22 Jul 2024 23:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C1313BAD5;
+	Tue, 23 Jul 2024 04:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IGj0uGcE"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="PxYCqLOu"
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2054.outbound.protection.outlook.com [40.107.93.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CD63CF74
-	for <keyrings@vger.kernel.org>; Mon, 22 Jul 2024 23:20:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721690448; cv=none; b=XBOhgCkDBHChNGR/BRmEuV79BPJRGaxBCpPwr1cW/V47zcSugIzBYY5DDPqqTMMLnQW/xhwyJmCG8od7k/hPbZUlGAeHjcqe2NWFmUNl86EXWhJfvFQ+JnRGY6oi0hjT952/67LQc+26ZuMCYSqiP9ma4y/6fUz7CS+D92UnfXA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721690448; c=relaxed/simple;
-	bh=8hI9lMbi+UjmjXCWHkVzDLluc5krJzYPJfazR5yT51M=;
-	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=OBUBk86zcP/ke7/y7cVqInnroWZ/CAHITw2ZWl397hGyofs7BnQg7JD8hJSXvkfgrFwbv3AxRyT1OeSR+rI0GpWZsa7yfySvjpqn6Wx+qvpniEDYOsqsJIlUQrIbOv8EeGzFvY/QSOB82UtKzX42wgd444QAybQBwRLnbCdzafc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IGj0uGcE; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721690444;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=E/sVu4ReP0qZaeipwhOkCe2X7CHcHmPX/Of9Aa8Ry64=;
-	b=IGj0uGcE9/otyiCxGPP6F4URXFLeVGQO7/On1+hk1qlTdSiRJ+IeqmtQZ3izQNsKb1pG6K
-	4uhvoJdq1Urhlxdq+JQ9/0yRNZNHf/PDKkl1d5wcSrF+j7CHFf6SznhsORmFXx0T5my9V3
-	g7llfVfGRpo4LjXhZikDGvmBHX+2+Zc=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-346-LeBt59QaPGOIVV85WaAegQ-1; Mon,
- 22 Jul 2024 19:20:39 -0400
-X-MC-Unique: LeBt59QaPGOIVV85WaAegQ-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7110C1955F28;
-	Mon, 22 Jul 2024 23:20:38 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.216])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B4CD51955D4A;
-	Mon, 22 Jul 2024 23:20:36 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-To: keyrings@vger.kernel.org
-cc: dhowells@redhat.com, Jarkko Sakkinen <jarkko@kernel.org>,
-    linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] keys: Add tracepoints for the keyrings facility
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1490161FE1;
+	Tue, 23 Jul 2024 04:26:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721708802; cv=fail; b=tfYU4jJjubmXlDKmIWGHjD5rLwiU5cvVbCGFBvTG47I366KDAW+BfLoIxBYnlrXDY82DNYNi7N6JEUwU9l8jIoRIFWXz9P908boaQVvOfVmE9z35b6klRDII3mY4jpnKhPtce+0ebodCYwbBmpc0vZebso4XvHPgxILO0DcTUEQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721708802; c=relaxed/simple;
+	bh=e61On6m6dF/5KiRdTyXF3Ld+xwJme8LARgHlozjUUz8=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=rIlYaHrkdKJu0YTO8z9Bmoh9+3lQghXou7I94yaFzun9Uy1OHZ1/O/1XSQ1gYzk0GA0ylWYYn9kH5SSyxP2uOPBbPxdrgYvmElcEx/9NdeOKmv4Qkyj89ByuQCfXZ53TkRBjnv7zGCSp+1XbHl593mkyEWR/7gYL85GgPEncU6Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=PxYCqLOu; arc=fail smtp.client-ip=40.107.93.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kl/yPgMkMBVq3TTWE2iTTy2X6V3DoeicWOZxcQ68PK6Ta+2sa9EsKMKswbNpjDhLEyRE1zCmflaVDfQxXs+RCp1KHK/tpjXyFDR5hE0NRLSLjLemOz2RKoqE7JTF5jXi16ig6h0fb1Dz7U42tjnPoCRVGqxtOEoNTxRQSL9rLDPC8XtPRMHkqXtgy3qT/tOfEbaVsXE9rczwoBhWQb/01KuOQ7c2ryY0Ka9zbwwYlKRtWBJrfFiDtJAPrGTFOLXSHNxfL5iYtI4mHvGy90tikUEb5Nu9iQtFdB0sL+AfRMC5r1t7EVZ2GFZ2i1AT3cm2eDUd9ADaHqzcyZhr1teYPQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8TGROUxPvSJkYfyB0Pn+qgfE4jGUky3H4j54Ymi6mCI=;
+ b=QLxn7o3fJtHA7UBmTaeORix/BhZ56AmjWLSyRVcpR7oF+x12Xs3jQdYs6JuqAaNN+dvUje5KoWCQpgsCDYDMXaCi+IK6EdqcO2lOnkJAD0AYAj9Bk5v4JZspAtat8rFsGoEnKYZhbCRq63B00Dx+97ibRjkSxmNlNUlsYFz3dt3kjeo3N3VBUXpl2lzAfGnVmKq6ZQgB7hb46NbMwiqSNztylA8WE0lzhcv8uCM2jEMByac/tUaipQkNK+rbVO4ShwWf3ycGs/nYrEQwmL7DjPFnrug00jFnEq88KZbFFNmwJRld/p0tmiy0w/dvJ19uenDorlNtQDa7bj7xlBVAaw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8TGROUxPvSJkYfyB0Pn+qgfE4jGUky3H4j54Ymi6mCI=;
+ b=PxYCqLOuwlAhpZc3jVHfsMAQoobizIjNbql+haQlhqoyGPJo4LvWO8Twi1nQFt2ZgMoAoUY5/Rn9Vg4fO9UuRyo4Wkp0HjiKYalgg87Zx1OHcIYK2d9V0GUNL0YILQG1Lcw1w40mSLP0MOQha2NI2vrGgo4+kPXgq02REB5olns=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by DS0PR12MB8576.namprd12.prod.outlook.com (2603:10b6:8:165::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.16; Tue, 23 Jul
+ 2024 04:26:38 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.7762.032; Tue, 23 Jul 2024
+ 04:26:37 +0000
+Message-ID: <de1ca8d1-b876-4b0f-9151-9303317b4d2b@amd.com>
+Date: Tue, 23 Jul 2024 14:26:23 +1000
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v2 08/18] PCI/CMA: Authenticate devices on enumeration
+Content-Language: en-US
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, Kees Cook <kees@kernel.org>,
+ Lukas Wunner <lukas@wunner.de>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>,
+ David Woodhouse <dwmw2@infradead.org>,
+ James Bottomley <James.Bottomley@hansenpartnership.com>,
+ linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
+ linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linuxarm@huawei.com,
+ David Box <david.e.box@intel.com>, "Li, Ming" <ming4.li@intel.com>,
+ Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+ Damien Le Moal <dlemoal@kernel.org>, Dhaval Giani <dhaval.giani@amd.com>,
+ Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
+ Peter Gonda <pgonda@google.com>, Jerome Glisse <jglisse@google.com>,
+ Sean Christopherson <seanjc@google.com>, Alexander Graf <graf@amazon.com>,
+ Samuel Ortiz <sameo@rivosinc.com>, Jann Horn <jannh@google.com>
+References: <ZpOPgcXU6eNqEB7M@wunner.de> <202407151005.15C1D4C5E8@keescook>
+ <20240715181252.GU1482543@nvidia.com>
+ <66958850db394_8f74d2942b@dwillia2-xfh.jf.intel.com.notmuch>
+ <20240715220206.GV1482543@nvidia.com>
+ <6695a7b4a1c14_1bc83294c1@dwillia2-xfh.jf.intel.com.notmuch>
+ <20240715232149.GY1482543@nvidia.com>
+ <6695b29d204e4_8f74d294f8@dwillia2-xfh.jf.intel.com.notmuch>
+ <20240715235510.GA1482543@nvidia.com>
+ <b297cfe0-c54f-4205-b102-ba53ec40344b@amd.com>
+ <20240722120642.GI1482543@nvidia.com>
+From: Alexey Kardashevskiy <aik@amd.com>
+In-Reply-To: <20240722120642.GI1482543@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TY2PR01CA0002.jpnprd01.prod.outlook.com
+ (2603:1096:404:a::14) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2014450.1721690435.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 23 Jul 2024 00:20:35 +0100
-Message-ID: <2014451.1721690435@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|DS0PR12MB8576:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3c065df3-2abb-42c2-6bc3-08dcaacfa47d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?RC9TaVFzcmdnOU5GUFIwSXQ5M3p0NkljUXVJRzd6S0NyalhyTzVCaityK09U?=
+ =?utf-8?B?L0dxWnh1N0Rodm9IZGIxWWhKQThvMXBOT29uajE0SjVkRU1uQnd4RWlkYnpX?=
+ =?utf-8?B?WXF6bCtrZTdDc3d2VDVqZGp0UHVuS1FWY2hQQ0dZVElldTZRbXEvMHBudGor?=
+ =?utf-8?B?QUE5a0M5bHRZTkR2MEp4eWp0UEk5WFNnUVB6SHQyYkFKOEFaaG5wQzEyNG5n?=
+ =?utf-8?B?Z1ZONTVKWXZqVXJjcE5zZVVweWYvcGVRcVFWTWFsMFpSZW9NaXVDMElkK3Vh?=
+ =?utf-8?B?dlp2aXRPK3VsOUVSTG96OHpJc3R2TnZXQ1ZLQzV3bVF6OUhaTW9iWFUvajFC?=
+ =?utf-8?B?eEF4RnZxQUE1VEhNaTJRcDdMMmMrSTNSM0RLR3RYTnlBVGtFcWNmRyt0MGV5?=
+ =?utf-8?B?Q1pKMjBEZzMxeDI5VVBKY09xdnpGYmN2azJVWVdrVEgyWERiYm5LQjJyMks4?=
+ =?utf-8?B?YW9kNUdhZkZTMnVWb0N4Y3c2c25IMGRQVG1lNVpmM3JpOElVenFzMDBOQW8v?=
+ =?utf-8?B?dHZ6b1JDK3pHRWpHakxrbTIzR3F6b0xpeldJY05NQzBSNkE2MkdINENiTFZI?=
+ =?utf-8?B?ODNFbDNBVG96SEVaRWFXV1lucFpsYnlGV0NoRUpXY2ZVbURSV21zdVhxN1Ew?=
+ =?utf-8?B?QnAwUW50ay84UGUrSjV4ZDE0M0tFaGxLc0VjSWs2ZllrTXhzQTM0LzVrczZJ?=
+ =?utf-8?B?VUloeGJtQUlkV0hsUlZzU0F5N3BhUFZockxzSzFSQjlXbXRNekhhekt0blJp?=
+ =?utf-8?B?NWd0WUw1dkpjNS9zNmcxTHNhUW9NMVAzd1V0V25qenNBZy8yWlZqbHByZ1Rw?=
+ =?utf-8?B?RGQwNVlhZ1gxNEpNbDRDbm1NMExHd05pSHZXWWR4cGlJYzdvcGRoQTFZN1JX?=
+ =?utf-8?B?VmRoNlhNMmpPY0pZektmZ0ZOZjBPZ0JyMUQwOVBiZW5EUW5SclZTbzZhQjFL?=
+ =?utf-8?B?SVhIcFZzalpJbmQ0YmY0WGNIYnE4VFN2MXR4ZUlYdldxM1oxcDZZTWRYSTlY?=
+ =?utf-8?B?OGJ6NXg4V3ZuM2czSHBudXZOMjZJc25HTjkyMlVuU2NKdUIrNm1ObjMwdWt3?=
+ =?utf-8?B?cXg5US82T3NQQ0wzeEJTemdwY2RRSTZoYjBPRGNWTFd3ZHZ5czJVSlhmRWk3?=
+ =?utf-8?B?Y2sydVAwVjZPWjFQUUM0YjJZakg1TzNIeWxVZEYycVUyRkFJdUZtVml2WjRI?=
+ =?utf-8?B?Z0xGQkFROVJLcUhUQnVMR1BFU29PZEtiak1OOTNCTzJtYXB2NWRIVURYSUlC?=
+ =?utf-8?B?NUIxMno2ZVpOZWZubVJkY2xJMy9TYS9yVnJMU1g4WDhvUG5zTnJpMXFvUk9h?=
+ =?utf-8?B?MDJ1UlVlSERFNkJGTXB2ZzdTQnUvdk9WdkdtVy8wVkNndkVLcVlIZmhVd2tm?=
+ =?utf-8?B?NVJDY2x1L3VkdHI5VnptTTJDZTloQmlVMVcyRVdIaVo3czFHejVKdXlSVjgw?=
+ =?utf-8?B?VlFGQXdQcjZqRHcwekZKK1JKaEJDZUdyTitPY2JTbjB0RzM5OHVyRWZQTEdP?=
+ =?utf-8?B?WWtKMGhXRUY2Q3NXMitCVUxqTFBtUVFrb3EzSTBkbVFKL1ZoaWRJVkF4Qkk5?=
+ =?utf-8?B?MU5TKzVEQXlKMFUrTXYzckFnWUNaMzNlQ0ZBanBrRTZsaG1MYUdGTWsvM09F?=
+ =?utf-8?B?QTNqT1N6a2FmVHZkbmxGVzJITFp5VlZ5YTJReE9HQ2RiYjRGZ204T3k2MUZ5?=
+ =?utf-8?B?MUtHanM3SXkzTzRxaGJEQmdCTjcwUys1SEhiY2RFclplc3czd3QzSWk5aHVR?=
+ =?utf-8?B?U2JUYWNaRHplM09mcSt0d1pTOUZNU0laMlprZkdISnpkU2N0YUZWVXQ0Wmh0?=
+ =?utf-8?B?T0p4dktsZk9JU0d2YnZ5UT09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?YlRrNnptbzd6SEdIYkpWUkwyTDNjQkI3WTMyT0hHZXdxdDgwQ09DMXBaUFE0?=
+ =?utf-8?B?Z3RKTVh6RS80eGRNNjhvZGxIVGZzTVpXNFJLNVJXN2N6VURNakxGcUhGZjBz?=
+ =?utf-8?B?VHNWSVlGV1VnWWpsc3ZnQmNjM05QY2pwOUYza2xkbDFIeXhUZUhwaUplaUpK?=
+ =?utf-8?B?V0dqbDZtRFNySEV2VVFkbXFLZm1udWRPbWNoQ3R5RHU5d1cvdDJOZlhRNHRC?=
+ =?utf-8?B?bmZPN2tDNHVPZjZ4L29zZitDck9zTzRYUUFHK3FpUSt6ZFJBc3FTTXFYd3V3?=
+ =?utf-8?B?ZnNqTFVDeUI2bXBsRmdVSnEwTmN3V1pnSDlJa0JmK2hhTDUvZ09ta252My8x?=
+ =?utf-8?B?OGwyRG9aNmlBU2xJalhvaElydExpTlVldGRsTTNOZmFiOWZibnpVdm1lTk1w?=
+ =?utf-8?B?RWxOSXR2aHQ5dHAxVTR6NzZWWHJBTzZrTHFuSG1aNTlHQTNSb3pUSEQ3NTVU?=
+ =?utf-8?B?eHN5SlNtNC9QcWhlcFpPbS9RekkvWTQ1bWZOUE82ZUoyckhBaElmRzdSYVFD?=
+ =?utf-8?B?aDhRSzgzT3ZuMkYvZ1pJcEkzWjR5Z1NjbjRxVm1ReWFaMUxEREF6MVpRTXQr?=
+ =?utf-8?B?aSt6aGtIZkJhR243OTlXWllFTU5PYTdzSDAvUldydVBjVjdhOXhIMDFYUGJO?=
+ =?utf-8?B?RGZNUC9aZmY4L2xYRlRzbFR5eUxUUHV4NHVlYUEzYm5aUExoSm8zd05HS3o3?=
+ =?utf-8?B?MUpFaXlyeVB1ak5JUjBqZXhSWnZnRTBvRjdNYmJiUTJyeFllRzJSSHYxTzZM?=
+ =?utf-8?B?YzVyZCs2bWlaeGprRTBZalloQ2F1Vjhod2syaHpoak5mRmhBSjcvaUYvUzNP?=
+ =?utf-8?B?TUEzMVpJUjY4NXdZcTlWZ0JxTHR4NDIreEVTK3crd1gwRFVTSFpBNy9pTlp5?=
+ =?utf-8?B?NUtmQWhJUFhYWEYyMXFvYTdZZm0rNlZjRGgzTENQbzUvL0RNYzB5QXlwbG9y?=
+ =?utf-8?B?VVJPVkJvQnc4aHZGZTBGTjQ2b0J0MWJ4eTJMbDdwOTVmOExZTmgzUG1DcHY3?=
+ =?utf-8?B?L3RWMElxMUZNck9kQ1FqZEdJempEVzZvbFdGbWJxMWJGRi8vUEN3Vjhua2Z3?=
+ =?utf-8?B?bG54dzlwd0ROZzU1RVhrVmEwVWhpRW5yQ0hTN1F1U3VRZnBwRGhnQWFWeWd1?=
+ =?utf-8?B?UXZJZkg5MDFnVzIvcDU1VnV4bWlyb2hsQ05POENZeC91T1pwajk3VzhEdk9T?=
+ =?utf-8?B?ckhxQUcrek1NdVdPako2MEU3cGUrYU9KcERIbHNIWHJpZWdSZzVnMkx2eFIy?=
+ =?utf-8?B?OTdZRTRDbnJCRE9tSHZIVnBQZ2NkRTgreC8xYklaYWczQXhoczZTdnNTS3J0?=
+ =?utf-8?B?VUF4dkt2MVVqbzlIMitZUnJFNnBqdzg3eWYxT2k1MndqRW1VS05nS2hTbjNP?=
+ =?utf-8?B?K2I3ZXhJVTVjdUVjMEhCOTRMbEdEcEp2dXEyL3BTK1o4aXRVOVczUHRPMTlQ?=
+ =?utf-8?B?NkJ1RXh0bmd2N1g3U08raHg4QlFuRVg4ejY1ZHFQdGIzcjhZWTdGQ0hPSDUw?=
+ =?utf-8?B?SXh0b2N0SGVwYUdOcWJWenJvZkh1Qnp2US9taW1WQmRYZWpub1dTK1g3U2NS?=
+ =?utf-8?B?bnNxWmc1aHR4UlJBcWxpOGptM21RWDhVSDBiY0puaGh4VWZQWGMwV3BneFVN?=
+ =?utf-8?B?SndqMVlmYVZoMm1vM1Q5ckVTSFdXeCtGb1ZHd0J4WW1CeUJEaEk4eDltcnR0?=
+ =?utf-8?B?bmVTODNnTUdrL2RTd1g2VWpiaVBPemdsMk45NHpaeFVaNXA2YmVNQ2p3cUts?=
+ =?utf-8?B?R0dPeStxRXNDbUVxNFZ4dG1qZFBXRXpsNzJzbnVFcjBYYkU4blVHcEFuWEZT?=
+ =?utf-8?B?N3dqUEt5bmZhekZoYldIdGdmU2dlZHQrRTJsbklYUk5BSUw4dzg5Q3ZKYVpj?=
+ =?utf-8?B?bnRWWDhrODRaZC94b0dkVHNZb0ZTTmtqb1lLdncwRm96UFdiV1FJUmtiblJN?=
+ =?utf-8?B?WURoWTJYZkVhaFZPWHJMc0ZZUTREWXZoMFJLSGNPeWZFc3ltUGVRY3pBK1lx?=
+ =?utf-8?B?ditneDhVZm1wbE5HbmZRUEQ1VmNtSHdIenFxVlp2dmNPV1hnclZ0K0ZGMkIz?=
+ =?utf-8?B?RnVPajYyaFF1OVFEYlczbTQydjZFWEI2clQvbEhXVmhJZllvclF0dzdyME1I?=
+ =?utf-8?Q?P1wHysWBzwg61wtA6ci4X0Y4l?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3c065df3-2abb-42c2-6bc3-08dcaacfa47d
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2024 04:26:37.6890
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1RwbfmKfAh1BBSIzbXxfSY5bHKDIPxLnC3sCf9xNZZh1KpwJx3TkixTqRFvMY3lnmWLKQU0PnTvMyvjWl3/hqg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8576
 
-Add some tracepoints to aid in debuggin the keyrings facility and
-applications that use it.  A number of events and operations are traceable=
-,
-including:
 
-  - Allocation
-  - Refcounting
-  - Instantiation and negative instantiation/rejection
-  - Update
-  - Detection of key being dead
-  - Key quota changes
-  - Key quota failure
-  - Link, unlink and move
-  - Keyring clearance
-  - Revocation and invalidation
-  - Garbage collection
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Jarkko Sakkinen <jarkko@kernel.org>
-cc: keyrings@vger.kernel.org
-cc: linux-security-module@vger.kernel.org
----
- Documentation/security/keys/core.rst |    1 =
+On 22/7/24 22:06, Jason Gunthorpe wrote:
+> On Mon, Jul 22, 2024 at 08:19:23PM +1000, Alexey Kardashevskiy wrote:
+> 
+>> If there is vIOMMU, then the driver in the VM can decide whether it wants
+>> private or shared memory for DMA, pass that new flag to dma_map() and 1)
+>> have DMA memory allocated from the private pool (== no page state changes)
+>> and 2) have C-bit set in the vIOMMU page table (which is in the VM memory).
+> 
+> Not all HW supports a flow like that.
 
- crypto/asymmetric_keys/restrict.c    |    6 =
+Fair point but still, under what imaginary circumstance a driver could 
+decide to flip T=0/1 when up and running?
 
- include/keys/key_user.h              |   35 +++
- include/linux/key.h                  |   16 -
- include/trace/events/key.h           |  401 +++++++++++++++++++++++++++++=
-++++++
- security/keys/gc.c                   |    4 =
 
- security/keys/internal.h             |   41 ---
- security/keys/key.c                  |   66 +++++
- security/keys/keyctl.c               |    2 =
+>> My V1 says "all IOVA below X are private and above - shared" (which is a hw
+>> knob in absence of vIOMMU) and I set the X to all '1's just to mark it all
+>> private.
+> Is that portable to other implementations?
 
- security/keys/keyring.c              |   45 +++
- security/keys/process_keys.c         |   15 -
- 11 files changed, 562 insertions(+), 70 deletions(-)
+Well, when used as a big knob - 0 or the max (== flip private/shared), 
+then yes :)
 
-diff --git a/Documentation/security/keys/core.rst b/Documentation/security=
-/keys/core.rst
-index 326b8a973828..0b179540d885 100644
---- a/Documentation/security/keys/core.rst
-+++ b/Documentation/security/keys/core.rst
-@@ -1217,7 +1217,6 @@ payload contents" for more information.
-  *  Extra references can be made to a key by calling one of the following
-     functions::
- =
 
--	struct key *__key_get(struct key *key);
- 	struct key *key_get(struct key *key);
- =
-
-     Keys so references will need to be disposed of by calling key_put() w=
-hen
-diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/re=
-strict.c
-index afcd4d101ac5..1ea7bfd4e5d7 100644
---- a/crypto/asymmetric_keys/restrict.c
-+++ b/crypto/asymmetric_keys/restrict.c
-@@ -267,20 +267,20 @@ static int key_or_keyring_common(struct key *dest_ke=
-yring,
- 			if (!sig->auth_ids[0] && !sig->auth_ids[1]) {
- 				if (asymmetric_key_id_same(signer_ids[2],
- 							   sig->auth_ids[2]))
--					key =3D __key_get(trusted);
-+					key =3D key_get(trusted);
- =
-
- 			} else if (!sig->auth_ids[0] || !sig->auth_ids[1]) {
- 				const struct asymmetric_key_id *auth_id;
- =
-
- 				auth_id =3D sig->auth_ids[0] ?: sig->auth_ids[1];
- 				if (match_either_id(signer_ids, auth_id))
--					key =3D __key_get(trusted);
-+					key =3D key_get(trusted);
- =
-
- 			} else if (asymmetric_key_id_same(signer_ids[1],
- 							  sig->auth_ids[1]) &&
- 				   match_either_id(signer_ids,
- 						   sig->auth_ids[0])) {
--				key =3D __key_get(trusted);
-+				key =3D key_get(trusted);
- 			}
- 		} else {
- 			return -EOPNOTSUPP;
-diff --git a/include/keys/key_user.h b/include/keys/key_user.h
-new file mode 100644
-index 000000000000..e9c383d8116e
---- /dev/null
-+++ b/include/keys/key_user.h
-@@ -0,0 +1,35 @@
-+/* User quota tracking for keys.
-+ *
-+ * Copyright (C) 2024 Red Hat, Inc. All Rights Reserved.
-+ * Written by David Howells (dhowells@redhat.com)
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public Licence
-+ * as published by the Free Software Foundation; either version
-+ * 2 of the Licence, or (at your option) any later version.
-+ */
-+
-+#ifndef _KEYS_KEY_USER_H
-+#define _KEYS_KEY_USER_H
-+
-+/*
-+ * Keep track of keys for a user.
-+ *
-+ * This needs to be separate to user_struct to avoid a refcount-loop
-+ * (user_struct pins some keyrings which pin this struct).
-+ *
-+ * We also keep track of keys under request from userspace for this UID h=
-ere.
-+ */
-+struct key_user {
-+	struct rb_node		node;
-+	struct mutex		cons_lock;	/* construction initiation lock */
-+	spinlock_t		lock;
-+	refcount_t		usage;		/* for accessing qnkeys & qnbytes */
-+	atomic_t		nkeys;		/* number of keys */
-+	atomic_t		nikeys;		/* number of instantiated keys */
-+	kuid_t			uid;
-+	int			qnkeys;		/* number of keys allocated to this user */
-+	int			qnbytes;	/* number of bytes allocated to this user */
-+};
-+
-+#endif /* _KEYS_KEY_USER_H */
-diff --git a/include/linux/key.h b/include/linux/key.h
-index 943a432da3ae..4e5baf3e7286 100644
---- a/include/linux/key.h
-+++ b/include/linux/key.h
-@@ -299,24 +299,20 @@ extern struct key *key_alloc(struct key_type *type,
- =
-
- extern void key_revoke(struct key *key);
- extern void key_invalidate(struct key *key);
-+struct key *key_get(struct key *key);
-+struct key *key_try_get(struct key *key);
- extern void key_put(struct key *key);
- extern bool key_put_tag(struct key_tag *tag);
- extern void key_remove_domain(struct key_tag *domain_tag);
- =
-
--static inline struct key *__key_get(struct key *key)
--{
--	refcount_inc(&key->usage);
--	return key;
--}
--
--static inline struct key *key_get(struct key *key)
-+static inline void key_ref_put(key_ref_t key_ref)
- {
--	return key ? __key_get(key) : key;
-+	key_put(key_ref_to_ptr(key_ref));
- }
- =
-
--static inline void key_ref_put(key_ref_t key_ref)
-+static inline void key_ref_get(key_ref_t key_ref)
- {
--	key_put(key_ref_to_ptr(key_ref));
-+	key_get(key_ref_to_ptr(key_ref));
- }
- =
-
- extern struct key *request_key_tag(struct key_type *type,
-diff --git a/include/trace/events/key.h b/include/trace/events/key.h
-new file mode 100644
-index 000000000000..b3f8c39cc0e8
---- /dev/null
-+++ b/include/trace/events/key.h
-@@ -0,0 +1,401 @@
-+/* Keyrings tracepoints
-+ *
-+ * Copyright (C) 2024 Red Hat, Inc. All Rights Reserved.
-+ * Written by David Howells (dhowells@redhat.com)
-+ *
-+ * This program is free software; you can redistribute it and/or
-+ * modify it under the terms of the GNU General Public Licence
-+ * as published by the Free Software Foundation; either version
-+ * 2 of the Licence, or (at your option) any later version.
-+ */
-+#undef TRACE_SYSTEM
-+#define TRACE_SYSTEM key
-+
-+#if !defined(_TRACE_KEY_H) || defined(TRACE_HEADER_MULTI_READ)
-+#define _TRACE_KEY_H
-+
-+#include <linux/tracepoint.h>
-+
-+struct key;
-+
-+/*
-+ * Declare tracing information enums and their string mappings for displa=
-y.
-+ */
-+#define key_ref_traces \
-+	EM(key_trace_ref_alloc,			"ALLOC") \
-+	EM(key_trace_ref_free,			"FREE ") \
-+	EM(key_trace_ref_gc,			"GC   ") \
-+	EM(key_trace_ref_get,			"GET  ") \
-+	EM(key_trace_ref_put,			"PUT  ") \
-+	E_(key_trace_ref_try_get,		"GET  ")
-+
-+#define key_dead_traces \
-+	EM(key_trace_dead_type_removed,		"TYPR") \
-+	EM(key_trace_dead_domain_removed,	"DOMR") \
-+	EM(key_trace_dead_expired,		"EXPD") \
-+	E_(key_trace_dead_invalidated,		"INVL")
-+
-+/*
-+ * Generate enums for tracing information.
-+ */
-+#ifndef __NETFS_DECLARE_TRACE_ENUMS_ONCE_ONLY
-+#define __NETFS_DECLARE_TRACE_ENUMS_ONCE_ONLY
-+
-+#undef EM
-+#undef E_
-+#define EM(a, b) a,
-+#define E_(a, b) a
-+
-+enum key_dead_trace	{ key_dead_traces } __mode(byte);
-+enum key_ref_trace	{ key_ref_traces } __mode(byte);
-+
-+#endif /* end __RXRPC_DECLARE_TRACE_ENUMS_ONCE_ONLY */
-+
-+/*
-+ * Export enum symbols via userspace.
-+ */
-+#undef EM
-+#undef E_
-+#define EM(a, b) TRACE_DEFINE_ENUM(a);
-+#define E_(a, b) TRACE_DEFINE_ENUM(a);
-+
-+key_dead_traces;
-+key_ref_traces;
-+
-+/*
-+ * Now redefine the EM() and E_() macros to map the enums to the strings =
-that
-+ * will be printed in the output.
-+ */
-+#undef EM
-+#undef E_
-+#define EM(a, b)	{ a, b },
-+#define E_(a, b)	{ a, b }
-+
-+TRACE_EVENT(key_alloc,
-+	    TP_PROTO(const struct key *key),
-+
-+	    TP_ARGS(key),
-+
-+	    TP_STRUCT__entry(
-+		    __field(key_serial_t,		key)
-+		    __field(uid_t,			uid)
-+		    __array(char,			type, 8)
-+		    __array(char,			desc, 24)
-+			     ),
-+
-+	    TP_fast_assign(
-+		    __entry->key =3D key->serial;
-+		    __entry->uid =3D from_kuid(&init_user_ns, key->uid);
-+		    strncpy(__entry->type, key->type->name, sizeof(__entry->type) - 1);
-+		    strncpy(__entry->desc, key->description ?: "", sizeof(__entry->desc=
-) - 1);
-+		    __entry->type[sizeof(__entry->type) - 1] =3D 0;
-+		    __entry->desc[sizeof(__entry->desc) - 1] =3D 0;
-+			   ),
-+
-+	    TP_printk("key=3D%08x uid=3D%08x t=3D%s d=3D%s",
-+		      __entry->key,
-+		      __entry->uid,
-+		      __entry->type,
-+		      __entry->desc)
-+	    );
-+
-+TRACE_EVENT(key_ref,
-+	    TP_PROTO(key_serial_t key, unsigned int ref, enum key_ref_trace trac=
-e,
-+		     const void *where),
-+
-+	    TP_ARGS(key, ref, trace, where),
-+
-+	    TP_STRUCT__entry(
-+		    __field(key_serial_t,		key)
-+		    __field(enum key_ref_trace,		trace)
-+		    __field(unsigned int,		ref)
-+		    __field(const void *,		where)
-+			     ),
-+
-+	    TP_fast_assign(
-+		    __entry->key =3D key;
-+		    __entry->trace =3D trace;
-+		    __entry->ref =3D ref;
-+		    __entry->where =3D where;
-+			   ),
-+
-+	    TP_printk("key=3D%08x %s r=3D%d pc=3D%pSR",
-+		      __entry->key,
-+		      __print_symbolic(__entry->trace, key_ref_traces),
-+		      __entry->ref,
-+		      __entry->where)
-+	    );
-+
-+TRACE_EVENT(key_instantiate,
-+	    TP_PROTO(const struct key *key, const struct key_preparsed_payload *=
-prep),
-+
-+	    TP_ARGS(key, prep),
-+
-+	    TP_STRUCT__entry(
-+		    __field(key_serial_t,	key)
-+		    __field(unsigned int,	datalen)
-+		    __field(unsigned int,	quotalen)
-+			     ),
-+
-+	    TP_fast_assign(
-+		    __entry->key =3D key->serial;
-+		    __entry->datalen =3D prep->datalen;
-+		    __entry->quotalen =3D prep->quotalen;
-+			   ),
-+
-+	    TP_printk("key=3D%08x dlen=3D%u qlen=3D%u",
-+		      __entry->key,
-+		      __entry->datalen,
-+		      __entry->quotalen)
-+	    );
-+
-+TRACE_EVENT(key_reject,
-+	    TP_PROTO(const struct key *key, int error),
-+
-+	    TP_ARGS(key, error),
-+
-+	    TP_STRUCT__entry(
-+		    __field(key_serial_t,	key)
-+		    __field(int,		error)
-+			     ),
-+
-+	    TP_fast_assign(
-+		    __entry->key =3D key->serial;
-+		    __entry->error =3D error;
-+			   ),
-+
-+	    TP_printk("key=3D%08x err=3D%d",
-+		      __entry->key,
-+		      __entry->error)
-+	    );
-+
-+TRACE_EVENT(key_update,
-+	    TP_PROTO(const struct key *key, const struct key_preparsed_payload *=
-prep),
-+
-+	    TP_ARGS(key, prep),
-+
-+	    TP_STRUCT__entry(
-+		    __field(key_serial_t,	key)
-+		    __field(unsigned int,	datalen)
-+		    __field(unsigned int,	quotalen)
-+			     ),
-+
-+	    TP_fast_assign(
-+		    __entry->key =3D key->serial;
-+		    __entry->datalen =3D prep->datalen;
-+		    __entry->quotalen =3D prep->quotalen;
-+			   ),
-+
-+	    TP_printk("key=3D%08x dlen=3D%u qlen=3D%u",
-+		      __entry->key,
-+		      __entry->datalen,
-+		      __entry->quotalen)
-+	    );
-+
-+TRACE_EVENT(key_dead,
-+	    TP_PROTO(const struct key *key, enum key_dead_trace trace),
-+
-+	    TP_ARGS(key, trace),
-+
-+	    TP_STRUCT__entry(
-+		    __field(key_serial_t,		key)
-+		    __field(enum key_dead_trace,	trace)
-+			     ),
-+
-+	    TP_fast_assign(
-+		    __entry->key =3D key->serial;
-+		    __entry->trace =3D trace;
-+			   ),
-+
-+	    TP_printk("key=3D%08x %s",
-+		      __entry->key,
-+		      __print_symbolic(__entry->trace, key_dead_traces))
-+	    );
-+
-+TRACE_EVENT(key_quota,
-+	    TP_PROTO(const struct key_user *user, int change_keys, int change_by=
-tes),
-+
-+	    TP_ARGS(user, change_keys, change_bytes),
-+
-+	    TP_STRUCT__entry(
-+		    __field(uid_t,		uid)
-+		    __field(unsigned int,	nkeys)
-+		    __field(unsigned int,	nikeys)
-+		    __field(unsigned int,	qnkeys)
-+		    __field(unsigned int,	qnbytes)
-+		    __field(int,		change_keys)
-+		    __field(int,		change_bytes)
-+			     ),
-+
-+	    TP_fast_assign(
-+		    __entry->uid =3D from_kuid(&init_user_ns, user->uid);
-+		    __entry->nkeys =3D atomic_read(&user->nkeys);
-+		    __entry->nikeys =3D atomic_read(&user->nikeys);
-+		    __entry->qnkeys =3D user->qnkeys;
-+		    __entry->qnbytes =3D user->qnbytes;
-+		    __entry->change_keys =3D change_keys;
-+		    __entry->change_bytes =3D change_bytes;
-+			   ),
-+
-+	    TP_printk("uid=3D%d nkeys=3D%u/%u qkeys=3D%u qpay=3D%u ckeys=3D%d cp=
-ay=3D%d",
-+		      __entry->uid,
-+		      __entry->nikeys, __entry->nkeys,
-+		      __entry->qnkeys,
-+		      __entry->qnbytes,
-+		      __entry->change_keys, __entry->change_bytes)
-+	    );
-+
-+TRACE_EVENT(key_edquot,
-+	    TP_PROTO(const struct key_user *user, unsigned int maxkeys,
-+		     unsigned int maxbytes, unsigned int reqbytes),
-+
-+	    TP_ARGS(user, maxkeys, maxbytes, reqbytes),
-+
-+	    TP_STRUCT__entry(
-+		    __field(uid_t,		uid)
-+		    __field(unsigned int,	nkeys)
-+		    __field(unsigned int,	nikeys)
-+		    __field(unsigned int,	qnkeys)
-+		    __field(unsigned int,	qnbytes)
-+		    __field(unsigned int,	maxkeys)
-+		    __field(unsigned int,	maxbytes)
-+		    __field(unsigned int,	reqbytes)
-+			     ),
-+
-+	    TP_fast_assign(
-+		    __entry->uid =3D from_kuid(&init_user_ns, user->uid);
-+		    __entry->nkeys =3D atomic_read(&user->nkeys);
-+		    __entry->nikeys =3D atomic_read(&user->nikeys);
-+		    __entry->qnkeys =3D user->qnkeys;
-+		    __entry->qnbytes =3D user->qnbytes;
-+		    __entry->maxkeys =3D maxkeys;
-+		    __entry->maxbytes =3D maxbytes;
-+		    __entry->reqbytes =3D reqbytes;
-+			   ),
-+
-+	    TP_printk("u=3D%d nkeys=3D%u/%u qkeys=3D%u/%u qpay=3D%u/%u cpay=3D%u=
-",
-+		      __entry->uid,
-+		      __entry->nikeys, __entry->nkeys,
-+		      __entry->qnkeys, __entry->maxkeys,
-+		      __entry->qnbytes, __entry->maxbytes,
-+		      __entry->reqbytes)
-+	    );
-+
-+TRACE_EVENT(key_link,
-+	    TP_PROTO(const struct key *keyring, const struct key *key),
-+
-+	    TP_ARGS(keyring, key),
-+
-+	    TP_STRUCT__entry(
-+		    __field(key_serial_t,	keyring)
-+		    __field(key_serial_t,	key)
-+			     ),
-+
-+	    TP_fast_assign(
-+		    __entry->keyring =3D keyring->serial;
-+		    __entry->key =3D key->serial;
-+			   ),
-+
-+	    TP_printk("key=3D%08x to=3D%08x",
-+		      __entry->key, __entry->keyring)
-+	    );
-+
-+TRACE_EVENT(key_unlink,
-+	    TP_PROTO(const struct key *keyring, const struct key *key),
-+
-+	    TP_ARGS(keyring, key),
-+
-+	    TP_STRUCT__entry(
-+		    __field(key_serial_t,	keyring)
-+		    __field(key_serial_t,	key)
-+			     ),
-+
-+	    TP_fast_assign(
-+		    __entry->keyring =3D keyring->serial;
-+		    __entry->key =3D key->serial;
-+			   ),
-+
-+	    TP_printk("key=3D%08x from=3D%08x",
-+		      __entry->key, __entry->keyring)
-+	    );
-+
-+TRACE_EVENT(key_move,
-+	    TP_PROTO(const struct key *from, const struct key *to,
-+		     const struct key *key),
-+
-+	    TP_ARGS(from, to, key),
-+
-+	    TP_STRUCT__entry(
-+		    __field(key_serial_t,	from)
-+		    __field(key_serial_t,	to)
-+		    __field(key_serial_t,	key)
-+			     ),
-+
-+	    TP_fast_assign(
-+		    __entry->from =3D from->serial;
-+		    __entry->to =3D to->serial;
-+		    __entry->key =3D key->serial;
-+			   ),
-+
-+	    TP_printk("key=3D%08x from=3D%08x to=3D%08x",
-+		      __entry->key, __entry->from, __entry->to)
-+	    );
-+
-+TRACE_EVENT(key_clear,
-+	    TP_PROTO(const struct key *keyring),
-+	    TP_ARGS(keyring),
-+	    TP_STRUCT__entry(
-+		    __field(key_serial_t,	keyring)
-+			     ),
-+	    TP_fast_assign(
-+		    __entry->keyring =3D keyring->serial;
-+			   ),
-+	    TP_printk("key=3D%08x",
-+		      __entry->keyring)
-+	    );
-+
-+TRACE_EVENT(key_revoke,
-+	    TP_PROTO(const struct key *key),
-+	    TP_ARGS(key),
-+	    TP_STRUCT__entry(
-+		    __field(key_serial_t,	key)
-+			     ),
-+	    TP_fast_assign(
-+		    __entry->key =3D key->serial;
-+			   ),
-+	    TP_printk("key=3D%08x",
-+		      __entry->key)
-+	    );
-+
-+TRACE_EVENT(key_invalidate,
-+	    TP_PROTO(const struct key *key),
-+	    TP_ARGS(key),
-+	    TP_STRUCT__entry(
-+		    __field(key_serial_t,	key)
-+			     ),
-+	    TP_fast_assign(
-+		    __entry->key =3D key->serial;
-+			   ),
-+	    TP_printk("key=3D%08x",
-+		      __entry->key)
-+	    );
-+
-+TRACE_EVENT(key_gc,
-+	    TP_PROTO(const struct key *key),
-+	    TP_ARGS(key),
-+	    TP_STRUCT__entry(
-+		    __field(key_serial_t,	key)
-+			     ),
-+	    TP_fast_assign(
-+		    __entry->key =3D key->serial;
-+			   ),
-+	    TP_printk("key=3D%08x",
-+		      __entry->key)
-+	    );
-+
-+#undef EM
-+#undef E_
-+#endif /* _TRACE_KEY_H */
-+
-+/* This part must be outside protection */
-+#include <trace/define_trace.h>
-diff --git a/security/keys/gc.c b/security/keys/gc.c
-index 7d687b0962b1..47f857653854 100644
---- a/security/keys/gc.c
-+++ b/security/keys/gc.c
-@@ -141,6 +141,7 @@ static noinline void key_gc_unused_keys(struct list_he=
-ad *keys)
- =
-
- 		list_del(&key->graveyard_link);
- =
-
-+		trace_key_gc(key);
- 		kdebug("- %u", key->serial);
- 		key_check(key);
- =
-
-@@ -163,6 +164,8 @@ static noinline void key_gc_unused_keys(struct list_he=
-ad *keys)
- 		key_put_tag(key->domain_tag);
- 		kfree(key->description);
- =
-
-+		trace_key_ref(key->serial, refcount_read(&key->usage),
-+			      key_trace_ref_free, 0);
- 		memzero_explicit(key, sizeof(*key));
- 		kmem_cache_free(key_jar, key);
- 	}
-@@ -331,6 +334,7 @@ static void key_garbage_collector(struct work_struct *=
-work)
- 	 */
- found_unreferenced_key:
- 	kdebug("unrefd key %d", key->serial);
-+	trace_key_ref(key->serial, refcount_read(&key->usage), key_trace_ref_gc,=
- 0);
- 	rb_erase(&key->serial_node, &key_serial_tree);
- 	spin_unlock(&key_serial_lock);
- =
-
-diff --git a/security/keys/internal.h b/security/keys/internal.h
-index 2cffa6dc8255..87600683a7f5 100644
---- a/security/keys/internal.h
-+++ b/security/keys/internal.h
-@@ -19,6 +19,8 @@
- #include <linux/compat.h>
- #include <linux/mm.h>
- #include <linux/vmalloc.h>
-+#include <keys/key_user.h>
-+#include <trace/events/key.h>
- =
-
- struct iovec;
- =
-
-@@ -43,25 +45,6 @@ extern struct key_type key_type_user;
- extern struct key_type key_type_logon;
- =
-
- /************************************************************************=
-*****/
--/*
-- * Keep track of keys for a user.
-- *
-- * This needs to be separate to user_struct to avoid a refcount-loop
-- * (user_struct pins some keyrings which pin this struct).
-- *
-- * We also keep track of keys under request from userspace for this UID h=
-ere.
-- */
--struct key_user {
--	struct rb_node		node;
--	struct mutex		cons_lock;	/* construction initiation lock */
--	spinlock_t		lock;
--	refcount_t		usage;		/* for accessing qnkeys & qnbytes */
--	atomic_t		nkeys;		/* number of keys */
--	atomic_t		nikeys;		/* number of instantiated keys */
--	kuid_t			uid;
--	int			qnkeys;		/* number of keys allocated to this user */
--	int			qnbytes;	/* number of bytes allocated to this user */
--};
- =
-
- extern struct rb_root	key_user_tree;
- extern spinlock_t	key_user_lock;
-@@ -211,26 +194,6 @@ extern struct key *request_key_auth_new(struct key *t=
-arget,
- =
-
- extern struct key *key_get_instantiation_authkey(key_serial_t target_id);
- =
-
--/*
-- * Determine whether a key is dead.
-- */
--static inline bool key_is_dead(const struct key *key, time64_t limit)
--{
--	time64_t expiry =3D key->expiry;
--
--	if (expiry !=3D TIME64_MAX) {
--		if (!(key->type->flags & KEY_TYPE_INSTANT_REAP))
--			expiry +=3D key_gc_delay;
--		if (expiry <=3D limit)
--			return true;
--	}
--
--	return
--		key->flags & ((1 << KEY_FLAG_DEAD) |
--			      (1 << KEY_FLAG_INVALIDATED)) ||
--		key->domain_tag->removed;
--}
--
- /*
-  * keyctl() functions
-  */
-diff --git a/security/keys/key.c b/security/keys/key.c
-index 3d7d185019d3..28a4128ff103 100644
---- a/security/keys/key.c
-+++ b/security/keys/key.c
-@@ -14,6 +14,7 @@
- #include <linux/workqueue.h>
- #include <linux/random.h>
- #include <linux/err.h>
-+#define CREATE_TRACE_POINTS
- #include "internal.h"
- =
-
- struct kmem_cache *key_jar;
-@@ -264,12 +265,15 @@ struct key *key_alloc(struct key_type *type, const c=
-har *desc,
- 		if (!(flags & KEY_ALLOC_QUOTA_OVERRUN)) {
- 			if (user->qnkeys + 1 > maxkeys ||
- 			    user->qnbytes + quotalen > maxbytes ||
--			    user->qnbytes + quotalen < user->qnbytes)
-+			    user->qnbytes + quotalen < user->qnbytes) {
-+				trace_key_edquot(user, maxkeys, maxbytes, quotalen);
- 				goto no_quota;
-+			}
- 		}
- =
-
- 		user->qnkeys++;
- 		user->qnbytes +=3D quotalen;
-+		trace_key_quota(user, +1, quotalen);
- 		spin_unlock_irqrestore(&user->lock, irqflags);
- 	}
- =
-
-@@ -319,7 +323,10 @@ struct key *key_alloc(struct key_type *type, const ch=
-ar *desc,
- 	/* publish the key by giving it a serial number */
- 	refcount_inc(&key->domain_tag->usage);
- 	atomic_inc(&user->nkeys);
-+	trace_key_quota(user, 0, 0);
- 	key_alloc_serial(key);
-+	trace_key_alloc(key);
-+	trace_key_ref(key->serial, 1, key_trace_ref_alloc, __builtin_return_addr=
-ess(0));
- =
-
- error:
- 	return key;
-@@ -331,6 +338,7 @@ struct key *key_alloc(struct key_type *type, const cha=
-r *desc,
- 		spin_lock_irqsave(&user->lock, irqflags);
- 		user->qnkeys--;
- 		user->qnbytes -=3D quotalen;
-+		trace_key_quota(user, -1, -quotalen);
- 		spin_unlock_irqrestore(&user->lock, irqflags);
- 	}
- 	key_user_put(user);
-@@ -344,6 +352,7 @@ struct key *key_alloc(struct key_type *type, const cha=
-r *desc,
- 		spin_lock_irqsave(&user->lock, irqflags);
- 		user->qnkeys--;
- 		user->qnbytes -=3D quotalen;
-+		trace_key_quota(user, -1, quotalen);
- 		spin_unlock_irqrestore(&user->lock, irqflags);
- 	}
- 	key_user_put(user);
-@@ -388,11 +397,13 @@ int key_payload_reserve(struct key *key, size_t data=
-len)
- 		if (delta > 0 &&
- 		    (key->user->qnbytes + delta > maxbytes ||
- 		     key->user->qnbytes + delta < key->user->qnbytes)) {
-+			trace_key_edquot(key->user, 0, maxbytes, datalen);
- 			ret =3D -EDQUOT;
- 		}
- 		else {
- 			key->user->qnbytes +=3D delta;
- 			key->quotalen +=3D delta;
-+			trace_key_quota(key->user, 0, delta);
- 		}
- 		spin_unlock_irqrestore(&key->user->lock, flags);
- 	}
-@@ -447,6 +458,7 @@ static int __key_instantiate_and_link(struct key *key,
- 		if (ret =3D=3D 0) {
- 			/* mark the key as being instantiated */
- 			atomic_inc(&key->user->nikeys);
-+			trace_key_instantiate(key, prep);
- 			mark_key_instantiated(key, 0);
- 			notify_key(key, NOTIFY_KEY_INSTANTIATED, 0);
- =
-
-@@ -604,6 +616,7 @@ int key_reject_and_link(struct key *key,
- 	if (key->state =3D=3D KEY_IS_UNINSTANTIATED) {
- 		/* mark the key as being negatively instantiated */
- 		atomic_inc(&key->user->nikeys);
-+		trace_key_reject(key, -error);
- 		mark_key_instantiated(key, -error);
- 		notify_key(key, NOTIFY_KEY_INSTANTIATED, -error);
- 		key_set_expiry(key, ktime_get_real_seconds() + timeout);
-@@ -635,6 +648,39 @@ int key_reject_and_link(struct key *key,
- }
- EXPORT_SYMBOL(key_reject_and_link);
- =
-
-+/**
-+ * key_get - Get a reference on a key
-+ * @key: The key to get a reference on.
-+ *
-+ * Get a reference on a key, if not NULL, and return the parameter.
-+ */
-+noinline struct key *key_get(struct key *key)
-+{
-+	if (key) {
-+		int r;
-+
-+		__refcount_inc(&key->usage, &r);
-+		trace_key_ref(key->serial, r + 1, key_trace_ref_get,
-+			      __builtin_return_address(0));
-+	}
-+	return key;
-+}
-+EXPORT_SYMBOL(key_get);
-+
-+/*
-+ * Get a ref on a key if its refcount is not non-zero.
-+ */
-+noinline struct key *key_try_get(struct key *key)
-+{
-+	int r;
-+
-+	if (!__refcount_inc_not_zero(&key->usage, &r))
-+		return NULL;
-+	trace_key_ref(key->serial, r + 1, key_trace_ref_try_get,
-+		      __builtin_return_address(0));
-+	return key;
-+}
-+
- /**
-  * key_put - Discard a reference to a key.
-  * @key: The key to discard a reference from.
-@@ -643,12 +689,19 @@ EXPORT_SYMBOL(key_reject_and_link);
-  * schedule the cleanup task to come and pull it out of the tree in proce=
-ss
-  * context at some later time.
-  */
--void key_put(struct key *key)
-+noinline void key_put(struct key *key)
- {
- 	if (key) {
-+		key_serial_t serial =3D key->serial;
-+		bool zero;
-+		int r;
-+
- 		key_check(key);
- =
-
--		if (refcount_dec_and_test(&key->usage)) {
-+		zero =3D __refcount_dec_and_test(&key->usage, &r);
-+		trace_key_ref(serial, r - 1, key_trace_ref_put,
-+			      __builtin_return_address(0));
-+		if (zero) {
- 			unsigned long flags;
- =
-
- 			/* deal with the user's key tracking and quota */
-@@ -656,6 +709,7 @@ void key_put(struct key *key)
- 				spin_lock_irqsave(&key->user->lock, flags);
- 				key->user->qnkeys--;
- 				key->user->qnbytes -=3D key->quotalen;
-+				trace_key_quota(key->user, -1, -key->quotalen);
- 				spin_unlock_irqrestore(&key->user->lock, flags);
- 			}
- 			schedule_work(&key_gc_work);
-@@ -695,7 +749,7 @@ struct key *key_lookup(key_serial_t id)
- 	/* A key is allowed to be looked up only if someone still owns a
- 	 * reference to it - otherwise it's awaiting the gc.
- 	 */
--	if (!refcount_inc_not_zero(&key->usage))
-+	if (!key_try_get(key))
- 		goto not_found;
- =
-
- error:
-@@ -779,6 +833,7 @@ static inline key_ref_t __key_update(key_ref_t key_ref=
-,
- 	ret =3D key->type->update(key, prep);
- 	if (ret =3D=3D 0) {
- 		/* Updating a negative key positively instantiates it */
-+		trace_key_update(key, prep);
- 		mark_key_instantiated(key, 0);
- 		notify_key(key, NOTIFY_KEY_UPDATED, 0);
- 	}
-@@ -1103,6 +1158,7 @@ int key_update(key_ref_t key_ref, const void *payloa=
-d, size_t plen)
- 	ret =3D key->type->update(key, &prep);
- 	if (ret =3D=3D 0) {
- 		/* Updating a negative key positively instantiates it */
-+		trace_key_update(key, &prep);
- 		mark_key_instantiated(key, 0);
- 		notify_key(key, NOTIFY_KEY_UPDATED, 0);
- 	}
-@@ -1138,6 +1194,7 @@ void key_revoke(struct key *key)
- 	 */
- 	down_write_nested(&key->sem, 1);
- 	if (!test_and_set_bit(KEY_FLAG_REVOKED, &key->flags)) {
-+		trace_key_revoke(key);
- 		notify_key(key, NOTIFY_KEY_REVOKED, 0);
- 		if (key->type->revoke)
- 			key->type->revoke(key);
-@@ -1170,6 +1227,7 @@ void key_invalidate(struct key *key)
- 	if (!test_bit(KEY_FLAG_INVALIDATED, &key->flags)) {
- 		down_write_nested(&key->sem, 1);
- 		if (!test_and_set_bit(KEY_FLAG_INVALIDATED, &key->flags)) {
-+			trace_key_invalidate(key);
- 			notify_key(key, NOTIFY_KEY_INVALIDATED, 0);
- 			key_schedule_gc_links();
- 		}
-diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
-index 4bc3e9398ee3..8fa4ced5c915 100644
---- a/security/keys/keyctl.c
-+++ b/security/keys/keyctl.c
-@@ -1020,11 +1020,13 @@ long keyctl_chown_key(key_serial_t id, uid_t user,=
- gid_t group)
- =
-
- 			newowner->qnkeys++;
- 			newowner->qnbytes +=3D key->quotalen;
-+			trace_key_quota(newowner, +1, key->quotalen);
- 			spin_unlock_irqrestore(&newowner->lock, flags);
- =
-
- 			spin_lock_irqsave(&key->user->lock, flags);
- 			key->user->qnkeys--;
- 			key->user->qnbytes -=3D key->quotalen;
-+			trace_key_quota(newowner, -1, -key->quotalen);
- 			spin_unlock_irqrestore(&key->user->lock, flags);
- 		}
- =
-
-diff --git a/security/keys/keyring.c b/security/keys/keyring.c
-index 4448758f643a..d67a60142318 100644
---- a/security/keys/keyring.c
-+++ b/security/keys/keyring.c
-@@ -920,7 +920,7 @@ key_ref_t keyring_search_rcu(key_ref_t keyring_ref,
- =
-
- 	ctx->now =3D ktime_get_real_seconds();
- 	if (search_nested_keyrings(keyring, ctx))
--		__key_get(key_ref_to_ptr(ctx->result));
-+		key_ref_get(ctx->result);
- 	return ctx->result;
- }
- =
-
-@@ -1122,7 +1122,7 @@ key_ref_t find_key_to_update(key_ref_t keyring_ref,
- 		kleave(" =3D NULL [x]");
- 		return NULL;
- 	}
--	__key_get(key);
-+	key_get(key);
- 	kleave(" =3D {%d}", key->serial);
- 	return make_key_ref(key, is_key_possessed(keyring_ref));
- }
-@@ -1174,7 +1174,7 @@ struct key *find_keyring_by_name(const char *name, b=
-ool uid_keyring)
- 		/* we've got a match but we might end up racing with
- 		 * key_cleanup() if the keyring is currently 'dead'
- 		 * (ie. it has a zero usage count) */
--		if (!refcount_inc_not_zero(&keyring->usage))
-+		if (!key_try_get(keyring))
- 			continue;
- 		keyring->last_used_at =3D ktime_get_real_seconds();
- 		goto out;
-@@ -1367,7 +1367,8 @@ int __key_link_check_live_key(struct key *keyring, s=
-truct key *key)
- void __key_link(struct key *keyring, struct key *key,
- 		struct assoc_array_edit **_edit)
- {
--	__key_get(key);
-+	key_get(key);
-+	trace_key_link(keyring, key);
- 	assoc_array_insert_set_object(*_edit, keyring_key_to_ptr(key));
- 	assoc_array_apply_edit(*_edit);
- 	*_edit =3D NULL;
-@@ -1506,6 +1507,7 @@ static int __key_unlink_begin(struct key *keyring, s=
-truct key *key,
- static void __key_unlink(struct key *keyring, struct key *key,
- 			 struct assoc_array_edit **_edit)
- {
-+	trace_key_unlink(keyring, key);
- 	assoc_array_apply_edit(*_edit);
- 	notify_key(keyring, NOTIFY_KEY_UNLINKED, key_serial(key));
- 	*_edit =3D NULL;
-@@ -1625,6 +1627,7 @@ int key_move(struct key *key,
- 	if (ret < 0)
- 		goto error;
- =
-
-+	trace_key_move(from_keyring, to_keyring, key);
- 	__key_unlink(from_keyring, key, &from_edit);
- 	__key_link(to_keyring, key, &to_edit);
- error:
-@@ -1654,6 +1657,7 @@ int keyring_clear(struct key *keyring)
- =
-
- 	down_write(&keyring->sem);
- =
-
-+	trace_key_clear(keyring);
- 	edit =3D assoc_array_clear(&keyring->keys, &keyring_assoc_array_ops);
- 	if (IS_ERR(edit)) {
- 		ret =3D PTR_ERR(edit);
-@@ -1687,6 +1691,39 @@ static void keyring_revoke(struct key *keyring)
- 	}
- }
- =
-
-+/*
-+ * Determine whether a key is dead.
-+ */
-+static bool key_is_dead(const struct key *key, time64_t limit)
-+{
-+	time64_t expiry =3D key->expiry;
-+
-+	if (expiry !=3D TIME64_MAX) {
-+		if (!(key->type->flags & KEY_TYPE_INSTANT_REAP))
-+			expiry +=3D key_gc_delay;
-+		if (expiry <=3D limit) {
-+			trace_key_dead(key, key_trace_dead_expired);
-+			return true;
-+		}
-+	}
-+
-+	if (test_bit(KEY_FLAG_DEAD, &key->flags)) {
-+		trace_key_dead(key, key_trace_dead_type_removed);
-+		return true;
-+	}
-+
-+	if (test_bit(KEY_FLAG_INVALIDATED, &key->flags)) {
-+		trace_key_dead(key, key_trace_dead_invalidated);
-+		return true;
-+	}
-+
-+	if (key->domain_tag->removed) {
-+		trace_key_dead(key, key_trace_dead_domain_removed);
-+		return true;
-+	}
-+	return false;
-+}
-+
- static bool keyring_gc_select_iterator(void *object, void *iterator_data)
- {
- 	struct key *key =3D keyring_ptr_to_key(object);
-diff --git a/security/keys/process_keys.c b/security/keys/process_keys.c
-index b5d5333ab330..01291b2d0888 100644
---- a/security/keys/process_keys.c
-+++ b/security/keys/process_keys.c
-@@ -333,7 +333,7 @@ int install_session_keyring_to_cred(struct cred *cred,=
- struct key *keyring)
- 		if (IS_ERR(keyring))
- 			return PTR_ERR(keyring);
- 	} else {
--		__key_get(keyring);
-+		key_get(keyring);
- 	}
- =
-
- 	/* install the keyring */
-@@ -641,7 +641,7 @@ key_ref_t lookup_user_key(key_serial_t id, unsigned lo=
-ng lflags,
- 		}
- =
-
- 		key =3D ctx.cred->thread_keyring;
--		__key_get(key);
-+		key_get(key);
- 		key_ref =3D make_key_ref(key, 1);
- 		break;
- =
-
-@@ -658,8 +658,7 @@ key_ref_t lookup_user_key(key_serial_t id, unsigned lo=
-ng lflags,
- 			goto reget_creds;
- 		}
- =
-
--		key =3D ctx.cred->process_keyring;
--		__key_get(key);
-+		key =3D key_get(ctx.cred->process_keyring);
- 		key_ref =3D make_key_ref(key, 1);
- 		break;
- =
-
-@@ -688,8 +687,7 @@ key_ref_t lookup_user_key(key_serial_t id, unsigned lo=
-ng lflags,
- 			goto reget_creds;
- 		}
- =
-
--		key =3D ctx.cred->session_keyring;
--		__key_get(key);
-+		key =3D key_get(ctx.cred->session_keyring);
- 		key_ref =3D make_key_ref(key, 1);
- 		break;
- =
-
-@@ -717,7 +715,7 @@ key_ref_t lookup_user_key(key_serial_t id, unsigned lo=
-ng lflags,
- 		if (!key)
- 			goto error;
- =
-
--		__key_get(key);
-+		key_get(key);
- 		key_ref =3D make_key_ref(key, 1);
- 		break;
- =
-
-@@ -732,8 +730,7 @@ key_ref_t lookup_user_key(key_serial_t id, unsigned lo=
-ng lflags,
- 			key =3D NULL;
- 		} else {
- 			rka =3D ctx.cred->request_key_auth->payload.data[0];
--			key =3D rka->dest_keyring;
--			__key_get(key);
-+			key =3D key_get(rka->dest_keyring);
- 		}
- 		up_read(&ctx.cred->request_key_auth->sem);
- 		if (!key)
+-- 
+Alexey
 
 
