@@ -1,118 +1,110 @@
-Return-Path: <keyrings+bounces-1821-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1820-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2442A93F717
-	for <lists+keyrings@lfdr.de>; Mon, 29 Jul 2024 15:54:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F252C93F703
+	for <lists+keyrings@lfdr.de>; Mon, 29 Jul 2024 15:50:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEA1F1F221A4
-	for <lists+keyrings@lfdr.de>; Mon, 29 Jul 2024 13:54:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E2F81F2294F
+	for <lists+keyrings@lfdr.de>; Mon, 29 Jul 2024 13:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC0514D29B;
-	Mon, 29 Jul 2024 13:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F5414EC60;
+	Mon, 29 Jul 2024 13:50:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4vseqjZ/"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [176.9.242.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3766B14A0B7;
-	Mon, 29 Jul 2024 13:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458BC14EC5D
+	for <keyrings@vger.kernel.org>; Mon, 29 Jul 2024 13:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722261288; cv=none; b=FoFS8boOkbgNE3+2SQtz7w5LRjI92+cxgCCTQfBk0AIdsa3kHkkDskv03G+DwI5TAbEk8756Nt+KsQ7Mz7XeoVpqm5eU5mSHabVMehN4uIFr7iVcshFUSm8J+RofndpOGTC1OAlaRwUN/GDjJmW+DAbyhdHRDxVvjiQDKpI5ZlY=
+	t=1722261011; cv=none; b=d8a8KU7MDSUFiGR17M8en4xdxehRXHpJ729lO6xJtlTZt9GQFhZdEB68VB4deq8BYmNIEDGKbSSZrsvqnEjs/BFrEudQiWBj4hJvBMS6fex48/OZW+uvKqVjau487xm4h4T1t0HUHVCsPlUCTeJp1XhyvLO7pUZMVF9z0Zsi9I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722261288; c=relaxed/simple;
-	bh=mmMiCaan3yYLojE8j7BKR5C4fRKRSyRZ+VaJI9HwKXg=;
-	h=Message-ID:From:Date:Subject:To:Cc; b=B5KkfUweyAPSbpAOTZq9tcdlNL1L6wfi8IWm5quzyVCa6TpVlcT/RWJ2xhQIuRKucYyZ+s0L7OBdgjgt8TQ5WGdK/J2d667devQ1Mrfp0QXSDPWhDjcthg8c2w/tvWOF0HWzqBj2AwR6xEWVNnEeFgmR02AKRLXMn9f5boZRgHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=176.9.242.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by mailout3.hostsharing.net (Postfix) with ESMTPS id 0AEFC1007577C;
-	Mon, 29 Jul 2024 15:46:01 +0200 (CEST)
-Received: from localhost (unknown [89.246.108.87])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by h08.hostsharing.net (Postfix) with ESMTPSA id BB4EA62563B0;
-	Mon, 29 Jul 2024 15:46:00 +0200 (CEST)
-X-Mailbox-Line: From 73f2190e7254181f9ab7e9a3ec64cae56def8435 Mon Sep 17 00:00:00 2001
-Message-ID: <cover.1722260176.git.lukas@wunner.de>
-From: Lukas Wunner <lukas@wunner.de>
-Date: Mon, 29 Jul 2024 15:46:00 +0200
-Subject: [PATCH 0/5] Templatize ecdsa signature decoding
-To: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, Stefan Berger <stefanb@linux.ibm.com>
-Cc: David Howells <dhowells@redhat.com>, Vitaly Chikunov <vt@altlinux.org>, Tadeusz Struk <tstruk@gigaio.com>, Andrew Zaborowski <andrew.zaborowski@intel.com>, Saulo Alessandre <saulo.alessandre@tse.jus.br>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-crypto@vger.kernel.org, keyrings@vger.kernel.org
+	s=arc-20240116; t=1722261011; c=relaxed/simple;
+	bh=Q5uRKdexl1FWIgeaecl12wpeJjOcyl1fYNvfHXWGAkM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OJ0l2DTfpT4ljS1PiO3NS2ZVLgGMNRoCdvzLWfDlBlXzDjCctSESjbJHOLHbjQL1O/fY9dRbCiMClFZxZSot0zzpj7Obv5kmcmIkfhUXtoXGjajh30KlYDZwN9gy/q8ipWRIO6Q7XuxXvEoDjlgMQRsiJGBnVefXwjmH5ureZ5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4vseqjZ/; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5a28b61b880so12381a12.1
+        for <keyrings@vger.kernel.org>; Mon, 29 Jul 2024 06:50:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722261008; x=1722865808; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GDb5V1QphvVrrCYy2ir9gaKSY7i3HzlEt0UMjL3m1Wo=;
+        b=4vseqjZ/lvUgR5siBsVk0eC3FjzIgRIDmpFqz2Sx8iXB6fP+oWbdQQMyMvwjPRL1i9
+         zTOrFaUtbBxRkyL0kJ+vvGbuvwLIFz6IyNllJ/l9sHsTZgcdpUHhLNTmz4e1jGeLPRkF
+         bq8esFig8O0MAR5mgQuJPL5aCJby7JIJgubajRqQEmSxz3oSEKwjKbgkv4DOhAOA8UNQ
+         najn5YnFbqy0L4fv6O8vJu7NlZ4NjMqPlKfPK5/4pVImK6LLrmdEy9NS7VXMJvLYn1Em
+         Pb+ZqnUa6BmvK3OvtSsTrZDBKl+k0rLGtJ47zDggBJUk3tD2fOclqv2SO8PV1KTy9+g6
+         SzoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722261008; x=1722865808;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GDb5V1QphvVrrCYy2ir9gaKSY7i3HzlEt0UMjL3m1Wo=;
+        b=KLm6TaApSIfhtzQCz9K6TGZoyDrVhY0/VvceFOFiNXmoojYxKaHYJ8Td1qtUS0Bqfc
+         tKZjRCnxtW/7RhapY+VJToHoauJLdLPs3D/G4zQjQUmOpWLaHodtzOFbMPv4Sp+tNGfj
+         7Gd28h9O26bROtOuJxCnoS9tMCqkEODYLz0V0iwOj6NctnpYQwtOcpfSSdxDEbeQJHRG
+         OJDIcNhLi6SKdJ+sHE82B+AC7XR2AHC3EcRjOijXzfqlHYBIaNajdtF7F3RrIXkEehS0
+         GDs1NYrDRPTn/1d3sY2dS7WKxvFKuriVAOuN8VzWC4M/kVHSPb0saNq8i+Mdrt6cywFC
+         Z/5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCW/YO0DzHrhnpMiPcF6/ZjSxTCH3MUXUWsQNlbt2PryZGLklZtmRzw/ImKnRt+z6SoO8NpDLCxTHRffF9h7hy6WY5AvGOm1rK8=
+X-Gm-Message-State: AOJu0Yy92E3XEXS7x/5xFplvunfuGlofqCUWD9HAjg5crd19zXb987aa
+	kgG1dd1A67r5ElZrE2JYYip68IwaCuPqZ4ZXxNSafx9Etk4BcdpPvNOmi+yCtpKZfRea3j5Nj4a
+	wJVhca2zCV63IeowUSQ7qUqLhLTznUIS22evk
+X-Google-Smtp-Source: AGHT+IG+KGgrjitU74w+Wuh3bTE7G0peIlECTBGCgPXSxL/avmg0YQ1+aMUr2y6hMEsjbkLoM8BTilae4DsdRUeStuo=
+X-Received: by 2002:a05:6402:2694:b0:5a1:4658:cb98 with SMTP id
+ 4fb4d7f45d1cf-5aed459c474mr562712a12.0.1722261007675; Mon, 29 Jul 2024
+ 06:50:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20240729125846.1043211-1-mic@digikod.net>
+In-Reply-To: <20240729125846.1043211-1-mic@digikod.net>
+From: Jann Horn <jannh@google.com>
+Date: Mon, 29 Jul 2024 15:49:29 +0200
+Message-ID: <CAG48ez3DzxGMWN9GDhSqpHrDJnZDg2k=VEMD_DFiET5yDr07rw@mail.gmail.com>
+Subject: Re: [PATCH v1] keys: Restrict KEYCTL_SESSION_TO_PARENT according to ptrace_may_access()
+To: =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>
+Cc: David Howells <dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
+	James Morris <jmorris@namei.org>, Kees Cook <kees@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	keyrings@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Move X9.62 signature decoding out of the ecdsa driver and into a
-template (patch [4/5]).
+On Mon, Jul 29, 2024 at 2:59=E2=80=AFPM Micka=C3=ABl Sala=C3=BCn <mic@digik=
+od.net> wrote:
+> A process can modify its parent's credentials with
+> KEYCTL_SESSION_TO_PARENT when their EUID and EGID are the same.  This
+> doesn't take into account all possible access controls.
+>
+> Enforce the same access checks as for impersonating a process.
+>
+> The current credentials checks are untouch because they check against
+> EUID and EGID, whereas ptrace_may_access() checks against UID and GID.
 
-This allows introduction of P1363 signature decoding as another
-template (patch [5/5]), which is needed by the upcoming SPDM library
-(Security Protocol and Data Model) for PCI device authentication.
+FWIW, my understanding is that the intended usecase of
+KEYCTL_SESSION_TO_PARENT is that command-line tools (like "keyctl
+new_session" and "e4crypt new_session") want to be able to change the
+keyring of the parent process that spawned them (which I think is
+usually a shell?); and Yama LSM, which I think is fairly widely used
+at this point, by default prevents a child process from using
+PTRACE_MODE_ATTACH on its parent.
 
-Drop usage of sglists for signature verification and use kernel
-buffers instead (patch [2/5]) to avoid the overhead of extracting
-from sglists into kernel buffers both in the templates and in the
-ecdsa driver.  This builds on Herbert's elimination of sglists
-from the akcipher API with commit 63ba4d67594a ("KEYS: asymmetric:
-Use new crypto interface without scatterlists").
-
-I realize that P1363 support (patch [5/5]) might not be acceptable
-standalone, but I'm hoping to get an ack for it so that I may
-upstream the patch as part of PCI device authentication.
-Patches [1/5] to [4/5] will hopefully be acceptable standalone.
-
-Note that I've duplicated the ecdsa test vectors in their entirety
-in patch [4/5].  If that is considered overzealous, I can reduce
-them to one or a few for testing the "raw" internal encoding.
-In patch [5/5] I've included just a single test vector for P1363.
-I can add more if desired.
-
-Link to Herbert's suggestion to use templates for X9.62 and P1363:
-https://lore.kernel.org/all/ZoHXyGwRzVvYkcTP@gondor.apana.org.au/
-
-Link to PCI device authentication v2 patches:
-https://lore.kernel.org/all/cover.1719771133.git.lukas@wunner.de/
-
-Please review and test -- thank you!
-
-Lukas Wunner (5):
-  ASN.1: Add missing include <linux/types.h>
-  crypto: akcipher - Drop usage of sglists for verify op
-  crypto: ecdsa - Avoid signed integer overflow on signature decoding
-  crypto: ecdsa - Move X9.62 signature decoding into template
-  crypto: ecdsa - Support P1363 signature decoding
-
- crypto/Makefile                     |   4 +-
- crypto/akcipher.c                   |  11 +-
- crypto/asymmetric_keys/public_key.c |  43 +-
- crypto/ecdsa-p1363.c                | 155 +++++
- crypto/ecdsa-x962.c                 | 211 +++++++
- crypto/ecdsa.c                      | 122 ++--
- crypto/ecrdsa.c                     |  28 +-
- crypto/rsa-pkcs1pad.c               |  27 +-
- crypto/sig.c                        |  24 +-
- crypto/testmgr.c                    |  57 +-
- crypto/testmgr.h                    | 847 +++++++++++++++++++++++++++-
- include/crypto/akcipher.h           |  53 +-
- include/crypto/internal/ecc.h       |   2 +
- include/linux/asn1_decoder.h        |   1 +
- 14 files changed, 1391 insertions(+), 194 deletions(-)
- create mode 100644 crypto/ecdsa-p1363.c
- create mode 100644 crypto/ecdsa-x962.c
-
--- 
-2.43.0
-
+I think KEYCTL_SESSION_TO_PARENT is not a great design, but I'm not
+sure if we can improve it much without risking some breakage.
 
