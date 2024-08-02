@@ -1,138 +1,132 @@
-Return-Path: <keyrings+bounces-1853-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1854-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 754A8945E6D
-	for <lists+keyrings@lfdr.de>; Fri,  2 Aug 2024 15:13:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39DD09462CC
+	for <lists+keyrings@lfdr.de>; Fri,  2 Aug 2024 20:00:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A504F1C2120F
-	for <lists+keyrings@lfdr.de>; Fri,  2 Aug 2024 13:13:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D720E1F2151C
+	for <lists+keyrings@lfdr.de>; Fri,  2 Aug 2024 18:00:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6A11E3CDF;
-	Fri,  2 Aug 2024 13:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED51215C126;
+	Fri,  2 Aug 2024 17:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S1BTIsiQ"
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="GpcdaXBc"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468981E3CD5
-	for <keyrings@vger.kernel.org>; Fri,  2 Aug 2024 13:13:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722604404; cv=none; b=C/aB5ZRcaMZm2LnAYeWaEdHDanwPq4sBJnFwWaRRZ5UerNCowCeQAUEox2mC9D2TZ8kfIxmDUE51g9ZepbZoBVvE1H6prEz4HK4aBeA1UusQDpYSbp/NtGv1t9QhbxIbscMgUKIKmX9wdYotWT6dzQYHIMRUDB0nKwDzh1HUKMA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722604404; c=relaxed/simple;
-	bh=BwTpX4R7zkKwhLkBtH/hZIhBc3WcCtukHgkLY/3CyXg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R3RtWBlqj1El4ORpM1dKRJxcwZIoYFABDzVQp9gaaCeRQWfx1yYH6k4qsGgcKmuVG854uAgZS7VNb/1ePD4wrG2BOMShhmbodt4dE6DErT7XROYbiqRGXbl4YHa/gTr9WZsLOuLzqe3yLfyKQSXaWqyYLjajc6d+z+JJ1QETW3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S1BTIsiQ; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5a18a5dbb23so50944a12.1
-        for <keyrings@vger.kernel.org>; Fri, 02 Aug 2024 06:13:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722604402; x=1723209202; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y1lsq1MbHixArH6n0xuStRjT/KO7g8bnFRsAbnZpGsc=;
-        b=S1BTIsiQu2+g9uCop3KOzEhU9ET8TDRf7tdg6HXU+ydnzfUnhMNWpRlYCFRp+h+gHJ
-         VGJ1Fk3jhweevDoKmMWqzQ3fpehZwyClv07VnNaBH51ffWZdbhjf9KniIgeyWILBnXO2
-         HZ0JZ96BSTID90wmaroPV/mujRMZpc+UnEMaCi5yHoN4Icnln7CcOdCHCwZ62QGoGdlo
-         yAR5+qxn+NSNDe7r7LYG5RwRYVxOJC6pk6nsLk/PTj3PDfCN+sIt/ndyqJ86fafgQgry
-         lSPmXGZV/jIy9G6lgMDpynJ9Jl6hMIJf1y3QtTUlncTNb4WN9KLAzm51yMDqeHw5Aro5
-         9umQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722604402; x=1723209202;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=y1lsq1MbHixArH6n0xuStRjT/KO7g8bnFRsAbnZpGsc=;
-        b=wmfc/l+Mp1Ov9xotwI7g5437dII/ybeNoonHED0CfdJKhrqAVuKDjMQ714CqFuhkqa
-         0cXG8VN+rIbQ9H0h75XSwEINbHT/36BHPV/NEE+FGEe4kePGjIDyZNr1AQ4iXy5+2wIe
-         W4BQXbkcNLWE84MJAWtyP5nuwpTD1cuBi2D6ZDb43OotgtGZImryaLbADyqdhlUHg39H
-         jx6LmgRfPxugoCKetvjWbky0MlRPBNopqYRszWqkiQzTIZMu84Jm+ZJzm9Hdbu9KNqZk
-         7EvOykQmG83yV/nTFAVZSN6Y84lCfKkmSCLFvwLfbBrhRpo6G794w0w28zPPzTWuCJDs
-         EI7w==
-X-Forwarded-Encrypted: i=1; AJvYcCXLF78NP9CKBnHBbmTNBvt9nJob9FzoLPd8EVbMUlYyh5EI2/BCOWszyEkq7Y+XhtIJd7QranMdUrbH7qEtTACsy0gXcu4ykM4=
-X-Gm-Message-State: AOJu0YwcZlSRDIwZqNpC0OUecVxP0ugSGnMEyzdweJkNn5xM+zqyXnsW
-	ma98uWe65MQGdfqSjFFpyQF3EzchOF77TrHf4m1bisUreQFxVabVyc0EC7Pd621eh5Mw9y2VU1h
-	VutMDN3aPVWJm6mN+XrcPN+Y7qWWdo+7fww4A
-X-Google-Smtp-Source: AGHT+IFYTrXmYI0k6b24zjW3CqG747URvtVJaY0p2tHnlsWe90ww1rp4IvxsCnMquQC7lV9N8ZofPfYaGnlnTfzCud4=
-X-Received: by 2002:a05:6402:268d:b0:57d:436b:68d6 with SMTP id
- 4fb4d7f45d1cf-5b870f72be0mr116158a12.7.1722604401009; Fri, 02 Aug 2024
- 06:13:21 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3861AE021;
+	Fri,  2 Aug 2024 17:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722621598; cv=pass; b=cUK9mrHD24KlzSMGhW2RAt6YK3urG4YYN1mlpts4NSRyYrtmXznQxAQ4fgDIn2A/gL96bFsXsPANb7dJG/hu+iJyrYminoaJwknkw1YWh3KtmVJkj+M+vw1vbZFabnEUhOCqek1mbCUiuk0AWPab8/pcLZByr03WEZ29071FL/Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722621598; c=relaxed/simple;
+	bh=me/Eakw+xTK6kHsTdcjNAkhbWagQTE8xh0qLAPaNdcA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=AVWd1hVGVPkDjuBMgvwdRoQbRP/8hrRP5EjtjPs1XBu/7xKySsBPRJxMnyc7ATBrAd0VPECKV6l6styLyOve00oBrKx6m3V8c8Cpx40k54IFt5ZaQ1bpQOq/ORmYlTcEhXa6yU9kdpwRoKn62fLP3JKPgjAAzALcAqV/OdaSjE4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=GpcdaXBc; arc=pass smtp.client-ip=185.185.170.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+Received: from localhost (91-154-92-171.elisa-laajakaista.fi [91.154.92.171])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sakkinen)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4WbDBK137Jz49Pv3;
+	Fri,  2 Aug 2024 20:59:52 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1722621594;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZNM1tIAU+W7tXSnmO+P1QhSHHf1UVmkplkL+yg4Ty4o=;
+	b=GpcdaXBcYG65Kefw0GsK3uFYOnXU9vripZihswZqWkx8W6uiBJh2uI8O3d4S9q+0HmajNM
+	ThrZ85Q5l7HRAfOOUU8YGw9RxP9EK9lS3ryWDpi+erHO5z88m+ntPQKDgpeMehtwV1W90f
+	6r9AjkQmq7YSqj7SvWEu7G8X5hvCnARS3e2WDeY/MUYGzT4fQxMvFjwd35OjW/hQW+CmLL
+	9CIa3tixYzYYOtculUovueFU2svtIqd7Bmlm9xi2Mk5NcBy7sPIDiNqazPlmsMs9h7VXwo
+	0FBrkonObzxJJXqIhJjgH5o0tB3wnSmgenPKL6eVIz8fzQErCk4CDo9vuYEHDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=lahtoruutu; t=1722621594;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZNM1tIAU+W7tXSnmO+P1QhSHHf1UVmkplkL+yg4Ty4o=;
+	b=As1ySAIaKTGHO0t/zcxq8nLqRbgFf+JTpS9oDykaRaoTxJ7DQM5n0IV5/t4Ia38Nfc8est
+	K9i8PuUdWzr9gwg1sMNCVjnX6OGNKkKE4k39NFQ0uL8AuIL1pqQbRObtx8iGUpv807kvUK
+	wyIfo8iqAu7BMD6EsLPFhoV/AZYyE+OJU7d+gR42on5jwgpVGZ8BXu4pbe0iLvV0Z/24gG
+	x60wcS8pegiiLqxCQEJYZdM7TNpfUsIzpmUUTFbRW6DtNbQVSMgJpe0eA5ExVI6hQogwuO
+	T6qz5r1w+CJ98IICxXWPh2Li6ovmlh2st7kp+pnbap1RaNmvs2vSFKYz8ALg9Q==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=sakkinen smtp.mailfrom=jarkko.sakkinen@iki.fi
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1722621594; a=rsa-sha256;
+	cv=none;
+	b=m+30M7KLmUT8wKUotCOET3JH1cy82jjb3cB3RoaKTs6wWIntwNKi46SHhZ0vzjQLD4I0tM
+	UjfscsnW5FN6AVrOIyQ488QQCrw9gQbvda1kljUHQyqjSXqRmjAa1F/9f7sCcMNsPc9esr
+	5Fa8VBDekGmdNPxeFdf1eODcVMgNhj/I7mWz9rz1bdL9aJ4yx1C/WST/j4KU5BYEd0LOmq
+	pY35Ihcl/sqgvzQOQiptUSXLes2p5hyn7isfT3+ZKSWyZ89i1H82L4CrorMjtyFNqrQXkV
+	bGVvSQcmsAiWaRwlYWDk5pVLOCdR1n4bi01/4FTYIx/4V22oeKeULeDuQ04sag==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240729125846.1043211-1-mic@digikod.net> <CAG48ez3DzxGMWN9GDhSqpHrDJnZDg2k=VEMD_DFiET5yDr07rw@mail.gmail.com>
- <20240729.cho6saegoHei@digikod.net> <CAG48ez1=xbGd8az4+iNJ_v1z4McMN8dsvWff-PH=ozLYnbzPqg@mail.gmail.com>
- <20240729.rayi3Chi9aef@digikod.net> <CAG48ez2HdeKXwwiCck9cvcoS1ZhbGD8Qs2DzV7F6W_6=fSgK5Q@mail.gmail.com>
- <20240729.roSo6soogho8@digikod.net> <CAHC9VhRmZOMLwY4AvV+96WU3jyqMt6jX5sRKAos75OjWDo-NvA@mail.gmail.com>
- <CAG48ez2bnvuX8i-D=5DxmfzEOKTWAf-DkgQq6aNC4WzSGoEGHg@mail.gmail.com>
- <CAHC9VhTk4X61K72FubR8ahNeGyzWKkF=vJZD+k-8+xO7RwZpgg@mail.gmail.com> <CAG48ez0RVMpMY2vfWqrCDYjFj7zZx5HCP+h-EaeNW1-0_EU0mg@mail.gmail.com>
-In-Reply-To: <CAG48ez0RVMpMY2vfWqrCDYjFj7zZx5HCP+h-EaeNW1-0_EU0mg@mail.gmail.com>
-From: Jann Horn <jannh@google.com>
-Date: Fri, 2 Aug 2024 15:12:43 +0200
-Message-ID: <CAG48ez2TVGzqS4RPSLJpLEsuqEPsxKfy+CoamGBD-1L8sWSAQQ@mail.gmail.com>
-Subject: Re: [PATCH v1] keys: Restrict KEYCTL_SESSION_TO_PARENT according to ptrace_may_access()
-To: Paul Moore <paul@paul-moore.com>
-Cc: =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
-	David Howells <dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
-	James Morris <jmorris@namei.org>, Kees Cook <kees@kernel.org>, keyrings@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 02 Aug 2024 20:59:51 +0300
+Message-Id: <D35ME25EZWYG.2G7BARLXC4UOO@iki.fi>
+To: "Herbert Xu" <herbert@gondor.apana.org.au>, "Jan Stancek"
+ <jstancek@redhat.com>
+Cc: <dhowells@redhat.com>, <dwmw2@infradead.org>,
+ <keyrings@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Jarkko
+ Sakkinen" <jarkko@kernel.org>
+Subject: Re: [PATCH 0/3] sign-file,extract-cert: switch to PROVIDER API for
+ OpenSSL >= 3.0
+From: "Jarkko Sakkinen" <jarkko.sakkinen@iki.fi>
+X-Mailer: aerc 0.17.0
+References: <cover.1720728319.git.jstancek@redhat.com>
+ <Zqzarrjxrt8A5QE2@gondor.apana.org.au>
+In-Reply-To: <Zqzarrjxrt8A5QE2@gondor.apana.org.au>
 
-On Wed, Jul 31, 2024 at 11:33=E2=80=AFPM Jann Horn <jannh@google.com> wrote=
-:
-> On Wed, Jul 31, 2024 at 11:27=E2=80=AFPM Paul Moore <paul@paul-moore.com>=
- wrote:
-> > On Wed, Jul 31, 2024 at 4:54=E2=80=AFPM Jann Horn <jannh@google.com> wr=
-ote:
-> > > FYI: Those checks, including the hook that formerly existed there, ar=
-e
-> > > (somewhat necessarily) racy wrt concurrent security context changes o=
-f
-> > > the parent because they come before asynchronous work is posted to th=
-e
-> > > parent to do the keyring update.
-> >
-> > I was wondering about something similar while looking at
-> > keyctl_session_to_parent(), aren't all of the parent's cred checks
-> > here racy?
+On Fri Aug 2, 2024 at 4:10 PM EEST, Herbert Xu wrote:
+> On Fri, Jul 12, 2024 at 09:11:13AM +0200, Jan Stancek wrote:
+> > The ENGINE interface has its limitations and it has been superseded
+> > by the PROVIDER API, it is deprecated in OpenSSL version 3.0.
+> > Some distros have started removing it from header files.
+> >=20
+> > Update sign-file and extract-cert to use PROVIDER API for OpenSSL Major=
+ >=3D 3.
+> >=20
+> > Tested on F39 with openssl-3.1.1, pkcs11-provider-0.5-2, openssl-pkcs11=
+-0.4.12-4
+> > and softhsm-2.6.1-5 by using same key/cert as PEM and PKCS11 and compar=
+ing that
+> > the result is identical.
+> >=20
+> > Jan Stancek (3):
+> >   sign-file,extract-cert: move common SSL helper functions to a header
+> >   sign-file,extract-cert: avoid using deprecated ERR_get_error_line()
+> >   sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >=3D 3
+> >=20
+> >  MAINTAINERS          |   1 +
+> >  certs/Makefile       |   2 +-
+> >  certs/extract-cert.c | 138 +++++++++++++++++++++++--------------------
+> >  scripts/sign-file.c  | 134 +++++++++++++++++++++--------------------
+> >  scripts/ssl-common.h |  32 ++++++++++
+> >  5 files changed, 178 insertions(+), 129 deletions(-)
+> >  create mode 100644 scripts/ssl-common.h
 >
-> Yeah...
->
-> > > In theory we could make them synchronous if we have the child wait fo=
-r
-> > > the parent to enter task work... actually, with that we could probabl=
-y
-> > > get rid of the whole cred_transfer hack and have the parent do
-> > > prepare_creds() and commit_creds() normally, and propagate any errors
-> > > back to the child, as long as we don't create any deadlocks with
-> > > this...
-> >
-> > Assuming that no problems are caused by waiting on the parent, this
-> > might be the best approach.  Should we also move, or duplicate, the
-> > cred checks into the parent's context to avoid any races?
->
-> Yeah, I think that'd probably be a reasonable way to do it. Post task
-> work to the parent, wait for the task work to finish (with an
-> interruptible sleep that cancels the work item on EINTR), and then do
-> the checks and stuff in the parent. I guess whether we should also do
-> racy checks in the child before that depends on whether we're worried
-> about a child without the necessary permissions being able to cause
-> spurious syscall restarts in the parent...
+> Adding Cc to Jarkko Sakkinen <jarkko@kernel.org>.
 
-I hacked up an RFC patch for this approach:
-https://lore.kernel.org/r/20240802-remove-cred-transfer-v1-1-b3fef1ef2ade@g=
-oogle.com
+I can download this but is it likely that there will be v2? If so,
+I'll hoold on for that. If not, I'll download it.
+
+BR, Jarkko
 
