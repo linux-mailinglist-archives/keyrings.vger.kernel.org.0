@@ -1,224 +1,153 @@
-Return-Path: <keyrings+bounces-1857-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1858-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D18D294634B
-	for <lists+keyrings@lfdr.de>; Fri,  2 Aug 2024 20:40:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC6FC946426
+	for <lists+keyrings@lfdr.de>; Fri,  2 Aug 2024 21:54:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00CFA1C21530
-	for <lists+keyrings@lfdr.de>; Fri,  2 Aug 2024 18:40:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88695283B84
+	for <lists+keyrings@lfdr.de>; Fri,  2 Aug 2024 19:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E124847F64;
-	Fri,  2 Aug 2024 18:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9784D8A1;
+	Fri,  2 Aug 2024 19:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I6OCsT/U"
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="Sh0sCuER"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED43A13633A
-	for <keyrings@vger.kernel.org>; Fri,  2 Aug 2024 18:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722624038; cv=none; b=DIuxBgz7kbIXiCYLskPM9+n4jk+7zV9kTYjdnsXMVZOuQP64SK0Bt5PrigPJG2mxPTwzy550i5s/K73EqZv5/7F8CAABBbagEDGeI72+8nswMHRcFvihW0ORP6VzEsQHPp2NlX+Ekf4NQc/qII/RQ9Ks+JIuI3ip+3CrWPo7Sg4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722624038; c=relaxed/simple;
-	bh=bBk8dbvdFkgHztIsamj9A6yqrnV8rALDYulS6Vq771U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=D8bxMhHxRD65K6vQ4aYmQJaSxc49WNSTC5boadBEqgB+6uknE418bR7YShrn/I9aTjbKojVGAEleQ+fSKhL3JibwfUh+qBq7ghm0NRJ8P1RRNPU/dlF4Ock2PnKbhZ+2ZOkelNxyBnX3w0BodzMmiJe8JSr6HQ7Jzg+SK0tRNRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I6OCsT/U; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5a28b61b880so57207a12.1
-        for <keyrings@vger.kernel.org>; Fri, 02 Aug 2024 11:40:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722624035; x=1723228835; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MvGo9T3eyBjc8RzJ3B/6nw2VwxThF3mQa//XCX7dSjQ=;
-        b=I6OCsT/URFAZ39H4tJIQ9D+FnQIkN0EAEqXhna1AdaqoY74lPfeKAC0DZk2lD9lTSj
-         EZvbiynJSIRNGJwCKfS/sWo2cMkCXLcamrh4MJ1ByL9to5E3vLRgPXQpch1lIZOUZxya
-         vNvsBiEeY+yeARIVbELqX8QWDA9uOYBzaLlhdEa8igAowvG84gh5yjFEnDZftlbCLnxI
-         QrTAIwl9k3SXnEvBYDmETQ8hvlJlAvvOW7he6R83GMBNYXLU6K+DczdlP42bVebJl9Au
-         LEmpvg17Hv8K60htRgWcrJHKbvcS3RRVb61J2PYaniDSuoOZGDJ7TWTto3RNXgKnsM6z
-         yEQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722624035; x=1723228835;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MvGo9T3eyBjc8RzJ3B/6nw2VwxThF3mQa//XCX7dSjQ=;
-        b=udp+IuPBIaUJN0OhcxF74pERc9/dGnwB2hL98096x4uZTYrpNru8nS2o0FCV12LjVX
-         ANPrMaeNTAgF/5sptsSFY2rbZxSfh6wFN8hf+M11ZxYq+1zg2pqV+FKQ9cUEiQf3RXSo
-         UQU44RFPIG4vD+bRZkUtYjl7D3+b7/F2Z3jLADMOk2dDQivVc6SasjrKJbonIbbkKfLA
-         0efy0Wao+z6AE5GdKH+Bdk1UZw910YfmUie+x8DB2fXf9sgsPcOBBhCE7IXd7sRe7q1+
-         AGfJs8vAWGiIBeBd40B6J+/AdlSLPWdrFqIOrUNj1rwsr05W7elxo9bLjcifd7EBLEhX
-         NBdA==
-X-Forwarded-Encrypted: i=1; AJvYcCUYMAyrlANOhFaxZtlbJCOO4AUV7JVExyFGIj8CUxT2G11ANLU9oaYj7CMFXhAHUEXWFeTw7U6k/njM1BCJ3fmKZRFVJiZS+IA=
-X-Gm-Message-State: AOJu0YxTv3ZIXlHqfCspYoOsBWrDvhz4hog1uYeLpBwC3DtU2GFZBU5q
-	LOEwiXL3kvQexKq6B/FIO/tLABnKr8xovSgzaGvpEyJUqyOqgG5P/NlpZGSPJ6pmBnD9IqNqFOA
-	EtJAx66SyKvUobrTHcVNpqFEMi1j7jDYhSi/a
-X-Google-Smtp-Source: AGHT+IE6a715lvD7e7H+jRBC/YC4Qmp0ZvYcNq+Z2J6Y52jOrAYsO1CDkNEmQVXxr6y4yqKqUpa8HB00+hEb3yiQVGc=
-X-Received: by 2002:a05:6402:51cb:b0:5b8:ccae:a8b8 with SMTP id
- 4fb4d7f45d1cf-5b99e0a517emr10054a12.3.1722624034462; Fri, 02 Aug 2024
- 11:40:34 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2800B6D1B9;
+	Fri,  2 Aug 2024 19:54:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722628461; cv=pass; b=YeA8jeQT9ZCYSHAsnsADoqtMWlMPBj5/CbyYWXv2AD3AMTM4K4yJYtgMsJ1Whkj+54g0JOyy/GUmIA+besyWGqS0yzYK6aibMW+0BCVdJMVxP6dLKET3x8xXUJz9BoNI47IvKfcOkNq9S84ACLJ9/aVawARagOKpHY40wo0etzk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722628461; c=relaxed/simple;
+	bh=iT6acgNgd5/PO8a0CzUf8rxOToX4TX3THEx4k2TYdF4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=dFVZ94UQ6/r8f1+/bL8Ys9YIntDUUQg40f/alak6sLlpvaWAGragwvy4r7AdthfY1BG1ZNZhvTTG2TsyDt285z6jcscrlHP70IISdRNgoOazyw2BgCVFx3NuLuzWoHKE/0iGDwIteaP9XS3kF7c/DLw3/oRXEyAM7QH6mAtKEr0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=Sh0sCuER; arc=pass smtp.client-ip=185.185.170.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+Received: from localhost (91-154-92-171.elisa-laajakaista.fi [91.154.92.171])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sakkinen)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4WbGkH2ptWz49Pv3;
+	Fri,  2 Aug 2024 22:54:15 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1722628455;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hHK97y9FZ+Wa9pnrK8vjYPO/mSFFDETpIessOb3b9EM=;
+	b=Sh0sCuERVfrbUKTYfjCYMrLOzOYh/umSCrSa5pigKk8oR33PPpo3Py6wZ968br81L6L+5T
+	Wo/Exp5q9+85t1fzsyZomHHjkal8NOqb6FntbpQiQX1Ry6QMTSOIW+iHY9BbNQu2znaAof
+	iUhUz9OGtCenDtfuJuQSvXtWuT8Vr+x1QxH2PbGtT1C7NY/Nq824js2YQlJf7xXKFXt96e
+	k+tpn2Q6qSlIf2mO6lUU82r7kfMEWRocYajHVfVkp7aWLOVECCOxelhyXE2WT5KAisZtM6
+	9mBg0h74fCP66OIWFnMn1td9AFWGyr3nJLVLBZBYylNZB3AC40nAlbZa3L6DGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=lahtoruutu; t=1722628455;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hHK97y9FZ+Wa9pnrK8vjYPO/mSFFDETpIessOb3b9EM=;
+	b=PA6pkgix2YVjOnnZFSK4TZPIKG5IjKAv82FXVcZWW8zS2bttDSiiH/AY8h0wB5RJyx38nX
+	TzO1jlKX566ovAqZ5ph/6pUMzY6CJpaYSXLG936z/Lci0LbrsEj5vM/lifLsCPcv1J0piF
+	Ctf3AzmvDsGjiHV3Ca/JKvWGwRtE1sQpEU8RCijclvkxTSKFGXeogzZU/xho3ZOEIkTYYn
+	lMoEuWVFXmQijMgIRDScKSHFEFvbp3Evv1ClHLmFxgCK6LSNY8DT8rvSYoD+8NscLCLLy7
+	Eoj9/78CN6kakxyPXuqhIw+vS24WTt2N9U9bEcbQGvghWXpDNIU1FC8BKhJJ9g==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=sakkinen smtp.mailfrom=jarkko.sakkinen@iki.fi
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1722628455; a=rsa-sha256;
+	cv=none;
+	b=vRI294C/zi2YRZKmvULdE3RnQ8exFQuO6c0aPrdBGvrdZeLY9hddxuoP2mgsDeIuXJW+Jt
+	mfclQGqaT40Hgljn5zZnaJ2gHzI5Ms4avE+fw31bvqJm6fMHSX1vFlAHVrvUo2+DSoUKKB
+	aImMaslpyhLJ/4dO5otlGnEwE7fUgvRhk16YMofk7uPj4IXsnVIQtgbV9XeEc40FrXVwk/
+	toOIe51UYw3JYLUXg8lCJw1+xuzmouieEa3DlMEqtedkp4XUlG64eOwt4oP/HJLxIsymyQ
+	Uy9gvxrzw9JL7ziQ2c0F1x01yHNvVhFypse+UgP3WEzy1M3Vo9s7aAu3CTiliQ==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240802-remove-cred-transfer-v1-1-b3fef1ef2ade@google.com> <D35ML45KMWK8.1E29IC0VZO4CL@iki.fi>
-In-Reply-To: <D35ML45KMWK8.1E29IC0VZO4CL@iki.fi>
-From: Jann Horn <jannh@google.com>
-Date: Fri, 2 Aug 2024 20:39:56 +0200
-Message-ID: <CAG48ez1GFY5H1ujaDfcj-Ay5_Pm8MsBVL=vU4tEynXgzg5yduQ@mail.gmail.com>
-Subject: Re: [PATCH RFC] security/KEYS: get rid of cred_alloc_blank and cred_transfer
-To: Jarkko Sakkinen <jarkko.sakkinen@iki.fi>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, John Johansen <john.johansen@canonical.com>, 
-	David Howells <dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
-	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
-	Casey Schaufler <casey@schaufler-ca.com>, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, apparmor@lists.ubuntu.com, 
-	keyrings@vger.kernel.org, selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 02 Aug 2024 22:54:14 +0300
+Message-Id: <D35OTMURG4E8.36GJXFQM6JR5C@iki.fi>
+Cc: "Herbert Xu" <herbert@gondor.apana.org.au>, <dhowells@redhat.com>,
+ <dwmw2@infradead.org>, <keyrings@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, "Jarkko Sakkinen" <jarkko@kernel.org>
+Subject: Re: [PATCH 0/3] sign-file,extract-cert: switch to PROVIDER API for
+ OpenSSL >= 3.0
+From: "Jarkko Sakkinen" <jarkko.sakkinen@iki.fi>
+To: "Jan Stancek" <jstancek@redhat.com>
+X-Mailer: aerc 0.17.0
+References: <cover.1720728319.git.jstancek@redhat.com>
+ <Zqzarrjxrt8A5QE2@gondor.apana.org.au> <D35ME25EZWYG.2G7BARLXC4UOO@iki.fi>
+ <CAASaF6zA4MDZ-jW8OCp6WrrKD_QkxFrA5CUCtZV8JzyXdr9Orw@mail.gmail.com>
+In-Reply-To: <CAASaF6zA4MDZ-jW8OCp6WrrKD_QkxFrA5CUCtZV8JzyXdr9Orw@mail.gmail.com>
 
-On Fri, Aug 2, 2024 at 8:09=E2=80=AFPM Jarkko Sakkinen <jarkko.sakkinen@iki=
-.fi> wrote:
-> On Fri Aug 2, 2024 at 4:10 PM EEST, Jann Horn wrote:
-> > cred_alloc_blank and cred_transfer were only necessary so that keyctl c=
-an
-> > allocate creds in the child and then asynchronously have the parent fil=
-l
-> > them in and apply them.
+On Fri Aug 2, 2024 at 9:27 PM EEST, Jan Stancek wrote:
+> On Fri, Aug 2, 2024 at 8:07=E2=80=AFPM Jarkko Sakkinen <jarkko.sakkinen@i=
+ki.fi> wrote:
 > >
-> > Get rid of them by letting the child synchronously wait for the task wo=
-rk
-> > executing in the parent's context. This way, any errors that happen in =
-the
-> > task work can be plumbed back into the syscall return value in the chil=
-d.
-> >
-> > Note that this requires using TWA_SIGNAL instead of TWA_RESUME, so the
-> > parent might observe some spurious -EGAIN syscall returns or such; but =
-the
-> > parent likely anyway has to be ready to deal with the side effects of
-> > receiving signals (since it'll probably get SIGCHLD when the child dies=
-),
-> > so that probably isn't an issue.
-> >
-> > Signed-off-by: Jann Horn <jannh@google.com>
-> > ---
-> > This is a quickly hacked up demo of the approach I proposed at
-> > <https://lore.kernel.org/all/CAG48ez2bnvuX8i-D=3D5DxmfzEOKTWAf-DkgQq6aN=
-C4WzSGoEGHg@mail.gmail.com/>
-> > to get rid of the cred_transfer stuff. Diffstat looks like this:
-> >
-> >  include/linux/cred.h          |   1 -
-> >  include/linux/lsm_hook_defs.h |   3 ---
-> >  include/linux/security.h      |  12 ------------
-> >  kernel/cred.c                 |  23 -----------------------
-> >  security/apparmor/lsm.c       |  19 -------------------
-> >  security/keys/internal.h      |   8 ++++++++
-> >  security/keys/keyctl.c        | 100 ++++++++++++++++++++++++++--------=
-------------------------------------------------------------------
-> >  security/keys/process_keys.c  |  86 ++++++++++++++++++++++++++++++++++=
-++++++++++++----------------------------------------
-> >  security/landlock/cred.c      |  11 ++---------
-> >  security/security.c           |  35 ----------------------------------=
--
-> >  security/selinux/hooks.c      |  12 ------------
-> >  security/smack/smack_lsm.c    |  32 --------------------------------
-> >  12 files changed, 82 insertions(+), 260 deletions(-)
-> >
-> > What do you think? Synchronously waiting for task work is a bit ugly,
-> > but at least this condenses the uglyness in the keys subsystem instead
-> > of making the rest of the security subsystem deal with this stuff.
->
-> Why does synchronously waiting is ugly? Not sarcasm, I genuineily
-> interested of breaking that down in smaller pieces.
->
-> E.g. what disadvantages would be there from your point of view?
->
-> Only trying to form a common picture, that's all.
-
-Two things:
-
-1. It means we have to send a pseudo-signal to the parent, to get the
-parent to bail out into signal handling context, which can lead to
-extra spurious -EGAIN in the parent. I think this is probably fine
-since _most_ parent processes will already expect to handle SIGCHLD
-signals...
-
-2. If the parent is blocked on some other killable wait, we won't be
-able to make progress - so in particular, if the parent was using a
-killable wait to wait for the child to leave its syscall, userspace
-=E1=BA=81ould deadlock (in a way that could be resolved by SIGKILLing one o=
-f
-the processes). Actually, I think that might happen if the parent uses
-ptrace() with sufficiently bad timing? We could avoid the issue by
-doing an interruptible wait instead of a killable one, but then that
-might confuse userspace callers of the keyctl() if they get an
--EINTR...
-I guess the way to do this cleanly is to use an interruptible wait and
-return -ERESTARTNOINTR if it gets interrupted?
-
-> > Another approach to simplify things further would be to try to move
-> > the session keyring out of the creds entirely and just let the child
-> > update it directly with appropriate locking, but I don't know enough
-> > about the keys subsystem to know if that would maybe break stuff
-> > that relies on override_creds() also overriding the keyrings, or
-> > something like that.
-> > ---
-> >  include/linux/cred.h          |   1 -
-> >  include/linux/lsm_hook_defs.h |   3 --
-> >  include/linux/security.h      |  12 -----
-> >  kernel/cred.c                 |  23 ----------
-> >  security/apparmor/lsm.c       |  19 --------
-> >  security/keys/internal.h      |   8 ++++
-> >  security/keys/keyctl.c        | 100 +++++++++++-----------------------=
---------
-> >  security/keys/process_keys.c  |  86 +++++++++++++++++++---------------=
+> > On Fri Aug 2, 2024 at 4:10 PM EEST, Herbert Xu wrote:
+> > > On Fri, Jul 12, 2024 at 09:11:13AM +0200, Jan Stancek wrote:
+> > > > The ENGINE interface has its limitations and it has been superseded
+> > > > by the PROVIDER API, it is deprecated in OpenSSL version 3.0.
+> > > > Some distros have started removing it from header files.
+> > > >
+> > > > Update sign-file and extract-cert to use PROVIDER API for OpenSSL M=
+ajor >=3D 3.
+> > > >
+> > > > Tested on F39 with openssl-3.1.1, pkcs11-provider-0.5-2, openssl-pk=
+cs11-0.4.12-4
+> > > > and softhsm-2.6.1-5 by using same key/cert as PEM and PKCS11 and co=
+mparing that
+> > > > the result is identical.
+> > > >
+> > > > Jan Stancek (3):
+> > > >   sign-file,extract-cert: move common SSL helper functions to a hea=
+der
+> > > >   sign-file,extract-cert: avoid using deprecated ERR_get_error_line=
+()
+> > > >   sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >=
+=3D 3
+> > > >
+> > > >  MAINTAINERS          |   1 +
+> > > >  certs/Makefile       |   2 +-
+> > > >  certs/extract-cert.c | 138 +++++++++++++++++++++++----------------=
+----
+> > > >  scripts/sign-file.c  | 134 +++++++++++++++++++++------------------=
 --
-> >  security/landlock/cred.c      |  11 +----
-> >  security/security.c           |  35 ---------------
-> >  security/selinux/hooks.c      |  12 -----
-> >  security/smack/smack_lsm.c    |  32 --------------
-> >  12 files changed, 82 insertions(+), 260 deletions(-)
+> > > >  scripts/ssl-common.h |  32 ++++++++++
+> > > >  5 files changed, 178 insertions(+), 129 deletions(-)
+> > > >  create mode 100644 scripts/ssl-common.h
+> > >
+> > > Adding Cc to Jarkko Sakkinen <jarkko@kernel.org>.
+> >
+> > I can download this but is it likely that there will be v2? If so,
+> > I'll hoold on for that. If not, I'll download it.
 >
-> Given the large patch size:
->
-> 1. If it is impossible to split some meaningful patches, i.e. patches
->    that transform kernel tree from working state to another, I can
->    cope with this.
-> 2. Even for small chunks that can be split into their own logical
->    pieces: please do that. Helps to review the main gist later on.
+> Noone requested any changes to v1 so far, so if you can have a look,
+> it would be much appreciated.
 
-There are basically two parts to this, it could be split up nicely into the=
-se:
+OK that is totally fine! I'm just prioritizing and postponing stuff
+that I can (WHEN it makes sense pragmatically)  to get back in the=20
+phase ;-)
 
-1. refactor code in security/keys/
-2. rip out all the code that is now unused (as you can see in the
-diffstat, basically everything outside security/keys/ is purely
-removals)
+I take a look at this next week.
 
-[...]
-> Not going through everything but can we e.g. make a separe SMACK patch
-> prepending?
+> Thanks,
+> Jan
 
-I wouldn't want to split it up further: As long as the cred_transfer
-mechanism and LSM hook still exist, all the LSMs that currently have
-implementations of it should also still implement it.
-
-But I think if patch 2/2 is just ripping out unused infrastructure
-across the tree, that should be sufficiently reviewable? (Or we could
-split it up into ripping out one individual helper per patch, but IDK,
-that doesn't seem to me like it adds much reviewability.)
+BR, Jarkko
 
