@@ -1,76 +1,76 @@
-Return-Path: <keyrings+bounces-1863-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1864-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70AEF947AA0
-	for <lists+keyrings@lfdr.de>; Mon,  5 Aug 2024 13:54:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7DD947AA7
+	for <lists+keyrings@lfdr.de>; Mon,  5 Aug 2024 13:55:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7898B21E63
-	for <lists+keyrings@lfdr.de>; Mon,  5 Aug 2024 11:54:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E8E91C2120D
+	for <lists+keyrings@lfdr.de>; Mon,  5 Aug 2024 11:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D00156C67;
-	Mon,  5 Aug 2024 11:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F103E156997;
+	Mon,  5 Aug 2024 11:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F+kOkJoA"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SMoJ3rd+"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F9F155CB2
-	for <keyrings@vger.kernel.org>; Mon,  5 Aug 2024 11:54:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7380156960
+	for <keyrings@vger.kernel.org>; Mon,  5 Aug 2024 11:54:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722858883; cv=none; b=XfGQzJff00S5PDQvqfwRU3MlVI44g08+qxs4WiQfIJZtKAs6Zu0N+yll+Rdo+Wr3Ov2IlLfpgYkHTZLVkox+zbsf7ungjsGg3uHPzU2p+JQl74IyzD9XeY0CC15I4lsfiZerrqm4x8S++6kmrftUp2felYRWmK3IhYsz4rAHzP8=
+	t=1722858884; cv=none; b=nHL5zpOI66fdct7CaNzM7qdCxdBWYYFraijDFwQTKPdeKq21sp0JxsnPu+XGAbBlXh2Qycl/Vl9mpk1TTOBFXvSlTkkdOW42erVnUtcGNHlEMQexgSFi/YMkxqiO7gORFzpVZOKH4EfBRsTsJ1UN87YyZlH7ZIpaWTksMMDHSMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722858883; c=relaxed/simple;
-	bh=Re7tlwQwkReWAxTPm//VWabZ0bUWqQj6ogEK+qQNCnA=;
+	s=arc-20240116; t=1722858884; c=relaxed/simple;
+	bh=4nc01cQfuB5ACezmUV6BHy3ON8aK7aPel4CWRgHU0QY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NCgUnGxSJTQosBYrS/vZodg+E7ZxjHkHOJRiBRQMfs6xmPOSZI11etKDOGPLZPiXenZRSl1nKYEooTb3AFlbhGRIwU8XG+5pvhAy9xlEeQFv5GxBasAzVgbTwSNXyeNZTrOU2DfWRti4DojuJ/5eJVf1wJsMobKS6y6qIgLpS3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F+kOkJoA; arc=none smtp.client-ip=209.85.128.48
+	 In-Reply-To:To:Cc; b=l1MogzbLIMwCFizetdBIoCozATAkWGwEd3O3o9nrP4rTRE+coh2YXctBBJm7NwC2qQelyPa+xDV/eNURRqUM1o55OjZlFjvKGV0D0mPVdznr6yWtf7NRppfmms5vVL54dec0jexDYLA3VxJs9+fDuzcUfFvki2vlzxB8pskGV8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SMoJ3rd+; arc=none smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-42807cb6afdso63055e9.1
-        for <keyrings@vger.kernel.org>; Mon, 05 Aug 2024 04:54:41 -0700 (PDT)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5a28b61b880so11877a12.1
+        for <keyrings@vger.kernel.org>; Mon, 05 Aug 2024 04:54:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722858880; x=1723463680; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1722858881; x=1723463681; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=O4C4qGfYc/H4rRnmI2/dH087dXNS+hc43XiseqKD6D0=;
-        b=F+kOkJoAyojXfe8CUNJpW/P5IqYbx8/4lckF24hZBTfdkQhhrYj1+jifKvgHfeMKNe
-         q00R7PCVoAtfi2/yKGxlHGCKm0TKAQwdcl4acnLahFRIdVlP0Ynq82Rm8sMK4+SBMT8h
-         RwnlHWUNZYnrPvLvbqVaI7zZpS7pGRfYYxQw0wdQXSr4SIBtqeRg5z5+WIhAe5jEkqs+
-         DjhRZVDD7GESGRDEjwvhWCMLOU82xq7EiVaFP/WLGhLbFdecoAfg9QoS2TKnVe1mPWIL
-         rXCMUWH1vxDPfj1PWl2w2Q7HIPm2rEqM5d9LWsZqsJNLsl5X004i3x/qXfodTGKhIOUU
-         y+QQ==
+        bh=CEoPY9IiE7pq7MMNhJ56hJ5lCC474oXSLVXIXdotg3Y=;
+        b=SMoJ3rd+Q2xq28kcNdVH6lorW+B7R2dzgBeSp2FT2/6E5n3jiEUguEXQmgYNA/T5zW
+         SMH3BbyuM2P7agN4SQMaw3n6mSVv1fqVcR0Bl5LHOwSAPMgkSDYuwmYaw0enNDdVdoD6
+         qQKwGtHZkjLaSP92gv27JYPTlpOq/esPCYl9DqniCAk7+iCVkUzoIfXkugtSTkQl1wlF
+         6q+pax/p419pgs1UH/2gB/egXlCWyMrLKZGraFTlx61YuQBsyTxA8zfy8DMNOagQl+Ps
+         Y+d5IFPHOsIziy9wUNm0MgRMGngro6fedKGJR0QsK/wBzQ7GXRyDR/ZuFaEFGWTffmcB
+         +H0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722858880; x=1723463680;
+        d=1e100.net; s=20230601; t=1722858881; x=1723463681;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=O4C4qGfYc/H4rRnmI2/dH087dXNS+hc43XiseqKD6D0=;
-        b=S6RlcQZg1yg4yJvddESBMtQBlCo8XYem5+yXzro5sPbFn6yVDODY+n1cs5/KDvPg1S
-         qCaA0auAZMBINh5rTLxI1AhUgVgEniDAaZaMpUUtezuLsCn3vnBX26n/orH0qG3Tf2Ua
-         vV0rDdDujJc9JxEv1gPILBfNNMPKDHA5C9HGLC2fzUgfSmroBaq60NmlxJ2lRtNSf7lM
-         iAnVqt+UaWzFd/i/pEMoHiBxBP52H6h7X7d1A/6W/EayUTguiBtVvF7czbkFXSGFsOft
-         ul1XyFFVOof/97lGDWl31Skvmn56V0xb75PzBWo7BxG1gx7MKv7f1Tf9NKh4kdAeAjIK
-         oNIg==
-X-Forwarded-Encrypted: i=1; AJvYcCX6mp42fLnXAV1EpizfJj/3emkqkim2ckjh9wi/Q7d1obW5PkN8OQajIGiugS1B5qcmPaq6vlmdZzz9xPrM3Om+uKcZKx/ollc=
-X-Gm-Message-State: AOJu0YyC6dmiUvM0A3d63yk6TmdwPZNRB/5XY8yLxgCMYIb+yj1Lk/bZ
-	CR0yTq0oudn/cnDOFAeFAMBSVPUWFDeOkdGhya5LeT3UBikvn35z3pPTSsh0VQ==
-X-Google-Smtp-Source: AGHT+IE1/OZGyVcZgXAgUHQazzFTNZJNCMvdxs7WfSOWX/jWwoi5cjyKhNoe5QUmALmlbH6g2NVRCA==
-X-Received: by 2002:a05:600c:1d98:b0:426:66fd:5fac with SMTP id 5b1f17b1804b1-428ef4b075fmr2788055e9.2.1722858879274;
-        Mon, 05 Aug 2024 04:54:39 -0700 (PDT)
+        bh=CEoPY9IiE7pq7MMNhJ56hJ5lCC474oXSLVXIXdotg3Y=;
+        b=uFZ6mmp+JVHo/MPZZBYRWrIRkEieKFFa+Y40IneNl+cVhUFzJopzzXZQ9ywwZcXD04
+         t3z67R2BcSoP9t1AKMkS3+gNbQ4lGjSxy0z8cmJaq91O+sHp6xN1tbYW1aJmuFUrCimf
+         REwyXIqsWi23DvXX3GpZU47OnTYBT8wP1bR0wMWaaMw1a3GXEHtFu7u0lVB4LV9z7e1M
+         DH4shQRF+HBAG2bBwozXRnhjQdIlRJIBH+7Vibf7udga1XTT1TWfojirZhk4B93Gpjkn
+         FhDbpgKkW+POA+f4sDvEuyq5UtYu6f3yDbGGr2MgTSbAGu36zJENQs/ztOx38P+NrmsC
+         CZRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXMxsvuSm76tbA6+d7zLl7RDUdYMnfwPGZPlndWG3yPc8ax+gEFqOq4e92b95eLGDBfsDy3zaijegHh5sl3l1XIQuIw3KrQQrk=
+X-Gm-Message-State: AOJu0YxjvWRctrF+2A2M31ODAUlhU7xLKuNMLcxHh+BBYDZ5y2JHYnbm
+	pG630kok3m8Z+MmFk7PSkgr/+pgzCrgU/eFf769oCeAMjO41IzNDK2RS/QTPYw==
+X-Google-Smtp-Source: AGHT+IFRBYyBjGqXEShWHBlWfZnELySEFWvet+AS8kT1WHTve1pLuTGQwTj6UulOd+7/NG2kYB9Zdw==
+X-Received: by 2002:a05:6402:27d4:b0:58b:93:b623 with SMTP id 4fb4d7f45d1cf-5b9ca81eb7bmr235474a12.5.1722858880259;
+        Mon, 05 Aug 2024 04:54:40 -0700 (PDT)
 Received: from localhost ([2a00:79e0:9d:4:ca74:8a49:a6f6:b872])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4282b89acacsm198653965e9.9.2024.08.05.04.54.38
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36bbcf1e97esm9507146f8f.37.2024.08.05.04.54.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Aug 2024 04:54:38 -0700 (PDT)
+        Mon, 05 Aug 2024 04:54:39 -0700 (PDT)
 From: Jann Horn <jannh@google.com>
-Date: Mon, 05 Aug 2024 13:54:23 +0200
-Subject: [PATCH v2 1/2] KEYS: use synchronous task work for changing parent
- credentials
+Date: Mon, 05 Aug 2024 13:54:24 +0200
+Subject: [PATCH v2 2/2] security: remove unused
+ cred_alloc_blank/cred_transfer helpers
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -79,7 +79,7 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240805-remove-cred-transfer-v2-1-a2aa1d45e6b8@google.com>
+Message-Id: <20240805-remove-cred-transfer-v2-2-a2aa1d45e6b8@google.com>
 References: <20240805-remove-cred-transfer-v2-0-a2aa1d45e6b8@google.com>
 In-Reply-To: <20240805-remove-cred-transfer-v2-0-a2aa1d45e6b8@google.com>
 To: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
@@ -95,325 +95,459 @@ Cc: linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
  apparmor@lists.ubuntu.com, keyrings@vger.kernel.org, 
  selinux@vger.kernel.org, Jann Horn <jannh@google.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1722858874; l=10749;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1722858874; l=15392;
  i=jannh@google.com; s=20240730; h=from:subject:message-id;
- bh=Re7tlwQwkReWAxTPm//VWabZ0bUWqQj6ogEK+qQNCnA=;
- b=dh3V3tyfNzFbCFftjs+fDtLLfOxy69vgTOAR6QAyWmTf4hIsZ7OUTcaxl2ebeCrK2jXHyeFPL
- V+z9D3vebI9AtEpTHfNrluIoKDOlXLzW6i0oRzYKNXzDHb3teuENXd+
+ bh=4nc01cQfuB5ACezmUV6BHy3ON8aK7aPel4CWRgHU0QY=;
+ b=I4ftB/ikEnSVBmwdzyEDlP55zVu27ULxCXbXsbUnHwhL5khVTHib/FlgsCk5XTubjaShDJJ2v
+ STCa9PefrujDvAMOi+knH1NZgRhYLVcBM5rn7s9/1LIwXVrr9aWhtEz
 X-Developer-Key: i=jannh@google.com; a=ed25519;
  pk=AljNtGOzXeF6khBXDJVVvwSEkVDGnnZZYqfWhP1V+C8=
 
-keyctl_session_to_parent() involves posting task work to the parent task,
-with work function key_change_session_keyring.
-Because the task work in the parent runs asynchronously, no errors can be
-returned back to the caller of keyctl_session_to_parent(), and therefore
-the work function key_change_session_keyring() can't be allowed to fail due
-to things like memory allocation failure or permission checks - all
-allocations and checks have to happen in the child.
-
-This is annoying for two reasons:
-
- - It is the only reason why cred_alloc_blank() and
-   security_transfer_creds() are necessary.
- - It means we can't do synchronous permission checks.
-
-Rewrite keyctl_session_to_parent() to run task work on the parent
-synchronously, so that any errors that happen in the task work can be
-plumbed back into the syscall return value in the child.
-This allows us to get rid of cred_alloc_blank() and
-security_transfer_creds() in a later commit, and it will make it possible
-to write more reliable security checks for this operation.
-
-Note that this requires using TWA_SIGNAL instead of TWA_RESUME, so the
-parent might observe some spurious -EAGAIN syscall returns or such; but the
-parent likely anyway has to be ready to deal with the side effects of
-receiving signals (since it'll probably get SIGCHLD when the child dies),
-so that probably isn't an issue.
+Now that they're unused thanks to the preceding commit, remove
+cred_alloc_blank(), security_transfer_creds(), and the corresponding LSM
+hook implementations.
 
 Signed-off-by: Jann Horn <jannh@google.com>
 ---
- security/keys/internal.h     |   8 ++++
- security/keys/keyctl.c       | 107 +++++++++++++------------------------------
- security/keys/process_keys.c |  86 ++++++++++++++++++----------------
- 3 files changed, 87 insertions(+), 114 deletions(-)
+ include/linux/cred.h          |  1 -
+ include/linux/lsm_hook_defs.h |  3 ---
+ include/linux/security.h      | 12 ------------
+ kernel/cred.c                 | 23 -----------------------
+ security/apparmor/lsm.c       | 19 -------------------
+ security/landlock/cred.c      | 11 ++---------
+ security/security.c           | 35 -----------------------------------
+ security/selinux/hooks.c      | 12 ------------
+ security/smack/smack_lsm.c    | 32 --------------------------------
+ 9 files changed, 2 insertions(+), 146 deletions(-)
 
-diff --git a/security/keys/internal.h b/security/keys/internal.h
-index 2cffa6dc8255..2c5eadc04cf2 100644
---- a/security/keys/internal.h
-+++ b/security/keys/internal.h
-@@ -157,12 +157,20 @@ extern struct key *request_key_and_link(struct key_type *type,
- 					unsigned long flags);
+diff --git a/include/linux/cred.h b/include/linux/cred.h
+index 2976f534a7a3..54b5105d4cd5 100644
+--- a/include/linux/cred.h
++++ b/include/linux/cred.h
+@@ -147,13 +147,12 @@ struct cred {
+ } __randomize_layout;
  
- extern bool lookup_user_key_possessed(const struct key *key,
- 				      const struct key_match_data *match_data);
+ extern void __put_cred(struct cred *);
+ extern void exit_creds(struct task_struct *);
+ extern int copy_creds(struct task_struct *, unsigned long);
+ extern const struct cred *get_task_cred(struct task_struct *);
+-extern struct cred *cred_alloc_blank(void);
+ extern struct cred *prepare_creds(void);
+ extern struct cred *prepare_exec_creds(void);
+ extern int commit_creds(struct cred *);
+ extern void abort_creds(struct cred *);
+ extern const struct cred *override_creds(const struct cred *);
+ extern void revert_creds(const struct cred *);
+diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+index 855db460e08b..1d75075cb607 100644
+--- a/include/linux/lsm_hook_defs.h
++++ b/include/linux/lsm_hook_defs.h
+@@ -204,18 +204,15 @@ LSM_HOOK(int, 0, file_receive, struct file *file)
+ LSM_HOOK(int, 0, file_open, struct file *file)
+ LSM_HOOK(int, 0, file_post_open, struct file *file, int mask)
+ LSM_HOOK(int, 0, file_truncate, struct file *file)
+ LSM_HOOK(int, 0, task_alloc, struct task_struct *task,
+ 	 unsigned long clone_flags)
+ LSM_HOOK(void, LSM_RET_VOID, task_free, struct task_struct *task)
+-LSM_HOOK(int, 0, cred_alloc_blank, struct cred *cred, gfp_t gfp)
+ LSM_HOOK(void, LSM_RET_VOID, cred_free, struct cred *cred)
+ LSM_HOOK(int, 0, cred_prepare, struct cred *new, const struct cred *old,
+ 	 gfp_t gfp)
+-LSM_HOOK(void, LSM_RET_VOID, cred_transfer, struct cred *new,
+-	 const struct cred *old)
+ LSM_HOOK(void, LSM_RET_VOID, cred_getsecid, const struct cred *c, u32 *secid)
+ LSM_HOOK(int, 0, kernel_act_as, struct cred *new, u32 secid)
+ LSM_HOOK(int, 0, kernel_create_files_as, struct cred *new, struct inode *inode)
+ LSM_HOOK(int, 0, kernel_module_request, char *kmod_name)
+ LSM_HOOK(int, 0, kernel_load_data, enum kernel_load_data_id id, bool contents)
+ LSM_HOOK(int, 0, kernel_post_load_data, char *buf, loff_t size,
+diff --git a/include/linux/security.h b/include/linux/security.h
+index 1390f1efb4f0..a366c2a03f55 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -421,16 +421,14 @@ int security_file_send_sigiotask(struct task_struct *tsk,
+ int security_file_receive(struct file *file);
+ int security_file_open(struct file *file);
+ int security_file_post_open(struct file *file, int mask);
+ int security_file_truncate(struct file *file);
+ int security_task_alloc(struct task_struct *task, unsigned long clone_flags);
+ void security_task_free(struct task_struct *task);
+-int security_cred_alloc_blank(struct cred *cred, gfp_t gfp);
+ void security_cred_free(struct cred *cred);
+ int security_prepare_creds(struct cred *new, const struct cred *old, gfp_t gfp);
+-void security_transfer_creds(struct cred *new, const struct cred *old);
+ void security_cred_getsecid(const struct cred *c, u32 *secid);
+ int security_kernel_act_as(struct cred *new, u32 secid);
+ int security_kernel_create_files_as(struct cred *new, struct inode *inode);
+ int security_kernel_module_request(char *kmod_name);
+ int security_kernel_load_data(enum kernel_load_data_id id, bool contents);
+ int security_kernel_post_load_data(char *buf, loff_t size,
+@@ -1117,32 +1115,22 @@ static inline int security_task_alloc(struct task_struct *task,
+ 	return 0;
+ }
  
- extern long join_session_keyring(const char *name);
-+
-+struct keyctl_session_to_parent_context {
-+	struct callback_head work;
-+	struct completion done;
-+	struct key *new_session_keyring;
-+	const struct cred *child_cred;
-+	int result;
-+};
- extern void key_change_session_keyring(struct callback_head *twork);
+ static inline void security_task_free(struct task_struct *task)
+ { }
  
- extern struct work_struct key_gc_work;
- extern unsigned key_gc_delay;
- extern void keyring_gc(struct key *keyring, time64_t limit);
- extern void keyring_restriction_gc(struct key *keyring,
-diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
-index ab927a142f51..e4cfe5c4594a 100644
---- a/security/keys/keyctl.c
-+++ b/security/keys/keyctl.c
-@@ -1616,104 +1616,63 @@ long keyctl_get_security(key_serial_t keyid,
-  * parent process.
-  *
-  * The keyring must exist and must grant the caller LINK permission, and the
-  * parent process must be single-threaded and must have the same effective
-  * ownership as this process and mustn't be SUID/SGID.
-  *
-- * The keyring will be emplaced on the parent when it next resumes userspace.
-+ * The keyring will be emplaced on the parent via a pseudo-signal.
-  *
-  * If successful, 0 will be returned.
-  */
- long keyctl_session_to_parent(void)
+-static inline int security_cred_alloc_blank(struct cred *cred, gfp_t gfp)
+-{
+-	return 0;
+-}
+-
+ static inline void security_cred_free(struct cred *cred)
+ { }
+ 
+ static inline int security_prepare_creds(struct cred *new,
+ 					 const struct cred *old,
+ 					 gfp_t gfp)
  {
--	struct task_struct *me, *parent;
--	const struct cred *mycred, *pcred;
--	struct callback_head *newwork, *oldwork;
-+	struct keyctl_session_to_parent_context ctx;
-+	struct task_struct *parent;
- 	key_ref_t keyring_r;
--	struct cred *cred;
- 	int ret;
+ 	return 0;
+ }
  
- 	keyring_r = lookup_user_key(KEY_SPEC_SESSION_KEYRING, 0, KEY_NEED_LINK);
- 	if (IS_ERR(keyring_r))
- 		return PTR_ERR(keyring_r);
- 
--	ret = -ENOMEM;
+-static inline void security_transfer_creds(struct cred *new,
+-					   const struct cred *old)
+-{
+-}
 -
--	/* our parent is going to need a new cred struct, a new tgcred struct
--	 * and new security data, so we allocate them here to prevent ENOMEM in
--	 * our parent */
--	cred = cred_alloc_blank();
--	if (!cred)
--		goto error_keyring;
--	newwork = &cred->rcu;
-+	write_lock_irq(&tasklist_lock);
-+	parent = get_task_struct(rcu_dereference_protected(current->real_parent,
-+					lockdep_is_held(&tasklist_lock)));
-+	write_unlock_irq(&tasklist_lock);
+ static inline void security_cred_getsecid(const struct cred *c, u32 *secid)
+ {
+ 	*secid = 0;
+ }
  
--	cred->session_keyring = key_ref_to_ptr(keyring_r);
--	keyring_r = NULL;
--	init_task_work(newwork, key_change_session_keyring);
-+	/* the parent mustn't be init and mustn't be a kernel thread */
-+	if (is_global_init(parent) || (READ_ONCE(parent->flags) & PF_KTHREAD) != 0)
-+		goto put_task;
+ static inline int security_kernel_act_as(struct cred *cred, u32 secid)
+diff --git a/kernel/cred.c b/kernel/cred.c
+index 075cfa7c896f..b2f6130cd6b7 100644
+--- a/kernel/cred.c
++++ b/kernel/cred.c
+@@ -163,35 +163,12 @@ const struct cred *get_task_cred(struct task_struct *task)
  
--	me = current;
--	rcu_read_lock();
--	write_lock_irq(&tasklist_lock);
-+	ctx.new_session_keyring = key_ref_to_ptr(keyring_r);
-+	ctx.child_cred = current_cred();
-+	init_completion(&ctx.done);
-+	init_task_work(&ctx.work, key_change_session_keyring);
-+	ret = task_work_add(parent, &ctx.work, TWA_SIGNAL);
-+	if (ret)
-+		goto put_task;
+ 	rcu_read_unlock();
+ 	return cred;
+ }
+ EXPORT_SYMBOL(get_task_cred);
  
--	ret = -EPERM;
--	oldwork = NULL;
--	parent = rcu_dereference_protected(me->real_parent,
--					   lockdep_is_held(&tasklist_lock));
-+	ret = wait_for_completion_interruptible(&ctx.done);
- 
--	/* the parent mustn't be init and mustn't be a kernel thread */
--	if (parent->pid <= 1 || !parent->mm)
--		goto unlock;
+-/*
+- * Allocate blank credentials, such that the credentials can be filled in at a
+- * later date without risk of ENOMEM.
+- */
+-struct cred *cred_alloc_blank(void)
+-{
+-	struct cred *new;
 -
--	/* the parent must be single threaded */
--	if (!thread_group_empty(parent))
--		goto unlock;
+-	new = kmem_cache_zalloc(cred_jar, GFP_KERNEL);
+-	if (!new)
+-		return NULL;
 -
--	/* the parent and the child must have different session keyrings or
--	 * there's no point */
--	mycred = current_cred();
--	pcred = __task_cred(parent);
--	if (mycred == pcred ||
--	    mycred->session_keyring == pcred->session_keyring) {
--		ret = 0;
--		goto unlock;
-+	if (task_work_cancel(parent, &ctx.work)) {
-+		/*
-+		 * We got interrupted and the task work was canceled before it
-+		 * could execute.
-+		 * Use -ERESTARTNOINTR instead of -ERESTARTSYS for
-+		 * compatibility - the manpage does not list -EINTR as a
-+		 * possible error for keyctl().
-+		 */
-+		ret = -ERESTARTNOINTR;
-+	} else {
-+		/* task work is running or has been executed */
-+		wait_for_completion(&ctx.done);
-+		ret = ctx.result;
+-	atomic_long_set(&new->usage, 1);
+-	if (security_cred_alloc_blank(new, GFP_KERNEL_ACCOUNT) < 0)
+-		goto error;
+-
+-	return new;
+-
+-error:
+-	abort_creds(new);
+-	return NULL;
+-}
+-
+ /**
+  * prepare_creds - Prepare a new set of credentials for modification
+  *
+  * Prepare a new set of task credentials for modification.  A task's creds
+  * shouldn't generally be modified directly, therefore this function is used to
+  * prepare a new copy, which the caller then modifies and then commits by
+diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
+index 808060f9effb..089d53978d9e 100644
+--- a/security/apparmor/lsm.c
++++ b/security/apparmor/lsm.c
+@@ -74,39 +74,22 @@ static DEFINE_PER_CPU(struct aa_local_cache, aa_local_buffers);
+ static void apparmor_cred_free(struct cred *cred)
+ {
+ 	aa_put_label(cred_label(cred));
+ 	set_cred_label(cred, NULL);
+ }
+ 
+-/*
+- * allocate the apparmor part of blank credentials
+- */
+-static int apparmor_cred_alloc_blank(struct cred *cred, gfp_t gfp)
+-{
+-	set_cred_label(cred, NULL);
+-	return 0;
+-}
+-
+ /*
+  * prepare new cred label for modification by prepare_cred block
+  */
+ static int apparmor_cred_prepare(struct cred *new, const struct cred *old,
+ 				 gfp_t gfp)
+ {
+ 	set_cred_label(new, aa_get_newest_label(cred_label(old)));
+ 	return 0;
+ }
+ 
+-/*
+- * transfer the apparmor data to a blank set of creds
+- */
+-static void apparmor_cred_transfer(struct cred *new, const struct cred *old)
+-{
+-	set_cred_label(new, aa_get_newest_label(cred_label(old)));
+-}
+-
+ static void apparmor_task_free(struct task_struct *task)
+ {
+ 
+ 	aa_free_task_ctx(task_ctx(task));
+ }
+ 
+@@ -1504,16 +1487,14 @@ static struct security_hook_list apparmor_hooks[] __ro_after_init = {
+ 		      apparmor_socket_getpeersec_dgram),
+ 	LSM_HOOK_INIT(sock_graft, apparmor_sock_graft),
+ #ifdef CONFIG_NETWORK_SECMARK
+ 	LSM_HOOK_INIT(inet_conn_request, apparmor_inet_conn_request),
+ #endif
+ 
+-	LSM_HOOK_INIT(cred_alloc_blank, apparmor_cred_alloc_blank),
+ 	LSM_HOOK_INIT(cred_free, apparmor_cred_free),
+ 	LSM_HOOK_INIT(cred_prepare, apparmor_cred_prepare),
+-	LSM_HOOK_INIT(cred_transfer, apparmor_cred_transfer),
+ 
+ 	LSM_HOOK_INIT(bprm_creds_for_exec, apparmor_bprm_creds_for_exec),
+ 	LSM_HOOK_INIT(bprm_committing_creds, apparmor_bprm_committing_creds),
+ 	LSM_HOOK_INIT(bprm_committed_creds, apparmor_bprm_committed_creds),
+ 
+ 	LSM_HOOK_INIT(task_free, apparmor_task_free),
+diff --git a/security/landlock/cred.c b/security/landlock/cred.c
+index db9fe7d906ba..786af18c4a1c 100644
+--- a/security/landlock/cred.c
++++ b/security/landlock/cred.c
+@@ -11,41 +11,34 @@
+ 
+ #include "common.h"
+ #include "cred.h"
+ #include "ruleset.h"
+ #include "setup.h"
+ 
+-static void hook_cred_transfer(struct cred *const new,
+-			       const struct cred *const old)
++static int hook_cred_prepare(struct cred *const new,
++			     const struct cred *const old, const gfp_t gfp)
+ {
+ 	struct landlock_ruleset *const old_dom = landlock_cred(old)->domain;
+ 
+ 	if (old_dom) {
+ 		landlock_get_ruleset(old_dom);
+ 		landlock_cred(new)->domain = old_dom;
  	}
- 
--	/* the parent must have the same effective ownership and mustn't be
--	 * SUID/SGID */
--	if (!uid_eq(pcred->uid,	 mycred->euid) ||
--	    !uid_eq(pcred->euid, mycred->euid) ||
--	    !uid_eq(pcred->suid, mycred->euid) ||
--	    !gid_eq(pcred->gid,	 mycred->egid) ||
--	    !gid_eq(pcred->egid, mycred->egid) ||
--	    !gid_eq(pcred->sgid, mycred->egid))
--		goto unlock;
+-}
 -
--	/* the keyrings must have the same UID */
--	if ((pcred->session_keyring &&
--	     !uid_eq(pcred->session_keyring->uid, mycred->euid)) ||
--	    !uid_eq(mycred->session_keyring->uid, mycred->euid))
--		goto unlock;
--
--	/* cancel an already pending keyring replacement */
--	oldwork = task_work_cancel_func(parent, key_change_session_keyring);
--
--	/* the replacement session keyring is applied just prior to userspace
--	 * restarting */
--	ret = task_work_add(parent, newwork, TWA_RESUME);
--	if (!ret)
--		newwork = NULL;
--unlock:
--	write_unlock_irq(&tasklist_lock);
--	rcu_read_unlock();
--	if (oldwork)
--		put_cred(container_of(oldwork, struct cred, rcu));
--	if (newwork)
--		put_cred(cred);
--	return ret;
--
--error_keyring:
-+put_task:
-+	put_task_struct(parent);
- 	key_ref_put(keyring_r);
- 	return ret;
+-static int hook_cred_prepare(struct cred *const new,
+-			     const struct cred *const old, const gfp_t gfp)
+-{
+-	hook_cred_transfer(new, old);
+ 	return 0;
  }
  
- /*
-  * Apply a restriction to a given keyring.
-diff --git a/security/keys/process_keys.c b/security/keys/process_keys.c
-index b5d5333ab330..199c5dd34792 100644
---- a/security/keys/process_keys.c
-+++ b/security/keys/process_keys.c
-@@ -902,59 +902,65 @@ long join_session_keyring(const char *name)
- error:
- 	abort_creds(new);
- 	return ret;
- }
- 
- /*
-- * Replace a process's session keyring on behalf of one of its children when
-- * the target  process is about to resume userspace execution.
-+ * Replace a process's session keyring on behalf of one of its children.
-+ * This function runs in task context, while the child is blocked in
-+ * keyctl_session_to_parent().
-  */
--void key_change_session_keyring(struct callback_head *twork)
-+void key_change_session_keyring(struct callback_head *work)
+ static void hook_cred_free(struct cred *const cred)
  {
--	const struct cred *old = current_cred();
--	struct cred *new = container_of(twork, struct cred, rcu);
-+	struct keyctl_session_to_parent_context *ctx =
-+		container_of(work, struct keyctl_session_to_parent_context, work);
-+	const struct cred *pcred = current_cred();
-+	const struct cred *ccred = ctx->child_cred;
-+	struct cred *new;
+ 	struct landlock_ruleset *const dom = landlock_cred(cred)->domain;
  
--	if (unlikely(current->flags & PF_EXITING)) {
--		put_cred(new);
--		return;
--	}
-+	/* do checks */
-+	ctx->result = -EPERM;
-+	if (unlikely(current->flags & PF_EXITING))
-+		goto out;
+ 	if (dom)
+ 		landlock_put_ruleset_deferred(dom);
+ }
  
--	/* If get_ucounts fails more bits are needed in the refcount */
--	if (unlikely(!get_ucounts(old->ucounts))) {
--		WARN_ONCE(1, "In %s get_ucounts failed\n", __func__);
--		put_cred(new);
--		return;
--	}
-+	/* we must be single threaded */
-+	if (!thread_group_empty(current))
-+		goto out;
-+
-+	/*
-+	 * the parent must have the same effective ownership and mustn't be
-+	 * SUID/SGID
-+	 */
-+	if (!uid_eq(pcred->uid,	 ccred->euid) ||
-+	    !uid_eq(pcred->euid, ccred->euid) ||
-+	    !uid_eq(pcred->suid, ccred->euid) ||
-+	    !gid_eq(pcred->gid,	 ccred->egid) ||
-+	    !gid_eq(pcred->egid, ccred->egid) ||
-+	    !gid_eq(pcred->sgid, ccred->egid))
-+		goto out;
-+
-+	/* the keyrings must have the same UID */
-+	if ((pcred->session_keyring &&
-+	     !uid_eq(pcred->session_keyring->uid, ccred->euid)) ||
-+	    !uid_eq(ctx->new_session_keyring->uid, ccred->euid))
-+		goto out;
-+
-+
-+	/* okay, try to update creds */
-+	ctx->result = -ENOMEM;
-+	new = prepare_creds();
-+	if (!new)
-+		goto out;
+ static struct security_hook_list landlock_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(cred_prepare, hook_cred_prepare),
+-	LSM_HOOK_INIT(cred_transfer, hook_cred_transfer),
+ 	LSM_HOOK_INIT(cred_free, hook_cred_free),
+ };
  
--	new->  uid	= old->  uid;
--	new-> euid	= old-> euid;
--	new-> suid	= old-> suid;
--	new->fsuid	= old->fsuid;
--	new->  gid	= old->  gid;
--	new-> egid	= old-> egid;
--	new-> sgid	= old-> sgid;
--	new->fsgid	= old->fsgid;
--	new->user	= get_uid(old->user);
--	new->ucounts	= old->ucounts;
--	new->user_ns	= get_user_ns(old->user_ns);
--	new->group_info	= get_group_info(old->group_info);
+ __init void landlock_add_cred_hooks(void)
+ {
+ 	security_add_hooks(landlock_hooks, ARRAY_SIZE(landlock_hooks),
+diff --git a/security/security.c b/security/security.c
+index 8cee5b6c6e6d..4fb81de5cf80 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -3057,35 +3057,12 @@ void security_task_free(struct task_struct *task)
+ 	call_void_hook(task_free, task);
+ 
+ 	kfree(task->security);
+ 	task->security = NULL;
+ }
+ 
+-/**
+- * security_cred_alloc_blank() - Allocate the min memory to allow cred_transfer
+- * @cred: credentials
+- * @gfp: gfp flags
+- *
+- * Only allocate sufficient memory and attach to @cred such that
+- * cred_transfer() will not get ENOMEM.
+- *
+- * Return: Returns 0 on success, negative values on failure.
+- */
+-int security_cred_alloc_blank(struct cred *cred, gfp_t gfp)
+-{
+-	int rc = lsm_cred_alloc(cred, gfp);
 -
--	new->securebits	= old->securebits;
--	new->cap_inheritable	= old->cap_inheritable;
--	new->cap_permitted	= old->cap_permitted;
--	new->cap_effective	= old->cap_effective;
--	new->cap_ambient	= old->cap_ambient;
--	new->cap_bset		= old->cap_bset;
+-	if (rc)
+-		return rc;
 -
--	new->jit_keyring	= old->jit_keyring;
--	new->thread_keyring	= key_get(old->thread_keyring);
--	new->process_keyring	= key_get(old->process_keyring);
+-	rc = call_int_hook(cred_alloc_blank, cred, gfp);
+-	if (unlikely(rc))
+-		security_cred_free(cred);
+-	return rc;
+-}
 -
--	security_transfer_creds(new, old);
-+	key_put(new->session_keyring);
-+	new->session_keyring = key_get(ctx->new_session_keyring);
+ /**
+  * security_cred_free() - Free the cred's LSM blob and associated resources
+  * @cred: credentials
+  *
+  * Deallocate and clear the cred->security field in a set of credentials.
+  */
+@@ -3124,24 +3101,12 @@ int security_prepare_creds(struct cred *new, const struct cred *old, gfp_t gfp)
+ 	rc = call_int_hook(cred_prepare, new, old, gfp);
+ 	if (unlikely(rc))
+ 		security_cred_free(new);
+ 	return rc;
+ }
  
- 	commit_creds(new);
-+	ctx->result = 0;
-+out:
-+	complete_all(&ctx->done);
+-/**
+- * security_transfer_creds() - Transfer creds
+- * @new: target credentials
+- * @old: original credentials
+- *
+- * Transfer data from original creds to new creds.
+- */
+-void security_transfer_creds(struct cred *new, const struct cred *old)
+-{
+-	call_void_hook(cred_transfer, new, old);
+-}
+-
+ /**
+  * security_cred_getsecid() - Get the secid from a set of credentials
+  * @c: credentials
+  * @secid: secid value
+  *
+  * Retrieve the security identifier of the cred structure @c.  In case of
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 55c78c318ccd..8a659475cc12 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -4007,23 +4007,12 @@ static int selinux_cred_prepare(struct cred *new, const struct cred *old,
+ 	struct task_security_struct *tsec = selinux_cred(new);
+ 
+ 	*tsec = *old_tsec;
+ 	return 0;
+ }
+ 
+-/*
+- * transfer the SELinux data to a blank set of creds
+- */
+-static void selinux_cred_transfer(struct cred *new, const struct cred *old)
+-{
+-	const struct task_security_struct *old_tsec = selinux_cred(old);
+-	struct task_security_struct *tsec = selinux_cred(new);
+-
+-	*tsec = *old_tsec;
+-}
+-
+ static void selinux_cred_getsecid(const struct cred *c, u32 *secid)
+ {
+ 	*secid = cred_sid(c);
  }
  
  /*
-  * Make sure that root's user and user-session keyrings exist.
+@@ -7213,13 +7202,12 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(file_receive, selinux_file_receive),
+ 
+ 	LSM_HOOK_INIT(file_open, selinux_file_open),
+ 
+ 	LSM_HOOK_INIT(task_alloc, selinux_task_alloc),
+ 	LSM_HOOK_INIT(cred_prepare, selinux_cred_prepare),
+-	LSM_HOOK_INIT(cred_transfer, selinux_cred_transfer),
+ 	LSM_HOOK_INIT(cred_getsecid, selinux_cred_getsecid),
+ 	LSM_HOOK_INIT(kernel_act_as, selinux_kernel_act_as),
+ 	LSM_HOOK_INIT(kernel_create_files_as, selinux_kernel_create_files_as),
+ 	LSM_HOOK_INIT(kernel_module_request, selinux_kernel_module_request),
+ 	LSM_HOOK_INIT(kernel_load_data, selinux_kernel_load_data),
+ 	LSM_HOOK_INIT(kernel_read_file, selinux_kernel_read_file),
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 4164699cd4f6..4cc658deb08b 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -2050,27 +2050,12 @@ static int smack_file_open(struct file *file)
+ }
+ 
+ /*
+  * Task hooks
   */
- static int __init init_root_keyring(void)
+ 
+-/**
+- * smack_cred_alloc_blank - "allocate" blank task-level security credentials
+- * @cred: the new credentials
+- * @gfp: the atomicity of any memory allocations
+- *
+- * Prepare a blank set of credentials for modification.  This must allocate all
+- * the memory the LSM module might require such that cred_transfer() can
+- * complete without error.
+- */
+-static int smack_cred_alloc_blank(struct cred *cred, gfp_t gfp)
+-{
+-	init_task_smack(smack_cred(cred), NULL, NULL);
+-	return 0;
+-}
+-
+ 
+ /**
+  * smack_cred_free - "free" task-level security credentials
+  * @cred: the credentials in question
+  *
+  */
+@@ -2113,27 +2098,12 @@ static int smack_cred_prepare(struct cred *new, const struct cred *old,
+ 
+ 	rc = smk_copy_relabel(&new_tsp->smk_relabel, &old_tsp->smk_relabel,
+ 				gfp);
+ 	return rc;
+ }
+ 
+-/**
+- * smack_cred_transfer - Transfer the old credentials to the new credentials
+- * @new: the new credentials
+- * @old: the original credentials
+- *
+- * Fill in a set of blank credentials from another set of credentials.
+- */
+-static void smack_cred_transfer(struct cred *new, const struct cred *old)
+-{
+-	struct task_smack *old_tsp = smack_cred(old);
+-	struct task_smack *new_tsp = smack_cred(new);
+-
+-	init_task_smack(new_tsp, old_tsp->smk_task, old_tsp->smk_task);
+-}
+-
+ /**
+  * smack_cred_getsecid - get the secid corresponding to a creds structure
+  * @cred: the object creds
+  * @secid: where to put the result
+  *
+  * Sets the secid to contain a u32 version of the smack label.
+@@ -5107,16 +5077,14 @@ static struct security_hook_list smack_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(file_set_fowner, smack_file_set_fowner),
+ 	LSM_HOOK_INIT(file_send_sigiotask, smack_file_send_sigiotask),
+ 	LSM_HOOK_INIT(file_receive, smack_file_receive),
+ 
+ 	LSM_HOOK_INIT(file_open, smack_file_open),
+ 
+-	LSM_HOOK_INIT(cred_alloc_blank, smack_cred_alloc_blank),
+ 	LSM_HOOK_INIT(cred_free, smack_cred_free),
+ 	LSM_HOOK_INIT(cred_prepare, smack_cred_prepare),
+-	LSM_HOOK_INIT(cred_transfer, smack_cred_transfer),
+ 	LSM_HOOK_INIT(cred_getsecid, smack_cred_getsecid),
+ 	LSM_HOOK_INIT(kernel_act_as, smack_kernel_act_as),
+ 	LSM_HOOK_INIT(kernel_create_files_as, smack_kernel_create_files_as),
+ 	LSM_HOOK_INIT(task_setpgid, smack_task_setpgid),
+ 	LSM_HOOK_INIT(task_getpgid, smack_task_getpgid),
+ 	LSM_HOOK_INIT(task_getsid, smack_task_getsid),
 
 -- 
 2.46.0.rc2.264.g509ed76dc8-goog
