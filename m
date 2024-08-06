@@ -1,107 +1,120 @@
-Return-Path: <keyrings+bounces-1867-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1868-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D90F948BCD
-	for <lists+keyrings@lfdr.de>; Tue,  6 Aug 2024 10:58:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7A1F9498FF
+	for <lists+keyrings@lfdr.de>; Tue,  6 Aug 2024 22:27:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45C831C20BF3
-	for <lists+keyrings@lfdr.de>; Tue,  6 Aug 2024 08:58:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 881011F231DD
+	for <lists+keyrings@lfdr.de>; Tue,  6 Aug 2024 20:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DFB31BD505;
-	Tue,  6 Aug 2024 08:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A58155C83;
+	Tue,  6 Aug 2024 20:27:06 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53721BD006;
-	Tue,  6 Aug 2024 08:58:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF9440875;
+	Tue,  6 Aug 2024 20:27:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722934726; cv=none; b=h746gjd0fqT/Cx1RdaZqNNFbpodH9jynoLmzOKoCqu5b9tGd1eWptFEfcvxj5tKd5R1YAPV1RmfrY1dwu7tSJSzB8JaOd+w1lwWekMxNMaH8Jg5ALHIF9jco9IEFxkr9y7u7jY7bDTk0VMqe3o8D7pUTkUGHWjJ5qT7zg/FrGpQ=
+	t=1722976026; cv=none; b=XF+dVwdxUzF2qk+fRVdzetpw4TkOQM/YiGrc99pz99gHVWmKfc8RMT/tQharZbc0q8DcplpYIZrN/x6lRNCqr7980q6y9lUuTzzh9hpXlYj1ldzCpCwg29TWjFtEtSC2XkOy6Mk3o/BrMvLYx/nzEtJVWMTv0eo8FUfCsSjSQFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722934726; c=relaxed/simple;
-	bh=A3jT79yax7B4x+CCo8lOx9zIktZJhYbb2Jpf2FLQKSY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JGNTfm+KXVDlgNOfUXKIjIXaU6RpSHc6XPxCG5KfbQvuXhMp73phh49cOzywobNfyXJToMV2Xu3tpuH9sl+NnuBuOzC9aXTgp5+kgjyR3ZIf+ZqfzifbuXd3uhpSGN2FYC6/Ce8gq5zb+FoukjlJ5evvsPG/cjI+igeWne3xm2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1sbFso-002k7B-07;
-	Tue, 06 Aug 2024 16:58:16 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 06 Aug 2024 16:58:15 +0800
-Date: Tue, 6 Aug 2024 16:58:15 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Vitaly Chikunov <vt@altlinux.org>,
-	Tadeusz Struk <tstruk@gigaio.com>,
-	Andrew Zaborowski <andrew.zaborowski@intel.com>,
-	Saulo Alessandre <saulo.alessandre@tse.jus.br>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-crypto@vger.kernel.org, keyrings@vger.kernel.org
-Subject: Re: [PATCH 2/5] crypto: akcipher - Drop usage of sglists for verify
- op
-Message-ID: <ZrHlpz4qnre0zWJO@gondor.apana.org.au>
-References: <cover.1722260176.git.lukas@wunner.de>
- <eb13c292f60a61b0af14f0c5afd23719b3cb0bd7.1722260176.git.lukas@wunner.de>
- <ZrG6w9wsb-iiLZIF@gondor.apana.org.au>
- <ZrHft0G-1BTmhF0V@wunner.de>
+	s=arc-20240116; t=1722976026; c=relaxed/simple;
+	bh=LIGzCfRqqebdBfRcltouWmCzar9jPj1JAuYvgrKDy8o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Lg9DwHgRdUD6yXMrhd41iB5hfRyGZvAbcNXng5Gd6KzeYfkCqB0tXi474E2uh2OPB1sda5IPK++QBB7P4oXXpN5dOMmre/y0SZxpQcXTYL7hQmCeIniR2MFagVtbCAxv28dRfG8FBd1PphnHw8Udv9ybtGn3iQhWbJeeY5tSnfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-6b6199ef089so5410716d6.3;
+        Tue, 06 Aug 2024 13:27:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722976023; x=1723580823;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=uwZfXOJPvxoJ+u8XhJj/J9BXgf+sA8551y3aceuGSSs=;
+        b=GGAtxaaPLuotBay4HlgT9B2JQuEQUihdvmgVMdc5kZzl8hJve8eIxpgRqaFZCwJxHX
+         mUSeQ0BIXkZ+RBbjsCLDs4O9KK7XR4bgOU/+Uc4mSsQlCX6M7EB+4IhUIgYKYHCwz0/O
+         c4Us4sUmTUfhR7yUjRtI4gbougt48AGDybxYNoErntO2IN525i4eG7zfAwWGS3wRDNvx
+         CPsnH261S2QxCRg2W7XxAJB7WZuUBUlHMo2B+YpZeALi9mKWn5UeW+9LeA/oL6Uj2F+k
+         XUMZ7J92eMPqqpm6QOABjiBoAk0x6gBDbhtHLzRvOHAYBQa+GFXi9y2pTw1zKtR5FHZ8
+         A7+A==
+X-Forwarded-Encrypted: i=1; AJvYcCWKH00slN6kx45iWdZp5dJUEOdAhxx8l2kgPqR7yTuuX1r59RmP0aMIKvxJ23qFasFBU+MBaqUVXP/fmJnLGcUXo7oo1jvheB4=
+X-Gm-Message-State: AOJu0Yzuj1P3MDPiNTWn8mij06rzPJUuruOBH9ANVl2IsFcFq3qLMaHv
+	wDEIk5J9WVBc2sb4PZ2YxRnu5CGHc+mma6ly5AxDGNtG1181Y1kO
+X-Google-Smtp-Source: AGHT+IFWJRP53ZGQcILmesp11SkYwtkCw7B+T56HRmkDeDIKC0nI9Xt3v62mr8pYg6yxuQDhfxg0lA==
+X-Received: by 2002:a05:6214:5546:b0:6b9:9151:d8c1 with SMTP id 6a1803df08f44-6bb9830fbb1mr191513846d6.11.1722976023490;
+        Tue, 06 Aug 2024 13:27:03 -0700 (PDT)
+Received: from skuld-framework.localnet ([32.221.37.233])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb9c83d039sm50000056d6.75.2024.08.06.13.27.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Aug 2024 13:27:03 -0700 (PDT)
+From: Neal Gompa <neal@gompa.dev>
+To: David Howells <dhowells@redhat.com>, dwmw2@infradead.org, zxu@redhat.com,
+ keyrings@vger.kernel.org, Jan Stancek <jstancek@redhat.com>
+Cc: linux-kernel@vger.kernel.org, Jan Stancek <jstancek@redhat.com>,
+ Asahi Linux <asahi@lists.linux.dev>, Hector Martin <marcan@marcan.st>,
+ Janne Grunau <j@jannau.net>
+Subject:
+ Re: [PATCH 0/3] sign-file,extract-cert: switch to PROVIDER API for OpenSSL >=
+ 3.0
+Date: Tue, 06 Aug 2024 16:27:02 -0400
+Message-ID: <27899413.1r3eYUQgxm@skuld-framework>
+In-Reply-To: <cover.1720728319.git.jstancek@redhat.com>
+References: <cover.1720728319.git.jstancek@redhat.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZrHft0G-1BTmhF0V@wunner.de>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, Aug 06, 2024 at 10:32:55AM +0200, Lukas Wunner wrote:
->
-> I'm looking through the code right now to understand what would be
-> necessary to get there.
+On Friday, July 12, 2024 3:11:13=E2=80=AFAM EDT Jan Stancek wrote:
+> The ENGINE interface has its limitations and it has been superseded
+> by the PROVIDER API, it is deprecated in OpenSSL version 3.0.
+> Some distros have started removing it from header files.
+>=20
+> Update sign-file and extract-cert to use PROVIDER API for OpenSSL Major >=
+=3D
+> 3.
+>=20
+> Tested on F39 with openssl-3.1.1, pkcs11-provider-0.5-2,
+> openssl-pkcs11-0.4.12-4 and softhsm-2.6.1-5 by using same key/cert as PEM
+> and PKCS11 and comparing that the result is identical.
+>=20
+> Jan Stancek (3):
+>   sign-file,extract-cert: move common SSL helper functions to a header
+>   sign-file,extract-cert: avoid using deprecated ERR_get_error_line()
+>   sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >=3D 3
+>=20
+>  MAINTAINERS          |   1 +
+>  certs/Makefile       |   2 +-
+>  certs/extract-cert.c | 138 +++++++++++++++++++++++--------------------
+>  scripts/sign-file.c  | 134 +++++++++++++++++++++--------------------
+>  scripts/ssl-common.h |  32 ++++++++++
+>  5 files changed, 178 insertions(+), 129 deletions(-)
+>  create mode 100644 scripts/ssl-common.h
 
-Great :)
+The code looks fairly reasonable to me and behaves as expected.
 
-> One issue I see is an algorithm name collision in rsa-pkcs1pad.c:
-> I think I'd have to register two instances in pkcs1pad_create(),
-> an akcipher_instance and a sig_instance.
+I have been actively using this patch set for several weeks now across=20
+linux-6.9.y and now linux-6.10.y with good success.
 
-Since there is precisely one user -- crypto/asymmetric, we could
-simply rename the sig version of pkcs1pad to something else without
-causing too much churn.  Perhaps leave the akcipher pkcs1pad as is
-and create a new template for sig called pkcs1sig.
+It is in use in production for Fedora Asahi Linux kernels with good success=
+=2E=20
+Thanks for the fixes. :)
 
-So you could do it in a little series without breaking bisection:
+Reviewed-by: Neal Gompa <neal@gompa.dev>
 
-1) Add sig type and then create the pkcs1sig template;
-2) Switch to pkcs1sig when signing in crypto/asymmetric;
-3) Remove now-unused signing code from pkcs1pad.
+=2D-=20
+=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
+=BC=81/ Always, there's only one truth!
 
-> The last couple of days I've been contemplating amending
-> struct akcipher_alg with additional callbacks to get the
-> max_sig_size and max_data_size.  For RSA it's the same as
-> the keysize (which is available through the existing ->max_size
-> callback), but for ECDSA it's different depending on the
-> template.  Adding those new callbacks to a new struct sig_alg
-> would be cleaner of course than shoehorning them into struct
-> akcipher_alg.
 
-Yes having a separate alg for sig is definitely where we want to
-be since there is very little that the two types actually share.
-
-The only place where they currently intersect is pkcs1pad :)
-
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
