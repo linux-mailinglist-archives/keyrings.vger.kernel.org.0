@@ -1,179 +1,126 @@
-Return-Path: <keyrings+bounces-1870-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1871-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C92950222
-	for <lists+keyrings@lfdr.de>; Tue, 13 Aug 2024 12:12:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DEE695025A
+	for <lists+keyrings@lfdr.de>; Tue, 13 Aug 2024 12:23:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48DF91C203E3
-	for <lists+keyrings@lfdr.de>; Tue, 13 Aug 2024 10:12:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A040FB23B4A
+	for <lists+keyrings@lfdr.de>; Tue, 13 Aug 2024 10:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C880917E44F;
-	Tue, 13 Aug 2024 10:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C521189BB1;
+	Tue, 13 Aug 2024 10:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rSpGmmYJ"
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="YAjdNAGp";
+	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="FnmmqpRH"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8B817C21C;
-	Tue, 13 Aug 2024 10:12:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723543934; cv=none; b=p039aSyzfgEXJ8qCPeUz/5TYjAT5GS/0tLcmHtelKKABT8MF+5vsk1N54XLp4P2cPMyyvSeZDM7GwSPaYl53h8XiekHA/DbCCo9U4M+YZxBjjSuZP7x/eeuLXfgpooJuDxjuGj43etL1wxWLg6CekXlQfSDBNcdk6f04jtOka0w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723543934; c=relaxed/simple;
-	bh=YMNNW9k4e3EqFXo3XwG4zoOa/XJLXLrP2YgZr9lkA5Q=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=BkISCrjVHQuPIUVjPBGR2mkg7T2iOoeD8xr++3djKOgBAfF1j3kK86t2dQUxSWOwWFTsBjVTcscOev2jeeR8bZ1AA992piBFeP/LcWwqHci8tovLu8W2a48+Mt5XSLz3NPTI9I51OYv0QOZiM3Ff2elrGbZh0q0JO5FkqqUhn6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rSpGmmYJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE52AC4AF0B;
-	Tue, 13 Aug 2024 10:12:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723543934;
-	bh=YMNNW9k4e3EqFXo3XwG4zoOa/XJLXLrP2YgZr9lkA5Q=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=rSpGmmYJvn+u+U2+ahyh1CTwkK4/uy5YOAD6TVopPR+NVLSMm+wtEHiYJSw4/FAmg
-	 44iU2mAr82FlMa/TXpvWkd9UxByKTO49nYjqLCqacfvinxgDqYuNh/ixdXxbrP0JOz
-	 6PWZKJK+EKeVTwxX8ov/UnJAyYMxZPVFvVXP2UlfzliHmbf7PC9cT6nrzij9eN6kKg
-	 SZAiKLLTOC1s9axzNt5okGZ5TLA3EIVf5x7fdX7QWYB7YNG/9J3LdOoaISuhh3G25z
-	 X3NWbI4NitDeWN6JqpxJdMQQb407mLQZheHwvehdlY5XJQF5kiT9o4scVc0yDh8fGN
-	 J6rd67shhqMjw==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1145B17C228;
+	Tue, 13 Aug 2024 10:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723544618; cv=pass; b=BD5hApHoN+3E3hBIGIPPWHeUVgfEM4Ro7xov9Qom2oUE9hHLDboH94oK6EsgUpP+FpNvaNElDIT21ur+jjMTmVQJWruzbvTdvOdjy4g9hrtvraeNStyWzPyEigqrS9OCkmYcnSGrJLeQliKB58+1yTmwmINOsIcBPaCdx48NR7I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723544618; c=relaxed/simple;
+	bh=yNnR3JNgL24+GniR04GS/+TvPRzO1SJUZmEkdjQahfw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Nv8IgIAi32vLSym/J3Rq9Xvghj0g9Z5IXHueFJCGx1RSPeSTHyvLpgYvI82yxx2hbz53t1J/XsYQqVyMXX3gXtN8hnnoi1WoIGg9XXc8AXi+lPIQddnroXn5Gvocp7C/mJQ06urdOf1dAJEuG5igjKhvlri3JtWbHA91NqXXBrI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=YAjdNAGp; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=FnmmqpRH; arc=pass smtp.client-ip=185.185.170.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPS id 4WjnXZ0v80z49Pv3;
+	Tue, 13 Aug 2024 13:23:26 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1723544606;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yNnR3JNgL24+GniR04GS/+TvPRzO1SJUZmEkdjQahfw=;
+	b=YAjdNAGpE7A6dwPItlQskvqsgo/7VVMKA/sjcqZ4nU0WjyA5cI/T0hMeCxmFYSF9PFkDP9
+	nqQlBAKck5bp7j8zvPNdMPAjF4stAuqnOdGuwuT+dLoxjAjTnbn3gnmNtyhu9trrgWXPWl
+	NTt7tOCSorYC9QqbUSVUV0/RtSVqubAy63773c8btU2sAplmLpcYVhcorDoRujn7Jlheub
+	/UV+x3AcvW1t0I25pKk1/yuWtbcDlXHFGIbOZZlEo6ojYd8A1KWm+RXVpozF7exzmh9Xyl
+	UNL/IYzQeQj+dQBcjc0zyHiuqnyTCaoNTBh55Jyc37CF7uWwMvG8AfbXZ/aR/A==
+Received: from localhost (83-245-197-106.elisa-laajakaista.fi [83.245.197.106])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sakkinen)
+	by meesny.iki.fi (Postfix) with ESMTPSA id 4WjnXL5cL6zyV8;
+	Tue, 13 Aug 2024 13:23:14 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
+	t=1723544597;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yNnR3JNgL24+GniR04GS/+TvPRzO1SJUZmEkdjQahfw=;
+	b=FnmmqpRHcOoGxnDGnoB1PDh1iCCtenX53NvOC/A4VrNlKpEis4dYJxmU9cgG9Iylzqc+Mc
+	JII5rCSphSYLOJpf3RkOY8DvE7pvgykpMn0T6jFPOBOdybbG0VsO1/RdVQevJ14fYhVyZX
+	+gK1N3rMtOgQU2FsCJeAL/QIdzfUmMc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=meesny; t=1723544597;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yNnR3JNgL24+GniR04GS/+TvPRzO1SJUZmEkdjQahfw=;
+	b=Rzujk1h2BWttlsTCOZAjOSiBo5hkJWuGKFSMWzSrh+f2/Zq3UHOaWRtsQC1MiTU00c972j
+	PnQRxnZkOqpel8ls4uJLa+V1U0hPjOwoaNLOqqQXY+FsDi/Oc0MfuZlUgOSpE1A5f5L/2V
+	PZbNXWZZuIV6u6gUpIWEkjME2AqzwvE=
+ARC-Seal: i=1; s=meesny; d=iki.fi; t=1723544597; a=rsa-sha256; cv=none;
+	b=x8/pvvpCk0fek6pYspCjq0ibwnig63N5dwnX3gjkpJ/nJfuCcv8OpYFqQgpyLhyIbfy0AR
+	ouLUraOTtMDYN7cXSiQcJuU6OQH8KI/4+k2UpM4QxwexWOR5iJ3S7/PnVkSQLWRIh+uusA
+	adqD8zadJ9OhbVuzC5IORYCjdT//WZw=
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=sakkinen smtp.mailfrom=jarkko.sakkinen@iki.fi
+Message-ID: <900fcce8cdce254e73864c653743370108fd0555.camel@iki.fi>
+Subject: Re: [PATCH 3/3] sign-file,extract-cert: use pkcs11 provider for
+ OPENSSL MAJOR >= 3
+From: Jarkko Sakkinen <jarkko.sakkinen@iki.fi>
+To: Jan Stancek <jstancek@redhat.com>, dhowells@redhat.com,
+ dwmw2@infradead.org,  zxu@redhat.com, keyrings@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Date: Tue, 13 Aug 2024 13:23:13 +0300
+In-Reply-To: <10c0539a6103f4da2eb19765c83800594ebe2dff.1720728319.git.jstancek@redhat.com>
+References: <cover.1720728319.git.jstancek@redhat.com>
+	 <10c0539a6103f4da2eb19765c83800594ebe2dff.1720728319.git.jstancek@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 13 Aug 2024 13:12:10 +0300
-Message-Id: <D3EPBYVJ9NZ2.2OI3EQVYKRRZI@kernel.org>
-To: "Jan Stancek" <jstancek@redhat.com>, <dhowells@redhat.com>,
- <dwmw2@infradead.org>, <zxu@redhat.com>, <keyrings@vger.kernel.org>
-Cc: <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/3] sign-file,extract-cert: avoid using deprecated
- ERR_get_error_line()
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-X-Mailer: aerc 0.17.0
-References: <cover.1720728319.git.jstancek@redhat.com>
- <6b7f84efe01b89a8a6cd35108a721224c22de8e1.1720728319.git.jstancek@redhat.com>
-In-Reply-To: <6b7f84efe01b89a8a6cd35108a721224c22de8e1.1720728319.git.jstancek@redhat.com>
+MIME-Version: 1.0
 
-On Fri Jul 12, 2024 at 10:11 AM EEST, Jan Stancek wrote:
-> ERR_get_error_line() is deprecated since OpenSSL 3.0.
->
-> Use ERR_peek_error_line() instead, and combine display_openssl_errors()
-> and drain_openssl_errors() to a single function where parameter decides
-> if it should consume errors silently.
->
+On Fri, 2024-07-12 at 09:11 +0200, Jan Stancek wrote:
+> ENGINE API has been deprecated since OpenSSL version 3.0 [1].
+> Distros have started dropping support from headers and in future
+> it will likely disappear also from library.
+>=20
+> It has been superseded by the PROVIDER API, so use it instead
+> for OPENSSL MAJOR >=3D 3.
+>=20
+> [1] https://github.com/openssl/openssl/blob/master/README-ENGINES.md
+>=20
 > Signed-off-by: Jan Stancek <jstancek@redhat.com>
-> ---
->  certs/extract-cert.c |  4 ++--
->  scripts/sign-file.c  |  6 +++---
->  scripts/ssl-common.h | 23 ++++++++---------------
->  3 files changed, 13 insertions(+), 20 deletions(-)
->
-> diff --git a/certs/extract-cert.c b/certs/extract-cert.c
-> index 8e7ba9974a1f..61bbe0085671 100644
-> --- a/certs/extract-cert.c
-> +++ b/certs/extract-cert.c
-> @@ -99,11 +99,11 @@ int main(int argc, char **argv)
->  		parms.cert =3D NULL;
-> =20
->  		ENGINE_load_builtin_engines();
-> -		drain_openssl_errors();
-> +		drain_openssl_errors(__LINE__, 1);
->  		e =3D ENGINE_by_id("pkcs11");
->  		ERR(!e, "Load PKCS#11 ENGINE");
->  		if (ENGINE_init(e))
-> -			drain_openssl_errors();
-> +			drain_openssl_errors(__LINE__, 1);
->  		else
->  			ERR(1, "ENGINE_init");
->  		if (key_pass)
-> diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-> index 39ba58db5d4e..bb3fdf1a617c 100644
-> --- a/scripts/sign-file.c
-> +++ b/scripts/sign-file.c
-> @@ -114,11 +114,11 @@ static EVP_PKEY *read_private_key(const char *priva=
-te_key_name)
->  		ENGINE *e;
-> =20
->  		ENGINE_load_builtin_engines();
-> -		drain_openssl_errors();
-> +		drain_openssl_errors(__LINE__, 1);
->  		e =3D ENGINE_by_id("pkcs11");
->  		ERR(!e, "Load PKCS#11 ENGINE");
->  		if (ENGINE_init(e))
-> -			drain_openssl_errors();
-> +			drain_openssl_errors(__LINE__, 1);
->  		else
->  			ERR(1, "ENGINE_init");
->  		if (key_pass)
-> @@ -273,7 +273,7 @@ int main(int argc, char **argv)
-> =20
->  		/* Digest the module data. */
->  		OpenSSL_add_all_digests();
-> -		display_openssl_errors(__LINE__);
-> +		drain_openssl_errors(__LINE__, 0);
->  		digest_algo =3D EVP_get_digestbyname(hash_algo);
->  		ERR(!digest_algo, "EVP_get_digestbyname");
-> =20
-> diff --git a/scripts/ssl-common.h b/scripts/ssl-common.h
-> index e6711c75ed91..2db0e181143c 100644
-> --- a/scripts/ssl-common.h
-> +++ b/scripts/ssl-common.h
-> @@ -3,7 +3,7 @@
->   * SSL helper functions shared by sign-file and extract-cert.
->   */
-> =20
-> -static void display_openssl_errors(int l)
-> +static void drain_openssl_errors(int l, int silent)
->  {
->  	const char *file;
->  	char buf[120];
-> @@ -11,28 +11,21 @@ static void display_openssl_errors(int l)
-> =20
->  	if (ERR_peek_error() =3D=3D 0)
->  		return;
-> -	fprintf(stderr, "At main.c:%d:\n", l);
-> +	if (!silent)
-> +		fprintf(stderr, "At main.c:%d:\n", l);
-> =20
-> -	while ((e =3D ERR_get_error_line(&file, &line))) {
-> +	while ((e =3D ERR_peek_error_line(&file, &line))) {
->  		ERR_error_string(e, buf);
-> -		fprintf(stderr, "- SSL %s: %s:%d\n", buf, file, line);
-> +		if (!silent)
-> +			fprintf(stderr, "- SSL %s: %s:%d\n", buf, file, line);
-> +		ERR_get_error();
->  	}
->  }
-> =20
-> -static void drain_openssl_errors(void)
-> -{
-> -	const char *file;
-> -	int line;
-> -
-> -	if (ERR_peek_error() =3D=3D 0)
-> -		return;
-> -	while (ERR_get_error_line(&file, &line)) {}
-> -}
-> -
->  #define ERR(cond, fmt, ...)				\
->  	do {						\
->  		bool __cond =3D (cond);			\
-> -		display_openssl_errors(__LINE__);	\
-> +		drain_openssl_errors(__LINE__, 0);	\
->  		if (__cond) {				\
->  			errx(1, fmt, ## __VA_ARGS__);	\
->  		}					\
-
 
 Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+
+I think all these somewhat "dead obvious" patches. Not much to comment
+on these.
 
 BR, Jarkko
 
