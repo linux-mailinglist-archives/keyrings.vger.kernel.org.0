@@ -1,121 +1,154 @@
-Return-Path: <keyrings+bounces-1875-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1876-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 137D0953B0E
-	for <lists+keyrings@lfdr.de>; Thu, 15 Aug 2024 21:47:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7620953B38
+	for <lists+keyrings@lfdr.de>; Thu, 15 Aug 2024 22:00:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92F40B24601
-	for <lists+keyrings@lfdr.de>; Thu, 15 Aug 2024 19:46:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7398C2858E7
+	for <lists+keyrings@lfdr.de>; Thu, 15 Aug 2024 20:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D53D145B14;
-	Thu, 15 Aug 2024 19:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3F613CFAA;
+	Thu, 15 Aug 2024 20:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AKIEu+8z"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XEoCxbyL"
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D2E82876
-	for <keyrings@vger.kernel.org>; Thu, 15 Aug 2024 19:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC877E591
+	for <keyrings@vger.kernel.org>; Thu, 15 Aug 2024 20:00:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723751204; cv=none; b=nV7D2c99HZh+MwKhUbx7lPDb7qD4ncIHGTtKeYBMIKWT7jkrO0JKbHwkS83nHIvngCUxixigRMUqojek/KgO8lfo7Gfx7UI74g4rf54I06E2QR6fjrwqAdqy4hyXENGgLB8bIIvmaZdwP3s5o0iXQnpUSR+60mW5NNY7X8Nt2XA=
+	t=1723752037; cv=none; b=jSs0EgfyjDG54dj2oyGxinFYgeesVUkw9DbrJAGspTrPFjKoHYqm/BlsMX9u7o+y6SnkYuj5DC3owQ+iQfVDzrIx7U9vd3xCtxb3pnkCDj60aBTkA+CokKExQp7LzCmI2a+6RgMjNOKuj+CAyxsMeMB7qVNWvbdZkq9V/1CszTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723751204; c=relaxed/simple;
-	bh=r9BUfohUq44ghTk7Ggo5cn7xGSmzUposKb2aPQJ6cPo=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=cpbvXGxaZ6QyOJz/8/88t8YQi8sP2xp7/xBATW2frzrBmsadjhDNdCk/eXq6Vqq1n6DBKtdoTPwJer9S0ruPiJ0t1Lali7rcDEjxLU5RczcXN2TpdbfI9XvfipbbiCIMprx+9TbdGWmwrjZ9g+KNUgD9tjkj8I00GIxpKrDs/YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AKIEu+8z; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723751201;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hscydfmGaytB0tY5NrMFG6FDivDIrO/rS4k+FVJY0Sw=;
-	b=AKIEu+8zGr8NAJgAczSCr7oK5VwZyUJmPAt3FVSrWxBiMQitCAHx8ACwLeCcCryo5lUYG3
-	qD5EdcvyWYhoyLvIoH7f9roMNLen3GvNwN7uxl5KPlijaKzR7bIrrtCMeaiKEJKxX5dzHK
-	6X7cQwfwsp4XAety5KecyBz9FT6LvCg=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-320-ntn8nMOUNz6pSvDV7rlhtg-1; Thu,
- 15 Aug 2024 15:46:38 -0400
-X-MC-Unique: ntn8nMOUNz6pSvDV7rlhtg-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 280C9190ECEE;
-	Thu, 15 Aug 2024 19:46:35 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.30])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5A56419560AA;
-	Thu, 15 Aug 2024 19:46:29 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20240805-remove-cred-transfer-v2-1-a2aa1d45e6b8@google.com>
-References: <20240805-remove-cred-transfer-v2-1-a2aa1d45e6b8@google.com> <20240805-remove-cred-transfer-v2-0-a2aa1d45e6b8@google.com>
-To: Jann Horn <jannh@google.com>, Jeffrey Altman <jaltman@auristor.com>,
-    openafs-devel@openafs.org
-Cc: dhowells@redhat.com, Paul Moore <paul@paul-moore.com>,
-    James Morris <jmorris@namei.org>,
-    "Serge E. Hallyn" <serge@hallyn.com>,
-    John Johansen <john.johansen@canonical.com>,
-    Jarkko Sakkinen <jarkko@kernel.org>,
-    =?utf-8?q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
-    =?utf-8?q?G=C3=BCnther_Noack?= <gnoack@google.com>,
-    Stephen Smalley <stephen.smalley.work@gmail.com>,
-    Ondrej Mosnacek <omosnace@redhat.com>,
-    Casey Schaufler <casey@schaufler-ca.com>,
-    linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org,
-    linux-security-module@vger.kernel.org, apparmor@lists.ubuntu.com,
-    keyrings@vger.kernel.org, selinux@vger.kernel.org
-Subject: Can KEYCTL_SESSION_TO_PARENT be dropped entirely? -- was Re: [PATCH v2 1/2] KEYS: use synchronous task work for changing parent credentials
+	s=arc-20240116; t=1723752037; c=relaxed/simple;
+	bh=xGYBVjCJruWxpObTcbXRaohepR1nP2OwaL5Zu9E+LTY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DvP26zGu5uKIrZJnRvv/y4J089YUe5hmhcpZ0tu+f3tEARAYfYyQ3LQzFzwITbOwoIzU3duvYe9bPKDnj+Se9YmGzJkMcraZF+5Z3BHCQhs9vztcCZwj7yWaafXjcRFEd9TwqfK/Qv2yiO5QbOROAzl4ddSaYXxr0cfX4AQIZz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XEoCxbyL; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5bebc830406so1773a12.0
+        for <keyrings@vger.kernel.org>; Thu, 15 Aug 2024 13:00:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1723752034; x=1724356834; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d3ArqisW88zeUJ5548euro8ampk/ZNm/xfRfsdbWrSo=;
+        b=XEoCxbyLwL4HcM51EsZbF3tltEsLeG0fMLChLyci6j8xwhfdhsrk6PiWQztaCnghnC
+         eaT2mcJ4GFV3M/3yL2RhFQQJf3dUVdRow4s3vrr2/+04q2tTYkdxTpp3dAklavj7Nqat
+         qt3xj+w69yg9KR3KfFxFysAFY0NCnGqPh/+jZDSKE8vgmyM40WTWy39GMYmEuULcPvna
+         aWkDjRKI0g9hrEGuYsZQoJniEdjA0Z1H51ZpwRfckEvQM/453k1oPkSM1Tb389rtf0BX
+         OKs8QmWwYCgZDH20vSOLhDjMJhyNsMS6uelDMF9OtT2GHwOMx8BqyfLU4FfjClsjs7nI
+         QfJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723752034; x=1724356834;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=d3ArqisW88zeUJ5548euro8ampk/ZNm/xfRfsdbWrSo=;
+        b=Diz13+RbdpuAcvOAmH/0CiY/x07glRC4rdinEkjOBAcDOCEajIuQCIhFQurNldL6pO
+         ieiy8K+802t97K3apWNZcZNE4tJnSh3uYpxoPCTkfHiPW8UmGffxwglDaKoHzCYgGDnK
+         no0K+6desaaNbUxiWTuiFoK4KVCe4ExANI99osa+VkcPqdBClF2DTHXoks5XhjX4lfKg
+         92T/43WgZB7sxev2ryjgTYvMgjUZDRc1ajNVEC1gYhrsyvW2w36Ta/gbYKw0pprlv1LQ
+         mogZreiz30Wnl2BgmqgLY2DJ1pCv9ZE+C/aOXxgyZt/2TslAyPogMGUX4DRAbWlmcbM1
+         iM7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXpoVM4pveAsF2WjtzPmejRHRoTrm3hZTBoB53QmDHpEIe5XRz0E0LuocTF363v0TRYzxgoGlqCe+bsjBDsbsegCWmi0zqalVo=
+X-Gm-Message-State: AOJu0YyOY78j2UhJ4UZqYHPrxzpN7M/9GYVN9qvzEFPO9cMZtQx+dLOd
+	GYxN5DZdzU6hHj7gSkoTErVBG0h+iw8o9gNNgRdv55yZH/bMSb5hCPMPGCl9+QC+/fupQF2fdLG
+	UFvls6ZNMIcN/1Vk4opr2402gVHfKyL5baTxY
+X-Google-Smtp-Source: AGHT+IFwS4EKwUlrFlYXcuSN5oh43sNNRYX1HBigJRCxXbMVgn7z8rfDqxIsTOr1QPI6vYSZFktXxOduALeTABTxFEw=
+X-Received: by 2002:a05:6402:27ca:b0:57c:b712:47b5 with SMTP id
+ 4fb4d7f45d1cf-5becb50aa8cmr15762a12.4.1723752032713; Thu, 15 Aug 2024
+ 13:00:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2494948.1723751188.1@warthog.procyon.org.uk>
-Date: Thu, 15 Aug 2024 20:46:28 +0100
-Message-ID: <2494949.1723751188@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+References: <20240805-remove-cred-transfer-v2-0-a2aa1d45e6b8@google.com>
+ <20240805-remove-cred-transfer-v2-1-a2aa1d45e6b8@google.com> <2494949.1723751188@warthog.procyon.org.uk>
+In-Reply-To: <2494949.1723751188@warthog.procyon.org.uk>
+From: Jann Horn <jannh@google.com>
+Date: Thu, 15 Aug 2024 21:59:54 +0200
+Message-ID: <CAG48ez2LBmS91fQVLYRYEaBHssj22NyUjB0HVtkDHUXDvDZ6EA@mail.gmail.com>
+Subject: Re: Can KEYCTL_SESSION_TO_PARENT be dropped entirely? -- was Re:
+ [PATCH v2 1/2] KEYS: use synchronous task work for changing parent credentials
+To: David Howells <dhowells@redhat.com>
+Cc: Jeffrey Altman <jaltman@auristor.com>, openafs-devel@openafs.org, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, John Johansen <john.johansen@canonical.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
+	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
+	Casey Schaufler <casey@schaufler-ca.com>, linux-afs@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	apparmor@lists.ubuntu.com, keyrings@vger.kernel.org, selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Jann Horn <jannh@google.com> wrote:
+On Thu, Aug 15, 2024 at 9:46=E2=80=AFPM David Howells <dhowells@redhat.com>=
+ wrote:
+> Jann Horn <jannh@google.com> wrote:
+>
+> > Rewrite keyctl_session_to_parent() to run task work on the parent
+> > synchronously, so that any errors that happen in the task work can be
+> > plumbed back into the syscall return value in the child.
+>
+> The main thing I worry about is if there's a way to deadlock the child an=
+d the
+> parent against each other.  vfork() for example.
 
-> Rewrite keyctl_session_to_parent() to run task work on the parent
-> synchronously, so that any errors that happen in the task work can be
-> plumbed back into the syscall return value in the child.
+Yes - I think it would work fine for scenarios like using
+KEYCTL_SESSION_TO_PARENT from a helper binary against the shell that
+launched the helper (which I think is the intended usecase?), but
+there could theoretically be constellations where it would cause an
+(interruptible) hang if the parent is stuck in
+uninterruptible/killable sleep.
 
-The main thing I worry about is if there's a way to deadlock the child and the
-parent against each other.  vfork() for example.
+I think vfork() is rather special in that it does a killable wait for
+the child to exit or execute; and based on my understanding of the
+intended usecase of KEYCTL_SESSION_TO_PARENT, I think normally
+KEYCTL_SESSION_TO_PARENT would only be used by a child that has gone
+through execve?
 
-> +	if (task_work_cancel(parent, &ctx.work)) {
-> +		/*
-> +		 * We got interrupted and the task work was canceled before it
-> +		 * could execute.
-> +		 * Use -ERESTARTNOINTR instead of -ERESTARTSYS for
-> +		 * compatibility - the manpage does not list -EINTR as a
-> +		 * possible error for keyctl().
-> +		 */
 
-I think returning EINTR is fine, provided that if we return EINTR, the change
-didn't happen.  KEYCTL_SESSION_TO_PARENT is only used by the aklog, dlog and
-klog* OpenAFS programs AFAIK, and only if "-setpag" is set as a command line
-option.  It also won't be effective if you strace the program.
+> > +     if (task_work_cancel(parent, &ctx.work)) {
+> > +             /*
+> > +              * We got interrupted and the task work was canceled befo=
+re it
+> > +              * could execute.
+> > +              * Use -ERESTARTNOINTR instead of -ERESTARTSYS for
+> > +              * compatibility - the manpage does not list -EINTR as a
+> > +              * possible error for keyctl().
+> > +              */
+>
+> I think returning EINTR is fine, provided that if we return EINTR, the ch=
+ange
+> didn't happen.  KEYCTL_SESSION_TO_PARENT is only used by the aklog, dlog =
+and
+> klog* OpenAFS programs AFAIK, and only if "-setpag" is set as a command l=
+ine
+> option.  It also won't be effective if you strace the program.
 
-Maybe the AFS people can say whether it's even worth keeping the functionality
-rather than just dropping KEYCTL_SESSION_TO_PARENT?
+Ah, I didn't even know about those.
 
-David
+The users I knew of are the command-line tools "keyctl new_session"
+and "e4crypt new_session" (see
+https://codesearch.debian.net/search?q=3DKEYCTL_SESSION_TO_PARENT&literal=
+=3D1,
+which indexes code that's part of Debian).
 
+> Maybe the AFS people can say whether it's even worth keeping the function=
+ality
+> rather than just dropping KEYCTL_SESSION_TO_PARENT?
+
+I think this would break the tools "keyctl new_session" and "e4crypt
+new_session" - though I don't know if anyone actually uses those
+invocations.
 
