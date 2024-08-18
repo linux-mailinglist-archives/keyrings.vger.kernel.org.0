@@ -1,90 +1,89 @@
-Return-Path: <keyrings+bounces-1883-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1884-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C97DD95523D
-	for <lists+keyrings@lfdr.de>; Fri, 16 Aug 2024 23:10:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DFF7955CB7
+	for <lists+keyrings@lfdr.de>; Sun, 18 Aug 2024 15:18:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07CA01C2146F
-	for <lists+keyrings@lfdr.de>; Fri, 16 Aug 2024 21:10:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C926A1F214BF
+	for <lists+keyrings@lfdr.de>; Sun, 18 Aug 2024 13:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96C313B293;
-	Fri, 16 Aug 2024 21:10:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VS814E0x"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C61B219E1;
+	Sun, 18 Aug 2024 13:18:16 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF26026AFC
-	for <keyrings@vger.kernel.org>; Fri, 16 Aug 2024 21:10:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F7B1B978
+	for <keyrings@vger.kernel.org>; Sun, 18 Aug 2024 13:18:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723842621; cv=none; b=JQaSAsEALC8CPKXAe8W6f2za+UQE64+/D9Ute+jX/xoTk0MYhvP+L3XOZGbbcCKSp97HGDy3wQYmKvT82cWcNY/UkwtRdPezOQ/9rsJTg+Ix1U+DVkUsGfGEocPY+0H60wpPvFr2lpHKSDMEOVmVvy72Bdhm709gxt2DeUUKvWw=
+	t=1723987096; cv=none; b=lXz3a3bj4m9g7ZMGJC69IW2JO/iF4Btp3P0PCUaaaVxJ5kI3cqn+nvu/xS3QS/WiptCfIVrOt257hJuYk/p1YNIa12XWwP670ro3AtXJU6JQBqBR3x57MVZtTGEBy2YHMt+bpKcesvasC1SLG/ivwXHsQzp8/B3zVsLFVK0Ffcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723842621; c=relaxed/simple;
-	bh=F/3cjECbAeiyBsSNDLlrgEJ8JdBdJEAfLudJblvV+wM=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=BWs/l/C7weY+DZktBE8kLFNHx0YMmuBlLZKoGAGR9RwYtiK3wgV/sYAZr6dthbiH88fZpxvkMfydN8bx1z6ynHzbb76KK2r7NJh+ZiV2i7RMh2apvZvxndCEIyHhkzyiHmowC+CVtLAD0tTTROyBua42SuxzQ3h3P68uvRMjtmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VS814E0x; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723842618;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=F/3cjECbAeiyBsSNDLlrgEJ8JdBdJEAfLudJblvV+wM=;
-	b=VS814E0xm/QNi85ojhC1s6l8+rcnv8c7gGgOeeEmbARxf3D7upsj73adJL8QGyHC2ZgZvh
-	NvBRO/ZRQU6GwCcHIKptSFLdgcRk7vXh5hRuhPIGlme6F5vCMf403WuZZYbhiFR9JlDSDA
-	HUbmVPk3cTJE0UVHZtUYuHZRiOxSw10=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-269-itlj7RUrNjC_r1nGuBnQUQ-1; Fri,
- 16 Aug 2024 17:10:15 -0400
-X-MC-Unique: itlj7RUrNjC_r1nGuBnQUQ-1
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 386C11955D4E;
-	Fri, 16 Aug 2024 21:10:14 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.30])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B7B2219560A3;
-	Fri, 16 Aug 2024 21:10:12 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <ddc266b6f275438425b206a35760f827b7892c24.camel@huaweicloud.com>
-References: <ddc266b6f275438425b206a35760f827b7892c24.camel@huaweicloud.com> <2493611.1723748374@warthog.procyon.org.uk>
-To: Roberto Sassu <roberto.sassu@huaweicloud.com>
-Cc: dhowells@redhat.com, Jarkko Sakkinen <jarkko@kernel.org>,
-    keyrings@vger.kernel.org
-Subject: Re: PGP signature patches
+	s=arc-20240116; t=1723987096; c=relaxed/simple;
+	bh=JTYd3luilgFncoYX9QcWhiHpDxSWoX4LUN/45dme9cU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ve388DjXdpcoUurU6uj5pJt7n3EGdbhDvUdc7DQSMox6VnxpmkcKuoGYZoIqjOsLlJtHA5VinZ+UVmhzmSnhyEKRqEU59Rpv2IKomM6drXEHSqKRtOV0ICpoEV16ueSRb1hTjRK5174mbp9Uj6EmLZoh0Mk6jY9nCJHJNrog+yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.18.186.51])
+	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4WmwdV121cz9v7JM
+	for <keyrings@vger.kernel.org>; Sun, 18 Aug 2024 20:53:34 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.27])
+	by mail.maildlp.com (Postfix) with ESMTP id F0A701401F0
+	for <keyrings@vger.kernel.org>; Sun, 18 Aug 2024 21:17:58 +0800 (CST)
+Received: from [10.45.153.54] (unknown [10.45.153.54])
+	by APP2 (Coremail) with SMTP id GxC2BwDnA8F+9MFmwgByAQ--.19125S2;
+	Sun, 18 Aug 2024 14:17:58 +0100 (CET)
+Message-ID: <9d835c9f-313a-4007-9513-28fff3bfec71@huaweicloud.com>
+Date: Sun, 18 Aug 2024 15:17:47 +0200
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <3081108.1723842611.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 16 Aug 2024 22:10:11 +0100
-Message-ID: <3081109.1723842611@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+User-Agent: Mozilla Thunderbird
+Subject: Re: PGP signature patches
+To: David Howells <dhowells@redhat.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org
+References: <ddc266b6f275438425b206a35760f827b7892c24.camel@huaweicloud.com>
+ <2493611.1723748374@warthog.procyon.org.uk>
+ <3081109.1723842611@warthog.procyon.org.uk>
+Content-Language: en-US
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+In-Reply-To: <3081109.1723842611@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:GxC2BwDnA8F+9MFmwgByAQ--.19125S2
+X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUU5P7kC6x804xWl14x267AKxVWUJVW8JwAF
+	c2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII
+	0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xv
+	wVC0I7IYx2IY6xkF7I0E14v26r1j6r4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjc
+	xK6I8E87Iv6xkF7I0E14v26r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
+	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
+	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxAIw28IcxkI7VAKI48JMxC2
+	0s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI
+	0_JrI_JrWlx4CE17CEb7AF67AKxVWUXVWUAwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE
+	14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20x
+	vaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWU
+	JVW8JbIYCTnIWIevJa73UjIFyTuYvjxUzsqWUUUUU
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQATBGbBWHEBdwACss
 
-I've pulled your patches up to v6.11-rc3:
+On 8/16/2024 11:10 PM, David Howells wrote:
+> I've pulled your patches up to v6.11-rc3:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=pgplib
 
-https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/=
-?h=3Dpgplib
+Thanks. I also found some bug fixes from openEuler 22.03 LTS
+(the PGP patch set was already merged there).
 
-David
+Will send a new version of the patch set shortly.
+
+Roberto
 
 
