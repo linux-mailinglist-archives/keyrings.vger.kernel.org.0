@@ -1,131 +1,112 @@
-Return-Path: <keyrings+bounces-1912-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1913-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B90729588C0
-	for <lists+keyrings@lfdr.de>; Tue, 20 Aug 2024 16:15:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 036FD959BE9
+	for <lists+keyrings@lfdr.de>; Wed, 21 Aug 2024 14:36:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE50E1C21088
-	for <lists+keyrings@lfdr.de>; Tue, 20 Aug 2024 14:14:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC7B01F215AD
+	for <lists+keyrings@lfdr.de>; Wed, 21 Aug 2024 12:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC0F190063;
-	Tue, 20 Aug 2024 14:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF9C166F04;
+	Wed, 21 Aug 2024 12:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KDwgSiWE"
 X-Original-To: keyrings@vger.kernel.org
-Received: from frasgout11.his.huawei.com (frasgout11.his.huawei.com [14.137.139.23])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D521189F3F;
-	Tue, 20 Aug 2024 14:14:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FEB1D12E1
+	for <keyrings@vger.kernel.org>; Wed, 21 Aug 2024 12:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724163297; cv=none; b=CsAxTd5cb5/VNOKvbQ7bNn2etYYkL6m5szWbFnMMhDEr3PaVlt7QI6LT7CcaYulA6xW88i/F53utLqyRsSDQON9HNfmOxjaVwm75ty3Le+3bpid4j7EQUr4zwIwRIN+6W4QETJPXdfDwm/szvGEI/vO0sx6JxU0b1EcOMmG0z3I=
+	t=1724243789; cv=none; b=ZQQBdXq4Mg5p053JNlRr5NsiEEEyio8JWHltW/5CXm5zM0BA74Xdx3P/qMMtjHgc4vkAGJlcsvmlfhcZGcsOsiGEQPRmMUY2khsWob21pT21PjuZQmQD73A0mxSD14p7yAeNTuv7bv/bw/ueZRA0HGaAl/jn0UJ3pQ0rmVotRXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724163297; c=relaxed/simple;
-	bh=Li4il9DPZcDFmQDsu6gkCNX3IrynfYcKNpVKGyGtauc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ccAX9qUQojXkJ/6K08isZv8sOLBokw93NjZM5i3NRw2wA1dW2avOtYcodCNRujrBLYReW4bS4Dk3LuOfDi76wkNd613bpE99MMyGBqVkSJztU2ClaGzqmB7HqVm/iZd85cz0uFblW4eCCPlmKM+0OZVITcKG23WIH/m1atvNkT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.51])
-	by frasgout11.his.huawei.com (SkyGuard) with ESMTP id 4Wp9wG09J9z9v7Hk;
-	Tue, 20 Aug 2024 21:55:42 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.27])
-	by mail.maildlp.com (Postfix) with ESMTP id D434A140B1C;
-	Tue, 20 Aug 2024 22:14:36 +0800 (CST)
-Received: from [127.0.0.1] (unknown [10.204.63.22])
-	by APP2 (Coremail) with SMTP id GxC2BwDntsPEpMRmxQiUAQ--.4381S2;
-	Tue, 20 Aug 2024 15:14:36 +0100 (CET)
-Message-ID: <e0a67e424dc4cd9f36252c453f046f1f6e51d363.camel@huaweicloud.com>
-Subject: Re: [PATCH v2 00/14] KEYS: Add support for PGP keys and signatures
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: Jonathan McDowell <noodles@earth.li>
-Cc: dhowells@redhat.com, dwmw2@infradead.org, herbert@gondor.apana.org.au, 
- davem@davemloft.net, linux-kernel@vger.kernel.org,
- keyrings@vger.kernel.org,  linux-crypto@vger.kernel.org,
- zohar@linux.ibm.com,  linux-integrity@vger.kernel.org, Roberto Sassu
- <roberto.sassu@huawei.com>
-Date: Tue, 20 Aug 2024 16:14:24 +0200
-In-Reply-To: <ZsSkTs4TFfx2pK8r@earth.li>
-References: <20240818165756.629203-1-roberto.sassu@huaweicloud.com>
-	 <ZsNf1VdfkHqD8R4Q@earth.li>
-	 <f142b1c4e662d4701a2ab67fa5fc839ab7109e5e.camel@huaweicloud.com>
-	 <ZsSkTs4TFfx2pK8r@earth.li>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	s=arc-20240116; t=1724243789; c=relaxed/simple;
+	bh=iPAgneh8d06fCeRW00UqhEOvyxYtOrl8jJrAAPmiQfQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dHCtUYrc8b50RPmSsQQyhSGNXY6mjf0cB3Xk4ru6IuNN3z4myyM4xxrfLqtgZyGGAOQNHzPUiEn74BXwXKNaepNzjMPSoMzjEEb1qmKdDhBESZKPaN8BwJNUpkXzi5NEuzRX0rbdReUCOcf5pWWax9d1fOD/dnTxoFjNOBSLGp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KDwgSiWE; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1724243787;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vG/ZDsrU8oiDjbsJ4bObMRa3sGVEeffwvXpjidw8y40=;
+	b=KDwgSiWEWL287zMtBs3Wrg7HrOXlYn+bMxCvh5srVOpwjKRIbG3pXOjVO8R17jpp0h3yB2
+	ND5BtmpDHoiXDz+tqmXSBLl0MlULiX9vE4qAckdsTii18XpmUeJJ6E0sSxjWTSHXe2HzFv
+	YoWt1BeK5ev7seBjdRch0sLM3XuBbBI=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-84-ZgwmLf_7Mhm2TVGlkD_0WA-1; Wed,
+ 21 Aug 2024 08:36:25 -0400
+X-MC-Unique: ZgwmLf_7Mhm2TVGlkD_0WA-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 793C81955D54;
+	Wed, 21 Aug 2024 12:36:24 +0000 (UTC)
+Received: from warthog.procyon.org.uk.com (unknown [10.42.28.30])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CC6F519560A3;
+	Wed, 21 Aug 2024 12:36:22 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: David Howells <dhowells@redhat.com>,
+	keyrings@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/7] keys: Add tracepoints
+Date: Wed, 21 Aug 2024 13:36:08 +0100
+Message-ID: <20240821123616.60401-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-CM-TRANSID:GxC2BwDntsPEpMRmxQiUAQ--.4381S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZF1kJFWfWr1DWr17AFyUtrb_yoW8AFWkpa
-	yrWF13tFZ5tw1SkFnay3WUGrWjy39rJF15JwnxJrykAFn0qFy09F1xKF45u3s8Grn3Cw1j
-	vrW3Ja13W3s8AaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
-	wI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUF1
-	v3UUUUU
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgABBGbD+-gF-gABsb
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Tue, 2024-08-20 at 15:12 +0100, Jonathan McDowell wrote:
-> On Mon, Aug 19, 2024 at 05:15:02PM +0200, Roberto Sassu wrote:
-> > On Mon, 2024-08-19 at 16:08 +0100, Jonathan McDowell wrote:
-> > > On Sun, Aug 18, 2024 at 06:57:42PM +0200, Roberto Sassu wrote:
-> > > > From: Roberto Sassu <roberto.sassu@huawei.com>
-> > > >=20
-> > > > Support for PGP keys and signatures was proposed by David long time=
- ago,
-> > > > before the decision of using PKCS#7 for kernel modules signatures
-> > > > verification was made. After that, there has been not enough intere=
-st to
-> > > > support PGP too.
-> > >=20
-> > > You might want to update the RFC/bis references to RFC9580, which was
-> > > published last month and updates things.
-> >=20
-> > Yes, makes sense (but probably isn't too much hassle to support more
-> > things for our purposes?)
->=20
-> I'm mostly suggesting that the comments/docs point to the latest
-> standard rather than the draft version, not changing to support the new
-> v6 keys.
->=20
-> > > Also, I see support for v2 + v3 keys, and this doesn't seem like a go=
-od
-> > > idea. There are cryptographic issues with fingerprints etc there and =
-I
-> > > can't think of a good reason you'd want the kernel to support them. T=
-he
-> > > same could probably be said of DSA key support too.
-> >=20
-> > Uhm, if I remember correctly I encountered some old PGP keys used to
-> > verify RPM packages (need to check). DSA keys are not supported, since
-> > the algorithm is not in the kernel.
->=20
-> I would question the benefit gained from using obsolete key/signature
-> types for verification (I was involved in the process of Debian dropping
-> them back in *2010* which was later than it should have been). Dropping
-> the code for that path means a smaller attack surface/maintenance
-> overhead for something that isn't giving a benefit.
+Hi Jarkko,
 
-Ok, I agree to both!
+Here's a patch to add some tracepoints to keyrings to make it easier to
+debug what's going on, plus a bunch of preliminary patches to move things
+about a bit to make that easier.
 
-Thanks
+The patches can also be found here:
 
-Roberto
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=keys-next
+
+Thanks,
+David
+
+David Howells (7):
+  keys: Out of line key_is_dead() so it can have tracepoints added in
+  keys: Extract struct key_user to its own header for tracing purposes
+  keys: Move key_get() out of line so a tracepoint can be added
+  keys: Add a key_ref_get() wrapper
+  keys: Use key_get() instead of __key_get()
+  keys: Provide a key_try_get() function and use it
+  keys: Add tracepoints for the keyrings facility
+
+ Documentation/security/keys/core.rst |   1 -
+ crypto/asymmetric_keys/restrict.c    |   6 +-
+ include/keys/key_user.h              |  35 +++
+ include/linux/key.h                  |  16 +-
+ include/trace/events/key.h           | 401 +++++++++++++++++++++++++++
+ security/keys/gc.c                   |   4 +
+ security/keys/internal.h             |  41 +--
+ security/keys/key.c                  |  70 ++++-
+ security/keys/keyctl.c               |   2 +
+ security/keys/keyring.c              |  45 ++-
+ security/keys/process_keys.c         |  15 +-
+ 11 files changed, 566 insertions(+), 70 deletions(-)
+ create mode 100644 include/keys/key_user.h
+ create mode 100644 include/trace/events/key.h
 
 
