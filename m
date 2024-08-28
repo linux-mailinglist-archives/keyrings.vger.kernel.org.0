@@ -1,92 +1,80 @@
-Return-Path: <keyrings+bounces-1929-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1930-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0749617F8
-	for <lists+keyrings@lfdr.de>; Tue, 27 Aug 2024 21:28:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98FB1961E37
+	for <lists+keyrings@lfdr.de>; Wed, 28 Aug 2024 07:32:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED750284732
-	for <lists+keyrings@lfdr.de>; Tue, 27 Aug 2024 19:28:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B21C2858B4
+	for <lists+keyrings@lfdr.de>; Wed, 28 Aug 2024 05:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 492AC1D2F51;
-	Tue, 27 Aug 2024 19:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02FF14D282;
+	Wed, 28 Aug 2024 05:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AjPheou2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VDb1l480"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B70B77117;
-	Tue, 27 Aug 2024 19:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33B414AD25;
+	Wed, 28 Aug 2024 05:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724786898; cv=none; b=OUWFyRjVyCXKfFc2xVJ1bvZFGt3PqDmp9uVTyh44TP+LWcgIzDT1aRdcRPFaUqdgWZu6H1EMKSsCWeO7O4NzSxji2SugbDcnlC3IxLjS1IGo3aqKQ4St/0eyngT2AQCOyuL2CsZUzSec5Y63FTiKXnj5vxtewR69iqYUi0F5eu4=
+	t=1724823140; cv=none; b=S4H9qoqDP2WRfb+UCLRhUgX0yaq1pnqMre2WP5+rIbyGhql+WfxcyeI7Lt71RFfta1ZdWCu1ncuVYt4/5D2lu+JJCxDNEUcJHQyBUjmbwp1spePrkyQ3PUZZKNdXjvQCGEQQVq6uRSrsz1cbS9KYBcFvqjFOsetQE5c8Fkx0FUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724786898; c=relaxed/simple;
-	bh=INQLM/QHDaLa8UQEb+hgn/bB/mse+eLCIi6nGDdtQKw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To; b=i67WjjOm4tgcm0dyceENuiz4+vJp2wrnFWmdfRx+/KYNipihH7LZaoXvL5WMdw2/gehriQcnR1v82VWCcn16zcz3kOrvqQuZypwYgsrOc2LDWKf1GWEWAEE+rocJvX9b3Nz7sDRuDT07auvq7bK37DpwZ3HRdxYLPsmgyTREHhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AjPheou2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E946C32782;
-	Tue, 27 Aug 2024 19:28:17 +0000 (UTC)
+	s=arc-20240116; t=1724823140; c=relaxed/simple;
+	bh=olmmimMEbwDxYfJ3/akHUI21VGIKzZvVUXeUuGj+0WI=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=L/++jdJT4151elDAUxTNU62X7By1fdoLJ+6TFoo71JQ7+FT1gPo0YF9MEw20/WKZqHWJcbqAlG2zrrbDA0rydQwKf+9A3+LW8wBryw1EuPKdqXNUagz582sXtwVAHTOzPGsa5PIArS0hQ9Ndm7Y0jKjt4hR0dIuJqmAZpU70ipc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VDb1l480; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23B0EC4AF19;
+	Wed, 28 Aug 2024 05:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724786897;
-	bh=INQLM/QHDaLa8UQEb+hgn/bB/mse+eLCIi6nGDdtQKw=;
-	h=Date:Cc:Subject:From:To:From;
-	b=AjPheou23EfD4GpR4IOajaTvychmmtPZUtlg2rf19WovRMTVDiocYIhIqptzPPFd2
-	 FkSCDZHhNP2U7MphblDPD/k/SNrc6Yho1Bha1XBVZU+3zPhTeWzMs8d8zDVYhjtagj
-	 qbRsgvg0VqdFZTeHXQWaBZK6ZcW4EM50wua4Kb3BgLsEgut9auUUlibFLElp1xZDjd
-	 cUl24xSgTiT3ApwKgpb1wofV80eXD+9IiCgFnut2Z8zAUWrLODGe8JB2hYpYu5wpUG
-	 sbY3bjh1Jk47Oy9RMtaDCIsE6zENWT9GxZhWM49kcit7AZNcFIf2aHC35KS/DpzBuY
-	 Q3Vu+HrLLNW0A==
+	s=k20201202; t=1724823140;
+	bh=olmmimMEbwDxYfJ3/akHUI21VGIKzZvVUXeUuGj+0WI=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=VDb1l480Cks0yXzbSebTymGYQhmtZ/U9YSBbjpnGRGdmHEtVfmjMd76lju0LBtEBy
+	 Bh9Y9VJg2aHY+jXiczPTDS32BLLxo2g0VmbJ0LcwQVbIEU8fBS3RyPP5ZOl3y9RUaA
+	 2hJkCdZpQe+NWnZVb0SmWYrPC4eAc+oRdihfd6PHm0idli+HdCC5e+d/WanEq9vzZe
+	 uqX7X8DrftlMcEO0EefGQ+PCdB0koQJQOtSZwfAAfoXhQ1RSMJhUxdLSFSFCW5q1AA
+	 4TqmPhymrb1eMYi+Tep8wFN061f9bzR9iMxRzLJl7ea/heDHLwe4IU1nFCO2YYVQGS
+	 LZjdrO/PcVyyQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70F493822D6F;
+	Wed, 28 Aug 2024 05:32:21 +0000 (UTC)
+Subject: Re: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.11-rc6
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <D3QXXCFHY73S.26C2JS9ZOV7IQ@kernel.org>
+References: <D3QXXCFHY73S.26C2JS9ZOV7IQ@kernel.org>
+X-PR-Tracked-List-Id: <linux-integrity.vger.kernel.org>
+X-PR-Tracked-Message-Id: <D3QXXCFHY73S.26C2JS9ZOV7IQ@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-6.11-rc6
+X-PR-Tracked-Commit-Id: 08d08e2e9f0ad1af0044e4747723f66677c35ee9
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 46d22bfdf0bc76429f596c58ca74a8f67d0f6251
+Message-Id: <172482314011.853602.7428886411403749943.pr-tracker-bot@kernel.org>
+Date: Wed, 28 Aug 2024 05:32:20 +0000
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org, Stefan
+ Berger <stefanb@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 27 Aug 2024 22:28:13 +0300
-Message-Id: <D3QXXCFHY73S.26C2JS9ZOV7IQ@kernel.org>
-Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
- "David Howells" <dhowells@redhat.com>, <keyrings@vger.kernel.org>,
- <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Stefan
- Berger" <stefanb@linux.ibm.com>
-Subject: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.11-rc6
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Linus Torvalds" <torvalds@linux-foundation.org>
-X-Mailer: aerc 0.17.0
 
-The following changes since commit 3e9bff3bbe1355805de919f688bef4baefbfd436=
-:
+The pull request you sent on Tue, 27 Aug 2024 22:28:13 +0300:
 
-  Merge tag 'vfs-6.11-rc6.fixes' of gitolite.kernel.org:pub/scm/linux/kerne=
-l/git/vfs/vfs (2024-08-27 16:57:35 +1200)
+> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-6.11-rc6
 
-are available in the Git repository at:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/46d22bfdf0bc76429f596c58ca74a8f67d0f6251
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags=
-/tpmdd-next-6.11-rc6
+Thank you!
 
-for you to fetch changes up to 08d08e2e9f0ad1af0044e4747723f66677c35ee9:
-
-  tpm: ibmvtpm: Call tpm2_sessions_init() to initialize session support (20=
-24-08-27 21:11:44 +0300)
-
-----------------------------------------------------------------
-Hi,
-
-Contains a bug fix for tpm_ibmvtpm driver so that it will take the bus
-encryption into use.
-
-BR, Jarkko
-
-----------------------------------------------------------------
-Stefan Berger (1):
-      tpm: ibmvtpm: Call tpm2_sessions_init() to initialize session support
-
- drivers/char/tpm/tpm_ibmvtpm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
