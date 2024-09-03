@@ -1,33 +1,33 @@
-Return-Path: <keyrings+bounces-1932-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1933-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A1D59699C8
-	for <lists+keyrings@lfdr.de>; Tue,  3 Sep 2024 12:12:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7DD969B39
+	for <lists+keyrings@lfdr.de>; Tue,  3 Sep 2024 13:09:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F38A91F238B0
-	for <lists+keyrings@lfdr.de>; Tue,  3 Sep 2024 10:12:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD84C1C2127A
+	for <lists+keyrings@lfdr.de>; Tue,  3 Sep 2024 11:09:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E557B45003;
-	Tue,  3 Sep 2024 10:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0A81A0BEC;
+	Tue,  3 Sep 2024 11:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=basantfashion.com header.i=@basantfashion.com header.b="EREZoX2A"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=basantfashion.com header.i=@basantfashion.com header.b="JEuuq03q"
 X-Original-To: keyrings@vger.kernel.org
 Received: from mod.modforum.org (mod.modforum.org [192.254.136.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BBB1A0BC7
-	for <keyrings@vger.kernel.org>; Tue,  3 Sep 2024 10:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747591B12D9
+	for <keyrings@vger.kernel.org>; Tue,  3 Sep 2024 11:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.254.136.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725358352; cv=none; b=Nl8CBYIvAC5wSV++8sBgKQ77b4oiF1zjC80mEnBHJ7rU5QGqJ16MV6/HuDWO2uLSNsJiSKXlELjjZ3u9331FUMb3mD89Nrle5/spqO+8BUJTL2WrmlrrWoXc80T8/EQMDmQoPL8MirInAG0oJs+W1IZ0Hg+VPohELSd7pRij3NY=
+	t=1725361790; cv=none; b=GkdHZcelnSk23p7J+J4/jNWYBMzuLiIbcq+yvJqhUsy9NTt5fCtSjn7zz6VcwJigH4BVND5aH3PJStBWtPV9txV/9bquswGBPWGfYRI+46jhtIP4q24d1B21Cn+9sCPvMEcGQcG1G0q0jF26bdzYl0DKPo6lhwu8MRh56plCKnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725358352; c=relaxed/simple;
+	s=arc-20240116; t=1725361790; c=relaxed/simple;
 	bh=G4BItOc8k/hB4suOfWWwTOg/U0FTlHwyCNnKCLPge2w=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BHryKAMI1nmmBH2zq+OaoMBg0gJfQdcqniTlkIqgTYQUwZ2l1/awdgG2o2LEyGhBREYCeLqh91ZsOBwGh7YcgwYL2xS2+XKCrjdpybxlppfhn1L3uOcEmgyRIxq5S8Z2MrjoGx4fd9iKg79tHMsf9OHU0+LS1iQVTfpeG9DkqbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=basantfashion.com; spf=pass smtp.mailfrom=basantfashion.com; dkim=pass (2048-bit key) header.d=basantfashion.com header.i=@basantfashion.com header.b=EREZoX2A; arc=none smtp.client-ip=192.254.136.77
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kmYMjOGIawjj1phKO/d81QbwiSdb0l2oBIdLMAcEDDmKIMq3xVEi9ziW241lrikDFkxT3HjK6Fo+BpolCLfe+/F9bEF9MJn7KyNVcpqO82IsdH9pPHpV9BrC4UN9M7+GsU/izXU9FURdW5PEzYgJYHhjSpJtBrVziXuj+rv9ph4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=basantfashion.com; spf=pass smtp.mailfrom=basantfashion.com; dkim=pass (2048-bit key) header.d=basantfashion.com header.i=@basantfashion.com header.b=JEuuq03q; arc=none smtp.client-ip=192.254.136.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=basantfashion.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=basantfashion.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -36,24 +36,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=G4BItOc8k/hB4suOfWWwTOg/U0FTlHwyCNnKCLPge2w=; b=EREZoX2Ai1ZvMyO4jiQZxBRZZx
-	BmWrO8+TSITR0NaZ0N35jeMlW5+Xv69/WAVREN9uym6Q59LDAV6e344uAR5UiolEygQRpTcYDwJPA
-	40h0gj9ieK9GHkwHoSSE1V/kjlBLein6C4icfCRf4iWQGFA28RGX1x0+HObgEiyX08aViLwRBcXcK
-	GHMRSsJ3ixM6NLNqPdQ+29h9nfJbyzNd7oMp3V7cuLX8XyoU2UbjjMudzWfx8Y3idLmlpFzsyn3aw
-	3Ix2EPzImxfVfrSY60oo6aUnjsmt+u8T5pungKc1gffu2eixIt1OCxqLM3bLeUivKBPV/vUctLTrC
-	ExuN7N4w==;
-Received: from [162.244.210.121] (port=65067)
+	bh=G4BItOc8k/hB4suOfWWwTOg/U0FTlHwyCNnKCLPge2w=; b=JEuuq03qcSKdDgW1G7H7IWsMke
+	aZWwWJNcy5ybunuD/t9HQiuuBLL4y7KnI5zYDdhYFZeuIkfTVu+WTm6NenKnMzPQJ0ycB2zhFZZ4N
+	2TX9Of2u9PTjxenGsX5RGOvyqyAvEymw/RNzpD2CG68PQkqF+Jm2yX7cZTfnVEiBjwaAo1dvLzG4l
+	BIbgfg7V3CON1hw3MCrBCLbUDqWhKfb4aWDLKY9dAMIymXdUAZnQGAlN5Lwp4f6IxNDL4ftZm3SJG
+	N2p453IJmxhZvuEUhv1ImRzpxXFZXntGzvdT79PHDxkF5Gd6vQuBAJqtUGLScsQMxgF1Ir2UWjz35
+	PhgyDZ6g==;
+Received: from [162.244.210.121] (port=49616)
 	by mod.modforum.org with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.93)
 	(envelope-from <kuljeet@basantfashion.com>)
-	id 1slQVa-000146-AR
-	for keyrings@vger.kernel.org; Tue, 03 Sep 2024 05:11:34 -0500
+	id 1slRP0-00026T-QY
+	for keyrings@vger.kernel.org; Tue, 03 Sep 2024 06:08:50 -0500
 Reply-To: procurement@mercuira.com
 From: MERCURIA  <kuljeet@basantfashion.com>
 To: keyrings@vger.kernel.org
 Subject: Request for Quote and Meeting Availability
-Date: 3 Sep 2024 03:12:29 -0700
-Message-ID: <20240903031228.86891B76A79670D3@basantfashion.com>
+Date: 3 Sep 2024 04:09:45 -0700
+Message-ID: <20240903040945.5B4DE113970A2975@basantfashion.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
