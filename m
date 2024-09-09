@@ -1,100 +1,161 @@
-Return-Path: <keyrings+bounces-1935-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1936-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7773A96EB43
-	for <lists+keyrings@lfdr.de>; Fri,  6 Sep 2024 08:59:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 705E69721D6
+	for <lists+keyrings@lfdr.de>; Mon,  9 Sep 2024 20:25:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A46231C23D7A
-	for <lists+keyrings@lfdr.de>; Fri,  6 Sep 2024 06:59:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26A361F23D13
+	for <lists+keyrings@lfdr.de>; Mon,  9 Sep 2024 18:25:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2800145FFF;
-	Fri,  6 Sep 2024 06:59:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="HVT8YDDS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2671187856;
+	Mon,  9 Sep 2024 18:25:54 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4674140E2E;
-	Fri,  6 Sep 2024 06:59:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642EA54278;
+	Mon,  9 Sep 2024 18:25:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725605988; cv=none; b=bAQazq/J7zIttZjR31Iy7Uf6DN3qO4stKWZqkteGmdcy/XnYrSQDQR1tue7L/aIoVpW0SG1vGCSDOJjZ6sI7JSuXjpNeQeLgCILrzNbgUfXvOL8PJ7RJIgS9lldL4I/9z0HeFdz+T2B2yu0i0ZED0SMp+rF3Mk5PYrMqU0ztAFc=
+	t=1725906354; cv=none; b=K6fDFa337B/bB7cyi7voxRSBK1npYORObCEJCj60fn5qoOr1C2M52KwrJMv5oUJbPPMxWOq8jGZa56JtYB31i0RjGEyCLRfUOQy3e25LTw4EnHsn+hlSMGF1ia5BUx3j629uM9jxOBgnsfMmKeHb1o/OWKy+iaSz+d4san7pQ9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725605988; c=relaxed/simple;
-	bh=9qEsuurv2N2uY32XnpeyGgBFlMO2uLp/Hj0P+rW9Uxs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y/gxx4AZ2xnIe7MZwGf73nGZVDuKNdSch2JT49khzyBJHL8L9k0qpdGdw4BdySkVt1OA8fKGcFwx7TvN5o8VZm/vip9aK5HsRcwvoPzUeYE+VfZU/GpsGmvO1ugMytv917VEVQjxXvGYMoM4jAygnChoeluCO24xXWJFA6aNDzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=HVT8YDDS; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=W+UwvjYKC0vg2lzUhqUnw0heFE0B17R9zWw6oXzEWps=; b=HVT8YDDSDhLRu+pwboJjlPht7q
-	v/9lTapXz8PpzuwWmY2xz8+swBK5V4vvp2ACg/4DRLCINyGf6LrF1M2JrQK36LKf/Xw8QoW27l3ff
-	fSjCusepDY85fq9/gx9viBzcj4ICFR0822vewTKBSYrXwFLd4DjAtTIexW9uckmeL/SoU1tI36Cye
-	fJdAn8dV+1mb90W7Y3rFoaqnSglrUbwqU7HJb4yj19gqPAb6JzZI3Z3TPdJoI7OAFknt72XS21ORO
-	qHfmWQiZsECOVCwZ3IC7bXLClqda+2IkFNs1RJLYOSM4UqV0whQqznqvllNzbI5DwUE0+ztD5GvPe
-	ZnLnA0gQ==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1smSly-000WNH-1X;
-	Fri, 06 Sep 2024 14:59:01 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 06 Sep 2024 14:59:00 +0800
-Date: Fri, 6 Sep 2024 14:59:00 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Vitaly Chikunov <vt@altlinux.org>,
-	Tadeusz Struk <tstruk@gigaio.com>,
-	Andrew Zaborowski <andrew.zaborowski@intel.com>,
-	Saulo Alessandre <saulo.alessandre@tse.jus.br>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	zhenwei pi <pizhenwei@bytedance.com>
-Subject: Re: [PATCH 2/5] crypto: akcipher - Drop usage of sglists for verify
- op
-Message-ID: <ZtqoNAgcnXnrYhZZ@gondor.apana.org.au>
-References: <cover.1722260176.git.lukas@wunner.de>
- <eb13c292f60a61b0af14f0c5afd23719b3cb0bd7.1722260176.git.lukas@wunner.de>
- <ZrG6w9wsb-iiLZIF@gondor.apana.org.au>
- <ZscuLueUKl9rcCGr@wunner.de>
+	s=arc-20240116; t=1725906354; c=relaxed/simple;
+	bh=IN6wpwySbo/t6LNShmmbuRlhOJoFQ6h5dJpybnFw0TI=;
+	h=From:Subject:To:CC:References:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=SQ+xdFXlJ22Vn83HEZmufa57kPNSJtdNitOY+p2+tnUBGTPmLEUZHdBdyerpTlC/XD5SjkZvm7DaUUlHrd7l/PnJa7wzOb2mtZu/s12iqTzrw8Gx545NAUccMzMQmOWUMQR1Uv5lRiZWbi0Usnj5za59AB2H+7GjM4DLOtLUjy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from [192.168.1.106] (31.173.81.96) by msexch01.omp.ru (10.188.4.12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Mon, 9 Sep
+ 2024 21:25:29 +0300
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
+Subject: Re: [PATCH] KEYS: prevent NULL pointer dereference in
+ find_asymmetric_key()
+To: Jarkko Sakkinen <jarkko@kernel.org>, Roman Smirnov <r.smirnov@omp.ru>,
+	David Howells <dhowells@redhat.com>, Herbert Xu
+	<herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
+	Andrew Zaborowski <andrew.zaborowski@intel.com>
+CC: "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>
+References: <20240315103320.18754-1-r.smirnov@omp.ru>
+ <CZX9T3TU6YU0.3JE9M7M3ENUE0@kernel.org>
+ <b5f21d1175c142efb52e68a24bc4165a@omp.ru>
+ <CZY02YNBTGYQ.3KG8NLH8X3RQE@kernel.org>
+ <7fd0f2a8252d4a6aa295adc1e76bc0e2@omp.ru>
+ <CZZK77BY3FK4.2WMP1X5H9GTL1@kernel.org>
+Organization: Open Mobile Platform
+Message-ID: <2ba02cfc-b866-bda4-4996-f7f95148832c@omp.ru>
+Date: Mon, 9 Sep 2024 21:25:28 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZscuLueUKl9rcCGr@wunner.de>
+In-Reply-To: <CZZK77BY3FK4.2WMP1X5H9GTL1@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 09/09/2024 18:08:05
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 187636 [Sep 09 2024]
+X-KSE-AntiSpam-Info: Version: 6.1.1.5
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 32 0.3.32
+ 766319f57b3d5e49f2c79a76e7d7087b621090df
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_bl_eng_cat, c15}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 31.173.81.96 in (user)
+ b.barracudacentral.org}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 31.173.81.96 in (user) dbl.spamhaus.org}
+X-KSE-AntiSpam-Info:
+	127.0.0.199:7.1.2;omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;linuxtesting.org:7.1.1;git.kernel.org:7.1.1
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: ApMailHostAddress: 31.173.81.96
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/09/2024 18:12:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 9/9/2024 4:30:00 PM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-On Thu, Aug 22, 2024 at 02:25:18PM +0200, Lukas Wunner wrote:
->
-> That's user space ABI, so we're stuck with it.  The user space ABI
-> combines sign/verify and encrypt/decrypt in common structs.
+Hello!
 
-I would say that this is something that we can break.  Breaking
-it is no different to running virtio on a host that does not support
-these algorithms.  After all, a software implementation must always
-be present.
+   Sorry for (so long!) delay -- we're trying to finalize the status
+of our yet unmerged patches...
 
-I deliberately left akcipher out of crypto_user because the API
-is still in flux.  We should not let virtio constrain ourselves.
+On 3/21/24 7:12 PM, Jarkko Sakkinen wrote:
+[...]
 
-Thanks,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+>>>>>> Found by Linux Verification Center (linuxtesting.org) with Svace.
+>>>>>
+>>>>> I'm not sure if this should be part of the commit message.
+>>>>
+>>>> I have already submitted patches with this line, some have been
+>>>> accepted. It is important for the Linux Verification Center to mark
+>>>> patches as closing issues found with Svace.
+>>>>
+>>>>>>
+>>>>>> Fixes: 7d30198ee24f ("keys: X.509 public key issuer lookup without AKID")
+>>>>>> Suggested-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+>>>>>
+>>>>> Should be reported-by.
+>>>>
+>>>> The suggested-by tag belongs to Sergey because he suggested the fix,
+>>>> subject/description of the patch. The tag reported-by belongs to
+>>>> Svace tool.
+>>>
+>>> 1. I did not see any reported-by tags in this which is requirement.
+>>> 2. Who did find the issue using that tool? I don't put reported-by to
+>>>    GDB even if I use that find the bug.
+>>
+>> Svace is an automated bug finding tool. This error was found during
+>> source code analysis by the program, so the tag reported-by does not
+>> belong to any person. I don't know what to do in such a situation,
+>> but write something like:
+>>
+>>     Reported-by: Svace
+>>
+>> would be weird. I think that the line "Found by Linux ... with Svace"
+>> could be a substitute for the tag.
+> 
+> I'd prefer a person here that used the tool as it is not korg hosted
+> automated tool.
+
+   It's a long ago established practice with the Linux Verification Center (http://linuxtesting.org): you can find 700+ merged patches with a similar
+line (mentioning the LVC's website) and without the Reported-by tag:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/?qt=grep&q=linuxtesting.org
+
+> BR, Jarkko
+
+MBR, Sergey
 
