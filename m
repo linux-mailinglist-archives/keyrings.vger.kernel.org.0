@@ -1,91 +1,85 @@
-Return-Path: <keyrings+bounces-1976-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1978-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2CF097437E
-	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 21:30:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A98B3974458
+	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 22:54:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E697A1C24933
-	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 19:30:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBB5A1C24EBE
+	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 20:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3C2192D6C;
-	Tue, 10 Sep 2024 19:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB66193431;
+	Tue, 10 Sep 2024 20:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lrX/vH1U"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IYe2zooS"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6D017C7C4;
-	Tue, 10 Sep 2024 19:30:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E328A188014;
+	Tue, 10 Sep 2024 20:53:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725996614; cv=none; b=DZSXHpir2AIiKygfozf34MUoN7zpgaqBtiPmvUuSQRSPC7Y8vwyGHtQoC4YlZsZmkEG5U4RtnclDvQqtwfsn4Wp/ZSz/X9T+9wg8eibL1lowSEwO7VWrk+BnQRTBWi9SU8qAr82AzuVYaWxx1IbpPeJ/s1IJTKrS+Uc39ybpGxg=
+	t=1726001643; cv=none; b=PCI+tzVV4CGq5Gj2Fli/nQSsL9V09oCna4CnofEcjNXfl1CdcTNFEKjT9QL1m6Z7cTVrk18oBalXdka0QJmfIbwDTeG305gigreCD4nRYGDiW1cZQCvtLCSOromfc7obHpZt/1g9eCRkkCfWqDFsPpMOJ4pMEh6K1nCvCSlbvR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725996614; c=relaxed/simple;
-	bh=NzIteahWsR/8lxm1A1NB0eWE4FxXmXBbB6oFSDuJq/I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l5ftz3Ia4cNE4AiedaZRi2QH16jGXU2XMER15FK0ePvD3b+MyOkMxF3VOg1WmpTMuqtTT1ANBL966RUhT5TNsVtY3deD42cFV52V66VDqmM6q1e4w/DpTCAj6jaovuppyMRaIm33igte9EgSTo2N0mhdxdpttSo2Y43USPrEvKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lrX/vH1U; arc=none smtp.client-ip=148.163.156.1
+	s=arc-20240116; t=1726001643; c=relaxed/simple;
+	bh=BmmUaqGUVrCJoLi60JHyuV7xSP2HMQzH1y9fks5k5sA=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Y/+JVP+bzj8YASyEj+IEsj8my1FJdHCqrtkla0hzJlBBCU+2bYErivE8o+dVD+dHTbhkDao1AjCihhL0HfuCU1PmuMaNlOSLmB61TE17Kdl1PU9FSEOSZxDQnuVQsoyj6+xhj4x+vUPxtHu+kbFRoSaK/i2+nKsDwZ+5iSVZNaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IYe2zooS; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48A9a1oX007077;
-	Tue, 10 Sep 2024 19:24:46 GMT
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48AFKRiE021760;
+	Tue, 10 Sep 2024 20:46:35 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=pp1; bh=G
-	ntVu4sxoZ//QQVa6FFw7BpccMh+fJ34m8scW/CvNnw=; b=lrX/vH1UKJO7MQzLz
-	5edI7/lrOFerBED3/ZPMWX73evMAUfK/aOAjB4Rps2aGPozL5iU//k7RlKkU7+Tq
-	j3iWa4NTqKeMjayB4lGz3+nyxyKYXTXR9wZv4QBi1J9n7jpdbq9YEqlImsIIA+Pn
-	ykrKQvFs+wZQDaD3bQj/+TuO9A2yG6zqsmBYRiuOW76Xo6iTb8Amvv+Sxybg9paf
-	lHtQO1dBv550lWqCjr+UgzZAke/kgpDSSCGX64SEtaAgMue5CRUxEQzsTfbZI+uG
-	wtVE1+RW/5uJZg8FBHdBH62qf8j+oR2hFpbjbjhjmb9vs1LilRXH7xBtj6frmI5o
-	8IbYA==
+	message-id:date:subject:to:cc:references:from:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+	XoMAaSbV0shsbM/kvb3WVXBVHWOh+fH7ZZ7BY/PYM7Y=; b=IYe2zooSlSjIUBes
+	AaDKCJSyZElbUcn3pHdJg6AasSWiStFJKW+5tmJIWNsLMt+FSzG9nZYNZzaqjjvR
+	k3yQiXm3px9kzQZ/fIbFzy3InoE1Pta9dKXbA62jdftY2XP7kDa2QkY8J3gX8rWc
+	B6m/dCPxuJVEfNpz+1EJ0pCZaqzYQOdXi+NxY+ppJ4MWFjec8hDgMdO5cJHXSDbd
+	RGDokenAz4etYSV6oltvYlROcSpmHQnmzYOi7E/WMdIYx+dJToakGhE4BCp37kH+
+	C3M1HNeBDnOD5SMCV6biLaP0ZYlF52rp7enqSu3KyZjRhhNwocjkRvcSh/gXi+/X
+	O7RbNQ==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gegwsjqq-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gc8qa47g-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Sep 2024 19:24:46 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48AJOjcL005994;
-	Tue, 10 Sep 2024 19:24:45 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gegwsjqh-1
+	Tue, 10 Sep 2024 20:46:34 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48AKhTrr013669;
+	Tue, 10 Sep 2024 20:46:34 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gc8qa47b-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Sep 2024 19:24:45 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48AGFPma032069;
-	Tue, 10 Sep 2024 19:24:44 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41h2nmn4ct-1
+	Tue, 10 Sep 2024 20:46:33 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48AJKOLw019853;
+	Tue, 10 Sep 2024 20:46:33 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41h25pwh4m-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Sep 2024 19:24:44 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48AJOhaq11338466
+	Tue, 10 Sep 2024 20:46:33 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48AKkW6J15532672
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Sep 2024 19:24:44 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E2DE358045;
-	Tue, 10 Sep 2024 19:24:43 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DDB5B58052;
-	Tue, 10 Sep 2024 19:24:39 +0000 (GMT)
+	Tue, 10 Sep 2024 20:46:32 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 255495805F;
+	Tue, 10 Sep 2024 20:46:32 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CB1E25805A;
+	Tue, 10 Sep 2024 20:46:30 +0000 (GMT)
 Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 10 Sep 2024 19:24:39 +0000 (GMT)
-Message-ID: <bed47a64-a9b3-43ec-b89d-378505f890a7@linux.ibm.com>
-Date: Tue, 10 Sep 2024 15:24:39 -0400
-Precedence: bulk
-X-Mailing-List: keyrings@vger.kernel.org
-List-Id: <keyrings.vger.kernel.org>
-List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 10 Sep 2024 20:46:30 +0000 (GMT)
+Message-ID: <1f102959-9a9b-4684-a1e9-ce434ee81ef5@linux.ibm.com>
+Date: Tue, 10 Sep 2024 16:46:30 -0400
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 12/19] crypto: sig - Move crypto_sig_*() API calls to
- include file
+Subject: Re: [PATCH v2 15/19] crypto: ecdsa - Move X9.62 signature decoding
+ into template
 To: Lukas Wunner <lukas@wunner.de>, Herbert Xu <herbert@gondor.apana.org.au>,
         "David S. Miller" <davem@davemloft.net>,
         Eric Biggers <ebiggers@google.com>, Vitaly Chikunov <vt@altlinux.org>,
@@ -101,183 +95,62 @@ Cc: David Howells <dhowells@redhat.com>,
         Denis Kenzior <denkenz@gmail.com>, linux-crypto@vger.kernel.org,
         keyrings@vger.kernel.org
 References: <cover.1725972333.git.lukas@wunner.de>
- <1f15cfe8b380af55cd1bd0535abfefcbb68f6b1f.1725972335.git.lukas@wunner.de>
+ <467f4245dffbe19b9e9bde3043fba39ab5c2cfda.1725972335.git.lukas@wunner.de>
 Content-Language: en-US
 From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <1f15cfe8b380af55cd1bd0535abfefcbb68f6b1f.1725972335.git.lukas@wunner.de>
+In-Reply-To: <467f4245dffbe19b9e9bde3043fba39ab5c2cfda.1725972335.git.lukas@wunner.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: dgKiFo1_L8lx0USkdJtuPMMPXjgBFlcv
-X-Proofpoint-ORIG-GUID: N6Cj2R4cBHabud-5Lb96XCxcnwpQe-i_
+X-Proofpoint-GUID: cL8OP3XUY6wy4MwnlbzwpeZa16A9N2o4
+X-Proofpoint-ORIG-GUID: RXhU_RUy_iAKxC2X9Mv2ZQwZ4hkOukOY
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+Precedence: bulk
+X-Mailing-List: keyrings@vger.kernel.org
+List-Id: <keyrings.vger.kernel.org>
+List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-10_06,2024-09-09_02,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
- lowpriorityscore=0 suspectscore=0 priorityscore=1501 bulkscore=0
- adultscore=0 impostorscore=0 clxscore=1015 malwarescore=0 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409100141
+ definitions=2024-09-10_08,2024-09-09_02,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
+ mlxscore=0 lowpriorityscore=0 impostorscore=0 priorityscore=1501
+ malwarescore=0 adultscore=0 clxscore=1015 mlxlogscore=999 suspectscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409100153
 
 
 
 On 9/10/24 10:30 AM, Lukas Wunner wrote:
-> The crypto_sig_*() API calls lived in sig.c so far because they needed
-> access to struct crypto_sig_type:  This was necessary to differentiate
-> between signature algorithms that had already been migrated from
-> crypto_akcipher to crypto_sig and those that hadn't yet.
+> Unlike the rsa driver, which separates signature decoding and
+> signature verification into two steps, the ecdsa driver does both in one.
 > 
-> Now that all algorithms have been migrated, the API calls can become
-> static inlines in <crypto/sig.h> to mimic what <crypto/akcipher.h> is
-> doing.
+> This restricts users to the one signature format currently supported
+> (X9.62) and prevents addition of others such as P1363, which is needed
+> by the forthcoming SPDM library (Security Protocol and Data Model) for
+> PCI device authentication.
 > 
+> Per Herbert's suggestion, change ecdsa to use a "raw" signature encoding
+> and then implement X9.62 and P1363 as templates which convert their
+> respective encodings to the raw one.  One may then specify
+> "x962(ecdsa-nist-XXX)" or "p1363(ecdsa-nist-XXX)" to pick the encoding.
+> 
+> The present commit moves X9.62 decoding to a template.  A separate
+> commit is going to introduce another template for P1363 decoding.
+> 
+> The ecdsa driver internally represents a signature as two u64 arrays of
+> size ECC_MAX_BYTES.  This appears to be the most natural choice for the
+> raw format as it can directly be used for verification without having to
+> further decode signature data or copy it around.
+> 
+> Repurpose all the existing test vectors for "x962(ecdsa-nist-XXX)" and
+> create a duplicate of them to test the raw encoding.
+> 
+> Link: https://lore.kernel.org/all/ZoHXyGwRzVvYkcTP@gondor.apana.org.au/
 > Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> ---
->   crypto/sig.c         | 46 -------------------------------------------
->   include/crypto/sig.h | 47 +++++++++++++++++++++++++++++++++-----------
->   2 files changed, 36 insertions(+), 57 deletions(-)
-> 
-> diff --git a/crypto/sig.c b/crypto/sig.c
-> index 1e6b0d677472..84d0ea9fd73b 100644
-> --- a/crypto/sig.c
-> +++ b/crypto/sig.c
-> @@ -84,52 +84,6 @@ struct crypto_sig *crypto_alloc_sig(const char *alg_name, u32 type, u32 mask)
->   }
->   EXPORT_SYMBOL_GPL(crypto_alloc_sig);
->   
-> -int crypto_sig_maxsize(struct crypto_sig *tfm)
-> -{
-> -	struct sig_alg *alg = crypto_sig_alg(tfm);
-> -
-> -	return alg->max_size(tfm);
-> -}
-> -EXPORT_SYMBOL_GPL(crypto_sig_maxsize);
-> -
-> -int crypto_sig_sign(struct crypto_sig *tfm,
-> -		    const void *src, unsigned int slen,
-> -		    void *dst, unsigned int dlen)
-> -{
-> -	struct sig_alg *alg = crypto_sig_alg(tfm);
-> -
-> -	return alg->sign(tfm, src, slen, dst, dlen);
-> -}
-> -EXPORT_SYMBOL_GPL(crypto_sig_sign);
-> -
-> -int crypto_sig_verify(struct crypto_sig *tfm,
-> -		      const void *src, unsigned int slen,
-> -		      const void *digest, unsigned int dlen)
-> -{
-> -	struct sig_alg *alg = crypto_sig_alg(tfm);
-> -
-> -	return alg->verify(tfm, src, slen, digest, dlen);
-> -}
-> -EXPORT_SYMBOL_GPL(crypto_sig_verify);
-> -
-> -int crypto_sig_set_pubkey(struct crypto_sig *tfm,
-> -			  const void *key, unsigned int keylen)
-> -{
-> -	struct sig_alg *alg = crypto_sig_alg(tfm);
-> -
-> -	return alg->set_pub_key(tfm, key, keylen);
-> -}
-> -EXPORT_SYMBOL_GPL(crypto_sig_set_pubkey);
-> -
-> -int crypto_sig_set_privkey(struct crypto_sig *tfm,
-> -			  const void *key, unsigned int keylen)
-> -{
-> -	struct sig_alg *alg = crypto_sig_alg(tfm);
-> -
-> -	return alg->set_priv_key(tfm, key, keylen);
-> -}
-> -EXPORT_SYMBOL_GPL(crypto_sig_set_privkey);
-> -
->   static void sig_prepare_alg(struct sig_alg *alg)
->   {
->   	struct crypto_alg *base = &alg->base;
-> diff --git a/include/crypto/sig.h b/include/crypto/sig.h
-> index f0f52a7c5ae7..bbc902642bf5 100644
-> --- a/include/crypto/sig.h
-> +++ b/include/crypto/sig.h
-> @@ -130,7 +130,12 @@ static inline void crypto_free_sig(struct crypto_sig *tfm)
->    *
->    * @tfm:	signature tfm handle allocated with crypto_alloc_sig()
->    */
-> -int crypto_sig_maxsize(struct crypto_sig *tfm);
-> +static inline int crypto_sig_maxsize(struct crypto_sig *tfm)
-> +{
-> +	struct sig_alg *alg = crypto_sig_alg(tfm);
-> +
-> +	return alg->max_size(tfm);
-> +}
->   
->   /**
->    * crypto_sig_sign() - Invoke signing operation
-> @@ -145,9 +150,14 @@ int crypto_sig_maxsize(struct crypto_sig *tfm);
->    *
->    * Return: zero on success; error code in case of error
->    */
-> -int crypto_sig_sign(struct crypto_sig *tfm,
-> -		    const void *src, unsigned int slen,
-> -		    void *dst, unsigned int dlen);
-> +static inline int crypto_sig_sign(struct crypto_sig *tfm,
-> +				  const void *src, unsigned int slen,
-> +				  void *dst, unsigned int dlen)
-> +{
-> +	struct sig_alg *alg = crypto_sig_alg(tfm);
-> +
-> +	return alg->sign(tfm, src, slen, dst, dlen);
-> +}
->   
->   /**
->    * crypto_sig_verify() - Invoke signature verification
-> @@ -163,9 +173,14 @@ int crypto_sig_sign(struct crypto_sig *tfm,
->    *
->    * Return: zero on verification success; error code in case of error.
->    */
-> -int crypto_sig_verify(struct crypto_sig *tfm,
-> -		      const void *src, unsigned int slen,
-> -		      const void *digest, unsigned int dlen);
-> +static inline int crypto_sig_verify(struct crypto_sig *tfm,
-> +				    const void *src, unsigned int slen,
-> +				    const void *digest, unsigned int dlen)
-> +{
-> +	struct sig_alg *alg = crypto_sig_alg(tfm);
-> +
-> +	return alg->verify(tfm, src, slen, digest, dlen);
-> +}
->   
->   /**
->    * crypto_sig_set_pubkey() - Invoke set public key operation
-> @@ -180,8 +195,13 @@ int crypto_sig_verify(struct crypto_sig *tfm,
->    *
->    * Return: zero on success; error code in case of error
->    */
-> -int crypto_sig_set_pubkey(struct crypto_sig *tfm,
-> -			  const void *key, unsigned int keylen);
-> +static inline int crypto_sig_set_pubkey(struct crypto_sig *tfm,
-> +					const void *key, unsigned int keylen)
-> +{
-> +	struct sig_alg *alg = crypto_sig_alg(tfm);
-> +
-> +	return alg->set_pub_key(tfm, key, keylen);
-> +}
->   
->   /**
->    * crypto_sig_set_privkey() - Invoke set private key operation
-> @@ -196,6 +216,11 @@ int crypto_sig_set_pubkey(struct crypto_sig *tfm,
->    *
->    * Return: zero on success; error code in case of error
->    */
-> -int crypto_sig_set_privkey(struct crypto_sig *tfm,
-> -			   const void *key, unsigned int keylen);
-> +static inline int crypto_sig_set_privkey(struct crypto_sig *tfm,
-> +					 const void *key, unsigned int keylen)
-> +{
-> +	struct sig_alg *alg = crypto_sig_alg(tfm);
-> +
-> +	return alg->set_priv_key(tfm, key, keylen);
-> +}
->   #endif
 
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+I ran my signature verification test cases over this:
+
+Tested-by: Stefan Berger <stefanb@linux.ibm.com>
 
