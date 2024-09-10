@@ -1,31 +1,31 @@
-Return-Path: <keyrings+bounces-1951-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1953-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4218973A21
-	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 16:40:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 043D0973AA4
+	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 16:54:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CD711F21B53
-	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 14:40:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 241E81C21390
+	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 14:54:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72111953BD;
-	Tue, 10 Sep 2024 14:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A441E1957F9;
+	Tue, 10 Sep 2024 14:54:25 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [83.223.95.204])
+Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [176.9.242.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6160D194C8B;
-	Tue, 10 Sep 2024 14:40:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE033189903;
+	Tue, 10 Sep 2024 14:54:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725979237; cv=none; b=Ytj4300lXNMsyUmcTSXmvXnbzZyVgRZQJRM9C+ENLqE/xL5J0OqMLn3ZLQ2Q5dswpxID8xVmzov55PmjzeGgaimAMW+lT+P7CQX0U57nu/G0FpgKhvCowg/KriwcxoeDiBKtTqGjuh1CtnEH9VwnpkTz2dpVJJ9FTYMFcA33TJQ=
+	t=1725980065; cv=none; b=MfDdw6ePS/qKklERotLUdNaphQ4QprW3WDsO+wOPa4iynqgdNEgqKHnzB/4cxI2O4k6XAQe1gmipoNvhYuWZNetHmmULVhWIBSLEs72oDWFAwdug5SljhNgFa5n6YcewmYHi6883yg/LhTlRoeWBjI8YOBekNal81+N3PD/jNpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725979237; c=relaxed/simple;
-	bh=Dlno360+ptDIIc6o/dmlFwuU45OT/FEVFgGwnCJ5n+Q=;
-	h=Message-ID:In-Reply-To:References:From:Date:Subject:To:Cc; b=iVTpEFEGfqlbafoKsczH1wZ/SyCIoW6NT6ncDh0bq9EJXSd8HNksRTleSwVSyB6klYKuEcMDbjA6cMmViHyEKabVxBOdeRf1AiRoCfa7/ifiyaAXkLlOAS5GBRpmVLKsdLtrLhtTeOGQFM/sOivSUnPANgRjN8+vdsv2GYxXD74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.95.204
+	s=arc-20240116; t=1725980065; c=relaxed/simple;
+	bh=E9SdjXjKIXBxufAYwAklvvq9YuDaJHJ45dA6EoF/fKE=;
+	h=Message-ID:In-Reply-To:References:From:Date:Subject:To:Cc; b=JGfHfsI5FEIA+pvquKZX9wg0ut6hQlBsq9yd2XyYkuPUFwDYdUG6ECwIaRIMTtgm8s/cLpAm5t55QqdZTL1JyiUbjd5YzXlQgU/QkZzlHi+NazcxlRjqbw8R1T8AE4E5Izx7xrGu/d2dJW/WeOMH/0DWUEp9vkQxkdO2ybo7Xg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=176.9.242.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
 Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
@@ -33,21 +33,21 @@ Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
 	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
 	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by mailout1.hostsharing.net (Postfix) with ESMTPS id 541871019265F;
-	Tue, 10 Sep 2024 16:40:32 +0200 (CEST)
+	by mailout3.hostsharing.net (Postfix) with ESMTPS id BB17A10173F91;
+	Tue, 10 Sep 2024 16:44:32 +0200 (CEST)
 Received: from localhost (unknown [89.246.108.87])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by h08.hostsharing.net (Postfix) with ESMTPSA id 255A46039371;
-	Tue, 10 Sep 2024 16:40:32 +0200 (CEST)
-X-Mailbox-Line: From f160f2418c98204817f93339e944529987308b32 Mon Sep 17 00:00:00 2001
-Message-ID: <f160f2418c98204817f93339e944529987308b32.1725972334.git.lukas@wunner.de>
+	by h08.hostsharing.net (Postfix) with ESMTPSA id 792F76039371;
+	Tue, 10 Sep 2024 16:44:32 +0200 (CEST)
+X-Mailbox-Line: From 688e92e7db6f2de1778691bb7cdafe3bb39e73c6 Mon Sep 17 00:00:00 2001
+Message-ID: <688e92e7db6f2de1778691bb7cdafe3bb39e73c6.1725972334.git.lukas@wunner.de>
 In-Reply-To: <cover.1725972333.git.lukas@wunner.de>
 References: <cover.1725972333.git.lukas@wunner.de>
 From: Lukas Wunner <lukas@wunner.de>
-Date: Tue, 10 Sep 2024 16:30:11 +0200
-Subject: [PATCH v2 01/19] crypto: ecdsa - Drop unused test vector elements
+Date: Tue, 10 Sep 2024 16:30:12 +0200
+Subject: [PATCH v2 02/19] crypto: sig - Introduce sig_alg backend
 To: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, Eric Biggers <ebiggers@google.com>, Stefan Berger <stefanb@linux.ibm.com>, Vitaly Chikunov <vt@altlinux.org>, Tadeusz Struk <tstruk@gigaio.com>
 Cc: David Howells <dhowells@redhat.com>, Andrew Zaborowski <andrew.zaborowski@intel.com>, Saulo Alessandre <saulo.alessandre@tse.jus.br>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Ignat Korchagin <ignat@cloudflare.com>, Marek Behun <kabel@kernel.org>, Varad Gautam <varadgautam@google.com>, Stephan Mueller <smueller@chronox.de>, Denis Kenzior <denkenz@gmail.com>, linux-crypto@vger.kernel.org, keyrings@vger.kernel.org
 Precedence: bulk
@@ -56,437 +56,672 @@ List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 
-The ECDSA test vectors contain "params", "param_len" and "algo" elements
-even though ecdsa.c doesn't make any use of them.  The only algorithm
-implementation using those elements is ecrdsa.c.
+Commit 6cb8815f41a9 ("crypto: sig - Add interface for sign/verify")
+began a transition of asymmetric sign/verify operations from
+crypto_akcipher to a new crypto_sig frontend.
 
-Drop the unused test vector elements.
+Internally, the crypto_sig frontend still uses akcipher_alg as backend,
+however:
 
-For the curious, "params" is an ASN.1 SEQUENCE of OID_id_ecPublicKey
-and a second OID identifying the curve.  For example:
+   "The link between sig and akcipher is meant to be temporary.  The
+    plan is to create a new low-level API for sig and then migrate
+    the signature code over to that from akcipher."
+    https://lore.kernel.org/r/ZrG6w9wsb-iiLZIF@gondor.apana.org.au/
 
-    "\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
-    "\xce\x3d\x03\x01\x01"
+   "having a separate alg for sig is definitely where we want to
+    be since there is very little that the two types actually share."
+    https://lore.kernel.org/r/ZrHlpz4qnre0zWJO@gondor.apana.org.au/
 
-... decodes to:
+Take the next step of that migration and augment the crypto_sig frontend
+with a sig_alg backend to which all algorithms can be moved.
 
-    SEQUENCE (OID_id_ecPublicKey, OID_id_prime192v1)
-
-The curve OIDs used in those "params" elements are unsurprisingly:
-
-    OID_id_prime192v1 (2a8648ce3d030101)
-    OID_id_prime256v1 (2a8648ce3d030107)
-    OID_id_ansip384r1 (2b81040022)
-    OID_id_ansip521r1 (2b81040023)
-
-Those are just different names for secp192r1, secp256r1, secp384r1 and
-secp521r1, respectively, per RFC 8422 appendix A:
-https://www.rfc-editor.org/rfc/rfc8422#appendix-A
-
-The entries for secp384r1 and secp521r1 curves contain a useful code
-comment calling out the curve and hash.  Add analogous code comments
-to secp192r1 and secp256r1 curve entries.
+During the migration, there will briefly be signature algorithms that
+are still based on crypto_akcipher, whilst others are already based on
+crypto_sig.  Allow for that by building a fork into crypto_sig_*() API
+calls (i.e. crypto_sig_maxsize() and friends) such that one of the two
+backends is selected based on the transform's cra_type.
 
 Signed-off-by: Lukas Wunner <lukas@wunner.de>
 ---
- crypto/testmgr.h | 115 +++++------------------------------------------
- 1 file changed, 10 insertions(+), 105 deletions(-)
+ Documentation/crypto/api-sig.rst      |  15 +++
+ Documentation/crypto/api.rst          |   1 +
+ Documentation/crypto/architecture.rst |   2 +
+ crypto/sig.c                          | 143 +++++++++++++++++++++++++-
+ crypto/testmgr.c                      | 115 +++++++++++++++++++++
+ crypto/testmgr.h                      |  13 +++
+ include/crypto/internal/sig.h         |  80 ++++++++++++++
+ include/crypto/sig.h                  |  61 +++++++++++
+ include/uapi/linux/cryptouser.h       |   5 +
+ 9 files changed, 433 insertions(+), 2 deletions(-)
+ create mode 100644 Documentation/crypto/api-sig.rst
 
+diff --git a/Documentation/crypto/api-sig.rst b/Documentation/crypto/api-sig.rst
+new file mode 100644
+index 000000000000..e5e87e106884
+--- /dev/null
++++ b/Documentation/crypto/api-sig.rst
+@@ -0,0 +1,15 @@
++Asymmetric Signature Algorithm Definitions
++------------------------------------------
++
++.. kernel-doc:: include/crypto/sig.h
++   :functions: sig_alg
++
++Asymmetric Signature API
++------------------------
++
++.. kernel-doc:: include/crypto/sig.h
++   :doc: Generic Public Key Signature API
++
++.. kernel-doc:: include/crypto/sig.h
++   :functions: crypto_alloc_sig crypto_free_sig crypto_sig_set_pubkey crypto_sig_set_privkey crypto_sig_maxsize crypto_sig_sign crypto_sig_verify
++
+diff --git a/Documentation/crypto/api.rst b/Documentation/crypto/api.rst
+index ff31c30561d4..8b2a90521886 100644
+--- a/Documentation/crypto/api.rst
++++ b/Documentation/crypto/api.rst
+@@ -10,4 +10,5 @@ Programming Interface
+    api-digest
+    api-rng
+    api-akcipher
++   api-sig
+    api-kpp
+diff --git a/Documentation/crypto/architecture.rst b/Documentation/crypto/architecture.rst
+index 646c3380a7ed..15dcd62fd22f 100644
+--- a/Documentation/crypto/architecture.rst
++++ b/Documentation/crypto/architecture.rst
+@@ -214,6 +214,8 @@ the aforementioned cipher types:
+ 
+ -  CRYPTO_ALG_TYPE_AKCIPHER Asymmetric cipher
+ 
++-  CRYPTO_ALG_TYPE_SIG Asymmetric signature
++
+ -  CRYPTO_ALG_TYPE_PCOMPRESS Enhanced version of
+    CRYPTO_ALG_TYPE_COMPRESS allowing for segmented compression /
+    decompression instead of performing the operation on one segment
+diff --git a/crypto/sig.c b/crypto/sig.c
+index 7645bedf3a1f..4f36ceb7a90b 100644
+--- a/crypto/sig.c
++++ b/crypto/sig.c
+@@ -21,14 +21,38 @@
+ 
+ static const struct crypto_type crypto_sig_type;
+ 
++static void crypto_sig_exit_tfm(struct crypto_tfm *tfm)
++{
++	struct crypto_sig *sig = __crypto_sig_tfm(tfm);
++	struct sig_alg *alg = crypto_sig_alg(sig);
++
++	alg->exit(sig);
++}
++
+ static int crypto_sig_init_tfm(struct crypto_tfm *tfm)
+ {
+ 	if (tfm->__crt_alg->cra_type != &crypto_sig_type)
+ 		return crypto_init_akcipher_ops_sig(tfm);
+ 
++	struct crypto_sig *sig = __crypto_sig_tfm(tfm);
++	struct sig_alg *alg = crypto_sig_alg(sig);
++
++	if (alg->exit)
++		sig->base.exit = crypto_sig_exit_tfm;
++
++	if (alg->init)
++		return alg->init(sig);
++
+ 	return 0;
+ }
+ 
++static void crypto_sig_free_instance(struct crypto_instance *inst)
++{
++	struct sig_instance *sig = sig_instance(inst);
++
++	sig->free(sig);
++}
++
+ static void __maybe_unused crypto_sig_show(struct seq_file *m,
+ 					   struct crypto_alg *alg)
+ {
+@@ -38,16 +62,17 @@ static void __maybe_unused crypto_sig_show(struct seq_file *m,
+ static int __maybe_unused crypto_sig_report(struct sk_buff *skb,
+ 					    struct crypto_alg *alg)
+ {
+-	struct crypto_report_akcipher rsig = {};
++	struct crypto_report_sig rsig = {};
+ 
+ 	strscpy(rsig.type, "sig", sizeof(rsig.type));
+ 
+-	return nla_put(skb, CRYPTOCFGA_REPORT_AKCIPHER, sizeof(rsig), &rsig);
++	return nla_put(skb, CRYPTOCFGA_REPORT_SIG, sizeof(rsig), &rsig);
+ }
+ 
+ static const struct crypto_type crypto_sig_type = {
+ 	.extsize = crypto_alg_extsize,
+ 	.init_tfm = crypto_sig_init_tfm,
++	.free = crypto_sig_free_instance,
+ #ifdef CONFIG_PROC_FS
+ 	.show = crypto_sig_show,
+ #endif
+@@ -68,6 +93,14 @@ EXPORT_SYMBOL_GPL(crypto_alloc_sig);
+ 
+ int crypto_sig_maxsize(struct crypto_sig *tfm)
+ {
++	if (crypto_sig_tfm(tfm)->__crt_alg->cra_type != &crypto_sig_type)
++		goto akcipher;
++
++	struct sig_alg *alg = crypto_sig_alg(tfm);
++
++	return alg->max_size(tfm);
++
++akcipher:
+ 	struct crypto_akcipher **ctx = crypto_sig_ctx(tfm);
+ 
+ 	return crypto_akcipher_maxsize(*ctx);
+@@ -78,6 +111,14 @@ int crypto_sig_sign(struct crypto_sig *tfm,
+ 		    const void *src, unsigned int slen,
+ 		    void *dst, unsigned int dlen)
+ {
++	if (crypto_sig_tfm(tfm)->__crt_alg->cra_type != &crypto_sig_type)
++		goto akcipher;
++
++	struct sig_alg *alg = crypto_sig_alg(tfm);
++
++	return alg->sign(tfm, src, slen, dst, dlen);
++
++akcipher:
+ 	struct crypto_akcipher **ctx = crypto_sig_ctx(tfm);
+ 	struct crypto_akcipher_sync_data data = {
+ 		.tfm = *ctx,
+@@ -97,6 +138,14 @@ int crypto_sig_verify(struct crypto_sig *tfm,
+ 		      const void *src, unsigned int slen,
+ 		      const void *digest, unsigned int dlen)
+ {
++	if (crypto_sig_tfm(tfm)->__crt_alg->cra_type != &crypto_sig_type)
++		goto akcipher;
++
++	struct sig_alg *alg = crypto_sig_alg(tfm);
++
++	return alg->verify(tfm, src, slen, digest, dlen);
++
++akcipher:
+ 	struct crypto_akcipher **ctx = crypto_sig_ctx(tfm);
+ 	struct crypto_akcipher_sync_data data = {
+ 		.tfm = *ctx,
+@@ -120,6 +169,14 @@ EXPORT_SYMBOL_GPL(crypto_sig_verify);
+ int crypto_sig_set_pubkey(struct crypto_sig *tfm,
+ 			  const void *key, unsigned int keylen)
+ {
++	if (crypto_sig_tfm(tfm)->__crt_alg->cra_type != &crypto_sig_type)
++		goto akcipher;
++
++	struct sig_alg *alg = crypto_sig_alg(tfm);
++
++	return alg->set_pub_key(tfm, key, keylen);
++
++akcipher:
+ 	struct crypto_akcipher **ctx = crypto_sig_ctx(tfm);
+ 
+ 	return crypto_akcipher_set_pub_key(*ctx, key, keylen);
+@@ -129,11 +186,93 @@ EXPORT_SYMBOL_GPL(crypto_sig_set_pubkey);
+ int crypto_sig_set_privkey(struct crypto_sig *tfm,
+ 			  const void *key, unsigned int keylen)
+ {
++	if (crypto_sig_tfm(tfm)->__crt_alg->cra_type != &crypto_sig_type)
++		goto akcipher;
++
++	struct sig_alg *alg = crypto_sig_alg(tfm);
++
++	return alg->set_priv_key(tfm, key, keylen);
++
++akcipher:
+ 	struct crypto_akcipher **ctx = crypto_sig_ctx(tfm);
+ 
+ 	return crypto_akcipher_set_priv_key(*ctx, key, keylen);
+ }
+ EXPORT_SYMBOL_GPL(crypto_sig_set_privkey);
+ 
++static void sig_prepare_alg(struct sig_alg *alg)
++{
++	struct crypto_alg *base = &alg->base;
++
++	base->cra_type = &crypto_sig_type;
++	base->cra_flags &= ~CRYPTO_ALG_TYPE_MASK;
++	base->cra_flags |= CRYPTO_ALG_TYPE_SIG;
++}
++
++static int sig_default_sign(struct crypto_sig *tfm,
++			    const void *src, unsigned int slen,
++			    void *dst, unsigned int dlen)
++{
++	return -ENOSYS;
++}
++
++static int sig_default_verify(struct crypto_sig *tfm,
++			      const void *src, unsigned int slen,
++			      const void *dst, unsigned int dlen)
++{
++	return -ENOSYS;
++}
++
++static int sig_default_set_key(struct crypto_sig *tfm,
++			       const void *key, unsigned int keylen)
++{
++	return -ENOSYS;
++}
++
++int crypto_register_sig(struct sig_alg *alg)
++{
++	struct crypto_alg *base = &alg->base;
++
++	if (!alg->sign)
++		alg->sign = sig_default_sign;
++	if (!alg->verify)
++		alg->verify = sig_default_verify;
++	if (!alg->set_priv_key)
++		alg->set_priv_key = sig_default_set_key;
++	if (!alg->set_pub_key)
++		return -EINVAL;
++	if (!alg->max_size)
++		return -EINVAL;
++
++	sig_prepare_alg(alg);
++	return crypto_register_alg(base);
++}
++EXPORT_SYMBOL_GPL(crypto_register_sig);
++
++void crypto_unregister_sig(struct sig_alg *alg)
++{
++	crypto_unregister_alg(&alg->base);
++}
++EXPORT_SYMBOL_GPL(crypto_unregister_sig);
++
++int sig_register_instance(struct crypto_template *tmpl,
++			  struct sig_instance *inst)
++{
++	if (WARN_ON(!inst->free))
++		return -EINVAL;
++	sig_prepare_alg(&inst->alg);
++	return crypto_register_instance(tmpl, sig_crypto_instance(inst));
++}
++EXPORT_SYMBOL_GPL(sig_register_instance);
++
++int crypto_grab_sig(struct crypto_sig_spawn *spawn,
++		    struct crypto_instance *inst,
++		    const char *name, u32 type, u32 mask)
++{
++	spawn->base.frontend = &crypto_sig_type;
++	return crypto_grab_spawn(&spawn->base, inst, name, type, mask);
++}
++EXPORT_SYMBOL_GPL(crypto_grab_sig);
++
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("Public Key Signature Algorithms");
+diff --git a/crypto/testmgr.c b/crypto/testmgr.c
+index f02cb075bd68..bb21378aa510 100644
+--- a/crypto/testmgr.c
++++ b/crypto/testmgr.c
+@@ -33,6 +33,7 @@
+ #include <crypto/akcipher.h>
+ #include <crypto/kpp.h>
+ #include <crypto/acompress.h>
++#include <crypto/sig.h>
+ #include <crypto/internal/cipher.h>
+ #include <crypto/internal/simd.h>
+ 
+@@ -131,6 +132,11 @@ struct akcipher_test_suite {
+ 	unsigned int count;
+ };
+ 
++struct sig_test_suite {
++	const struct sig_testvec *vecs;
++	unsigned int count;
++};
++
+ struct kpp_test_suite {
+ 	const struct kpp_testvec *vecs;
+ 	unsigned int count;
+@@ -151,6 +157,7 @@ struct alg_test_desc {
+ 		struct cprng_test_suite cprng;
+ 		struct drbg_test_suite drbg;
+ 		struct akcipher_test_suite akcipher;
++		struct sig_test_suite sig;
+ 		struct kpp_test_suite kpp;
+ 	} suite;
+ };
+@@ -4317,6 +4324,114 @@ static int alg_test_akcipher(const struct alg_test_desc *desc,
+ 	return err;
+ }
+ 
++static int test_sig_one(struct crypto_sig *tfm, const struct sig_testvec *vecs)
++{
++	u8 *ptr, *key __free(kfree);
++	int err, sig_size;
++
++	key = kmalloc(vecs->key_len + 2 * sizeof(u32) + vecs->param_len,
++		      GFP_KERNEL);
++	if (!key)
++		return -ENOMEM;
++
++	/* ecrdsa expects additional parameters appended to the key */
++	memcpy(key, vecs->key, vecs->key_len);
++	ptr = key + vecs->key_len;
++	ptr = test_pack_u32(ptr, vecs->algo);
++	ptr = test_pack_u32(ptr, vecs->param_len);
++	memcpy(ptr, vecs->params, vecs->param_len);
++
++	if (vecs->public_key_vec)
++		err = crypto_sig_set_pubkey(tfm, key, vecs->key_len);
++	else
++		err = crypto_sig_set_privkey(tfm, key, vecs->key_len);
++	if (err)
++		return err;
++
++	/*
++	 * Run asymmetric signature verification first
++	 * (which does not require a private key)
++	 */
++	err = crypto_sig_verify(tfm, vecs->c, vecs->c_size,
++				vecs->m, vecs->m_size);
++	if (err) {
++		pr_err("alg: sig: verify test failed: err %d\n", err);
++		return err;
++	}
++
++	/*
++	 * Don't invoke sign test (which requires a private key)
++	 * for vectors with only a public key.
++	 */
++	if (vecs->public_key_vec)
++		return 0;
++
++	sig_size = crypto_sig_maxsize(tfm);
++	if (sig_size < vecs->c_size) {
++		pr_err("alg: sig: invalid maxsize %u\n", sig_size);
++		return -EINVAL;
++	}
++
++	u8 *sig __free(kfree) = kzalloc(sig_size, GFP_KERNEL);
++	if (!sig)
++		return -ENOMEM;
++
++	/* Run asymmetric signature generation */
++	err = crypto_sig_sign(tfm, vecs->m, vecs->m_size, sig, sig_size);
++	if (err) {
++		pr_err("alg: sig: sign test failed: err %d\n", err);
++		return err;
++	}
++
++	/* Verify that generated signature equals cooked signature */
++	if (memcmp(sig, vecs->c, vecs->c_size) ||
++	    memchr_inv(sig + vecs->c_size, 0, sig_size - vecs->c_size)) {
++		pr_err("alg: sig: sign test failed: invalid output\n");
++		hexdump(sig, sig_size);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int test_sig(struct crypto_sig *tfm, const char *alg,
++		    const struct sig_testvec *vecs, unsigned int tcount)
++{
++	const char *algo = crypto_tfm_alg_driver_name(crypto_sig_tfm(tfm));
++	int ret, i;
++
++	for (i = 0; i < tcount; i++) {
++		ret = test_sig_one(tfm, vecs++);
++		if (ret) {
++			pr_err("alg: sig: test %d failed for %s: err %d\n",
++			       i + 1, algo, ret);
++			return ret;
++		}
++	}
++	return 0;
++}
++
++__maybe_unused
++static int alg_test_sig(const struct alg_test_desc *desc, const char *driver,
++			u32 type, u32 mask)
++{
++	struct crypto_sig *tfm;
++	int err = 0;
++
++	tfm = crypto_alloc_sig(driver, type, mask);
++	if (IS_ERR(tfm)) {
++		pr_err("alg: sig: Failed to load tfm for %s: %ld\n",
++		       driver, PTR_ERR(tfm));
++		return PTR_ERR(tfm);
++	}
++	if (desc->suite.sig.vecs)
++		err = test_sig(tfm, desc->alg, desc->suite.sig.vecs,
++			       desc->suite.sig.count);
++
++	crypto_free_sig(tfm);
++	return err;
++}
++
+ static int alg_test_null(const struct alg_test_desc *desc,
+ 			     const char *driver, u32 type, u32 mask)
+ {
 diff --git a/crypto/testmgr.h b/crypto/testmgr.h
-index 9b38501a17b2..ed1640f3e352 100644
+index ed1640f3e352..39dd1d558883 100644
 --- a/crypto/testmgr.h
 +++ b/crypto/testmgr.h
-@@ -652,21 +652,16 @@ static const struct akcipher_testvec rsa_tv_template[] = {
-  */
- static const struct akcipher_testvec ecdsa_nist_p192_tv_template[] = {
- 	{
--	.key =
-+	.key = /* secp192r1(sha1) */
- 	"\x04\xf7\x46\xf8\x2f\x15\xf6\x22\x8e\xd7\x57\x4f\xcc\xe7\xbb\xc1"
- 	"\xd4\x09\x73\xcf\xea\xd0\x15\x07\x3d\xa5\x8a\x8a\x95\x43\xe4\x68"
- 	"\xea\xc6\x25\xc1\xc1\x01\x25\x4c\x7e\xc3\x3c\xa6\x04\x0a\xe7\x08"
- 	"\x98",
- 	.key_len = 49,
--	.params =
--	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
--	"\xce\x3d\x03\x01\x01",
--	.param_len = 21,
- 	.m =
- 	"\xcd\xb9\xd2\x1c\xb7\x6f\xcd\x44\xb3\xfd\x63\xea\xa3\x66\x7f\xae"
- 	"\x63\x85\xe7\x82",
- 	.m_size = 20,
--	.algo = OID_id_ecdsa_with_sha1,
- 	.c =
- 	"\x30\x35\x02\x19\x00\xba\xe5\x93\x83\x6e\xb6\x3b\x63\xa0\x27\x91"
- 	"\xc6\xf6\x7f\xc3\x09\xad\x59\xad\x88\x27\xd6\x92\x6b\x02\x18\x10"
-@@ -676,21 +671,16 @@ static const struct akcipher_testvec ecdsa_nist_p192_tv_template[] = {
- 	.public_key_vec = true,
- 	.siggen_sigver_test = true,
- 	}, {
--	.key =
-+	.key = /* secp192r1(sha224) */
- 	"\x04\xb6\x4b\xb1\xd1\xac\xba\x24\x8f\x65\xb2\x60\x00\x90\xbf\xbd"
- 	"\x78\x05\x73\xe9\x79\x1d\x6f\x7c\x0b\xd2\xc3\x93\xa7\x28\xe1\x75"
- 	"\xf7\xd5\x95\x1d\x28\x10\xc0\x75\x50\x5c\x1a\x4f\x3f\x8f\xa5\xee"
- 	"\xa3",
- 	.key_len = 49,
--	.params =
--	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
--	"\xce\x3d\x03\x01\x01",
--	.param_len = 21,
- 	.m =
- 	"\x8d\xd6\xb8\x3e\xe5\xff\x23\xf6\x25\xa2\x43\x42\x74\x45\xa7\x40"
- 	"\x3a\xff\x2f\xe1\xd3\xf6\x9f\xe8\x33\xcb\x12\x11",
- 	.m_size = 28,
--	.algo = OID_id_ecdsa_with_sha224,
- 	.c =
- 	"\x30\x34\x02\x18\x5a\x8b\x82\x69\x7e\x8a\x0a\x09\x14\xf8\x11\x2b"
- 	"\x55\xdc\xae\x37\x83\x7b\x12\xe6\xb6\x5b\xcb\xd4\x02\x18\x6a\x14"
-@@ -700,21 +690,16 @@ static const struct akcipher_testvec ecdsa_nist_p192_tv_template[] = {
- 	.public_key_vec = true,
- 	.siggen_sigver_test = true,
- 	}, {
--	.key =
-+	.key = /* secp192r1(sha256) */
- 	"\x04\xe2\x51\x24\x9b\xf7\xb6\x32\x82\x39\x66\x3d\x5b\xec\x3b\xae"
- 	"\x0c\xd5\xf2\x67\xd1\xc7\xe1\x02\xe4\xbf\x90\x62\xb8\x55\x75\x56"
- 	"\x69\x20\x5e\xcb\x4e\xca\x33\xd6\xcb\x62\x6b\x94\xa9\xa2\xe9\x58"
- 	"\x91",
- 	.key_len = 49,
--	.params =
--	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
--	"\xce\x3d\x03\x01\x01",
--	.param_len = 21,
- 	.m =
- 	"\x35\xec\xa1\xa0\x9e\x14\xde\x33\x03\xb6\xf6\xbd\x0c\x2f\xb2\xfd"
- 	"\x1f\x27\x82\xa5\xd7\x70\x3f\xef\xa0\x82\x69\x8e\x73\x31\x8e\xd7",
- 	.m_size = 32,
--	.algo = OID_id_ecdsa_with_sha256,
- 	.c =
- 	"\x30\x35\x02\x18\x3f\x72\x3f\x1f\x42\xd2\x3f\x1d\x6b\x1a\x58\x56"
- 	"\xf1\x8f\xf7\xfd\x01\x48\xfb\x5f\x72\x2a\xd4\x8f\x02\x19\x00\xb3"
-@@ -724,22 +709,17 @@ static const struct akcipher_testvec ecdsa_nist_p192_tv_template[] = {
- 	.public_key_vec = true,
- 	.siggen_sigver_test = true,
- 	}, {
--	.key =
-+	.key = /* secp192r1(sha384) */
- 	"\x04\x5a\x13\xfe\x68\x86\x4d\xf4\x17\xc7\xa4\xe5\x8c\x65\x57\xb7"
- 	"\x03\x73\x26\x57\xfb\xe5\x58\x40\xd8\xfd\x49\x05\xab\xf1\x66\x1f"
- 	"\xe2\x9d\x93\x9e\xc2\x22\x5a\x8b\x4f\xf3\x77\x22\x59\x7e\xa6\x4e"
- 	"\x8b",
- 	.key_len = 49,
--	.params =
--	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
--	"\xce\x3d\x03\x01\x01",
--	.param_len = 21,
- 	.m =
- 	"\x9d\x2e\x1a\x8f\xed\x6c\x4b\x61\xae\xac\xd5\x19\x79\xce\x67\xf9"
- 	"\xa0\x34\xeb\xb0\x81\xf9\xd9\xdc\x6e\xb3\x5c\xa8\x69\xfc\x8a\x61"
- 	"\x39\x81\xfb\xfd\x5c\x30\x6b\xa8\xee\xed\x89\xaf\xa3\x05\xe4\x78",
- 	.m_size = 48,
--	.algo = OID_id_ecdsa_with_sha384,
- 	.c =
- 	"\x30\x35\x02\x19\x00\xf0\xa3\x38\xce\x2b\xf8\x9d\x1a\xcf\x7f\x34"
- 	"\xb4\xb4\xe5\xc5\x00\xdd\x15\xbb\xd6\x8c\xa7\x03\x78\x02\x18\x64"
-@@ -749,23 +729,18 @@ static const struct akcipher_testvec ecdsa_nist_p192_tv_template[] = {
- 	.public_key_vec = true,
- 	.siggen_sigver_test = true,
- 	}, {
--	.key =
-+	.key = /* secp192r1(sha512) */
- 	"\x04\xd5\xf2\x6e\xc3\x94\x5c\x52\xbc\xdf\x86\x6c\x14\xd1\xca\xea"
- 	"\xcc\x72\x3a\x8a\xf6\x7a\x3a\x56\x36\x3b\xca\xc6\x94\x0e\x17\x1d"
- 	"\x9e\xa0\x58\x28\xf9\x4b\xe6\xd1\xa5\x44\x91\x35\x0d\xe7\xf5\x11"
- 	"\x57",
- 	.key_len = 49,
--	.params =
--	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
--	"\xce\x3d\x03\x01\x01",
--	.param_len = 21,
- 	.m =
- 	"\xd5\x4b\xe9\x36\xda\xd8\x6e\xc0\x50\x03\xbe\x00\x43\xff\xf0\x23"
- 	"\xac\xa2\x42\xe7\x37\x77\x79\x52\x8f\x3e\xc0\x16\xc1\xfc\x8c\x67"
- 	"\x16\xbc\x8a\x5d\x3b\xd3\x13\xbb\xb6\xc0\x26\x1b\xeb\x33\xcc\x70"
- 	"\x4a\xf2\x11\x37\xe8\x1b\xba\x55\xac\x69\xe1\x74\x62\x7c\x6e\xb5",
- 	.m_size = 64,
--	.algo = OID_id_ecdsa_with_sha512,
- 	.c =
- 	"\x30\x35\x02\x19\x00\x88\x5b\x8f\x59\x43\xbf\xcf\xc6\xdd\x3f\x07"
- 	"\x87\x12\xa0\xd4\xac\x2b\x11\x2d\x1c\xb6\x06\xc9\x6c\x02\x18\x73"
-@@ -779,22 +754,17 @@ static const struct akcipher_testvec ecdsa_nist_p192_tv_template[] = {
+@@ -162,6 +162,19 @@ struct akcipher_testvec {
+ 	enum OID algo;
+ };
  
- static const struct akcipher_testvec ecdsa_nist_p256_tv_template[] = {
- 	{
--	.key =
-+	.key = /* secp256r1(sha1) */
- 	"\x04\xb9\x7b\xbb\xd7\x17\x64\xd2\x7e\xfc\x81\x5d\x87\x06\x83\x41"
- 	"\x22\xd6\x9a\xaa\x87\x17\xec\x4f\x63\x55\x2f\x94\xba\xdd\x83\xe9"
- 	"\x34\x4b\xf3\xe9\x91\x13\x50\xb6\xcb\xca\x62\x08\xe7\x3b\x09\xdc"
- 	"\xc3\x63\x4b\x2d\xb9\x73\x53\xe4\x45\xe6\x7c\xad\xe7\x6b\xb0\xe8"
- 	"\xaf",
- 	.key_len = 65,
--	.params =
--	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
--	"\xce\x3d\x03\x01\x07",
--	.param_len = 21,
- 	.m =
- 	"\xc2\x2b\x5f\x91\x78\x34\x26\x09\x42\x8d\x6f\x51\xb2\xc5\xaf\x4c"
- 	"\x0b\xde\x6a\x42",
- 	.m_size = 20,
--	.algo = OID_id_ecdsa_with_sha1,
- 	.c =
- 	"\x30\x46\x02\x21\x00\xf9\x25\xce\x9f\x3a\xa6\x35\x81\xcf\xd4\xe7"
- 	"\xb7\xf0\x82\x56\x41\xf7\xd4\xad\x8d\x94\x5a\x69\x89\xee\xca\x6a"
-@@ -805,22 +775,17 @@ static const struct akcipher_testvec ecdsa_nist_p256_tv_template[] = {
- 	.public_key_vec = true,
- 	.siggen_sigver_test = true,
- 	}, {
--	.key =
-+	.key = /* secp256r1(sha224) */
- 	"\x04\x8b\x6d\xc0\x33\x8e\x2d\x8b\x67\xf5\xeb\xc4\x7f\xa0\xf5\xd9"
- 	"\x7b\x03\xa5\x78\x9a\xb5\xea\x14\xe4\x23\xd0\xaf\xd7\x0e\x2e\xa0"
- 	"\xc9\x8b\xdb\x95\xf8\xb3\xaf\xac\x00\x2c\x2c\x1f\x7a\xfd\x95\x88"
- 	"\x43\x13\xbf\xf3\x1c\x05\x1a\x14\x18\x09\x3f\xd6\x28\x3e\xc5\xa0"
- 	"\xd4",
- 	.key_len = 65,
--	.params =
--	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
--	"\xce\x3d\x03\x01\x07",
--	.param_len = 21,
- 	.m =
- 	"\x1a\x15\xbc\xa3\xe4\xed\x3a\xb8\x23\x67\xc6\xc4\x34\xf8\x6c\x41"
- 	"\x04\x0b\xda\xc5\x77\xfa\x1c\x2d\xe6\x2c\x3b\xe0",
- 	.m_size = 28,
--	.algo = OID_id_ecdsa_with_sha224,
- 	.c =
- 	"\x30\x44\x02\x20\x20\x43\xfa\xc0\x9f\x9d\x7b\xe7\xae\xce\x77\x59"
- 	"\x1a\xdb\x59\xd5\x34\x62\x79\xcb\x6a\x91\x67\x2e\x7d\x25\xd8\x25"
-@@ -831,22 +796,17 @@ static const struct akcipher_testvec ecdsa_nist_p256_tv_template[] = {
- 	.public_key_vec = true,
- 	.siggen_sigver_test = true,
- 	}, {
--	.key =
-+	.key = /* secp256r1(sha256) */
- 	"\x04\xf1\xea\xc4\x53\xf3\xb9\x0e\x9f\x7e\xad\xe3\xea\xd7\x0e\x0f"
- 	"\xd6\x98\x9a\xca\x92\x4d\x0a\x80\xdb\x2d\x45\xc7\xec\x4b\x97\x00"
- 	"\x2f\xe9\x42\x6c\x29\xdc\x55\x0e\x0b\x53\x12\x9b\x2b\xad\x2c\xe9"
- 	"\x80\xe6\xc5\x43\xc2\x1d\x5e\xbb\x65\x21\x50\xb6\x37\xb0\x03\x8e"
- 	"\xb8",
- 	.key_len = 65,
--	.params =
--	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
--	"\xce\x3d\x03\x01\x07",
--	.param_len = 21,
- 	.m =
- 	"\x8f\x43\x43\x46\x64\x8f\x6b\x96\xdf\x89\xdd\xa9\x01\xc5\x17\x6b"
- 	"\x10\xa6\xd8\x39\x61\xdd\x3c\x1a\xc8\x8b\x59\xb2\xdc\x32\x7a\xa4",
- 	.m_size = 32,
--	.algo = OID_id_ecdsa_with_sha256,
- 	.c =
- 	"\x30\x45\x02\x20\x08\x31\xfa\x74\x0d\x1d\x21\x5d\x09\xdc\x29\x63"
- 	"\xa8\x1a\xad\xfc\xac\x44\xc3\xe8\x24\x11\x2d\xa4\x91\xdc\x02\x67"
-@@ -857,23 +817,18 @@ static const struct akcipher_testvec ecdsa_nist_p256_tv_template[] = {
- 	.public_key_vec = true,
- 	.siggen_sigver_test = true,
- 	}, {
--	.key =
-+	.key = /* secp256r1(sha384) */
- 	"\x04\xc5\xc6\xea\x60\xc9\xce\xad\x02\x8d\xf5\x3e\x24\xe3\x52\x1d"
- 	"\x28\x47\x3b\xc3\x6b\xa4\x99\x35\x99\x11\x88\x88\xc8\xf4\xee\x7e"
- 	"\x8c\x33\x8f\x41\x03\x24\x46\x2b\x1a\x82\xf9\x9f\xe1\x97\x1b\x00"
- 	"\xda\x3b\x24\x41\xf7\x66\x33\x58\x3d\x3a\x81\xad\xcf\x16\xe9\xe2"
- 	"\x7c",
- 	.key_len = 65,
--	.params =
--	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
--	"\xce\x3d\x03\x01\x07",
--	.param_len = 21,
- 	.m =
- 	"\x3e\x78\x70\xfb\xcd\x66\xba\x91\xa1\x79\xff\x1e\x1c\x6b\x78\xe6"
- 	"\xc0\x81\x3a\x65\x97\x14\x84\x36\x14\x1a\x9a\xb7\xc5\xab\x84\x94"
- 	"\x5e\xbb\x1b\x34\x71\xcb\x41\xe1\xf6\xfc\x92\x7b\x34\xbb\x86\xbb",
- 	.m_size = 48,
--	.algo = OID_id_ecdsa_with_sha384,
- 	.c =
- 	"\x30\x46\x02\x21\x00\x8e\xf3\x6f\xdc\xf8\x69\xa6\x2e\xd0\x2e\x95"
- 	"\x54\xd1\x95\x64\x93\x08\xb2\x6b\x24\x94\x48\x46\x5e\xf2\xe4\x6c"
-@@ -884,24 +839,19 @@ static const struct akcipher_testvec ecdsa_nist_p256_tv_template[] = {
- 	.public_key_vec = true,
- 	.siggen_sigver_test = true,
- 	}, {
--	.key =
-+	.key = /* secp256r1(sha512) */
- 	"\x04\xd7\x27\x46\x49\xf6\x26\x85\x12\x40\x76\x8e\xe2\xe6\x2a\x7a"
- 	"\x83\xb1\x4e\x7a\xeb\x3b\x5c\x67\x4a\xb5\xa4\x92\x8c\x69\xff\x38"
- 	"\xee\xd9\x4e\x13\x29\x59\xad\xde\x6b\xbb\x45\x31\xee\xfd\xd1\x1b"
- 	"\x64\xd3\xb5\xfc\xaf\x9b\x4b\x88\x3b\x0e\xb7\xd6\xdf\xf1\xd5\x92"
- 	"\xbf",
- 	.key_len = 65,
--	.params =
--	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
--	"\xce\x3d\x03\x01\x07",
--	.param_len = 21,
- 	.m =
- 	"\x57\xb7\x9e\xe9\x05\x0a\x8c\x1b\xc9\x13\xe5\x4a\x24\xc7\xe2\xe9"
- 	"\x43\xc3\xd1\x76\x62\xf4\x98\x1a\x9c\x13\xb0\x20\x1b\xe5\x39\xca"
- 	"\x4f\xd9\x85\x34\x95\xa2\x31\xbc\xbb\xde\xdd\x76\xbb\x61\xe3\xcf"
- 	"\x9d\xc0\x49\x7a\xf3\x7a\xc4\x7d\xa8\x04\x4b\x8d\xb4\x4d\x5b\xd6",
- 	.m_size = 64,
--	.algo = OID_id_ecdsa_with_sha512,
- 	.c =
- 	"\x30\x45\x02\x21\x00\xb8\x6d\x87\x81\x43\xdf\xfb\x9f\x40\xea\x44"
- 	"\x81\x00\x4e\x29\x08\xed\x8c\x73\x30\x6c\x22\xb3\x97\x76\xf6\x04"
-@@ -925,15 +875,10 @@ static const struct akcipher_testvec ecdsa_nist_p384_tv_template[] = {
- 	"\x0b\x25\xd6\x80\x5c\x3b\xe6\x1a\x98\x48\x91\x45\x7a\x73\xb0\xc3"
- 	"\xf1",
- 	.key_len = 97,
--	.params =
--	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
--	"\x00\x22",
--	.param_len = 18,
- 	.m =
- 	"\x12\x55\x28\xf0\x77\xd5\xb6\x21\x71\x32\x48\xcd\x28\xa8\x25\x22"
- 	"\x3a\x69\xc1\x93",
- 	.m_size = 20,
--	.algo = OID_id_ecdsa_with_sha1,
- 	.c =
- 	"\x30\x66\x02\x31\x00\xf5\x0f\x24\x4c\x07\x93\x6f\x21\x57\x55\x07"
- 	"\x20\x43\x30\xde\xa0\x8d\x26\x8e\xae\x63\x3f\xbc\x20\x3a\xc6\xf1"
-@@ -955,15 +900,10 @@ static const struct akcipher_testvec ecdsa_nist_p384_tv_template[] = {
- 	"\x6b\x93\x99\x6c\x66\x4c\x42\x3f\x65\x60\x6c\x1c\x0b\x93\x9b\x9d"
- 	"\xe0",
- 	.key_len = 97,
--	.params =
--	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
--	"\x00\x22",
--	.param_len = 18,
- 	.m =
- 	"\x12\x80\xb6\xeb\x25\xe2\x3d\xf0\x21\x32\x96\x17\x3a\x38\x39\xfd"
- 	"\x1f\x05\x34\x7b\xb8\xf9\x71\x66\x03\x4f\xd5\xe5",
- 	.m_size = 28,
--	.algo = OID_id_ecdsa_with_sha224,
- 	.c =
- 	"\x30\x66\x02\x31\x00\x8a\x51\x84\xce\x13\x1e\xd2\xdc\xec\xcb\xe4"
- 	"\x89\x47\xb2\xf7\xbc\x97\xf1\xc8\x72\x26\xcf\x5a\x5e\xc5\xda\xb4"
-@@ -985,15 +925,10 @@ static const struct akcipher_testvec ecdsa_nist_p384_tv_template[] = {
- 	"\x17\xc3\x34\x29\xd6\x40\xea\x5c\xb9\x3f\xfb\x32\x2e\x12\x33\xbc"
- 	"\xab",
- 	.key_len = 97,
--	.params =
--	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
--	"\x00\x22",
--	.param_len = 18,
- 	.m =
- 	"\xaa\xe7\xfd\x03\x26\xcb\x94\x71\xe4\xce\x0f\xc5\xff\xa6\x29\xa3"
- 	"\xe1\xcc\x4c\x35\x4e\xde\xca\x80\xab\x26\x0c\x25\xe6\x68\x11\xc2",
- 	.m_size = 32,
--	.algo = OID_id_ecdsa_with_sha256,
- 	.c =
- 	"\x30\x64\x02\x30\x08\x09\x12\x9d\x6e\x96\x64\xa6\x8e\x3f\x7e\xce"
- 	"\x0a\x9b\xaa\x59\xcc\x47\x53\x87\xbc\xbd\x83\x3f\xaf\x06\x3f\x84"
-@@ -1015,16 +950,11 @@ static const struct akcipher_testvec ecdsa_nist_p384_tv_template[] = {
- 	"\x21\x67\xe5\x1b\x5a\x52\x31\x68\xd6\xee\xf0\x19\xb0\x55\xed\x89"
- 	"\x9e",
- 	.key_len = 97,
--	.params =
--	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
--	"\x00\x22",
--	.param_len = 18,
- 	.m =
- 	"\x8d\xf2\xc0\xe9\xa8\xf3\x8e\x44\xc4\x8c\x1a\xa0\xb8\xd7\x17\xdf"
- 	"\xf2\x37\x1b\xc6\xe3\xf5\x62\xcc\x68\xf5\xd5\x0b\xbf\x73\x2b\xb1"
- 	"\xb0\x4c\x04\x00\x31\xab\xfe\xc8\xd6\x09\xc8\xf2\xea\xd3\x28\xff",
- 	.m_size = 48,
--	.algo = OID_id_ecdsa_with_sha384,
- 	.c =
- 	"\x30\x66\x02\x31\x00\x9b\x28\x68\xc0\xa1\xea\x8c\x50\xee\x2e\x62"
- 	"\x35\x46\xfa\x00\xd8\x2d\x7a\x91\x5f\x49\x2d\x22\x08\x29\xe6\xfb"
-@@ -1046,17 +976,12 @@ static const struct akcipher_testvec ecdsa_nist_p384_tv_template[] = {
- 	"\xdf\x42\x5c\xc2\x5a\xc7\x0c\xf4\x15\xf7\x1b\xa3\x2e\xd7\x00\xac"
- 	"\xa3",
- 	.key_len = 97,
--	.params =
--	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
--	"\x00\x22",
--	.param_len = 18,
- 	.m =
- 	"\xe8\xb7\x52\x7d\x1a\x44\x20\x05\x53\x6b\x3a\x68\xf2\xe7\x6c\xa1"
- 	"\xae\x9d\x84\xbb\xba\x52\x43\x3e\x2c\x42\x78\x49\xbf\x78\xb2\x71"
- 	"\xeb\xe1\xe0\xe8\x42\x7b\x11\xad\x2b\x99\x05\x1d\x36\xe6\xac\xfc"
- 	"\x55\x73\xf0\x15\x63\x39\xb8\x6a\x6a\xc5\x91\x5b\xca\x6a\xa8\x0e",
- 	.m_size = 64,
--	.algo = OID_id_ecdsa_with_sha512,
- 	.c =
- 	"\x30\x63\x02\x2f\x1d\x20\x94\x77\xfe\x31\xfa\x4d\xc6\xef\xda\x02"
- 	"\xe7\x0f\x52\x9a\x02\xde\x93\xe8\x83\xe4\x84\x4c\xfc\x6f\x80\xe3"
-@@ -1084,15 +1009,10 @@ static const struct akcipher_testvec ecdsa_nist_p521_tv_template[] = {
- 	"\xed\x37\x0f\x99\x3f\x26\xba\xa3\x8e\xff\x79\x34\x7c\x3a\xfe\x1f"
- 	"\x3b\x83\x82\x2f\x14",
- 	.key_len = 133,
--	.params =
--	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
--	"\x00\x23",
--	.param_len = 18,
- 	.m =
- 	"\xa2\x3a\x6a\x8c\x7b\x3c\xf2\x51\xf8\xbe\x5f\x4f\x3b\x15\x05\xc4"
- 	"\xb5\xbc\x19\xe7\x21\x85\xe9\x23\x06\x33\x62\xfb",
- 	.m_size = 28,
--	.algo = OID_id_ecdsa_with_sha224,
- 	.c =
- 	"\x30\x81\x86\x02\x41\x01\xd6\x43\xe7\xff\x42\xb2\xba\x74\x35\xf6"
- 	"\xdc\x6d\x02\x7b\x22\xac\xe2\xef\x07\x92\xee\x60\x94\x06\xf8\x3f"
-@@ -1119,15 +1039,10 @@ static const struct akcipher_testvec ecdsa_nist_p521_tv_template[] = {
- 	"\x8a\xe9\x53\xa8\xcf\xce\x43\x0e\x82\x20\x86\xbc\x88\x9c\xb7\xe3"
- 	"\xe6\x77\x1e\x1f\x8a",
- 	.key_len = 133,
--	.params =
--	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
--	"\x00\x23",
--	.param_len = 18,
- 	.m =
- 	"\xcc\x97\x73\x0c\x73\xa2\x53\x2b\xfa\xd7\x83\x1d\x0c\x72\x1b\x39"
- 	"\x80\x71\x8d\xdd\xc5\x9b\xff\x55\x32\x98\x25\xa2\x58\x2e\xb7\x73",
- 	.m_size = 32,
--	.algo = OID_id_ecdsa_with_sha256,
- 	.c =
- 	"\x30\x81\x88\x02\x42\x00\xcd\xa5\x5f\x57\x52\x27\x78\x3a\xb5\x06"
- 	"\x0f\xfd\x83\xfc\x0e\xd9\xce\x50\x9f\x7d\x1f\xca\x8b\xa8\x2d\x56"
-@@ -1154,16 +1069,11 @@ static const struct akcipher_testvec ecdsa_nist_p521_tv_template[] = {
- 	"\x22\x6e\xd7\x35\xc7\x23\xb7\x13\xae\xb6\x34\xff\xd7\x80\xe5\x39"
- 	"\xb3\x3b\x5b\x1b\x94",
- 	.key_len = 133,
--	.params =
--	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
--	"\x00\x23",
--	.param_len = 18,
- 	.m =
- 	"\x36\x98\xd6\x82\xfa\xad\xed\x3c\xb9\x40\xb6\x4d\x9e\xb7\x04\x26"
- 	"\xad\x72\x34\x44\xd2\x81\xb4\x9b\xbe\x01\x04\x7a\xd8\x50\xf8\x59"
- 	"\xba\xad\x23\x85\x6b\x59\xbe\xfb\xf6\x86\xd4\x67\xa8\x43\x28\x76",
- 	.m_size = 48,
--	.algo = OID_id_ecdsa_with_sha384,
- 	.c =
- 	"\x30\x81\x88\x02\x42\x00\x93\x96\x76\x3c\x27\xea\xaa\x9c\x26\xec"
- 	"\x51\xdc\xe8\x35\x5e\xae\x16\xf2\x4b\x64\x98\xf7\xec\xda\xc7\x7e"
-@@ -1190,17 +1100,12 @@ static const struct akcipher_testvec ecdsa_nist_p521_tv_template[] = {
- 	"\xfe\x3a\x05\x1a\xdb\xa9\x0f\xc0\x6c\x76\x30\x8c\xd8\xde\x44\xae"
- 	"\xd0\x17\xdf\x49\x6a",
- 	.key_len = 133,
--	.params =
--	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
--	"\x00\x23",
--	.param_len = 18,
- 	.m =
- 	"\x5c\xa6\xbc\x79\xb8\xa0\x1e\x11\x83\xf7\xe9\x05\xdf\xba\xf7\x69"
- 	"\x97\x22\x32\xe4\x94\x7c\x65\xbd\x74\xc6\x9a\x8b\xbd\x0d\xdc\xed"
- 	"\xf5\x9c\xeb\xe1\xc5\x68\x40\xf2\xc7\x04\xde\x9e\x0d\x76\xc5\xa3"
- 	"\xf9\x3c\x6c\x98\x08\x31\xbd\x39\xe8\x42\x7f\x80\x39\x6f\xfe\x68",
- 	.m_size = 64,
--	.algo = OID_id_ecdsa_with_sha512,
- 	.c =
- 	"\x30\x81\x88\x02\x42\x01\x5c\x71\x86\x96\xac\x21\x33\x7e\x4e\xaa"
- 	"\x86\xec\xa8\x05\x03\x52\x56\x63\x0e\x02\xcc\x94\xa9\x05\xb9\xfb"
++struct sig_testvec {
++	const unsigned char *key;
++	const unsigned char *params;
++	const unsigned char *m;
++	const unsigned char *c;
++	unsigned int key_len;
++	unsigned int param_len;
++	unsigned int m_size;
++	unsigned int c_size;
++	bool public_key_vec;
++	enum OID algo;
++};
++
+ struct kpp_testvec {
+ 	const unsigned char *secret;
+ 	const unsigned char *b_secret;
+diff --git a/include/crypto/internal/sig.h b/include/crypto/internal/sig.h
+index 97cb26ef8115..b16648c1a986 100644
+--- a/include/crypto/internal/sig.h
++++ b/include/crypto/internal/sig.h
+@@ -10,8 +10,88 @@
+ #include <crypto/algapi.h>
+ #include <crypto/sig.h>
+ 
++struct sig_instance {
++	void (*free)(struct sig_instance *inst);
++	union {
++		struct {
++			char head[offsetof(struct sig_alg, base)];
++			struct crypto_instance base;
++		};
++		struct sig_alg alg;
++	};
++};
++
++struct crypto_sig_spawn {
++	struct crypto_spawn base;
++};
++
+ static inline void *crypto_sig_ctx(struct crypto_sig *tfm)
+ {
+ 	return crypto_tfm_ctx(&tfm->base);
+ }
++
++/**
++ * crypto_register_sig() -- Register public key signature algorithm
++ *
++ * Function registers an implementation of a public key signature algorithm
++ *
++ * @alg:	algorithm definition
++ *
++ * Return: zero on success; error code in case of error
++ */
++int crypto_register_sig(struct sig_alg *alg);
++
++/**
++ * crypto_unregister_sig() -- Unregister public key signature algorithm
++ *
++ * Function unregisters an implementation of a public key signature algorithm
++ *
++ * @alg:	algorithm definition
++ */
++void crypto_unregister_sig(struct sig_alg *alg);
++
++int sig_register_instance(struct crypto_template *tmpl,
++			  struct sig_instance *inst);
++
++static inline struct sig_instance *sig_instance(struct crypto_instance *inst)
++{
++	return container_of(&inst->alg, struct sig_instance, alg.base);
++}
++
++static inline struct sig_instance *sig_alg_instance(struct crypto_sig *tfm)
++{
++	return sig_instance(crypto_tfm_alg_instance(&tfm->base));
++}
++
++static inline struct crypto_instance *sig_crypto_instance(struct sig_instance
++									*inst)
++{
++	return container_of(&inst->alg.base, struct crypto_instance, alg);
++}
++
++static inline void *sig_instance_ctx(struct sig_instance *inst)
++{
++	return crypto_instance_ctx(sig_crypto_instance(inst));
++}
++
++int crypto_grab_sig(struct crypto_sig_spawn *spawn,
++		    struct crypto_instance *inst,
++		    const char *name, u32 type, u32 mask);
++
++static inline struct crypto_sig *crypto_spawn_sig(struct crypto_sig_spawn
++								   *spawn)
++{
++	return crypto_spawn_tfm2(&spawn->base);
++}
++
++static inline void crypto_drop_sig(struct crypto_sig_spawn *spawn)
++{
++	crypto_drop_spawn(&spawn->base);
++}
++
++static inline struct sig_alg *crypto_spawn_sig_alg(struct crypto_sig_spawn
++								    *spawn)
++{
++	return container_of(spawn->base.alg, struct sig_alg, base);
++}
+ #endif
+diff --git a/include/crypto/sig.h b/include/crypto/sig.h
+index d25186bb2be3..f0f52a7c5ae7 100644
+--- a/include/crypto/sig.h
++++ b/include/crypto/sig.h
+@@ -19,6 +19,52 @@ struct crypto_sig {
+ 	struct crypto_tfm base;
+ };
+ 
++/**
++ * struct sig_alg - generic public key signature algorithm
++ *
++ * @sign:	Function performs a sign operation as defined by public key
++ *		algorithm. Optional.
++ * @verify:	Function performs a complete verify operation as defined by
++ *		public key algorithm, returning verification status. Optional.
++ * @set_pub_key: Function invokes the algorithm specific set public key
++ *		function, which knows how to decode and interpret
++ *		the BER encoded public key and parameters. Mandatory.
++ * @set_priv_key: Function invokes the algorithm specific set private key
++ *		function, which knows how to decode and interpret
++ *		the BER encoded private key and parameters. Optional.
++ * @max_size:	Function returns key size. Mandatory.
++ * @init:	Initialize the cryptographic transformation object.
++ *		This function is used to initialize the cryptographic
++ *		transformation object. This function is called only once at
++ *		the instantiation time, right after the transformation context
++ *		was allocated. In case the cryptographic hardware has some
++ *		special requirements which need to be handled by software, this
++ *		function shall check for the precise requirement of the
++ *		transformation and put any software fallbacks in place.
++ * @exit:	Deinitialize the cryptographic transformation object. This is a
++ *		counterpart to @init, used to remove various changes set in
++ *		@init.
++ *
++ * @base:	Common crypto API algorithm data structure
++ */
++struct sig_alg {
++	int (*sign)(struct crypto_sig *tfm,
++		    const void *src, unsigned int slen,
++		    void *dst, unsigned int dlen);
++	int (*verify)(struct crypto_sig *tfm,
++		      const void *src, unsigned int slen,
++		      const void *digest, unsigned int dlen);
++	int (*set_pub_key)(struct crypto_sig *tfm,
++			   const void *key, unsigned int keylen);
++	int (*set_priv_key)(struct crypto_sig *tfm,
++			    const void *key, unsigned int keylen);
++	unsigned int (*max_size)(struct crypto_sig *tfm);
++	int (*init)(struct crypto_sig *tfm);
++	void (*exit)(struct crypto_sig *tfm);
++
++	struct crypto_alg base;
++};
++
+ /**
+  * DOC: Generic Public Key Signature API
+  *
+@@ -47,6 +93,21 @@ static inline struct crypto_tfm *crypto_sig_tfm(struct crypto_sig *tfm)
+ 	return &tfm->base;
+ }
+ 
++static inline struct crypto_sig *__crypto_sig_tfm(struct crypto_tfm *tfm)
++{
++	return container_of(tfm, struct crypto_sig, base);
++}
++
++static inline struct sig_alg *__crypto_sig_alg(struct crypto_alg *alg)
++{
++	return container_of(alg, struct sig_alg, base);
++}
++
++static inline struct sig_alg *crypto_sig_alg(struct crypto_sig *tfm)
++{
++	return __crypto_sig_alg(crypto_sig_tfm(tfm)->__crt_alg);
++}
++
+ /**
+  * crypto_free_sig() - free signature tfm handle
+  *
+diff --git a/include/uapi/linux/cryptouser.h b/include/uapi/linux/cryptouser.h
+index 20a6c0fc149e..db05e0419972 100644
+--- a/include/uapi/linux/cryptouser.h
++++ b/include/uapi/linux/cryptouser.h
+@@ -64,6 +64,7 @@ enum crypto_attr_type_t {
+ 	CRYPTOCFGA_STAT_AKCIPHER,	/* No longer supported, do not use. */
+ 	CRYPTOCFGA_STAT_KPP,		/* No longer supported, do not use. */
+ 	CRYPTOCFGA_STAT_ACOMP,		/* No longer supported, do not use. */
++	CRYPTOCFGA_REPORT_SIG,		/* struct crypto_report_sig */
+ 	__CRYPTOCFGA_MAX
+ 
+ #define CRYPTOCFGA_MAX (__CRYPTOCFGA_MAX - 1)
+@@ -207,6 +208,10 @@ struct crypto_report_acomp {
+ 	char type[CRYPTO_MAX_NAME];
+ };
+ 
++struct crypto_report_sig {
++	char type[CRYPTO_MAX_NAME];
++};
++
+ #define CRYPTO_REPORT_MAXSIZE (sizeof(struct crypto_user_alg) + \
+ 			       sizeof(struct crypto_report_blkcipher))
+ 
 -- 
 2.43.0
 
