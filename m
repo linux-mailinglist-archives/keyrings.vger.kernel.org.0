@@ -1,270 +1,149 @@
-Return-Path: <keyrings+bounces-1979-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1980-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D6A697448A
-	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 23:08:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53946974501
+	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 23:48:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF07E1F273CD
-	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 21:08:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E89AD1F23707
+	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 21:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A811AAE24;
-	Tue, 10 Sep 2024 21:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7D718C33E;
+	Tue, 10 Sep 2024 21:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="W49oBH0o"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IzB/gmcy"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870CB19412D
-	for <keyrings@vger.kernel.org>; Tue, 10 Sep 2024 21:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F34416C854;
+	Tue, 10 Sep 2024 21:48:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726002482; cv=none; b=ZmE3Ahha8m1XlNJdkDO48nWElV+5SMheCvRdYjzG0PC/TO0YD9YpyNc2gVtcNW48vKbLjKGXY66SwGCKzp6B+FN1M6f8KSEqYLA5gc921rdMUEkpoU/7AynEXcrfuyjDMqzeaR6LaCpThrkxgYlmkRbs7T3AZmPhcDt3MZsj/7Q=
+	t=1726004926; cv=none; b=Pju6bPJ8HlO/pwPXE60Ufj+NrqQS7vAM65QWmS0ExeCQU2c2La5JoRo1V2NedX8r8TOqQlt6HcBjrxA0zX8FigCuEXiv/0skPQpW9/xpYhmsAiPlszhszpkk1ep9114NXqMtT+V62LeeuPjaS2upHqyK0pm3DilDyl4hVNVEAPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726002482; c=relaxed/simple;
-	bh=KExRflW8J1qrGZemxSMBTuo2DT5ZtIVX+177fgt01io=;
-	h=Date:Message-ID:MIME-Version:Content-Type:Content-Disposition:
-	 From:To:Cc:Subject:References:In-Reply-To; b=V4ngG3R7qqiNJhnWpJ0aydgmEvTkn9H1h/m77tfEOkDu7cs7OZUeYEAYuY3QCRAksMGNHWAb+EEqjn8J7uB6957TZPQAELORwoEhN+rpmg81otAvGaKh6/VgvglnWy9qYCF7vFGXGaM3fRnUJJs0mnlHoxqJCndoyUdpLtvbjHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=W49oBH0o; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7a9a30a045cso374245885a.2
-        for <keyrings@vger.kernel.org>; Tue, 10 Sep 2024 14:07:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1726002478; x=1726607278; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :content-disposition:mime-version:message-id:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=xsgweXIpmstBe5GJ597qL3m2SDBc+q8DcPeq2Npix+U=;
-        b=W49oBH0onyfkZgIj2/9fQl4mU2iRC0wGidJp73eZ9nryWWwjm27dyEHJdtNZDaLEH6
-         x6BvEp5/ErQS2iFTCu4d9YRkdsWDfsjiWxE1wxdSg23EN4Rl23Id2x5xIEMq9Zv/ursx
-         k7UIZlVf9ObsF5UWTkbwFroUkE1Qwj/msqVo58/zFJ2RF82rUyOPGEdsANqlT4mh1sDy
-         mCOJbKboJK64hErhvbLOkABqpVkY4ouJp+fvKiYDW7fUSBj7T/8y2KtCDal0XqC4FFw/
-         lDP2pItHyQHa7qOzQVuIdtnSb3NBd6gZd2lB0dn4og1DqHhM+WDGZgAueOyVAEJsk42G
-         OAFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726002478; x=1726607278;
-        h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
-         :content-disposition:mime-version:message-id:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xsgweXIpmstBe5GJ597qL3m2SDBc+q8DcPeq2Npix+U=;
-        b=IkIvhwk4j9A9ry9EUeOr21sSp8q2d33kXFFNO20voY8etH0jqXeyCv1Gh21IlpJTxP
-         6E9aAyf8wZ2eTAjPfVC6nvSKZf6Dj1uM+mHKcBBgEJghEFU78qS7yuRT5tazME+V6eob
-         mwvR/c802Yk+sjk9OhLv8lHXrQ4adbchAbIjzVSzZ0SNRb8s4ZzE7Fd0O//INmRzVkxJ
-         c54WjB4jG4ISWVM7wa8kNyn/qdPOd3zjkqDLjOszf9w3mfnwUvRl8j8/TgDlZWgP7bhR
-         3fR3Drzzlqu7wpUG5XxFzDUnF1+aUhNB1vTVKspzhLw7qv7R6hCk0XvAzYV0ciUReLmb
-         z5Sw==
-X-Forwarded-Encrypted: i=1; AJvYcCUZoClbk1ZLOph9093RBQnfQg2bwY32UgSJ1nqOEMisNIY+ccKFZh4HbcEPcyvEZroDGRZNenMWCA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzREiI2UKq0+R+mrzlTPgTZNtqI5dIgrU3K05niDdKy/ax3uDCY
-	OC84H+8iLEQbsua5BK0sbGiJsaRnOPY3dGKOXQcvsBWo6dLun/L+2r4ywo3ENw==
-X-Google-Smtp-Source: AGHT+IGdN3Bip/QFL1/JxWNAkcL/JUmgw8uKd+/pDtMXUXN6GSGIZoTS92X+BzdXp0VO+irY5HiZ9w==
-X-Received: by 2002:a05:620a:491:b0:7a9:9ed7:b49f with SMTP id af79cd13be357-7a99ed7bed2mr1837046285a.38.1726002478185;
-        Tue, 10 Sep 2024 14:07:58 -0700 (PDT)
-Received: from localhost ([70.22.175.108])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a9a79972e3sm343656385a.68.2024.09.10.14.07.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Sep 2024 14:07:57 -0700 (PDT)
-Date: Tue, 10 Sep 2024 17:07:57 -0400
-Message-ID: <47697d5f8d557113244b7c044251fe09@paul-moore.com>
+	s=arc-20240116; t=1726004926; c=relaxed/simple;
+	bh=vGPncFprsxm/fAOWXG3+i9RfL/D57gHl+J/0ZFyJTHE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=jG2Fv7h1Uduz8QiUa1xEyfWtWzjA1vRtn5umXkY5c0MbVV27K4BedOdI1nlu4XGUXIWxI8aHpl0xwc7IWg22afoeUUhQyzoPHkYGyFpwgC1CPfk4oadPUw9+CXg9LAvTqrbQikjviBpn17Cxj5v3KjOiRH782MN1E9kpG3/F2Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IzB/gmcy; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48AFKRlt021760;
+	Tue, 10 Sep 2024 21:46:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:subject:to:cc:references:from:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=pp1; bh=
+	CX2CcmFdyKQa10u3RE7Hlil+wr28ZSrTGQQi9hSImxo=; b=IzB/gmcyaV+UnvY4
+	TFtkw7t05j6nEAj7zvZjrTr9dacMTFITalzb8rcqWZMlAXVtq0tPSv+Ry4Pq7Je7
+	2W/3gOearyhbx5yn4xNnD8TiOKMmh6pzAYIcuhbrnknhzI6Pi7ZdNdk3GsF0WBJs
+	Sf+Bp4fA3KpzlAtgpVAsCClI11WdZ91yww9w/g/DCqV5vC6D8oGUQ6NE+f1thh87
+	C6P+vs4PQ9ZAOnLO3Mk04VuoxQSjDHIwT04CZktjSiyPxGniOgfdBP1MUanFagUv
+	IKb9HIpTz752+ygHnBGBvhkWaFlQotojNTrEKV+8FDRcaXhTx3cdt9b1vHPaT24e
+	NsHhbg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gc8qab2y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Sep 2024 21:46:21 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 48ALkKhx005236;
+	Tue, 10 Sep 2024 21:46:20 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41gc8qab2t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Sep 2024 21:46:20 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48AJL4H9019891;
+	Tue, 10 Sep 2024 21:46:20 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41h25pwqsf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Sep 2024 21:46:19 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48ALkJG4459358
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 10 Sep 2024 21:46:19 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EC0CD5804B;
+	Tue, 10 Sep 2024 21:46:18 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 57A3158055;
+	Tue, 10 Sep 2024 21:46:17 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 10 Sep 2024 21:46:17 +0000 (GMT)
+Message-ID: <20e10bf5-2ac1-4d10-bedd-7c61572fc55f@linux.ibm.com>
+Date: Tue, 10 Sep 2024 17:46:15 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 18/19] crypto: ecdsa - Support P1363 signature decoding
+To: Lukas Wunner <lukas@wunner.de>, Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Biggers <ebiggers@google.com>, Vitaly Chikunov <vt@altlinux.org>,
+        Tadeusz Struk <tstruk@gigaio.com>
+Cc: David Howells <dhowells@redhat.com>,
+        Andrew Zaborowski <andrew.zaborowski@intel.com>,
+        Saulo Alessandre <saulo.alessandre@tse.jus.br>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Ignat Korchagin <ignat@cloudflare.com>, Marek Behun <kabel@kernel.org>,
+        Varad Gautam <varadgautam@google.com>,
+        Stephan Mueller
+ <smueller@chronox.de>,
+        Denis Kenzior <denkenz@gmail.com>, linux-crypto@vger.kernel.org,
+        keyrings@vger.kernel.org
+References: <cover.1725972333.git.lukas@wunner.de>
+ <73e9e6b6ba2631e2d9474bd53be165b2ae8810d4.1725972335.git.lukas@wunner.de>
+Content-Language: en-US
+From: Stefan Berger <stefanb@linux.ibm.com>
+In-Reply-To: <73e9e6b6ba2631e2d9474bd53be165b2ae8810d4.1725972335.git.lukas@wunner.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ZZxG3LUB8lzeSRK_jilvAzve6lW-p3CZ
+X-Proofpoint-ORIG-GUID: 0ItC-gs4zkE9iI2T34SnfGiVEVaw30K0
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 
-Content-Type: text/plain; charset=utf-8 
-Content-Disposition: inline 
-Content-Transfer-Encoding: 8bit
-From: Paul Moore <paul@paul-moore.com>
-To: Jann Horn <jannh@google.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, John Johansen <john.johansen@canonical.com>, David Howells <dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>, =?utf-8?q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, =?utf-8?q?G=C3=BCnther_Noack?= <gnoack@google.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, Casey Schaufler <casey@schaufler-ca.com>
-Cc: linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, apparmor@lists.ubuntu.com, keyrings@vger.kernel.org, selinux@vger.kernel.org, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH v2 1/2] KEYS: use synchronous task work for changing parent  credentials
-References: <20240805-remove-cred-transfer-v2-1-a2aa1d45e6b8@google.com>
-In-Reply-To: <20240805-remove-cred-transfer-v2-1-a2aa1d45e6b8@google.com>
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-10_08,2024-09-09_02,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
+ mlxscore=0 lowpriorityscore=0 impostorscore=0 priorityscore=1501
+ malwarescore=0 adultscore=0 clxscore=1015 mlxlogscore=747 suspectscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409100161
 
-On Aug  5, 2024 Jann Horn <jannh@google.com> wrote:
-> 
-> keyctl_session_to_parent() involves posting task work to the parent task,
-> with work function key_change_session_keyring.
-> Because the task work in the parent runs asynchronously, no errors can be
-> returned back to the caller of keyctl_session_to_parent(), and therefore
-> the work function key_change_session_keyring() can't be allowed to fail due
-> to things like memory allocation failure or permission checks - all
-> allocations and checks have to happen in the child.
-> 
-> This is annoying for two reasons:
-> 
->  - It is the only reason why cred_alloc_blank() and
->    security_transfer_creds() are necessary.
->  - It means we can't do synchronous permission checks.
-> 
-> Rewrite keyctl_session_to_parent() to run task work on the parent
-> synchronously, so that any errors that happen in the task work can be
-> plumbed back into the syscall return value in the child.
-> This allows us to get rid of cred_alloc_blank() and
-> security_transfer_creds() in a later commit, and it will make it possible
-> to write more reliable security checks for this operation.
-> 
-> Note that this requires using TWA_SIGNAL instead of TWA_RESUME, so the
-> parent might observe some spurious -EAGAIN syscall returns or such; but the
-> parent likely anyway has to be ready to deal with the side effects of
-> receiving signals (since it'll probably get SIGCHLD when the child dies),
-> so that probably isn't an issue.
-> 
-> Signed-off-by: Jann Horn <jannh@google.com>
-> ---
->  security/keys/internal.h     |   8 ++++
->  security/keys/keyctl.c       | 107 +++++++++++++------------------------------
->  security/keys/process_keys.c |  86 ++++++++++++++++++----------------
->  3 files changed, 87 insertions(+), 114 deletions(-)
 
-...
 
-> diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
-> index ab927a142f51..e4cfe5c4594a 100644
-> --- a/security/keys/keyctl.c
-> +++ b/security/keys/keyctl.c
-> @@ -1616,104 +1616,63 @@ long keyctl_get_security(key_serial_t keyid,
->   * parent process.
->   *
->   * The keyring must exist and must grant the caller LINK permission, and the
->   * parent process must be single-threaded and must have the same effective
->   * ownership as this process and mustn't be SUID/SGID.
->   *
-> - * The keyring will be emplaced on the parent when it next resumes userspace.
-> + * The keyring will be emplaced on the parent via a pseudo-signal.
->   *
->   * If successful, 0 will be returned.
->   */
->  long keyctl_session_to_parent(void)
->  {
-> -	struct task_struct *me, *parent;
-> -	const struct cred *mycred, *pcred;
-> -	struct callback_head *newwork, *oldwork;
-> +	struct keyctl_session_to_parent_context ctx;
-> +	struct task_struct *parent;
->  	key_ref_t keyring_r;
-> -	struct cred *cred;
->  	int ret;
->  
->  	keyring_r = lookup_user_key(KEY_SPEC_SESSION_KEYRING, 0, KEY_NEED_LINK);
->  	if (IS_ERR(keyring_r))
->  		return PTR_ERR(keyring_r);
->  
-> -	ret = -ENOMEM;
-> -
-> -	/* our parent is going to need a new cred struct, a new tgcred struct
-> -	 * and new security data, so we allocate them here to prevent ENOMEM in
-> -	 * our parent */
-> -	cred = cred_alloc_blank();
-> -	if (!cred)
-> -		goto error_keyring;
-> -	newwork = &cred->rcu;
-> +	write_lock_irq(&tasklist_lock);
-> +	parent = get_task_struct(rcu_dereference_protected(current->real_parent,
-> +					lockdep_is_held(&tasklist_lock)));
-> +	write_unlock_irq(&tasklist_lock);
->  
-> -	cred->session_keyring = key_ref_to_ptr(keyring_r);
-> -	keyring_r = NULL;
-> -	init_task_work(newwork, key_change_session_keyring);
-> +	/* the parent mustn't be init and mustn't be a kernel thread */
-> +	if (is_global_init(parent) || (READ_ONCE(parent->flags) & PF_KTHREAD) != 0)
-> +		goto put_task;
+On 9/10/24 10:30 AM, Lukas Wunner wrote:
+> Alternatively to the X9.62 encoding of ecdsa signatures, which uses
+> ASN.1 and is already supported by the kernel, there's another common
+> encoding called P1363.  It stores r and s as the concatenation of two
+> big endian, unsigned integers.  The name originates from IEEE P1363.
+> 
+> Add a P1363 template in support of the forthcoming SPDM library
+> (Security Protocol and Data Model) for PCI device authentication.
+> 
+> P1363 is prescribed by SPDM 1.2.1 margin no 44:
+> 
+>     "For ECDSA signatures, excluding SM2, in SPDM, the signature shall be
+>      the concatenation of r and s.  The size of r shall be the size of
+>      the selected curve.  Likewise, the size of s shall be the size of
+>      the selected curve.  See BaseAsymAlgo in NEGOTIATE_ALGORITHMS for
+>      the size of r and s.  The byte order for r and s shall be in big
+>      endian order.  When placing ECDSA signatures into an SPDM signature
+>      field, r shall come first followed by s."
+> 
+> Link: https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.2.1.pdf
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-I think we need to explicitly set @ret if we are failing here, yes?
-  
-> -	me = current;
-> -	rcu_read_lock();
-> -	write_lock_irq(&tasklist_lock);
-> +	ctx.new_session_keyring = key_ref_to_ptr(keyring_r);
-> +	ctx.child_cred = current_cred();
-> +	init_completion(&ctx.done);
-> +	init_task_work(&ctx.work, key_change_session_keyring);
-> +	ret = task_work_add(parent, &ctx.work, TWA_SIGNAL);
-> +	if (ret)
-> +		goto put_task;
->  
-> -	ret = -EPERM;
-> -	oldwork = NULL;
-> -	parent = rcu_dereference_protected(me->real_parent,
-> -					   lockdep_is_held(&tasklist_lock));
-> +	ret = wait_for_completion_interruptible(&ctx.done);
->  
-> -	/* the parent mustn't be init and mustn't be a kernel thread */
-> -	if (parent->pid <= 1 || !parent->mm)
-> -		goto unlock;
-> -
-> -	/* the parent must be single threaded */
-> -	if (!thread_group_empty(parent))
-> -		goto unlock;
-> -
-> -	/* the parent and the child must have different session keyrings or
-> -	 * there's no point */
-> -	mycred = current_cred();
-> -	pcred = __task_cred(parent);
-> -	if (mycred == pcred ||
-> -	    mycred->session_keyring == pcred->session_keyring) {
-> -		ret = 0;
-> -		goto unlock;
-> +	if (task_work_cancel(parent, &ctx.work)) {
-> +		/*
-> +		 * We got interrupted and the task work was canceled before it
-> +		 * could execute.
-> +		 * Use -ERESTARTNOINTR instead of -ERESTARTSYS for
-> +		 * compatibility - the manpage does not list -EINTR as a
-> +		 * possible error for keyctl().
-> +		 */
-> +		ret = -ERESTARTNOINTR;
-> +	} else {
-> +		/* task work is running or has been executed */
-> +		wait_for_completion(&ctx.done);
-> +		ret = ctx.result;
->  	}
->  
-> -	/* the parent must have the same effective ownership and mustn't be
-> -	 * SUID/SGID */
-> -	if (!uid_eq(pcred->uid,	 mycred->euid) ||
-> -	    !uid_eq(pcred->euid, mycred->euid) ||
-> -	    !uid_eq(pcred->suid, mycred->euid) ||
-> -	    !gid_eq(pcred->gid,	 mycred->egid) ||
-> -	    !gid_eq(pcred->egid, mycred->egid) ||
-> -	    !gid_eq(pcred->sgid, mycred->egid))
-> -		goto unlock;
-> -
-> -	/* the keyrings must have the same UID */
-> -	if ((pcred->session_keyring &&
-> -	     !uid_eq(pcred->session_keyring->uid, mycred->euid)) ||
-> -	    !uid_eq(mycred->session_keyring->uid, mycred->euid))
-> -		goto unlock;
-> -
-> -	/* cancel an already pending keyring replacement */
-> -	oldwork = task_work_cancel_func(parent, key_change_session_keyring);
-> -
-> -	/* the replacement session keyring is applied just prior to userspace
-> -	 * restarting */
-> -	ret = task_work_add(parent, newwork, TWA_RESUME);
-> -	if (!ret)
-> -		newwork = NULL;
-> -unlock:
-> -	write_unlock_irq(&tasklist_lock);
-> -	rcu_read_unlock();
-> -	if (oldwork)
-> -		put_cred(container_of(oldwork, struct cred, rcu));
-> -	if (newwork)
-> -		put_cred(cred);
-> -	return ret;
-> -
-> -error_keyring:
-> +put_task:
-> +	put_task_struct(parent);
->  	key_ref_put(keyring_r);
->  	return ret;
->  }
+Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 
---
-paul-moore.com
 
