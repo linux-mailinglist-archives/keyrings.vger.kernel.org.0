@@ -1,174 +1,492 @@
-Return-Path: <keyrings+bounces-1950-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1951-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED9F0973A13
-	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 16:39:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4218973A21
+	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 16:40:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E4EC1F21740
-	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 14:39:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CD711F21B53
+	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 14:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4421957F9;
-	Tue, 10 Sep 2024 14:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72111953BD;
+	Tue, 10 Sep 2024 14:40:37 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
 Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [83.223.95.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A2319413F;
-	Tue, 10 Sep 2024 14:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6160D194C8B;
+	Tue, 10 Sep 2024 14:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725979158; cv=none; b=Tz577ucrDh4sfwPGuGac0g+zOTYS2gD4MomNuy5ALSJZVBi8FERMsfc9p2ix/0W5omFbJTwDCz4U+C+Qo0L+toJ5NmGC7+RWdwnZ4mG1jc1dKhEUxRECwbIE/ueu0L4hoq54O9denAdnvD2Gu0RG1N08V2U8Pnne+4hQ/uaIjIA=
+	t=1725979237; cv=none; b=Ytj4300lXNMsyUmcTSXmvXnbzZyVgRZQJRM9C+ENLqE/xL5J0OqMLn3ZLQ2Q5dswpxID8xVmzov55PmjzeGgaimAMW+lT+P7CQX0U57nu/G0FpgKhvCowg/KriwcxoeDiBKtTqGjuh1CtnEH9VwnpkTz2dpVJJ9FTYMFcA33TJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725979158; c=relaxed/simple;
-	bh=hXjL36ZTUUG010MGGcWtvAiwr3c02h0fr0+QVFB949Q=;
-	h=Message-ID:From:Date:Subject:To:Cc; b=CwuRC+iKyMsyOrruUCi5Q5cat5o86BFp6E9sKaVdCc3CA7/QhCiG+3iTprujPsBVk2Scq7qedECZlvfPAXXHz8y1yU3Zxz/1GEZFha8t7U5XyQ4xJzQHMKIENM6Ex6UreNrMG/ZAgQ68w5M1hxqs5lj6ChtQ3z3yc+tpjHp7HUU=
+	s=arc-20240116; t=1725979237; c=relaxed/simple;
+	bh=Dlno360+ptDIIc6o/dmlFwuU45OT/FEVFgGwnCJ5n+Q=;
+	h=Message-ID:In-Reply-To:References:From:Date:Subject:To:Cc; b=iVTpEFEGfqlbafoKsczH1wZ/SyCIoW6NT6ncDh0bq9EJXSd8HNksRTleSwVSyB6klYKuEcMDbjA6cMmViHyEKabVxBOdeRf1AiRoCfa7/ifiyaAXkLlOAS5GBRpmVLKsdLtrLhtTeOGQFM/sOivSUnPANgRjN8+vdsv2GYxXD74=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.95.204
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
 	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
 	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by mailout1.hostsharing.net (Postfix) with ESMTPS id 776D110192657;
-	Tue, 10 Sep 2024 16:30:39 +0200 (CEST)
+	by mailout1.hostsharing.net (Postfix) with ESMTPS id 541871019265F;
+	Tue, 10 Sep 2024 16:40:32 +0200 (CEST)
 Received: from localhost (unknown [89.246.108.87])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by h08.hostsharing.net (Postfix) with ESMTPSA id 4707E60A79C3;
-	Tue, 10 Sep 2024 16:30:39 +0200 (CEST)
-X-Mailbox-Line: From b74f4875ae056ff8aa20b7530fe4f41592581c63 Mon Sep 17 00:00:00 2001
-Message-ID: <cover.1725972333.git.lukas@wunner.de>
+	by h08.hostsharing.net (Postfix) with ESMTPSA id 255A46039371;
+	Tue, 10 Sep 2024 16:40:32 +0200 (CEST)
+X-Mailbox-Line: From f160f2418c98204817f93339e944529987308b32 Mon Sep 17 00:00:00 2001
+Message-ID: <f160f2418c98204817f93339e944529987308b32.1725972334.git.lukas@wunner.de>
+In-Reply-To: <cover.1725972333.git.lukas@wunner.de>
+References: <cover.1725972333.git.lukas@wunner.de>
 From: Lukas Wunner <lukas@wunner.de>
-Date: Tue, 10 Sep 2024 16:30:10 +0200
-Subject: [PATCH v2 00/19] Migrate to sig_alg and templatize ecdsa
-To: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, Eric Biggers <ebiggers@google.com>, Stefan Berger <stefanb@linux.ibm.com>, Vitaly Chikunov <vt@altlinux.org>, Tadeusz Struk <tstruk@gigaio.com>, "Dimitri John Ledkov" <dimitri.ledkov@canonical.com>
-Cc: David Howells <dhowells@redhat.com>, Andrew Zaborowski <andrew.zaborowski@intel.com>, Saulo Alessandre <saulo.alessandre@tse.jus.br>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Ignat Korchagin <ignat@cloudflare.com>, Marek Behun <kabel@kernel.org>, Varad Gautam <varadgautam@google.com>, Stephan Mueller <smueller@chronox.de>, Denis Kenzior <denkenz@gmail.com>, linux-crypto@vger.kernel.org, keyrings@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, Eric Snowberg <eric.snowberg@oracle.com>, linux-security-module@vger.kernel.org, Gonglei <arei.gonglei@huawei.com>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio Perez <eperezma@redhat.com>, virtualization@lists.linux.dev, zhenwei pi <pizhenwei@bytedance.com>, lei he <helei.sig11@bytedance.com>, Neal Liu <neal_liu@aspeedtech.com>, Joel Stanley <joel@jms.id.au>, Andrew Jeff
- ery <andrew@codeconstruct.com.au>, linux-aspeed@lists.ozlabs.org, Zhiqi Song <songzhiqi1@huawei.com>, Longfang Liu <liulongfang@huawei.com>, Jia Jie Ho <jiajie.ho@starfivetech.com>, William Qiu <william.qiu@starfivetech.com>
+Date: Tue, 10 Sep 2024 16:30:11 +0200
+Subject: [PATCH v2 01/19] crypto: ecdsa - Drop unused test vector elements
+To: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, Eric Biggers <ebiggers@google.com>, Stefan Berger <stefanb@linux.ibm.com>, Vitaly Chikunov <vt@altlinux.org>, Tadeusz Struk <tstruk@gigaio.com>
+Cc: David Howells <dhowells@redhat.com>, Andrew Zaborowski <andrew.zaborowski@intel.com>, Saulo Alessandre <saulo.alessandre@tse.jus.br>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Ignat Korchagin <ignat@cloudflare.com>, Marek Behun <kabel@kernel.org>, Varad Gautam <varadgautam@google.com>, Stephan Mueller <smueller@chronox.de>, Denis Kenzior <denkenz@gmail.com>, linux-crypto@vger.kernel.org, keyrings@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 
-The original impetus of this series is to introduce P1363 signature
-decoding for ecdsa (patch [18/19]), which is needed by the upcoming
-SPDM library (Security Protocol and Data Model) for PCI device
-authentication.
+The ECDSA test vectors contain "params", "param_len" and "algo" elements
+even though ecdsa.c doesn't make any use of them.  The only algorithm
+implementation using those elements is ecrdsa.c.
 
-To facilitate that, move X9.62 signature decoding out of ecdsa.c and
-into a template (patch [15/19]).
+Drop the unused test vector elements.
 
-New in v2:  Move the maximum signature size calculations for ecdsa
-out of software_key_query() and into the X9.62 template so that
-corresponding calculations can be added for P1363 without further
-cluttering up software_key_query() (patch [16/19] - [17/19]).
+For the curious, "params" is an ASN.1 SEQUENCE of OID_id_ecPublicKey
+and a second OID identifying the curve.  For example:
 
-New in v2:  Avoid inefficient copying from kernel buffers to sglists
-in the new templates by introducing a sig_alg backend and migrating
-all algorithms to it, per Herbert's advice (patch [02/19] - [12/19]).
+    "\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
+    "\xce\x3d\x03\x01\x01"
 
-Clean up various smaller issues that caught my eye in ecdsa
-(patch [01/19] and [14/19]), ecrdsa (patch [19/19]) and
-ASN.1 headers (patch [13/19]).
+... decodes to:
 
-I've also accumulated various cleanups for crypto virtio on my
-development branch but will leave them for another day as this
-series is already nearing the "too big to review" threshold. ;)
+    SEQUENCE (OID_id_ecPublicKey, OID_id_prime192v1)
 
-I've run selftests on every single commit, but further testing
-would be appreciated to raise the confidence.
+The curve OIDs used in those "params" elements are unsurprisingly:
 
+    OID_id_prime192v1 (2a8648ce3d030101)
+    OID_id_prime256v1 (2a8648ce3d030107)
+    OID_id_ansip384r1 (2b81040022)
+    OID_id_ansip521r1 (2b81040023)
 
-Link to v1:
+Those are just different names for secp192r1, secp256r1, secp384r1 and
+secp521r1, respectively, per RFC 8422 appendix A:
+https://www.rfc-editor.org/rfc/rfc8422#appendix-A
 
-https://lore.kernel.org/all/cover.1722260176.git.lukas@wunner.de/
+The entries for secp384r1 and secp521r1 curves contain a useful code
+comment calling out the curve and hash.  Add analogous code comments
+to secp192r1 and secp256r1 curve entries.
 
-Changes v1 -> v2:
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+---
+ crypto/testmgr.h | 115 +++++------------------------------------------
+ 1 file changed, 10 insertions(+), 105 deletions(-)
 
-* [PATCH 13/19] ASN.1: Clean up include statements in public headers
-  * Drop "#include <linux/bug.h>" from <linux/asn1_encoder.h> (Jonathan)
-
-* [PATCH 14/19] crypto: ecdsa - Avoid signed integer overflow on signature
-  decoding
-  * Add code comment explaining why vlen may be larger than bufsize (Stefan)
-
-* [PATCH 15/19] crypto: ecdsa - Move X9.62 signature decoding into template
-  * Drop unnecessary "params", "param_len" and "algo" definitions from
-    ecdsa_nist_p{192,256,384,521}_tv_template[].
-  * Introduce and use struct ecdsa_raw_sig in <crypto/internal/ecc.h>.
-
-* [PATCH 18/19] crypto: ecdsa - Support P1363 signature decoding
-  * Drop unnecessary "params", "param_len" and "algo" definitions from
-    p1363_ecdsa_nist_p256_tv_template[].
-
-
-Lukas Wunner (19):
-  crypto: ecdsa - Drop unused test vector elements
-  crypto: sig - Introduce sig_alg backend
-  crypto: ecdsa - Migrate to sig_alg backend
-  crypto: ecrdsa - Migrate to sig_alg backend
-  crypto: rsa-pkcs1pad - Deduplicate set_{pub,priv}_key callbacks
-  crypto: rsassa-pkcs1 - Migrate to sig_alg backend
-  crypto: rsassa-pkcs1 - Harden digest length verification
-  crypto: rsassa-pkcs1 - Avoid copying hash prefix
-  crypto: virtio - Drop sign/verify operations
-  crypto: drivers - Drop sign/verify operations
-  crypto: akcipher - Drop sign/verify operations
-  crypto: sig - Move crypto_sig_*() API calls to include file
-  ASN.1: Clean up include statements in public headers
-  crypto: ecdsa - Avoid signed integer overflow on signature decoding
-  crypto: ecdsa - Move X9.62 signature decoding into template
-  crypto: sig - Rename crypto_sig_maxsize() to crypto_sig_keysize()
-  crypto: ecdsa - Move X9.62 signature size calculation into template
-  crypto: ecdsa - Support P1363 signature decoding
-  crypto: ecrdsa - Fix signature size calculation
-
- Documentation/crypto/api-akcipher.rst         |   2 +-
- Documentation/crypto/api-sig.rst              |  15 +
- Documentation/crypto/api.rst                  |   1 +
- Documentation/crypto/architecture.rst         |   2 +
- crypto/Kconfig                                |   5 +-
- crypto/Makefile                               |   5 +-
- crypto/akcipher.c                             |  64 +-
- crypto/asymmetric_keys/public_key.c           |  58 +-
- crypto/ecdsa-p1363.c                          | 159 ++++
- crypto/ecdsa-x962.c                           | 237 +++++
- crypto/ecdsa.c                                | 209 ++---
- crypto/ecrdsa.c                               |  64 +-
- crypto/internal.h                             |  19 -
- crypto/rsa-pkcs1pad.c                         | 371 +-------
- crypto/rsa.c                                  |  17 +-
- crypto/rsassa-pkcs1.c                         | 442 +++++++++
- crypto/sig.c                                  | 143 +--
- crypto/testmgr.c                              | 320 +++++--
- crypto/testmgr.h                              | 884 +++++++++++++++---
- drivers/crypto/aspeed/aspeed-acry.c           |   2 -
- drivers/crypto/hisilicon/hpre/hpre_crypto.c   |   2 -
- drivers/crypto/starfive/jh7110-rsa.c          |   2 -
- .../virtio/virtio_crypto_akcipher_algs.c      |  65 +-
- include/crypto/akcipher.h                     |  69 +-
- include/crypto/internal/akcipher.h            |   4 +-
- include/crypto/internal/ecc.h                 |  14 +
- include/crypto/internal/rsa.h                 |  29 +
- include/crypto/internal/sig.h                 |  80 ++
- include/crypto/sig.h                          | 152 ++-
- include/linux/asn1_decoder.h                  |   1 +
- include/linux/asn1_encoder.h                  |   1 -
- include/linux/slab.h                          |   1 +
- include/uapi/linux/cryptouser.h               |   5 +
- include/uapi/linux/virtio_crypto.h            |   1 +
- security/integrity/ima/ima_main.c             |   6 +-
- 35 files changed, 2398 insertions(+), 1053 deletions(-)
- create mode 100644 Documentation/crypto/api-sig.rst
- create mode 100644 crypto/ecdsa-p1363.c
- create mode 100644 crypto/ecdsa-x962.c
- create mode 100644 crypto/rsassa-pkcs1.c
-
+diff --git a/crypto/testmgr.h b/crypto/testmgr.h
+index 9b38501a17b2..ed1640f3e352 100644
+--- a/crypto/testmgr.h
++++ b/crypto/testmgr.h
+@@ -652,21 +652,16 @@ static const struct akcipher_testvec rsa_tv_template[] = {
+  */
+ static const struct akcipher_testvec ecdsa_nist_p192_tv_template[] = {
+ 	{
+-	.key =
++	.key = /* secp192r1(sha1) */
+ 	"\x04\xf7\x46\xf8\x2f\x15\xf6\x22\x8e\xd7\x57\x4f\xcc\xe7\xbb\xc1"
+ 	"\xd4\x09\x73\xcf\xea\xd0\x15\x07\x3d\xa5\x8a\x8a\x95\x43\xe4\x68"
+ 	"\xea\xc6\x25\xc1\xc1\x01\x25\x4c\x7e\xc3\x3c\xa6\x04\x0a\xe7\x08"
+ 	"\x98",
+ 	.key_len = 49,
+-	.params =
+-	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
+-	"\xce\x3d\x03\x01\x01",
+-	.param_len = 21,
+ 	.m =
+ 	"\xcd\xb9\xd2\x1c\xb7\x6f\xcd\x44\xb3\xfd\x63\xea\xa3\x66\x7f\xae"
+ 	"\x63\x85\xe7\x82",
+ 	.m_size = 20,
+-	.algo = OID_id_ecdsa_with_sha1,
+ 	.c =
+ 	"\x30\x35\x02\x19\x00\xba\xe5\x93\x83\x6e\xb6\x3b\x63\xa0\x27\x91"
+ 	"\xc6\xf6\x7f\xc3\x09\xad\x59\xad\x88\x27\xd6\x92\x6b\x02\x18\x10"
+@@ -676,21 +671,16 @@ static const struct akcipher_testvec ecdsa_nist_p192_tv_template[] = {
+ 	.public_key_vec = true,
+ 	.siggen_sigver_test = true,
+ 	}, {
+-	.key =
++	.key = /* secp192r1(sha224) */
+ 	"\x04\xb6\x4b\xb1\xd1\xac\xba\x24\x8f\x65\xb2\x60\x00\x90\xbf\xbd"
+ 	"\x78\x05\x73\xe9\x79\x1d\x6f\x7c\x0b\xd2\xc3\x93\xa7\x28\xe1\x75"
+ 	"\xf7\xd5\x95\x1d\x28\x10\xc0\x75\x50\x5c\x1a\x4f\x3f\x8f\xa5\xee"
+ 	"\xa3",
+ 	.key_len = 49,
+-	.params =
+-	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
+-	"\xce\x3d\x03\x01\x01",
+-	.param_len = 21,
+ 	.m =
+ 	"\x8d\xd6\xb8\x3e\xe5\xff\x23\xf6\x25\xa2\x43\x42\x74\x45\xa7\x40"
+ 	"\x3a\xff\x2f\xe1\xd3\xf6\x9f\xe8\x33\xcb\x12\x11",
+ 	.m_size = 28,
+-	.algo = OID_id_ecdsa_with_sha224,
+ 	.c =
+ 	"\x30\x34\x02\x18\x5a\x8b\x82\x69\x7e\x8a\x0a\x09\x14\xf8\x11\x2b"
+ 	"\x55\xdc\xae\x37\x83\x7b\x12\xe6\xb6\x5b\xcb\xd4\x02\x18\x6a\x14"
+@@ -700,21 +690,16 @@ static const struct akcipher_testvec ecdsa_nist_p192_tv_template[] = {
+ 	.public_key_vec = true,
+ 	.siggen_sigver_test = true,
+ 	}, {
+-	.key =
++	.key = /* secp192r1(sha256) */
+ 	"\x04\xe2\x51\x24\x9b\xf7\xb6\x32\x82\x39\x66\x3d\x5b\xec\x3b\xae"
+ 	"\x0c\xd5\xf2\x67\xd1\xc7\xe1\x02\xe4\xbf\x90\x62\xb8\x55\x75\x56"
+ 	"\x69\x20\x5e\xcb\x4e\xca\x33\xd6\xcb\x62\x6b\x94\xa9\xa2\xe9\x58"
+ 	"\x91",
+ 	.key_len = 49,
+-	.params =
+-	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
+-	"\xce\x3d\x03\x01\x01",
+-	.param_len = 21,
+ 	.m =
+ 	"\x35\xec\xa1\xa0\x9e\x14\xde\x33\x03\xb6\xf6\xbd\x0c\x2f\xb2\xfd"
+ 	"\x1f\x27\x82\xa5\xd7\x70\x3f\xef\xa0\x82\x69\x8e\x73\x31\x8e\xd7",
+ 	.m_size = 32,
+-	.algo = OID_id_ecdsa_with_sha256,
+ 	.c =
+ 	"\x30\x35\x02\x18\x3f\x72\x3f\x1f\x42\xd2\x3f\x1d\x6b\x1a\x58\x56"
+ 	"\xf1\x8f\xf7\xfd\x01\x48\xfb\x5f\x72\x2a\xd4\x8f\x02\x19\x00\xb3"
+@@ -724,22 +709,17 @@ static const struct akcipher_testvec ecdsa_nist_p192_tv_template[] = {
+ 	.public_key_vec = true,
+ 	.siggen_sigver_test = true,
+ 	}, {
+-	.key =
++	.key = /* secp192r1(sha384) */
+ 	"\x04\x5a\x13\xfe\x68\x86\x4d\xf4\x17\xc7\xa4\xe5\x8c\x65\x57\xb7"
+ 	"\x03\x73\x26\x57\xfb\xe5\x58\x40\xd8\xfd\x49\x05\xab\xf1\x66\x1f"
+ 	"\xe2\x9d\x93\x9e\xc2\x22\x5a\x8b\x4f\xf3\x77\x22\x59\x7e\xa6\x4e"
+ 	"\x8b",
+ 	.key_len = 49,
+-	.params =
+-	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
+-	"\xce\x3d\x03\x01\x01",
+-	.param_len = 21,
+ 	.m =
+ 	"\x9d\x2e\x1a\x8f\xed\x6c\x4b\x61\xae\xac\xd5\x19\x79\xce\x67\xf9"
+ 	"\xa0\x34\xeb\xb0\x81\xf9\xd9\xdc\x6e\xb3\x5c\xa8\x69\xfc\x8a\x61"
+ 	"\x39\x81\xfb\xfd\x5c\x30\x6b\xa8\xee\xed\x89\xaf\xa3\x05\xe4\x78",
+ 	.m_size = 48,
+-	.algo = OID_id_ecdsa_with_sha384,
+ 	.c =
+ 	"\x30\x35\x02\x19\x00\xf0\xa3\x38\xce\x2b\xf8\x9d\x1a\xcf\x7f\x34"
+ 	"\xb4\xb4\xe5\xc5\x00\xdd\x15\xbb\xd6\x8c\xa7\x03\x78\x02\x18\x64"
+@@ -749,23 +729,18 @@ static const struct akcipher_testvec ecdsa_nist_p192_tv_template[] = {
+ 	.public_key_vec = true,
+ 	.siggen_sigver_test = true,
+ 	}, {
+-	.key =
++	.key = /* secp192r1(sha512) */
+ 	"\x04\xd5\xf2\x6e\xc3\x94\x5c\x52\xbc\xdf\x86\x6c\x14\xd1\xca\xea"
+ 	"\xcc\x72\x3a\x8a\xf6\x7a\x3a\x56\x36\x3b\xca\xc6\x94\x0e\x17\x1d"
+ 	"\x9e\xa0\x58\x28\xf9\x4b\xe6\xd1\xa5\x44\x91\x35\x0d\xe7\xf5\x11"
+ 	"\x57",
+ 	.key_len = 49,
+-	.params =
+-	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
+-	"\xce\x3d\x03\x01\x01",
+-	.param_len = 21,
+ 	.m =
+ 	"\xd5\x4b\xe9\x36\xda\xd8\x6e\xc0\x50\x03\xbe\x00\x43\xff\xf0\x23"
+ 	"\xac\xa2\x42\xe7\x37\x77\x79\x52\x8f\x3e\xc0\x16\xc1\xfc\x8c\x67"
+ 	"\x16\xbc\x8a\x5d\x3b\xd3\x13\xbb\xb6\xc0\x26\x1b\xeb\x33\xcc\x70"
+ 	"\x4a\xf2\x11\x37\xe8\x1b\xba\x55\xac\x69\xe1\x74\x62\x7c\x6e\xb5",
+ 	.m_size = 64,
+-	.algo = OID_id_ecdsa_with_sha512,
+ 	.c =
+ 	"\x30\x35\x02\x19\x00\x88\x5b\x8f\x59\x43\xbf\xcf\xc6\xdd\x3f\x07"
+ 	"\x87\x12\xa0\xd4\xac\x2b\x11\x2d\x1c\xb6\x06\xc9\x6c\x02\x18\x73"
+@@ -779,22 +754,17 @@ static const struct akcipher_testvec ecdsa_nist_p192_tv_template[] = {
+ 
+ static const struct akcipher_testvec ecdsa_nist_p256_tv_template[] = {
+ 	{
+-	.key =
++	.key = /* secp256r1(sha1) */
+ 	"\x04\xb9\x7b\xbb\xd7\x17\x64\xd2\x7e\xfc\x81\x5d\x87\x06\x83\x41"
+ 	"\x22\xd6\x9a\xaa\x87\x17\xec\x4f\x63\x55\x2f\x94\xba\xdd\x83\xe9"
+ 	"\x34\x4b\xf3\xe9\x91\x13\x50\xb6\xcb\xca\x62\x08\xe7\x3b\x09\xdc"
+ 	"\xc3\x63\x4b\x2d\xb9\x73\x53\xe4\x45\xe6\x7c\xad\xe7\x6b\xb0\xe8"
+ 	"\xaf",
+ 	.key_len = 65,
+-	.params =
+-	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
+-	"\xce\x3d\x03\x01\x07",
+-	.param_len = 21,
+ 	.m =
+ 	"\xc2\x2b\x5f\x91\x78\x34\x26\x09\x42\x8d\x6f\x51\xb2\xc5\xaf\x4c"
+ 	"\x0b\xde\x6a\x42",
+ 	.m_size = 20,
+-	.algo = OID_id_ecdsa_with_sha1,
+ 	.c =
+ 	"\x30\x46\x02\x21\x00\xf9\x25\xce\x9f\x3a\xa6\x35\x81\xcf\xd4\xe7"
+ 	"\xb7\xf0\x82\x56\x41\xf7\xd4\xad\x8d\x94\x5a\x69\x89\xee\xca\x6a"
+@@ -805,22 +775,17 @@ static const struct akcipher_testvec ecdsa_nist_p256_tv_template[] = {
+ 	.public_key_vec = true,
+ 	.siggen_sigver_test = true,
+ 	}, {
+-	.key =
++	.key = /* secp256r1(sha224) */
+ 	"\x04\x8b\x6d\xc0\x33\x8e\x2d\x8b\x67\xf5\xeb\xc4\x7f\xa0\xf5\xd9"
+ 	"\x7b\x03\xa5\x78\x9a\xb5\xea\x14\xe4\x23\xd0\xaf\xd7\x0e\x2e\xa0"
+ 	"\xc9\x8b\xdb\x95\xf8\xb3\xaf\xac\x00\x2c\x2c\x1f\x7a\xfd\x95\x88"
+ 	"\x43\x13\xbf\xf3\x1c\x05\x1a\x14\x18\x09\x3f\xd6\x28\x3e\xc5\xa0"
+ 	"\xd4",
+ 	.key_len = 65,
+-	.params =
+-	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
+-	"\xce\x3d\x03\x01\x07",
+-	.param_len = 21,
+ 	.m =
+ 	"\x1a\x15\xbc\xa3\xe4\xed\x3a\xb8\x23\x67\xc6\xc4\x34\xf8\x6c\x41"
+ 	"\x04\x0b\xda\xc5\x77\xfa\x1c\x2d\xe6\x2c\x3b\xe0",
+ 	.m_size = 28,
+-	.algo = OID_id_ecdsa_with_sha224,
+ 	.c =
+ 	"\x30\x44\x02\x20\x20\x43\xfa\xc0\x9f\x9d\x7b\xe7\xae\xce\x77\x59"
+ 	"\x1a\xdb\x59\xd5\x34\x62\x79\xcb\x6a\x91\x67\x2e\x7d\x25\xd8\x25"
+@@ -831,22 +796,17 @@ static const struct akcipher_testvec ecdsa_nist_p256_tv_template[] = {
+ 	.public_key_vec = true,
+ 	.siggen_sigver_test = true,
+ 	}, {
+-	.key =
++	.key = /* secp256r1(sha256) */
+ 	"\x04\xf1\xea\xc4\x53\xf3\xb9\x0e\x9f\x7e\xad\xe3\xea\xd7\x0e\x0f"
+ 	"\xd6\x98\x9a\xca\x92\x4d\x0a\x80\xdb\x2d\x45\xc7\xec\x4b\x97\x00"
+ 	"\x2f\xe9\x42\x6c\x29\xdc\x55\x0e\x0b\x53\x12\x9b\x2b\xad\x2c\xe9"
+ 	"\x80\xe6\xc5\x43\xc2\x1d\x5e\xbb\x65\x21\x50\xb6\x37\xb0\x03\x8e"
+ 	"\xb8",
+ 	.key_len = 65,
+-	.params =
+-	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
+-	"\xce\x3d\x03\x01\x07",
+-	.param_len = 21,
+ 	.m =
+ 	"\x8f\x43\x43\x46\x64\x8f\x6b\x96\xdf\x89\xdd\xa9\x01\xc5\x17\x6b"
+ 	"\x10\xa6\xd8\x39\x61\xdd\x3c\x1a\xc8\x8b\x59\xb2\xdc\x32\x7a\xa4",
+ 	.m_size = 32,
+-	.algo = OID_id_ecdsa_with_sha256,
+ 	.c =
+ 	"\x30\x45\x02\x20\x08\x31\xfa\x74\x0d\x1d\x21\x5d\x09\xdc\x29\x63"
+ 	"\xa8\x1a\xad\xfc\xac\x44\xc3\xe8\x24\x11\x2d\xa4\x91\xdc\x02\x67"
+@@ -857,23 +817,18 @@ static const struct akcipher_testvec ecdsa_nist_p256_tv_template[] = {
+ 	.public_key_vec = true,
+ 	.siggen_sigver_test = true,
+ 	}, {
+-	.key =
++	.key = /* secp256r1(sha384) */
+ 	"\x04\xc5\xc6\xea\x60\xc9\xce\xad\x02\x8d\xf5\x3e\x24\xe3\x52\x1d"
+ 	"\x28\x47\x3b\xc3\x6b\xa4\x99\x35\x99\x11\x88\x88\xc8\xf4\xee\x7e"
+ 	"\x8c\x33\x8f\x41\x03\x24\x46\x2b\x1a\x82\xf9\x9f\xe1\x97\x1b\x00"
+ 	"\xda\x3b\x24\x41\xf7\x66\x33\x58\x3d\x3a\x81\xad\xcf\x16\xe9\xe2"
+ 	"\x7c",
+ 	.key_len = 65,
+-	.params =
+-	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
+-	"\xce\x3d\x03\x01\x07",
+-	.param_len = 21,
+ 	.m =
+ 	"\x3e\x78\x70\xfb\xcd\x66\xba\x91\xa1\x79\xff\x1e\x1c\x6b\x78\xe6"
+ 	"\xc0\x81\x3a\x65\x97\x14\x84\x36\x14\x1a\x9a\xb7\xc5\xab\x84\x94"
+ 	"\x5e\xbb\x1b\x34\x71\xcb\x41\xe1\xf6\xfc\x92\x7b\x34\xbb\x86\xbb",
+ 	.m_size = 48,
+-	.algo = OID_id_ecdsa_with_sha384,
+ 	.c =
+ 	"\x30\x46\x02\x21\x00\x8e\xf3\x6f\xdc\xf8\x69\xa6\x2e\xd0\x2e\x95"
+ 	"\x54\xd1\x95\x64\x93\x08\xb2\x6b\x24\x94\x48\x46\x5e\xf2\xe4\x6c"
+@@ -884,24 +839,19 @@ static const struct akcipher_testvec ecdsa_nist_p256_tv_template[] = {
+ 	.public_key_vec = true,
+ 	.siggen_sigver_test = true,
+ 	}, {
+-	.key =
++	.key = /* secp256r1(sha512) */
+ 	"\x04\xd7\x27\x46\x49\xf6\x26\x85\x12\x40\x76\x8e\xe2\xe6\x2a\x7a"
+ 	"\x83\xb1\x4e\x7a\xeb\x3b\x5c\x67\x4a\xb5\xa4\x92\x8c\x69\xff\x38"
+ 	"\xee\xd9\x4e\x13\x29\x59\xad\xde\x6b\xbb\x45\x31\xee\xfd\xd1\x1b"
+ 	"\x64\xd3\xb5\xfc\xaf\x9b\x4b\x88\x3b\x0e\xb7\xd6\xdf\xf1\xd5\x92"
+ 	"\xbf",
+ 	.key_len = 65,
+-	.params =
+-	"\x30\x13\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x08\x2a\x86\x48"
+-	"\xce\x3d\x03\x01\x07",
+-	.param_len = 21,
+ 	.m =
+ 	"\x57\xb7\x9e\xe9\x05\x0a\x8c\x1b\xc9\x13\xe5\x4a\x24\xc7\xe2\xe9"
+ 	"\x43\xc3\xd1\x76\x62\xf4\x98\x1a\x9c\x13\xb0\x20\x1b\xe5\x39\xca"
+ 	"\x4f\xd9\x85\x34\x95\xa2\x31\xbc\xbb\xde\xdd\x76\xbb\x61\xe3\xcf"
+ 	"\x9d\xc0\x49\x7a\xf3\x7a\xc4\x7d\xa8\x04\x4b\x8d\xb4\x4d\x5b\xd6",
+ 	.m_size = 64,
+-	.algo = OID_id_ecdsa_with_sha512,
+ 	.c =
+ 	"\x30\x45\x02\x21\x00\xb8\x6d\x87\x81\x43\xdf\xfb\x9f\x40\xea\x44"
+ 	"\x81\x00\x4e\x29\x08\xed\x8c\x73\x30\x6c\x22\xb3\x97\x76\xf6\x04"
+@@ -925,15 +875,10 @@ static const struct akcipher_testvec ecdsa_nist_p384_tv_template[] = {
+ 	"\x0b\x25\xd6\x80\x5c\x3b\xe6\x1a\x98\x48\x91\x45\x7a\x73\xb0\xc3"
+ 	"\xf1",
+ 	.key_len = 97,
+-	.params =
+-	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
+-	"\x00\x22",
+-	.param_len = 18,
+ 	.m =
+ 	"\x12\x55\x28\xf0\x77\xd5\xb6\x21\x71\x32\x48\xcd\x28\xa8\x25\x22"
+ 	"\x3a\x69\xc1\x93",
+ 	.m_size = 20,
+-	.algo = OID_id_ecdsa_with_sha1,
+ 	.c =
+ 	"\x30\x66\x02\x31\x00\xf5\x0f\x24\x4c\x07\x93\x6f\x21\x57\x55\x07"
+ 	"\x20\x43\x30\xde\xa0\x8d\x26\x8e\xae\x63\x3f\xbc\x20\x3a\xc6\xf1"
+@@ -955,15 +900,10 @@ static const struct akcipher_testvec ecdsa_nist_p384_tv_template[] = {
+ 	"\x6b\x93\x99\x6c\x66\x4c\x42\x3f\x65\x60\x6c\x1c\x0b\x93\x9b\x9d"
+ 	"\xe0",
+ 	.key_len = 97,
+-	.params =
+-	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
+-	"\x00\x22",
+-	.param_len = 18,
+ 	.m =
+ 	"\x12\x80\xb6\xeb\x25\xe2\x3d\xf0\x21\x32\x96\x17\x3a\x38\x39\xfd"
+ 	"\x1f\x05\x34\x7b\xb8\xf9\x71\x66\x03\x4f\xd5\xe5",
+ 	.m_size = 28,
+-	.algo = OID_id_ecdsa_with_sha224,
+ 	.c =
+ 	"\x30\x66\x02\x31\x00\x8a\x51\x84\xce\x13\x1e\xd2\xdc\xec\xcb\xe4"
+ 	"\x89\x47\xb2\xf7\xbc\x97\xf1\xc8\x72\x26\xcf\x5a\x5e\xc5\xda\xb4"
+@@ -985,15 +925,10 @@ static const struct akcipher_testvec ecdsa_nist_p384_tv_template[] = {
+ 	"\x17\xc3\x34\x29\xd6\x40\xea\x5c\xb9\x3f\xfb\x32\x2e\x12\x33\xbc"
+ 	"\xab",
+ 	.key_len = 97,
+-	.params =
+-	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
+-	"\x00\x22",
+-	.param_len = 18,
+ 	.m =
+ 	"\xaa\xe7\xfd\x03\x26\xcb\x94\x71\xe4\xce\x0f\xc5\xff\xa6\x29\xa3"
+ 	"\xe1\xcc\x4c\x35\x4e\xde\xca\x80\xab\x26\x0c\x25\xe6\x68\x11\xc2",
+ 	.m_size = 32,
+-	.algo = OID_id_ecdsa_with_sha256,
+ 	.c =
+ 	"\x30\x64\x02\x30\x08\x09\x12\x9d\x6e\x96\x64\xa6\x8e\x3f\x7e\xce"
+ 	"\x0a\x9b\xaa\x59\xcc\x47\x53\x87\xbc\xbd\x83\x3f\xaf\x06\x3f\x84"
+@@ -1015,16 +950,11 @@ static const struct akcipher_testvec ecdsa_nist_p384_tv_template[] = {
+ 	"\x21\x67\xe5\x1b\x5a\x52\x31\x68\xd6\xee\xf0\x19\xb0\x55\xed\x89"
+ 	"\x9e",
+ 	.key_len = 97,
+-	.params =
+-	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
+-	"\x00\x22",
+-	.param_len = 18,
+ 	.m =
+ 	"\x8d\xf2\xc0\xe9\xa8\xf3\x8e\x44\xc4\x8c\x1a\xa0\xb8\xd7\x17\xdf"
+ 	"\xf2\x37\x1b\xc6\xe3\xf5\x62\xcc\x68\xf5\xd5\x0b\xbf\x73\x2b\xb1"
+ 	"\xb0\x4c\x04\x00\x31\xab\xfe\xc8\xd6\x09\xc8\xf2\xea\xd3\x28\xff",
+ 	.m_size = 48,
+-	.algo = OID_id_ecdsa_with_sha384,
+ 	.c =
+ 	"\x30\x66\x02\x31\x00\x9b\x28\x68\xc0\xa1\xea\x8c\x50\xee\x2e\x62"
+ 	"\x35\x46\xfa\x00\xd8\x2d\x7a\x91\x5f\x49\x2d\x22\x08\x29\xe6\xfb"
+@@ -1046,17 +976,12 @@ static const struct akcipher_testvec ecdsa_nist_p384_tv_template[] = {
+ 	"\xdf\x42\x5c\xc2\x5a\xc7\x0c\xf4\x15\xf7\x1b\xa3\x2e\xd7\x00\xac"
+ 	"\xa3",
+ 	.key_len = 97,
+-	.params =
+-	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
+-	"\x00\x22",
+-	.param_len = 18,
+ 	.m =
+ 	"\xe8\xb7\x52\x7d\x1a\x44\x20\x05\x53\x6b\x3a\x68\xf2\xe7\x6c\xa1"
+ 	"\xae\x9d\x84\xbb\xba\x52\x43\x3e\x2c\x42\x78\x49\xbf\x78\xb2\x71"
+ 	"\xeb\xe1\xe0\xe8\x42\x7b\x11\xad\x2b\x99\x05\x1d\x36\xe6\xac\xfc"
+ 	"\x55\x73\xf0\x15\x63\x39\xb8\x6a\x6a\xc5\x91\x5b\xca\x6a\xa8\x0e",
+ 	.m_size = 64,
+-	.algo = OID_id_ecdsa_with_sha512,
+ 	.c =
+ 	"\x30\x63\x02\x2f\x1d\x20\x94\x77\xfe\x31\xfa\x4d\xc6\xef\xda\x02"
+ 	"\xe7\x0f\x52\x9a\x02\xde\x93\xe8\x83\xe4\x84\x4c\xfc\x6f\x80\xe3"
+@@ -1084,15 +1009,10 @@ static const struct akcipher_testvec ecdsa_nist_p521_tv_template[] = {
+ 	"\xed\x37\x0f\x99\x3f\x26\xba\xa3\x8e\xff\x79\x34\x7c\x3a\xfe\x1f"
+ 	"\x3b\x83\x82\x2f\x14",
+ 	.key_len = 133,
+-	.params =
+-	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
+-	"\x00\x23",
+-	.param_len = 18,
+ 	.m =
+ 	"\xa2\x3a\x6a\x8c\x7b\x3c\xf2\x51\xf8\xbe\x5f\x4f\x3b\x15\x05\xc4"
+ 	"\xb5\xbc\x19\xe7\x21\x85\xe9\x23\x06\x33\x62\xfb",
+ 	.m_size = 28,
+-	.algo = OID_id_ecdsa_with_sha224,
+ 	.c =
+ 	"\x30\x81\x86\x02\x41\x01\xd6\x43\xe7\xff\x42\xb2\xba\x74\x35\xf6"
+ 	"\xdc\x6d\x02\x7b\x22\xac\xe2\xef\x07\x92\xee\x60\x94\x06\xf8\x3f"
+@@ -1119,15 +1039,10 @@ static const struct akcipher_testvec ecdsa_nist_p521_tv_template[] = {
+ 	"\x8a\xe9\x53\xa8\xcf\xce\x43\x0e\x82\x20\x86\xbc\x88\x9c\xb7\xe3"
+ 	"\xe6\x77\x1e\x1f\x8a",
+ 	.key_len = 133,
+-	.params =
+-	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
+-	"\x00\x23",
+-	.param_len = 18,
+ 	.m =
+ 	"\xcc\x97\x73\x0c\x73\xa2\x53\x2b\xfa\xd7\x83\x1d\x0c\x72\x1b\x39"
+ 	"\x80\x71\x8d\xdd\xc5\x9b\xff\x55\x32\x98\x25\xa2\x58\x2e\xb7\x73",
+ 	.m_size = 32,
+-	.algo = OID_id_ecdsa_with_sha256,
+ 	.c =
+ 	"\x30\x81\x88\x02\x42\x00\xcd\xa5\x5f\x57\x52\x27\x78\x3a\xb5\x06"
+ 	"\x0f\xfd\x83\xfc\x0e\xd9\xce\x50\x9f\x7d\x1f\xca\x8b\xa8\x2d\x56"
+@@ -1154,16 +1069,11 @@ static const struct akcipher_testvec ecdsa_nist_p521_tv_template[] = {
+ 	"\x22\x6e\xd7\x35\xc7\x23\xb7\x13\xae\xb6\x34\xff\xd7\x80\xe5\x39"
+ 	"\xb3\x3b\x5b\x1b\x94",
+ 	.key_len = 133,
+-	.params =
+-	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
+-	"\x00\x23",
+-	.param_len = 18,
+ 	.m =
+ 	"\x36\x98\xd6\x82\xfa\xad\xed\x3c\xb9\x40\xb6\x4d\x9e\xb7\x04\x26"
+ 	"\xad\x72\x34\x44\xd2\x81\xb4\x9b\xbe\x01\x04\x7a\xd8\x50\xf8\x59"
+ 	"\xba\xad\x23\x85\x6b\x59\xbe\xfb\xf6\x86\xd4\x67\xa8\x43\x28\x76",
+ 	.m_size = 48,
+-	.algo = OID_id_ecdsa_with_sha384,
+ 	.c =
+ 	"\x30\x81\x88\x02\x42\x00\x93\x96\x76\x3c\x27\xea\xaa\x9c\x26\xec"
+ 	"\x51\xdc\xe8\x35\x5e\xae\x16\xf2\x4b\x64\x98\xf7\xec\xda\xc7\x7e"
+@@ -1190,17 +1100,12 @@ static const struct akcipher_testvec ecdsa_nist_p521_tv_template[] = {
+ 	"\xfe\x3a\x05\x1a\xdb\xa9\x0f\xc0\x6c\x76\x30\x8c\xd8\xde\x44\xae"
+ 	"\xd0\x17\xdf\x49\x6a",
+ 	.key_len = 133,
+-	.params =
+-	"\x30\x10\x06\x07\x2a\x86\x48\xce\x3d\x02\x01\x06\x05\x2b\x81\x04"
+-	"\x00\x23",
+-	.param_len = 18,
+ 	.m =
+ 	"\x5c\xa6\xbc\x79\xb8\xa0\x1e\x11\x83\xf7\xe9\x05\xdf\xba\xf7\x69"
+ 	"\x97\x22\x32\xe4\x94\x7c\x65\xbd\x74\xc6\x9a\x8b\xbd\x0d\xdc\xed"
+ 	"\xf5\x9c\xeb\xe1\xc5\x68\x40\xf2\xc7\x04\xde\x9e\x0d\x76\xc5\xa3"
+ 	"\xf9\x3c\x6c\x98\x08\x31\xbd\x39\xe8\x42\x7f\x80\x39\x6f\xfe\x68",
+ 	.m_size = 64,
+-	.algo = OID_id_ecdsa_with_sha512,
+ 	.c =
+ 	"\x30\x81\x88\x02\x42\x01\x5c\x71\x86\x96\xac\x21\x33\x7e\x4e\xaa"
+ 	"\x86\xec\xa8\x05\x03\x52\x56\x63\x0e\x02\xcc\x94\xa9\x05\xb9\xfb"
 -- 
 2.43.0
 
