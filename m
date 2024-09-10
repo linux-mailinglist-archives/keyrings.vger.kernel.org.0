@@ -1,53 +1,54 @@
-Return-Path: <keyrings+bounces-1965-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-1966-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C29AD973BBD
-	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 17:26:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A57973BDC
+	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 17:28:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01B791C25418
-	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 15:26:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59CA8B26B3B
+	for <lists+keyrings@lfdr.de>; Tue, 10 Sep 2024 15:28:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 265E819ABB6;
-	Tue, 10 Sep 2024 15:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F3CD1A2C04;
+	Tue, 10 Sep 2024 15:26:02 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [176.9.242.54])
+Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [83.223.95.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EE7196434;
-	Tue, 10 Sep 2024 15:24:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41641A01CA;
+	Tue, 10 Sep 2024 15:26:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725981876; cv=none; b=DFjrknGa8aBjstA9t5FabJEky5aSq2WRQNkhkzKFIhFVU2eGlPJjlvBEH/GVMsKpfrPL9ivwcH6bdlWPfJk4fr5lvp7QVmHP8U48ZfKJBO9wRbSurcMFO/i+CPbQ/pGSo6gspvVGSq5NE9IRHRSoBwZdJkfGJoioWgk/sl88Sh4=
+	t=1725981962; cv=none; b=Rav8VcPUzIrAktfYWc+w2LQYIb94d31hWvnjNIoLEcg475fqTI5agq6TD/kkx/+yI9ZV3rFO7/TmLydePXFf6/64+C9HfjsFv9Gn92/Q0OIKtazIioxXFe905uDG5FODXdO20NVFoNnWQeF3Zt2srUFhW1KcPkTC6jN7ZKpGDPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725981876; c=relaxed/simple;
-	bh=9NrFXIl4mzBSyQy6skIOWMUuppt7NLCSSu3BHcANNLE=;
-	h=Message-ID:In-Reply-To:References:From:Date:Subject:To:Cc; b=N6ypWw8Eq5wluv6L+DP/qgO+l/yUXAVUeAdwZPgh0kgPTjTSJGOjftAOZyyNFvE2NAWIGJQARuY7FAhIteSHgjcH0vE35lcFUZ9WlRwMbAQ+nWp1Q/FjM+tqvstDGg1u7aJslIs0HeIIwq2tUsmjayRjS4qPiln25S5pmpsHas4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=176.9.242.54
+	s=arc-20240116; t=1725981962; c=relaxed/simple;
+	bh=UuNWLOkpN2Kr6+gI0jyf4qB6UU6KAPybbT6dZ4y3R5w=;
+	h=Message-ID:In-Reply-To:References:From:Date:Subject:To:Cc; b=sScP4DcSH5ZtPW/dPrQLgLqWkheeTAgaO17Hz5eghgTf/PiYqkQiN3an/1H81E310ILm05GV7OiiqavwX7dvb4I1N3B+MGHBxranUsbLOxoNSZGDjKc6KNikGWlt8uqyNL9D6oTFwPnzPL7CZPFqDrnyOV6nPWvudLZRx1WLy2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.95.204
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
 	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
 	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by mailout3.hostsharing.net (Postfix) with ESMTPS id 3DDFC10195301;
-	Tue, 10 Sep 2024 17:24:32 +0200 (CEST)
+	by mailout1.hostsharing.net (Postfix) with ESMTPS id 8943D1019178F;
+	Tue, 10 Sep 2024 17:25:58 +0200 (CEST)
 Received: from localhost (unknown [89.246.108.87])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by h08.hostsharing.net (Postfix) with ESMTPSA id 008D760A8B01;
-	Tue, 10 Sep 2024 17:24:31 +0200 (CEST)
-X-Mailbox-Line: From 16afbc3d1fba51d40977bf0d018f2441f6f1383a Mon Sep 17 00:00:00 2001
-Message-ID: <16afbc3d1fba51d40977bf0d018f2441f6f1383a.1725972335.git.lukas@wunner.de>
+	by h08.hostsharing.net (Postfix) with ESMTPSA id 68DD360A8B01;
+	Tue, 10 Sep 2024 17:25:58 +0200 (CEST)
+X-Mailbox-Line: From d5018797f813f8baae02954dabf6df167324fa75 Mon Sep 17 00:00:00 2001
+Message-ID: <d5018797f813f8baae02954dabf6df167324fa75.1725972335.git.lukas@wunner.de>
 In-Reply-To: <cover.1725972333.git.lukas@wunner.de>
 References: <cover.1725972333.git.lukas@wunner.de>
 From: Lukas Wunner <lukas@wunner.de>
-Date: Tue, 10 Sep 2024 16:30:23 +0200
-Subject: [PATCH v2 13/19] ASN.1: Clean up include statements in public headers
+Date: Tue, 10 Sep 2024 16:30:24 +0200
+Subject: [PATCH v2 14/19] crypto: ecdsa - Avoid signed integer overflow on
+ signature decoding
 To: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, Eric Biggers <ebiggers@google.com>, Stefan Berger <stefanb@linux.ibm.com>, Vitaly Chikunov <vt@altlinux.org>, Tadeusz Struk <tstruk@gigaio.com>
 Cc: David Howells <dhowells@redhat.com>, Andrew Zaborowski <andrew.zaborowski@intel.com>, Saulo Alessandre <saulo.alessandre@tse.jus.br>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Ignat Korchagin <ignat@cloudflare.com>, Marek Behun <kabel@kernel.org>, Varad Gautam <varadgautam@google.com>, Stephan Mueller <smueller@chronox.de>, Denis Kenzior <denkenz@gmail.com>, linux-crypto@vger.kernel.org, keyrings@vger.kernel.org
 Precedence: bulk
@@ -56,52 +57,77 @@ List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 
-If <linux/asn1_decoder.h> is the first header included from a .c file
-(due to headers being sorted alphabetically), the compiler complains:
+When extracting a signature component r or s from an ASN.1-encoded
+integer, ecdsa_get_signature_rs() subtracts the expected length
+"bufsize" from the ASN.1 length "vlen" (both of unsigned type size_t)
+and stores the result in "diff" (of signed type ssize_t).
 
-  include/linux/asn1_decoder.h:18:29: error: unknown type name 'size_t'
+This results in a signed integer overflow if vlen > SSIZE_MAX + bufsize.
 
-Avoid by including <linux/types.h>.
+The kernel is compiled with -fno-strict-overflow, which implies -fwrapv,
+meaning signed integer overflow is not undefined behavior.  And the
+function does check for overflow:
 
-Jonathan notes that the counterpart <linux/asn1_encoder.h> already
-includes <linux/types.h>, but additionally includes the unnecessary
-<linux/bug.h>.  Drop it.
+       if (-diff >= bufsize)
+               return -EINVAL;
+
+So the code is fine in principle but not very obvious.  In the future it
+might trigger a false-positive with CONFIG_UBSAN_SIGNED_WRAP=y.
+
+Avoid by comparing the two unsigned variables directly and erroring out
+if "vlen" is too large.
 
 Signed-off-by: Lukas Wunner <lukas@wunner.de>
 Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
 Changes v1 -> v2:
-  * Drop "#include <linux/bug.h>" from <linux/asn1_encoder.h> (Jonathan)
+  * Add code comment explaining why vlen may be larger than bufsize (Stefan)
 
- include/linux/asn1_decoder.h | 1 +
- include/linux/asn1_encoder.h | 1 -
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ crypto/ecdsa.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/asn1_decoder.h b/include/linux/asn1_decoder.h
-index 83f9c6e1e5e9..b41bce82a191 100644
---- a/include/linux/asn1_decoder.h
-+++ b/include/linux/asn1_decoder.h
-@@ -9,6 +9,7 @@
- #define _LINUX_ASN1_DECODER_H
+diff --git a/crypto/ecdsa.c b/crypto/ecdsa.c
+index 3b9873f56b0a..4a0ca93c99ea 100644
+--- a/crypto/ecdsa.c
++++ b/crypto/ecdsa.c
+@@ -35,29 +35,24 @@ static int ecdsa_get_signature_rs(u64 *dest, size_t hdrlen, unsigned char tag,
+ 				  const void *value, size_t vlen, unsigned int ndigits)
+ {
+ 	size_t bufsize = ndigits * sizeof(u64);
+-	ssize_t diff = vlen - bufsize;
+ 	const char *d = value;
  
- #include <linux/asn1.h>
-+#include <linux/types.h>
+-	if (!value || !vlen)
++	if (!value || !vlen || vlen > bufsize + 1)
+ 		return -EINVAL;
  
- struct asn1_decoder;
+-	/* diff = 0: 'value' has exacly the right size
+-	 * diff > 0: 'value' has too many bytes; one leading zero is allowed that
+-	 *           makes the value a positive integer; error on more
+-	 * diff < 0: 'value' is missing leading zeros
++	/*
++	 * vlen may be 1 byte larger than bufsize due to a leading zero byte
++	 * (necessary if the most significant bit of the integer is set).
+ 	 */
+-	if (diff > 0) {
++	if (vlen > bufsize) {
+ 		/* skip over leading zeros that make 'value' a positive int */
+ 		if (*d == 0) {
+ 			vlen -= 1;
+-			diff--;
+ 			d++;
+-		}
+-		if (diff)
++		} else {
+ 			return -EINVAL;
++		}
+ 	}
+-	if (-diff >= bufsize)
+-		return -EINVAL;
  
-diff --git a/include/linux/asn1_encoder.h b/include/linux/asn1_encoder.h
-index 08cd0c2ad34f..d17484dffb74 100644
---- a/include/linux/asn1_encoder.h
-+++ b/include/linux/asn1_encoder.h
-@@ -6,7 +6,6 @@
- #include <linux/types.h>
- #include <linux/asn1.h>
- #include <linux/asn1_ber_bytecode.h>
--#include <linux/bug.h>
+ 	ecc_digits_from_bytes(d, vlen, dest, ndigits);
  
- #define asn1_oid_len(oid) (sizeof(oid)/sizeof(u32))
- unsigned char *
 -- 
 2.43.0
 
