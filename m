@@ -1,214 +1,173 @@
-Return-Path: <keyrings+bounces-2003-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2004-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3424975282
-	for <lists+keyrings@lfdr.de>; Wed, 11 Sep 2024 14:36:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B0F9752DE
+	for <lists+keyrings@lfdr.de>; Wed, 11 Sep 2024 14:50:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AE3228AC98
-	for <lists+keyrings@lfdr.de>; Wed, 11 Sep 2024 12:36:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9898DB248F1
+	for <lists+keyrings@lfdr.de>; Wed, 11 Sep 2024 12:49:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FE6619F13D;
-	Wed, 11 Sep 2024 12:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198B91714CF;
+	Wed, 11 Sep 2024 12:49:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UGIkK9md"
 X-Original-To: keyrings@vger.kernel.org
-Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E81718C03E;
-	Wed, 11 Sep 2024 12:32:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45C518EFD4;
+	Wed, 11 Sep 2024 12:49:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726057933; cv=none; b=WElKJtNebpz447xM1hRw97onHPw0rk1EU/F3MUqBf8hkVw8V8bXgBxAh+Abu2hYNxD7MqBNXUl+DnYjWSxLkmO5GdrKsEF/+D8gQRcDCImM5Uo7Y0ES31kmEUFBoSC53SDOrdFfx/w0j4+B14nATpHWdlNdd6nsw/vkAR7CxhsY=
+	t=1726058952; cv=none; b=dJINBaYuqzIBrAiPjT3SOGdL991FKEW4QSoV5A8cHpU5sFt5+cuAHGNClZgC/2/88/aDOJnNIWyM5uB5R+VXTaArFI0CgQlkXKTN2zec1qJ19HfdZyKD//UuxQ5OzJSxpCbUfdo3fxL3ZS0pntv3P5fCGbrytDwrXvadRG207fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726057933; c=relaxed/simple;
-	bh=tSytCnfi4nnQFFL8WhpSzw4/Y/VqtTFp8/HjS3cG67E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JW9yxS4RlKCeCV0p+OhletJ+PbSbQOD4O95FVB7j0ppHKqhs2JDYLflZaA14AOFsuKsD4ew//Rl6QMgyyiaGht0/Do0Ah5aJjvzMJssKFnWOXwkGL+vVg7l/AVpZrLKVZ6u2mnYsU9LR6au21Kzj9UMlT3oWUiPMRAzJ+J460zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=none smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.51])
-	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4X3fSc5XVbz9v7Jb;
-	Wed, 11 Sep 2024 20:06:56 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.47])
-	by mail.maildlp.com (Postfix) with ESMTP id DD54614086A;
-	Wed, 11 Sep 2024 20:32:00 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.204.63.22])
-	by APP1 (Coremail) with SMTP id LxC2BwD3hy+ijeFmnHu1AA--.60036S6;
-	Wed, 11 Sep 2024 13:32:00 +0100 (CET)
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: dhowells@redhat.com,
-	dwmw2@infradead.org,
-	herbert@gondor.apana.org.au,
-	davem@davemloft.net
-Cc: linux-kernel@vger.kernel.org,
-	keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	zohar@linux.ibm.com,
-	linux-integrity@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	Roberto Sassu <roberto.sassu@huawei.com>
-Subject: [PATCH v3 14/14] KEYS: Introduce load_pgp_public_keyring()
-Date: Wed, 11 Sep 2024 14:29:11 +0200
-Message-Id: <20240911122911.1381864-15-roberto.sassu@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240911122911.1381864-1-roberto.sassu@huaweicloud.com>
-References: <20240911122911.1381864-1-roberto.sassu@huaweicloud.com>
+	s=arc-20240116; t=1726058952; c=relaxed/simple;
+	bh=DmfDciZfAQsHzD1twt2/wDXPYs9oqTXB5QYAdBZT594=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=WTBsTx2Wo0zOj9YimT0nzuUnDrfNYLeMboD145c7bGEkcZ2x1xS3M4ADzQZNQ0mreVq+1Ut4DlDPDn9aUCgKGapLQjTkhQMahOGUKoc0KCvM255CvypcKQWyRVWGi/ZSJVhGLLKPhKkBLdy46Ke5mkO11/36uR4UQg2vTgHyCuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UGIkK9md; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 376EFC4CEC5;
+	Wed, 11 Sep 2024 12:49:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726058951;
+	bh=DmfDciZfAQsHzD1twt2/wDXPYs9oqTXB5QYAdBZT594=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=UGIkK9mdrpxLovJiBE9Fz6Ei40rAL2RVLejP1Jks8yQPXaGabmnczOiY2Iktf4NpH
+	 IGi1E7zriIf6flMuUhKca7BqQ7bvx83go/gDnu527VuNRHLf80dQTT9vefjPcWMyyc
+	 gaZyLRUbkydv7+KlPHRBq0NGRNoklPmV0hczfKgzpYL6SKlU5Pdz6e1MO4nQ89kG80
+	 Mz8JTcWccrubBbsuaXa+gekJX3Tziziojb5O8vCgHL6GshMeOYeywq9nXTLAgM3o/d
+	 mNQuNsjoJUpEW/+c/2e9r6pMLUf/SeAzRC7LeXe4RiD/xmv4pcfwA365B3pGvg7t5c
+	 iprM1qkpK2A/w==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:LxC2BwD3hy+ijeFmnHu1AA--.60036S6
-X-Coremail-Antispam: 1UD129KBjvJXoWxJF1DZryrGFWkCF1rAF18Krg_yoWrZF45p3
-	yvyr1fKr4xtr1fArWfGF1UWrW5Cw1vkry2gw13Cw43AFWDKFy5ArsrKFs09ay5Wr98Zr1F
-	v3yvqr1a9w1UA3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUPlb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAV
-	Cq3wA2048vs2IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0
-	rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267
-	AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E
-	14v26r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrV
-	C2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE
-	7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262
-	kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s02
-	6c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw
-	0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvE
-	c7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aV
-	AFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZF
-	pf9x07Udl1kUUUUU=
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQADBGbg-HQH5gAAsp
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 11 Sep 2024 15:49:07 +0300
+Message-Id: <D43GTXWLMJ2E.258ZI34E5JRK6@kernel.org>
+Cc: "David Howells" <dhowells@redhat.com>, "Andrew Zaborowski"
+ <andrew.zaborowski@intel.com>, "Saulo Alessandre"
+ <saulo.alessandre@tse.jus.br>, "Jonathan Cameron"
+ <Jonathan.Cameron@huawei.com>, "Ignat Korchagin" <ignat@cloudflare.com>,
+ "Marek Behun" <kabel@kernel.org>, "Varad Gautam" <varadgautam@google.com>,
+ "Stephan Mueller" <smueller@chronox.de>, "Denis Kenzior"
+ <denkenz@gmail.com>, <linux-crypto@vger.kernel.org>,
+ <keyrings@vger.kernel.org>
+Subject: Re: [PATCH v2 04/19] crypto: ecrdsa - Migrate to sig_alg backend
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Lukas Wunner" <lukas@wunner.de>, "Herbert Xu"
+ <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
+ "Eric Biggers" <ebiggers@google.com>, "Stefan Berger"
+ <stefanb@linux.ibm.com>, "Vitaly Chikunov" <vt@altlinux.org>, "Tadeusz
+ Struk" <tstruk@gigaio.com>
+X-Mailer: aerc 0.18.2
+References: <cover.1725972333.git.lukas@wunner.de>
+ <45acc8db555f80408c8b975771da34c569da45da.1725972334.git.lukas@wunner.de>
+In-Reply-To: <45acc8db555f80408c8b975771da34c569da45da.1725972334.git.lukas@wunner.de>
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+On Tue Sep 10, 2024 at 5:30 PM EEST, Lukas Wunner wrote:
+> A sig_alg backend has just been introduced with the intent of moving all
+> asymmetric sign/verify algorithms to it one by one.
+>
+> Migrate ecrdsa.c to the new backend.
+>
+> One benefit of the new API is the use of kernel buffers instead of
+> sglists, which avoids the overhead of copying signature and digest
+> sglists back into kernel buffers.  ecrdsa.c is thus simplified quite
+> a bit.
+>
+> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+> ---
+>  crypto/Kconfig   |  2 +-
+>  crypto/ecrdsa.c  | 56 +++++++++++++++++++++---------------------------
+>  crypto/testmgr.c |  4 ++--
+>  crypto/testmgr.h |  7 +-----
+>  4 files changed, 28 insertions(+), 41 deletions(-)
+>
+> diff --git a/crypto/Kconfig b/crypto/Kconfig
+> index 89b728c72f07..e8488b8c45e3 100644
+> --- a/crypto/Kconfig
+> +++ b/crypto/Kconfig
+> @@ -302,7 +302,7 @@ config CRYPTO_ECDSA
+>  config CRYPTO_ECRDSA
+>  	tristate "EC-RDSA (Elliptic Curve Russian Digital Signature Algorithm)"
+>  	select CRYPTO_ECC
+> -	select CRYPTO_AKCIPHER
+> +	select CRYPTO_SIG
+>  	select CRYPTO_STREEBOG
+>  	select OID_REGISTRY
+>  	select ASN1
+> diff --git a/crypto/ecrdsa.c b/crypto/ecrdsa.c
+> index 3811f3805b5d..7383dd11089b 100644
+> --- a/crypto/ecrdsa.c
+> +++ b/crypto/ecrdsa.c
+> @@ -18,12 +18,11 @@
+> =20
+>  #include <linux/module.h>
+>  #include <linux/crypto.h>
+> +#include <crypto/sig.h>
+>  #include <crypto/streebog.h>
+> -#include <crypto/internal/akcipher.h>
+>  #include <crypto/internal/ecc.h>
+> -#include <crypto/akcipher.h>
+> +#include <crypto/internal/sig.h>
+>  #include <linux/oid_registry.h>
+> -#include <linux/scatterlist.h>
+>  #include "ecrdsa_params.asn1.h"
+>  #include "ecrdsa_pub_key.asn1.h"
+>  #include "ecrdsa_defs.h"
+> @@ -68,13 +67,12 @@ static const struct ecc_curve *get_curve_by_oid(enum =
+OID oid)
+>  	}
+>  }
+> =20
+> -static int ecrdsa_verify(struct akcipher_request *req)
+> +static int ecrdsa_verify(struct crypto_sig *tfm,
+> +			 const void *src, unsigned int slen,
+> +			 const void *digest, unsigned int dlen)
+>  {
+> -	struct crypto_akcipher *tfm =3D crypto_akcipher_reqtfm(req);
+> -	struct ecrdsa_ctx *ctx =3D akcipher_tfm_ctx(tfm);
+> -	unsigned char sig[ECRDSA_MAX_SIG_SIZE];
+> -	unsigned char digest[STREEBOG512_DIGEST_SIZE];
+> -	unsigned int ndigits =3D req->dst_len / sizeof(u64);
+> +	struct ecrdsa_ctx *ctx =3D crypto_sig_ctx(tfm);
+> +	unsigned int ndigits =3D dlen / sizeof(u64);
+>  	u64 r[ECRDSA_MAX_DIGITS]; /* witness (r) */
+>  	u64 _r[ECRDSA_MAX_DIGITS]; /* -r */
+>  	u64 s[ECRDSA_MAX_DIGITS]; /* second part of sig (s) */
+> @@ -91,25 +89,19 @@ static int ecrdsa_verify(struct akcipher_request *req=
+)
+>  	 */
+>  	if (!ctx->curve ||
+>  	    !ctx->digest ||
+> -	    !req->src ||
+> +	    !src ||
+> +	    !digest ||
+>  	    !ctx->pub_key.x ||
+> -	    req->dst_len !=3D ctx->digest_len ||
+> -	    req->dst_len !=3D ctx->curve->g.ndigits * sizeof(u64) ||
+> +	    dlen !=3D ctx->digest_len ||
+> +	    dlen !=3D ctx->curve->g.ndigits * sizeof(u64) ||
+>  	    ctx->pub_key.ndigits !=3D ctx->curve->g.ndigits ||
+> -	    req->dst_len * 2 !=3D req->src_len ||
+> -	    WARN_ON(req->src_len > sizeof(sig)) ||
+> -	    WARN_ON(req->dst_len > sizeof(digest)))
+> +	    dlen * 2 !=3D slen ||
+> +	    WARN_ON(slen > ECRDSA_MAX_SIG_SIZE) ||
+> +	    WARN_ON(dlen > STREEBOG512_DIGEST_SIZE))
 
-Preload PGP keys from 'pubring.gpg', placed in certs/ of the kernel source
-directory.
+Despite being migration I don't see no point recycling use of WARN_ON()
+here, given panic_on_warn kernel command-line flag.
 
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
----
- certs/Kconfig               | 11 +++++++++++
- certs/Makefile              |  7 +++++++
- certs/system_certificates.S | 18 ++++++++++++++++++
- certs/system_keyring.c      | 23 +++++++++++++++++++++++
- 4 files changed, 59 insertions(+)
+If you want to print to something, please do separate checks and use
+pr_warn() instead at most.
 
-diff --git a/certs/Kconfig b/certs/Kconfig
-index 78307dc25559..9b7ece1e45fa 100644
---- a/certs/Kconfig
-+++ b/certs/Kconfig
-@@ -154,4 +154,15 @@ config SYSTEM_BLACKLIST_AUTH_UPDATE
- 	  keyring.  The PKCS#7 signature of the description is set in the key
- 	  payload.  Blacklist keys cannot be removed.
- 
-+config PGP_PRELOAD_PUBLIC_KEYS
-+	bool "Preload PGP public keys"
-+	depends on SYSTEM_TRUSTED_KEYRING
-+	select PGP_PRELOAD
-+	default n
-+	help
-+	  Load at boot time the PGP public keys from a reserved area (populated
-+	  with the content of 'certs/pubring.gpg' provided at kernel build
-+	  time), and add them to the built-in keyring. Invalid keys are ignored
-+	  and the loading continues.
-+
- endmenu
-diff --git a/certs/Makefile b/certs/Makefile
-index 1094e3860c2a..7a3d68441e09 100644
---- a/certs/Makefile
-+++ b/certs/Makefile
-@@ -31,6 +31,13 @@ $(obj)/system_certificates.o: $(obj)/x509_certificate_list
- $(obj)/x509_certificate_list: $(CONFIG_SYSTEM_TRUSTED_KEYS) $(obj)/extract-cert FORCE
- 	$(call if_changed,extract_certs)
- 
-+ifdef CONFIG_PGP_PRELOAD_PUBLIC_KEYS
-+ifeq ($(shell ls $(srctree)/certs/pubring.gpg 2> /dev/null), $(srctree)/certs/pubring.gpg)
-+AFLAGS_system_certificates.o := -DHAVE_PUBRING_GPG
-+$(obj)/system_certificates.o: $(srctree)/certs/pubring.gpg
-+endif
-+endif
-+
- targets += x509_certificate_list
- 
- # If module signing is requested, say by allyesconfig, but a key has not been
-diff --git a/certs/system_certificates.S b/certs/system_certificates.S
-index 003e25d4a17e..b3cbf0811e3f 100644
---- a/certs/system_certificates.S
-+++ b/certs/system_certificates.S
-@@ -44,3 +44,21 @@ module_cert_size:
- #else
- 	.long __module_cert_end - __module_cert_start
- #endif
-+
-+	.align 8
-+	.globl pgp_public_keys
-+pgp_public_keys:
-+__pgp_key_list_start:
-+#ifdef HAVE_PUBRING_GPG
-+	.incbin "certs/pubring.gpg"
-+#endif
-+__pgp_key_list_end:
-+
-+	.align 8
-+	.globl pgp_public_keys_size
-+pgp_public_keys_size:
-+#ifdef CONFIG_64BIT
-+	.quad __pgp_key_list_end - __pgp_key_list_start
-+#else
-+	.long __pgp_key_list_end - __pgp_key_list_start
-+#endif
-diff --git a/certs/system_keyring.c b/certs/system_keyring.c
-index f132773c6096..357d52d1d250 100644
---- a/certs/system_keyring.c
-+++ b/certs/system_keyring.c
-@@ -32,6 +32,10 @@ static struct key *platform_trusted_keys;
- extern __initconst const u8 system_certificate_list[];
- extern __initconst const unsigned long system_certificate_list_size;
- extern __initconst const unsigned long module_cert_size;
-+#ifdef CONFIG_PGP_PRELOAD_PUBLIC_KEYS
-+extern __initconst const u8 pgp_public_keys[];
-+extern __initconst const unsigned long pgp_public_keys_size;
-+#endif
- 
- /**
-  * restrict_link_by_builtin_trusted - Restrict keyring addition by built-in CA
-@@ -268,6 +272,15 @@ __init int load_module_cert(struct key *keyring)
- 	if (!IS_ENABLED(CONFIG_IMA_APPRAISE_MODSIG))
- 		return 0;
- 
-+#ifdef CONFIG_PGP_PRELOAD_PUBLIC_KEYS
-+	pr_notice("Load PGP public keys to keyring %s\n", keyring->description);
-+
-+	if (preload_pgp_keys(pgp_public_keys,
-+			     pgp_public_keys_size,
-+			     keyring) < 0)
-+		pr_err("Can't load PGP public keys\n");
-+#endif
-+
- 	pr_notice("Loading compiled-in module X.509 certificates\n");
- 
- 	return x509_load_certificate_list(system_certificate_list,
-@@ -292,6 +305,16 @@ static __init int load_system_certificate_list(void)
- 	size = system_certificate_list_size - module_cert_size;
- #endif
- 
-+#ifdef CONFIG_PGP_PRELOAD_PUBLIC_KEYS
-+	pr_notice("Load PGP public keys to keyring %s\n",
-+		  builtin_trusted_keys->description);
-+
-+	if (preload_pgp_keys(pgp_public_keys,
-+			     pgp_public_keys_size,
-+			     builtin_trusted_keys) < 0)
-+		pr_err("Can't load PGP public keys\n");
-+#endif
-+
- 	return x509_load_certificate_list(p, size, builtin_trusted_keys);
- }
- late_initcall(load_system_certificate_list);
--- 
-2.34.1
-
+BR, Jarkko
 
