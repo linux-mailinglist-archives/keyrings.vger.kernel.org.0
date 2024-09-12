@@ -1,97 +1,242 @@
-Return-Path: <keyrings+bounces-2017-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2018-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D846976415
-	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 10:12:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8BC297641F
+	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 10:14:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7626F1C208BC
-	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 08:12:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 161AFB22E4D
+	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 08:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7A436C;
-	Thu, 12 Sep 2024 08:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF5C19004A;
+	Thu, 12 Sep 2024 08:14:11 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
+Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E7518F2FB;
-	Thu, 12 Sep 2024 08:12:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0231885BC;
+	Thu, 12 Sep 2024 08:14:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726128732; cv=none; b=b6x6QphxlO/UA1YBK83J7jjXPDTCxwUCZ1awgcioybRbbC5BzYNkaV8Jy7Zcdk17FHnYV5HIlKOq0kchcCeKuR16YTqDV0L2h4uSf5r89DP6hso5SQ6E6Mz7nP8DiFx+tsPO8JRE72QY04UN5Tr2S/LlwlrHEK6iNOFYRNMGTBc=
+	t=1726128851; cv=none; b=G3mF1OvWtP9MTWrK4Uf3YDUczuuPRhht1pGRTj19ZLdU9pWupZeLrDiGuk9Vo1sv27Jb3D7N0TpwK6iRJU9wWQkyWv94oKAWQZIzJdKdeiIeR7MUjjxanS1V5PePvY2pVhka5sZV3G10FTEGyWWmxbnYIPiYLPqhuqDt1s2H8HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726128732; c=relaxed/simple;
-	bh=UbMGX2oDZPSE9seClpEPKbIaE1nMuAaIAcbOL82/7oo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lLkxEzPpBwuAwn9Okug+NGRBKl8/q/XH+6KEZ3366iy/zJD2VP0YRF8//SM5D6oeT/iP5HUP/BqVHLM7/9yDKZqbyTcDaLDWAZD2byBTZC4JJV6gXxu7sDgsrSogCP+/a7YVyQO5xodNKyOKDmXJVHF2o/HpqnHEZZhS8OLbLWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 9A0F93000A0D1;
-	Thu, 12 Sep 2024 10:12:07 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 8570712D3BE; Thu, 12 Sep 2024 10:12:07 +0200 (CEST)
-Date: Thu, 12 Sep 2024 10:12:07 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Biggers <ebiggers@google.com>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Vitaly Chikunov <vt@altlinux.org>,
-	Tadeusz Struk <tstruk@gigaio.com>,
-	David Howells <dhowells@redhat.com>,
-	Andrew Zaborowski <andrew.zaborowski@intel.com>,
-	Saulo Alessandre <saulo.alessandre@tse.jus.br>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Marek Behun <kabel@kernel.org>,
-	Varad Gautam <varadgautam@google.com>,
-	Stephan Mueller <smueller@chronox.de>,
-	Denis Kenzior <denkenz@gmail.com>, linux-crypto@vger.kernel.org,
-	keyrings@vger.kernel.org
-Subject: Re: [PATCH v2 16/19] crypto: sig - Rename crypto_sig_maxsize() to
- crypto_sig_keysize()
-Message-ID: <ZuKiV1uNkH1PwlJP@wunner.de>
-References: <cover.1725972333.git.lukas@wunner.de>
- <85b9d0003d8d55c21e7411802950826d01011668.1725972335.git.lukas@wunner.de>
- <D43H3UEUAXDN.2CF8RROAANPM9@kernel.org>
+	s=arc-20240116; t=1726128851; c=relaxed/simple;
+	bh=S12iHFD+Ylpk128Urn+AhyYnPt/pw3Tm5yihTA31VQU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=aRD0+xgkv5GkpOZ6ScO4KmBzTOfly9iTBNEvRJMHXUxW6KXY+638cSANltzm6FolSVYRYek3OcwktFoAvNPJWMTIoOjkShPM63fpDqd2nAeVENq5gYepPHCElbxOTCpVdY4Y2ekLYcez7WmkRYK5gMNsZBpPOmVO0PpdwpiF9kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=none smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.18.186.51])
+	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4X48hN5BNdz9v7JT;
+	Thu, 12 Sep 2024 15:48:52 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.27])
+	by mail.maildlp.com (Postfix) with ESMTP id 9C9071402E1;
+	Thu, 12 Sep 2024 16:14:05 +0800 (CST)
+Received: from [127.0.0.1] (unknown [10.204.63.22])
+	by APP2 (Coremail) with SMTP id GxC2BwC3ZsfGouJmHcLEAA--.1679S2;
+	Thu, 12 Sep 2024 09:14:05 +0100 (CET)
+Message-ID: <7e47f97aede88b87fbb9c9284db2005764bfbedd.camel@huaweicloud.com>
+Subject: Re: [regression] significant delays when secureboot is enabled
+ since 6.10
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>, James Bottomley
+	 <James.Bottomley@HansenPartnership.com>, Linux regressions mailing list
+	 <regressions@lists.linux.dev>
+Cc: keyrings@vger.kernel.org, "linux-integrity@vger.kernel.org"
+	 <linux-integrity@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Pengyu Ma <mapengyu@gmail.com>
+Date: Thu, 12 Sep 2024 10:13:55 +0200
+In-Reply-To: <D43JXBFOOB2O.3U6ZQ7DASR1ZW@kernel.org>
+References: <0b4a5a86-a9f6-42d1-a9ba-ec565b336d3a@leemhuis.info>
+	 <92fbcc4c252ec9070d71a6c7d4f1d196ec67eeb0.camel@huaweicloud.com>
+	 <D42LZPLE8HR3.2UTNOI9CYZPIR@kernel.org>
+	 <D42M6OE94RLT.6EZSZLBTX437@kernel.org>
+	 <663d272617d1aead08077ad2b72929cbc226372a.camel@HansenPartnership.com>
+	 <D42N17MFTEDM.3E6IK034S26UT@kernel.org>
+	 <f554031343039883068145f9f4777277e490dc05.camel@huaweicloud.com>
+	 <D43JXBFOOB2O.3U6ZQ7DASR1ZW@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D43H3UEUAXDN.2CF8RROAANPM9@kernel.org>
+X-CM-TRANSID:GxC2BwC3ZsfGouJmHcLEAA--.1679S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxWFW8GFy5GF4kWr1ruF4kWFg_yoW5ury8pF
+	Z7GryxWry0kw1DXryI9ayDXFn8Awn7X3y2qw4DWryvk3WaqrnavF4fAFWaya4DG345K34r
+	ua4Syr4DCwn0gaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUymb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
+	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
+	14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UK2NtUUUUU=
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAEBGbiTnsECgAAs9
 
-On Wed, Sep 11, 2024 at 04:02:03PM +0300, Jarkko Sakkinen wrote:
-> On Tue Sep 10, 2024 at 5:30 PM EEST, Lukas Wunner wrote:
-> > crypto_sig_maxsize() is a bit of a misnomer as it doesn't return the
-> > maximum signature size, but rather the key size.
-> >
-> > Rename it as well as all implementations of the ->max_size callback.
-> > A subsequent commit introduces a crypto_sig_maxsize() function which
-> > returns the actual maximum signature size.
-> >
-> > While at it, change the return type of crypto_sig_keysize() from int to
-> > unsigned int for consistency with crypto_akcipher_maxsize().  None of
-> > the callers checks for a negative return value and an error condition
-> > can always be indicated by returning zero.
-> 
-> Why this is so late in the series?
+On Wed, 2024-09-11 at 18:14 +0300, Jarkko Sakkinen wrote:
+> On Wed Sep 11, 2024 at 11:53 AM EEST, Roberto Sassu wrote:
+> > I made few measurements. I have a Fedora 38 VM with TPM passthrough.
+>=20
+> I was thinking more like
+>=20
+> sudo bpftrace -e 'k:tpm_transmit { @start[tid] =3D nsecs; } kr:tpm_transm=
+it { @[kstack, ustack, comm] =3D sum(nsecs - @start[tid]); delete(@start[ti=
+d]); } END { clear(@start); }'
+>=20
+> For example when running "tpm2_createprimary --hierarchy o -G rsa2048 -c =
+owner.txt", I get:
 
-Because it's a prerequisite for the subsequent patch.
+Sure:
 
-Thanks,
+Without HMAC:
 
-Lukas
+@[
+    tpm_transmit_cmd+50
+    tpm2_pcr_extend+295
+    tpm_pcr_extend+221
+    ima_add_template_entry+437
+    ima_store_template+114
+    ima_store_measurement+209
+    process_measurement+2473
+    ima_file_check+82
+    security_file_post_open+92
+    path_openat+550
+    do_filp_open+171
+    do_sys_openat2+186
+    do_sys_open+76
+    __x64_sys_openat+35
+    x64_sys_call+9589
+    do_syscall_64+96
+    entry_SYSCALL_64_after_hwframe+118
+,=20
+    0x7f338ee7be55
+    0x55bf24459ac2
+    0x7f338eda2b8a
+    0x7f338eda2c4b
+    0x55bf2445a9b5
+, cat]: 5273648
+
+
+With HMAC:
+
+@[
+    tpm_transmit_cmd+50
+    tpm2_flush_context+95
+    tpm2_start_auth_session+676
+    tpm2_pcr_extend+39
+    tpm_pcr_extend+221
+    ima_add_template_entry+437
+    ima_store_template+114
+    ima_store_measurement+209
+    process_measurement+2473
+    ima_file_check+82
+    security_file_post_open+92
+    path_openat+550
+    do_filp_open+171
+    do_sys_openat2+186
+    do_sys_open+76
+    __x64_sys_openat+35
+    x64_sys_call+9589
+    do_syscall_64+96
+    entry_SYSCALL_64_after_hwframe+118
+,=20
+    0x7f03ea0ade55
+    0x55f929b7dac2
+    0x7f03e9fd4b8a
+    0x7f03e9fd4c4b
+    0x55f929b7e9b5
+, cat]: 3128177
+@[
+    tpm_transmit_cmd+50
+    tpm2_pcr_extend+338
+    tpm_pcr_extend+221
+    ima_add_template_entry+437
+    ima_store_template+114
+    ima_store_measurement+209
+    process_measurement+2473
+    ima_file_check+82
+    security_file_post_open+92
+    path_openat+550
+    do_filp_open+171
+    do_sys_openat2+186
+    do_sys_open+76
+    __x64_sys_openat+35
+    x64_sys_call+9589
+    do_syscall_64+96
+    entry_SYSCALL_64_after_hwframe+118
+,=20
+    0x7f03ea0ade55
+    0x55f929b7dac2
+    0x7f03e9fd4b8a
+    0x7f03e9fd4c4b
+    0x55f929b7e9b5
+, cat]: 25851638
+@[
+    tpm_transmit_cmd+50
+    tpm2_load_context+161
+    tpm2_start_auth_session+98
+    tpm2_pcr_extend+39
+    tpm_pcr_extend+221
+    ima_add_template_entry+437
+    ima_store_template+114
+    ima_store_measurement+209
+    process_measurement+2473
+    ima_file_check+82
+    security_file_post_open+92
+    path_openat+550
+    do_filp_open+171
+    do_sys_openat2+186
+    do_sys_open+76
+    __x64_sys_openat+35
+    x64_sys_call+9589
+    do_syscall_64+96
+    entry_SYSCALL_64_after_hwframe+118
+,=20
+    0x7f03ea0ade55
+    0x55f929b7dac2
+    0x7f03e9fd4b8a
+    0x7f03e9fd4c4b
+    0x55f929b7e9b5
+, cat]: 35928108
+@[
+    tpm_transmit_cmd+50
+    tpm2_start_auth_session+650
+    tpm2_pcr_extend+39
+    tpm_pcr_extend+221
+    ima_add_template_entry+437
+    ima_store_template+114
+    ima_store_measurement+209
+    process_measurement+2473
+    ima_file_check+82
+    security_file_post_open+92
+    path_openat+550
+    do_filp_open+171
+    do_sys_openat2+186
+    do_sys_open+76
+    __x64_sys_openat+35
+    x64_sys_call+9589
+    do_syscall_64+96
+    entry_SYSCALL_64_after_hwframe+118
+,=20
+    0x7f03ea0ade55
+    0x55f929b7dac2
+    0x7f03e9fd4b8a
+    0x7f03e9fd4c4b
+    0x55f929b7e9b5
+, cat]: 84616611
+
+Roberto
+
 
