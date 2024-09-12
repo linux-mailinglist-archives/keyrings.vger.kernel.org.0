@@ -1,46 +1,46 @@
-Return-Path: <keyrings+bounces-2031-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2032-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E60976BD2
-	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 16:20:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E693976BDB
+	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 16:23:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB55C283A79
-	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 14:20:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E45F283BC0
+	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 14:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 165CD1AD25D;
-	Thu, 12 Sep 2024 14:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1D51A76D7;
+	Thu, 12 Sep 2024 14:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y02RydHn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uEb75SEV"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E385A1AD24C;
-	Thu, 12 Sep 2024 14:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0862BB09;
+	Thu, 12 Sep 2024 14:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726150839; cv=none; b=P5er8ESnW/51BdQgclMQkQj6o9yocHJp9kOLZbx9vrsyjirosGFpvV0M2YOGwkmnElw49cRqORDJ/9SPVBkzAUSSQ5NRIRYEgJH3VsN0ae3s5vewJKkX+xFndtSiJb7BYnOGAjOA1eRFGYilnwfdSYb4TjRSbi0WQGw6MIH2fEU=
+	t=1726150988; cv=none; b=Fl3I5yt27LAkMHLWfm6fKZ7ZS8Tr2PT0LXriGSB5w5t4kzmwE97BPUl+uzmt1CnB70Pn7l2DCzimJ7t053B+L3QFeluH9sx4VpgqY3dScsvHGGV5XVp6EJwBzBzq8xPVZ9j6nBgazfDb34eY4ndGDDkXeKWiTdgxTETIYsloH7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726150839; c=relaxed/simple;
-	bh=KAU0PY03KRqnWf3s8ERZdEBmVCwp6kPw5OS8nAMo/pw=;
+	s=arc-20240116; t=1726150988; c=relaxed/simple;
+	bh=jJcTh5nuJ5D7uttcH6Y/4WauSKzkve6TgMPWd0TWE4c=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=cNYQtgOODZD53r+AnUEAMd+usR1MFAz3QpFz5DzJq7nn4e9yoorZcxVntEWQ8nPUlJN2F7tiMcMRRZBKwZi17ORItoj8hzlQy6vemVkOlmgOfQZIYhS/45eP1XOWkh1WHSnjsMFhdumTyIsK/ynNxEZ1wDNdGjHocg4Da1l8c18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y02RydHn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20002C4CEC3;
-	Thu, 12 Sep 2024 14:20:37 +0000 (UTC)
+	 References:In-Reply-To; b=Yd9Innzkwx2rZsahal2i6dxDgYDPTAacjqZ7t/S5bGK90t2JUZOaE+iIkF2vmrsZZaybc22Dvb+Bb8ZpIRuJgg4H95XSIFIVE/dBhRKgVDQlY8Lz/iuC7vITbIT6cTkWdm4LC2VxRnHGKLXLB53YXJ3T8DUSnVNUSxDzTu6pHOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uEb75SEV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC014C4CEC3;
+	Thu, 12 Sep 2024 14:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726150838;
-	bh=KAU0PY03KRqnWf3s8ERZdEBmVCwp6kPw5OS8nAMo/pw=;
+	s=k20201202; t=1726150987;
+	bh=jJcTh5nuJ5D7uttcH6Y/4WauSKzkve6TgMPWd0TWE4c=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=Y02RydHnic95INM3A0d+6o1Xc0Vl6FbfX47eEaNNUmaWPz96aUdSgWnk/muFCiDcW
-	 Nf94vt+SsbvD+Im74H3s9RbjR1iQVFrNYOVKq303z8IZnWmbRIP08AIaSyds5qQBPH
-	 GXGqyMv5LpOZMPIacm9E9nusiDex7Z7P5XcewDlUutR12Hc4Pi/26bNJI3x4u5W9GI
-	 BnqRsdAejktrhX8/2D/wjZ34FLbLCaX/ZwGy5KUDVToD59JaM1sN6LErPWe5+WlEPd
-	 zS7KaWaYtpGVaHJozM8VK5ZfHEo09ni3QMriNyKGrmzY4yGaER7G6U7Oax0JWGDTPa
-	 XL6cxnm1XIGCg==
+	b=uEb75SEV1I6iz142ZSa/gtM33bEJr03brAE9Y98I+8pnhVgJRbyc10teHgRKu93Q9
+	 6EppxtWnPDWQrgYJbWbr5eAH36ydIkI2Dps4GmWtTtzB0nx0TER5DUqMsr67vmlJk0
+	 mwTYJkdPYrc1UA9xN19q7BGGqaGOhHxmCYriJ0dTQXioa+K9pnuiRoPQjPds5E4cUr
+	 XqR3euVYAo+IDDtEWeU43+ANHw/dxcWWcsOTMLY65/r5FhbQg7yjC3Gbs0kX/6nSh2
+	 RhsuUnHirw79HbuE6tgbfAurEiqwReMCBXPZ8q2TrKKIo9YSp2ZgLRgqpoTp+q1yj2
+	 ym03KgDGxg2zQ==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,68 +49,185 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Sep 2024 17:20:34 +0300
-Message-Id: <D44DEI8HIZYP.1FP3PSAX538W4@kernel.org>
-Cc: "Herbert Xu" <herbert@gondor.apana.org.au>, "David S. Miller"
- <davem@davemloft.net>, "Eric Biggers" <ebiggers@google.com>, "Stefan
- Berger" <stefanb@linux.ibm.com>, "Vitaly Chikunov" <vt@altlinux.org>,
- "Tadeusz Struk" <tstruk@gigaio.com>, "David Howells" <dhowells@redhat.com>,
- "Andrew Zaborowski" <andrew.zaborowski@intel.com>, "Saulo Alessandre"
- <saulo.alessandre@tse.jus.br>, "Jonathan Cameron"
- <Jonathan.Cameron@huawei.com>, "Ignat Korchagin" <ignat@cloudflare.com>,
- "Marek Behun" <kabel@kernel.org>, "Varad Gautam" <varadgautam@google.com>,
- "Stephan Mueller" <smueller@chronox.de>, "Denis Kenzior"
- <denkenz@gmail.com>, <linux-crypto@vger.kernel.org>,
- <keyrings@vger.kernel.org>
-Subject: Re: [PATCH v2 04/19] crypto: ecrdsa - Migrate to sig_alg backend
+Date: Thu, 12 Sep 2024 17:23:03 +0300
+Message-Id: <D44DGENMPU9S.C2ZOA3EA5LEW@kernel.org>
+Cc: <keyrings@vger.kernel.org>, "linux-integrity@vger.kernel.org"
+ <linux-integrity@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>,
+ "Pengyu Ma" <mapengyu@gmail.com>
+Subject: Re: [regression] significant delays when secureboot is enabled
+ since 6.10
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Lukas Wunner" <lukas@wunner.de>
+To: "Roberto Sassu" <roberto.sassu@huaweicloud.com>, "James Bottomley"
+ <James.Bottomley@HansenPartnership.com>, "Linux regressions mailing list"
+ <regressions@lists.linux.dev>
 X-Mailer: aerc 0.18.2
-References: <cover.1725972333.git.lukas@wunner.de>
- <45acc8db555f80408c8b975771da34c569da45da.1725972334.git.lukas@wunner.de>
- <D43GTXWLMJ2E.258ZI34E5JRK6@kernel.org> <ZuKgwrocKlI5Qk8t@wunner.de>
-In-Reply-To: <ZuKgwrocKlI5Qk8t@wunner.de>
+References: <0b4a5a86-a9f6-42d1-a9ba-ec565b336d3a@leemhuis.info>
+ <92fbcc4c252ec9070d71a6c7d4f1d196ec67eeb0.camel@huaweicloud.com>
+ <D42LZPLE8HR3.2UTNOI9CYZPIR@kernel.org>
+ <D42M6OE94RLT.6EZSZLBTX437@kernel.org>
+ <663d272617d1aead08077ad2b72929cbc226372a.camel@HansenPartnership.com>
+ <D42N17MFTEDM.3E6IK034S26UT@kernel.org>
+ <f554031343039883068145f9f4777277e490dc05.camel@huaweicloud.com>
+ <D43JXBFOOB2O.3U6ZQ7DASR1ZW@kernel.org>
+ <7e47f97aede88b87fbb9c9284db2005764bfbedd.camel@huaweicloud.com>
+In-Reply-To: <7e47f97aede88b87fbb9c9284db2005764bfbedd.camel@huaweicloud.com>
 
-On Thu Sep 12, 2024 at 11:05 AM EEST, Lukas Wunner wrote:
-> On Wed, Sep 11, 2024 at 03:49:07PM +0300, Jarkko Sakkinen wrote:
-> > On Tue Sep 10, 2024 at 5:30 PM EEST, Lukas Wunner wrote:
-> > > A sig_alg backend has just been introduced with the intent of moving =
-all
-> > > asymmetric sign/verify algorithms to it one by one.
-> > >
-> > > Migrate ecrdsa.c to the new backend.
-> [...]
-> > >  	if (!ctx->curve ||
-> > >  	    !ctx->digest ||
-> > > -	    !req->src ||
-> > > +	    !src ||
-> > > +	    !digest ||
-> > >  	    !ctx->pub_key.x ||
-> > > -	    req->dst_len !=3D ctx->digest_len ||
-> > > -	    req->dst_len !=3D ctx->curve->g.ndigits * sizeof(u64) ||
-> > > +	    dlen !=3D ctx->digest_len ||
-> > > +	    dlen !=3D ctx->curve->g.ndigits * sizeof(u64) ||
-> > >  	    ctx->pub_key.ndigits !=3D ctx->curve->g.ndigits ||
-> > > -	    req->dst_len * 2 !=3D req->src_len ||
-> > > -	    WARN_ON(req->src_len > sizeof(sig)) ||
-> > > -	    WARN_ON(req->dst_len > sizeof(digest)))
-> > > +	    dlen * 2 !=3D slen ||
-> > > +	    WARN_ON(slen > ECRDSA_MAX_SIG_SIZE) ||
-> > > +	    WARN_ON(dlen > STREEBOG512_DIGEST_SIZE))
+On Thu Sep 12, 2024 at 11:13 AM EEST, Roberto Sassu wrote:
+> On Wed, 2024-09-11 at 18:14 +0300, Jarkko Sakkinen wrote:
+> > On Wed Sep 11, 2024 at 11:53 AM EEST, Roberto Sassu wrote:
+> > > I made few measurements. I have a Fedora 38 VM with TPM passthrough.
 > >=20
-> > Despite being migration I don't see no point recycling use of WARN_ON()
-> > here, given panic_on_warn kernel command-line flag.
+> > I was thinking more like
 > >=20
-> > If you want to print to something, please do separate checks and use
-> > pr_warn() instead at most.
+> > sudo bpftrace -e 'k:tpm_transmit { @start[tid] =3D nsecs; } kr:tpm_tran=
+smit { @[kstack, ustack, comm] =3D sum(nsecs - @start[tid]); delete(@start[=
+tid]); } END { clear(@start); }'
+> >=20
+> > For example when running "tpm2_createprimary --hierarchy o -G rsa2048 -=
+c owner.txt", I get:
 >
-> The object of the patch is to migrate ecrdsa.c to sig_alg with no
-> behavioral change.
+> Sure:
 >
-> If you feel the WARN_ON() is uncalled for, please submit a cleanup
-> patch.
+> Without HMAC:
+>
+> @[
+>     tpm_transmit_cmd+50
+>     tpm2_pcr_extend+295
+>     tpm_pcr_extend+221
+>     ima_add_template_entry+437
+>     ima_store_template+114
+>     ima_store_measurement+209
+>     process_measurement+2473
+>     ima_file_check+82
+>     security_file_post_open+92
+>     path_openat+550
+>     do_filp_open+171
+>     do_sys_openat2+186
+>     do_sys_open+76
+>     __x64_sys_openat+35
+>     x64_sys_call+9589
+>     do_syscall_64+96
+>     entry_SYSCALL_64_after_hwframe+118
+> ,=20
+>     0x7f338ee7be55
+>     0x55bf24459ac2
+>     0x7f338eda2b8a
+>     0x7f338eda2c4b
+>     0x55bf2445a9b5
+> , cat]: 5273648
+>
+>
+> With HMAC:
+>
+> @[
+>     tpm_transmit_cmd+50
+>     tpm2_flush_context+95
+>     tpm2_start_auth_session+676
+>     tpm2_pcr_extend+39
+>     tpm_pcr_extend+221
+>     ima_add_template_entry+437
+>     ima_store_template+114
+>     ima_store_measurement+209
+>     process_measurement+2473
+>     ima_file_check+82
+>     security_file_post_open+92
+>     path_openat+550
+>     do_filp_open+171
+>     do_sys_openat2+186
+>     do_sys_open+76
+>     __x64_sys_openat+35
+>     x64_sys_call+9589
+>     do_syscall_64+96
+>     entry_SYSCALL_64_after_hwframe+118
+> ,=20
+>     0x7f03ea0ade55
+>     0x55f929b7dac2
+>     0x7f03e9fd4b8a
+>     0x7f03e9fd4c4b
+>     0x55f929b7e9b5
+> , cat]: 3128177
+> @[
+>     tpm_transmit_cmd+50
+>     tpm2_pcr_extend+338
+>     tpm_pcr_extend+221
+>     ima_add_template_entry+437
+>     ima_store_template+114
+>     ima_store_measurement+209
+>     process_measurement+2473
+>     ima_file_check+82
+>     security_file_post_open+92
+>     path_openat+550
+>     do_filp_open+171
+>     do_sys_openat2+186
+>     do_sys_open+76
+>     __x64_sys_openat+35
+>     x64_sys_call+9589
+>     do_syscall_64+96
+>     entry_SYSCALL_64_after_hwframe+118
+> ,=20
+>     0x7f03ea0ade55
+>     0x55f929b7dac2
+>     0x7f03e9fd4b8a
+>     0x7f03e9fd4c4b
+>     0x55f929b7e9b5
+> , cat]: 25851638
+> @[
+>     tpm_transmit_cmd+50
+>     tpm2_load_context+161
+>     tpm2_start_auth_session+98
+>     tpm2_pcr_extend+39
+>     tpm_pcr_extend+221
+>     ima_add_template_entry+437
+>     ima_store_template+114
+>     ima_store_measurement+209
+>     process_measurement+2473
+>     ima_file_check+82
+>     security_file_post_open+92
+>     path_openat+550
+>     do_filp_open+171
+>     do_sys_openat2+186
+>     do_sys_open+76
+>     __x64_sys_openat+35
+>     x64_sys_call+9589
+>     do_syscall_64+96
+>     entry_SYSCALL_64_after_hwframe+118
+> ,=20
+>     0x7f03ea0ade55
+>     0x55f929b7dac2
+>     0x7f03e9fd4b8a
+>     0x7f03e9fd4c4b
+>     0x55f929b7e9b5
+> , cat]: 35928108
+> @[
+>     tpm_transmit_cmd+50
+>     tpm2_start_auth_session+650
+>     tpm2_pcr_extend+39
+>     tpm_pcr_extend+221
+>     ima_add_template_entry+437
+>     ima_store_template+114
+>     ima_store_measurement+209
+>     process_measurement+2473
+>     ima_file_check+82
+>     security_file_post_open+92
+>     path_openat+550
+>     do_filp_open+171
+>     do_sys_openat2+186
+>     do_sys_open+76
+>     __x64_sys_openat+35
+>     x64_sys_call+9589
+>     do_syscall_64+96
+>     entry_SYSCALL_64_after_hwframe+118
+> ,=20
+>     0x7f03ea0ade55
+>     0x55f929b7dac2
+>     0x7f03e9fd4b8a
+>     0x7f03e9fd4c4b
+>     0x55f929b7e9b5
+> , cat]: 84616611
+>
+> Roberto
 
-OK, put on consideration since I have a related series.
+Looking into tomorrow thank you.
 
 BR, Jarkko
 
