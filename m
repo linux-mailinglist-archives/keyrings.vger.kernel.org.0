@@ -1,210 +1,141 @@
-Return-Path: <keyrings+bounces-2023-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2024-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2B6E976AC4
-	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 15:36:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CCB8976B31
+	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 15:51:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65B7E2820D2
-	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 13:36:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E231D28121C
+	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 13:51:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8EA53BB24;
-	Thu, 12 Sep 2024 13:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5EFD1A3037;
+	Thu, 12 Sep 2024 13:51:50 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F4F191F9C;
-	Thu, 12 Sep 2024 13:36:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7BF1A0BD4;
+	Thu, 12 Sep 2024 13:51:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726148191; cv=none; b=uUKeLwkICFYb3LhfDBqhmGFZ3EAC3kacAu3DBQp/1r+CcNvqGRV/acHIMgzPNo0+SCUK835+/4t5YEwdmyR5udGfcL7tidJm1WCsgT5XQcM+e8fj4tpcK1UeqqvTv4rIkLGkFlx4SB8PHaU/snBKz9nFxCuxsIszegTxnyHtT34=
+	t=1726149110; cv=none; b=i5g2GSqvNnLlOGboZKUfGZq3v5ib9eGKcjxlIJ8+CnLCzZEBofmfqGzlAqqqBSIbSjRXthtWBSGZHakxOf9qhp28fnuvKZVo1KPsSvObSZd+xBJG7n7sGuVEZkIMVg3+62V68NZplQjs3da7JdzXDU14Sym4KLDPxyXUqCtaBi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726148191; c=relaxed/simple;
-	bh=RjsoJk0fz0GT0pGzrOF7avM7SGiSZ+cDXayYZl1cJpM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=C3aCIYGjSKrVjVlRwM2jlo+r3+9e+eLToGpkqMwhCW7TnoTWA14/mpxjUEi83qpyiWJhNrXLTE/F3JzBO0iQwBsqxuS+tIWvmAxer9g614N6i4TXGORejPIRbjPf9yslI1B6wxOX/4HOAp71Dkr+jerZahwJDdKs56jJTklAiDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.29])
-	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4X4HrC1LrJz9v7JW;
-	Thu, 12 Sep 2024 21:11:07 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.27])
-	by mail.maildlp.com (Postfix) with ESMTP id 73CDA1401F3;
-	Thu, 12 Sep 2024 21:36:15 +0800 (CST)
-Received: from [127.0.0.1] (unknown [10.204.63.22])
-	by APP2 (Coremail) with SMTP id GxC2BwDnlsdI7uJmEIfIAA--.3419S2;
-	Thu, 12 Sep 2024 14:36:15 +0100 (CET)
-Message-ID: <155190f0eb0974e223538f10afaa7860c5a61cf5.camel@huaweicloud.com>
-Subject: Re: [regression] significant delays when secureboot is enabled
- since 6.10
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>, Jarkko Sakkinen
-	 <jarkko@kernel.org>, Linux regressions mailing list
-	 <regressions@lists.linux.dev>
-Cc: keyrings@vger.kernel.org, "linux-integrity@vger.kernel.org"
-	 <linux-integrity@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Pengyu Ma <mapengyu@gmail.com>
-Date: Thu, 12 Sep 2024 15:36:04 +0200
-In-Reply-To: <c47b129aeb95094aace5b174fc6d81bf0a7ecfbf.camel@HansenPartnership.com>
-References: <0b4a5a86-a9f6-42d1-a9ba-ec565b336d3a@leemhuis.info>
-	 <92fbcc4c252ec9070d71a6c7d4f1d196ec67eeb0.camel@huaweicloud.com>
-	 <D42LZPLE8HR3.2UTNOI9CYZPIR@kernel.org>
-	 <D42M6OE94RLT.6EZSZLBTX437@kernel.org>
-	 <663d272617d1aead08077ad2b72929cbc226372a.camel@HansenPartnership.com>
-	 <D42N17MFTEDM.3E6IK034S26UT@kernel.org>
-	 <f554031343039883068145f9f4777277e490dc05.camel@huaweicloud.com>
-	 <10ae7b8592af7bacef87e493e6d628a027641b8d.camel@HansenPartnership.com>
-	 <D44C19QB8IK1.OMUJP7N91HRN@kernel.org>
-	 <c47b129aeb95094aace5b174fc6d81bf0a7ecfbf.camel@HansenPartnership.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2 
+	s=arc-20240116; t=1726149110; c=relaxed/simple;
+	bh=qzHvcMNowk6NzrnJnzjlLOM0xR+661lK3QZTiFzxQc0=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=cezc3LNYIg3pXDIYllHma2ukaGt5Kg04lAHGO8XYu6+Awpxs6UwOG/7J0ukJ2a2JTB1CSZaZ9D/ZCOSWzsFsgU19OsbvkKfTNO174h7R5uOcmg6Lw5ATjS1oFqTV1W0Fhy7QvFNwa9nJGTzFYC0D35KvDMaggsd9yUTGd6dCp14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from [192.168.1.106] (31.173.87.196) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Thu, 12 Sep
+ 2024 16:51:35 +0300
+Subject: Re: [PATCH v2] KEYS: prevent NULL pointer dereference in
+ find_asymmetric_key()
+To: Jarkko Sakkinen <jarkko@kernel.org>, Roman Smirnov <r.smirnov@omp.ru>,
+	David Howells <dhowells@redhat.com>, Herbert Xu
+	<herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
+	Andrew Zaborowski <andrew.zaborowski@intel.com>
+CC: <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
+References: <20240910111806.65945-1-r.smirnov@omp.ru>
+ <D42N9ASJJSUD.EG094MFWZA4Q@kernel.org>
+ <84d6b0fa-4948-fe58-c766-17f87c2a2dba@omp.ru>
+ <D43HG3PEBR4I.2INNPVZIT19ZZ@kernel.org>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
+Organization: Open Mobile Platform
+Message-ID: <8774f6a2-9bec-b699-6b68-63a26019c5b3@omp.ru>
+Date: Thu, 12 Sep 2024 16:51:34 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-CM-TRANSID:GxC2BwDnlsdI7uJmEIfIAA--.3419S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxXr4fWr4fCFyrZF4ktFyDGFg_yoWrJFWfpr
-	48JFyUGry5Gr1rtr1DKr4Utryjyr1UJw1UXrn8JF1kAF4Dtr1Ygr15Xr4Ygr1DZr4fJr1Y
-	qr1UJrnxur1UGr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUylb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
-	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
-	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
-	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
-	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUwxhLUUUUU
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQAEBGbiTfQJHwADsp
+In-Reply-To: <D43HG3PEBR4I.2INNPVZIT19ZZ@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 09/12/2024 13:36:58
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 187710 [Sep 12 2024]
+X-KSE-AntiSpam-Info: Version: 6.1.1.5
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 34 0.3.34
+ 8a1fac695d5606478feba790382a59668a4f0039
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 31.173.87.196 in (user)
+ b.barracudacentral.org}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 31.173.87.196 in (user)
+ dbl.spamhaus.org}
+X-KSE-AntiSpam-Info:
+	d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;31.173.87.196:7.1.2;omp.ru:7.1.1
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: ApMailHostAddress: 31.173.87.196
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/12/2024 13:41:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 9/12/2024 10:54:00 AM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-On Thu, 2024-09-12 at 09:26 -0400, James Bottomley wrote:
-> On Thu, 2024-09-12 at 16:16 +0300, Jarkko Sakkinen wrote:
-> > On Wed Sep 11, 2024 at 3:21 PM EEST, James Bottomley wrote:
-> > > On Wed, 2024-09-11 at 10:53 +0200, Roberto Sassu wrote:
-> [...]
-> > > > I made few measurements. I have a Fedora 38 VM with TPM
-> > > > passthrough.
-> > > >=20
-> > > > Kernels: 6.11-rc2+ (guest), 6.5.0-45-generic (host)
-> > > >=20
-> > > > QEMU:
-> > > >=20
-> > > > rc=C2=A0 qemu-kvm=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1:4.2-
-> > > > 3ubuntu6.27
-> > > > ii=C2=A0 qemu-system-x86=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 1:6.2+dfsg-
-> > > > 2ubuntu6.22
-> > > >=20
-> > > >=20
-> > > > TPM2_PT_MANUFACTURER:
-> > > > =C2=A0 raw: 0x49465800
-> > > > =C2=A0 value: "IFX"
-> > > > TPM2_PT_VENDOR_STRING_1:
-> > > > =C2=A0 raw: 0x534C4239
-> > > > =C2=A0 value: "SLB9"
-> > > > TPM2_PT_VENDOR_STRING_2:
-> > > > =C2=A0 raw: 0x36373000
-> > > > =C2=A0 value: "670"
-> > > >=20
-> > > >=20
-> > > > No HMAC:
-> > > >=20
-> > > > # tracer: function_graph
-> > > > #
-> > > > # CPU=C2=A0 DURATION=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 FUNCTION CALLS
-> > > > # |=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0 |
-> > > > =C2=A00)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 tpm2_pcr_extend() {
-> > > > =C2=A00)=C2=A0=C2=A0 1.112 us=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=
- tpm_buf_append_hmac_session();
-> > > > =C2=A00) # 6360.029 us |=C2=A0=C2=A0=C2=A0 tpm_transmit_cmd();
-> > > > =C2=A00) # 6415.012 us |=C2=A0 }
-> > > >=20
-> > > >=20
-> > > > HMAC:
-> > > >=20
-> > > > # tracer: function_graph
-> > > > #
-> > > > # CPU=C2=A0 DURATION=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 FUNCTION CALLS
-> > > > # |=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0 |
-> > > > =C2=A01)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 tpm2_pcr_extend() {
-> > > > =C2=A01)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 tpm2_start_auth_session() {
-> > > > =C2=A01) * 36976.99 us |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tpm_transmit=
-_cmd();
-> > > > =C2=A01) * 84746.51 us |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tpm_transmit=
-_cmd();
-> > > > =C2=A01) # 3195.083 us |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tpm_transmit=
-_cmd();
-> > > > =C2=A01) @ 126795.1 us |=C2=A0=C2=A0=C2=A0 }
-> > > > =C2=A01)=C2=A0=C2=A0 2.254 us=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=
- tpm_buf_append_hmac_session();
-> > > > =C2=A01)=C2=A0=C2=A0 3.546 us=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=
- tpm_buf_fill_hmac_session();
-> > > > =C2=A01) * 24356.46 us |=C2=A0=C2=A0=C2=A0 tpm_transmit_cmd();
-> > > > =C2=A01)=C2=A0=C2=A0 3.496 us=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=
- tpm_buf_check_hmac_response();
-> > > > =C2=A01) @ 151171.0 us |=C2=A0 }
-> > >=20
-> > > Well, unfortunately, that tells us that it's the TPM itself that's
-> > > taking the time processing the security overhead.=C2=A0 The ordering =
-of
-> > > the commands in tpm2_start_auth_session() shows
-> > >=20
-> > > =C2=A037ms for context restore of null key
-> > > =C2=A085ms for start session with encrypted salt
-> > > =C2=A0 3ms to flush null key
-> > > -----
-> > > 125ms
-> > >=20
-> > > If we context save the session, we'd likely only bear a single 37ms
-> > > cost to restore it (replacing the total 125ms).=C2=A0 However, there'=
-s
-> > > nothing we can do about the extend execution going from 6ms to
-> > > 24ms, so I could halve your current boot time with security enabled
-> > > (it's currently 149ms, it would go to 61ms, but it's still 10x
-> > > slower than the unsecured extend at 6ms)
-> > >=20
-> > > James
-> >=20
-> > I'll hold for better benchmarks.
->=20
-> Well, yes, I'd like to see this for a variety of TPMs.
->=20
-> This one clearly shows it's the real time wait for the TPM (since it
-> dwarfs the CPU time calculation there's not much optimization we can do
-> on the kernel end).  The one thing that's missing in all of this is
-> what was the TPM?  but even if it's an outlier that's really bad at
-> crypto what should we do?  We could have a blacklist that turns off the
-> extend hmac (or a whitelist that turns it on), but we can't simply say
-> too bad you need a better TPM.
+On 9/11/24 4:18 PM, Jarkko Sakkinen wrote:
+[...]
 
-Ops, sorry. I pasted the TPM properties. Was not that clear:
+>>>> In find_asymmetric_key(), if all NULLs are passed in id_{0,1,2} parameters
+>>>> the kernel will first emit WARN and then have an oops because id_2 gets
+>>>> dereferenced anyway.
+>>>>
+>>>> Found by Linux Verification Center (linuxtesting.org) with Svace static
+>>>> analysis tool.
+>>>
+>>> Weird, I recall that I've either sent a patch to address the same site
+>>> OR have commented a patch with similar reasoning. Well, it does not
+>>> matter, I think it this makes sense to me.
+>>>
+>>> You could further add to the motivation that given the panic_on_warn
+>>> kernel command-line parameter, it is for the best limit the scope and
+>>> use of the WARN-macro.
+>>
+>>    I don't understand what you mean -- this version of the patch keeps
+>> the WARN_ON() call, it just moves that call, so that the duplicate id_{0,1,2}
+>> checks are avoided...
+> 
+> I overlooked the code change (my bad sorry). Here's a better version of
+> the first paragraph:
+> 
+> "find_asymmetric_keys() has nullity checks of id_0 and id_1 but ignores
+> validation for id_2. Check nullity also for id_2."
 
-Infineon Optiga SLB9670 (interpreting the properties).
+   Hm, what about WARN_ON(!id_0 && !id_1 && !id_2) -- it used to check all
+the pointers, right? I think our variant was closer to reality... :-)
 
-Roberto
+[...]
 
+> BR, Jarkko
+
+MBR, Sergey
 
