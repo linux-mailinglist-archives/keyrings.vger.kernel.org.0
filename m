@@ -1,172 +1,101 @@
-Return-Path: <keyrings+bounces-2013-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2014-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12D8B97569D
-	for <lists+keyrings@lfdr.de>; Wed, 11 Sep 2024 17:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78285976386
+	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 09:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADDDD1F2373B
-	for <lists+keyrings@lfdr.de>; Wed, 11 Sep 2024 15:14:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AF7A1F22A6F
+	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 07:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 104FE1AAE37;
-	Wed, 11 Sep 2024 15:14:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qid0OwwQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1018C188A00;
+	Thu, 12 Sep 2024 07:54:14 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14EA1AAE20;
-	Wed, 11 Sep 2024 15:14:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6D41552E1;
+	Thu, 12 Sep 2024 07:54:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726067680; cv=none; b=E+GLVTci1dEPfe3+m3opXUtV4dBD1Hk+ueX5RBUWa9tJVWBjK23PApbWVg5xFxSc6vfJgYv1CWUPvdbIkXrnvLzAimzT5IwkQ58B3gQW6JYKvyLIQPc8mOrQUSC/FGnqC2CPVF/aZsZF+Boy377kPll6b57LSBjJWyDIhXdmyE8=
+	t=1726127654; cv=none; b=Oyf5w+ks+5e7J6ACCkjzwBcjWGp/KAuWsn3g7M3x2SCCMrriFGBw21fIzIgOtfthpgj6n7K/qW1Z3btzrD8I/lhbphb5RNBnLzoNnvfMAdaQblyg7pRueRRgPsaepZVk5kT2PCHCLHBu03/Cx9MDo81B75kbJ30GIIpbtUqVAqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726067680; c=relaxed/simple;
-	bh=PiPFhxOCWpTWiOs7tP6Fa3NGL6/VbqwXaT+AzVDdajA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
-	 References:In-Reply-To; b=aTZ9J0FC2hgAFpZckO2Cbmd1iMHNtNoVQP0D6adWlTOZCBq5uOJHn1x1uPzXkNaPLUmGf0YE+ooUMd91KaEKAusSvBSKNyInPWV4V3CYBzd3TKqtl/twaOTONW+swu3/kbWFn0aZ2hwKsaAa9hCKToUsynjGRwziRre98bM+MnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qid0OwwQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D7BC4CEC0;
-	Wed, 11 Sep 2024 15:14:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726067679;
-	bh=PiPFhxOCWpTWiOs7tP6Fa3NGL6/VbqwXaT+AzVDdajA=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=qid0OwwQiQB6xRYk8H184zEtj1LHIGbSgeLt2rO1RQuKWNwxb9UitrJR9BJm02DqR
-	 3h09QrrJu3q2mLlpP4cc08jUtgty87LHqtMHwBp4ICiOYFS2cgJjtyFrThmznraoOV
-	 iboj0338yO0h+iYKub8URKudGajeTbeH2WEaG9oCXUhtTM0S8fQYpa/fJAnQ+DEbpg
-	 ax/wQRVdDqKZQhACRQdCACJuqvlW4sKZyL/9RK5ex9JskfQbY+rBZxSECo6bT8vQ7u
-	 W/H6UOEyFh/Jqu50FWp0r8C9t69EpIRRbLwzeqV0kDuAvPKx1oQ0a26VEdeopfVqcp
-	 ggv7+11hQiiTw==
+	s=arc-20240116; t=1726127654; c=relaxed/simple;
+	bh=r71T/CXhTbDb0+b0A3QqRAws5X6TEZjZPKCpaLnDh9M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rBjDXhZWCYpAAWMp6BAa4IBQ8HOV9wq3thcjsLD//4EtsAdq42S1i2AHhw/vqEC3dq2Bzt8KqnL6it30Ddlw4cOR+SsEY6UaXRvkP+GQz7eSJW1n2n79xFneZsrigzdiyLQ0d1ZDEIEU6JnEqmp8n11PEk7CgByCVILHAESUoxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id CCBEE300002D2;
+	Thu, 12 Sep 2024 09:54:06 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id B7B2C1252A6; Thu, 12 Sep 2024 09:54:06 +0200 (CEST)
+Date: Thu, 12 Sep 2024 09:54:06 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Biggers <ebiggers@google.com>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Vitaly Chikunov <vt@altlinux.org>,
+	Tadeusz Struk <tstruk@gigaio.com>,
+	David Howells <dhowells@redhat.com>,
+	Andrew Zaborowski <andrew.zaborowski@intel.com>,
+	Saulo Alessandre <saulo.alessandre@tse.jus.br>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Marek Behun <kabel@kernel.org>,
+	Varad Gautam <varadgautam@google.com>,
+	Stephan Mueller <smueller@chronox.de>,
+	Denis Kenzior <denkenz@gmail.com>, linux-crypto@vger.kernel.org,
+	keyrings@vger.kernel.org
+Subject: Re: [PATCH v2 02/19] crypto: sig - Introduce sig_alg backend
+Message-ID: <ZuKeHmeMRyXZHyTK@wunner.de>
+References: <cover.1725972333.git.lukas@wunner.de>
+ <688e92e7db6f2de1778691bb7cdafe3bb39e73c6.1725972334.git.lukas@wunner.de>
+ <D43G1XSAWTQF.OG1Z8K18DUVF@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 11 Sep 2024 18:14:35 +0300
-Message-Id: <D43JXBFOOB2O.3U6ZQ7DASR1ZW@kernel.org>
-Subject: Re: [regression] significant delays when secureboot is enabled
- since 6.10
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Roberto Sassu" <roberto.sassu@huaweicloud.com>, "James Bottomley"
- <James.Bottomley@HansenPartnership.com>, "Linux regressions mailing list"
- <regressions@lists.linux.dev>
-Cc: <keyrings@vger.kernel.org>, "linux-integrity@vger.kernel.org"
- <linux-integrity@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>,
- "Pengyu Ma" <mapengyu@gmail.com>
-X-Mailer: aerc 0.18.2
-References: <0b4a5a86-a9f6-42d1-a9ba-ec565b336d3a@leemhuis.info>
- <92fbcc4c252ec9070d71a6c7d4f1d196ec67eeb0.camel@huaweicloud.com>
- <D42LZPLE8HR3.2UTNOI9CYZPIR@kernel.org>
- <D42M6OE94RLT.6EZSZLBTX437@kernel.org>
- <663d272617d1aead08077ad2b72929cbc226372a.camel@HansenPartnership.com>
- <D42N17MFTEDM.3E6IK034S26UT@kernel.org>
- <f554031343039883068145f9f4777277e490dc05.camel@huaweicloud.com>
-In-Reply-To: <f554031343039883068145f9f4777277e490dc05.camel@huaweicloud.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <D43G1XSAWTQF.OG1Z8K18DUVF@kernel.org>
 
-On Wed Sep 11, 2024 at 11:53 AM EEST, Roberto Sassu wrote:
-> I made few measurements. I have a Fedora 38 VM with TPM passthrough.
+On Wed, Sep 11, 2024 at 03:12:33PM +0300, Jarkko Sakkinen wrote:
+> >  static int crypto_sig_init_tfm(struct crypto_tfm *tfm)
+> >  {
+> >  	if (tfm->__crt_alg->cra_type != &crypto_sig_type)
+> >  		return crypto_init_akcipher_ops_sig(tfm);
+> >  
+> > +	struct crypto_sig *sig = __crypto_sig_tfm(tfm);
+> > +	struct sig_alg *alg = crypto_sig_alg(sig);
+> > +
+> > +	if (alg->exit)
+> > +		sig->base.exit = crypto_sig_exit_tfm;
+> > +
+> > +	if (alg->init)
+> > +		return alg->init(sig);
+> 
+> 1. alg->exit == NULL, alg->init == NULL
+> 2. alg->exit != NULL, alg->init == NULL
+> 3. alg->exit == NULL, alg->init != NULL
+> 
+> Which of the three are legit use of the API and which are not?
 
-I was thinking more like
+All three are possible.  Same as crypto_akcipher_init_tfm().
 
-sudo bpftrace -e 'k:tpm_transmit { @start[tid] =3D nsecs; } kr:tpm_transmit=
- { @[kstack, ustack, comm] =3D sum(nsecs - @start[tid]); delete(@start[tid]=
-); } END { clear(@start); }'
+Thanks,
 
-For example when running "tpm2_createprimary --hierarchy o -G rsa2048 -c ow=
-ner.txt", I get:
-
-Attaching 3 probes...
-^C
-
-@[
-    tpm_transmit_cmd+46
-    tpm2_flush_context+120
-    tpm2_commit_space+197
-    tpm_dev_transmit.constprop.0+137
-    tpm_dev_async_work+102
-    process_one_work+374
-    worker_thread+614
-    kthread+207
-    ret_from_fork+49
-    ret_from_fork_asm+26
-, , kworker/4:2]: 2860677
-@[
-    tpm_dev_transmit.constprop.0+111
-    tpm_dev_async_work+102
-    process_one_work+374
-    worker_thread+614
-    kthread+207
-    ret_from_fork+49
-    ret_from_fork_asm+26
-, , kworker/16:1]: 3890693
-@[
-    tpm_transmit_cmd+46
-    tpm2_load_context+195
-    tpm2_prepare_space+410
-    tpm_dev_transmit.constprop.0+54
-    tpm_dev_async_work+102
-    process_one_work+374
-    worker_thread+614
-    kthread+207
-    ret_from_fork+49
-    ret_from_fork_asm+26
-, , kworker/4:2]: 9058524
-@[
-    tpm_transmit_cmd+46
-    tpm2_save_context+179
-    tpm2_commit_space+314
-    tpm_dev_transmit.constprop.0+137
-    tpm_dev_async_work+102
-    process_one_work+374
-    worker_thread+614
-    kthread+207
-    ret_from_fork+49
-    ret_from_fork_asm+26
-, , kworker/4:2]: 11426260
-@[
-    tpm_transmit_cmd+46
-    tpm2_load_context+195
-    tpm2_prepare_space+318
-    tpm_dev_transmit.constprop.0+54
-    tpm_dev_async_work+102
-    process_one_work+374
-    worker_thread+614
-    kthread+207
-    ret_from_fork+49
-    ret_from_fork_asm+26
-, , kworker/4:2]: 14182972
-@[
-    tpm_transmit_cmd+46
-    tpm2_save_context+179
-    tpm2_commit_space+155
-    tpm_dev_transmit.constprop.0+137
-    tpm_dev_async_work+102
-    process_one_work+374
-    worker_thread+614
-    kthread+207
-    ret_from_fork+49
-    ret_from_fork_asm+26
-, , kworker/4:2]: 22597059
-@[
-    tpm_dev_transmit.constprop.0+111
-    tpm_dev_async_work+102
-    process_one_work+374
-    worker_thread+614
-    kthread+207
-    ret_from_fork+49
-    ret_from_fork_asm+26
-, , kworker/4:2]: 1958500581
-
-This results stacks to compare with "real" time spent total in each
-stack (in nsecs). CPU time is relevant measure in the problem we're
-dealing.
-
-BR, Jarkko
+Lukas
 
