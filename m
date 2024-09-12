@@ -1,46 +1,46 @@
-Return-Path: <keyrings+bounces-2033-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2034-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF65976BF7
-	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 16:26:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 042D7976C10
+	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 16:28:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0009B284849
-	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 14:26:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 366AA1C23E60
+	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 14:28:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6FEE1B12E4;
-	Thu, 12 Sep 2024 14:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6078F1AD25F;
+	Thu, 12 Sep 2024 14:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IqMSHt+f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="doL6O8Zu"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745251B12E2;
-	Thu, 12 Sep 2024 14:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B1D15D5D9;
+	Thu, 12 Sep 2024 14:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726151178; cv=none; b=O+Vq6MqaEd77M+B/HbH1utIRZ2jiq27Glo0O5nctiYNoENu+LGnBRxRIw1CiBKvwAEY9ZQu8UApvjgC1AW6VYjU2pftFU577Ez3dzzsuYSup3eaqbFsM2qgSWrTECsZb1i09e/ebHLau9mTSYqrocDEzFXAOo8z9AQ+cqdMzh40=
+	t=1726151270; cv=none; b=dtcRnfDTLe4JNtgrjHeJKgj8rCShX82M2OlZkezAYLZH+oPRsaFDTFL1FzRSvuQzmPzGwHf7OsRU2Z4gbOg227FEBUBJ0aTnovXvNqh4yEIvlyWrzc1z3B0bhVT8BjGMwhuPFknpWsbp0VScaKHnHE+wrvH/dHgvBDm7p6KUshU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726151178; c=relaxed/simple;
-	bh=lsy1Gv3SViMMRhiCTW8cg/MAslIojkvK7IrI2vdHuCI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=Qbt6GtF8fP2BnBpn4a5uBwpKn7y8LaUrf8z7AKKp1RwXgpthf1NeIL1V7wXxIZdplv2Gym1Z1w/+U+7FLnoB779rievob0qhwYdkHMTGhGE7IS87a/wAYb2uToWzPxC6GKgpDgyOlDdlfCBOUrAlc8p0KdZrqL9cBuxncbwjytU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IqMSHt+f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C186C4CECF;
-	Thu, 12 Sep 2024 14:26:17 +0000 (UTC)
+	s=arc-20240116; t=1726151270; c=relaxed/simple;
+	bh=R9iNhmLdXJrD0HXJ+V9I+UW/8WxZygjTlvhQcx+VNh8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=i/2Tt43uXJDjpIJfjStK6+4TslYIqhf45PwUbLGQ1Pk1OUZjyB1NDyysIvhuOQfET0qZQOXhAhBlmZ6kopB7U2RAf9aUyhj8IHTSvzQfTMFH6O6Ga+bc/d+gU8QOJlChxbEidwSkgK1Wo3FerFD18Ij6OHO/Nq0rWO6ujKdplLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=doL6O8Zu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE64C4CEC3;
+	Thu, 12 Sep 2024 14:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726151178;
-	bh=lsy1Gv3SViMMRhiCTW8cg/MAslIojkvK7IrI2vdHuCI=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=IqMSHt+fn9WjUszoXbH8wAj7M/YiSSsgfSrbnLaVTqdSW6+1ceUvHRKDDm2rXKf4D
-	 MaTpckvR9pXxzDKYRIU+348W/rgdEomTgCYMHMk3sFZTgKs+wIN2umaM9FPlck7Wau
-	 hliAGKaEviMJzNoTSvBGJtkwWnYMXTj0pm95/6yiPEp1cxNoZRGbSI/raac9YwWnob
-	 /vfYQP3KEkvRLPvI9eIcCDjc02uzL+lvXnJWEPHs1DOmAQt7SdVTVWKjA/GoZGajVs
-	 rQ4/sB7KKbpr6xmOHeFUUbB8uHyzMkN5Xcj8otd27A2kka0mO5L8NK1T9IUDkeRhnp
-	 oKWLQGhwSaV2Q==
+	s=k20201202; t=1726151269;
+	bh=R9iNhmLdXJrD0HXJ+V9I+UW/8WxZygjTlvhQcx+VNh8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=doL6O8Zua35rWE3YInz4yJsiZIQP37eMOlxYBt7UPYKJMSfqhlGJGK6QA7ChHomld
+	 SffZVF6mGJqCf8LfEdL7YgdhLGLAwDRH+s5HeBURtWF8BAc4VSEwJbKRIrEnwDHTw3
+	 +VwNobzfIibnQnsC43cXGDYYE7Q0yNFnFJmsFgnZnVy4ulUDaUl99ngq3iR6ogB2SO
+	 lUVcd7+LTW00J3nZsmMfVAo+aXc2/c1mH5mcdyXYGdXuTNsnd6wb9c69kRsjgfkPr9
+	 QVe5mF29qWEfBjY3OQbjUIj0tzhdhH7utyhVXJTRBLVbl3boUz99XPbTqbNgM/OHuX
+	 6gfwb91cixAYg==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,156 +49,64 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Sep 2024 17:26:14 +0300
-Message-Id: <D44DIUD9CDR7.2VE81HS08JEE0@kernel.org>
-To: "James Bottomley" <James.Bottomley@HansenPartnership.com>, "Roberto
- Sassu" <roberto.sassu@huaweicloud.com>, "Linux regressions mailing list"
- <regressions@lists.linux.dev>
-Cc: <keyrings@vger.kernel.org>, "linux-integrity@vger.kernel.org"
- <linux-integrity@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>,
- "Pengyu Ma" <mapengyu@gmail.com>
-Subject: Re: [regression] significant delays when secureboot is enabled
- since 6.10
+Date: Thu, 12 Sep 2024 17:27:45 +0300
+Message-Id: <D44DK087Y80R.25CNND6WHJ7EE@kernel.org>
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Sergey Shtylyov" <s.shtylyov@omp.ru>, "Roman Smirnov"
+ <r.smirnov@omp.ru>, "David Howells" <dhowells@redhat.com>, "Herbert Xu"
+ <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
+ "Andrew Zaborowski" <andrew.zaborowski@intel.com>
+Cc: <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
+Subject: Re: [PATCH v2] KEYS: prevent NULL pointer dereference in
+ find_asymmetric_key()
 X-Mailer: aerc 0.18.2
-References: <0b4a5a86-a9f6-42d1-a9ba-ec565b336d3a@leemhuis.info>
- <92fbcc4c252ec9070d71a6c7d4f1d196ec67eeb0.camel@huaweicloud.com>
- <D42LZPLE8HR3.2UTNOI9CYZPIR@kernel.org>
- <D42M6OE94RLT.6EZSZLBTX437@kernel.org>
- <663d272617d1aead08077ad2b72929cbc226372a.camel@HansenPartnership.com>
- <D42N17MFTEDM.3E6IK034S26UT@kernel.org>
- <f554031343039883068145f9f4777277e490dc05.camel@huaweicloud.com>
- <10ae7b8592af7bacef87e493e6d628a027641b8d.camel@HansenPartnership.com>
- <D44C19QB8IK1.OMUJP7N91HRN@kernel.org>
- <c47b129aeb95094aace5b174fc6d81bf0a7ecfbf.camel@HansenPartnership.com>
-In-Reply-To: <c47b129aeb95094aace5b174fc6d81bf0a7ecfbf.camel@HansenPartnership.com>
+References: <20240910111806.65945-1-r.smirnov@omp.ru>
+ <D42N9ASJJSUD.EG094MFWZA4Q@kernel.org>
+ <84d6b0fa-4948-fe58-c766-17f87c2a2dba@omp.ru>
+ <D43HG3PEBR4I.2INNPVZIT19ZZ@kernel.org>
+ <8774f6a2-9bec-b699-6b68-63a26019c5b3@omp.ru>
+In-Reply-To: <8774f6a2-9bec-b699-6b68-63a26019c5b3@omp.ru>
 
-On Thu Sep 12, 2024 at 4:26 PM EEST, James Bottomley wrote:
-> On Thu, 2024-09-12 at 16:16 +0300, Jarkko Sakkinen wrote:
-> > On Wed Sep 11, 2024 at 3:21 PM EEST, James Bottomley wrote:
-> > > On Wed, 2024-09-11 at 10:53 +0200, Roberto Sassu wrote:
+On Thu Sep 12, 2024 at 4:51 PM EEST, Sergey Shtylyov wrote:
+> On 9/11/24 4:18 PM, Jarkko Sakkinen wrote:
 > [...]
-> > > > I made few measurements. I have a Fedora 38 VM with TPM
-> > > > passthrough.
-> > > >=20
-> > > > Kernels: 6.11-rc2+ (guest), 6.5.0-45-generic (host)
-> > > >=20
-> > > > QEMU:
-> > > >=20
-> > > > rc=C2=A0 qemu-kvm=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1:4.2-
-> > > > 3ubuntu6.27
-> > > > ii=C2=A0 qemu-system-x86=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0 1:6.2+dfsg-
-> > > > 2ubuntu6.22
-> > > >=20
-> > > >=20
-> > > > TPM2_PT_MANUFACTURER:
-> > > > =C2=A0 raw: 0x49465800
-> > > > =C2=A0 value: "IFX"
-> > > > TPM2_PT_VENDOR_STRING_1:
-> > > > =C2=A0 raw: 0x534C4239
-> > > > =C2=A0 value: "SLB9"
-> > > > TPM2_PT_VENDOR_STRING_2:
-> > > > =C2=A0 raw: 0x36373000
-> > > > =C2=A0 value: "670"
-> > > >=20
-> > > >=20
-> > > > No HMAC:
-> > > >=20
-> > > > # tracer: function_graph
-> > > > #
-> > > > # CPU=C2=A0 DURATION=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 FUNCTION CALLS
-> > > > # |=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0 |
-> > > > =C2=A00)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 tpm2_pcr_extend() {
-> > > > =C2=A00)=C2=A0=C2=A0 1.112 us=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=
- tpm_buf_append_hmac_session();
-> > > > =C2=A00) # 6360.029 us |=C2=A0=C2=A0=C2=A0 tpm_transmit_cmd();
-> > > > =C2=A00) # 6415.012 us |=C2=A0 }
-> > > >=20
-> > > >=20
-> > > > HMAC:
-> > > >=20
-> > > > # tracer: function_graph
-> > > > #
-> > > > # CPU=C2=A0 DURATION=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 FUNCTION CALLS
-> > > > # |=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0 |
-> > > > =C2=A01)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 tpm2_pcr_extend() {
-> > > > =C2=A01)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 tpm2_start_auth_session() {
-> > > > =C2=A01) * 36976.99 us |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tpm_transmit=
-_cmd();
-> > > > =C2=A01) * 84746.51 us |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tpm_transmit=
-_cmd();
-> > > > =C2=A01) # 3195.083 us |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tpm_transmit=
-_cmd();
-> > > > =C2=A01) @ 126795.1 us |=C2=A0=C2=A0=C2=A0 }
-> > > > =C2=A01)=C2=A0=C2=A0 2.254 us=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=
- tpm_buf_append_hmac_session();
-> > > > =C2=A01)=C2=A0=C2=A0 3.546 us=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=
- tpm_buf_fill_hmac_session();
-> > > > =C2=A01) * 24356.46 us |=C2=A0=C2=A0=C2=A0 tpm_transmit_cmd();
-> > > > =C2=A01)=C2=A0=C2=A0 3.496 us=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=
- tpm_buf_check_hmac_response();
-> > > > =C2=A01) @ 151171.0 us |=C2=A0 }
-> > >=20
-> > > Well, unfortunately, that tells us that it's the TPM itself that's
-> > > taking the time processing the security overhead.=C2=A0 The ordering =
-of
-> > > the commands in tpm2_start_auth_session() shows
-> > >=20
-> > > =C2=A037ms for context restore of null key
-> > > =C2=A085ms for start session with encrypted salt
-> > > =C2=A0 3ms to flush null key
-> > > -----
-> > > 125ms
-> > >=20
-> > > If we context save the session, we'd likely only bear a single 37ms
-> > > cost to restore it (replacing the total 125ms).=C2=A0 However, there'=
-s
-> > > nothing we can do about the extend execution going from 6ms to
-> > > 24ms, so I could halve your current boot time with security enabled
-> > > (it's currently 149ms, it would go to 61ms, but it's still 10x
-> > > slower than the unsecured extend at 6ms)
-> > >=20
-> > > James
+>
+> >>>> In find_asymmetric_key(), if all NULLs are passed in id_{0,1,2} para=
+meters
+> >>>> the kernel will first emit WARN and then have an oops because id_2 g=
+ets
+> >>>> dereferenced anyway.
+> >>>>
+> >>>> Found by Linux Verification Center (linuxtesting.org) with Svace sta=
+tic
+> >>>> analysis tool.
+> >>>
+> >>> Weird, I recall that I've either sent a patch to address the same sit=
+e
+> >>> OR have commented a patch with similar reasoning. Well, it does not
+> >>> matter, I think it this makes sense to me.
+> >>>
+> >>> You could further add to the motivation that given the panic_on_warn
+> >>> kernel command-line parameter, it is for the best limit the scope and
+> >>> use of the WARN-macro.
+> >>
+> >>    I don't understand what you mean -- this version of the patch keeps
+> >> the WARN_ON() call, it just moves that call, so that the duplicate id_=
+{0,1,2}
+> >> checks are avoided...
 > >=20
-> > I'll hold for better benchmarks.
+> > I overlooked the code change (my bad sorry). Here's a better version of
+> > the first paragraph:
+> >=20
+> > "find_asymmetric_keys() has nullity checks of id_0 and id_1 but ignores
+> > validation for id_2. Check nullity also for id_2."
 >
-> Well, yes, I'd like to see this for a variety of TPMs.
->
-> This one clearly shows it's the real time wait for the TPM (since it
-> dwarfs the CPU time calculation there's not much optimization we can do
-> on the kernel end).  The one thing that's missing in all of this is
-> what was the TPM?  but even if it's an outlier that's really bad at
-> crypto what should we do?  We could have a blacklist that turns off the
-> extend hmac (or a whitelist that turns it on), but we can't simply say
-> too bad you need a better TPM.
->
-> James
+>    Hm, what about WARN_ON(!id_0 && !id_1 && !id_2) -- it used to check al=
+l
+> the pointers, right? I think our variant was closer to reality... :-)
 
-I'm pasting here my yesterday's one-liner ;-)
-
-sudo bpftrace -e 'k:tpm_transmit { @start[tid] =3D nsecs; } kr:tpm_transmit=
- { @[kstack, ustack, comm] =3D sum(nsecs - @start[tid]); delete(@start[tid]=
-); } END { clear(@start); }'
-
-If you have a fix candidate, snippet of the output before/after would
-work as rationale too.
-
-Looking into the data Roberto put me tomorrow.
+Right (lazy validation, first null ignores rest)
 
 BR, Jarkko
 
