@@ -1,112 +1,290 @@
-Return-Path: <keyrings+bounces-2034-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2035-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 042D7976C10
-	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 16:28:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A431976CBD
+	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 16:53:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 366AA1C23E60
-	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 14:28:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E9C328627F
+	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 14:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6078F1AD25F;
-	Thu, 12 Sep 2024 14:27:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="doL6O8Zu"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED561B533E;
+	Thu, 12 Sep 2024 14:53:01 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B1D15D5D9;
-	Thu, 12 Sep 2024 14:27:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0BC176FCF;
+	Thu, 12 Sep 2024 14:52:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726151270; cv=none; b=dtcRnfDTLe4JNtgrjHeJKgj8rCShX82M2OlZkezAYLZH+oPRsaFDTFL1FzRSvuQzmPzGwHf7OsRU2Z4gbOg227FEBUBJ0aTnovXvNqh4yEIvlyWrzc1z3B0bhVT8BjGMwhuPFknpWsbp0VScaKHnHE+wrvH/dHgvBDm7p6KUshU=
+	t=1726152781; cv=none; b=PSQHeeb76Nf9kVzBRxgRo4oOd1i3Xmk6uKvzZ8m8pmJokdY5a9QAwXFUgg1azZ2+SQOzqzAa38vTR6S04YSyxMhG0u1zBgwCAA/v4p0FWX4m72lYQNs9yXX97RtLYwNn9vfZx4XaLIH7vEaCkBFDbiRcJsMqkiKrMRUFoMdqo6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726151270; c=relaxed/simple;
-	bh=R9iNhmLdXJrD0HXJ+V9I+UW/8WxZygjTlvhQcx+VNh8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=i/2Tt43uXJDjpIJfjStK6+4TslYIqhf45PwUbLGQ1Pk1OUZjyB1NDyysIvhuOQfET0qZQOXhAhBlmZ6kopB7U2RAf9aUyhj8IHTSvzQfTMFH6O6Ga+bc/d+gU8QOJlChxbEidwSkgK1Wo3FerFD18Ij6OHO/Nq0rWO6ujKdplLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=doL6O8Zu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE64C4CEC3;
-	Thu, 12 Sep 2024 14:27:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726151269;
-	bh=R9iNhmLdXJrD0HXJ+V9I+UW/8WxZygjTlvhQcx+VNh8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=doL6O8Zua35rWE3YInz4yJsiZIQP37eMOlxYBt7UPYKJMSfqhlGJGK6QA7ChHomld
-	 SffZVF6mGJqCf8LfEdL7YgdhLGLAwDRH+s5HeBURtWF8BAc4VSEwJbKRIrEnwDHTw3
-	 +VwNobzfIibnQnsC43cXGDYYE7Q0yNFnFJmsFgnZnVy4ulUDaUl99ngq3iR6ogB2SO
-	 lUVcd7+LTW00J3nZsmMfVAo+aXc2/c1mH5mcdyXYGdXuTNsnd6wb9c69kRsjgfkPr9
-	 QVe5mF29qWEfBjY3OQbjUIj0tzhdhH7utyhVXJTRBLVbl3boUz99XPbTqbNgM/OHuX
-	 6gfwb91cixAYg==
+	s=arc-20240116; t=1726152781; c=relaxed/simple;
+	bh=jJRKHuyFhRwIGFXt36hK6RLoLWePKd0LtKVg67zuh5s=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TV5YUoTWChZigxt5kY7uGsVEfukFs8tDM6uHp4Hyxy3XeAYSA3hmyLmvN/8GZ8CeloSiD7OWe/rlsYk8rWvPSyA/5TOJyc8hCmVu1t2b0hVOYyknBIVFLH7LrBa7qFfvCyZdctOPBLbBz4H51p5dKjjwzk/9gbD3yw1Fhc3P1F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.18.186.51])
+	by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4X4KgB51hrz9v7NT;
+	Thu, 12 Sep 2024 22:33:26 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.47])
+	by mail.maildlp.com (Postfix) with ESMTP id AC2A4140B27;
+	Thu, 12 Sep 2024 22:52:53 +0800 (CST)
+Received: from [127.0.0.1] (unknown [10.204.63.22])
+	by APP1 (Coremail) with SMTP id LxC2BwDndy88AONmTKPHAA--.2627S2;
+	Thu, 12 Sep 2024 15:52:52 +0100 (CET)
+Message-ID: <0cd01bd94b6e29b4db2f071a32e5d543df02eb21.camel@huaweicloud.com>
+Subject: Re: [regression] significant delays when secureboot is enabled
+ since 6.10
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>, Jarkko Sakkinen
+	 <jarkko@kernel.org>, Linux regressions mailing list
+	 <regressions@lists.linux.dev>
+Cc: keyrings@vger.kernel.org, "linux-integrity@vger.kernel.org"
+	 <linux-integrity@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Pengyu Ma <mapengyu@gmail.com>
+Date: Thu, 12 Sep 2024 16:52:40 +0200
+In-Reply-To: <e3d0947a45f7a6fea0dca345deaa52baf9ffaaf6.camel@HansenPartnership.com>
+References: <0b4a5a86-a9f6-42d1-a9ba-ec565b336d3a@leemhuis.info>
+	 <92fbcc4c252ec9070d71a6c7d4f1d196ec67eeb0.camel@huaweicloud.com>
+	 <D42LZPLE8HR3.2UTNOI9CYZPIR@kernel.org>
+	 <D42M6OE94RLT.6EZSZLBTX437@kernel.org>
+	 <663d272617d1aead08077ad2b72929cbc226372a.camel@HansenPartnership.com>
+	 <D42N17MFTEDM.3E6IK034S26UT@kernel.org>
+	 <f554031343039883068145f9f4777277e490dc05.camel@huaweicloud.com>
+	 <10ae7b8592af7bacef87e493e6d628a027641b8d.camel@HansenPartnership.com>
+	 <D44C19QB8IK1.OMUJP7N91HRN@kernel.org>
+	 <c47b129aeb95094aace5b174fc6d81bf0a7ecfbf.camel@HansenPartnership.com>
+	 <155190f0eb0974e223538f10afaa7860c5a61cf5.camel@huaweicloud.com>
+	 <e3d0947a45f7a6fea0dca345deaa52baf9ffaaf6.camel@HansenPartnership.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 12 Sep 2024 17:27:45 +0300
-Message-Id: <D44DK087Y80R.25CNND6WHJ7EE@kernel.org>
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Sergey Shtylyov" <s.shtylyov@omp.ru>, "Roman Smirnov"
- <r.smirnov@omp.ru>, "David Howells" <dhowells@redhat.com>, "Herbert Xu"
- <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
- "Andrew Zaborowski" <andrew.zaborowski@intel.com>
-Cc: <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
-Subject: Re: [PATCH v2] KEYS: prevent NULL pointer dereference in
- find_asymmetric_key()
-X-Mailer: aerc 0.18.2
-References: <20240910111806.65945-1-r.smirnov@omp.ru>
- <D42N9ASJJSUD.EG094MFWZA4Q@kernel.org>
- <84d6b0fa-4948-fe58-c766-17f87c2a2dba@omp.ru>
- <D43HG3PEBR4I.2INNPVZIT19ZZ@kernel.org>
- <8774f6a2-9bec-b699-6b68-63a26019c5b3@omp.ru>
-In-Reply-To: <8774f6a2-9bec-b699-6b68-63a26019c5b3@omp.ru>
+MIME-Version: 1.0
+X-CM-TRANSID:LxC2BwDndy88AONmTKPHAA--.2627S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3JFWrGF4kXw1DZw18Jr43Wrg_yoWxGw4xpw
+	48JFyUGr95Jr1rtr1vyr1Dtry2y34UJw1UXrn5JF1kAF1DKr1Ygr15Xr1Y9r1DXr4xJr15
+	tr1UJr13ur1UJF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUylb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
+	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUwxhLUUUUU
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQAEBGbiTfQKWAAAsu
 
-On Thu Sep 12, 2024 at 4:51 PM EEST, Sergey Shtylyov wrote:
-> On 9/11/24 4:18 PM, Jarkko Sakkinen wrote:
-> [...]
->
-> >>>> In find_asymmetric_key(), if all NULLs are passed in id_{0,1,2} para=
-meters
-> >>>> the kernel will first emit WARN and then have an oops because id_2 g=
-ets
-> >>>> dereferenced anyway.
-> >>>>
-> >>>> Found by Linux Verification Center (linuxtesting.org) with Svace sta=
-tic
-> >>>> analysis tool.
-> >>>
-> >>> Weird, I recall that I've either sent a patch to address the same sit=
-e
-> >>> OR have commented a patch with similar reasoning. Well, it does not
-> >>> matter, I think it this makes sense to me.
-> >>>
-> >>> You could further add to the motivation that given the panic_on_warn
-> >>> kernel command-line parameter, it is for the best limit the scope and
-> >>> use of the WARN-macro.
-> >>
-> >>    I don't understand what you mean -- this version of the patch keeps
-> >> the WARN_ON() call, it just moves that call, so that the duplicate id_=
-{0,1,2}
-> >> checks are avoided...
+On Thu, 2024-09-12 at 10:13 -0400, James Bottomley wrote:
+> On Thu, 2024-09-12 at 15:36 +0200, Roberto Sassu wrote:
+> > On Thu, 2024-09-12 at 09:26 -0400, James Bottomley wrote:
+> > > On Thu, 2024-09-12 at 16:16 +0300, Jarkko Sakkinen wrote:
+> > > > On Wed Sep 11, 2024 at 3:21 PM EEST, James Bottomley wrote:
+> > > > > On Wed, 2024-09-11 at 10:53 +0200, Roberto Sassu wrote:
+> > > [...]
+> > > > > > I made few measurements. I have a Fedora 38 VM with TPM
+> > > > > > passthrough.
+> > > > > >=20
+> > > > > > Kernels: 6.11-rc2+ (guest), 6.5.0-45-generic (host)
+> > > > > >=20
+> > > > > > QEMU:
+> > > > > >=20
+> > > > > > rc=C2=A0 qemu-kvm=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 1:4.2-
+> > > > > > 3ubuntu6.27
+> > > > > > ii=C2=A0 qemu-system-x86=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0
+> > > > > > 1:6.2+dfsg-
+> > > > > > 2ubuntu6.22
+> > > > > >=20
+> > > > > >=20
+> > > > > > TPM2_PT_MANUFACTURER:
+> > > > > > =C2=A0 raw: 0x49465800
+> > > > > > =C2=A0 value: "IFX"
+> > > > > > TPM2_PT_VENDOR_STRING_1:
+> > > > > > =C2=A0 raw: 0x534C4239
+> > > > > > =C2=A0 value: "SLB9"
+> > > > > > TPM2_PT_VENDOR_STRING_2:
+> > > > > > =C2=A0 raw: 0x36373000
+> > > > > > =C2=A0 value: "670"
+> > > > > >=20
+> > > > > >=20
+> > > > > > No HMAC:
+> > > > > >=20
+> > > > > > # tracer: function_graph
+> > > > > > #
+> > > > > > # CPU=C2=A0 DURATION=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 FUNCTION CALLS
+> > > > > > # |=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0 |
+> > > > > > =C2=A00)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 tpm2_pcr_extend() {
+> > > > > > =C2=A00)=C2=A0=C2=A0 1.112 us=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=
+=C2=A0 tpm_buf_append_hmac_session();
+> > > > > > =C2=A00) # 6360.029 us |=C2=A0=C2=A0=C2=A0 tpm_transmit_cmd();
+> > > > > > =C2=A00) # 6415.012 us |=C2=A0 }
+> > > > > >=20
+> > > > > >=20
+> > > > > > HMAC:
+> > > > > >=20
+> > > > > > # tracer: function_graph
+> > > > > > #
+> > > > > > # CPU=C2=A0 DURATION=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 FUNCTION CALLS
+> > > > > > # |=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0 |=C2=A0=C2=A0 |
+> > > > > > =C2=A01)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 tpm2_pcr_extend() {
+> > > > > > =C2=A01)=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0 tpm2_start_auth_session(=
+) {
+> > > > > > =C2=A01) * 36976.99 us |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tpm_tran=
+smit_cmd();
+> > > > > > =C2=A01) * 84746.51 us |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tpm_tran=
+smit_cmd();
+> > > > > > =C2=A01) # 3195.083 us |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tpm_tran=
+smit_cmd();
+> > > > > > =C2=A01) @ 126795.1 us |=C2=A0=C2=A0=C2=A0 }
+> > > > > > =C2=A01)=C2=A0=C2=A0 2.254 us=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=
+=C2=A0 tpm_buf_append_hmac_session();
+> > > > > > =C2=A01)=C2=A0=C2=A0 3.546 us=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=
+=C2=A0 tpm_buf_fill_hmac_session();
+> > > > > > =C2=A01) * 24356.46 us |=C2=A0=C2=A0=C2=A0 tpm_transmit_cmd();
+> > > > > > =C2=A01)=C2=A0=C2=A0 3.496 us=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=
+=C2=A0 tpm_buf_check_hmac_response();
+> > > > > > =C2=A01) @ 151171.0 us |=C2=A0 }
+> > > > >=20
+> > > > > Well, unfortunately, that tells us that it's the TPM itself
+> > > > > that's
+> > > > > taking the time processing the security overhead.=C2=A0 The order=
+ing
+> > > > > of
+> > > > > the commands in tpm2_start_auth_session() shows
+> > > > >=20
+> > > > > =C2=A037ms for context restore of null key
+> > > > > =C2=A085ms for start session with encrypted salt
+> > > > > =C2=A0 3ms to flush null key
+> > > > > -----
+> > > > > 125ms
+> > > > >=20
+> > > > > If we context save the session, we'd likely only bear a single
+> > > > > 37ms
+> > > > > cost to restore it (replacing the total 125ms).=C2=A0 However,
+> > > > > there's
+> > > > > nothing we can do about the extend execution going from 6ms to
+> > > > > 24ms, so I could halve your current boot time with security
+> > > > > enabled
+> > > > > (it's currently 149ms, it would go to 61ms, but it's still 10x
+> > > > > slower than the unsecured extend at 6ms)
+> > > > >=20
+> > > > > James
+> > > >=20
+> > > > I'll hold for better benchmarks.
+> > >=20
+> > > Well, yes, I'd like to see this for a variety of TPMs.
+> > >=20
+> > > This one clearly shows it's the real time wait for the TPM (since
+> > > it dwarfs the CPU time calculation there's not much optimization we
+> > > can do on the kernel end).=C2=A0 The one thing that's missing in all =
+of
+> > > this is what was the TPM?=C2=A0 but even if it's an outlier that's
+> > > really bad at crypto what should we do?=C2=A0 We could have a blackli=
+st
+> > > that turns off the extend hmac (or a whitelist that turns it on),
+> > > but we can't simply say too bad you need a better TPM.
 > >=20
-> > I overlooked the code change (my bad sorry). Here's a better version of
-> > the first paragraph:
+> > Ops, sorry. I pasted the TPM properties. Was not that clear:
 > >=20
-> > "find_asymmetric_keys() has nullity checks of id_0 and id_1 but ignores
-> > validation for id_2. Check nullity also for id_2."
->
->    Hm, what about WARN_ON(!id_0 && !id_1 && !id_2) -- it used to check al=
-l
-> the pointers, right? I think our variant was closer to reality... :-)
+> > Infineon Optiga SLB9670 (interpreting the properties).
+>=20
+> OK, that's reasonably modern and common:
+>=20
+> https://www.infineon.com/cms/en/product/security-smart-card-solutions/opt=
+iga-embedded-security-solutions/optiga-tpm/
+>=20
+> I assume it's one of the Q20 (otherwise it would be a TPM 1.2) but what
+> firmware version (as in could it be upgraded and the tests re-run to
+> see if that makes a difference).
+>=20
+> I also need the IMA community to start thinking about what they're
+> willing to accept in terms of performance for the added security hmac
+> brings to TPM extends.
 
-Right (lazy validation, first null ignores rest)
+Just for curiosity, I made a comparison of the boot time of Fedora 38
+(minimal installation) without and with HMAC enabled, without and with
+the Integrity Digest Cache [1], which I originally designed exactly for
+this purpose (one measurement per package):
 
-BR, Jarkko
+
+Without HMAC:
+Without Integrity Digest Cache:
+
+[root@fedora ~]# systemd-analyze=20
+Startup finished in 2.486s (kernel) + 3.594s (initrd) + 11.613s (userspace)=
+ =3D 17.694s=20
+multi-user.target reached after 11.559s in userspace.
+[root@fedora ~]# cat /sys/kernel/security/ima/ascii_runtime_measurements|wc=
+ -l
+444
+
+With Integrity Digest Cache:
+
+[root@fedora ~]# systemd-analyze=20
+Startup finished in 2.381s (kernel) + 3.469s (initrd) + 11.794s (userspace)=
+ =3D 17.644s=20
+multi-user.target reached after 11.750s in userspace.
+[root@fedora ~]# cat /sys/kernel/security/ima/ascii_runtime_measurements|wc=
+ -l
+218
+
+
+
+With HMAC:
+Without Integrity Digest Cache:
+
+[root@fedora ~]# systemd-analyze=20
+Startup finished in 2.911s (kernel) + 3.453s (initrd) + 1min 5.754s (usersp=
+ace) =3D 1min 12.119s=20
+multi-user.target reached after 1min 5.707s in userspace.
+[root@fedora ~]# cat /sys/kernel/security/ima/ascii_runtime_measurements|wc=
+ -l
+444
+
+
+With Integrity Digest Cache:
+
+[root@fedora ~]# systemd-analyze=20
+Startup finished in 2.990s (kernel) + 3.462s (initrd) + 37.038s (userspace)=
+ =3D 43.491s=20
+multi-user.target reached after 36.997s in userspace.
+[root@fedora ~]# cat /sys/kernel/security/ima/ascii_runtime_measurements|wc=
+ -l
+218
+
+
+[1]: https://lore.kernel.org/linux-integrity/20240905150543.3766895-1-rober=
+to.sassu@huaweicloud.com/
+
+Roberto
+
 
