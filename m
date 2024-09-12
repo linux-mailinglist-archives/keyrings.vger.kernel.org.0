@@ -1,143 +1,124 @@
-Return-Path: <keyrings+bounces-2038-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2039-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 193DF976F99
-	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 19:36:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EE0B9775C8
+	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2024 01:57:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D434F285BDC
-	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 17:36:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16223285CD1
+	for <lists+keyrings@lfdr.de>; Thu, 12 Sep 2024 23:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5899A188938;
-	Thu, 12 Sep 2024 17:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5EF51C2DC2;
+	Thu, 12 Sep 2024 23:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DB5QJf12"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B054C17837A;
-	Thu, 12 Sep 2024 17:36:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E53019F425;
+	Thu, 12 Sep 2024 23:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726162590; cv=none; b=gqTUE9ExYd899IppjxGDQou5fQFGLtaYB7ehERELKYoUkL0cDYQjwWG9AAfxKLBZ6+OyIMxCiWcpySosMm2dd29NB9sOCsEko3a1kFDSh7A3HhnDs0ZeI+2OEZRMx1s2Lu0cCZggCEBjgT/ukG9h/H4x6Rw51R67y3xHA1PhduQ=
+	t=1726185444; cv=none; b=OBnMj3sd5cAE5wRjYMaOAE/2cODPpzgyn8NCqVgtwcemyULwYOX5KGJg269d3sgO/2F/8VEWILu1b/3jaoMGjFTMBpU3Gkwe4SlxmF2/DHa5y52SsVbvf3ZxWiIK5uUmFXSFCn1URl07rtjWeUqrlEtcNlf9CjVed0r04OyFr1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726162590; c=relaxed/simple;
-	bh=+FlbC/3U714LtmseffHdvybFIBJGuTjQcO+84rTczl0=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=WBISU5GQ8+RMMfI4fFrfdJnPbBCDYq2qosbkg3nm4LqzOIAI20lRY4k3a3vWhTDQl/uavzQocwI2D9JSRAafACBzSnYodqk4qTereKltjPJAzGtq1XFJlf9e72KzkuGlS0kLVZ4bGesnPXBuGVLvOf25YEQm3MtNop/K+eN2fso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from [192.168.1.106] (178.176.74.114) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Thu, 12 Sep
- 2024 20:36:10 +0300
+	s=arc-20240116; t=1726185444; c=relaxed/simple;
+	bh=AsfRcrtObUzG0G02vJhdYtWyZnOhJwTlNYYrFWc+CCg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=t+w6Ife6yazdgoq+BnGWBkARSSo39/qvknF0RJf6+qbJ/F5Lpu9HYKVUjmjLRGHYivg9XI1RlkBzbQoPTaLj1Op+miXl8kALOjh89bVwzS38OC7qoifJT/i/FnMS0mUM/DqHDnjbMXI4UCzVU3pPiOZQS0JLvF8nO0fvIFLPAVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DB5QJf12; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48FDC4CEC3;
+	Thu, 12 Sep 2024 23:57:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726185444;
+	bh=AsfRcrtObUzG0G02vJhdYtWyZnOhJwTlNYYrFWc+CCg=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=DB5QJf121WmloINNRr9CXjIgZovlOpNsyCUdEDkRtBvHlpbjiOg+OLyfS4aN7OJLM
+	 uZyVKHNHSiTKIG85yxti+1Oc+bdYYzDWVnglbPFWJm7wtlYUH/I8cdiX28mpcC711l
+	 LKesPT/n/vJiP1zbHGp/y86uMjT42cJihoFOtOKLkUKT6u4/p5EbOKagxW+XF9YRy3
+	 vhY/iCfDkarlUXIaaqLXYoy7xbjXXo5+2Z+x7HsAb+N/cRxva7cAxRT35j8V8j//L4
+	 MWZdSfiCdOEi1G63TwuWlEh1fnbUedVmOjolwTZfw/3oAWZU6k/NBZKoNppwO+ZxtB
+	 YakCukUmSRc6A==
+Precedence: bulk
+X-Mailing-List: keyrings@vger.kernel.org
+List-Id: <keyrings.vger.kernel.org>
+List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 13 Sep 2024 02:57:20 +0300
+Message-Id: <D44PO3WW3R6S.1VSJQ4AYFJW04@kernel.org>
+To: "Sergey Shtylyov" <s.shtylyov@omp.ru>, "Roman Smirnov"
+ <r.smirnov@omp.ru>, "David Howells" <dhowells@redhat.com>, "Herbert Xu"
+ <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
+ "Andrew Zaborowski" <andrew.zaborowski@intel.com>
+Cc: <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
 Subject: Re: [PATCH v2] KEYS: prevent NULL pointer dereference in
  find_asymmetric_key()
-To: Jarkko Sakkinen <jarkko@kernel.org>, Roman Smirnov <r.smirnov@omp.ru>,
-	David Howells <dhowells@redhat.com>, Herbert Xu
-	<herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
-	Andrew Zaborowski <andrew.zaborowski@intel.com>
-CC: <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+X-Mailer: aerc 0.18.2
 References: <20240910111806.65945-1-r.smirnov@omp.ru>
  <D42N9ASJJSUD.EG094MFWZA4Q@kernel.org>
  <84d6b0fa-4948-fe58-c766-17f87c2a2dba@omp.ru>
  <D43HG3PEBR4I.2INNPVZIT19ZZ@kernel.org>
  <8774f6a2-9bec-b699-6b68-63a26019c5b3@omp.ru>
  <D44DK087Y80R.25CNND6WHJ7EE@kernel.org>
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <dbc7249a-7bf5-7e5f-7204-d368c052023c@omp.ru>
-Date: Thu, 12 Sep 2024 20:36:08 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
-Precedence: bulk
-X-Mailing-List: keyrings@vger.kernel.org
-List-Id: <keyrings.vger.kernel.org>
-List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <D44DK087Y80R.25CNND6WHJ7EE@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 09/12/2024 17:17:50
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 59
-X-KSE-AntiSpam-Info: Lua profiles 187714 [Sep 12 2024]
-X-KSE-AntiSpam-Info: Version: 6.1.1.5
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 34 0.3.34
- 8a1fac695d5606478feba790382a59668a4f0039
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {relay has no DNS name}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.74.114 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info:
-	omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.74.114
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 59
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 09/12/2024 17:20:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 9/12/2024 1:09:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+ <dbc7249a-7bf5-7e5f-7204-d368c052023c@omp.ru>
+In-Reply-To: <dbc7249a-7bf5-7e5f-7204-d368c052023c@omp.ru>
 
-On 9/12/24 5:27 PM, Jarkko Sakkinen wrote:
-[...]
+On Thu Sep 12, 2024 at 8:36 PM EEST, Sergey Shtylyov wrote:
+> On 9/12/24 5:27 PM, Jarkko Sakkinen wrote:
+> [...]
+>
+> >>>>>> In find_asymmetric_key(), if all NULLs are passed in id_{0,1,2} pa=
+rameters
+> >>>>>> the kernel will first emit WARN and then have an oops because id_2=
+ gets
+> >>>>>> dereferenced anyway.
+> >>>>>>
+> >>>>>> Found by Linux Verification Center (linuxtesting.org) with Svace s=
+tatic
+> >>>>>> analysis tool.
+> >>>>>
+> >>>>> Weird, I recall that I've either sent a patch to address the same s=
+ite
+> >>>>> OR have commented a patch with similar reasoning. Well, it does not
+> >>>>> matter, I think it this makes sense to me.
+> >>>>>
+> >>>>> You could further add to the motivation that given the panic_on_war=
+n
+> >>>>> kernel command-line parameter, it is for the best limit the scope a=
+nd
+> >>>>> use of the WARN-macro.
+> >>>>
+> >>>>    I don't understand what you mean -- this version of the patch kee=
+ps
+> >>>> the WARN_ON() call, it just moves that call, so that the duplicate i=
+d_{0,1,2}
+> >>>> checks are avoided...
+> >>>
+> >>> I overlooked the code change (my bad sorry). Here's a better version =
+of
+> >>> the first paragraph:
+> >>>
+> >>> "find_asymmetric_keys() has nullity checks of id_0 and id_1 but ignor=
+es
+> >>> validation for id_2. Check nullity also for id_2."
+> >>
+> >>    Hm, what about WARN_ON(!id_0 && !id_1 && !id_2) -- it used to check=
+ all
+> >> the pointers, right? I think our variant was closer to reality... :-)
+> >=20
+> > Right (lazy validation, first null ignores rest)
+>
+>    No, contrariwise: since we use && and !, first non-NULL would ignore t=
+he rest.
 
->>>>>> In find_asymmetric_key(), if all NULLs are passed in id_{0,1,2} parameters
->>>>>> the kernel will first emit WARN and then have an oops because id_2 gets
->>>>>> dereferenced anyway.
->>>>>>
->>>>>> Found by Linux Verification Center (linuxtesting.org) with Svace static
->>>>>> analysis tool.
->>>>>
->>>>> Weird, I recall that I've either sent a patch to address the same site
->>>>> OR have commented a patch with similar reasoning. Well, it does not
->>>>> matter, I think it this makes sense to me.
->>>>>
->>>>> You could further add to the motivation that given the panic_on_warn
->>>>> kernel command-line parameter, it is for the best limit the scope and
->>>>> use of the WARN-macro.
->>>>
->>>>    I don't understand what you mean -- this version of the patch keeps
->>>> the WARN_ON() call, it just moves that call, so that the duplicate id_{0,1,2}
->>>> checks are avoided...
->>>
->>> I overlooked the code change (my bad sorry). Here's a better version of
->>> the first paragraph:
->>>
->>> "find_asymmetric_keys() has nullity checks of id_0 and id_1 but ignores
->>> validation for id_2. Check nullity also for id_2."
->>
->>    Hm, what about WARN_ON(!id_0 && !id_1 && !id_2) -- it used to check all
->> the pointers, right? I think our variant was closer to reality... :-)
-> 
-> Right (lazy validation, first null ignores rest)
+Oops correct :-/
 
-   No, contrariwise: since we use && and !, first non-NULL would ignore the rest.
-
-> BR, Jarkko
-
-MBR, Sergey
+BR, Jarkko
 
