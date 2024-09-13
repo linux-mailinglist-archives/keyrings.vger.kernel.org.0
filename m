@@ -1,134 +1,175 @@
-Return-Path: <keyrings+bounces-2041-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2042-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D90C97793F
-	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2024 09:17:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 331A7977B0A
+	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2024 10:31:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 757B41C2162D
-	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2024 07:17:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D8801C24BCA
+	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2024 08:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47641B533E;
-	Fri, 13 Sep 2024 07:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0010C1D798D;
+	Fri, 13 Sep 2024 08:30:40 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05C777107;
-	Fri, 13 Sep 2024 07:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522021BCA19;
+	Fri, 13 Sep 2024 08:30:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726211860; cv=none; b=RT4mb8QNrt2efQ/bHMRFSf2RYQKy/Am2EVWDwZO+av1EJBOEDfKkDg8M8b1eq3qVq8HwyGKOWMlgzLav9nuW382I3lERVQgspo+mP+ehNn2PbQGC0quxO9V987N8l3hgqzlg9KMuFyCLwZ6N/mRoq7FbqiyxR4KtYZCwJmRFbeg=
+	t=1726216240; cv=none; b=FmH/Vjcqm6hWzRF7XG2bRrlQSkec73gG8C//skY2WcmMYzLU9MDyB+4jphzBBdGoKdt+vAnYvEYkJEAFyVRq34OByZCm1OzBZDLlHLxSv6jRShicfGPFExRaqf/1GJ5oSQq5Ef9UCDn1V/SPMOgZggr3fKQYfArZ3mZkeBrSdQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726211860; c=relaxed/simple;
-	bh=/aB7KyuDzWiiD7QCWbP9P8AiK+96dTijvv1tTPSwsxU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=thDljgbcocZWqxpvKCycMMjsJkXgaGhSl3H7yIpeBNAs5SZMcxl6G3Pu7hDMf0RyLLRzNIdpOSd4mSu0gNE5EskBk7D4JLl9APUTsAC0TAZdVnnLzbgbAhLpphkYYQiX8awX59FD4zur0e7ydW/jP/sibBU9pEWA0g2tgMH7AqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4X4lxd6Wngz69N3;
-	Fri, 13 Sep 2024 15:17:25 +0800 (CST)
-Received: from kwepemd100013.china.huawei.com (unknown [7.221.188.163])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2031518006C;
-	Fri, 13 Sep 2024 15:17:34 +0800 (CST)
-Received: from huawei.com (10.67.174.121) by kwepemd100013.china.huawei.com
- (7.221.188.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.34; Fri, 13 Sep
- 2024 15:17:33 +0800
-From: Chen Ridong <chenridong@huawei.com>
-To: <dhowells@redhat.com>, <jarkko@kernel.org>, <paul@paul-moore.com>,
-	<jmorris@namei.org>, <serge@hallyn.com>
-CC: <keyrings@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <chenridong@huaweicloud.com>
-Subject: [PATCH] security/keys: fix slab-out-of-bounds in key_task_permission
-Date: Fri, 13 Sep 2024 07:09:28 +0000
-Message-ID: <20240913070928.1670785-1-chenridong@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1726216240; c=relaxed/simple;
+	bh=kPrSg6p6aTVQXXcjD7xT55A6UN3j0AilK3uKI03SJuY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=KZyvSAoG4+tx7bNGnIEmvHrLSkIQekXbu41eWvRBLNTUqTpKsUxURq9Rjp3z7laqtILzPlQbKIMGkurhef8i2kRX5LAK/KWWA3+S4gZFuQJFGLJheqILT8rXx02TirqkH/s8VaGj5RAVHambcopz3OIlrlDvrCmW6dFxc80EBRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.18.186.51])
+	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4X4n0v135Cz9v7JT;
+	Fri, 13 Sep 2024 16:05:19 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.27])
+	by mail.maildlp.com (Postfix) with ESMTP id C27AE140360;
+	Fri, 13 Sep 2024 16:30:27 +0800 (CST)
+Received: from [127.0.0.1] (unknown [10.204.63.22])
+	by APP2 (Coremail) with SMTP id GxC2BwCX+ckW+ONmdJzVAA--.9008S2;
+	Fri, 13 Sep 2024 09:30:25 +0100 (CET)
+Message-ID: <b4a3e55650a9e9f2302cf093e5cc8e739b4ac98f.camel@huaweicloud.com>
+Subject: Re: [PATCH v3 00/14] KEYS: Add support for PGP keys and signatures
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+To: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: dhowells@redhat.com, dwmw2@infradead.org, davem@davemloft.net, 
+	linux-kernel@vger.kernel.org, keyrings@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, zohar@linux.ibm.com, 
+	linux-integrity@vger.kernel.org, torvalds@linux-foundation.org, 
+	roberto.sassu@huawei.com, linux-security-module@vger.kernel.org
+Date: Fri, 13 Sep 2024 10:30:11 +0200
+In-Reply-To: <ZuPDZL_EIoS60L1a@gondor.apana.org.au>
+References: <ZuPDZL_EIoS60L1a@gondor.apana.org.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemd100013.china.huawei.com (7.221.188.163)
+X-CM-TRANSID:GxC2BwCX+ckW+ONmdJzVAA--.9008S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxGryrJw4DKr1UZr4kWF1rWFg_yoW5tryUpr
+	45Aa9xKwnrJr17K3s7Jw4xCa4I9ws3C3W5Gr9xJr1Fywn8GF1I9r1S9w4UWF1kCr4xJr1Y
+	vwsFvr12k3srZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
+	wI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
+	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43
+	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
+	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
+	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUF1
+	v3UUUUU
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAFBGbjn-sDtwABsX
 
-We meet the same issue with the LINK, which reads memory out of bounds:
-BUG: KASAN: slab-out-of-bounds in __kuid_val include/linux/uidgid.h:36
-BUG: KASAN: slab-out-of-bounds in uid_eq include/linux/uidgid.h:63 [inline]
-BUG: KASAN: slab-out-of-bounds in key_task_permission+0x394/0x410
-security/keys/permission.c:54
-Read of size 4 at addr ffff88813c3ab618 by task stress-ng/4362
+On Fri, 2024-09-13 at 12:45 +0800, Herbert Xu wrote:
+> Roberto Sassu <roberto.sassu@huaweicloud.com> wrote:
 
-CPU: 2 PID: 4362 Comm: stress-ng Not tainted 5.10.0-14930-gafbffd6c3ede #15
-Call Trace:
- __dump_stack lib/dump_stack.c:82 [inline]
- dump_stack+0x107/0x167 lib/dump_stack.c:123
- print_address_description.constprop.0+0x19/0x170 mm/kasan/report.c:400
- __kasan_report.cold+0x6c/0x84 mm/kasan/report.c:560
- kasan_report+0x3a/0x50 mm/kasan/report.c:585
- __kuid_val include/linux/uidgid.h:36 [inline]
- uid_eq include/linux/uidgid.h:63 [inline]
- key_task_permission+0x394/0x410 security/keys/permission.c:54
- search_nested_keyrings+0x90e/0xe90 security/keys/keyring.c:793
- keyring_search_rcu+0x1b6/0x310 security/keys/keyring.c:922
- search_cred_keyrings_rcu+0x111/0x2e0 security/keys/process_keys.c:459
- search_process_keyrings_rcu+0x1d/0x310 security/keys/process_keys.c:544
- lookup_user_key+0x782/0x12e0 security/keys/process_keys.c:762
- keyctl_invalidate_key+0x20/0x190 security/keys/keyctl.c:434
- __do_sys_keyctl security/keys/keyctl.c:1978 [inline]
- __se_sys_keyctl+0x1de/0x5b0 security/keys/keyctl.c:1880
- do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x67/0xd1
++ linux-security-module
 
-However, we can't reproduce this issue.
-After our analysis, it can make this issue by following steps.
-1.As syzkaller reported, the memory is allocated for struct
-  assoc_array_shortcut in the assoc_array_insert_into_terminal_node
-  functions.
-2.In the search_nested_keyrings, when we go through the slots in a node,
-  (bellow tag ascend_to_node), and the slot ptr is meta and
-  node->back_pointer != NULL, we will proceed to  descend_to_node.
-  However, there is an exception. If node is the root, and one of the
-  slots points to a shortcut, it will be treated as a keyring.
-3.Whether the ptr is keyring decided by keyring_ptr_is_keyring function.
-  However, KEYRING_PTR_SUBTYPE is 0x2UL, the same as
-  ASSOC_ARRAY_PTR_SUBTYPE_MASK,
-4.As mentioned above, If a slot of the root is a shortcut, it may be
-  mistakenly be transferred to a key*, leading to an read out-of-bounds
-  read.
+> >=20
+> > For the envisioned use cases, PGP operations cannot be done in user spa=
+ce,
+> > since the consumers are in the kernel itself (Integrity Digest Cache an=
+d
+> > IMA). Also they cannot be done in a trusted initial ram disk, since PGP
+> > operations can occur also while the system is running (e.g. after softw=
+are
+> > package installation).
+>=20
+> Does this address Linus's objections? If not then we cannot proceed.
 
-To fix this issue, one should jump to descend_to_node if the pointer is a
-shortcut.
+I hope to get an answer from him.
 
-Link: https://syzkaller.appspot.com/bug?id=68a5e206c2a8e08d317eb83f05610c0484ad10b9
-Fixes: b2a4df200d57 ("KEYS: Expand the capacity of a keyring")
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
----
- security/keys/keyring.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+> Personally I don't think the argument above holds water.  With
+> IPsec we had a similar issue of authenticating untrusted peers
+> using public key cryptography.  In that case we successfully
+> delegated the task to user-space and it is still how it works
+> to this day.
 
-diff --git a/security/keys/keyring.c b/security/keys/keyring.c
-index 4448758f643a..7958486ac834 100644
---- a/security/keys/keyring.c
-+++ b/security/keys/keyring.c
-@@ -772,7 +772,9 @@ static bool search_nested_keyrings(struct key *keyring,
- 	for (; slot < ASSOC_ARRAY_FAN_OUT; slot++) {
- 		ptr = READ_ONCE(node->slots[slot]);
- 
--		if (assoc_array_ptr_is_meta(ptr) && node->back_pointer)
-+		if ((assoc_array_ptr_is_meta(ptr) && node->back_pointer) ||
-+		    (assoc_array_ptr_is_meta(ptr) &&
-+		     assoc_array_ptr_is_shortcut(ptr)))
- 			goto descend_to_node;
- 
- 		if (!keyring_ptr_is_keyring(ptr))
--- 
-2.34.1
+That makes sense, since it is not the kernel holding secrets on behalf
+of user space, it is user space passing the crypto material to the
+kernel (if I remember IPSEC correctly). Failure of user space to hold
+its secrets or to tamper with the task has only effect in user space.
+
+With my understanding, I'm citing a source enumerating the requirements
+of a secure system:
+
+James P. Anderson: Computer Security Technology Planning Study
+
+The first requirement of a component enforcing a security policy on a
+Target of Evaluation (TOE), aka the reference monitor, is that it must
+be tamperproof [1].
+
+The security policy I want to enforce is: all code that the system
+executes has been built by a trusted source (e.g. a Linux
+distribution).
+
+I want to leverage the kernel to enforce such security policy, and I
+assume that the kernel can be fortified enough (for example through the
+lockdown LSM) to be considered tamperproof against the TOE (the user
+space processes).
+
+The first problem I see in delegating the public crypto task to user
+space is that it is at the same time part of the reference monitor
+(since it is used to enforce the security policy) and it is a TOE too.
+
+The second problem is, assuming that the task is verified through other
+means other than PGP (but again, we are still relying on the public
+crypto functionality to be performed by the kernel, for this to work),
+that I didn't get a confirmation that user space can have equivalent
+isolation guarantees as the kernel:
+
+https://lore.kernel.org/linux-integrity/eb31920bd00e2c921b0aa6ebed8745cb013=
+0b0e1.camel@huaweicloud.com/
+
+
+Please, keep in mind that I already proposed what you suggested:
+
+https://lore.kernel.org/linux-kernel/20230317145240.363908-1-roberto.sassu@=
+huaweicloud.com/#r
+
+
+After discussing with some kernel developers, the outcome was that a
+better choice would be to put the code in the kernel, if I want
+reasonable tamperproof guarantees.
+
+Thanks
+
+Roberto
+
+
+[1] https://seclab.cs.ucdavis.edu/projects/history/papers/ande72a.pdf (page=
+ 17)
+
+> A user-space daemon dedicated to public key crypto seems equally
+> applicable to your scenario.
+>=20
+> The original application that brought public key crypto into the
+> kernel was module loading.  If we really wanted to we could extend
+> the user-space verification to modules too and perhaps kick all
+> public key crypto out of the kernel.
+>=20
+> The complexity and lack of reviewer attention in this area means
+> that we're more likely to introduce security holes into the kernel
+> with such code.
+>=20
+> Cheers,
 
 
