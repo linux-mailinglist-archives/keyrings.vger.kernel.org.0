@@ -1,172 +1,126 @@
-Return-Path: <keyrings+bounces-2047-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2048-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A00D978808
-	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2024 20:41:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DABB597891D
+	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2024 21:51:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 061E51F25F06
-	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2024 18:41:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F7C31C22A29
+	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2024 19:51:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE0286AE3;
-	Fri, 13 Sep 2024 18:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB64146D6E;
+	Fri, 13 Sep 2024 19:51:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XTWlhpV0"
 X-Original-To: keyrings@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E62A811EB;
-	Fri, 13 Sep 2024 18:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC3B13CAA5;
+	Fri, 13 Sep 2024 19:51:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726252859; cv=none; b=nCXnzOSqTT2N3dBoPB9MMu7LpFz1HhbfgYXeDiUTc2HIIOO/nxbeW5yWzNz/irwYxTVyt0xcB0mW1LDwlC39xL2nVeQD6DDqq6uUlcNjDE1UOqmp62J83Ag3qXDHfGyZP8pGytO22N5QRx0xb7j+l+LuCDk3AIMqPZxE9e2TLcE=
+	t=1726257070; cv=none; b=aCsVV8XhqJJgnGvvfgSAyCSuQhbAOhx1lplD1VLr3vqPm0NdARU1jR6nWDKl/lrUaaqAL1zFR4NBbIU3XWBdUHi46qoDR92rAED8DUyQCB3e7vZQByWmCxk5cL64yqKBRgaL4/YTEfiymHCcZjIpiLEleSgf29KSLeX0dQKHRAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726252859; c=relaxed/simple;
-	bh=D+I8GQYbtdFqu//u3VQ9wkisq1yyy0w6iTNBsqfKPiA=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nStzvArSglSQD94n8+E+uFBMolcY48VzQCZ9dWTTWfRbw39yrlnoLAlTCcYl9BO3JsdZ2CwTlmub+hX9+pxK8spxSMnfzgE5xdzdioY4xvnOpygzbRanJK7Q0gw1dlbmaiJPZezRzLvmELRLmxQ/Kqt5b7A19ZjIvKJCAhvDLuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4X53213XD4z67kr9;
-	Sat, 14 Sep 2024 02:37:13 +0800 (CST)
-Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
-	by mail.maildlp.com (Postfix) with ESMTPS id DF2A8140A77;
-	Sat, 14 Sep 2024 02:40:53 +0800 (CST)
-Received: from localhost (10.48.150.243) by frapeml500008.china.huawei.com
- (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 13 Sep
- 2024 20:40:52 +0200
-Date: Fri, 13 Sep 2024 19:40:49 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Lukas Wunner <lukas@wunner.de>
-CC: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller"
-	<davem@davemloft.net>, Eric Biggers <ebiggers@google.com>, Stefan Berger
-	<stefanb@linux.ibm.com>, Vitaly Chikunov <vt@altlinux.org>, Tadeusz Struk
-	<tstruk@gigaio.com>, David Howells <dhowells@redhat.com>, Andrew Zaborowski
-	<andrew.zaborowski@intel.com>, Saulo Alessandre
-	<saulo.alessandre@tse.jus.br>, Ignat Korchagin <ignat@cloudflare.com>, Marek
- Behun <kabel@kernel.org>, Varad Gautam <varadgautam@google.com>, Denis
- Kenzior <denkenz@gmail.com>, <linux-crypto@vger.kernel.org>,
-	<keyrings@vger.kernel.org>
-Subject: Re: [PATCH v2 02/19] crypto: sig - Introduce sig_alg backend
-Message-ID: <20240913194049.000030d9@Huawei.com>
-In-Reply-To: <688e92e7db6f2de1778691bb7cdafe3bb39e73c6.1725972334.git.lukas@wunner.de>
-References: <cover.1725972333.git.lukas@wunner.de>
-	<688e92e7db6f2de1778691bb7cdafe3bb39e73c6.1725972334.git.lukas@wunner.de>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1726257070; c=relaxed/simple;
+	bh=W2r+kS904i1eF8SnmU6ynsgUgAqTin0VQq7IlkO2umU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=gFPv8y6LNhpnoR3CV0dvlOSRjpJytDkYZwlMGW1eJKJt/HaBbfuleLRVeYDwceZ2GfuZtO/ARjECRnnZ/oHlqn44sjrpiQpgTiphEspM/B1j+hnlH8JRNlr007EXhCfNSzgLTwJLb4wn8MT3Mws6tG7PobbUTAuYPfy03zzxJjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XTWlhpV0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F91C4CEC0;
+	Fri, 13 Sep 2024 19:51:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726257069;
+	bh=W2r+kS904i1eF8SnmU6ynsgUgAqTin0VQq7IlkO2umU=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=XTWlhpV0GW6n8Q0Y46b6EcDU34hs45fEGQJLJGqwssA0KF91mvCmAgMPv/ZVxDD/o
+	 21rNvfs4sFftS1IPadMy1LpstLfVsRXLICQJVZPs1H5KFZG6g91GoTTxvvGx15eWZU
+	 ZkVjwxnFu7e0lTE03QIRoA7vcvU10T4XUy4ZMIPsx/Dr14ym9syQfhEd68sXngddbK
+	 BzJxkzvkK87z4sctn3NVyD5+u6kRy5XD3dQ6xMAVVd0QAi55RpDKJ4JqURfCx90N7c
+	 afnIzGTgmrit/dzA46aPrZhLxCQnHWvGbpIUIP0mqe0SOiSqSLLbrW0D572JpmQq5l
+	 ut64rM77w5GYw==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- frapeml500008.china.huawei.com (7.182.85.71)
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 13 Sep 2024 22:51:04 +0300
+Message-Id: <D45F23O3EX54.1NDMXAY5G7AL3@kernel.org>
+Cc: <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
+Subject: Re: [PATCH v2] KEYS: prevent NULL pointer dereference in
+ find_asymmetric_key()
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Sergey Shtylyov" <s.shtylyov@omp.ru>, "Roman Smirnov"
+ <r.smirnov@omp.ru>, "David Howells" <dhowells@redhat.com>, "Herbert Xu"
+ <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
+ "Andrew Zaborowski" <andrew.zaborowski@intel.com>
+X-Mailer: aerc 0.17.0
+References: <20240910111806.65945-1-r.smirnov@omp.ru>
+ <D42N9ASJJSUD.EG094MFWZA4Q@kernel.org>
+ <84d6b0fa-4948-fe58-c766-17f87c2a2dba@omp.ru>
+ <D43HG3PEBR4I.2INNPVZIT19ZZ@kernel.org>
+ <D43HH3XOAXFO.2MX7FA48VOLE9@kernel.org>
+ <85607ea7-a42a-1c7b-0722-e4b63a814385@omp.ru>
+In-Reply-To: <85607ea7-a42a-1c7b-0722-e4b63a814385@omp.ru>
 
-On Tue, 10 Sep 2024 16:30:12 +0200
-Lukas Wunner <lukas@wunner.de> wrote:
+On Wed Sep 11, 2024 at 5:45 PM EEST, Sergey Shtylyov wrote:
+> On 9/11/24 4:19 PM, Jarkko Sakkinen wrote:
+>
+> [...]
+>
+> >>>>> In find_asymmetric_key(), if all NULLs are passed in id_{0,1,2} par=
+ameters
+> >>>>> the kernel will first emit WARN and then have an oops because id_2 =
+gets
+> >>>>> dereferenced anyway.
+> >>>>>
+> >>>>> Found by Linux Verification Center (linuxtesting.org) with Svace st=
+atic
+> >>>>> analysis tool.
+> >>>>
+> >>>> Weird, I recall that I've either sent a patch to address the same si=
+te
+> >>>> OR have commented a patch with similar reasoning. Well, it does not
+> >>>> matter, I think it this makes sense to me.
+> >>>>
+> >>>> You could further add to the motivation that given the panic_on_warn
+> >>>> kernel command-line parameter, it is for the best limit the scope an=
+d
+> >>>> use of the WARN-macro.
+> >>>
+> >>>    I don't understand what you mean -- this version of the patch keep=
+s
+> >>> the WARN_ON() call, it just moves that call, so that the duplicate id=
+_{0,1,2}
+> >>> checks are avoided...
+> >>
+> >> I overlooked the code change (my bad sorry). Here's a better version o=
+f
+> >> the first paragraph:
+> >>
+> >> "find_asymmetric_keys() has nullity checks of id_0 and id_1 but ignore=
+s
+> >> validation for id_2. Check nullity also for id_2."
+> >>
+> >> Yep, and it changes no situation with WARN_ON() macro for better or
+> >> worse. It would logically separate issue to discuss and address so
+> >> as far as I'm concerned, with this clarification I think the change
+> >> makes sense to me.
+> >=20
+> > Actually explicitly stating that call paths leading to WARN_ON()
+> > invocation are intact by the commit (as a reminder for future).
+>
+>    OK...
+>    Do you still think the Fixes tag should be dropped (and thus the
+> Reported-by tag would become unnecessary?)?
 
-> Commit 6cb8815f41a9 ("crypto: sig - Add interface for sign/verify")
-> began a transition of asymmetric sign/verify operations from
-> crypto_akcipher to a new crypto_sig frontend.
-> 
-> Internally, the crypto_sig frontend still uses akcipher_alg as backend,
-> however:
-> 
->    "The link between sig and akcipher is meant to be temporary.  The
->     plan is to create a new low-level API for sig and then migrate
->     the signature code over to that from akcipher."
->     https://lore.kernel.org/r/ZrG6w9wsb-iiLZIF@gondor.apana.org.au/
-> 
->    "having a separate alg for sig is definitely where we want to
->     be since there is very little that the two types actually share."
->     https://lore.kernel.org/r/ZrHlpz4qnre0zWJO@gondor.apana.org.au/
-> 
-> Take the next step of that migration and augment the crypto_sig frontend
-> with a sig_alg backend to which all algorithms can be moved.
-> 
-> During the migration, there will briefly be signature algorithms that
-> are still based on crypto_akcipher, whilst others are already based on
-> crypto_sig.  Allow for that by building a fork into crypto_sig_*() API
-> calls (i.e. crypto_sig_maxsize() and friends) such that one of the two
-> backends is selected based on the transform's cra_type.
-> 
-> Signed-off-by: Lukas Wunner <lukas@wunner.de>
+I think we can keep them.
 
-Hi Lukas,
-
-A few trivial comments.
-
-Jonathan
-
-> diff --git a/crypto/sig.c b/crypto/sig.c
-> index 7645bedf3a1f..4f36ceb7a90b 100644
-> --- a/crypto/sig.c
-> +++ b/crypto/sig.c
-
-> @@ -68,6 +93,14 @@ EXPORT_SYMBOL_GPL(crypto_alloc_sig);
->  
->  int crypto_sig_maxsize(struct crypto_sig *tfm)
->  {
-> +	if (crypto_sig_tfm(tfm)->__crt_alg->cra_type != &crypto_sig_type)
-> +		goto akcipher;
-> +
-> +	struct sig_alg *alg = crypto_sig_alg(tfm);
-> +
-> +	return alg->max_size(tfm);
-> +
-> +akcipher:
-
-Neat trick for temporary retention of the code.
-Hideous code in the meantime ;) Not that I have a better idea.
-
->  	struct crypto_akcipher **ctx = crypto_sig_ctx(tfm);
->  
->  	return crypto_akcipher_maxsize(*ctx);
-
-> diff --git a/crypto/testmgr.c b/crypto/testmgr.c
-> index f02cb075bd68..bb21378aa510 100644
-> --- a/crypto/testmgr.c
-> +++ b/crypto/testmgr.c
-...
-
-> @@ -4317,6 +4324,114 @@ static int alg_test_akcipher(const struct alg_test_desc *desc,
->  	return err;
->  }
->  
-> +static int test_sig_one(struct crypto_sig *tfm, const struct sig_testvec *vecs)
-> +{
-> +	u8 *ptr, *key __free(kfree);
-I would move definition of key down to where the constructor is.
-Current pattern is fine until some extra code sneaks inbetween with
-an error return.
-
-> +	int err, sig_size;
-> +
-> +	key = kmalloc(vecs->key_len + 2 * sizeof(u32) + vecs->param_len,
-> +		      GFP_KERNEL);
-> +	if (!key)
-> +		return -ENOMEM;
-
-git a/include/crypto/internal/sig.h b/include/crypto/internal/sig.h
-> index 97cb26ef8115..b16648c1a986 100644
-> --- a/include/crypto/internal/sig.h
-> +++ b/include/crypto/internal/sig.h
-
-> +static inline struct crypto_sig *crypto_spawn_sig(struct crypto_sig_spawn
-> +								   *spawn)
-
-That's an odd wrap. I'd just go long where this happens and slightly past 80 chars.
-
-
-> +{
-> +	return crypto_spawn_tfm2(&spawn->base);
-> +}
-
+BR, Jarkko
 
