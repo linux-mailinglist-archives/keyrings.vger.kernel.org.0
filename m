@@ -1,137 +1,136 @@
-Return-Path: <keyrings+bounces-2044-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2045-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B31977C38
-	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2024 11:32:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2515B977DE4
+	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2024 12:46:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F1DA286580
-	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2024 09:32:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B408BB22811
+	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2024 10:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 730951C2301;
-	Fri, 13 Sep 2024 09:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A9A1D7E5D;
+	Fri, 13 Sep 2024 10:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WSoEobQb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PCesijiR"
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6ED1BD4E0
-	for <keyrings@vger.kernel.org>; Fri, 13 Sep 2024 09:32:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221C01D7E39;
+	Fri, 13 Sep 2024 10:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726219964; cv=none; b=MbdA63JQEKESLdDDfKAhQOylQ7V8pNdQ0bxqc5MNJqBsqeSMT65ai6Yd35oiCzFEpQYCfenUY17bwYLRKblbPt6F8QmI7CzkZgRIXZJ7eemvkPfZ6eEiPKHhG3dwC8PQbACwPiGWBmsEpQDR5N8/xvGr+rzh+cg5nyTVXzMo1gM=
+	t=1726224383; cv=none; b=hS65T82EXrSjawsMwRzD3VNRHo2Y2q+uOWzNT7uUbEUX64a/8e1RIfbr33MrFm6j24iRIqDCZEwN9AN6rerHF/ESijvPhehMCk8hfA9yi+Jjxc+qiL0umtepd8GYtCz+QyZRdkyz153fXG5/YMxxZnwQWLxinO4j9AE4Jf9KaWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726219964; c=relaxed/simple;
-	bh=4O2NPtM1NLF8/x7jRBau7jSt45OgkOZjXoYGaAykKhw=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=IxMWdKzKj44oGjs2lhYWzkuEcJq84fCAdPTiRVBaCtP2KUhVTDDhWvtVffPFPgpd7CA+8RozLw4w8MTq77YVNYn27MZosrvcliapOAAEEr1uPSs4axdvb7oTvgvJUT3zgXn3dBjiRvnDH6STIZXDn7tVwrhIpr22XcxEVMqrxMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WSoEobQb; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1726219961;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pKVcQh0mMWfw7YNLqAXgPrezuHhuotyVKCaDrGzitZI=;
-	b=WSoEobQb8ga/5EjTB8LtEicyTEb0daigoLiFLCc3xnatnar5XgNHnDRBZll4jTHLWAaMKf
-	1agGT009LRiSh6gVoypxkg5bWyeY2+KhuKvvz2l3Og1SRQ3Kje+t+HiwS8yf33OXJloGcc
-	NbGLOIMaXE0fMQbhtO7MUIAQ0PYLnJc=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-70-lLH3y46ROHGoR321_9vN-A-1; Fri,
- 13 Sep 2024 05:32:38 -0400
-X-MC-Unique: lLH3y46ROHGoR321_9vN-A-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EA49D19560AB;
-	Fri, 13 Sep 2024 09:32:35 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.67])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D2B8C1956086;
-	Fri, 13 Sep 2024 09:32:31 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <ZuPDZL_EIoS60L1a@gondor.apana.org.au>
-References: <ZuPDZL_EIoS60L1a@gondor.apana.org.au>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: dhowells@redhat.com, Roberto Sassu <roberto.sassu@huaweicloud.com>,
-    dwmw2@infradead.org, davem@davemloft.net,
-    linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
-    linux-crypto@vger.kernel.org, zohar@linux.ibm.com,
-    linux-integrity@vger.kernel.org, torvalds@linux-foundation.org,
-    roberto.sassu@huawei.com
-Subject: Re: [PATCH v3 00/14] KEYS: Add support for PGP keys and signatures
+	s=arc-20240116; t=1726224383; c=relaxed/simple;
+	bh=S3OfFPhvngzIXVIBvvu2VJ7Ne9DtASb05dIPumrAuGA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BVQV6Ubx3ptMeyUN0tT8O7ZmO/xgIQnn/I8Ee74AP3BNM35UQBI8QiL9nuzghXKge+d5n6kfBsbtVrtLIjmiboqw30UtYl0/rV+KUtQ4N2cbjLuTB+mucGHVNWgEb5Lv4wCF0T/+ob5daD6PabwP3AvyHcfMyYTYbvQD1FI9Ae8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PCesijiR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0A22C4CED0;
+	Fri, 13 Sep 2024 10:46:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726224382;
+	bh=S3OfFPhvngzIXVIBvvu2VJ7Ne9DtASb05dIPumrAuGA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=PCesijiRN0EG3csPIokYtW3nnlsM02Sn8/crXyeded6Dwiab1FXZ1fvHFnj32e9UD
+	 cUpXq9+9gb60uH+AhkYtovgYOFsLDU2WvffuKLjvouAEUdvtELf8wLcUFpeHcbx7UE
+	 PQRmFs+U5Oaa0v1kQ6ALW5DOePB1fBbdgCS1l4awJ9RecUVQQidV/f/6/CVaZvssFR
+	 9pLsHQ0AA8fyZh64QFPAmLTZOMJ5OnOGzfpFynP8FAX1vINw2F1j0K34I4XiMXX5Y8
+	 AnOGx3kl3u0eqy8V5gzcrzME/JZ336CG29Z3URffZrBjoA79xZam0o+VvZqNjuhuY4
+	 BRMp/RZi+BS3Q==
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2f75b13c2a8so24190331fa.3;
+        Fri, 13 Sep 2024 03:46:22 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUtjXwnFTNIuWnSbnkUwh3mG3eK9s80i598NqBybOM9WFflbthvaSQWT/sI23aDneB8mZCIDM+YDQLKVkBX@vger.kernel.org, AJvYcCUxlrTIMOpFB/UGvEnX4EaxQWiD2lHaNEILJooPdrIhFCtINDH8U2/jPJQxg2G0rbD6Q7BTyPkEccIO55kD@vger.kernel.org, AJvYcCXIHqZUR184CNDIy8QLX2hEkhyAs0T+fhGvgyWME+slirwUQprRnxfVIDWez3vAlwJ97UkQ4l3Cyw==@vger.kernel.org, AJvYcCXsvIfTLerldLa2wE4EUT769Y8N8i/BevX+aQ6HjWbIAv1j/whDkaAwxlbAv6SCG7OoDGHTGzzL2myKIknLJEce@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWUcLhFUar0QGK9HSPfpf6X9uw0wPDOW8TOnshNJYQhbv19RF1
+	5luUdTsRwJFNZ7u7ywM40DmK0ftvRKVaTxydIjWxdrTSABfosIyW6ovFn80ms3T0TA+hf5ZmaDd
+	AK13nl3cc9om3s4u8tZnjX+Q76js=
+X-Google-Smtp-Source: AGHT+IHgfCxPiT5vZMtaQepta9uqXpG4/5TNPzFxOmRXvEQwfvgwsKyWmN8/Fya2mEuSKQsg4t5AMIdDxMekLTQEEkM=
+X-Received: by 2002:a2e:1311:0:b0:2f3:ed34:41c9 with SMTP id
+ 38308e7fff4ca-2f787f32dc2mr26801081fa.37.1726224380930; Fri, 13 Sep 2024
+ 03:46:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1266434.1726219950.1@warthog.procyon.org.uk>
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 13 Sep 2024 10:32:30 +0100
-Message-ID: <1266435.1726219950@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+References: <ZuPDZL_EIoS60L1a@gondor.apana.org.au> <1266435.1726219950@warthog.procyon.org.uk>
+In-Reply-To: <1266435.1726219950@warthog.procyon.org.uk>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Fri, 13 Sep 2024 12:46:09 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXH8nWtAzX+9xc2tLyy5d0w==JNQCMJBAbL=LdcF+XrYkw@mail.gmail.com>
+Message-ID: <CAMj1kXH8nWtAzX+9xc2tLyy5d0w==JNQCMJBAbL=LdcF+XrYkw@mail.gmail.com>
+Subject: Re: [PATCH v3 00/14] KEYS: Add support for PGP keys and signatures
+To: David Howells <dhowells@redhat.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, 
+	Roberto Sassu <roberto.sassu@huaweicloud.com>, dwmw2@infradead.org, davem@davemloft.net, 
+	linux-kernel@vger.kernel.org, keyrings@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, zohar@linux.ibm.com, 
+	linux-integrity@vger.kernel.org, torvalds@linux-foundation.org, 
+	roberto.sassu@huawei.com
+Content-Type: text/plain; charset="UTF-8"
 
-Herbert Xu <herbert@gondor.apana.org.au> wrote:
+On Fri, 13 Sept 2024 at 11:32, David Howells <dhowells@redhat.com> wrote:
+>
+> Herbert Xu <herbert@gondor.apana.org.au> wrote:
+>
+> > Personally I don't think the argument above holds water.  With
+> > IPsec we had a similar issue of authenticating untrusted peers
+> > using public key cryptography.  In that case we successfully
+> > delegated the task to user-space and it is still how it works
+> > to this day.
 
-> Personally I don't think the argument above holds water.  With
-> IPsec we had a similar issue of authenticating untrusted peers
-> using public key cryptography.  In that case we successfully
-> delegated the task to user-space and it is still how it works
-> to this day.
+This is slightly disingenuous. The kernel itself has no need to trust
+the peer - it only manages the network pipe and authenticates/decrypts
+the packets on behalf of user space.
 
-It transpires that we do actually need at least a PGP parser in the kernel=
- -
-and it needs to be used prior to loading any modules: some Lenovo Thinkpad=
-s,
-at least, may have EFI variables holding a list of keys in PGP form, not X=
-.509
-form.
+The situation would be radically different if the kernel itself would
+communicate over IPsec (or HTTPS) directly.
 
-For example, in dmesg, you might see:
+Likewise for module loading: there is no way the authentication can be
+delegated to user space, unless that user space component is
+authenticated by the kernel (and runs in a special, hardened context).
+>
+> It transpires that we do actually need at least a PGP parser in the kernel -
+> and it needs to be used prior to loading any modules: some Lenovo Thinkpads,
+> at least, may have EFI variables holding a list of keys in PGP form, not X.509
+> form.
+>
+> For example, in dmesg, you might see:
+>
+> May 16 04:01:01 localhost kernel: integrity: Loading X.509 certificate: UEFI:MokListRT (MOKvar table)
+> May 16 04:01:01 localhost kernel: integrity: Problem loading X.509 certificate -126
+>
 
-May 16 04:01:01 localhost kernel: integrity: Loading X.509 certificate: UE=
-FI:MokListRT (MOKvar table)
-May 16 04:01:01 localhost kernel: integrity: Problem loading X.509 certifi=
-cate -126
+MokListRT is a shim construct, which is a component in the downstream
+distro boot chain. It is not part of EFI, and in your case, this is
+unlikely to be specific to Lenovo systems.
 
-On my laptop, if I dump this variable:
+> On my laptop, if I dump this variable:
+>
+>         efivar -e /tmp/q --name=605dab50-e046-4300-abb6-3dd810dd8b23-MokListRT
+>
+> And then looking at the data exported:
+>
+>         file /tmp/q
+>
+> I see:
+>
+>         /tmp/q: PGP Secret Sub-key -
+>
+> The kernel doesn't currently have a PGP parser.  I've checked and the value
+> doesn't parse as ASN.1:
+>
+>         openssl asn1parse -in /tmp/q -inform DER
+>             0:d=0  hl=2 l=  21 prim: cont [ 23 ]
+>         Error in encoding
+>         001EBA93B67F0000:error:0680007B:asn1 encoding routines:ASN1_get_object:header too long:crypto/asn1/asn1_lib.c:105:
+>
+> which would suggest that it isn't X.509.
+>
 
-	efivar -e /tmp/q --name=3D605dab50-e046-4300-abb6-3dd810dd8b23-MokListRT
-
-And then looking at the data exported:
-
-	file /tmp/q
-
-I see:
-
-	/tmp/q: PGP Secret Sub-key -
-
-The kernel doesn't currently have a PGP parser.  I've checked and the valu=
-e
-doesn't parse as ASN.1:
-
-	openssl asn1parse -in /tmp/q -inform DER
-	    0:d=3D0  hl=3D2 l=3D  21 prim: cont [ 23 ]       =
-
-	Error in encoding
-	001EBA93B67F0000:error:0680007B:asn1 encoding routines:ASN1_get_object:he=
-ader too long:crypto/asn1/asn1_lib.c:105:
-
-which would suggest that it isn't X.509.
-
-David
-
+This should be fixed in shim not the kernel.
 
