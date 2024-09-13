@@ -1,46 +1,77 @@
-Return-Path: <keyrings+bounces-2048-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2049-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DABB597891D
-	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2024 21:51:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C1A978A37
+	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2024 22:50:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F7C31C22A29
-	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2024 19:51:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59A6B28123D
+	for <lists+keyrings@lfdr.de>; Fri, 13 Sep 2024 20:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB64146D6E;
-	Fri, 13 Sep 2024 19:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734A31465A4;
+	Fri, 13 Sep 2024 20:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XTWlhpV0"
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="l4tNLFek"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC3B13CAA5;
-	Fri, 13 Sep 2024 19:51:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726257070; cv=none; b=aCsVV8XhqJJgnGvvfgSAyCSuQhbAOhx1lplD1VLr3vqPm0NdARU1jR6nWDKl/lrUaaqAL1zFR4NBbIU3XWBdUHi46qoDR92rAED8DUyQCB3e7vZQByWmCxk5cL64yqKBRgaL4/YTEfiymHCcZjIpiLEleSgf29KSLeX0dQKHRAM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726257070; c=relaxed/simple;
-	bh=W2r+kS904i1eF8SnmU6ynsgUgAqTin0VQq7IlkO2umU=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D64E824A1;
+	Fri, 13 Sep 2024 20:50:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726260637; cv=pass; b=ZOAculWvAIBub2yMfpA9tANHY7O5Nqv6QOID5ydA8JQq1lt3mSUHaoL918MGTYLK9oro7VALPyijBHmwU/wOqZRi8+Bpa6sUmPZyPNQXp1rtKPntMVzzW/7+H2vAe+zDfAM7bWLEmU4Ui0P6rghZ3tcx1/k8uKevh1Z3L0IK6R0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726260637; c=relaxed/simple;
+	bh=IyHwq3gLv93dYm4dDVxpET0KKx/gYmYIpij+l71ZSgk=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=gFPv8y6LNhpnoR3CV0dvlOSRjpJytDkYZwlMGW1eJKJt/HaBbfuleLRVeYDwceZ2GfuZtO/ARjECRnnZ/oHlqn44sjrpiQpgTiphEspM/B1j+hnlH8JRNlr007EXhCfNSzgLTwJLb4wn8MT3Mws6tG7PobbUTAuYPfy03zzxJjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XTWlhpV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F91C4CEC0;
-	Fri, 13 Sep 2024 19:51:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726257069;
-	bh=W2r+kS904i1eF8SnmU6ynsgUgAqTin0VQq7IlkO2umU=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=XTWlhpV0GW6n8Q0Y46b6EcDU34hs45fEGQJLJGqwssA0KF91mvCmAgMPv/ZVxDD/o
-	 21rNvfs4sFftS1IPadMy1LpstLfVsRXLICQJVZPs1H5KFZG6g91GoTTxvvGx15eWZU
-	 ZkVjwxnFu7e0lTE03QIRoA7vcvU10T4XUy4ZMIPsx/Dr14ym9syQfhEd68sXngddbK
-	 BzJxkzvkK87z4sctn3NVyD5+u6kRy5XD3dQ6xMAVVd0QAi55RpDKJ4JqURfCx90N7c
-	 afnIzGTgmrit/dzA46aPrZhLxCQnHWvGbpIUIP0mqe0SOiSqSLLbrW0D572JpmQq5l
-	 ut64rM77w5GYw==
+	 References:In-Reply-To; b=rucmliWrdZ/A8jSAqvAtw/NUCHLJP4XUhsFR5vo/wnSiSyp8XCRqiYCqe3uYHsHNrvrl3GC92uvi8MuUdelnZCfhXt+MFqvrq5Y0e0s1wP7EldXQ41vJpA4Y3G+Nf0q8OZtYVty2Wm0Q/Y0MAeLLf2AIJ3Dwa/DkvZnqdwgJsMs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=l4tNLFek; arc=pass smtp.client-ip=185.185.170.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+Received: from localhost (83-245-197-106.elisa-laajakaista.fi [83.245.197.106])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sakkinen)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4X55zk1W3lz49Q33;
+	Fri, 13 Sep 2024 23:50:26 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1726260626;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IyHwq3gLv93dYm4dDVxpET0KKx/gYmYIpij+l71ZSgk=;
+	b=l4tNLFek/TDFwZBOxa+fufpxVTS+FaVSZS33KwbLImz/KcR4/yPUbBM+N9mBLBmCVJp2zn
+	lcAkmPGVA34ADF8ARM2q+fvXoa5CSxGA2o9JIJpFkqZEwJK9Mw6KFvY9ApCHdfjfITi5Qy
+	N6dV9tb+HK9pv9CEEwY02m5yrIyrAB0Nm/6fPhUz4j/+C2vsTqSwabdrm+BjlbqDWNkSEE
+	CyO+hLGlJ6+yvbQGKOvWg4lnJAZK6sY8CF6fT7pkdyqwv34BaOH8lhL/b0IsZsKoGq4bUP
+	e4LumVA1oJNkj+rVGvEheQTwClDtgOo6RIviy8keZClra+arl1qUE3UcBA0pRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=lahtoruutu; t=1726260626;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IyHwq3gLv93dYm4dDVxpET0KKx/gYmYIpij+l71ZSgk=;
+	b=tq6KLSnUXAW1zeEzBJT5ak+sbn2fl9eh3+XRND730ZPBak+kO3yCAVJ/LJzMcZoXBPFr6k
+	9h7ag0Fr107V2BYG5QODKqXy/MwSXVqFQiL1H+ugjtD0ExQxW7YB8nRlD9GerDtP+z/ru4
+	bEe5SVHORRcOAbSoTl8M2rgQxfB/qdR5VCSnr6BMdrD5w+GZ3Vlo5J9H9L0/WycErZxCmT
+	4JK808o8/4IC4YO7HiuOxWWgA23KWLTgXsRM/qh1zH+pDf6YtvV6vlOupxjujDQlb+M6+b
+	zrCts5dXDqiwl1SQEaOSzZ3nmILXBN3odFX76NhMzbuC14d+bE18+m/k6qY32g==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=sakkinen smtp.mailfrom=jarkko.sakkinen@iki.fi
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1726260626; a=rsa-sha256;
+	cv=none;
+	b=pG0r/+T06biVOJqOTx9dZx9owVgyiCBY71em/k7Jqt0XexY9dhdCJESOjNgZbpUT6qN2Zh
+	9/p9eUZtENLEXI6P33uHs3B4epwcUnTtmyIYJo3o90Vhz3nB8p5XeRhBkwpFhaKM0tpSIy
+	2CMvpQ/FLzeqUZHud1MIeUEfk99BV09pU5J1Flb1/dcX5QxEMFvnToA3kVs0o3bp1LT6vF
+	3VKz1bDaPI8o5SEQMTzYjwiWG3TD7F1DXq1hDhGyuC2gJZVkT2EcAscOPiQATcE2p/gEmE
+	QeSHYKK34qyu0753tG42ueBslcgp5XT9ril+fud9t8B4DBbZmB1zvb69lcj/Dg==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -49,78 +80,65 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 13 Sep 2024 22:51:04 +0300
-Message-Id: <D45F23O3EX54.1NDMXAY5G7AL3@kernel.org>
-Cc: <keyrings@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
-Subject: Re: [PATCH v2] KEYS: prevent NULL pointer dereference in
- find_asymmetric_key()
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Sergey Shtylyov" <s.shtylyov@omp.ru>, "Roman Smirnov"
- <r.smirnov@omp.ru>, "David Howells" <dhowells@redhat.com>, "Herbert Xu"
- <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
- "Andrew Zaborowski" <andrew.zaborowski@intel.com>
-X-Mailer: aerc 0.17.0
-References: <20240910111806.65945-1-r.smirnov@omp.ru>
- <D42N9ASJJSUD.EG094MFWZA4Q@kernel.org>
- <84d6b0fa-4948-fe58-c766-17f87c2a2dba@omp.ru>
- <D43HG3PEBR4I.2INNPVZIT19ZZ@kernel.org>
- <D43HH3XOAXFO.2MX7FA48VOLE9@kernel.org>
- <85607ea7-a42a-1c7b-0722-e4b63a814385@omp.ru>
-In-Reply-To: <85607ea7-a42a-1c7b-0722-e4b63a814385@omp.ru>
+Date: Fri, 13 Sep 2024 23:50:24 +0300
+Message-Id: <D45GBJ51SBNP.1WR34VCVNSN52@iki.fi>
+Cc: <keyrings@vger.kernel.org>, "linux-integrity@vger.kernel.org"
+ <linux-integrity@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>,
+ "Pengyu Ma" <mapengyu@gmail.com>
+Subject: Re: [regression] significant delays when secureboot is enabled
+ since 6.10
+From: "Jarkko Sakkinen" <jarkko.sakkinen@iki.fi>
+To: "Roberto Sassu" <roberto.sassu@huaweicloud.com>, "Jarkko Sakkinen"
+ <jarkko@kernel.org>, "James Bottomley"
+ <James.Bottomley@HansenPartnership.com>, "Linux regressions mailing list"
+ <regressions@lists.linux.dev>
+X-Mailer: aerc 0.18.2
+References: <0b4a5a86-a9f6-42d1-a9ba-ec565b336d3a@leemhuis.info>
+ <92fbcc4c252ec9070d71a6c7d4f1d196ec67eeb0.camel@huaweicloud.com>
+ <D42LZPLE8HR3.2UTNOI9CYZPIR@kernel.org>
+ <D42M6OE94RLT.6EZSZLBTX437@kernel.org>
+ <663d272617d1aead08077ad2b72929cbc226372a.camel@HansenPartnership.com>
+ <D42N17MFTEDM.3E6IK034S26UT@kernel.org>
+ <f554031343039883068145f9f4777277e490dc05.camel@huaweicloud.com>
+ <D43JXBFOOB2O.3U6ZQ7DASR1ZW@kernel.org>
+ <7e47f97aede88b87fbb9c9284db2005764bfbedd.camel@huaweicloud.com>
+In-Reply-To: <7e47f97aede88b87fbb9c9284db2005764bfbedd.camel@huaweicloud.com>
 
-On Wed Sep 11, 2024 at 5:45 PM EEST, Sergey Shtylyov wrote:
-> On 9/11/24 4:19 PM, Jarkko Sakkinen wrote:
->
-> [...]
->
-> >>>>> In find_asymmetric_key(), if all NULLs are passed in id_{0,1,2} par=
-ameters
-> >>>>> the kernel will first emit WARN and then have an oops because id_2 =
-gets
-> >>>>> dereferenced anyway.
-> >>>>>
-> >>>>> Found by Linux Verification Center (linuxtesting.org) with Svace st=
-atic
-> >>>>> analysis tool.
-> >>>>
-> >>>> Weird, I recall that I've either sent a patch to address the same si=
-te
-> >>>> OR have commented a patch with similar reasoning. Well, it does not
-> >>>> matter, I think it this makes sense to me.
-> >>>>
-> >>>> You could further add to the motivation that given the panic_on_warn
-> >>>> kernel command-line parameter, it is for the best limit the scope an=
-d
-> >>>> use of the WARN-macro.
-> >>>
-> >>>    I don't understand what you mean -- this version of the patch keep=
-s
-> >>> the WARN_ON() call, it just moves that call, so that the duplicate id=
-_{0,1,2}
-> >>> checks are avoided...
-> >>
-> >> I overlooked the code change (my bad sorry). Here's a better version o=
-f
-> >> the first paragraph:
-> >>
-> >> "find_asymmetric_keys() has nullity checks of id_0 and id_1 but ignore=
-s
-> >> validation for id_2. Check nullity also for id_2."
-> >>
-> >> Yep, and it changes no situation with WARN_ON() macro for better or
-> >> worse. It would logically separate issue to discuss and address so
-> >> as far as I'm concerned, with this clarification I think the change
-> >> makes sense to me.
+On Thu Sep 12, 2024 at 11:13 AM EEST, Roberto Sassu wrote:
+> On Wed, 2024-09-11 at 18:14 +0300, Jarkko Sakkinen wrote:
+> > On Wed Sep 11, 2024 at 11:53 AM EEST, Roberto Sassu wrote:
+> > > I made few measurements. I have a Fedora 38 VM with TPM passthrough.
 > >=20
-> > Actually explicitly stating that call paths leading to WARN_ON()
-> > invocation are intact by the commit (as a reminder for future).
+> > I was thinking more like
+> >=20
+> > sudo bpftrace -e 'k:tpm_transmit { @start[tid] =3D nsecs; } kr:tpm_tran=
+smit { @[kstack, ustack, comm] =3D sum(nsecs - @start[tid]); delete(@start[=
+tid]); } END { clear(@start); }'
+> >=20
+> > For example when running "tpm2_createprimary --hierarchy o -G rsa2048 -=
+c owner.txt", I get:
 >
->    OK...
->    Do you still think the Fixes tag should be dropped (and thus the
-> Reported-by tag would become unnecessary?)?
+> Sure:
 
-I think we can keep them.
+Took couple of days to upgrade my BuildRoot environment to have bcc and
+bpftrace [1] but finally got similar figures (not the same test but doing
+extends).
+
+Summarizing your results looking at call before tpm_transmit:
+
+- HMAC management: 124 ms
+- extend with HMAC: 25 ms
+- extend without HMAC: 5.2 ms=20
+
+I'd see the only possible way to fix this would be refactor the HMAC
+implementation by making the caller always the orchestrator and thus
+allowing to use continueSession flag for TPM2_StartAuthSession to be
+used.
+
+For example if you do multiple extends there should not be good reason
+to setup and rollback session for each call separately right?
+
+[1] https://codeberg.org/jarkko/linux-tpmdd-test
 
 BR, Jarkko
 
