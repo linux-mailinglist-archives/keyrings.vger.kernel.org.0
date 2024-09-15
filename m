@@ -1,135 +1,127 @@
-Return-Path: <keyrings+bounces-2067-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2068-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E8EF9796EB
-	for <lists+keyrings@lfdr.de>; Sun, 15 Sep 2024 15:59:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE0D69796F0
+	for <lists+keyrings@lfdr.de>; Sun, 15 Sep 2024 15:59:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30DBC281EA4
-	for <lists+keyrings@lfdr.de>; Sun, 15 Sep 2024 13:59:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F8A3B21496
+	for <lists+keyrings@lfdr.de>; Sun, 15 Sep 2024 13:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68731C6890;
-	Sun, 15 Sep 2024 13:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355041C689D;
+	Sun, 15 Sep 2024 13:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sbtfAXaW"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="t+cL4B6W";
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="t+cL4B6W"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A943914286;
-	Sun, 15 Sep 2024 13:59:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663781E4BE;
+	Sun, 15 Sep 2024 13:59:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726408778; cv=none; b=dfwaY0tclYMzNRcMabMp5LU0fY3VG3gm4zhouM1ATnKsePT0fgCs0tjbek0q5FAuPp/W6jcNKXUjYHdQrxdJFt+ikiwPrEsvW2b3wnNUHmpwrI7QmW91HmlH8mKFq+j+N4JWndHCwYEK+xfotugQZvMQXP6oguzTp+ila4AiHGg=
+	t=1726408790; cv=none; b=uFhsOeyJfr1TTycAPCsZFgHK4xm+Q8i8E5MzLCewIGucEEQaD4A80yvjy4pQL2+xYUKC3P/cQUOjEOLtiIxNFhOSWgQkgfuUJjOxm8hNKJ7AoJmO/pYOM6drwk738xyrgHklCdqk28/7D6svRMi5ZSimDBlO+taeJK82RbuRGhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726408778; c=relaxed/simple;
-	bh=pGhdpnLKMMpzp5BtVWktmzX+4TYM4NBSRmFyG1Z+wtA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=bh6hE+Bzp26rlzzmDkkPJIHtF9i9LH8f5Sw5061LVh6JyPe4sP8hZeMTaoy6sJuIIT7zbgYbH0m5AGJpSiHSmq23nzpu88O4ta3QWvaV94uSTDgzngRdMOfT/Rixho4jq9dBMiQltnQPQZDK0suicM+xWnNRN8EUOKI15eSUg3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sbtfAXaW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2558C4CEC3;
-	Sun, 15 Sep 2024 13:59:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726408778;
-	bh=pGhdpnLKMMpzp5BtVWktmzX+4TYM4NBSRmFyG1Z+wtA=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=sbtfAXaWb+1nAyij4kgj52CR1uoOks3EK2FOcx/PKWm0nfj/uEjdsoj507dkSRCrg
-	 09KXd4+BXOZKqTjfqi7kO6dQtFnryWENOaikdp28qK6oemoZIuoADzKbYfmpqAtEs9
-	 1LR1MUhxMP0/WOHDr51s3t2SSEawdu5dK7tsVShoa+iF83apVqm3EuJN9FIGTKDrle
-	 gybf4l0LTMBWQAXEKcZs/ETzEDUf64+OiLh0INtOQkIg0Q9Lit2uVBGHidzOUCk0xv
-	 mMdiMzp0Jr7xMvlWsA9fykDxHZjtNN75WmyEQOmzSteOB97phBNFlVCQ2HkpeSwaV1
-	 vlO7XLKPOPV6Q==
+	s=arc-20240116; t=1726408790; c=relaxed/simple;
+	bh=M7XTnKiOkvygMAVY45yPCdZxs3a5dEDlEj1iCP1KQKE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=tkuKh4+fZpcVssYsRNmA0zuqj8bgbQXXY2yLPd6UpVckHtSVH1fHN8AH833e6+OH72HutZjPdZmxLg8fMe3ukzPFKpB2gfkLej8iYDG9+dmPFi6aYTROTgqDBk4xe45DGABghfw3r3e/f0tmzltYApN6vZPljTnqzS19pu2us8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=t+cL4B6W; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=t+cL4B6W; arc=none smtp.client-ip=96.44.175.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1726408785;
+	bh=M7XTnKiOkvygMAVY45yPCdZxs3a5dEDlEj1iCP1KQKE=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=t+cL4B6WaDuGcwfDgH3IKYaZ30ClKOZtEVeh3E64t3lH1yf6RczNsYdyIpCUMpBf8
+	 26gOsY+nsVKRgVBvy9ZYgUCk6+daispswtztoDzm1RbxQ/28wOHtZyr30x2emHYulw
+	 lBt1G04jjC407N0CtZOsFS4kNpsV8ryybv4vVNXw=
+Received: from localhost (localhost [127.0.0.1])
+	by bedivere.hansenpartnership.com (Postfix) with ESMTP id D2A35128739B;
+	Sun, 15 Sep 2024 09:59:45 -0400 (EDT)
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+ by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
+ with ESMTP id NqA8VVMp0qDd; Sun, 15 Sep 2024 09:59:45 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1726408785;
+	bh=M7XTnKiOkvygMAVY45yPCdZxs3a5dEDlEj1iCP1KQKE=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=t+cL4B6WaDuGcwfDgH3IKYaZ30ClKOZtEVeh3E64t3lH1yf6RczNsYdyIpCUMpBf8
+	 26gOsY+nsVKRgVBvy9ZYgUCk6+daispswtztoDzm1RbxQ/28wOHtZyr30x2emHYulw
+	 lBt1G04jjC407N0CtZOsFS4kNpsV8ryybv4vVNXw=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(Client did not present a certificate)
+	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 95CDF12872A6;
+	Sun, 15 Sep 2024 09:59:44 -0400 (EDT)
+Message-ID: <0b22c2c4b4a998fb44bb08be60a359acb9ecb8da.camel@HansenPartnership.com>
+Subject: Re: [regression] significant delays when secureboot is enabled
+ since 6.10
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>, Roberto Sassu
+	 <roberto.sassu@huaweicloud.com>, Linux regressions mailing list
+	 <regressions@lists.linux.dev>
+Cc: keyrings@vger.kernel.org, "linux-integrity@vger.kernel.org"
+	 <linux-integrity@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	Pengyu Ma <mapengyu@gmail.com>
+Date: Sun, 15 Sep 2024 09:59:43 -0400
+In-Reply-To: <D46RWPQ211ZS.12EYKZY053BH@kernel.org>
+References: <0b4a5a86-a9f6-42d1-a9ba-ec565b336d3a@leemhuis.info>
+	 <92fbcc4c252ec9070d71a6c7d4f1d196ec67eeb0.camel@huaweicloud.com>
+	 <D42LZPLE8HR3.2UTNOI9CYZPIR@kernel.org>
+	 <D42M6OE94RLT.6EZSZLBTX437@kernel.org>
+	 <663d272617d1aead08077ad2b72929cbc226372a.camel@HansenPartnership.com>
+	 <D42N17MFTEDM.3E6IK034S26UT@kernel.org>
+	 <f554031343039883068145f9f4777277e490dc05.camel@huaweicloud.com>
+	 <D43JXBFOOB2O.3U6ZQ7DASR1ZW@kernel.org>
+	 <7e47f97aede88b87fbb9c9284db2005764bfbedd.camel@huaweicloud.com>
+	 <D46RE2BWMGJ4.25VA7IVYTJ8MO@kernel.org>
+	 <D46RWPQ211ZS.12EYKZY053BH@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 15 Sep 2024 16:59:34 +0300
-Message-Id: <D46WU24OP9O4.1Y7EGDV8ZN7NR@kernel.org>
-Cc: <keyrings@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] security/keys: fix slab-out-of-bounds in
- key_task_permission
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Chen Ridong" <chenridong@huaweicloud.com>, "Chen Ridong"
- <chenridong@huawei.com>, <dhowells@redhat.com>, <paul@paul-moore.com>,
- <jmorris@namei.org>, <serge@hallyn.com>
-X-Mailer: aerc 0.18.2
-References: <20240913070928.1670785-1-chenridong@huawei.com>
- <D45Z3J2E2MPX.4SDWNGAP3D41@kernel.org>
- <4079d020-edcc-4e27-9815-580f83a6c0ca@huaweicloud.com>
-In-Reply-To: <4079d020-edcc-4e27-9815-580f83a6c0ca@huaweicloud.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Sun Sep 15, 2024 at 3:55 AM EEST, Chen Ridong wrote:
->
->
-> On 2024/9/14 19:33, Jarkko Sakkinen wrote:
-> > On Fri Sep 13, 2024 at 10:09 AM EEST, Chen Ridong wrote:
-> >> We meet the same issue with the LINK, which reads memory out of bounds=
-:
-> >=20
-> > Nit: don't use "we" anywhere".
-> >=20
-> > Tbh, I really don't understand the sentence above. I don't what
-> > "the same issue with the LINK" really is.
-> >=20
->
-> Hello, Jarkko.
-> I apologize for any confusion caused.
->
-> I've encountered a bug reported by syzkaller. I also found the same bug=
-=20
-> reported at this LINK:=20
-> https://syzkaller.appspot.com/bug?id=3D68a5e206c2a8e08d317eb83f05610c0484=
-ad10b9.
->
-> >> BUG: KASAN: slab-out-of-bounds in __kuid_val include/linux/uidgid.h:36
-> >> BUG: KASAN: slab-out-of-bounds in uid_eq include/linux/uidgid.h:63 [in=
-line]
-> >> BUG: KASAN: slab-out-of-bounds in key_task_permission+0x394/0x410
-> >> security/keys/permission.c:54
-> >> Read of size 4 at addr ffff88813c3ab618 by task stress-ng/4362
-> >>
-> >> CPU: 2 PID: 4362 Comm: stress-ng Not tainted 5.10.0-14930-gafbffd6c3ed=
-e #15
-> >> Call Trace:
-> >>   __dump_stack lib/dump_stack.c:82 [inline]
-> >>   dump_stack+0x107/0x167 lib/dump_stack.c:123
-> >>   print_address_description.constprop.0+0x19/0x170 mm/kasan/report.c:4=
-00
-> >>   __kasan_report.cold+0x6c/0x84 mm/kasan/report.c:560
-> >>   kasan_report+0x3a/0x50 mm/kasan/report.c:585
-> >>   __kuid_val include/linux/uidgid.h:36 [inline]
-> >>   uid_eq include/linux/uidgid.h:63 [inline]
-> >>   key_task_permission+0x394/0x410 security/keys/permission.c:54
-> >>   search_nested_keyrings+0x90e/0xe90 security/keys/keyring.c:793
-> >>   keyring_search_rcu+0x1b6/0x310 security/keys/keyring.c:922
-> >>   search_cred_keyrings_rcu+0x111/0x2e0 security/keys/process_keys.c:45=
-9
-> >>   search_process_keyrings_rcu+0x1d/0x310 security/keys/process_keys.c:=
-544
-> >>   lookup_user_key+0x782/0x12e0 security/keys/process_keys.c:762
-> >>   keyctl_invalidate_key+0x20/0x190 security/keys/keyctl.c:434
-> >>   __do_sys_keyctl security/keys/keyctl.c:1978 [inline]
-> >>   __se_sys_keyctl+0x1de/0x5b0 security/keys/keyctl.c:1880
-> >>   do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
-> >>   entry_SYSCALL_64_after_hwframe+0x67/0xd1
-> >>
-> >> However, we can't reproduce this issue.
-> >=20
-> > "The issue cannot be easily reproduced but by analyzing the code
-> > it can be broken into following steps:"
->
-> Thank you for your correction.
-> Does this patch address the issue correctly? Is this patch acceptable?
+On Sun, 2024-09-15 at 13:07 +0300, Jarkko Sakkinen wrote:
+> On Sun Sep 15, 2024 at 12:43 PM EEST, Jarkko Sakkinen wrote:
+> > When it comes to boot we should aim for one single
+> > start_auth_session during boot, i.e. different phases would leave
+> > that session open so that we don't have to load the context every
+> > single time.  I think it should be doable.
+> 
+> The best possible idea how to improve performance here would be to
+> transfer the cost from time to space. This can be achieved by keeping
+> null key permanently in the TPM memory during power cycle.
 
-I only comment new patch versions so not giving any promises but I can
-say that it is I think definitely in the correct direction :-)
+No it's not at all.  If you look at it, the NULL key is only used to
+encrypt the salt for the start session and that's the operating taking
+a lot of time.  That's why the cleanest mitigation would be to save and
+restore the session.  Unfortunately the timings you already complain
+about still show this would be about 10x longer than a no-hmac extend
+so I'm still waiting to see if IMA people consider that an acceptable
+tradeoff.
 
-BR, Jarkko
+> It would give about 80% increase given Roberto's benchmark to all
+> in-kernel callers. There's no really other possible solution for this
+> to make any major improvements. So after opt-in kernel command line
+> option I might look into this.
+> 
+> This is already done locally in tpm2_get_random(), which uses
+> continueSession to keep session open for all calls.
+
+The other problem if the session is context saved, as I already said,
+is that it becomes long lived and requires degapping the session
+manager.
+
+James
+
 
