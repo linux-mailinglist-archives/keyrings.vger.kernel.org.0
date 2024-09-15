@@ -1,184 +1,129 @@
-Return-Path: <keyrings+bounces-2058-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2059-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13A1A9793E1
-	for <lists+keyrings@lfdr.de>; Sun, 15 Sep 2024 02:55:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3552B9794F5
+	for <lists+keyrings@lfdr.de>; Sun, 15 Sep 2024 09:11:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 999811F21B48
-	for <lists+keyrings@lfdr.de>; Sun, 15 Sep 2024 00:55:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 056E128478F
+	for <lists+keyrings@lfdr.de>; Sun, 15 Sep 2024 07:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F92184E;
-	Sun, 15 Sep 2024 00:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84EDE208A0;
+	Sun, 15 Sep 2024 07:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="g7MfO1ZT"
 X-Original-To: keyrings@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5116EA41;
-	Sun, 15 Sep 2024 00:55:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7543B1B59A
+	for <keyrings@vger.kernel.org>; Sun, 15 Sep 2024 07:11:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726361717; cv=none; b=izdGt4Ekkr4DLCR2evnKHxMHWJgMSpZWo2SlRgfAnjlfZaiqP7oxt1D4C9Vr/Zhcx22d8nOjhQgvcHcl3/WJ8B4l9XAj0RVRyMxcTkQ2pfWDP07+fMNyjB3VVTJuvDlYq4854Y02PfUL3VlH4qAM62H0FfCgUwoz/rhCNzA12bM=
+	t=1726384287; cv=none; b=qtmYVeddCD99Bp+kXT8ABthYPEeS427M0eok5Ndw6E3M74Yv00SSXQIsFSM++AeIvex8jQe+SmjsSN/j2aN5dwCeKn8fRew1ZqoJ6dZpYViPcFOlc+RgC5FfZzdHarG1WxCxErq1rXxeCCvaMiyap2hNtmMO7oV1GbTk2C7hEks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726361717; c=relaxed/simple;
-	bh=7e+VF93yu9rQUiTwqw1nyWInvcLvFgzxDjdDrfLtzqo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=E+Sw7q95ufAV/co/wyONs4cCxKEYnKcm46gKW4gb0nntSVq3dY4nT1Wesqvn0O4vRdj1ABWfkZA84VUQZWlTIgqSvUrSlLi2xRQ514fo6HAUd2yck5Zfh6yCeaMuBZOyHiiiEah4N7OMjWgUpWbGXRJvnNT7BwNbEEmaB1371PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4X5qML5hmQz4f3jsg;
-	Sun, 15 Sep 2024 08:54:54 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id 6BBB51A08FC;
-	Sun, 15 Sep 2024 08:55:10 +0800 (CST)
-Received: from [10.67.109.79] (unknown [10.67.109.79])
-	by APP2 (Coremail) with SMTP id Syh0CgBHfGFrMOZmQWNgBQ--.41765S2;
-	Sun, 15 Sep 2024 08:55:09 +0800 (CST)
-Message-ID: <4079d020-edcc-4e27-9815-580f83a6c0ca@huaweicloud.com>
-Date: Sun, 15 Sep 2024 08:55:07 +0800
+	s=arc-20240116; t=1726384287; c=relaxed/simple;
+	bh=xjWojUc1mLB5ktKYpFXYU5sO8vFqeC4TxRTtvNAcNTk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GOt2XmaLd+bUPT4lH4h+d9IjJ+299zhUK4sLltaOdXJ5tkKc7efB8/p8Vl8vwVR9+g1wJYbaWLtZQQtxlK6HY0o+MLp6HfS+S4LDOqCHW57dkFuVrgCQ3V/9z4SjlIP8BoZRlKjUAh1SLtnHUuMwT5vvxGIQziwMYEXCEYVft9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=g7MfO1ZT; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a8d13b83511so413840766b.2
+        for <keyrings@vger.kernel.org>; Sun, 15 Sep 2024 00:11:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1726384284; x=1726989084; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yc55qxpiIVFj7PWD1KIvBrEfXf3cIQSNj9lFEjAYl9E=;
+        b=g7MfO1ZTCqtEcsI2uxXwQYB41trv/aYnxKEeu/ZUWPq9H1MbiarpVfCXhjRQ4/cdfr
+         a70CAIBqKCYm/2/woaPgbGTv3FMv6GVEpbrAcXvkH/UWoTmjiF8xWaSWZYYtoxxy9IPj
+         h0R1zuhcy2MZg3z2EFD1uLOkeOSKPEOtpIBa8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726384284; x=1726989084;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Yc55qxpiIVFj7PWD1KIvBrEfXf3cIQSNj9lFEjAYl9E=;
+        b=VAlQLxiG3J8FCn/HIawsSoCI1FOfwtG+1v0mX2NB5rA0DX0BSyNh6++HsZyoKhYrTL
+         Klowi2j5GkLOdGsE42Wbj0pWA9/umuvaE1etTferygXn5eDCWWLnSCdQ6PKhLdP5CA+o
+         qMafK+B99jpE8Ay+mNSBbncmNgtOznpibg6S8rfifU2J9KnouPv/SiFtxV86OTBQvb7J
+         wPDdRU9Ya24GOGk/+D/z23WZy0talPeb6AsGqOxwHjGL28w6WRFE7/pVmC4+p0NuUBMw
+         OEahreJ9+zZMOzWh6WuivFuIm17SgM0tD2tJfVp1y4QjhGX41XB6ql6pmo/xKgaZWteP
+         UunA==
+X-Forwarded-Encrypted: i=1; AJvYcCUuQnCnBJMplUbzQ9LGoj5Z0fh99qrqYT9EeimPo8AQmV4fo4rvFAa2+pIygXEshMAbOY/gfGD1iw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9+XJ+5gygcdw1rWQMl936DFbjLQO53tCwiu9PIccqgO3+X315
+	n+N2JHegbGh96sFjqnnL50Rp7fjkeoa8peInFG+b2c35Pq8DCM2l1k1JNiAGjAbgE9V0+NIxcll
+	YB5on4Q==
+X-Google-Smtp-Source: AGHT+IHISp6V0i9xk8o8f+a6w4PoCKsZq0GS/ukilDK/8WCf5+19EvkaEGxcYGZxd1Zjk7cyZjuM9Q==
+X-Received: by 2002:a17:907:d853:b0:a8d:5f69:c854 with SMTP id a640c23a62f3a-a902944e7a8mr1054950966b.24.1726384283494;
+        Sun, 15 Sep 2024 00:11:23 -0700 (PDT)
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com. [209.85.208.54])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a90610968b9sm162703466b.5.2024.09.15.00.11.21
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 15 Sep 2024 00:11:21 -0700 (PDT)
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5c42e7adbe0so661170a12.2
+        for <keyrings@vger.kernel.org>; Sun, 15 Sep 2024 00:11:21 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVHVq1/CYBpfpZnV21jbfvLRk8qgEJZIO6GO3HEpVgJs++50ZxEK8s1xGhFnHakQxM1tD335wVJfA==@vger.kernel.org
+X-Received: by 2002:a05:6402:5193:b0:5c2:7002:7cf8 with SMTP id
+ 4fb4d7f45d1cf-5c413e1f43bmr8669748a12.17.1726384281208; Sun, 15 Sep 2024
+ 00:11:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] security/keys: fix slab-out-of-bounds in
- key_task_permission
-To: Jarkko Sakkinen <jarkko@kernel.org>, Chen Ridong <chenridong@huawei.com>,
- dhowells@redhat.com, paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com
-Cc: keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240913070928.1670785-1-chenridong@huawei.com>
- <D45Z3J2E2MPX.4SDWNGAP3D41@kernel.org>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <D45Z3J2E2MPX.4SDWNGAP3D41@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:Syh0CgBHfGFrMOZmQWNgBQ--.41765S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxCFyUGr1xKrW7Xw1xKry3Arb_yoWrZw13pF
-	WrKFyjyr1Utry2grySk3WUWw1rZa90kw17G39Ig347A3Z5Xr1DJFWvkF1j9Fy5ur42yFyF
-	yFsFvwsxZ3Wqv3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUymb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vI
-	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
-	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
-	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
-	14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UAwIDUUUUU=
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+References: <ZuPDZL_EIoS60L1a@gondor.apana.org.au> <b4a3e55650a9e9f2302cf093e5cc8e739b4ac98f.camel@huaweicloud.com>
+In-Reply-To: <b4a3e55650a9e9f2302cf093e5cc8e739b4ac98f.camel@huaweicloud.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sun, 15 Sep 2024 09:11:04 +0200
+X-Gmail-Original-Message-ID: <CAHk-=wiU24MGO7LZ1ZZYpQJr1+CSFG9VnB0Nyy4xZSSc_Zu0rg@mail.gmail.com>
+Message-ID: <CAHk-=wiU24MGO7LZ1ZZYpQJr1+CSFG9VnB0Nyy4xZSSc_Zu0rg@mail.gmail.com>
+Subject: Re: [PATCH v3 00/14] KEYS: Add support for PGP keys and signatures
+To: Roberto Sassu <roberto.sassu@huaweicloud.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>, dhowells@redhat.com, dwmw2@infradead.org, 
+	davem@davemloft.net, linux-kernel@vger.kernel.org, keyrings@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, zohar@linux.ibm.com, 
+	linux-integrity@vger.kernel.org, roberto.sassu@huawei.com, 
+	linux-security-module@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+On Fri, 13 Sept 2024 at 10:30, Roberto Sassu
+<roberto.sassu@huaweicloud.com> wrote:
+>
+> On Fri, 2024-09-13 at 12:45 +0800, Herbert Xu wrote:
+> >
+> > Does this address Linus's objections? If not then we cannot proceed.
+>
+> I hope to get an answer from him.
 
+So honestly, just the series adding pgp key verification I have no
+objection to. The use case where some firmware uses pgp to validate
+allowed keys in EFI variables etc sounds like a "ok, then we need to
+parse them".
 
-On 2024/9/14 19:33, Jarkko Sakkinen wrote:
-> On Fri Sep 13, 2024 at 10:09 AM EEST, Chen Ridong wrote:
->> We meet the same issue with the LINK, which reads memory out of bounds:
-> 
-> Nit: don't use "we" anywhere".
-> 
-> Tbh, I really don't understand the sentence above. I don't what
-> "the same issue with the LINK" really is.
-> 
+The objections I had were against the whole "start doing policy in
+kernel", with what sounded like actually parsing and unpacking rpm
+contents and verifying them with a pgp key. *That* still sounds like a
+disaster to me, and is the part that made me go "why isn't that done
+in user space together with then generating the fsverifty
+information"?
 
-Hello, Jarkko.
-I apologize for any confusion caused.
+The argument that the kernel is the only part of the system you trust
+is bogus. The kernel does nothing on its own (apart from device
+enumeration etc of course), so if you have no trustworthy user space,
+then you might as well just give up entirely. At a *minimum* you have
+initrd, and that can then be the start of a chain of user space trust.
 
-I've encountered a bug reported by syzkaller. I also found the same bug 
-reported at this LINK: 
-https://syzkaller.appspot.com/bug?id=68a5e206c2a8e08d317eb83f05610c0484ad10b9.
+Parsing rpm files in the kernel really sounds horrendous. But that
+doesn't mean that I hate *this* series that just adds pgp key handling
+in case there are other valid uses for it.
 
->> BUG: KASAN: slab-out-of-bounds in __kuid_val include/linux/uidgid.h:36
->> BUG: KASAN: slab-out-of-bounds in uid_eq include/linux/uidgid.h:63 [inline]
->> BUG: KASAN: slab-out-of-bounds in key_task_permission+0x394/0x410
->> security/keys/permission.c:54
->> Read of size 4 at addr ffff88813c3ab618 by task stress-ng/4362
->>
->> CPU: 2 PID: 4362 Comm: stress-ng Not tainted 5.10.0-14930-gafbffd6c3ede #15
->> Call Trace:
->>   __dump_stack lib/dump_stack.c:82 [inline]
->>   dump_stack+0x107/0x167 lib/dump_stack.c:123
->>   print_address_description.constprop.0+0x19/0x170 mm/kasan/report.c:400
->>   __kasan_report.cold+0x6c/0x84 mm/kasan/report.c:560
->>   kasan_report+0x3a/0x50 mm/kasan/report.c:585
->>   __kuid_val include/linux/uidgid.h:36 [inline]
->>   uid_eq include/linux/uidgid.h:63 [inline]
->>   key_task_permission+0x394/0x410 security/keys/permission.c:54
->>   search_nested_keyrings+0x90e/0xe90 security/keys/keyring.c:793
->>   keyring_search_rcu+0x1b6/0x310 security/keys/keyring.c:922
->>   search_cred_keyrings_rcu+0x111/0x2e0 security/keys/process_keys.c:459
->>   search_process_keyrings_rcu+0x1d/0x310 security/keys/process_keys.c:544
->>   lookup_user_key+0x782/0x12e0 security/keys/process_keys.c:762
->>   keyctl_invalidate_key+0x20/0x190 security/keys/keyctl.c:434
->>   __do_sys_keyctl security/keys/keyctl.c:1978 [inline]
->>   __se_sys_keyctl+0x1de/0x5b0 security/keys/keyctl.c:1880
->>   do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
->>   entry_SYSCALL_64_after_hwframe+0x67/0xd1
->>
->> However, we can't reproduce this issue.
-> 
-> "The issue cannot be easily reproduced but by analyzing the code
-> it can be broken into following steps:"
+But maybe I misunderstood the original suggestion from Roberto.
 
-Thank you for your correction.
-Does this patch address the issue correctly? Is this patch acceptable?
-
-Best regard,
-Ridong
-
-> 
->> After our analysis, it can make this issue by following steps.
->> 1.As syzkaller reported, the memory is allocated for struct
->>    assoc_array_shortcut in the assoc_array_insert_into_terminal_node
->>    functions.
->> 2.In the search_nested_keyrings, when we go through the slots in a node,
->>    (bellow tag ascend_to_node), and the slot ptr is meta and
->>    node->back_pointer != NULL, we will proceed to  descend_to_node.
->>    However, there is an exception. If node is the root, and one of the
->>    slots points to a shortcut, it will be treated as a keyring.
->> 3.Whether the ptr is keyring decided by keyring_ptr_is_keyring function.
->>    However, KEYRING_PTR_SUBTYPE is 0x2UL, the same as
->>    ASSOC_ARRAY_PTR_SUBTYPE_MASK,
->> 4.As mentioned above, If a slot of the root is a shortcut, it may be
->>    mistakenly be transferred to a key*, leading to an read out-of-bounds
->>    read.
->>
->> To fix this issue, one should jump to descend_to_node if the pointer is a
->> shortcut.
->>
->> Link: https://syzkaller.appspot.com/bug?id=68a5e206c2a8e08d317eb83f05610c0484ad10b9
->> Fixes: b2a4df200d57 ("KEYS: Expand the capacity of a keyring")
->> Signed-off-by: Chen Ridong <chenridong@huawei.com>
->> ---
->>   security/keys/keyring.c | 4 +++-
->>   1 file changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/security/keys/keyring.c b/security/keys/keyring.c
->> index 4448758f643a..7958486ac834 100644
->> --- a/security/keys/keyring.c
->> +++ b/security/keys/keyring.c
->> @@ -772,7 +772,9 @@ static bool search_nested_keyrings(struct key *keyring,
->>   	for (; slot < ASSOC_ARRAY_FAN_OUT; slot++) {
->>   		ptr = READ_ONCE(node->slots[slot]);
->>   
->> -		if (assoc_array_ptr_is_meta(ptr) && node->back_pointer)
->> +		if ((assoc_array_ptr_is_meta(ptr) && node->back_pointer) ||
->> +		    (assoc_array_ptr_is_meta(ptr) &&
->> +		     assoc_array_ptr_is_shortcut(ptr)))
->>   			goto descend_to_node;
->>   
->>   		if (!keyring_ptr_is_keyring(ptr))
-> 
-> 
-> BR, Jarkko
-
+              Linus
 
