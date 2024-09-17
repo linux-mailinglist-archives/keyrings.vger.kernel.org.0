@@ -1,143 +1,153 @@
-Return-Path: <keyrings+bounces-2083-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2084-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85FAC97ACBD
-	for <lists+keyrings@lfdr.de>; Tue, 17 Sep 2024 10:19:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5CF097AFB1
+	for <lists+keyrings@lfdr.de>; Tue, 17 Sep 2024 13:29:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AE1E1F2250E
-	for <lists+keyrings@lfdr.de>; Tue, 17 Sep 2024 08:19:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00B451C21DA7
+	for <lists+keyrings@lfdr.de>; Tue, 17 Sep 2024 11:29:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D07145FE5;
-	Tue, 17 Sep 2024 08:19:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="bL/niYfi";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="rR9CngKH";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="bL/niYfi";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="rR9CngKH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE355165EE2;
+	Tue, 17 Sep 2024 11:29:49 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F63BE4F
-	for <keyrings@vger.kernel.org>; Tue, 17 Sep 2024 08:19:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+Received: from wind.enjellic.com (wind.enjellic.com [76.10.64.91])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347E9200A3;
+	Tue, 17 Sep 2024 11:29:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=76.10.64.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726561195; cv=none; b=kj1N6W5s1poMGUiX4pAzRgcOlf6QFbQw3PAYKxU/xWEEHaL4n0/FA87BILT8t+VCCP65b0WP2+1Q/ng9NuHtGJJ4vQRPv0IEYNZI4A/+9Jm4e8vrbGkieXjWeiVUHHXNQZeOX8QYIJcMe0rPls/BS8c+SEuNuloqrYT1ZowHzxA=
+	t=1726572589; cv=none; b=VOCgToaa+ZwUeuPvBkFmOEiPRZQYUT/q1P3TWP5+O5Wfj8OWRGdNF6UBhQ73ooVZnymvlqzOxROGbPbum7QhW/pAEO9SVh2wJWpW5h93HH5lOOpnkjtwlAfkBKzNQ5y0ePHqgnOGif2NI6KgIjxPJNAbZydkiXnQYX0GQYCIFnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726561195; c=relaxed/simple;
-	bh=u7sTORogatsWkbTHxzWvRqPvu6Ugz2yj/5IDpwYGGXA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZyWl/bZ1tDBhUJDpYJadwv6buNBFDJqAYSzK76e/+wF+IaP7hZF9PiziC45jp3ReL+wByJKUcaNru4vAzjl/Vu5SZAdrf1KGlTEa7fC2InnXvUjvEpPF65RLdG3AwLcavzkqtRadv32BpAjk8ekdd/NAQZqLbPZzJLGOnQ2OwQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=bL/niYfi; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=rR9CngKH; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=bL/niYfi; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=rR9CngKH; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 77DE21FB69;
-	Tue, 17 Sep 2024 08:19:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1726561189; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xuDFv0gWLy/ZiI+ix4hN6AL3Ol/WWNAH0kpV6kzgLHU=;
-	b=bL/niYfiBPnnT6VXi/FeX0M/Q6pwt2PoA+7oZlqtLKae4vKiWePjQYObOsNvksDN6gmN5S
-	PvRkMISUnaEeKDFME4KE+07I9BMumPc9H8VT4SivWxv5/M5TvyV0bcxjOAyZZbkdNGA/3O
-	zJjdq0ljoUKob7nJFFSgbqd0zl86ENg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1726561189;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xuDFv0gWLy/ZiI+ix4hN6AL3Ol/WWNAH0kpV6kzgLHU=;
-	b=rR9CngKHF9zk1VbxzFlrt3QW0jEhZsMHJFHm5SjF8kWUwitU/pLBsyLxfxrxx+6p9tmD5D
-	dgqeg/YZYhV2Z/BA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1726561189; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xuDFv0gWLy/ZiI+ix4hN6AL3Ol/WWNAH0kpV6kzgLHU=;
-	b=bL/niYfiBPnnT6VXi/FeX0M/Q6pwt2PoA+7oZlqtLKae4vKiWePjQYObOsNvksDN6gmN5S
-	PvRkMISUnaEeKDFME4KE+07I9BMumPc9H8VT4SivWxv5/M5TvyV0bcxjOAyZZbkdNGA/3O
-	zJjdq0ljoUKob7nJFFSgbqd0zl86ENg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1726561189;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xuDFv0gWLy/ZiI+ix4hN6AL3Ol/WWNAH0kpV6kzgLHU=;
-	b=rR9CngKHF9zk1VbxzFlrt3QW0jEhZsMHJFHm5SjF8kWUwitU/pLBsyLxfxrxx+6p9tmD5D
-	dgqeg/YZYhV2Z/BA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5EB2513AB6;
-	Tue, 17 Sep 2024 08:19:49 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id HeDSFqU76Wb6TQAAD6G6ig
-	(envelope-from <chrubis@suse.cz>); Tue, 17 Sep 2024 08:19:49 +0000
-Date: Tue, 17 Sep 2024 10:18:34 +0200
-From: Cyril Hrubis <chrubis@suse.cz>
-To: Petr Vorel <pvorel@suse.cz>
-Cc: Ma Xinjian <maxj.fnst@fujitsu.com>, keyrings@vger.kernel.org,
-	ltp@lists.linux.it, Eric Biggers <ebiggers@google.com>
-Subject: Re: [LTP] [PATCH] request_key: Add negative tests for request_key
-Message-ID: <Zuk7Wn1CWSLaicut@yuki.lan>
-References: <20240521081552.2162-1-maxj.fnst@fujitsu.com>
- <20240730103431.GA1371143@pevik>
+	s=arc-20240116; t=1726572589; c=relaxed/simple;
+	bh=BSUGbVFzo/XLFC1Eb0wbRRxSENs3PhgBjIFbMO9VrPU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Mime-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L5cBAFvqxGf7M1vnhkcXBk02LanXQxNAEHDLEZOg4ZGS9j3XQbM3vsliiwkcAYQ/Bd4ccYKrTKIrkShY8MwSYA2n31p1XMcLxPauN4cIs9LtxTvfzQBREQdm8aCFqWw3DEIf1VLAV7nDG7WiSDhubXsHvCXYDdVDLnde502G4YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com; spf=pass smtp.mailfrom=wind.enjellic.com; arc=none smtp.client-ip=76.10.64.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=enjellic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wind.enjellic.com
+Received: from wind.enjellic.com (localhost [127.0.0.1])
+	by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 48HBRQaS014263;
+	Tue, 17 Sep 2024 06:27:26 -0500
+Received: (from greg@localhost)
+	by wind.enjellic.com (8.15.2/8.15.2/Submit) id 48HBROCL014262;
+	Tue, 17 Sep 2024 06:27:24 -0500
+Date: Tue, 17 Sep 2024 06:27:24 -0500
+From: "Dr. Greg" <greg@enjellic.com>
+To: Roberto Sassu <roberto.sassu@huaweicloud.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
+        Linus Torvalds <torvalds@linux-foundation.org>, dhowells@redhat.com,
+        dwmw2@infradead.org, davem@davemloft.net, linux-kernel@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        zohar@linux.ibm.com, linux-integrity@vger.kernel.org,
+        roberto.sassu@huawei.com, linux-security-module@vger.kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH v3 00/14] KEYS: Add support for PGP keys and signatures
+Message-ID: <20240917112724.GA14167@wind.enjellic.com>
+Reply-To: "Dr. Greg" <greg@enjellic.com>
+References: <ZuPDZL_EIoS60L1a@gondor.apana.org.au> <b4a3e55650a9e9f2302cf093e5cc8e739b4ac98f.camel@huaweicloud.com> <CAHk-=wiU24MGO7LZ1ZZYpQJr1+CSFG9VnB0Nyy4xZSSc_Zu0rg@mail.gmail.com> <ZuaVzQqkwwjbUHSh@gondor.apana.org.au> <CAHk-=wgnG+C3fVB+dwZYi_ZEErnd_jFbrkN+xc__om3d=7optQ@mail.gmail.com> <ZualreC25wViRHBq@gondor.apana.org.au> <ZuapXswFUxsFxjgH@gondor.apana.org.au> <2541abb8-68b5-4e6a-b309-a001ecdfbea1@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240730103431.GA1371143@pevik>
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,yuki.lan:mid,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Level: 
+In-Reply-To: <2541abb8-68b5-4e6a-b309-a001ecdfbea1@huaweicloud.com>
+User-Agent: Mutt/1.4i
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Tue, 17 Sep 2024 06:27:26 -0500 (CDT)
 
-Hi!
-> LGTM, thanks!
-> Reviewed-by: Petr Vorel <pvorel@suse.cz>
-> 
-> We also somehow test EACCES (request_key04.c). Looking into man page, there are
-> other interesting errno to test I suppose (EDQUOT, EKEYEXPIRED, EKEYREJECTED,
-> ...)
-> 
-> @Eric, other devs, would you have time to have a quick look on the test?
+On Sun, Sep 15, 2024 at 07:52:13PM +0200, Roberto Sassu wrote:
 
-I've pushed the patch, we can add more tests later on.
+Good morning, I hope the day is starting well for everyone.
 
--- 
-Cyril Hrubis
-chrubis@suse.cz
+> On 9/15/2024 11:31 AM, Herbert Xu wrote:
+> >On Sun, Sep 15, 2024 at 05:15:25PM +0800, Herbert Xu wrote:
+> >>
+> >>Roberto, correct me if I'm wrong but your intended use case is
+> >>the following patch series, right?
+> >
+> >Actually the meat of the changes is in the following series:
+> >
+> >https://lore.kernel.org/linux-integrity/20240905150543.3766895-1-roberto.sassu@huaweicloud.com/
+
+> Yes, correct. The idea is to verify the authenticity of RPM headers,
+> extract the file digests from them, and use those file digests as
+> reference values for integrity checking of files accessed by user
+> space processes.
+>
+> If the calculated digest of a file being accessed matches one
+> extracted from the RPM header, access is granted otherwise it is
+> denied.
+
+Based on the above response and your comment:
+
+"The security policy I want to enforce is: all code that the system
+executes has been built by a trusted source (e.g. a Linux
+distribution)."
+
+From the following URL:
+
+https://lore.kernel.org/linux-integrity/b4a3e55650a9e9f2302cf093e5cc8e739b4ac98f.camel@huaweicloud.com/#t
+
+What you are advocating for then, with this patch series and the
+digest cache series, is a security policy that requires signed code
+execution, correct?
+
+Nothing wrong with that, it is a reasonable security desire, but it
+seems wrong to conflate that with the implementation of the digest
+cache.  There is a great deal of utility in a digest cache but it
+doesn't require the need to parse RPM header information and/or TLV
+sequences in the kernel.
+
+That would only appear to be a requirement if your goal is a signed
+executable policy that is implemented through a packaging medium,
+correct?
+
+To wit:
+
+If I have security infrastructure that gives me confidence in the
+integrity of the files on my media, I can populate a digest cache with
+a simple ASCII list of pathnames fed into the kernel at boot time.
+
+If I don't have confidence in the integrity of the files on my media I
+could append a known good checksum to each pathname with the last
+entry in the list being a PGP signature over the input stream.
+
+I brought the following issue up in the patch series that Herbert
+links to above, but will do so here, since I believe it has relevance
+to this conversation as well.
+
+If the goal is to have the digest cache be relevant from an integrity
+perspective, particularly a signed code policy, you have to physically
+read every file that has a digest value in the RPM digest list.
+Otherwise the scheme is vulnerable to a Time Of Measurement Time Of
+Use (TOMTOU) vulnerability scenario, correct?
+
+This requires that one needs to experience a latency hit at least
+once, presumably at boot when you prime the digest cache, correct?
+
+An alternative approach may be to separate the RPM/TLV parsing code
+from the digest code and implement RPM/Debian/whatever parsing in a
+loadable module that would in turn populate the digest cache.
+
+That may be a more acceptable strategy since it places the potential
+security vulnerabilities of a parser into something that an entity
+that is interested in a signed code policy would consider to be an
+acceptable tradeoff from a security perspective.
+
+> Roberto
+
+Hopefully the above comments and clarifications will be helpful in
+furthering additional discussion.
+
+Have a good day.
+
+As always,
+Dr. Greg
+
+The Quixote Project - Flailing at the Travails of Cybersecurity
+              https://github.com/Quixote-Project
 
