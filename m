@@ -1,79 +1,89 @@
-Return-Path: <keyrings+bounces-2106-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2107-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C3697C579
-	for <lists+keyrings@lfdr.de>; Thu, 19 Sep 2024 10:00:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BAE897CA52
+	for <lists+keyrings@lfdr.de>; Thu, 19 Sep 2024 15:45:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85193284CC0
-	for <lists+keyrings@lfdr.de>; Thu, 19 Sep 2024 08:00:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 226A31F245A7
+	for <lists+keyrings@lfdr.de>; Thu, 19 Sep 2024 13:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CACDF199253;
-	Thu, 19 Sep 2024 08:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D90219E7FB;
+	Thu, 19 Sep 2024 13:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jceGIhtm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eeQx8zw7"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2884199FC7;
-	Thu, 19 Sep 2024 08:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E70C101C8;
+	Thu, 19 Sep 2024 13:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726732809; cv=none; b=Ox1SzpptORrHy6xTpdl+XaDRSRk03B2GPDQ3rW1UTLZrVTc7Cz1ZHhFWEb1TfQb3gWcKeB1TTwKrWDnt53ySXqLkOLGflLwgKxXMXNZRzrM3QfAnwy5kL5f1l8xnePXwNK6XBc35nmQ4fhtH5l+UJnciqhhRqMui81MVbSlVmiU=
+	t=1726753530; cv=none; b=LkGpmG0dLuBIjaUYwIosShGW5vapFlSxhJb6vh/89CSAanHXjDED8WPpmgmDc6c6WxTlmTjEkZTYlHOsH/VMxjMTdjbZPsHtdP3FQNajI+vDQ4BtRyUvud5d5GiW1R4BgQN0486J8bzJGgkxSvGufNbtnuAgGBiNsnwubLaLCgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726732809; c=relaxed/simple;
-	bh=I/G4k6y4i9DNO1R6tRk8uZ85Yb1u0CalDZlvaSRmhgM=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=MVwMfX+JSk950WvcarQzOkhmtcF/kSdj8Iab5c6onR+QhddUUI6/0vUgcosQNPRfDbzwokhlIaRdbLWkdvLbL6Uop4ib+xocqcs7mZ4nHdrbpXDyrkDzHf7OzGILKfe8d4yG7IQFbpFzizwq0iw14KGlvd2jvxeTxLy2iZK66ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jceGIhtm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F360C4CEC4;
-	Thu, 19 Sep 2024 08:00:09 +0000 (UTC)
+	s=arc-20240116; t=1726753530; c=relaxed/simple;
+	bh=FUYBepLdRp0iSBZxVwRXEjHJHigCeMLd0ZMY0ivjTAc=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=rXE18V+EXzXagBAIAX6He0g5gj3a3IbAOL+c9u3rSey4mVD4zJeDQsqo84pRI3v8uFjQ12QdhifxUO05mFCamur73IKKKBkS2u8teZQIEMWV61ZNgEHEo0h7artDYdFZdZjgL/idyK4CFynWUpg70HG0yLv4Zv8m1ePy3Kk0D14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eeQx8zw7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5916AC4CEC4;
+	Thu, 19 Sep 2024 13:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726732809;
-	bh=I/G4k6y4i9DNO1R6tRk8uZ85Yb1u0CalDZlvaSRmhgM=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=jceGIhtmTXYYUWUaehmwKhrqznRQxn23ytG13DMzyw7r3+Wi/CdSS28AfF/t3eF7W
-	 tuQplsetNRm9I+EdKoO1LbjlETUWmV2IuXLpZl7oh19VlJnsyYp/2SiqCbWE9C4S6W
-	 d5lKTNy7U7aNGBrjqDEQl6NTO5v2yIvFYZ2+3IRPAVePIKMp2HzYMmvJ4i+M1YD4d9
-	 jef2mNyx0FDzpuwirVlxpXMW9JdfeKhSmA4H/FonNwp1BvXTI6bfKV/WVZGJ/2YAZc
-	 fuyn3FE6c1ZhkGs3evazZg0PXilUbQwnZAh7Zjit6fLYL/QVfOioEhzeGpNZlanKnd
-	 oOKSu4yB3z5lg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 790003809A81;
-	Thu, 19 Sep 2024 08:00:12 +0000 (UTC)
-Subject: Re: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.12-rc1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <D48OZ7EPSJB7.2YEWVMTAYHQXH@kernel.org>
-References: <D48OZ7EPSJB7.2YEWVMTAYHQXH@kernel.org>
-X-PR-Tracked-List-Id: <keyrings.vger.kernel.org>
-X-PR-Tracked-Message-Id: <D48OZ7EPSJB7.2YEWVMTAYHQXH@kernel.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-6.12-rc1
-X-PR-Tracked-Commit-Id: f168c000d27f8134160d4a52dfc474a948a3d7e9
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: d5e65d1fb75ffbe3aba33de81a72752ace28295e
-Message-Id: <172673281140.1388805.17939526705738153161.pr-tracker-bot@kernel.org>
-Date: Thu, 19 Sep 2024 08:00:11 +0000
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org
+	s=k20201202; t=1726753528;
+	bh=FUYBepLdRp0iSBZxVwRXEjHJHigCeMLd0ZMY0ivjTAc=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=eeQx8zw772AesrOc9kn0TiyBO3HI6qZmGuLzoIhk4QPPWNQ/QOcJXWcquMURaVLRG
+	 pPT2cZIJ1OwwQBRJB35JksgkmCHTBlC51zGdkahT6kyp9yyjgEWR2tQggcx0K+Ex9q
+	 kWuDxMj1c36R76S1oVGvwT1FxqgNoIP7aRgN+s15Cofj0fkR6q0ZdQLPL9E1MpEnKj
+	 0+Vm99bMMWT7cFGLJ5Qd+eZjzV0Vs8i+GwTjGKuHboo7tw7k3CrOGdQWa8udDYwGVK
+	 8GVc6Is9kpz8SBS4Uq9KjE7j27v8muCwD7YmvUXqfxi/HYdS2/Rcb0jIlXm6Y5Ud7I
+	 JSabZ+qBu5iTg==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Sep 2024 16:45:25 +0300
+Message-Id: <D4AB1EB73L84.2CVJGCDFJSWX0@kernel.org>
+To: "Pengyu Ma" <mapengyu@gmail.com>
+Cc: <linux-integrity@vger.kernel.org>,
+ <James.Bottomley@hansenpartnership.com>, <roberto.sassu@huawei.com>, "Mimi
+ Zohar" <zohar@linux.ibm.com>, "David Howells" <dhowells@redhat.com>, "Paul
+ Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
+ Hallyn" <serge@hallyn.com>, <keyrings@vger.kernel.org>,
+ <linux-security-module@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 0/5] Lazy flush for the auth session
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+X-Mailer: aerc 0.18.2
+References: <20240918203559.192605-1-jarkko@kernel.org>
+ <CALSz7m3SXE3v-yB=_E3Xf5zCDv6bAYhjb+KHrnZ6J14ay2q9sw@mail.gmail.com>
+In-Reply-To: <CALSz7m3SXE3v-yB=_E3Xf5zCDv6bAYhjb+KHrnZ6J14ay2q9sw@mail.gmail.com>
 
-The pull request you sent on Tue, 17 Sep 2024 19:15:28 +0300:
+On Thu Sep 19, 2024 at 4:12 AM EEST, Pengyu Ma wrote:
+> On Thu, Sep 19, 2024 at 4:36=E2=80=AFAM Jarkko Sakkinen <jarkko@kernel.or=
+g> wrote:
+> >
+> > For the sake of:
+> > https://bugzilla.kernel.org/show_bug.cgi?id=3D219229
+> >
+> > The baseline for the series is v6.11 tag.
+>
+> Clean applied on v6.11 upstream kernel.
+> Boot time is 8.7 seconds which is almost good as 7 seconds without TPM2_H=
+MAC.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-6.12-rc1
+Awesome thank you! I think there could be some places where we could
+further make "100 ms here and 50 ms there" time savings. I'll look
+at those when I have some bandwidth but overally I think we are
+now in pretty acceptable measures :-)
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/d5e65d1fb75ffbe3aba33de81a72752ace28295e
+Thanks again for all the effort with testing this!
 
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+BR, Jarkko
 
