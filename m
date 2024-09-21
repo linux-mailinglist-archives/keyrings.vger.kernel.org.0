@@ -1,105 +1,103 @@
-Return-Path: <keyrings+bounces-2112-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2113-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 895F597DA86
-	for <lists+keyrings@lfdr.de>; Sat, 21 Sep 2024 00:16:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F08697DD0B
+	for <lists+keyrings@lfdr.de>; Sat, 21 Sep 2024 14:08:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B8371F21B63
-	for <lists+keyrings@lfdr.de>; Fri, 20 Sep 2024 22:16:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDD811C209C3
+	for <lists+keyrings@lfdr.de>; Sat, 21 Sep 2024 12:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9840517DFFB;
-	Fri, 20 Sep 2024 22:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D851547DA;
+	Sat, 21 Sep 2024 12:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OQ80pRyg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PwApDNk8"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A26605BA;
-	Fri, 20 Sep 2024 22:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D2F38FAD;
+	Sat, 21 Sep 2024 12:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726870611; cv=none; b=dC4/uEJBu3e5QhyvG9iTEuyZ4NWwTWGvRd/GAFL7TnktydsNAhgxI6CMndi3RmFgGcsK1kumZ4pLJkBJo5EldrdsOy6E2M/YwNHWwzcOAJ73mTADmG+ExQAnnN7JAm3KxvtScVteWzV/AhJ53ni9nuSbXIf1/2dxuZFSqvM/1vc=
+	t=1726920497; cv=none; b=mj9pTcZB7xnq9gfhxWEMF+66GIci+2j/L0GVgoudI08zc1fgzn4bYeSlWmjoDdIwwjKeJ2JCP+9SG2ZdkoPGTFzI72GzFb5jbrX7SjZppPwjtAfdcZxm3wBk0PmxbBxGvaNN+IPjldJihHSZNaGpdpA7aAK2m9j27nUsi+41Ifc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726870611; c=relaxed/simple;
-	bh=TzaIT5iXFdGr723fv6kTc8RsHivTNLi/fCWQEqat024=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=UOKRdB3l2e5yM+rfC4P+V4WMwJjYmF+dvAoH8Jg9LnWn7Tnd7pcNx470ZQ/IS5I8GuG2F3afC5CTbFje0v+HEqDwMtThZJsW0uQCb/cD9oXMj2bxOcZ7Z8mp/uSUe+on9jIvKbrrNHvlb8lEMpIyRNj4DqKEqnKmOhA2bEhzV+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OQ80pRyg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEEEC4CEC3;
-	Fri, 20 Sep 2024 22:16:50 +0000 (UTC)
+	s=arc-20240116; t=1726920497; c=relaxed/simple;
+	bh=eyoBx/NKFE6Fmta/q0MPQKQBRElp6C0qlTcA5X+Tsz4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q/0LouEHcxmrfp9r+w8uTDrQkN5hqB6GniWmWB66izMopHiBfqr2Ss1LHfXvJtaGpIX2lI6oJ485vLuAEYUIOeL8zzb5NjLbhYtneJEnktGZ8X2mjrwXH+I49yXuzuzUhncivTRYHrQjSfqRV5wHvocGu9GVh1U6MBBjA24jX5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PwApDNk8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E6BC4CEC2;
+	Sat, 21 Sep 2024 12:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726870611;
-	bh=TzaIT5iXFdGr723fv6kTc8RsHivTNLi/fCWQEqat024=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=OQ80pRygHh5nT4XaT1EUSVY1MNtgkObb3uQhs8URtxqjGZgaIUM4967MGyulVroKw
-	 M2wa3YdhYYW18beugL7z3NopHZa63icEWNhq05dN9yPcSV8wEaY3gynAfoVOVq0lXV
-	 cyzEsPvUA7+EBnJWz/FtUgqgH+BuBdnr7qiz7U09+Rs0YwDjyw51gmO6fZXidSvx4O
-	 7uVfkpRp94zwAVL0NcZKHfUliCwtSos2z8nlnfvhGedCJCDHrsex44wFlwneDai7aA
-	 lMg33TmKakjHlJp0U+ywynsKYO7W3awvno3PGsp7dfDZLj1Djkio27gZI2Izfl5WzQ
-	 gOPdtW/BbfrZg==
+	s=k20201202; t=1726920496;
+	bh=eyoBx/NKFE6Fmta/q0MPQKQBRElp6C0qlTcA5X+Tsz4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=PwApDNk8l9S/mr35QNpD3zMOsO/Yp4ZsPb+iuZuMvhmvmsdxpNsU7TjOvFBn9pHTJ
+	 5b06dhTwlComs9GHlWgF51q5JBtsJR3K97+O3JHGFLbpGFZKNQQoKTpxJ39uuOESP9
+	 1blhmPIiJXOlFwNt4i7dYnvtS0Q0DkV3eNSDtePbatljyMEx0MO131E5KUlVcUZDPr
+	 C4C1AM1rCXRqywO3/pIB+Ml2C1Ms2IVurEVPLxqfKE/wgHmdvmR+OxYjb4Mi4HLsUZ
+	 fOOAy1j8DqYpmAICQj9gCW4NzEtuJ7IFpMZselIZPZ0atf8DlLbY5xFuruEWTF3i/r
+	 vyqff5zq+dQhg==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-integrity@vger.kernel.org
+Cc: James.Bottomley@HansenPartnership.com,
+	roberto.sassu@huawei.com,
+	mapengyu@gmail.com,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	keyrings@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v5 0/5] Lazy flush for the auth session
+Date: Sat, 21 Sep 2024 15:08:00 +0300
+Message-ID: <20240921120811.1264985-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.46.1
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 21 Sep 2024 01:16:46 +0300
-Message-Id: <D4BGJGUL3HSW.19HZANGB06JSW@kernel.org>
-Cc: "Neal Gompa" <neal@gompa.dev>, "David Howells" <dhowells@redhat.com>,
- <dwmw2@infradead.org>, <zxu@redhat.com>, <keyrings@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Asahi Linux" <asahi@lists.linux.dev>,
- "Hector Martin" <marcan@marcan.st>, "Janne Grunau" <j@jannau.net>
-Subject: Re: [PATCH 0/3] sign-file,extract-cert: switch to PROVIDER API for
- OpenSSL >= 3.0
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Jan Stancek" <jstancek@redhat.com>, "Jarkko Sakkinen"
- <jarkko.sakkinen@iki.fi>
-X-Mailer: aerc 0.18.2
-References: <cover.1720728319.git.jstancek@redhat.com>
- <27899413.1r3eYUQgxm@skuld-framework>
- <CAEg-Je_MXyP_PNj_QOu66SW_XYHy0zv0PnTTxX2qWELRG+xM_w@mail.gmail.com>
- <D4B7ZCR4XWCT.3TWNN24TA8PSF@iki.fi>
- <CAASaF6zhiDdbfYkgg7wENih2Lp309eUgeu=FHZm0yYaEBt2gRg@mail.gmail.com>
-In-Reply-To: <CAASaF6zhiDdbfYkgg7wENih2Lp309eUgeu=FHZm0yYaEBt2gRg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri Sep 20, 2024 at 11:05 PM EEST, Jan Stancek wrote:
-> This looks like false-positive. Following will produce same error:
-> +#if TEST
-> +       ENGINE *e;
-> +#endif
-> +
-> $ git diff > 1.patch; ./scripts/checkpatch.pl 1.patch
-> ERROR: need consistent spacing around '*' (ctx:WxV)
-> #10: FILE: scripts/sign-file.c:217:
-> +       ENGINE *e;
->                ^
->
-> total: 1 errors, 0 warnings, 10 lines checked
->
-> but if first type in #if block is something checkpatch recognizes,
-> then it reports no issues:
-> +#if TEST
-> +       int i;
-> +       ENGINE *e;
-> +#endif
-> +
->
-> $ git diff > 1.patch; ./scripts/checkpatch.pl 1.patch
-> total: 0 errors, 0 warnings, 11 lines checked
+This patch set aims to fix:
+https://bugzilla.kernel.org/show_bug.cgi?id=219229.
 
-I fixed a couple of alignment issues reported by "checkpatch.pl
---strict" and sent a pull request:
+The baseline for the series is the v6.11 tag.
 
-https://lore.kernel.org/keyrings/D4B9WXZC9B9U.34I6BHWMYXOS2@kernel.org/T/#u
+v4:
+https://lore.kernel.org/linux-integrity/20240918203559.192605-1-jarkko@kernel.org/
+v3:
+https://lore.kernel.org/linux-integrity/20240917154444.702370-1-jarkko@kernel.org/
+v2:
+https://lore.kernel.org/linux-integrity/20240916110714.1396407-1-jarkko@kernel.org/
+v1:
+https://lore.kernel.org/linux-integrity/20240915180448.2030115-1-jarkko@kernel.org/
 
-> Regards,
-> Jan
+Jarkko Sakkinen (5):
+  tpm: Return on tpm2_create_null_primary() failure
+  tpm: Implement tpm2_load_null() rollback
+  tpm: flush the null key only when /dev/tpm0 is accessed
+  tpm: Allocate chip->auth in tpm2_start_auth_session()
+  tpm: flush the auth session only when /dev/tpm0 is open
 
-BR, Jarkko
+ drivers/char/tpm/tpm-chip.c       |  14 ++++
+ drivers/char/tpm/tpm-dev-common.c |   8 +++
+ drivers/char/tpm/tpm-interface.c  |  10 ++-
+ drivers/char/tpm/tpm2-cmd.c       |   3 +
+ drivers/char/tpm/tpm2-sessions.c  | 109 ++++++++++++++++++------------
+ include/linux/tpm.h               |   2 +
+ 6 files changed, 102 insertions(+), 44 deletions(-)
+
+-- 
+2.46.1
+
 
