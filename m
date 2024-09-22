@@ -1,134 +1,249 @@
-Return-Path: <keyrings+bounces-2122-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2123-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DD7897DDB4
-	for <lists+keyrings@lfdr.de>; Sat, 21 Sep 2024 17:40:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 010CA97E0FF
+	for <lists+keyrings@lfdr.de>; Sun, 22 Sep 2024 12:53:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB387B21000
-	for <lists+keyrings@lfdr.de>; Sat, 21 Sep 2024 15:40:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FA84B20CE3
+	for <lists+keyrings@lfdr.de>; Sun, 22 Sep 2024 10:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3CC741C60;
-	Sat, 21 Sep 2024 15:40:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lG9mNQC7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56E617C211;
+	Sun, 22 Sep 2024 10:53:25 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDE326AC1;
-	Sat, 21 Sep 2024 15:40:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C331154BFE
+	for <keyrings@vger.kernel.org>; Sun, 22 Sep 2024 10:53:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726933216; cv=none; b=r/rnQMAZ7JeVa4xyipwUZtlDGC1bRgwRFBjiwOVtFB/VzZwid80y8TbCwT6I/viRF0oVki+8QhZuK1afpPDXHXjo0Bdggur1/Pbwf1qn59p/TdbkkvdC0f5vmidS98YWeBYLzVEOEVMBgQeAAeCBSuyD6HF2ZcdOUbeDQrtZkmQ=
+	t=1727002405; cv=none; b=gR9yb48Ykg/GsPyNgwOZ0Irrp0OBa1VL2UF3XJw6LR7ViZE19IyJ8JDWyG2hQLCDUBEe+sZjsDP2rJaeM62a8mMFGnkzNK9rTMrg6lfY27XCypjnk/biGDrNUQZCs3OC25Zf36pgVhItqdFtXpgQ1PrOaMLnsMiEQVQkzpWCb8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726933216; c=relaxed/simple;
-	bh=4CxDI76mPU+av0PlDueKI0ZftQmM4Hg/wO91AfGb+BA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
-	 References:In-Reply-To; b=PtlP3vk+um/EU/6DVebNEGjGeYMOvmnqVBncZnnUjh14rEP1pvQXSjC5e6honFtHVy5epkmuT0QfeMq/lRwjylu4t5cyXBnwXand1TVw+jKP+NiMo3S9+cDHWhHtb7U1yfvilIg2qmgVObQc1FPF5cFQdpdHhzkK8XtyMso/q/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lG9mNQC7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA0FAC4CEC2;
-	Sat, 21 Sep 2024 15:40:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726933216;
-	bh=4CxDI76mPU+av0PlDueKI0ZftQmM4Hg/wO91AfGb+BA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lG9mNQC7KEW0nXIn7zBz5m8fkpiHVe3caQ+vTqDQ94XVbQ/227S55P+MKY20GpX5H
-	 4KU0o3f7qzva6l/UwbINxrjW5n1l5SrmdIDrv59UyVxsxuQWkvJ0Hh9Wbv+8mvn262
-	 lntcnMyG4rNTn85JvYEliF9w8Qb4bCABaP2LOGEJZFdqPBJYulocBOBVVNYttNKIkP
-	 /Fe8mTztkd0KlQcnpwaC186EHifE2hVJpWg9Ben3t+BAaWaHM94zeWFVf6ICM7gZ7j
-	 xU+In4yGI/PJ/pGC9NJRpTMfhfQ1DuXi+qGSERgGBbCImYeJO/sidvktarMkrJHPZL
-	 I5+N4x5jDYB4A==
+	s=arc-20240116; t=1727002405; c=relaxed/simple;
+	bh=eBnzNcr/M/8mOz3gMBdNgOkNqK5r7H+BBaOY34kxLx0=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=g4URt4Euw8vi9Ohn+8KaE+Kaf96nrdu7A1g8Wv9dekPDR/jRUQOMroFy7xMuAuTWeaI0hlpkKLy+4h2srvfmEHQl6JB+E/B/vNQbUmXSRbvyx23vmJ6iVJc54jgVN4iMAgfr9jCZb5/5Ar4iKGBNPpzKr1K1E4v2meDqsXlJeh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3a04bf03b1aso43113155ab.1
+        for <keyrings@vger.kernel.org>; Sun, 22 Sep 2024 03:53:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727002403; x=1727607203;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+hqCGCxweegnNMsqwPHYu2suzLkMUGZHN1jjU5TdhD0=;
+        b=vRoVr71G0xA3mcBjePK939iVrqFs1WBWPsptjJfiQtVFaoq4mY2g+fNoMhGoOd08YJ
+         IDijnoaLpRd+Qzx52m7wY/b/4B8tN/Fs5w1f+4vF0ikpU+ibDiypG8/84an4WvS6gcH3
+         mc9UKqpZRv++QIA19dInUrlN/eS3gdEA9pa8D9tN21cwmtiMQ+JIe887s/RpZecf8Gne
+         wec4R992psBZs5JvG/ZqIrER/KfQhjKtj7Z778YIQ2kwldm1lMtnCqTxmvx9HerC/mzr
+         CppUMiKryUbSNLV6/axymnC+/ZGiRqTxQm8QKlCFvKT/f5v3mQTMjInxZrlu0kxKayK8
+         5fAw==
+X-Forwarded-Encrypted: i=1; AJvYcCWjDyeF/BBjgw75UXNvXrqhXkuMt7c3W1sEBtFB7vVABPOI3g3YWCI6qtJ7s5GonxOF5nABFsaz3Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNKfg8465mdqmlUeTmbk4o/skY4fdpEuWHDkcZw+sSC0XArFZM
+	QUONHKzLorSKRsghuliMm15kYfm3GDRdaQ3L46ie9r5NoNCFqMGdT6iTn15+6VLlCuLoR8K6UZx
+	wR0G2YqLQ2me7xCyMvDve68mCItbeQr678GsjpREIuG7dm96VDDOoD4s=
+X-Google-Smtp-Source: AGHT+IEziXiZPMDJBMFbvh2sEM+Nj1yd+5ARUmxKxG13bFbZIAq5fS37mwKHJWivmAKkqNRgtX90oqcOz2RPoS+N28F0iy8lDNlj
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 21 Sep 2024 18:40:12 +0300
-Message-Id: <D4C2QDK9WGUH.KQCJ19C43ONW@kernel.org>
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Jarkko Sakkinen" <jarkko@kernel.org>, "James Bottomley"
- <James.Bottomley@HansenPartnership.com>, "Roberto Sassu"
- <roberto.sassu@huaweicloud.com>, "Linux regressions mailing list"
- <regressions@lists.linux.dev>
-Cc: <keyrings@vger.kernel.org>, "linux-integrity@vger.kernel.org"
- <linux-integrity@vger.kernel.org>, "LKML" <linux-kernel@vger.kernel.org>,
- "Pengyu Ma" <mapengyu@gmail.com>
-Subject: Re: [regression] significant delays when secureboot is enabled
- since 6.10
-X-Mailer: aerc 0.18.2
-References: <0b4a5a86-a9f6-42d1-a9ba-ec565b336d3a@leemhuis.info>
- <92fbcc4c252ec9070d71a6c7d4f1d196ec67eeb0.camel@huaweicloud.com>
- <D42LZPLE8HR3.2UTNOI9CYZPIR@kernel.org>
- <D42M6OE94RLT.6EZSZLBTX437@kernel.org>
- <663d272617d1aead08077ad2b72929cbc226372a.camel@HansenPartnership.com>
- <D42N17MFTEDM.3E6IK034S26UT@kernel.org>
- <f554031343039883068145f9f4777277e490dc05.camel@huaweicloud.com>
- <D43JXBFOOB2O.3U6ZQ7DASR1ZW@kernel.org>
- <7e47f97aede88b87fbb9c9284db2005764bfbedd.camel@huaweicloud.com>
- <D46RE2BWMGJ4.25VA7IVYTJ8MO@kernel.org>
- <D46RWPQ211ZS.12EYKZY053BH@kernel.org>
- <0b22c2c4b4a998fb44bb08be60a359acb9ecb8da.camel@HansenPartnership.com>
- <D46XX6HNU686.50X57ZWI2GUX@kernel.org>
- <7586c7e6e6028a734a8cac3d4b1a8504e6cd4b21.camel@HansenPartnership.com>
- <D46ZV5RXW7Z9.26N1IRXNRLV9X@kernel.org>
-In-Reply-To: <D46ZV5RXW7Z9.26N1IRXNRLV9X@kernel.org>
+MIME-Version: 1.0
+X-Received: by 2002:a05:6e02:1908:b0:3a0:9c8e:965a with SMTP id
+ e9e14a558f8ab-3a0c8b79d04mr80617685ab.0.1727002403328; Sun, 22 Sep 2024
+ 03:53:23 -0700 (PDT)
+Date: Sun, 22 Sep 2024 03:53:23 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <66eff723.050a0220.1b7b75.0000.GAE@google.com>
+Subject: [syzbot] [keyrings?] [lsm?] [ext4?] possible deadlock in
+ keyring_clear (2)
+From: syzbot <syzbot+1b2d1134e0b675176a15@syzkaller.appspotmail.com>
+To: dhowells@redhat.com, jarkko@kernel.org, jmorris@namei.org, 
+	keyrings@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	paul@paul-moore.com, serge@hallyn.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun Sep 15, 2024 at 7:22 PM EEST, Jarkko Sakkinen wrote:
-> On Sun Sep 15, 2024 at 6:00 PM EEST, James Bottomley wrote:
-> > On Sun, 2024-09-15 at 17:50 +0300, Jarkko Sakkinen wrote:
-> > > On Sun Sep 15, 2024 at 4:59 PM EEST, James Bottomley wrote:
-> > > > On Sun, 2024-09-15 at 13:07 +0300, Jarkko Sakkinen wrote:
-> > > > > On Sun Sep 15, 2024 at 12:43 PM EEST, Jarkko Sakkinen wrote:
-> > > > > > When it comes to boot we should aim for one single
-> > > > > > start_auth_session during boot, i.e. different phases would
-> > > > > > leave that session open so that we don't have to load the
-> > > > > > context every single time.=C2=A0 I think it should be doable.
-> > > > >=20
-> > > > > The best possible idea how to improve performance here would be
-> > > > > to transfer the cost from time to space. This can be achieved by
-> > > > > keeping null key permanently in the TPM memory during power
-> > > > > cycle.
-> > > >=20
-> > > > No it's not at all.=C2=A0 If you look at it, the NULL key is only u=
-sed
-> > > > to encrypt the salt for the start session and that's the operating
-> > > > taking a lot of time.=C2=A0 That's why the cleanest mitigation woul=
-d be
-> > > > to save and restore the session.=C2=A0 Unfortunately the timings yo=
-u
-> > > > already complain about still show this would be about 10x longer
-> > > > than a no-hmac extend so I'm still waiting to see if IMA people
-> > > > consider that an acceptable tradeoff.
-> > >=20
-> > > The bug report does not say anything about IMA issues. Please read
-> > > the bug reports before commenting ;-) I will ignore your comment
-> > > because it is plain misleading information.
-> > >=20
-> > > https://bugzilla.kernel.org/show_bug.cgi?id=3D219229
-> >
-> > Well, given that the kernel does no measured boot extends after the EFI
-> > boot stub (which isn't session protected) finishes, what's your theory
-> > for the root cause?
->
-> I don't think there is a silver bullet. Based on benchmark which showed
-> 80% overhead from throttling the context reducing number of loads and
-> saves will cut a slice of the fat.
->
-> Since it is the low-hanging fruit I'll start with that. In other words,
-> I'm not going touch session loading and saving. I'll start with null
-> key loading and saving.
+Hello,
 
-"my theory" worked pretty well. It brought the boot time back to 8.7s,
-which can be explained with encryption overhead pretty well.
+syzbot found the following issue on:
 
-I'd suggest reading the bug report next time before solving a problem
-that did not exist. We care about users, not unfinished patch sets.
+HEAD commit:    2f27fce67173 Merge tag 'sound-6.12-rc1' of git://git.kerne..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=118d7500580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1cb2f9a0593f5374
+dashboard link: https://syzkaller.appspot.com/bug?extid=1b2d1134e0b675176a15
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1511c69f980000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=16107fc7980000
 
-BR, Jarkko
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7bc7510fe41f/non_bootable_disk-2f27fce6.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/9f657bfdbb07/vmlinux-2f27fce6.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/b3ee0fec5f83/bzImage-2f27fce6.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/96f591b14f71/mount_0.gz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+1b2d1134e0b675176a15@syzkaller.appspotmail.com
+
+======================================================
+WARNING: possible circular locking dependency detected
+6.11.0-syzkaller-04557-g2f27fce67173 #0 Not tainted
+------------------------------------------------------
+kswapd0/79 is trying to acquire lock:
+ffff88803c9e2e98 (&type->lock_class){+.+.}-{3:3}, at: keyring_clear+0xb2/0x350 security/keys/keyring.c:1655
+
+but task is already holding lock:
+ffffffff8ea30460 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat mm/vmscan.c:6821 [inline]
+ffffffff8ea30460 (fs_reclaim){+.+.}-{0:0}, at: kswapd+0xbf1/0x3720 mm/vmscan.c:7203
+
+which lock already depends on the new lock.
+
+
+the existing dependency chain (in reverse order) is:
+
+-> #1 (fs_reclaim){+.+.}-{0:0}:
+       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5822
+       __fs_reclaim_acquire mm/page_alloc.c:3825 [inline]
+       fs_reclaim_acquire+0x88/0x140 mm/page_alloc.c:3839
+       might_alloc include/linux/sched/mm.h:334 [inline]
+       slab_pre_alloc_hook mm/slub.c:3940 [inline]
+       slab_alloc_node mm/slub.c:4018 [inline]
+       __kmalloc_cache_noprof+0x3d/0x2c0 mm/slub.c:4185
+       kmalloc_noprof include/linux/slab.h:690 [inline]
+       kzalloc_noprof include/linux/slab.h:816 [inline]
+       assoc_array_insert+0xfe/0x33e0 lib/assoc_array.c:980
+       __key_link_begin+0xe5/0x1f0 security/keys/keyring.c:1314
+       __key_create_or_update+0x570/0xc70 security/keys/key.c:874
+       key_create_or_update+0x42/0x60 security/keys/key.c:1018
+       x509_load_certificate_list+0x149/0x270 crypto/asymmetric_keys/x509_loader.c:31
+       do_one_initcall+0x248/0x880 init/main.c:1269
+       do_initcall_level+0x157/0x210 init/main.c:1331
+       do_initcalls+0x3f/0x80 init/main.c:1347
+       kernel_init_freeable+0x435/0x5d0 init/main.c:1580
+       kernel_init+0x1d/0x2b0 init/main.c:1469
+       ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+-> #0 (&type->lock_class){+.+.}-{3:3}:
+       check_prev_add kernel/locking/lockdep.c:3158 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3277 [inline]
+       validate_chain+0x18ef/0x5920 kernel/locking/lockdep.c:3901
+       __lock_acquire+0x1384/0x2050 kernel/locking/lockdep.c:5199
+       lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5822
+       down_write+0x99/0x220 kernel/locking/rwsem.c:1579
+       keyring_clear+0xb2/0x350 security/keys/keyring.c:1655
+       fscrypt_put_master_key+0xc8/0x190 fs/crypto/keyring.c:79
+       put_crypt_info+0x275/0x320 fs/crypto/keysetup.c:548
+       fscrypt_put_encryption_info+0x40/0x60 fs/crypto/keysetup.c:753
+       ext4_clear_inode+0x15b/0x1c0 fs/ext4/super.c:1524
+       ext4_evict_inode+0xabc/0xf50 fs/ext4/inode.c:318
+       evict+0x4e8/0x9b0 fs/inode.c:731
+       __dentry_kill+0x20d/0x630 fs/dcache.c:615
+       shrink_kill+0xa9/0x2c0 fs/dcache.c:1060
+       shrink_dentry_list+0x2c0/0x5b0 fs/dcache.c:1087
+       prune_dcache_sb+0x10f/0x180 fs/dcache.c:1168
+       super_cache_scan+0x34f/0x4b0 fs/super.c:221
+       do_shrink_slab+0x701/0x1160 mm/shrinker.c:435
+       shrink_slab+0x1093/0x14d0 mm/shrinker.c:662
+       shrink_one+0x43b/0x850 mm/vmscan.c:4795
+       shrink_many mm/vmscan.c:4856 [inline]
+       lru_gen_shrink_node mm/vmscan.c:4934 [inline]
+       shrink_node+0x3799/0x3de0 mm/vmscan.c:5914
+       kswapd_shrink_node mm/vmscan.c:6742 [inline]
+       balance_pgdat mm/vmscan.c:6934 [inline]
+       kswapd+0x1cbc/0x3720 mm/vmscan.c:7203
+       kthread+0x2f0/0x390 kernel/kthread.c:389
+       ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+
+other info that might help us debug this:
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(fs_reclaim);
+                               lock(&type->lock_class);
+                               lock(fs_reclaim);
+  lock(&type->lock_class);
+
+ *** DEADLOCK ***
+
+2 locks held by kswapd0/79:
+ #0: ffffffff8ea30460 (fs_reclaim){+.+.}-{0:0}, at: balance_pgdat mm/vmscan.c:6821 [inline]
+ #0: ffffffff8ea30460 (fs_reclaim){+.+.}-{0:0}, at: kswapd+0xbf1/0x3720 mm/vmscan.c:7203
+ #1: ffff88803ba840e0 (&type->s_umount_key#32){++++}-{3:3}, at: super_trylock_shared fs/super.c:562 [inline]
+ #1: ffff88803ba840e0 (&type->s_umount_key#32){++++}-{3:3}, at: super_cache_scan+0x94/0x4b0 fs/super.c:196
+
+stack backtrace:
+CPU: 0 UID: 0 PID: 79 Comm: kswapd0 Not tainted 6.11.0-syzkaller-04557-g2f27fce67173 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:93 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:119
+ print_circular_bug+0x13a/0x1b0 kernel/locking/lockdep.c:2074
+ check_noncircular+0x36a/0x4a0 kernel/locking/lockdep.c:2203
+ check_prev_add kernel/locking/lockdep.c:3158 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3277 [inline]
+ validate_chain+0x18ef/0x5920 kernel/locking/lockdep.c:3901
+ __lock_acquire+0x1384/0x2050 kernel/locking/lockdep.c:5199
+ lock_acquire+0x1ed/0x550 kernel/locking/lockdep.c:5822
+ down_write+0x99/0x220 kernel/locking/rwsem.c:1579
+ keyring_clear+0xb2/0x350 security/keys/keyring.c:1655
+ fscrypt_put_master_key+0xc8/0x190 fs/crypto/keyring.c:79
+ put_crypt_info+0x275/0x320 fs/crypto/keysetup.c:548
+ fscrypt_put_encryption_info+0x40/0x60 fs/crypto/keysetup.c:753
+ ext4_clear_inode+0x15b/0x1c0 fs/ext4/super.c:1524
+ ext4_evict_inode+0xabc/0xf50 fs/ext4/inode.c:318
+ evict+0x4e8/0x9b0 fs/inode.c:731
+ __dentry_kill+0x20d/0x630 fs/dcache.c:615
+ shrink_kill+0xa9/0x2c0 fs/dcache.c:1060
+ shrink_dentry_list+0x2c0/0x5b0 fs/dcache.c:1087
+ prune_dcache_sb+0x10f/0x180 fs/dcache.c:1168
+ super_cache_scan+0x34f/0x4b0 fs/super.c:221
+ do_shrink_slab+0x701/0x1160 mm/shrinker.c:435
+ shrink_slab+0x1093/0x14d0 mm/shrinker.c:662
+ shrink_one+0x43b/0x850 mm/vmscan.c:4795
+ shrink_many mm/vmscan.c:4856 [inline]
+ lru_gen_shrink_node mm/vmscan.c:4934 [inline]
+ shrink_node+0x3799/0x3de0 mm/vmscan.c:5914
+ kswapd_shrink_node mm/vmscan.c:6742 [inline]
+ balance_pgdat mm/vmscan.c:6934 [inline]
+ kswapd+0x1cbc/0x3720 mm/vmscan.c:7203
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
