@@ -1,117 +1,124 @@
-Return-Path: <keyrings+bounces-2127-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2128-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9050E97E2D3
-	for <lists+keyrings@lfdr.de>; Sun, 22 Sep 2024 19:51:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3218A97ECC4
+	for <lists+keyrings@lfdr.de>; Mon, 23 Sep 2024 16:04:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A75921C209F3
-	for <lists+keyrings@lfdr.de>; Sun, 22 Sep 2024 17:51:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D37331F22063
+	for <lists+keyrings@lfdr.de>; Mon, 23 Sep 2024 14:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C3B2A1DF;
-	Sun, 22 Sep 2024 17:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA72D198846;
+	Mon, 23 Sep 2024 14:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ugcolgZT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GF44Eq82"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC0228F4;
-	Sun, 22 Sep 2024 17:51:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2422D198A05
+	for <keyrings@vger.kernel.org>; Mon, 23 Sep 2024 14:04:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727027493; cv=none; b=KWjlJSrlWQsnOwNuR4EGZlU3q7K2JfFW94W2BDP6bTD2MNxA94tx+o7E29irNGYj0AkL8RhHuZLVBTzc/oIxFTSlaJuM7zi91iRkxCiE2S3xiWOnlXH1eZwQAyK3PadbkY1KeNfJxv03Ktp06dDm0LevaETV4gpCYEQm9cZHP3c=
+	t=1727100270; cv=none; b=FRBjuvURYK/Z70DX4tHmFysrsu2ORwV96vq8IyS/SNXlwC1QqMUQeXByGFcXY0LzQl6UXnj8BAJmX/mzTbGu2uOshRpUzExz8ET1+/PeEAShzLVIaMOci0Bag5azyIe4YYwpqQ2LA9mISY/CbHw2FvE4XanHw6t/d51zordu7sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727027493; c=relaxed/simple;
-	bh=jrKwbHXXO1kCrYfMrjaKi/Cs9E6R903V1bh7/PKaI3w=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=X8L+ecyMgUh+xZAYr6S7U9+OEO0E6jyyF8adUlTGKSdo3SN8HlP/jr4os6lxajylQz1OiNlwZsSE4nJHQsWJI/wuI+47yFUt4eC7W0tCO4rO67vnLd3yQjalS3DRmhMQO/2eBit83SzjqLR5vyjwa6sn7B32Y/QzDTybWqegIGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ugcolgZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A1CC4CEC3;
-	Sun, 22 Sep 2024 17:51:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727027492;
-	bh=jrKwbHXXO1kCrYfMrjaKi/Cs9E6R903V1bh7/PKaI3w=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=ugcolgZTzGEG3+CjpfJ/Qt1VI3ff4D5VnA1dC2+LT1B6p6Ba19Lmq/JiscFTElCVY
-	 6rFVnYSviUBaLw4nZcnXb/1TX2YYSP1zwC5aRKBQYsYk1Fc+Ztv9TFY3l28DYRe6a9
-	 Ge+5r3k0hOgoHM8A8B7SCsOy+PmN/QmgrPQMosPD+Ak3pw/GnwVo/tDzyuZrak+zii
-	 sb1ObggvrnGvgEAMJKsYSPV0vHCMqC9bq/y62EoJ2QXiQT+6UOC2plT/8xZrPa5jzz
-	 JMogbab8zAbvaiS9nlp0OfH37NaHcK2TAs3sWonzvQ9xma7/dCOQOiY7VwQ7Jspv0H
-	 2t9J221NLNLYA==
+	s=arc-20240116; t=1727100270; c=relaxed/simple;
+	bh=gSx9WElPoDc3GpnWNuZWuoC3lDWAnGUmRJLHC+V4aD0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=o1QL8b6WkxDNU8IMj1TYYeyIGoXYf4h6cOw/33lzZ0eDwcj284euqzJVeudo/MnQaQ0ypJtZo0wZUI7HPk1DsHWKcXTQSpJzHnk3TdAt8TsSEBttX0T4DXuaewtXu2vdjR3pi0sBc12ZOkL6xENjOByb794ox3wQmz+VBZmvOPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GF44Eq82; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727100268;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BZBpzUBCLdRFe7Fe/66+8sc2jK73AsIgYMvGRGKjsF8=;
+	b=GF44Eq82hhMe6ojfqlJH/gvMXF5tZA96P8HykYhkUOz3wV3W0CEAbN0QI2QVkOOq11LPhv
+	qemqgzTzyz4Jh1KvaWf01SocH9klTk/9q7Nao9ceWvgX4Iv4qaeeORGwWZBjMYpFvhGRMS
+	JspWzksPKDCSEgdEUMS/D4P6INcgl28=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-653-J-NuBEIEN22XD9dWQO2_KQ-1; Mon,
+ 23 Sep 2024 10:04:24 -0400
+X-MC-Unique: J-NuBEIEN22XD9dWQO2_KQ-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5B2021955D4B;
+	Mon, 23 Sep 2024 14:04:21 +0000 (UTC)
+Received: from [10.45.226.79] (unknown [10.45.226.79])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0C34C19560A3;
+	Mon, 23 Sep 2024 14:04:17 +0000 (UTC)
+Date: Mon, 23 Sep 2024 16:04:15 +0200 (CEST)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: luca.boccassi@gmail.com
+cc: dm-devel@lists.linux.dev, snitzer@kernel.org, serge@hallyn.com, 
+    wufan@linux.microsoft.com, David Howells <dhowells@redhat.com>, 
+    Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org, 
+    linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>
+Subject: Re: [PATCH] dm verity: fallback to platform keyring also if key in
+ trusted keyring is rejected
+In-Reply-To: <20240922161753.244476-1-luca.boccassi@gmail.com>
+Message-ID: <6b3e0e45-5efe-3032-62b8-75dcd45c879c@redhat.com>
+References: <20240922161753.244476-1-luca.boccassi@gmail.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sun, 22 Sep 2024 20:51:28 +0300
-Message-Id: <D4D05FKB9VSG.33COYTJHUX6EM@kernel.org>
-Cc: <James.Bottomley@HansenPartnership.com>, <roberto.sassu@huawei.com>,
- <mapengyu@gmail.com>, "Mimi Zohar" <zohar@linux.ibm.com>, "David Howells"
- <dhowells@redhat.com>, "Paul Moore" <paul@paul-moore.com>, "James Morris"
- <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, "Peter Huewe"
- <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
- <keyrings@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 0/5] Lazy flush for the auth session
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Jarkko Sakkinen" <jarkko@kernel.org>, <linux-integrity@vger.kernel.org>
-X-Mailer: aerc 0.18.2
-References: <20240921120811.1264985-1-jarkko@kernel.org>
-In-Reply-To: <20240921120811.1264985-1-jarkko@kernel.org>
-
-On Sat Sep 21, 2024 at 3:08 PM EEST, Jarkko Sakkinen wrote:
-> This patch set aims to fix:
-> https://bugzilla.kernel.org/show_bug.cgi?id=3D219229.
->
-> The baseline for the series is the v6.11 tag.
->
-> v4:
-> https://lore.kernel.org/linux-integrity/20240918203559.192605-1-jarkko@ke=
-rnel.org/
-> v3:
-> https://lore.kernel.org/linux-integrity/20240917154444.702370-1-jarkko@ke=
-rnel.org/
-> v2:
-> https://lore.kernel.org/linux-integrity/20240916110714.1396407-1-jarkko@k=
-ernel.org/
-> v1:
-> https://lore.kernel.org/linux-integrity/20240915180448.2030115-1-jarkko@k=
-ernel.org/
->
-> Jarkko Sakkinen (5):
->   tpm: Return on tpm2_create_null_primary() failure
->   tpm: Implement tpm2_load_null() rollback
->   tpm: flush the null key only when /dev/tpm0 is accessed
->   tpm: Allocate chip->auth in tpm2_start_auth_session()
->   tpm: flush the auth session only when /dev/tpm0 is open
->
->  drivers/char/tpm/tpm-chip.c       |  14 ++++
->  drivers/char/tpm/tpm-dev-common.c |   8 +++
->  drivers/char/tpm/tpm-interface.c  |  10 ++-
->  drivers/char/tpm/tpm2-cmd.c       |   3 +
->  drivers/char/tpm/tpm2-sessions.c  | 109 ++++++++++++++++++------------
->  include/linux/tpm.h               |   2 +
->  6 files changed, 102 insertions(+), 44 deletions(-)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
 
-Roberto, James, speaking of digest cache. This patch set has no aim to
-fix those issues but I do believe that it should improve also that=20
-feature.
 
-If I don't get soon patch reviews for the patch set, I'll pick the 2nd
-best option: disable bus encryption on all architectures including x86
-and ARM64 (being by default on).
+On Sun, 22 Sep 2024, luca.boccassi@gmail.com wrote:
 
-It's a force majeure situation. I know this would sort out the issue
-but I really cannot send these as a pull request with zero reviewe-by's.
+> From: Luca Boccassi <bluca@debian.org>
+> 
+> If enabled, we fallback to the platform keyring if the trusted keyring doesn't have
+> the key used to sign the roothash. But if pkcs7_verify() rejects the key for other
+> reasons, such as usage restrictions, we do not fallback. Do so.
+> 
+> Follow-up for 6fce1f40e95182ebbfe1ee3096b8fc0b37903269
+> 
+> Suggested-by: Serge Hallyn <serge@hallyn.com>
+> Signed-off-by: Luca Boccassi <bluca@debian.org>
 
-I expect this to be closed by tomorrow.
+Hi
 
-BR, Jarkko
+I'm not an expert in keyrings.
+
+I added keyring maintainers to the CC. Please review this patch and 
+Ack/Nack it.
+
+Mikulas
+
+> ---
+>  drivers/md/dm-verity-verify-sig.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/md/dm-verity-verify-sig.c b/drivers/md/dm-verity-verify-sig.c
+> index d351d7d39c60..a9e2c6c0a33c 100644
+> --- a/drivers/md/dm-verity-verify-sig.c
+> +++ b/drivers/md/dm-verity-verify-sig.c
+> @@ -127,7 +127,7 @@ int verity_verify_root_hash(const void *root_hash, size_t root_hash_len,
+>  #endif
+>  				VERIFYING_UNSPECIFIED_SIGNATURE, NULL, NULL);
+>  #ifdef CONFIG_DM_VERITY_VERIFY_ROOTHASH_SIG_PLATFORM_KEYRING
+> -	if (ret == -ENOKEY)
+> +	if (ret == -ENOKEY || ret == -EKEYREJECTED)
+>  		ret = verify_pkcs7_signature(root_hash, root_hash_len, sig_data,
+>  					sig_len,
+>  					VERIFY_USE_PLATFORM_KEYRING,
+> -- 
+> 2.39.5
+> 
+
 
