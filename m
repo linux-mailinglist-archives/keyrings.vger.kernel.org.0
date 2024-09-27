@@ -1,190 +1,298 @@
-Return-Path: <keyrings+bounces-2170-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2171-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3F4E987F2B
-	for <lists+keyrings@lfdr.de>; Fri, 27 Sep 2024 09:12:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D55698802B
+	for <lists+keyrings@lfdr.de>; Fri, 27 Sep 2024 10:21:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 412DCB20A46
-	for <lists+keyrings@lfdr.de>; Fri, 27 Sep 2024 07:12:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE38C1C22907
+	for <lists+keyrings@lfdr.de>; Fri, 27 Sep 2024 08:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C42216D33F;
-	Fri, 27 Sep 2024 07:12:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F3JoG31Y"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35474189B82;
+	Fri, 27 Sep 2024 08:20:49 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BC66BFC0;
-	Fri, 27 Sep 2024 07:12:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C7A17E44F;
+	Fri, 27 Sep 2024 08:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727421165; cv=none; b=inkO7nBk50kX+kssAmOX8J6VGmK1otv2KUWax2ru1ROatATLXjBPzImQVOmSnqJNF6dHhqvIsxmiEonIDTzOMs2ZzjLYAansxeS77jaYcMFs5v09NJrMhYk0WBLbHH9ShIdc4U+r2l0uyp+CieWnfGOEX2gQGlr3iTEq3n3BYZk=
+	t=1727425249; cv=none; b=fwke5a/iYl8qnlZ+g3WbYQ9i2Ib2JC6emVVp3/RpQsDVIJ9G/FEfYe7UyzlenZUaRQ+VrTNRl4qVzppfREROjAr+Q5xnZZgt0JLdjeMWCeOCG/4r0OTp2MXg4W96DXIBtzI3pr3e+nY90HRknB1DsDtSD+jE/OsGzfY4GEI4/gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727421165; c=relaxed/simple;
-	bh=cio1o5IurKNwuIpAly/OV6gI1NaIP2BOcW/IDsaOapg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CFg7X7XU9tJjv1/1whEwyfWYUwH4ZV5ZkM0ha07T6U+I0E8K+rw1G4tev/52EKlMUtMfXNTslHEUgIdzb4HT29slz17F6UDYmTBdQxXipQZ/Ahus8PY5sEWyqH1ZKqDAOCE0fh78mc1gYfF2E9wXVTq/yPlDLLd75jWgaSbsrBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F3JoG31Y; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a8d24f98215so243494166b.1;
-        Fri, 27 Sep 2024 00:12:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727421162; x=1728025962; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=y+Ffj+Tps2rgenFO7SDx+Hw2LCXpsYIAcy4tw3rNXyQ=;
-        b=F3JoG31YdPdS0ZI+eVXIQTkDvjtB51MXvFTRuksQg9tx/XH3FaylQPCNdq8NctFAF6
-         W0qy7FI6K2vJV8sTaswRS59+cEQfhLGnOGPPQmEtz/BcL1KNHv+Ds9eJ640zHvs0QoTR
-         nVQwue0VuSqm3V3Gp8KXvuYPjd/VcmJV5AEU85iYBnOtw+8iEMKUk3BjDX1kxeJn6fSL
-         I7PAzRLi0TvbyFe5jzSwbuQEuk5oW1z3Er/H8WOSZy3xpksp0UZBrptz0e7XO7Bz3nPp
-         sQAdxFWnmJh2EMN8q3qCpLL33V1PJy3XQQGudwhJr6bMh5YnKpV7RytNxCdQfUyzN5Za
-         mPZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727421162; x=1728025962;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y+Ffj+Tps2rgenFO7SDx+Hw2LCXpsYIAcy4tw3rNXyQ=;
-        b=MnfCSsn+iHqAkIPTX0LUAdNVrD7Rd2uW6Cu6HS/KyADHHBlZtkKOunCYhdhP5JE90F
-         r4q3LRZbCeglZHgzivwcXydiJRSszuOrY9bbX0ODiBkhtklZRLSMmj9OMLtMERFNcTkl
-         EC9WgWiWbdfNgd4BHJujFW+tTpFvgfcmrRTmobwlZfyjTD8cnZSckz2ROkvAXYw2Vst3
-         c+qA/Wyefl/zcOY1vCEPnHTOzRtNYFbJv9Z8YHGeySuZ/8zHS7AJ1DjBF2cvWfN+zoEv
-         gL2xLXERAymFQZUHV2p6bVoa2qSAsOPRI9jcRVKcAIN2QXcTpkA0u7zAQ2O6XTrnCn4q
-         TYMA==
-X-Forwarded-Encrypted: i=1; AJvYcCU4XJSwNxhM3bbNysPc+q9ZcizK72M0hQw1zaBXfOIKPveie1IIaXDqVdQumIW3gFejuBXIDZDj0Q==@vger.kernel.org, AJvYcCWo9Ulfh4vZXMDlG37dUTwPNm40U4s9LBIHeZe7ptD1qyu2C3nGUInMrnZaDMIyHgMDouS3HIHyTrEmZ7rFfK6b@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAw+TNf1ml8sKjJEdO8DngO2r2VJt/U0z6yxE/g/yBv0eubMIs
-	L+72xtHdY0WJGiFLTZnOAQEQczbfoLNf+meBvDK9GQMCi6ghL215
-X-Google-Smtp-Source: AGHT+IHxmODD/qFIHB5xnYxt+qaFwv616CLTVcHa9VfoKBfORQh79v5gKph6zFK7BABbBwNgGfyjtA==
-X-Received: by 2002:a17:907:981:b0:a86:43c0:4270 with SMTP id a640c23a62f3a-a93c48e900cmr191497066b.13.1727421161716;
-        Fri, 27 Sep 2024 00:12:41 -0700 (PDT)
-Received: from [147.251.42.107] (laomedon.fi.muni.cz. [147.251.42.107])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c27776cesm91496366b.40.2024.09.27.00.12.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Sep 2024 00:12:40 -0700 (PDT)
-Message-ID: <08fe559f-f5b8-497f-b7aa-6e61e5c1aeb3@gmail.com>
-Date: Fri, 27 Sep 2024 09:12:40 +0200
+	s=arc-20240116; t=1727425249; c=relaxed/simple;
+	bh=i1slnvDKp045nJ9fFHS8rGTU0oPAS8xE7oaAFo0z1Ho=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Axl72RXT+MsDnxPW8z2Ic/2wuZNkzs0NO5Pp+hPD76CIuWe4Mt6yHSFBzsIYrU6Qcu/3478WZptadQmUNZAdqGCht+BZpa27dykFWKwDBlTMljqkF7lOyEE2IClmtOiKzwyOcjJ7uxpKJDcJwrpYSpeC4Ks9lx4TyUCwy+lwLHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XFNgF6JRPz2QTvg;
+	Fri, 27 Sep 2024 16:19:53 +0800 (CST)
+Received: from kwepemd100013.china.huawei.com (unknown [7.221.188.163])
+	by mail.maildlp.com (Postfix) with ESMTPS id 78F131A0188;
+	Fri, 27 Sep 2024 16:20:43 +0800 (CST)
+Received: from [10.67.109.79] (10.67.109.79) by kwepemd100013.china.huawei.com
+ (7.221.188.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.34; Fri, 27 Sep
+ 2024 16:20:42 +0800
+Message-ID: <fe377483-65e2-419a-8590-9d4b60a601bb@huawei.com>
+Date: Fri, 27 Sep 2024 16:20:42 +0800
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH] dm verity: fallback to platform keyring also if key in
- trusted keyring is rejected
-To: Luca Boccassi <luca.boccassi@gmail.com>
-Cc: Eric Biggers <ebiggers@kernel.org>, Jarkko Sakkinen <jarkko@kernel.org>,
- Mikulas Patocka <mpatocka@redhat.com>, dm-devel@lists.linux.dev,
- snitzer@kernel.org, serge@hallyn.com, wufan@linux.microsoft.com,
- David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
- linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>
-References: <20240922161753.244476-1-luca.boccassi@gmail.com>
- <6b3e0e45-5efe-3032-62b8-75dcd45c879c@redhat.com>
- <D4EMWUMBIM94.3PM88QAV6LG6B@kernel.org>
- <7c40c30a-5154-08eb-d44e-6598087c53e6@redhat.com>
- <D4EU6G0VR6WO.24IWJJQC997Y9@kernel.org>
- <20240924215910.GA1585@sol.localdomain>
- <df791a04-feae-4708-865f-193360b35fad@gmail.com>
- <CAMw=ZnT=3n+1n6z0HE7JPNFX07fAJS+5W+SeO4pddrcUcEpjZA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] security/keys: fix slab-out-of-bounds in
+ key_task_permission
+To: Jarkko Sakkinen <jarkko@kernel.org>, Chen Ridong
+	<chenridong@huaweicloud.com>, <dhowells@redhat.com>, <paul@paul-moore.com>,
+	<jmorris@namei.org>, <serge@hallyn.com>
+CC: <keyrings@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <James.Bottomley@HansenPartnership.com>,
+	<roberto.sassu@huaweicloud.com>
+References: <20240913070928.1670785-1-chenridong@huawei.com>
+ <D45Z3J2E2MPX.4SDWNGAP3D41@kernel.org>
+ <4079d020-edcc-4e27-9815-580f83a6c0ca@huaweicloud.com>
+ <D46WU24OP9O4.1Y7EGDV8ZN7NR@kernel.org>
+ <1cfa878e-8c7b-4570-8606-21daf5e13ce7@huaweicloud.com>
+ <D49PLU7VOREK.3UZFD499C96FB@kernel.org>
+ <fbe97a9c-0899-403a-840a-8d86e8730934@huaweicloud.com>
+ <D4G37UXT3VYV.1F8Z50TNGYYBW@kernel.org>
+ <D4G39938DC0V.8PCWJQ73GOK3@kernel.org>
+ <D4G4I4V56OJ3.1AUR56F77OOHU@kernel.org>
+ <eef47f37-6d96-4c60-a00b-e96e6025ef43@huawei.com>
+ <D4GDQXEN0RKN.L4Q48E96DC8H@kernel.org>
 Content-Language: en-US
-From: Milan Broz <gmazyland@gmail.com>
-Autocrypt: addr=gmazyland@gmail.com; keydata=
- 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
-In-Reply-To: <CAMw=ZnT=3n+1n6z0HE7JPNFX07fAJS+5W+SeO4pddrcUcEpjZA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: chenridong <chenridong@huawei.com>
+In-Reply-To: <D4GDQXEN0RKN.L4Q48E96DC8H@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemd100013.china.huawei.com (7.221.188.163)
 
-On 9/25/24 11:28 PM, Luca Boccassi wrote:
+
+
+On 2024/9/27 1:08, Jarkko Sakkinen wrote:
+> On Thu Sep 26, 2024 at 2:20 PM EEST, chenridong wrote:
 >>
->> Do people use veritysetup (libcryptsetup) here, or does it run with its separate userspace tooling?
+>>
+>> On 2024/9/26 17:54, Jarkko Sakkinen wrote:
+>>> On Thu Sep 26, 2024 at 11:55 AM EEST, Jarkko Sakkinen wrote:
+>>>> On Thu Sep 26, 2024 at 11:53 AM EEST, Jarkko Sakkinen wrote:
+>>>>> On Thu Sep 26, 2024 at 6:48 AM EEST, Chen Ridong wrote:
+>>>>>>
+>>>>>> On 2024/9/19 4:57, Jarkko Sakkinen wrote:
+>>>>>>> On Wed Sep 18, 2024 at 10:30 AM EEST, Chen Ridong wrote:
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> On 2024/9/15 21:59, Jarkko Sakkinen wrote:
+>>>>>>>>> On Sun Sep 15, 2024 at 3:55 AM EEST, Chen Ridong wrote:
+>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> On 2024/9/14 19:33, Jarkko Sakkinen wrote:
+>>>>>>>>>>> On Fri Sep 13, 2024 at 10:09 AM EEST, Chen Ridong wrote:
+>>>>>>>>>>>> We meet the same issue with the LINK, which reads memory out of bounds:
+>>>>>>>>>>>
+>>>>>>>>>>> Nit: don't use "we" anywhere".
+>>>>>>>>>>>
+>>>>>>>>>>> Tbh, I really don't understand the sentence above. I don't what
+>>>>>>>>>>> "the same issue with the LINK" really is.
+>>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> Hello, Jarkko.
+>>>>>>>>>> I apologize for any confusion caused.
+>>>>>>>>>>
+>>>>>>>>>> I've encountered a bug reported by syzkaller. I also found the same bug
+>>>>>>>>>> reported at this LINK:
+>>>>>>>>>> https://syzkaller.appspot.com/bug?id=68a5e206c2a8e08d317eb83f05610c0484ad10b9.
+>>>>>>>>>>
+>>>>>>>>>>>> BUG: KASAN: slab-out-of-bounds in __kuid_val include/linux/uidgid.h:36
+>>>>>>>>>>>> BUG: KASAN: slab-out-of-bounds in uid_eq include/linux/uidgid.h:63 [inline]
+>>>>>>>>>>>> BUG: KASAN: slab-out-of-bounds in key_task_permission+0x394/0x410
+>>>>>>>>>>>> security/keys/permission.c:54
+>>>>>>>>>>>> Read of size 4 at addr ffff88813c3ab618 by task stress-ng/4362
+>>>>>>>>>>>>
+>>>>>>>>>>>> CPU: 2 PID: 4362 Comm: stress-ng Not tainted 5.10.0-14930-gafbffd6c3ede #15
+>>>>>>>>>>>> Call Trace:
+>>>>>>>>>>>>       __dump_stack lib/dump_stack.c:82 [inline]
+>>>>>>>>>>>>       dump_stack+0x107/0x167 lib/dump_stack.c:123
+>>>>>>>>>>>>       print_address_description.constprop.0+0x19/0x170 mm/kasan/report.c:400
+>>>>>>>>>>>>       __kasan_report.cold+0x6c/0x84 mm/kasan/report.c:560
+>>>>>>>>>>>>       kasan_report+0x3a/0x50 mm/kasan/report.c:585
+>>>>>>>>>>>>       __kuid_val include/linux/uidgid.h:36 [inline]
+>>>>>>>>>>>>       uid_eq include/linux/uidgid.h:63 [inline]
+>>>>>>>>>>>>       key_task_permission+0x394/0x410 security/keys/permission.c:54
+>>>>>>>>>>>>       search_nested_keyrings+0x90e/0xe90 security/keys/keyring.c:793
+>>>>>>>>>>>>       keyring_search_rcu+0x1b6/0x310 security/keys/keyring.c:922
+>>>>>>>>>>>>       search_cred_keyrings_rcu+0x111/0x2e0 security/keys/process_keys.c:459
+>>>>>>>>>>>>       search_process_keyrings_rcu+0x1d/0x310 security/keys/process_keys.c:544
+>>>>>>>>>>>>       lookup_user_key+0x782/0x12e0 security/keys/process_keys.c:762
+>>>>>>>>>>>>       keyctl_invalidate_key+0x20/0x190 security/keys/keyctl.c:434
+>>>>>>>>>>>>       __do_sys_keyctl security/keys/keyctl.c:1978 [inline]
+>>>>>>>>>>>>       __se_sys_keyctl+0x1de/0x5b0 security/keys/keyctl.c:1880
+>>>>>>>>>>>>       do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
+>>>>>>>>>>>>       entry_SYSCALL_64_after_hwframe+0x67/0xd1
+>>>>>>>>>>>>
+>>>>>>>>>>>> However, we can't reproduce this issue.
+>>>>>>>>>>>
+>>>>>>>>>>> "The issue cannot be easily reproduced but by analyzing the code
+>>>>>>>>>>> it can be broken into following steps:"
+>>>>>>>>>>
+>>>>>>>>>> Thank you for your correction.
+>>>>>>>>>> Does this patch address the issue correctly? Is this patch acceptable?
+>>>>>>>>>
+>>>>>>>>> I only comment new patch versions so not giving any promises but I can
+>>>>>>>>> say that it is I think definitely in the correct direction :-)
+>>>>>>>>>
+>>>>>>>>> BR, Jarkko
+>>>>>>>>
+>>>>>>>> Hello, Jarkko. I have reproduced this issue. It can be reproduced by
+>>>>>>>> following these steps:
+>>>>>>>>
+>>>>>>>> 1. Add the helper patch.
+>>>>>>>>
+>>>>>>>> @@ -205,6 +205,9 @@ static void hash_key_type_and_desc(struct
+>>>>>>>> keyring_index_key *index_key)
+>>>>>>>>             else if (index_key->type == &key_type_keyring && (hash &
+>>>>>>>> fan_mask) != 0)
+>>>>>>>>                     hash = (hash + (hash << level_shift)) & ~fan_mask;
+>>>>>>>>             index_key->hash = hash;
+>>>>>>>> +       if ((index_key->hash & 0xff) == 0xe6) {
+>>>>>>>> +                       pr_err("hash_key_type_and_desc: type %s %s
+>>>>>>>> 0x%x\n",  index_key->type->name, index_key->description, index_key->hash);
+>>>>>>>> +       }
+>>>>>>>>      }
+>>>>>>>>
+>>>>>>>> 2. Pick up the inputs whose hash is xxe6 using the following cmd. If a
+>>>>>>>> key's hash is xxe6, it will be printed.
+>>>>>>>>
+>>>>>>>> for ((i=0; i<=10000; i++)); do ./test_key user user$i "Some payload"; done
+>>>>>>>>
+>>>>>>>> You have complile test_key whith following code.
+>>>>>>>>
+>>>>>>>> #include <sys/types.h>
+>>>>>>>> #include <keyutils.h>
+>>>>>>>> #include <stdint.h>
+>>>>>>>> #include <stdio.h>
+>>>>>>>> #include <stdlib.h>
+>>>>>>>> #include <string.h>
+>>>>>>>>
+>>>>>>>> int
+>>>>>>>> main(int argc, char *argv[])
+>>>>>>>> {
+>>>>>>>>        key_serial_t key;
+>>>>>>>>
+>>>>>>>>        if (argc != 4) {
+>>>>>>>> 	   fprintf(stderr, "Usage: %s type description payload\n",
+>>>>>>>> 			   argv[0]);
+>>>>>>>> 	   exit(EXIT_FAILURE);
+>>>>>>>>        }
+>>>>>>>>
+>>>>>>>>        key = add_key(argv[1], argv[2], argv[3], strlen(argv[3]),
+>>>>>>>> 			   KEY_SPEC_SESSION_KEYRING);
+>>>>>>>>        if (key == -1) {
+>>>>>>>> 	   perror("add_key");
+>>>>>>>> 	   exit(EXIT_FAILURE);
+>>>>>>>>        }
+>>>>>>>>
+>>>>>>>>        printf("Key ID is %jx\n", (uintmax_t) key);
+>>>>>>>>
+>>>>>>>>        exit(EXIT_SUCCESS);
+>>>>>>>> }
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> 3. Have more than 32 inputs now. their hashes are xxe6.
+>>>>>>>> eg.
+>>>>>>>> hash_key_type_and_desc: type user user438 0xe3033fe6
+>>>>>>>> hash_key_type_and_desc: type user user526 0xeb7eade6
+>>>>>>>> ...
+>>>>>>>> hash_key_type_and_desc: type user user9955 0x44bc99e6
+>>>>>>>>
+>>>>>>>> 4. Reboot and add the keys obtained from step 3.
+>>>>>>>> When adding keys to the ROOT that their hashes are all xxe6, and up to
+>>>>>>>> 16, the ROOT has keys with hashes that are not xxe6 (e.g., slot 0), so
+>>>>>>>> the keys are dissimilar. The ROOT will then split NODE A without using a
+>>>>>>>> shortcut. When NODE A is filled with keys that have hashes of xxe6, the
+>>>>>>>> keys are similar. NODE A will split with a shortcut.
+>>>>>>>>
+>>>>>>>> As my analysis, if a slot of the root is a shortcut(slot 6), it may be
+>>>>>>>> mistakenly be transferred to a key*, leading to an read out-of-bounds read.
+>>>>>>>>
+>>>>>>>>                           NODE A
+>>>>>>>>                   +------>+---+
+>>>>>>>>           ROOT    |       | 0 | xxe6
+>>>>>>>>           +---+   |       +---+
+>>>>>>>>      xxxx | 0 | shortcut  :   : xxe6
+>>>>>>>>           +---+   |       +---+
+>>>>>>>>      xxe6 :   :   |       |   | xxe6
+>>>>>>>>           +---+   |       +---+
+>>>>>>>>           | 6 |---+       :   : xxe6
+>>>>>>>>           +---+           +---+
+>>>>>>>>      xxe6 :   :           | f | xxe6
+>>>>>>>>           +---+           +---+
+>>>>>>>>      xxe6 | f |
+>>>>>>>>           +---+
+>>>>>>>>
+>>>>>>>> 5. cat /proc/keys. and the issue is reproduced.
+>>>>>>>
+>>>>>>> Hi, I'll try to run through your procedure next week and give my comments.
+>>>>>>> Thanks for doing this.
+>>>>>>>
+>>>>>>> BR, Jarkko
+>>>>>>
+>>>>>> Hi, Jarkko, have you run these procedure?
+>>>>>> I have tested this patch with LTP and a pressure test(stress-ng --key),
+>>>>>> and this patch have fixed this issue. Additionally, no new bugs have
+>>>>>> been found so far.
+>>>>>>
+>>>>>> I am looking forward to your reply.
+>>>>>>
+>>>>>> Best regards,
+>>>>>> Ridong
+>>>>>
+>>>>> Nope because we are apparently stuck with release critical bug:
+>>>>>
+>>>>> https://lore.kernel.org/linux-integrity/D4EPMF7G3E05.1VHS9CVG3DZDE@kernel.org/T/#t
+>>>>>
+>>>>> Might take several weeks before I look into this.
+>>>>
+>>>> I was expecting to send a PR early this week since the patch set
+>>>> addresses the issue so thus wrong estimation.
+>>>
+>>> I asked David if he could look into this.
+>>>
+>>> BR, Jarkko
+>>
+>> Thank you very much.
 > 
-> This is used with libcryptsetup commonly, and often with veritysetup.
-> It is fairly easy to test in a VM or on baremetal, it is not required
-> to build your own kernel - that's the reason for supporting
-> secondary+platform keyrings (the first one allows you to enroll keys
-> in MOK, the second one for UEFI DB).
-> We would even have a CI testing this for every PR and merge in systemd
-> on Github, _except_ there is currently an issue (unrelated to
-> dmverity) that happens when nesting KVM with UEFI secure boot enabled
-> on top of HyperV, which means it cannot be used reliably on Github
-> Actions. Once that is solved, this will be again part of the systemd
-> CI integration tests. But it is used regularly by developers on their
-> machines.
-
-Hi Luca,
-
-good to know that libcryptswtup userspace is then used here, thanks for the info!
-
-I have some more questions, but that is not related to this thread,
-I will ask in another mail later.
-
-Thanks,
-Milan
-
-
+> Further, I'm switching jobs. Tomorrow is my last day in the current
+> job and next week starting a new job so given all these circumastances
+> I rather look into this properly hopefully latest after my rc2 PR is
+> out, rather than rushing.
 > 
-> It might not be commonly used by kernel developers, I do not know as I
-> am not a kernel developer, but it is becoming more and more common in
-> userspace and among image builders. For example the mkosi image
-> builder, using systemd-repart, can very easily build distro images
-> using signed dm verity. I am at All Systems Go and just today there
-> were multiple talks by multiple people using dmverity images for their
-> distros/platforms/products, especially with systemd-sysext, which is
-> all about signed dm-verity.
+> In a normal status quo situation this would not be such a huge issue.
 > 
-> In 6.12 we will also have IPE which allows to enable trusted code
-> integrity checks that cannot be trivially bypassed by other userspace
-> processes running with root or caps. This has been, still is and will
-> be for the foreseeable future, in use in the Azure infrastructure.
+> Similarly, for the performance bug I want to review James' comments
+> etc with time and bake v6 that hopefully satisfies all the
+> stateholders.
 > 
-> Hope this provides some clarity, let me know if you need more info.
+> So thank you for understanding, and I appreciate the work you've done
+> on this. I.e. not ignoring this :-)
+> 
+> BR, Jarkko
+> 
+> BR, Jarkko
 
+I am happy to fix this issue. I am also looking forward to your reply.
+If this patch is acceptable, I will send a patch to update the commit 
+message you have mentioned.
+
+Best regards,
+Ridong
 
