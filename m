@@ -1,298 +1,165 @@
-Return-Path: <keyrings+bounces-2171-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2172-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D55698802B
-	for <lists+keyrings@lfdr.de>; Fri, 27 Sep 2024 10:21:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A4A8988D7B
+	for <lists+keyrings@lfdr.de>; Sat, 28 Sep 2024 04:03:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE38C1C22907
-	for <lists+keyrings@lfdr.de>; Fri, 27 Sep 2024 08:21:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01BC1B210FF
+	for <lists+keyrings@lfdr.de>; Sat, 28 Sep 2024 02:03:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35474189B82;
-	Fri, 27 Sep 2024 08:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F8114267;
+	Sat, 28 Sep 2024 02:03:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cEf2qBOP"
 X-Original-To: keyrings@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C7A17E44F;
-	Fri, 27 Sep 2024 08:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2E77494
+	for <keyrings@vger.kernel.org>; Sat, 28 Sep 2024 02:03:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727425249; cv=none; b=fwke5a/iYl8qnlZ+g3WbYQ9i2Ib2JC6emVVp3/RpQsDVIJ9G/FEfYe7UyzlenZUaRQ+VrTNRl4qVzppfREROjAr+Q5xnZZgt0JLdjeMWCeOCG/4r0OTp2MXg4W96DXIBtzI3pr3e+nY90HRknB1DsDtSD+jE/OsGzfY4GEI4/gw=
+	t=1727489016; cv=none; b=Jne56+0ObAAI/067/WRBmQb2UuV+QlVb4BiIIH+6PNx/EWcuDCpASdLL0fRHP45fHHC3A1PjjlT/bxCcv0xU/2WiUDxVHfdm48ETPeXyjexuQqbxamVRaKj01Adv2UBcB6Q7PN95JfsgDsrLqvDPnAAUv3VxvrnZn/rDk5OLPC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727425249; c=relaxed/simple;
-	bh=i1slnvDKp045nJ9fFHS8rGTU0oPAS8xE7oaAFo0z1Ho=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Axl72RXT+MsDnxPW8z2Ic/2wuZNkzs0NO5Pp+hPD76CIuWe4Mt6yHSFBzsIYrU6Qcu/3478WZptadQmUNZAdqGCht+BZpa27dykFWKwDBlTMljqkF7lOyEE2IClmtOiKzwyOcjJ7uxpKJDcJwrpYSpeC4Ks9lx4TyUCwy+lwLHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XFNgF6JRPz2QTvg;
-	Fri, 27 Sep 2024 16:19:53 +0800 (CST)
-Received: from kwepemd100013.china.huawei.com (unknown [7.221.188.163])
-	by mail.maildlp.com (Postfix) with ESMTPS id 78F131A0188;
-	Fri, 27 Sep 2024 16:20:43 +0800 (CST)
-Received: from [10.67.109.79] (10.67.109.79) by kwepemd100013.china.huawei.com
- (7.221.188.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.34; Fri, 27 Sep
- 2024 16:20:42 +0800
-Message-ID: <fe377483-65e2-419a-8590-9d4b60a601bb@huawei.com>
-Date: Fri, 27 Sep 2024 16:20:42 +0800
+	s=arc-20240116; t=1727489016; c=relaxed/simple;
+	bh=3YEMzurlh7qJNAx6PZBOe/N6mkm5F8N4BP5VSwieDls=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Mst/2IiYDA7HhXFshpIMH0zNVtihzPOjQE0A3qmtcf8HTrfRo+mv4vLi9b34U3bxeTAAMbMlo5gM17GnBBDmpjxsJK/2u7nvNSjxtu8GS2oyvk4QKaWSZD5TY04HBIlqfPG5pQywWqJmT0bAMx5r+GBUMf3PeELMcdbfda9lMtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cEf2qBOP; arc=none smtp.client-ip=209.85.166.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-8325044e388so105651339f.0
+        for <keyrings@vger.kernel.org>; Fri, 27 Sep 2024 19:03:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727489014; x=1728093814; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=o0UczL+R3tD/Ft3QVxFuzN55tfUGEJFRYYEEbRxmU2E=;
+        b=cEf2qBOPUXpcwWZw2iP0hOieCGcobYf3mNQLZ3H6VtSHyWYT0PTvitHfxASsj01+Rf
+         /xpClOyL2JcFrKXXyGKjoZlEFnWFtuV5nO6AymM4k1LLDBtNKhNzHlL2J6MtiwMYr8qR
+         LuMA6LL/6hQmwMK89yIL/WsimgWUzoag8hprXvnRD+5+ZzVYYDmhIhsxft/VwJtBJzQC
+         kyrwj4rSEqTRmvOsVBy7Zv1pL2UmMxF4S/h12Daxd2ubFlf3C8ZS6CsUninokisScAez
+         8jqFsJunNw29sNDHaVGsRoQ2JELwutLhhQJF1Wg9hHyuluYbRT6ggIyf+mSo2tLv9CGl
+         wkCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727489014; x=1728093814;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o0UczL+R3tD/Ft3QVxFuzN55tfUGEJFRYYEEbRxmU2E=;
+        b=V/neFgj8/5ZKV73nZthoGdtWPuqdh0NGwdgbRpIhGXxNejqoK3P/JB9NkD9PFvQ3lO
+         PYbk53iLGPlwjwcTtXgStJTS1P6aSxzHcQokb/lAPLKNkhIPPOYr2dcJG7JXEHchb/HA
+         K5CfvBKGiRQsjEj7PxoZiKOA6VOlYrOWpDz50OUxrM5JSJHLyL5bK0UOq3JaxJypPrUw
+         8hHSqilSv8y2fMiGnisupXwl3jEdt2AjKEDoL9mknfeVaVbZS0e67wkLwaOXb5uGcmsu
+         LF7AovS39s3wljVIiD9GeE1pJdaRyfbMtQXSccYgSMnKv29cAw00QEl74XfvSLQ08hLo
+         eiFA==
+X-Forwarded-Encrypted: i=1; AJvYcCXLCoIIk1GePATickll9KCTGCevRWRLLksVVLgamW+NmCegdlHuhKO/XdvyWQLSbm+vDrGyN/JNRw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgWr+GsfEbN20SU46HGCjVrn9/SljlkrjhoBucqV3isATqMRHh
+	qQX7lBc7CI1e41D6hKlwlO0OCSI21MbqkKHMHO6JEnoXFG2Vt6nSABneRLrSWA==
+X-Google-Smtp-Source: AGHT+IHP4VWSEq6ViTOKDqfybNIa3TZYlGAA7HFUy7+R9x3J9EURD/tS83ZYLv/lTus4fayi5o+n6g==
+X-Received: by 2002:a05:6602:1641:b0:82d:79b:ee8d with SMTP id ca18e2360f4ac-834931b1a4emr524668639f.4.1727489014480;
+        Fri, 27 Sep 2024 19:03:34 -0700 (PDT)
+Received: from google.com (30.64.135.34.bc.googleusercontent.com. [34.135.64.30])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4d8888351e8sm830347173.8.2024.09.27.19.03.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Sep 2024 19:03:33 -0700 (PDT)
+Date: Fri, 27 Sep 2024 19:03:29 -0700
+From: Justin Stitt <justinstitt@google.com>
+To: David Howells <dhowells@redhat.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 7/7] keys: Add tracepoints for the keyrings facility
+Message-ID: <3ttplslryf2sdthv3aracoqixwoodblq2gw2vfm2mlgf2kh25h@4hc3iy23hlj7>
+References: <20240821123616.60401-1-dhowells@redhat.com>
+ <20240821123616.60401-8-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] security/keys: fix slab-out-of-bounds in
- key_task_permission
-To: Jarkko Sakkinen <jarkko@kernel.org>, Chen Ridong
-	<chenridong@huaweicloud.com>, <dhowells@redhat.com>, <paul@paul-moore.com>,
-	<jmorris@namei.org>, <serge@hallyn.com>
-CC: <keyrings@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <James.Bottomley@HansenPartnership.com>,
-	<roberto.sassu@huaweicloud.com>
-References: <20240913070928.1670785-1-chenridong@huawei.com>
- <D45Z3J2E2MPX.4SDWNGAP3D41@kernel.org>
- <4079d020-edcc-4e27-9815-580f83a6c0ca@huaweicloud.com>
- <D46WU24OP9O4.1Y7EGDV8ZN7NR@kernel.org>
- <1cfa878e-8c7b-4570-8606-21daf5e13ce7@huaweicloud.com>
- <D49PLU7VOREK.3UZFD499C96FB@kernel.org>
- <fbe97a9c-0899-403a-840a-8d86e8730934@huaweicloud.com>
- <D4G37UXT3VYV.1F8Z50TNGYYBW@kernel.org>
- <D4G39938DC0V.8PCWJQ73GOK3@kernel.org>
- <D4G4I4V56OJ3.1AUR56F77OOHU@kernel.org>
- <eef47f37-6d96-4c60-a00b-e96e6025ef43@huawei.com>
- <D4GDQXEN0RKN.L4Q48E96DC8H@kernel.org>
-Content-Language: en-US
-From: chenridong <chenridong@huawei.com>
-In-Reply-To: <D4GDQXEN0RKN.L4Q48E96DC8H@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemd100013.china.huawei.com (7.221.188.163)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240821123616.60401-8-dhowells@redhat.com>
 
+Hi,
 
+On Wed, Aug 21, 2024 at 01:36:15PM GMT, David Howells wrote:
+> Add some tracepoints to aid in debuggin the keyrings facility and
+> applications that use it.  A number of events and operations are traceable,
+> including:
+> 
+>   - Allocation
+>   - Refcounting
+>   - Instantiation and negative instantiation/rejection
+>   - Update
+>   - Detection of key being dead
+>   - Key quota changes
+>   - Key quota failure
+>   - Link, unlink and move
+>   - Keyring clearance
+>   - Revocation and invalidation
+>   - Garbage collection
+> 
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Jarkko Sakkinen <jarkko@kernel.org>
+> cc: keyrings@vger.kernel.org
+> cc: linux-security-module@vger.kernel.org
+> ---
+>  include/trace/events/key.h | 401 +++++++++++++++++++++++++++++++++++++
+>  security/keys/gc.c         |   4 +
+>  security/keys/internal.h   |   1 +
+>  security/keys/key.c        |  50 ++++-
+>  security/keys/keyctl.c     |   2 +
+>  security/keys/keyring.c    |  27 ++-
+>  6 files changed, 472 insertions(+), 13 deletions(-)
+>  create mode 100644 include/trace/events/key.h
+> 
+> diff --git a/include/trace/events/key.h b/include/trace/events/key.h
+> new file mode 100644
+> index 000000000000..b3f8c39cc0e8
+> --- /dev/null
+> +++ b/include/trace/events/key.h
+> @@ -0,0 +1,401 @@
 
-On 2024/9/27 1:08, Jarkko Sakkinen wrote:
-> On Thu Sep 26, 2024 at 2:20 PM EEST, chenridong wrote:
->>
->>
->> On 2024/9/26 17:54, Jarkko Sakkinen wrote:
->>> On Thu Sep 26, 2024 at 11:55 AM EEST, Jarkko Sakkinen wrote:
->>>> On Thu Sep 26, 2024 at 11:53 AM EEST, Jarkko Sakkinen wrote:
->>>>> On Thu Sep 26, 2024 at 6:48 AM EEST, Chen Ridong wrote:
->>>>>>
->>>>>> On 2024/9/19 4:57, Jarkko Sakkinen wrote:
->>>>>>> On Wed Sep 18, 2024 at 10:30 AM EEST, Chen Ridong wrote:
->>>>>>>>
->>>>>>>>
->>>>>>>> On 2024/9/15 21:59, Jarkko Sakkinen wrote:
->>>>>>>>> On Sun Sep 15, 2024 at 3:55 AM EEST, Chen Ridong wrote:
->>>>>>>>>>
->>>>>>>>>>
->>>>>>>>>> On 2024/9/14 19:33, Jarkko Sakkinen wrote:
->>>>>>>>>>> On Fri Sep 13, 2024 at 10:09 AM EEST, Chen Ridong wrote:
->>>>>>>>>>>> We meet the same issue with the LINK, which reads memory out of bounds:
->>>>>>>>>>>
->>>>>>>>>>> Nit: don't use "we" anywhere".
->>>>>>>>>>>
->>>>>>>>>>> Tbh, I really don't understand the sentence above. I don't what
->>>>>>>>>>> "the same issue with the LINK" really is.
->>>>>>>>>>>
->>>>>>>>>>
->>>>>>>>>> Hello, Jarkko.
->>>>>>>>>> I apologize for any confusion caused.
->>>>>>>>>>
->>>>>>>>>> I've encountered a bug reported by syzkaller. I also found the same bug
->>>>>>>>>> reported at this LINK:
->>>>>>>>>> https://syzkaller.appspot.com/bug?id=68a5e206c2a8e08d317eb83f05610c0484ad10b9.
->>>>>>>>>>
->>>>>>>>>>>> BUG: KASAN: slab-out-of-bounds in __kuid_val include/linux/uidgid.h:36
->>>>>>>>>>>> BUG: KASAN: slab-out-of-bounds in uid_eq include/linux/uidgid.h:63 [inline]
->>>>>>>>>>>> BUG: KASAN: slab-out-of-bounds in key_task_permission+0x394/0x410
->>>>>>>>>>>> security/keys/permission.c:54
->>>>>>>>>>>> Read of size 4 at addr ffff88813c3ab618 by task stress-ng/4362
->>>>>>>>>>>>
->>>>>>>>>>>> CPU: 2 PID: 4362 Comm: stress-ng Not tainted 5.10.0-14930-gafbffd6c3ede #15
->>>>>>>>>>>> Call Trace:
->>>>>>>>>>>>       __dump_stack lib/dump_stack.c:82 [inline]
->>>>>>>>>>>>       dump_stack+0x107/0x167 lib/dump_stack.c:123
->>>>>>>>>>>>       print_address_description.constprop.0+0x19/0x170 mm/kasan/report.c:400
->>>>>>>>>>>>       __kasan_report.cold+0x6c/0x84 mm/kasan/report.c:560
->>>>>>>>>>>>       kasan_report+0x3a/0x50 mm/kasan/report.c:585
->>>>>>>>>>>>       __kuid_val include/linux/uidgid.h:36 [inline]
->>>>>>>>>>>>       uid_eq include/linux/uidgid.h:63 [inline]
->>>>>>>>>>>>       key_task_permission+0x394/0x410 security/keys/permission.c:54
->>>>>>>>>>>>       search_nested_keyrings+0x90e/0xe90 security/keys/keyring.c:793
->>>>>>>>>>>>       keyring_search_rcu+0x1b6/0x310 security/keys/keyring.c:922
->>>>>>>>>>>>       search_cred_keyrings_rcu+0x111/0x2e0 security/keys/process_keys.c:459
->>>>>>>>>>>>       search_process_keyrings_rcu+0x1d/0x310 security/keys/process_keys.c:544
->>>>>>>>>>>>       lookup_user_key+0x782/0x12e0 security/keys/process_keys.c:762
->>>>>>>>>>>>       keyctl_invalidate_key+0x20/0x190 security/keys/keyctl.c:434
->>>>>>>>>>>>       __do_sys_keyctl security/keys/keyctl.c:1978 [inline]
->>>>>>>>>>>>       __se_sys_keyctl+0x1de/0x5b0 security/keys/keyctl.c:1880
->>>>>>>>>>>>       do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
->>>>>>>>>>>>       entry_SYSCALL_64_after_hwframe+0x67/0xd1
->>>>>>>>>>>>
->>>>>>>>>>>> However, we can't reproduce this issue.
->>>>>>>>>>>
->>>>>>>>>>> "The issue cannot be easily reproduced but by analyzing the code
->>>>>>>>>>> it can be broken into following steps:"
->>>>>>>>>>
->>>>>>>>>> Thank you for your correction.
->>>>>>>>>> Does this patch address the issue correctly? Is this patch acceptable?
->>>>>>>>>
->>>>>>>>> I only comment new patch versions so not giving any promises but I can
->>>>>>>>> say that it is I think definitely in the correct direction :-)
->>>>>>>>>
->>>>>>>>> BR, Jarkko
->>>>>>>>
->>>>>>>> Hello, Jarkko. I have reproduced this issue. It can be reproduced by
->>>>>>>> following these steps:
->>>>>>>>
->>>>>>>> 1. Add the helper patch.
->>>>>>>>
->>>>>>>> @@ -205,6 +205,9 @@ static void hash_key_type_and_desc(struct
->>>>>>>> keyring_index_key *index_key)
->>>>>>>>             else if (index_key->type == &key_type_keyring && (hash &
->>>>>>>> fan_mask) != 0)
->>>>>>>>                     hash = (hash + (hash << level_shift)) & ~fan_mask;
->>>>>>>>             index_key->hash = hash;
->>>>>>>> +       if ((index_key->hash & 0xff) == 0xe6) {
->>>>>>>> +                       pr_err("hash_key_type_and_desc: type %s %s
->>>>>>>> 0x%x\n",  index_key->type->name, index_key->description, index_key->hash);
->>>>>>>> +       }
->>>>>>>>      }
->>>>>>>>
->>>>>>>> 2. Pick up the inputs whose hash is xxe6 using the following cmd. If a
->>>>>>>> key's hash is xxe6, it will be printed.
->>>>>>>>
->>>>>>>> for ((i=0; i<=10000; i++)); do ./test_key user user$i "Some payload"; done
->>>>>>>>
->>>>>>>> You have complile test_key whith following code.
->>>>>>>>
->>>>>>>> #include <sys/types.h>
->>>>>>>> #include <keyutils.h>
->>>>>>>> #include <stdint.h>
->>>>>>>> #include <stdio.h>
->>>>>>>> #include <stdlib.h>
->>>>>>>> #include <string.h>
->>>>>>>>
->>>>>>>> int
->>>>>>>> main(int argc, char *argv[])
->>>>>>>> {
->>>>>>>>        key_serial_t key;
->>>>>>>>
->>>>>>>>        if (argc != 4) {
->>>>>>>> 	   fprintf(stderr, "Usage: %s type description payload\n",
->>>>>>>> 			   argv[0]);
->>>>>>>> 	   exit(EXIT_FAILURE);
->>>>>>>>        }
->>>>>>>>
->>>>>>>>        key = add_key(argv[1], argv[2], argv[3], strlen(argv[3]),
->>>>>>>> 			   KEY_SPEC_SESSION_KEYRING);
->>>>>>>>        if (key == -1) {
->>>>>>>> 	   perror("add_key");
->>>>>>>> 	   exit(EXIT_FAILURE);
->>>>>>>>        }
->>>>>>>>
->>>>>>>>        printf("Key ID is %jx\n", (uintmax_t) key);
->>>>>>>>
->>>>>>>>        exit(EXIT_SUCCESS);
->>>>>>>> }
->>>>>>>>
->>>>>>>>
->>>>>>>> 3. Have more than 32 inputs now. their hashes are xxe6.
->>>>>>>> eg.
->>>>>>>> hash_key_type_and_desc: type user user438 0xe3033fe6
->>>>>>>> hash_key_type_and_desc: type user user526 0xeb7eade6
->>>>>>>> ...
->>>>>>>> hash_key_type_and_desc: type user user9955 0x44bc99e6
->>>>>>>>
->>>>>>>> 4. Reboot and add the keys obtained from step 3.
->>>>>>>> When adding keys to the ROOT that their hashes are all xxe6, and up to
->>>>>>>> 16, the ROOT has keys with hashes that are not xxe6 (e.g., slot 0), so
->>>>>>>> the keys are dissimilar. The ROOT will then split NODE A without using a
->>>>>>>> shortcut. When NODE A is filled with keys that have hashes of xxe6, the
->>>>>>>> keys are similar. NODE A will split with a shortcut.
->>>>>>>>
->>>>>>>> As my analysis, if a slot of the root is a shortcut(slot 6), it may be
->>>>>>>> mistakenly be transferred to a key*, leading to an read out-of-bounds read.
->>>>>>>>
->>>>>>>>                           NODE A
->>>>>>>>                   +------>+---+
->>>>>>>>           ROOT    |       | 0 | xxe6
->>>>>>>>           +---+   |       +---+
->>>>>>>>      xxxx | 0 | shortcut  :   : xxe6
->>>>>>>>           +---+   |       +---+
->>>>>>>>      xxe6 :   :   |       |   | xxe6
->>>>>>>>           +---+   |       +---+
->>>>>>>>           | 6 |---+       :   : xxe6
->>>>>>>>           +---+           +---+
->>>>>>>>      xxe6 :   :           | f | xxe6
->>>>>>>>           +---+           +---+
->>>>>>>>      xxe6 | f |
->>>>>>>>           +---+
->>>>>>>>
->>>>>>>> 5. cat /proc/keys. and the issue is reproduced.
->>>>>>>
->>>>>>> Hi, I'll try to run through your procedure next week and give my comments.
->>>>>>> Thanks for doing this.
->>>>>>>
->>>>>>> BR, Jarkko
->>>>>>
->>>>>> Hi, Jarkko, have you run these procedure?
->>>>>> I have tested this patch with LTP and a pressure test(stress-ng --key),
->>>>>> and this patch have fixed this issue. Additionally, no new bugs have
->>>>>> been found so far.
->>>>>>
->>>>>> I am looking forward to your reply.
->>>>>>
->>>>>> Best regards,
->>>>>> Ridong
->>>>>
->>>>> Nope because we are apparently stuck with release critical bug:
->>>>>
->>>>> https://lore.kernel.org/linux-integrity/D4EPMF7G3E05.1VHS9CVG3DZDE@kernel.org/T/#t
->>>>>
->>>>> Might take several weeks before I look into this.
->>>>
->>>> I was expecting to send a PR early this week since the patch set
->>>> addresses the issue so thus wrong estimation.
->>>
->>> I asked David if he could look into this.
->>>
->>> BR, Jarkko
->>
->> Thank you very much.
-> 
-> Further, I'm switching jobs. Tomorrow is my last day in the current
-> job and next week starting a new job so given all these circumastances
-> I rather look into this properly hopefully latest after my rc2 PR is
-> out, rather than rushing.
-> 
-> In a normal status quo situation this would not be such a huge issue.
-> 
-> Similarly, for the performance bug I want to review James' comments
-> etc with time and bake v6 that hopefully satisfies all the
-> stateholders.
-> 
-> So thank you for understanding, and I appreciate the work you've done
-> on this. I.e. not ignoring this :-)
-> 
-> BR, Jarkko
-> 
-> BR, Jarkko
+<snip>
 
-I am happy to fix this issue. I am also looking forward to your reply.
-If this patch is acceptable, I will send a patch to update the commit 
-message you have mentioned.
+> +	    TP_STRUCT__entry(
+> +		    __field(key_serial_t,		key)
+> +		    __field(uid_t,			uid)
+> +		    __array(char,			type, 8)
+> +		    __array(char,			desc, 24)
+> +			     ),
+> +
+> +	    TP_fast_assign(
+> +		    __entry->key = key->serial;
+> +		    __entry->uid = from_kuid(&init_user_ns, key->uid);
+> +		    strncpy(__entry->type, key->type->name, sizeof(__entry->type) - 1);
+> +		    strncpy(__entry->desc, key->description ?: "", sizeof(__entry->desc) - 1);
+> +		    __entry->type[sizeof(__entry->type) - 1] = 0;
+> +		    __entry->desc[sizeof(__entry->desc) - 1] = 0;
 
-Best regards,
-Ridong
+Looks like these want to be NUL-terminated. Can we use strscpy or
+strscpy_pad since strncpy is deprecated [1] for use on NUL-terminated
+strings.
+
+> +			   ),
+> +
+> +	    TP_printk("key=%08x uid=%08x t=%s d=%s",
+> +		      __entry->key,
+> +		      __entry->uid,
+> +		      __entry->type,
+> +		      __entry->desc)
+> +	    );
+> +
+
+<snip>
+
+[1]: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings
+
+Thanks
+Justin
 
