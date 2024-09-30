@@ -1,165 +1,109 @@
-Return-Path: <keyrings+bounces-2172-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2173-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A4A8988D7B
-	for <lists+keyrings@lfdr.de>; Sat, 28 Sep 2024 04:03:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AA9998AC41
+	for <lists+keyrings@lfdr.de>; Mon, 30 Sep 2024 20:40:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01BC1B210FF
-	for <lists+keyrings@lfdr.de>; Sat, 28 Sep 2024 02:03:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43E201F236AE
+	for <lists+keyrings@lfdr.de>; Mon, 30 Sep 2024 18:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F8114267;
-	Sat, 28 Sep 2024 02:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBED814A627;
+	Mon, 30 Sep 2024 18:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cEf2qBOP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d1Du3j3b"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2E77494
-	for <keyrings@vger.kernel.org>; Sat, 28 Sep 2024 02:03:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF9E192D82
+	for <keyrings@vger.kernel.org>; Mon, 30 Sep 2024 18:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727489016; cv=none; b=Jne56+0ObAAI/067/WRBmQb2UuV+QlVb4BiIIH+6PNx/EWcuDCpASdLL0fRHP45fHHC3A1PjjlT/bxCcv0xU/2WiUDxVHfdm48ETPeXyjexuQqbxamVRaKj01Adv2UBcB6Q7PN95JfsgDsrLqvDPnAAUv3VxvrnZn/rDk5OLPC8=
+	t=1727721645; cv=none; b=TE/hdTwkjOgaolCYRkXjJKlGDrMnl2RWpuwrGtjPt4S5aCo8G++y7lw+MyKDlgyAkT2hG+1SrTj8J5axKY54fn1+jeYByPo9uQEp1/SXGvLaQjMhL0HrKjIUBCkyBcT/Gg8kvgOPR3PA/lV1Saa41pUX0qppfoCZEBHJJcGTCqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727489016; c=relaxed/simple;
-	bh=3YEMzurlh7qJNAx6PZBOe/N6mkm5F8N4BP5VSwieDls=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mst/2IiYDA7HhXFshpIMH0zNVtihzPOjQE0A3qmtcf8HTrfRo+mv4vLi9b34U3bxeTAAMbMlo5gM17GnBBDmpjxsJK/2u7nvNSjxtu8GS2oyvk4QKaWSZD5TY04HBIlqfPG5pQywWqJmT0bAMx5r+GBUMf3PeELMcdbfda9lMtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cEf2qBOP; arc=none smtp.client-ip=209.85.166.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-8325044e388so105651339f.0
-        for <keyrings@vger.kernel.org>; Fri, 27 Sep 2024 19:03:35 -0700 (PDT)
+	s=arc-20240116; t=1727721645; c=relaxed/simple;
+	bh=2ZPv0d9hUJBt5qKwF3chbIqNRfMUt9xoKYhnbX3yhKA=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=NL5OGD00UFWhn6jIabnkyf5MkthdHHjUw3NhFGwCaMusB1d9OdG7Ka3A02OCMK9JM1J8MaIyPO1ccGOx0HD5d8s0tV7vPTi875WLMsohOLaScFU93ObTyhbfL1swLzO0GJvqXDzX05UfICeBf9f8t0XgDJ7/o6rbHmWnD1rSREA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d1Du3j3b; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-20b49ee353cso30222895ad.2
+        for <keyrings@vger.kernel.org>; Mon, 30 Sep 2024 11:40:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727489014; x=1728093814; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=o0UczL+R3tD/Ft3QVxFuzN55tfUGEJFRYYEEbRxmU2E=;
-        b=cEf2qBOPUXpcwWZw2iP0hOieCGcobYf3mNQLZ3H6VtSHyWYT0PTvitHfxASsj01+Rf
-         /xpClOyL2JcFrKXXyGKjoZlEFnWFtuV5nO6AymM4k1LLDBtNKhNzHlL2J6MtiwMYr8qR
-         LuMA6LL/6hQmwMK89yIL/WsimgWUzoag8hprXvnRD+5+ZzVYYDmhIhsxft/VwJtBJzQC
-         kyrwj4rSEqTRmvOsVBy7Zv1pL2UmMxF4S/h12Daxd2ubFlf3C8ZS6CsUninokisScAez
-         8jqFsJunNw29sNDHaVGsRoQ2JELwutLhhQJF1Wg9hHyuluYbRT6ggIyf+mSo2tLv9CGl
-         wkCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727489014; x=1728093814;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1727721643; x=1728326443; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=o0UczL+R3tD/Ft3QVxFuzN55tfUGEJFRYYEEbRxmU2E=;
-        b=V/neFgj8/5ZKV73nZthoGdtWPuqdh0NGwdgbRpIhGXxNejqoK3P/JB9NkD9PFvQ3lO
-         PYbk53iLGPlwjwcTtXgStJTS1P6aSxzHcQokb/lAPLKNkhIPPOYr2dcJG7JXEHchb/HA
-         K5CfvBKGiRQsjEj7PxoZiKOA6VOlYrOWpDz50OUxrM5JSJHLyL5bK0UOq3JaxJypPrUw
-         8hHSqilSv8y2fMiGnisupXwl3jEdt2AjKEDoL9mknfeVaVbZS0e67wkLwaOXb5uGcmsu
-         LF7AovS39s3wljVIiD9GeE1pJdaRyfbMtQXSccYgSMnKv29cAw00QEl74XfvSLQ08hLo
-         eiFA==
-X-Forwarded-Encrypted: i=1; AJvYcCXLCoIIk1GePATickll9KCTGCevRWRLLksVVLgamW+NmCegdlHuhKO/XdvyWQLSbm+vDrGyN/JNRw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzgWr+GsfEbN20SU46HGCjVrn9/SljlkrjhoBucqV3isATqMRHh
-	qQX7lBc7CI1e41D6hKlwlO0OCSI21MbqkKHMHO6JEnoXFG2Vt6nSABneRLrSWA==
-X-Google-Smtp-Source: AGHT+IHP4VWSEq6ViTOKDqfybNIa3TZYlGAA7HFUy7+R9x3J9EURD/tS83ZYLv/lTus4fayi5o+n6g==
-X-Received: by 2002:a05:6602:1641:b0:82d:79b:ee8d with SMTP id ca18e2360f4ac-834931b1a4emr524668639f.4.1727489014480;
-        Fri, 27 Sep 2024 19:03:34 -0700 (PDT)
-Received: from google.com (30.64.135.34.bc.googleusercontent.com. [34.135.64.30])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4d8888351e8sm830347173.8.2024.09.27.19.03.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Sep 2024 19:03:33 -0700 (PDT)
-Date: Fri, 27 Sep 2024 19:03:29 -0700
-From: Justin Stitt <justinstitt@google.com>
-To: David Howells <dhowells@redhat.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 7/7] keys: Add tracepoints for the keyrings facility
-Message-ID: <3ttplslryf2sdthv3aracoqixwoodblq2gw2vfm2mlgf2kh25h@4hc3iy23hlj7>
-References: <20240821123616.60401-1-dhowells@redhat.com>
- <20240821123616.60401-8-dhowells@redhat.com>
+        bh=ndFJwW9UnSWvmGWAz2ns3q0fd/gfNg3V4vZtjUGxW68=;
+        b=d1Du3j3bHUpWrURpDSKVcO1FhqUz+o997DNF5JLSV4344IFjCyEA3POsURF3WsXFzM
+         hU9+VERaASg1gW6SCBddOoupt+YBkWtL5OR6OoWrhzDMcPjqNNxEJdpjaPX/G/+tv7+7
+         9Ld/D79r8Sh8/iLdSBXnlchaCYREfdvnCCK8HaGA/e86t1YVg4XVJ477LsGkR0iYb8+u
+         FwfLqDHsyH4/9KnSYwBbmPC4S30vlyl+HIFF4Yf+/nVQKd6cxUzghEWjdcLsLQWt1X8O
+         cwAbJhsE9vbMGsmnbuZ4zqPAAX1IIa9EV0berhXsdRXJpg6OUA5L8t8i+U5VdtagE8wt
+         gDDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727721643; x=1728326443;
+        h=content-transfer-encoding:subject:from:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ndFJwW9UnSWvmGWAz2ns3q0fd/gfNg3V4vZtjUGxW68=;
+        b=rjJ60MBlG6OptJo1TQTZcxQN9wQZaPvgQt3RW0xx4BIzBosMxJr/gz2VO7JRotsSiO
+         X/6qUQIJRPu7MK6+pN767UXHsa4ojvaiDtjRibbHfTQ4R3xJ5nUFP8qBYdvCYITAA6x2
+         Ky+6VBUZGdDXaFugHJcHBxtED9PhY4CLx55uT8P+CBfTjEYxit8WcVcdsPAdODTsuXjC
+         WFM6WW6E69yWrTye0CJ5h2UGga0pNm4G4nB2KWiHcgzRt7RTZ/a3Wv7wA68zunldyNm5
+         Ad1cUNHCWkMwp4fFEukYXKkBqF4yyWNmFPeWcknvL9vQTncwKyvhhN8D+/+6x8aKbXJH
+         lzJw==
+X-Gm-Message-State: AOJu0Yzr7ob8Ouo2jjxd0ZwhgxP2l7XRFRxiIvVZlxQVCAj/xppBNEyy
+	aV6XO3OXQHTVpmUXz//ygg1HJtQv1VGf6yfmyKgKqdiq9JpZNuLZy5QVWQ==
+X-Google-Smtp-Source: AGHT+IEMv6Ctj+a+K8VGyJigC1eT1RfbQA8igUsSa11UPbqhkkUqtSXB/j0fUC3VsUEVOsT7L0yisQ==
+X-Received: by 2002:a17:90a:de92:b0:2e0:d1fa:fdd7 with SMTP id 98e67ed59e1d1-2e0d1fb0eb5mr12800440a91.27.1727721643455;
+        Mon, 30 Sep 2024 11:40:43 -0700 (PDT)
+Received: from [10.201.20.170] ([71.181.84.66])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e11908eb91sm3440630a91.44.2024.09.30.11.40.42
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 Sep 2024 11:40:43 -0700 (PDT)
+Message-ID: <eb52cc47-0e42-4f1a-984d-27d3470da92e@gmail.com>
+Date: Mon, 30 Sep 2024 11:40:40 -0700
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240821123616.60401-8-dhowells@redhat.com>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: keyrings@vger.kernel.org
+From: James Prestwood <prestwoj@gmail.com>
+Subject: Reading public key portion of asymmetric keys
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 Hi,
 
-On Wed, Aug 21, 2024 at 01:36:15PM GMT, David Howells wrote:
-> Add some tracepoints to aid in debuggin the keyrings facility and
-> applications that use it.  A number of events and operations are traceable,
-> including:
-> 
->   - Allocation
->   - Refcounting
->   - Instantiation and negative instantiation/rejection
->   - Update
->   - Detection of key being dead
->   - Key quota changes
->   - Key quota failure
->   - Link, unlink and move
->   - Keyring clearance
->   - Revocation and invalidation
->   - Garbage collection
-> 
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Jarkko Sakkinen <jarkko@kernel.org>
-> cc: keyrings@vger.kernel.org
-> cc: linux-security-module@vger.kernel.org
-> ---
->  include/trace/events/key.h | 401 +++++++++++++++++++++++++++++++++++++
->  security/keys/gc.c         |   4 +
->  security/keys/internal.h   |   1 +
->  security/keys/key.c        |  50 ++++-
->  security/keys/keyctl.c     |   2 +
->  security/keys/keyring.c    |  27 ++-
->  6 files changed, 472 insertions(+), 13 deletions(-)
->  create mode 100644 include/trace/events/key.h
-> 
-> diff --git a/include/trace/events/key.h b/include/trace/events/key.h
-> new file mode 100644
-> index 000000000000..b3f8c39cc0e8
-> --- /dev/null
-> +++ b/include/trace/events/key.h
-> @@ -0,0 +1,401 @@
+Unless I'm missing something it does not seem possible to read back the 
+public key portion of an asymmetric key to userspace once added to the 
+kernel. I have a use case where two separate applications need to 
+perform crypto operations using the same private/public key pair and for 
+added security it would be convenient to add the key (or load from TPM) 
+once and pass around a key ID rather than the keys themselves.
 
-<snip>
+One of the things I need is to create and sign a CSR. To create the CSR 
+I need the public key contents which can't be obtained from the key ID.
 
-> +	    TP_STRUCT__entry(
-> +		    __field(key_serial_t,		key)
-> +		    __field(uid_t,			uid)
-> +		    __array(char,			type, 8)
-> +		    __array(char,			desc, 24)
-> +			     ),
-> +
-> +	    TP_fast_assign(
-> +		    __entry->key = key->serial;
-> +		    __entry->uid = from_kuid(&init_user_ns, key->uid);
-> +		    strncpy(__entry->type, key->type->name, sizeof(__entry->type) - 1);
-> +		    strncpy(__entry->desc, key->description ?: "", sizeof(__entry->desc) - 1);
-> +		    __entry->type[sizeof(__entry->type) - 1] = 0;
-> +		    __entry->desc[sizeof(__entry->desc) - 1] = 0;
+To solve this problem I would propose adding a "read" operation to the 
+asymmetric key type, but limiting it to only reading the public key 
+portion of the key (if it exists). Alternatively a entirely new 
+"read_public" keyctl API could be added as well, but re-using the 
+existing read seemed more straight forward. Adding this seems easy 
+enough, but I wanted to get an idea if this is something that would be 
+accepted upstream or if others had better suggestions.
 
-Looks like these want to be NUL-terminated. Can we use strscpy or
-strscpy_pad since strncpy is deprecated [1] for use on NUL-terminated
-strings.
+Thanks,
 
-> +			   ),
-> +
-> +	    TP_printk("key=%08x uid=%08x t=%s d=%s",
-> +		      __entry->key,
-> +		      __entry->uid,
-> +		      __entry->type,
-> +		      __entry->desc)
-> +	    );
-> +
+James
 
-<snip>
-
-[1]: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings
-
-Thanks
-Justin
 
