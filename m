@@ -1,156 +1,168 @@
-Return-Path: <keyrings+bounces-2181-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2182-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9ED39901BE
-	for <lists+keyrings@lfdr.de>; Fri,  4 Oct 2024 13:01:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52596990472
+	for <lists+keyrings@lfdr.de>; Fri,  4 Oct 2024 15:32:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F7172819B9
-	for <lists+keyrings@lfdr.de>; Fri,  4 Oct 2024 11:01:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2C021F21042
+	for <lists+keyrings@lfdr.de>; Fri,  4 Oct 2024 13:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101AB145A17;
-	Fri,  4 Oct 2024 11:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1DB212F07;
+	Fri,  4 Oct 2024 13:31:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jUHRieyz"
 X-Original-To: keyrings@vger.kernel.org
-Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D3712C81F;
-	Fri,  4 Oct 2024 11:01:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD39212EE7;
+	Fri,  4 Oct 2024 13:31:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728039708; cv=none; b=DKAWsjEGjWmORig86hA9MQyoMfOI3MgBICUrJI+Wie0po2AjMtlh1xHbkSAtdsK/XfL1Hi/4iaNQ60djmcmaxwCZDNP3e+deT4/25IKmTaPEWzPmud2VECaWceNPL7nxznKpXBk1o8ydoE65ht4wWnPua18blAJgCyehhFW1baw=
+	t=1728048719; cv=none; b=UPNd3E6zz1b2qHH8SeaetmCbE3OlIL7mJZ4KQ42k+MGwxdADJNDvERAOlZHulFFZWwYAMEgc2/wzXtkhILkXNlTfHwun3xz6mzHn7C7vz6MqmBPNaE8D0/DQGAX0D/W60E3VUQ+EHuWziwhHvTOFLcT1Y2uK1c8cMBqU/XG7qG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728039708; c=relaxed/simple;
-	bh=NtDsvusRx+fsiFebmXuORxX16ZxXymuvfEFFLg91cOE=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=G7iRozRtflyPMoI43NvImWJJ3z7GSXkRiDwxiXZtynZckIGdsPcuy46HST5UqTj+sjgUXB5RY0Ok1dOTqONNmenZTPLQUoUKXiKwoJsRE6ua5fssDCO8jkEx+pd+GsrJ4HHgKekSJUdLrvikMSj3dPVx6yYDPzf9cvX4fG2pbVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.51])
-	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4XKkx72wzVz9v7JQ;
-	Fri,  4 Oct 2024 18:16:59 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.27])
-	by mail.maildlp.com (Postfix) with ESMTP id 537F5140935;
-	Fri,  4 Oct 2024 18:42:44 +0800 (CST)
-Received: from [10.81.200.188] (unknown [10.81.200.188])
-	by APP2 (Coremail) with SMTP id GxC2BwBH9saaxv9m_X80Ag--.35107S2;
-	Fri, 04 Oct 2024 11:42:43 +0100 (CET)
-Message-ID: <d5387ff4-06c7-4115-bd53-1c485e3743ec@huaweicloud.com>
-Date: Fri, 4 Oct 2024 12:42:32 +0200
+	s=arc-20240116; t=1728048719; c=relaxed/simple;
+	bh=FPLZJaARGtRR7bwMZfLF8SBRUPHLyRTznI4rLQWKTiU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ig/oNZr1DsQLHzqy9DkecTBCK30HWK93DIy51MgmYM+z4nJcoft2fzTZEBTBKES4npLgkTtcSFunBv0XB2qtMb/DCBDc/apz50KCqaYDski7bGxDLXE64pOGRxpD85cmKWTBEraVISMicEn8GSO2lrbuuriBG9l2EbDNHYL34zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jUHRieyz; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728048717; x=1759584717;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=FPLZJaARGtRR7bwMZfLF8SBRUPHLyRTznI4rLQWKTiU=;
+  b=jUHRieyz1FMasVVZbwlzQFUKf3j1Gl9uN/Xd9p525IUhtv+p3paL/Svd
+   js1RR/9oIxknr3LJBr1E6a+8nyEsueEW2QKyyccFh5aEltgcytj4VdGnJ
+   sSvoGz571d84WQFvo3o8GIPbsegSB/fb0NOBipTL7X+HnbuPIkYi+ypqY
+   OYZZUOypaS9OpTjHSMj/kFQRqGBjU+ypDgHF/5YEYkJOaGELJNooNq9Zc
+   UZb7Iw4IGyyJvBHAzmKwBBLJW6aexr01z1TYvzU7Omduebw2ywify+MIA
+   7pz/NrmOSaf9X1Vvai/RH+mUKGlwRTUOZAr4As5JFLTF9XywKZqjdTr/p
+   g==;
+X-CSE-ConnectionGUID: eJrIxmvtTV+wRitEO1Wl5Q==
+X-CSE-MsgGUID: RhfnDijfR46Md2IL4wVAsQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11214"; a="27150476"
+X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; 
+   d="scan'208";a="27150476"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2024 06:30:21 -0700
+X-CSE-ConnectionGUID: L0iAeHhRRXmIGL7OAVxeAQ==
+X-CSE-MsgGUID: y5hOZK8qRSWp9CZ6SrHB7Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; 
+   d="scan'208";a="74697088"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 04 Oct 2024 06:30:20 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1swiNt-0001fq-1V;
+	Fri, 04 Oct 2024 13:30:17 +0000
+Date: Fri, 4 Oct 2024 21:30:05 +0800
+From: kernel test robot <lkp@intel.com>
+To: Fam Zheng <fam.zheng@bytedance.com>, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, fam@euphon.net,
+	David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
+	David Woodhouse <dwmw2@infradead.org>, fam.zheng@bytedance.com
+Subject: Re: [PATCH] sign-file: Add -D "digest mode"
+Message-ID: <202410042115.WT7VlS8U-lkp@intel.com>
+References: <20241002133837.1030094-1-fam.zheng@bytedance.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/14] KEYS: Add support for PGP keys and signatures
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>,
- Herbert Xu <herbert@gondor.apana.org.au>
-Cc: dhowells@redhat.com, dwmw2@infradead.org, davem@davemloft.net,
- linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
- linux-crypto@vger.kernel.org, zohar@linux.ibm.com,
- linux-integrity@vger.kernel.org, roberto.sassu@huawei.com,
- linux-security-module@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>
-References: <ZuPDZL_EIoS60L1a@gondor.apana.org.au>
- <b4a3e55650a9e9f2302cf093e5cc8e739b4ac98f.camel@huaweicloud.com>
- <CAHk-=wiU24MGO7LZ1ZZYpQJr1+CSFG9VnB0Nyy4xZSSc_Zu0rg@mail.gmail.com>
- <ZuaVzQqkwwjbUHSh@gondor.apana.org.au>
- <CAHk-=wgnG+C3fVB+dwZYi_ZEErnd_jFbrkN+xc__om3d=7optQ@mail.gmail.com>
- <a991cf4187bced19485e28a5542ac446b92f864e.camel@huaweicloud.com>
-Content-Language: en-US
-In-Reply-To: <a991cf4187bced19485e28a5542ac446b92f864e.camel@huaweicloud.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:GxC2BwBH9saaxv9m_X80Ag--.35107S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxur4xCFW5Jw4rGrW8CFyDZFb_yoW5XF13pa
-	9aqFy2kr1kJr1Ik3Z7Ca18ZFWFyws3ta45Gr9xXryrA34YqF12yryfKF43ZFy2krn5Ga1j
-	vrZ8try5A3Z8ZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
-	wI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUF1
-	v3UUUUU
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQAGBGb-TvcIKQAAsC
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241002133837.1030094-1-fam.zheng@bytedance.com>
 
-On 9/26/2024 11:41 AM, Roberto Sassu wrote:
-> On Sun, 2024-09-15 at 10:40 +0200, Linus Torvalds wrote:
->> On Sun, 15 Sept 2024 at 10:08, Herbert Xu <herbert@gondor.apana.org.au> wrote:
->>>
->>> If the aformentioned EFI use-case is bogus, then distro package
->>> verification is going to be the only application for PGP keys in
->>> the kernel.
->>
->> So I haven't actually seen _that_ series, but as mentioned it does
->> smell pretty conceptually broken to me.
->>
->> But hey, code talks, bullshit walks. People can most certainly try to
->> convince me.
-> 
-> The solution has three parts.
-> 
-> 1. The kernel verifies the RPM header with a PGP key embedded in the
-> kernel, and provided by the Linux distribution vendor.
-> 
-> 2. The Integrity Digest Cache parses the verified RPM header in the
-> kernel and feeds one of the existing LSMs (IMA, IPE and BPF LSM) with
-> the digests extracted from the RPM header.
-> 
-> 3. The LSMs compare the fsverity digest they find in the filesystem
-> with the authenticated ones from the RPM header, and might deny access
-> to the file if the digests don't match.
-> 
-> At this point, RPM headers don't contain fsverity digests, only file
-> content digests, but this is an orthogonal problem.
-> 
-> 
-> I had a look at previous threads on similar topics, to find your
-> position on the matter.
-> 
-> I got that you would not be probably against (1), and maybe not (3).
-> 
-> However, we still need a source telling whether the fsverity digest in
-> the filesystem is the same of one calculated by Linux distributions
-> during build. That is what the Integrity Digest Cache provides.
-> 
-> Regarding (2), maybe I'm missing something fundamental, but isn't
-> parsing the ELF format of kernel modules from the kernel similar?
-> 
-> Cannot really go to user space at this point, since the authenticated
-> fsverity digests are directly consumed by LSMs. Also, as David pointed
-> out in this thread [1], there is no obligation for user space to call
-> any signature verification function before executing a file, this task
-> must be done by an LSM.
-> 
-> I'm aware that we should not run unnecessary code in the kernel. I
-> tried to mitigate this issue by striping the parsing functionality to
-> the minimum (220 LOC), and formally verifying it with the Frama-C
-> static analyzer. The parser is available here [2].
-> 
-> I'm also aware that this is not the long term solution, but I didn't
-> find much support on the alternatives, like a trustworthy user mode
-> driver [3][4] (isolated from other root processes) and signed eBPF
-> programs [5].
-> 
-> What it would be the right way to proceed, in your opinion?
+Hi Fam,
 
-If I remove the parsers completely from the kernel, and attach them 
-dynamically with eBPF, would you reconsider my patch set?
+kernel test robot noticed the following build warnings:
 
-Thanks
+[auto build test WARNING on linus/master]
+[also build test WARNING on v6.12-rc1 next-20241004]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Roberto
+url:    https://github.com/intel-lab-lkp/linux/commits/Fam-Zheng/sign-file-Add-D-digest-mode/20241002-215025
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20241002133837.1030094-1-fam.zheng%40bytedance.com
+patch subject: [PATCH] sign-file: Add -D "digest mode"
+config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20241004/202410042115.WT7VlS8U-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 13.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241004/202410042115.WT7VlS8U-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202410042115.WT7VlS8U-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from scripts/sign-file.c:40:
+   scripts/sign-file.c: In function 'main':
+>> scripts/sign-file.c:357:29: warning: implicit declaration of function 'CMS_final_digest' [-Wimplicit-function-declaration]
+     357 |                         ERR(CMS_final_digest(cms, digest_bin, digest_len, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
+         |                             ^~~~~~~~~~~~~~~~
+   scripts/ssl-common.h:27:32: note: in definition of macro 'ERR'
+      27 |                 bool __cond = (cond);                   \
+         |                                ^~~~
+--
+   In file included from scripts/sign-file.c:40:
+   scripts/sign-file.c: In function 'main':
+>> scripts/sign-file.c:357:29: warning: implicit declaration of function 'CMS_final_digest' [-Wimplicit-function-declaration]
+     357 |                         ERR(CMS_final_digest(cms, digest_bin, digest_len, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
+         |                             ^~~~~~~~~~~~~~~~
+   scripts/ssl-common.h:27:32: note: in definition of macro 'ERR'
+      27 |                 bool __cond = (cond);                   \
+         |                                ^~~~
+
+
+vim +/CMS_final_digest +357 scripts/sign-file.c
+
+   329	
+   330		if (!raw_sig) {
+   331			/* Read the private key and the X.509 cert the PKCS#7 message
+   332			 * will point to.
+   333			 */
+   334			private_key = read_private_key(private_key_name);
+   335			x509 = read_x509(x509_name);
+   336	
+   337			/* Digest the module data. */
+   338			OpenSSL_add_all_digests();
+   339			drain_openssl_errors(__LINE__, 0);
+   340			digest_algo = EVP_get_digestbyname(hash_algo);
+   341			ERR(!digest_algo, "EVP_get_digestbyname");
+   342	
+   343	#ifndef USE_PKCS7
+   344			/* Load the signature message from the digest buffer. */
+   345			cms = CMS_sign(NULL, NULL, NULL, NULL,
+   346				       CMS_NOCERTS | CMS_PARTIAL | CMS_BINARY |
+   347				       CMS_DETACHED | CMS_STREAM);
+   348			ERR(!cms, "CMS_sign");
+   349	
+   350			ERR(!CMS_add1_signer(cms, x509, private_key, digest_algo,
+   351					     CMS_NOCERTS | CMS_BINARY |
+   352					     CMS_NOSMIMECAP | use_keyid |
+   353					     (digest_mode ? CMS_KEY_PARAM : 0) |
+   354					     use_signed_attrs),
+   355			    "CMS_add1_signer");
+   356			if (digest_mode)
+ > 357				ERR(CMS_final_digest(cms, digest_bin, digest_len, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
+   358				    "CMS_final_digest");
+   359			else
+   360				ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
+   361				    "CMS_final");
+   362	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
