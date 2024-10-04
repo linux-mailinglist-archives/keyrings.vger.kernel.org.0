@@ -1,168 +1,226 @@
-Return-Path: <keyrings+bounces-2182-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2183-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52596990472
-	for <lists+keyrings@lfdr.de>; Fri,  4 Oct 2024 15:32:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE8E499092E
+	for <lists+keyrings@lfdr.de>; Fri,  4 Oct 2024 18:30:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2C021F21042
-	for <lists+keyrings@lfdr.de>; Fri,  4 Oct 2024 13:32:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5353B224A7
+	for <lists+keyrings@lfdr.de>; Fri,  4 Oct 2024 16:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1DB212F07;
-	Fri,  4 Oct 2024 13:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17011AA79D;
+	Fri,  4 Oct 2024 16:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jUHRieyz"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="JEK5rV9l"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD39212EE7;
-	Fri,  4 Oct 2024 13:31:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6169C1C303B
+	for <keyrings@vger.kernel.org>; Fri,  4 Oct 2024 16:22:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728048719; cv=none; b=UPNd3E6zz1b2qHH8SeaetmCbE3OlIL7mJZ4KQ42k+MGwxdADJNDvERAOlZHulFFZWwYAMEgc2/wzXtkhILkXNlTfHwun3xz6mzHn7C7vz6MqmBPNaE8D0/DQGAX0D/W60E3VUQ+EHuWziwhHvTOFLcT1Y2uK1c8cMBqU/XG7qG8=
+	t=1728058926; cv=none; b=dQ8u5XzagHboqBibr4eO6UOxfUrpEgcSVj3cO2rmieGFRuvNlsP5uXlr9g3jmzjCAVZbQtLmaxyYszLmiNkg/Y9Z/bA5EU9Qx7Bwv07ZstWMd++OCoRMcjUb1XLT8yZNurY8eGI+M4RQZgyracp/m+m70iK8E6njHzQHOGsmrZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728048719; c=relaxed/simple;
-	bh=FPLZJaARGtRR7bwMZfLF8SBRUPHLyRTznI4rLQWKTiU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ig/oNZr1DsQLHzqy9DkecTBCK30HWK93DIy51MgmYM+z4nJcoft2fzTZEBTBKES4npLgkTtcSFunBv0XB2qtMb/DCBDc/apz50KCqaYDski7bGxDLXE64pOGRxpD85cmKWTBEraVISMicEn8GSO2lrbuuriBG9l2EbDNHYL34zo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jUHRieyz; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728048717; x=1759584717;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FPLZJaARGtRR7bwMZfLF8SBRUPHLyRTznI4rLQWKTiU=;
-  b=jUHRieyz1FMasVVZbwlzQFUKf3j1Gl9uN/Xd9p525IUhtv+p3paL/Svd
-   js1RR/9oIxknr3LJBr1E6a+8nyEsueEW2QKyyccFh5aEltgcytj4VdGnJ
-   sSvoGz571d84WQFvo3o8GIPbsegSB/fb0NOBipTL7X+HnbuPIkYi+ypqY
-   OYZZUOypaS9OpTjHSMj/kFQRqGBjU+ypDgHF/5YEYkJOaGELJNooNq9Zc
-   UZb7Iw4IGyyJvBHAzmKwBBLJW6aexr01z1TYvzU7Omduebw2ywify+MIA
-   7pz/NrmOSaf9X1Vvai/RH+mUKGlwRTUOZAr4As5JFLTF9XywKZqjdTr/p
-   g==;
-X-CSE-ConnectionGUID: eJrIxmvtTV+wRitEO1Wl5Q==
-X-CSE-MsgGUID: RhfnDijfR46Md2IL4wVAsQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11214"; a="27150476"
-X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; 
-   d="scan'208";a="27150476"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Oct 2024 06:30:21 -0700
-X-CSE-ConnectionGUID: L0iAeHhRRXmIGL7OAVxeAQ==
-X-CSE-MsgGUID: y5hOZK8qRSWp9CZ6SrHB7Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; 
-   d="scan'208";a="74697088"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 04 Oct 2024 06:30:20 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1swiNt-0001fq-1V;
-	Fri, 04 Oct 2024 13:30:17 +0000
-Date: Fri, 4 Oct 2024 21:30:05 +0800
-From: kernel test robot <lkp@intel.com>
-To: Fam Zheng <fam.zheng@bytedance.com>, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, fam@euphon.net,
-	David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
-	David Woodhouse <dwmw2@infradead.org>, fam.zheng@bytedance.com
-Subject: Re: [PATCH] sign-file: Add -D "digest mode"
-Message-ID: <202410042115.WT7VlS8U-lkp@intel.com>
-References: <20241002133837.1030094-1-fam.zheng@bytedance.com>
+	s=arc-20240116; t=1728058926; c=relaxed/simple;
+	bh=je74LtNxmIzOZi3SCp6WVDFwZ30KNMZ8HgUYDImMZcM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=uHlANzPocZRVeoOUa5Lm7BbdOODKGPS893HilrTx3ujroG6SK93qGzYBgnLNsQ/gC98MZHKQ0gw/aCPqTrNnPBR7roJ+ogeAECjUasicwXv1qzbKvg0MH7mh4n4Ox/AXnB/0IHcssMsqerF9e02sqaJM1iC3TFTGVdZwCtOXBO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=JEK5rV9l; arc=none smtp.client-ip=209.85.219.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-6cb3bbb9cf5so17838706d6.1
+        for <keyrings@vger.kernel.org>; Fri, 04 Oct 2024 09:22:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1728058923; x=1728663723; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dZwzCUJjE0AU6B0ciHwXhgBjpmcX6LzSknC7CVqPG54=;
+        b=JEK5rV9lP8C6YvZS8/kZ8VHNnS4yDKpbqP+nHfYZK6/Fv1vVnttFptAKNz2ejKYa9D
+         +wFyWD1SEef1zd8iaAm3c1MFWCZJrO6fU2ixHrHiTIyZ3/I8kknkllQUQPVFBGem3ybt
+         MFiwxSAE8CV6pi5IIuyxTGVLvZAMYi87Is6MJ1KVqX6ojvdTwsJSJ9z4WoJN3ueeRy4W
+         CMqmgjVc9XpKzt/U85IBubjHkC8FbqX4L+zRYKWCoTX+ZHc9btqNqhP1i+ghcbMTzWlN
+         +KFLEuM1dzujRuKpKCcVxwy9CeHk8K1pgtXHtJjFvski9/iws5CQyBAEQuiwGZUUyvzn
+         KZVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728058923; x=1728663723;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dZwzCUJjE0AU6B0ciHwXhgBjpmcX6LzSknC7CVqPG54=;
+        b=ORc4wRAp3hEYFDjsC2BCSSlz3bQtJsdok3WPWkm6M4qtnoKh00dRCsMLe6ywwwhtcV
+         Qsp0Ac3P6zN3zOB1msxHpQPyykLOlkqn0I2yWarJoL70hadnM6j4cE69yWW90kM57ukx
+         zWPuoDiQqeMe/T0oet7/ExUVD+nEI9S4foIpEue5dY8etuIxhAR/7du4DKDlXpxYRZE4
+         /leW3N97CSxODHGcB6oqoM/dpVM0XwF4wmdGM+kt0UQEdIQt90nrTBGUv22Y/CEFgZ52
+         VY2OrUVPwLNPLRX7tyf7CP6gHDyWIY8ZmUqTCNy1ZqG/2ZSLMjI+1OfcMNPrIFBKqkgn
+         kZDA==
+X-Forwarded-Encrypted: i=1; AJvYcCVkexAt/HHLtlcG94Da+EUI797GdeOIyzdEsQMRZpvrXjq+PhTp4SSZGtUndfBUbaNQdYNQtRm7QQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaxhrmSsqBozuHRrCF72ABo50Jmgjby2tZbofsrO8A/YNsLeKD
+	WLL2XTfMew+Pi6umrL06iKVa0jmPO3XLKgLd600VhEk8AAj2jNVzy/X78g17q84=
+X-Google-Smtp-Source: AGHT+IEPbaivzjppHiMsKskxqT3v6ZYnQUxrOb8G5Kg3/5pvc+BpKPzpYmrhfb9zRrSFpzV+wqUgcQ==
+X-Received: by 2002:a05:6214:5413:b0:6cb:50c8:b5f7 with SMTP id 6a1803df08f44-6cb9a4bd5f1mr37659856d6.52.1728058923199;
+        Fri, 04 Oct 2024 09:22:03 -0700 (PDT)
+Received: from localhost ([93.115.195.2])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cba46efcd1sm564236d6.60.2024.10.04.09.22.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Oct 2024 09:22:01 -0700 (PDT)
+From: Fam Zheng <fam.zheng@bytedance.com>
+To: linux-kernel@vger.kernel.org
+Cc: fam@euphon.net,
+	keyrings@vger.kernel.org,
+	David Woodhouse <dwmw2@infradead.org>,
+	David Howells <dhowells@redhat.com>,
+	fam.zheng@bytedance.com
+Subject: [PATCH v2] sign-file: Add -D "digest mode"
+Date: Fri,  4 Oct 2024 17:21:59 +0100
+Message-Id: <20241004162159.675136-1-fam.zheng@bytedance.com>
+X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241002133837.1030094-1-fam.zheng@bytedance.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Fam,
+This allows the command to sign by a binary digest file, instead of the
+original ko file.
 
-kernel test robot noticed the following build warnings:
+Combined with the -p (save_sig), we can now split module building (e.g.
+dkms) and module signing into different steps and environments, while
+_not_ requiring copying the whole module file back and forth.
 
-[auto build test WARNING on linus/master]
-[also build test WARNING on v6.12-rc1 next-20241004]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Example usage:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Fam-Zheng/sign-file-Add-D-digest-mode/20241002-215025
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20241002133837.1030094-1-fam.zheng%40bytedance.com
-patch subject: [PATCH] sign-file: Add -D "digest mode"
-config: alpha-allyesconfig (https://download.01.org/0day-ci/archive/20241004/202410042115.WT7VlS8U-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 13.3.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241004/202410042115.WT7VlS8U-lkp@intel.com/reproduce)
+1. On host side:
+    mod=ip6_gre.ko
+    openssl dgst -binary -sha256 $mod > $mod.digest
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410042115.WT7VlS8U-lkp@intel.com/
+2. Send $mod.digest over to a signing service
 
-All warnings (new ones prefixed by >>):
+3. On the server side, sign the digest using new mode:
 
-   In file included from scripts/sign-file.c:40:
-   scripts/sign-file.c: In function 'main':
->> scripts/sign-file.c:357:29: warning: implicit declaration of function 'CMS_final_digest' [-Wimplicit-function-declaration]
-     357 |                         ERR(CMS_final_digest(cms, digest_bin, digest_len, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
-         |                             ^~~~~~~~~~~~~~~~
-   scripts/ssl-common.h:27:32: note: in definition of macro 'ERR'
-      27 |                 bool __cond = (cond);                   \
-         |                                ^~~~
---
-   In file included from scripts/sign-file.c:40:
-   scripts/sign-file.c: In function 'main':
->> scripts/sign-file.c:357:29: warning: implicit declaration of function 'CMS_final_digest' [-Wimplicit-function-declaration]
-     357 |                         ERR(CMS_final_digest(cms, digest_bin, digest_len, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
-         |                             ^~~~~~~~~~~~~~~~
-   scripts/ssl-common.h:27:32: note: in definition of macro 'ERR'
-      27 |                 bool __cond = (cond);                   \
-         |                                ^~~~
+    ./sign-file -dpD sha256 private_key.pem cert.pem $mod.digest
 
+4. Server returns the signature (it will be named $mod.digest.p7s) in
+binary
 
-vim +/CMS_final_digest +357 scripts/sign-file.c
+5. Client uses the returned signature to sign the ko locally:
 
-   329	
-   330		if (!raw_sig) {
-   331			/* Read the private key and the X.509 cert the PKCS#7 message
-   332			 * will point to.
-   333			 */
-   334			private_key = read_private_key(private_key_name);
-   335			x509 = read_x509(x509_name);
-   336	
-   337			/* Digest the module data. */
-   338			OpenSSL_add_all_digests();
-   339			drain_openssl_errors(__LINE__, 0);
-   340			digest_algo = EVP_get_digestbyname(hash_algo);
-   341			ERR(!digest_algo, "EVP_get_digestbyname");
-   342	
-   343	#ifndef USE_PKCS7
-   344			/* Load the signature message from the digest buffer. */
-   345			cms = CMS_sign(NULL, NULL, NULL, NULL,
-   346				       CMS_NOCERTS | CMS_PARTIAL | CMS_BINARY |
-   347				       CMS_DETACHED | CMS_STREAM);
-   348			ERR(!cms, "CMS_sign");
-   349	
-   350			ERR(!CMS_add1_signer(cms, x509, private_key, digest_algo,
-   351					     CMS_NOCERTS | CMS_BINARY |
-   352					     CMS_NOSMIMECAP | use_keyid |
-   353					     (digest_mode ? CMS_KEY_PARAM : 0) |
-   354					     use_signed_attrs),
-   355			    "CMS_add1_signer");
-   356			if (digest_mode)
- > 357				ERR(CMS_final_digest(cms, digest_bin, digest_len, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
-   358				    "CMS_final_digest");
-   359			else
-   360				ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
-   361				    "CMS_final");
-   362	
+    ./sign-file -s signature sha256 cert.pem $mod
 
+Signed-off-by: Fam Zheng <fam.zheng@bytedance.com>
+
+---
+
+v2: Guard the call to CMS_final_digest with #ifdef
+---
+ scripts/sign-file.c | 48 ++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 43 insertions(+), 5 deletions(-)
+
+diff --git a/scripts/sign-file.c b/scripts/sign-file.c
+index 7070245edfc1..edbee3d9162e 100644
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -56,6 +56,9 @@
+ 	defined(OPENSSL_NO_CMS)
+ #define USE_PKCS7
+ #endif
++#if OPENSSL_VERSION_NUMBER > 0x30200000L
++#define HAS_CMS_final_digest 1
++#endif
+ #ifndef USE_PKCS7
+ #include <openssl/cms.h>
+ #else
+@@ -80,9 +83,9 @@ static __attribute__((noreturn))
+ void format(void)
+ {
+ 	fprintf(stderr,
+-		"Usage: scripts/sign-file [-dp] <hash algo> <key> <x509> <module> [<dest>]\n");
++		"Usage: scripts/sign-file [-dpD] <hash algo> <key> <x509> <file> [<dest>]\n");
+ 	fprintf(stderr,
+-		"       scripts/sign-file -s <raw sig> <hash algo> <x509> <module> [<dest>]\n");
++		"       scripts/sign-file -s <raw sig> <hash algo> <x509> <file> [<dest>]\n");
+ 	exit(2);
+ }
+ 
+@@ -229,6 +232,11 @@ int main(int argc, char **argv)
+ 	unsigned char buf[4096];
+ 	unsigned long module_size, sig_size;
+ 	unsigned int use_signed_attrs;
++	bool digest_mode = false;
++#ifdef HAS_CMS_final_digest
++	unsigned char digest_bin[4096];
++	long digest_len;
++#endif
+ 	const EVP_MD *digest_algo;
+ 	EVP_PKEY *private_key;
+ #ifndef USE_PKCS7
+@@ -253,11 +261,20 @@ int main(int argc, char **argv)
+ #endif
+ 
+ 	do {
+-		opt = getopt(argc, argv, "sdpk");
++		opt = getopt(argc, argv, "sdpkD");
+ 		switch (opt) {
+ 		case 's': raw_sig = true; break;
+ 		case 'p': save_sig = true; break;
+ 		case 'd': sign_only = true; save_sig = true; break;
++		case 'D':
++#ifdef HAS_CMS_final_digest
++			digest_mode = true;
++			break;
++#else
++			fprintf(stderr, "digest signing is not supported by the openssl version in use\n");
++			exit(3);
++			break;
++#endif
+ #ifndef USE_PKCS7
+ 		case 'k': use_keyid = CMS_USE_KEYID; break;
+ #endif
+@@ -301,6 +318,17 @@ int main(int argc, char **argv)
+ 	bm = BIO_new_file(module_name, "rb");
+ 	ERR(!bm, "%s", module_name);
+ 
++#ifdef HAS_CMS_final_digest
++	if (digest_mode) {
++		digest_len = BIO_read(bm, digest_bin, sizeof(digest_bin));
++		if (digest_len >= sizeof(digest_bin)) {
++			fprintf(stderr, "sign-file: Digest file too large (max %ld)\n", sizeof(digest_bin));
++			exit(3);
++		}
++		ERR(BIO_reset(bm) < 0, "%s", module_name);
++	}
++#endif
++
+ 	if (!raw_sig) {
+ 		/* Read the private key and the X.509 cert the PKCS#7 message
+ 		 * will point to.
+@@ -324,10 +352,20 @@ int main(int argc, char **argv)
+ 		ERR(!CMS_add1_signer(cms, x509, private_key, digest_algo,
+ 				     CMS_NOCERTS | CMS_BINARY |
+ 				     CMS_NOSMIMECAP | use_keyid |
++				     (digest_mode ? CMS_KEY_PARAM : 0) |
+ 				     use_signed_attrs),
+ 		    "CMS_add1_signer");
+-		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
+-		    "CMS_final");
++		if (digest_mode) {
++#if HAS_CMS_final_digest
++			ERR(CMS_final_digest(cms, digest_bin, digest_len, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
++			    "CMS_final_digest");
++#else
++			fprintf(stderr, "digest mode is not supported by the openssl library\n");
++			exit(3);
++#endif
++		} else
++			ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
++			    "CMS_final");
+ 
+ #else
+ 		pkcs7 = PKCS7_sign(x509, private_key, NULL, bm,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.20.1
+
 
