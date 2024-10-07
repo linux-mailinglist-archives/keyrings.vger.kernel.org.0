@@ -1,164 +1,119 @@
-Return-Path: <keyrings+bounces-2185-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2186-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22D0A9922C2
-	for <lists+keyrings@lfdr.de>; Mon,  7 Oct 2024 04:33:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB81A99366C
+	for <lists+keyrings@lfdr.de>; Mon,  7 Oct 2024 20:42:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B0AC281786
-	for <lists+keyrings@lfdr.de>; Mon,  7 Oct 2024 02:33:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51BE31F22635
+	for <lists+keyrings@lfdr.de>; Mon,  7 Oct 2024 18:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF7A1173F;
-	Mon,  7 Oct 2024 02:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79CE1D357B;
+	Mon,  7 Oct 2024 18:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=kev009.com header.i=@kev009.com header.b="tuIpb769"
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="JlE2A5da"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-190d.mail.infomaniak.ch (smtp-190d.mail.infomaniak.ch [185.125.25.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A208522A
-	for <keyrings@vger.kernel.org>; Mon,  7 Oct 2024 02:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2011E1DDC2A
+	for <keyrings@vger.kernel.org>; Mon,  7 Oct 2024 18:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.25.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728268382; cv=none; b=E6NDz/b0msN4bfHuXuIZCwgT12bgo/LSnM4wSzem5Yuv3dIti2l/C97Ap5XuQ6oT9Tv2OH8/dbPc/L4WuCVklr0ai6LdN31by34yFPa9LcFaaOI3OWAKdUA7QKWzYZsKvw64CaaK2kXGuAIGFXgLyWtm1tGiD2cqyKJ56JT68aw=
+	t=1728326553; cv=none; b=JQlGhoEFPTtUIUc4dbGDu1MV3A9/31nakISdYlEeW6ww+qFyVzA5CQQy/lMN3bCdV+RMPqgg3QSYApPVjxI6466BEiT9XkDZLx+tn5193fT4xxpErBNWQTB/nAzDRb4EWrWaBsUOX6HExTeHk3r4uPAuQUDUhqiH6ZFW+Lp+qvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728268382; c=relaxed/simple;
-	bh=UmYzWjwwdRldGzMtasrj0iUPzywF33QHaFRM8bXmb/M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Cc3Tzkidt8zN1IxKuufzktbHldZT0DtZX3osblG2Q2XI2tBTrOUKVmwg5eZB+NGiSildwNlL+ysvncN5CX6xXp2chSks+2azBmlJZfL0yw1+tZp+aldcsX9VzkKiRSzMeZUydvVs9c16eDKyH+kRLmxu1dBP01koVP500uFyPMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kev009.com; spf=pass smtp.mailfrom=kev009.com; dkim=fail (0-bit key) header.d=kev009.com header.i=@kev009.com header.b=tuIpb769 reason="key not found in DNS"; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kev009.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kev009.com
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4581e7f31eeso36158151cf.0
-        for <keyrings@vger.kernel.org>; Sun, 06 Oct 2024 19:32:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kev009.com; s=google; t=1728268379; x=1728873179; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eIagNj3XBeiwbes7ESay7OedVVX9YeO+j3SWRSuWDgU=;
-        b=tuIpb769p5oD0BWU9SUrJE4RyPonSCiDvwzOKjzffMGJDU82HUKHq4lzCS/ioKYOrm
-         QDXVeJV6LQjGIWPMtPKHYfrf4AEIiyZpWU3He1FOCy/6WqsM0rud7fQP4UtlJDBTZCq1
-         ZjzQRzllrHWRp3q6Q9zICqXpK/uhznT/YuZoY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728268379; x=1728873179;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eIagNj3XBeiwbes7ESay7OedVVX9YeO+j3SWRSuWDgU=;
-        b=Me912yHnLzL4qEh52ghz7j1Dp8Kif/4cstwwIaq1bOPjV7IhoSGwIaw7T5v2nPOm7l
-         zNMTV5zIIZgEqqT55tLbfWVFIKdBPbOg65eEzrKiVQh+mQpsfQHGtDSpiBPu87NpfcVj
-         iauFVgjx4XFK/etR+s47Le5sxaKxqUkIVk0vQoalFGBDIbXPp7lf6fnH/TL1Rd3pmTEu
-         lfG6jy//28Lv3F32Dhkl9BQWY8JqkNz3R2btMBYGnsJS0A2yBtrPzcohc2bwC3wATPO0
-         eO3+UVyJb163reHfBklCM18alkqNJAL2FUibyk3vXl2ctGF/ldmSJ2X2DMMVxQicMiGq
-         aJnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUmG/Ei2FiDHxODvmiWsg1pL5oZuh5AsYd5t1Jg3DAdDoI42OeKEtoVSUummi9I9sB0IOQ8e458EQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywaei3pnwOx9YfeokaRuRiY5pquZP0Nm+Wi1v/PQmwdaXSxWKHl
-	jIhyhtYyOOm4mxSqg2u1LmoAWllsjJnAjFUV3yQaGGLSuDrcVvNVXqAh50GcHgzX7veIPEdVsSw
-	/r6bysuPoMNerY4BNfYiCHnMAmjGxyhKdmuFjd09Rm4lfj1w=
-X-Google-Smtp-Source: AGHT+IGW6ESRO/rs7JsIqpNrzr5mR+Qf6lp+llFyFWrhgLaCLuuBhqRYKgzRWQDEQknxfpZf58As69biVB1biwW3opY=
-X-Received: by 2002:ac8:5792:0:b0:45b:1d3:d9a8 with SMTP id
- d75a77b69052e-45d9ba85fdcmr172235491cf.27.1728268379057; Sun, 06 Oct 2024
- 19:32:59 -0700 (PDT)
+	s=arc-20240116; t=1728326553; c=relaxed/simple;
+	bh=mcMOKVsBPrPgTTNnT1Bb+Nfenyk6y5Waj7/KMOMeIEo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PStuoaF51DKXZ4Ui2fmRci0oghLP8pVRga1KEH5e6ozoiBXLAn+deHZUITOFHNlLTDkHP2Brv/2KiNLOquXAbhdQGf1UnUbWS0oSpQMK2JlZJe+VybtQsM2Y+55mxr0KpLuYpWm9br2pSb8CkUuXljHiHuZkiSg91Qk3aMTaXsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=JlE2A5da; arc=none smtp.client-ip=185.125.25.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+Received: from smtp-4-0001.mail.infomaniak.ch (smtp-4-0001.mail.infomaniak.ch [10.7.10.108])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4XMp0p6Cq3z2g;
+	Mon,  7 Oct 2024 20:42:18 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1728326538;
+	bh=38snT+jgcGiQcLlpyDSbMiNYqR/RVp7VfyLyvnZeeHo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JlE2A5dawUjoBcXET0bOHOlOmEr6EtiQCczYvOVpMaLIypT/1SjMpl2rp6XVqgKkE
+	 kE7rgRTKkBWxiktS2AzIHCPg9qsOUn/Y8TwXpYeGC5t6mp7bf7dPRyo9HS5g8aLGdo
+	 iLziARWqlEPF6yP/Tw0Q3WEW1tyuSrnsve+QjxBs=
+Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4XMp0p0Rgfz2qM;
+	Mon,  7 Oct 2024 20:42:18 +0200 (CEST)
+Date: Mon, 7 Oct 2024 20:42:15 +0200
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: David Howells <dhowells@redhat.com>, 
+	David Woodhouse <dwmw2@infradead.org>
+Cc: keyrings@vger.kernel.org, Eric Snowberg <eric.snowberg@oracle.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Daniel Urbonas <t-durbonas@microsoft.com>
+Subject: Re: [PATCH] tools/certs: Make print-cert-tbs-hash.sh compatible with
+ recent OpenSSL
+Message-ID: <20241007.aek5Ohpahlai@digikod.net>
+References: <20240729180233.1114694-1-mic@digikod.net>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240801210155.89097-1-kevin.bowling@kev009.com>
-In-Reply-To: <20240801210155.89097-1-kevin.bowling@kev009.com>
-From: Kevin Bowling <kevin.bowling@kev009.com>
-Date: Sun, 6 Oct 2024 19:32:47 -0700
-Message-ID: <CAK7dMtDiL16JAXvTuTv3fOL5JNkMOCyjr6tVx44uDMKQxVnwqA@mail.gmail.com>
-Subject: Re: [PATCH] KEYS: Print digitalSignature and CA link errors
-To: dhowells@redhat.com, keyrings@vger.kernel.org, jarkko@kernel.org
-Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240729180233.1114694-1-mic@digikod.net>
+X-Infomaniak-Routing: alpha
 
-Hi,
+Could someone please take this patch?
 
-Hopefully this is pretty self explanatory, it just increases the
-diagnostic capabilities of using the keyring erroneously.  How do I
-get someone to look at it?
-
-Regards,
-Kevin
-
-
-On Thu, Aug 1, 2024 at 2:02=E2=80=AFPM Kevin Bowling <kevin.bowling@kev009.=
-com> wrote:
->
-> ENOKEY is overloaded for several different failure types in these link
-> functions.  In addition, by the time we are consuming the return several
-> other methods can return ENOKEY.  Add some error prints to help diagnose
-> fundamental certificate issues.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kevin Bowling <kevin.bowling@kev009.com>
+On Mon, Jul 29, 2024 at 08:02:32PM +0200, Mickaël Salaün wrote:
+> Recent OpenSSL versions (2 or 3) broke the "x509" argument parsing by
+> not handling "-in -" (unlike OpenSSL 1.1):
+>   Could not open file or uri for loading certificate from -: No such
+>   file or directory
+> 
+> Avoid this issue and still make this script work with older versions of
+> OpenSSL by using implicit arguments instead.
+> 
+> To hopefully make it more future-proof, apply the same simplifications
+> for other OpenSSL commands.
+> 
+> Cc: David Howells <dhowells@redhat.com>
+> Cc: David Woodhouse <dwmw2@infradead.org>
+> Cc: Eric Snowberg <eric.snowberg@oracle.com>
+> Cc: Jarkko Sakkinen <jarkko@kernel.org>
+> Reported-by: Daniel Urbonas <t-durbonas@microsoft.com>
+> Fixes: 58d416351e6d ("tools/certs: Add print-cert-tbs-hash.sh")
+> Signed-off-by: Mickaël Salaün <mic@digikod.net>
 > ---
->  crypto/asymmetric_keys/restrict.c | 24 ++++++++++++++++++------
->  1 file changed, 18 insertions(+), 6 deletions(-)
->
-> diff --git a/crypto/asymmetric_keys/restrict.c b/crypto/asymmetric_keys/r=
-estrict.c
-> index afcd4d101ac5..472561e451b3 100644
-> --- a/crypto/asymmetric_keys/restrict.c
-> +++ b/crypto/asymmetric_keys/restrict.c
-> @@ -140,14 +140,20 @@ int restrict_link_by_ca(struct key *dest_keyring,
->         pkey =3D payload->data[asym_crypto];
->         if (!pkey)
->                 return -ENOPKG;
-> -       if (!test_bit(KEY_EFLAG_CA, &pkey->key_eflags))
-> +       if (!test_bit(KEY_EFLAG_CA, &pkey->key_eflags)) {
-> +               pr_err("Missing CA usage bit\n");
->                 return -ENOKEY;
-> -       if (!test_bit(KEY_EFLAG_KEYCERTSIGN, &pkey->key_eflags))
-> +       }
-> +       if (!test_bit(KEY_EFLAG_KEYCERTSIGN, &pkey->key_eflags)) {
-> +               pr_err("Missing keyCertSign usage bit\n");
->                 return -ENOKEY;
-> +       }
->         if (!IS_ENABLED(CONFIG_INTEGRITY_CA_MACHINE_KEYRING_MAX))
->                 return 0;
-> -       if (test_bit(KEY_EFLAG_DIGITALSIG, &pkey->key_eflags))
-> +       if (test_bit(KEY_EFLAG_DIGITALSIG, &pkey->key_eflags)) {
-> +               pr_err("Unexpected digitalSignature usage bit\n");
->                 return -ENOKEY;
-> +       }
->
->         return 0;
->  }
-> @@ -183,14 +189,20 @@ int restrict_link_by_digsig(struct key *dest_keyrin=
-g,
->         if (!pkey)
->                 return -ENOPKG;
->
-> -       if (!test_bit(KEY_EFLAG_DIGITALSIG, &pkey->key_eflags))
-> +       if (!test_bit(KEY_EFLAG_DIGITALSIG, &pkey->key_eflags)) {
-> +               pr_err("Missing digitalSignature usage bit\n");
->                 return -ENOKEY;
-> +       }
->
-> -       if (test_bit(KEY_EFLAG_CA, &pkey->key_eflags))
-> +       if (test_bit(KEY_EFLAG_CA, &pkey->key_eflags)) {
-> +               pr_err("Unexpected CA usage bit\n");
->                 return -ENOKEY;
-> +       }
->
-> -       if (test_bit(KEY_EFLAG_KEYCERTSIGN, &pkey->key_eflags))
-> +       if (test_bit(KEY_EFLAG_KEYCERTSIGN, &pkey->key_eflags)) {
-> +               pr_err("Unexpected keyCertSign usage bit\n");
->                 return -ENOKEY;
-> +       }
->
->         return restrict_link_by_signature(dest_keyring, type, payload,
->                                           trust_keyring);
-> --
-> 2.46.0
->
+>  tools/certs/print-cert-tbs-hash.sh | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tools/certs/print-cert-tbs-hash.sh b/tools/certs/print-cert-tbs-hash.sh
+> index c93df5387ec9..22bdeec4d286 100755
+> --- a/tools/certs/print-cert-tbs-hash.sh
+> +++ b/tools/certs/print-cert-tbs-hash.sh
+> @@ -54,7 +54,7 @@ RANGE_AND_DIGEST_RE='
+>  '
+>  
+>  RANGE_AND_DIGEST=($(echo "${PEM}" | \
+> -	openssl asn1parse -in - | \
+> +	openssl asn1parse | \
+>  	sed -n -e "${RANGE_AND_DIGEST_RE}"))
+>  
+>  if [ "${#RANGE_AND_DIGEST[@]}" != 3 ]; then
+> @@ -85,7 +85,7 @@ if [ -z "${DIGEST_MATCH}" ]; then
+>  fi
+>  
+>  echo "${PEM}" | \
+> -	openssl x509 -in - -outform DER | \
+> +	openssl x509 -outform DER | \
+>  	dd "bs=1" "skip=${OFFSET}" "count=${END}" "status=none" | \
+> -	openssl dgst "-${DIGEST_MATCH}" - | \
+> +	openssl dgst "-${DIGEST_MATCH}" | \
+>  	awk '{printf "tbs:" $2}'
+> -- 
+> 2.45.2
+> 
 
