@@ -1,116 +1,81 @@
-Return-Path: <keyrings+bounces-2198-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2199-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 480C999B329
-	for <lists+keyrings@lfdr.de>; Sat, 12 Oct 2024 12:56:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC9C99C67F
+	for <lists+keyrings@lfdr.de>; Mon, 14 Oct 2024 11:55:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3F41B225B2
-	for <lists+keyrings@lfdr.de>; Sat, 12 Oct 2024 10:56:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97CA628138B
+	for <lists+keyrings@lfdr.de>; Mon, 14 Oct 2024 09:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5151547EB;
-	Sat, 12 Oct 2024 10:56:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nS87PGIk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7619154C0F;
+	Mon, 14 Oct 2024 09:54:58 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [83.223.95.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B626136330;
-	Sat, 12 Oct 2024 10:56:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B29146D55
+	for <keyrings@vger.kernel.org>; Mon, 14 Oct 2024 09:54:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728730572; cv=none; b=qJMjc4gi5ask7ZS2Xoa/Rs0GQXPKP3w0iE+fAlFHx/FXe4P38kiDCPBNQs86nLSRMZZzQ3XYNWxHRnQQtBg3FDQeixNxImiMZ7jypg6Y+b1VsQBhALPDLQzViYigXa7acpSxUof38ZK3BHDIFIJPenA6Lmkxmhrk/WIIBCzGc38=
+	t=1728899698; cv=none; b=qzJ+pz9eqcjg0lQUX58cgZtSkiKp2CoMQ0rDC5bcnmUNHK+jrxgqYnJAX4tyst/V0CB29WZa77v/+h4GkFzTwUmLA8eppEVCJIowHEjShW1chZtpdt/Z43rr7Yf84usIJuUZq/nYk77skLqVaQydzRf5xY4jhqUciIh05K2FhFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728730572; c=relaxed/simple;
-	bh=zszbQppB/+KNbhCJ4wgFW64onx8DPG8wPG1jytjeIgw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fXin4Axh+3SA1HZt/ZHD9W4rANtjWTWIXk7aa38dp5LtAUHO+cM2ApfPZxX8xHaIkfgcGvu1hm7s/SzCLFZsg/D1Z65ZTY8xxbK0RYTEbpJNzCsQLhup5c4PPGmOaJTvMlOcWozJmzGiCyR7sqNoPKJHfc3WWfLcRaBN/JBEMlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nS87PGIk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE0BC4CEC6;
-	Sat, 12 Oct 2024 10:56:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728730571;
-	bh=zszbQppB/+KNbhCJ4wgFW64onx8DPG8wPG1jytjeIgw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=nS87PGIkc5IhYumerFajBV4hZKRaSXPoRKJ7W1fGupvQ6Cb3O0dh7/qkvmgja1Ijz
-	 QXaVyVUOQecLadb3lk6x78vzejD+swZ5RTU5QkVa8gRhXekjKxCIgDzsthZpjxmrF1
-	 /fxACYTT/flIlgofC2P27jC5TMOINGXFHd7BncuZTry2wHtlSKAt+UEsMqBZA51kXm
-	 YyP40gipIWvz0tKZ+lkZO82xIBquTgAyLdRgO5Cfz8ohWumYXE7EwfEkUNu1mCcpu4
-	 OcsEH9FYvDA655B4uLGyyOAwhwElEY27Y4JC5HRAhHrekh2PrwDika2qRBUat/wAgb
-	 W/a/jQRnShjDA==
-Message-ID: <e70c55c6edea2a5be7786ee04a85778193237444.camel@kernel.org>
-Subject: Re: [PATCH v5 0/5] Lazy flush for the auth session
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Roberto Sassu <roberto.sassu@huaweicloud.com>, 
-	linux-integrity@vger.kernel.org
-Cc: James.Bottomley@HansenPartnership.com, roberto.sassu@huawei.com, 
- mapengyu@gmail.com, Mimi Zohar <zohar@linux.ibm.com>, David Howells
- <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>, James Morris
- <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Peter Huewe
- <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
- keyrings@vger.kernel.org,  linux-security-module@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sat, 12 Oct 2024 13:56:07 +0300
-In-Reply-To: <a0068539450a81fdd363d078521cb3822c54608b.camel@kernel.org>
-References: <20240921120811.1264985-1-jarkko@kernel.org>
-	 <f69e08167d8354db31013018edf064a2876f8d1c.camel@kernel.org>
-	 <21b46f4882f0b9b12304d7786bd88f33a7ad2b97.camel@huaweicloud.com>
-	 <a0068539450a81fdd363d078521cb3822c54608b.camel@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1728899698; c=relaxed/simple;
+	bh=opJWGRJzJmm8FlVLRJmQbEMa7Z55QytunZlZn1fcnG4=;
+	h=Message-ID:From:Date:Subject:To:Cc; b=t9JxeLQ9hjDh6tVIVh0ii4ykstvSP0wVq6WUspTMVZvIPdvWM165HJMXmyLqMZj2zi4ww5Bv2Kkib64g5/HvZlhsPEGdrZwYF4TibG1O+8GKYgsys791dOQeCMrfHQ27nafaEUF3CKyBhqjcHDqsulsOvemMKkUA8Tl51oLqdEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.95.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by mailout1.hostsharing.net (Postfix) with ESMTPS id C8641100FAD88;
+	Mon, 14 Oct 2024 11:54:45 +0200 (CEST)
+Received: from localhost (unknown [89.246.108.87])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by h08.hostsharing.net (Postfix) with ESMTPSA id 9C83560FC0F1;
+	Mon, 14 Oct 2024 11:54:45 +0200 (CEST)
+X-Mailbox-Line: From c6db4d5e631df30499b6a34885b5551f2da2436c Mon Sep 17 00:00:00 2001
+Message-ID: <c6db4d5e631df30499b6a34885b5551f2da2436c.1728899510.git.lukas@wunner.de>
+From: Lukas Wunner <lukas@wunner.de>
+Date: Mon, 14 Oct 2024 11:54:46 +0200
+Subject: [PATCH keyutils] man: keyctl(1): Fix typo pkey_decrypt -> pkey_verify
+To: David Howells <dhowells@redhat.com>
+Cc: keyrings@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
 
-On Fri, 2024-10-11 at 19:25 +0300, Jarkko Sakkinen wrote:
-> On Fri, 2024-10-11 at 18:10 +0200, Roberto Sassu wrote:
-> > Initially, I thought that maybe it would not be good to have an
-> > event
-> > log with unmodified and altered measurement entries. Then, I tried
-> > to
-> > think if we can really prevent an active interposer from injecting
-> > arbitrary PCR extends and pretending that those events actually
-> > happened.
-> >=20
-> > If I understood James's cover letter correctly, the kernel can
-> > detect
-> > whether a TPM reset occurred, but not that a PCR extend occurred
-> > (maybe
-> > with a shadow PCR?).
->=20
-> We can detect TPM reset indirectly. I.e. null seed re-randomizes
-> per reset.
->=20
-> >=20
-> > Second point, do we really want to take the responsibility to
-> > disable
-> > the protection on behalf of users? Maybe a better choice is to let
-> > them
-> > consciously disable HMAC protection.
->=20
-> So when IMA is not used already with these fixes we get good
-> results. And for tpm2_get_random() we can make the algorithm
-> smarter. All in all we have good path ongoing for "desktop
-> use case" that I would keep thing way there are or at least
-> postpone any major decisions just a bit.
->=20
-> For server/IMA use case I'll add a boot parameter it can be
-> either on or off by default, I will state that in the commit
-> message and we'll go from there.
+The synopsis of keyctl(1) erroneously lists "pkey_decrypt" not once but
+twice.  The second occurrence was obviously meant to be "pkey_verify".
 
-Up until legit fixes are place distributors can easily disable
-the feature. It would be worse if TCG_TPM2_HMAC did not exist.
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+---
+ man/keyctl.1 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-So I think it is better to focus on doing right things right,
-since the feature itself is useful objectively, and make sure
-that those fixes bring the wanted results.
+diff --git a/man/keyctl.1 b/man/keyctl.1
+index c1d067f..67e48b8 100644
+--- a/man/keyctl.1
++++ b/man/keyctl.1
+@@ -113,7 +113,7 @@ keyctl \- key management facility control
+ .br
+ \fBkeyctl\fR pkey_sign <key> <pass> <datafile> [k=v]* ><sigfile>
+ .br
+-\fBkeyctl\fR pkey_decrypt <key> <pass> <datafile> <sigfile> [k=v]*
++\fBkeyctl\fR pkey_verify <key> <pass> <datafile> <sigfile> [k=v]*
+ .br
+ \fBkeyctl\fR watch [\-f<filters>] <key>
+ .br
+-- 
+2.43.0
 
-BR, Jarkko
 
