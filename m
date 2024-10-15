@@ -1,38 +1,38 @@
-Return-Path: <keyrings+bounces-2205-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2207-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D33999FB50
-	for <lists+keyrings@lfdr.de>; Wed, 16 Oct 2024 00:23:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3834A99FB57
+	for <lists+keyrings@lfdr.de>; Wed, 16 Oct 2024 00:23:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18370284642
-	for <lists+keyrings@lfdr.de>; Tue, 15 Oct 2024 22:23:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 914741F22863
+	for <lists+keyrings@lfdr.de>; Tue, 15 Oct 2024 22:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F73D1D63C6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B811D63E4;
 	Tue, 15 Oct 2024 22:22:57 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75AF1B0F0F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD781B6CED;
 	Tue, 15 Oct 2024 22:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729030977; cv=none; b=r+kU+GscUPToqkdkvH1G/P6b06yVUf1EE6lMtTeJ6/s1jCcsMYR2610wmhboxIRg0ExWhgkHq7/2TsXPyAW+lyshTWtn/T2xULExUAFbc5IFMRQOFHTQsO6qBsRGrKIClnlBrdE7YFs/SSIGSy5J2Mdt6vPrBK2xpC58Hjt2FBs=
+	t=1729030977; cv=none; b=NCbFFRuugUkMZlbNfeJ/dTbfWADR3fEcOFrxhzxo565Ip8k9cN6Kqt9qlBtHelX3joHb4l7uUOB49FGaompuwF/T1AMeXTwcDyzWLdx9AUyiKzB4gr+JQXZ5v8EXIjZjV+LzpT83tC3evC0nlCudYZEN2Jkp+V6sa4j33tYN+Gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1729030977; c=relaxed/simple;
-	bh=Hyol+qnMXN5hFfxO1tenvEfNy6Zotd9r1odI5pxqgm8=;
+	bh=BqOeHEtc1k32tWuUWaZhaEli3OQ7/QlXnTlOvCW7df4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQORGs4lSjdT3QMLbCqAk3+EVYo7FJDpQKMvHZmwbPRdID+iiey+S9vMIuNe+DII7gp9IY0b+/PNlFW4/fc8dIn1vGM6v/2IOo6VOikT2TmSC7tM3tVJ+FwmRmw8zroSxxlCAA2PuG1no1ZwdAeWJYGtKRXchfnlKNO/w+wVXLg=
+	 MIME-Version; b=SK7puA3ux2LjDTE281AReWJc7NvDFrvAK1ly88sHBhVl4AHxzfqxfIQ+8xctW7WtccL5C/XAy8S+WKOpxkYIEpwwySNqqpNbnkxfdoXADGX9K4Z1PCyMcLoqI8VPMRopJFWB8HSNllOV4hHRVqHoS0AMqJ309Qy2zHGXldL6Az4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8D5D81691;
-	Tue, 15 Oct 2024 15:23:24 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2C9811692;
+	Tue, 15 Oct 2024 15:23:25 -0700 (PDT)
 Received: from u200865.usa.arm.com (U203867.austin.arm.com [10.118.30.35])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D872D3F71E;
-	Tue, 15 Oct 2024 15:22:54 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 784793F71E;
+	Tue, 15 Oct 2024 15:22:55 -0700 (PDT)
 From: Jeremy Linton <jeremy.linton@arm.com>
 To: linux-kernel@vger.kernel.org
 Cc: akpm@linux-foundation.org,
@@ -48,9 +48,9 @@ Cc: akpm@linux-foundation.org,
 	linux-kbuild@vger.kernel.org,
 	keyrings@vger.kernel.org,
 	Jeremy Linton <jeremy.linton@arm.com>
-Subject: [RFC 2/5] KEYS/certs: Start the builtin key and cert system earlier
-Date: Tue, 15 Oct 2024 17:22:32 -0500
-Message-ID: <20241015222235.71040-3-jeremy.linton@arm.com>
+Subject: [RFC 3/5] initramfs: Use existing module signing infrastructure
+Date: Tue, 15 Oct 2024 17:22:33 -0500
+Message-ID: <20241015222235.71040-4-jeremy.linton@arm.com>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241015222235.71040-1-jeremy.linton@arm.com>
 References: <20241015222235.71040-1-jeremy.linton@arm.com>
@@ -62,80 +62,149 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This exists at the moment to assure that the module signature checking
-logic can be utilized before the initramfs is mounted.
+Adding some security checks around the configuration data and early
+init processes running on the machine is a good idea. There is a move
+to do this via systemd UKIs using the UEFI and shim infrastructure to
+wrap a kernel and its associated initramfs into a single PE
+executable, which is then validated and measured together. The
+existing kernel boot methods can also provide a similar level of
+security by leveraging the kernel's signing and validation
+infrastructure to check a signature on the initramfs.
 
-Assuming we want to use the built in keys as well as MOK's to validate
-an init image, is just moving this stuff earlier in the boot process
-the right choice?
+Kernel-validated initramfs images maintain the existing UEFI boot flow
+while enabling functionality on non-UEFI machines. They keep the UEFI
+secure boot verification separate from current and future choices over
+how the kernel verifies data used after it boots. Additionally, this
+makes it possible for multiple signed initramfs images, for example,
+debug and recovery images, to share a single kernel image.
+
+Let's reuse the kernel's sign-file utility, which appends a trailing
+signature, signature description, and module signature string to sign
+the initramfs. Then, immediately before we unpack the image, detect if
+there is a signature, validate it, and strip it off. Then, with a
+later patch, we can decide what happens when the image is unsigned or
+cannot be verified.
 
 Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
 ---
- certs/blacklist.c                        | 2 +-
- certs/system_keyring.c                   | 4 ++--
- crypto/asymmetric_keys/asymmetric_type.c | 2 +-
- crypto/asymmetric_keys/x509_public_key.c | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ include/linux/initrd.h |  3 ++
+ init/initramfs.c       | 67 +++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 69 insertions(+), 1 deletion(-)
 
-diff --git a/certs/blacklist.c b/certs/blacklist.c
-index 675dd7a8f07a..e644dd4cfc2b 100644
---- a/certs/blacklist.c
-+++ b/certs/blacklist.c
-@@ -356,7 +356,7 @@ static int __init blacklist_init(void)
- /*
-  * Must be initialised before we try and load the keys into the keyring.
-  */
--device_initcall(blacklist_init);
-+fs_initcall(blacklist_init);
+diff --git a/include/linux/initrd.h b/include/linux/initrd.h
+index f1a1f4c92ded..e123d3cb39bb 100644
+--- a/include/linux/initrd.h
++++ b/include/linux/initrd.h
+@@ -5,6 +5,9 @@
  
- #ifdef CONFIG_SYSTEM_REVOCATION_LIST
- /*
-diff --git a/certs/system_keyring.c b/certs/system_keyring.c
-index 9de610bf1f4b..81a86418cb00 100644
---- a/certs/system_keyring.c
-+++ b/certs/system_keyring.c
-@@ -260,7 +260,7 @@ static __init int system_trusted_keyring_init(void)
- /*
-  * Must be initialised before we try and load the keys into the keyring.
-  */
--device_initcall(system_trusted_keyring_init);
-+subsys_initcall(system_trusted_keyring_init);
+ #define INITRD_MINOR 250 /* shouldn't collide with /dev/ram* too soon ... */
  
- __init int load_module_cert(struct key *keyring)
++/* the len here equals the modsig string len */
++#define INITRD_SIG_STRING "~initrd signature appended~\n"
++
+ /* starting block # of image */
+ extern int rd_image_start;
+ 
+diff --git a/init/initramfs.c b/init/initramfs.c
+index bc911e466d5b..d2d2c68016c2 100644
+--- a/init/initramfs.c
++++ b/init/initramfs.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include <linux/init.h>
++#include <linux/initrd.h>
+ #include <linux/async.h>
+ #include <linux/fs.h>
+ #include <linux/slab.h>
+@@ -14,6 +15,7 @@
+ #include <linux/kstrtox.h>
+ #include <linux/memblock.h>
+ #include <linux/mm.h>
++#include <linux/module_signature.h>
+ #include <linux/namei.h>
+ #include <linux/init_syscalls.h>
+ #include <linux/umh.h>
+@@ -688,8 +690,69 @@ static void __init populate_initrd_image(char *err)
+ }
+ #endif /* CONFIG_BLK_DEV_RAM */
+ 
++static int __init initrd_signature_check(size_t *initrd_len)
++{
++	struct module_signature *ms;
++	size_t sig_len;
++	int ret = -ENODATA;
++	const size_t m_len = sizeof(INITRD_SIG_STRING) - 1;
++
++	*initrd_len = (initrd_end - initrd_start);
++
++	if (*initrd_len < (m_len + sizeof(*ms)))
++		goto fail;
++
++	if (memcmp((char *)(initrd_end - m_len), INITRD_SIG_STRING, m_len)) {
++		pr_info("unsigned initramfs\n");
++		goto fail;
++	}
++
++	/* remove module sig string from len computations going forward */
++	*initrd_len -= m_len;
++
++	ms = (struct module_signature *)(initrd_end - sizeof(*ms) - m_len);
++
++	ret = mod_check_sig(ms, *initrd_len, "initramfs");
++	if (ret)
++		goto fail;
++
++	sig_len = be32_to_cpu(ms->sig_len);
++	*initrd_len -= sizeof(*ms) + sig_len;
++
++#ifdef CONFIG_INITRAMFS_SIG
++	ret = verify_pkcs7_signature((char *)initrd_start, *initrd_len,
++				     (char *)(initrd_start + *initrd_len),
++				     sig_len,
++				     VERIFY_USE_SECONDARY_KEYRING,
++				     VERIFYING_UNSPECIFIED_SIGNATURE,
++				     NULL, NULL);
++
++	switch (ret) {
++	case 0:
++		pr_info("initramfs: valid signature\n");
++		break;
++	case -ENODATA:
++		pr_err("initramfs: invalid signature\n");
++		break;
++	case -ENOPKG:
++		pr_err("initramfs: unsupported crypto\n");
++		break;
++	case -ENOKEY:
++		pr_err("initramfs: unknown key\n");
++		break;
++	default:
++		pr_err("initramfs: unknown error %d\n", ret);
++	}
++#endif
++
++fail:
++	return ret;
++}
++
+ static void __init do_populate_rootfs(void *unused, async_cookie_t cookie)
  {
-@@ -293,7 +293,7 @@ static __init int load_system_certificate_list(void)
++	size_t initrd_len;
++
+ 	/* Load the built in initramfs */
+ 	char *err = unpack_to_rootfs(__initramfs_start, __initramfs_size);
+ 	if (err)
+@@ -703,7 +766,9 @@ static void __init do_populate_rootfs(void *unused, async_cookie_t cookie)
+ 	else
+ 		printk(KERN_INFO "Unpacking initramfs...\n");
  
- 	return x509_load_certificate_list(p, size, builtin_trusted_keys);
- }
--late_initcall(load_system_certificate_list);
-+fs_initcall_sync(load_system_certificate_list);
- 
- #ifdef CONFIG_SYSTEM_DATA_VERIFICATION
- 
-diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
-index 43af5fa510c0..a0607e8cdafc 100644
---- a/crypto/asymmetric_keys/asymmetric_type.c
-+++ b/crypto/asymmetric_keys/asymmetric_type.c
-@@ -681,5 +681,5 @@ static void __exit asymmetric_key_cleanup(void)
- 	unregister_key_type(&key_type_asymmetric);
- }
- 
--module_init(asymmetric_key_init);
-+subsys_initcall(asymmetric_key_init);
- module_exit(asymmetric_key_cleanup);
-diff --git a/crypto/asymmetric_keys/x509_public_key.c b/crypto/asymmetric_keys/x509_public_key.c
-index 8409d7d36cb4..391db5f1ede6 100644
---- a/crypto/asymmetric_keys/x509_public_key.c
-+++ b/crypto/asymmetric_keys/x509_public_key.c
-@@ -246,7 +246,7 @@ static void __exit x509_key_exit(void)
- 	unregister_asymmetric_key_parser(&x509_key_parser);
- }
- 
--module_init(x509_key_init);
-+fs_initcall(x509_key_init);
- module_exit(x509_key_exit);
- 
- MODULE_DESCRIPTION("X.509 certificate parser");
+-	err = unpack_to_rootfs((char *)initrd_start, initrd_end - initrd_start);
++	initrd_signature_check(&initrd_len);
++
++	err = unpack_to_rootfs((char *)initrd_start, initrd_len);
+ 	if (err) {
+ #ifdef CONFIG_BLK_DEV_RAM
+ 		populate_initrd_image(err);
 -- 
 2.46.0
 
