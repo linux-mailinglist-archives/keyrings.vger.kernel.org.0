@@ -1,100 +1,110 @@
-Return-Path: <keyrings+bounces-2203-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2204-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA0099FB1A
-	for <lists+keyrings@lfdr.de>; Wed, 16 Oct 2024 00:14:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 036D799FB4C
+	for <lists+keyrings@lfdr.de>; Wed, 16 Oct 2024 00:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 332AA1F228A8
-	for <lists+keyrings@lfdr.de>; Tue, 15 Oct 2024 22:14:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B79EE284614
+	for <lists+keyrings@lfdr.de>; Tue, 15 Oct 2024 22:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6CD1D63C3;
-	Tue, 15 Oct 2024 22:14:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TWyfb1yN"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9EA1B6D08;
+	Tue, 15 Oct 2024 22:22:57 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AF01CEAD3;
-	Tue, 15 Oct 2024 22:14:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09F721E3A7;
+	Tue, 15 Oct 2024 22:22:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729030467; cv=none; b=DmDFMXw0noTHEHZrzyopfP8aofSE9IDaMrfYd2Yf0h0ZpeqeUInnk0QSXgzbkk1hqGH+A4btl59oOwIrvAq38tSQv0rsMRvVoO8DWlMEefglWgUL+p/R9QArZrJwJCNbg11I6T9a8Ih+AIpdLQU9lKJALSiTwrYtn974FLOzMH0=
+	t=1729030976; cv=none; b=o5yMXfhyh03nSr2lnD+Mg9i5YDljdBQLdGRiu0eZGqSFGuedBtl1YAItD9EKTSD2y+Vv/LP+xB5bKEzP1en0VyWEgXH9ot0teLRERLyqU1zpbYDUQcJIwQGqVBcZQo5s782hRciTV72TIVoHOoV8Cugj+Q56TplPKiv0QDUYvSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729030467; c=relaxed/simple;
-	bh=KVI17gbRn/XiNvHg57UmIBJR1zSXb183qGcnq/PSnFY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=C2qtW0jtSZGqnytrv/s6vfu18roJY7tsgxZWMUtIPlNJVJf5si/S9ISe/XLEyrYIfiZsMml3x8veqVUDo8/Uh5LMqAyBiFSaSqsA1X1puLT8ypIyVpvMfJBc2fGTgsUQQ7Dt+bp9NgCGnqmbGpKgyei9K5XF/NNMdg2tdtaUB7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TWyfb1yN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A624C4CEC6;
-	Tue, 15 Oct 2024 22:14:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729030466;
-	bh=KVI17gbRn/XiNvHg57UmIBJR1zSXb183qGcnq/PSnFY=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=TWyfb1yNtLs/bZiJMLn9sLOsR12Az7fmc9HWm7JUASMma8z/e7WSh5Iy2Yt+WoR5H
-	 z2/mXgj2uYN7QLdk1si4FOmDxywvpHDEryRlHIAp6fudSWmbJ4J61ItSdVOpD/EoRz
-	 hdqtrFGHhbeqNCvvcpn98moS3UjH8RrYtL7v3igorvs09nl1IaH09+Pv3oSlYC7fZl
-	 uhQIRx9ltk4FG8YFMOODfJbWnR8aBlp7A3gL/ryQ+1Y3V1RTgj+deTiUfQeSwv9kks
-	 jK5cYVScwexhQ38jSJDYQYngOMRa8en2W4UlAHMklLnB4ViaD7+OXRhzDVbUBiF4Qc
-	 f+xX/pB5qwCvA==
+	s=arc-20240116; t=1729030976; c=relaxed/simple;
+	bh=ChJp3FkdlrjyBMH8e4YX8Xck6vININFbQO4OvSITy5E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ejhJ8tiJ6EZxf3SkjgoGekEDFqdx2ZSml58sHVz9RdkfUsHpRPnXAwHvvgNljaPgkzUU6PKkI4iWj4OHzAoMpYgkN0L3x7nG015OPBfcJ1QUWnvnoovcitvfmr3whTNm2CqlnwnK1168ciKfOG2gTW//w2Ue8I6NCf6tf9aF5Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E91ADDA7;
+	Tue, 15 Oct 2024 15:23:22 -0700 (PDT)
+Received: from u200865.usa.arm.com (U203867.austin.arm.com [10.118.30.35])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 030F23F71E;
+	Tue, 15 Oct 2024 15:22:53 -0700 (PDT)
+From: Jeremy Linton <jeremy.linton@arm.com>
+To: linux-kernel@vger.kernel.org
+Cc: akpm@linux-foundation.org,
+	hch@lst.de,
+	gregkh@linuxfoundation.org,
+	graf@amazon.com,
+	lukas@wunner.de,
+	wufan@linux.microsoft.com,
+	brauner@kernel.org,
+	jsperbeck@google.com,
+	ardb@kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	keyrings@vger.kernel.org,
+	Jeremy Linton <jeremy.linton@arm.com>
+Subject: [RFC 0/5] Another initramfs signature checking set
+Date: Tue, 15 Oct 2024 17:22:30 -0500
+Message-ID: <20241015222235.71040-1-jeremy.linton@arm.com>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 16 Oct 2024 01:14:22 +0300
-Message-Id: <D4WQ58T5O21X.CGFKGFKV630K@kernel.org>
-Cc: <James.Bottomley@HansenPartnership.com>, <roberto.sassu@huawei.com>,
- <mapengyu@gmail.com>, "David Howells" <dhowells@redhat.com>, "Paul Moore"
- <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
- Hallyn" <serge@hallyn.com>, "Peter Huewe" <peterhuewe@gmx.de>, "Jason
- Gunthorpe" <jgg@ziepe.ca>, <keyrings@vger.kernel.org>,
- <linux-security-module@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 0/5] Lazy flush for the auth session
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Mimi Zohar" <zohar@linux.ibm.com>, "Roberto Sassu"
- <roberto.sassu@huaweicloud.com>, <linux-integrity@vger.kernel.org>
-X-Mailer: aerc 0.18.2
-References: <20240921120811.1264985-1-jarkko@kernel.org>
- <f69e08167d8354db31013018edf064a2876f8d1c.camel@kernel.org>
- <21b46f4882f0b9b12304d7786bd88f33a7ad2b97.camel@huaweicloud.com>
- <a0068539450a81fdd363d078521cb3822c54608b.camel@kernel.org>
- <e70c55c6edea2a5be7786ee04a85778193237444.camel@kernel.org>
- <04dc04872f2925166f969b43852161d468ee899a.camel@linux.ibm.com>
- <64710fe1db1432ca8857ec83fff4809ab1550137.camel@kernel.org>
- <036746bc4e37ff10a18b5fdffd6fdee561dd5bfe.camel@linux.ibm.com>
-In-Reply-To: <036746bc4e37ff10a18b5fdffd6fdee561dd5bfe.camel@linux.ibm.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Tue Oct 15, 2024 at 11:08 PM EEST, Mimi Zohar wrote:
-> > > > since the feature itself is useful objectively, and make sure
-> > > > that those fixes bring the wanted results.
->
-> The right thing would have been to listen to my concerns when this was in=
-itially
-> being discussed.  The right thing wasn't enabling TCG_TPM2_HMAC by defaul=
-t.
+With the advent of UKI's wrapping kernel and cpio archives up into
+single UEFI PE executables it seems like its probably time to
+reconsider whether the core idea of signing the initrd and verifying
+it in its entirely is a useful function of the core kernel.
 
-This is debatable as for laptops and desktops having hard drive
-encryption do benefit with this. If systemd hadn't added
-systemd-cryptenroll I would agree with this. I learned about this
-feature two years after its inception in that project, so we needed to
-address this as a priority (I did not and will not follow systemd
-development proactively, as don't have time for that).
+Moving this functionality in the kernel should provide a similar
+security statement to the UKIs with a more traditional kernel + initrd
+boot flow and the ability to have a single kernel image that
+selects between multiple signed initrd images. Say a normal boot
+image, and a recovery image.
 
-I feel more safe using my laptop with the feature in place at least.
+This set is a very basic implementation of that concept using the kernel
+built in trusted keyring, and a signature format that is similar to the
+existing module signature. The core change is quite trivial with the larger
+questions around the policy for enforcing or simply checking
+for a valid signature. I've considered various policies, tying it to
+lockdown/etc but this set simply enforces it by default with an kernel
+parameter to override the behavior.
 
-Besides, it is complicated feature enough that it would have been
-impossible ever "zero glitch" land it. I don't think there is any
-rigid "data centers first" rule really, except maybe for those
-businesses that run data centers (and I'm not one of those
-businesses).
+Outside of the core patch the largest change revolves around making
+sure that the asymmetric key and built in cert/keyring/blacklist logic
+is started much earlier in the boot process than normal. This means
+that beyond the hacky _initcall changes in patch 2 there are a bit of
+additional Kconfig changes necessary.
 
-BR, Jarkko
+Finally, before the RFC is dropped there are a number of
+/Documentation changes that will be completed as needed.
+
+Jeremy Linton (5):
+  initramfs: Add initramfs signature checking
+  KEYS/certs: Start the builtin key and cert system earlier
+  initramfs: Use existing module signing infrastructure
+  sign-file: Add -i option to sign initramfs images
+  initramfs: Enforce initramfs signature
+
+ certs/blacklist.c                        |  2 +-
+ certs/system_keyring.c                   |  4 +-
+ crypto/asymmetric_keys/asymmetric_type.c |  2 +-
+ crypto/asymmetric_keys/x509_public_key.c |  2 +-
+ include/linux/initrd.h                   |  3 +
+ init/initramfs.c                         | 84 +++++++++++++++++++++++-
+ scripts/sign-file.c                      | 11 +++-
+ usr/Kconfig                              |  9 +++
+ 8 files changed, 109 insertions(+), 8 deletions(-)
+
+-- 
+2.46.0
+
 
