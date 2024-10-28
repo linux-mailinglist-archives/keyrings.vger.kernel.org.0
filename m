@@ -1,89 +1,92 @@
-Return-Path: <keyrings+bounces-2264-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2265-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC509B2FD7
-	for <lists+keyrings@lfdr.de>; Mon, 28 Oct 2024 13:11:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B01909B307F
+	for <lists+keyrings@lfdr.de>; Mon, 28 Oct 2024 13:39:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4396DB248CA
-	for <lists+keyrings@lfdr.de>; Mon, 28 Oct 2024 12:11:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74921282131
+	for <lists+keyrings@lfdr.de>; Mon, 28 Oct 2024 12:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929981DCB06;
-	Mon, 28 Oct 2024 12:10:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EDlL1ozw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 264DE1DA0EB;
+	Mon, 28 Oct 2024 12:39:34 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF8F1DA2FD;
-	Mon, 28 Oct 2024 12:10:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3494C83;
+	Mon, 28 Oct 2024 12:39:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730117412; cv=none; b=O9MBP0ZS4vi16aZIUEi96+SyQeklOk+czvOcLG9cmmR+Y++vshMn/FZcb16WHgtvASbANgQn/jFUdgv/7On5nOdaRHp9EW/fvQE6AGYU3Wel19S2k9+oEmtLcNg6czFPRdtPO3Q2QxdrXFNEGHyVrghz4/49RFMqvwNk+KoUQ84=
+	t=1730119174; cv=none; b=Uy67dTjDogocR6XZ0p6bwKIE/C1dVim4mWnU+qr4VhILv+NeS5uGJKDx8YKFkC2KodbIbYqZQJMsn6STixsS7N0tDS26/FE0lXjyv7WMaIlj+VGy+rcLelPna32Ayzi7BBMZJdXB6qTJSKboRs/7+Zfz4Ni3Xz29lt5wxDyKn94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730117412; c=relaxed/simple;
-	bh=l5qalQPiwCYhTC3zWpqOzDEvbB3Z5puNHOvHklAezwA=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Gry9jjep4+PKEJUXfUh5uWwKRGwsAsRxNX4DNdaQA3ZDXGq44ePiqrHeQdSttw7KH3FUL9nAt/OV0V/VpD8Vu4ShInmjXLl3KkOWCxS5gk57gQKcmOye6rrPvbKGeZSQ8K1xM00YRUGoVFLjtwpo4Hte9u6Ry2DiKo+vH+NSWXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EDlL1ozw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A34DC4CEE4;
-	Mon, 28 Oct 2024 12:10:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730117411;
-	bh=l5qalQPiwCYhTC3zWpqOzDEvbB3Z5puNHOvHklAezwA=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=EDlL1ozw1Wu3K3uSzBJ5adQi8VkhBdNP+GTmcAI/b+yah183t8I4np5OzbcAJy5HM
-	 PR1241pJnh4SP1Rx8700JfmXBeGRiRvLQjKX4fWkmGPbzYaBSL1apxUfDTQPhMbGHJ
-	 FSxFkDUUM8zHl7ZztgEAptrbCryJbM2r769Wd1xo1i6ykZeiblrYfQMbZB325/Nsdc
-	 tZuhY+xSlwRZeU1Jnh0LskNp3cIYO2zJSbclbnuKbJ+4zHegJfrPVZZgIGJ6O+snwO
-	 pAbXn1ZDfvq+LayFD6CyXYiB9TmG7aNHSZxQzk5lQZnsf7eRj52RyMPDytNPZ6Wcr8
-	 sa6cgOWVPuYKQ==
+	s=arc-20240116; t=1730119174; c=relaxed/simple;
+	bh=f/TexvBF0UCUEoSPWKmBASOK80VhssDA3j4/J1bQ46Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JhS93vX2ink9vZ60RFY3RG84eS71wrM5TSm40feHgrsUR+dfq//zfOg9y29+P9Qf3wNWfLsnivmaoSnWXyASG28S0Dsw4EZFMVdDddaxK49T9rmYpJyyp4uiEycUzaZI86OEAT/QZl2eDwuLy+vmDOCCHkXyC7d8MyxC9gnMC9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [141.14.220.45] (g45.guest.molgen.mpg.de [141.14.220.45])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 9E95561BF4882;
+	Mon, 28 Oct 2024 13:38:17 +0100 (CET)
+Message-ID: <abc37c7f-b069-4272-956d-77e099cadf11@molgen.mpg.de>
+Date: Mon, 28 Oct 2024 13:38:17 +0100
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 28 Oct 2024 14:10:07 +0200
-Message-Id: <D57FFOHZQDUV.QA3SZQSP63Q2@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, "David Howells" <dhowells@redhat.com>,
- "Mimi Zohar" <zohar@linux.ibm.com>, "Roberto Sassu"
- <roberto.sassu@huawei.com>, "Stefan Berger" <stefanb@linux.ibm.com>, "Paul
- Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
- Hallyn" <serge@hallyn.com>, "Dmitry Kasatkin" <dmitry.kasatkin@gmail.com>,
- "Eric Snowberg" <eric.snowberg@oracle.com>, <keyrings@vger.kernel.org>,
- <linux-security-module@vger.kernel.org>, <stable@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v8 2/3] tpm: Rollback tpm2_load_null()
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Paul Menzel" <pmenzel@molgen.mpg.de>,
- <linux-integrity@vger.kernel.org>, "Peter Huewe" <peterhuewe@gmx.de>,
- "Jason Gunthorpe" <jgg@ziepe.ca>, "James Bottomley"
- <James.Bottomley@HansenPartnership.com>
-X-Mailer: aerc 0.18.2
+To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org,
+ Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+ James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: linux-kernel@vger.kernel.org, David Howells <dhowells@redhat.com>,
+ Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>,
+ Stefan Berger <stefanb@linux.ibm.com>, Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Eric Snowberg <eric.snowberg@oracle.com>, keyrings@vger.kernel.org,
+ linux-security-module@vger.kernel.org, stable@vger.kernel.org
 References: <20241028055007.1708971-1-jarkko@kernel.org>
  <20241028055007.1708971-3-jarkko@kernel.org>
  <88bfa0f8-4900-4c56-bd23-14d3b3c7de85@molgen.mpg.de>
-In-Reply-To: <88bfa0f8-4900-4c56-bd23-14d3b3c7de85@molgen.mpg.de>
+ <D57FFOHZQDUV.QA3SZQSP63Q2@kernel.org>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <D57FFOHZQDUV.QA3SZQSP63Q2@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon Oct 28, 2024 at 8:13 AM EET, Paul Menzel wrote:
-> Dear Jarkko,
->
->
-> Thank you for your patch.
->
-> Am 28.10.24 um 06:50 schrieb Jarkko Sakkinen:
-> > Do not continue on tpm2_create_primary() failure in tpm2_load_null().
->
-> Could you please elaborate, why this is done, that means the motivation=
-=20
-> for your change?
+Dear Jarkko,
 
-Which part of "not properly handling a return value" I should explain?
 
-BR, Jarkko
+Am 28.10.24 um 13:10 schrieb Jarkko Sakkinen:
+> On Mon Oct 28, 2024 at 8:13 AM EET, Paul Menzel wrote:
+
+>> Am 28.10.24 um 06:50 schrieb Jarkko Sakkinen:
+>>> Do not continue on tpm2_create_primary() failure in tpm2_load_null().
+>>
+>> Could you please elaborate, why this is done, that means the motivation
+>> for your change?
+> 
+> Which part of "not properly handling a return value" I should explain?
+
+Sorry, where is your quote from?
+
+Anyway, maybe explaining why a successful call to tpm2_create_primary() 
+is needed to continue would at least help me.
+
+
+Kind regards,
+
+Paul
 
