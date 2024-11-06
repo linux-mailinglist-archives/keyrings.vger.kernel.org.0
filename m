@@ -1,73 +1,79 @@
-Return-Path: <keyrings+bounces-2285-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2286-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66EA69BF573
-	for <lists+keyrings@lfdr.de>; Wed,  6 Nov 2024 19:38:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05DEB9BF764
+	for <lists+keyrings@lfdr.de>; Wed,  6 Nov 2024 20:47:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F3A41F261CC
-	for <lists+keyrings@lfdr.de>; Wed,  6 Nov 2024 18:38:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A011BB22D5E
+	for <lists+keyrings@lfdr.de>; Wed,  6 Nov 2024 19:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63677207A3A;
-	Wed,  6 Nov 2024 18:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD66A20CCD3;
+	Wed,  6 Nov 2024 19:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ix6tW9Cl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uz8J3he7"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2E536D;
-	Wed,  6 Nov 2024 18:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A3D209F3D;
+	Wed,  6 Nov 2024 19:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730918319; cv=none; b=JDtwUW7wuOrt8xp0oBgnEPP+yp9kBoDsf3nG6pNni9+T333IayqfBfnDvaapFuTK1WRxBLfKtuIUM3KtHPgaA84fB3Y+L/iG0NbzXaWgGfwmxxOIQL//6Kzg74Z6KhOWM10rxMBZUdmJ/gVZfD6yLGmx7jIVMNoszEDTKpAtXNs=
+	t=1730921880; cv=none; b=oIPLLIhCGiwwC2AiRAAFEDC1Ual1MMwH8qK4ZEkjMdPVmNxnAeGCRttNpM+nUmBBn/juPQKSRoumvZUNbae34S6h3lCTNpJdev4ayVaKssYrpZa0k7iHacRfeIxUXYqjlG9E7Oge7Zm3T7VaQ1ssaCDxd78TVXb0F74ryb64dwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730918319; c=relaxed/simple;
-	bh=tVEgPo14STreEG8UQOeK4cUOz0zDlmTUOzlk8/PZQ3U=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=goPzEExxIMZyV0KO+vRb1aSfQmD7nA6F50FogmOnOcrVTIJN8kfDEOAvuYaXR0lo2xhafx9p10Ynw1vXTz1dC0RHMEBoBcETL1z2lqdKhfy+50IbHYPw9Pf4fmfj1iIarY6gMtOwmyEJXmlD6PA+h5sdBrSJrv5DZ7+wRKFQO04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ix6tW9Cl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69977C4CEC6;
-	Wed,  6 Nov 2024 18:38:38 +0000 (UTC)
+	s=arc-20240116; t=1730921880; c=relaxed/simple;
+	bh=mGlh48tZL1bBGAsoQiwsn0f2h0aoYC2dM7uvbxk8g0I=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=YuISawkmpygJI3rT9zxjBrmMQYa+JaM8XNjXrYQC+5dfwgPFqmEMwOdzuk/3hd1sPSdqw9+mmrqUh0bDoMo6CYvsBIEAzA66e64yZnvP3hSkg+vFoMuptN+WQPulr6S46/kewtY4FpVWYXnlK9Gn7jYCbmEBs4JixqZYNMnXCtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uz8J3he7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30549C4CEC6;
+	Wed,  6 Nov 2024 19:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730918318;
-	bh=tVEgPo14STreEG8UQOeK4cUOz0zDlmTUOzlk8/PZQ3U=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=ix6tW9CletS/q+2tcwXs8z665+y2pVvYb5d4FymMHWP9e+d+jah1rWsoiIi3q5+Dj
-	 T3kpGI11cvQO0gl2pp7FgYZTe0AvWR5aEnGG9xuZeFRRTUVk584plOyeSxHVQvX6BZ
-	 Lac6NKee/lpsxze3WPy6x/NPQ+tjavobQXaBHO2wCvokq9P0PfU6MdbX/xeeajq1hc
-	 3KrjRhVso1sv2eA1gNJs1aRK+DThJc+MfNSIvz4tKWMISofRUl6BI9t3jo58HEv37v
-	 aVTO6re0gCIdNvvaMIHQMoeBjkYLaW8mCvzssl9W+Lq4MP4jkCSIr2SPGo5ylbTVtF
-	 fimu0yePEmr8Q==
+	s=k20201202; t=1730921880;
+	bh=mGlh48tZL1bBGAsoQiwsn0f2h0aoYC2dM7uvbxk8g0I=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=Uz8J3he7YvfKegpVNZ+/uPeuSHgteFmqS9u3eW/4OoHAfeGv/l78pC1hBTshzKyaB
+	 E2geQChIqXdAwMkEYijBQqE1gCqekvpCs5EjEe3HPBDY3tCJNY0UIDRnK7qJ7we2VN
+	 F56TZwaVRfVmXWDzx4CowMFJCPjuYa0jBUvOyRm3LDj8AonN2FYSGEMT6Flk84N+M5
+	 tg+UNHPcCN9Z9t4bg7SpvfcbvFr6+hteRFNqF3hvPOOmXdh9KyUT7xFEyorSgL39vx
+	 +jBAX1OegjPs7+uwwJ1WnPvSlnI9EQTijig0MsJFnQtIRtAN9tCDwMLDtnjItAWvxP
+	 sW/+XiFH/kYTA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 710ED3809A80;
+	Wed,  6 Nov 2024 19:38:10 +0000 (UTC)
+Subject: Re: [GIT PULL] KEYS: keys-next-6.12-rc7
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <D5FB9PK9DD35.1B1VBVMPOZPRS@kernel.org>
+References: <D5FB9PK9DD35.1B1VBVMPOZPRS@kernel.org>
+X-PR-Tracked-List-Id: <keyrings.vger.kernel.org>
+X-PR-Tracked-Message-Id: <D5FB9PK9DD35.1B1VBVMPOZPRS@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/keys-next-6.12-rc7
+X-PR-Tracked-Commit-Id: 04de7589e0a95167d803ecadd115235ba2c14997
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: f43b15692129904ccc064180fa2dd796ba3843a5
+Message-Id: <173092188900.1393097.2042064650287641436.pr-tracker-bot@kernel.org>
+Date: Wed, 06 Nov 2024 19:38:09 +0000
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, David Howells <dhowells@redhat.com>, Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, keyrings@vger.kernel.org, linux-integrity@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 06 Nov 2024 20:38:34 +0200
-Message-Id: <D5FBC0756PMF.3SBC48BP5UTET@kernel.org>
-Cc: "David Howells" <dhowells@redhat.com>, "Herbert Xu"
- <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
- <keyrings@vger.kernel.org>, <linux-integrity@vger.kernel.org>
-Subject: Re: [GIT PULL] KEYS: keys-next-6.12-rc7
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Jarkko Sakkinen" <jarkko@kernel.org>, "Linus Torvalds"
- <torvalds@linux-foundation.org>
-X-Mailer: aerc 0.18.2
-References: <D5FB9PK9DD35.1B1VBVMPOZPRS@kernel.org>
-In-Reply-To: <D5FB9PK9DD35.1B1VBVMPOZPRS@kernel.org>
 
-On Wed Nov 6, 2024 at 8:35 PM EET, Jarkko Sakkinen wrote:
-> Couple of fixes for keys and trusted keys. For me it id not make
-> (common) sense to separate them into separate them into separate keys
-> and trusted keys PR's.
+The pull request you sent on Wed, 06 Nov 2024 20:35:34 +0200:
 
-oops, sorry for the typos ;-)
+> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/keys-next-6.12-rc7
 
-BR, Jarkko
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/f43b15692129904ccc064180fa2dd796ba3843a5
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
