@@ -1,107 +1,99 @@
-Return-Path: <keyrings+bounces-2297-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2298-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A369C7B9C
-	for <lists+keyrings@lfdr.de>; Wed, 13 Nov 2024 19:51:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E1C59C7C21
+	for <lists+keyrings@lfdr.de>; Wed, 13 Nov 2024 20:29:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B82ADB26216
-	for <lists+keyrings@lfdr.de>; Wed, 13 Nov 2024 18:45:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F057C284607
+	for <lists+keyrings@lfdr.de>; Wed, 13 Nov 2024 19:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AB6203712;
-	Wed, 13 Nov 2024 18:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4310120495A;
+	Wed, 13 Nov 2024 19:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YMzIN0Ai"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N+qj/xc0"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CB120125C;
-	Wed, 13 Nov 2024 18:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13939204095;
+	Wed, 13 Nov 2024 19:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731523495; cv=none; b=XsEl2K0QrzHMb9v7vqGp7K5FQSfe7WougIrJnS53bcy0tbBpTtvclkbXNY2Lfl1u4Wqes+RSzN46uEy61p6UtJAFOJBPJ0eaE4ZdeRSVRHpythKBgr8pNm2vnBLKwxlVa7EIQ6mzlLybtCxaF5Bw/OohaN3DzpxdnZ9YX3Q8+HY=
+	t=1731526161; cv=none; b=Z8XOeoc+4QU5LL/coE+b/ublJcHaOCL3EeXzdJSRGEJ0XjmQVlm6gWtJRKR4TWxRkbcmaGdfNlzjmCjoWqCU3gxToqrv6KcP3Ky6udGe++P6/WaiCUoOoj3MUTHj5J3mIE26XmtdmQOJw5E2FWOtn+KPLmdzeessxZmEIPbLEWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731523495; c=relaxed/simple;
-	bh=9b+TTCpVQFtzpW7fgoyoQDsAoWwHFZNEITgQxl3ZD38=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Wjd+ALIBZ56L8q5yRRt6XMFH3HaMQfmqVAUq2wwt2XD+OC3d5aX3cQQscbk6lOMdaLrQxF+Y18fPKuakKDP5+7tXxnLcvq5oXWFdTUJEv+IJyIEIWYM4T6nHB54hJ6eE08UkchWnYMoNxrl72oMX7pEUbElwQdwjGiGzdr6M4Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YMzIN0Ai; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D097C4CEC3;
-	Wed, 13 Nov 2024 18:44:54 +0000 (UTC)
+	s=arc-20240116; t=1731526161; c=relaxed/simple;
+	bh=9I/sPxC4ETBYsax4tZn4x1+AhNAjIBeUlAR5o9CMu3I=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From; b=SKq8LjptWcK79TWHuU+qHtXE1rwu6m3+35qQLXHwcbywUyqYAhwQPi7JcU3730v+nNepVsN6eCULaGstimFSvSDduI3HD3jgkD6LDt/MzCGgu6LRcTGLLpINAPdvcM26Jm1AtP6sZm54hv+RqhclT+Doopaat5mpTLNfGQCDSh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N+qj/xc0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F8AC4CEC3;
+	Wed, 13 Nov 2024 19:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731523495;
-	bh=9b+TTCpVQFtzpW7fgoyoQDsAoWwHFZNEITgQxl3ZD38=;
-	h=From:To:Cc:Subject:Date:From;
-	b=YMzIN0AiFnKMPxtr73YZGmnkfyafC0lzJsSeoamnxWf0XyCiZCO+nKgXJYKwzAcOq
-	 2EG8evfPHOmBBZB1pmbTiM7uLweJ2hkFuU9uCSaTRbR28SmAmntI1Vy/E43rE5TEvJ
-	 0Pw5NgwmkqfuxkoH3n2lel3sErtiCUAclFC8OImxsV7PKF5pWpzXznf9vM5hbaFIUB
-	 3FFxfKgV2YjxAb0xX7eg2k8pM8HQ5IjE1aBPlIs9S8SEWWNaVycWyTQuqSwrPfOdMy
-	 nLBSUIxeIOS1OaxQhTA4eKp/NUAOhmz2cFQNgU7pSYP8+FTRGjtShtRsgCGoUkmiWP
-	 3KI3yfG+F+/jw==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org,
-	Peter Huewe <peterhuewe@gmx.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Stefan Berger <stefanb@linux.ibm.com>
-Cc: stable@vger.kernel.org,
-	Christoph Anton Mitterer <calestyo@scientia.org>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	linux-kernel@vger.kernel.org (open list),
-	keyrings@vger.kernel.org (open list:KEYS-TRUSTED),
-	linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM)
-Subject: [PATCH] tpm: Disable TPM on tpm2_create_primary() failure
-Date: Wed, 13 Nov 2024 20:44:49 +0200
-Message-ID: <20241113184449.477731-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.47.0
+	s=k20201202; t=1731526160;
+	bh=9I/sPxC4ETBYsax4tZn4x1+AhNAjIBeUlAR5o9CMu3I=;
+	h=Date:To:Cc:Subject:From:From;
+	b=N+qj/xc0sDj/7GxhVnVglZ23Cn3lIyNHMEx9CYswgL8EKsADdftx+MmnsXD27YR5x
+	 E+jQCyOpcUkXmory+QNz3ek8zWnNpAW4WRwFtIVL/JE31ukpw2o/COLcqMEI5f73fI
+	 qbgWBU+0G5gTL5TEKw+uNdOch2gcw3Fv9gny3SykEip77EMFuvDOKKNfBBRahI/loD
+	 MCwNZbKb/3Xnj/nTGkhuu40YE+bzt7oOilqNnMg9UpADUdzkykykap4uSeMWa3ZADv
+	 0yQEZZ5BaJWR2xuB29y7d9brRPjMLCaFb3H3DujxWDcRGYGpGqCji7GImU1eVOkr6y
+	 gD/pzMgmWRRTA==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 13 Nov 2024 21:29:16 +0200
+Message-Id: <D5LASMVLQDYH.2EDC5DH6YIDTG@kernel.org>
+To: "Linus Torvalds" <torvalds@linux-foundation.org>
+Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
+ "David Howells" <dhowells@redhat.com>, <keyrings@vger.kernel.org>,
+ <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ "Christoph Anton Mitterer" <calestyo@scientia.org>
+Subject: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.12-rc8
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+X-Mailer: aerc 0.18.2
 
-The earlier bug fix misplaced the error-label when dealing with the
-tpm2_create_primary() return value, which the original completely ignored.
 
-Cc: stable@vger.kernel.org
-Reported-by: Christoph Anton Mitterer <calestyo@scientia.org>
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1087331
-Fixes: cc7d8594342a ("tpm: Rollback tpm2_load_null()")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
- drivers/char/tpm/tpm2-sessions.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+The following changes since commit 14b6320953a3f856a3f93bf9a0e423395baa593d=
+:
 
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index a7c1b162251b..b70165b588ec 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -953,10 +953,13 @@ static int tpm2_load_null(struct tpm_chip *chip, u32 *null_key)
- 	/* Deduce from the name change TPM interference: */
- 	dev_err(&chip->dev, "null key integrity check failed\n");
- 	tpm2_flush_context(chip, tmp_null_key);
--	chip->flags |= TPM_CHIP_FLAG_DISABLE;
- 
- err:
--	return rc ? -ENODEV : 0;
-+	if (rc) {
-+		chip->flags |= TPM_CHIP_FLAG_DISABLE;
-+		rc = -ENODEV;
-+	}
-+	return rc;
- }
- 
- /**
--- 
-2.47.0
+  Merge tag 'for-linus' of git://git.kernel.org/pub/scm/virt/kvm/kvm (2024-=
+11-12 13:35:13 -0800)
 
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags=
+/tpmdd-next-6.12-rc8
+
+for you to fetch changes up to 423893fcbe7e9adc875bce4e55b9b25fc1424977:
+
+  tpm: Disable TPM on tpm2_create_primary() failure (2024-11-13 21:10:45 +0=
+200)
+
+----------------------------------------------------------------
+Hi,
+
+Two bug fixes for TPM bus encryption (the remaining reported issues in
+the feature).
+
+BR, Jarkko
+
+----------------------------------------------------------------
+Jarkko Sakkinen (2):
+      tpm: Opt-in in disable PCR integrity protection
+      tpm: Disable TPM on tpm2_create_primary() failure
+
+ Documentation/admin-guide/kernel-parameters.txt |  9 ++++
+ drivers/char/tpm/tpm-buf.c                      | 20 +++++++++
+ drivers/char/tpm/tpm2-cmd.c                     | 30 +++++++++----
+ drivers/char/tpm/tpm2-sessions.c                | 58 ++++++++++++++-------=
+----
+ include/linux/tpm.h                             |  3 ++
+ 5 files changed, 87 insertions(+), 33 deletions(-)
 
