@@ -1,79 +1,91 @@
-Return-Path: <keyrings+bounces-2300-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2301-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF499C7DB3
-	for <lists+keyrings@lfdr.de>; Wed, 13 Nov 2024 22:36:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 421CC9CFF70
+	for <lists+keyrings@lfdr.de>; Sat, 16 Nov 2024 16:18:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11C68282874
-	for <lists+keyrings@lfdr.de>; Wed, 13 Nov 2024 21:36:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E06821F21F12
+	for <lists+keyrings@lfdr.de>; Sat, 16 Nov 2024 15:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A4418991E;
-	Wed, 13 Nov 2024 21:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48EB31078F;
+	Sat, 16 Nov 2024 15:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TyPXLPpF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gc3K9IMo"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39361865FC;
-	Wed, 13 Nov 2024 21:35:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8191D529
+	for <keyrings@vger.kernel.org>; Sat, 16 Nov 2024 15:18:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731533759; cv=none; b=TBsxdmDFWmuFwyR0LwPYgSDWEoS9EoAV0zjreu8+ZDFsjRVLFVs2ABObKOtVspiEH7mn0bxc9kq/rjqAX/tlFfo//vdC/g0LanXsHMD08Yld79wekLW6yvr8AvCtgdlvho8+aPq9kAV5RdTKNgqUZzfdnx6fB36glObY4kyTNJQ=
+	t=1731770327; cv=none; b=bGiTWm3SvSCbWPmiy2WKPzSn26VBeYpTbo4D3rUW6YqkxyEbhUsa3qAwPBXjJUPApFlHX+Nx8uAZ4PeXj/A/miPIdq6c8HkpH8RCV1stmJ3SxUaTOdly1/9KRoMHA9Ee2LV9K4Z2icOnjNyMISGfC/jfylvFHqodCK3Nj/6UHOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731533759; c=relaxed/simple;
-	bh=kFUf2WiBHLV7e9+O6AbQ0bJDckduwRhjdX073xkDfzA=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=tcNavmD3cbq+ygz+l78n/xEwyPn3swr8JE22C/Hk9/h2v0WybGTCiqU5Vz+GJMVfJdj4Dj6hAbL9lOUS96dQn9hQRmR0rnr/w5Swwn1sPfddcUWUiZLzlBO3PIlzWgi6UH3ie4ncaGVnwrhfEwfXH6Dw7ow6rq1k4SN/puv72qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TyPXLPpF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BA4C4CEC3;
-	Wed, 13 Nov 2024 21:35:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731533759;
-	bh=kFUf2WiBHLV7e9+O6AbQ0bJDckduwRhjdX073xkDfzA=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=TyPXLPpFzQJS13RcBjYBErmO0VhVkO2xfEll+c9hrXj2ecQcBnuUuyAQLN4lRLsmr
-	 KrHi7sTEgLZ7Qs1alacaLNTuppN9V8Lbc46vQgde1PWbwY0nHCZ3QuCD1Hqf24YAc1
-	 kX+W/bs2wrCHEDl6fXrh+MUr7RhcVP27J1rRvSoO3kql8e30b9C1W89BgR6ueyKMv0
-	 nnM56GVGYi7ErFl4qwV8pMUx4q//hWVfHdd7cYmrkvJpNjkAVH1pi4GYLRmeiJgAJ9
-	 e809G8JliKK9zO14fv9nKEA7Ct5utVQhELxM1A1UqEoD+sZGFPJG8pSPOPDpEIyCdT
-	 dtRL98Avzr0KQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAFC43809A80;
-	Wed, 13 Nov 2024 21:36:10 +0000 (UTC)
-Subject: Re: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.12-rc8
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <D5LASMVLQDYH.2EDC5DH6YIDTG@kernel.org>
-References: <D5LASMVLQDYH.2EDC5DH6YIDTG@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <D5LASMVLQDYH.2EDC5DH6YIDTG@kernel.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-6.12-rc8
-X-PR-Tracked-Commit-Id: 423893fcbe7e9adc875bce4e55b9b25fc1424977
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 4ba05b0e857d1f78f92084a15e618ea89a318089
-Message-Id: <173153376966.1393977.13024225536362594859.pr-tracker-bot@kernel.org>
-Date: Wed, 13 Nov 2024 21:36:09 +0000
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org, Christoph Anton Mitterer <calestyo@scientia.org>
+	s=arc-20240116; t=1731770327; c=relaxed/simple;
+	bh=Wd+7kLQISUZlzyPvYmSUTVOb8NV4Vyd3OpsFXw6X7a0=;
+	h=From:Message-ID:To:Subject:Date:MIME-Version:Content-Type; b=YaIHF3MqyVI/pI2+Rq5BCLtLJErs+LQPJkQHrpZcZ4m6r24femzghoV5jnNUNL9MSCdE0rA5w1tnSqODPTuUxn2oRsC+SxGPqYa/eAjI1oqFvMMLRk0XYJ4V7SLsYJSC+iWVoaSoRQvR/fKUJdaVcUggdW0g0WGyiKr2Vv/XiVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gc3K9IMo; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-20cdb889222so16208955ad.3
+        for <keyrings@vger.kernel.org>; Sat, 16 Nov 2024 07:18:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731770325; x=1732375125; darn=vger.kernel.org;
+        h=mime-version:date:subject:to:reply-to:message-id:from:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XHEOkgJ64rwJ+cv0sVIqPUmbc8l+iTifR7HzGzNced0=;
+        b=Gc3K9IMoJuJI2TeJ6NTCQIXP0sx8fPNJRZZYW7mmpeENJMe2J4Sxkrjbwld6H2BZun
+         dAClwfCrQdWaMwERuctp+ZGL1ZdNJiBQCGG1v89QpZK9FewEKVFlDR7OIkcaLuxxYCFD
+         svXwNFgUl+9LprJb0lgQBIhSBEVmMTEeMDhg5YISPIH7NQIOoL/kYFdfXFsHImpTD4Sj
+         PKig6JXSdJIOEu2itKv02dFORAls6zDDpitjSGaZOoza9YQnTLXE1wEjkLfdJhUxR2V6
+         w+3dbMS35P65DHc2g7tQzrvtY1rkd/6bou636u4XwKlAlENJvoO97fTU+N+EiDvFM5/N
+         0qcg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731770325; x=1732375125;
+        h=mime-version:date:subject:to:reply-to:message-id:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XHEOkgJ64rwJ+cv0sVIqPUmbc8l+iTifR7HzGzNced0=;
+        b=OIoY5VNJ2BHcc4vmOuGxXpKQEMyzXXAN0dS1LpV827L/mk3u/UwNL7xdQCAsdsNlCr
+         /Ka/XgrbMWyFZ8mrgUeeQcBD06BrqsB1yYZ7/X1ALX/0jtmI9gDScZuQOGHyHcjPOAtY
+         ZuvcAvXffFBoGGasczDLphEPTPz2qP3pmeS6ruaYF6Q5iIuPLrH4MAS9rVBxNOwuvpSe
+         UfSQd1BPn/RovWu27GWwK+eIGYsYLp8WMXBFkJWUs913epHWhs6XHQl6v8wUb7ujcYbW
+         CJXfA5a8pnkB5rPpRdusbypR0/Oie3U2bJzW8dv+spcIVrZv+cbnqNw9t0VKsLBKATCT
+         IrIw==
+X-Gm-Message-State: AOJu0Yw8szTA296Cv/AZiHTIkhjl1gNnQGKoOUo5jqGDdy+YoBjBi1qE
+	K6h+EXwmqa25Nu8EmN/eR7wkebBMV8+MGxj+tnCQYOa9yeZ+pogUk0w8
+X-Google-Smtp-Source: AGHT+IFiulUNhLWn3UhgMDRk3N3PQiYliboH+pU0vfbbkQIKTFBKrtAjzocxmUh033y/lzZZMAXHrg==
+X-Received: by 2002:a17:903:11c9:b0:20b:5645:d860 with SMTP id d9443c01a7336-211d0ecc3f0mr90830525ad.36.1731770324966;
+        Sat, 16 Nov 2024 07:18:44 -0800 (PST)
+Received: from [103.67.163.162] ([103.67.163.162])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211d0f54d4fsm28902685ad.229.2024.11.16.07.18.43
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 16 Nov 2024 07:18:44 -0800 (PST)
+From: "Van. HR" <jeanpierceyfdvx7548@gmail.com>
+X-Google-Original-From: "Van. HR" <info@information.com>
+Message-ID: <d957b18c1e93476ff5fb4ff8a7b357e7f1bca410f4af8ac60971e749cc391808@mx.google.com>
+Reply-To: dirofdptvancollin@gmail.com
+To: keyrings@vger.kernel.org
+Subject: Nov:16:24
+Date: Sat, 16 Nov 2024 10:18:42 -0500
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 
-The pull request you sent on Wed, 13 Nov 2024 21:29:16 +0200:
+Hello,
+I am a private investment consultant representing the interest of a multinational  conglomerate that wishes to place funds into a trust management portfolio.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-6.12-rc8
+Please indicate your interest for additional information.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/4ba05b0e857d1f78f92084a15e618ea89a318089
+Regards,
 
-Thank you!
+Van Collin.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
 
