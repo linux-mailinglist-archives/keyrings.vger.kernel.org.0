@@ -1,88 +1,95 @@
-Return-Path: <keyrings+bounces-2305-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2306-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AED8E9D1AAA
-	for <lists+keyrings@lfdr.de>; Mon, 18 Nov 2024 22:37:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B6AE9D23AC
+	for <lists+keyrings@lfdr.de>; Tue, 19 Nov 2024 11:36:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74CEC28316C
-	for <lists+keyrings@lfdr.de>; Mon, 18 Nov 2024 21:37:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE27D1F21E15
+	for <lists+keyrings@lfdr.de>; Tue, 19 Nov 2024 10:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F3931E6DD4;
-	Mon, 18 Nov 2024 21:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E811BCA0A;
+	Tue, 19 Nov 2024 10:36:04 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1A11E47DD
-	for <keyrings@vger.kernel.org>; Mon, 18 Nov 2024 21:37:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B43814AD1A
+	for <keyrings@vger.kernel.org>; Tue, 19 Nov 2024 10:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731965826; cv=none; b=B0W8bSi8XrNFPX9ag2XUweCxhhU1uDuBteBkuCBMQYuYJxjp9bhkNyP0QXSAlmpXWfRisX9U0Rd4GCfEz1nbp6vKvJmpgripl4ZS91/i4B7T71hcMtmi97mTm13tpzRtWG3iMNzdlwCTpGE/rIJrlGeUXa+dK0Gdy0bVcjJ6EL0=
+	t=1732012564; cv=none; b=myFk99YA+cYoMSvIG1aufQ053Q3yFHMBqURpTMg5hZJSjWJBYexC/wKIwQfMf6vrLKsTXJTTcx/whvPGs15xHPL4eG0pSPIXQeOEAYTsFXjIiSBYHPmmM5YvGO2ekEs8/njkEiwMJW/M695ZTX/tNVENtRCTC76yVcIQ5ngQtFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731965826; c=relaxed/simple;
-	bh=AD8RL+a16qS304XyMe5fRqoLGy5XqE4pyAEjYUVdeB0=;
+	s=arc-20240116; t=1732012564; c=relaxed/simple;
+	bh=xUwo3wZZYVQWLtQgSzxfVN3DRvFAYHr7FOk4PHNEuEg=;
 	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=aMZYf2fwPCF4yA0Lb4ZDXXf6zRNeACeRbu5CW/2jlVyatJa8S3iJ3yJQlDEWRRAYvlcWeeGkiYBQcPEx4mdba4F/YTu5qNOVuWynhYlWhfYr7TZ+dHX1vTI+s9/ZY3vP8p1o9pv2LRdKQqOAadF65yXyhTaQZeb0IJ5CnQENWRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
+	 Content-Type; b=BJb5plbhfsC5qMl53QWwMEb3L/3gXXeNOklv/U14DLX+bPZx1xbSFyYqvJSTBNj+Q/6xbl5qZz7k2cRga4k7zTImc+mK2HLjQ34lpsYlvXwsPuLvqD+Wpn6MtKbtEpwvRXZ5vhpeGpQBEJtzP5t9KY71SklvwEL83dgofJDJW2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3a6b7974696so29915105ab.1
-        for <keyrings@vger.kernel.org>; Mon, 18 Nov 2024 13:37:04 -0800 (PST)
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a743d76ed9so40777185ab.0
+        for <keyrings@vger.kernel.org>; Tue, 19 Nov 2024 02:36:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731965824; x=1732570624;
+        d=1e100.net; s=20230601; t=1732012562; x=1732617362;
         h=to:from:subject:message-id:in-reply-to:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nICKXi7/BY4L+b4MgIKYet21aV0bch1WeZjTtJNx1VM=;
-        b=cigjqlRWYp8XOjpyslRntV8yBRGEwM1W2N1k9p0i/qF/8XSPtWw1ly7eb7AqfDgUOh
-         //aJyBjyEacFAJvyf6yzr+aWQPu6YpwdCGbK6wsLagbRw5n4zf0pDsDUVnS1E4HygzHn
-         dSCR37QoE6IWuba1hO6EPlv6i9t1zI1OmeSFetLIS7mwZzQMVpMqNE1KUo6zYN6sfQeh
-         P/VJN2SGzZP73leXlnfwlF9MYyhMdtW7tla+a9A1/MClu601p6m09Yd7Uhs7S4t8XHcD
-         u1bk+R5UEreAjvuLXp634zqMpSqsIWiRPfCTFdNmGd+Xk0jjriMWX6DQWHhkcow9CQEq
-         YjEg==
-X-Forwarded-Encrypted: i=1; AJvYcCXMo4mCZaNThIfFIUNBOVsWC0eQmuidlTIlc5uC3nYibBqbgOsdPnR5v7XRx9VS00e63giMHq7ycg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxRr9sjH3ykJf1yygrM4GhHuJP2vm7Grz2J8kBdYO6Fcby/WlUn
-	rUDJOoE4xWEDEdQ72BMLructSfVnVhaqU6mO581ahgoMm8mQ4kuBXiDXh0LyuCDaJvhZs/R33ID
-	axhmrNuMePO0aAIXPhcEEWoCoYfZO147ZGLPKOvk/0xb1siqoYuTbmHo=
-X-Google-Smtp-Source: AGHT+IGJW+n7lvA83sJnLZWBSzq5D53guT7v7kIGh3rmiBABzveN4sxuyZ+8da1KEFDylZ92PG81tcaxMFqjeI71tSx+BKKbO1L+
+        bh=amgwMc6OTFsPhBoe0UDa+e6OjKCPctPlX9BP3lpk4Tw=;
+        b=C0FUJ1qEARdm6QHeYC66PNlTDG/beDzTzDgeP7d8lDTJkvLC3NxI7h2XPaFVvKJu3s
+         JryX6/zZyXs3JpwLnTBxHVNDoPE3tV6G6cpisB/j750AfkTGW1M/BonuS7V4burU5gxZ
+         N2UMDejNIqf9Y2CgEg0BxHJC1QuHP76Pq5T1G4QQYcTaujhBNyBDxO6gdCC64sGbY+/s
+         kHDZ2ejmqHDZLA0FD1i+WZzNVF6KwRwclzMSEEMhsKCzhgbqGpWwrGUYKnXHtbL1woL4
+         v6+OrdZPx5H24hwntPHF1/GA9Euk+xyEyFH/n5vl3HOT9VbIqsgnKihzUcvWVCYYrvB0
+         s7tg==
+X-Forwarded-Encrypted: i=1; AJvYcCX9Y0pRF45XKw9m9/hHTrDaVHLaw02M/toV3XCb2v/JQGZaI0DrioCdNeZqDbY6RTLHQ6JbWu1OUQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwOGi6S6+2aPvFL70GA1mn8ihGwbHITBS3BORFCHxug8RjJmGau
+	+Tedf/n7OFc9huyB5jjwUFpRYCREVgI9b/psaPDsMDSlJpLYzZGNOOQqSx/DqoP0MeNt5FjFB8+
+	Su0T51ntgUUrXCkIzErg8ylfZ6FbtZYUTjId8LRcoErOMfbMoTsBQ7NI=
+X-Google-Smtp-Source: AGHT+IH4JLOB68J0WVaAms5rG1fSqmbBp652LVCd0s1VSCK1MCwu0N8T0U23tdmatWrAyYwbPaOyDlt2vvijnxc840hCL2uU9PNO
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1c2d:b0:3a7:74e1:d54d with SMTP id
- e9e14a558f8ab-3a774e1d777mr22152385ab.21.1731965823827; Mon, 18 Nov 2024
- 13:37:03 -0800 (PST)
-Date: Mon, 18 Nov 2024 13:37:03 -0800
-In-Reply-To: <CAHiZj8j7dp5L_A_nvN4zv9q9qH865MDhhzgEgtZUBMq9H1gPMg@mail.gmail.com>
+X-Received: by 2002:a05:6e02:1a65:b0:3a7:4382:668e with SMTP id
+ e9e14a558f8ab-3a77738fb96mr20777805ab.2.1732012562296; Tue, 19 Nov 2024
+ 02:36:02 -0800 (PST)
+Date: Tue, 19 Nov 2024 02:36:02 -0800
+In-Reply-To: <673b6aec.050a0220.87769.004a.GAE@google.com>
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <673bb37f.050a0220.87769.005d.GAE@google.com>
+Message-ID: <673c6a12.050a0220.87769.006b.GAE@google.com>
 Subject: Re: [syzbot] [keyrings?] [lsm?] KASAN: slab-use-after-free Read in key_put
 From: syzbot <syzbot+6105ffc1ded71d194d6d@syzkaller.appspotmail.com>
-To: dhowells@redhat.com, jarkko@kernel.org, jmorris@namei.org, 
-	keyrings@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, paul@paul-moore.com, serge@hallyn.com, 
-	surajsonawane0215@gmail.com, syzkaller-bugs@googlegroups.com
+To: dhowells@redhat.com, jarkko.sakkinen@kernel.org, jarkko@kernel.org, 
+	jmorris@namei.org, keyrings@vger.kernel.org, lhenriques@suse.de, 
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	paul@paul-moore.com, serge@hallyn.com, surajsonawane0215@gmail.com, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+syzbot has bisected this issue to:
 
-syzbot tried to test the proposed patch but the build/boot failed:
+commit 9578e327b2b4935a25d49e3891b8fcca9b6c10c6
+Author: Luis Henriques <lhenriques@suse.de>
+Date:   Tue Jan 30 10:13:44 2024 +0000
 
-security/keys/gc.c:146:40: error: 'KEY_IS_DEAD' undeclared (first use in this function); did you mean 'KEY_USR_READ'?
+    keys: update key quotas in key_put()
 
-
-Tested on:
-
-commit:         9fb2cfa4 Merge tag 'pull-ufs' of git://git.kernel.org/..
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=10821bf7980000
+start commit:   adc218676eef Linux 6.12
 git tree:       upstream
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=12821bf7980000
+console output: https://syzkaller.appspot.com/x/log.txt?x=14821bf7980000
 kernel config:  https://syzkaller.appspot.com/x/.config?x=55f8591b98dd132
 dashboard link: https://syzkaller.appspot.com/bug?extid=6105ffc1ded71d194d6d
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=1781eac0580000
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12dbbb5f980000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11c672e8580000
 
+Reported-by: syzbot+6105ffc1ded71d194d6d@syzkaller.appspotmail.com
+Fixes: 9578e327b2b4 ("keys: update key quotas in key_put()")
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
