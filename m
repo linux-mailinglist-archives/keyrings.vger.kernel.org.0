@@ -1,95 +1,107 @@
-Return-Path: <keyrings+bounces-2306-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2307-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6AE9D23AC
-	for <lists+keyrings@lfdr.de>; Tue, 19 Nov 2024 11:36:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF6489D5646
+	for <lists+keyrings@lfdr.de>; Fri, 22 Nov 2024 00:41:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE27D1F21E15
-	for <lists+keyrings@lfdr.de>; Tue, 19 Nov 2024 10:36:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B410C284210
+	for <lists+keyrings@lfdr.de>; Thu, 21 Nov 2024 23:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E811BCA0A;
-	Tue, 19 Nov 2024 10:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883851DE2AB;
+	Thu, 21 Nov 2024 23:41:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5xlhA5u"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B43814AD1A
-	for <keyrings@vger.kernel.org>; Tue, 19 Nov 2024 10:36:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDF41CBEB9;
+	Thu, 21 Nov 2024 23:41:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732012564; cv=none; b=myFk99YA+cYoMSvIG1aufQ053Q3yFHMBqURpTMg5hZJSjWJBYexC/wKIwQfMf6vrLKsTXJTTcx/whvPGs15xHPL4eG0pSPIXQeOEAYTsFXjIiSBYHPmmM5YvGO2ekEs8/njkEiwMJW/M695ZTX/tNVENtRCTC76yVcIQ5ngQtFU=
+	t=1732232475; cv=none; b=Dok4FUXycKkReTM+0vqheJBxRcJKSpl4iQL2Usnd4scH9op41WduagmTypmyPHw/THjUeGxRMpNakourC2X+P4koun9ullbYvzzhOyLLyXP/qffggJczpfcvKN2uPOsMgssD18rHC3Jk2v9Xko/IS2ZJdfpo7CXLg9LXDF3NI4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732012564; c=relaxed/simple;
-	bh=xUwo3wZZYVQWLtQgSzxfVN3DRvFAYHr7FOk4PHNEuEg=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=BJb5plbhfsC5qMl53QWwMEb3L/3gXXeNOklv/U14DLX+bPZx1xbSFyYqvJSTBNj+Q/6xbl5qZz7k2cRga4k7zTImc+mK2HLjQ34lpsYlvXwsPuLvqD+Wpn6MtKbtEpwvRXZ5vhpeGpQBEJtzP5t9KY71SklvwEL83dgofJDJW2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a743d76ed9so40777185ab.0
-        for <keyrings@vger.kernel.org>; Tue, 19 Nov 2024 02:36:02 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732012562; x=1732617362;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=amgwMc6OTFsPhBoe0UDa+e6OjKCPctPlX9BP3lpk4Tw=;
-        b=C0FUJ1qEARdm6QHeYC66PNlTDG/beDzTzDgeP7d8lDTJkvLC3NxI7h2XPaFVvKJu3s
-         JryX6/zZyXs3JpwLnTBxHVNDoPE3tV6G6cpisB/j750AfkTGW1M/BonuS7V4burU5gxZ
-         N2UMDejNIqf9Y2CgEg0BxHJC1QuHP76Pq5T1G4QQYcTaujhBNyBDxO6gdCC64sGbY+/s
-         kHDZ2ejmqHDZLA0FD1i+WZzNVF6KwRwclzMSEEMhsKCzhgbqGpWwrGUYKnXHtbL1woL4
-         v6+OrdZPx5H24hwntPHF1/GA9Euk+xyEyFH/n5vl3HOT9VbIqsgnKihzUcvWVCYYrvB0
-         s7tg==
-X-Forwarded-Encrypted: i=1; AJvYcCX9Y0pRF45XKw9m9/hHTrDaVHLaw02M/toV3XCb2v/JQGZaI0DrioCdNeZqDbY6RTLHQ6JbWu1OUQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwOGi6S6+2aPvFL70GA1mn8ihGwbHITBS3BORFCHxug8RjJmGau
-	+Tedf/n7OFc9huyB5jjwUFpRYCREVgI9b/psaPDsMDSlJpLYzZGNOOQqSx/DqoP0MeNt5FjFB8+
-	Su0T51ntgUUrXCkIzErg8ylfZ6FbtZYUTjId8LRcoErOMfbMoTsBQ7NI=
-X-Google-Smtp-Source: AGHT+IH4JLOB68J0WVaAms5rG1fSqmbBp652LVCd0s1VSCK1MCwu0N8T0U23tdmatWrAyYwbPaOyDlt2vvijnxc840hCL2uU9PNO
+	s=arc-20240116; t=1732232475; c=relaxed/simple;
+	bh=hZMMA00BLtAoskhvmEJq99fPpPJUiqFk9bzWhdPZVr8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To; b=tmq8AH0SL6dXdFOGOFlezBzcB18axTK1UvdGWIzWxnuhuzCzVzAZgwstqvmdJR8A1yxCLRJp/Fbs0ot3XBgT8Gj7XRzUP07yZS1rV3GHbHom37L2jUFDETHVNrNRYYZmm2odLZzFFHYFr9xFGCSRs7xQ+eYUg2tkZRseyr1LI6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5xlhA5u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE7CC4CECC;
+	Thu, 21 Nov 2024 23:41:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732232475;
+	bh=hZMMA00BLtAoskhvmEJq99fPpPJUiqFk9bzWhdPZVr8=;
+	h=Date:Cc:Subject:From:To:From;
+	b=A5xlhA5uCJNUNqZqyB34pBv1KzfF0bZciA0RMSPEG561rMJUWUNGhI0mI+IvNzK+M
+	 U6iFA+lKKT31MV+ZjVIORET5/MTW65KcsgY+Dbxz3ieeynmtX2+IMUGRJYUdokizTa
+	 QxYid/dIG5AYkH8+7v6v1Gk6Eyn5/eFXjHbSZR3bFb+xssU1j5Fhi3nVTugR92OL+u
+	 jRKa0yTNJ4HNqWBi+J0WoIbYlutjFKQDx+R4IWxUKFvyQfZ1L2u2hogvIvQQ7arhno
+	 kmAjgyQXI8eGQedTJmLf1PKUilLqprh02+/NpcGqmD8WmZtz4zmmZga0GnZlmquHad
+	 zF+Q9puyGoLHA==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1a65:b0:3a7:4382:668e with SMTP id
- e9e14a558f8ab-3a77738fb96mr20777805ab.2.1732012562296; Tue, 19 Nov 2024
- 02:36:02 -0800 (PST)
-Date: Tue, 19 Nov 2024 02:36:02 -0800
-In-Reply-To: <673b6aec.050a0220.87769.004a.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <673c6a12.050a0220.87769.006b.GAE@google.com>
-Subject: Re: [syzbot] [keyrings?] [lsm?] KASAN: slab-use-after-free Read in key_put
-From: syzbot <syzbot+6105ffc1ded71d194d6d@syzkaller.appspotmail.com>
-To: dhowells@redhat.com, jarkko.sakkinen@kernel.org, jarkko@kernel.org, 
-	jmorris@namei.org, keyrings@vger.kernel.org, lhenriques@suse.de, 
-	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	paul@paul-moore.com, serge@hallyn.com, surajsonawane0215@gmail.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 22 Nov 2024 01:41:10 +0200
+Message-Id: <D5S95V90MFOZ.4LGI0I0F9QP8@kernel.org>
+Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
+ "David Howells" <dhowells@redhat.com>, <keyrings@vger.kernel.org>,
+ <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [GIT PULL] TPM DEVICE DRIVER: linux-next-6.13-rc1
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Linus Torvalds" <torvalds@linux-foundation.org>
+X-Mailer: aerc 0.18.2
 
-syzbot has bisected this issue to:
+The following changes since commit 341d041daae52cd5f014f68c1c7d9039db818fca=
+:
 
-commit 9578e327b2b4935a25d49e3891b8fcca9b6c10c6
-Author: Luis Henriques <lhenriques@suse.de>
-Date:   Tue Jan 30 10:13:44 2024 +0000
+  Merge tag 'for-linus-iommufd' of git://git.kernel.org/pub/scm/linux/kerne=
+l/git/jgg/iommufd (2024-11-21 12:40:50 -0800)
 
-    keys: update key quotas in key_put()
+are available in the Git repository at:
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=10821bf7980000
-start commit:   adc218676eef Linux 6.12
-git tree:       upstream
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=12821bf7980000
-console output: https://syzkaller.appspot.com/x/log.txt?x=14821bf7980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=55f8591b98dd132
-dashboard link: https://syzkaller.appspot.com/bug?extid=6105ffc1ded71d194d6d
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=12dbbb5f980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11c672e8580000
+  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags=
+/tpmdd-next-6.13-rc1
 
-Reported-by: syzbot+6105ffc1ded71d194d6d@syzkaller.appspotmail.com
-Fixes: 9578e327b2b4 ("keys: update key quotas in key_put()")
+for you to fetch changes up to 5578b4347bb5d5dfc8eeb8ee2eb8248658707d9b:
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+  tpm: atmel: Drop PPC64 specific MMIO setup (2024-11-22 00:56:50 +0200)
+
+----------------------------------------------------------------
+Hi,
+
+This pull request has only some minor tweaks.
+
+BR, Jarkko
+
+----------------------------------------------------------------
+Jan Dabros (2):
+      char: tpm: cr50: Use generic request/relinquish locality ops
+      char: tpm: cr50: Move i2c locking to request/relinquish locality ops
+
+Jett Rink (1):
+      char: tpm: cr50: Add new device/vendor ID 0x50666666
+
+Rob Herring (Arm) (1):
+      tpm: atmel: Drop PPC64 specific MMIO setup
+
+Stefan Berger (1):
+      tpm: ibmvtpm: Set TPM_OPS_AUTO_STARTUP flag on driver
+
+ drivers/char/tpm/Kconfig            |   2 +-
+ drivers/char/tpm/tpm2-sessions.c    |   1 -
+ drivers/char/tpm/tpm_atmel.c        |  63 +++++++++++++++-
+ drivers/char/tpm/tpm_atmel.h        | 140 --------------------------------=
+--
+ drivers/char/tpm/tpm_ibmvtpm.c      |  15 +---
+ drivers/char/tpm/tpm_tis_i2c_cr50.c | 146 +++++++++++++++++++++++---------=
+----
+ 6 files changed, 156 insertions(+), 211 deletions(-)
+ delete mode 100644 drivers/char/tpm/tpm_atmel.h
 
