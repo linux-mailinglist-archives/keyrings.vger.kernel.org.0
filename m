@@ -1,107 +1,79 @@
-Return-Path: <keyrings+bounces-2307-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2308-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6489D5646
-	for <lists+keyrings@lfdr.de>; Fri, 22 Nov 2024 00:41:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64EFF9D6705
+	for <lists+keyrings@lfdr.de>; Sat, 23 Nov 2024 02:30:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B410C284210
-	for <lists+keyrings@lfdr.de>; Thu, 21 Nov 2024 23:41:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 010BE282EDC
+	for <lists+keyrings@lfdr.de>; Sat, 23 Nov 2024 01:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883851DE2AB;
-	Thu, 21 Nov 2024 23:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47144165EE8;
+	Sat, 23 Nov 2024 01:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5xlhA5u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WdRjpY8o"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDF41CBEB9;
-	Thu, 21 Nov 2024 23:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E22D1632FA;
+	Sat, 23 Nov 2024 01:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732232475; cv=none; b=Dok4FUXycKkReTM+0vqheJBxRcJKSpl4iQL2Usnd4scH9op41WduagmTypmyPHw/THjUeGxRMpNakourC2X+P4koun9ullbYvzzhOyLLyXP/qffggJczpfcvKN2uPOsMgssD18rHC3Jk2v9Xko/IS2ZJdfpo7CXLg9LXDF3NI4g=
+	t=1732325399; cv=none; b=POYDP53FVbzsgreMLwBNF4sgL5CD+g91iF0Vcid5qvb0grSXw3d/EMtSkcEqUfWzNxRxdOP3ZesydGn1rz9bWMcolrsAEmfNE6sM//HLH6MA1v3GoE5aj5PaWXUtcS55OsbGRl8IwD5HkL2+KjM0bhVj0p8sNiHE6L2xy9HlMbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732232475; c=relaxed/simple;
-	bh=hZMMA00BLtAoskhvmEJq99fPpPJUiqFk9bzWhdPZVr8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To; b=tmq8AH0SL6dXdFOGOFlezBzcB18axTK1UvdGWIzWxnuhuzCzVzAZgwstqvmdJR8A1yxCLRJp/Fbs0ot3XBgT8Gj7XRzUP07yZS1rV3GHbHom37L2jUFDETHVNrNRYYZmm2odLZzFFHYFr9xFGCSRs7xQ+eYUg2tkZRseyr1LI6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5xlhA5u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE7CC4CECC;
-	Thu, 21 Nov 2024 23:41:14 +0000 (UTC)
+	s=arc-20240116; t=1732325399; c=relaxed/simple;
+	bh=60amuwJeWKMn2wu118Hx7N21nxzN3QbMwtbd5rrSn18=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=fkloFNGgAWj2j2BTqxSl7mDvvjDTriIK2Kf/O4jHkieFeZ59fGI8M0n2x+u5LeTRa449qJCfnYTBDkwfppnKJLejqCXi4vctmtcX0rE3vHrHV0g8KZ1F78Q0tP4KeVD3ba2GqzwVNolyXbv1qONoB3kCFiasiTIiA6lzy3Lw/9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WdRjpY8o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03608C4CED0;
+	Sat, 23 Nov 2024 01:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732232475;
-	bh=hZMMA00BLtAoskhvmEJq99fPpPJUiqFk9bzWhdPZVr8=;
-	h=Date:Cc:Subject:From:To:From;
-	b=A5xlhA5uCJNUNqZqyB34pBv1KzfF0bZciA0RMSPEG561rMJUWUNGhI0mI+IvNzK+M
-	 U6iFA+lKKT31MV+ZjVIORET5/MTW65KcsgY+Dbxz3ieeynmtX2+IMUGRJYUdokizTa
-	 QxYid/dIG5AYkH8+7v6v1Gk6Eyn5/eFXjHbSZR3bFb+xssU1j5Fhi3nVTugR92OL+u
-	 jRKa0yTNJ4HNqWBi+J0WoIbYlutjFKQDx+R4IWxUKFvyQfZ1L2u2hogvIvQQ7arhno
-	 kmAjgyQXI8eGQedTJmLf1PKUilLqprh02+/NpcGqmD8WmZtz4zmmZga0GnZlmquHad
-	 zF+Q9puyGoLHA==
+	s=k20201202; t=1732325399;
+	bh=60amuwJeWKMn2wu118Hx7N21nxzN3QbMwtbd5rrSn18=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=WdRjpY8oAJyQmIls8PeK8x7Efgxb1PY7YD8VUpEUsuFvgNPQV8HJ6bIqDJrO1s/7o
+	 lAluO7go3D2AiG+3SDZjP9TwOLVqOfp66Sh+2lfVyvjnE8cCxWYUb9+8kCp2z+15JB
+	 yqidY2k7R0koS9RQXgBfELQI9wRfuuL5maygUdw4ce/YqkT/iiYrSsm98FBi9il+QA
+	 sLMw3o2nFbLAMPVIS+A15TyM+N9jFVMtDt/WAd8KVZFFI0Huaq5dPWGuEng7JkhE8Q
+	 LxaxwuQGLtNwRcS7Jx+rrhsHTDERE5Vr6ql8q8xHRS+QRm1SCOhtE37PDTljSxKVv9
+	 kmM9AN0vpLESw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 713E13809A00;
+	Sat, 23 Nov 2024 01:30:12 +0000 (UTC)
+Subject: Re: [GIT PULL] TPM DEVICE DRIVER: linux-next-6.13-rc1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <D5S95V90MFOZ.4LGI0I0F9QP8@kernel.org>
+References: <D5S95V90MFOZ.4LGI0I0F9QP8@kernel.org>
+X-PR-Tracked-List-Id: <keyrings.vger.kernel.org>
+X-PR-Tracked-Message-Id: <D5S95V90MFOZ.4LGI0I0F9QP8@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-6.13-rc1
+X-PR-Tracked-Commit-Id: 5578b4347bb5d5dfc8eeb8ee2eb8248658707d9b
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 619d996c86421da1057d589123a28e2da0bf0785
+Message-Id: <173232541130.2863978.6328455370106125781.pr-tracker-bot@kernel.org>
+Date: Sat, 23 Nov 2024 01:30:11 +0000
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 22 Nov 2024 01:41:10 +0200
-Message-Id: <D5S95V90MFOZ.4LGI0I0F9QP8@kernel.org>
-Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
- "David Howells" <dhowells@redhat.com>, <keyrings@vger.kernel.org>,
- <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [GIT PULL] TPM DEVICE DRIVER: linux-next-6.13-rc1
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Linus Torvalds" <torvalds@linux-foundation.org>
-X-Mailer: aerc 0.18.2
 
-The following changes since commit 341d041daae52cd5f014f68c1c7d9039db818fca=
-:
+The pull request you sent on Fri, 22 Nov 2024 01:41:10 +0200:
 
-  Merge tag 'for-linus-iommufd' of git://git.kernel.org/pub/scm/linux/kerne=
-l/git/jgg/iommufd (2024-11-21 12:40:50 -0800)
+> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-6.13-rc1
 
-are available in the Git repository at:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/619d996c86421da1057d589123a28e2da0bf0785
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags=
-/tpmdd-next-6.13-rc1
+Thank you!
 
-for you to fetch changes up to 5578b4347bb5d5dfc8eeb8ee2eb8248658707d9b:
-
-  tpm: atmel: Drop PPC64 specific MMIO setup (2024-11-22 00:56:50 +0200)
-
-----------------------------------------------------------------
-Hi,
-
-This pull request has only some minor tweaks.
-
-BR, Jarkko
-
-----------------------------------------------------------------
-Jan Dabros (2):
-      char: tpm: cr50: Use generic request/relinquish locality ops
-      char: tpm: cr50: Move i2c locking to request/relinquish locality ops
-
-Jett Rink (1):
-      char: tpm: cr50: Add new device/vendor ID 0x50666666
-
-Rob Herring (Arm) (1):
-      tpm: atmel: Drop PPC64 specific MMIO setup
-
-Stefan Berger (1):
-      tpm: ibmvtpm: Set TPM_OPS_AUTO_STARTUP flag on driver
-
- drivers/char/tpm/Kconfig            |   2 +-
- drivers/char/tpm/tpm2-sessions.c    |   1 -
- drivers/char/tpm/tpm_atmel.c        |  63 +++++++++++++++-
- drivers/char/tpm/tpm_atmel.h        | 140 --------------------------------=
---
- drivers/char/tpm/tpm_ibmvtpm.c      |  15 +---
- drivers/char/tpm/tpm_tis_i2c_cr50.c | 146 +++++++++++++++++++++++---------=
-----
- 6 files changed, 156 insertions(+), 211 deletions(-)
- delete mode 100644 drivers/char/tpm/tpm_atmel.h
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
