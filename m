@@ -1,159 +1,395 @@
-Return-Path: <keyrings+bounces-2313-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2314-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEAA39E6822
-	for <lists+keyrings@lfdr.de>; Fri,  6 Dec 2024 08:46:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D37939FAE26
+	for <lists+keyrings@lfdr.de>; Mon, 23 Dec 2024 13:11:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A58B9168736
-	for <lists+keyrings@lfdr.de>; Fri,  6 Dec 2024 07:46:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46BD01645C8
+	for <lists+keyrings@lfdr.de>; Mon, 23 Dec 2024 12:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05437197548;
-	Fri,  6 Dec 2024 07:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15BE21A8F7E;
+	Mon, 23 Dec 2024 12:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IkjF+EAF"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mPQhbYTR"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2FE13DDDF
-	for <keyrings@vger.kernel.org>; Fri,  6 Dec 2024 07:46:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06433166307;
+	Mon, 23 Dec 2024 12:11:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733471182; cv=none; b=uVm6kjKFSii++z3p32pi++Eo7kF+FW7wne++MR/ud70faeBdjMuG/F5UhmprFxeQaQi8o5QdrejgEa1X71XKMMjZ5TTJ+h7nq1umnpUg9Z5G62UUl3yFla9p0cVQRcHRd4nNIBYB/idI2FIE32pbgRgQiw/2yl16obNh4FPceT4=
+	t=1734955899; cv=none; b=Bw3sbPJhgDW8ALKYPWbuW4vL7FxwoetsqENeemWmWNAg0z1ewP94l2hGWKmdqgEhHc/c6fNMzJK0kFx917ZSbJEKEQ/t0oVTR6bhj+wkGybwpsQBDc7ixRc1mcT/bH7kBXDLShcT75yp7RMocIWw9wVxu0Mg4LPKkkEiHo5vzB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733471182; c=relaxed/simple;
-	bh=tPv4OOeD0gjIOZkECyAvR4dnHfIfx1W4nFgN8YXR6fg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=dq5m5lGEOf0C30f5Kb4aQymA44jD5EUhKAJDGY7ab13u8f0vpeHPoUFTMDIOcnFbLxMFit93zWB7diXseM9dHwgkTbcnb0hhmhYjzDHZyyP/8d4rDrtZDy9eM1k+oVN8SZH8A6yk2RO7wYW9sMUJqE4QoF4J+fpHRlEEoYRHvgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IkjF+EAF; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-21145812538so14503825ad.0
-        for <keyrings@vger.kernel.org>; Thu, 05 Dec 2024 23:46:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733471179; x=1734075979; darn=vger.kernel.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=wOFUZ9gV6La6sfZjXBczKJ4Mec0cKF4N95da3Hhde70=;
-        b=IkjF+EAFD6WP5jqXeVjGH86nT9paOefwNzYl57mzNGjoMtkjRrv83qTMUMnTkvYLsS
-         hccX/pBs3bPBI9L6DNNqCSltu5WPPJ0WCKrl7X1eNCLp0BdAF3Hsf4kTiiba1AmPGx/0
-         6FCydbovILn0nWP/Qlf29cXaR5xHGjjoxtdsWibQgDl1+SJExUfNB5BROdSw0KkEzQmd
-         CM0J2Zx6BLExmj1fgDlyIIONFTo3oysHziRmIDFiJaY8C4/NPq2HlKOc1ThTv/PInM7P
-         CYpriRMHwidZOV1JKRGevLYnuQjlq3LN+QsgY7i0lcHjjU7ZoGZKReW2qAq0IeGde4EV
-         srig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733471179; x=1734075979;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wOFUZ9gV6La6sfZjXBczKJ4Mec0cKF4N95da3Hhde70=;
-        b=vJ9j5GyQH8RwcLpmvgdG7fFj3S8YpQhJZHrURvBJxagJGKjYMD1NOaf+GGx8ys/5EQ
-         S1hARDvaBLvWcbBrIaPUD6XgqX067jY2K4HhV+Bc8Psq8H9Z4EMtG9pIGMSoNk6hI+Js
-         8hWs1DycCHto1/sulUuxtreUay1uJ88ixKOZGelI5C8hy5pR6QpJFRHLWKoMXbUWOm5W
-         f5ICtiajI85UdHGhcHL9CUGWcdbLzEyaFsJXL0ACsCaVweVVDcG7IQppegdBAXwrrwaL
-         nQZ9oCTpNdHGJ8NInTy5NmR1e8fp41rmzQZ40IchMxRady4dv3KpnUClGYBqueoTU2lU
-         jhQg==
-X-Forwarded-Encrypted: i=1; AJvYcCXoWuzaxEanEw3jJmAe67BmoA6AZt5i2EfzK5PiJboDS0M7MrZpxqpOWsbMR+fvZnRaZjqyiveRLw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQzpLJCg+Z8zk8LVyd/AyVB+kKcFfGhVa1pgssUSl0JrO/jIj3
-	SC9VevW4FZDSzCajfnQ8L+w0IZhJG+bXV0t3GDMBDWJNZbyxqdwBitL89QHF
-X-Gm-Gg: ASbGncu3ayEPwJOF833NOUkhuuRW5ejSGO+1Hyn0p5V21E5RPks/bsHs3BQuqTq2UMc
-	C6HjNrRKbY4MFZ8JRMnafIH4AH486e78E4IbkZGUHeucJGDK/Z9mMXc4T1NocBCcHv0HlSww9uW
-	KRD70mX8VqLNbBTKGkASJGfRIoUu4zJxBF3o+uRPX5I8MGoMS1e5ZQitXm2wEWhmzUnNQuCDljd
-	jaVYhVCKaHPwNtQokliDoRhfL1vkwRB8CGG4lmZRLfhWo7/eKeDgEBzmY4=
-X-Google-Smtp-Source: AGHT+IFfBf3Wo5WSegM9AhIaI9Ku/oZbtgpLCnAy5FBMiIpfociB2ByUULFmIraCKSpEHBIFh9HkXQ==
-X-Received: by 2002:a17:902:dad1:b0:215:522d:72d2 with SMTP id d9443c01a7336-21614dd41a9mr22017395ad.45.1733471178654;
-        Thu, 05 Dec 2024 23:46:18 -0800 (PST)
-Received: from localhost.localdomain ([43.153.70.29])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215f8efa156sm23181695ad.131.2024.12.05.23.46.17
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 05 Dec 2024 23:46:18 -0800 (PST)
-From: MengEn Sun <mengensun88@gmail.com>
-X-Google-Original-From: MengEn Sun <mengensun@tencent.com>
-To: jarkko@kernel.org
-Cc: dhowells@redhat.com,
-	jmorris@namei.org,
-	keyrings@vger.kernel.org,
-	mengensun88@gmail.com,
-	mengensun@tencent.com,
-	yuehongwu@tencent.com
-Subject: Re: [PATCH] keys: Add cond_resched to key_gc_unused_keys()
-Date: Fri,  6 Dec 2024 15:46:16 +0800
-Message-Id: <1733471176-24436-1-git-send-email-mengensun@tencent.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <D5Z646TLQVW0.2TIYHM0OCEUM1@kernel.org>
-References: <D5Z646TLQVW0.2TIYHM0OCEUM1@kernel.org>
+	s=arc-20240116; t=1734955899; c=relaxed/simple;
+	bh=T4q8TAqtW9ewJad2LRn3NEdOLjHX9vlVdu4sLUiB6A0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=uG659ME1ylXLHjGJybe2YFZrw5oc7pTdNanlCbWipbqHFQRTeTIzm+2SOHXZD1bupfQxWan9/SrV0x5MhALcDSQ3W7aSgAkuozBw/GdaXFQOQDQGi+NXbDL03DplXwnHto7CmKMh8eDVnwhyJhhRkWZGGGKhpUZBSVBdIpRMUjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mPQhbYTR; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BN9dTft008340;
+	Mon, 23 Dec 2024 12:10:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=X/HYWJ
+	4KKBSZHIvaAsJTgofYfg4xLMIh7+ZZdByQCK4=; b=mPQhbYTRlVTgR3yAf4FRQC
+	yHrW7xtdEfL4v0ldQpY6MwD03z0tp+sF+TJXDHeBpqgxWnBQPJLFi6TXJfhupHYC
+	DGrrSURKRpjTXHdHm0fH9sdhyf6AUwpKCD3uvk3AARb/BnGNX5DEGFWhNr2yWmg3
+	Lj98WOjFE37cQfin5xiTUO+b89VEV8egLR8+cmBzXEHM6LWmxTTFX08PWQBxM0wt
+	4tzrpiTY1BWZ4UhaaREuzGCu4Hwf6r0mleZxzRA5ZmYG34wf4h/z+O6O3DoV7hiP
+	JJF8c1oJI2TYugSs2T6vP+ydhTXw21H3dZVWwFSu156T3VT4zIGLOMH7fT1WTw5w
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43pm84kmd2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Dec 2024 12:10:01 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BNBvQ6c021056;
+	Mon, 23 Dec 2024 12:10:00 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43pm84kmcx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Dec 2024 12:10:00 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BNA4hH7020548;
+	Mon, 23 Dec 2024 12:10:00 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43p8cy5nd4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Dec 2024 12:10:00 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BNC9xYp29229688
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 23 Dec 2024 12:09:59 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 902035805C;
+	Mon, 23 Dec 2024 12:09:59 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 65FA65805A;
+	Mon, 23 Dec 2024 12:09:57 +0000 (GMT)
+Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.115.247])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 23 Dec 2024 12:09:57 +0000 (GMT)
+Message-ID: <c490397315c2704e9ef65c8ad3fefedb239f1997.camel@linux.ibm.com>
+Subject: Re: [RFC PATCH v3 00/13] Clavis LSM
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Eric Snowberg <eric.snowberg@oracle.com>,
+        linux-security-module@vger.kernel.org
+Cc: dhowells@redhat.com, dwmw2@infradead.org, herbert@gondor.apana.org.au,
+        davem@davemloft.net, ardb@kernel.org, jarkko@kernel.org,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        roberto.sassu@huawei.com, dmitry.kasatkin@gmail.com, mic@digikod.net,
+        casey@schaufler-ca.com, stefanb@linux.ibm.com, ebiggers@kernel.org,
+        rdunlap@infradead.org, linux-kernel@vger.kernel.org,
+        keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+        linux-efi@vger.kernel.org, linux-integrity@vger.kernel.org
+Date: Mon, 23 Dec 2024 07:09:56 -0500
+In-Reply-To: <20241017155516.2582369-1-eric.snowberg@oracle.com>
+References: <20241017155516.2582369-1-eric.snowberg@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: pNfshmhnmaLmmrW9oMqIUfmRpie1-RxX
+X-Proofpoint-ORIG-GUID: MW2ztICRoZTIHPLuL0dlKJnx9MYqPDCK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 phishscore=0
+ impostorscore=0 malwarescore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 suspectscore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2412230108
 
-Hi, David 
+On Thu, 2024-10-17 at 09:55 -0600, Eric Snowberg wrote:
+> Motivation:
+>=20
+> Each end-user has their own security threat model. What is important to o=
+ne
+> end-user may not be important to another. There is not a right or wrong t=
+hreat
+> model.
+>=20
+> A common request made when adding new kernel changes that could impact th=
+e
+> threat model around system kernel keys is to add additional Kconfig optio=
+ns.
+> As kernel developers, it is challenging to both add and keep track of all=
+ the
+> Kconfig options around security features that may limit or restrict
+> system key usage.  It is also difficult for a general purpose distro to t=
+ake
+> advantage of some of these features, since it may prevent some users from
+> executing their workload.
+>=20
+> It is the author's belief that it is better left up to the end-user on ho=
+w
+> kernel keys should be used within their system.
+>=20
+> Throughout the Linux kernel, key usage is tracked when doing signature
+> verification with keys contained within one of the system keyrings;  howe=
+ver,
+> there isn't a way for the end-user to enforce this usage.  This series gi=
+ves the
+> end-user the ability to configure key usage based on their threat model.
+> Having the ability to enforce key usage also improves security by reducin=
+g the
+> attack surface should a system key be compromised. It allows new features=
+ to be
+> added without the need for additional Kconfig options for fear of changin=
+g the
+> end-user's threat model. It also allows a distro to build a kernel that s=
+uits
+> various end-user's needs without resorting to selecting Kconfig options w=
+ith
+> the least restrictive security options.
 
-On Sat, 30 Nov 2024 04:46:35 +0200 Jarkko Sakkinen wrote:
-> From: jarkko@kernel.org 
-> On Wed Nov 27, 2024 at 5:52 AM EET, mengensun88 wrote:
-> > From: MengEn Sun <mengensun@tencent.com>
-> >
-> > When running the follow test:
-> > while :
-> > do
-> >     stress-ng --key=64 --key-ops=1000
-> > done
-> >
-> > We used the bcc tools funclatency to measure the execution
-> > latency of key_gc_unused_keys(), and the results are as
-> > follows:
-> >
-> > funclatency key_gc_unused_keys.constprop.5 -i 1 -m
-> > msecs               : count
-> >     0 -> 1          : 0
-> >     2 -> 3          : 0
-> >     4 -> 7          : 0
-> >     8 -> 15         : 0
-> >    16 -> 31         : 0
-> >    32 -> 63         : 0
-> >    64 -> 127        : 1
-> >
-> > It seems that key_gc_unused_keys() takes a long time to
-> > execute, and there are no scheduling points in this function,
-> > which may harm latency-sensitive services.
-> >
-> > Therefore, we have added a scheduling point to this function.
-> >
-> > Reviewed-by: YueHong Wu <yuehongwu@tencent.com>
-> > Signed-off-by: MengEn Sun <mengensun@tencent.com>
-> > ---
-> >  security/keys/gc.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/security/keys/gc.c b/security/keys/gc.c
-> > index 7d687b0..14e4f1c 100644
-> > --- a/security/keys/gc.c
-> > +++ b/security/keys/gc.c
-> > @@ -165,6 +165,7 @@ static noinline void key_gc_unused_keys(struct list_head *keys)
-> >  
-> >  		memzero_explicit(key, sizeof(*key));
-> >  		kmem_cache_free(key_jar, key);
-> > +		cond_resched();
-> >  	}
-> >  }
-> >  
-> 
-> 
-> This really needs ack from David.
+The motivation for this patch set is convincing and addresses limiting the =
+usage
+of keys loaded directly or indirectly onto the system trusted keyrings -=
+=20
+.builtin, .machine, and .secondary_trusted_keys keyrings.  Pre-loading the =
+build
+time ephemeral kernel module signing key is a nice improvement from the pre=
+vious
+versions.  My main concern is not with Clavis per-se, but that the LSM
+infrastructure allows configuring all the LSMs, but enabling at build time =
+and
+modifying at runtime a subset of them.  Without Clavis enabled, nothing cha=
+nges
+- any key on the system trusted keyrings remains usable for any purpose.  W=
+ith
+the current LSM design, the end user security threat model cannot be guaran=
+teed.
 
-Could you please provide me with some valuable suggestions? That way,
-I can make adjustments for a version 2 based on your advice. Thank
-you very much!
-
-> 
-> Get the idea tho.
-> 
-> BR, Jarkko
-
-Regards
-Meng En
+Mimi
+>=20
+> Solution:
+>=20
+> This series introduces a new LSM called Clavis (Latin word meaning key).
+> This LSM leaves it up to the end-user to determine what system keys they =
+want
+> to use and for what purpose.
+>=20
+> The Clavis LSM adds the ability to do access control for all system keys.=
+  When
+> enabled, until an ACL entry is added for a specific key, none of the syst=
+em keys
+> may be used for any type of verification purpose.  When the kernel is bui=
+lt,
+> typically kernel modules are signed with an ephemeral key, an ACL entry f=
+or the
+> ephemeral key is pre-loaded, allowing the kernel modules to load during b=
+oot. At
+> build time other ACL entries may also be included.
+>=20
+> The Clavis LSM requires the end-user to have their own public key infrast=
+ructure
+> (PKI).  In order for a Clavis ACL entry to be added, the ACL must be sign=
+ed by
+> what is being called the Clavis key.  The Clavis key is owned by the end-=
+user.
+> The Clavis public key can be contained within the machine keyring, or it =
+can be
+> added after the machine boots.
+>=20
+> Not only is there a new Clavis key being introduced, but there is also a =
+new
+> .clavis keyring.  The .clavis keyring contains a single Clavis key. It al=
+so
+> contains any number of ACL entries that are signed by the Clavis key.
+>=20
+> It is believed that the most common setup would be to have the Clavis key
+> contained within the machine keyring. Enabling the Clavis LSM during boot=
+ is
+> accomplished by passing in the asymmetric key id for the Clavis key withi=
+n a
+> new "clavis=3D" boot param.  The asymmetric key id must match one already
+> contained within any of the system keyrings.  If a match is found, a link=
+ is
+> created into the new .clavis keyring.  This Clavis key shall be used as t=
+he
+> root of trust for any keyring ACL updates afterwards.
+>=20
+> On UEFI systems the "clavis" boot param is mirrored into a new UEFI varia=
+ble
+> within the EFI stub code. This variable will persist until the next reboo=
+t.
+> This same type of functionality is done within shim. Since this variable =
+is
+> created before ExitBootServices (EBS) it will not have the NVRAM bit set,
+> signifying it was created during the Boot Services phase. This is being u=
+sed
+> so the "clavis" boot param can not be changed via kexec, thereby preventi=
+ng a
+> pivot of the root of trust.
+>=20
+> As mentioned earlier, this LSM introduces a new .clavis keyring.  Followi=
+ng
+> boot, no new keys can be added to this keyring and only the key designate=
+d via
+> the initial boot param may be used. If the clavis boot param was not used=
+, the
+> LSM can be enabled afterwards using the keyctl command.  The end-user may=
+ add
+> their Clavis key into the .clavis keyring and the Clavis LSM shall be ena=
+bled.
+>=20
+> The .clavis keyring also holds the access control list for system keys. A=
+ new
+> key type called clavis_key_acl is being introduced. This contains the usa=
+ge
+> followed by the asymmetric key id. To be added to the clavis keyring, the
+> clavis_key_acl must be S/MIME signed by the Clavis key. New ACL additions=
+ to
+> the .clavis keyring may be added at any time.
+>=20
+> Currently this LSM does not require new changes or modifications to any u=
+ser
+> space tools.  It also does not have a securityfs interface.  Everything i=
+s
+> done using the existing keyctl tool through the new .clavis keyring. The
+> S/MIME signing can be done with a simple OpenSSL command. If additions or
+> updates need to be added in the future, new ACL key types could be create=
+d.
+> With this approach, maintainability should not be an issue in the future
+> if missing items are identified.
+>=20
+> Clavis must be configured at build time with CONFIG_SECURITY_CLAVIS=3Dy. =
+The list
+> of security modules enabled by default is set with CONFIG_LSM.  The kerne=
+l
+> configuration must contain CONFIG_LSM=3D[...],clavis with [...] as the li=
+st of
+> other security modules for the running system.
+>=20
+> For setup and usage instructions, a clavis admin-guide has been included
+> in Documentation/admin-guide/LSM/clavis.rst.
+>=20
+> Future enhancements to this LSM could include:
+>=20
+> 1. Subsystems that currently use system keys with
+>    VERIFYING_UNSPECIFIED_SIGNATURE could be updated with their specific u=
+sage
+>    type.  For example, a usage type for IMA, BPF, etc could be added.
+>=20
+> 2. Having the ability to allow platform keys to be on par with all other
+>    system keys when using this LSM. This would be useful for a user that
+>    controls their entire UEFI SB DB key chain and doesn't want to use MOK=
+ keys.
+>    This could also potentially remove the need for the machine keyring al=
+l
+>    together.
+>=20
+> 3. Some of the Kconfig options around key usage and types could be deprec=
+ated.
+>=20
+> I would appreciate any feedback on this approach. Thanks.
+>=20
+> Changes in v3:
+>   Rebased to 6.12-rc3
+>   Added Kunit test code
+>   Preload an ACL in the clavis keyring with the ephemeral module signing =
+key
+>   Preload user defined ACL data into the clavis keyring with build time d=
+ata
+>   Changes to the second patch recommended by Jarkko
+>   Reordered patches recommended by Mimi
+>   Documentation improvements recommended by Randy
+>=20
+> Changes in v2:
+>   Rebased to 6.10-rc1
+>   Various cleanup in the first patch recommended by Jarkko
+>   Documentation improvements recommended by Randy
+>   Fixed lint warnings
+>   Other cleanup
+>=20
+> Eric Snowberg (13):
+>   certs: Remove CONFIG_INTEGRITY_PLATFORM_KEYRING check
+>   certs: Introduce ability to link to a system key
+>   clavis: Introduce a new system keyring called clavis
+>   keys: Add new verification type (VERIFYING_CLAVIS_SIGNATURE)
+>   clavis: Introduce a new key type called clavis_key_acl
+>   clavis: Populate clavis keyring acl with kernel module signature
+>   keys: Add ability to track intended usage of the public key
+>   clavis: Introduce new LSM called clavis
+>   clavis: Allow user to define acl at build time
+>   efi: Make clavis boot param persist across kexec
+>   clavis: Prevent boot param change during kexec
+>   clavis: Add function redirection for Kunit support
+>   clavis: Kunit support
+>=20
+>  Documentation/admin-guide/LSM/clavis.rst      | 191 ++++++
+>  .../admin-guide/kernel-parameters.txt         |   6 +
+>  MAINTAINERS                                   |   7 +
+>  certs/.gitignore                              |   1 +
+>  certs/Makefile                                |  20 +
+>  certs/blacklist.c                             |   3 +
+>  certs/clavis_module_acl.c                     |   7 +
+>  certs/system_keyring.c                        |  36 +-
+>  crypto/asymmetric_keys/asymmetric_type.c      |   1 +
+>  crypto/asymmetric_keys/pkcs7_trust.c          |  20 +
+>  crypto/asymmetric_keys/pkcs7_verify.c         |   5 +
+>  crypto/asymmetric_keys/signature.c            |   4 +
+>  drivers/firmware/efi/Kconfig                  |  12 +
+>  drivers/firmware/efi/libstub/Makefile         |   1 +
+>  drivers/firmware/efi/libstub/clavis.c         |  33 +
+>  .../firmware/efi/libstub/efi-stub-helper.c    |   2 +
+>  drivers/firmware/efi/libstub/efi-stub.c       |   2 +
+>  drivers/firmware/efi/libstub/efistub.h        |   8 +
+>  drivers/firmware/efi/libstub/x86-stub.c       |   2 +
+>  include/crypto/pkcs7.h                        |   3 +
+>  include/crypto/public_key.h                   |   4 +
+>  include/keys/system_keyring.h                 |   7 +-
+>  include/linux/efi.h                           |   1 +
+>  include/linux/integrity.h                     |   8 +
+>  include/linux/lsm_count.h                     |   8 +-
+>  include/linux/lsm_hook_defs.h                 |   2 +
+>  include/linux/security.h                      |   7 +
+>  include/linux/verification.h                  |   2 +
+>  include/uapi/linux/lsm.h                      |   1 +
+>  security/Kconfig                              |  11 +-
+>  security/Makefile                             |   1 +
+>  security/clavis/.gitignore                    |   2 +
+>  security/clavis/.kunitconfig                  |   4 +
+>  security/clavis/Kconfig                       |  37 ++
+>  security/clavis/Makefile                      | 156 +++++
+>  security/clavis/clavis.c                      |  26 +
+>  security/clavis/clavis.h                      |  62 ++
+>  security/clavis/clavis_builtin_acl.c          |   7 +
+>  security/clavis/clavis_efi.c                  |  50 ++
+>  security/clavis/clavis_keyring.c              | 426 +++++++++++++
+>  security/clavis/clavis_test.c                 | 566 ++++++++++++++++++
+>  security/integrity/iint.c                     |   2 +
+>  security/security.c                           |  13 +
+>  .../selftests/lsm/lsm_list_modules_test.c     |   3 +
+>  44 files changed, 1757 insertions(+), 13 deletions(-)
+>  create mode 100644 Documentation/admin-guide/LSM/clavis.rst
+>  create mode 100644 certs/clavis_module_acl.c
+>  create mode 100644 drivers/firmware/efi/libstub/clavis.c
+>  create mode 100644 security/clavis/.gitignore
+>  create mode 100644 security/clavis/.kunitconfig
+>  create mode 100644 security/clavis/Kconfig
+>  create mode 100644 security/clavis/Makefile
+>  create mode 100644 security/clavis/clavis.c
+>  create mode 100644 security/clavis/clavis.h
+>  create mode 100644 security/clavis/clavis_builtin_acl.c
+>  create mode 100644 security/clavis/clavis_efi.c
+>  create mode 100644 security/clavis/clavis_keyring.c
+>  create mode 100644 security/clavis/clavis_test.c
+>=20
+>=20
+> base-commit: 8e929cb546ee42c9a61d24fae60605e9e3192354
 
 
