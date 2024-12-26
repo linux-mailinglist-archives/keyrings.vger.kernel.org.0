@@ -1,54 +1,54 @@
-Return-Path: <keyrings+bounces-2322-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2323-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3128B9FCC9A
-	for <lists+keyrings@lfdr.de>; Thu, 26 Dec 2024 19:21:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 560139FCD21
+	for <lists+keyrings@lfdr.de>; Thu, 26 Dec 2024 19:39:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B329D1621BE
-	for <lists+keyrings@lfdr.de>; Thu, 26 Dec 2024 18:21:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D76E2163B1A
+	for <lists+keyrings@lfdr.de>; Thu, 26 Dec 2024 18:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116174E1CA;
-	Thu, 26 Dec 2024 18:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16474E1CA;
+	Thu, 26 Dec 2024 18:34:58 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [176.9.242.54])
+Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [83.223.95.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116A223DE;
-	Thu, 26 Dec 2024 18:21:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACB014F11E;
+	Thu, 26 Dec 2024 18:34:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735237274; cv=none; b=opdE+HJ9b56HfbPGXXhNGD1SHqI0wik9uYneNyibUEXyOLBdgCZ02w+D8TkkSqJKCYlmE0VaPKWL44Z6eQSTFqmq2eIbyiZ5SJmgrfGpxzbQwtphT0nLNP9LIX0G5jNa+y90cViTcbq0f3346QAVess8wYOPkC/3XuKQV+8J+5k=
+	t=1735238098; cv=none; b=OSm+MHMd0eWFSznNpkml23ToR2oUnOeg3gKkBQZSOmQQf1PnctLxL3xifEI8pReNj2s46paotNblk42VwuxumxdDkGalvRJ0IXdFtStmOOj/YwAOlgXi4ewpOhaiyOk5JARdZnDomgTObNXsn4BM74xGZ2KRhkDG5Kg2Y1m5QYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735237274; c=relaxed/simple;
-	bh=Nff4Bk2eE4dw479y03Lr+w9CVz016VCLvx3y1HLHAkU=;
-	h=Message-ID:In-Reply-To:References:From:Date:Subject:To:Cc; b=MpVE0hVJwLNV5ytuoWiyvvAIszLAIIkPTNydLUj4ojo9XjEX+UPEo4MT01pKvV5Z/U5mL5fSR3w/W/OoHQCk63niDSgtd23d2A0mzRHHWWbsX0d8wCA/gGEtWuite66T3Miqjq8FEguXhmPJ109N6f6xgu5/yzIItwj5AmFY9fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=176.9.242.54
+	s=arc-20240116; t=1735238098; c=relaxed/simple;
+	bh=a/AlMC/EGVib7gOoc8eHGK35m/Yf3H4qE1CyU+v7BBA=;
+	h=Message-ID:In-Reply-To:References:From:Date:Subject:To:Cc; b=qQvXy8sO3XqzOOOK9KwtnAjk/a6YwhthR31sDAEOalRn/tegtXbtUUBN7dcfDMUipdFPsevf2zUmU0mTzZoBbB4N528GAbsSU0eMaC5+vX0LGLwUve9hDoimPn3NEUsn/YXvfcxCUc9LhpTmuciNdFCCclkUB3s/78zfWuH0ttI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.95.204
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
 	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
 	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by mailout3.hostsharing.net (Postfix) with ESMTPS id A909B101E9E8C;
-	Thu, 26 Dec 2024 19:21:07 +0100 (CET)
+	by mailout1.hostsharing.net (Postfix) with ESMTPS id 7DC4610190FCF;
+	Thu, 26 Dec 2024 19:29:30 +0100 (CET)
 Received: from localhost (unknown [89.246.108.87])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by h08.hostsharing.net (Postfix) with ESMTPSA id 5FC956188CD9;
-	Thu, 26 Dec 2024 19:21:07 +0100 (CET)
-X-Mailbox-Line: From c6cc21391c52e06511d619170c443e84f28a72a4 Mon Sep 17 00:00:00 2001
-Message-ID: <c6cc21391c52e06511d619170c443e84f28a72a4.1735236227.git.lukas@wunner.de>
+	by h08.hostsharing.net (Postfix) with ESMTPSA id 456696188CD9;
+	Thu, 26 Dec 2024 19:29:30 +0100 (CET)
+X-Mailbox-Line: From 0de2a7e0c0f35e468486693a7db2f6e0b0092a64 Mon Sep 17 00:00:00 2001
+Message-ID: <0de2a7e0c0f35e468486693a7db2f6e0b0092a64.1735236227.git.lukas@wunner.de>
 In-Reply-To: <cover.1735236227.git.lukas@wunner.de>
 References: <cover.1735236227.git.lukas@wunner.de>
 From: Lukas Wunner <lukas@wunner.de>
-Date: Thu, 26 Dec 2024 19:08:01 +0100
-Subject: [PATCH 1/3] crypto: sig - Prepare for algorithms with variable
- signature size
+Date: Thu, 26 Dec 2024 19:08:02 +0100
+Subject: [PATCH 2/3] crypto: ecdsa - Fix enc/dec size reported by
+ KEYCTL_PKEY_QUERY
 To: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, Stefan Berger <stefanb@linux.ibm.com>, Vitaly Chikunov <vt@altlinux.org>
 Cc: David Howells <dhowells@redhat.com>, Ignat Korchagin <ignat@cloudflare.com>, linux-crypto@vger.kernel.org, keyrings@vger.kernel.org
 Precedence: bulk
@@ -57,146 +57,62 @@ List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 
-The callers of crypto_sig_sign() assume that the signature size is
-always equivalent to the key size.
+KEYCTL_PKEY_QUERY system calls for ecdsa keys return the key size as
+max_enc_size and max_dec_size, even though such keys cannot be used for
+encryption/decryption.  They're exclusively for signature generation or
+verification.
 
-This happens to be true for RSA, which is currently the only algorithm
-implementing the ->sign() callback.  But it is false e.g. for X9.62
-encoded ECDSA signatures because they have variable length.
+Only rsa keys with pkcs1 encoding can also be used for encryption or
+decryption.
 
-Prepare for addition of a ->sign() callback to such algorithms by
-letting the callback return the signature size (or a negative integer
-on error).  When testing the ->sign() callback in test_sig_one(),
-use crypto_sig_maxsize() instead of crypto_sig_keysize() to verify that
-the test vector's signature does not exceed an algorithm's maximum
-signature size.
-
-There has been a relatively recent effort to upstream ECDSA signature
-generation support which may benefit from this change:
-
-https://lore.kernel.org/linux-crypto/20220908200036.2034-1-ignat@cloudflare.com/
-
-However the main motivation for this commit is to reduce the number of
-crypto_sig_keysize() callers:  This function is about to be changed to
-return the size in bits instead of bytes and that will require amending
-most callers to divide the return value by 8.
+Return 0 instead for ecdsa keys (as well as ecrdsa keys).
 
 Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: Ignat Korchagin <ignat@cloudflare.com>
 ---
- crypto/asymmetric_keys/public_key.c | 9 ++-------
- crypto/rsassa-pkcs1.c               | 2 +-
- crypto/testmgr.c                    | 7 ++++---
- include/crypto/sig.h                | 5 +++--
- 4 files changed, 10 insertions(+), 13 deletions(-)
+ crypto/asymmetric_keys/public_key.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
-index bbd07a9022e6..bf165d321440 100644
+index bf165d321440..dd44a966947f 100644
 --- a/crypto/asymmetric_keys/public_key.c
 +++ b/crypto/asymmetric_keys/public_key.c
-@@ -267,7 +267,6 @@ static int software_key_eds_op(struct kernel_pkey_params *params,
- 	struct crypto_sig *sig;
- 	char *key, *ptr;
- 	bool issig;
--	int ksz;
- 	int ret;
+@@ -188,6 +188,8 @@ static int software_key_query(const struct kernel_pkey_params *params,
+ 	ptr = pkey_pack_u32(ptr, pkey->paramlen);
+ 	memcpy(ptr, pkey->params, pkey->paramlen);
  
- 	pr_devel("==>%s()\n", __func__);
-@@ -302,8 +301,6 @@ static int software_key_eds_op(struct kernel_pkey_params *params,
- 			ret = crypto_sig_set_pubkey(sig, key, pkey->keylen);
- 		if (ret)
- 			goto error_free_tfm;
--
--		ksz = crypto_sig_keysize(sig);
- 	} else {
- 		tfm = crypto_alloc_akcipher(alg_name, 0, 0);
- 		if (IS_ERR(tfm)) {
-@@ -317,8 +314,6 @@ static int software_key_eds_op(struct kernel_pkey_params *params,
- 			ret = crypto_akcipher_set_pub_key(tfm, key, pkey->keylen);
- 		if (ret)
- 			goto error_free_tfm;
--
--		ksz = crypto_akcipher_maxsize(tfm);
++	memset(info, 0, sizeof(*info));
++
+ 	if (issig) {
+ 		sig = crypto_alloc_sig(alg_name, 0, 0);
+ 		if (IS_ERR(sig)) {
+@@ -211,6 +213,9 @@ static int software_key_query(const struct kernel_pkey_params *params,
+ 			info->supported_ops |= KEYCTL_SUPPORTS_SIGN;
+ 
+ 		if (strcmp(params->encoding, "pkcs1") == 0) {
++			info->max_enc_size = len;
++			info->max_dec_size = len;
++
+ 			info->supported_ops |= KEYCTL_SUPPORTS_ENCRYPT;
+ 			if (pkey->key_is_private)
+ 				info->supported_ops |= KEYCTL_SUPPORTS_DECRYPT;
+@@ -232,6 +237,8 @@ static int software_key_query(const struct kernel_pkey_params *params,
+ 		len = crypto_akcipher_maxsize(tfm);
+ 		info->max_sig_size = len;
+ 		info->max_data_size = len;
++		info->max_enc_size = len;
++		info->max_dec_size = len;
+ 
+ 		info->supported_ops = KEYCTL_SUPPORTS_ENCRYPT;
+ 		if (pkey->key_is_private)
+@@ -239,8 +246,6 @@ static int software_key_query(const struct kernel_pkey_params *params,
  	}
  
- 	ret = -EINVAL;
-@@ -347,8 +342,8 @@ static int software_key_eds_op(struct kernel_pkey_params *params,
- 		BUG();
- 	}
+ 	info->key_size = len * 8;
+-	info->max_enc_size = len;
+-	info->max_dec_size = len;
  
--	if (ret == 0)
--		ret = ksz;
-+	if (!issig && ret == 0)
-+		ret = crypto_akcipher_maxsize(tfm);
+ 	ret = 0;
  
- error_free_tfm:
- 	if (issig)
-diff --git a/crypto/rsassa-pkcs1.c b/crypto/rsassa-pkcs1.c
-index f68ffd338f48..d01ac75635e0 100644
---- a/crypto/rsassa-pkcs1.c
-+++ b/crypto/rsassa-pkcs1.c
-@@ -210,7 +210,7 @@ static int rsassa_pkcs1_sign(struct crypto_sig *tfm,
- 		memset(dst, 0, pad_len);
- 	}
- 
--	return 0;
-+	return ctx->key_size;
- }
- 
- static int rsassa_pkcs1_verify(struct crypto_sig *tfm,
-diff --git a/crypto/testmgr.c b/crypto/testmgr.c
-index 1f5f48ab18c7..76c013bcebe5 100644
---- a/crypto/testmgr.c
-+++ b/crypto/testmgr.c
-@@ -4339,7 +4339,7 @@ static int test_sig_one(struct crypto_sig *tfm, const struct sig_testvec *vecs)
- 	if (vecs->public_key_vec)
- 		return 0;
- 
--	sig_size = crypto_sig_keysize(tfm);
-+	sig_size = crypto_sig_maxsize(tfm);
- 	if (sig_size < vecs->c_size) {
- 		pr_err("alg: sig: invalid maxsize %u\n", sig_size);
- 		return -EINVAL;
-@@ -4351,13 +4351,14 @@ static int test_sig_one(struct crypto_sig *tfm, const struct sig_testvec *vecs)
- 
- 	/* Run asymmetric signature generation */
- 	err = crypto_sig_sign(tfm, vecs->m, vecs->m_size, sig, sig_size);
--	if (err) {
-+	if (err < 0) {
- 		pr_err("alg: sig: sign test failed: err %d\n", err);
- 		return err;
- 	}
- 
- 	/* Verify that generated signature equals cooked signature */
--	if (memcmp(sig, vecs->c, vecs->c_size) ||
-+	if (err != vecs->c_size ||
-+	    memcmp(sig, vecs->c, vecs->c_size) ||
- 	    memchr_inv(sig + vecs->c_size, 0, sig_size - vecs->c_size)) {
- 		pr_err("alg: sig: sign test failed: invalid output\n");
- 		hexdump(sig, sig_size);
-diff --git a/include/crypto/sig.h b/include/crypto/sig.h
-index cff41ad93824..11024708c069 100644
---- a/include/crypto/sig.h
-+++ b/include/crypto/sig.h
-@@ -23,7 +23,8 @@ struct crypto_sig {
-  * struct sig_alg - generic public key signature algorithm
-  *
-  * @sign:	Function performs a sign operation as defined by public key
-- *		algorithm. Optional.
-+ *		algorithm. On success, the signature size is returned.
-+ *		Optional.
-  * @verify:	Function performs a complete verify operation as defined by
-  *		public key algorithm, returning verification status. Optional.
-  * @set_pub_key: Function invokes the algorithm specific set public key
-@@ -186,7 +187,7 @@ static inline unsigned int crypto_sig_maxsize(struct crypto_sig *tfm)
-  * @dst:	destination obuffer
-  * @dlen:	destination length
-  *
-- * Return: zero on success; error code in case of error
-+ * Return: signature size on success; error code in case of error
-  */
- static inline int crypto_sig_sign(struct crypto_sig *tfm,
- 				  const void *src, unsigned int slen,
 -- 
 2.43.0
 
