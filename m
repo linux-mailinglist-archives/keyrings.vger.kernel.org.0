@@ -1,96 +1,94 @@
-Return-Path: <keyrings+bounces-2361-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2362-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C2DA169AD
-	for <lists+keyrings@lfdr.de>; Mon, 20 Jan 2025 10:34:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06D40A17A4E
+	for <lists+keyrings@lfdr.de>; Tue, 21 Jan 2025 10:37:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED2F5162E6F
-	for <lists+keyrings@lfdr.de>; Mon, 20 Jan 2025 09:34:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E533C7A402C
+	for <lists+keyrings@lfdr.de>; Tue, 21 Jan 2025 09:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F801ACEC2;
-	Mon, 20 Jan 2025 09:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B861C07CF;
+	Tue, 21 Jan 2025 09:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O0YkmZYQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kh5TXMsp"
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D92B193425
-	for <keyrings@vger.kernel.org>; Mon, 20 Jan 2025 09:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE7B1C07D5;
+	Tue, 21 Jan 2025 09:36:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737365684; cv=none; b=XAK1o5HWonb31SqTGxqUHUYwQpZDPcLek+UOOxYW54UmwWb/hzRHRY3rUboCdlvlHx9pMltohpsRxrbkqHff+sNsaUshY+fW059It7pw2zfGWNANuJ1Vk0WoirUnstu7C0DMkcxRAmhilbvChh0qbMAf2L9wXclEBx9UT9leE4g=
+	t=1737452219; cv=none; b=hggXO7HM6OYauUY0gsTsILJULBbntm5Itbua8oedrMXG7AWtz9qA1qmPE1E/TuDvvd3TGxsRogJIUXzaROs+4ItxU+zAsnY8ivVX8/dG39mVp9wqU8mHh0KRe9kWibhC/Mx2LpOtkRpZbOv74i/wlCP3NmltOjSF7f4AhaA8+Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737365684; c=relaxed/simple;
-	bh=u2HQiCL+u3gJ8mAykqLQuJvkHpp/IqMu+QM/A8KSWck=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=awXSYo4EH0gj6eqtaPeGddNxkbXCt4/IWWRK/jy69r27WJWBDJNvMJswqGtFempjDFNRb4LhYwsfHysbiaeR0XURH72EP6xDfzO5CPsjbjrJ0+LBZ+c98XUTLUw9Qq7IrDdKO86BvdQ9XGJpmwv1NwZWoEvAskuxfKs2sfwzLzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O0YkmZYQ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1737365681;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2AwYiuDf1j5uDju1TxVaOib/j90iLN/1cU+I3EHvD7c=;
-	b=O0YkmZYQSt/TKuUdXO6rUTSyJofK3Mp0sKNbHyPPFfy4fPpFv2A/9E1Uh8hEPGna9dk0wX
-	Dmn3B8Tk1LMaWzFVsY0m6cW+C8JnemcJPOTlo3GsvYebEw+fXhQKAoBA6dtQGyoIpMogA4
-	0fY9HGDkSMSSpMHVNGs5cPHH2nQ5qP0=
-Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-689-LnePKWCkOQW1lKPkfGYpLg-1; Mon,
- 20 Jan 2025 04:34:35 -0500
-X-MC-Unique: LnePKWCkOQW1lKPkfGYpLg-1
-X-Mimecast-MFC-AGG-ID: LnePKWCkOQW1lKPkfGYpLg
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 570F41955DCD;
-	Mon, 20 Jan 2025 09:34:34 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.5])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 76D9919560A3;
-	Mon, 20 Jan 2025 09:34:32 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20250112163059.467573-1-linux@treblig.org>
-References: <20250112163059.467573-1-linux@treblig.org>
-To: linux@treblig.org
-Cc: dhowells@redhat.com, herbert@gondor.apana.org.au,
-    davem@davemloft.net, keyrings@vger.kernel.org,
-    linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] crypto: asymmetric_keys - Remove unused key_being_used_for[]
+	s=arc-20240116; t=1737452219; c=relaxed/simple;
+	bh=EI5S/iz514lfNCax9LcEZSG+EjLfBy6b6gXnwQmwfYQ=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To; b=ubcLpoCchUJW27C73TutytCT8CJ5fYzmTkShs5fDDvPnUX7IKXW0Q++2x0BDyLAf1FBlVJRZiUc/G2aKI0p8MpxgVVvSC+jZU4YBTKFt4nS5JqFdhISJxyB6CdlL9Vu8w/CYUDxC9CU5IwWD4BCYzqP5OZ03vzwLHBd6js5LtrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kh5TXMsp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB596C4CEDF;
+	Tue, 21 Jan 2025 09:36:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737452219;
+	bh=EI5S/iz514lfNCax9LcEZSG+EjLfBy6b6gXnwQmwfYQ=;
+	h=Date:Cc:Subject:From:To:From;
+	b=Kh5TXMsp2nvyto3/qR/1cbr72JKcHhsy+OAQ3oKk/MVZ2vj7uH42+f4CyggFabR26
+	 5vDwhvVP9+j/duna3OaW5LYgoFRfmynLkTrI9j1P2iYt33i8gQm5uppV/NZDZC4y9H
+	 hhKWL5199WYIm8VQ53bUzunUxIe3zOmNvO93INBqAwlbMTwTX4RA6aP2X/c51oUaQq
+	 6YptiFbDk53dueZSXvXDZLnoNpKwrpeVGmopF1g/Bn+WR4RWoqdXu3GEr0IK0+KR25
+	 WLoYvEIaJ/RGFhI9Fc63/DvxovImGt6tL2ZSdETiqJrb5chSqaHmegcbRo28YBCzo2
+	 cfb5ECZJ+ltRw==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <988300.1737365671.1@warthog.procyon.org.uk>
-Date: Mon, 20 Jan 2025 09:34:31 +0000
-Message-ID: <988301.1737365671@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 21 Jan 2025 11:36:55 +0200
+Message-Id: <D77NEOPLOQ14.36MY4H1HJCG6J@kernel.org>
+Cc: "David Howells" <dhowells@redhat.com>, "Herbert Xu"
+ <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>,
+ <keyrings@vger.kernel.org>, <linux-integrity@vger.kernel.org>
+Subject: [GIT PULL] KEYS: keys-next-6.13-rc1
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Linus Torvalds" <torvalds@linux-foundation.org>
+X-Mailer: aerc 0.18.2
 
-linux@treblig.org wrote:
+The following changes since commit 95ec54a420b8f445e04a7ca0ea8deb72c51fe1d3=
+:
 
-> key_being_used_for[] is an unused array of textual names for
-> the elements of the enum key_being_used_for.  It was added in 2015 by
-> commit 99db44350672 ("PKCS#7: Appropriately restrict authenticated
-> attributes and content type")
-> 
-> Remove it.
-> 
-> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+  Merge tag 'powerpc-6.14-1' of git://git.kernel.org/pub/scm/linux/kernel/g=
+it/powerpc/linux (2025-01-20 21:40:19 -0800)
 
-Acked-by: David Howells <dhowells@redhat.com>
+are available in the Git repository at:
 
+  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags=
+/keys-next-6.13-rc1
+
+for you to fetch changes up to e8d9fab39d1f87b52932646b2f1e7877aa3fc0f4:
+
+  KEYS: trusted: dcp: fix improper sg use with CONFIG_VMAP_STACK=3Dy (2025-=
+01-21 11:25:23 +0200)
+
+----------------------------------------------------------------
+Hi,
+
+Here's the changes for 6.13-rc1.
+
+BR, Jarkko
+
+----------------------------------------------------------------
+Christian G=C3=B6ttsche (1):
+      keys: drop shadowing dead prototype
+
+David Gstir (1):
+      KEYS: trusted: dcp: fix improper sg use with CONFIG_VMAP_STACK=3Dy
+
+ include/keys/system_keyring.h            |  2 +-
+ security/keys/trusted-keys/trusted_dcp.c | 22 ++++++++++++++++++----
+ 2 files changed, 19 insertions(+), 5 deletions(-)
 
