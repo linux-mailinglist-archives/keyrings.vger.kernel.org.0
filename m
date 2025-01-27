@@ -1,79 +1,148 @@
-Return-Path: <keyrings+bounces-2371-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2372-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D4FA1B9E8
-	for <lists+keyrings@lfdr.de>; Fri, 24 Jan 2025 17:04:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C807AA1D77F
+	for <lists+keyrings@lfdr.de>; Mon, 27 Jan 2025 14:55:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA9C2160AD4
-	for <lists+keyrings@lfdr.de>; Fri, 24 Jan 2025 16:04:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F9EB3A75D2
+	for <lists+keyrings@lfdr.de>; Mon, 27 Jan 2025 13:54:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E0915688C;
-	Fri, 24 Jan 2025 16:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C301FFC6B;
+	Mon, 27 Jan 2025 13:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MJrS6yl+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ITreSYYk"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD9C70816;
-	Fri, 24 Jan 2025 16:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9505E1FFC68;
+	Mon, 27 Jan 2025 13:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737734680; cv=none; b=kaz3YvT20+hF+waepbqbI6aNueBCJtOgN5iRDeNC4Gnq8eLz0gksyFKq05INyWfWwT+2gvUC0i22Ewb+kABlnegt13OWOfmz3mDjvXbJ5cuL70vge8u1MhdZQ1A/epQp/EjwjMnswYkpz3M4hRG14xWDWOObKTIPUY6KGkE9Mm0=
+	t=1737985801; cv=none; b=F7MeqUMwDh9AqnAbz9VTF0CPfrtHPsda2VMB/wELMoluxT+jFHPryUKSs55sirg/JaTbiKeoQpZC3XaV1emjPPZwTa8TM8aRf86wN60F8WHhSeBnTDqVBvObJDdcZ4JhtUPpTYgZMMl2hmaEjlJP4yTS7NtSLLMEC6CGc9+GtpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737734680; c=relaxed/simple;
-	bh=OeiEbT5K8cnDh1TWXoWJBvobV/f43GzaMibGIlZ5IH8=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=hJlXziBM62NgJ3H9jJbkDSfFCp5BkTd8gEoAQIX/xA78picgmzPPX8of/0fyGlGuZ5GBbgZBBJvJhBVQN1U++ktdniFuofXrV6Cts6xRgULjh+9IqgxShWOz8NyzRXPlfo1bAf0HwSeosXbAEFfgocST5/yw6abKS5QB1uQRsYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MJrS6yl+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2366DC4CED2;
-	Fri, 24 Jan 2025 16:04:40 +0000 (UTC)
+	s=arc-20240116; t=1737985801; c=relaxed/simple;
+	bh=laZX1iWKmTFe6EBXe6dQ6V5dBHky9feUPubV8bbHYy0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rMORzqWZio7hChDXr3/Qm5jAoxmn3zfTl1CgvY0LxIyhoT2v86KB7bEl152QlrUFCUzkwCK29e3++AnjuJnmM48HlKCBcmgXNkS2Mxz1JA1n2RJFuhe8lXQwgO9o9FcUCrsk0Ls4rQo8d942Fvsaj2FBbZIzb3I4Q4SunH6SlLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ITreSYYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 881ACC4CED2;
+	Mon, 27 Jan 2025 13:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737734680;
-	bh=OeiEbT5K8cnDh1TWXoWJBvobV/f43GzaMibGIlZ5IH8=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=MJrS6yl+YWgWkpv/MB/pkMsK48f9svMiHLIK2aTGdG4JrrVfVQsPFCedEoejsqSJj
-	 c7P1e3ca96YNF7q67SMr7s7DpVIsDvf9Uknn4YZaIoVht/EizDYW3VdH556nNzOXMT
-	 slnnjNaIDOeVctplqx+6sHU7xX6Evq633LkzWhOrvEr/+B6z8vXe0wRTBfZ9+pydvY
-	 6kgBrb6B8KP1FK80yGn9Vg3M6CnVZgZYBRJeAZwZlLDYOM8rySYHiNHaRttb1jF2c1
-	 ey5RaRpBZkiMxkQ4ajqWwUWSIJDEjwFCp80KbIsjiQFhg//sGWeeNz7zVlzElHaDRP
-	 Mxn5shHp5r2KA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3490D380AA79;
-	Fri, 24 Jan 2025 16:05:06 +0000 (UTC)
-Subject: Re: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.14-rc1
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <D79BYW5LF81P.3S7NLCWK7RAL9@iki.fi>
-References: <D79BYW5LF81P.3S7NLCWK7RAL9@iki.fi>
-X-PR-Tracked-List-Id: <linux-integrity.vger.kernel.org>
-X-PR-Tracked-Message-Id: <D79BYW5LF81P.3S7NLCWK7RAL9@iki.fi>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-6.14-rc1
-X-PR-Tracked-Commit-Id: a3a860bc0fd6c07332e4911cf9a238d20de90173
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: ae2d4fc540cd27d667d10597b6ad8cc4c6ce622a
-Message-Id: <173773470475.2087587.4723226889722538524.pr-tracker-bot@kernel.org>
-Date: Fri, 24 Jan 2025 16:05:04 +0000
-To: Jarkko Sakkinen <jarkko.sakkinen@iki.fi>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org
+	s=k20201202; t=1737985800;
+	bh=laZX1iWKmTFe6EBXe6dQ6V5dBHky9feUPubV8bbHYy0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ITreSYYkYqJo0yzT/NmeCNaU8ylN9fF82uixbVQhbAMNhn/x1ksvsdeN2BZIjx7Av
+	 6jRzLOfnz1KOiZ8BN/+a6yzSKjX86nOzP6ewnKK12LbyYoLRgr6MitIVZMs+Q9nRjt
+	 1O56sOuQWf9/oW9JBeL1K1Ep9SPnbGRY0gAqf1BfWdrmsV6P6rbrAzrEzJaWATIpCg
+	 PxgyGHOSh+1Dp+na/sGNdWcGsgzNCRs4/nnMHS16Kt8UOkwJO9cYsDiIOKruHAZkDs
+	 tuJVwo0MPlNeiRHuQkLVgJEWRQ8mSboCfx8PwGZonQ0+bdJkEjI8BLPDWS5oZchNDY
+	 iBi9Q4ViZ4cfA==
+Date: Mon, 27 Jan 2025 14:49:55 +0100
+From: Joel Granados <joel.granados@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>, Kees Cook <kees@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	openipmi-developer@lists.sourceforge.net, intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	linux-raid@vger.kernel.org, linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, 
+	netfs@lists.linux.dev, codalist@coda.cs.cmu.edu, linux-mm@kvack.org, 
+	linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev, fsverity@lists.linux.dev, 
+	linux-xfs@vger.kernel.org, io-uring@vger.kernel.org, bpf@vger.kernel.org, 
+	kexec@lists.infradead.org, linux-trace-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
+	keyrings@vger.kernel.org, Song Liu <song@kernel.org>, 
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>, "Martin K. Petersen" <martin.petersen@oracle.com>, 
+	"Darrick J. Wong" <djwong@kernel.org>, Jani Nikula <jani.nikula@intel.com>, 
+	Corey Minyard <cminyard@mvista.com>
+Subject: Re: Re: Re: [PATCH v2] treewide: const qualify ctl_tables where
+ applicable
+Message-ID: <f4lfo2fb7ajogucsvisfd5sg2avykavmkizr6ycsllcrco4mo3@qt2zx4zp57zh>
+References: <20250110-jag-ctl_table_const-v2-1-0000e1663144@kernel.org>
+ <Z4+jwDBrZNRgu85S@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+ <nslqrapp4v3rknjgtfk4cg64ha7rewrrg24aslo2e5jmxfwce5@t4chrpuk632k>
+ <CAMj1kXEZPe8zk7s67SADK9wVH3cfBup-sAZSC6_pJyng9QT7aw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXEZPe8zk7s67SADK9wVH3cfBup-sAZSC6_pJyng9QT7aw@mail.gmail.com>
 
-The pull request you sent on Thu, 23 Jan 2025 11:04:25 +0200:
+On Wed, Jan 22, 2025 at 01:41:35PM +0100, Ard Biesheuvel wrote:
+> On Wed, 22 Jan 2025 at 13:25, Joel Granados <joel.granados@kernel.org> wrote:
+> >
+> > On Tue, Jan 21, 2025 at 02:40:16PM +0100, Alexander Gordeev wrote:
+> > > On Fri, Jan 10, 2025 at 03:16:08PM +0100, Joel Granados wrote:
+> > >
+> > > Hi Joel,
+> > >
+> > > > Add the const qualifier to all the ctl_tables in the tree except for
+> > > > watchdog_hardlockup_sysctl, memory_allocation_profiling_sysctls,
+> > > > loadpin_sysctl_table and the ones calling register_net_sysctl (./net,
+> > > > drivers/inifiniband dirs). These are special cases as they use a
+> > > > registration function with a non-const qualified ctl_table argument or
+> > > > modify the arrays before passing them on to the registration function.
+> > > >
+> > > > Constifying ctl_table structs will prevent the modification of
+> > > > proc_handler function pointers as the arrays would reside in .rodata.
+> > > > This is made possible after commit 78eb4ea25cd5 ("sysctl: treewide:
+> > > > constify the ctl_table argument of proc_handlers") constified all the
+> > > > proc_handlers.
+> > >
+> > > I could identify at least these occurences in s390 code as well:
+> > Hey Alexander
+> >
+> > Thx for bringing these to my attention. I had completely missed them as
+> > the spatch only deals with ctl_tables outside functions.
+> >
+> > Short answer:
+> > These should not be included in the current patch because they are a
+> > different pattern from how sysctl tables are usually used. So I will not
+> > include them.
+> >
+> > With that said, I think it might be interesting to look closer at them
+> > as they seem to be complicating the proc_handler (I have to look at them
+> > closer).
+> >
+> > I see that they are defining a ctl_table struct within the functions and
+> > just using the data (from the incoming ctl_table) to forward things down
+> > to proc_do{u,}intvec_* functions. This is very odd and I have only seen
+> > it done in order to change the incoming ctl_table (which is not what is
+> > being done here).
+> >
+> > I will take a closer look after the merge window and circle back with
+> > more info. Might take me a while as I'm not very familiar with s390
+> > code; any additional information on why those are being used inside the
+> > functions would be helpfull.
+> >
+> 
+> Using const data on the stack is not as useful, because the stack is
+> always mapped writable.
+> 
+> Global data structures marked 'const' will be moved into an ELF
+> section that is typically mapped read-only in its entirely, and so the
+> data cannot be modified by writing to it directly. No such protection
+> is possible for the stack, and so the constness there is only enforced
+> at compile time.
+I completely agree with you. No reason to use const within those
+functions. But why define those ctl_tables in function to begin with.
+Can't you just use the ones that are defined outside the functions?
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-6.14-rc1
+Best
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/ae2d4fc540cd27d667d10597b6ad8cc4c6ce622a
-
-Thank you!
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+
+Joel Granados
 
