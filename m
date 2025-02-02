@@ -1,54 +1,54 @@
-Return-Path: <keyrings+bounces-2379-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2380-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8F4CA24FC6
-	for <lists+keyrings@lfdr.de>; Sun,  2 Feb 2025 20:20:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F470A24FC9
+	for <lists+keyrings@lfdr.de>; Sun,  2 Feb 2025 20:28:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50CC8162E0C
-	for <lists+keyrings@lfdr.de>; Sun,  2 Feb 2025 19:20:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DFEC3A327C
+	for <lists+keyrings@lfdr.de>; Sun,  2 Feb 2025 19:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44AA41FCFE3;
-	Sun,  2 Feb 2025 19:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5DA1FE44D;
+	Sun,  2 Feb 2025 19:28:01 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mailout3.hostsharing.net (mailout3.hostsharing.net [176.9.242.54])
+Received: from mailout1.hostsharing.net (mailout1.hostsharing.net [83.223.95.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C33D635;
-	Sun,  2 Feb 2025 19:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D56111FE46B;
+	Sun,  2 Feb 2025 19:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738524027; cv=none; b=dfvsB5Hg1oWr8dW6BLGjNA0N/2GjgLG3uDe0E+8bLYPbrJcBWt+SaECfiF9RUq2vuzArQtwIY4WS1D/XU51ZMKWCPhnBYdwERw+/peREIlxLReDsKnNe/5A2Qy7tpstWNJFyBkNEV/Jyz1ppZ0oeYNdow+xsJ9k2es/opWaScs4=
+	t=1738524481; cv=none; b=dZYljRUq2G9Ed2axKM8l40FANBvGepUK6v6kwMGDDObrTVwaXKcOIgTjtJFJuw0KRimU6fVcaGDeSUp7vz3oYj1BMmOkRLSNVxZYsOJpSWkb/mriaXvy7/ael70AmolHYdw7CZn06kKUjUPPyS3emKaGLvlmD9b1Z3tWyiapdAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738524027; c=relaxed/simple;
-	bh=PM21b7+NVUTZOn6L311HP5iegdIvi1w5mbaGkgXdSls=;
-	h=Message-ID:In-Reply-To:References:From:Date:Subject:To:Cc; b=mf040/9IaczQVDI4dAZJfeudiicvsxblNOFHcjzw2++yixc2V5toeJFrn6ad1gRvHehVXi+fjJLbieqaVwFs8NnbfmuMk04lnW/2cXynpEKlP/oS+/p5HN+iic36TtVAnFBg4cqn6vJSB+lZWaDy+Gc3IAmVcmV5mpPRVL03puE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=176.9.242.54
+	s=arc-20240116; t=1738524481; c=relaxed/simple;
+	bh=DCmH/SrLqxbA1xeWtiXCl7hPAUvpNX0YqMX8pA3cP6Q=;
+	h=Message-ID:In-Reply-To:References:From:Date:Subject:To:Cc; b=s0u1e5tHvhbg9ZsTCSyQnxoAMfTkNHYVJpXBy722NEWLOmJadGZlQyTkItQoO7gnCh+yUEe40pMQdXcJ1otvtnw7GFGdhhWv+O04FRGCxiiV5BF+cBlOF10k7MhsvMTohTfwfvGBEEz0/w+MWuvB4ozsj/vkiYyuDeyKOEFzRJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.95.204
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
 	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
 	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by mailout3.hostsharing.net (Postfix) with ESMTPS id 7E8D1101E6A35;
-	Sun,  2 Feb 2025 20:11:02 +0100 (CET)
+	by mailout1.hostsharing.net (Postfix) with ESMTPS id 9150810192097;
+	Sun,  2 Feb 2025 20:21:12 +0100 (CET)
 Received: from localhost (unknown [89.246.108.87])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by h08.hostsharing.net (Postfix) with ESMTPSA id 267E161024FA;
-	Sun,  2 Feb 2025 20:11:02 +0100 (CET)
-X-Mailbox-Line: From 981e7c8b3f061f3effd253b8cfc6632e52e3e8fe Mon Sep 17 00:00:00 2001
-Message-ID: <981e7c8b3f061f3effd253b8cfc6632e52e3e8fe.1738521533.git.lukas@wunner.de>
+	by h08.hostsharing.net (Postfix) with ESMTPSA id 5B3B561024FA;
+	Sun,  2 Feb 2025 20:21:12 +0100 (CET)
+X-Mailbox-Line: From 9143947a5a706d3c9b9857c47ddb5159181c16cf Mon Sep 17 00:00:00 2001
+Message-ID: <9143947a5a706d3c9b9857c47ddb5159181c16cf.1738521533.git.lukas@wunner.de>
 In-Reply-To: <cover.1738521533.git.lukas@wunner.de>
 References: <cover.1738521533.git.lukas@wunner.de>
 From: Lukas Wunner <lukas@wunner.de>
-Date: Sun, 2 Feb 2025 20:00:51 +0100
-Subject: [PATCH v2 1/4] crypto: sig - Prepare for algorithms with variable
- signature size
+Date: Sun, 2 Feb 2025 20:00:52 +0100
+Subject: [PATCH v2 2/4] crypto: ecdsa - Harden against integer overflows in
+ DIV_ROUND_UP()
 To: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, Stefan Berger <stefanb@linux.ibm.com>, Vitaly Chikunov <vt@altlinux.org>
 Cc: David Howells <dhowells@redhat.com>, Ignat Korchagin <ignat@cloudflare.com>, linux-crypto@vger.kernel.org, keyrings@vger.kernel.org
 Precedence: bulk
@@ -57,147 +57,95 @@ List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 
-The callers of crypto_sig_sign() assume that the signature size is
-always equivalent to the key size.
+Herbert notes that DIV_ROUND_UP() may overflow unnecessarily if an ecdsa
+implementation's ->key_size() callback returns an unusually large value.
+Herbert instead suggests (for a division by 8):
 
-This happens to be true for RSA, which is currently the only algorithm
-implementing the ->sign() callback.  But it is false e.g. for X9.62
-encoded ECDSA signatures because they have variable length.
+  X / 8 + !!(X & 7)
 
-Prepare for addition of a ->sign() callback to such algorithms by
-letting the callback return the signature size (or a negative integer
-on error).  When testing the ->sign() callback in test_sig_one(),
-use crypto_sig_maxsize() instead of crypto_sig_keysize() to verify that
-the test vector's signature does not exceed an algorithm's maximum
-signature size.
+Based on this formula, introduce a generic DIV_ROUND_UP_POW2() macro and
+use it in lieu of DIV_ROUND_UP() for ->key_size() return values.
 
-There has been a relatively recent effort to upstream ECDSA signature
-generation support which may benefit from this change:
+Additionally, use the macro in ecc_digits_from_bytes(), whose "nbytes"
+parameter is a ->key_size() return value in some instances, or a
+user-specified ASN.1 length in the case of ecdsa_get_signature_rs().
 
-https://lore.kernel.org/linux-crypto/20220908200036.2034-1-ignat@cloudflare.com/
-
-However the main motivation for this commit is to reduce the number of
-crypto_sig_keysize() callers:  This function is about to be changed to
-return the size in bits instead of bytes and that will require amending
-most callers to divide the return value by 8.
-
+Link: https://lore.kernel.org/r/Z3iElsILmoSu6FuC@gondor.apana.org.au/
 Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Cc: Ignat Korchagin <ignat@cloudflare.com>
 ---
- crypto/asymmetric_keys/public_key.c | 9 ++-------
- crypto/rsassa-pkcs1.c               | 2 +-
- crypto/testmgr.c                    | 7 ++++---
- include/crypto/sig.h                | 5 +++--
- 4 files changed, 10 insertions(+), 13 deletions(-)
+Changes v1 -> v2:
+* New patch introduced in v2
 
-diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
-index bbd07a9022e6..bf165d321440 100644
---- a/crypto/asymmetric_keys/public_key.c
-+++ b/crypto/asymmetric_keys/public_key.c
-@@ -267,7 +267,6 @@ static int software_key_eds_op(struct kernel_pkey_params *params,
- 	struct crypto_sig *sig;
- 	char *key, *ptr;
- 	bool issig;
--	int ksz;
- 	int ret;
+ crypto/ecc.c         |  2 +-
+ crypto/ecdsa-p1363.c |  2 +-
+ crypto/ecdsa-x962.c  |  4 ++--
+ include/linux/math.h | 12 ++++++++++++
+ 4 files changed, 16 insertions(+), 4 deletions(-)
+
+diff --git a/crypto/ecc.c b/crypto/ecc.c
+index 50ad2d4ed672..6cf9a945fc6c 100644
+--- a/crypto/ecc.c
++++ b/crypto/ecc.c
+@@ -71,7 +71,7 @@ EXPORT_SYMBOL(ecc_get_curve);
+ void ecc_digits_from_bytes(const u8 *in, unsigned int nbytes,
+ 			   u64 *out, unsigned int ndigits)
+ {
+-	int diff = ndigits - DIV_ROUND_UP(nbytes, sizeof(u64));
++	int diff = ndigits - DIV_ROUND_UP_POW2(nbytes, sizeof(u64));
+ 	unsigned int o = nbytes & 7;
+ 	__be64 msd = 0;
  
- 	pr_devel("==>%s()\n", __func__);
-@@ -302,8 +301,6 @@ static int software_key_eds_op(struct kernel_pkey_params *params,
- 			ret = crypto_sig_set_pubkey(sig, key, pkey->keylen);
- 		if (ret)
- 			goto error_free_tfm;
--
--		ksz = crypto_sig_keysize(sig);
- 	} else {
- 		tfm = crypto_alloc_akcipher(alg_name, 0, 0);
- 		if (IS_ERR(tfm)) {
-@@ -317,8 +314,6 @@ static int software_key_eds_op(struct kernel_pkey_params *params,
- 			ret = crypto_akcipher_set_pub_key(tfm, key, pkey->keylen);
- 		if (ret)
- 			goto error_free_tfm;
--
--		ksz = crypto_akcipher_maxsize(tfm);
- 	}
+diff --git a/crypto/ecdsa-p1363.c b/crypto/ecdsa-p1363.c
+index eaae7214d69b..4454f1f8f33f 100644
+--- a/crypto/ecdsa-p1363.c
++++ b/crypto/ecdsa-p1363.c
+@@ -22,7 +22,7 @@ static int ecdsa_p1363_verify(struct crypto_sig *tfm,
+ {
+ 	struct ecdsa_p1363_ctx *ctx = crypto_sig_ctx(tfm);
+ 	unsigned int keylen = crypto_sig_keysize(ctx->child);
+-	unsigned int ndigits = DIV_ROUND_UP(keylen, sizeof(u64));
++	unsigned int ndigits = DIV_ROUND_UP_POW2(keylen, sizeof(u64));
+ 	struct ecdsa_raw_sig sig;
  
- 	ret = -EINVAL;
-@@ -347,8 +342,8 @@ static int software_key_eds_op(struct kernel_pkey_params *params,
- 		BUG();
- 	}
+ 	if (slen != 2 * keylen)
+diff --git a/crypto/ecdsa-x962.c b/crypto/ecdsa-x962.c
+index 6a77c13e192b..90a04f4b9a2f 100644
+--- a/crypto/ecdsa-x962.c
++++ b/crypto/ecdsa-x962.c
+@@ -81,8 +81,8 @@ static int ecdsa_x962_verify(struct crypto_sig *tfm,
+ 	struct ecdsa_x962_signature_ctx sig_ctx;
+ 	int err;
  
--	if (ret == 0)
--		ret = ksz;
-+	if (!issig && ret == 0)
-+		ret = crypto_akcipher_maxsize(tfm);
+-	sig_ctx.ndigits = DIV_ROUND_UP(crypto_sig_keysize(ctx->child),
+-				       sizeof(u64));
++	sig_ctx.ndigits = DIV_ROUND_UP_POW2(crypto_sig_keysize(ctx->child),
++					    sizeof(u64));
  
- error_free_tfm:
- 	if (issig)
-diff --git a/crypto/rsassa-pkcs1.c b/crypto/rsassa-pkcs1.c
-index f68ffd338f48..d01ac75635e0 100644
---- a/crypto/rsassa-pkcs1.c
-+++ b/crypto/rsassa-pkcs1.c
-@@ -210,7 +210,7 @@ static int rsassa_pkcs1_sign(struct crypto_sig *tfm,
- 		memset(dst, 0, pad_len);
- 	}
- 
--	return 0;
-+	return ctx->key_size;
- }
- 
- static int rsassa_pkcs1_verify(struct crypto_sig *tfm,
-diff --git a/crypto/testmgr.c b/crypto/testmgr.c
-index e61490ba4095..b69877db3f33 100644
---- a/crypto/testmgr.c
-+++ b/crypto/testmgr.c
-@@ -4328,7 +4328,7 @@ static int test_sig_one(struct crypto_sig *tfm, const struct sig_testvec *vecs)
- 	if (vecs->public_key_vec)
- 		return 0;
- 
--	sig_size = crypto_sig_keysize(tfm);
-+	sig_size = crypto_sig_maxsize(tfm);
- 	if (sig_size < vecs->c_size) {
- 		pr_err("alg: sig: invalid maxsize %u\n", sig_size);
- 		return -EINVAL;
-@@ -4340,13 +4340,14 @@ static int test_sig_one(struct crypto_sig *tfm, const struct sig_testvec *vecs)
- 
- 	/* Run asymmetric signature generation */
- 	err = crypto_sig_sign(tfm, vecs->m, vecs->m_size, sig, sig_size);
--	if (err) {
-+	if (err < 0) {
- 		pr_err("alg: sig: sign test failed: err %d\n", err);
- 		return err;
- 	}
- 
- 	/* Verify that generated signature equals cooked signature */
--	if (memcmp(sig, vecs->c, vecs->c_size) ||
-+	if (err != vecs->c_size ||
-+	    memcmp(sig, vecs->c, vecs->c_size) ||
- 	    memchr_inv(sig + vecs->c_size, 0, sig_size - vecs->c_size)) {
- 		pr_err("alg: sig: sign test failed: invalid output\n");
- 		hexdump(sig, sig_size);
-diff --git a/include/crypto/sig.h b/include/crypto/sig.h
-index cff41ad93824..11024708c069 100644
---- a/include/crypto/sig.h
-+++ b/include/crypto/sig.h
-@@ -23,7 +23,8 @@ struct crypto_sig {
-  * struct sig_alg - generic public key signature algorithm
-  *
-  * @sign:	Function performs a sign operation as defined by public key
-- *		algorithm. Optional.
-+ *		algorithm. On success, the signature size is returned.
-+ *		Optional.
-  * @verify:	Function performs a complete verify operation as defined by
-  *		public key algorithm, returning verification status. Optional.
-  * @set_pub_key: Function invokes the algorithm specific set public key
-@@ -186,7 +187,7 @@ static inline unsigned int crypto_sig_maxsize(struct crypto_sig *tfm)
-  * @dst:	destination obuffer
-  * @dlen:	destination length
-  *
-- * Return: zero on success; error code in case of error
-+ * Return: signature size on success; error code in case of error
+ 	err = asn1_ber_decoder(&ecdsasignature_decoder, &sig_ctx, src, slen);
+ 	if (err < 0)
+diff --git a/include/linux/math.h b/include/linux/math.h
+index f5f18dc3616b..0198c92cbe3e 100644
+--- a/include/linux/math.h
++++ b/include/linux/math.h
+@@ -34,6 +34,18 @@
   */
- static inline int crypto_sig_sign(struct crypto_sig *tfm,
- 				  const void *src, unsigned int slen,
+ #define round_down(x, y) ((x) & ~__round_mask(x, y))
+ 
++/**
++ * DIV_ROUND_UP_POW2 - divide and round up
++ * @n: numerator
++ * @d: denominator (must be a power of 2)
++ *
++ * Divides @n by @d and rounds up to next multiple of @d (which must be a power
++ * of 2). Avoids integer overflows that may occur with __KERNEL_DIV_ROUND_UP().
++ * Performance is roughly equivalent to __KERNEL_DIV_ROUND_UP().
++ */
++#define DIV_ROUND_UP_POW2(n, d) \
++	((n) / (d) + !!((n) & ((d) - 1)))
++
+ #define DIV_ROUND_UP __KERNEL_DIV_ROUND_UP
+ 
+ #define DIV_ROUND_DOWN_ULL(ll, d) \
 -- 
 2.43.0
 
