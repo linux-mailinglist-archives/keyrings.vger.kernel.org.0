@@ -1,80 +1,72 @@
-Return-Path: <keyrings+bounces-2401-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2402-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46B8A32BEC
-	for <lists+keyrings@lfdr.de>; Wed, 12 Feb 2025 17:38:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AF83A37201
+	for <lists+keyrings@lfdr.de>; Sun, 16 Feb 2025 05:20:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D18A169DC1
-	for <lists+keyrings@lfdr.de>; Wed, 12 Feb 2025 16:37:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06A2916DCD6
+	for <lists+keyrings@lfdr.de>; Sun, 16 Feb 2025 04:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020CD2586E6;
-	Wed, 12 Feb 2025 16:36:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67AC6199BC;
+	Sun, 16 Feb 2025 04:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="NqyAZEBt"
 X-Original-To: keyrings@vger.kernel.org
-Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A6625743C;
-	Wed, 12 Feb 2025 16:36:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBBA33C5;
+	Sun, 16 Feb 2025 04:20:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739378171; cv=none; b=i5FCg7lh0G8MvY5A4BvyK4FY6HMUeK9TTWAmOn6bDw1Y0/kx5NEfosty0MltGQdSdAr6r71peziqGoJmceVqDGLbM1l/qetoqpX8iGCHTlqzBaAM+Z8QqAhwZ8UlD9hG54LZKyP59+OU46YPzi6sMoM9v13RNMlgoPwxNhhddyk=
+	t=1739679607; cv=none; b=edE80+glctxLledS/grKbzqGJJX9+TmnBfTnTVRmQVXWufJqQ/6E7lFbpq7PcGqM2F0qHSaawaTDNYYlmIHCa1Qfd3g1MAr2gnMEd7j6eZ5ojBZD8GnOXy9L5Q6Uyg0N5dHwHZmFFtih0n0BiXC3YFFe8NTJZYtFoiql7e+JKjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739378171; c=relaxed/simple;
-	bh=ozwS80Px8jgB+KR4DO9OSCcBIuaqE6z6a9AlLrJXX1Q=;
+	s=arc-20240116; t=1739679607; c=relaxed/simple;
+	bh=DsqDrNEtdjcTxfYRE6f7SWktdGL4KQtG4Im5+8xemL8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Nl6YH6OvlebB6L3X5HAa3CjLYXWxeRaASxdnIaRZab0O3n8jW7Q2HmSH11UhvHkwmdx2xDfF7Gymi5cS27623K8JfWIxJHzGKlhM65uY7fUSQENFg/QlfUQdjpBSdS1dkWxUml7yQl2oUwq6cKhBfP7G6yOjU/IBjQgUojmWdxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.95.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout1.hostsharing.net (Postfix) with ESMTPS id 5C348300135A1;
-	Wed, 12 Feb 2025 17:36:01 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 452231B825A; Wed, 12 Feb 2025 17:36:01 +0100 (CET)
-Date: Wed, 12 Feb 2025 17:36:01 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Woodhouse <dwmw2@infradead.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linuxarm@huawei.com,
-	David Box <david.e.box@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Li, Ming" <ming4.li@intel.com>,
-	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Dhaval Giani <dhaval.giani@amd.com>,
-	Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Peter Gonda <pgonda@google.com>,
-	Jerome Glisse <jglisse@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>,
-	Eric Biggers <ebiggers@google.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=AYQLWswtLExZJgeoYVgF51SufJ86M6q+UgBtnt9oqI0oJhPj6O1eFGa8z5wRy6bN6tpOYjGgATxuXfFl47hH13zDRUQOK1YGSEDqdw5iMQn8adxBFdY4kz7dVjugAbSxiKSnzOCSqQzjlGIvLCU4cyAoXEyjznHvC3zct3VQOcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=NqyAZEBt; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=XhmDuuowFYAuW6k3dKrYQB8MedipeC1QmikJZqeF7wE=; b=NqyAZEBtEm1mbJGJwOnWw2lS46
+	1B2ROWQuxpwArr2V01aSnH2tvbV/0TS4/2sKGMynAehc4745KPVtCi62nM31vmfwE7CxPWzNEOjWz
+	UGU+PHBt+gDop/OE6Lq+vlouZy5L1R1rM/vovbC7ttTWJec+XB2hljW4clysYHeifQWznbZu75aL7
+	tnXUM2L98ZjxSLHtV0vM+F63XxIbjGJhlWJCpg2DBD4zVR5mhioKo2H0bN5sO4e+h/ct6PCMbDe5a
+	ttsyroy7OgFahQ69d0jxxYF5Ap0IpGrijACZxB6hGKybDdMfMExJ12TuYjgutp2QWd2Q/+PUP62Dj
+	uj59VV/A==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1tjVvE-000gzK-0Y;
+	Sun, 16 Feb 2025 12:19:46 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sun, 16 Feb 2025 12:19:44 +0800
+Date: Sun, 16 Feb 2025 12:19:44 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Lukas Wunner <lukas@wunner.de>
+Cc: "David S. Miller" <davem@davemloft.net>,
 	Stefan Berger <stefanb@linux.ibm.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: Re: [PATCH v2 00/18] PCI device authentication
-Message-ID: <Z6zN8R-E9uJpkU7j@wunner.de>
-References: <cover.1719771133.git.lukas@wunner.de>
- <2140c4e4-6df0-47c7-8301-c6eb70ada27d@amd.com>
- <ZovrK7GsDpOMp3Bz@wunner.de>
- <b1595ceb-a916-4ff0-97bd-1a223e0cef15@amd.com>
+	Vitaly Chikunov <vt@altlinux.org>,
+	David Howells <dhowells@redhat.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
+	Eric Biggers <ebiggers@google.com>
+Subject: Re: [PATCH v2 3/4] crypto: ecdsa - Fix enc/dec size reported by
+ KEYCTL_PKEY_QUERY
+Message-ID: <Z7FnYEN-OnR_-7sP@gondor.apana.org.au>
+References: <cover.1738521533.git.lukas@wunner.de>
+ <3d74d6134f4f87a90ebe0a37cb06c6ec144ceef7.1738521533.git.lukas@wunner.de>
+ <Z6h8L0D-CBhZUiVR@gondor.apana.org.au>
+ <Z6iRssS26IOjWbfx@wunner.de>
+ <Z6mwxUaS33EastB3@gondor.apana.org.au>
+ <Z6pLRRJFOml8w61S@wunner.de>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -83,34 +75,32 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b1595ceb-a916-4ff0-97bd-1a223e0cef15@amd.com>
+In-Reply-To: <Z6pLRRJFOml8w61S@wunner.de>
 
-On Tue, Feb 11, 2025 at 12:30:21PM +1100, Alexey Kardashevskiy wrote:
-> > > On 1/7/24 05:35, Lukas Wunner wrote:
-> > > > PCI device authentication v2
-> > > > 
-> > > > Authenticate PCI devices with CMA-SPDM (PCIe r6.2 sec 6.31) and
-> > > > expose the result in sysfs.
+On Mon, Feb 10, 2025 at 07:53:57PM +0100, Lukas Wunner wrote:
+>
+> > > https://git.kernel.org/pub/scm/libs/ell/ell.git/tree/ell/key.c
+> > > https://git.kernel.org/pub/scm/network/wireless/iwd.git/tree/src/eap-tls.c
+> > 
+> > Surely this doesn't use the private key part of the API, does it?
 > 
-> Has any further development happened since then? I am asking as I have the
-> CMA-v2 in my TSM exercise tree (to catch conflicts, etc) but I do not see
-> any change in your github or kernel.org/devsec since v2 and that v2 does not
-> merge nicely with the current upstream.
+> It does use the private key part:
+> 
+> It takes advantage of the kernel's Key Retention Service for EAP-TLS,
+> which generally uses mutual authentication.  E.g. clients authenticate
+> against a wireless hotspot.  Hence it does invoke KEYCTL_PKEY_SIGN and
+> KEYCTL_PKEY_ENCRYPT (with private keys, obviously).
 
-Please find a rebase of v2 on v6.14-rc2 on this branch:
+Does it really? I grepped the whole iwd git tree and the only
+use of private key functionality is to check that it matches
+the public key, IOW it encrypts a piece of text and then decrypts
+it again to check whether they match.
 
-https://github.com/l1k/linux/commits/doe
+It doesn't make use of any other private key functionality AFAICS.
 
-A portion of the crypto patches that were part of v2 have landed in v6.13.
-So the rebased version has shrunk.
-
-There was a bit of fallout caused by the upstreamed crypto patches
-and dealing with that kept me occupied during the v6.13 cycle.
-However I'm now back working on the PCI/CMA patches,
-specifically the migration to netlink for retrieval of signatures
-and measurements as discussed at Plumbers.
-
-Thanks,
-
-Lukas
+Cheers,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
