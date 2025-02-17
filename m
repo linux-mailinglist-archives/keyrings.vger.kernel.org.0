@@ -1,130 +1,182 @@
-Return-Path: <keyrings+bounces-2403-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2404-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF31AA373D5
-	for <lists+keyrings@lfdr.de>; Sun, 16 Feb 2025 11:45:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD9B8A37950
+	for <lists+keyrings@lfdr.de>; Mon, 17 Feb 2025 01:56:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 495EB16BACE
-	for <lists+keyrings@lfdr.de>; Sun, 16 Feb 2025 10:45:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA2A5188CEC4
+	for <lists+keyrings@lfdr.de>; Mon, 17 Feb 2025 00:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9851914B959;
-	Sun, 16 Feb 2025 10:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573AB7483;
+	Mon, 17 Feb 2025 00:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="Dt1VZFOr"
 X-Original-To: keyrings@vger.kernel.org
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0310B17D346;
-	Sun, 16 Feb 2025 10:45:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF89E8F6B
+	for <keyrings@vger.kernel.org>; Mon, 17 Feb 2025 00:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1739702717; cv=none; b=lpdmqfAcY3xJIYS8eG5j9ZRcidXyvg4Xr33vJdw8kaNwncqo36bbp83RKltv2Kq/N3kDKWS5/Voy3tKg9o3rbY6u5TtTbxUkgKH0wNevsRhyYKC3RSmwj+lqxdqAGO2x4xg0lmKvbcFNarjXYQuj7KEyUyMezDr3Eo+Cs/tdbNE=
+	t=1739753762; cv=none; b=LazVk+/9Kii69+8E2fSWz7SgIU2v3bVF2yO784Lc4DimhpCN4CZThNJW2eaLLkZsS2WCxDGvv+s6Rh1nuJx33CBMxn5Fcso3zEAiXiMeK3S+FTYBN+cPnEg+vI1Z3wopK3A/HPOi4Mou3ZhN9/MGkNJ3iYQKG/ROR6FrgWUGFPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1739702717; c=relaxed/simple;
-	bh=fa/fmQSZpHAhnO4dBF2O3QM/qi0ngSjs4VtzmyARpnc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mel3j2af2RYSq/Pc0YLu4NaDG17dcENjYw4JG2bWCx3eqlHhafMfZsd6BFW1Gb5i5tpcTCJ+WQ3lc+JfYC/uW5+NM64BpK/TRpxSjepBbEjKdyUghHRQ1fvQFMlyuIgD247lKI1B6FpKxpG/W28X/4DRaLiGRVHYOHTEzsb4V4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 1FD92100D587D;
-	Sun, 16 Feb 2025 11:45:05 +0100 (CET)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id E403C5CD8E8; Sun, 16 Feb 2025 11:45:04 +0100 (CET)
-Date: Sun, 16 Feb 2025 11:45:04 +0100
-From: Lukas Wunner <lukas@wunner.de>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Vitaly Chikunov <vt@altlinux.org>,
-	David Howells <dhowells@redhat.com>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
-	Eric Biggers <ebiggers@google.com>
-Subject: Re: [PATCH v2 3/4] crypto: ecdsa - Fix enc/dec size reported by
- KEYCTL_PKEY_QUERY
-Message-ID: <Z7HBsONxj_q0BkJU@wunner.de>
-References: <cover.1738521533.git.lukas@wunner.de>
- <3d74d6134f4f87a90ebe0a37cb06c6ec144ceef7.1738521533.git.lukas@wunner.de>
- <Z6h8L0D-CBhZUiVR@gondor.apana.org.au>
- <Z6iRssS26IOjWbfx@wunner.de>
- <Z6mwxUaS33EastB3@gondor.apana.org.au>
- <Z6pLRRJFOml8w61S@wunner.de>
- <Z7FnYEN-OnR_-7sP@gondor.apana.org.au>
+	s=arc-20240116; t=1739753762; c=relaxed/simple;
+	bh=M76tTXeOco/DTmfQJhlp7IBFxX8hTcbiscKDZRNBJz4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WGL5Hb8S1uZ3dFFd5cUdJn5yKTFhVWDzkvB6ioNJJTIni9fqeUdjv/Y2ItuutUxJl4as/nQhMQHl0irOSNZFxeJna83hUj01GZHO2eydpsGhL6qQGJlQjenWnpXnMgRV65XG7p2QlOCGuxGhhK5fslbsc5ef5LTbi+AVEUVjUp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=Dt1VZFOr; arc=none smtp.client-ip=207.171.188.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1739753761; x=1771289761;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=oH0aRh5X50kbgH43zwPx6QjEUg3SHz7JY0IvkQnPiW4=;
+  b=Dt1VZFOrrrb1m2GBzsmRMMOMNhID2cX+fQetQAvvUvNvJPURsoGeM7uY
+   vfeBKdB0mSpo1sMTrf6pYURcQsy0qbNor2GhkRS/yp4EaRpVRY4gmsbK3
+   +J120ndGJlrUFQjg5dauX1Vqr7ndOsH9XAVenFiCTDOTgM+bfprbUv1xi
+   U=;
+X-IronPort-AV: E=Sophos;i="6.13,291,1732579200"; 
+   d="scan'208";a="799297622"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2025 00:55:55 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.21.151:4566]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.55.73:2525] with esmtp (Farcaster)
+ id 7d4ee54c-08fe-4a3e-9dc8-062ceac3c0cd; Mon, 17 Feb 2025 00:55:37 +0000 (UTC)
+X-Farcaster-Flow-ID: 7d4ee54c-08fe-4a3e-9dc8-062ceac3c0cd
+Received: from EX19D021UWC004.ant.amazon.com (10.13.139.224) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.217) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Mon, 17 Feb 2025 00:55:37 +0000
+Received: from EX19MTAUWA001.ant.amazon.com (10.250.64.204) by
+ EX19D021UWC004.ant.amazon.com (10.13.139.224) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Mon, 17 Feb 2025 00:55:37 +0000
+Received: from email-imr-corp-prod-pdx-all-2c-785684ef.us-west-2.amazon.com
+ (10.25.36.214) by mail-relay.amazon.com (10.250.64.204) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id
+ 15.2.1258.39 via Frontend Transport; Mon, 17 Feb 2025 00:55:37 +0000
+Received: from dev-dsk-abuehaze-1c-21d23c85.eu-west-1.amazon.com (dev-dsk-abuehaze-1c-21d23c85.eu-west-1.amazon.com [10.13.244.41])
+	by email-imr-corp-prod-pdx-all-2c-785684ef.us-west-2.amazon.com (Postfix) with ESMTP id D8EEFA0484;
+	Mon, 17 Feb 2025 00:55:36 +0000 (UTC)
+Received: by dev-dsk-abuehaze-1c-21d23c85.eu-west-1.amazon.com (Postfix, from userid 5005603)
+	id 6DE837485; Mon, 17 Feb 2025 00:55:36 +0000 (UTC)
+From: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
+To: <dhowells@redhat.com>, <keyrings@vger.kernel.org>
+CC: <benh@amazon.com>, <ptyadav@amazon.com>, Hazem Mohamed Abuelfotoh
+	<abuehaze@amazon.com>
+Subject: [PATCH] Pass "err" argument by address to "_nsError" function
+Date: Mon, 17 Feb 2025 00:54:52 +0000
+Message-ID: <20250217005452.4873-1-abuehaze@amazon.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z7FnYEN-OnR_-7sP@gondor.apana.org.au>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Sun, Feb 16, 2025 at 12:19:44PM +0800, Herbert Xu wrote:
-> On Mon, Feb 10, 2025 at 07:53:57PM +0100, Lukas Wunner wrote:
-> > > > https://git.kernel.org/pub/scm/libs/ell/ell.git/tree/ell/key.c
-> > > > https://git.kernel.org/pub/scm/network/wireless/iwd.git/tree/src/eap-tls.c
-> > > 
-> > > Surely this doesn't use the private key part of the API, does it?
-> > 
-> > It does use the private key part:
-> > 
-> > It takes advantage of the kernel's Key Retention Service for EAP-TLS,
-> > which generally uses mutual authentication.  E.g. clients authenticate
-> > against a wireless hotspot.  Hence it does invoke KEYCTL_PKEY_SIGN and
-> > KEYCTL_PKEY_ENCRYPT (with private keys, obviously).
-> 
-> Does it really? I grepped the whole iwd git tree and the only
-> use of private key functionality is to check that it matches
-> the public key, IOW it encrypts a piece of text and then decrypts
-> it again to check whether they match.
-> 
-> It doesn't make use of any other private key functionality AFAICS.
+Commit 0d71523ab584 (“DNS: Support AFS SRV records and
+cell db config files”) has refactored the "nsError" function
+by moving some of error handling to "_nsError" function
+however we are passing the "err" argument to "_nsError"
+by value not by address which is wrong as that basically
+waste any processing we do in the "_nsError" function
+so correcting that by passing "err" by address.
 
-__eap_handle_request()                            [iwd src/eap.c]
-  eap->method->handle_request()
-    eap_tls_common_handle_request()               [iwd src/eap-tls-common.c]
-      l_tls_handle_rx()                           [ell ell/tls-record.c]
-        tls_handle_ciphertext()
-          tls_handle_plaintext()
-            tls_handle_message()                  [ell ell/tls.c]
-              tls_handle_handshake()
-                tls_handle_server_hello_done()
-                  tls_send_certificate_verify()
-                    tls->pending.cipher_suite->signature->sign
-                      tls_rsa_sign()              [ell ell/tls-suites.c]
-                        l_key_sign()              [ell ell/key.c]
-                          eds_common()
-                            kernel_key_eds()
-                              syscall(__NR_keyctl, KEYCTL_PKEY_SIGN, ...)
+Reported-by: Pratyush Yadav <ptyadav@amazon.com>
+Signed-off-by: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
+---
+ dns.afsdb.c        |  4 ++--
+ key.dns.h          |  2 +-
+ key.dns_resolver.c | 20 ++++++++++----------
+ 3 files changed, 13 insertions(+), 13 deletions(-)
 
-... where tls_handle_server_hello_done() performs client authentication
-per RFC 8446 sec 4.6.2:
+diff --git a/dns.afsdb.c b/dns.afsdb.c
+index 986c0f3..7bffb60 100644
+--- a/dns.afsdb.c
++++ b/dns.afsdb.c
+@@ -228,7 +228,7 @@ static int dns_query_AFSDB(const char *cell)
+ 
+ 	if (response_len < 0) {
+ 		/* negative result */
+-		_nsError(h_errno, cell);
++		_nsError(&h_errno, cell);
+ 		return -1;
+ 	}
+ 
+@@ -267,7 +267,7 @@ static int dns_query_VL_SRV(const char *cell)
+ 
+ 	if (response_len < 0) {
+ 		/* negative result */
+-		_nsError(h_errno, cell);
++		_nsError(&h_errno, cell);
+ 		return -1;
+ 	}
+ 
+diff --git a/key.dns.h b/key.dns.h
+index 33d0ab3..2fedbc3 100644
+--- a/key.dns.h
++++ b/key.dns.h
+@@ -59,7 +59,7 @@ extern __attribute__((format(printf, 1, 2)))
+ void info(const char *fmt, ...);
+ extern __attribute__((noreturn))
+ void nsError(int err, const char *domain);
+-extern void _nsError(int err, const char *domain);
++extern void _nsError(int *err, const char *domain);
+ extern __attribute__((format(printf, 1, 2)))
+ void debug(const char *fmt, ...);
+ 
+diff --git a/key.dns_resolver.c b/key.dns_resolver.c
+index 7a7ec42..6b16427 100644
+--- a/key.dns_resolver.c
++++ b/key.dns_resolver.c
+@@ -157,19 +157,20 @@ static const int ns_errno_map[] = {
+ 	[NO_DATA]		= ENODATA,
+ };
+ 
+-void _nsError(int err, const char *domain)
++void _nsError(int *err, const char *domain)
+ {
+ 	if (isatty(2))
+-		fprintf(stderr, "NS:%s: %s.\n", domain, hstrerror(err));
++		fprintf(stderr, "NS:%s: %s.\n", domain, hstrerror(*err));
+ 	else
+-		syslog(LOG_INFO, "%s: %s", domain, hstrerror(err));
++		syslog(LOG_INFO, "%s: %s", domain, hstrerror(*err));
+ 
+-	if (err >= sizeof(ns_errno_map) / sizeof(ns_errno_map[0]))
+-		err = ECONNREFUSED;
+-	else
+-		err = ns_errno_map[err];
++	if (*err >= sizeof(ns_errno_map) / sizeof(ns_errno_map[0]))
++		*err = ECONNREFUSED;
++	else{
++		*err = ns_errno_map[*err];
++	}
+ 
+-	info("Reject the key with error %d", err);
++	info("Reject the key with error %d", *err);
+ }
+ 
+ void nsError(int err, const char *domain)
+@@ -177,8 +178,7 @@ void nsError(int err, const char *domain)
+ 	unsigned timeout;
+ 	int ret;
+ 
+-	_nsError(err, domain);
+-
++	_nsError(&err, domain);
+ 	switch (err) {
+ 	case TRY_AGAIN:
+ 		timeout = 1;
+-- 
+2.47.1
 
-  "When the client has sent the "post_handshake_auth" extension (see
-   Section 4.2.6), a server MAY request client authentication at any
-   time after the handshake has completed by sending a
-   CertificateRequest message.  The client MUST respond with the
-   appropriate Authentication messages (see Section 4.4).  If the client
-   chooses to authenticate, it MUST send Certificate, CertificateVerify,
-   and Finished."
-
-   https://datatracker.ietf.org/doc/html/rfc8446#section-4.6.2
-
-I think the best option at this point isn't to aim for removal
-but to wait for Cloudflare to beat their out-of-tree implementation
-(which apparently isn't susceptible to side channel attacks)
-into shape so that it can be upstreamed.
-
-Thanks,
-
-Lukas
 
