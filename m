@@ -1,151 +1,128 @@
-Return-Path: <keyrings+bounces-2413-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2414-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 532F8A47C4A
-	for <lists+keyrings@lfdr.de>; Thu, 27 Feb 2025 12:33:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C097A48580
+	for <lists+keyrings@lfdr.de>; Thu, 27 Feb 2025 17:45:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AE24166EBF
-	for <lists+keyrings@lfdr.de>; Thu, 27 Feb 2025 11:33:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B128C3A78AD
+	for <lists+keyrings@lfdr.de>; Thu, 27 Feb 2025 16:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26831DB122;
-	Thu, 27 Feb 2025 11:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E841B3943;
+	Thu, 27 Feb 2025 16:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D5aJlq2F"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="fbhShm+I"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185282253A8
-	for <keyrings@vger.kernel.org>; Thu, 27 Feb 2025 11:33:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4051D5CEE
+	for <keyrings@vger.kernel.org>; Thu, 27 Feb 2025 16:45:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740655998; cv=none; b=fbMnKGeJL+nvIDJ7M/ETKvprf/sotmgZRz7nE55/z+vOq5DeRw3ESjwF96yMcweZAK6zuBa25Thdp1hmqO5c1eVEVL4kI1HNk43CJCy6FlYXwxPTsl7nvFtfIgG4plf61VE2Wb2hW8wK8/3s9b4AHVTJyWPTf9CqPNXiVAARaZ4=
+	t=1740674723; cv=none; b=BJzrcanovedMLyqWWpS5aGVZ9HQl/Q4cg4eUx/rMRD4z2kEOqgymjOuAYMt3DvYoxcAV1pBmOk5mVjvkTTefCLH9ULbTxxiIE08rpZt48Y4cztxroe0dHADehh/DR00E/eZYGWEa9fwUhdrvtf4eKCq0/Q+rnbe3n24HbbgG7HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740655998; c=relaxed/simple;
-	bh=LO2N9vciU7HB99mtlW3h5ysZsPTzOm1mscKvDNw90XU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GwnwyaNiRzi+i8K9gP+YX1xSFXTk4gHphWkV0xKR06oj96J4zDn5HkpJCY3O+VSqAmcgXx0mByx/Jgi8FW1+a1+ZMW+JjLRnDFCNBH3nUMUU/lPTHMI1U/8lX4RaNCPtz5+fYbLHqCsT9MJzorKpkTYl5bqjpUZ4UPj3G8Pf6nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=D5aJlq2F; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2232b12cd36so10349745ad.0
-        for <keyrings@vger.kernel.org>; Thu, 27 Feb 2025 03:33:15 -0800 (PST)
+	s=arc-20240116; t=1740674723; c=relaxed/simple;
+	bh=DABk5HGlcnVPtrWTwBOC3Bxja7Ae6t+CZeMoYMJ8cco=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FxGuxtabJgVRSBHfxVGQO25NkCsPWY22SSyDriGUsKytBL0ZCTqZip4bqiQfmGn5rtLxfohxmMp4c2dj26oYeP59MW7PdBq0HcuuUakBJ/5Xc73obUeYDQbNgpThFk/nemLIUGDeTAuRsFl8b+yk9bbpVu7yK0jrlmGr5S+Ey1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=fbhShm+I; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-6f6c90b51c3so10989587b3.2
+        for <keyrings@vger.kernel.org>; Thu, 27 Feb 2025 08:45:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1740655995; x=1741260795; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cg8yMwZ72Jlc0r5z1N3IiuaraHv4s6b2xThN5W01Djk=;
-        b=D5aJlq2F6R3GUVFt9YVYvhZSbEIyrGG1WMu63jw39i9UyiEW8h3xQDgfWN5Pycnn8P
-         beqrTO3UYTF8846iPQOltFhA1dkAD6wN6puK4jcojLYSt2ztSzGi9i2tx3dMkFy8F7Y8
-         3P9XUvlZfrALUIckJ3n71tffqsz1+ZFWZbAMasuiVZQ3Gy7K1ceewuk3Z8DOIU6Nricn
-         HKI1frdmWR289oCt0FpSOlm4NMj0HnV1FFhyvdPGR1hYfOyyT45CDAmLcC4VQhbRhJIZ
-         jJGWvxdM7sF3f+YSy4oeDBoDeCdtPGkLeFXR2pwUJ8mafwT3f8hiUkKPJhpxeUYviKDT
-         NCdg==
+        d=paul-moore.com; s=google; t=1740674721; x=1741279521; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+Y2OhTDfbYUPSi0n+YD3zUk4WKi/mnjXGnIuCw7tFnM=;
+        b=fbhShm+Iwr3hZAUE7me8u4Z3uS2OFwI6zCOTmpxtz9/K3qDYbqXIws+dxvKLXbtOA4
+         yjTAWdA4Uabbb9EnnRi3oNrzLELgBJjTmLMBQsH2tLZm8ecw+BdRIMYzpvWCcN5aQHhO
+         iwZgPRx5h3WNjSI3aL1cz2Y8qEL/JZwz+eODkbJPHm0/Er2zuMK9cln6QvcsBz68l10N
+         WZv22CcxK5tGIzLxLp/HtyTTy4eqSDGAXjUfRdmwgfch8P+1Po8MBVsLHzeSmAYm6YMe
+         sgznogmM8jhKJEgknAPGJ8L2YOrsjnG5prdJ+j/U+jvy8r7HI+kieWPFuFVD8mHCupcp
+         Hx7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740655995; x=1741260795;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cg8yMwZ72Jlc0r5z1N3IiuaraHv4s6b2xThN5W01Djk=;
-        b=VBYf+Lz25JJIyr+ph1Bzye3bnbnlPobzn/Ycej0lo1xO1SvEvUJzkNfumTsJIFraMW
-         QQQC0vABlEMlIS9MkiPakMHioKUo7XmhpGD3g1w8MekkDatliAt+n7Q4oeDTjR7XFUjr
-         64tNBYEOul3666VQrI3Ot/LyFYtQ5fFBU7qpkPcoETgdwLHVMrSYPokBxT8+PveeLLxf
-         4z16HH+QkR8UyT4t96VA+tpeUxKDBjTJJqx9po6xtsl2vkWUEX9cmEq245YIDObGbDDa
-         OA+llbARW/AJEgjlk5w/XD6ix2cqgd1vu3dHGh1ubuPZn3JKXyFSP46d8SpI6jbabMoz
-         ULcA==
-X-Forwarded-Encrypted: i=1; AJvYcCXe/A7bU258BsCAq5UJ5x76Uoj+TZHM8rIO1VTGtnWyFR97lGzk0gMt3edAfC2yVk4rWXbrSllb/w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwCgepRbcrmeiJUH6W++KZuoIhfxaPtCDAnMk3lCqwuvBaiQClU
-	4zfYoFZEUQ3/hvRrlf5DzKkC3L/EGFYVSRjLdg6yStVCWNFYv2Ths7Luc5RRF3E=
-X-Gm-Gg: ASbGncustQ9dZASkUonlnJX5ENln0DsCBimJVBh/ueMPdcvsqlgMkm0SEzqP3835hCk
-	trZ28p+ucjXkTfczSyXYfOVmbPZNnjw37BJRyN2vuYKxA+m9br9d9gOgEmewX7fsjwIgmEbH6kk
-	+zy2v/d1ZrESe2TJj7yv+Wbl2w4LpLYcdnmMai/LFAYLwJGcM5BWSciyLxExWs+JteJXZUA5vNo
-	MfIDbNLNqcJja81NwHiZkikdpItFype0aMa9ZK+ugA3HzP+fdLU0b8uBqYE3gwHr6hwifYs3+bs
-	N8CVtuHXJooZsQDDmb7exhBsnc5E
-X-Google-Smtp-Source: AGHT+IG4VU2x6YDtNodsc0R4UfSHlwxikIm91sBEmZvthobIJS1xQjZsA9eqGdyUlDUdvBKd735Xuw==
-X-Received: by 2002:a05:6a00:4614:b0:732:13fd:3f1f with SMTP id d2e1a72fcca58-7348be7eeb2mr12060717b3a.24.1740655995332;
-        Thu, 27 Feb 2025 03:33:15 -0800 (PST)
-Received: from sumit-X1.. ([223.178.212.145])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7349fe48858sm1343733b3a.51.2025.02.27.03.33.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Feb 2025 03:33:14 -0800 (PST)
-From: Sumit Garg <sumit.garg@linaro.org>
-To: akpm@linux-foundation.org,
-	herbert@gondor.apana.org.au,
-	jarkko@kernel.org,
-	jens.wiklander@linaro.org
-Cc: sumit.garg@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-integrity@vger.kernel.org,
-	keyrings@vger.kernel.org,
-	op-tee@lists.trustedfirmware.org,
-	linux-crypto@vger.kernel.org,
-	Sumit Garg <sumit.garg@linaro.org>
-Subject: [PATCH] MAINTAINERS: .mailmap: Update Sumit Garg's email address
-Date: Thu, 27 Feb 2025 17:02:28 +0530
-Message-ID: <20250227113228.1809449-1-sumit.garg@linaro.org>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1740674721; x=1741279521;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+Y2OhTDfbYUPSi0n+YD3zUk4WKi/mnjXGnIuCw7tFnM=;
+        b=sWOf2E7l5A9qcaNFfppNvbdDa1OtYSgHwyTawcnAfckEt6s59ye0yr6UMrJ3Jj0f5B
+         H3hwpfAOxwmNGJGa7cJcZdlbMQ63Jf2gEcsli50wKoaC+shtTW63FWmksC+SEtRuAqZE
+         71LcKTz2bGj0WADumOcIpBIX0nO//uirDaFe4Zvsopkdr7B6NhEqqjQynbRT2a7K/yY3
+         oWa4t4VM/3EZ1AHN+SOL59t3Ts/ML/BhOxRFwqhoKIMNWO12ntgjqov8kAQ8Gl5cE6nl
+         wYh8L4Lib+gJ0iMzkPPNnht+yAeZLUFv3CjwSvj5BR8vlRrCvjCKZJx5s5w/Sageb32v
+         K6OQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVucgaN/49QujHI5KQ2Z7SUGiPza1O8AOS0qoO5dUWB9+qWy7uDCnpAyTaFD8fsp0Uyn8ZhqV3Sjw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyeq2h3oOlP8lxhaoUnz1zqs9HSv6JDCZe8FQluy4xX6jOQceYx
+	wTgQBcmEneaz1qThr09562XfldH6FnVF7OFR62/PiQ1rx8gS27rp5Z8DgUsD6t1rMC7hV3/HRSa
+	mrQ2D6jYVvbL1uA2+cs6xof88OObLfu5MVkyn
+X-Gm-Gg: ASbGnctaayruzsLUxlK+K0t/vWB14+Ipn/rMcvmyX6x4AbZgCboHJR62WTxoLzOvIHp
+	+B3yAYotRO8D8dyHR6Kiq2PrzTnfttSqopGxZ01U1UoYPLPK9CfKZfGyvmSks1FmzXLvCUlS+IX
+	1bQ4YR9wQ=
+X-Google-Smtp-Source: AGHT+IFstoV34sDpQuH0KrhKiFYaxdU0llmPTWK3akgTdx0dj5ICycOhcMBiHKd218R+yYYVWSp1yVZs1fdJpBpbIKU=
+X-Received: by 2002:a05:690c:a8d:b0:6fd:4441:3daf with SMTP id
+ 00721157ae682-6fd4a14d07dmr1458727b3.30.1740674720751; Thu, 27 Feb 2025
+ 08:45:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250123-sysctl_const-pcmoore-v1-1-d9f918dbb0be@suse.com>
+ <CAHC9VhQpkyqaJsxj9_d4d6Vpc+FVbSnH_HeAFAVEdj0trGCh1g@mail.gmail.com> <D8362ZV7Y4YI.PJTF4OC88RQK@suse.com>
+In-Reply-To: <D8362ZV7Y4YI.PJTF4OC88RQK@suse.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Thu, 27 Feb 2025 11:45:09 -0500
+X-Gm-Features: AQ5f1Joe4xg5_zcs96-PQy9e8tNorgl6hzcdkI4Dodr8p0sDbqo9j3WaMuiILYo
+Message-ID: <CAHC9VhQfC3kXt39qBS3NEHtGNqNhD1SpJ103_kUtOCi0HTMDHg@mail.gmail.com>
+Subject: Re: [PATCH] security: keys: Make sysctl table const
+To: =?UTF-8?Q?Ricardo_B=2E_Marli=C3=A8re?= <rbm@suse.com>
+Cc: "Ricardo B. Marliere" <ricardo@marliere.net>, David Howells <dhowells@redhat.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Update Sumit Garg's email address to @kernel.org.
+On Thu, Feb 27, 2025 at 5:47=E2=80=AFAM Ricardo B. Marli=C3=A8re <rbm@suse.=
+com> wrote:
+> On Wed Feb 26, 2025 at 9:21 PM -03, Paul Moore wrote:
+> > On Thu, Jan 23, 2025 at 2:50=E2=80=AFPM Ricardo B. Marliere
+> > <ricardo@marliere.net> wrote:
+> >>
+> >> Since commit 7abc9b53bd51 ("sysctl: allow registration of const struct
+> >> ctl_table"), the sysctl registration API allows for struct ctl_table t=
+o be
+> >> in read-only memory. Move key_sysctls to be declared at build time, in=
+stead
+> >> of having to be dynamically allocated at boot time.
+> >>
+> >> Cc: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
+> >> Suggested-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
+> >> Signed-off-by: Ricardo B. Marliere <rbm@suse.com>
+> >> ---
+> >>  security/keys/sysctl.c | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > Looks fine to me.  David or Jarkko, this looks like something for the
+> > keys tree, yes?
+> >
+> > Reviewed-by: Paul Moore <paul@paul-moore.com>
+>
+> Thank you for the review, but I believe this has been done here:
+>
+> https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/co=
+mmit/?id=3D1751f872cc97f992ed5c4c72c55588db1f0021e1
 
-Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
----
- .mailmap    | 1 +
- MAINTAINERS | 6 +++---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+Even better :)  Thanks for the update Ricardo.
 
-diff --git a/.mailmap b/.mailmap
-index a897c16d3bae..4a93909286d8 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -689,6 +689,7 @@ Subbaraman Narayanamurthy <quic_subbaram@quicinc.com> <subbaram@codeaurora.org>
- Subhash Jadavani <subhashj@codeaurora.org>
- Sudarshan Rajagopalan <quic_sudaraja@quicinc.com> <sudaraja@codeaurora.org>
- Sudeep Holla <sudeep.holla@arm.com> Sudeep KarkadaNagesha <sudeep.karkadanagesha@arm.com>
-+Sumit Garg <sumit.garg@kernel.org> <sumit.garg@linaro.org>
- Sumit Semwal <sumit.semwal@ti.com>
- Surabhi Vishnoi <quic_svishnoi@quicinc.com> <svishnoi@codeaurora.org>
- Sven Eckelmann <sven@narfation.org> <seckelmann@datto.com>
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1b0cc181db74..616f859c5f92 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12861,7 +12861,7 @@ F:	include/keys/trusted_dcp.h
- F:	security/keys/trusted-keys/trusted_dcp.c
- 
- KEYS-TRUSTED-TEE
--M:	Sumit Garg <sumit.garg@linaro.org>
-+M:	Sumit Garg <sumit.garg@kernel.org>
- L:	linux-integrity@vger.kernel.org
- L:	keyrings@vger.kernel.org
- S:	Supported
-@@ -17661,7 +17661,7 @@ F:	Documentation/ABI/testing/sysfs-bus-optee-devices
- F:	drivers/tee/optee/
- 
- OP-TEE RANDOM NUMBER GENERATOR (RNG) DRIVER
--M:	Sumit Garg <sumit.garg@linaro.org>
-+M:	Sumit Garg <sumit.garg@kernel.org>
- L:	op-tee@lists.trustedfirmware.org
- S:	Maintained
- F:	drivers/char/hw_random/optee-rng.c
-@@ -23272,7 +23272,7 @@ F:	include/media/i2c/tw9910.h
- 
- TEE SUBSYSTEM
- M:	Jens Wiklander <jens.wiklander@linaro.org>
--R:	Sumit Garg <sumit.garg@linaro.org>
-+R:	Sumit Garg <sumit.garg@kernel.org>
- L:	op-tee@lists.trustedfirmware.org
- S:	Maintained
- F:	Documentation/ABI/testing/sysfs-class-tee
--- 
-2.43.0
-
+--=20
+paul-moore.com
 
