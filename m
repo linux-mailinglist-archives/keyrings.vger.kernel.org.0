@@ -1,153 +1,151 @@
-Return-Path: <keyrings+bounces-2412-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2413-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A160BA47ABA
-	for <lists+keyrings@lfdr.de>; Thu, 27 Feb 2025 11:48:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 532F8A47C4A
+	for <lists+keyrings@lfdr.de>; Thu, 27 Feb 2025 12:33:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 640641890C65
-	for <lists+keyrings@lfdr.de>; Thu, 27 Feb 2025 10:48:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AE24166EBF
+	for <lists+keyrings@lfdr.de>; Thu, 27 Feb 2025 11:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA8A22AE7B;
-	Thu, 27 Feb 2025 10:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26831DB122;
+	Thu, 27 Feb 2025 11:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="EfBCFwJP"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D5aJlq2F"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A008229B3D
-	for <keyrings@vger.kernel.org>; Thu, 27 Feb 2025 10:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185282253A8
+	for <keyrings@vger.kernel.org>; Thu, 27 Feb 2025 11:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740653267; cv=none; b=BZr8ixO+XHFLcbvf2/rLUhfdDDmVly7faPKAuESYyiws0D+onLg2VtOX2/EZDwkKFdf8ajub2Vz9IWJwVZYgWq8JMoz1vvqlT3/zvB4QhrgpBmQXpcxzpW6CB+Nw42El8hgMloBfQml+EJQ6kTkP+MJXOfa5FqW+P4bpM9p40Qw=
+	t=1740655998; cv=none; b=fbMnKGeJL+nvIDJ7M/ETKvprf/sotmgZRz7nE55/z+vOq5DeRw3ESjwF96yMcweZAK6zuBa25Thdp1hmqO5c1eVEVL4kI1HNk43CJCy6FlYXwxPTsl7nvFtfIgG4plf61VE2Wb2hW8wK8/3s9b4AHVTJyWPTf9CqPNXiVAARaZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740653267; c=relaxed/simple;
-	bh=voqDI+sR3cgQLpRJNz2L7lClXa4i8MTgaVBRLvybSdM=;
-	h=From:Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:
-	 References:In-Reply-To; b=VWY/yoeFubmmrNguzEpRJLxrkdXiSRwCNVjt0uf7ftpkCdrNbc4iDJ26cTWEglUo07V/QlFpCqn+wD55DQ0uNFakJ18nkENp2Rw964BUkb7dNMp3u4h50vFcwEoIIB0tbwYU4uuTEpkV018mzAQS2NAOI1YNI8/ZVMe1Lql0vAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=EfBCFwJP; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-aaf0f1adef8so141587766b.3
-        for <keyrings@vger.kernel.org>; Thu, 27 Feb 2025 02:47:45 -0800 (PST)
+	s=arc-20240116; t=1740655998; c=relaxed/simple;
+	bh=LO2N9vciU7HB99mtlW3h5ysZsPTzOm1mscKvDNw90XU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GwnwyaNiRzi+i8K9gP+YX1xSFXTk4gHphWkV0xKR06oj96J4zDn5HkpJCY3O+VSqAmcgXx0mByx/Jgi8FW1+a1+ZMW+JjLRnDFCNBH3nUMUU/lPTHMI1U/8lX4RaNCPtz5+fYbLHqCsT9MJzorKpkTYl5bqjpUZ4UPj3G8Pf6nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=D5aJlq2F; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2232b12cd36so10349745ad.0
+        for <keyrings@vger.kernel.org>; Thu, 27 Feb 2025 03:33:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1740653264; x=1741258064; darn=vger.kernel.org;
-        h=in-reply-to:references:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hwYrgbQrysBcAd8WRw0jB/UCnkIW4vR+8ZOYC92wVf4=;
-        b=EfBCFwJPvX3mJBaI1iMIG6qRcCc/ZE0MBX6+7rU2JyA55KjwnWRARWDOtWMpATTJti
-         9qUmo44uX1c6pWtCIbFfYfLsskm0Z+OJJTDPwaPVPGrCOUs4Ug+GbrP5n5QpXGkoXfmc
-         f0tJxpdBmvPQ2TSmKxKhrrIIb5LOWDH6aVbCK7qzHu8fTNodSJbHz+U6mBIGWyOsE0FO
-         l216f4svoJhdStviEPpjKgQJbsScHiJXTljrahFMHQ/CJvEbnyDPcsXn9aLsiV4tatLT
-         MtBnRnVkSvqtwK8VLafHNFU5s4Wo3lJnyw66a/1hXQWEtc//lnIdWMBp5un8H2t58QMJ
-         2ZnA==
+        d=linaro.org; s=google; t=1740655995; x=1741260795; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cg8yMwZ72Jlc0r5z1N3IiuaraHv4s6b2xThN5W01Djk=;
+        b=D5aJlq2F6R3GUVFt9YVYvhZSbEIyrGG1WMu63jw39i9UyiEW8h3xQDgfWN5Pycnn8P
+         beqrTO3UYTF8846iPQOltFhA1dkAD6wN6puK4jcojLYSt2ztSzGi9i2tx3dMkFy8F7Y8
+         3P9XUvlZfrALUIckJ3n71tffqsz1+ZFWZbAMasuiVZQ3Gy7K1ceewuk3Z8DOIU6Nricn
+         HKI1frdmWR289oCt0FpSOlm4NMj0HnV1FFhyvdPGR1hYfOyyT45CDAmLcC4VQhbRhJIZ
+         jJGWvxdM7sF3f+YSy4oeDBoDeCdtPGkLeFXR2pwUJ8mafwT3f8hiUkKPJhpxeUYviKDT
+         NCdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740653264; x=1741258064;
-        h=in-reply-to:references:to:cc:subject:message-id:date
-         :content-transfer-encoding:mime-version:from:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hwYrgbQrysBcAd8WRw0jB/UCnkIW4vR+8ZOYC92wVf4=;
-        b=xJZOjPllWP/qf9JWLU1aRa0GCaZuzF1Nf8+05y9Q7gUMyHwRSOxQ+CvUdA0u+8mAsB
-         pKt9n9c17cGOQUcvxqi9w2UCpRSiuSaNW2jbC1Wff0vMd0SbiJpEKVPi59s5JuXvSNYW
-         A8e0F9Jiv9fw8sim8uHzSDEISZ83U/h6WlvTRoCPUL7u56OU6okI69NSzRwWfo1y+Khe
-         K1mCVlR2UlN2W2vW0yyW6lJPYo16gP5kIWT40EG6tTPcsyBI6VZaKmyAeJmSpxkupNy6
-         SYBLCy4NZlF9YDGrI7xQlPi1DIK46bmTNG5lXutJ0n54CXeTyLyhdIfKnrvgqAeZ9hHC
-         0aOw==
-X-Forwarded-Encrypted: i=1; AJvYcCWZBrYEa6DIMXL5rZCb6NhvoNTIqylb8/2XlMnTSDc2R289285gikiyDwYxLEatdU3+vBLh6qEYGg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTv0ABTdymkWHeVp2UkU8fDH9WBsyi9ooRp8EdJoPavBdcxI42
-	LvhKQFkxjLcN+B3+FqYqLHTXDNg/3VkzRqZBoPb1S1AHTZIeSXreVgghSnXlp0s=
-X-Gm-Gg: ASbGncsEW13ZtHOWD/SiQSk8UPN1beEYBT/MGAAfGLqo92gdQ4hZ8+WQckFl85wO9uM
-	7BdqnBdNqk2TD5Bf4JZIk+QnfyYo5GiaZdWfphG7F7s3KNslu2whNqsZTOC1f+KbP+3dwVlf7xD
-	AV3Ts54FDbmUq8qDBlFM4rq00StCylILk9GB4ZwCXPDvvi6pnowH4WU2r6F+QYGT0EoIqF6TTeb
-	Vil3iEKUsUywokLRtuiHfg16E2CtpSFDe+Z1B3s+/YuAw9cP+TCPGG058iQLiyXpgAzx/wQc3J/
-	9bPpLqCHhXqiX5Y=
-X-Google-Smtp-Source: AGHT+IH/QdSWLijhlmKS6cpPQOvDmaBBqLi3TtTAJFjDo0/KOlaCmiQJXCXK3w63xzxEUvqFh2dyGw==
-X-Received: by 2002:a17:907:770f:b0:abe:e91e:b7d9 with SMTP id a640c23a62f3a-abeeed10d3bmr882696466b.1.1740653262374;
-        Thu, 27 Feb 2025 02:47:42 -0800 (PST)
-Received: from localhost ([179.228.215.131])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-734a00400absm1199194b3a.151.2025.02.27.02.47.41
+        d=1e100.net; s=20230601; t=1740655995; x=1741260795;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cg8yMwZ72Jlc0r5z1N3IiuaraHv4s6b2xThN5W01Djk=;
+        b=VBYf+Lz25JJIyr+ph1Bzye3bnbnlPobzn/Ycej0lo1xO1SvEvUJzkNfumTsJIFraMW
+         QQQC0vABlEMlIS9MkiPakMHioKUo7XmhpGD3g1w8MekkDatliAt+n7Q4oeDTjR7XFUjr
+         64tNBYEOul3666VQrI3Ot/LyFYtQ5fFBU7qpkPcoETgdwLHVMrSYPokBxT8+PveeLLxf
+         4z16HH+QkR8UyT4t96VA+tpeUxKDBjTJJqx9po6xtsl2vkWUEX9cmEq245YIDObGbDDa
+         OA+llbARW/AJEgjlk5w/XD6ix2cqgd1vu3dHGh1ubuPZn3JKXyFSP46d8SpI6jbabMoz
+         ULcA==
+X-Forwarded-Encrypted: i=1; AJvYcCXe/A7bU258BsCAq5UJ5x76Uoj+TZHM8rIO1VTGtnWyFR97lGzk0gMt3edAfC2yVk4rWXbrSllb/w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCgepRbcrmeiJUH6W++KZuoIhfxaPtCDAnMk3lCqwuvBaiQClU
+	4zfYoFZEUQ3/hvRrlf5DzKkC3L/EGFYVSRjLdg6yStVCWNFYv2Ths7Luc5RRF3E=
+X-Gm-Gg: ASbGncustQ9dZASkUonlnJX5ENln0DsCBimJVBh/ueMPdcvsqlgMkm0SEzqP3835hCk
+	trZ28p+ucjXkTfczSyXYfOVmbPZNnjw37BJRyN2vuYKxA+m9br9d9gOgEmewX7fsjwIgmEbH6kk
+	+zy2v/d1ZrESe2TJj7yv+Wbl2w4LpLYcdnmMai/LFAYLwJGcM5BWSciyLxExWs+JteJXZUA5vNo
+	MfIDbNLNqcJja81NwHiZkikdpItFype0aMa9ZK+ugA3HzP+fdLU0b8uBqYE3gwHr6hwifYs3+bs
+	N8CVtuHXJooZsQDDmb7exhBsnc5E
+X-Google-Smtp-Source: AGHT+IG4VU2x6YDtNodsc0R4UfSHlwxikIm91sBEmZvthobIJS1xQjZsA9eqGdyUlDUdvBKd735Xuw==
+X-Received: by 2002:a05:6a00:4614:b0:732:13fd:3f1f with SMTP id d2e1a72fcca58-7348be7eeb2mr12060717b3a.24.1740655995332;
+        Thu, 27 Feb 2025 03:33:15 -0800 (PST)
+Received: from sumit-X1.. ([223.178.212.145])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7349fe48858sm1343733b3a.51.2025.02.27.03.33.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Feb 2025 02:47:41 -0800 (PST)
-From: =?utf-8?B?UmljYXJkbyBCLiBNYXJsacOocmU=?= <rbm@suse.com>
+        Thu, 27 Feb 2025 03:33:14 -0800 (PST)
+From: Sumit Garg <sumit.garg@linaro.org>
+To: akpm@linux-foundation.org,
+	herbert@gondor.apana.org.au,
+	jarkko@kernel.org,
+	jens.wiklander@linaro.org
+Cc: sumit.garg@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-integrity@vger.kernel.org,
+	keyrings@vger.kernel.org,
+	op-tee@lists.trustedfirmware.org,
+	linux-crypto@vger.kernel.org,
+	Sumit Garg <sumit.garg@linaro.org>
+Subject: [PATCH] MAINTAINERS: .mailmap: Update Sumit Garg's email address
+Date: Thu, 27 Feb 2025 17:02:28 +0530
+Message-ID: <20250227113228.1809449-1-sumit.garg@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 27 Feb 2025 07:47:38 -0300
-Message-Id: <D8362ZV7Y4YI.PJTF4OC88RQK@suse.com>
-Subject: Re: [PATCH] security: keys: Make sysctl table const
-Cc: "James Morris" <jmorris@namei.org>, "Serge E. Hallyn"
- <serge@hallyn.com>, <keyrings@vger.kernel.org>,
- <linux-security-module@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-To: "Paul Moore" <paul@paul-moore.com>, "Ricardo B. Marliere"
- <ricardo@marliere.net>, "David Howells" <dhowells@redhat.com>, "Jarkko
- Sakkinen" <jarkko@kernel.org>
-X-Mailer: aerc 0.20.1
-References: <20250123-sysctl_const-pcmoore-v1-1-d9f918dbb0be@suse.com>
- <CAHC9VhQpkyqaJsxj9_d4d6Vpc+FVbSnH_HeAFAVEdj0trGCh1g@mail.gmail.com>
-In-Reply-To: <CAHC9VhQpkyqaJsxj9_d4d6Vpc+FVbSnH_HeAFAVEdj0trGCh1g@mail.gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Paul,
+Update Sumit Garg's email address to @kernel.org.
 
-On Wed Feb 26, 2025 at 9:21 PM -03, Paul Moore wrote:
-> On Thu, Jan 23, 2025 at 2:50=E2=80=AFPM Ricardo B. Marliere
-> <ricardo@marliere.net> wrote:
->>
->> Since commit 7abc9b53bd51 ("sysctl: allow registration of const struct
->> ctl_table"), the sysctl registration API allows for struct ctl_table to =
-be
->> in read-only memory. Move key_sysctls to be declared at build time, inst=
-ead
->> of having to be dynamically allocated at boot time.
->>
->> Cc: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
->> Suggested-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
->> Signed-off-by: Ricardo B. Marliere <rbm@suse.com>
->> ---
->>  security/keys/sysctl.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> Looks fine to me.  David or Jarkko, this looks like something for the
-> keys tree, yes?
->
-> Reviewed-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+---
+ .mailmap    | 1 +
+ MAINTAINERS | 6 +++---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-Thank you for the review, but I believe this has been done here:
-
-https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
-it/?id=3D1751f872cc97f992ed5c4c72c55588db1f0021e1
-
->
->> diff --git a/security/keys/sysctl.c b/security/keys/sysctl.c
->> index 91f000eef3ad82370250e5238d9c9c80757aab61..cde08c478f3272081304e6db=
-34e36b64ce0d321a 100644
->> --- a/security/keys/sysctl.c
->> +++ b/security/keys/sysctl.c
->> @@ -9,7 +9,7 @@
->>  #include <linux/sysctl.h>
->>  #include "internal.h"
->>
->> -static struct ctl_table key_sysctls[] =3D {
->> +static const struct ctl_table key_sysctls[] =3D {
->>         {
->>                 .procname =3D "maxkeys",
->>                 .data =3D &key_quota_maxkeys,
->>
->> ---
->> base-commit: 714d87c90a766e6917f7d69f618b864d350f09d3
->> change-id: 20250123-sysctl_const-pcmoore-fa14389b8329
->>
->> Best regards,
->> --
->> Ricardo B. Marliere <rbm@suse.com>
+diff --git a/.mailmap b/.mailmap
+index a897c16d3bae..4a93909286d8 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -689,6 +689,7 @@ Subbaraman Narayanamurthy <quic_subbaram@quicinc.com> <subbaram@codeaurora.org>
+ Subhash Jadavani <subhashj@codeaurora.org>
+ Sudarshan Rajagopalan <quic_sudaraja@quicinc.com> <sudaraja@codeaurora.org>
+ Sudeep Holla <sudeep.holla@arm.com> Sudeep KarkadaNagesha <sudeep.karkadanagesha@arm.com>
++Sumit Garg <sumit.garg@kernel.org> <sumit.garg@linaro.org>
+ Sumit Semwal <sumit.semwal@ti.com>
+ Surabhi Vishnoi <quic_svishnoi@quicinc.com> <svishnoi@codeaurora.org>
+ Sven Eckelmann <sven@narfation.org> <seckelmann@datto.com>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1b0cc181db74..616f859c5f92 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -12861,7 +12861,7 @@ F:	include/keys/trusted_dcp.h
+ F:	security/keys/trusted-keys/trusted_dcp.c
+ 
+ KEYS-TRUSTED-TEE
+-M:	Sumit Garg <sumit.garg@linaro.org>
++M:	Sumit Garg <sumit.garg@kernel.org>
+ L:	linux-integrity@vger.kernel.org
+ L:	keyrings@vger.kernel.org
+ S:	Supported
+@@ -17661,7 +17661,7 @@ F:	Documentation/ABI/testing/sysfs-bus-optee-devices
+ F:	drivers/tee/optee/
+ 
+ OP-TEE RANDOM NUMBER GENERATOR (RNG) DRIVER
+-M:	Sumit Garg <sumit.garg@linaro.org>
++M:	Sumit Garg <sumit.garg@kernel.org>
+ L:	op-tee@lists.trustedfirmware.org
+ S:	Maintained
+ F:	drivers/char/hw_random/optee-rng.c
+@@ -23272,7 +23272,7 @@ F:	include/media/i2c/tw9910.h
+ 
+ TEE SUBSYSTEM
+ M:	Jens Wiklander <jens.wiklander@linaro.org>
+-R:	Sumit Garg <sumit.garg@linaro.org>
++R:	Sumit Garg <sumit.garg@kernel.org>
+ L:	op-tee@lists.trustedfirmware.org
+ S:	Maintained
+ F:	Documentation/ABI/testing/sysfs-class-tee
+-- 
+2.43.0
 
 
