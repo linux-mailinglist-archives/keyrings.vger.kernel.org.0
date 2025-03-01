@@ -1,62 +1,79 @@
-Return-Path: <keyrings+bounces-2422-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2423-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E23B7A4A7C9
-	for <lists+keyrings@lfdr.de>; Sat,  1 Mar 2025 03:01:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3F5A4A7EB
+	for <lists+keyrings@lfdr.de>; Sat,  1 Mar 2025 03:19:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 892B73B9021
-	for <lists+keyrings@lfdr.de>; Sat,  1 Mar 2025 02:00:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7B19163E42
+	for <lists+keyrings@lfdr.de>; Sat,  1 Mar 2025 02:19:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836B62E630;
-	Sat,  1 Mar 2025 02:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545C11DA5F;
+	Sat,  1 Mar 2025 02:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XxAIsB3X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lJtj7E+Z"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537E122087;
-	Sat,  1 Mar 2025 02:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1618B23C9;
+	Sat,  1 Mar 2025 02:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740794461; cv=none; b=eA4lFGWBlV4lVQRM+VNHbFhuzCElMo+MFmReeqj3UF6+6WCq/xrZHRhlErH7oyJFyjho3ejE96ep7TGfm9Kqxn00CTLN4b589XTh9YFUFER3Hz73ftMgrmeaL22VCjJlzTdHz7bsrUzGN8iqW4Ks45UWS+kQz4pXnRl8ovggs7Y=
+	t=1740795560; cv=none; b=Pn5i6YivB0B/o4xAE2eNNA4xgCkuUW25iTHD+/IVY8SKZDjTDQ8aBWoKk+WAnJyW5l/uUcLEDuBnRXHPL87dCchL7FcKOeK/6OFK1YPdWhspuD9EMe1Ud7YO5Eqi2iUML3G8wlW9w3PX4RxK+OAjkZBYduaE8i2GxW3isua7cvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740794461; c=relaxed/simple;
-	bh=gGs2GfVRCLLjRlbngighgDlPCdV29Jl8gnNktBervmk=;
+	s=arc-20240116; t=1740795560; c=relaxed/simple;
+	bh=cP5LLog8QYA15qY6G6z2j9WolFBDsu0s1MuFuS0Od1U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lF5MC+VfEExY9pxw9KjXxvZQ70BuWw9t4jij97FNumMx308iGVo71icWRT88zizqkoQDCyelGTuncrKm5BlMW0ug3mgdfzIV+JsSATwC6llYljS6lZ4kD3ik0AqUHY8J8om/1CDn/bXrOpDiQM4izDuz4RZvpF56cdZFfvql2lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XxAIsB3X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8EBC4CED6;
-	Sat,  1 Mar 2025 02:01:00 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=AbeloH+ly+664/H0SJXBUmnGKrbDWJoYh8ANSuCry2MEKfC8b5eoIdbkfKEo8seuUHKm1V3om2aZ9krMbT/yX5WE7WObvU8dNdt+qV/ZVFG/Nk3oivREYkZpxU/l6QeaugM3ZV2JbG3/kCURYZSD8YUcR4e+kTTCHORRzD8IPfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lJtj7E+Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 070F4C4CED6;
+	Sat,  1 Mar 2025 02:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740794460;
-	bh=gGs2GfVRCLLjRlbngighgDlPCdV29Jl8gnNktBervmk=;
+	s=k20201202; t=1740795559;
+	bh=cP5LLog8QYA15qY6G6z2j9WolFBDsu0s1MuFuS0Od1U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XxAIsB3XfD6rhkCmTjZEVcxoUktxe1oqCjCC8NopYvACp/0VFAB2HOyaX29YIwfgb
-	 JHxDHAWsZfG3s5vEVBl86aigMJcIajmdmi94M6iiyaKa9zjoYMTpmuNZ8qvzeW/yEI
-	 4lFQmiNvHmx49kyqpfNhcVthStN2vID05fwXNzCRvfBZQB2Zg3EEY+a+yyVxJNtd8a
-	 3dnPDNNpTi4EQm8sGsz7Zi3D4ek0UOn0t9YUHhGEQNFWrljU/savARY2GtxWuVQo//
-	 qxB2lStRArYdQve7Ls+rJSMb2//f4PEa2GdLlSJOwc8mPPljUbtBE+J5UxhZpOTArr
-	 7FzjaZW2fr/WQ==
-Date: Sat, 1 Mar 2025 04:00:57 +0200
+	b=lJtj7E+Zts7tOwSbKzDGEguy9UOLMYZuKzFeX2/0wKbthGoAS2N3WemoJepw3toZW
+	 Ghhjd1rdocrVUN4Ege5O3soyBGLjJIKxw3fVYs39er7ZuhONeFTbd7Pw2iCGOP4+QM
+	 jWhc9aLCWc0l3tCEGNC0LaB28WMNOUOkr1rReITa4rblDx5gqlEubfwxybJvIcDPuf
+	 38gBeOvXLOBNPi/RSeUabN20wcIfjZNX+li6VypxtDUHFSwZNlvGGJ0Z9c3Zai2AwZ
+	 f2HnXVop7TycEbhDPALZUzUHM+YcLkP5ZBsO8nZwRB1ewctHThk6Dh3TMOs4kWnwhq
+	 10AgW13Bu+iqg==
+Date: Sat, 1 Mar 2025 04:19:15 +0200
 From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Paul Moore <paul@paul-moore.com>
-Cc: Ricardo =?iso-8859-1?Q?B=2E_Marli=E8re?= <rbm@suse.com>,
-	"Ricardo B. Marliere" <ricardo@marliere.net>,
+To: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Eric Snowberg <eric.snowberg@oracle.com>,
+	Paul Moore <paul@paul-moore.com>,
 	David Howells <dhowells@redhat.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>, keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Subject: Re: [PATCH] security: keys: Make sysctl table const
-Message-ID: <Z8JqWQ-oxyJy0goW@kernel.org>
-References: <20250123-sysctl_const-pcmoore-v1-1-d9f918dbb0be@suse.com>
- <CAHC9VhQpkyqaJsxj9_d4d6Vpc+FVbSnH_HeAFAVEdj0trGCh1g@mail.gmail.com>
- <D8362ZV7Y4YI.PJTF4OC88RQK@suse.com>
- <CAHC9VhQfC3kXt39qBS3NEHtGNqNhD1SpJ103_kUtOCi0HTMDHg@mail.gmail.com>
+	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>,
+	David Woodhouse <dwmw2@infradead.org>,
+	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	=?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+	"casey@schaufler-ca.com" <casey@schaufler-ca.com>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	"ebiggers@kernel.org" <ebiggers@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
+	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>,
+	"linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>
+Subject: Re: [RFC PATCH v3 00/13] Clavis LSM
+Message-ID: <Z8Juo1NESOzK2j8s@kernel.org>
+References: <20241017155516.2582369-1-eric.snowberg@oracle.com>
+ <c490397315c2704e9ef65c8ad3fefedb239f1997.camel@linux.ibm.com>
+ <72F52F71-C7F3-402D-8441-3D636A093FE8@oracle.com>
+ <CAHC9VhRHEw5c+drC=aX4xTqWoQJJZ+qkJ7aHUT5dcu+Q5f7BqA@mail.gmail.com>
+ <CAHC9VhSJpnaAK1efgs1Uk0Tr3CaDNR1LiDU-t_yDKDQG6J-74Q@mail.gmail.com>
+ <E20C617B-EA01-4E69-B5E2-31E9AAD6F7A2@oracle.com>
+ <506e8e58e5236a4525b18d84bafa9aae80b24452.camel@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -66,38 +83,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHC9VhQfC3kXt39qBS3NEHtGNqNhD1SpJ103_kUtOCi0HTMDHg@mail.gmail.com>
+In-Reply-To: <506e8e58e5236a4525b18d84bafa9aae80b24452.camel@linux.ibm.com>
 
-On Thu, Feb 27, 2025 at 11:45:09AM -0500, Paul Moore wrote:
-> On Thu, Feb 27, 2025 at 5:47 AM Ricardo B. Marlière <rbm@suse.com> wrote:
-> > On Wed Feb 26, 2025 at 9:21 PM -03, Paul Moore wrote:
-> > > On Thu, Jan 23, 2025 at 2:50 PM Ricardo B. Marliere
-> > > <ricardo@marliere.net> wrote:
-> > >>
-> > >> Since commit 7abc9b53bd51 ("sysctl: allow registration of const struct
-> > >> ctl_table"), the sysctl registration API allows for struct ctl_table to be
-> > >> in read-only memory. Move key_sysctls to be declared at build time, instead
-> > >> of having to be dynamically allocated at boot time.
-> > >>
-> > >> Cc: Thomas Weißschuh <linux@weissschuh.net>
-> > >> Suggested-by: Thomas Weißschuh <linux@weissschuh.net>
-> > >> Signed-off-by: Ricardo B. Marliere <rbm@suse.com>
-> > >> ---
-> > >>  security/keys/sysctl.c | 2 +-
-> > >>  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > Looks fine to me.  David or Jarkko, this looks like something for the
-> > > keys tree, yes?
-> > >
-> > > Reviewed-by: Paul Moore <paul@paul-moore.com>
-> >
-> > Thank you for the review, but I believe this has been done here:
-> >
-> > https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=1751f872cc97f992ed5c4c72c55588db1f0021e1
+On Thu, Feb 27, 2025 at 03:41:18PM -0500, Mimi Zohar wrote:
+> On Mon, 2025-01-06 at 17:15 +0000, Eric Snowberg wrote:
+> > 
+> > > On Jan 5, 2025, at 8:40 PM, Paul Moore <paul@paul-moore.com> wrote:
+> > > 
+> > > On Fri, Jan 3, 2025 at 11:48 PM Paul Moore <paul@paul-moore.com> wrote:
+> > > > 
+> > > > Regardless, back to Clavis ... reading quickly through the cover
+> > > > letter again, I do somewhat wonder if this isn't better integrated
+> > > > into the keyring proper; have you talked to both David and Jarkko
+> > > > about this?
+> > > 
+> > > I realize I should probably expand on my thinking a bit, especially
+> > > since my comment a while regarding LSMs dedicated to enforcing access
+> > > control on keys is what was given as a reason for making Clavis a LSM.
+> > > 
+> > > I still stand by my comment from over a year ago that I see no reason
+> > > why we couldn't support a LSM that enforces access controls on
+> > > keyrings/keys.  What gives me pause with the Clavis LSM is that so
+> > > much of Clavis is resident in the keyrings themselves, e.g. Clavis
+> > > policy ACLs and authorization keys, that it really feels like it
+> > > should be part of the keys subsystem and not a LSM.  Yes, existing
+> > > LSMs do have LSM specific data that resides outside of the LSM and in
+> > > an object's subsystem, but that is usually limited to security
+> > > identifiers and similar things, not the LSM's security policy.
 > 
-> Even better :)  Thanks for the update Ricardo.
+> Hi Jarkko, David,
+> 
+> Both Paul's and my main concerns with this patch set is storing policy in the
+> keyring.  We would appreciate your chiming in here about storing key policy in
+> the keyring itself.
 
-+1 
+Right so the problem here would be that keyring defines policy for keys?
+
+Like in abstract "textbook sense" a policy should not live within in the
+closure that it dictactes. And the most classic issue would be probably
+circular dependencies.
+
+Theory aside, in practical sense, can you spot an example from the patch
+set where we could introduce issue by having Clavis as it is?
+
+> 
+> thanks,
+> 
+> Mimi
 
 BR, Jarkko
 
