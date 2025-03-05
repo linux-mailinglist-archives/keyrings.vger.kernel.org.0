@@ -1,73 +1,73 @@
-Return-Path: <keyrings+bounces-2433-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2434-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ECBCA4F255
-	for <lists+keyrings@lfdr.de>; Wed,  5 Mar 2025 01:20:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27533A4F29E
+	for <lists+keyrings@lfdr.de>; Wed,  5 Mar 2025 01:23:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D92F16178A
-	for <lists+keyrings@lfdr.de>; Wed,  5 Mar 2025 00:20:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD8003A4C10
+	for <lists+keyrings@lfdr.de>; Wed,  5 Mar 2025 00:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDA116426;
-	Wed,  5 Mar 2025 00:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236F61F92E;
+	Wed,  5 Mar 2025 00:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="VpPwhOjF"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="RdQDNyoX"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171F112B94
-	for <keyrings@vger.kernel.org>; Wed,  5 Mar 2025 00:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F0817C61
+	for <keyrings@vger.kernel.org>; Wed,  5 Mar 2025 00:23:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741134000; cv=none; b=AlQIHns7TzG1zA21Zcyba4JvAXHDfyg7+WS1ey6pNuhbTr0ll+bCN6fq7FjZ0yJmrE6s3n1D9bhkiKopQ3UisTJkpxoNbdzHRuk+b5G23nUxUR1nuvOJ6WiHSDg43u46VeWVISd5d6k9FfHlf4QBlEKEYgOgb3Dn5t7280YokZA=
+	t=1741134198; cv=none; b=dW0Gac9E3lcFHrdS+NiNUVJLlNO4tsbZmMTwvk+jfez9wK4ZrLLOI8NEIlb6tqZBnUj50adkL4tYcS0pzN/LRGxfkIhzZ//hR8LtQHWrVw2ojC/HAJXPTLPA2Mgul5mV+5VNhJo1QtjT5WDcyEIBoYS9mnlWQUKrRl3qqDZL0hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741134000; c=relaxed/simple;
-	bh=nFmPFrquQ5bomrKpIAorl2f7SP/HswO2qcap7S1MciA=;
+	s=arc-20240116; t=1741134198; c=relaxed/simple;
+	bh=EMm2jrTYaTVwDIb7fIqq/SrPdw8NSX14iaJPNP9LZ2A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rX2GBTImwNb2/mw2TBzZaHolmjm6V5yrQU6dOyqdfF+9bfVDA3rOw0GJ+5tVj7X85M/eCY+y/QvPp6epQZptfr+dH0XvJBgZbgsprIHXivkBPuiiHT2sjLlOXkqzWTSrZHo3Q3ZGtT9n9Mh+JktEb7XQjQHKZItqxHL+ZVZ8RHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=VpPwhOjF; arc=none smtp.client-ip=209.85.219.178
+	 To:Cc:Content-Type; b=TZIYUsI9YALBmQCvOxXPMw54mH45vIVvkjRAShPwyqDW4EUTgSt22QUrSwYRcY81knYwxxd/9YLXa9O20ZSGG7aV7JEFxn8xFB+WaFhqm9+jZhe+wRo1Rii3zW8/WKXpathwOtX6TR4FmiPnTUMO1sYtvhsSUc7pK2qC4w99J1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=RdQDNyoX; arc=none smtp.client-ip=209.85.128.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e53c9035003so4765009276.2
-        for <keyrings@vger.kernel.org>; Tue, 04 Mar 2025 16:19:58 -0800 (PST)
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6ef60e500d7so51477037b3.0
+        for <keyrings@vger.kernel.org>; Tue, 04 Mar 2025 16:23:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1741133998; x=1741738798; darn=vger.kernel.org;
+        d=paul-moore.com; s=google; t=1741134194; x=1741738994; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ocfBqfPEo/ZGjFNCT7umNcOBhbM/4xfpitCEs7MgftA=;
-        b=VpPwhOjFNxiBiMmvGTcObTttOW5Dj7bBG+a7vtg2EjkoHTunEEoFT0g+jruYi+R4YD
-         6VXDfklPzlOtM5XODG2rL77Z2kGosFeXNIw12gB2XQ2FOBD5m9EY9AeLrqpXr4osauDK
-         d/Yn4JombAnuBPvbluRvv30nqtxEJ8ZspBhQG7GAMgsmn3cONHz1EON5JJ58i9Ld6j6J
-         BSmpPQx+AqFn20PbH4S/CiBuCWpzSZVQCVBeWbbaJXA47gSa2lbTaBiZ3p8vEsCblzAq
-         jZsb0hD/36mutqj6w8N0llaNorUBnHCrXNhYcxs5GY1wdpYmcyKmtl+1CVxBTyGBKYSB
-         Jo0A==
+        bh=n4YiDLYB2Xyv0i3lSlJtAUBvLRrjWhRXqsvlbXIFqzQ=;
+        b=RdQDNyoXM7IPhz6ZcFdiO2YoIKx40O8RUIXLuPFtlR7VRRQPCGAzgNL1OzG8Erl0aC
+         sjqRZrpJMXwcMRCVLt4oWh3qM274V0LG56D0xUPgoHXHezq6iSEPpRc2FX+STQf/vvf0
+         vaShhwR1oHgaGveBc0p9AlQqQeK4wpGqkzEqiazCdSc6XOtrt43aFVVZ+tiJqt4+oZEJ
+         xKKLhP06KG8nsbGkRvBMHvyTg8eMiDSaCseRwpNWH/Sy81DkDR0vGNmiur6sW6Z2rxd/
+         VDxgds4JokUodF1FYXoVsTxBBloLCrr7zG9aIXWJx46rZic/h+X+kOzqZC+61yWcME2L
+         574Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741133998; x=1741738798;
+        d=1e100.net; s=20230601; t=1741134194; x=1741738994;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ocfBqfPEo/ZGjFNCT7umNcOBhbM/4xfpitCEs7MgftA=;
-        b=TL33BTCW55zZafgte8iJVWkjGIy29pE0/sSxYCA138brL6OKuIdX/UbDDsnDqnu6hY
-         aNjmf4p1hVYNfufl6C+9BTElyEgkS8GwspCte9uTRNM9mm9h7hGqHCK/4FW+6hWukdcy
-         hbj9iyVIkd28r1u0msnnt0U1kdr4LDgKJVFVrzYPOEtWDNopWiCpnB6AMIwCKQo75uD2
-         C1RdjjIFVzz2zPGtzhFNg/ZIzmsjTAXjL459W+x4vA1emxYMyAuP95uC0KhnPDPPPcs3
-         n7XT3+YlRFyjIOZ0AB9i1L7eGH7ulPEeJkCDmXgFab7XY2sYvn/HR2HO3DZ79saNM5r/
-         T+JA==
-X-Forwarded-Encrypted: i=1; AJvYcCUtGt1dVPkCv8O/r2lyAuo2x6U/rEJQSfbxRcsrt0b2Qlls4IfS6uNDBD4ioWuq9KYiAQCCiSvs8Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5AXJOwZNOwOKVSAgcjJcKVDTPpePzz5lO+XzToo74ZEt3VntH
-	2xLQedUBkpRv89gECzPbX+aqkMh6f+aXJTneRAvsjZlJsDRQSEqU2KhlHQ2YFhkWF39a/m6unld
-	y5Pdlk/oGxGSPc/G8EC5k/1N5/pd7lwAMJJgc
-X-Gm-Gg: ASbGncsHczI1/qcpuV3NG7Bx4Xo/QJbJmB3dQr/gmHZdsXuNegMrAJDAiPzc7wYtuTU
-	I7lrc+3XUeySWjwJbtdhymImpGXcO0j3c9EYNAabdhj3ds2eS1WBS1ujmyiXtxe72fuUwOEwiBn
-	TKaHDNIl+gKAzVHrXXIMOYbUcu9Q==
-X-Google-Smtp-Source: AGHT+IGF/y0geooCPtJRjqZPvENGrM6G/jIaXoX7kcX22U7OqoXPhdA0YA3220WyCrgUujmfozkdhji7akGtDiTRuzs=
-X-Received: by 2002:a05:6902:108f:b0:e60:a2e2:9359 with SMTP id
- 3f1490d57ef6-e611e19a0bfmr1796526276.3.1741133997973; Tue, 04 Mar 2025
- 16:19:57 -0800 (PST)
+        bh=n4YiDLYB2Xyv0i3lSlJtAUBvLRrjWhRXqsvlbXIFqzQ=;
+        b=pszDhQenf+9lDMi/9yc3gn0niONhoImXtByC4tS5YYkrAUEfUd8Mgn96DhF0ACTLqr
+         yNwXNrL8ktrVOUEhNTrUtP0rHsllhJtTMcl4ewHzx7veSzRLOoKGDKY+z36jOHjVGT4g
+         K7/F0wLskgNDH1wlUAAXYGmHc7uH5VB7bKBJB2cDSmJcRNyC0rUPTcCNoRqwsMz4/Xhh
+         zGRaIwXG51V0SsQyjYqSIGBo+Uvo+XfftR8JSSZ0c2MMCSdfjXQU294r9DWrQaYdYRUh
+         XyOA2TtHSMfREbWwT0/TysrYHwL+9b9+M21116ltkOEzO0fNWfryB4GKKrRQoqwiPAwI
+         f5rg==
+X-Forwarded-Encrypted: i=1; AJvYcCVUFi3RPqe2hB4MWED7zfhRrpgfDuOe+Wn3Zl7ST2d0KqF0pmbHhSmrO/rOdQmzCZdpH+Ycz2mvmw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZb+/cP2eTThhSeeLHHxwjx+ZbRXa/Ull7FLoQbuS7GNguvL6+
+	9z/8lTv9J2s+JzBVcUxQ2CpEn1jtuJz/jPjTyN5gdc0V4zhvbztEI+2lCLaElTucPw5yzIgvalS
+	GrSXs0BgOdzY35omsPtnKEAibDyrkjRZ1ZLaG
+X-Gm-Gg: ASbGncsW2ukeBLsdMRRljpohoejL++7UdcZXT2Jc7cd7bxd/mgCW0b6keRgp7Xi3sq8
+	D92RCceaYA/F7inn+CGjzEwLhJyY2zeL75q7BYA4zq6BzqiLjHwOQ35geQXdSnSQXnY5+bGmQSC
+	xw+v1b5dd/q/SSiyHTR+17xaKqYg==
+X-Google-Smtp-Source: AGHT+IGOLBgkI0Cnk4j24VyTAA7d3ChoOytypLLEWobuiO8gJGe4SQT14bcYnIvbbRk+2AFMGCgF13qrN5gAjSrMY80=
+X-Received: by 2002:a05:6902:1683:b0:e60:b17c:423f with SMTP id
+ 3f1490d57ef6-e611e1e7b91mr1711475276.28.1741134194264; Tue, 04 Mar 2025
+ 16:23:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -82,16 +82,16 @@ References: <20241017155516.2582369-1-eric.snowberg@oracle.com>
  <CAHC9VhTsZntLdGBV7=4suauS+rzSQv1O4UAoGcy2vEB02wRkoA@mail.gmail.com>
  <c580811716f550ed5d6777db5e143afe4ad06edc.camel@linux.ibm.com>
  <CAHC9VhTz6U5rRdbJBWq0_U4BSKTsiGCsaX=LTgisNNoZXZokOA@mail.gmail.com>
- <e0e7c0971d42e45c7b4641bd58cb7ea20b36e2e1.camel@linux.ibm.com>
- <CAHC9VhSzc6N0oBesT8V21xuwB11T7e6V9r0UmiqHXvCg5erkVA@mail.gmail.com> <a1d6ce786256bbade459f98e0b4074e449048fee.camel@linux.ibm.com>
-In-Reply-To: <a1d6ce786256bbade459f98e0b4074e449048fee.camel@linux.ibm.com>
+ <FD501FB8-72D2-4B10-A03A-F52FC5B67646@oracle.com> <CAHC9VhR961uTFueovLXXaOf-3ZAnvQCWOTfw-wCRuAKOKPAOKw@mail.gmail.com>
+ <73B78CE7-1BB8-4065-9EBA-FB69E327725E@oracle.com>
+In-Reply-To: <73B78CE7-1BB8-4065-9EBA-FB69E327725E@oracle.com>
 From: Paul Moore <paul@paul-moore.com>
-Date: Tue, 4 Mar 2025 19:19:46 -0500
-X-Gm-Features: AQ5f1Jow_JKN5Wb5BydtWrN3W2PF1ZW0sHwsGmKXbhetUZR51OWtnJRtrsmPv-Q
-Message-ID: <CAHC9VhT27Ge6woKbBExu2nT_cQE79rG+rrgp3nDYjvjcztVQXg@mail.gmail.com>
+Date: Tue, 4 Mar 2025 19:23:03 -0500
+X-Gm-Features: AQ5f1JrNkibyfl_g34dPES-fz_iVnpfHCEdaTH0VQZ1SvczNe3olHp_2oU87GRs
+Message-ID: <CAHC9VhRMUkzLVT5GT5c5hgpfaaKubzcPOTWFDpOmhNne0sswPA@mail.gmail.com>
 Subject: Re: [RFC PATCH v3 00/13] Clavis LSM
-To: Mimi Zohar <zohar@linux.ibm.com>
-Cc: Eric Snowberg <eric.snowberg@oracle.com>, David Howells <dhowells@redhat.com>, 
+To: Eric Snowberg <eric.snowberg@oracle.com>
+Cc: Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, 
 	Jarkko Sakkinen <jarkko@kernel.org>, 
 	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>, 
 	David Woodhouse <dwmw2@infradead.org>, 
@@ -109,125 +109,55 @@ Cc: Eric Snowberg <eric.snowberg@oracle.com>, David Howells <dhowells@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 4, 2025 at 7:54=E2=80=AFAM Mimi Zohar <zohar@linux.ibm.com> wro=
-te:
-> On Mon, 2025-03-03 at 17:38 -0500, Paul Moore wrote:
-> > On Fri, Feb 28, 2025 at 12:19=E2=80=AFPM Mimi Zohar <zohar@linux.ibm.co=
-m> wrote:
-> > > On Fri, 2025-02-28 at 11:14 -0500, Paul Moore wrote:
-> > > > On Fri, Feb 28, 2025 at 9:09=E2=80=AFAM Mimi Zohar <zohar@linux.ibm=
-.com> wrote:
-> > > > > On Thu, 2025-02-27 at 17:22 -0500, Paul Moore wrote:
+On Tue, Mar 4, 2025 at 9:47=E2=80=AFAM Eric Snowberg <eric.snowberg@oracle.=
+com> wrote:
+> > On Mar 3, 2025, at 3:40=E2=80=AFPM, Paul Moore <paul@paul-moore.com> wr=
+ote:
+> > On Fri, Feb 28, 2025 at 12:52=E2=80=AFPM Eric Snowberg <eric.snowberg@o=
+racle.com> wrote:
+> >>> On Feb 28, 2025, at 9:14=E2=80=AFAM, Paul Moore <paul@paul-moore.com>=
+ wrote:
+> >>> On Fri, Feb 28, 2025 at 9:09=E2=80=AFAM Mimi Zohar <zohar@linux.ibm.c=
+om> wrote:
+> >>>> On Thu, 2025-02-27 at 17:22 -0500, Paul Moore wrote:
+> >>>>>
+> >>>>> I'd still also like to see some discussion about moving towards the
+> >>>>> addition of keyrings oriented towards usage instead of limiting
+> >>>>> ourselves to keyrings that are oriented on the source of the keys.
+> >>>>> Perhaps I'm missing some important detail which makes this
+> >>>>> impractical, but it seems like an obvious improvement to me and wou=
+ld
+> >>>>> go a long way towards solving some of the problems that we typicall=
+y
+> >>>>> see with kernel keys.
+> >>
+> >> The intent is not to limit ourselves to the source of the key.  The ma=
+in
+> >> point of Clavis is to allow the end-user to determine what kernel keys
+> >> they want to trust and for what purpose, irrespective of the originati=
+ng
+> >> source (.builtin_trusted, .secondary, .machine, or .platform). If we c=
+ould
+> >> go back in time, individual keyrings could be created that are oriente=
+d
+> >> toward usage.   The idea for introducing Clavis is to bridge what we
+> >> have today with kernel keys and allow them to be usage based.
 > >
-> > ...
-> >
-> > > Ok, let's go through different scenarios to see if it would scale.
-> > >
-> > > Scenario 1: Mostly distro signed userspace applications, minimum numb=
-er of
-> > > developer, customer, 3rd party applications.
-> > >
-> > > Scenario 2: Multiple developer, customer, 3rd party applications, sig=
-ned by the
-> > > same party.
-> > >
-> > > Scenario 3: extreme case - every application signed by different part=
-y.
-> > >
-> > > With the minimum case, there would probably be a default key or sets =
-of
-> > > permissible keys.  In the extreme case, the number of keyrings would =
-be
-> > > equivalent to the number of application/software packages.
-> >
-> > Perhaps we're not understanding each other, but my understanding of
-> > the above three scenarios is that they are all examples of signed
-> > applications where something (likely something in the kernel like IMA)
-> > verifies the signature on the application.  While there are going to
-> > be differing numbers of keys in each of the three scenarios, I believe
-> > they would all be on/linked-to the same usage oriented keyring as they
-> > all share the same usage: application signatures.
+> > While it is unlikely that the current well known keyrings could be
+> > removed, I see no reason why new usage oriented keyrings could not be
+> > introduced.  We've seen far more significant shifts in the kernel over
+> > the years.
 >
-> Yes they're all verifying file signatures, but the software packages are =
-from
-> different sources (e.g. distro, chrome), signed by different keys.
+> Could you further clarify how a usage oriented keyring would work?  For
+> example, if a kernel module keyring was added, how would the end-user
+> add keys to it while maintaining a root of trust?
 
-Yep.
+Consider it an exercise left to the reader :)
 
-> Only a
-> particular key should be used to verify the file signatures for a particu=
-lar
-> application.
-
-That's definitely one access control policy, but I can also envision a
-scenario where I have just one keyring for application signatures with
-multiple keys from multiple vendors.
-
-> Clavis limits key usage based on LSM hooks (e.g. kernel modules, kernel i=
-mage,
-> firmware, etc).  It's a good start, but even this probably is not fine en=
-ough
-> granularity.
-
-Which is fine, but like I said earlier, it makes far more sense to me
-to move towards usage oriented keyrings and then apply whatever
-additional access control granularity is required to meet a given
-scenario.
-
-It's also worth (re)mentioning that what makes Clavis not-a-LSM in my
-mind is how it is implemented, not necessarily its security goals.  If
-Clavis were to be implemented in such a way that it only relied on
-security/LSM blobs and not keys/keyrings it might be more suitable.
-
-> > > > My takeaway from Clavis was that it was more about establishing a s=
-et
-> > > > of access controls around keys already present in the keyrings and =
-my
-> > > > comments about usage/spplication oriented keyrings have been in tha=
-t
-> > > > context.  While the access control policy, regardless of how it is
-> > > > implemented, should no doubt incorporate the trust placed in the
-> > > > individual keys, how that trust is established is a separate issue
-> > > > from access control as far as I'm concerned.
-> > >
-> > > Clavis defined both a mechanism for establishing trust and access con=
-trol rules.
-> > >
-> > > Clavis defined a single Clavis key to establish trust.  The Clavis po=
-licy rules
-> > > were signed by the Clavis key.  The Clavis policy rules defined the a=
-ccess
-> > > control.
-> >
-> > Unfortunately I think we're getting a little ambiguous with how we are
-> > using the word "trust".  Just as "security" can mean different things
-> > depending on context, so can "trust" as the qualities we are trusting
-> > will vary depending on context.  I'll leave it at that for now as I
-> > believe we are talking about different things in the paragraphs above.
-> >
-> > Regardless, I'll also say this regarding Clavis and key/keyring access
-> > controls - as implemented, Clavis doesn't look like a LSM to me for
-> > the reasons already given.  If all of the various keys subsystem
-> > maintainers believe it is the Right Thing To Do inside the keys
-> > subsystem then it isn't my place to have a say in that.  I personally
-> > believe that doing the work to support usage oriented keyrings before,
-> > or while, implementing a Clavis-like mechanism is the better option,
-> > but that is a decision for you and the other key maintainers.
->
-> "Usage oriented keyrings" similarly implies any key on a particular keyri=
-ng is
-> acceptable.
-
-Yep.
-
-> Without understanding what you mean by "usage oriented keyrings", I
-> would assume it would work initially, but eventually it too will not be f=
-ine
-> enough granularity.
-
-It all depends on what your goals are, but like I said above, it
-really seems to me like this is a good first step which can be
-followed up with additional granularity.
+I imagine there are different ways one could do that, either using
+traditional user/group/capability permissions and/or LSM permissions,
+it would depend on the environment and the security goals of the
+overall system.
 
 --=20
 paul-moore.com
