@@ -1,204 +1,140 @@
-Return-Path: <keyrings+bounces-2440-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2441-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5779FA4F4A8
-	for <lists+keyrings@lfdr.de>; Wed,  5 Mar 2025 03:24:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2060A50632
+	for <lists+keyrings@lfdr.de>; Wed,  5 Mar 2025 18:17:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E03E3AAAA9
-	for <lists+keyrings@lfdr.de>; Wed,  5 Mar 2025 02:24:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13F233A28A9
+	for <lists+keyrings@lfdr.de>; Wed,  5 Mar 2025 17:16:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A32415573F;
-	Wed,  5 Mar 2025 02:24:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="SH5/CTsl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512DD17BEC6;
+	Wed,  5 Mar 2025 17:17:06 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [83.223.95.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FB1155342
-	for <keyrings@vger.kernel.org>; Wed,  5 Mar 2025 02:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859A2567D;
+	Wed,  5 Mar 2025 17:16:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.95.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741141466; cv=none; b=WiFUhnn60Y8YQG8thWZKXSuqfzYDdPsq6Q1TC3kc7a9uUEWR1HnJQJCcuEqN9Df/OpGn1OD5XU+NjepxGay61uurlTXgvySuUDLigM3Ob3w0p8uKPgvqx+DvD749APhEghQRzJlxBtnvpSPa49CvzlpTnW7pAFuYD86yksxFwvk=
+	t=1741195026; cv=none; b=qEe8fGhU2heM6bsb3iFuWycRXrZ2a9b0vgm6so2LfU9JKrFQy9xHTeug+1esDG+6g51uhWaYyQGxg3qYyF6ihf5nVFgATepgCwvuMwojiHKY5Ym7Jjohn9n6lHCnODmoK2XK/hCr8TLytCdImX1lKMZZBVOuuFc3unLldGrBDv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741141466; c=relaxed/simple;
-	bh=AgwFFQtEuifNourVx+tLk3zjZ3DvJgh61y+UczYSgaA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UKBaI/ldHP60g9YZED227tL5Fk6nA76fMmiqLlhbNTHDYX7muG1W9SLW+EvYz08lt9Af7chJipdL2jcEL53ZIJVL11i7SM4K4VgkBbKHDPW+YtaNgo7ix3bk65W21M1yBNumpUk+6zjYNuED3uOQPSwoemCakT9kk8WeYJE4eow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=SH5/CTsl; arc=none smtp.client-ip=209.85.219.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e4930eca0d4so4611414276.3
-        for <keyrings@vger.kernel.org>; Tue, 04 Mar 2025 18:24:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1741141464; x=1741746264; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/kMF9Dym4tz6vqOqqczuHDu3SZSd/waaI0Ftwvs+VkU=;
-        b=SH5/CTsl8us9+2w986sr65NUpZPpPNSK8W0gxljx7d9un/pP2Wn5avrgSF4Rw8neKj
-         MZ/dikXkxrRxFzUuOarBejKQzSIeGvrUTqnzzrCSUpIsxQ6SfJNrDprrOIGS/n13bpkP
-         +pqGdxTgQeDBBvk+S83hNU1/WYIYyae/xloIxB6YUQJugyt8KHJ8AnTw+kVAsVcc0yiR
-         ERYZF8ANa1f1tFQJnzbPFeKOMOrlNzAGoD6qj0DgcKX5iYmYAXbkGbgdXUXXFC1jZuR2
-         S3iShZ3chFSLkliWYDwAPaTpy9e9pFvi1qVDfG25dMTj6B7xy4inP7iTfe+W/ICDUHt5
-         z8dQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741141464; x=1741746264;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/kMF9Dym4tz6vqOqqczuHDu3SZSd/waaI0Ftwvs+VkU=;
-        b=MNXyq1GIrQpvDsXIcLJKBcFaGk6Tk4/8wkxO/9vSAbpJFe5lV/NZVIlq4E2C93IfoN
-         ndzd8xhjUnEziw2geJHM/VRudbcQ7eylK7kJP2itLbJyUtLaIPLooDtI0mOBhQ7rks4J
-         fh9jcwUoCOkn622kNaH36IlIs23mnZXhzyA55N1xkuuGd/6pTkbSwUS/AhnnnMvPlkTL
-         V6BvxZoECTDYFIE9IoYWoO5dyAprRL7BbdLYuuBB4mAOtiDNDUvsj4RhQsMpdud65B+Y
-         WEIjozVaGSXVXqcG0BXXlfprVmHS0m+W7xGBbSLkCgc6SEWPSdPwnS4IAqsigqy61aW7
-         Hdlw==
-X-Forwarded-Encrypted: i=1; AJvYcCWbyBBj8A6YG+B1DAxY1soeY/EzdTj8SHtbRJVD12rVjU9Aoc2QvhvRS6NBzf1tXQLRf9wOL2yNBQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGwQZXH3Q3LWgMjhNXlKZ8tYcyJUI0Z1m3H5phpAkmvA5cyc+u
-	e/E2cKS0kgLENrno/fbxmmgroW4wBMjS+B5eBqYiPuo/hSSIMVIBQVDYe0oF7hjUUIdpKKaIHGq
-	Ure2MJMLAAGxCN0ZJsTCfbmpT3PUKZZ2VXuiX
-X-Gm-Gg: ASbGncv+NbQNZOHYrJVtdCAMJ1Oatfe99gyDqJQV/e3HYygNCC6NMsAhl+40YlkK3JY
-	9P4UsM1kReCi/+K/3lFQ7USw5YOoN213cFckUq1Avv8m+6UwpVcIV9VdRyWzkSaJKROquVBPaEJ
-	C3HbGgEAQjfdpJvk7BpoitlETz/g==
-X-Google-Smtp-Source: AGHT+IFEh6e6KF3avbSlOkT/C8VTB+3rxBE4DMHORzH7o48m83jvAvVGaMqAvJgwUzS2EPoYJl63n61rs2jWoqJVC4M=
-X-Received: by 2002:a05:6902:100f:b0:e5b:4482:a4f7 with SMTP id
- 3f1490d57ef6-e611e1f7a0amr2368591276.12.1741141463666; Tue, 04 Mar 2025
- 18:24:23 -0800 (PST)
+	s=arc-20240116; t=1741195026; c=relaxed/simple;
+	bh=3XbN8qRobWrAztvAkHqAPv4HcVw1mR5SEU8MQNSX7ls=;
+	h=Message-Id:From:Date:Subject:MIME-Version:Content-Type:To:Cc; b=P8XK6nW7Xovk0PvKOFa2fxzioGEkaLf+tqYfTSoU760dgwtWUvOlghsGjlVpUwzwkIvHowsiWUJwa7rLSyNJyR9huQ8JaNv++S8CBMGGsPixt7mjhUZG8oVICgH0P6wpQhKZSzp46i77kK8wfsCMSolFxQLAZ9qZIsV0uaQBMsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass smtp.mailfrom=wunner.de; arc=none smtp.client-ip=83.223.95.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wunner.de
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout1.hostsharing.net (Postfix) with ESMTPS id E3A433000A3A4;
+	Wed,  5 Mar 2025 18:16:51 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id CC7731BCE7; Wed,  5 Mar 2025 18:16:51 +0100 (CET)
+Message-Id: <90c171d5beed08bcf65ec2df6357a7ac97520b91.1741194399.git.lukas@wunner.de>
+From: Lukas Wunner <lukas@wunner.de>
+Date: Wed, 5 Mar 2025 18:14:32 +0100
+Subject: [PATCH] MAINTAINERS: Add Lukas & Ignat & Stefan for asymmetric keys
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241017155516.2582369-1-eric.snowberg@oracle.com>
- <c490397315c2704e9ef65c8ad3fefedb239f1997.camel@linux.ibm.com>
- <72F52F71-C7F3-402D-8441-3D636A093FE8@oracle.com> <CAHC9VhRHEw5c+drC=aX4xTqWoQJJZ+qkJ7aHUT5dcu+Q5f7BqA@mail.gmail.com>
- <CAHC9VhSJpnaAK1efgs1Uk0Tr3CaDNR1LiDU-t_yDKDQG6J-74Q@mail.gmail.com>
- <E20C617B-EA01-4E69-B5E2-31E9AAD6F7A2@oracle.com> <506e8e58e5236a4525b18d84bafa9aae80b24452.camel@linux.ibm.com>
- <CAHC9VhTsZntLdGBV7=4suauS+rzSQv1O4UAoGcy2vEB02wRkoA@mail.gmail.com>
- <c580811716f550ed5d6777db5e143afe4ad06edc.camel@linux.ibm.com>
- <CAHC9VhTz6U5rRdbJBWq0_U4BSKTsiGCsaX=LTgisNNoZXZokOA@mail.gmail.com>
- <e0e7c0971d42e45c7b4641bd58cb7ea20b36e2e1.camel@linux.ibm.com>
- <CAHC9VhSzc6N0oBesT8V21xuwB11T7e6V9r0UmiqHXvCg5erkVA@mail.gmail.com>
- <a1d6ce786256bbade459f98e0b4074e449048fee.camel@linux.ibm.com>
- <CAHC9VhT27Ge6woKbBExu2nT_cQE79rG+rrgp3nDYjvjcztVQXg@mail.gmail.com>
- <049a04b2e07e9e984ada32277cbbde42bdf7bb1b.camel@linux.ibm.com>
- <CAHC9VhRrko_CdZJg81=s-ShGfusaJqhvrX8+R6STPbMhpnEwCQ@mail.gmail.com> <b464675506fa8d7ccef737d3bcddd0ec26b9b2c3.camel@linux.ibm.com>
-In-Reply-To: <b464675506fa8d7ccef737d3bcddd0ec26b9b2c3.camel@linux.ibm.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Tue, 4 Mar 2025 21:24:12 -0500
-X-Gm-Features: AQ5f1Jqpip5THNPkWYuHQHFGVe_RbmHQJEHYfBQMGKSQG1o2BNCOxD9C4D6hUiA
-Message-ID: <CAHC9VhQzALRBZ3mMDL5fmdJepjeHLUz=Tm4xtoLJrL8R6Y0QKg@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 00/13] Clavis LSM
-To: Mimi Zohar <zohar@linux.ibm.com>
-Cc: Eric Snowberg <eric.snowberg@oracle.com>, David Howells <dhowells@redhat.com>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, 
-	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>, 
-	David Woodhouse <dwmw2@infradead.org>, 
-	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, "davem@davemloft.net" <davem@davemloft.net>, 
-	Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Roberto Sassu <roberto.sassu@huawei.com>, 
-	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
-	"casey@schaufler-ca.com" <casey@schaufler-ca.com>, Stefan Berger <stefanb@linux.ibm.com>, 
-	"ebiggers@kernel.org" <ebiggers@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"keyrings@vger.kernel.org" <keyrings@vger.kernel.org>, 
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, 
-	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>, 
-	"linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+To: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, David Howells <dhowells@redhat.com>, Ignat Korchagin <ignat@cloudflare.com>, Stefan Berger <stefanb@linux.ibm.com>
+Cc: Tadeusz Struk <tstruk@gmail.com>, Tadeusz Struk <tstruk@gigaio.com>, Vitaly Chikunov <vt@altlinux.org>, linux-crypto@vger.kernel.org, keyrings@vger.kernel.org, Eric Biggers <ebiggers@google.com>
 
-On Tue, Mar 4, 2025 at 9:20=E2=80=AFPM Mimi Zohar <zohar@linux.ibm.com> wro=
-te:
-> On Tue, 2025-03-04 at 21:09 -0500, Paul Moore wrote:
-> > On Tue, Mar 4, 2025 at 8:50=E2=80=AFPM Mimi Zohar <zohar@linux.ibm.com>=
- wrote:
-> > > On Tue, 2025-03-04 at 19:19 -0500, Paul Moore wrote:
-> > > > On Tue, Mar 4, 2025 at 7:54=E2=80=AFAM Mimi Zohar <zohar@linux.ibm.=
-com> wrote:
-> > > > > On Mon, 2025-03-03 at 17:38 -0500, Paul Moore wrote:
-> > > > > > On Fri, Feb 28, 2025 at 12:19=E2=80=AFPM Mimi Zohar <zohar@linu=
-x.ibm.com> wrote:
-> > > > > > > On Fri, 2025-02-28 at 11:14 -0500, Paul Moore wrote:
-> > > > > > > > On Fri, Feb 28, 2025 at 9:09=E2=80=AFAM Mimi Zohar <zohar@l=
-inux.ibm.com> wrote:
-> > > > > > > > > On Thu, 2025-02-27 at 17:22 -0500, Paul Moore wrote:
-> > > > > >
-> > > > > > ...
-> > > > > >
-> > > > > > > Ok, let's go through different scenarios to see if it would s=
-cale.
-> > > > > > >
-> > > > > > > Scenario 1: Mostly distro signed userspace applications, mini=
-mum number of
-> > > > > > > developer, customer, 3rd party applications.
-> > > > > > >
-> > > > > > > Scenario 2: Multiple developer, customer, 3rd party applicati=
-ons, signed by the
-> > > > > > > same party.
-> > > > > > >
-> > > > > > > Scenario 3: extreme case - every application signed by differ=
-ent party.
-> > > > > > >
-> > > > > > > With the minimum case, there would probably be a default key =
-or sets of
-> > > > > > > permissible keys.  In the extreme case, the number of keyring=
-s would be
-> > > > > > > equivalent to the number of application/software packages.
-> > > > > >
-> > > > > > Perhaps we're not understanding each other, but my understandin=
-g of
-> > > > > > the above three scenarios is that they are all examples of sign=
-ed
-> > > > > > applications where something (likely something in the kernel li=
-ke IMA)
-> > > > > > verifies the signature on the application.  While there are goi=
-ng to
-> > > > > > be differing numbers of keys in each of the three scenarios, I =
-believe
-> > > > > > they would all be on/linked-to the same usage oriented keyring =
-as they
-> > > > > > all share the same usage: application signatures.
-> > > > >
-> > > > > Yes they're all verifying file signatures, but the software packa=
-ges are from
-> > > > > different sources (e.g. distro, chrome), signed by different keys=
-.
-> > > >
-> > > > Yep.
-> > > >
-> > > > > Only a
-> > > > > particular key should be used to verify the file signatures for a=
- particular
-> > > > > application.
-> > > >
-> > > > That's definitely one access control policy, but I can also envisio=
-n a
-> > > > scenario where I have just one keyring for application signatures w=
-ith
-> > > > multiple keys from multiple vendors.
-> > >
-> > > Having a single keyring with keys from multiple software vendors is t=
-he status
-> > > quo.
-> >
-> > A single keyring with keys from multiple vendors does happen today
-> > yes, but there is no separation based on how those keys are used, e.g.
-> > separate application signature and kernel module signature keyrings.
->
-> As soon as you add multiple vendors keys on the kernel module signature k=
-eyring,
-> you'll need finer grained access control.
+Herbert asks for long-term maintenance of everything under
+crypto/asymmetric_keys/ and associated algorithms (ECDSA, GOST, RSA) [1].
 
-Maybe.  It depends on your security policy, some solutions might be
-okay with keyring level access control granularity, others may want
-finer grained control.
+Ignat has kindly agreed to co-maintain this with me going forward.
 
---=20
-paul-moore.com
+Stefan has agreed to be added as reviewer for ECDSA.  He introduced it
+in 2021 and has been meticulously providing reviews for 3rd party
+patches anyway.
+
+Retain David Howells' maintainer entry until he explicitly requests to
+be removed.  He originally introduced asymmetric keys in 2012.
+
+RSA was introduced by Tadeusz Struk as an employee of Intel in 2015,
+but he's changed jobs and last contributed to the implementation in 2016.
+
+GOST was introduced by Vitaly Chikunov as an employee of Basealt LLC [2]
+(Базальт СПО [3]) in 2019.  This company is an OFAC sanctioned entity
+[4][5], which makes employees ineligible as maintainer [6].  It's not
+clear if Vitaly is still working for Basealt, he did not immediately
+respond to my e-mail.  Since knowledge and use of GOST algorithms is
+relatively limited outside the Russian Federation, assign "Odd fixes"
+status for now.
+
+[1] https://lore.kernel.org/r/Z8QNJqQKhyyft_gz@gondor.apana.org.au/
+[2] https://prohoster.info/ru/blog/novosti-interneta/reliz-yadra-linux-5-2
+[3] https://www.basealt.ru/
+[4] https://ofac.treasury.gov/recent-actions/20240823
+[5] https://sanctionssearch.ofac.treas.gov/Details.aspx?id=50178
+[6] https://lore.kernel.org/r/7ee74c1b5b589619a13c6318c9fbd0d6ac7c334a.camel@HansenPartnership.com/
+
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+---
+ MAINTAINERS | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 8e0736d..b16a1cc 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3595,14 +3595,42 @@ F:	drivers/hwmon/asus_wmi_sensors.c
+ 
+ ASYMMETRIC KEYS
+ M:	David Howells <dhowells@redhat.com>
++M:	Lukas Wunner <lukas@wunner.de>
++M:	Ignat Korchagin <ignat@cloudflare.com>
+ L:	keyrings@vger.kernel.org
++L:	linux-crypto@vger.kernel.org
+ S:	Maintained
+ F:	Documentation/crypto/asymmetric-keys.rst
+ F:	crypto/asymmetric_keys/
+ F:	include/crypto/pkcs7.h
+ F:	include/crypto/public_key.h
++F:	include/keys/asymmetric-*.h
+ F:	include/linux/verification.h
+ 
++ASYMMETRIC KEYS - ECDSA
++M:	Lukas Wunner <lukas@wunner.de>
++M:	Ignat Korchagin <ignat@cloudflare.com>
++R:	Stefan Berger <stefanb@linux.ibm.com>
++L:	linux-crypto@vger.kernel.org
++S:	Maintained
++F:	crypto/ecc*
++F:	crypto/ecdsa*
++F:	include/crypto/ecc*
++
++ASYMMETRIC KEYS - GOST
++M:	Lukas Wunner <lukas@wunner.de>
++M:	Ignat Korchagin <ignat@cloudflare.com>
++L:	linux-crypto@vger.kernel.org
++S:	Odd fixes
++F:	crypto/ecrdsa*
++
++ASYMMETRIC KEYS - RSA
++M:	Lukas Wunner <lukas@wunner.de>
++M:	Ignat Korchagin <ignat@cloudflare.com>
++L:	linux-crypto@vger.kernel.org
++S:	Maintained
++F:	crypto/rsa*
++
+ ASYNCHRONOUS TRANSFERS/TRANSFORMS (IOAT) API
+ R:	Dan Williams <dan.j.williams@intel.com>
+ S:	Odd fixes
+-- 
+2.43.0
+
 
