@@ -1,171 +1,215 @@
-Return-Path: <keyrings+bounces-2444-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2445-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2337A53F51
-	for <lists+keyrings@lfdr.de>; Thu,  6 Mar 2025 01:46:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D4FEA53FAD
+	for <lists+keyrings@lfdr.de>; Thu,  6 Mar 2025 02:13:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EACE9173B5F
-	for <lists+keyrings@lfdr.de>; Thu,  6 Mar 2025 00:46:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C6667A1D53
+	for <lists+keyrings@lfdr.de>; Thu,  6 Mar 2025 01:11:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6931E171CD;
-	Thu,  6 Mar 2025 00:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088708634E;
+	Thu,  6 Mar 2025 01:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="HZmO2wUE"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="CvwX/Aq7"
 X-Original-To: keyrings@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98260376;
-	Thu,  6 Mar 2025 00:46:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F506823DE
+	for <keyrings@vger.kernel.org>; Thu,  6 Mar 2025 01:12:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741221985; cv=none; b=cBZ8wQnPjM0EHKd7ibA1IXDhiEVzKGN6+tyBdpvbjbEeyGnKFX+UwKGLL29ngarPAO9yWSty1cA2FLEa4ESfmpHf4y5U1xdFEu4YLAGQkAWMb+cxlBhcOEkvUbVvojVFmVYWj6PGy8FHa/93eEXAHPfDg1t1c5bLDli2TfvoLDQ=
+	t=1741223572; cv=none; b=pNmyX3GEDDm/rEXHYAwkjuHIAj6HqlGRDNX6E4OpktuKMzYxnWIRPDUMxwKKhwB2g/V/iYxw63XnXhUqPJwNKPArAwsBp9hdgms+zIah0MGJYM3jTRybcglizNzhE2S/8j/yHCz9nMjiWLOi9Bd0OaMVMNGLOwgjYljY0Aqmy2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741221985; c=relaxed/simple;
-	bh=bdHiGmQCW+jIfwEFWXAePVnE6Zh5EwQEOmLh1i+TniU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jNUJGbowPI9yAmHNlDtlDolEBKzYZq1sfuiuhETY/NXgNY7bivQblBb9LYzETM2E6cZuzr6YOdbLIrRlUoXrrogi3U0sdILiExaW8JarnkawLcDpPgBk5BPQjDr+KVzZs7VDiryoIUs00HbZZGYhg2TMRRAyZBAnlfLdumN4wIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=HZmO2wUE; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=6yqrLKAlALHmSW2F1YLkpltivONOHD+rr+GiBiB4O/4=; b=HZmO2wUEsPHehGXtyKG2XKbyVx
-	7FFv/baK50YvkjaDfunG677O3VDdq3YUjwajZUt3un9vXdmvDkKnNTXd+QvoaVqtH3Ee5P+Y5wFxw
-	LkVz71wddgy+t/24VLQUpcIV67D2cNsbguccMf0t0KrG5IxeEAtvIu/yu3ZtKkVle8N99IOQpR4Xt
-	6l9FiJvTF6RnC+A2D5oNwENoVWdgQYZ44lrDZGkAWtYyyKN0UYU4HbNhrbYe7DpMZ960YwTzGveDO
-	Ej1fTHgISfixmDUBvLmDrayVIiBO4Hqqr1AuMgUg5w6NTonD4G5xm+cEXyQcLc8eaY7C1YmmrZwG0
-	4byQow/Q==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1tpzNC-0048x1-0a;
-	Thu, 06 Mar 2025 08:46:03 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 06 Mar 2025 08:46:02 +0800
-Date: Thu, 6 Mar 2025 08:46:02 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	David Howells <dhowells@redhat.com>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Tadeusz Struk <tstruk@gmail.com>, Tadeusz Struk <tstruk@gigaio.com>,
-	Vitaly Chikunov <vt@altlinux.org>, linux-crypto@vger.kernel.org,
-	keyrings@vger.kernel.org, Eric Biggers <ebiggers@google.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: Re: [PATCH] MAINTAINERS: Add Lukas & Ignat & Stefan for asymmetric
- keys
-Message-ID: <Z8jwSmRA45tMlUKI@gondor.apana.org.au>
-References: <90c171d5beed08bcf65ec2df6357a7ac97520b91.1741194399.git.lukas@wunner.de>
+	s=arc-20240116; t=1741223572; c=relaxed/simple;
+	bh=iwuGm3ZHGbApYL4XEYwpkiGj6XRB3Wy/awOqe4nijcs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dIep5eO4r7DceW/FGCpwyamg2A5RUDwwP/Kzeu9yLRZxcDb4GIH2qTAyBgs7aOnj7sVTLZEiakzYw3u37enSbpF48wYnWRoNlJmWyTOoTljqr3bSyS43sSOV2x7ia4AA0050gTTYdn70Me/puO8FdAvdWdvg/piReRJVcizemlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=CvwX/Aq7; arc=none smtp.client-ip=209.85.219.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-e60aef2711fso78423276.2
+        for <keyrings@vger.kernel.org>; Wed, 05 Mar 2025 17:12:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1741223570; x=1741828370; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ns9OcNLiPQZ46N5SAy+lKQOOPBlD1bg4YL1QETokjIw=;
+        b=CvwX/Aq7UGvh8jKF6amc8L4Pjg9vIASGNnPFQjiOrAY64bsl/bjq5hsENfPkoWOvBV
+         bAUDCN6FkW10z5OU3AHzF4I8P3TZrYGLkIC/wRKaZDdwv7zwOIMDroPhLNO8fpBF6iYE
+         FQvmI6sRSc1SmaD3hsW1pcMuoEl5zWH7+NGxZAX4RjINKp9ZsU25e1fc0FR0YByEWfuD
+         EO0YuKeJHGRVMyIoJseCdaFMhYvY7qWCOkNWNSvnfrcPOV1oHtOgWPXagbgOxdZ1JPvR
+         pcaQ8VUX71UTUBQmg7drw5wC6cqip27x1vIG+C3Lxn9/fKiRO1+TdCfdQo4bAI1IUrku
+         UGUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741223570; x=1741828370;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ns9OcNLiPQZ46N5SAy+lKQOOPBlD1bg4YL1QETokjIw=;
+        b=w0Ercve0L5SzIKyCHD48zE3cQCjfsoJDwoyfpmECd4CBP8kk8ulIViZvFuOLYJganX
+         bEcny/ja8OfBiiXwgDNJN+54D8MHM0x1pJ3UBu6Bay+RalOiscFxgoxZsP5Si1RgKUb2
+         mthtqOtQ+F7w+UBMzamVxvr09Tu0ENZKQ0bJUURFzuaUBZHajZIEW1msmFZeDk7kHgKc
+         n3Lu6iuiXAQshFAct+RaJr4f32omfo7ltkwZzkxCo7d08vJjm61DQRZNziAukzEH45WR
+         1XgCpQUuu+iMQP/9KumnxPkK8/Os0369sXpgyrTGDILfQ7hSAtzM2wNyQDsuUUGtHIu8
+         jqXw==
+X-Forwarded-Encrypted: i=1; AJvYcCUAHPOlICzokEFsU2apIkMqqzYH8TFDIff19gP+ZTe8FLNXxeeWSQh+U6D4b6iDAG2dBoSQ5u9Apg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyagSo6I55b3BCIE2LN8dltuY7vSpJBrLvp0VEg6ei5JJf0PSVI
+	g/Yu0nlZWDpLluvS419+j9cNPHDE8OcRgLLnOwJd0GZDgzOLINMwKU69eh6CxvQlKQatxR1yHqr
+	lvwOmn0hJ6pOLAwBBsk+m9fWXpkYNznKS1kgO
+X-Gm-Gg: ASbGncshcfmVeNyTyOFR2eR69cORS0j8FHilCv/wVnwPQcVJYosaaeCCv9MRiGpl8eP
+	Ng3gxuN+SA/kumalQRGGa1vLHBAyCLjRmPcYJcP3nqb6i4xDPGwxCP4LCTrKtUoZQZ2X2ovULWg
+	PsPSbwABMF+XZh7kdML6HZVjjvtA==
+X-Google-Smtp-Source: AGHT+IF7pO968cQESwSx4d3Cse0SeXvFnLRkVRGiC/k9GOy1btAF+uyGL5ue4Dp5VeWQu3Cdo1ybcXgzsv8nGNGFq8o=
+X-Received: by 2002:a05:6902:2a4a:b0:e5d:dcc5:59bc with SMTP id
+ 3f1490d57ef6-e611e308b67mr7715694276.39.1741223570094; Wed, 05 Mar 2025
+ 17:12:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <90c171d5beed08bcf65ec2df6357a7ac97520b91.1741194399.git.lukas@wunner.de>
+References: <20241017155516.2582369-1-eric.snowberg@oracle.com>
+ <c490397315c2704e9ef65c8ad3fefedb239f1997.camel@linux.ibm.com>
+ <72F52F71-C7F3-402D-8441-3D636A093FE8@oracle.com> <CAHC9VhRHEw5c+drC=aX4xTqWoQJJZ+qkJ7aHUT5dcu+Q5f7BqA@mail.gmail.com>
+ <CAHC9VhSJpnaAK1efgs1Uk0Tr3CaDNR1LiDU-t_yDKDQG6J-74Q@mail.gmail.com>
+ <E20C617B-EA01-4E69-B5E2-31E9AAD6F7A2@oracle.com> <506e8e58e5236a4525b18d84bafa9aae80b24452.camel@linux.ibm.com>
+ <CAHC9VhTsZntLdGBV7=4suauS+rzSQv1O4UAoGcy2vEB02wRkoA@mail.gmail.com>
+ <c580811716f550ed5d6777db5e143afe4ad06edc.camel@linux.ibm.com>
+ <CAHC9VhTz6U5rRdbJBWq0_U4BSKTsiGCsaX=LTgisNNoZXZokOA@mail.gmail.com>
+ <FD501FB8-72D2-4B10-A03A-F52FC5B67646@oracle.com> <CAHC9VhR961uTFueovLXXaOf-3ZAnvQCWOTfw-wCRuAKOKPAOKw@mail.gmail.com>
+ <73B78CE7-1BB8-4065-9EBA-FB69E327725E@oracle.com> <CAHC9VhRMUkzLVT5GT5c5hgpfaaKubzcPOTWFDpOmhNne0sswPA@mail.gmail.com>
+ <1A222B45-FCC4-4BBD-8E17-D92697FE467D@oracle.com>
+In-Reply-To: <1A222B45-FCC4-4BBD-8E17-D92697FE467D@oracle.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Wed, 5 Mar 2025 20:12:39 -0500
+X-Gm-Features: AQ5f1Jodn7KbI0UIW2OdnLduODjPaSZfEKxzP8aA2XiHbTTB_Svl7vi4QeubrRI
+Message-ID: <CAHC9VhTObTee95SwZ+C4EwPotovE9R3vy0gVXf+kATtP3vfXrg@mail.gmail.com>
+Subject: Re: [RFC PATCH v3 00/13] Clavis LSM
+To: Eric Snowberg <eric.snowberg@oracle.com>
+Cc: Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, 
+	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>, 
+	David Woodhouse <dwmw2@infradead.org>, 
+	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, "davem@davemloft.net" <davem@davemloft.net>, 
+	Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Roberto Sassu <roberto.sassu@huawei.com>, 
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
+	"casey@schaufler-ca.com" <casey@schaufler-ca.com>, Stefan Berger <stefanb@linux.ibm.com>, 
+	"ebiggers@kernel.org" <ebiggers@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"keyrings@vger.kernel.org" <keyrings@vger.kernel.org>, 
+	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, 
+	"linux-efi@vger.kernel.org" <linux-efi@vger.kernel.org>, 
+	"linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 05, 2025 at 06:14:32PM +0100, Lukas Wunner wrote:
-> Herbert asks for long-term maintenance of everything under
-> crypto/asymmetric_keys/ and associated algorithms (ECDSA, GOST, RSA) [1].
-> 
-> Ignat has kindly agreed to co-maintain this with me going forward.
-> 
-> Stefan has agreed to be added as reviewer for ECDSA.  He introduced it
-> in 2021 and has been meticulously providing reviews for 3rd party
-> patches anyway.
-> 
-> Retain David Howells' maintainer entry until he explicitly requests to
-> be removed.  He originally introduced asymmetric keys in 2012.
-> 
-> RSA was introduced by Tadeusz Struk as an employee of Intel in 2015,
-> but he's changed jobs and last contributed to the implementation in 2016.
-> 
-> GOST was introduced by Vitaly Chikunov as an employee of Basealt LLC [2]
-> (Базальт СПО [3]) in 2019.  This company is an OFAC sanctioned entity
-> [4][5], which makes employees ineligible as maintainer [6].  It's not
-> clear if Vitaly is still working for Basealt, he did not immediately
-> respond to my e-mail.  Since knowledge and use of GOST algorithms is
-> relatively limited outside the Russian Federation, assign "Odd fixes"
-> status for now.
-> 
-> [1] https://lore.kernel.org/r/Z8QNJqQKhyyft_gz@gondor.apana.org.au/
-> [2] https://prohoster.info/ru/blog/novosti-interneta/reliz-yadra-linux-5-2
-> [3] https://www.basealt.ru/
-> [4] https://ofac.treasury.gov/recent-actions/20240823
-> [5] https://sanctionssearch.ofac.treas.gov/Details.aspx?id=50178
-> [6] https://lore.kernel.org/r/7ee74c1b5b589619a13c6318c9fbd0d6ac7c334a.camel@HansenPartnership.com/
-> 
-> Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> ---
->  MAINTAINERS | 28 ++++++++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 8e0736d..b16a1cc 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3595,14 +3595,42 @@ F:	drivers/hwmon/asus_wmi_sensors.c
->  
->  ASYMMETRIC KEYS
->  M:	David Howells <dhowells@redhat.com>
-> +M:	Lukas Wunner <lukas@wunner.de>
-> +M:	Ignat Korchagin <ignat@cloudflare.com>
->  L:	keyrings@vger.kernel.org
-> +L:	linux-crypto@vger.kernel.org
->  S:	Maintained
->  F:	Documentation/crypto/asymmetric-keys.rst
->  F:	crypto/asymmetric_keys/
->  F:	include/crypto/pkcs7.h
->  F:	include/crypto/public_key.h
-> +F:	include/keys/asymmetric-*.h
->  F:	include/linux/verification.h
->  
-> +ASYMMETRIC KEYS - ECDSA
-> +M:	Lukas Wunner <lukas@wunner.de>
-> +M:	Ignat Korchagin <ignat@cloudflare.com>
-> +R:	Stefan Berger <stefanb@linux.ibm.com>
-> +L:	linux-crypto@vger.kernel.org
-> +S:	Maintained
-> +F:	crypto/ecc*
-> +F:	crypto/ecdsa*
-> +F:	include/crypto/ecc*
-> +
-> +ASYMMETRIC KEYS - GOST
-> +M:	Lukas Wunner <lukas@wunner.de>
-> +M:	Ignat Korchagin <ignat@cloudflare.com>
-> +L:	linux-crypto@vger.kernel.org
-> +S:	Odd fixes
-> +F:	crypto/ecrdsa*
-> +
-> +ASYMMETRIC KEYS - RSA
-> +M:	Lukas Wunner <lukas@wunner.de>
-> +M:	Ignat Korchagin <ignat@cloudflare.com>
-> +L:	linux-crypto@vger.kernel.org
-> +S:	Maintained
-> +F:	crypto/rsa*
-> +
->  ASYNCHRONOUS TRANSFERS/TRANSFORMS (IOAT) API
->  R:	Dan Williams <dan.j.williams@intel.com>
->  S:	Odd fixes
-> -- 
-> 2.43.0
+On Wed, Mar 5, 2025 at 4:30=E2=80=AFPM Eric Snowberg <eric.snowberg@oracle.=
+com> wrote:
+> > On Mar 4, 2025, at 5:23=E2=80=AFPM, Paul Moore <paul@paul-moore.com> wr=
+ote:
+> > On Tue, Mar 4, 2025 at 9:47=E2=80=AFAM Eric Snowberg <eric.snowberg@ora=
+cle.com> wrote:
+> >>> On Mar 3, 2025, at 3:40=E2=80=AFPM, Paul Moore <paul@paul-moore.com> =
+wrote:
+> >>> On Fri, Feb 28, 2025 at 12:52=E2=80=AFPM Eric Snowberg <eric.snowberg=
+@oracle.com> wrote:
+> >>>>> On Feb 28, 2025, at 9:14=E2=80=AFAM, Paul Moore <paul@paul-moore.co=
+m> wrote:
+> >>>>> On Fri, Feb 28, 2025 at 9:09=E2=80=AFAM Mimi Zohar <zohar@linux.ibm=
+.com> wrote:
+> >>>>>> On Thu, 2025-02-27 at 17:22 -0500, Paul Moore wrote:
+> >>>>>>>
+> >>>>>>> I'd still also like to see some discussion about moving towards t=
+he
+> >>>>>>> addition of keyrings oriented towards usage instead of limiting
+> >>>>>>> ourselves to keyrings that are oriented on the source of the keys=
+.
+> >>>>>>> Perhaps I'm missing some important detail which makes this
+> >>>>>>> impractical, but it seems like an obvious improvement to me and w=
+ould
+> >>>>>>> go a long way towards solving some of the problems that we typica=
+lly
+> >>>>>>> see with kernel keys.
+> >>>>
+> >>>> The intent is not to limit ourselves to the source of the key.  The =
+main
+> >>>> point of Clavis is to allow the end-user to determine what kernel ke=
+ys
+> >>>> they want to trust and for what purpose, irrespective of the origina=
+ting
+> >>>> source (.builtin_trusted, .secondary, .machine, or .platform). If we=
+ could
+> >>>> go back in time, individual keyrings could be created that are orien=
+ted
+> >>>> toward usage.   The idea for introducing Clavis is to bridge what we
+> >>>> have today with kernel keys and allow them to be usage based.
+> >>>
+> >>> While it is unlikely that the current well known keyrings could be
+> >>> removed, I see no reason why new usage oriented keyrings could not be
+> >>> introduced.  We've seen far more significant shifts in the kernel ove=
+r
+> >>> the years.
+> >>
+> >> Could you further clarify how a usage oriented keyring would work?  Fo=
+r
+> >> example, if a kernel module keyring was added, how would the end-user
+> >> add keys to it while maintaining a root of trust?
+> >
+> > Consider it an exercise left to the reader :)
+> >
+> > I imagine there are different ways one could do that, either using
+> > traditional user/group/capability permissions and/or LSM permissions,
+> > it would depend on the environment and the security goals of the
+> > overall system.
+>
+> These keys are used by the Lockdown LSM to provide signature
+> validation.
+>
+> I realize the contents that follow in this paragraph is outside the
+> boundary of mainline kernel code.  Every distro that wants their
+> shim signed must explain how their kernel enforces lockdown
+> mode.  The minimum requirement is lockdown in integrity mode.
+> Also, the expectation is lockdown enforcement continues on
+> through a kexec.
 
-Thank you for stepping up to do this! I'll just add Jarkko to
-the cc list so that he is aware of this.
+I personally find it very amusing the UEFI Secure Boot shim is reliant
+on an unmaintained and only marginally supported LSM, Lockdown.  Has
+anyone recently verified that Lockdown's protections are still intact
+and comprehensive enough to be worthwhile?  Sorry, this is a bit of a
+digression, but since you were the one to bring up Lockdown I thought
+it would be important to mention that I don't have much faith that it
+is still working to the same level as it originally was intended.  I
+have a TODO list item to draft a policy around deprecating
+unmaintained LSMs after an extended period of time, and once that is
+in place if we don't have a qualified maintainer for Lockdown it will
+likely fall into the deprecation process (whatever that may be).
 
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+> When in lockdown integrity mode, features that allow the kernel
+> to be modified at runtime are disabled.  How would what you have
+> suggested above adhere to these goals?
+
+For starters, verify that Lockdown is still comprehensive enough to
+satisfy these requirements on a modern Linux kernel.  After that has
+been done, find someone with some kernel experience to step up and
+maintain Lockdown.  Finally, put a mechanism in place so that
+someone/something is regularly evaluating changes in the upstream
+kernel to ensure that Lockdown is still able to achieve its security
+goals.
+
+After all that, then you can start worrying about keys.
+
+> The point of the Clavis LSM is to use the root of trust provided to
+> the kernel prior to it booting. This maintains the lockdown integrity
+> goals, while also giving the end-user the ability to determine how
+> kernel keys are used.
+
+--=20
+paul-moore.com
 
