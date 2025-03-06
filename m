@@ -1,189 +1,116 @@
-Return-Path: <keyrings+bounces-2449-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2450-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0947A559EF
-	for <lists+keyrings@lfdr.de>; Thu,  6 Mar 2025 23:39:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD86FA55AA2
+	for <lists+keyrings@lfdr.de>; Fri,  7 Mar 2025 00:06:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECC993B1A6F
-	for <lists+keyrings@lfdr.de>; Thu,  6 Mar 2025 22:39:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF2B13AF4FB
+	for <lists+keyrings@lfdr.de>; Thu,  6 Mar 2025 23:06:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09FDE27CB0C;
-	Thu,  6 Mar 2025 22:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B718527CB3D;
+	Thu,  6 Mar 2025 23:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="JuWR+waS"
+	dkim=pass (2048-bit key) header.d=delugo.co.za header.i=@delugo.co.za header.b="fO/JKBdZ"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outgoing1.cpt4.host-h.net (outgoing1.cpt4.host-h.net [197.189.247.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350291F4185
-	for <keyrings@vger.kernel.org>; Thu,  6 Mar 2025 22:39:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D774202F7C
+	for <keyrings@vger.kernel.org>; Thu,  6 Mar 2025 23:05:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=197.189.247.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741300751; cv=none; b=WYwLU/e4DNI/qSFKPlAYOuJN3cBwJTtTQ1SlqqoXXbl8NgTPbRCgcvEo/yIizeL3ynLcxbikd6hfw4KUM2W6QfgTlRsKPwyKiSFkPstSNpeMXLhuEfmyk+OyX8vSmgTLQjsMMQNG6lqnT+80Sq7DC+zOkzX3msU0Vd3QD1tdl6g=
+	t=1741302323; cv=none; b=af3N9kWFqmfjEwerqLhyi+wtOeN02QODc1jD+wgYcNzO6e6rs5G2k+Bf71LmyPWIR20zELjmYaVUH2iG0ECU+vfHeJYhIbue+Ad3UE/ZaDG6A3uOz07z+0HGwCuvrbs7bxEowqdGFNNk4Hc8+0MlGd1Wm54ro32U2PJkxNol86E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741300751; c=relaxed/simple;
-	bh=hPzh7ssBwl1dUtDKNrXIa7KqEjktBsI9Rm9Oh1CqqTE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EBdZhRCLdensVEGb/ZPSYdQ27cOmMWkDyJazrL3M5T96z77hCkPIW/+3zw7wbmoNiydFssvNPmWhBK/0WT3FyudN7ZVeLZUM+LRktCf/bzibyUH9d992MDMhHM+MJ4Mi8pDyMXtRVksNL/F5DL+bgBBg6Pp2Tocz4jshAhCT0Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=JuWR+waS; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2234e5347e2so23491075ad.1
-        for <keyrings@vger.kernel.org>; Thu, 06 Mar 2025 14:39:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1741300749; x=1741905549; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h+DEPeF6tUdrf5sYZTIAFqaj+xuuM1BUFzIBk9RHTI0=;
-        b=JuWR+waSQMkH0iH3cMQ8qbklxMWjjNbG5WZtfi1bNNl90Y3xWsDVNKguvHcHpxO2s0
-         NtRs/Ca6VESVIgbSXPhjBjiGouvuffkk0jnWfZcxQxEYP+e+WsE7t+rsFqcxYltcidgS
-         CXjJZNfvPtcVamKMo/2+4hTPxhuLD48IlV3qbSxylIKiXlMkL1n+KiErrCc3UnMGd/s+
-         PtQUhsVFNzGwTqD3WjpIH4JQsakyJ1vm56WqFe/XEaFBdjkS1s+6StUmnASgR4XItV7r
-         nnMXJav+TuYEuPNI1srTJ+HHpWB3NYnJiwHaY+wX4SxUzXVblYqLSPsKpDNQLYW6ndrs
-         iGHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741300749; x=1741905549;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h+DEPeF6tUdrf5sYZTIAFqaj+xuuM1BUFzIBk9RHTI0=;
-        b=sYhdk2CZz156856AYY/XjJnELq3zq9wpMHYctseo0fprB6e6kha1bKRrvTFJ5b9sC/
-         o8Qk1nXSOmsQWBJA3iStw+sDDjOgWSvv0avQpKMzYv9/wt4aUCMx4OiWpo6yja2GupMB
-         UEMJ9WEXnRCmjZZhN6/4ZzDKG1PXVaJrwXge9BGEGbC+AHPtYRiji0dLi0lTzP/Wmiy1
-         KstMlvozV7D1XKgmyaS3hAO71PpnHHn7EXGh/mHVK/WX1qrocyvC+zypg2syilNu7HQJ
-         lW/dFGgGMMi9NXjPDC4eo8hvPNL+/YIthetXIhoxn9RUiKC1lc26seVTMI0EXoYDWAlE
-         gGJA==
-X-Forwarded-Encrypted: i=1; AJvYcCU/Ytgcn+D+ANq427I5/DaUUvvdQSAP+89eKCJTcfFMz5UsoT7uX6bd4aoBULGasbz305piI/VSnA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtcUJsRlfHaTjlffacG8nW5ahY4r7rBqCTIvfKBxXl02eGuSoh
-	RlX3U4qQ7kA8QtNn9xySTiJx2IQ1uHOls4V4uVLqGD0KXqU7XEWMBUX04Xy+1WCVxLRRL8jF+yo
-	QAb6c/O2zbJJNpJMJpy3GdLZOrlDNiqrfa74+2w==
-X-Gm-Gg: ASbGnct+92HqLP4yqtuP/eRhHuF4h5eK8PchJgyuUkYt9p4FIJC6vmcWMCnT92Gb7hd
-	kUYqQQFt4qTx6h4LVcmRdt4v1Y+Ys7iE7x156YUBUxRbPvmzRL0tcjmIr5IXl3weGGaJoWqFlgd
-	upITrmMiHEc7v3wQR3UwshhD0mrbegKixCDstAD8gpuAMkdJZjdi6L2dt+Xsc=
-X-Google-Smtp-Source: AGHT+IGXTvH+QOSG/rW5XS7z1aEK3pcaK2z1twmViFnZzxKB7GeXwBWo4+UDouBTG979vA3+Yhzz/ndkDjnQ6YGlo8g=
-X-Received: by 2002:a17:903:1b63:b0:224:1005:7280 with SMTP id
- d9443c01a7336-22428bd57a2mr18397955ad.38.1741300749421; Thu, 06 Mar 2025
- 14:39:09 -0800 (PST)
+	s=arc-20240116; t=1741302323; c=relaxed/simple;
+	bh=UOdy1uc1Ja6Ouzx9Gp3orqw2OLpxN4Hd+lHG4CKFzvE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Q9g9uL6cr/B8NH6cO+yjUXKTQP80mmTRVh1S+quUCA6MUkPy4FrxX2xQq/ep9bb+RB6Nyg7/L4CO4ahAjKz7OdJd9lpvPEo0zaGeuHSplsX9flcu9b5s11NhDXatdxweVfZ6ZZMkxY1/h70JHcbizwVrxPJREISIWjCM4Z9NjP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=delugo.co.za; spf=pass smtp.mailfrom=delugo.co.za; dkim=pass (2048-bit key) header.d=delugo.co.za header.i=@delugo.co.za header.b=fO/JKBdZ; arc=none smtp.client-ip=197.189.247.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=delugo.co.za
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=delugo.co.za
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=delugo.co.za; s=xneelo; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:sender:cc:bcc:
+	in-reply-to:references; bh=UOdy1uc1Ja6Ouzx9Gp3orqw2OLpxN4Hd+lHG4CKFzvE=; b=fO
+	/JKBdZakhPJTG5jAsSWomOr73t7TZqFHsbDrDWQGlzikjSzrHsPs20Pgvoo8mHAAzkmoBpKJCaWhK
+	FsqRRmyt6Lnwa7HQd75jXwbmFhIrg9xHIaAvYZOgUCtDfpbZxJ6tfpaYrc+6nPV1rCg2NP4p58pRN
+	ubNhgmY0p/ZTNFg+CxmfJzuftNuHyGcvCpbclYa62kjoJTgJq/J1BpKlGJmbs9Q61zX+z7OtXUvtx
+	sHgGCLmkbqBHnt8can2Z64pMfh48CQ54nD//fuBhea6tsECFac0fCTagFX4ygd6F/JFhxyvI5SQSj
+	kUSolVLMSr0RJcWUm0ze2TsMEXoItbew==;
+Received: from www46.cpt3.host-h.net ([197.221.14.46])
+	by antispam1-cpt4.host-h.net with esmtpsa (TLSv1.3:TLS_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <orders@delugo.co.za>)
+	id 1tqKHD-001UUn-IJ
+	for keyrings@vger.kernel.org; Fri, 07 Mar 2025 01:05:16 +0200
+Received: from [104.192.5.240] (helo=delugo.co.za)
+	by www46.cpt3.host-h.net with esmtpsa (TLS1.2:ECDHE_SECP521R1__RSA_SHA512__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <orders@delugo.co.za>)
+	id 1tqK54-0000000Dm2b-1hNy
+	for keyrings@vger.kernel.org;
+	Fri, 07 Mar 2025 00:52:42 +0200
+Reply-To: barry@investorstrustco.net
+From: Barry <orders@delugo.co.za>
+To: keyrings@vger.kernel.org
+Subject: Re: The Business Loan/financing.1
+Date: 06 Mar 2025 22:52:41 +0000
+Message-ID: <20250306223012.07D63D0F4BEAC2EA@delugo.co.za>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <90c171d5beed08bcf65ec2df6357a7ac97520b91.1741194399.git.lukas@wunner.de>
-In-Reply-To: <90c171d5beed08bcf65ec2df6357a7ac97520b91.1741194399.git.lukas@wunner.de>
-From: Ignat Korchagin <ignat@cloudflare.com>
-Date: Thu, 6 Mar 2025 22:38:58 +0000
-X-Gm-Features: AQ5f1JoJa6SipvivxSs9TwSia_gUcfciKY7Kxc9Vy9q0r_E9yeTQv3AQR3ZIAAY
-Message-ID: <CALrw=nG-NP=XAUD3V5O44j3fbea0-zhKJM1tgOmwN8yyQMYu-g@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: Add Lukas & Ignat & Stefan for asymmetric keys
-To: Lukas Wunner <lukas@wunner.de>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	David Howells <dhowells@redhat.com>, Stefan Berger <stefanb@linux.ibm.com>, 
-	Tadeusz Struk <tstruk@gmail.com>, Tadeusz Struk <tstruk@gigaio.com>, Vitaly Chikunov <vt@altlinux.org>, 
-	linux-crypto@vger.kernel.org, keyrings@vger.kernel.org, 
-	Eric Biggers <ebiggers@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+	charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
+X-Authenticated-Sender: orders@delugo.co.za
+X-Virus-Scanned: Clear
+X-SpamExperts-Domain: delugo.co.za
+X-SpamExperts-Username: 
+Authentication-Results: host-h.net; auth=pass (login) smtp.auth=@delugo.co.za
+X-SpamExperts-Outgoing-Class: unsure
+X-SpamExperts-Outgoing-Evidence: Combined (0.75)
+X-Recommended-Action: accept
+X-Filter-ID: Pt3MvcO5N4iKaDQ5O6lkdGlMVN6RH8bjRMzItlySaT+5DhM0jw86KsbkaGfFMuQCPUtbdvnXkggZ
+ 3YnVId/Y5jcf0yeVQAvfjHznO7+bT5zDQrfUAi3O/xfP/O+Sa6P2W4h0KqOTIGbSh7sPxo0b07gN
+ zB/4Jkrw1eDLcif59fvZOxK68RwLjWTAxOmLPRgkgYVALhXkueKT79r7FRLqfR+evMtsdD6ftsld
+ sfnMs10q9c+4Ff8pUXk0BTqlb4RLs8aMj3d6PkVfGnccqGRdIe3om1NOCXE1kCr91rpFr6SCNzgB
+ zq1ySYML985VKzvVyIhNl47uPFa9YEAuYZYGqweph0m/7Zfos+AxsfpxEVjN0iSJBwaRRCp9wOH4
+ R+ueaVyj66M1yz85ZZhpUrhTRbASVYnBhdKUnGmBdHG7BUn2dK6UtSEdwn3yFtfkzf2gaLnJjd8G
+ 94gdLOfhe8ud1dI4asu3KfN2fj0P4iw7xzsjF+zaopzR+EXhgx3SXAfA5fJjsMYie1KIHivoqPV+
+ yClmkGsLc8BOsvUZq1oC3tQnKgUcmMkAcVs3h9yHT69gm54XYz0lbA+o4ZKLKop65ovhSJcbnX/H
+ QqL/X9rNCJCc6iESJvKm1NV8gkr+Wu8ScVDXinOVyuIpITQ9z3M3DEPE5lEGmMkRWrcFIJmPjQ+l
+ RpTAZpJuxsSbJHBbUUtocbizIpBmJyMKAzhAwIwRzA246snhpY0AHiBL6U5bHxzn9sfTcvc8Pdr1
+ Eep4DMP1lKJ7jrNRXsNt/cBtRLSZFwHEfA/nAtW6EkD5d6HfoI3vpFmWyTLCbA81C8stasRnxi0A
+ 4m6JtJd9/PPFSsyQJla7kdVV0k0ysDMNhUO3O7IccBIk1Sag4dKiqCrF8eZZKVuxqyEw0bOyF0K/
+ byuDO5t0Liotf6e5xyTYE7MyLegD9u4OiddtVk9xfnW9NSjMPmmtiDTojdHcBBawfH0Y+8GSFRx5
+ C+DsqqfSwTWdevIqbWe2XTLJZsfQ+qOStW7Yzki9qqiuW3Bk5C+gdmOiVUocc7wo4xkKZzzZBdDM
+ F0T/RZQXqz2OSxZa5G41j9ZG
+X-Report-Abuse-To: spam@antispamquarantine.host-h.net
+X-Complaints-To: abuse@antispammaster.host-h.net
 
-On Wed, Mar 5, 2025 at 5:16=E2=80=AFPM Lukas Wunner <lukas@wunner.de> wrote=
-:
->
-> Herbert asks for long-term maintenance of everything under
-> crypto/asymmetric_keys/ and associated algorithms (ECDSA, GOST, RSA) [1].
->
-> Ignat has kindly agreed to co-maintain this with me going forward.
->
-> Stefan has agreed to be added as reviewer for ECDSA.  He introduced it
-> in 2021 and has been meticulously providing reviews for 3rd party
-> patches anyway.
->
-> Retain David Howells' maintainer entry until he explicitly requests to
-> be removed.  He originally introduced asymmetric keys in 2012.
->
-> RSA was introduced by Tadeusz Struk as an employee of Intel in 2015,
-> but he's changed jobs and last contributed to the implementation in 2016.
->
-> GOST was introduced by Vitaly Chikunov as an employee of Basealt LLC [2]
-> (=D0=91=D0=B0=D0=B7=D0=B0=D0=BB=D1=8C=D1=82 =D0=A1=D0=9F=D0=9E [3]) in 20=
-19.  This company is an OFAC sanctioned entity
-> [4][5], which makes employees ineligible as maintainer [6].  It's not
-> clear if Vitaly is still working for Basealt, he did not immediately
-> respond to my e-mail.  Since knowledge and use of GOST algorithms is
-> relatively limited outside the Russian Federation, assign "Odd fixes"
-> status for now.
->
-> [1] https://lore.kernel.org/r/Z8QNJqQKhyyft_gz@gondor.apana.org.au/
-> [2] https://prohoster.info/ru/blog/novosti-interneta/reliz-yadra-linux-5-=
-2
-> [3] https://www.basealt.ru/
-> [4] https://ofac.treasury.gov/recent-actions/20240823
-> [5] https://sanctionssearch.ofac.treas.gov/Details.aspx?id=3D50178
-> [6] https://lore.kernel.org/r/7ee74c1b5b589619a13c6318c9fbd0d6ac7c334a.ca=
-mel@HansenPartnership.com/
->
-> Signed-off-by: Lukas Wunner <lukas@wunner.de>
-> ---
->  MAINTAINERS | 28 ++++++++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 8e0736d..b16a1cc 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3595,14 +3595,42 @@ F:      drivers/hwmon/asus_wmi_sensors.c
->
->  ASYMMETRIC KEYS
->  M:     David Howells <dhowells@redhat.com>
-> +M:     Lukas Wunner <lukas@wunner.de>
-> +M:     Ignat Korchagin <ignat@cloudflare.com>
->  L:     keyrings@vger.kernel.org
-> +L:     linux-crypto@vger.kernel.org
->  S:     Maintained
->  F:     Documentation/crypto/asymmetric-keys.rst
->  F:     crypto/asymmetric_keys/
->  F:     include/crypto/pkcs7.h
->  F:     include/crypto/public_key.h
-> +F:     include/keys/asymmetric-*.h
->  F:     include/linux/verification.h
->
-> +ASYMMETRIC KEYS - ECDSA
-> +M:     Lukas Wunner <lukas@wunner.de>
-> +M:     Ignat Korchagin <ignat@cloudflare.com>
-> +R:     Stefan Berger <stefanb@linux.ibm.com>
-> +L:     linux-crypto@vger.kernel.org
-> +S:     Maintained
-> +F:     crypto/ecc*
-> +F:     crypto/ecdsa*
-> +F:     include/crypto/ecc*
-> +
-> +ASYMMETRIC KEYS - GOST
-> +M:     Lukas Wunner <lukas@wunner.de>
-> +M:     Ignat Korchagin <ignat@cloudflare.com>
-> +L:     linux-crypto@vger.kernel.org
-> +S:     Odd fixes
-> +F:     crypto/ecrdsa*
-> +
-> +ASYMMETRIC KEYS - RSA
-> +M:     Lukas Wunner <lukas@wunner.de>
-> +M:     Ignat Korchagin <ignat@cloudflare.com>
-> +L:     linux-crypto@vger.kernel.org
-> +S:     Maintained
-> +F:     crypto/rsa*
-> +
->  ASYNCHRONOUS TRANSFERS/TRANSFORMS (IOAT) API
->  R:     Dan Williams <dan.j.williams@intel.com>
->  S:     Odd fixes
-> --
-> 2.43.0
->
+Hello,
 
-Acked-by: Ignat Korchagin <ignat@cloudflare.com>
+My name is Barry at Investment Consult, we are a consultancy and
+brokerage Firm specializing in Growth Financial Loan and joint
+partnership venture. We specialize in investments in all Private
+and public sectors in a broad range of areas within our Financial
+Investment Services.
 
-Regards,
-Ignat
+ We are experts in financial and operational management, due
+diligence and capital planning in all markets and industries. Our
+Investors wish to invest in any viable Project presented by your
+Management after reviews on your Business Project Presentation
+Plan.
+
+ We look forward to your Swift response. We also offer commission
+to consultants and brokers for any partnership referrals.
+
+ Regards,
+Barry
+Senior Broker
 
