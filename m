@@ -1,157 +1,137 @@
-Return-Path: <keyrings+bounces-2462-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2463-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6BA8A670EF
-	for <lists+keyrings@lfdr.de>; Tue, 18 Mar 2025 11:16:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19920A671D3
+	for <lists+keyrings@lfdr.de>; Tue, 18 Mar 2025 11:53:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA186422B1E
-	for <lists+keyrings@lfdr.de>; Tue, 18 Mar 2025 10:15:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7C663AFFAB
+	for <lists+keyrings@lfdr.de>; Tue, 18 Mar 2025 10:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3390E207A35;
-	Tue, 18 Mar 2025 10:14:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iK/2x/Ve"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6CA2080C3;
+	Tue, 18 Mar 2025 10:53:39 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF7D207A2C
-	for <keyrings@vger.kernel.org>; Tue, 18 Mar 2025 10:14:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C172066EF;
+	Tue, 18 Mar 2025 10:53:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742292896; cv=none; b=rIBkZRHWi97QQUEqz0Aob+rvZRIq5X0FxJTs5o3uc4rZbHO9wU2gdnCZMetPLjKMuDbPYYO6ar9duiuiUzOMcDKgR95xnOWj2G2crJSbnbJ7atBMLdcuRY1JJ4MKJXAN02N1T0Mc4N6XEgyW9yUp8kl2NOsQvPlvJN6ODiI1nhI=
+	t=1742295219; cv=none; b=psKdv4OgNtXYWEXnbsm2FLGgPK4h57JjW0QMlC+sQGIE3ymIvNVPTqxn5ESpezRzvppDJ0UtI55Q/e0SpreBvMNoqiJ4qLh5wEkxVYzvYJa2b2V43ipO6pIsMl8Vd1680QX7b/Md4zXP0KTV7oK252XETzJq4sauaWZc8ev2W3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742292896; c=relaxed/simple;
-	bh=qgbreH565IsTmANQ6jcuU4QnCgPcSjS+1zqr0JjRNEs=;
-	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=tam0Zhflha3Ufbo828D25OZptuMYHk5zEOrBjpRmUTZ13g5kDSmJ/Fj0Epvn/9aX3KYA6kiSxu5g1d9gfzNuhFViV/fTy1AOBZuYkQNEzCHCxkHSPXqJQuBAyj5WssDJ9eM0ppHJtkwPDwQqSTn0pAG1LM7xkCJIzBy7EsILGhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iK/2x/Ve; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742292893;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=N2pxJRjJyW1cw5QoeNfYeEt/Fo+VzjEblG5ngppUQIU=;
-	b=iK/2x/Vec32+BDcv+IdOAW+0ivTmAFkqPupY9jpGuPTIgETbV1xbbdFsfE1aJZDSYFi16H
-	VtTfg4yNtRc+Lu2IU3q+h2jKDmlYEhyfz0kAPbuAf/XcoEZvlwH7wPuyYSc+HbtZLYZzDm
-	IIY9T4Wq0F+cWnOH7aZUrSdwEWUxlho=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-383-CGAihJ3WNlyH7E1GrkaaBw-1; Tue,
- 18 Mar 2025 06:14:51 -0400
-X-MC-Unique: CGAihJ3WNlyH7E1GrkaaBw-1
-X-Mimecast-MFC-AGG-ID: CGAihJ3WNlyH7E1GrkaaBw_1742292890
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1AE83195608B;
-	Tue, 18 Mar 2025 10:14:50 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.61])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E9FFD19560AD;
-	Tue, 18 Mar 2025 10:14:46 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-cc: dhowells@redhat.com, Kees Cook <kees@kernel.org>,
-    Greg KH <gregkh@linuxfoundation.org>,
-    Josh Drake <josh@delphoslabs.com>,
-    Suraj Sonawane <surajsonawane0215@gmail.com>,
-    keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-    security@kernel.org, stable@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: [PATCH] keys: Fix UAF in key_put()
+	s=arc-20240116; t=1742295219; c=relaxed/simple;
+	bh=SGybYdnHDipNR4n7EgqZc3WC2xDhL+Q6SF95rsycQWk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lqBP0HiJaob1tzyPpolyo59otK+cMGaSXIZFS4/X15syfRYvyaQtJN703tSFNx36SSXn8vyVPBKxvZQvPDpQknZDw2FNmg7LvLvPJ5zFsF8Exw7z9J1BRQnkiJ6n07qSLDbgQIbX8wrr9w/mSvTDmdKPUgSeruvZQcqHKEzfy1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.198])
+	by gateway (Coremail) with SMTP id _____8Bx63GoUNlnUIibAA--.875S3;
+	Tue, 18 Mar 2025 18:53:28 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.68.198])
+	by front1 (Coremail) with SMTP id qMiowMDxesSgUNlnrp1RAA--.20743S2;
+	Tue, 18 Mar 2025 18:53:28 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>
+Cc: Xuerui Wang <kernel@xen0n.name>,
+	stable@vger.kernel.org,
+	David Howells <dhowells@redhat.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Jan Stancek <jstancek@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	keyrings@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1&6.6 0/3] sign-file,extract-cert: switch to PROVIDER API for OpenSSL >= 3.0
+Date: Tue, 18 Mar 2025 18:53:05 +0800
+Message-ID: <20250318105308.2160738-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2477453.1742292884.1@warthog.procyon.org.uk>
-Date: Tue, 18 Mar 2025 10:14:45 +0000
-Message-ID: <2477454.1742292885@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMDxesSgUNlnrp1RAA--.20743S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxXFWDAF48AF4xtw18AFy5trc_yoW5Wr13pa
+	43A343K348XrnrWwnxtw4rWr13ZrWkGw18ZrnrGw4rGa1UAFy0vr1jqF4Fka4xJryrtr1a
+	qa4jqas0gr1rAagCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBjb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	GcCE3s1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
+	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1D
+	McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
+	1lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
+	Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
+	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
+	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07jOiSdUUUUU=
 
-From: Hillf Danton <hdanton@sina.com>
-    
-Once a key's reference count has been reduced to 0, the garbage collector
-thread may destroy it at any time and so key_put() is not allowed to touch
-the key after that point.  The most key_put() is normally allowed to do is
-to touch key_gc_work as that's a static global variable.
+Backport this series to 6.1&6.6 because we get build errors with GCC14
+and OpenSSL3 (or later):
 
-However, in an effort to speed up the reclamation of quota, this is now
-done in key_put() once the key's usage is reduced to 0 - but now the code
-is looking at the key after the deadline, which is forbidden.
+certs/extract-cert.c: In function 'main':
+certs/extract-cert.c:124:17: error: implicit declaration of function 'ENGINE_load_builtin_engines' [-Wimplicit-function-declaration]
+  124 |                 ENGINE_load_builtin_engines();
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+certs/extract-cert.c:126:21: error: implicit declaration of function 'ENGINE_by_id' [-Wimplicit-function-declaration]
+  126 |                 e = ENGINE_by_id("pkcs11");
+      |                     ^~~~~~~~~~~~
+certs/extract-cert.c:126:19: error: assignment to 'ENGINE *' {aka 'struct engine_st *'} from 'int' makes pointer from integer without a cast [-Wint-conversion]
+  126 |                 e = ENGINE_by_id("pkcs11");
+      |                   ^
+certs/extract-cert.c:128:21: error: implicit declaration of function 'ENGINE_init' [-Wimplicit-function-declaration]
+  128 |                 if (ENGINE_init(e))
+      |                     ^~~~~~~~~~~
+certs/extract-cert.c:133:30: error: implicit declaration of function 'ENGINE_ctrl_cmd_string' [-Wimplicit-function-declaration]
+  133 |                         ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0), "Set PKCS#11 PIN");
+      |                              ^~~~~~~~~~~~~~~~~~~~~~
+certs/extract-cert.c:64:32: note: in definition of macro 'ERR'
+   64 |                 bool __cond = (cond);                   \
+      |                                ^~~~
+certs/extract-cert.c:134:17: error: implicit declaration of function 'ENGINE_ctrl_cmd' [-Wimplicit-function-declaration]
+  134 |                 ENGINE_ctrl_cmd(e, "LOAD_CERT_CTRL", 0, &parms, NULL, 1);
+      |                 ^~~~~~~~~~~~~~~
 
-Fix this on an expedited basis[*] by taking a ref on the key->user struct
-and caching the key length before dropping the refcount so that we can
-reduce the quota afterwards if we dropped the last ref.
+In theory 5.4&5.10&5.15 also need this, but they need more efforts because
+file paths are different.
 
-[*] This is going to hurt key_put() performance, so a better way is
-probably necessary, such as sticking the dead key onto a queue for the
-garbage collector to pick up rather than having it scan the serial number
-registry.
+The ENGINE interface has its limitations and it has been superseded
+by the PROVIDER API, it is deprecated in OpenSSL version 3.0.
+Some distros have started removing it from header files.
 
-Fixes: 9578e327b2b4 ("keys: update key quotas in key_put()")
-Reported-by: syzbot+6105ffc1ded71d194d6d@syzkaller.appspotmail.com
-Tested-by: syzbot+6105ffc1ded71d194d6d@syzkaller.appspotmail.com
-Suggested-by: Hillf Danton <hdanton@sina.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Jarkko Sakkinen <jarkko@kernel.org>
-cc: Kees Cook <kees@kernel.org>
-cc: keyrings@vger.kernel.org
-cc: stable@vger.kernel.org # v6.10+
+Update sign-file and extract-cert to use PROVIDER API for OpenSSL Major >= 3.
+
+Tested on F39 with openssl-3.1.1, pkcs11-provider-0.5-2, openssl-pkcs11-0.4.12-4
+and softhsm-2.6.1-5 by using same key/cert as PEM and PKCS11 and comparing that
+the result is identical.
+
+Jan Stancek (3):
+  sign-file,extract-cert: move common SSL helper functions to a header
+  sign-file,extract-cert: avoid using deprecated ERR_get_error_line()
+  sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >= 3
+
+Signed-off-by: Jan Stancek <jstancek@redhat.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- security/keys/key.c |   19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
-
-diff --git a/security/keys/key.c b/security/keys/key.c
-index 3d7d185019d3..1e6028492355 100644
---- a/security/keys/key.c
-+++ b/security/keys/key.c
-@@ -645,21 +645,30 @@ EXPORT_SYMBOL(key_reject_and_link);
-  */
- void key_put(struct key *key)
- {
-+	int quota_flag;
-+	unsigned short len;
-+	struct key_user *user;
-+
- 	if (key) {
- 		key_check(key);
- 
-+		quota_flag = test_bit(KEY_FLAG_IN_QUOTA, &key->flags);
-+		len = key->quotalen;
-+		user = key->user;
-+		refcount_inc(&user->usage);
- 		if (refcount_dec_and_test(&key->usage)) {
- 			unsigned long flags;
- 
- 			/* deal with the user's key tracking and quota */
--			if (test_bit(KEY_FLAG_IN_QUOTA, &key->flags)) {
--				spin_lock_irqsave(&key->user->lock, flags);
--				key->user->qnkeys--;
--				key->user->qnbytes -= key->quotalen;
--				spin_unlock_irqrestore(&key->user->lock, flags);
-+			if (quota_flag) {
-+				spin_lock_irqsave(&user->lock, flags);
-+				user->qnkeys--;
-+				user->qnbytes -= len;
-+				spin_unlock_irqrestore(&user->lock, flags);
- 			}
- 			schedule_work(&key_gc_work);
- 		}
-+		key_user_put(user);
- 	}
- }
- EXPORT_SYMBOL(key_put);
+ MAINTAINERS          |   1 +
+ certs/Makefile       |   2 +-
+ certs/extract-cert.c | 138 +++++++++++++++++++++++--------------------
+ scripts/sign-file.c  | 134 +++++++++++++++++++++--------------------
+ scripts/ssl-common.h |  32 ++++++++++
+ 5 files changed, 178 insertions(+), 129 deletions(-)
+ create mode 100644 scripts/ssl-common.h
+---
+2.27.0
 
 
