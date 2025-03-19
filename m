@@ -1,170 +1,118 @@
-Return-Path: <keyrings+bounces-2489-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2490-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 730D1A69587
-	for <lists+keyrings@lfdr.de>; Wed, 19 Mar 2025 17:54:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A76A1A697D8
+	for <lists+keyrings@lfdr.de>; Wed, 19 Mar 2025 19:17:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF56016F0C0
-	for <lists+keyrings@lfdr.de>; Wed, 19 Mar 2025 16:53:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4E488A62D4
+	for <lists+keyrings@lfdr.de>; Wed, 19 Mar 2025 18:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DCE71E2843;
-	Wed, 19 Mar 2025 16:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85AF20FA97;
+	Wed, 19 Mar 2025 18:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xa193cTt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SO+my/8i"
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845DE1E0B66
-	for <keyrings@vger.kernel.org>; Wed, 19 Mar 2025 16:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C9B20A5DE
+	for <keyrings@vger.kernel.org>; Wed, 19 Mar 2025 18:12:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742403202; cv=none; b=IN5BmOurGg0rmunnX6JbKb2Rs8qvpw83zGYSH8sPxopLxLnPK9MltUOCf7PaXweZ/iU9ha5P+Ynp2fdtgyzdOh099Fjw1L1/8TXsnfJude1qQycziGaojj/Zeczr7D9aJx0J/QErHYCXJ9fqvbtw6+8608//9hBKMsPEA7ZAL/A=
+	t=1742407938; cv=none; b=or0u7PFS8Dh7wU5OV61cg6+wa/LjE8ujAU5l5beNrKJiWO0UbzffhiF9Y4r50d+t4io/VJ2nS7KG7z0C0/qbstx8x9EK+AT0BGSVeMRZOIz7yYVgWWD4InL7VywhiSxMzQGPCIrtmCc6pzFsEmUgUUlcW+pcTrQfwcP/T9PkAWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742403202; c=relaxed/simple;
-	bh=gZ91fGn4VM1jhjIigc/roNld//H+y2pnwO3JvtN5t1g=;
+	s=arc-20240116; t=1742407938; c=relaxed/simple;
+	bh=fFeqEDSx+gFrh11ijFVYJhwWlYSMde/JsajtuuK8bvA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EUodD0Xl1HgPJV8Mzfsjcg8nQhUfFORDgk96z/vUIPObp15KlQnomNTw2JkQ8WQF2ojvAM9Ghbf81FNvfoHQgSWO7bGt5xKFv9+5PhSBT8Tu43zW2Ca+RBYZBmX4lK1ZDbWDwhV4016B2ZuHieqWXY4OEV3MD+FzCALQ2wRkVhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xa193cTt; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742403199;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QMYidfuF22qqOjt7R1FtIa+eC5SY/DINipfXYLFNQ3c=;
-	b=Xa193cTtLwB6J+31fN+oeph9eGd+cvGcGoI+G+Ar3/BTKeEMfllAoXdhCauWJx/0hNdjeC
-	AsxsXW8OnEXZALYm8ygHu41vSAkbpowr8HN6t783GZAoNHhyvfea+FcQ4vP2bSV3UfB/ud
-	6laHbXx0CZZoJqlD03fh/7el54yTOaI=
-Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
- [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-557-KVJPzf0oNSilw85-SGWKiA-1; Wed, 19 Mar 2025 12:53:18 -0400
-X-MC-Unique: KVJPzf0oNSilw85-SGWKiA-1
-X-Mimecast-MFC-AGG-ID: KVJPzf0oNSilw85-SGWKiA_1742403197
-Received: by mail-ua1-f71.google.com with SMTP id a1e0cc1a2514c-86c428a6b92so1722645241.0
-        for <keyrings@vger.kernel.org>; Wed, 19 Mar 2025 09:53:18 -0700 (PDT)
+	 To:Cc:Content-Type; b=aY2HLvyCSf3NmmjyupnxuP11rTxMJlRqWCTa/rn4l+PoLw3Ag5Wp1Z1Vh+l5+90yWrgJ7YWEwgsNm0ZRgGX3+Xarr//cLSmKcx2p1T9Hn/UzCa58yYIhvYA4bFvnQP1NepohYYaP0Gk7GCgp390fSdqEBzrquHSHQWPB1BjVLRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SO+my/8i; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-ac2a81e41e3so177420766b.1
+        for <keyrings@vger.kernel.org>; Wed, 19 Mar 2025 11:12:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1742407935; x=1743012735; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PtsDpMKG3PVh8c/2wdkRvEAKIrMwiuW7c09tD+wzsRQ=;
+        b=SO+my/8iQC8Sry5gW8ScLtTJKz1xPXEWyhJqAmZk6pqTd7ZwdCTM1TQFPBDiePS1d+
+         T2u39Hctl8SR4BwtPK1xiHhBW8z3V4hBhIxnOdJ3qzOGK1nSPhn5TIYUixr6dvEsh2bx
+         WQPpNR+W3NXEtmu93UpOmsRDn0+jGh5+nwijw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742403197; x=1743007997;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QMYidfuF22qqOjt7R1FtIa+eC5SY/DINipfXYLFNQ3c=;
-        b=bcwCkjIEn5mJ7iVfh09fLzFjiB+cQoZqWL+Y4sZkRGQ8dSC22/oIsJEkj1FIarhfM6
-         vwhnriIKPyZwNvl9TTpAZiheSTxJRZN7kHJtDNzqG0GV2qisitCDFiUI/Z0NO8j+Xllp
-         WK9NC/5cV1hPDliSstFsFWdsna5HjkPzfhENohJ4M30jx6GTVHnTagFNgkqc23J+iBTf
-         +BTOlkK5LnjvKfue1KEAjyltFXICRwEHzf7WjL6epbJ+ckVtmeZi6KKjtApRWuiHTiIs
-         URO9F1XQx3H6qb3RTVPCjcu+xX976uAO9U/Onjbire53WGXXM0FykvhkquGnnAEI8wBt
-         RcWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUFueqCi1n+FI75urUgbf3E0chYaNcBNFmTnniRVQSpLdPOr6swXNRIwvE1qzTPbgJo/360eztcug==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy304t4HFdYvba2zIf/SoXFnPJE/f2+sXuaOtYFv5lvgw+LduPK
-	+HmdEnOGebaHaEGBVEuQ3LnrkJSgQaUuFmLuN7mcZCfPe7YiGUojncTI8lamoVTQ7gmDw29Jqm7
-	Lq6Gd/05SsYe8LFgYrbTwptqvZ5NKu8ZnphF4kTfGs2xXKCu9CF6AjxH857pJTNbt6lWQ6mR8aF
-	8OntkkCOkOsYq/gZGscRp8D413zGiYMhQ=
-X-Gm-Gg: ASbGncu14sWPkqn4c7tUzE9/BlKtXpT0Sr1uuDEQb5K4v/tADqe0VIIXtB9UixiXn09
-	BsmUkBCKFp0gOJ3bZlMIcNZ6JF8UaY+K38qcjvIJS4QlrHheTpwr+VWBrQ8aU33Q2ku+w0/dp
-X-Received: by 2002:a05:6102:c04:b0:4bb:d062:455 with SMTP id ada2fe7eead31-4c4ec2f2e0cmr3397553137.0.1742403197623;
-        Wed, 19 Mar 2025 09:53:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFBaHItzcn4FKUvbMcp1OcW2oWpcGSy2J17LaT6TvPL1Qm1q4Ep4ILwSlmKbFP+qP7MGksmGbNbt7PDdKxGz40=
-X-Received: by 2002:a05:6102:c04:b0:4bb:d062:455 with SMTP id
- ada2fe7eead31-4c4ec2f2e0cmr3397539137.0.1742403197256; Wed, 19 Mar 2025
- 09:53:17 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1742407935; x=1743012735;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PtsDpMKG3PVh8c/2wdkRvEAKIrMwiuW7c09tD+wzsRQ=;
+        b=TBU+wQ1h1CO9bmepp8oMOXKlvGBCNxO1DT6rsVo5QtGGQgeEJLQptmcAa17YVKsY0N
+         xtDdb4Iy6EQ4lZE+hj4OPHcggDbkNeQ7wlppWL8XTXQPUXa9OVTVazXuG8aE22IFPK5Q
+         yXx4BrZBZD0Lsst00KmnI6539DZSMLAR/HAW0m13edkWE/TypI+L9hH4iNFXiHKsKucf
+         g1GBSqXg4r3Uq4o/kizY8NOqoBOTXQrhSAh7WC45H6j5sN6iTFM/GmOBTWNcVO1t+xiU
+         cWzSQ3Kjj7S1qZ0Q5Supj6jUDvY5BiCI60brcz2dw1jo30Q4rl4Gwp7aHmfL7j4mY49R
+         noGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWneuwRURnt0e3hX7SYWhDDgWfLxSBtkRzDTlIrXNJUuDbajdGQAuW9xutGSjW1b2XHnU0i+/FYNg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcJhM1q/B0slb4yxjMuSm+bJ3VVvDMOtXUSxZqsbNjBa3gW/CM
+	E3aYb2jnDbIxSlRpbasQI3g65SNJbcxJs4/Q5QKGWZ4Hs+s5qknkUJESia8TJY7qO8a9qNX2zYs
+	AlbE=
+X-Gm-Gg: ASbGnct+cgYvadkhmErVZTfpQ+4Ti/1oGJ63fpMI58XKajV80VdAvuSV+de2Pfb2t7e
+	BVZgFg+pmQLWrXmGoR2YSG3kaajg2Gdy1cO+MWnnLgCx0IawaZ0qk8dK6ixGXJpmHabpVi9RH5d
+	VV/GK9WaLedwsI/iGnwGve9inE9iW2O6JW68YUQtLbpsbDj2Mo/rHwAy0oSuFCESbcpOZpEpKF1
+	JhZvZPLrFPktJ9yYoPIxHhpYDvwY4MeDYKK5MHbNwZC2azFzCLb7N05y//VqiaQeBfLkDlXDkuv
+	W3w62bakN2Rd+ib2FxhJm3tQyW+uggc9kKxWjiZgHnFMfvw239b+Yd5CppzeziAseVSR0qdicaY
+	WKrZYYN07na+mo1eeqQ==
+X-Google-Smtp-Source: AGHT+IHSBc58z2vk4vxKiEw2B8qPTv9etpx/HviiziNbKlvfu/kUoCGv3f1byQGXQeG7gbHP2NWO3Q==
+X-Received: by 2002:a17:907:d93:b0:ac3:4489:790f with SMTP id a640c23a62f3a-ac3b7dd3027mr368277966b.24.1742407934831;
+        Wed, 19 Mar 2025 11:12:14 -0700 (PDT)
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com. [209.85.218.54])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ac3149d0bc1sm1060766466b.105.2025.03.19.11.12.13
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Mar 2025 11:12:13 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-abec8b750ebso1263669066b.0
+        for <keyrings@vger.kernel.org>; Wed, 19 Mar 2025 11:12:13 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUfrwaoeCdogpX4Cw4X32akkfq3ySMrwgqZ9FwT2WSjqLPsAenXo22A8G1/YvWU5UKaYWuw5xM6nw==@vger.kernel.org
+X-Received: by 2002:a17:907:ec0d:b0:ac3:bd68:24e4 with SMTP id
+ a640c23a62f3a-ac3bd6830damr446966766b.53.1742407933026; Wed, 19 Mar 2025
+ 11:12:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250319064031.2971073-1-chenhuacai@loongson.cn>
- <20250319064031.2971073-4-chenhuacai@loongson.cn> <2025031943-disparity-dash-cfa3@gregkh>
- <Z9rYQy3l5V5cvW7W@t14s> <2025031942-portside-finite-34a9@gregkh>
-In-Reply-To: <2025031942-portside-finite-34a9@gregkh>
-From: Jan Stancek <jstancek@redhat.com>
-Date: Wed, 19 Mar 2025 17:53:02 +0100
-X-Gm-Features: AQ5f1Jq9puc3zDkRAXP8CifSCOyuo9iakTiG2zcMin5No34Rk7G5vb8HVg7uT8A
-Message-ID: <CAASaF6zNsiwUOcSD177aORwfBu4kaq8EKh1XdZkO13kgedcOPA@mail.gmail.com>
-Subject: Re: [PATCH 6.1&6.6 V3 3/3] sign-file,extract-cert: use pkcs11
- provider for OPENSSL MAJOR >= 3
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Sasha Levin <sashal@kernel.org>, 
-	Huacai Chen <chenhuacai@kernel.org>, Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org, 
-	David Howells <dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	loongarch@lists.linux.dev, R Nageswara Sastry <rnsastry@linux.ibm.com>, 
-	Neal Gompa <neal@gompa.dev>
+References: <2874581.1742399866@warthog.procyon.org.uk> <20250319163038.GD26879@redhat.com>
+In-Reply-To: <20250319163038.GD26879@redhat.com>
+From: Linus Torvalds <torvalds@linuxfoundation.org>
+Date: Wed, 19 Mar 2025 11:11:56 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgqidLD38wYUw-5Y6ztFdAvkX3P+Gv2=K+rpkFBG-bf7g@mail.gmail.com>
+X-Gm-Features: AQ5f1JrIwulbm3bCXYePiRgtmwvEUEXDiL2TRjJKyWZ4_ecrDX73K-AxzmDTtIE
+Message-ID: <CAHk-=wgqidLD38wYUw-5Y6ztFdAvkX3P+Gv2=K+rpkFBG-bf7g@mail.gmail.com>
+Subject: Re: [PATCH v2] keys: Fix UAF in key_put()
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: David Howells <dhowells@redhat.com>, Jarkko Sakkinen <jarkko@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Greg KH <gregkh@linuxfoundation.org>, Josh Drake <josh@delphoslabs.com>, 
+	Suraj Sonawane <surajsonawane0215@gmail.com>, keyrings@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, security@kernel.org, 
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 19, 2025 at 5:26=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Wed, 19 Mar 2025 at 09:31, Oleg Nesterov <oleg@redhat.com> wrote:
 >
-> On Wed, Mar 19, 2025 at 03:44:19PM +0100, Jan Stancek wrote:
-> > On Wed, Mar 19, 2025 at 07:13:13AM -0700, Greg Kroah-Hartman wrote:
-> > > On Wed, Mar 19, 2025 at 02:40:31PM +0800, Huacai Chen wrote:
-> > > > From: Jan Stancek <jstancek@redhat.com>
-> > > >
-> > > > commit 558bdc45dfb2669e1741384a0c80be9c82fa052c upstream.
-> > > >
-> > > > ENGINE API has been deprecated since OpenSSL version 3.0 [1].
-> > > > Distros have started dropping support from headers and in future
-> > > > it will likely disappear also from library.
-> > > >
-> > > > It has been superseded by the PROVIDER API, so use it instead
-> > > > for OPENSSL MAJOR >=3D 3.
-> > > >
-> > > > [1] https://github.com/openssl/openssl/blob/master/README-ENGINES.m=
-d
-> > > >
-> > > > [jarkko: fixed up alignment issues reported by checkpatch.pl --stri=
-ct]
-> > > >
-> > > > Signed-off-by: Jan Stancek <jstancek@redhat.com>
-> > > > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > > Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
-> > > > Reviewed-by: Neal Gompa <neal@gompa.dev>
-> > > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > > ---
-> > > >  certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++---------=
-----
-> > > >  scripts/sign-file.c  |  93 ++++++++++++++++++++++++++------------
-> > > >  2 files changed, 138 insertions(+), 58 deletions(-)
-> > >
-> > > This seems to differ from what is upstream by a lot, please document
-> > > what you changed from it and why when you resend this series again.
-> >
-> > Hunks are arranged differently, but code appears to be identical.
-> > When I apply the series to v6.6.83 and compare with upstream I get:
->
-> If so, why is the diffstat different?  Also why are the hunks arranged
-> differently,
+> Can't resist, smp_mb__before_atomic() should equally work,
+> but this doesn't really matter, please forget.
 
-He appears to be using "--diff-algorithm=3Dminimal", while you probably
-patience or histogram.
+We really should have "test_bit_acquire()" and "set_bit_release()".
 
-$ git format-patch -1 --stdout --diff-algorithm=3Dminimal 558bdc45dfb2 |
-grep -A3 -m1 -- "---"
----
- certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++-------------
- scripts/sign-file.c  |  93 ++++++++++++++++++++++++++------------
- 2 files changed, 138 insertions(+), 58 deletions(-)
+Well, we do have the test_bit_acquire().
 
-Should be easy to regenerate with different diff-alg for v4.
+We just don't have the set_bit side, because we only have the bit
+clearing version (and it's called "clear_bit_unlock()" for historical
+reasons).
 
-Regards,
-Jan
+Annoying.
 
-> that's a hint to me that something went wrong and I can't
-> trust the patch at all.
->
-> thanks,
->
-> greg k-h
->
-
+             Linus
 
