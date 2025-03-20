@@ -1,62 +1,58 @@
-Return-Path: <keyrings+bounces-2495-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2496-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D470A6A915
-	for <lists+keyrings@lfdr.de>; Thu, 20 Mar 2025 15:52:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8F91A6A981
+	for <lists+keyrings@lfdr.de>; Thu, 20 Mar 2025 16:16:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9868880F17
-	for <lists+keyrings@lfdr.de>; Thu, 20 Mar 2025 14:52:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83AAE7AFB31
+	for <lists+keyrings@lfdr.de>; Thu, 20 Mar 2025 15:15:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A3C1E25EB;
-	Thu, 20 Mar 2025 14:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7B71E5219;
+	Thu, 20 Mar 2025 15:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oRdovX/x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZM7dm3My"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0291E1DF1;
-	Thu, 20 Mar 2025 14:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D79F1DE4C5;
+	Thu, 20 Mar 2025 15:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742482336; cv=none; b=edEn8ZmWLxjAWKa2FttfR/3rB2RtDO3ag+eiC71OQFIWnzRZisrHYZ7g83I7rLvjo0rWlJijLxQ7/opPJ6c9EBzJ47XRm/5491+5PYBys0jMD9+UxYlbyEnav0nMA9buWdnnQ2pE9106wPyUF/AAdib2OU51gwySB6x1XE8IRgA=
+	t=1742483795; cv=none; b=W81D/UG5t2EjM3mSL7lnsESWHqfzgJjigXEU+AeYuL0mPHSpiip5lpH+hfE8jhvgnzHDG8H6obUuJgcaKuIrSafOIdVulHl5m/iRv3klADeZgfnEbFabOX6Y7WKo+Te3UU0b5rra3m+JoZe2pqK+A+sGRW+pTU09Ide3RudTv5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742482336; c=relaxed/simple;
-	bh=i4ccmJVw2G//TPp4o3Pkz8L4ugx1OstMRn3/JVIzkS4=;
+	s=arc-20240116; t=1742483795; c=relaxed/simple;
+	bh=3ISFEoedf+AsgYKpMB/pWOzZYb8aFav8C0G9rOCDxCU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o94Dl7H4saouxuR7chpW15JCZ+mvTaULUwkYkDeNnxC6ut15xU/Wm8XlmNsbzM4NjNO20CQcYD9ZKlPCYvzl+C/Hm7+uVIALMS0ORvKRl010ok6L40fEhKiD3f/MWxWQg+dPo3if8cJQr0ejsVyMBMEBTDGbrrIiI/YtIvvWzPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oRdovX/x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC853C4CEE7;
-	Thu, 20 Mar 2025 14:52:14 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=rWGzupM6hvwhxwlcNsO0OgokTKgSn7miqtI/iMbOPCbLHhE/WRL1voX8BEBtg5kdXUHK5eIqafboMafY2TlLpj8uOMs3Y9EyXKO6/fuq9vTSgcquUhgVC31BqVjnzDtWLo4NTTun4Y+hMbUvU4JjYF7hXAHkoSpadp80j8Ma2Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZM7dm3My; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28BB4C4CEDD;
+	Thu, 20 Mar 2025 15:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742482335;
-	bh=i4ccmJVw2G//TPp4o3Pkz8L4ugx1OstMRn3/JVIzkS4=;
+	s=k20201202; t=1742483794;
+	bh=3ISFEoedf+AsgYKpMB/pWOzZYb8aFav8C0G9rOCDxCU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oRdovX/xFzu7cs3TIl6sDxyxMGTcZrvfa4PBJcP8ZRZBL/8LGFWM2/fs6YW1+PKNL
-	 h/PvCPsvfP4TxVIRVySFnp1TqJnaTa5M9pRU3bikqiQZpPhJfBITDuDKZGlLkTnVIk
-	 jaPbNJ8S0EFO+JrhSMAn7DdsOo6MHcd/bFaGylaM817gFG5qBGniZ9vbT7N++q+vvw
-	 MIubR1BHM5jyREb3SvsIldN38qyPOgEmf01VtBBOe+LH7vb6MteLunc2pGS29NHn/w
-	 L+LiAMt6fWLBq0vhJEM9xu7N9kxOJxisHiZ+gzWhA/BMPYrzgEDDRzfmBbBNBnQyDj
-	 Dq6CuauAmUF2A==
-Date: Thu, 20 Mar 2025 16:52:10 +0200
+	b=ZM7dm3MyW1u9kYmnpMqxZbxFqmooKpRDJaGCFC6WSQ75koW1s6RCSXzYTQSj3qFKN
+	 LWK2New6mbyX+UphtaHktjHvLutibQ4P7boeCPjFVcXN0RP4d6xwdeszLrg7HVRxeQ
+	 1a47qfrPK3VJFVuZivf5hnw5F+zpWmJBt9wRbV8OFdTu53liiSaSmySOm0jUdffMXQ
+	 bqZAecPY0PTg1PDEfgzvj2Eq3rAGm9fIOs4k9v8M0coA4vfeImo4+y8uPycUpcPmQv
+	 AuGTXu5s5DycnFUDEbOoQ3QaCZJ4mRmoy3Th2UvffwULb0IQC0axYtUdDzF5vgd0nH
+	 KDUv7WRxVsUEA==
+Date: Thu, 20 Mar 2025 17:16:31 +0200
 From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Lennart Poettering <mzxreary@0pointer.de>
-Cc: Mimi Zohar <zohar@linux.ibm.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-	Eric Snowberg <eric.snowberg@oracle.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Lee, Chun-Yi" <joeyli.kernel@gmail.com>
-Subject: Re: [PATCH] Revert "integrity: Do not load MOK and MOKx when secure
- boot be disabled"
-Message-ID: <Z9wrmoPHWoxdEImx@kernel.org>
-References: <Z9wDxeRQPhTi1EIS@gardel-login>
+To: Bo Liu <liubo03@inspur.com>
+Cc: dhowells@redhat.com, James.Bottomley@hansenpartnership.com,
+	zohar@linux.ibm.com, paul@paul-moore.com, jmorris@namei.org,
+	serge@hallyn.com, linux-integrity@vger.kernel.org,
+	keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KEYS: trusted: dcp: Use kfree_sensitive() to fix
+ Coccinelle warnings
+Message-ID: <Z9wxT9SV4BmehzmT@kernel.org>
+References: <20250320103557.7236-1-liubo03@inspur.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -65,58 +61,55 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z9wDxeRQPhTi1EIS@gardel-login>
+In-Reply-To: <20250320103557.7236-1-liubo03@inspur.com>
 
-On Thu, Mar 20, 2025 at 01:02:13PM +0100, Lennart Poettering wrote:
-> diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
-> index d1fdd113450a..7783bcacd26c 100644
-> --- a/security/integrity/platform_certs/load_uefi.c
-> +++ b/security/integrity/platform_certs/load_uefi.c
-> @@ -7,7 +7,6 @@
->  #include <linux/err.h>
->  #include <linux/efi.h>
->  #include <linux/slab.h>
-> -#include <linux/ima.h>
->  #include <keys/asymmetric-type.h>
->  #include <keys/system_keyring.h>
->  #include "../integrity.h"
-> @@ -211,10 +210,6 @@ static int __init load_uefi_certs(void)
->  		kfree(dbx);
+On Thu, Mar 20, 2025 at 06:35:57AM -0400, Bo Liu wrote:
+> Replace memzero_explicit() and kfree() with kfree_sensitive() to fix
+> warnings reported by Coccinelle:
+> 
+> WARNING opportunity for kfree_sensitive/kvfree_sensitive
+> WARNING opportunity for kfree_sensitive/kvfree_sensitive
+
+Even if you get the error from Coccinelle, you should still go trouble
+why this warning happens. Otherwise, you are contributing a change that
+you don't understand yourself.
+
+> 
+> Signed-off-by: Bo Liu <liubo03@inspur.com>
+> ---
+>  security/keys/trusted-keys/trusted_dcp.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/security/keys/trusted-keys/trusted_dcp.c b/security/keys/trusted-keys/trusted_dcp.c
+> index 7b6eb655df0c..c967837e72ee 100644
+> --- a/security/keys/trusted-keys/trusted_dcp.c
+> +++ b/security/keys/trusted-keys/trusted_dcp.c
+> @@ -233,8 +233,7 @@ static int trusted_dcp_seal(struct trusted_key_payload *p, char *datablob)
+>  	ret = 0;
+>  
+>  out:
+> -	memzero_explicit(plain_blob_key, AES_KEYSIZE_128);
+> -	kfree(plain_blob_key);
+> +	kfree_sensitive(plain_blob_key);
+>  
+>  	return ret;
+>  }
+> @@ -283,8 +282,7 @@ static int trusted_dcp_unseal(struct trusted_key_payload *p, char *datablob)
+>  	ret = 0;
+>  out:
+>  	if (plain_blob_key) {
+> -		memzero_explicit(plain_blob_key, AES_KEYSIZE_128);
+> -		kfree(plain_blob_key);
+> +		kfree_sensitive(plain_blob_key);
 >  	}
-> 
-> -	/* the MOK/MOKx can not be trusted when secure boot is disabled */
-> -	if (!arch_ima_get_secureboot())
-> -		return 0;
-> -
->  	mokx = get_cert_list(L"MokListXRT", &mok_var, &mokxsize, &status);
->  	if (!mokx) {
->  		if (status == EFI_NOT_FOUND)
-
-The original commit message is foggy:
-
-"
-    integrity: Do not load MOK and MOKx when secure boot be disabled
-
-    The security of Machine Owner Key (MOK) relies on secure boot. When
-    secure boot is disabled, EFI firmware will not verify binary code. Then
-    arbitrary efi binary code can modify MOK when rebooting.
-
-    This patch prevents MOK/MOKx be loaded when secure boot be disabled.
-"
-
-Given that I don't understand the problem it is trying to solve:
-
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-
-> --
-> 2.48.1
-> 
-> 
-> Lennart
-> 
-> --
-> Lennart Poettering, Berlin
+>  
+>  	return ret;
+> -- 
+> 2.31.1
 > 
 
-Jarkko
+Not gonna fly because you did not include KEYS-TRUSTED-DCP maintainer to
+the CC list.
+
+BR, Jarkko
 
