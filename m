@@ -1,42 +1,50 @@
-Return-Path: <keyrings+bounces-2494-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2495-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6C5CA6A608
-	for <lists+keyrings@lfdr.de>; Thu, 20 Mar 2025 13:14:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D470A6A915
+	for <lists+keyrings@lfdr.de>; Thu, 20 Mar 2025 15:52:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D4028A0CD1
-	for <lists+keyrings@lfdr.de>; Thu, 20 Mar 2025 12:12:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9868880F17
+	for <lists+keyrings@lfdr.de>; Thu, 20 Mar 2025 14:52:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1B6221D9C;
-	Thu, 20 Mar 2025 12:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A3C1E25EB;
+	Thu, 20 Mar 2025 14:52:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oRdovX/x"
 X-Original-To: keyrings@vger.kernel.org
-Received: from gardel.0pointer.net (gardel.0pointer.net [85.214.157.71])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A9321E0A2;
-	Thu, 20 Mar 2025 12:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.157.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0291E1DF1;
+	Thu, 20 Mar 2025 14:52:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742472730; cv=none; b=JFhE2S/o4g/p57tyJJPHkX7xaDt/HgFZGNw/5u1K/1msbCdmn+fAMJWor6JPZX9ijDYajosfCGe9V264jYRz8rsV68+i2O/wEyVAtE8/og0FXQbLqdfWEuGq99s2zu057f7c/qoF9ZDB1bFFHKqVII/BUmtjoQs+6puxGNRaIqA=
+	t=1742482336; cv=none; b=edEn8ZmWLxjAWKa2FttfR/3rB2RtDO3ag+eiC71OQFIWnzRZisrHYZ7g83I7rLvjo0rWlJijLxQ7/opPJ6c9EBzJ47XRm/5491+5PYBys0jMD9+UxYlbyEnav0nMA9buWdnnQ2pE9106wPyUF/AAdib2OU51gwySB6x1XE8IRgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742472730; c=relaxed/simple;
-	bh=2hjKwq6kk1hx+A8wkZwRF9MYGKvwTO1wp6RDC9xD8Kw=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=Ses+iMPv8LnCJecMK/F1QYSbNYNbZCTlN2/I46PqL4K0wv3399wXsPtgsaoMcPoItXaTU4xXR7qiwoVu5oNFLrcDBgQSRIWzXVrtx+7rTlQ0Cng2Q8XhLbdFi0EdiwI/9Tygm6VHuqQ9pQqpCw9xum9fzRA5C0MTGNrCpbF5ptQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0pointer.de; spf=pass smtp.mailfrom=0pointer.de; arc=none smtp.client-ip=85.214.157.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0pointer.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0pointer.de
-Received: from gardel-login.0pointer.net (gardel-mail [85.214.157.71])
-	by gardel.0pointer.net (Postfix) with ESMTP id D02F4E801C3;
-	Thu, 20 Mar 2025 13:02:13 +0100 (CET)
-Received: by gardel-login.0pointer.net (Postfix, from userid 1000)
-	id 6C4FF160206; Thu, 20 Mar 2025 13:02:13 +0100 (CET)
-Date: Thu, 20 Mar 2025 13:02:13 +0100
-From: Lennart Poettering <mzxreary@0pointer.de>
-To: Jarkko Sakkinen <jarkko@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
+	s=arc-20240116; t=1742482336; c=relaxed/simple;
+	bh=i4ccmJVw2G//TPp4o3Pkz8L4ugx1OstMRn3/JVIzkS4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o94Dl7H4saouxuR7chpW15JCZ+mvTaULUwkYkDeNnxC6ut15xU/Wm8XlmNsbzM4NjNO20CQcYD9ZKlPCYvzl+C/Hm7+uVIALMS0ORvKRl010ok6L40fEhKiD3f/MWxWQg+dPo3if8cJQr0ejsVyMBMEBTDGbrrIiI/YtIvvWzPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oRdovX/x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC853C4CEE7;
+	Thu, 20 Mar 2025 14:52:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742482335;
+	bh=i4ccmJVw2G//TPp4o3Pkz8L4ugx1OstMRn3/JVIzkS4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oRdovX/xFzu7cs3TIl6sDxyxMGTcZrvfa4PBJcP8ZRZBL/8LGFWM2/fs6YW1+PKNL
+	 h/PvCPsvfP4TxVIRVySFnp1TqJnaTa5M9pRU3bikqiQZpPhJfBITDuDKZGlLkTnVIk
+	 jaPbNJ8S0EFO+JrhSMAn7DdsOo6MHcd/bFaGylaM817gFG5qBGniZ9vbT7N++q+vvw
+	 MIubR1BHM5jyREb3SvsIldN38qyPOgEmf01VtBBOe+LH7vb6MteLunc2pGS29NHn/w
+	 L+LiAMt6fWLBq0vhJEM9xu7N9kxOJxisHiZ+gzWhA/BMPYrzgEDDRzfmBbBNBnQyDj
+	 Dq6CuauAmUF2A==
+Date: Thu, 20 Mar 2025 16:52:10 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Lennart Poettering <mzxreary@0pointer.de>
+Cc: Mimi Zohar <zohar@linux.ibm.com>,
 	Roberto Sassu <roberto.sassu@huawei.com>,
 	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
 	Eric Snowberg <eric.snowberg@oracle.com>,
@@ -45,9 +53,10 @@ To: Jarkko Sakkinen <jarkko@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>,
 	linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
 	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org,
 	"Lee, Chun-Yi" <joeyli.kernel@gmail.com>
-Subject: [PATCH] Revert "integrity: Do not load MOK and MOKx when secure boot
- be disabled"
-Message-ID: <Z9wDxeRQPhTi1EIS@gardel-login>
+Subject: Re: [PATCH] Revert "integrity: Do not load MOK and MOKx when secure
+ boot be disabled"
+Message-ID: <Z9wrmoPHWoxdEImx@kernel.org>
+References: <Z9wDxeRQPhTi1EIS@gardel-login>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -56,75 +65,58 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <Z9wDxeRQPhTi1EIS@gardel-login>
 
-This reverts commit 92ad19559ea9a8ec6f158480934ae26ebfe2c14f.
+On Thu, Mar 20, 2025 at 01:02:13PM +0100, Lennart Poettering wrote:
+> diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
+> index d1fdd113450a..7783bcacd26c 100644
+> --- a/security/integrity/platform_certs/load_uefi.c
+> +++ b/security/integrity/platform_certs/load_uefi.c
+> @@ -7,7 +7,6 @@
+>  #include <linux/err.h>
+>  #include <linux/efi.h>
+>  #include <linux/slab.h>
+> -#include <linux/ima.h>
+>  #include <keys/asymmetric-type.h>
+>  #include <keys/system_keyring.h>
+>  #include "../integrity.h"
+> @@ -211,10 +210,6 @@ static int __init load_uefi_certs(void)
+>  		kfree(dbx);
+>  	}
+> 
+> -	/* the MOK/MOKx can not be trusted when secure boot is disabled */
+> -	if (!arch_ima_get_secureboot())
+> -		return 0;
+> -
+>  	mokx = get_cert_list(L"MokListXRT", &mok_var, &mokxsize, &status);
+>  	if (!mokx) {
+>  		if (status == EFI_NOT_FOUND)
 
-This original commit this reverts creates a strange situation: it
-ensures more restrictive behaviour if SecureBoot is off then when it
-is on, which is the opposite of what one would expect.
+The original commit message is foggy:
 
-Typically, one would expect that if SB is off the validation of
-resources during the pre-kernel and kernel initialization is less
-restrictive, not more restrictive. But this check turned the world on
-its head.
+"
+    integrity: Do not load MOK and MOKx when secure boot be disabled
 
-I'd like to ask for this commit to be reverted. If SB is on all bets are
-off regarding integrity of boot loaders and stuff, hence it makes no
-sense to be restrictive here: you cannot regain integrity once you gave
-it up once, hence if all bets are off anyway we might as well import any
-Mok keys passed to us into the kernel keyring.
+    The security of Machine Owner Key (MOK) relies on secure boot. When
+    secure boot is disabled, EFI firmware will not verify binary code. Then
+    arbitrary efi binary code can modify MOK when rebooting.
 
-Or to say this differently: if an attacker got control of the pre-kernel
-boot phase they might as well patch around in the firmware apis to make
-the kernel believe it is in SB mode even if it is not. Hence the check
-carries no value. It doesn't protect anything in any effective way.
+    This patch prevents MOK/MOKx be loaded when secure boot be disabled.
+"
 
-The reason i'd like this check to go is that I'd like a nice way to
-insert keys from pre-boot into into the kernel keyring for use with
-signed dm-verity, without requiring recompilation of the kernel, and
-without SB database games. i.e. i'd like to use a regular, signed
-distro kernel, and pass to it additional keys to insert into the
-kernel keyring in a reasonable way. The mok stuff would be great for that,
-except it all falls apart once SB is off.
+Given that I don't understand the problem it is trying to solve:
 
-You might wonder what signed dm-verity gives me if I have SB off. If
-we authenticate the boot phase up to Linux userspace via TPM-based PCR
-policies (i.e. measured boot) we can be sure of the boot integrity
-without having to rely on SB. But then we'd still like to use
-dm-verity based code signing for userspace.
----
- security/integrity/platform_certs/load_uefi.c | 5 -----
- 1 file changed, 5 deletions(-)
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
-index d1fdd113450a..7783bcacd26c 100644
---- a/security/integrity/platform_certs/load_uefi.c
-+++ b/security/integrity/platform_certs/load_uefi.c
-@@ -7,7 +7,6 @@
- #include <linux/err.h>
- #include <linux/efi.h>
- #include <linux/slab.h>
--#include <linux/ima.h>
- #include <keys/asymmetric-type.h>
- #include <keys/system_keyring.h>
- #include "../integrity.h"
-@@ -211,10 +210,6 @@ static int __init load_uefi_certs(void)
- 		kfree(dbx);
- 	}
+> --
+> 2.48.1
+> 
+> 
+> Lennart
+> 
+> --
+> Lennart Poettering, Berlin
+> 
 
--	/* the MOK/MOKx can not be trusted when secure boot is disabled */
--	if (!arch_ima_get_secureboot())
--		return 0;
--
- 	mokx = get_cert_list(L"MokListXRT", &mok_var, &mokxsize, &status);
- 	if (!mokx) {
- 		if (status == EFI_NOT_FOUND)
---
-2.48.1
-
-
-Lennart
-
---
-Lennart Poettering, Berlin
+Jarkko
 
