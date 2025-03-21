@@ -1,557 +1,283 @@
-Return-Path: <keyrings+bounces-2528-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2529-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3484A6C5F2
-	for <lists+keyrings@lfdr.de>; Fri, 21 Mar 2025 23:29:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98523A6C61C
+	for <lists+keyrings@lfdr.de>; Fri, 21 Mar 2025 23:57:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 119423BDBD4
-	for <lists+keyrings@lfdr.de>; Fri, 21 Mar 2025 22:29:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 067B94802D0
+	for <lists+keyrings@lfdr.de>; Fri, 21 Mar 2025 22:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F00F22CBE9;
-	Fri, 21 Mar 2025 22:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0C91F4E57;
+	Fri, 21 Mar 2025 22:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OMxpGn3o"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="MZZJJ0JN";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="S8Ff7sZt"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4701F4183;
-	Fri, 21 Mar 2025 22:29:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1742596190; cv=none; b=ie2WTJlC97bsGl6HyvUvK2gAQQQ8a8cirg1huHht8U0812G5xTiieBmHSx8iBlNGdht+U0kGKV7EZ0WiO/NFx7nmT4UrOtU88aZqiXsA/gnOttF4gKw8E90GUP3GD2vsgBd6r1qksz2vs12Awo2O2rw/G3KfiX6aOuK7AnPGvNk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1742596190; c=relaxed/simple;
-	bh=MJnjYRN0LEgZ0tEihdscwvdV0tOUjsMvYyVAybCBfrg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q/XiFFkjy/J2on3gGe+bmEzMY+rUAiDyin+GN5fFbDA4CCT2WxNxLW44HiipxM97wpErRmwmlgCbgvCVOESPlMIpDGT/xfY6NGx4MdqwgIyz95auFkI1L2C9aN8+ucVWz9n+VQzB5wKSO1pxla8QJ6RcgMTR7dPuTZa/FyttAJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OMxpGn3o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20994C4CEE3;
-	Fri, 21 Mar 2025 22:29:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742596189;
-	bh=MJnjYRN0LEgZ0tEihdscwvdV0tOUjsMvYyVAybCBfrg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OMxpGn3onwmLIr77R5VCSx0MSVLUoWdyEI5YyV8/340EtL25+O9CmgCQbs58z7GS6
-	 Eu2W/kH7WuBbwSlzUpNTnqOn2sCvwl5ubNzAKZFwE7zALPjs4tmFcNZbzKTr+uK0+d
-	 0Y0Nz3fqVRYxtEFgdDwTBp+n9KPviSIVufjk3itXnJFTHj7nEoWPUd+3r7BZ0yE9mx
-	 aeBDTwstoJ2uAOP7v/q9l1xzG59uyII/F5Ze/n/QJAbAsecaXZonfujWsFbGwHG/Oi
-	 r2YI3b7idxY3BPi6OFHwdjXr8irY4rz/IyRI1TIWoJRsUz4NBtHx+fjoUANRtfaBZd
-	 rPFyZxVCiO3NA==
-Date: Fri, 21 Mar 2025 22:29:40 +0000
-From: sergeh@kernel.org
-To: Blaise Boscaccy <bboscaccy@linux.microsoft.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, David Howells <dhowells@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>, Shuah Khan <shuah@kernel.org>,
-	=?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
-	=?iso-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jan Stancek <jstancek@redhat.com>, Neal Gompa <neal@gompa.dev>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-	linux-security-module@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
-	llvm@lists.linux.dev, nkapron@google.com, teknoraver@meta.com,
-	roberto.sassu@huawei.com, xiyou.wangcong@gmail.com
-Subject: Re: [RFC PATCH security-next 1/4] security: Hornet LSM
-Message-ID: <Z93oVD96C3Cvc4ps@lei>
-References: <20250321164537.16719-1-bboscaccy@linux.microsoft.com>
- <20250321164537.16719-2-bboscaccy@linux.microsoft.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C249C1F152D;
+	Fri, 21 Mar 2025 22:56:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1742597818; cv=fail; b=lfnBo7S6OdZTcmkWA9cNCeOelFPhRwOoH3qVj9Wpdd6bUGA4MayrF8WrrY+5AS4jI5YT2OIjUvKHf2j08LvEVivErm3WUC63g7VvRwcG1EFAXlpiuEi/lut+48ZSZQXKYIWG6DVJInB+p7zrVBEASjlKjVd/iDTP8/QYn+zh8Ic=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1742597818; c=relaxed/simple;
+	bh=x46+VivWV/nlnFz4glrbZAcPK5CxNMF1XQ0AXbj0JL0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qixIz0jl+pLlZK9l8vj23NIr2YO6RsOzYFIBRx6fVzTDMZDKMk7AEanWZlRPAj1pGhKl7Xwf00CjNRaMokoQ84Hv5bmf5B+/SuVOs4A4EjCVw9dsLq/9maI1eZwEeHhuoGgfhyQcSQLda2QGIv7wg/2dAKsvyMZwx6NHMkWn4SI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=MZZJJ0JN; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=S8Ff7sZt; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52LKftSG021299;
+	Fri, 21 Mar 2025 22:56:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-id:content-transfer-encoding:content-type:date:from
+	:in-reply-to:message-id:mime-version:references:subject:to; s=
+	corp-2023-11-20; bh=x46+VivWV/nlnFz4glrbZAcPK5CxNMF1XQ0AXbj0JL0=; b=
+	MZZJJ0JNyBnojvygUYbzr2PiTP50Cxn9gWgsP0w9sTzdBYiZy2oktjm9LU+Sg8+5
+	604KbP5nkuiZzC1nPPcaWoMSSmxmAjfotzqVkplCT4et+XJj342M+Mn6qNdLS+wb
+	c8bAUR+7WpWoJHycB6IKF1Y1vU1gYu9wdnEnYXcaYn1xgawuA3einYGaGAtd37wi
+	iYVOzLyU8JexG+t2reBt2XpyldCRBZ7+KTNy9ZOoo4b488S637SATkqh2LtcMTuq
+	KLUNyQScsZVyII9sut8iHWQEHD7cpHQX/2IO+1do+NBMlZ8XzxFuvAlFcLfQ4nEg
+	IuLRr1980bAPCDQTeiyeNw==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 45d1n8shu1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 21 Mar 2025 22:56:29 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 52LMNQR6008892;
+	Fri, 21 Mar 2025 22:56:20 GMT
+Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2169.outbound.protection.outlook.com [104.47.55.169])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 45dxm4q53q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 21 Mar 2025 22:56:20 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rm5pXwekeLjid7oam/Rq7qmWSuMbouPxs92jORxFVAkRswy3Za1VepXp9RVDjNKyLchAEhsGitbJxJX0CRHIFeb/RodZSqOT9zrnZ/J7Vn6tZtIjBOZ7idxB2s4+pMIXEze61CtCqg8a5nMCH9DtQx+wRnSigE1f8I4OwX9wPK6dX6z2eX4Fd0NWc+9aRN9ki/0TFv9wcPPMhd3cNJ98HkIHblPidIkBZ4SfrjgYqJMkQsbRa+hroLlBfetnJKlxnEPXjIyhls31hAhEg1BfMyY36JPuKiXkFpQsV5WDUOGOmvruQj6XkUCr9xJ/9CEXXVeqbwiRO7dVeFEa6yjwgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=x46+VivWV/nlnFz4glrbZAcPK5CxNMF1XQ0AXbj0JL0=;
+ b=N20ee9AILEWs0RXZ/JPzM/oLCtnky8FZJG6oMUNVFBxi/D0ridt/ZkPlahDf3KsyQW+1sUKukhaNUM1jFQwF8SNCTZKyRgOxEzWd9DQBBA5jzFdZdF/8nv5dNgiv7zKo3gPLj/2E6HvKlh0lBgRKAEAPBpnSDfw+76N4VsJk50zcCenPWC1dV68ueHbTbQwBUE4YonRNbpvFF9039H6lS2mIM6wAbL/5R++h6mQlNfG7dcyZiTEKpzpRqBcYxgyW+JBFfKxzOBo+5wkFgopo4DwfmGUEAE4mW3E8yccWkRvwDOBRbeGsebBgQwisHXIU9iC69zaUg2D6uTYjvUgooA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=x46+VivWV/nlnFz4glrbZAcPK5CxNMF1XQ0AXbj0JL0=;
+ b=S8Ff7sZty843d9b4d/ENOMrR9nI5vFw5iDrCCEw2USnxE4mZM8NbDFXM9czREutUbkKB6gUfIN6HeK9FC91Ww2RPP8Gaeid/q1RLkyMt0zcN46DBYaZCU6rzkKGheFbFSJow/Z2c/E7CF7RytHhcw6zU2JhrAE4iV+/Ta3PK4Wg=
+Received: from PH7PR10MB7730.namprd10.prod.outlook.com (2603:10b6:510:308::13)
+ by BN0PR10MB5175.namprd10.prod.outlook.com (2603:10b6:408:115::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.37; Fri, 21 Mar
+ 2025 22:56:17 +0000
+Received: from PH7PR10MB7730.namprd10.prod.outlook.com
+ ([fe80::7ac6:2653:966f:9411]) by PH7PR10MB7730.namprd10.prod.outlook.com
+ ([fe80::7ac6:2653:966f:9411%5]) with mapi id 15.20.8534.034; Fri, 21 Mar 2025
+ 22:56:17 +0000
+From: Eric Snowberg <eric.snowberg@oracle.com>
+To: Paul Moore <paul@paul-moore.com>
+CC: Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        "open list:SECURITY SUBSYSTEM"
+	<linux-security-module@vger.kernel.org>,
+        David Woodhouse
+	<dwmw2@infradead.org>,
+        "herbert@gondor.apana.org.au"
+	<herbert@gondor.apana.org.au>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        Ard Biesheuvel <ardb@kernel.org>, James Morris <jmorris@namei.org>,
+        "Serge E.
+ Hallyn" <serge@hallyn.com>,
+        Roberto Sassu <roberto.sassu@huawei.com>,
+        Dmitry
+ Kasatkin <dmitry.kasatkin@gmail.com>,
+        =?utf-8?B?TWlja2HDq2wgU2FsYcO8bg==?=
+	<mic@digikod.net>,
+        "casey@schaufler-ca.com" <casey@schaufler-ca.com>,
+        Stefan
+ Berger <stefanb@linux.ibm.com>,
+        "ebiggers@kernel.org" <ebiggers@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        open list
+	<linux-kernel@vger.kernel.org>,
+        "keyrings@vger.kernel.org"
+	<keyrings@vger.kernel.org>,
+        "linux-crypto@vger.kernel.org"
+	<linux-crypto@vger.kernel.org>,
+        "linux-efi@vger.kernel.org"
+	<linux-efi@vger.kernel.org>,
+        "linux-integrity@vger.kernel.org"
+	<linux-integrity@vger.kernel.org>
+Subject: Re: [RFC PATCH v3 00/13] Clavis LSM
+Thread-Topic: [RFC PATCH v3 00/13] Clavis LSM
+Thread-Index:
+ AQHbIK0E/vdc4Eou30K4SgPRfeDFerL0Jc4AgBIDLwCAAF1+gIADEbkAgADjnYCAUfK8AIAAHD0AgAEIXICAACNLAIAAGwsAgAUHzgCAAQ2/gIAAoSGAgAFh24CAAD5VgIABZIsAgABIHQCAFVKsgIAAV02AgAE+nwCAACclAIAAJ/WAgAAO6gCAAAvjAA==
+Date: Fri, 21 Mar 2025 22:56:17 +0000
+Message-ID: <E8FD1D0D-4A71-45C3-B74C-5224ACD7CED1@oracle.com>
+References: <20241017155516.2582369-1-eric.snowberg@oracle.com>
+ <c490397315c2704e9ef65c8ad3fefedb239f1997.camel@linux.ibm.com>
+ <72F52F71-C7F3-402D-8441-3D636A093FE8@oracle.com>
+ <CAHC9VhRHEw5c+drC=aX4xTqWoQJJZ+qkJ7aHUT5dcu+Q5f7BqA@mail.gmail.com>
+ <CAHC9VhSJpnaAK1efgs1Uk0Tr3CaDNR1LiDU-t_yDKDQG6J-74Q@mail.gmail.com>
+ <E20C617B-EA01-4E69-B5E2-31E9AAD6F7A2@oracle.com>
+ <506e8e58e5236a4525b18d84bafa9aae80b24452.camel@linux.ibm.com>
+ <CAHC9VhTsZntLdGBV7=4suauS+rzSQv1O4UAoGcy2vEB02wRkoA@mail.gmail.com>
+ <c580811716f550ed5d6777db5e143afe4ad06edc.camel@linux.ibm.com>
+ <CAHC9VhTz6U5rRdbJBWq0_U4BSKTsiGCsaX=LTgisNNoZXZokOA@mail.gmail.com>
+ <FD501FB8-72D2-4B10-A03A-F52FC5B67646@oracle.com>
+ <CAHC9VhR961uTFueovLXXaOf-3ZAnvQCWOTfw-wCRuAKOKPAOKw@mail.gmail.com>
+ <73B78CE7-1BB8-4065-9EBA-FB69E327725E@oracle.com>
+ <CAHC9VhRMUkzLVT5GT5c5hgpfaaKubzcPOTWFDpOmhNne0sswPA@mail.gmail.com>
+ <1A222B45-FCC4-4BBD-8E17-D92697FE467D@oracle.com>
+ <CAHC9VhTObTee95SwZ+C4EwPotovE9R3vy0gVXf+kATtP3vfXrg@mail.gmail.com>
+ <EB757F96-E152-4EAB-B3F7-75C1DBE3A03B@oracle.com>
+ <1956e7f9d60.28a7.85c95baa4474aabc7814e68940a78392@paul-moore.com>
+ <A3A29FB9-E015-4C87-B5F0-190A4C779CB3@oracle.com>
+ <CAHC9VhQMN6cgWbxdAgBNffpCAo=ogGdm4qBGS_kKdDmiT8b3cw@mail.gmail.com>
+ <B89ED288-1A01-41D2-8ECF-285669139553@oracle.com>
+ <CAHC9VhQb55+SmwmrsVpyw5X2Ys0oo6gJ_dbDf64mS5c008230A@mail.gmail.com>
+ <4F901DC6-51DC-47A1-8D2A-D84DCD9D0C2D@oracle.com>
+ <CAHC9VhT0y5AO0Yjy649PbsYnN+Xf3_pTJCegW1kPW7=GM9RypQ@mail.gmail.com>
+In-Reply-To:
+ <CAHC9VhT0y5AO0Yjy649PbsYnN+Xf3_pTJCegW1kPW7=GM9RypQ@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-mailer: Apple Mail (2.3776.700.51.11.1)
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR10MB7730:EE_|BN0PR10MB5175:EE_
+x-ms-office365-filtering-correlation-id: 91a9b4bd-1a84-443b-2941-08dd68cb96eb
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|7416014|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?NkFmOXJkZTJBZ2pMZ3Roekp1b1RDVlFRQ1lhb25BWlVRTkROY0E0T2tldjIv?=
+ =?utf-8?B?UzRiN3BOWFVjK3dzLzl5dzAxNGpaNWdlSVJ3OXE2V1paSnBxckZkcGVUekNM?=
+ =?utf-8?B?VUh2MnpDMTVIRDludHNCMjVMbXA3VTA4bHkzbFFUR3VIWi8rMklHUVkvR0dx?=
+ =?utf-8?B?TUtsNUtGU0JVWElha2F0VGxvbjZnOW1jZzkyUGw3Z1NoSjBjN0srY2dYY1JD?=
+ =?utf-8?B?QXZlem5kUlQzc3MrRGNHTnl2bHY1NFEzbjVEcVJVdkdiNG1XWnFLNndRY0Q1?=
+ =?utf-8?B?aGg1VVd6czloNmdJMk1BWVFrcjcrenFmSVBkc01aT2NzZlJ6TkJzdDRpcFRE?=
+ =?utf-8?B?bStQYmwrRGJMNUR4UWIzdFhGd0Nlcm5RNkY1TXV3dFhJYVZRTGZRazRzUWFm?=
+ =?utf-8?B?Y1dZT0RkZGxxRXh3ZGVPSXlMRC9OakMvd1VucW4rNGg0aVBFOEpFcTk2cDN0?=
+ =?utf-8?B?QU9ia0cycGxOVWd3bjNONm5SRkhnQzJ3OGNpYlBSQlo2STFURDg4ZEwvOVFT?=
+ =?utf-8?B?KzU5alRkWWVERy9tTk95L3BaVkRiY0NPdU5INThRbG9KR0o3VS9MM2dvR0Nr?=
+ =?utf-8?B?U1FCL25NemlBdFczQVFpd1RmcWx3ZjNHVG1CUlRyTWhZWEZzOTJ0ZFMwZy95?=
+ =?utf-8?B?c0F5TGJYUWJacUlhVnBOMTZoS2JjOW5kYjJVeC9HemtLYU9BbXZPYStrczR0?=
+ =?utf-8?B?Uy9QOVVsdEpIUklFdXJ1d1p6MXd2eGZCWUtjc0dKb3dRdGh2VXFkcjE3cUlH?=
+ =?utf-8?B?eDkvbWpCWk5vZVR6bTd5MUY3UUJTKzBydXlPR1lyN3R4eGpLVlJ0Z2lWUStq?=
+ =?utf-8?B?bXBiQVZ2NnpocklUSXo5cnBVcGpScC95N0xFVmc0dUNXenVWSk5saHQxYUkx?=
+ =?utf-8?B?dkpHWmRleEMybFhjdUJ3YzFJTHEwU3N5eU0zR1dBM3UwU2kzbUR1WVNhR1Vw?=
+ =?utf-8?B?eFRGcGlKWk1jamRHZ3MxWDhrUGN1a09ML1ltektSRFdSNzBBaHYvSERXZFo2?=
+ =?utf-8?B?OG83UUY1dlN6OUNwaHBsTXVSVy8wb1A1d3FIU3o2aEczQ296RVJQMlIyRVBl?=
+ =?utf-8?B?bFVDMFRBSW5LQUNpU0dIc0Zua250ZjFEK0ZNWng0NzllUlVWRHc1MWkzSVBv?=
+ =?utf-8?B?VmlWY3d2dXJ2cFFCY2lTWUxnQzYwekVmSzdINit2QkEveHhCSEdRa2ZWKzh5?=
+ =?utf-8?B?Q0NqUzNFSzZxV3l0YXRzK0g5OFgzLzk0ZFhwMnhiWXd0RHkzaFNiVDVjTWVK?=
+ =?utf-8?B?eG85cm1zbmt2cGdkYk45WGtKOTAyTmRhWHoyWnlVUjBGaVlKOXpya0lYRXBn?=
+ =?utf-8?B?ZVoyMStuV0huMFhlcmFGL3NFNGlWREthUzVFdWQxVTVRdUpRV3JnbkJxWVNC?=
+ =?utf-8?B?enlpR1p0d1FsaWR2VlVaVjlNQWpSVFc2WlJCTkREOVd3dTVwWWNiRFFrRWdo?=
+ =?utf-8?B?YlFKSFI1VUpEYnlTWGFseExsdkpybW8zbjJ5aDFkLzVHSzVuRG9kYlErZXV5?=
+ =?utf-8?B?bzNSMm5XaUVOV3ZOeFpVRzRuMDQ4YmNJUXZtRnBzV0xBZFNCRytDeUZjYjJE?=
+ =?utf-8?B?amI5aEtpOWNwVG5hWWhJL0hUYWs4OWRGU0RwNU1KYmhQSllQWEhvNktFTzBO?=
+ =?utf-8?B?Nk5YZk5qUkc3RXJPdTVDZi9IaTJoS1dpa0Fzc1FVSEpMejVjVnJtUyt5SHY3?=
+ =?utf-8?B?Zk1qc1FiTWZoNE4rV1RYZzdheXZTYTgzbmx1K05USjVIcHFEUFo5TW5lUzZ3?=
+ =?utf-8?B?RHpFUmVVdzdKSFZGNkRwcFYyTWJLZFFtKzlxY3ZwNlpIY2ZVQWhvUTYxdlk5?=
+ =?utf-8?B?eGd3RHpDV0FmUXd0UGxXakJPdzltT3NsQm85VnVvTmQ4WWhhTUVGYmNBQUE2?=
+ =?utf-8?B?VEtXSzRmaVRUMUxadHVFTWZ3TStVNjB2Rk1BWThaSi9XZXY4ZkM0dEJFdVZW?=
+ =?utf-8?Q?BMLuMKXDaUaRxHpLzYSjWE4LUjkn95s2?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR10MB7730.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?MzFWa2p0ajB3RUhFaGt3L2oxc2FSeEJlempURlVxWUxFREh2WDRXRHl0WUJN?=
+ =?utf-8?B?QnRiZlJSM1E0SFoxOG1mMHhDaXRpS0Y1ck9QeHJQUHR6a2dqdW9uVFFzbXJq?=
+ =?utf-8?B?WFY5OXY2ZXpnYmM2T2wzMnhQbW4yVVYxZ0R5OVQ2bnQxaC9mRjJxWDNpKy9V?=
+ =?utf-8?B?bTVDWDhXVS82WUNLb3EvYVBUWm9yM3VZZGtSdHRnK1hnNWtDcStGNE1lSkx2?=
+ =?utf-8?B?Y1NGc1d3NElodzRrZnFZNXF5TFpLWUVaZ05Fa0ZhYVBZQjNaSVM5U3RiNHJm?=
+ =?utf-8?B?cXBsdEVFT3BMakxCODFxQVF5cjA5eGtUclJFYk1NUWJvejN1T2VJOFFtSCtH?=
+ =?utf-8?B?TjIzK0lrMUVlU0Y4ZnFWdjNPb0oydVA3VXQyNGw2OHd0anlaOEZGbGpWQ1Ny?=
+ =?utf-8?B?Q0ZVMWtzWnUvQ1VrVWZPUytkbWRya0NjcXczTlB0REFCZDRvWjNvWnZpTGo2?=
+ =?utf-8?B?bU1HTUZtcExJRm9NVCtZa0s4SXJ1YVFlS3JoOGY2OFprU2hsdjQweFplT1Zt?=
+ =?utf-8?B?aStIRklpZHdHMG9lYlQwVndlNWc4V1N6L1hydWVPN0hFTllSQnRHb1RWeThj?=
+ =?utf-8?B?NkJRRXA0TERONW5lSTVCTGp6QVY0ai9RbkRuKzMrQm9TUFBxLzAvV2pXZ0g5?=
+ =?utf-8?B?LytsYnl0eFRJTmtCVnB0Zm1wVWRUM3ZDd2N2di9QY0krZU5ZdDE4VlhkS1FS?=
+ =?utf-8?B?dy96eEdIcUZRS012VzRQblkyaHQvd2pVdGxockM4c1NScjRrZ0hHOWJvNkJZ?=
+ =?utf-8?B?c2RxenZBd2JDWi9pMGhCNXZRYWh3QXlRSWRISjJYNlYweXY1YXVQZTFNYVZq?=
+ =?utf-8?B?MkxzLzc4Y3lrckNZRzErZlN1RkFGREljWXRiSW0waXdIYnNRWTJVL2pleHl6?=
+ =?utf-8?B?MmZmeHZJa3JiNTBxTDVrcGw3UndxVjI2TUFLeDZEVkFlVlJiM0Jxemp0T0F5?=
+ =?utf-8?B?YytZUGRzNFk1WUgxNGExTnJLQzVXMkFueVhnbEJtcnpmVXRlOG93aWFoWlp5?=
+ =?utf-8?B?OXVVNGFDVVI1OFR2endTejYvVmUxUHo3MFJZUWVUWVZuTG5jd1VyVGtqb0F4?=
+ =?utf-8?B?QUUvYjk4cm5IbFk4NTFmSVFNQVh4TU9HTXBnTXBIWURyNDgzeU9CRWMwMVh2?=
+ =?utf-8?B?TXRkUVV5TVFHQkY0ZTFMMGJkNHUwdW9xc2xkWGR3ZzhrWENKekNCbjA1UVZl?=
+ =?utf-8?B?N05pOWkvbm9WdDZlYy9Ub2ZSemtlakkxSEtGUEliZXRERnkwY2JyWk81UDBV?=
+ =?utf-8?B?Y0Z2VUlOSUgzWTI1aXlseGZEbjdUQnE1cDhyVUtlcjFIeG5qN01TOTFwblB3?=
+ =?utf-8?B?bWIzdU4xeTV5NlBuOUhFejNyaGpSdnZzVHhBMlN1d1FPdlBLL0xVTTIzVytJ?=
+ =?utf-8?B?WldSb2V5bjVaZTkzQ3RQVEsrSnRQNitnYWlZSjZvV0w2NGxQb2lIRisvTGlw?=
+ =?utf-8?B?WXZRS2h1UUE5aXY3TWp6QkhIYVc1Z2o3ZXJnczE1VjJkbHRRM2oxT1NvSjFQ?=
+ =?utf-8?B?Q2NWSjBJR1ZlTlUweGFzTldvbHRUZkdRRTdxSE1EYnJtNWpEZUxDalUyaFJy?=
+ =?utf-8?B?UzBva2srSkc3UzdGd1dXcGNVaGU2N0lTSFRhMTI1aGJReEFJOGNOR2QzL1NC?=
+ =?utf-8?B?Q2VHNDhoMHNpdUVLamhhSWhNdmpKa29wcG1UNWpzV1RtdHVnT0ovYkNTQ3dB?=
+ =?utf-8?B?anErSjd1WTRBTTIvVE5yR3hpZlk1N3ZsSmk5b2tLZnBWT3hBV2FUeHNrOUw5?=
+ =?utf-8?B?VjJwUzZXdjdac1kxOFNGNlZzSy9mc3BuUGo1a1hQTWEvRDFFRnRiK3VPQTVZ?=
+ =?utf-8?B?T2FOaXJEZi8zT0FXMDZWSDhqVERITEdZYnRPT1RVd3ZGOGp4OEpnc3B0RDN4?=
+ =?utf-8?B?VEc3RWZ6eVlvc01kQmZMakVJR2p6ZzNWQkE1WTJQRDlmbGw2bmppSENyWkY3?=
+ =?utf-8?B?T1dtaHNadXd1YkRvUU9iL0dYb1YwSGFvUlpvdzdPWEg4L3JKei9Uc1lSbncx?=
+ =?utf-8?B?dCt5cFBINU1Pay8vWlJ4RUxWNy9KUXlqTFN2UmI1QkdrdmJTeVRDVzBXVUJq?=
+ =?utf-8?B?cngreWZKS280N3cvNjY4RStoMHZxMytBSU1FQVZEM0srbU5VekpSSUlPbnlv?=
+ =?utf-8?B?NXV3Nm9GS00rdnk3M1dmdmN4MENyZlI3bHA0Zm44eW8rRjVhRHpHd1luaENL?=
+ =?utf-8?B?S3c9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <C901D699F2C0B2468863779556476649@namprd10.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250321164537.16719-2-bboscaccy@linux.microsoft.com>
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	4/zZhhkZbHYJrtlGhACC4KbdfELL04pI8S9UgrZZHUBZqVQ36MdZRms2gtKinLLf0cxE5EcGwqBGnE6vSRgCygbXhPZDF689vwAOtKXNrjVzUaTO35qZyhsG5z4nggD1UGwCu6/08v1vvrbns2LtIN9JRlLuq/coQTTbLJIcSI1vhmzmSUK6pURwvxVZs3htHIVeslaJ4AmqbMipiS+9309smsXA75XCBJMDOMr6/l2/vSvF293x5B0YWxMC4oLkf7FE5qDR11RpzKb+XE7Bj2jOASzeQEJPmvuiOvsV950Y32hG3alJyVwTmhWdruz4Da+KX0PCNDYeWPKmzi2KeBZDw/0I2SQF2msuCZsN0u5zBwsDX2TbpW9bcIumNpljG/Qnq49yo6RNJ1OMUBGQVIB8EXuuYqRlaKC6lxEikPBeUtM7BX156vR+Ca0ReT8IkQw+sVHFdWt6NAAPw8BjQ+I+N5t39/1A9lRxq6CfJ5ILwrKJ6ZOy3UsSvgWlB3zqt2k0ymQsydnRo4wZAMyOkZW/jWRHnuInjOPEfpu2N9wa/FKB/IfTKv4EfKHIicBJeyX+F2cuM9AhgevB0SgNlT3msvU7XUW8vrEuaF9ad8U=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR10MB7730.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 91a9b4bd-1a84-443b-2941-08dd68cb96eb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Mar 2025 22:56:17.5573
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 4IjF2tUDHdCyv9p6ZcWleO3GBynWQIOKvcm4a0Aw8mLc5uaGFQ6xpS3qFJfBbAM7hkXiaYJhKpuldOHT5eoMggtZecOV3RRd0cNn10ss9hM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR10MB5175
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-21_08,2025-03-21_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 suspectscore=0
+ malwarescore=0 bulkscore=0 mlxscore=0 spamscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2502280000 definitions=main-2503210167
+X-Proofpoint-ORIG-GUID: 4ErToT-N2iY9AaNiltRYIp3pGdbHoFfX
+X-Proofpoint-GUID: 4ErToT-N2iY9AaNiltRYIp3pGdbHoFfX
 
-On Fri, Mar 21, 2025 at 09:45:03AM -0700, Blaise Boscaccy wrote:
-> This adds the Hornet Linux Security Module which provides signature
-> verification of eBPF programs.
-> 
-> Hornet uses a similar signature verification scheme similar to that of
-
-used 'similar' twice
-
-> kernel modules. A pkcs#7 signature is appended to the end of an
-> executable file. During an invocation of bpf_prog_load, the signature
-> is fetched from the current task's executable file. That signature is
-> used to verify the integrity of the bpf instructions and maps which
-> where passed into the kernel. Additionally, Hornet implicitly trusts any
-
-s/where/were
-
-> programs which where loaded from inside kernel rather than userspace,
-
-s/where/were
-
-> which allows BPF_PRELOAD programs along with outputs for BPF_SYSCALL
-> programs to run.
-> 
-> Hornet allows users to continue to maintain an invariant that all code
-> running inside of the kernel has been signed and works well with
-> light-skeleton based loaders, or any statically generated program that
-> doesn't require userspace instruction rewriting.
-> 
-> Signed-off-by: Blaise Boscaccy <bboscaccy@linux.microsoft.com>
-> ---
->  Documentation/admin-guide/LSM/Hornet.rst |  51 +++++
->  crypto/asymmetric_keys/pkcs7_verify.c    |  10 +
->  include/linux/kernel_read_file.h         |   1 +
->  include/linux/verification.h             |   1 +
->  include/uapi/linux/lsm.h                 |   1 +
->  security/Kconfig                         |   3 +-
->  security/Makefile                        |   1 +
->  security/hornet/Kconfig                  |  11 ++
->  security/hornet/Makefile                 |   4 +
->  security/hornet/hornet_lsm.c             | 239 +++++++++++++++++++++++
->  10 files changed, 321 insertions(+), 1 deletion(-)
->  create mode 100644 Documentation/admin-guide/LSM/Hornet.rst
->  create mode 100644 security/hornet/Kconfig
->  create mode 100644 security/hornet/Makefile
->  create mode 100644 security/hornet/hornet_lsm.c
-> 
-> diff --git a/Documentation/admin-guide/LSM/Hornet.rst b/Documentation/admin-guide/LSM/Hornet.rst
-> new file mode 100644
-> index 0000000000000..fa112412638f1
-> --- /dev/null
-> +++ b/Documentation/admin-guide/LSM/Hornet.rst
-> @@ -0,0 +1,51 @@
-> +======
-> +Hornet
-> +======
-> +
-> +Hornet is a Linux Security Module that provides signature verification
-> +for eBPF programs. This is selectable at build-time with
-> +``CONFIG_SECURITY_HORNET``.
-> +
-> +Overview
-> +========
-> +
-> +Hornet provides signature verification for eBPF programs by utilizing
-> +the existing PKCS#7 infrastructure that's used for module signature
-> +verification. Hornet works by creating a buffer containing the eBPF
-> +program instructions along with its associated maps and checking a
-> +signature against that buffer. The signature is appended to the end of
-> +the lskel executable file and is extracted at runtime via
-> +get_task_exe_file. Hornet works by hooking into the
-> +security_bpf_prog_load hook. Load invocations that originate from the
-> +kernel (bpf preload, results of bpf_syscall programs, etc.) are
-> +allowed to run unconditionally. Calls that originate from userspace
-> +require signature verification. If signature verification fails, the
-> +program will fail to load.
-> +
-> +Instruction/Map Ordering
-> +========================
-> +
-> +Hornet supports both sparse-array based maps via map discovery along
-> +with the newly added fd_array_cnt API for continuous map arrays. The
-> +buffer used for signature verification is assumed to be the
-> +instructions followed by all maps used, ordered by their index in
-> +fd_array.
-> +
-> +Tooling
-> +=======
-> +
-> +Some tooling is provided to aid with the development of signed eBPF lskels.
-> +
-> +extract-skel.sh
-> +---------------
-> +
-> +This simple shell script extracts the instructions and map data used
-> +by the light skeleton from the autogenerated header file created by
-> +bpftool.
-> +
-> +sign-ebpf
-> +---------
-> +
-> +sign-ebpf works similarly to the sign-file script with one key
-> +difference: it takes a separate input binary used for signature
-> +verification and will append the signature to a different output file.
-> diff --git a/crypto/asymmetric_keys/pkcs7_verify.c b/crypto/asymmetric_keys/pkcs7_verify.c
-> index f0d4ff3c20a83..1a5fbb3612188 100644
-> --- a/crypto/asymmetric_keys/pkcs7_verify.c
-> +++ b/crypto/asymmetric_keys/pkcs7_verify.c
-> @@ -428,6 +428,16 @@ int pkcs7_verify(struct pkcs7_message *pkcs7,
->  		}
->  		/* Authattr presence checked in parser */
->  		break;
-> +	case VERIFYING_EBPF_SIGNATURE:
-> +		if (pkcs7->data_type != OID_data) {
-> +			pr_warn("Invalid ebpf sig (not pkcs7-data)\n");
-> +			return -EKEYREJECTED;
-> +		}
-> +		if (pkcs7->have_authattrs) {
-> +			pr_warn("Invalid ebpf sig (has authattrs)\n");
-> +			return -EKEYREJECTED;
-> +		}
-> +		break;
->  	case VERIFYING_UNSPECIFIED_SIGNATURE:
->  		if (pkcs7->data_type != OID_data) {
->  			pr_warn("Invalid unspecified sig (not pkcs7-data)\n");
-> diff --git a/include/linux/kernel_read_file.h b/include/linux/kernel_read_file.h
-> index 90451e2e12bd1..7ed9337be5423 100644
-> --- a/include/linux/kernel_read_file.h
-> +++ b/include/linux/kernel_read_file.h
-> @@ -14,6 +14,7 @@
->  	id(KEXEC_INITRAMFS, kexec-initramfs)	\
->  	id(POLICY, security-policy)		\
->  	id(X509_CERTIFICATE, x509-certificate)	\
-> +	id(EBPF, ebpf)				\
->  	id(MAX_ID, )
->  
->  #define __fid_enumify(ENUM, dummy) READING_ ## ENUM,
-> diff --git a/include/linux/verification.h b/include/linux/verification.h
-> index 4f3022d081c31..812be8ad5f744 100644
-> --- a/include/linux/verification.h
-> +++ b/include/linux/verification.h
-> @@ -35,6 +35,7 @@ enum key_being_used_for {
->  	VERIFYING_KEXEC_PE_SIGNATURE,
->  	VERIFYING_KEY_SIGNATURE,
->  	VERIFYING_KEY_SELF_SIGNATURE,
-> +	VERIFYING_EBPF_SIGNATURE,
->  	VERIFYING_UNSPECIFIED_SIGNATURE,
->  	NR__KEY_BEING_USED_FOR
->  };
-> diff --git a/include/uapi/linux/lsm.h b/include/uapi/linux/lsm.h
-> index 938593dfd5daf..2ff9bcdd551e2 100644
-> --- a/include/uapi/linux/lsm.h
-> +++ b/include/uapi/linux/lsm.h
-> @@ -65,6 +65,7 @@ struct lsm_ctx {
->  #define LSM_ID_IMA		111
->  #define LSM_ID_EVM		112
->  #define LSM_ID_IPE		113
-> +#define LSM_ID_HORNET		114
->  
->  /*
->   * LSM_ATTR_XXX definitions identify different LSM attributes
-> diff --git a/security/Kconfig b/security/Kconfig
-> index f10dbf15c2947..0030f0224c7ab 100644
-> --- a/security/Kconfig
-> +++ b/security/Kconfig
-> @@ -230,6 +230,7 @@ source "security/safesetid/Kconfig"
->  source "security/lockdown/Kconfig"
->  source "security/landlock/Kconfig"
->  source "security/ipe/Kconfig"
-> +source "security/hornet/Kconfig"
->  
->  source "security/integrity/Kconfig"
->  
-> @@ -273,7 +274,7 @@ config LSM
->  	default "landlock,lockdown,yama,loadpin,safesetid,apparmor,selinux,smack,tomoyo,ipe,bpf" if DEFAULT_SECURITY_APPARMOR
->  	default "landlock,lockdown,yama,loadpin,safesetid,tomoyo,ipe,bpf" if DEFAULT_SECURITY_TOMOYO
->  	default "landlock,lockdown,yama,loadpin,safesetid,ipe,bpf" if DEFAULT_SECURITY_DAC
-> -	default "landlock,lockdown,yama,loadpin,safesetid,selinux,smack,tomoyo,apparmor,ipe,bpf"
-> +	default "landlock,lockdown,yama,loadpin,safesetid,selinux,smack,tomoyo,apparmor,ipe,hornet,bpf"
->  	help
->  	  A comma-separated list of LSMs, in initialization order.
->  	  Any LSMs left off this list, except for those with order
-> diff --git a/security/Makefile b/security/Makefile
-> index 22ff4c8bd8cec..e24bccd951f88 100644
-> --- a/security/Makefile
-> +++ b/security/Makefile
-> @@ -26,6 +26,7 @@ obj-$(CONFIG_CGROUPS)			+= device_cgroup.o
->  obj-$(CONFIG_BPF_LSM)			+= bpf/
->  obj-$(CONFIG_SECURITY_LANDLOCK)		+= landlock/
->  obj-$(CONFIG_SECURITY_IPE)		+= ipe/
-> +obj-$(CONFIG_SECURITY_HORNET)		+= hornet/
->  
->  # Object integrity file lists
->  obj-$(CONFIG_INTEGRITY)			+= integrity/
-> diff --git a/security/hornet/Kconfig b/security/hornet/Kconfig
-> new file mode 100644
-> index 0000000000000..19406aa237ac6
-> --- /dev/null
-> +++ b/security/hornet/Kconfig
-> @@ -0,0 +1,11 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +config SECURITY_HORNET
-> +	bool "Hornet support"
-> +	depends on SECURITY
-> +	default n
-> +	help
-> +	  This selects Hornet.
-> +	  Further information can be found in
-> +	  Documentation/admin-guide/LSM/Hornet.rst.
-> +
-> +	  If you are unsure how to answer this question, answer N.
-> diff --git a/security/hornet/Makefile b/security/hornet/Makefile
-> new file mode 100644
-> index 0000000000000..79f4657b215fa
-> --- /dev/null
-> +++ b/security/hornet/Makefile
-> @@ -0,0 +1,4 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +obj-$(CONFIG_SECURITY_HORNET) := hornet.o
-> +
-> +hornet-y := hornet_lsm.o
-> diff --git a/security/hornet/hornet_lsm.c b/security/hornet/hornet_lsm.c
-> new file mode 100644
-> index 0000000000000..3616c68b76fbc
-> --- /dev/null
-> +++ b/security/hornet/hornet_lsm.c
-> @@ -0,0 +1,239 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Hornet Linux Security Module
-> + *
-> + * Author: Blaise Boscaccy <bboscaccy@linux.microsoft.com>
-> + *
-> + * Copyright (C) 2025 Microsoft Corporation
-> + */
-> +
-> +#include <linux/lsm_hooks.h>
-> +#include <uapi/linux/lsm.h>
-> +#include <linux/bpf.h>
-> +#include <linux/verification.h>
-> +#include <crypto/public_key.h>
-> +#include <linux/module_signature.h>
-> +#include <crypto/pkcs7.h>
-> +#include <linux/bpf_verifier.h>
-> +#include <linux/sort.h>
-> +
-> +#define EBPF_SIG_STRING "~eBPF signature appended~\n"
-> +
-> +struct hornet_maps {
-> +	u32 used_idx[MAX_USED_MAPS];
-> +	u32 used_map_cnt;
-> +	bpfptr_t fd_array;
-> +};
-> +
-> +static int cmp_idx(const void *a, const void *b)
-> +{
-> +	return *(const u32 *)a - *(const u32 *)b;
-> +}
-> +
-> +static int add_used_map(struct hornet_maps *maps, int idx)
-> +{
-> +	int i;
-> +
-> +	for (i = 0; i < maps->used_map_cnt; i++)
-> +		if (maps->used_idx[i] == idx)
-> +			return i;
-> +
-> +	if (maps->used_map_cnt >= MAX_USED_MAPS)
-> +		return -E2BIG;
-> +
-> +	maps->used_idx[maps->used_map_cnt] = idx;
-> +	return maps->used_map_cnt++;
-> +}
-> +
-> +static int hornet_find_maps(struct bpf_prog *prog, struct hornet_maps *maps)
-> +{
-> +	struct bpf_insn *insn = prog->insnsi;
-> +	int insn_cnt = prog->len;
-> +	int i;
-> +	int err;
-> +
-> +	for (i = 0; i < insn_cnt; i++, insn++) {
-> +		if (insn[0].code == (BPF_LD | BPF_IMM | BPF_DW)) {
-> +			switch (insn[0].src_reg) {
-> +			case BPF_PSEUDO_MAP_IDX_VALUE:
-> +			case BPF_PSEUDO_MAP_IDX:
-> +				err = add_used_map(maps, insn[0].imm);
-> +				if (err < 0)
-> +					return err;
-> +				break;
-> +			default:
-> +				break;
-> +			}
-> +		}
-> +	}
-> +	/* Sort the spare-array indices. This should match the map ordering used during
-> +	 * signature generation
-> +	 */
-> +	sort(maps->used_idx, maps->used_map_cnt, sizeof(*maps->used_idx),
-> +	     cmp_idx, NULL);
-> +
-> +	return 0;
-> +}
-> +
-> +static int hornet_populate_fd_array(struct hornet_maps *maps, u32 fd_array_cnt)
-> +{
-> +	int i;
-> +
-> +	if (fd_array_cnt > MAX_USED_MAPS)
-> +		return -E2BIG;
-> +
-> +	for (i = 0; i < fd_array_cnt; i++)
-> +		maps->used_idx[i] = i;
-> +
-> +	maps->used_map_cnt = fd_array_cnt;
-> +	return 0;
-> +}
-> +
-> +/* kern_sys_bpf is declared as an EXPORT_SYMBOL in kernel/bpf/syscall.c, however no definition is
-> + * provided in any bpf header files. If/when this function has a proper definition provided
-> + * somewhere this declaration should be removed
-> + */
-> +int kern_sys_bpf(int cmd, union bpf_attr *attr, unsigned int size);
-> +
-> +static int hornet_verify_lskel(struct bpf_prog *prog, struct hornet_maps *maps,
-> +			       void *sig, size_t sig_len)
-> +{
-> +	int fd;
-> +	u32 i;
-> +	void *buf;
-> +	void *new;
-> +	size_t buf_sz;
-> +	struct bpf_map *map;
-> +	int err = 0;
-> +	int key = 0;
-> +	union bpf_attr attr = {0};
-> +
-> +	buf = kmalloc_array(prog->len, sizeof(struct bpf_insn), GFP_KERNEL);
-> +	if (!buf)
-> +		return -ENOMEM;
-> +	buf_sz = prog->len * sizeof(struct bpf_insn);
-> +	memcpy(buf, prog->insnsi, buf_sz);
-> +
-> +	for (i = 0; i < maps->used_map_cnt; i++) {
-> +		err = copy_from_bpfptr_offset(&fd, maps->fd_array,
-> +					      maps->used_idx[i] * sizeof(fd),
-> +					      sizeof(fd));
-> +		if (err < 0)
-> +			continue;
-> +		if (fd < 1)
-> +			continue;
-> +
-> +		map = bpf_map_get(fd);
-> +		if (IS_ERR(map))
-> +			continue;
-> +
-> +		/* don't allow userspace to change map data used for signature verification */
-> +		if (!map->frozen) {
-> +			attr.map_fd = fd;
-> +			err = kern_sys_bpf(BPF_MAP_FREEZE, &attr, sizeof(attr));
-> +			if (err < 0)
-> +				goto out;
-> +		}
-> +
-> +		new = krealloc(buf, buf_sz + map->value_size, GFP_KERNEL);
-> +		if (!new) {
-> +			err = -ENOMEM;
-> +			goto out;
-> +		}
-> +		buf = new;
-> +		new = map->ops->map_lookup_elem(map, &key);
-> +		if (!new) {
-> +			err = -ENOENT;
-> +			goto out;
-> +		}
-> +		memcpy(buf + buf_sz, new, map->value_size);
-> +		buf_sz += map->value_size;
-> +	}
-> +
-> +	err = verify_pkcs7_signature(buf, buf_sz, sig, sig_len,
-> +				     VERIFY_USE_SECONDARY_KEYRING,
-> +				     VERIFYING_EBPF_SIGNATURE,
-> +				     NULL, NULL);
-> +out:
-> +	kfree(buf);
-> +	return err;
-> +}
-> +
-> +static int hornet_check_binary(struct bpf_prog *prog, union bpf_attr *attr,
-> +			       struct hornet_maps *maps)
-> +{
-> +	struct file *file = get_task_exe_file(current);
-> +	const unsigned long markerlen = sizeof(EBPF_SIG_STRING) - 1;
-> +	void *buf = NULL;
-> +	size_t sz = 0, sig_len, prog_len, buf_sz;
-> +	int err = 0;
-> +	struct module_signature sig;
-> +
-> +	buf_sz = kernel_read_file(file, 0, &buf, INT_MAX, &sz, READING_EBPF);
-> +	fput(file);
-> +	if (!buf_sz)
-> +		return -1;
-> +
-> +	prog_len = buf_sz;
-> +
-> +	if (prog_len > markerlen &&
-> +	    memcmp(buf + prog_len - markerlen, EBPF_SIG_STRING, markerlen) == 0)
-> +		prog_len -= markerlen;
-> +
-> +	memcpy(&sig, buf + (prog_len - sizeof(sig)), sizeof(sig));
-> +	sig_len = be32_to_cpu(sig.sig_len);
-> +	prog_len -= sig_len + sizeof(sig);
-> +
-> +	err = mod_check_sig(&sig, prog->len * sizeof(struct bpf_insn), "ebpf");
-> +	if (err)
-> +		return err;
-> +	return hornet_verify_lskel(prog, maps, buf + prog_len, sig_len);
-> +}
-> +
-> +static int hornet_check_signature(struct bpf_prog *prog, union bpf_attr *attr,
-> +				  struct bpf_token *token, bool is_kernel)
-
-It's a little confusing that you are passing is_kernel in here, when the
-only caller will always pass in true.  Is there a good reason not to
-drop the arg here and pass 'true' in to make_bpfptr().  Of course, then
-people will ask why not define an IS_KERNEL to true as passing true to
-second argument is cryptic...  Maybe you just can't win here :)
-
-> +{
-> +	struct hornet_maps maps = {0};
-> +	int err;
-> +
-> +	/* support both sparse arrays and explicit continuous arrays of map fds */
-> +	if (attr->fd_array_cnt)
-> +		err = hornet_populate_fd_array(&maps, attr->fd_array_cnt);
-> +	else
-> +		err = hornet_find_maps(prog, &maps);
-> +
-> +	if (err < 0)
-> +		return err;
-> +
-> +	maps.fd_array = make_bpfptr(attr->fd_array, is_kernel);
-> +	return hornet_check_binary(prog, attr, &maps);
-> +}
-> +
-> +static int hornet_bpf_prog_load(struct bpf_prog *prog, union bpf_attr *attr,
-> +				struct bpf_token *token, bool is_kernel)
-> +{
-> +	if (is_kernel)
-> +		return 0;
-> +	return hornet_check_signature(prog, attr, token, is_kernel);
-> +}
-> +
-> +static struct security_hook_list hornet_hooks[] __ro_after_init = {
-> +	LSM_HOOK_INIT(bpf_prog_load, hornet_bpf_prog_load),
-> +};
-> +
-> +static const struct lsm_id hornet_lsmid = {
-> +	.name = "hornet",
-> +	.id = LSM_ID_HORNET,
-> +};
-> +
-> +static int __init hornet_init(void)
-> +{
-> +	pr_info("Hornet: eBPF signature verification enabled\n");
-> +	security_add_hooks(hornet_hooks, ARRAY_SIZE(hornet_hooks), &hornet_lsmid);
-> +	return 0;
-> +}
-> +
-> +DEFINE_LSM(hornet) = {
-> +	.name = "hornet",
-> +	.init = hornet_init,
-> +};
-> -- 
-> 2.48.1
-> 
+DQoNCj4gT24gTWFyIDIxLCAyMDI1LCBhdCA0OjEz4oCvUE0sIFBhdWwgTW9vcmUgPHBhdWxAcGF1
+bC1tb29yZS5jb20+IHdyb3RlOg0KPiANCj4gT24gRnJpLCBNYXIgMjEsIDIwMjUgYXQgNToyMeKA
+r1BNIEVyaWMgU25vd2JlcmcgPGVyaWMuc25vd2JlcmdAb3JhY2xlLmNvbT4gd3JvdGU6DQo+Pj4g
+T24gTWFyIDIxLCAyMDI1LCBhdCAxMjo1N+KAr1BNLCBQYXVsIE1vb3JlIDxwYXVsQHBhdWwtbW9v
+cmUuY29tPiB3cm90ZToNCj4+IC4uLg0KPj4+ICwgYnV0IEkgd2lsbCBub3RlIHRoYXQgSSBkb24n
+dCByZWNhbGwgeW91IG9mZmVyaW5nIHRvIHN0ZXANCj4+PiB1cCBhbmQgbWFpbnRhaW4gTG9ja2Rv
+d24gYW55d2hlcmUgaW4gdGhpcyB0aHJlYWQuDQo+PiANCj4+IEkgZGlkbid0IHJlYWxpemUgdGhh
+dCB0cnlpbmcgdG8gY29udHJpYnV0ZSBhIG5ldyBMU00gYW5kIGJlaW5nIHdpbGxpbmcgdG8NCj4+
+IGJlIHRoZSBtYWludGFpbmVyIG9mIGl0IGFsc28gaW52b2x2ZWQgc3RlcHBpbmcgdXAgdG8gbWFp
+bnRhaW4gbG9ja2Rvd24uDQo+IA0KPiBJdCBkb2Vzbid0LCBidXQgeW91ciBjcml0aWNpc20gb2Yg
+aG93IExvY2tkb3duIGlzIGJlaW5nIGhhbmRsZWQNCj4gZGVmaW5pdGVseSBmYWxscyBhIGJpdCBm
+bGF0Lg0KDQpJIG1lcmVseSBwb2ludGVkIG91dCB0aGUgaW5hY2N1cmFjeSBvZiB5b3VyIGFzc2Vy
+dGlvbiB0aGF0IHBlb3BsZSBhcmUgZnJlZWxvYWRpbmcgDQpvZmYgaXQgYW5kIG5vdCBjb250cmli
+dXRpbmcgYW55dGhpbmcgc3Vic3RhbnRpYWwgYnkgcHJvdmlkaW5nIGFuIGV4YW1wbGUuDQoNCg==
 
