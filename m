@@ -1,173 +1,140 @@
-Return-Path: <keyrings+bounces-2544-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2545-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10EB9A75773
-	for <lists+keyrings@lfdr.de>; Sat, 29 Mar 2025 19:33:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 694CBA758F8
+	for <lists+keyrings@lfdr.de>; Sun, 30 Mar 2025 10:41:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91F9D3AAA55
-	for <lists+keyrings@lfdr.de>; Sat, 29 Mar 2025 18:32:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED5763A96A2
+	for <lists+keyrings@lfdr.de>; Sun, 30 Mar 2025 08:40:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D8E51A2645;
-	Sat, 29 Mar 2025 18:32:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KL0yZGt9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C68216D4E6;
+	Sun, 30 Mar 2025 08:41:01 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B182AE8E;
-	Sat, 29 Mar 2025 18:32:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C4815A858;
+	Sun, 30 Mar 2025 08:40:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743273175; cv=none; b=GSorhdgrVn6rVXgInFRVG/+Sxgfexa8tMaIe1SV9+2W4JEISxZQwM6guf33lOiUIIyU3vKx6yQ1p7cRDXlHRKAy6MKC0vAx8NuI3JRAV1kf0R0qVkEn9Y2hkO3tiXcUV9bLrsiFm1AKO3xVjYHqxrbS/kqxB2Qy08+Js0FOF4DU=
+	t=1743324061; cv=none; b=n8pkgsegX38Iz9pRTPVPmvOIYn3BkVzI0PP/gQKUdov4I9dLq5l5erMAlQA82h6XbtdkePsFTWRqdc/dRmXKhKYJQAJJ2zVyHYs2360KUsIzqtJFkUDRCprbv6Fq/nLKRtrpYazw3TtPb2H//R5ozb1OX0mx2WM+CiEVmubsYOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743273175; c=relaxed/simple;
-	bh=88SrUHIh4lPXPPCyQrgHZe3BRPvZFsiCiw25NSW1FPg=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=HmFunLUlCw2fFj2e9SF/7AqMIw5tz1Dm9yMu0ctHdGT4FmdGA6plrQwpcOZipHsGbqhlbkIpXJJ14WhyduLZrHvs05DqRW5V1kyXfHZrpDgLf0iU6iY/CwfEmlhf2TN3rJ6q9tT9+MXY8pUxUsYJr6M8118bOlZzqQnBovTmgUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KL0yZGt9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD62C4CEE2;
-	Sat, 29 Mar 2025 18:32:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743273175;
-	bh=88SrUHIh4lPXPPCyQrgHZe3BRPvZFsiCiw25NSW1FPg=;
-	h=From:To:Subject:Date:From;
-	b=KL0yZGt91+FbNnOOkmQfrmB+zy1dU4u0xDU/HVpcM/vcVFwir5l5ZaL9iwFJQs1o6
-	 nS0vnU/E+p3MjqLg9OiN9XgC8nzVJuhR8obg58ymT/QQBbkoMMaAr3Q1xEvaJy6Rxq
-	 UZmOCZ9nqsHh/ySwFHNbFWXdaNMD/WutsXx223Li/qaBDQ4wFWiV8KLF3fPf5wTkXf
-	 19rbBtpKcidIXXbQPqFSuQG3RoL12uBOZr9JJ+fVR9p6l4G06HdfGW9f0OunaUPHFK
-	 IScgMUbvIg63vw0XBCYV0PWEJmyZy/YKNQKtwXU3Fu8BweRTwLgv8RsNSyevIRsMph
-	 XYBlitrxDgBkw==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: keyrings@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	linux-kernel@vger.kernel.org,
-	linux-security-module@vger.kernel.org
-Subject: [RFC PATCH] keys: Add a list for unreferenced keys
-Date: Sat, 29 Mar 2025 20:32:43 +0200
-Message-Id: <20250329183243.719222-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1743324061; c=relaxed/simple;
+	bh=jo+fUY9KjPyIY0nrwSxzp+BoGwLTb2tLqe+pxfvkNlk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QGoJptZkj0Y+DRojToEzmU4RQsENND6i0gpNz9Z4XzIcrYxzUDBxWBiiI6ReEs43dR2ANs6YVSfzUPkwkmHe4ZPHeUeYiKk6ONZaFowxms97pqCnoWwPuQEwh9w7DWbJddM20Z8zQjA+8Fy7sbvHq+N6ZNvJ9twN8WLVaUBawL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-520847ad493so3499405e0c.1;
+        Sun, 30 Mar 2025 01:40:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743324058; x=1743928858;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZoQHXpkA0HF8Mt8XDc2rN36k5LR7d1tDjvQ8h8PozaY=;
+        b=mocfEpqgqP4bnD+hCM5E+m+qseSJsc4ItXXgpfLfTyPUoyemWJ63/yGK8vaHc6RoKq
+         PQ5RAN5sPqqynIfFQ+3OPbIbsTeHdTvd0VQMONPgsJRN08UfRxc6pq7sYFvqKQaZPag7
+         waY9sC4DdSglf9U9yIUz0yJ7Pkt64GwHeTPhkirUe9xY/5XMR5XoO0Mk43kewU2wIcVX
+         W7lEii4/JsbZLKwG52LqVIlqw+IezDzBqgmCmVgCU5ohsXWQ0/ZB2lMQbCyd2qpGP2gu
+         nG7OyqdBt9dIfHDjf7+dTtc3OjkT5bBN75isp1N+SnK635RRAt7dr9cv/4k/09JktUqU
+         uJ+g==
+X-Forwarded-Encrypted: i=1; AJvYcCU6i9bflgLZc2VjjCZDvnUKo1RvdNnwBdZKreYXVn7vs3J6aDhqI89ogzlCWeleI3nE8p6kvzwJfw==@vger.kernel.org, AJvYcCVSGCKB6QWLRpF0v28g2/CzQnAOl8AXjqd+NTcGfA2UrF7Y6T1lakk6Gg+5KP60jk+QaGKQjomtx9Tu3nKf@vger.kernel.org, AJvYcCVzoppZQrC8Ek5Mcj9xD47JbDQ3vyYs5FZLKBUN8XdEp/9lVujeH0M5Legjog0vrSGYej5WNa9BbSNcqqGGMoxC0by04FCi@vger.kernel.org, AJvYcCXCD0GIs6zOkDs5WjR+1U/mgoNn2AhQtJK3zz0aTbPDsyqNh+eWBjdA38XDMkF5blPydrY1hBCMPqxg+BYR@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBFfciJeT/uGqtGJvkulendmAHJZ+QeWOxLbpF2cCSGpjXBTT2
+	j5gXKlwIwU7csJi1DwBr00FpY6e/7PmOC9yzjCRCtsSzZFIJDwp+OZbXMOtI
+X-Gm-Gg: ASbGnctDmYgJl3rNG3ezv3fObsaI7sSR6/j/yQND6jLl7VfE/ityYUNS6cLpxCtELQy
+	MCZvC0R3dAiNWpwOHJK6ChDEmmBH7kx9C/8zgJaJk/13F0jZyUn2OV6PwDWDnCKhRToKcZltUsS
+	Q/BK2kefkFrgmkzwawrFcpLgnD3UgCrEElPNrU9mcZOL5pe3rxOdyMOxxr6u+mZkhcHOc9kf9GH
+	rApsU2qaFjU+rDDExn1epYFK3TzF6tz92ki/7SikPmm2PavFviPxX0esCXi04/3rMxDKdPIr8uL
+	DKVGaDqra4PhEoUOWcLtdT59qPfxRk8iMLaYtMhJ4B8n5NuDNX3pqh+zf6n/QehPnBz4jNECW10
+	5efU17JJX+D4=
+X-Google-Smtp-Source: AGHT+IErjvIbcTuJxAq6mh/8rbjw67uY0ViOSP6eInFj77h33Zq0HidJ+dL38gtlD2aa2pZvQixC3Q==
+X-Received: by 2002:a05:6102:3ca4:b0:4bb:e511:15a6 with SMTP id ada2fe7eead31-4c6d38d34fcmr3532115137.11.1743324057951;
+        Sun, 30 Mar 2025 01:40:57 -0700 (PDT)
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com. [209.85.221.174])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4c6bfce96f4sm1136438137.14.2025.03.30.01.40.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 30 Mar 2025 01:40:57 -0700 (PDT)
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-520847ad493so3499403e0c.1;
+        Sun, 30 Mar 2025 01:40:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU6qxxH9jYlhC3jEyKl65ES6l77XLOZuB5VGcy59p0X3E5iXOVhp+jkoY1lOF59xukB2ffWng7ABFgbexAn@vger.kernel.org, AJvYcCV5JI0hxLK2jqy9gcG5qDtxNuqnwej4Nd/Kqsv0GcbyPgAGZuFw6DaVQdJlmJi4y6PfluMI5odSq7bGCtpM@vger.kernel.org, AJvYcCWo0v/HkZBaRkrgB4tF3ieCILAGggtcBQ702jH8cPNlRcqcWms2RJ3TqaC372Zdv4mEGR0VCrtkgw==@vger.kernel.org, AJvYcCXfj0UroMn3WWJjHYxNZJ6iYOHv6D2YJRGZ7wLGeWhLxDpFR3+32FRylnCm2JIWgVna92Z88WO+iZ5hAFMZ9HjpCoYMOKG5@vger.kernel.org
+X-Received: by 2002:a05:6102:510c:b0:4c1:869b:7db4 with SMTP id
+ ada2fe7eead31-4c6d3886c27mr3306697137.9.1743323690025; Sun, 30 Mar 2025
+ 01:34:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250314160543.605055-1-arnd@kernel.org>
+In-Reply-To: <20250314160543.605055-1-arnd@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Sun, 30 Mar 2025 10:34:38 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdViGZRQL7toi7Arvm5L=OTK1mGmODbckE+427bx4KyWdw@mail.gmail.com>
+X-Gm-Features: AQ5f1JpsRk8bUwx1w_Bo7lsmXMYQpvMMe33_LKw24q3KhkiO1G7u-hb7ENrQgYE
+Message-ID: <CAMuHMdViGZRQL7toi7Arvm5L=OTK1mGmODbckE+427bx4KyWdw@mail.gmail.com>
+Subject: Re: [PATCH] [v2] crypto: lib/Kconfig: hide library options
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Boris Brezillon <bbrezillon@kernel.org>, Arnaud Ebalard <arno@natisbad.org>, 
+	Srujana Challa <schalla@marvell.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	"David S. Miller" <davem@davemloft.net>, David Howells <dhowells@redhat.com>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	"Justin M. Forbes" <jforbes@fedoraproject.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+	Arnd Bergmann <arnd@arndb.de>, Rosen Penev <rosenp@gmail.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, keyrings@vger.kernel.org, 
+	linux-security-module@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Add an isolated list for unreferenced keys, in order to make the reaping
-process more straight-forward and failure-safe.
+Hi Arnd,
 
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
- include/linux/key.h      |  1 -
- security/keys/gc.c       | 21 ++++-----------------
- security/keys/internal.h |  1 +
- security/keys/key.c      |  7 +++++--
- 4 files changed, 10 insertions(+), 20 deletions(-)
+On Fri, 14 Mar 2025 at 17:05, Arnd Bergmann <arnd@kernel.org> wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> Any driver that needs these library functions should already be selecting
+> the corresponding Kconfig symbols, so there is no real point in making
+> these visible.
+>
+> The original patch that made these user selectable described problems
+> with drivers failing to select the code they use, but for consistency
+> it's better to always use 'select' on a symbol than to mix it with
+> 'depends on'.
+>
+> Fixes: e56e18985596 ("lib/crypto: add prompts back to crypto libraries")
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-diff --git a/include/linux/key.h b/include/linux/key.h
-index ba05de8579ec..074dca3222b9 100644
---- a/include/linux/key.h
-+++ b/include/linux/key.h
-@@ -236,7 +236,6 @@ struct key {
- #define KEY_FLAG_ROOT_CAN_INVAL	7	/* set if key can be invalidated by root without permission */
- #define KEY_FLAG_KEEP		8	/* set if key should not be removed */
- #define KEY_FLAG_UID_KEYRING	9	/* set if key is a user or user session keyring */
--#define KEY_FLAG_FINAL_PUT	10	/* set if final put has happened on key */
- 
- 	/* the key type and key description string
- 	 * - the desc is used to match a key against search criteria
-diff --git a/security/keys/gc.c b/security/keys/gc.c
-index f27223ea4578..7222692cfd60 100644
---- a/security/keys/gc.c
-+++ b/security/keys/gc.c
-@@ -218,11 +218,6 @@ static void key_garbage_collector(struct work_struct *work)
- 		key = rb_entry(cursor, struct key, serial_node);
- 		cursor = rb_next(cursor);
- 
--		if (test_bit(KEY_FLAG_FINAL_PUT, &key->flags)) {
--			smp_mb(); /* Clobber key->user after FINAL_PUT seen. */
--			goto found_unreferenced_key;
--		}
--
- 		if (unlikely(gc_state & KEY_GC_REAPING_DEAD_1)) {
- 			if (key->type == key_gc_dead_keytype) {
- 				gc_state |= KEY_GC_FOUND_DEAD_KEY;
-@@ -286,6 +281,10 @@ static void key_garbage_collector(struct work_struct *work)
- 		key_schedule_gc(new_timer);
- 	}
- 
-+	spin_lock(&key_serial_lock);
-+	list_splice_init(&key_graveyard, &graveyard);
-+	spin_unlock(&key_serial_lock);
-+
- 	if (unlikely(gc_state & KEY_GC_REAPING_DEAD_2) ||
- 	    !list_empty(&graveyard)) {
- 		/* Make sure that all pending keyring payload destructions are
-@@ -328,18 +327,6 @@ static void key_garbage_collector(struct work_struct *work)
- 	kleave(" [end %x]", gc_state);
- 	return;
- 
--	/* We found an unreferenced key - once we've removed it from the tree,
--	 * we can safely drop the lock.
--	 */
--found_unreferenced_key:
--	kdebug("unrefd key %d", key->serial);
--	rb_erase(&key->serial_node, &key_serial_tree);
--	spin_unlock(&key_serial_lock);
--
--	list_add_tail(&key->graveyard_link, &graveyard);
--	gc_state |= KEY_GC_REAP_AGAIN;
--	goto maybe_resched;
--
- 	/* We found a restricted keyring and need to update the restriction if
- 	 * it is associated with the dead key type.
- 	 */
-diff --git a/security/keys/internal.h b/security/keys/internal.h
-index 2cffa6dc8255..c1b6f0b5817c 100644
---- a/security/keys/internal.h
-+++ b/security/keys/internal.h
-@@ -66,6 +66,7 @@ struct key_user {
- extern struct rb_root	key_user_tree;
- extern spinlock_t	key_user_lock;
- extern struct key_user	root_key_user;
-+extern struct list_head key_graveyard;
- 
- extern struct key_user *key_user_lookup(kuid_t uid);
- extern void key_user_put(struct key_user *user);
-diff --git a/security/keys/key.c b/security/keys/key.c
-index 7198cd2ac3a3..b34b4cba6ce7 100644
---- a/security/keys/key.c
-+++ b/security/keys/key.c
-@@ -22,6 +22,7 @@ DEFINE_SPINLOCK(key_serial_lock);
- 
- struct rb_root	key_user_tree; /* tree of quota records indexed by UID */
- DEFINE_SPINLOCK(key_user_lock);
-+LIST_HEAD(key_graveyard);
- 
- unsigned int key_quota_root_maxkeys = 1000000;	/* root's key count quota */
- unsigned int key_quota_root_maxbytes = 25000000; /* root's key space quota */
-@@ -658,8 +659,10 @@ void key_put(struct key *key)
- 				key->user->qnbytes -= key->quotalen;
- 				spin_unlock_irqrestore(&key->user->lock, flags);
- 			}
--			smp_mb(); /* key->user before FINAL_PUT set. */
--			set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
-+			spin_lock(&key_serial_lock);
-+			rb_erase(&key->serial_node, &key_serial_tree);
-+			list_add_tail(&key->graveyard_link, &key_graveyard);
-+			spin_unlock(&key_serial_lock);
- 			schedule_work(&key_gc_work);
- 		}
- 	}
+Thanks for your patch, which is now commit edc8e80bf862a728 ("crypto:
+lib/Kconfig - hide library options").
+
+> --- a/security/keys/Kconfig
+> +++ b/security/keys/Kconfig
+> @@ -60,7 +60,7 @@ config BIG_KEYS
+>         bool "Large payload keys"
+>         depends on KEYS
+>         depends on TMPFS
+> -       depends on CRYPTO_LIB_CHACHA20POLY1305 = y
+> +       select CRYPTO_LIB_CHACHA20POLY1305
+>         help
+>           This option provides support for holding large keys within the kernel
+>           (for example Kerberos ticket caches).  The data may be stored out to
+
+Due to dropping the dependency, this appeared on my radar.
+Should this be selected by one or some of the Kerberos Kconfig symbols?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.39.5
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
