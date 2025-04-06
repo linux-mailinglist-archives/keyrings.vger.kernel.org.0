@@ -1,68 +1,68 @@
-Return-Path: <keyrings+bounces-2578-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2579-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC3DA7CCBC
-	for <lists+keyrings@lfdr.de>; Sun,  6 Apr 2025 06:28:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96384A7D067
+	for <lists+keyrings@lfdr.de>; Sun,  6 Apr 2025 22:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B7313A9FAD
-	for <lists+keyrings@lfdr.de>; Sun,  6 Apr 2025 04:28:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 510A5188B618
+	for <lists+keyrings@lfdr.de>; Sun,  6 Apr 2025 20:43:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3AB91B87D1;
-	Sun,  6 Apr 2025 04:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327EA1AAE28;
+	Sun,  6 Apr 2025 20:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R4equr5S"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RCfRAANi"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F292AEF5;
-	Sun,  6 Apr 2025 04:28:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FF718C03F;
+	Sun,  6 Apr 2025 20:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1743913720; cv=none; b=MvB3RrCi/MmlIzovRY0nU4TNaEdGuuqXylNgxCF0MlBMwW+AF2SAhW2/h0r9vQXd1Q7LcJ3vP77ZzQu0sYZfKtOyKKXsziBYaLs6kphlptJTPM4RYX+4tDYjFT1P+CBkvU9rMgzmFvY+jeamX9QnWanrZfN5UN2m61F1RonJcC0=
+	t=1743972182; cv=none; b=ScDb9wdm8vhDYnWHxSYImlky+V+Zx2VIC9Bryxrz5wFK1XXi3yzzuoDE9D7qCPDdAQoPItMfuqTUZvZbWAlgcoCukO4AyIvr+CA+sZEmP8QcTCekTB3C/RXmgsa19GeEsiwORc6v9jE+jypydz6R8CL+7ybpj5w5ZWSABsYsNak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1743913720; c=relaxed/simple;
-	bh=4BH94r9eFHWd7jK1gh/ArWcfPCsUQZMfgHuoqE5hS94=;
+	s=arc-20240116; t=1743972182; c=relaxed/simple;
+	bh=ucTOR97qFqJDSGh++Oi8YunL4fytJwroFSyVVKXhxw8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LjZk9JjR4Yvbs0FKr831KTBps7VKG19zARsDUXwdhxm1eyKjsliPhlkJsKBU8Mo5j4NS05reIsy0aP/nKEvX57s8VRXmSNLF6WTW7Wre6gpM02vN7dqer5Gom/tdJ9ZmvAM+2UE20cRhvbW0OBDsV/L2wHUgM5SqHVCY9Q2d9Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R4equr5S; arc=none smtp.client-ip=198.175.65.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=QQ9t1/62a5eKuYzuXh/FdA4cUzJNxHJ8LJodOuU3h3wwVncndjDxQJ47FYAbd+VPw6ZSvBO1SoNrJazgQcCsA9nV4QtFMIa78EzOsk0ktko5V32A3iDeBv31M4SkV0oiFxHdwsIvq917+emS7/+yS5utoa0xZZnMZzd7vZiQXz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RCfRAANi; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743913719; x=1775449719;
+  t=1743972180; x=1775508180;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=4BH94r9eFHWd7jK1gh/ArWcfPCsUQZMfgHuoqE5hS94=;
-  b=R4equr5SQ1KHsLtMq8WXDlmeyZiPX3MpxZ4xVwRpd3AHN8sYJTO4uVS7
-   58vYOnaP5i5fEz2OaopowPQDE+fSXqCOn2qZrI8k+LyBlcF7S44FLT8y+
-   Ur+J/Q7FxkjyknrUkQLZ6tv2DRsPy9Nd4KGfasaG7zsWUI1p26iMLUKyd
-   B2qQT84TFRlGnC6thAFYoqIjrhT6Vn4vmxjOLLdSgXN0Wr+o+Omx0DRuP
-   YhBl+WFq8bNbhqIEt1uBm7LivzUiTAMnPi6k313EFl28jmZiJ51LSsn+c
-   /Z+w2i84eMX/40RAFG1A7QG14JeLHvjq0c1rGFdoUjD4nHbcA7eBlQWHd
-   Q==;
-X-CSE-ConnectionGUID: BiwFMpqNR1GuNxWs2Pi9PQ==
-X-CSE-MsgGUID: 2Kc/7TV6RQSHKWdeiZeidw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11395"; a="56681021"
-X-IronPort-AV: E=Sophos;i="6.15,192,1739865600"; 
-   d="scan'208";a="56681021"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Apr 2025 21:28:38 -0700
-X-CSE-ConnectionGUID: 1bedKDMXRJKqCrYs7nazqw==
-X-CSE-MsgGUID: acvAGZQMQzmFa8Oa3eIpPg==
+  bh=ucTOR97qFqJDSGh++Oi8YunL4fytJwroFSyVVKXhxw8=;
+  b=RCfRAANiFlsffxsLkeOrf3D2ZxEdUtpkJ7iUEcGjAYGGPvkwsIydz1Fl
+   4Fcdra37AWaAzXnc7mtm8SV0gjrTuOcaOQ3NvmykOBiJo71gtMg2NhanK
+   0YY9JmBAcZSmDiUlg9e6lpAaaZbmNRnsez8C9syFOQ9Y+f9fhNDG82/Lt
+   cE0amL0ZwPPLmALE0ts9ebCRM9R3V4yiOKac6HszOgbG1m2aZLVMNlb/v
+   Ay6V/fkQy9bVdgBpWVE1HbkcI/IJBq+xIF6XgHxQexJb3u9UKwsUomWhG
+   HCzyuKbowCSBZxBxWXct4hGXQJnwoKm0Fq2zKP3meO6/1KTmgT9wAnnWX
+   w==;
+X-CSE-ConnectionGUID: T6WPsuguRsaw4+xAPBrnFA==
+X-CSE-MsgGUID: z+EiWtdLSdGJW8Guhc1I0w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11396"; a="62893348"
+X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; 
+   d="scan'208";a="62893348"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Apr 2025 13:42:59 -0700
+X-CSE-ConnectionGUID: 7A1SZ+9HQaeEOp+zSzOO2A==
+X-CSE-MsgGUID: 1Mu686fJRWm6vbVCtSdAXQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,192,1739865600"; 
-   d="scan'208";a="158617337"
+X-IronPort-AV: E=Sophos;i="6.15,193,1739865600"; 
+   d="scan'208";a="128624589"
 Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 05 Apr 2025 21:28:31 -0700
+  by fmviesa009.fm.intel.com with ESMTP; 06 Apr 2025 13:42:53 -0700
 Received: from kbuild by b207828170a5 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1u1HcT-0002RH-1k;
-	Sun, 06 Apr 2025 04:28:29 +0000
-Date: Sun, 6 Apr 2025 12:27:29 +0800
+	id 1u1WpO-0002lj-2N;
+	Sun, 06 Apr 2025 20:42:50 +0000
+Date: Mon, 7 Apr 2025 04:42:09 +0800
 From: kernel test robot <lkp@intel.com>
 To: Blaise Boscaccy <bboscaccy@linux.microsoft.com>,
 	Jonathan Corbet <corbet@lwn.net>,
@@ -87,9 +87,10 @@ To: Blaise Boscaccy <bboscaccy@linux.microsoft.com>,
 	linux-security-module@vger.kernel.org, linux-kbuild@vger.kernel.org,
 	linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
 	llvm@lists.linux.dev
-Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	netdev@vger.kernel.org
 Subject: Re: [PATCH v2 security-next 1/4] security: Hornet LSM
-Message-ID: <202504061441.FMnrO665-lkp@intel.com>
+Message-ID: <202504070413.eDHSjWGP-lkp@intel.com>
 References: <20250404215527.1563146-2-bboscaccy@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
@@ -116,30 +117,24 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Blaise-Boscaccy/security-
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git next
 patch link:    https://lore.kernel.org/r/20250404215527.1563146-2-bboscaccy%40linux.microsoft.com
 patch subject: [PATCH v2 security-next 1/4] security: Hornet LSM
-config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20250406/202504061441.FMnrO665-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250406/202504061441.FMnrO665-lkp@intel.com/reproduce)
+config: s390-allmodconfig (https://download.01.org/0day-ci/archive/20250407/202504070413.eDHSjWGP-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250407/202504070413.eDHSjWGP-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202504061441.FMnrO665-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202504070413.eDHSjWGP-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   In file included from security/hornet/hornet_lsm.c:10:
->> security/hornet/hornet_lsm.c:221:38: error: initialization of 'int (*)(struct bpf_prog *, union bpf_attr *, struct bpf_token *)' from incompatible pointer type 'int (*)(struct bpf_prog *, union bpf_attr *, struct bpf_token *, bool)' {aka 'int (*)(struct bpf_prog *, union bpf_attr *, struct bpf_token *, _Bool)'} [-Wincompatible-pointer-types]
+>> security/hornet/hornet_lsm.c:221:31: error: incompatible function pointer types initializing 'int (*)(struct bpf_prog *, union bpf_attr *, struct bpf_token *)' with an expression of type 'int (struct bpf_prog *, union bpf_attr *, struct bpf_token *, bool)' (aka 'int (struct bpf_prog *, union bpf_attr *, struct bpf_token *, _Bool)') [-Wincompatible-function-pointer-types]
      221 |         LSM_HOOK_INIT(bpf_prog_load, hornet_bpf_prog_load),
          |                                      ^~~~~~~~~~~~~~~~~~~~
-   include/linux/lsm_hooks.h:136:35: note: in definition of macro 'LSM_HOOK_INIT'
+   include/linux/lsm_hooks.h:136:21: note: expanded from macro 'LSM_HOOK_INIT'
      136 |                 .hook = { .NAME = HOOK }                \
          |                                   ^~~~
-   security/hornet/hornet_lsm.c:221:38: note: (near initialization for 'hornet_hooks[0].hook.bpf_prog_load')
-     221 |         LSM_HOOK_INIT(bpf_prog_load, hornet_bpf_prog_load),
-         |                                      ^~~~~~~~~~~~~~~~~~~~
-   include/linux/lsm_hooks.h:136:35: note: in definition of macro 'LSM_HOOK_INIT'
-     136 |                 .hook = { .NAME = HOOK }                \
-         |                                   ^~~~
+   1 error generated.
 
 
 vim +221 security/hornet/hornet_lsm.c
