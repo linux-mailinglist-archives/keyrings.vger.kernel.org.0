@@ -1,103 +1,126 @@
-Return-Path: <keyrings+bounces-2611-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2612-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788A9A852F9
-	for <lists+keyrings@lfdr.de>; Fri, 11 Apr 2025 07:19:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ADB5A862C3
+	for <lists+keyrings@lfdr.de>; Fri, 11 Apr 2025 18:03:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E02F1BA0DB8
-	for <lists+keyrings@lfdr.de>; Fri, 11 Apr 2025 05:19:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B1FC7ABE8E
+	for <lists+keyrings@lfdr.de>; Fri, 11 Apr 2025 15:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C625C26F462;
-	Fri, 11 Apr 2025 05:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E532220683;
+	Fri, 11 Apr 2025 15:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="SEJsE1vc"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gAfL9Itd"
 X-Original-To: keyrings@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A03800;
-	Fri, 11 Apr 2025 05:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF043221FAC
+	for <keyrings@vger.kernel.org>; Fri, 11 Apr 2025 15:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744348744; cv=none; b=LtSSdfh1gq330nLBTxEhY4NF+Xf9PUTT6UUE4rXb6BtUTmr8+bcRuWHBz85BmxfzzEoldl97j9VyYTmgEW2Kkp89uMrPJlOOfLOZo1PJxXZ/y8MRfk0bWcveoVfKX1qlMbve+9K/aus/iBbjRAc68bdqaHGWPRisAOh4nnDRwZ4=
+	t=1744387171; cv=none; b=cR6FcHbpCRMDMbL+QBuU5s1Bzu9P3AQ9gvOblrmxpUrKMH+wWlHIWILWZlWwQTlsawJPncxOVC4Thi4o+rT+DHAtwsH2SMSWMZMXkMU/Pltv5y9odkuk1tBylnZ4gWjZkTjl3rgPn+YMR21IiLs78ymW7dzSRK/BQOgNY2TBDbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744348744; c=relaxed/simple;
-	bh=IqSRQOutg+lSKvgxnPhObEbWxO6AaTi44G63FPoeKyQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gDZvq+DbC0NG6JsRWjrIJRx6vf6IPYbow0++ObtevrGblLarKeg7CGlcVIstGllabrjhFaAX7i6ikF3Hoq7pqhtVnV1mANGRtNedFvvMXrB2WutvRRBJ6Da1A4MEYYXu+6kxpY3LMhrUKyEa8H4GPKqe+IMikMgm7vtprxWZ1U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=SEJsE1vc; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=ZEklUjidFtoZ8deAmHVTu5AXS7JqIfMBRiWA0f30O4w=; b=SEJsE1vcfLwUzViAOvFAa03FHq
-	hKs8L2h5zIqqPxeOtapJSUfDV4xVQxLdGV8ObjLEpAg2SQ1wtZnR81UTflRwhygxJLC+CZ+WInIky
-	zPFxN0hV3W1iVlN74szYpV2KswJ/rV/yvB124B3IcL8MKZDrbuL4wje7PmyyMMdpAC1hElC0sKPwH
-	TdxAKqEflV1FCBOKb1z9MvJJsYRW6elY81+mfCSnGnLHKhnpWCPVV4Jb21LGNs949jM/gLMYWquy/
-	hE9c4q+YWLmYZemAd1GNg1h2UvPlma0ybfbgZRwhgRN4AeSb1bYww6f9mSRQ2vRd5FnulN1P3rolD
-	AwCpb9SA==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1u36m2-00Ek2o-1T;
-	Fri, 11 Apr 2025 13:17:55 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 11 Apr 2025 13:17:54 +0800
-Date: Fri, 11 Apr 2025 13:17:54 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: "Gupta, Nipun" <nipun.gupta@amd.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, davem@davemloft.net,
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, krzk+dt@kernel.org,
-	gregkh@linuxfoundation.org, robh@kernel.org, conor+dt@kernel.org,
-	ogabbay@kernel.org, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
-	simona@ffwll.ch, derek.kiernan@amd.com, dragan.cvetic@amd.com,
-	arnd@arndb.de, praveen.jain@amd.com, harpreet.anand@amd.com,
-	nikhil.agarwal@amd.com, srivatsa@csail.mit.edu, code@tyhicks.com,
-	ptsm@linux.microsoft.com, linux-crypto@vger.kernel.org,
-	David Howells <dhowells@redhat.com>, Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@cloudflare.com>, keyrings@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] accel/amdpk: add driver for AMD PKI accelerator
-Message-ID: <Z_imAnYu1hGRb8An@gondor.apana.org.au>
-References: <20250409173033.2261755-1-nipun.gupta@amd.com>
- <20250409173033.2261755-2-nipun.gupta@amd.com>
- <20250410-sly-inventive-squirrel-ddecbc@shite>
- <bf851be7-74a5-8f9d-375b-b617691b6765@amd.com>
+	s=arc-20240116; t=1744387171; c=relaxed/simple;
+	bh=fZlIPKzYCfS3JWZkzUhx6xvi3UjrSnLayoxpbPfvozY=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=plbF4ycXZG9XmOgwwW7L9NFtZM4tFloWK1msCXigLMYK/oxGZGhfS8hr89Xmdqiv2tW9yOVaVXbjt1MKb7eMfnrTlvB+5GE383fN/ksqT53qK9ijYxv+V9f1zrVLIl5YWBhWH/OlTOq41hnqCy07j94XY5XcMv5biilZ8ktgP2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gAfL9Itd; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1744387168;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1YGwsbANdm5+UipwPPrI05eTBmxw+TZxLni/YQ7Hx4Q=;
+	b=gAfL9Itd+sYQsLVZLz6rR2vsOPpTWBbUPpDFa5y0Yna2AkbPJ9IIt8VaoQ/pJlh9X/3pPb
+	Pv/jGrvbTwT+dXRiI1UpaJGf9w2puQ5Eh4k2QGlHUU4m5nakSRwxkqSUJJWn1DxsctU+br
+	IqWn5zro9sWtq6rRCqZ1ixooTqyTJs4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-652-1LNp5UCTODWVVEnUWP054A-1; Fri,
+ 11 Apr 2025 11:59:23 -0400
+X-MC-Unique: 1LNp5UCTODWVVEnUWP054A-1
+X-Mimecast-MFC-AGG-ID: 1LNp5UCTODWVVEnUWP054A_1744387160
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 743D21801A00;
+	Fri, 11 Apr 2025 15:59:19 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.40])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 62EF11808882;
+	Fri, 11 Apr 2025 15:59:13 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20250407125801.40194-1-jarkko@kernel.org>
+References: <20250407125801.40194-1-jarkko@kernel.org>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: dhowells@redhat.com, keyrings@vger.kernel.org,
+    Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
+    stable@vger.kernel.org, Lukas Wunner <lukas@wunner.de>,
+    Ignat Korchagin <ignat@cloudflare.com>,
+    Herbert Xu <herbert@gondor.apana.org.au>,
+    "David S. Miller" <davem@davemloft.net>,
+    Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+    Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+    "Serge E.
+ Hallyn" <serge@hallyn.com>,
+    James Bottomley <James.Bottomley@HansenPartnership.com>,
+    Mimi Zohar <zohar@linux.ibm.com>, linux-crypto@vger.kernel.org,
+    linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
+    linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v8] KEYS: Add a list for unreferenced keys
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bf851be7-74a5-8f9d-375b-b617691b6765@amd.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2426185.1744387151.1@warthog.procyon.org.uk>
+Date: Fri, 11 Apr 2025 16:59:11 +0100
+Message-ID: <2426186.1744387151@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Fri, Apr 11, 2025 at 10:21:03AM +0530, Gupta, Nipun wrote:
->
-> added crypto maintainers for comments.
-> IMO, as accel framework is designed to support any type of compute
-> accelerators, the PKI crypto accelerator in accel framework is not
-> completely out of place here, as also suggested at:
-> https://lore.kernel.org/all/2025031352-gyration-deceit-5563@gregkh/
-> 
-> Having the crypto accelerator as part of accel also enables to extract
-> the most performance from the HW PKI engines, given that the queue
-> assignment is handled per drm device open call.
+Jarkko Sakkinen <jarkko@kernel.org> wrote:
 
-There is actually a user-space interface for asymmetric crypto
-through the keyring subsystem.  Adding the maintainers of those
-in case they wish to comment on your driver.
+> +	spin_lock_irqsave(&key_graveyard_lock, flags);
+> +	list_splice_init(&key_graveyard, &graveyard);
+> +	spin_unlock_irqrestore(&key_graveyard_lock, flags);
 
-Thanks,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+I would wrap this bit in a check to see if key_graveyard is empty so that we
+can avoid disabling irqs and taking the lock if the graveyard is empty.
+
+> +		if (!refcount_inc_not_zero(&key->usage)) {
+
+Sorry, but eww.  You're going to wangle the refcount twice on every key on the
+system every time the gc does a pass.  Further, in some cases inc_not_zero is
+not the fastest op in the world.
+
+> +			spin_lock_irqsave(&key_graveyard_lock, flags);
+> +			list_add_tail(&key->graveyard_link, &key_graveyard);
+> +			spin_unlock_irqrestore(&key_graveyard_lock, flags);
+>  			schedule_work(&key_gc_work);
+
+This is going to enable and disable interrupts twice and that can be
+expensive, depending on the arch.  I wonder if it would be better to do:
+
+			local_irq_save(flags);
+			spin_lock(&key_graveyard_lock);
+			list_add_tail(&key->graveyard_link, &key_graveyard);
+			spin_unlock(&key_graveyard_lock);
+			schedule_work(&key_gc_work);
+			local_irq_restore(flags);
+
+David
+
 
