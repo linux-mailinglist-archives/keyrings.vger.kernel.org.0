@@ -1,209 +1,206 @@
-Return-Path: <keyrings+bounces-2629-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2630-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97487A88823
-	for <lists+keyrings@lfdr.de>; Mon, 14 Apr 2025 18:12:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F1C0A88CD1
+	for <lists+keyrings@lfdr.de>; Mon, 14 Apr 2025 22:11:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CC8917CEFD
-	for <lists+keyrings@lfdr.de>; Mon, 14 Apr 2025 16:10:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E7B717B854
+	for <lists+keyrings@lfdr.de>; Mon, 14 Apr 2025 20:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1104F28B4E9;
-	Mon, 14 Apr 2025 16:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB8B1DBB37;
+	Mon, 14 Apr 2025 20:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="Mumwvm/8"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="DGcER8U0"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E295728B4E4
-	for <keyrings@vger.kernel.org>; Mon, 14 Apr 2025 16:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F651B4233;
+	Mon, 14 Apr 2025 20:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744646904; cv=none; b=EAqcDplbKlTYZ0MUc2UaCLvw0PmWT3LXQM/rfPiTqn41hyT3DM6ytpY2tuAPdLKpTsc5/huOWXmHalceR9dJlr+NWzQj2MeqEH32OGV4STlAASHIo/G29/JDkPmZsdP8SMgxrweWj545BFBwtYo/eM3oymfLMp4zky3nqm5/ok0=
+	t=1744661482; cv=none; b=SSaPIGZuTq4vMCqqzvoXITgrHKqMpsYGTL95QisvEYClYwHTTOTaB18vaqYONcaEOGf1+siOe/LLK68t/A/l61lKaX6SKyC7EtuRIH+LMhfBQzz0tcBEcLhJkZno3MNR7RxK0y0Wo+UxrmzIeEWieKOV57rxg0dEsH6Yg7xg1kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744646904; c=relaxed/simple;
-	bh=UM2X1MMDXZM7fTOBoaVl4irheKjkJEoFW6yGloSDkIU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DmDl9QomPCxn+1k+3/wYOPUE+qz/jTmQRw8BzcRfRWc02tGMps9bFU2j+TR2lnrxTO6aysUm6fHS7hJpEA4kBlwL29S0KddjdyOIGtJ8xrrXBBYywBHwhrpU37W7xvf6WL40yPiD2En71lSkLnnRPXCYRBAtkhYvpi6ienOvo3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=Mumwvm/8; arc=none smtp.client-ip=209.85.219.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e6df1419f94so3653522276.0
-        for <keyrings@vger.kernel.org>; Mon, 14 Apr 2025 09:08:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1744646900; x=1745251700; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CL3vhJ/AOwi9smEiZpaLEqVlOaMdXAZ9MQuarYjoWe8=;
-        b=Mumwvm/8Y5rtsz0IvKUFkpE8ruDsmgBOjoUBw6i35+BbgBlhTboR4WV1z9gUU1ywLH
-         If2Yai0i6Q6qV8vm/ZQQZL0v9dYK03JXD0IhGFtp9mbK19ZLCDLnhXw/Uf/vH2kQ+taV
-         z3gj/9kyjkXNnsJWvBnbscoWFRL03Ll5QTZUTC2l+vzaVamEWnHzXlRUPZ/Nr5Bu7ppt
-         P307C8L/eQjyp29jdZkkMH6TcWCd6a8kcUjlFLyfvoFFuv0+9y0c+K0ho2d945G7mDRV
-         TST1aqnUXcHWpERl3ZCxsaVHdRAEe7WupgH9tpJDTMG1CJbCaOFvsU20YqAQ3wwsSnh1
-         TXnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744646900; x=1745251700;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CL3vhJ/AOwi9smEiZpaLEqVlOaMdXAZ9MQuarYjoWe8=;
-        b=ngCriXeVEz3SatXoFByD5klG5xbpcBNqAq6qiQiT6UaBb4mdiIZtx0aekdgXz733YF
-         4oDJvW2PJX8YibVA+4hmrYSKfSB/SA1wosEVQTb2/lPCkxNiEtTLeDqhX02aHzChujlk
-         EbIBePvaDxnDY9D/YgowxH49+u3RP6E7BQMcjLp3y78xDzvnVWj7H9IfZS6phqGrq4A6
-         ozy5KTuoXFqr9ZL/heq9SopRAQwLZBqDAS+Y0s+qVRxppCotRuiyiCDvqC/rzD3IWKeo
-         jTCt2k0lB+r2jn6j2yV6Ar5knJ1I0b7MpNEqp6UeImgNGdhP4UVNi6JFtBBC9B2nMHso
-         zw0g==
-X-Forwarded-Encrypted: i=1; AJvYcCWYuucSr0XcSscrk3khTWSma/oorONGIUuTKh6eNxUVO+PU30C7FuBtld31M2aXKD+E2AkmtGK+Og==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYVNLmOBQXN6/+0i/jNvXZv5xpXXZR5d69SoPh42onthO3annK
-	Od29gxqFxL3bPxQvi0teug1g+UZ46tGgwm0aNPtTkAUJNnkgqT6wTckJ3TIHKc0/GO5STbM1iYp
-	pdH8kBbJi8QuS8uOSocZtGfwR/vVZmP1l8yJg
-X-Gm-Gg: ASbGnctO7cu2RKFqeqHt5kXyAHp1rq7HOBWvml16p/zLdQMDirjLSWtq3aWQ5oSugqe
-	/q5NL8HtkSN+4NbSmGUdvYIPeJ+Imh9J9gyASfXhDfDQckuhle2J0aEkDDsrBnXKwoxmdPii9Pj
-	R1H0aEtF9y2AnxEmHUwPOvbw==
-X-Google-Smtp-Source: AGHT+IEIR0Yjon2HOlR6cN2sFBuht845hyAi0y0g8G/WBIBmJsXWf+CNllSW2DnKB64zYskb2VqpvQmI+s8gSsNUMNs=
-X-Received: by 2002:a05:6902:2086:b0:e6d:e3f8:5167 with SMTP id
- 3f1490d57ef6-e704e00541cmr21022948276.39.1744646899625; Mon, 14 Apr 2025
- 09:08:19 -0700 (PDT)
+	s=arc-20240116; t=1744661482; c=relaxed/simple;
+	bh=m9gUHGSqqjzXCUNW6X/n+Ri/iJ5aMnBxw6nMVp+5E6M=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=QyURcX1XBSpvhS+UJvbqehcfgTXb6BQ4mMUaOdHE4NQqX9u2R2hDLjWYFfPZLY5Zie0EoRNhX1Xt0kMhb3Z3wrDYiV5aD+WHXrilxvO0d8t7QZ5TbPn5IZlpGf+o7Ly4oS5m8ZNIZloLVt003zBZ3Rn+7qOLRS2t21XaT1HP7bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=DGcER8U0; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from narnia (unknown [167.220.2.28])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 3E98D210C426;
+	Mon, 14 Apr 2025 13:11:11 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3E98D210C426
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1744661480;
+	bh=P556LurTOELheJsvrtJpXaQl7rF2eMtCrBpdxv4c0g8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=DGcER8U0Lp6LIp5x8dw8dW/kKK1vADezhCEhZACHXla6ONsZ/FiK3dfjlQd/DeITL
+	 6lyD6wH7iWHkvv5LbIiMagDI/VQwjUWpO/P+F21KKUt2eFOC3eYPU3j6gOs5oqok7S
+	 SMP1E1bth48QsO3rcIBsYXqH09fmAhbiTS24RlfI=
+From: Blaise Boscaccy <bboscaccy@linux.microsoft.com>
+To: Tyler Hicks <code@tyhicks.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, David Howells <dhowells@redhat.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller"
+ <davem@davemloft.net>, Paul Moore <paul@paul-moore.com>, James Morris
+ <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Masahiro Yamada
+ <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas
+ Schier <nicolas@fjasle.eu>, Shuah Khan <shuah@kernel.org>, =?utf-8?Q?Mick?=
+ =?utf-8?Q?a=C3=ABl_Sala=C3=BCn?=
+ <mic@digikod.net>, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, Nick
+ Desaulniers
+ <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>,
+ Justin Stitt <justinstitt@google.com>, Jarkko Sakkinen
+ <jarkko@kernel.org>, Jan Stancek <jstancek@redhat.com>, Neal Gompa
+ <neal@gompa.dev>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
+ llvm@lists.linux.dev, nkapron@google.com, teknoraver@meta.com,
+ roberto.sassu@huawei.com, xiyou.wangcong@gmail.com
+Subject: Re: [PATCH v2 security-next 1/4] security: Hornet LSM
+In-Reply-To: <Z/lo3iVcJgB2pfQX@redbud>
+References: <20250404215527.1563146-1-bboscaccy@linux.microsoft.com>
+ <20250404215527.1563146-2-bboscaccy@linux.microsoft.com>
+ <Z/lo3iVcJgB2pfQX@redbud>
+Date: Mon, 14 Apr 2025 13:11:09 -0700
+Message-ID: <87lds2jyg2.fsf@microsoft.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250404215527.1563146-1-bboscaccy@linux.microsoft.com>
- <20250404215527.1563146-2-bboscaccy@linux.microsoft.com> <CAADnVQJyNRZVLPj_nzegCyo+BzM1-whbnajotCXu+GW+5-=P6w@mail.gmail.com>
- <87semdjxcp.fsf@microsoft.com>
-In-Reply-To: <87semdjxcp.fsf@microsoft.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Mon, 14 Apr 2025 12:08:08 -0400
-X-Gm-Features: ATxdqUE4xsXRFht60hSZa09A9jxdssSnYGr-dDs5eKOQiFPM4gPTEA6FMREhjdE
-Message-ID: <CAHC9VhQ-Zs56LG9D-9Xs14Au-ub8aR4W+THDJfEsza_54CJf-Q@mail.gmail.com>
-Subject: Re: [PATCH v2 security-next 1/4] security: Hornet LSM
-To: Blaise Boscaccy <bboscaccy@linux.microsoft.com>, 
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, David Howells <dhowells@redhat.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Shuah Khan <shuah@kernel.org>, 
-	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
-	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Jan Stancek <jstancek@redhat.com>, Neal Gompa <neal@gompa.dev>, 
-	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	keyrings@vger.kernel.org, 
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, 
-	LSM List <linux-security-module@vger.kernel.org>, 
-	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, bpf <bpf@vger.kernel.org>, 
-	clang-built-linux <llvm@lists.linux.dev>, nkapron@google.com, 
-	Matteo Croce <teknoraver@meta.com>, Roberto Sassu <roberto.sassu@huawei.com>, 
-	Cong Wang <xiyou.wangcong@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Sat, Apr 12, 2025 at 9:58=E2=80=AFAM Blaise Boscaccy
-<bboscaccy@linux.microsoft.com> wrote:
-> Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
-> > On Fri, Apr 4, 2025 at 2:56=E2=80=AFPM Blaise Boscaccy
-> > <bboscaccy@linux.microsoft.com> wrote:
+Tyler Hicks <code@tyhicks.com> writes:
 
-...
-
-> > Above are serious layering violations.
-> > LSMs should not be looking that deep into bpf instructions.
+> On 2025-04-04 14:54:50, Blaise Boscaccy wrote:
+>> +static int hornet_verify_lskel(struct bpf_prog *prog, struct hornet_maps *maps,
+>> +			       void *sig, size_t sig_len)
+>> +{
+>> +	int fd;
+>> +	u32 i;
+>> +	void *buf;
+>> +	void *new;
+>> +	size_t buf_sz;
+>> +	struct bpf_map *map;
+>> +	int err = 0;
+>> +	int key = 0;
+>> +	union bpf_attr attr = {0};
+>> +
+>> +	buf = kmalloc_array(prog->len, sizeof(struct bpf_insn), GFP_KERNEL);
+>> +	if (!buf)
+>> +		return -ENOMEM;
+>> +	buf_sz = prog->len * sizeof(struct bpf_insn);
+>> +	memcpy(buf, prog->insnsi, buf_sz);
+>> +
+>> +	for (i = 0; i < maps->used_map_cnt; i++) {
+>> +		err = copy_from_bpfptr_offset(&fd, maps->fd_array,
+>> +					      maps->used_idx[i] * sizeof(fd),
+>> +					      sizeof(fd));
+>> +		if (err < 0)
+>> +			continue;
+>> +		if (fd < 1)
+>> +			continue;
+>> +
+>> +		map = bpf_map_get(fd);
 >
-> These aren't BPF internals; this is data passed in from
-> userspace. Inspecting userspace function inputs is definitely within the
-> purview of an LSM.
+> I'm not very familiar with BPF map lifetimes but I'd assume we need to have a
+> corresponding bpf_map_put(map) before returning.
 >
-> Lskel signature verification doesn't actually need a full disassembly,
-> but it does need all the maps used by the lskel. Due to API design
-> choices, this unfortunately requires disassembling the program to see
-> which array indexes are being used.
+>> +		if (IS_ERR(map))
+>> +			continue;
+>> +
+>> +		/* don't allow userspace to change map data used for signature verification */
+>> +		if (!map->frozen) {
+>> +			attr.map_fd = fd;
+>> +			err = kern_sys_bpf(BPF_MAP_FREEZE, &attr, sizeof(attr));
+>> +			if (err < 0)
+>> +				goto out;
+>> +		}
+>> +
+>> +		new = krealloc(buf, buf_sz + map->value_size, GFP_KERNEL);
+>> +		if (!new) {
+>> +			err = -ENOMEM;
+>> +			goto out;
+>> +		}
+>> +		buf = new;
+>> +		new = map->ops->map_lookup_elem(map, &key);
+>> +		if (!new) {
+>> +			err = -ENOENT;
+>> +			goto out;
+>> +		}
+>> +		memcpy(buf + buf_sz, new, map->value_size);
+>> +		buf_sz += map->value_size;
+>> +	}
+>> +
+>> +	err = verify_pkcs7_signature(buf, buf_sz, sig, sig_len,
+>> +				     VERIFY_USE_SECONDARY_KEYRING,
+>> +				     VERIFYING_EBPF_SIGNATURE,
+>> +				     NULL, NULL);
+>> +out:
+>> +	kfree(buf);
+>> +	return err;
+>> +}
+>> +
+>> +static int hornet_check_binary(struct bpf_prog *prog, union bpf_attr *attr,
+>> +			       struct hornet_maps *maps)
+>> +{
+>> +	struct file *file = get_task_exe_file(current);
 >
-> > Calling into sys_bpf from LSM is plain nack.
-> >
+> We should handle get_task_exe_file() returning NULL. I don't think it is likely
+> to happen when passing `current` but kernel_read_file() doesn't protect against
+> it and we'll have a NULL pointer dereference when it calls file_inode(NULL).
 >
-> kern_sys_bpf is an EXPORT_SYMBOL, which means that it should be callable
-> from a module. Lskels without frozen maps are vulnerable to a TOCTOU
-> attack from a sufficiently privileged user. Lskels currently pass
-> unfrozen maps into the kernel, and there is nothing stopping someone
-> from modifying them between BPF_PROG_LOAD and BPF_PROG_RUN.
-
-I agree with Blaise on both the issue of iterating through the eBPF
-program as well as calling into EXPORT_SYMBOL'd functions; I see no
-reason why these things couldn't be used in a LSM.  These are both
-"public" interfaces; reading/iterating through the eBPF instructions
-falls under a "don't break userspace" API, and EXPORT_SYMBOL is
-essentially public by definition.
-
-It is a bit odd that the eBPF code is creating an exported symbol and
-not providing a declaration in a kernel wide header file, but that's a
-different issue.
-
-> > The verification of module signatures is a job of the module loading pr=
-ocess.
-> > The same thing should be done by the bpf system.
-> > The signature needs to be passed into sys_bpf syscall
-> > as a part of BPF_PROG_LOAD command.
-> > It probably should be two new fields in union bpf_attr
-> > (signature and length),
-> > and the whole thing should be processed as part of the loading
-> > with human readable error reported back through the verifier log
-> > in case of signature mismatch, etc.
-> >
+>> +	const unsigned long markerlen = sizeof(EBPF_SIG_STRING) - 1;
+>> +	void *buf = NULL;
+>> +	size_t sz = 0, sig_len, prog_len, buf_sz;
+>> +	int err = 0;
+>> +	struct module_signature sig;
+>> +
+>> +	buf_sz = kernel_read_file(file, 0, &buf, INT_MAX, &sz, READING_EBPF);
 >
-> I don't necessarily disagree, but my main concern with this is that
-> previous code signing patchsets seem to get gaslit or have the goalposts
-> moved until they die or are abandoned.
+> We are leaking buf in this function. kernel_read_file() allocates the memory
+> for us but we never kfree(buf).
+>
+>> +	fput(file);
+>> +	if (!buf_sz)
+>> +		return -1;
+>> +
+>> +	prog_len = buf_sz;
+>> +
+>> +	if (prog_len > markerlen &&
+>> +	    memcmp(buf + prog_len - markerlen, EBPF_SIG_STRING, markerlen) == 0)
+>> +		prog_len -= markerlen;
+>
+> Why is the marker optional? Looking at module_sig_check(), which verifies the
+> signature on kernel modules, I see that it refuses to proceed if the marker is
+> not found. Should we do the same and refuse to operate on any unexpected input?
+>
 
-My understanding from the previous threads is that the recommendation
-from the BPF devs was that anyone wanting to implement BPF program
-signature validation at load time should implement a LSM that
-leverages a light skeleton based loading mechanism and implement a
-gatekeeper which would authorize BPF program loading based on
-signatures.  From what I can see that is exactly what Blaise has done
-with Hornet.  While Hornet is implemented in C, that alone should not
-be reason for rejection; from the perspective of the overall LSM
-framework, we don't accept or reject individual LSMs based on their
-source language, we have both BPF and C based LSMs today, and we've
-been working with the Rust folks to ensure we have the right things in
-place to support Rust in the future.  If your response to Hornet is
-that it isn't acceptable because it is written in C and not BPF, you
-need to know that such a response isn't an acceptable objection.
+Looking at this again, there doesn't seem to be a good reason to have an
+optional marker. I'll get that fixed in v3 along with the rest of these
+suggestions. 
 
-> Are you saying that at this point, you would be amenable to an in-tree
-> set of patches that enforce signature verification of lskels during
-> BPF_PROG_LOAD that live in syscall.c, without adding extra non-code
-> signing requirements like attachment point verification, completely
-> eBPF-based solutions, or rich eBPF-based program run-time policy
-> enforcement?
-
-I worry that we are now circling back to the original idea of doing
-BPF program signature validation in the BPF subsystem itself.  To be
-clear, I think that would be okay, if not ultimately preferable, but I
-think we've all seen this attempted numerous times in the past and it
-has been delayed, dismissed in favor of alternatives, or simply
-rejected for one reason or another.  If there is a clearly defined
-path forward for validation of signatures on BPF programs within the
-context of the BPF subsystem that doesn't require a trusted userspace
-loader/library/etc. that is one thing, but I don't believe we
-currently have that, despite user/dev requests for such a feature
-stretching out over several years.
-
-I believe there are a few questions/issues that have been identified
-in Hornet's latest round of reviews which may take Blaise a few days
-(week?) to address; if the BPF devs haven't provided a proposal in
-which one could acceptably implement in-kernel BPF signature
-validation by that time, I see no reason why development and review of
-Hornet shouldn't continue into a v3 revision.
-
---=20
-paul-moore.com
+>> +
+>> +	memcpy(&sig, buf + (prog_len - sizeof(sig)), sizeof(sig));
+>
+> We should make sure that prog_len is larger than sizeof(sig) prior to this
+> memcpy(). It is probably not a real issue in practice but it would be good to
+> ensure that we can't be tricked to copy and operate on any bytes proceeding
+> buf.
+>
+> Tyler
+>
+>> +	sig_len = be32_to_cpu(sig.sig_len);
+>> +	prog_len -= sig_len + sizeof(sig);
+>> +
+>> +	err = mod_check_sig(&sig, prog->len * sizeof(struct bpf_insn), "ebpf");
+>> +	if (err)
+>> +		return err;
+>> +	return hornet_verify_lskel(prog, maps, buf + prog_len, sig_len);
+>> +}
 
