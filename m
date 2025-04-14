@@ -1,215 +1,209 @@
-Return-Path: <keyrings+bounces-2628-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2629-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60F9A8848E
-	for <lists+keyrings@lfdr.de>; Mon, 14 Apr 2025 16:22:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97487A88823
+	for <lists+keyrings@lfdr.de>; Mon, 14 Apr 2025 18:12:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0AB717EE46
-	for <lists+keyrings@lfdr.de>; Mon, 14 Apr 2025 14:15:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CC8917CEFD
+	for <lists+keyrings@lfdr.de>; Mon, 14 Apr 2025 16:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE1FF2522B7;
-	Mon, 14 Apr 2025 13:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1104F28B4E9;
+	Mon, 14 Apr 2025 16:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m0NuMVO2"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="Mumwvm/8"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8556D25229C;
-	Mon, 14 Apr 2025 13:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E295728B4E4
+	for <keyrings@vger.kernel.org>; Mon, 14 Apr 2025 16:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744638758; cv=none; b=Tm/6l+ecNzb5eAbwS4eFvgAxCwsgwyMAGoZWVGh2xzXjFNfwjgOCqcnehS5jymLTPcI3MBn7PDgl3xDsgi/SaI6CDCKqr4mzJZSaedmT+iNYCNaSBG9Vx7fsMnR30z1jkyjVFSDgmSqMskqW17S5RKX5hrIBBeD5hULGo5D33V4=
+	t=1744646904; cv=none; b=EAqcDplbKlTYZ0MUc2UaCLvw0PmWT3LXQM/rfPiTqn41hyT3DM6ytpY2tuAPdLKpTsc5/huOWXmHalceR9dJlr+NWzQj2MeqEH32OGV4STlAASHIo/G29/JDkPmZsdP8SMgxrweWj545BFBwtYo/eM3oymfLMp4zky3nqm5/ok0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744638758; c=relaxed/simple;
-	bh=ua8cASNkPaWRfa3lb5p4l80TaaxTdU9VK5enTPHP22U=;
+	s=arc-20240116; t=1744646904; c=relaxed/simple;
+	bh=UM2X1MMDXZM7fTOBoaVl4irheKjkJEoFW6yGloSDkIU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RmcLoCYPMx8bP9D0Ut79TVHPMYX8OqLizKZI7QgewbXbTb7mi3+wMk4eCrqasDQdFlEdmZEup005TfaS5n76webK8u7aOPqvmQMDK+KHJa/z48kyt0LADBVI3GBv0gqxQPQwVWsjWzVPGsNwm0poYjHgK41OK8bpTng4XLQ4ytU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m0NuMVO2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04825C4CEED;
-	Mon, 14 Apr 2025 13:52:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744638758;
-	bh=ua8cASNkPaWRfa3lb5p4l80TaaxTdU9VK5enTPHP22U=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=m0NuMVO26ktidw9tegT2dsWUHdlydwNaqfHnjdcVc3u1AdX3nP9ymx5Yx06eUhAwr
-	 d5dyW7yEEDBPaPPmzrmDTVJ1JO5U37iebS9J1aE0dza8PPSYHV45YQAWvC9HXptWuf
-	 Xc/J7GIVQ0DuAtZEdNVfceNsTYUo58uxOYb36I7wbU3wRgULo+V55zl2Cn1CdI1bx8
-	 719McGg+A+Z/fXu+j+7BaYwLhkBPlXhO8cgIbmMqS9f5+eFeuJatPjShhFU2yImCre
-	 UAZaMrZ6+7mttz6LxuaVizP40/4XYFBRyDttkKJrXTx5Lq4XLLpvng3oqnvopkrvWq
-	 tTXnVrA7V3Gfw==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ac29fd22163so690414966b.3;
-        Mon, 14 Apr 2025 06:52:37 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVMLlrzCqqppRRknQ8FHCrxRUVe2RGw6LGjwmfXsZzch+mHAEKHqxlPeUD0tNBZo40nj7ZvV3eACw==@vger.kernel.org, AJvYcCVptBw6O/LLy4Iq8hl8iVu+4VrarZ4qn8cP+5sO/XexJ6ZX3H5R4d+4G/ONpR68vYpPaFSCUUHk@vger.kernel.org, AJvYcCX47vhs1m6BqYYvPk1IlHye9tAMHFYRCSzZWZh56vZyF74mFRv7lj6Yp4b7jpCfRaCJUHNRM5hRIsBiHuJO@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywy54qMwCfx0gsPsDkB3Aj5cIZ7gy4n3+6wPr2xQ0ElOOoRUG3P
-	qZo7LrGGPPNZdp5EguieOHvVDfCJ9Hw1dQlDzeCTnN40Z7XmVkh/FKKH5Tvi4SBBSJY7eMT0UaL
-	5KBZ23X55yiOWsXPqEeJgONNMWzI=
-X-Google-Smtp-Source: AGHT+IEb9cXahzO8rO6tTtsRYaxmrd0g3AGSHrWP5pO4nON1SGuxFGxFHtpFDvEAu9sp8G1Us6/u8WHw7IosPBIF6N0=
-X-Received: by 2002:a17:906:f585:b0:ac7:3912:5ea8 with SMTP id
- a640c23a62f3a-acad371af0amr1104496566b.61.1744638756467; Mon, 14 Apr 2025
- 06:52:36 -0700 (PDT)
+	 To:Cc:Content-Type; b=DmDl9QomPCxn+1k+3/wYOPUE+qz/jTmQRw8BzcRfRWc02tGMps9bFU2j+TR2lnrxTO6aysUm6fHS7hJpEA4kBlwL29S0KddjdyOIGtJ8xrrXBBYywBHwhrpU37W7xvf6WL40yPiD2En71lSkLnnRPXCYRBAtkhYvpi6ienOvo3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=Mumwvm/8; arc=none smtp.client-ip=209.85.219.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e6df1419f94so3653522276.0
+        for <keyrings@vger.kernel.org>; Mon, 14 Apr 2025 09:08:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1744646900; x=1745251700; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CL3vhJ/AOwi9smEiZpaLEqVlOaMdXAZ9MQuarYjoWe8=;
+        b=Mumwvm/8Y5rtsz0IvKUFkpE8ruDsmgBOjoUBw6i35+BbgBlhTboR4WV1z9gUU1ywLH
+         If2Yai0i6Q6qV8vm/ZQQZL0v9dYK03JXD0IhGFtp9mbK19ZLCDLnhXw/Uf/vH2kQ+taV
+         z3gj/9kyjkXNnsJWvBnbscoWFRL03Ll5QTZUTC2l+vzaVamEWnHzXlRUPZ/Nr5Bu7ppt
+         P307C8L/eQjyp29jdZkkMH6TcWCd6a8kcUjlFLyfvoFFuv0+9y0c+K0ho2d945G7mDRV
+         TST1aqnUXcHWpERl3ZCxsaVHdRAEe7WupgH9tpJDTMG1CJbCaOFvsU20YqAQ3wwsSnh1
+         TXnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744646900; x=1745251700;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CL3vhJ/AOwi9smEiZpaLEqVlOaMdXAZ9MQuarYjoWe8=;
+        b=ngCriXeVEz3SatXoFByD5klG5xbpcBNqAq6qiQiT6UaBb4mdiIZtx0aekdgXz733YF
+         4oDJvW2PJX8YibVA+4hmrYSKfSB/SA1wosEVQTb2/lPCkxNiEtTLeDqhX02aHzChujlk
+         EbIBePvaDxnDY9D/YgowxH49+u3RP6E7BQMcjLp3y78xDzvnVWj7H9IfZS6phqGrq4A6
+         ozy5KTuoXFqr9ZL/heq9SopRAQwLZBqDAS+Y0s+qVRxppCotRuiyiCDvqC/rzD3IWKeo
+         jTCt2k0lB+r2jn6j2yV6Ar5knJ1I0b7MpNEqp6UeImgNGdhP4UVNi6JFtBBC9B2nMHso
+         zw0g==
+X-Forwarded-Encrypted: i=1; AJvYcCWYuucSr0XcSscrk3khTWSma/oorONGIUuTKh6eNxUVO+PU30C7FuBtld31M2aXKD+E2AkmtGK+Og==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYVNLmOBQXN6/+0i/jNvXZv5xpXXZR5d69SoPh42onthO3annK
+	Od29gxqFxL3bPxQvi0teug1g+UZ46tGgwm0aNPtTkAUJNnkgqT6wTckJ3TIHKc0/GO5STbM1iYp
+	pdH8kBbJi8QuS8uOSocZtGfwR/vVZmP1l8yJg
+X-Gm-Gg: ASbGnctO7cu2RKFqeqHt5kXyAHp1rq7HOBWvml16p/zLdQMDirjLSWtq3aWQ5oSugqe
+	/q5NL8HtkSN+4NbSmGUdvYIPeJ+Imh9J9gyASfXhDfDQckuhle2J0aEkDDsrBnXKwoxmdPii9Pj
+	R1H0aEtF9y2AnxEmHUwPOvbw==
+X-Google-Smtp-Source: AGHT+IEIR0Yjon2HOlR6cN2sFBuht845hyAi0y0g8G/WBIBmJsXWf+CNllSW2DnKB64zYskb2VqpvQmI+s8gSsNUMNs=
+X-Received: by 2002:a05:6902:2086:b0:e6d:e3f8:5167 with SMTP id
+ 3f1490d57ef6-e704e00541cmr21022948276.39.1744646899625; Mon, 14 Apr 2025
+ 09:08:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250319064031.2971073-1-chenhuacai@loongson.cn>
- <20250319064031.2971073-4-chenhuacai@loongson.cn> <2025031943-disparity-dash-cfa3@gregkh>
- <Z9rYQy3l5V5cvW7W@t14s> <2025031942-portside-finite-34a9@gregkh>
- <CAASaF6zNsiwUOcSD177aORwfBu4kaq8EKh1XdZkO13kgedcOPA@mail.gmail.com>
- <CAAhV-H7ECQp4S8SNF8_fbK2CHHpgAsfAZk4QdJLYb4iXtjLYyA@mail.gmail.com> <CAASaF6zvEntqKZUzqRjw4Pp5edsRHdd0Dz7-RD=TTMc1n_HMPA@mail.gmail.com>
-In-Reply-To: <CAASaF6zvEntqKZUzqRjw4Pp5edsRHdd0Dz7-RD=TTMc1n_HMPA@mail.gmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Mon, 14 Apr 2025 21:52:35 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7h5SW40jDyJs2naBQ3ZLH9S_PLNeq=19P5+75jwT5eYQ@mail.gmail.com>
-X-Gm-Features: ATxdqUG1icZREjZMGI3uSy2brC-wqNFlBfkcadOO9-HvQ5kt1SjX-qscPsLmFhE
-Message-ID: <CAAhV-H7h5SW40jDyJs2naBQ3ZLH9S_PLNeq=19P5+75jwT5eYQ@mail.gmail.com>
-Subject: Re: [PATCH 6.1&6.6 V3 3/3] sign-file,extract-cert: use pkcs11
- provider for OPENSSL MAJOR >= 3
-To: Jan Stancek <jstancek@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Huacai Chen <chenhuacai@loongson.cn>, 
-	Sasha Levin <sashal@kernel.org>, Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org, 
-	David Howells <dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	loongarch@lists.linux.dev, R Nageswara Sastry <rnsastry@linux.ibm.com>, 
-	Neal Gompa <neal@gompa.dev>
+References: <20250404215527.1563146-1-bboscaccy@linux.microsoft.com>
+ <20250404215527.1563146-2-bboscaccy@linux.microsoft.com> <CAADnVQJyNRZVLPj_nzegCyo+BzM1-whbnajotCXu+GW+5-=P6w@mail.gmail.com>
+ <87semdjxcp.fsf@microsoft.com>
+In-Reply-To: <87semdjxcp.fsf@microsoft.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Mon, 14 Apr 2025 12:08:08 -0400
+X-Gm-Features: ATxdqUE4xsXRFht60hSZa09A9jxdssSnYGr-dDs5eKOQiFPM4gPTEA6FMREhjdE
+Message-ID: <CAHC9VhQ-Zs56LG9D-9Xs14Au-ub8aR4W+THDJfEsza_54CJf-Q@mail.gmail.com>
+Subject: Re: [PATCH v2 security-next 1/4] security: Hornet LSM
+To: Blaise Boscaccy <bboscaccy@linux.microsoft.com>, 
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, David Howells <dhowells@redhat.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Shuah Khan <shuah@kernel.org>, 
+	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
+	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	Jan Stancek <jstancek@redhat.com>, Neal Gompa <neal@gompa.dev>, 
+	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	keyrings@vger.kernel.org, 
+	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, 
+	LSM List <linux-security-module@vger.kernel.org>, 
+	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, 
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, bpf <bpf@vger.kernel.org>, 
+	clang-built-linux <llvm@lists.linux.dev>, nkapron@google.com, 
+	Matteo Croce <teknoraver@meta.com>, Roberto Sassu <roberto.sassu@huawei.com>, 
+	Cong Wang <xiyou.wangcong@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi, Greg and Sasha,
+On Sat, Apr 12, 2025 at 9:58=E2=80=AFAM Blaise Boscaccy
+<bboscaccy@linux.microsoft.com> wrote:
+> Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
+> > On Fri, Apr 4, 2025 at 2:56=E2=80=AFPM Blaise Boscaccy
+> > <bboscaccy@linux.microsoft.com> wrote:
 
-On Sun, Mar 30, 2025 at 9:40=E2=80=AFPM Jan Stancek <jstancek@redhat.com> w=
-rote:
->
-> On Sun, Mar 30, 2025 at 3:08=E2=80=AFPM Huacai Chen <chenhuacai@kernel.or=
-g> wrote:
-> >
-> > On Thu, Mar 20, 2025 at 12:53=E2=80=AFAM Jan Stancek <jstancek@redhat.c=
-om> wrote:
-> > >
-> > > On Wed, Mar 19, 2025 at 5:26=E2=80=AFPM Greg Kroah-Hartman
-> > > <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > On Wed, Mar 19, 2025 at 03:44:19PM +0100, Jan Stancek wrote:
-> > > > > On Wed, Mar 19, 2025 at 07:13:13AM -0700, Greg Kroah-Hartman wrot=
-e:
-> > > > > > On Wed, Mar 19, 2025 at 02:40:31PM +0800, Huacai Chen wrote:
-> > > > > > > From: Jan Stancek <jstancek@redhat.com>
-> > > > > > >
-> > > > > > > commit 558bdc45dfb2669e1741384a0c80be9c82fa052c upstream.
-> > > > > > >
-> > > > > > > ENGINE API has been deprecated since OpenSSL version 3.0 [1].
-> > > > > > > Distros have started dropping support from headers and in fut=
-ure
-> > > > > > > it will likely disappear also from library.
-> > > > > > >
-> > > > > > > It has been superseded by the PROVIDER API, so use it instead
-> > > > > > > for OPENSSL MAJOR >=3D 3.
-> > > > > > >
-> > > > > > > [1] https://github.com/openssl/openssl/blob/master/README-ENG=
-INES.md
-> > > > > > >
-> > > > > > > [jarkko: fixed up alignment issues reported by checkpatch.pl =
---strict]
-> > > > > > >
-> > > > > > > Signed-off-by: Jan Stancek <jstancek@redhat.com>
-> > > > > > > Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > > > > > Tested-by: R Nageswara Sastry <rnsastry@linux.ibm.com>
-> > > > > > > Reviewed-by: Neal Gompa <neal@gompa.dev>
-> > > > > > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > > > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > > > > > > ---
-> > > > > > >  certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++---=
-----------
-> > > > > > >  scripts/sign-file.c  |  93 ++++++++++++++++++++++++++-------=
------
-> > > > > > >  2 files changed, 138 insertions(+), 58 deletions(-)
-> > > > > >
-> > > > > > This seems to differ from what is upstream by a lot, please doc=
-ument
-> > > > > > what you changed from it and why when you resend this series ag=
-ain.
-> > > > >
-> > > > > Hunks are arranged differently, but code appears to be identical.
-> > > > > When I apply the series to v6.6.83 and compare with upstream I ge=
-t:
-> > > >
-> > > > If so, why is the diffstat different?  Also why are the hunks arran=
-ged
-> > > > differently,
-> > >
-> > > He appears to be using "--diff-algorithm=3Dminimal", while you probab=
-ly
-> > > patience or histogram.
-> > Hi, Jan,
-> >
-> > I tried --diff-algorithm=3Dminimal/patience/histogram from the upstream
-> > commit, they all give the same result as this patch. But Sasha said
-> > the upstream diffstat is different, so how does he generate the patch?
->
-> Hi,
->
-> I don't know how he generates the patch, but with git-2.43 I get noticabl=
-e
-> different patches and diff stats for minimal vs. histogram. "minimal" one
-> matches your v3 patch. I don't know details of Greg's workflow, just offe=
-red
-> one possible explanation that would allow this series to progress further=
-.
->
-> $ git format-patch -1 --stdout --diff-algorithm=3Dminimal 558bdc45dfb2 |
-> grep -A3 -m1 -- "---"
-Could you please tell me how you generate patches? I always get the
-same result from the upstream repo.
+...
 
-Huacai
+> > Above are serious layering violations.
+> > LSMs should not be looking that deep into bpf instructions.
+>
+> These aren't BPF internals; this is data passed in from
+> userspace. Inspecting userspace function inputs is definitely within the
+> purview of an LSM.
+>
+> Lskel signature verification doesn't actually need a full disassembly,
+> but it does need all the maps used by the lskel. Due to API design
+> choices, this unfortunately requires disassembling the program to see
+> which array indexes are being used.
+>
+> > Calling into sys_bpf from LSM is plain nack.
+> >
+>
+> kern_sys_bpf is an EXPORT_SYMBOL, which means that it should be callable
+> from a module. Lskels without frozen maps are vulnerable to a TOCTOU
+> attack from a sufficiently privileged user. Lskels currently pass
+> unfrozen maps into the kernel, and there is nothing stopping someone
+> from modifying them between BPF_PROG_LOAD and BPF_PROG_RUN.
 
-> ---
->  certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++-------------
->  scripts/sign-file.c  |  93 ++++++++++++++++++++++++++------------
->  2 files changed, 138 insertions(+), 58 deletions(-)
->
-> $ git format-patch -1 --stdout --diff-algorithm=3Dhistogram 558bdc45dfb2
-> | grep -A3 -m1 -- "---"
-> ---
->  certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++-------------
->  scripts/sign-file.c  |  95 +++++++++++++++++++++++++++------------
->  2 files changed, 139 insertions(+), 59 deletions(-)
->
-> Regards,
-> Jan
->
-> >
-> > Huacai
-> >
-> > >
-> > > $ git format-patch -1 --stdout --diff-algorithm=3Dminimal 558bdc45dfb=
-2 |
-> > > grep -A3 -m1 -- "---"
-> > > ---
-> > >  certs/extract-cert.c | 103 ++++++++++++++++++++++++++++++-----------=
---
-> > >  scripts/sign-file.c  |  93 ++++++++++++++++++++++++++------------
-> > >  2 files changed, 138 insertions(+), 58 deletions(-)
-> > >
-> > > Should be easy to regenerate with different diff-alg for v4.
-> > >
-> > > Regards,
-> > > Jan
-> > >
-> > > > that's a hint to me that something went wrong and I can't
-> > > > trust the patch at all.
-> > > >
-> > > > thanks,
-> > > >
-> > > > greg k-h
-> > > >
-> > >
+I agree with Blaise on both the issue of iterating through the eBPF
+program as well as calling into EXPORT_SYMBOL'd functions; I see no
+reason why these things couldn't be used in a LSM.  These are both
+"public" interfaces; reading/iterating through the eBPF instructions
+falls under a "don't break userspace" API, and EXPORT_SYMBOL is
+essentially public by definition.
+
+It is a bit odd that the eBPF code is creating an exported symbol and
+not providing a declaration in a kernel wide header file, but that's a
+different issue.
+
+> > The verification of module signatures is a job of the module loading pr=
+ocess.
+> > The same thing should be done by the bpf system.
+> > The signature needs to be passed into sys_bpf syscall
+> > as a part of BPF_PROG_LOAD command.
+> > It probably should be two new fields in union bpf_attr
+> > (signature and length),
+> > and the whole thing should be processed as part of the loading
+> > with human readable error reported back through the verifier log
+> > in case of signature mismatch, etc.
 > >
 >
->
+> I don't necessarily disagree, but my main concern with this is that
+> previous code signing patchsets seem to get gaslit or have the goalposts
+> moved until they die or are abandoned.
+
+My understanding from the previous threads is that the recommendation
+from the BPF devs was that anyone wanting to implement BPF program
+signature validation at load time should implement a LSM that
+leverages a light skeleton based loading mechanism and implement a
+gatekeeper which would authorize BPF program loading based on
+signatures.  From what I can see that is exactly what Blaise has done
+with Hornet.  While Hornet is implemented in C, that alone should not
+be reason for rejection; from the perspective of the overall LSM
+framework, we don't accept or reject individual LSMs based on their
+source language, we have both BPF and C based LSMs today, and we've
+been working with the Rust folks to ensure we have the right things in
+place to support Rust in the future.  If your response to Hornet is
+that it isn't acceptable because it is written in C and not BPF, you
+need to know that such a response isn't an acceptable objection.
+
+> Are you saying that at this point, you would be amenable to an in-tree
+> set of patches that enforce signature verification of lskels during
+> BPF_PROG_LOAD that live in syscall.c, without adding extra non-code
+> signing requirements like attachment point verification, completely
+> eBPF-based solutions, or rich eBPF-based program run-time policy
+> enforcement?
+
+I worry that we are now circling back to the original idea of doing
+BPF program signature validation in the BPF subsystem itself.  To be
+clear, I think that would be okay, if not ultimately preferable, but I
+think we've all seen this attempted numerous times in the past and it
+has been delayed, dismissed in favor of alternatives, or simply
+rejected for one reason or another.  If there is a clearly defined
+path forward for validation of signatures on BPF programs within the
+context of the BPF subsystem that doesn't require a trusted userspace
+loader/library/etc. that is one thing, but I don't believe we
+currently have that, despite user/dev requests for such a feature
+stretching out over several years.
+
+I believe there are a few questions/issues that have been identified
+in Hornet's latest round of reviews which may take Blaise a few days
+(week?) to address; if the BPF devs haven't provided a proposal in
+which one could acceptably implement in-kernel BPF signature
+validation by that time, I see no reason why development and review of
+Hornet shouldn't continue into a v3 revision.
+
+--=20
+paul-moore.com
 
