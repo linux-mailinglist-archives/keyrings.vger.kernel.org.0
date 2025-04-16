@@ -1,113 +1,111 @@
-Return-Path: <keyrings+bounces-2640-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2641-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6667AA8B2C6
-	for <lists+keyrings@lfdr.de>; Wed, 16 Apr 2025 09:57:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEE48A909FD
+	for <lists+keyrings@lfdr.de>; Wed, 16 Apr 2025 19:31:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C93B44180C
-	for <lists+keyrings@lfdr.de>; Wed, 16 Apr 2025 07:57:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4596444969
+	for <lists+keyrings@lfdr.de>; Wed, 16 Apr 2025 17:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E16A22D794;
-	Wed, 16 Apr 2025 07:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0DB215044;
+	Wed, 16 Apr 2025 17:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="YarukJTk"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="TJVRAyam"
 X-Original-To: keyrings@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B9622DFF3;
-	Wed, 16 Apr 2025 07:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E32884E1C;
+	Wed, 16 Apr 2025 17:31:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744790216; cv=none; b=pWY6HvUIhIeHyN+DMBTrEOnIWjJUvRuV8CT70AB+LsxPSawTBc3Tmy2I7H4dVpcTnYPcrFSQ73OQD9K55VsYxaUlEZcqOwGheQZsGvDNTaR5ywH+0BQ+kmxHcEOXE2MFW1Bsn5O875S0FilpaBN4ZHGfEBft1GNNQ1pHIgFqhlI=
+	t=1744824691; cv=none; b=D112bay0m7XE+Vj/hkzkE9hZPnuUGUwfGZ2xTZipyOp3LYwMVcpZRUH+pnjEbJfZva1suW8uQj6sB94tv2xyZmdnzK711dqhzkNFbLIRmnjhKP/O2uuvv7+r8A20fBHAVw+7S0tUQDUzY4DsfFhN5NLW8VVqp8vKkR6ZAoaOZMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744790216; c=relaxed/simple;
-	bh=i0xdJXOZ8yy3JN3d3zzzimM0riUW2ArgrrAEqg1BwUU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YH+O9iHAdngq0nx8SRnB1QciN3avWDiF6sf7aiW+QweEf0Dqs5V63vn4B5udtRBdZdm+/k4YOBhtRTvLxxya3xrTukMmqR9YYfhnkUiCUfqnsc5IDOXDtWg1srBGzHZewEvgsoZlymRKVjBdOLhvz/LwQ73Jz6Pfq66OpZKbYwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=YarukJTk; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=Y6lQ12ewHqprPTbUSX5cbh8CXvvU3uLy0vsrn+BVpVM=; b=YarukJTknY5xVZZ3CONlPY/vcV
-	Y1JdEpW/bf3dNAifnXW6XqPm1x7Tk+amLLa3trBFqpsAkoZUaCPiZZ4akVe4+40NpZZO9MgofFoqd
-	8Q9ToLREvTb6wvX28Gun/RJkfK8ZGqQ3Cu8cnKVxyZItclA5GVSK+AV7K63LNiTbTWmZj6WuQqjjd
-	5ivIXgPDsurqVEbnyXu0XzH57VO2cWNI/YtWTcdyEivkRzkkvu+h3PhwVQOohjmJniE99mg3uGd5o
-	e9z1Z5ahLNiez15qKjl2utzZN7Bl29yM1B2UQNh9VrLLJ2jyioJnZaZuptQEjqo2b/nTzNHi0tclm
-	ZRInC0ag==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1u4xdN-00G7rY-21;
-	Wed, 16 Apr 2025 15:56:38 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 16 Apr 2025 15:56:37 +0800
-Date: Wed, 16 Apr 2025 15:56:37 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Lukas Wunner <lukas@wunner.de>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	David Howells <dhowells@redhat.com>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Vitaly Chikunov <vt@altlinux.org>, linux-crypto@vger.kernel.org,
-	keyrings@vger.kernel.org
-Subject: Re: [PATCH RESEND v2 0/2] ecdsa KEYCTL_PKEY_QUERY fixes
-Message-ID: <Z_9itcDC17b-B9Se@gondor.apana.org.au>
-References: <cover.1744052920.git.lukas@wunner.de>
+	s=arc-20240116; t=1744824691; c=relaxed/simple;
+	bh=5Pv3Hc0R8ZXL+oH8n2b7z3OtCOacHKIR1ANqXH+K9c0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Z6xAiaGvNQheyQ613Gf8n2WutwhQB4Ggf/OdQ9ZWAejineJRBApQhgWc3kPaOzvAb9+pl5V+zXfDL33JkEkj+Ub/Kwc6kz9o+vEh27VTA5OxVJPRTGd+i46sezK5If3i7vEs8J4bohK+yf8Jje/gFqSX/zb20N+OYJniVzMq8dE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=TJVRAyam; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from narnia (unknown [167.220.2.28])
+	by linux.microsoft.com (Postfix) with ESMTPSA id CA0032052508;
+	Wed, 16 Apr 2025 10:31:20 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CA0032052508
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1744824689;
+	bh=b7cZx62sBqiNAK+Z5g1uUfPSpgmxvu8T11NIoXrTY/o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=TJVRAyamNt8PTaChjPR4KaTuMaecAOHx9O2mwAnlkPR9lulk07gjnRGoxXT/5rHwB
+	 ZlrItUV1NU7JpKbyzk/UEEXb1e+ROAv34a6ZYR5OoptpDpkfF+e1fJEz/jPiDVMnTN
+	 ekQqoaiXnzkMd9ip4K/kRhdBVUggBCaWt16+ZVoo=
+From: Blaise Boscaccy <bboscaccy@linux.microsoft.com>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, David Howells <dhowells@redhat.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller"
+ <davem@davemloft.net>, Paul Moore <paul@paul-moore.com>, James Morris
+ <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Masahiro Yamada
+ <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas
+ Schier <nicolas@fjasle.eu>, Shuah Khan <shuah@kernel.org>, =?utf-8?Q?Mick?=
+ =?utf-8?Q?a=C3=ABl_Sala=C3=BCn?=
+ <mic@digikod.net>, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, Nick
+ Desaulniers
+ <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>,
+ Justin Stitt <justinstitt@google.com>, Jarkko Sakkinen
+ <jarkko@kernel.org>, Jan Stancek <jstancek@redhat.com>, Neal Gompa
+ <neal@gompa.dev>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, keyrings@vger.kernel.org, Linux
+ Crypto Mailing List <linux-crypto@vger.kernel.org>, LSM List
+ <linux-security-module@vger.kernel.org>, Linux Kbuild mailing list
+ <linux-kbuild@vger.kernel.org>, "open list:KERNEL SELFTEST FRAMEWORK"
+ <linux-kselftest@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
+ clang-built-linux <llvm@lists.linux.dev>, nkapron@google.com, Matteo Croce
+ <teknoraver@meta.com>, Roberto Sassu <roberto.sassu@huawei.com>, Cong Wang
+ <xiyou.wangcong@gmail.com>
+Subject: Re: [PATCH v2 security-next 1/4] security: Hornet LSM
+In-Reply-To: <CAADnVQ+LMAnyT4yV5iuJ=vswgtUu97cHKnvysipc6o7HZfEbUA@mail.gmail.com>
+References: <20250404215527.1563146-1-bboscaccy@linux.microsoft.com>
+ <20250404215527.1563146-2-bboscaccy@linux.microsoft.com>
+ <CAADnVQJyNRZVLPj_nzegCyo+BzM1-whbnajotCXu+GW+5-=P6w@mail.gmail.com>
+ <87semdjxcp.fsf@microsoft.com>
+ <CAADnVQ+JGfwRgsoe2=EHkXdTyQ8ycn0D9nh1k49am++4oXUPHg@mail.gmail.com>
+ <87friajmd5.fsf@microsoft.com>
+ <CAADnVQKb3gPBFz+n+GoudxaTrugVegwMb8=kUfxOea5r2NNfUA@mail.gmail.com>
+ <87a58hjune.fsf@microsoft.com>
+ <CAADnVQ+LMAnyT4yV5iuJ=vswgtUu97cHKnvysipc6o7HZfEbUA@mail.gmail.com>
+Date: Wed, 16 Apr 2025 10:31:18 -0700
+Message-ID: <87y0w0hv2x.fsf@microsoft.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1744052920.git.lukas@wunner.de>
+Content-Type: text/plain
 
-On Mon, Apr 07, 2025 at 09:32:40PM +0200, Lukas Wunner wrote:
-> Here are two patches for ecdsa to avoid reporting nonsensical values
-> for enc/dec size and -- for P521 keys -- also the key size in response
-> to KEYCTL_PKEY_QUERY system calls.
-> 
-> Resending as requested by Herbert:
-> 
->   https://lore.kernel.org/r/Z9fuCTAAOphOvEeH@gondor.apana.org.au/
-> 
-> Link to the original submission:
-> 
->   https://lore.kernel.org/r/cover.1738521533.git.lukas@wunner.de/
-> 
-> Although these are technically fixes, the issues they address are
-> not critical, so I recommend not applying as fixes for v6.15,
-> but rather let the patches soak in linux-next for v6.16.
-> 
-> 
-> Lukas Wunner (2):
->   crypto: ecdsa - Fix enc/dec size reported by KEYCTL_PKEY_QUERY
->   crypto: ecdsa - Fix NIST P521 key size reported by KEYCTL_PKEY_QUERY
-> 
->  crypto/asymmetric_keys/public_key.c | 13 +++++++++----
->  crypto/ecdsa-p1363.c                |  6 ++++--
->  crypto/ecdsa-x962.c                 |  5 +++--
->  crypto/ecdsa.c                      |  2 +-
->  crypto/ecrdsa.c                     |  2 +-
->  crypto/rsassa-pkcs1.c               |  2 +-
->  crypto/sig.c                        |  9 +++++++--
->  include/crypto/sig.h                |  2 +-
->  8 files changed, 27 insertions(+), 14 deletions(-)
-> 
-> -- 
-> 2.43.0
+Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
 
-All applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+> History repeats itself.
+> 1. the problem is hard.
+> 2. you're only interested in addressing your own use case.
+> There is no end-to-end design here and no attempt to
+> think it through how it will work for others.
+>
+
+Well, I suppose anything worth doing is going to be hard :)
+
+The end-to-end design for this is the same end-to-end design that exists
+for signing kernel modules today. We envisioned it working for others
+the same way module signing works for others. 
+
+> Hacking into bpf internal objects like maps is not acceptable.
+
+We've heard your concerns about kern_sys_bpf and we agree that the LSM
+should not be calling it. The proposal in this email should meet both of
+our needs
+https://lore.kernel.org/bpf/874iypjl8t.fsf@microsoft.com/
+
+
+-blaise
 
