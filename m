@@ -1,147 +1,477 @@
-Return-Path: <keyrings+bounces-2660-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2661-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E12DA9907C
-	for <lists+keyrings@lfdr.de>; Wed, 23 Apr 2025 17:20:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4FDDA9AADC
+	for <lists+keyrings@lfdr.de>; Thu, 24 Apr 2025 12:48:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2555B17E77B
-	for <lists+keyrings@lfdr.de>; Wed, 23 Apr 2025 15:16:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C400A19431D5
+	for <lists+keyrings@lfdr.de>; Thu, 24 Apr 2025 10:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E65928CF61;
-	Wed, 23 Apr 2025 15:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D1C1E5B6A;
+	Thu, 24 Apr 2025 10:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="BV467kOY"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J+Vc85CK"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10CC28CF5B
-	for <keyrings@vger.kernel.org>; Wed, 23 Apr 2025 15:10:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282491E9B32
+	for <keyrings@vger.kernel.org>; Thu, 24 Apr 2025 10:44:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1745421043; cv=none; b=DGxPv4yVfXPx7YiWGuPJR1JPTkvvM6XMMrXoId0hP5cpCkl4Zp3AuJJPwLkpnlSdGgbkgxEWD/Tf2QWqPPxdGa2bvh6SWE0BjiH35OZB0uM3tRSMHQYACvy9wl3vLIAb/08Rz5wW8kYaRXbSPoQX88S1/sK6r74KvMxLD8qWyvs=
+	t=1745491490; cv=none; b=Q+m8TpG9VpGuPwMHQsZ8lvttzYpkLf/bYRiI4f+l+1GZdKALpcNaOmoED/Sv06cMnK4aJ/fhT1ekx6B/pAk7Q8+LK/0BvITSV/Wjj+fcx3esjtn/lLO4R2bmEgHt9kvReFVnI2YmXQ/oTp9tspoJWe/vXUOO7bnT4yJwVBB0t+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1745421043; c=relaxed/simple;
-	bh=uFV3fDxHeTVor0I1L/M53Jf1QkJJii9mgN/m4+mnqe0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SbEW64S46LEd1p+xfp71neDIsRa+C65HP3BDtelCaeXqVuoJqaWdex06o6Rz8Me80Uy7DuyaRQzBXpfI/snfiNWoAq6NT5TE/PR49ck9/QJO3zok0V8bwu8hirDv9acpD+Y7CcbjClrVNRdUA3+0DvfBz5cH8zPPzQAPqvJlskE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=BV467kOY; arc=none smtp.client-ip=209.85.128.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-7080dd5f9f1so210027b3.0
-        for <keyrings@vger.kernel.org>; Wed, 23 Apr 2025 08:10:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1745421041; x=1746025841; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ppDTLRNI5D/DHlJ104+9klrOmugo96Z4EzkqmTSr+tw=;
-        b=BV467kOYvg9v1zan0/6j+x47F8k96sTz/PYM0TdS2w+WeWy7o3I1OK3YpPMw2RYbPn
-         YBo32qVaE2CpT/F0kqYkX6ESu30MQ5Zs4SVO6Ngktc83G8A9DZ52LypKy6vxTaZRnDXv
-         nCvVf9KcnMy3bFIrmJSvtCa5JU5K5bavjj3/uG/IgXj26dO++/pnJtPQzyTlTur5U5E4
-         M27BjyuJxCnK+1YTgD8oA2zvnQoEkgi2Yr8lPHPA/hYOeURaQ2HMRRPT45VNgrE6JOba
-         JVDZYlvx1cuiQ5EbAJTRGFyV9ytozEWODCcZLDQ6CJLlgX0C1fzENfaWaSI3Jc1TGnDg
-         AhnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745421041; x=1746025841;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ppDTLRNI5D/DHlJ104+9klrOmugo96Z4EzkqmTSr+tw=;
-        b=KrJ7IKe9zK93RQ0FlRraF9eqc6s6BiLBTyqOtdYKppTeEGlLH0OAc1Jk5sQovPFy+L
-         mQsW04TqNPHlYoopeEtnkCHQUkwyjenBAcpcULsrr0i8DySXUJ4e6r2Lx/XBZUL9qqA8
-         rrAS6QFgdlXgbdv3Hw0cbnqC/iSSEU1QTpQvvQ+/tEGI7nMpTqDFVuAfPLtTs7ssIpJ+
-         1Zqj6JXqYO87c8PcXhspj1DDguV6pip0pp5thXWgMvGgeLg08CTlz6hNrA8Ox1KxWuzR
-         DB7qZXinkAAc1tPvSuOlV13uEP9C6AyrgmaJq/CyAJm/cIJeXYItyNZmCDE+rXxFYztM
-         vgkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCULmCpTOMWYIjHeBUftq2YCKek5zc2Nvovrs7gHAmW7MpPwPx+Ucj68oJZgJlp6JMJ8fIA4lSwS5A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXg0wgIEyLaADsvUlWEF6TwIfLgbRT1BFPTC+bHazzFPx5/qo6
-	djHrziP+kEIc9vh8tQQW9xvR9IiJ4eTWv/CgGGrHIv5swDf70TJW0H45wViLT6RCjC5m8tdgbPI
-	uoZTnNz0CbAzoNNQKawiNpxh3TL1NAQllXy5F
-X-Gm-Gg: ASbGncsGeSU9hu3SIMHcojUAn2IYUx3dnycFF25D9r1Fj55JsyRJPGRw2WAgewQpR0A
-	dIudXYNepIWUPLFJcgWFNdUDjeSDlUfMGwFTFR1p19g3gqRtr2e1FhDI1KeqwbQR4UCwo9D+oGM
-	rq5f+gaF81dDZV5f1jDTAoV3VS7byF+jU9
-X-Google-Smtp-Source: AGHT+IHNlf00p8r3DHcmCpgY+IFBhYtAhRgyVsFb6FFk96MPIernB0HKWY5qgWQbLL58D4kTom9itSs/0uIOQcHE5fg=
-X-Received: by 2002:a05:690c:6801:b0:6fd:33a5:59a with SMTP id
- 00721157ae682-706ccd1a5ccmr309843197b3.18.1745421040868; Wed, 23 Apr 2025
- 08:10:40 -0700 (PDT)
+	s=arc-20240116; t=1745491490; c=relaxed/simple;
+	bh=srPpCwBBTBcG0UQ7pTmo2VgxvZVnw2VFQ1x90p51RJY=;
+	h=From:To:cc:Subject:MIME-Version:Content-Type:Date:Message-ID; b=HayZ4Ag75AyAGy5rmRuVprg1rQaXhvMvuu2+oICZuDNMXd7lQ7WVvxVJYQezc8xC86X3SNZCqhW1ENoX4yiA00HNIsemfBJX3vhLjy1ecD4Hcn0yxRi4xNJkDqIP6F2B41JhNo4uOrzSXSWLnA0c5gNmXKCcMcP3k9uJmvxrMZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J+Vc85CK; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1745491487;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WMLLQpRUhw0b6j7lrq1jp33gLec8Zcw4oSoDT5hT84Y=;
+	b=J+Vc85CKFdtg2AKfMUU3/VBVQsAlmiiXrZ2ccU0LVepWKA+iEf3t4n9jWT5lpvS97w5vam
+	kJcm2fVilGI+81ceVzzuLnKd05Uhs+mBsoPXKvmTqtTpadqiVlEFTSUvcWGFD5uYWawajj
+	jmp9m+8zksIjP334iPe90z4/vDsaaLU=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-225-_4NUA1_PPZyL4VA0wGO82A-1; Thu,
+ 24 Apr 2025 06:44:43 -0400
+X-MC-Unique: _4NUA1_PPZyL4VA0wGO82A-1
+X-Mimecast-MFC-AGG-ID: _4NUA1_PPZyL4VA0wGO82A_1745491483
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C8CAD19560AF;
+	Thu, 24 Apr 2025 10:44:42 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.16])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C991C180047F;
+	Thu, 24 Apr 2025 10:44:41 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+cc: dhowells@redhat.com, keyrings@vger.kernel.org
+Subject: [PATCH keyutils] tests: Add skips for testing of unsupported features
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250404215527.1563146-1-bboscaccy@linux.microsoft.com>
- <20250404215527.1563146-2-bboscaccy@linux.microsoft.com> <CAADnVQJyNRZVLPj_nzegCyo+BzM1-whbnajotCXu+GW+5-=P6w@mail.gmail.com>
- <87semdjxcp.fsf@microsoft.com> <CAADnVQ+JGfwRgsoe2=EHkXdTyQ8ycn0D9nh1k49am++4oXUPHg@mail.gmail.com>
- <87friajmd5.fsf@microsoft.com> <CAADnVQKb3gPBFz+n+GoudxaTrugVegwMb8=kUfxOea5r2NNfUA@mail.gmail.com>
- <87a58hjune.fsf@microsoft.com> <CAADnVQ+LMAnyT4yV5iuJ=vswgtUu97cHKnvysipc6o7HZfEbUA@mail.gmail.com>
- <87y0w0hv2x.fsf@microsoft.com> <CAADnVQKF+B_YYwOCFsPBbrTBGKe4b22WVJFb8C0PHGmRAjbusQ@mail.gmail.com>
- <2bd95ca78e836db0775da8237792e8448b8eec62.camel@HansenPartnership.com>
-In-Reply-To: <2bd95ca78e836db0775da8237792e8448b8eec62.camel@HansenPartnership.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Wed, 23 Apr 2025 11:10:29 -0400
-X-Gm-Features: ATxdqUEil0O912atUTQeKlUUv4Sfsc4c76L7yegeINodkXYOkWCpNQ86Ynaeoaw
-Message-ID: <CAHC9VhTi6+CHD9OtWj5=pPDrtwF+S9yfBOKqghe=9wXmd7jrxA@mail.gmail.com>
-Subject: Re: [PATCH v2 security-next 1/4] security: Hornet LSM
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, 
-	Blaise Boscaccy <bboscaccy@linux.microsoft.com>, Jonathan Corbet <corbet@lwn.net>, 
-	David Howells <dhowells@redhat.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	"David S. Miller" <davem@davemloft.net>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Shuah Khan <shuah@kernel.org>, 
-	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
-	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	Jan Stancek <jstancek@redhat.com>, Neal Gompa <neal@gompa.dev>, 
-	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	keyrings@vger.kernel.org, 
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, 
-	LSM List <linux-security-module@vger.kernel.org>, 
-	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, bpf <bpf@vger.kernel.org>, 
-	clang-built-linux <llvm@lists.linux.dev>, nkapron@google.com, 
-	Matteo Croce <teknoraver@meta.com>, Roberto Sassu <roberto.sassu@huawei.com>, 
-	Cong Wang <xiyou.wangcong@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3089642.1745491480.1@warthog.procyon.org.uk>
 Content-Transfer-Encoding: quoted-printable
+Date: Thu, 24 Apr 2025 11:44:40 +0100
+Message-ID: <3089643.1745491480@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Wed, Apr 23, 2025 at 10:12=E2=80=AFAM James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
-> On Mon, 2025-04-21 at 13:12 -0700, Alexei Starovoitov wrote:
-> [...]
-> > Calling bpf_map_get() and
-> > map->ops->map_lookup_elem() from a module is not ok either.
->
-> I don't understand this objection.  The program just got passed in to
-> bpf_prog_load() as a set of attributes which, for a light skeleton,
-> directly contain the code as a blob and have the various BTF
-> relocations as a blob in a single element array map.  I think everyone
-> agrees that the integrity of the program would be compromised by
-> modifications to the relocations, so the security_bpf_prog_load() hook
-> can't make an integrity determination without examining both.  If the
-> hook can't use the bpf_maps.. APIs directly is there some other API it
-> should be using to get the relocations, or are you saying that the
-> security_bpf_prog_load() hook isn't fit for purpose and it should be
-> called after the bpf core has loaded the relocations so they can be
-> provided to the hook as an argument?
->
-> The above, by the way, is independent of signing, because it applies to
-> any determination that might be made in the security_bpf_prog_load()
-> hook regardless of purpose.
+Hi Jarkko,
 
-I've also been worrying that some of the unspoken motivation behind
-the objection is simply that Hornet is not BPF.  If/when we get to a
-point where Hornet is sent up to Linus and Alexei's objection to the
-Hornet LSM inspecting BPF maps stands, it seems as though *any* LSM,
-including BPF LSMs, would need to be prevented from accessing BPF
-maps.  I'm fairly certain no one wants to see it come to that.
+Here's a patch I'm proposing to add to the keyutils testsuite so that I ca=
+n
+use it with some older OS versions.
 
---=20
-paul-moore.com
+David
+---
+tests: Add skips for testing of unsupported features
+
+Add skips for features that are either unsupported by the kernel or by the
+keyutils package.
+    =
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+---
+ tests/features/limits/runtest.sh          |    6 +++++
+ tests/hex2bin.pl                          |   21 +++++++++++++++++++
+ tests/keyctl/id/bad-args/runtest.sh       |    6 +++++
+ tests/keyctl/id/noargs/runtest.sh         |    6 +++++
+ tests/keyctl/id/valid/runtest.sh          |    6 +++++
+ tests/keyctl/move/bad-args/runtest.sh     |    6 +++++
+ tests/keyctl/move/noargs/runtest.sh       |    6 +++++
+ tests/keyctl/move/recursion/runtest.sh    |    6 +++++
+ tests/keyctl/move/valid/runtest.sh        |    6 +++++
+ tests/keyctl/session/valid2/runtest.sh    |    6 +++++
+ tests/keyctl/supports/bad-args/runtest.sh |    6 +++++
+ tests/keyctl/supports/valid/runtest.sh    |    6 +++++
+ tests/prepare.inc.sh                      |   23 ++++++++++++++++++++
+ tests/toolbox.inc.sh                      |   33 ++++++++++++++++++++++++=
+------
+ 14 files changed, 136 insertions(+), 7 deletions(-)
+
+diff --git a/tests/features/limits/runtest.sh b/tests/features/limits/runt=
+est.sh
+index 3af2f5a..7642071 100644
+--- a/tests/features/limits/runtest.sh
++++ b/tests/features/limits/runtest.sh
+@@ -9,6 +9,12 @@
+ result=3DPASS
+ echo "++++ BEGINNING TEST" >$OUTPUTFILE
+ =
+
++if ! keyutils_at_or_later_than 1.6.2
++then
++    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl --test'"
++    exit 0
++fi
++
+ # This doesn't work on MIPS earler than 3.19 because of a kernel bug
+ kver=3D`uname -r`
+ kmch=3D`uname -m`
+diff --git a/tests/hex2bin.pl b/tests/hex2bin.pl
+new file mode 100644
+index 0000000..4f0f27a
+--- /dev/null
++++ b/tests/hex2bin.pl
+@@ -0,0 +1,21 @@
++#!/usr/bin/perl -w
++use strict;
++
++die "Format:\n\t$0 <hex> [<hex>]*\n\t$0 -\n" unless (@ARGV);
++
++my $str =3D "";
++
++if ($ARGV[0] eq "-") {
++    shift(@ARGV);
++    $str .=3D $_ while (<STDIN>);
++} else {
++    $str =3D join("", @ARGV);
++}
++
++$str =3D~ s/[ \t\n]//g;
++die "odd length string\n" if (length($str) & 1);
++
++for (; $str; $str =3D substr($str, 2)) {
++    my $pair =3D hex(substr($str, 0, 2));
++    print pack("C", $pair);
++}
+diff --git a/tests/keyctl/id/bad-args/runtest.sh b/tests/keyctl/id/bad-arg=
+s/runtest.sh
+index 957d1a5..bba62c6 100644
+--- a/tests/keyctl/id/bad-args/runtest.sh
++++ b/tests/keyctl/id/bad-args/runtest.sh
+@@ -6,6 +6,12 @@
+ =
+
+ # ---- do the actual testing ----
+ =
+
++if [ $have_id_command =3D 0 ]
++then
++    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl id'"
++    exit 0
++fi
++
+ result=3DPASS
+ echo "++++ BEGINNING TEST" >$OUTPUTFILE
+ =
+
+diff --git a/tests/keyctl/id/noargs/runtest.sh b/tests/keyctl/id/noargs/ru=
+ntest.sh
+index aff9de6..b95c596 100644
+--- a/tests/keyctl/id/noargs/runtest.sh
++++ b/tests/keyctl/id/noargs/runtest.sh
+@@ -6,6 +6,12 @@
+ =
+
+ # ---- do the actual testing ----
+ =
+
++if [ $have_id_command =3D 0 ]
++then
++    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl id'"
++    exit 0
++fi
++
+ result=3DPASS
+ echo "++++ BEGINNING TEST" >$OUTPUTFILE
+ =
+
+diff --git a/tests/keyctl/id/valid/runtest.sh b/tests/keyctl/id/valid/runt=
+est.sh
+index ffed995..2c06b3d 100644
+--- a/tests/keyctl/id/valid/runtest.sh
++++ b/tests/keyctl/id/valid/runtest.sh
+@@ -6,6 +6,12 @@
+ =
+
+ # ---- do the actual testing ----
+ =
+
++if [ $have_id_command =3D 0 ]
++then
++    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl id'"
++    exit 0
++fi
++
+ result=3DPASS
+ echo "++++ BEGINNING TEST" >$OUTPUTFILE
+ =
+
+diff --git a/tests/keyctl/move/bad-args/runtest.sh b/tests/keyctl/move/bad=
+-args/runtest.sh
+index b1c7e66..9410941 100644
+--- a/tests/keyctl/move/bad-args/runtest.sh
++++ b/tests/keyctl/move/bad-args/runtest.sh
+@@ -6,6 +6,12 @@
+ =
+
+ # ---- do the actual testing ----
+ =
+
++if [ $have_move_key =3D 0 ]
++then
++    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl move'"
++    exit 0
++fi
++
+ result=3DPASS
+ echo "++++ BEGINNING TEST" >$OUTPUTFILE
+ =
+
+diff --git a/tests/keyctl/move/noargs/runtest.sh b/tests/keyctl/move/noarg=
+s/runtest.sh
+index 29a91f1..8ad91e9 100644
+--- a/tests/keyctl/move/noargs/runtest.sh
++++ b/tests/keyctl/move/noargs/runtest.sh
+@@ -6,6 +6,12 @@
+ =
+
+ # ---- do the actual testing ----
+ =
+
++if [ $have_move_key =3D 0 ]
++then
++    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl move'"
++    exit 0
++fi
++
+ result=3DPASS
+ echo "++++ BEGINNING TEST" >$OUTPUTFILE
+ =
+
+diff --git a/tests/keyctl/move/recursion/runtest.sh b/tests/keyctl/move/re=
+cursion/runtest.sh
+index 36cd5cb..8b90be8 100644
+--- a/tests/keyctl/move/recursion/runtest.sh
++++ b/tests/keyctl/move/recursion/runtest.sh
+@@ -6,6 +6,12 @@
+ =
+
+ # ---- do the actual testing ----
+ =
+
++if [ $have_move_key =3D 0 ]
++then
++    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl move'"
++    exit 0
++fi
++
+ result=3DPASS
+ echo "++++ BEGINNING TEST" >$OUTPUTFILE
+ =
+
+diff --git a/tests/keyctl/move/valid/runtest.sh b/tests/keyctl/move/valid/=
+runtest.sh
+index 31b51d7..20ccff2 100644
+--- a/tests/keyctl/move/valid/runtest.sh
++++ b/tests/keyctl/move/valid/runtest.sh
+@@ -6,6 +6,12 @@
+ =
+
+ # ---- do the actual testing ----
+ =
+
++if [ $have_move_key =3D 0 ]
++then
++    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl move'"
++    exit 0
++fi
++
+ result=3DPASS
+ echo "++++ BEGINNING TEST" >$OUTPUTFILE
+ =
+
+diff --git a/tests/keyctl/session/valid2/runtest.sh b/tests/keyctl/session=
+/valid2/runtest.sh
+index 12ad234..1642395 100644
+--- a/tests/keyctl/session/valid2/runtest.sh
++++ b/tests/keyctl/session/valid2/runtest.sh
+@@ -6,6 +6,12 @@
+ =
+
+ # ---- do the actual testing ----
+ =
+
++if [ $have_id_command =3D 0 ]
++then
++    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl id'"
++    exit 0
++fi
++
+ result=3DPASS
+ echo "++++ BEGINNING TEST" >$OUTPUTFILE
+ =
+
+diff --git a/tests/keyctl/supports/bad-args/runtest.sh b/tests/keyctl/supp=
+orts/bad-args/runtest.sh
+index 05581a4..f87f517 100644
+--- a/tests/keyctl/supports/bad-args/runtest.sh
++++ b/tests/keyctl/supports/bad-args/runtest.sh
+@@ -6,6 +6,12 @@
+ =
+
+ # ---- do the actual testing ----
+ =
+
++if [ $have_capabilities =3D 0 ]
++then
++    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl supports'"
++    exit 0
++fi
++
+ result=3DPASS
+ echo "++++ BEGINNING TEST" >$OUTPUTFILE
+ =
+
+diff --git a/tests/keyctl/supports/valid/runtest.sh b/tests/keyctl/support=
+s/valid/runtest.sh
+index 2c62ef2..4e41200 100644
+--- a/tests/keyctl/supports/valid/runtest.sh
++++ b/tests/keyctl/supports/valid/runtest.sh
+@@ -6,6 +6,12 @@
+ =
+
+ # ---- do the actual testing ----
+ =
+
++if [ $have_capabilities =3D 0 ]
++then
++    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl supports'"
++    exit 0
++fi
++
+ result=3DPASS
+ echo "++++ BEGINNING TEST" >$OUTPUTFILE
+ =
+
+diff --git a/tests/prepare.inc.sh b/tests/prepare.inc.sh
+index 4033d69..be134da 100644
+--- a/tests/prepare.inc.sh
++++ b/tests/prepare.inc.sh
+@@ -112,11 +112,14 @@ then
+     esac
+ fi
+ =
+
++have_capabilities=3D0
+ have_key_invalidate=3D0
+ have_big_key_type=3D0
+ have_dh_compute=3D0
+-have_restrict_keyring=3D0
++have_move_key=3D0
+ have_notify=3D0
++have_public_key=3D0
++have_restrict_keyring=3D0
+ =
+
+ if keyctl supports capabilities >&/dev/null
+ then
+@@ -179,3 +182,21 @@ if [ "$SKIPINSTALLREQ" =3D "yes" ]
+ then
+     skip_install_required=3D1
+ fi
++
++#
++# Check if "keyctl id" is supported
++#
++have_id_command=3D0
++if keyutils_at_or_later_than 1.6.2
++then
++    have_id_command=3D1
++fi
++
++#
++# Check if "keyctl pkey_*" are supported
++#
++have_pkey_commands=3D0
++if keyutils_at_or_later_than 1.6
++then
++    have_pkey_commands=3D1
++fi
+diff --git a/tests/toolbox.inc.sh b/tests/toolbox.inc.sh
+index 6f4fb18..212b353 100644
+--- a/tests/toolbox.inc.sh
++++ b/tests/toolbox.inc.sh
+@@ -613,8 +613,15 @@ function create_key ()
+ 	my_keyring=3D$4
+     fi
+ =
+
+-    echo keyctl add "$@" >>$OUTPUTFILE
+-    keyctl add "$@" >>$OUTPUTFILE 2>&1
++    if [ "$1" =3D "-x" ] && version_less_than $OSRELEASE 9
++    then
++	shift
++	echo perl ../../../hex2bin.pl "$3" "|" keyctl padd "$1 $2 $4" >>$OUTPUTF=
+ILE
++	perl ../../../hex2bin.pl "$3" | keyctl padd "$1" "$2" "$4" >>$OUTPUTFILE
++    else
++	echo keyctl add "$@" >>$OUTPUTFILE
++	keyctl add "$@" >>$OUTPUTFILE 2>&1
++    fi
+     e=3D$?
+     if [ $e =3D=3D $my_exitval ]
+     then
+@@ -682,8 +689,15 @@ function pcreate_key ()
+ 	my_keyring=3D$3
+     fi
+ =
+
+-    echo echo -n $data \| keyctl padd "$@" >>$OUTPUTFILE
+-    echo -n $data | keyctl padd "$@" >>$OUTPUTFILE 2>&1
++    if [ "$1" =3D "-x" ] && version_less_than $OSRELEASE 9
++    then
++	shift
++	echo echo -n $data \| perl ../../../hex2bin.pl "|" keyctl padd "$@" >>$O=
+UTPUTFILE
++	echo -n $data | perl ../../../hex2bin.pl - | keyctl padd "$@" >>$OUTPUTF=
+ILE
++    else
++	echo echo -n $data \| keyctl padd "$@" >>$OUTPUTFILE
++	echo -n $data | keyctl padd "$@" >>$OUTPUTFILE 2>&1
++	fi
+     e=3D$?
+     if [ $e =3D=3D $my_exitval ]
+     then
+@@ -1232,8 +1246,15 @@ function update_key ()
+ 	shift
+     fi
+ =
+
+-    echo keyctl update "$@" >>$OUTPUTFILE
+-    keyctl update "$@" >>$OUTPUTFILE 2>&1
++    if [ "x$1" =3D "x-x" ] && version_less_than $OSRELEASE 9
++    then
++	shift
++	echo perl ../../../hex2bin.pl "$2" "|" keyctl pupdate "$1" >>$OUTPUTFILE
++	perl ../../../hex2bin.pl "$2" | keyctl pupdate "$1" >>$OUTPUTFILE
++    else
++	echo keyctl update "$@" >>$OUTPUTFILE
++	keyctl update "$@" >>$OUTPUTFILE 2>&1
++    fi
+     e=3D$?
+     if [ $e =3D=3D $my_exitval ]
+     then
+
 
