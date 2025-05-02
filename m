@@ -1,84 +1,84 @@
-Return-Path: <keyrings+bounces-2669-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2670-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60549AA598E
-	for <lists+keyrings@lfdr.de>; Thu,  1 May 2025 04:01:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D78BEAA795E
+	for <lists+keyrings@lfdr.de>; Fri,  2 May 2025 20:44:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5D6846128F
-	for <lists+keyrings@lfdr.de>; Thu,  1 May 2025 02:01:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DB1E1C04A06
+	for <lists+keyrings@lfdr.de>; Fri,  2 May 2025 18:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B2914F121;
-	Thu,  1 May 2025 02:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06DF266EEF;
+	Fri,  2 May 2025 18:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nigauri-org.20230601.gappssmtp.com header.i=@nigauri-org.20230601.gappssmtp.com header.b="1T3EkSMZ"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ZebQyXQN"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDF62DC782
-	for <keyrings@vger.kernel.org>; Thu,  1 May 2025 02:01:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C69E376;
+	Fri,  2 May 2025 18:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746064904; cv=none; b=KLGHf3tP2pLmhk6ROl96rbQy+CTdY6vTFRCTp3l8sWVxVmE661kN+GgSZiq03uZNoiNgratt4EWJqrCzCNa/q5rBYa7rjWhK1WoTpSLOPLe/sMqyzTdU2KV/i5c/a03ENi7D42b62TusTpmTMl1AlvZfkTSu38KNDdUx+r2L+n0=
+	t=1746211474; cv=none; b=u3u86x7ofDZziWrhPLKlRKmdrOIvhnb0uuBisTSLE/svA9b3FRf1zDGl0A5QIWLVyLWTc5fCzaD4i/tQCcXJ2sGQcG+ULxy1PO06t5gAhapkS8mDZyMxV/JY+4rz9KDxGkhwtxWKyz+kiy/abzJHXuR1xWVl32EAwtobsLjou0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746064904; c=relaxed/simple;
-	bh=Q+NJnL+jduQYepLZ5Tk/GObsavVs40GR49mYXlZ6vas=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IzjTrFQC2my9C95JX+T/bmr6IHtnSbHfMJh2H8GPt1XJbbfj4qmERxypZFoHjtBB6f/r4OsZMtNmLD/+9qyoGEm6l3KJWs7ZrtoXpBTERgOsVWROioILXfpJ4toS2OfN2r9oYmYGKMovmbVyG5okmCHRPYhcruUhaRPr67C38as=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nigauri.org; spf=none smtp.mailfrom=nigauri.org; dkim=pass (2048-bit key) header.d=nigauri-org.20230601.gappssmtp.com header.i=@nigauri-org.20230601.gappssmtp.com header.b=1T3EkSMZ; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nigauri.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nigauri.org
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-224100e9a5cso5883395ad.2
-        for <keyrings@vger.kernel.org>; Wed, 30 Apr 2025 19:01:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nigauri-org.20230601.gappssmtp.com; s=20230601; t=1746064902; x=1746669702; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4RdKidupnxmKUtU+QgA6Q2KBy92PpTK2SP/EB0ACgnw=;
-        b=1T3EkSMZ4k7YUoXEoBDavXhzryALpowu1HQvPLH0ocTFm02/fDQHqZfZxdnZEYtLux
-         wU+2yJ5STqJpY2jD+IkpR4r8bowX+wsy0Kg7OV5KDfnAOFTklnWqY3SWs6oYiJs1674H
-         nVaxe21hRf/3WPMbrafDLjvwffX40gQgtec2OY4XyyTdkFmRuC+R7NPx5azQcehDYjBR
-         6BQgUbx5LhOI/sxPNdIbg6jr7qx4IUp/BvLARVIslOVF+Dky4AEF5JVJb+xJv47teNoY
-         XS5CTPLSxacYdGFWrg/7P7ZSMxYR2GGJSKXJi1r4jLU6LS0lVYimQUWjmW/cW+kCRl//
-         kR4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746064902; x=1746669702;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4RdKidupnxmKUtU+QgA6Q2KBy92PpTK2SP/EB0ACgnw=;
-        b=QNuAIWwATSnX/iHYr+29NE4uWXvtzx2ijuudL00aa+ka4Wvxm1N4K63iE9gboaFwXn
-         SJ/DrqBmldKtVfp60d8uGjKA3XQw7InBS+Hc+9jyW8MtqN9AnYnw28YIc3oegj1W6O2G
-         lREaPib6D2wmoEFJms/3LSioMI6GgIv/TNnxZkXbnDg3phLJZcpJgZzb2WrduH/U5RIS
-         FE3A+BsJVY5xE6DzCzLEvgsWJd8pC8WTrsLjiBblTxLJbU8i8VNUG5EI1cdoZ0VHDb8V
-         H5yl+LwmA3/Viqt+6UuMIXww17c/i5AOIL2CeAYp3y9m3h11GMgAYmzTnST/wZTxZWKH
-         q+pA==
-X-Gm-Message-State: AOJu0Yy63GU5mYvFJ7EWjxr4p1J0ren63kPaVb4KOyj1EyQa2bocAXpr
-	Y0zZSgwxtXWHF786MEiTX0ljltUzhhlY5gkqHtf1GP+dNaVdsrKYl1iTtuoDgrA4nluqPsCjXg=
-	=
-X-Gm-Gg: ASbGncsp0Bmau9jbsVwUo+uZraANWLj/jeCOFJn0nJ+ZjPZgYpNNzZAf/HZFl/liJEd
-	kTO3W+WbKtUopQaAcbc5SruCkynlKFmSPuLmWORoZe1H/J5uNJqazwf0FE8fpX4pO650JLQ2Dyl
-	gJxBgWR8SSHUUnhR6fpdEctn5ZfgZ5RngNgWeCJQY6sDtYoAL+8727JGmNuDJUcq9AOZM8jbV1w
-	VZh9iNG5BSToFxiJpQSmtNJs67QD0/u7rgCWniH/HjfQVyn10LORqmP3ODDXWlTx5a1VZGsLzMo
-	Gjfp0A1kPcvwvc1Ch7QjYf0TNY/ee29BJYvjVGKZ4KcDSFCmcUPIirNyerr/oj8rmtfY8qs7Gw=
-	=
-X-Google-Smtp-Source: AGHT+IFF1JDoVd9X1MLyQPl9JZM1YVu8tJmNyZpfa/m4sxE6o6GjVsnbi4Q1sS/ZMWs0zV9+OQus2Q==
-X-Received: by 2002:a17:902:d484:b0:223:2361:e855 with SMTP id d9443c01a7336-22e0844684amr10260825ad.39.1746064901792;
-        Wed, 30 Apr 2025 19:01:41 -0700 (PDT)
-Received: from localhost (ae053227.dynamic.ppp.asahi-net.or.jp. [14.3.53.227])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-22db4dbcb26sm129540965ad.68.2025.04.30.19.01.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Apr 2025 19:01:41 -0700 (PDT)
-From: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
-To: keyrings@vger.kernel.org,
-	David Howells <dhowells@redhat.com>
-Cc: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
-Subject: [PATCH] Add License variable to pkg-config file
-Date: Thu,  1 May 2025 11:01:27 +0900
-Message-ID: <20250501020127.3935268-1-iwamatsu@nigauri.org>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1746211474; c=relaxed/simple;
+	bh=LWm2Mewi0nFsm/A6RwwDy26RvhP0+n0VoXoQ4yv8rig=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=e/pjH2iw6VUElVu2h28WRYK2lx/dKLYyAsPLal7eToKdsE4kRSRc6a3VyX0s9T2rKKC74oREr6QCihxXu0Fpka3EDuwoyfbnfmrsewVa5dCg0bJRTFM5vwDM9Dt+QFKKv6UFybuH/tF4fye8jcEukcQsWgoO/Zo4K6RAVVFMZyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ZebQyXQN; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from narnia.corp.microsoft.com (unknown [40.78.12.133])
+	by linux.microsoft.com (Postfix) with ESMTPSA id C2C212111574;
+	Fri,  2 May 2025 11:44:29 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C2C212111574
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1746211472;
+	bh=aEe0PfwCQ3p3kPpyx+RuNZSjsrvOc2pL1wXnh7jwV18=;
+	h=From:To:Subject:Date:From;
+	b=ZebQyXQNFVO/se60BdDeY4wGv06VFo7Ggfizpn795gClnXruqrZ2LZWKTCxrAvIx7
+	 EsftJAIyCwyPDU/Fxjd5QombyTS2FTw3NBrVGIVAtxI3Rqv+JPjlvgEMDKg4I/Jj4Y
+	 o3mmqY9LLD8zmV/n5/QyvRTHOGmkyZAf/fZMO5+4=
+From: Blaise Boscaccy <bboscaccy@linux.microsoft.com>
+To: Jonathan Corbet <corbet@lwn.net>,
+	David Howells <dhowells@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Shuah Khan <shuah@kernel.org>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Blaise Boscaccy <bboscaccy@linux.microsoft.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jan Stancek <jstancek@redhat.com>,
+	Neal Gompa <neal@gompa.dev>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kbuild@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	bpf@vger.kernel.org,
+	llvm@lists.linux.dev,
+	nkapron@google.com,
+	teknoraver@meta.com,
+	roberto.sassu@huawei.com,
+	xiyou.wangcong@gmail.com,
+	Tyler Hicks <code@tyhicks.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>
+Subject: [PATCH v3 0/4] Introducing Hornet LSM
+Date: Fri,  2 May 2025 11:44:06 -0700
+Message-ID: <20250502184421.1424368-1-bboscaccy@linux.microsoft.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -87,25 +87,114 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The pkg-config file has License variable that allows you to set the license for
-the software. This sets 'LGPL-2.1-or-later' as defined in SPDX to License.
+This patch series introduces the Hornet LSM. The goal of Hornet is to
+provide a signature verification mechanism for eBPF programs.
 
-Ref: https://github.com/pkgconf/pkgconf/blob/master/man/pc.5#L116
-Signed-off-by: Nobuhiro Iwamatsu <iwamatsu@nigauri.org>
----
- libkeyutils.pc.in | 1 +
- 1 file changed, 1 insertion(+)
+eBPF has similar requirements to that of modules when it comes to
+loading: find symbol addresses, fix up ELF relocations, some struct
+field offset handling stuff called CO-RE (compile-once run-anywhere),
+and some other miscellaneous bookkeeping. During eBPF program
+compilation, pseudo-values get written to the immediate operands of
+instructions. During loading, those pseudo-values get rewritten with
+concrete addresses or data applicable to the currently running system,
+e.g., a kallsyms address or an fd for a map. This needs to happen
+before the instructions for a bpf program are loaded into the kernel
+via the bpf() syscall. Unlike modules, an in-kernel loader
+unfortunately doesn't exist. Typically, the instruction rewriting is
+done dynamically in userspace via libbpf. Since the relocations and
+instruction modifications are happening in userspace, and their values
+may change depending upon the running system, this breaks known
+signature verification mechanisms.
 
-diff --git a/libkeyutils.pc.in b/libkeyutils.pc.in
-index 4c06267..235ee18 100644
---- a/libkeyutils.pc.in
-+++ b/libkeyutils.pc.in
-@@ -6,3 +6,4 @@ Description: keyutils library
- Version: @VERSION@
- Cflags: -I${includedir}
- Libs: -L${libdir} -lkeyutils
-+License: LGPL-2.1-or-later
+Light skeleton programs were introduced in order to support early
+loading of eBPF programs along with user-mode drivers. They utilize a
+separate eBPF program that can load a target eBPF program and perform
+all necessary relocations in-kernel without needing a working
+userspace. Light skeletons were mentioned as a possible path forward
+for signature verification.
+
+Hornet takes a simple approach to light-skeleton-based eBPF signature
+verification. A PKCS#7 signature of a data buffer containing the raw
+instructions of an eBPF program, followed by the initial values of any
+maps used by the program is used. A utility script is provided to
+parse and extract the contents of autogenerated header files created
+via bpftool. That payload can then be signed and appended to the light
+skeleton executable.
+
+Maps are checked that they are frozen to prevent TOCTOU bugs where a
+sufficiently privileged user could rewrite map data between the calls
+to BPF_PROG_LOAD and BPF_PROG_RUN. Additionally, both
+sparse-array-based and fd_array_cnt-based map fd arrays are supported
+for signature verification.
+
+References:
+  [1] https://lore.kernel.org/bpf/20220209054315.73833-1-alexei.starovoitov@gmail.com/
+  [2] https://lore.kernel.org/bpf/CAADnVQ+wPK1KKZhCgb-Nnf0Xfjk8M1UpX5fnXC=cBzdEYbv_kg@mail.gmail.com/
+
+Change list:
+- v2 -> v3
+  - Remove any and all usage of proprietary bpf APIs
+  - Add optional systemd/pid1 whitelisting
+  - Minor Makefile cleanup
+  - Fixed buffer leak
+  - Handled null current task
+  - Made magic number required
+  - Defensive checks against invalid buffer signature reads
+
+- v1 -> v2
+  - Jargon clarification, maintainer entry and a few cosmetic fixes
+
+Revisions:
+- v1
+  https://lore.kernel.org/bpf/20250321164537.16719-1-bboscaccy@linux.microsoft.com
+- v2
+  https://lore.kernel.org/linux-security-module/20250404215527.1563146-1-bboscaccy@linux.microsoft.com
+
+Blaise Boscaccy (4):
+  security: Hornet LSM
+  hornet: Introduce sign-ebpf
+  hornet: Add a light skeleton data extractor script
+  selftests/hornet: Add a selftest for the Hornet LSM
+
+ Documentation/admin-guide/LSM/Hornet.rst      |  65 +++
+ Documentation/admin-guide/LSM/index.rst       |   1 +
+ MAINTAINERS                                   |   9 +
+ crypto/asymmetric_keys/pkcs7_verify.c         |  10 +
+ include/linux/kernel_read_file.h              |   1 +
+ include/linux/verification.h                  |   1 +
+ include/uapi/linux/lsm.h                      |   1 +
+ scripts/Makefile                              |   1 +
+ scripts/hornet/Makefile                       |   5 +
+ scripts/hornet/extract-skel.sh                |  29 ++
+ scripts/hornet/sign-ebpf.c                    | 411 ++++++++++++++++++
+ security/Kconfig                              |   3 +-
+ security/Makefile                             |   1 +
+ security/hornet/Kconfig                       |  24 +
+ security/hornet/Makefile                      |   4 +
+ security/hornet/hornet_lsm.c                  | 250 +++++++++++
+ security/selinux/hooks.c                      |  12 +-
+ security/selinux/include/classmap.h           |   2 +-
+ tools/testing/selftests/Makefile              |   1 +
+ tools/testing/selftests/hornet/Makefile       |  58 +++
+ tools/testing/selftests/hornet/fail_loader.sh |   3 +
+ tools/testing/selftests/hornet/frozen_skel.h  | 393 +++++++++++++++++
+ tools/testing/selftests/hornet/loader.c       |  22 +
+ tools/testing/selftests/hornet/trivial.bpf.c  |  33 ++
+ 24 files changed, 1336 insertions(+), 4 deletions(-)
+ create mode 100644 Documentation/admin-guide/LSM/Hornet.rst
+ create mode 100644 scripts/hornet/Makefile
+ create mode 100755 scripts/hornet/extract-skel.sh
+ create mode 100644 scripts/hornet/sign-ebpf.c
+ create mode 100644 security/hornet/Kconfig
+ create mode 100644 security/hornet/Makefile
+ create mode 100644 security/hornet/hornet_lsm.c
+ create mode 100644 tools/testing/selftests/hornet/Makefile
+ create mode 100755 tools/testing/selftests/hornet/fail_loader.sh
+ create mode 100644 tools/testing/selftests/hornet/frozen_skel.h
+ create mode 100644 tools/testing/selftests/hornet/loader.c
+ create mode 100644 tools/testing/selftests/hornet/trivial.bpf.c
+
 -- 
-2.49.0
+2.48.1
 
 
