@@ -1,151 +1,110 @@
-Return-Path: <keyrings+bounces-2675-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2676-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E34CAA7B31
-	for <lists+keyrings@lfdr.de>; Fri,  2 May 2025 23:00:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C46AA8118
+	for <lists+keyrings@lfdr.de>; Sat,  3 May 2025 16:39:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6E633A2491
-	for <lists+keyrings@lfdr.de>; Fri,  2 May 2025 21:00:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30A8B1B64E4C
+	for <lists+keyrings@lfdr.de>; Sat,  3 May 2025 14:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB93E1E04AC;
-	Fri,  2 May 2025 21:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1862C83CC7;
+	Sat,  3 May 2025 14:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ExgqAER2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RTr0Sjcf"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90315376;
-	Fri,  2 May 2025 21:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56C8367;
+	Sat,  3 May 2025 14:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746219647; cv=none; b=phzoEtbcGEGn3mUDUBB7FwD/KfaAWIwxUUTuIKSBWSpeiufcXldLRtVGCIur6591Hm9az0EGrbVAAXAo1besStUOWwAQwktSGpkEJbDxHBCOcX/ACqL45TGQ2W+T8LF56OcdBKha0BKJD32TvmjRkCNaIksPQkfR7KP/NkvjiCs=
+	t=1746283162; cv=none; b=XT7l5ihF2Jgz6Lfvi3SIS5TRLgeu+4TX71tbbs5JaPtb1iawtwXCfM/Yqo0NVjFQ6bc+sqPbg0uCf7Vo0bLKs4lceB5XEr0Lle7daU52foDh/sVIv9H+ZbVd3TqNzMi2PE2AvnCqrRS877+TPTI/GeN39mxdmfAuZ5Y/ipbAz2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746219647; c=relaxed/simple;
-	bh=QV74l1IOGVbOqoSkpgRlO6NEjTmym0E/wjU2qkQ32fw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KO0Zaakx+DGRRTjtd+4TylIF+aoWeOynM2ZrvbgROptKx2KbvkZMV5B6R0SDbL1L63EJuIGE5f+RbFgh1B4t3B8Fw4yNcCuaudHf3EIFNmTCl6YwQha9XUu3tsNJnZmFecTN8i4ECzrpt4KRS1/cLZQ0dzWbsMk5XzYY3pkIpCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ExgqAER2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCBAC4CEE4;
-	Fri,  2 May 2025 21:00:40 +0000 (UTC)
+	s=arc-20240116; t=1746283162; c=relaxed/simple;
+	bh=Jr9HzCArpmz5liqhpXLnd+1v5ot8JBjFOX4E/k8pSis=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pjksMK/Nl9HUZWnEL1DkgtVWOflR3hI3C/tmQYiPGmTfSFrTnFtjN5KmEfF2RQPzVirZApGs6JGusugP65paZVGbUgGe1QvGyt/uk8Ai4ffFGrYDpg4glxYiiZmEsDta8ssr7AejQ4MTimJuAgT2cOLM4r/2QhlcWuDHMz1TXdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RTr0Sjcf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96100C4CEE3;
+	Sat,  3 May 2025 14:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746219647;
-	bh=QV74l1IOGVbOqoSkpgRlO6NEjTmym0E/wjU2qkQ32fw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ExgqAER2CsxrCnnAMm6jRg6gINgp9LGlOtbpHezQgKA+SlqChKBhWB5JTT3F8BKcz
-	 WyBu8J75GKcBiBoM493HVF8pnLHXaYp6WJzC0Sbxf8kv72/jKkJsmWg37D3/E6DH9x
-	 AVMJ/pp3eIG8LdZs9D/W1CiAOFAC3NhB8+3+QS2zaYnHn+HpmNaNfYeALRPcqkW/8K
-	 dVgYMpGiSWtxAIENr8F9WMYO1YCTIdNL3WBIxgpMQPFCzktf4xO/PaZtyphqAiNU9n
-	 3OzuLYfo5zx6WMa/dh7nLZo3pf9Love+B/Ys5wJLPmSUhMMraXMrOReDrSZuvwz5Li
-	 L/yI/DomKf2lw==
-From: KP Singh <kpsingh@kernel.org>
-To: bboscaccy@linux.microsoft.com
-Cc: James.Bottomley@hansenpartnership.com,
-	bpf@vger.kernel.org,
-	code@tyhicks.com,
-	corbet@lwn.net,
-	davem@davemloft.net,
-	dhowells@redhat.com,
-	gnoack@google.com,
-	herbert@gondor.apana.org.au,
-	jarkko@kernel.org,
-	jmorris@namei.org,
-	jstancek@redhat.com,
-	justinstitt@google.com,
-	keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	llvm@lists.linux.dev,
-	masahiroy@kernel.org,
-	mic@digikod.net,
-	morbo@google.com,
-	nathan@kernel.org,
-	neal@gompa.dev,
-	nick.desaulniers+lkml@gmail.com,
-	nicolas@fjasle.eu,
-	nkapron@google.com,
-	paul@paul-moore.com,
-	roberto.sassu@huawei.com,
-	serge@hallyn.com,
-	shuah@kernel.org,
-	teknoraver@meta.com,
-	xiyou.wangcong@gmail.com,
-	KP Singh <kpsingh@kernel.org>
-Subject: Re: [PATCH v3 0/4] Introducing Hornet LSM
-Date: Fri,  2 May 2025 23:00:34 +0200
-Message-ID: <20250502210034.284051-1-kpsingh@kernel.org>
-X-Mailer: git-send-email 2.49.0.906.g1f30a19c02-goog
-In-Reply-To: <20250502184421.1424368-1-bboscaccy@linux.microsoft.com>
-References: <20250502184421.1424368-1-bboscaccy@linux.microsoft.com>
+	s=k20201202; t=1746283161;
+	bh=Jr9HzCArpmz5liqhpXLnd+1v5ot8JBjFOX4E/k8pSis=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RTr0SjcfzhXo8r92rzo29xHJTs63RuGBhSar+SkuDRwLHDeAi0VZKk7+ZgpwqUFW8
+	 p7/5e32srT9aD/0JRnfyHmsepXDCGJg9pvUd6lHh39qq1CgWMg4FBYLZq9oCA+Qklo
+	 yqg0LN+h/yrQPTzo0IEmQ0v5Mu/+TrU0aFNvx2zKyzQyAMamUR9dFi0wrWgztb4tpf
+	 1Pst1Up70ptz/Ki1YP5czDTwSPQAUIp4D8T3xw83KEGGyqTkEhqXlO2m4SOjOQ67P5
+	 3qtyEmSBgychtj7+fW1LwO/+b2KJw3a/Uqo1sMKJzfRnDlzgdXhMnbZcXh/smTqFqm
+	 hy3e2a1WL/btQ==
+Date: Sat, 3 May 2025 17:39:16 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: keyrings@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>, Lukas Wunner <lukas@wunner.de>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Mimi Zohar <zohar@linux.ibm.com>, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: Re: [PATCH] KEYS: Reduce smp_mb() calls in key_put()
+Message-ID: <aBYqlBoSq4FwiDKD@kernel.org>
+References: <20250430152554.23646-1-jarkko@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250430152554.23646-1-jarkko@kernel.org>
 
-> This patch series introduces the Hornet LSM. The goal of Hornet is to provide
-> a signature verification mechanism for eBPF programs.
->
+On Wed, Apr 30, 2025 at 06:25:53PM +0300, Jarkko Sakkinen wrote:
+> Rely only on the memory ordering of spin_unlock() when setting
+> KEY_FLAG_FINAL_PUT under key->user->lock in key_put().
+> 
+> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> ---
+>  security/keys/key.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/security/keys/key.c b/security/keys/key.c
+> index 7198cd2ac3a3..aecbd624612d 100644
+> --- a/security/keys/key.c
+> +++ b/security/keys/key.c
+> @@ -656,10 +656,12 @@ void key_put(struct key *key)
+>  				spin_lock_irqsave(&key->user->lock, flags);
+>  				key->user->qnkeys--;
+>  				key->user->qnbytes -= key->quotalen;
+> +				set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
+>  				spin_unlock_irqrestore(&key->user->lock, flags);
+> +			} else {
+> +				set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
+> +				smp_mb(); /* key->user before FINAL_PUT set. */
+>  			}
+> -			smp_mb(); /* key->user before FINAL_PUT set. */
+> -			set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
 
-[...]
+Oops, my bad (order swap), sorry. Should have been:
+	
+ 				spin_unlock_irqrestore(&key->user->lock, flags);
+			} else {
+				smp_mb(); /* key->user before FINAL_PUT set. */
+ 			}
+			set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
 
->
-> References: [1]
-> https://lore.kernel.org/bpf/20220209054315.73833-1-alexei.starovoitov@gmail.com/
-> [2]
-> https://lore.kernel.org/bpf/CAADnVQ+wPK1KKZhCgb-Nnf0Xfjk8M1UpX5fnXC=cBzdEYbv_kg@mail.gmail.com/
->
-> Change list: - v2 -> v3 - Remove any and all usage of proprietary bpf APIs
+Should spin_lock()/unlock() be good enough or what good does smp_mb() do
+in that branch? Just checking if I'm missing something before sending
+fixed version.
 
-BPF APIs are not proprietary, but you cannot implement BPF program signing
-for BPF users without aligning with the BPF maintainers and the community.
-Signed programs are a UAPI and a key part of how developers experience BPF
-and this is not how we would like signing to be experienced by BPF users.
-
-Some more feedback (which should be pretty obvious) but explicitly:
-
-* Hacks like if (current->pid == 1) return 0; also break your threat model
-  about root being untrusted. This is all the more reason I think signing
-  should be integrated into other LSMs, only a proper LSM policy can breathe
-  life into the root / kernel boundary. 
-
-* You also did not take the feedback into account:
-
-   new = map->ops->map_lookup_elem(map, &key);
-
-  This is not okay without having the BPF maintainers aligned, the same way as 
-
-  https://patchwork.kernel.org/project/netdevbpf/patch/20240629084331.3807368-4-kpsingh@kernel.org/#25928981
-
-  was not okay. Let's not have double standards.
-
-* And you copy pasted tools/testing/selftests/hornet/frozen_skel.h which
-  is what you expect users to do? Not acceptable either.
-
-So for this approach, it's a:
-
-Nacked-by: KP Singh <kpsingh@kernel.org>
-
-Now if you really care about the use-case and want to work with the maintainers
-and implement signing for the community, here's how we think it should be done:
-
-* The core signing logic and the tooling stays in BPF, something that the users
-  are already using. No new tooling.
-* The policy decision on the effect of signing can be built into various
-  existing LSMs. I don't think we need a new LSM for it.
-* A simple UAPI (emphasis on UAPI!) change to union bpf_attr in uapi/bpf.h in
-  the BPF_PROG_LOAD command:
-
-__aligned_u64 signature; 
-__u32 signature_size;
-
+BR, Jarkko
 
