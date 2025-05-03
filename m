@@ -1,117 +1,101 @@
-Return-Path: <keyrings+bounces-2677-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2678-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57DB8AA812D
-	for <lists+keyrings@lfdr.de>; Sat,  3 May 2025 17:03:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F110AAA8334
+	for <lists+keyrings@lfdr.de>; Sun,  4 May 2025 00:19:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3E8E5A5E0F
-	for <lists+keyrings@lfdr.de>; Sat,  3 May 2025 15:03:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2B47189CF9E
+	for <lists+keyrings@lfdr.de>; Sat,  3 May 2025 22:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1401815A856;
-	Sat,  3 May 2025 15:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2471A5BB1;
+	Sat,  3 May 2025 22:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="EPyF7K1p"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BQnG6SK3"
 X-Original-To: keyrings@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7F713D2B2;
-	Sat,  3 May 2025 15:03:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A77F17A31D
+	for <keyrings@vger.kernel.org>; Sat,  3 May 2025 22:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746284635; cv=none; b=qdGvl35WgVmeWnzWseEQW5OL5+vcF4kpG3koWA8N97ojbDeOi67G48lSVy8/ALTndDVvLuIbKtDGzNd9DqrwwA8rwgakfqKDEWRoJyn+Dp9mpvvuxfz0PCpOFOm6EjMhXtRfKl8Zjyre6Hb2GAQbBlJEUyeUgF9dYgdxJKl6Dus=
+	t=1746310785; cv=none; b=SxdIGyoOkqMr1tWjmm30ABRPfHUJ3HugoIvJQby2YQ7zWeDBOtbVb2QQQhZZ5bXzMHkJcaHmGwusp95jKhRJuIx//gjLqK3YnfBueBwC7TMsWq95i/sEQw6/XmSL84F7lHOKzNfuvNUTkmFuTazuFyC82l209gpUJgzrzE/x+uI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746284635; c=relaxed/simple;
-	bh=Q3jU8IweIELp/HDBkk6uZDya1bMmeBf0l/cgr0nnCNQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NI5Hf2AOVo3WSGZgq66XuMbLUeinb3cNT8uZnap2f21/3BdSE6YXo6u1dEO6W1wQFz4tYKqutjwP4G4adbDtZUhn4BsprboET/tfpi4UqV9YGbZTf5KIXlyj2xwZXXkqiSXQ2TTtm5v3torIUlHiMu30l6TcpA2Nhr3b86MiuRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=EPyF7K1p; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=nKPltQjGoDVIk3pbHzoFoWY2la6WaztZx7qnAjKn3N8=; b=EPyF7K1p6cu7vOUr/XV11SRuxX
-	7aiwUQ5Az3Atp+SbqrY4xIHYpWcrVfTshwHxizoSuhf1YyZPufpv3+LqeRXe0QrjJt8vK84GbIlmF
-	+mv0/RkjM1H9BDZJcKXxoznb/VEQKqEaJKXdx8buuHw4sZmXpOEmIb0ytpYVkRD5VuQ/yO0VvMlrU
-	/BRJ/xmIcmylVGlrrzU3oWm6dKpsafmMxmB34oXJGiVOMetjndtuPmIChzF/goULzg7Vqn5I13EHV
-	XbD79L6ZpjDbpdLj2K509EfGVu4Mj97WeVaf3oSFNN0Vx7C4SXXoAJAZcn+tcIih9qbHQIADrX6Tn
-	qIm/C5Cg==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1uBEOH-0034vl-1y;
-	Sat, 03 May 2025 23:02:58 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Sat, 03 May 2025 23:02:57 +0800
-Date: Sat, 3 May 2025 23:02:57 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
+	s=arc-20240116; t=1746310785; c=relaxed/simple;
+	bh=K7bpm3hmvNgfHOZKQIcgkQweXOrSWSr5prf6mDtV8Ps=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=lISKVtnbLDHccPcXOwG37lOiwo+odGw0qHQdZ8JXyLxZfmZOzXIqCZHn/FbmzJF+KbtjJf4Q38cOyEdFUMDGRP206hWCDLKk/WHG2Fgfsdjakm+g8NiUt9biY6DmSWBkIcJB9Z65Ap2q2PT/vcbOEdYgfobbMqTXcQJeGd9y8cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BQnG6SK3; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746310780;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4/c3VdkF4DbF4Om460TBXja0mJFR59DDuAT798jGta4=;
+	b=BQnG6SK3L4nQZwrIeZLRtYWYptksft0IOmrJwwfaaz1nfZm6RpEJ2MmQLyrzVHLE2pVU6O
+	hsYbjhETvfsc2efMwEE3p9HC3SROa+QjKRbJnA1M3KdjZGjGs0ve8M05aOZWKW4uv0G7vJ
+	vWAslCEjBoyA7dKXc0rLhvC9qXXtBD4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-215-mxxNZJgJOQeS8RMv7PlrJA-1; Sat,
+ 03 May 2025 18:19:35 -0400
+X-MC-Unique: mxxNZJgJOQeS8RMv7PlrJA-1
+X-Mimecast-MFC-AGG-ID: mxxNZJgJOQeS8RMv7PlrJA_1746310770
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DA65E195608E;
+	Sat,  3 May 2025 22:19:28 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.188])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 103E719560A3;
+	Sat,  3 May 2025 22:19:22 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <aBYqlBoSq4FwiDKD@kernel.org>
+References: <aBYqlBoSq4FwiDKD@kernel.org> <20250430152554.23646-1-jarkko@kernel.org>
 To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
-	linux-security-module@vger.kernel.org
+Cc: dhowells@redhat.com, keyrings@vger.kernel.org,
+    Lukas Wunner <lukas@wunner.de>,
+    Ignat Korchagin <ignat@cloudflare.com>,
+    Herbert Xu <herbert@gondor.apana.org.au>,
+    "David S. Miller" <davem@davemloft.net>,
+    Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+    Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+    "Serge E. Hallyn" <serge@hallyn.com>,
+    James Bottomley <James.Bottomley@hansenpartnership.com>,
+    Mimi Zohar <zohar@linux.ibm.com>, linux-crypto@vger.kernel.org,
+    linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
+    linux-security-module@vger.kernel.org
 Subject: Re: [PATCH] KEYS: Reduce smp_mb() calls in key_put()
-Message-ID: <aBYwIcy5JCOamAkj@gondor.apana.org.au>
-References: <20250430152554.23646-1-jarkko@kernel.org>
- <aBYqlBoSq4FwiDKD@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aBYqlBoSq4FwiDKD@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1121542.1746310761.1@warthog.procyon.org.uk>
+Date: Sat, 03 May 2025 23:19:21 +0100
+Message-ID: <1121543.1746310761@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Sat, May 03, 2025 at 05:39:16PM +0300, Jarkko Sakkinen wrote:
-> On Wed, Apr 30, 2025 at 06:25:53PM +0300, Jarkko Sakkinen wrote:
-> > Rely only on the memory ordering of spin_unlock() when setting
-> > KEY_FLAG_FINAL_PUT under key->user->lock in key_put().
-> > 
-> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > ---
-> >  security/keys/key.c | 6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/security/keys/key.c b/security/keys/key.c
-> > index 7198cd2ac3a3..aecbd624612d 100644
-> > --- a/security/keys/key.c
-> > +++ b/security/keys/key.c
-> > @@ -656,10 +656,12 @@ void key_put(struct key *key)
-> >  				spin_lock_irqsave(&key->user->lock, flags);
-> >  				key->user->qnkeys--;
-> >  				key->user->qnbytes -= key->quotalen;
-> > +				set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
-> >  				spin_unlock_irqrestore(&key->user->lock, flags);
-> > +			} else {
-> > +				set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
-> > +				smp_mb(); /* key->user before FINAL_PUT set. */
-> >  			}
-> > -			smp_mb(); /* key->user before FINAL_PUT set. */
-> > -			set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
-> 
+Jarkko Sakkinen <jarkko@kernel.org> wrote:
+
 > Oops, my bad (order swap), sorry. Should have been:
 > 	
 >  				spin_unlock_irqrestore(&key->user->lock, flags);
 > 			} else {
 > 				smp_mb(); /* key->user before FINAL_PUT set. */
-
-You can use smp_mb__before_atomic here as it is equivalent to
-smp_mb in this situation.
-
 >  			}
 > 			set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
 > 
@@ -119,19 +103,16 @@ smp_mb in this situation.
 > in that branch? Just checking if I'm missing something before sending
 > fixed version.
 
-I don't think spin_unlock alone is enough to replace an smp_mb.
-A spin_lock + spin_unlock would be enough though.
+spin_unlock() is semi-permeable, so stuff after it can leak into the inside of
+it up as far as the spin_lock().  With your change, the garbage collector can
+no longer guarantee that key_put() will have done with accessing key->user
+when it sees KEY_FLAG_FINAL_PUT is set.
 
-However, looking at the bigger picture this smp_mb looks bogus.
-What exactly is it protecting against?
+So, NAK on this patch, I think.  If you want a second opinion, I'd suggest
+waving it in front of Paul McKenney.
 
-The race condition that this is supposed to fix should have been
-dealt with by the set_bit/test_bit of FINAL_PUT alone.  I don't
-see any point in having this smb_mb at all.
+Possibly we only need smp_mb() in the IN_QUOTA branch in key_put().
 
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+David
+
 
