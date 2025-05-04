@@ -1,147 +1,240 @@
-Return-Path: <keyrings+bounces-2685-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2686-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB46FAA8837
-	for <lists+keyrings@lfdr.de>; Sun,  4 May 2025 18:56:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0530AA88AA
+	for <lists+keyrings@lfdr.de>; Sun,  4 May 2025 19:36:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24B1D3AAB6E
-	for <lists+keyrings@lfdr.de>; Sun,  4 May 2025 16:55:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FB381899180
+	for <lists+keyrings@lfdr.de>; Sun,  4 May 2025 17:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D8C1E3762;
-	Sun,  4 May 2025 16:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22A021FF26;
+	Sun,  4 May 2025 17:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mYPp7SoF"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="ORf2pr9z"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD5D1E1DE7;
-	Sun,  4 May 2025 16:56:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0149C1FE44D
+	for <keyrings@vger.kernel.org>; Sun,  4 May 2025 17:36:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746377763; cv=none; b=PkkSRO1BzNsgwPjF+gxwSa9uh01LnskU3w8ax080RpwCktwzbE1/XeDuQw8e3KnszupGYOo9S6gtisScXOT4UOrExol0P0cetXSo3x2yHBwGjbz9NPCCn8/E6m+0+tDtmESwWK41Xf62r7vDM6i99JVmbMXOdiSeVcpQxhF3ydY=
+	t=1746380186; cv=none; b=FPqzeCiQaYKDa1+2bFYUkKFStqx0s1JIbSGG2+cMVo7K36P5NEvmyp2VQaSfGzvMt4mEQOHQZ0Vj8fsNAOwfmJiBBxPpJq9Vc6NDjX4/sVjXjfV/SAAFM7UEmzlQmCijkN92GEfkWaDYzhcHRaLU/vz+7rxMJVF4Cm5rvmwonYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746377763; c=relaxed/simple;
-	bh=7byS+mjeSFHrzb+IfI4pFxAaork3Tq6cUfMVQ3+Gz9Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r/9DCSi2a+0/oK92onh1dppDoyHKvChvO/WB1GUl9PjFD6V6pqtaURyLPmkKuQfVohKe7K+LCxrrymM1KMMUMdzwntrHSPQ2I/764zryNbkdB81/QpgzdCKeUWEPhQNUn4soQVrjvamnRBmifiaKEIfEj0B4sirGhbcJF2A7tmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mYPp7SoF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD47C4CEE7;
-	Sun,  4 May 2025 16:56:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746377763;
-	bh=7byS+mjeSFHrzb+IfI4pFxAaork3Tq6cUfMVQ3+Gz9Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mYPp7SoFQgkP8sahvG/Tei97RR/8zhOMj0Tn7BI3CCTOTpgJihq65Tic8HqBDtw0Z
-	 HpbjfKZKMkyQbYT+x/m9OufNyXDhzdTmvo9lWAUn3ScsD6vXfrggpC2mU9jhHcMRXT
-	 1HOGbKr8sjgIgZcPMjWQ+eehI3Ng3ZukcUqOnR+wc6ecsBUD0DVWmbRW8aOu/E0nn8
-	 /QwUFwC94XFPjJVIzvyiQXU7XMGi46liIxxqTt/5pflc0qFXZm+QJZLWpFlh/VoOqn
-	 WSHY1YBDsuHx8qA4R++lGTjRCYxgsAKRi/qFHuQ3y1AcMLnONfknytVSlW0HeK9pcU
-	 vmxUuCeFjTGVw==
-Date: Sun, 4 May 2025 19:55:58 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
-	linux-security-module@vger.kernel.org
-Subject: Re: [PATCH] KEYS: Reduce smp_mb() calls in key_put()
-Message-ID: <aBecHr6jBLWmJcyP@kernel.org>
-References: <20250430152554.23646-1-jarkko@kernel.org>
- <aBYqlBoSq4FwiDKD@kernel.org>
- <aBYwIcy5JCOamAkj@gondor.apana.org.au>
+	s=arc-20240116; t=1746380186; c=relaxed/simple;
+	bh=PKto6XWHPw3qkf98Cr2fpVFSXZupXtz55RQHLXKhy38=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=g7fbdRmz1zlu3Ch3DNbFrdITpBMkvk9XpYuEbwX2+2GpP8oIW2T4rjPu/wpFdTnyqkD3f+ZbMscnCeat2bJ4FoaETlFAacSIhyWTKvf7dnbQH9/7NxF7d/Vd25rPVXEgEP4s9F76jJIYk9FqIwFgnlrCy5napFjmYC38rzdp5GE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=ORf2pr9z; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6ff1e375a47so33901037b3.1
+        for <keyrings@vger.kernel.org>; Sun, 04 May 2025 10:36:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1746380183; x=1746984983; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HXXRsHPoH/0YETZ7MLRenRDro5Q1bAftLTE63l4umNc=;
+        b=ORf2pr9z2IlpLqvfRPOJsECvEX72Cb2asbZtYacel0smJqsUf7LVbqb0rOaIJnAEml
+         XLpYDJx2ClultkAYkiZyZM7BzungNJ5o2IH2C4gN6WRDobrzW9ssL1HX3GKVHDBfx5Nk
+         pvl8cSyXY9B+P6/qVhmbQQQDv31Z7OTtXrFnKydyvWqMy8TlCi5mQ9RDE/8NuXWGLwnt
+         9YjUJ3aLjq7GoHAhIfCjySa5mkH6Qo6YcolDJiYhKu1oTkZp1Qe3IJVjXYEWavnhJpT6
+         TS6mdbUfkHtTVIgXQw5W/UwXSAF5glE7IJKYeC1iARhTj3rGQgbqYuBymaT7c7JqF/Rw
+         JxPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746380183; x=1746984983;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HXXRsHPoH/0YETZ7MLRenRDro5Q1bAftLTE63l4umNc=;
+        b=bmCebNMCV3V27ZjOuREHmrz2qf3cuhssq4zqgBTMGIyB5ctRL9UNQk63CYgKE7DN3D
+         tUeMSls2SqRL/q+3nf64Zx2FlBfqfG9zSW2VQPBAr9Wbk+i05RL7vWBA/rkaYvfl/+vD
+         tOKSkxcQFYNxAY5quhz8zFlBvZAtgR+GZmkIDOOLLfodP556ToOW16AjXWDq+YHdCQgm
+         0zrcuZmsDPQPudRHdPKXtHBagq4/grqMNJ1ocNZFi9zugVd9wjbbVo1zlFULaxpvVOOU
+         gpxzt5l1BThfxDnbEMORXZMjU7+6YJtHDH4Gb01dpol/9Au3qF+Ljne8X4LEGzRyoLAS
+         OzgA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3uqHEPaDFduzgl8Bhm2tGzVGVKYN/p8drtwFKCKeuMl1n7ZpLkkyMfHnwTXUfH0DWvDC4sSXcrg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyq/WPN6ObsjKXs8Yv5UHznifPYFA1YeJDIPDkGvnVmqBGVFhMw
+	7v82WugeqmpubFxyJ3mn8zCnHL2kt1AiKXnZYGcycpGI4EHl8CqTVKO4zGcnPWt9aCyEUoMOQB/
+	uvshj8KSR3CuJoQc9IGl9sLqLCoKs68kX0UtX
+X-Gm-Gg: ASbGncutXKrZ1L7DK1YhbEajnGlw5O+jEbLTsd3Udgn5LzCxmKpBx9fc01JzslxZRfa
+	mCrKdz9jgT4jYHGelSV5ZqGIJO0llH+nNSakkiRz+cFeii6x+oVWpI13Vb66o6e+M8+GDwYpgx1
+	HIb1S1LWKgaQLEuQQRdzTu4A==
+X-Google-Smtp-Source: AGHT+IGH4iM2kOBwjguhM2tjRQ5NOwlV2cMNEshm7rCu9worhB26SxpY/yE7dTp6irnVpWrLXhT6tFSernyBUKKlH2U=
+X-Received: by 2002:a05:690c:6385:b0:6ef:69b2:eac with SMTP id
+ 00721157ae682-708eaecbe4cmr56763087b3.4.1746380182785; Sun, 04 May 2025
+ 10:36:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aBYwIcy5JCOamAkj@gondor.apana.org.au>
+References: <20250502184421.1424368-1-bboscaccy@linux.microsoft.com> <20250502210034.284051-1-kpsingh@kernel.org>
+In-Reply-To: <20250502210034.284051-1-kpsingh@kernel.org>
+From: Paul Moore <paul@paul-moore.com>
+Date: Sun, 4 May 2025 13:36:12 -0400
+X-Gm-Features: ATxdqUG6G28ftr2F4dYbjsrK10lOxkoYxSdmHmsU_Sm_2J3in-8hzdqOgV_xvXY
+Message-ID: <CAHC9VhS5Vevcq90OxTmAp2=XtR1qOiDDe5sSXReX5oXzf+siVQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/4] Introducing Hornet LSM
+To: KP Singh <kpsingh@kernel.org>
+Cc: bboscaccy@linux.microsoft.com, James.Bottomley@hansenpartnership.com, 
+	bpf@vger.kernel.org, code@tyhicks.com, corbet@lwn.net, davem@davemloft.net, 
+	dhowells@redhat.com, gnoack@google.com, herbert@gondor.apana.org.au, 
+	jarkko@kernel.org, jmorris@namei.org, jstancek@redhat.com, 
+	justinstitt@google.com, keyrings@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	llvm@lists.linux.dev, masahiroy@kernel.org, mic@digikod.net, morbo@google.com, 
+	nathan@kernel.org, neal@gompa.dev, nick.desaulniers+lkml@gmail.com, 
+	nicolas@fjasle.eu, nkapron@google.com, roberto.sassu@huawei.com, 
+	serge@hallyn.com, shuah@kernel.org, teknoraver@meta.com, 
+	xiyou.wangcong@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, May 03, 2025 at 11:02:57PM +0800, Herbert Xu wrote:
-> On Sat, May 03, 2025 at 05:39:16PM +0300, Jarkko Sakkinen wrote:
-> > On Wed, Apr 30, 2025 at 06:25:53PM +0300, Jarkko Sakkinen wrote:
-> > > Rely only on the memory ordering of spin_unlock() when setting
-> > > KEY_FLAG_FINAL_PUT under key->user->lock in key_put().
-> > > 
-> > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > ---
-> > >  security/keys/key.c | 6 ++++--
-> > >  1 file changed, 4 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/security/keys/key.c b/security/keys/key.c
-> > > index 7198cd2ac3a3..aecbd624612d 100644
-> > > --- a/security/keys/key.c
-> > > +++ b/security/keys/key.c
-> > > @@ -656,10 +656,12 @@ void key_put(struct key *key)
-> > >  				spin_lock_irqsave(&key->user->lock, flags);
-> > >  				key->user->qnkeys--;
-> > >  				key->user->qnbytes -= key->quotalen;
-> > > +				set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
-> > >  				spin_unlock_irqrestore(&key->user->lock, flags);
-> > > +			} else {
-> > > +				set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
-> > > +				smp_mb(); /* key->user before FINAL_PUT set. */
-> > >  			}
-> > > -			smp_mb(); /* key->user before FINAL_PUT set. */
-> > > -			set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
-> > 
-> > Oops, my bad (order swap), sorry. Should have been:
-> > 	
-> >  				spin_unlock_irqrestore(&key->user->lock, flags);
-> > 			} else {
-> > 				smp_mb(); /* key->user before FINAL_PUT set. */
-> 
-> You can use smp_mb__before_atomic here as it is equivalent to
-> smp_mb in this situation.
-> 
-> >  			}
-> > 			set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
-> > 
-> > Should spin_lock()/unlock() be good enough or what good does smp_mb() do
-> > in that branch? Just checking if I'm missing something before sending
-> > fixed version.
-> 
-> I don't think spin_unlock alone is enough to replace an smp_mb.
-> A spin_lock + spin_unlock would be enough though.
-> 
-> However, looking at the bigger picture this smp_mb looks bogus.
-> What exactly is it protecting against?
-> 
-> The race condition that this is supposed to fix should have been
-> dealt with by the set_bit/test_bit of FINAL_PUT alone.  I don't
-> see any point in having this smb_mb at all.
+On Fri, May 2, 2025 at 5:00=E2=80=AFPM KP Singh <kpsingh@kernel.org> wrote:
+>
+> > This patch series introduces the Hornet LSM. The goal of Hornet is to p=
+rovide
+> > a signature verification mechanism for eBPF programs.
+> >
+>
+> [...]
+>
+> >
+> > References: [1]
+> > https://lore.kernel.org/bpf/20220209054315.73833-1-alexei.starovoitov@g=
+mail.com/
+> > [2]
+> > https://lore.kernel.org/bpf/CAADnVQ+wPK1KKZhCgb-Nnf0Xfjk8M1UpX5fnXC=3Dc=
+BzdEYbv_kg@mail.gmail.com/
+> >
+> > Change list: - v2 -> v3 - Remove any and all usage of proprietary bpf A=
+PIs
+>
+> BPF APIs are not proprietary, but you cannot implement BPF program signin=
+g
+> for BPF users without aligning with the BPF maintainers and the community=
+.
+> Signed programs are a UAPI and a key part of how developers experience BP=
+F
+> and this is not how we would like signing to be experienced by BPF users.
+>
+> Some more feedback (which should be pretty obvious) but explicitly:
+>
+> * Hacks like if (current->pid =3D=3D 1) return 0; also break your threat =
+model
+>   about root being untrusted.
 
-smp_mb() there makes sure that key->user change don't spill between
-key_put() and gc.
+Speaking with Blaise off-list when that change was discussed, I
+believe the intent behind that Kconfig option was simply for
+development/transition purposes, and not for any long term usage.  My
+understanding is that this is why it was a separate build time
+configuration and not something that could be toggled at runtime, e.g.
+sysctl or similar.
 
-GC pairs smp_mb() in key_put() after FINAL_PUT to make sure that also
-in its side key->user changes have been walled before moving the key
-as part of unrefenced keys.
+> * You also did not take the feedback into account:
+>
+>    new =3D map->ops->map_lookup_elem(map, &key);
+>
+>   This is not okay without having the BPF maintainers aligned, the same w=
+ay as
+>
+>   https://patchwork.kernel.org/project/netdevbpf/patch/20240629084331.380=
+7368-4-kpsingh@kernel.org/#25928981
+>
+>   was not okay. Let's not have double standards.
 
-See also [1]. It cleared this up for me. Here user->lock easily misleads
-to overlook the actual synchronization scheme.
+From my perspective these two patches are not the same.  Even on a
+quick inspection we notice two significant differences.  First, Hornet
+reads data (BPF maps) passed from userspace to determine if loading
+the associated BPF program should be allowed to load; whereas the
+patch you reference above had the BPF LSM directly modifying the very
+core of the LSM framework state, the LSM hook data.  Secondly, we can
+see multiple cases under net/ where map_lookup_elem() is either called
+or takes things a step further and provides an alternate
+implementation outside of the BPF subsystem, Hornet's use of
+map_lookup_elem() doesn't appear to be a significant shift in how the
+API is used; whereas the patch you reference attempted to do something
+no other LSM has ever been allowed to do as it could jeopardize other
+LSMs.  However, let us not forget perhaps the biggest difference
+between Hornet and patchset you mentioned; the LSM community worked
+with you and ultimately merged your static call patchset, I even had
+to argue *on*your*behalf* against Tetsuo Handa to get your patchset
+into Linus' tree.
 
-> 
-> Cheers,
-> -- 
-> Email: Herbert Xu <herbert@gondor.apana.org.au>
-> Home Page: http://gondor.apana.org.au/~herbert/
-> PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+I'm sorry you are upset that a portion of your original design for the
+static call patchset didn't make it into Linus' tree, but ultimately
+the vast majority of your original design *did* make it into Linus
+tree, and the process to get there involved the LSM community working
+with you in good faith, including arguing along side of you to support
+your patchset against a dissenting LSM.
 
-[1] https://lore.kernel.org/keyrings/1121543.1746310761@warthog.procyon.org.uk/
+This might also be a good time to remind others who don't follow LSM
+development of a couple other things that we've done recently in LSM
+land to make things easier, or better, for BPF and/or the BPF LSM.
+Perhaps the most important was the work to resolve a number of issues
+with the LSM hook default values, solving some immediate issues and
+preventing similar problems from occurring in the future; this was a
+significant improvement and helped pave the way for greater
+flexibility around where the BPF LSM could be inserted into the LSM
+ordering.  There was also the work around inspecting and normalizing a
+number of LSM hooks to make it easier for the BPF verifier to verify
+BPF LSM callbacks; granted we were not able to normalize every single
+LSM hook, but we did improve on a number of them and the BPF verifier
+was able to take advantage of those improvements.
 
-BR, Jarkko
+From what I've seen in Blaise's efforts to implement BPF signature
+validation in the upstream kernel he has been working in good faith
+and has been trying to work with the greater BPF community at each
+step along the way.  He attempted to learn from previously rejected
+attempts with his first patchset, however, that too was rejected, but
+with feedback on how he might proceed.  Blaise took that feedback and
+implemented Hornet, traveling to LSFMMBPF to present his idea to the
+BPF community, as well as the usual mailing list postings.  When there
+was feedback that certain APIs would not be permitted, despite being
+EXPORT_SYMBOL'd, Blaise made some adjustments and came back to the
+lists with an updated version.  You are obviously free to object to
+portions of Hornet, but I don't believe you can claim Blaise isn't
+trying to work with the BPF community on this effort.
+
+> So for this approach, it's a:
+>
+> Nacked-by: KP Singh <kpsingh@kernel.org>
+
+Noted.
+
+> Now if you really care about the use-case and want to work with the maint=
+ainers
+> and implement signing for the community, here's how we think it should be=
+ done:
+>
+> * The core signing logic and the tooling stays in BPF, something that the=
+ users
+>   are already using. No new tooling.
+
+I think we need a more detailed explanation of this approach on-list.
+There has been a lot of vague guidance on BPF signature validation
+from the BPF community which I believe has partly led us into the
+situation we are in now.  If you are going to require yet another
+approach, I think we all need to see a few paragraphs on-list
+outlining the basic design.
+
+> * The policy decision on the effect of signing can be built into various
+>   existing LSMs. I don't think we need a new LSM for it.
+> * A simple UAPI (emphasis on UAPI!) change to union bpf_attr in uapi/bpf.=
+h in
+>   the BPF_PROG_LOAD command:
+>
+> __aligned_u64 signature;
+> __u32 signature_size;
+
+--=20
+paul-moore.com
 
