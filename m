@@ -1,124 +1,89 @@
-Return-Path: <keyrings+bounces-2695-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2696-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F7DAAD9C7
-	for <lists+keyrings@lfdr.de>; Wed,  7 May 2025 10:12:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 911A3AAE385
+	for <lists+keyrings@lfdr.de>; Wed,  7 May 2025 16:48:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 753F61C039EF
-	for <lists+keyrings@lfdr.de>; Wed,  7 May 2025 08:12:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 034854A149D
+	for <lists+keyrings@lfdr.de>; Wed,  7 May 2025 14:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1962236E9;
-	Wed,  7 May 2025 08:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="FquN4ct/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FDE0288C0A;
+	Wed,  7 May 2025 14:48:44 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81982223715;
-	Wed,  7 May 2025 08:09:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90ED6288C1F;
+	Wed,  7 May 2025 14:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746605394; cv=none; b=M49fD+gbD4RQ4PcgMYibhyrSD/wK3gUOmpPlJQeAGllW+Os90Nv5+9U+yYITExPGsKLFjcxzFw0DXCG06CHq23Sp4xXDT90zLNQREnymH2kty/wJolQLP3A8k4vBkBJ486mkUcmAUHqGEvLRcJp8USBdgTtei7/R3EYOhqiwbzI=
+	t=1746629324; cv=none; b=FWaaMdnIvTl4roGu/iKsKTRL8+JjB5Ac364cqHAcEsU3d7Bjf1KFEdhrEBcvTbnU/6vRzDp+MEiF8CK1cfxFblgph+kXQ/ADuDaKUfuTn3SWUPLv1AYX6v5V/Bm4IQEb1bwuv4oPN14HjmwqXpu9cbYj9QKNBzN6a+0cT9Ji59g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746605394; c=relaxed/simple;
-	bh=Ga7dnYONWW6pQTZBnKOZXPLB1qcUDrDxR0uOkbFmXA4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f4N5d8qnWylJ4R7AkTh4MBi8kIZFlW7UmSyXblU7c5rKlzvrYmnbelkgjMJVf3hoeABNQB5b0flz2mUOcbdmylj5PBpXn6wn+rSfyrW/p3vu4XDbftQFlp4t6Yt389Je/Jda4x7AnwsPKVLd7KRbDAXQOWMRFPtLS2aU/HhFVEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=FquN4ct/; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=MSvX0Iv4a/Ez4u16yOHWPS+nmuShukYzT/zA6sPHA34=; b=FquN4ct/ZEzEPbmQ07S9r3+xSL
-	uwRbYswkikuCHuYH3t1lpgz/0ieKikXjWpfbQ0GFwPL6+RbJN522BgmgRjAKGeZ1iepdPEW4oy4eT
-	SWFhFOsxqdPVPduerVdXm2e9Hz+WkdFqpbb+HoRHIM68PsU6DpMDvNBbXoM9V+pXRVBV5nTCF9KGH
-	84UJ1FPO8NyqJXEdQTqacW5dtdjS7d6KAAVnvDO4HLHCLJrvn0xZcIB4VzkzqOJiU74gbrXKPn+yc
-	TA4JoH/eak4CxIgpqjx+LHDtToYvwqoXcqwyeJ+treL75uGAcC14cCwgAzfPT0T49ktgCjB8IiHK7
-	EabOgHYA==;
-Received: from [2001:4bb8:2ae:8c08:f874:4a3:a9ae:2540] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uCZqi-0000000Efjo-2rWY;
-	Wed, 07 May 2025 08:09:53 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trondmy@kernel.org>
-Cc: Anna Schumaker <anna@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	linux-nfs@vger.kernel.org,
-	kernel-tls-handshake <kernel-tls-handshake@lists.linux.dev>,
-	keyrings@vger.kernel.org
-Subject: [PATCH 2/2] nfs: create a kernel keyring
-Date: Wed,  7 May 2025 10:09:41 +0200
-Message-ID: <20250507080944.3947782-3-hch@lst.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250507080944.3947782-1-hch@lst.de>
-References: <20250507080944.3947782-1-hch@lst.de>
+	s=arc-20240116; t=1746629324; c=relaxed/simple;
+	bh=EAKMHUJqzlQgDrepx4CDqYCADzmC7w3H6FiJl08P0iU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=unsgkKLEVen1UysbxmwqcLrd+rr9A7A0eCLkA2meEuhB4o30XYV1uU/z29vh7gwYvMvtFtY6k2FqhC2zPBtZnQ3WI0dEnPzNge21h7tXM5zDeOm76DReYTgIW+/Lvs6hEYs5tCxPAmb6cwejwqc+wAGBkvOosnu/+bmPaLxVjqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grimberg.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grimberg.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-441ab63a415so70748095e9.3;
+        Wed, 07 May 2025 07:48:42 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746629321; x=1747234121;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EAKMHUJqzlQgDrepx4CDqYCADzmC7w3H6FiJl08P0iU=;
+        b=QS3E1RQYT3m+fO7cLw/wPtoi1kKxcZ+hkPD6UURJHMSgbAslY0ozwiCcD3rQmJc8i0
+         O03wGdqcIkJHZ/LISr+afgFN8xSOPYcmCmKyG038sbI57X6pngG2ZpdkKva3leG5YRxd
+         b7raTQcMBP7vMlfk3DYP89TM7LK7+ECCEi2v1NrTzD4sedMud3TB+4pXspTEm13Ns9Aj
+         ncnQyUNmqnDDNwqcX0X594IwXyBlD/YX1nRVlltZx2x81E0ElepG7VLC87hgGGuounUm
+         +CLjgy6Q/x/s64t1KSddFC9M+eH0lQ8VDlppiGSbwfHbYth2WxRL5WNwIWm3WvRHFKhF
+         iTgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVr2j5POK1HS45iNECISSkyNAcV79DdUE7J15u8LBBR+3X9KL7J9LPeTKOgb8OiKvZbIuEgJ6tkbw==@vger.kernel.org, AJvYcCXbV8o2I0q6aRikq6dIrvYMiSyxJao3CkIJ7b9ec3uO0NBZsIqzXwE5nZ6d2ewde91eiaHWudZ5apwb@vger.kernel.org
+X-Gm-Message-State: AOJu0YxoD9qbEwTCoMZpLOuWtP6Bq4ndV9JKjAObhTbWwwLz2MqzUEIY
+	Y9fuyBoI6fod7S5ou3AmmgMWWMAVMNEG1DTs3rQYTkeUjFOeSHpb2By0dg==
+X-Gm-Gg: ASbGncvpjpvFDWByb6bQmKv4pPei6rTc2SGSB8yJtc0kOV/P6tMI5Zn0kk0loxYrt/3
+	MXWWuLg93IiDSVg72CwYxf9GBP0umFr0SSodBO/sPVCaUPDBl67Ag8DivCZWWtsgcI31sLXWM6Y
+	6hTrMFoKRzyzjQqU75wxlL3mu1yWz2ybG7NFY6mfnwpZL1G1BtMR+KswJcEtdazJoGKqpuffdur
+	d4QPI0mPhbG9kNOPmeMYy/YmPaMcJf7JJHB4kei52mBkZBFM9T/BL2ar6ZT6U9GrR4dtoyzn/c0
+	TQXKKSH8/N9C8/zomXP2FKcoKu7cfeCILwlvFyTbJah+1GqN8V3fVfFRGbcbB7RyTrBh0eg39d0
+	9pZSG2SgJMUDHe2EB
+X-Google-Smtp-Source: AGHT+IF5BTozncU2f8ZOakRdmEUv5uIWg8hax2hMSrXQM17uMKwSEvjMx5Ip07y2lNB42HNCyDZFCQ==
+X-Received: by 2002:a05:600c:37c6:b0:43c:f8fc:f6a6 with SMTP id 5b1f17b1804b1-441d44c321emr32242065e9.9.1746629320547;
+        Wed, 07 May 2025 07:48:40 -0700 (PDT)
+Received: from [10.50.5.11] (bzq-84-110-32-226.static-ip.bezeqint.net. [84.110.32.226])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a0b6d0e1ebsm1458450f8f.80.2025.05.07.07.48.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 May 2025 07:48:40 -0700 (PDT)
+Message-ID: <b56bc2a2-3357-4d50-b53b-e65866ba1e7b@grimberg.me>
+Date: Wed, 7 May 2025 17:48:38 +0300
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] NFS: support the kernel keyring for TLS
+To: Christoph Hellwig <hch@lst.de>, Chuck Lever <chuck.lever@oracle.com>,
+ Trond Myklebust <trondmy@kernel.org>
+Cc: Anna Schumaker <anna@kernel.org>, David Howells <dhowells@redhat.com>,
+ Jarkko Sakkinen <jarkko@kernel.org>, linux-nfs@vger.kernel.org,
+ kernel-tls-handshake <kernel-tls-handshake@lists.linux.dev>,
+ keyrings@vger.kernel.org
+References: <20250507080944.3947782-1-hch@lst.de>
+ <20250507080944.3947782-2-hch@lst.de>
+Content-Language: en-US
+From: Sagi Grimberg <sagi@grimberg.me>
+In-Reply-To: <20250507080944.3947782-2-hch@lst.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Create a kernel .nfs keyring similar to the nvme .nvme one.  Unlike for
-a userspace-created keyrind, tlshd is a possesor of the keys with this
-and thus the keys don't need user read permissions.
+Pretty straight-forward I think.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- fs/nfs/inode.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index 119e447758b9..fb1fe1bdfe92 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -2571,6 +2571,8 @@ static struct pernet_operations nfs_net_ops = {
- 	.size = sizeof(struct nfs_net),
- };
- 
-+static struct key *nfs_keyring;
-+
- /*
-  * Initialize NFS
-  */
-@@ -2578,6 +2580,17 @@ static int __init init_nfs_fs(void)
- {
- 	int err;
- 
-+	if (IS_ENABLED(CONFIG_NFS_V4)) {
-+		nfs_keyring = keyring_alloc(".nfs",
-+				     GLOBAL_ROOT_UID, GLOBAL_ROOT_GID,
-+				     current_cred(),
-+				     (KEY_POS_ALL & ~KEY_POS_SETATTR) |
-+				     (KEY_USR_ALL & ~KEY_USR_SETATTR),
-+				     KEY_ALLOC_NOT_IN_QUOTA, NULL, NULL);
-+		if (IS_ERR(nfs_keyring))
-+			return PTR_ERR(nfs_keyring);
-+	}
-+
- 	err = nfs_sysfs_init();
- 	if (err < 0)
- 		goto out10;
-@@ -2653,6 +2666,8 @@ static void __exit exit_nfs_fs(void)
- 	nfs_fs_proc_exit();
- 	nfsiod_stop();
- 	nfs_sysfs_exit();
-+	if (IS_ENABLED(CONFIG_NFS_V4))
-+		key_put(nfs_keyring);
- }
- 
- /* Not quite true; I just maintain it */
--- 
-2.47.2
-
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
 
