@@ -1,150 +1,334 @@
-Return-Path: <keyrings+bounces-2706-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2707-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B65C5AB0F7A
-	for <lists+keyrings@lfdr.de>; Fri,  9 May 2025 11:45:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A592AB261B
+	for <lists+keyrings@lfdr.de>; Sun, 11 May 2025 04:01:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3367650322A
-	for <lists+keyrings@lfdr.de>; Fri,  9 May 2025 09:45:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23A84188C925
+	for <lists+keyrings@lfdr.de>; Sun, 11 May 2025 02:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB5928DB72;
-	Fri,  9 May 2025 09:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B7213BC0C;
+	Sun, 11 May 2025 02:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="bsMOAxeU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SknmlYj2"
 X-Original-To: keyrings@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B36428D840;
-	Fri,  9 May 2025 09:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7CA12DD95
+	for <keyrings@vger.kernel.org>; Sun, 11 May 2025 02:01:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746783934; cv=none; b=OWPxe+j0dhja0FdmruGIA5o6543Z2gFJf3m1k0g6o2ur3dvCuDKjNf8nN4qFfBTe/LailLOijwt8hOKSnjAkP9CqZTsU/4oQQKcoMho2om0RUstNDhNkc9O5xrarsVHbBOAI6yBSviO35vMOQXwtZWEP9fMqyux7LIkR3iL4Efw=
+	t=1746928898; cv=none; b=UNjAVHDNmVUfP8E00S6oMXHNyqI2cLt54qV9r+m4y1X6vh/G0tmAPY7ivCgDlRsqF0H8YEXKLrnQOqY+IlzIJRxEDDtCpEGXV+RIrsh2Lulw/oXatp69ugpD0N7cOBob7dzuhrJOQYW8XAE0OISEvrTYkk9/Uj3FogJSbid/c40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746783934; c=relaxed/simple;
-	bh=rCAKiZwC07a6hYm1JXeN/eU4Io7sxQr9R2Z0uILb7+A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=auPX5lzaTDejiGDwy33UJdQ1GkRY1JzCEefgM1l5K0MVUP6D5jaExW8NXBa+xYJefZUKc7ayY/4Kd7hoFzPgSlJmVH6D9IZhIiwbx9C/NVAlblZ3wOw/Pjw8O9zOE6QExuIwIqjNW2YF1ruC+9N9zQw52Erc6Rk+ang08Qf15UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=bsMOAxeU; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=OgKUwxjDLVEnkNCJ6apJ/HjXQWHF4sHczo99k4VuzQ0=; b=bsMOAxeUeKSmOj0fW9khPDifvx
-	VkxBt0BZF6rOZ95DJ9mT28mVjw5BmwkTkW0uRU1aESBW3EVgBHDKiGehu6BFrK6Cgx2lLlloSjlls
-	GZu7ZwU3QsrtYF3/WiV1ilNeKBy4rviTv8t0ujG8adRNI1fSHGXUnyRi/ElCOv/37eGymenZnq78N
-	vZcrtuIDjWwRzBn97Emxc8hE51NZakOvVRVh+kQatQ+ciT0ZSmmNj96+AN7lPdigoEcSXn1dBxRLQ
-	/dquK9ssHjsBeQf8b++9QOolNj61Y8i8/3z1T3LIZBz003LpQdp1+hjQEqGANPtdHpvrQAHJLCAOR
-	lRTKp6nA==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1uDKIC-004olb-2U;
-	Fri, 09 May 2025 17:45:21 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 09 May 2025 17:45:20 +0800
-Date: Fri, 9 May 2025 17:45:20 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: kernel test robot <oliver.sang@intel.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, keyrings@vger.kernel.org,
-	David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>, Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>, linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-integrity@vger.kernel.org,
-	linux-security-module@vger.kernel.org
-Subject: [v3 PATCH] KEYS: Invert FINAL_PUT bit
-Message-ID: <aB3OsMWScE2I9DhG@gondor.apana.org.au>
-References: <aBccz2nJs5Asg6cN@gondor.apana.org.au>
- <202505091721.245cbe78-lkp@intel.com>
+	s=arc-20240116; t=1746928898; c=relaxed/simple;
+	bh=Uud/c+M6EfwYviLXv3JhG9QXpJjkB+v/1YKSMnhuxYs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=meyCxWZOl2wsKznuaGAbyNRomuLeR8Jp3FpDNWrf3eh/vKkKBL/g+wWjL+9yUSdRfkrWQhxyPTK4R9qmbvdXuYO3fS50hBAevRMA8XEjhq/FfTd9KgjCt5X8qt1dqUl+VZ4jAi2EdRpEu1Erya14C4ejlN786rPe/51x6sq7lQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SknmlYj2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB04C4CEF6
+	for <keyrings@vger.kernel.org>; Sun, 11 May 2025 02:01:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746928898;
+	bh=Uud/c+M6EfwYviLXv3JhG9QXpJjkB+v/1YKSMnhuxYs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=SknmlYj2WWl0gmygOMQ462CEdJe1IMriWCMG4DDLJhTgeRoQh4ODOu2dMUdrccTuQ
+	 CA6pPxS9fLzPjzPokhWdOZa56uhku9XM3FW/1pQFiU25spAaaIXhrBhRDlyB9px4LG
+	 j5Fou3qIi1Pimuy8bJ/xKtnSiH0BmG4k8yIfJn44ZjHqAMvkjkNe0KNAvJ0gdBYWiR
+	 Zetb/OjfXg5lANmS+9bETEreAQLBB+CE6wUhYodPMcG9iavZMgZPLtO1b1VdmK8bjL
+	 SAk5twBmBWhF77iiBcC0QW2BefAOFAyBWMz+0EQ+EV1m4SrlWstyOwgI95x4d7ebM+
+	 Mzm1k2LaJAFHg==
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5fd1f7f8b25so598308a12.0
+        for <keyrings@vger.kernel.org>; Sat, 10 May 2025 19:01:37 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX4LnV4EMvcRqEljlvm9+WZ7g0AVjr60htDh/5Xu8/quGiVvlOFfIRe0hWRC4e/1hmbgKKJLp7RvQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvX39KGfDLKMRaQgj9LGcqcLvTkyxTz2rfyHXxF+UQuUp4QdCq
+	iw+8M5wnvc+wO6WXegezn1I0iCkdSQiEE/9IHO1Het0SQRJbqyJTQqb0cTjZTWZ9oF5oXWFT+5P
+	l/4Fl3QjodJFrhdSj5zBgpFQpIbZmwf+Zai1y
+X-Google-Smtp-Source: AGHT+IEndbWplSJxFGd74VrtGrhFU2hW9QCIiBQIkWd6Wv+M3EzLZDUhAbkzCtB+Hip0tzqQSM6gufYVYT1/8EGDpuY=
+X-Received: by 2002:a05:6402:2688:b0:5fd:1972:99da with SMTP id
+ 4fb4d7f45d1cf-5fd19729aa8mr1758195a12.23.1746928896391; Sat, 10 May 2025
+ 19:01:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202505091721.245cbe78-lkp@intel.com>
+References: <20250502184421.1424368-1-bboscaccy@linux.microsoft.com>
+ <20250502210034.284051-1-kpsingh@kernel.org> <CAHC9VhS5Vevcq90OxTmAp2=XtR1qOiDDe5sSXReX5oXzf+siVQ@mail.gmail.com>
+ <CACYkzJ5jsWFiXMRDwoGib5t+Xje6STTuJGRZM9Vg2dFz7uPa-g@mail.gmail.com>
+In-Reply-To: <CACYkzJ5jsWFiXMRDwoGib5t+Xje6STTuJGRZM9Vg2dFz7uPa-g@mail.gmail.com>
+From: KP Singh <kpsingh@kernel.org>
+Date: Sun, 11 May 2025 04:01:25 +0200
+X-Gmail-Original-Message-ID: <CACYkzJ6VQUExfyt0=-FmXz46GHJh3d=FXh5j4KfexcEFbHV-vg@mail.gmail.com>
+X-Gm-Features: AX0GCFvon_jvokApR2EuF7DFGQb8hyY-4kxy54yUF6qWCWTtHAsfnnk2ydLvo-Y
+Message-ID: <CACYkzJ6VQUExfyt0=-FmXz46GHJh3d=FXh5j4KfexcEFbHV-vg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/4] Introducing Hornet LSM
+To: Paul Moore <paul@paul-moore.com>
+Cc: bboscaccy@linux.microsoft.com, James.Bottomley@hansenpartnership.com, 
+	bpf@vger.kernel.org, code@tyhicks.com, corbet@lwn.net, davem@davemloft.net, 
+	dhowells@redhat.com, gnoack@google.com, herbert@gondor.apana.org.au, 
+	jarkko@kernel.org, jmorris@namei.org, jstancek@redhat.com, 
+	justinstitt@google.com, keyrings@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	llvm@lists.linux.dev, masahiroy@kernel.org, mic@digikod.net, morbo@google.com, 
+	nathan@kernel.org, neal@gompa.dev, nick.desaulniers+lkml@gmail.com, 
+	nicolas@fjasle.eu, nkapron@google.com, roberto.sassu@huawei.com, 
+	serge@hallyn.com, shuah@kernel.org, teknoraver@meta.com, 
+	xiyou.wangcong@gmail.com, kysrinivasan@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 09, 2025 at 05:34:09PM +0800, kernel test robot wrote:
-> 
-> our bot applied this patch directly upon v6.15-rc5. could you let us know if
-> this is a correct appliment?
+> > I think we need a more detailed explanation of this approach on-list.
+> > There has been a lot of vague guidance on BPF signature validation
+> > from the BPF community which I believe has partly led us into the
+> > situation we are in now.  If you are going to require yet another
+> > approach, I think we all need to see a few paragraphs on-list
+> > outlining the basic design.
+>
+> Definitely, happy to share design / code.
 
-Yes it is correct.
+Here=E2=80=99s the design that Alexei and I have been discussing. It's
+extensible, independent of ELF formats, handles all identified
+use-cases, paves the way for signed unprivileged eBPF, and meets the
+requirements of anyone who wants to run signed eBPF programs.
 
-The patch was buggy, the test_bit_acquire should've been inverted too:
+# Trusted Hash Chain
 
----8<---
-Invert the FINAL_PUT bit so that test_bit_acquire and clear_bit_unlock
-can be used instead of smp_mb.
+The key idea of the design is to use a signing algorithm that allows
+us to integrity-protect a number of future payloads, including their
+order, by creating a chain of trust.
 
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Consider that Alice needs to send messages M_1, M_2, ..., M_n to Bob.
+We define blocks of data such that:
 
-diff --git a/include/linux/key.h b/include/linux/key.h
-index ba05de8579ec..81b8f05c6898 100644
---- a/include/linux/key.h
-+++ b/include/linux/key.h
-@@ -236,7 +236,7 @@ struct key {
- #define KEY_FLAG_ROOT_CAN_INVAL	7	/* set if key can be invalidated by root without permission */
- #define KEY_FLAG_KEEP		8	/* set if key should not be removed */
- #define KEY_FLAG_UID_KEYRING	9	/* set if key is a user or user session keyring */
--#define KEY_FLAG_FINAL_PUT	10	/* set if final put has happened on key */
-+#define KEY_FLAG_USER_ALIVE	10	/* set if final put has not happened on key yet */
- 
- 	/* the key type and key description string
- 	 * - the desc is used to match a key against search criteria
-diff --git a/security/keys/gc.c b/security/keys/gc.c
-index f27223ea4578..748e83818a76 100644
---- a/security/keys/gc.c
-+++ b/security/keys/gc.c
-@@ -218,8 +218,8 @@ static void key_garbage_collector(struct work_struct *work)
- 		key = rb_entry(cursor, struct key, serial_node);
- 		cursor = rb_next(cursor);
- 
--		if (test_bit(KEY_FLAG_FINAL_PUT, &key->flags)) {
--			smp_mb(); /* Clobber key->user after FINAL_PUT seen. */
-+		if (!test_bit_acquire(KEY_FLAG_USER_ALIVE, &key->flags)) {
-+			/* Clobber key->user after final put seen. */
- 			goto found_unreferenced_key;
- 		}
- 
-diff --git a/security/keys/key.c b/security/keys/key.c
-index 7198cd2ac3a3..3bbdde778631 100644
---- a/security/keys/key.c
-+++ b/security/keys/key.c
-@@ -298,6 +298,7 @@ struct key *key_alloc(struct key_type *type, const char *desc,
- 	key->restrict_link = restrict_link;
- 	key->last_used_at = ktime_get_real_seconds();
- 
-+	key->flags |= 1 << KEY_FLAG_USER_ALIVE;
- 	if (!(flags & KEY_ALLOC_NOT_IN_QUOTA))
- 		key->flags |= 1 << KEY_FLAG_IN_QUOTA;
- 	if (flags & KEY_ALLOC_BUILT_IN)
-@@ -658,8 +659,8 @@ void key_put(struct key *key)
- 				key->user->qnbytes -= key->quotalen;
- 				spin_unlock_irqrestore(&key->user->lock, flags);
- 			}
--			smp_mb(); /* key->user before FINAL_PUT set. */
--			set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
-+			/* Mark key as safe for GC after key->user done. */
-+			clear_bit_unlock(KEY_FLAG_USER_ALIVE, &key->flags);
- 			schedule_work(&key_gc_work);
- 		}
- 	}
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+    B_n =3D M_n || H(termination_marker)
+
+(Each block contains its corresponding message and the hash of the
+*next* block in the chain.)
+
+    B_{n-1} =3D M_{n-1} || H(B_n)
+    B_{n-2} =3D M_{n-2} || H(B_{n-1})
+
+  ...
+
+    B_2 =3D M_2 || H(B_3)
+    B_1 =3D M_1 || H(B_2)
+
+Alice does the following (e.g., on a build system where all payloads
+are available):
+
+  * Assembles the blocks B_1, B_2, ..., B_n.
+  * Calculates H(B_1) and signs it, yielding Sig(H(B_1)).
+
+Alice sends the following to Bob:
+
+    M_1, H(B_2), Sig(H(B_1))
+
+Bob receives this payload and does the following:
+
+    * Reconstructs B_1 as B_1' using the received M_1 and H(B_2)
+(i.e., B_1' =3D M_1 || H(B_2)).
+    * Recomputes H(B_1') and verifies the signature against the
+received Sig(H(B_1)).
+    * If the signature verifies, it establishes the integrity of M_1
+and H(B_2) (and transitively, the integrity of the entire chain). Bob
+now stores the verified H(B_2) until it receives the next message.
+    * When Bob receives M_2 (and H(B_3) if n > 2), it reconstructs
+B_2' (e.g., B_2' =3D M_2 || H(B_3), or if n=3D2, B_2' =3D M_2 ||
+H(termination_marker)). Bob then computes H(B_2') and compares it
+against the stored H(B_2) that was verified in the previous step.
+
+This process continues until the last block is received and verified.
+
+Now, applying this to the BPF signing use-case, we simplify to two messages=
+:
+
+    M_1 =3D I_loader (the instructions of the loader program)
+    M_2 =3D M_metadata (the metadata for the loader program, passed in a
+map, which includes the programs to be loaded and other context)
+
+For this specific BPF case, we will directly sign a composite of the
+first message and the hash of the second. Let H_meta =3D H(M_metadata).
+The block to be signed is effectively:
+
+    B_signed =3D I_loader || H_meta
+
+The signature generated is Sig(B_signed).
+
+The process then follows a similar pattern to the Alice and Bob model,
+where the kernel (Bob) verifies I_loader and H_meta using the
+signature. Then, the trusted I_loader is responsible for verifying
+M_metadata against the trusted H_meta.
+
+From an implementation standpoint:
+
+# Build
+
+bpftool (or some other tool in the user's build environment) knows
+about the metadata (M_metadata) and the loader program (I_loader). It
+first calculates H_meta =3D H(M_metadata). Then it constructs the object
+to be signed and computes the signature:
+
+    Sig(I_loader || H_meta)
+
+# Loader
+
+bpftool generates the loader program. The initial instructions of this
+loader program are designed to verify the SHA256 hash of the metadata
+(M_metadata) that will be passed in a map. These instructions
+effectively embed the precomputed H_meta as immediate values.
+
+    ld_imm64 r1, const_ptr_to_map // insn[0].src_reg =3D=3D BPF_PSEUDO_MAP_=
+IDX
+    r2 =3D *(u64 *)(r1 + 0);
+    ld_imm64 r3, sha256_of_map_part1 // constant precomputed by
+bpftool (part of H_meta)
+    if r2 !=3D r3 goto out;
+
+    r2 =3D *(u64 *)(r1 + 8);
+    ld_imm64 r3, sha256_of_map_part2 // (part of H_meta)
+    if r2 !=3D r3 goto out;
+
+    r2 =3D *(u64 *)(r1 + 16);
+    ld_imm64 r3, sha256_of_map_part3 // (part of H_meta)
+    if r2 !=3D r3 goto out;
+
+    r2 =3D *(u64 *)(r1 + 24);
+    ld_imm64 r3, sha256_of_map_part4 // (part of H_meta)
+    if r2 !=3D r3 goto out;
+    ...
+
+This implicitly makes the payload equivalent to the signed block (B_signed)
+
+    I_loader || H_meta
+
+bpftool then generates the signature of this I_loader payload (which
+now contains the expected H_meta) using a key (system or user) with
+new flags that work in combination with bpftool -L
+
+This signature is stored in bpf_attr, which is extended as follows for
+the BPF_PROG_LOAD command:
+
+    __aligned_u64 signature;
+    __u32 signature_size;
+    __u32 user_keyring_serial;
+    __u64 system_keyring_id;
+
+# New BPF Commands
+
+## BPF_MAP_GET_HASH args: (map_fd, &sha256_output, output_size)
+
+This command instructs the kernel to compute the SHA256 hash of the
+map's data. If sha256_output is non-NULL, the hash is returned to
+userspace. (While not strictly needed for this specific signing
+use-case to function, it's a useful utility for userspace debugging or
+other applications.)
+
+The kernel also stores this computed hash internally within its struct bpf_=
+map:
+
+    struct bpf_map {
+    +   u64 sha[4];
+        const struct bpf_map_ops *ops;
+        struct bpf_map *inner_map_meta;
+    };
+
+## BPF_MAP_MAKE_EXCLUSIVE args: (map_fd, sha256_of_future_prog)
+
+Exclusivity ensures that the map can only be used by a future BPF
+program whose SHA256 hash matches sha256_of_future_prog.
+
+First, bpf_prog_calc_tag() is updated to compute the SHA256 instead of
+SHA1, and this hash is stored in struct bpf_prog_aux:
+
+    @@ -1588,6 +1588,7 @@ struct bpf_prog_aux {
+         int cgroup_atype; /* enum cgroup_bpf_attach_type */
+         struct bpf_map *cgroup_storage[MAX_BPF_CGROUP_STORAGE_TYPE];
+         char name[BPF_OBJ_NAME_LEN];
+    +    u64 sha[4];
+         u64 (*bpf_exception_cb)(u64 cookie, u64 sp, u64 bp, u64, u64);
+         // ...
+    };
+
+Once BPF_MAP_MAKE_EXCLUSIVE is called with map_fd and the target
+program's SHA256 hash, the kernel marks the map as exclusive. When a
+BPF program is subsequently loaded, if it attempts to use this map,
+the kernel will compare the program's own SHA256 hash against the one
+registered with the map, if matching, it will be added to
+prog->used_maps[]. The program load will fail if the hashes do not
+match or if the map is already in use by another (non-matching)
+exclusive program.
+
+Any program with a different SHA256 will fail to load if it attempts
+to use the exclusive map.
+
+NOTE: Exclusive maps cannot be added as inner maps.
+
+# Light Skeleton Sequence (Userspace Example)
+
+    // Create and populate the metadata map
+
+    map_fd =3D skel_map_create(BPF_MAP_TYPE_ARRAY, "__loader.map", 4,
+opts->data_sz, 1);
+    skel_map_update_elem(map_fd, &key, opts->data, 0);
+
+    // Freeze the map to prevent further userspace modifications.
+    // This makes its content immutable from userspace.
+
+    skel_map_freeze(map_fd);
+
+    // Make the map exclusive to the intended loader program.
+    // sha256_of_loader_prog is the hash of the I_loader binary
+    skel_map_make_exclusive(map_fd, sha256_of_loader_prog);
+
+    skel_map_get_hash(map_fd, NULL, 0);
+
+    // Load the loader program (I_loader) with its signature.
+    opts.ctx =3D (struct bpf_loader_ctx *)skel;
+    opts.data_sz =3D sizeof(opts_data) - 1;
+    opts.data =3D (void *)opts_data;
+    opts.insns_sz =3D sizeof(opts_insn) - 1;
+    opts.insns =3D (void *)opts_insn;
+
+    opts.signature =3D =E2=80=A6 signature of the opts_insn[] bytes=E2=80=
+=A6
+    opts.signature_size =3D sizeof(..);
+    opts. system_keyring_id  =3D ...
+
+    OR
+
+    opts.user_keyring_serial =3D =E2=80=A6 depending on what flag was used =
+in bpftool.
+    err =3D bpf_load_and_run(&opts);
+
+The kernel verifier will:
+
+    * Compute the hash of the provided I_loader bytecode.
+    * Verify the signature against this computed hash.
+    * Check if the metadata map (now exclusive) is intended for this
+program's hash.
+
+The signature check in the verifier (during BPF_PROG_LOAD):
+
+    verify_pkcs7_signature(prog->aux->sha, sizeof(prog->aux->sha),
+sig_from_bpf_attr, =E2=80=A6);
+
+This ensures that the loaded loader program (I_loader), including the
+embedded expected hash of the metadata (H_meta), is trusted.
+Since the loader program is now trusted, it can be entrusted to verify
+the actual metadata (M_metadata) read from the (now exclusive and
+frozen) map against the embedded (and trusted) H_meta. There is no
+Time-of-Check-Time-of-Use (TOCTOU) vulnerability here because:
+
+    * The signature covers the I_loader and its embedded H_meta.
+    * The metadata map M_metadata is frozen before the loader program
+is loaded and associated with it.
+    * The map is made exclusive to the specific (signed and verified)
+loader program.
 
