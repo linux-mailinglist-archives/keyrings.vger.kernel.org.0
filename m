@@ -1,121 +1,153 @@
-Return-Path: <keyrings+bounces-2708-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2709-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 693BBAB2632
-	for <lists+keyrings@lfdr.de>; Sun, 11 May 2025 04:14:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 317E2AB2FAB
+	for <lists+keyrings@lfdr.de>; Mon, 12 May 2025 08:34:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4A551748B1
-	for <lists+keyrings@lfdr.de>; Sun, 11 May 2025 02:14:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B19DB17032B
+	for <lists+keyrings@lfdr.de>; Mon, 12 May 2025 06:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F08614A4E0;
-	Sun, 11 May 2025 02:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D1IW0YD1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ACC6255E2C;
+	Mon, 12 May 2025 06:34:23 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f80.google.com (mail-io1-f80.google.com [209.85.166.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FAE149E13
-	for <keyrings@vger.kernel.org>; Sun, 11 May 2025 02:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33B8248F6F
+	for <keyrings@vger.kernel.org>; Mon, 12 May 2025 06:34:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746929673; cv=none; b=e0mnFnjCVrf6Y33YYfdD7IVCryxuFtAFTm95UqYUsDmI9rcLL8BUspTxtvzDJxPReOZ3lyT3aGx7TVEdcybhpHTEvcUg8txqDiN1HrTG39X8VDMiMEgObvoXg1nLtVZBgYEiPQTfwHX/+BV8FCuM0vdfUiKxTsHtNg/44A3u32o=
+	t=1747031663; cv=none; b=bDQcDBdCYF+/QnoRX6BXGKqKnVSj+hd3zglwlbRE0Pjp+n8jIB/FPB26uWVPGxNAYyE+DGPm3II3U50dBOQckquPlqIgB0PkeiZdjKBapNE5UCo8RBSEg18npVI+1kdM/QJ92I912qm6bb0dvs+etwCcB1PdxHCoGyJSyAymyQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746929673; c=relaxed/simple;
-	bh=ErdE1KVMfWPkKsMxBdbzTAnSvWDLWI4LLjWjznFIFAE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=t7WR1+uJXBfbpIDE0dpB3bVZs9cRmUZ4jdMZW281+NMdflMQjA5+32kOzKARvW9XOKF+kV/OmOzxIszLyIFCOl5EA5aM+1Mw13vcPPB/37IzVAcjGfVlm/zuL0kETWvA6v4NgFXBAKsUa1S1+tsWfbCcpaAlnu/a/yTPVglIgm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D1IW0YD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75AAEC116D0
-	for <keyrings@vger.kernel.org>; Sun, 11 May 2025 02:14:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746929672;
-	bh=ErdE1KVMfWPkKsMxBdbzTAnSvWDLWI4LLjWjznFIFAE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=D1IW0YD1PWiJE7OexRFET8O5OoDdN/n+H+arvcGWRYzDPMBLnLwS7wBDNnB5yAxhL
-	 ylfsP9uxJzMd0NTxXPAeXHqq1kycZyDThZpY7qV0bJNBtaByGa3Gi+w6CUcx4TvJ7Q
-	 DN5kneaArqhcJFZ9EFuoR9zWEkxh2laX1LhLrZ5PTtbMKgWbdR5vO4pvI4rU0Cljeh
-	 SoL6hb+EFl+I94+/CrjFVOzvQPhkXkl5ucRcMwjXldZ4a8UuCqNzktPwx7j3xeUKyl
-	 96YqxHULEPy323MNYOsLGWDN0jh2e+XwlPuC93HfCvn4PTjDwQeLQ9yMvJcVAulu+4
-	 7bUct8jdLE4fQ==
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5fcac09313cso2947070a12.2
-        for <keyrings@vger.kernel.org>; Sat, 10 May 2025 19:14:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX35oJjCSIgcWxo/IOqvQRO/GpFpDtWhfEYL55sYAWWarK91YwKx0fmO9f5kDJNWSSQNxmWJXTeiw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0J9lNFcHQeH6mlXkEXTiHQ7Ju9JVGBe5mbFasP76uYIcc94tS
-	XzASxryx+KhgJ6tUeXZ0NeuNuCFVtZ/hX4doQ8bEp2jBtKuabAMDUVIVWZ0MKZD1chWluUxcYuw
-	lRFx9c1IIvSCSyNPnjSOIeY5Fb8Gkqd1yXEAR
-X-Google-Smtp-Source: AGHT+IExXmbIf+BhGVnj7doD3WnX7s+dvlTY3FdrciBuDVwzwOxxJvaT9GkVsNX9nEvSMBd0KFEz7jYxBN5tsLhkF2M=
-X-Received: by 2002:a05:6402:2396:b0:5fc:a51a:9c03 with SMTP id
- 4fb4d7f45d1cf-5fca51a9f9fmr4891240a12.0.1746929670732; Sat, 10 May 2025
- 19:14:30 -0700 (PDT)
+	s=arc-20240116; t=1747031663; c=relaxed/simple;
+	bh=gpNdlN3Cb0qhrWVkl2uMw2MfCUiMelfl829BiTyR+Ys=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=GfPW4AB43BMo7hG9ccqN5CIJAZVM///RR/HmXVrrlPuP3cRp4OmN5HnVzwht/8k7PZ5mGp6xPG353mWuO/OyNNzZ1UvKHkIxZ1uuoml9n8gkk4elaJ9CW8KvX/Lg2f3coF7TuZwGKfAn/K9bmZVYpva0zC+p9a08xKs87iIXq5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f80.google.com with SMTP id ca18e2360f4ac-86176e300fdso364362839f.1
+        for <keyrings@vger.kernel.org>; Sun, 11 May 2025 23:34:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747031661; x=1747636461;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bk73waboJRsstF4X6ogODT970jaH6YsHHYw5z1KWGVg=;
+        b=eFQ7dC6lyVvhd2xritW5KwdecouLNCu4xD+KtkgwGlxwMjnxAw3uGcrwhxGyjeqIhx
+         1+V/6arfnKqCXbfuGvJ62kvEliYOCTndDzbnDIwZDgQYJ5KKdcC0+GKsA+H7uaiBoRSm
+         0HPSuwv0tD11DDbmP8egRhjJWb7tYZo6kj44ly6qeVMtdHvfz/xmiZRZFAndrmlQNDed
+         Bt2eIYFdC0DwxX/bMatMFXW/v41JGPuSmtvXsWFBFHqb3+/CeeMK475jM5AsNlgWnPDa
+         8MmHIszS/NzbX9LLsCDZNzsE3gAVsxAcSvy82L4neeTHIEW8rD1ONjxqeX0mfUNsIyTy
+         ht+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUIameVTEq+/GzDTxEG5oYrQknvOUtP/eISjizT0bWN6f+iuAAirphrau2xtOL/JdG9MrcntZ547Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtSUd+DtKZdCyCfCr4ganKDPuFu4VpJVzdtkcBEreNK5bJVnSE
+	nVGhcM9UFbkjniCNiBah5Z8qoMKsDKD2cJTNLMCtCu26sqriuPP7WRbbEGJ1uDI9OrwYersC8nY
+	2zeS8hDFDVx3ztAxsCTTdptuyL0N0Z682rzu/Z6Md+GDpFgYq6Pdk63g=
+X-Google-Smtp-Source: AGHT+IHnDX7gvaVDvWhoZmEs2BZOqUYzRCiyjD940H3qvyh4OlFngYAmesq+Gs/DUKA3V3EGe+m3fckqy4A24G+r2866OWsULKtg
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250502184421.1424368-1-bboscaccy@linux.microsoft.com>
- <20250502210034.284051-1-kpsingh@kernel.org> <87o6w7ge3o.fsf@microsoft.com>
- <CACYkzJ7Ur4kFaGZTDvcFJpn0ZwJ9V+=3ZefUURtkrQGfa68zLg@mail.gmail.com>
- <5dbc2a55a655f57a30be3ff7c6faa1d272e9b579.camel@HansenPartnership.com>
- <CAHC9VhSPLsi+GBtjJsQ8LUqPQW4aHtOL6gOqr9jfpR0i1izVZA@mail.gmail.com>
- <CAADnVQ+C2KNR1ryRtBGOZTNk961pF+30FnU9n3dt3QjaQu_N6Q@mail.gmail.com> <CAHC9VhRjKV4AbSgqb4J_-xhkWAp_VAcKDfLJ4GwhBNPOr+cvpg@mail.gmail.com>
-In-Reply-To: <CAHC9VhRjKV4AbSgqb4J_-xhkWAp_VAcKDfLJ4GwhBNPOr+cvpg@mail.gmail.com>
-From: KP Singh <kpsingh@kernel.org>
-Date: Sun, 11 May 2025 04:14:20 +0200
-X-Gmail-Original-Message-ID: <CACYkzJ528JBKbhiw1HNfv1kDBYv_C76cFB8a_Wa6DSqZp5_XuA@mail.gmail.com>
-X-Gm-Features: AX0GCFtRm2U2Z08Q-5iN5TPSVkChFMpfYbeWxPh5iWXOgSo5pdg9_y4ozgwfcPs
-Message-ID: <CACYkzJ528JBKbhiw1HNfv1kDBYv_C76cFB8a_Wa6DSqZp5_XuA@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] Introducing Hornet LSM
-To: Paul Moore <paul@paul-moore.com>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	Blaise Boscaccy <bboscaccy@linux.microsoft.com>, bpf <bpf@vger.kernel.org>, code@tyhicks.com, 
-	Jonathan Corbet <corbet@lwn.net>, "David S. Miller" <davem@davemloft.net>, 
-	David Howells <dhowells@redhat.com>, =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	James Morris <jmorris@namei.org>, Jan Stancek <jstancek@redhat.com>, 
-	Justin Stitt <justinstitt@google.com>, keyrings@vger.kernel.org, 
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, 
-	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, 
-	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, 
-	LSM List <linux-security-module@vger.kernel.org>, 
-	clang-built-linux <llvm@lists.linux.dev>, Masahiro Yamada <masahiroy@kernel.org>, 
-	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
-	Bill Wendling <morbo@google.com>, Nathan Chancellor <nathan@kernel.org>, Neal Gompa <neal@gompa.dev>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Nicolas Schier <nicolas@fjasle.eu>, nkapron@google.com, 
-	Roberto Sassu <roberto.sassu@huawei.com>, "Serge E . Hallyn" <serge@hallyn.com>, 
-	Shuah Khan <shuah@kernel.org>, Matteo Croce <teknoraver@meta.com>, 
-	Cong Wang <xiyou.wangcong@gmail.com>, kysrinivasan@gmail.com
+X-Received: by 2002:a05:6602:640f:b0:861:c759:61fa with SMTP id
+ ca18e2360f4ac-8676356c200mr1535456539f.4.1747031660879; Sun, 11 May 2025
+ 23:34:20 -0700 (PDT)
+Date: Sun, 11 May 2025 23:34:20 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6821966c.050a0220.f2294.0050.GAE@google.com>
+Subject: [syzbot] [lsm?] [keyrings?] KCSAN: data-race in key_garbage_collector
+ / key_set_expiry
+From: syzbot <syzbot+9defcbc1dc2f34e5b867@syzkaller.appspotmail.com>
+To: dhowells@redhat.com, jarkko@kernel.org, jmorris@namei.org, 
+	keyrings@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, paul@paul-moore.com, serge@hallyn.com, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-[...]
+Hello,
 
-> Blaise started this most recent effort by attempting to address the
-> concerns brought up in previous efforts, you and others rejected this
-> first attempt and directed Blaise towards a light skeleton and LSM
-> based approach, which is where he is at with Hornet.  Once again, you
-> reject this approach with minimal guidance on what would be
-> acceptable, and our response is to ask for clarification on your
-> preferred design.  We're not asking for a full working solution,
-> simply a couple of paragraphs outlining the design with enough detail
-> to put forward a working solution that isn't immediately NACK'd.
-> We've made this request multiple times in the past, most recently this
-> past weekend, where KP replied that he would be "happy" to share
+syzbot found the following issue on:
 
-Here's the proposed design:
+HEAD commit:    cd802e7e5f1e Merge tag 'for-linus' of git://git.kernel.org..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1583b768580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=6154604431d9aaf9
+dashboard link: https://syzkaller.appspot.com/bug?extid=9defcbc1dc2f34e5b867
+compiler:       Debian clang version 20.1.2 (++20250402124445+58df0ef89dd6-1~exp1~20250402004600.97), Debian LLD 20.1.2
 
-https://lore.kernel.org/bpf/CACYkzJ6VQUExfyt0=-FmXz46GHJh3d=FXh5j4KfexcEFbHV-vg@mail.gmail.com/#t
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/fdb14cb5e78f/disk-cd802e7e.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/c8b91b8b365f/vmlinux-cd802e7e.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/69520a7040dd/bzImage-cd802e7e.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+9defcbc1dc2f34e5b867@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KCSAN: data-race in key_garbage_collector / key_set_expiry
+
+write to 0xffffffff869eb168 of 8 bytes by task 3395 on cpu 1:
+ key_schedule_gc security/keys/gc.c:63 [inline]
+ key_garbage_collector+0x6d6/0x8f0 security/keys/gc.c:286
+ process_one_work kernel/workqueue.c:3238 [inline]
+ process_scheduled_works+0x4cb/0x9d0 kernel/workqueue.c:3319
+ worker_thread+0x582/0x770 kernel/workqueue.c:3400
+ kthread+0x486/0x510 kernel/kthread.c:464
+ ret_from_fork+0x4b/0x60 arch/x86/kernel/process.c:153
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+read to 0xffffffff869eb168 of 8 bytes by task 4277 on cpu 0:
+ key_schedule_gc security/keys/gc.c:61 [inline]
+ key_set_expiry+0xea/0x190 security/keys/gc.c:78
+ key_reject_and_link+0x18b/0x310 security/keys/key.c:609
+ key_negate_and_link include/linux/key-type.h:188 [inline]
+ complete_request_key security/keys/request_key.c:67 [inline]
+ call_sbin_request_key+0x656/0x6b0 security/keys/request_key.c:216
+ construct_key security/keys/request_key.c:247 [inline]
+ construct_key_and_link security/keys/request_key.c:519 [inline]
+ request_key_and_link+0x8bc/0xd70 security/keys/request_key.c:653
+ __do_sys_request_key security/keys/keyctl.c:222 [inline]
+ __se_sys_request_key+0x1df/0x290 security/keys/keyctl.c:167
+ __x64_sys_request_key+0x55/0x70 security/keys/keyctl.c:167
+ x64_sys_call+0x2f19/0x2fb0 arch/x86/include/generated/asm/syscalls_64.h:250
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xd0/0x1a0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+value changed: 0x7fffffffffffffff -> 0x000000006821354a
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 UID: 0 PID: 4277 Comm: syz.0.242 Not tainted 6.15.0-rc5-syzkaller-00353-gcd802e7e5f1e #0 PREEMPT(voluntary) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/19/2025
+==================================================================
+iwpm_register_pid: Unable to send a nlmsg (client = 2)
+infiniband syz1: RDMA CMA: cma_listen_on_dev, error -98
 
 
-> designs/code.  Unfortunately, since then all we've received from
-> either you or KP since then has been effectively just a list of your
-> objections on repeat; surely typing out a couple of paragraphs
-> outlining a design would have been quicker, easier, and more
-> constructive then your latest reply?
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
