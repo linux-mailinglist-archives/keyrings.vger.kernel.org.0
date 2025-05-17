@@ -1,100 +1,187 @@
-Return-Path: <keyrings+bounces-2740-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2741-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C4CBABA933
-	for <lists+keyrings@lfdr.de>; Sat, 17 May 2025 11:45:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A31ABAAC9
+	for <lists+keyrings@lfdr.de>; Sat, 17 May 2025 17:03:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CAB51BA1F15
-	for <lists+keyrings@lfdr.de>; Sat, 17 May 2025 09:45:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A8CC3BEB31
+	for <lists+keyrings@lfdr.de>; Sat, 17 May 2025 15:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16CBE1E2834;
-	Sat, 17 May 2025 09:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E887B205AB2;
+	Sat, 17 May 2025 15:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="K4490URf"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508961DEFD9;
-	Sat, 17 May 2025 09:45:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD82F1FF1C7
+	for <keyrings@vger.kernel.org>; Sat, 17 May 2025 15:03:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747475108; cv=none; b=ghQeM8dKSGuhujgLAmoc9P0wcSs29XvF7OuMI8SRFyHz6v6n4Oj/eDHDVTZaFqtgVul7dQfwIK4XJP6eG3x9k7YPY7aX+W77kzlhMZXylbTXNZANKuLpRAi54zo8Wfv+E0FheJVT+2d0glfPlI3paAZsf6uooZPt7AbixgRf7Fc=
+	t=1747494187; cv=none; b=l4CS//nKgY74uBn1rdKK5fRfF4x1sVgDZ+zOklNXeWbZOG8HDTcnIm0ZKvMgyo+OU/krnL7DG5sQCaCd9WkiBe7XCkIuKINKI1Z96WoadhTNvA2yisZ4dmLnPXg9JEiqKt51W4GY+dFT60qXUvvCigDhW3BQraEMTaseHs9Alyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747475108; c=relaxed/simple;
-	bh=Wmr5ohTXPKdyo8kcG6Jmsfp9sjQdnBz8HB4WyVN+qxg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aPTgwhh376jLlUJF86QjG+wAPcJAPzp1WL9g5dQ52ocKkEFMPdOblD4b4y7uNgQz/9EIAIPSi7eOLv81697xv9d+78gIscqMvbc7NCKKFLBvOo1WfJn2oCGJsEd4FsM7e92zVwOQjTAEw+15jJirmvu6utjmW+jlsKONA5dcrBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grimberg.me; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=grimberg.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-441d1ed82dbso27959685e9.0;
-        Sat, 17 May 2025 02:45:05 -0700 (PDT)
+	s=arc-20240116; t=1747494187; c=relaxed/simple;
+	bh=0I1eiVOJEdVLLXIohuqFusEWQMPeVi5Dp73/GaN/bZ4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C6CBLF9Il68Cnfs782kckM7bMnEvFYE6hCjzbT9ks91psSwQ/8PKLvmaZ3P6XMlJ+hEt3HDTAcDQrmLKRgBzfauBfE/TZrwwJ68eQtwjprVfW5qc1PHxDUBUA9pnky1a2sZ4kkwegQHot9ICFzBPhEhOXO444yAU24A71SveyFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=K4490URf; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-70a2970cb70so27793287b3.0
+        for <keyrings@vger.kernel.org>; Sat, 17 May 2025 08:03:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1747494185; x=1748098985; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6NTpCRL9xhCjiiet8qAMOfllcsVau1k8+ucYSc+O5KM=;
+        b=K4490URfks6tr9jn8LqvKaTG0G3arWwIyUz/hYiwUHy5vP69Uk/3qdDOSbzm8zCVmW
+         oElnbeUeKqdv8DBESWoFm8cCLrcRnoe71LeOpOlF6NxaQybDTBf2HL2pm7DorY6SWMc8
+         M7RGF5bGgDbi42iyjYbaYMUZ+/UtD2iB2CDIMVbgEKOrhVw0QDlgC1hqZvwpvSA+B/n/
+         f+4xVtzk6vqX1PHA0/g2gzNPxksXtM1EutFARSBniMpMYifo9mqnF+U8OLaDIcBdyXra
+         cUjiLfghFY5Bf1WPqRxBYcL/Ng/MPVBKbIp+UG/30/Ce9YXnvHMCYvD4RFN/44fJXcY3
+         8rcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747475104; x=1748079904;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=59Ev6Sd7fd/e7l1k5vr2tNy3baDisKIlgFDy502JZ1c=;
-        b=QTRKxRoVclENZ4q+SUcMBRn0JadZca0LcMxvUhE3xmeaojXtjE9Tr4cG2UlHl+I0Ir
-         iONUpZNj0S0RJkyPNIRtNam/dds/MryamFpExR6T4JqqLHFjagxt5UbKJHKKKzVTU06K
-         4LUB0mX7iGqDhVDk4VSrET71k+B/qQ+DYPO9TY5kYpcnP+Oscz8FNiOB9bOwuf5nBf5u
-         32Q8nAx4GLB3gGmcKLHyZlv+rfDxxC4JFwrnETTFlSOCjt9ioe7gwX1dVYYldg9aCrpU
-         HbUbY4Q2U1leSTr+nbWPw7uH9nPP2v34JJbaCOM3FN6t2Y4DsqQxG42xai6fVY+pWHcL
-         EFZg==
-X-Forwarded-Encrypted: i=1; AJvYcCUKZkngTQXpKWMeIsQS/jHLs8hxTZRIe+2vsdffGx/1wyZtRqBejiEi8vOMXI7bmhUx4tf3vZ9pRQPy@vger.kernel.org, AJvYcCX1QCiQJfLCtu2yYF5oIUSxyRZiS4Kv6qiVn+SjWLwcwkMXd+pK0leCslVVKCJSH5+F5hjzrtrXpg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyGtMHZF8ez8VvNqJk6GQBTxXm9P6x0dMTr3ul9+jb70jX7b4Gi
-	jtFbrxetJc6EcC0MjQZO8AtEBSx5UaX78jpYsfwUqXhFk2JJJ18AY3Eq
-X-Gm-Gg: ASbGncuCoouHZT8hwrnBL4rbQJZT/Gt2uvOadM6yPAlUGgkD6IxfSJs5KSbNBYYSV2y
-	jZgNyKarr8GvrMdtwSPd6OPzaZE4Eb7kfKALdGIofGEfjVutTviWolusmQhGpbQwEuDj7e1DsDE
-	hcSyGeZZCgrZ5MaPyXevNjazk1M/s2i+CqNsGNSbUZru2D7eLVSOxts5IUzJCkdZCpbw+UyZYNb
-	l9fdjwwzTR1L1zFcQZNDktdWj293QDjK7xiVcBISqfmjYml3TtrFVHy6m4zX2dzvvBzh+OzKwY4
-	9Yt1s4nOzSOQ5sz0PktxQErIyV7WaQJRJXbTW90U9ydeuSvCnJL7rGYk38CWsysZQVUftwxdTEu
-	virfJVUA8
-X-Google-Smtp-Source: AGHT+IEPe+vH7uFlOf+TSGvbTNcnl43YmfmsDp9u6x+rtqvyh9yZj9hPQWU9IyvvhHf3yqZKQNucBQ==
-X-Received: by 2002:a05:600c:4ec6:b0:442:e147:bea6 with SMTP id 5b1f17b1804b1-442fd950bd4mr64220845e9.11.1747475104304;
-        Sat, 17 May 2025 02:45:04 -0700 (PDT)
-Received: from [10.100.102.74] (89-138-68-29.bb.netvision.net.il. [89.138.68.29])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a35ca8cf66sm5565802f8f.87.2025.05.17.02.45.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 May 2025 02:45:03 -0700 (PDT)
-Message-ID: <692256f1-9179-4c19-ba17-39422c9bad69@grimberg.me>
-Date: Sat, 17 May 2025 12:45:02 +0300
+        d=1e100.net; s=20230601; t=1747494185; x=1748098985;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6NTpCRL9xhCjiiet8qAMOfllcsVau1k8+ucYSc+O5KM=;
+        b=N4WuhMTg4q1vTPoCQnNXEhIj5FLsOgCadVsVq0MSLkATP9xTKe1V8sz/lvHPmuJUnr
+         7jg5aRfu4o+1Lei1y4VyV5Bb7LwmcQzBt1bY/cBP6a7QuPatGTVvg3yNJnaSMgisSWMd
+         J7j8cB9PJ4xLgIXJnnrSYU+j7YilxUvbRAlp0JfbytWSDpf1yYvVsI6lk2QdTmMSGIyj
+         sBbe+65WXSs+aHlXF3p7PiY3c0BPf/ibSVE2fuCrrNP38Z0g5QA2i0WvZKyCsYOwZmm5
+         RsmYrFGb+zmpTI3Hq3Uy5DuB0jHoBOt1YcAzHhYsVaBt0m4j5Wf2qMxWuH56+zB/33tT
+         5y5g==
+X-Forwarded-Encrypted: i=1; AJvYcCUSFFJF4UBunTW6zr5IMqDf3lngIwTVGo5uPOZda90ROMg5QPpi63lMzQTnghKsu9LQO4XzCOxRGA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxmFhtMRMU6Kob8ke8NYsEtEGfTfQbNolAbtknh3+lqy/12kZ3N
+	5ZcVcmimC9UQAyiKbLZ4NDX9wIHeePgMHRI8jeBHt64+BG7mRQnhAfZfJOWBZv1UWliXGDG/7mF
+	N9ZmqCtHM3F0i+pNJwUege+eSbSupNzaxTumH3YX6
+X-Gm-Gg: ASbGnct+nAuTAWkvvAICQjUstrT5zf+koj1py8B//zXZKdwNhgJe1U3kbRBF1gnnZc/
+	RG+eN/vghCaflEBicKMX1zmt0+38ju5LiDV/u+JGB1wMbPWtbZmZ+qYs0XTWchXIUHwoJh35qmX
+	7+bRnbUuWAn7Z49Qx1D5GQBUHITLxrowbV
+X-Google-Smtp-Source: AGHT+IH4cvXZ2A6B3NQOnryIolvKUjfmtGf2pZQLNvPvX7nedF6oJ2mP2HSmm3dkkvdcM65QuaIOMlI3AMimnH5TpLo=
+X-Received: by 2002:a05:690c:3749:b0:70c:b882:2f3 with SMTP id
+ 00721157ae682-70cb882052emr47413877b3.4.1747494184512; Sat, 17 May 2025
+ 08:03:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] nfs: create a kernel keyring
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>, Chuck Lever <chuck.lever@oracle.com>,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- David Howells <dhowells@redhat.com>, linux-nfs@vger.kernel.org,
- kernel-tls-handshake <kernel-tls-handshake@lists.linux.dev>,
- keyrings@vger.kernel.org
-References: <20250515115107.33052-1-hch@lst.de>
- <20250515115107.33052-3-hch@lst.de>
- <c2044daa-c68e-43bf-8c28-6ce5f5a5c129@grimberg.me>
- <aCdv56ZcYEINRR0N@kernel.org>
-Content-Language: en-US
-From: Sagi Grimberg <sagi@grimberg.me>
-In-Reply-To: <aCdv56ZcYEINRR0N@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250502184421.1424368-1-bboscaccy@linux.microsoft.com>
+ <20250502210034.284051-1-kpsingh@kernel.org> <CAHC9VhS5Vevcq90OxTmAp2=XtR1qOiDDe5sSXReX5oXzf+siVQ@mail.gmail.com>
+ <CACYkzJ5jsWFiXMRDwoGib5t+Xje6STTuJGRZM9Vg2dFz7uPa-g@mail.gmail.com>
+ <CACYkzJ6VQUExfyt0=-FmXz46GHJh3d=FXh5j4KfexcEFbHV-vg@mail.gmail.com>
+ <CAHC9VhQL_FkUH8F1fvFZmC-8UwZh3zkwjomCo1PiWNW0EGYUPw@mail.gmail.com>
+ <CACYkzJ4+=3owK+ELD9Nw7Rrm-UajxXEw8kVtOTJJ+SNAXpsOpw@mail.gmail.com>
+ <CAHC9VhTeFBhdagvw4cT3EvA72EYCfAn6ToptpE9PWipG9YLrFw@mail.gmail.com> <CAADnVQJ4GDKvLSWuAMdwajA0V2DEw5m-O228QknW8Eo9jxhyig@mail.gmail.com>
+In-Reply-To: <CAADnVQJ4GDKvLSWuAMdwajA0V2DEw5m-O228QknW8Eo9jxhyig@mail.gmail.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Sat, 17 May 2025 11:02:53 -0400
+X-Gm-Features: AX0GCFuTvPgKKVsi_C1ZZBN1jNV8jcEHmfkcEtykXlcuzLm0gL1ZiUersRDfwfQ
+Message-ID: <CAHC9VhTJcV1mqBpxVUtpLhrN4Y9W_BGgB_La5QCqObGheK28Ug@mail.gmail.com>
+Subject: Re: [PATCH v3 0/4] Introducing Hornet LSM
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: KP Singh <kpsingh@kernel.org>, Blaise Boscaccy <bboscaccy@linux.microsoft.com>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, bpf <bpf@vger.kernel.org>, 
+	code@tyhicks.com, Jonathan Corbet <corbet@lwn.net>, "David S. Miller" <davem@davemloft.net>, 
+	David Howells <dhowells@redhat.com>, =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	James Morris <jmorris@namei.org>, Jan Stancek <jstancek@redhat.com>, 
+	Justin Stitt <justinstitt@google.com>, keyrings@vger.kernel.org, 
+	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, 
+	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, 
+	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, 
+	LSM List <linux-security-module@vger.kernel.org>, 
+	clang-built-linux <llvm@lists.linux.dev>, Masahiro Yamada <masahiroy@kernel.org>, 
+	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
+	Bill Wendling <morbo@google.com>, Nathan Chancellor <nathan@kernel.org>, Neal Gompa <neal@gompa.dev>, 
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Nicolas Schier <nicolas@fjasle.eu>, nkapron@google.com, 
+	Roberto Sassu <roberto.sassu@huawei.com>, "Serge E . Hallyn" <serge@hallyn.com>, 
+	Shuah Khan <shuah@kernel.org>, Matteo Croce <teknoraver@meta.com>, 
+	Cong Wang <xiyou.wangcong@gmail.com>, kysrinivasan@gmail.com, 
+	Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, May 16, 2025 at 7:49=E2=80=AFPM Alexei Starovoitov
+<alexei.starovoitov@gmail.com> wrote:
+> On Fri, May 16, 2025 at 12:49=E2=80=AFPM Paul Moore <paul@paul-moore.com>=
+ wrote:
+> >
+> > I think we need some clarification on a few of these details, it would
+> > be good if you could answer the questions below about the
+> > authorization aspects of your design?
+> >
+> > * Is the signature validation code in the BPF verifier *always* going
+> > to be enforced when a signature is passed in from userspace?  In other
+> > words, in your design is there going to be either a kernel build time
+> > or runtime configuration knob that could selectively enable (or
+> > disable) signature verification in the BPF verifier?
+>
+> If there is a signature in union bpf_attr and it's incorrect
+> the prog_load command will be rejected.
+> No point in adding a knob to control that.
 
+I agree that when a signature is provided and that signature check
+fails, the BPF load should be rejected.  I'm simply trying to
+understand how you envision your design handling all of the cases, not
+just this one, as well as what build and runtime options you expect
+for controlling various aspects of this behavior.
 
-On 16/05/2025 20:03, Jarkko Sakkinen wrote:
-> On Fri, May 16, 2025 at 02:47:18PM +0300, Sagi Grimberg wrote:
->> Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-> Based on?
+> > * In the case where the signature validation code in the BPF verifier
+> > is active, what happens when a signature is *not* passed in from
+> > userspace?  Will the BPF verifier allow the program load to take
+> > place?  Will the load operation be blocked?  Will the load operation
+> > be subject to a more granular policy, and if so, how do you plan to
+> > incorporate that policy decision into the BPF program load path?
+>
+> If there is no signature the existing loading semantics will remain intac=
+t.
+> We can discuss whether to add a sysctl or cgroup knob to disallow
+> loading when signature is not present ...
 
-Based on the same that nvme is doing. The only reason I see to have it
-is to avoid having the user explicitly set perms on the key for tlshd to be
-able to load it. nvme creates its own keyring that possessors can use, 
-so makes
-sense that nfs has this keyring as well.
+As mentioned earlier this week, if the BPF verifier is performing the
+signature verification as KP described, we will need a LSM hook after
+the verifier to serve as an access control point.  Of course that
+doesn't preclude the addition of some type of sysctl/cgroup/whatever
+based access control, but the LSM hook would be needed regardless.
+
+> but it probably should be a job of trivial LSM ...
+
+Exactly.  If the LSM is simply verifying the signature validation
+state of the BPF program being loaded it seems like an addition to IPE
+would be the best option from an upstream, in-tree perspective.
+However, with the post verifier LSM hook in place, one could also
+supply a BPF LSM to do something similar.
+
+It sounds like we are in agreement on the desirability and need for a
+post verifier LSM hook; we'll keep moving forward with this idea
+despite KP's earlier objections to the hook.
+
+> Note that the prog verification itself is independent of the signature.
+> If prog fails to pass safety checks it will still be rejected
+> even if signature is ok.
+
+There is plenty of precedence for a kernel subsystem rejecting a
+security relevant operation before a LSM access control hook is
+called; the reasons range from discretionary access control issues to
+simple matters of resource exhaustion.  The possibility of the BPF
+verifier rejecting the program load due to verifier constraints is
+reasonable and expected.
+
+> We're not going to do a verifier bypass.
+
+Agreed.  I don't recall anyone ever suggesting that as part of this
+recent BPF signature verification effort.
+
+--=20
+paul-moore.com
 
