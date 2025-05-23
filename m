@@ -1,146 +1,100 @@
-Return-Path: <keyrings+bounces-2752-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2753-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFFA6ABFF74
-	for <lists+keyrings@lfdr.de>; Thu, 22 May 2025 00:26:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1526AC2A72
+	for <lists+keyrings@lfdr.de>; Fri, 23 May 2025 21:34:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5595E3A7DED
-	for <lists+keyrings@lfdr.de>; Wed, 21 May 2025 22:26:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6A4C3ACCF0
+	for <lists+keyrings@lfdr.de>; Fri, 23 May 2025 19:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCBD323A578;
-	Wed, 21 May 2025 22:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEA029AB0E;
+	Fri, 23 May 2025 19:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="dWHtCK+1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JV8EVC2c"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCF42397BE
-	for <keyrings@vger.kernel.org>; Wed, 21 May 2025 22:26:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6E01D6DB4;
+	Fri, 23 May 2025 19:34:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747866402; cv=none; b=JZEs3Wccw3vrYnjNin02eU/Bpj/EX7sKHiBkQyBP5OPuPvmGwKFBmxxQ2aluc5QUsY+eaGL4ofjghujza650hIpgp1kaWPGqjggqg8h+9M3ojJj8NbrKryuCToUciu+cUVlPcqFNJguIbjoWpRyITatQiq+dRTQESedEAtrNhLA=
+	t=1748028865; cv=none; b=JUiDjQjNtguGCIgW8mXueSoTTzktKg9MIurz1AkOK9e8K0wn4U6lNMJHfogZgBqNalWQ3vY7tvWnqndJEKWavfTmR78Qql0FvU1yf71TJRwC1pW+JEFUue1w2lxEtdFCRcQSz2VMvglr+cyv3NFluWA7ExT9J95O4WI8TdmgUm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747866402; c=relaxed/simple;
-	bh=9Wg6PPoLM9WFD1B0FiNbRv3qnbGj9YtPrQiT2xmvAlk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mc8kTUjmwqx5ucwQxUHxMTVqnQFpO+aanH4GUOeiPCebfb4QgHXpc3lbmkQYeF/cmXny27Pqxy/NI/HBWFmtxTlIFSVdarMsygbSa3RC/aK8c+WS5zmtOyfx7RO1C5TgHdxzu7t67/0xUkltxl6w9LAtUApCk3RRIsF0tyyjWiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=dWHtCK+1; arc=none smtp.client-ip=209.85.128.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-70b50e0566fso69752857b3.0
-        for <keyrings@vger.kernel.org>; Wed, 21 May 2025 15:26:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1747866399; x=1748471199; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v2CpApAzFU/xdWj9L8OzabAbfmuyqqCQstsc9xr7aRs=;
-        b=dWHtCK+19LpV/OzjykLmVBgKbhcOVNo6dl8aB0xCje7M0djkO5qz6Brd4Vnj5mcKqI
-         1H5BuuIqWkinNZRXPToDvL+blTYOUCFrVj3IOcfW0WG7CAKmRKeOerkq8BF8rEJ8a6yG
-         EUdpdr16fxXqbeeTxYuVF/mjkMUUCCHD3JpO1rd/qvaNKZGYcfAZJ51/C0r4rNpFcKY5
-         G/WIktsPcA9J9qD7rjRrRBiA7aouCKaKzt/61Sm9K6rkO3kwYUmua+72BVLQXw6gtUty
-         0TIj9LWgjczs0LRj6jwoMssNL8YPLfT31FbyxqHBGs5nq6uyxvKzEysyiqfzGNA/JLiX
-         AAdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747866399; x=1748471199;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v2CpApAzFU/xdWj9L8OzabAbfmuyqqCQstsc9xr7aRs=;
-        b=hnecAn33TNemGG45suoUcYe5RVVECTWZjJ4jTsu+jgu/NUbkeE+QihkFVuvkXlq89h
-         cWF3hUliE8Ilt5eS7D17ZX2dg8XjQJECxESL2Ork2ppdGIkH7gfN/0za8OJY97PrVb2+
-         RlTqMZ/gT9DppqGGTSEje1uTO/TfTa5CNWENh5ZMxjAxNmEtlAZXE1AljD7VG7Usnjas
-         0ttyS8HNgNf47hHIfNAHzoEJ6qsidXz9Aga32CsnNH054d6QBGbIXMrc61XIieumltPd
-         pbMoQa248If4ASWPQyCPZZ09CX3vMWhpugiWt8GJshQnnrZd5xaAwLvspeLyyiRYXLAt
-         PwhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVLVNe92dsFX5/6s6ud4ShIpO+5vkvd5m5CeMPY0t8moG2wZkGHdrD1vSR9n7wVmadsq3wJWeikAA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywj8uqcaGps7BNVZAOYXdURm32xSrGu0mT6eQwJVGTdT4gqO0nI
-	SBbNxgULQXW6AbuUfLUehBdbl9/73PSm1B6IVsUBOpJDSqItBqb54iVvQk+55tYuqgWPejNbZrX
-	7RqPrMquMrtb18Ykc4OLoybYA6P5f6hKWT8Wn3/rN
-X-Gm-Gg: ASbGnctBhXgckpHGvcVu1XzsblR9R8fN0m7QqO0qzEQP/lhBbo+2mdiPAdArixIwPNH
-	A+Ds/3uzwuHblCT40IA5XoUwMN1rBSlu2bUAZW1Eb0xhdsCFCZ3/J+yEtw8NjlWnDdaEBHrP4dG
-	C5ff8BOEDRtL41fDxKfAUjk0LTW+nmiSCF
-X-Google-Smtp-Source: AGHT+IHWrEn3lGbj54WMbP1QWqKgIGqbS12jw/F6NygMZdWDXAhufhQc4tMWD/kGAI3Getozp0LttKjpfQRDZM9iHFA=
-X-Received: by 2002:a05:690c:4883:b0:70d:f35d:4d26 with SMTP id
- 00721157ae682-70df35d4d9fmr60596797b3.21.1747866399572; Wed, 21 May 2025
- 15:26:39 -0700 (PDT)
+	s=arc-20240116; t=1748028865; c=relaxed/simple;
+	bh=0UqZX81/yv/x/h+gFpsviYXaq+oaQj7FYRpkQJR7Vi4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To; b=h4EYYAZa572XhqZ6lIlLZLs6TOlEO7mJAzErOPLnZvvXA+cp/qA/l3a4fHGbQEAI+oCmglTILM8t2Kd9VpQcMDtqHuU+XgFw7lkItKUP82hug47rH3EEa0oCCy4rS5Uju1NS8kRLPXMQsQAyiLy3HlsV6phF+AyaQHNZ7Ed6JYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JV8EVC2c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAB3C4CEE9;
+	Fri, 23 May 2025 19:34:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748028864;
+	bh=0UqZX81/yv/x/h+gFpsviYXaq+oaQj7FYRpkQJR7Vi4=;
+	h=Date:Cc:Subject:From:To:From;
+	b=JV8EVC2chRFswuMnoG+N3m7qnKEr6qT7zoMVt0N4byBDxKQsKnuoMF69/kUqLq9C4
+	 ZpWYxB/5jzzNs63RETRkmLiGiS2EyqIDyqvuZjdMZRAF0sy17w+jd0vIjx9ZvnX94e
+	 xK1woqWohSZi5HhYz5Qc97dFEKTXUL0p4rV5JBz34JwfcMc5xrN3tjIPGQRLxRNUoQ
+	 stqvQmsyC5hypVGmmRy1vfH3qSi5OVeVe0ENqUmueNRIY4OPbjhTP0Y91hOclB8XZ8
+	 7wIgDmJKKy/W+sAutmx59jy812C5OF9JagG9pqVwoHIAOPStSexqnBXd3gwk/E2g9n
+	 v7QqeZ6N0UptQ==
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250502184421.1424368-1-bboscaccy@linux.microsoft.com>
- <20250502210034.284051-1-kpsingh@kernel.org> <CAHC9VhS5Vevcq90OxTmAp2=XtR1qOiDDe5sSXReX5oXzf+siVQ@mail.gmail.com>
- <CACYkzJ5jsWFiXMRDwoGib5t+Xje6STTuJGRZM9Vg2dFz7uPa-g@mail.gmail.com>
- <CACYkzJ6VQUExfyt0=-FmXz46GHJh3d=FXh5j4KfexcEFbHV-vg@mail.gmail.com>
- <CAHC9VhQL_FkUH8F1fvFZmC-8UwZh3zkwjomCo1PiWNW0EGYUPw@mail.gmail.com>
- <CACYkzJ4+=3owK+ELD9Nw7Rrm-UajxXEw8kVtOTJJ+SNAXpsOpw@mail.gmail.com>
- <CAHC9VhTeFBhdagvw4cT3EvA72EYCfAn6ToptpE9PWipG9YLrFw@mail.gmail.com>
- <CAADnVQJ4GDKvLSWuAMdwajA0V2DEw5m-O228QknW8Eo9jxhyig@mail.gmail.com>
- <CAHC9VhTJcV1mqBpxVUtpLhrN4Y9W_BGgB_La5QCqObGheK28Ug@mail.gmail.com>
- <CAADnVQ+wE5cGhy6tgmWgUwkNutueEsrhh6UR8N2fzrZjt-vb4g@mail.gmail.com>
- <196e1f03128.28a7.85c95baa4474aabc7814e68940a78392@paul-moore.com>
- <CAADnVQ+=2PnYHui2L0g0brNc+NqV8MtaRaU-XXpoXfJoghXpww@mail.gmail.com>
- <CAHC9VhRKZdEia0XUMs2+hRVC7oDzkBfkk5FPMD+Fq5V7mAk=Vg@mail.gmail.com>
- <CACYkzJ7oxFA3u9eKDpKgCsZsYsBojVJPHVeHZnVaYQ5e9DavmQ@mail.gmail.com> <CAHC9VhQ7Rr1jJm=HY2ixUWpsRuwCxjOq5OTMfn5k5hRzxTCz-Q@mail.gmail.com>
-In-Reply-To: <CAHC9VhQ7Rr1jJm=HY2ixUWpsRuwCxjOq5OTMfn5k5hRzxTCz-Q@mail.gmail.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Wed, 21 May 2025 18:26:27 -0400
-X-Gm-Features: AX0GCFvZaSST-PWkU4_ibBxMlaa0A91pXSzh3ZzCdqeIU3YX4GLRRjzs5eOILBs
-Message-ID: <CAHC9VhTj3=ZXgrYMNA+G64zsOyZO+78uDs1g=kh91=GR5KypYg@mail.gmail.com>
-Subject: Re: [PATCH v3 0/4] Introducing Hornet LSM
-To: KP Singh <kpsingh@kernel.org>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>, 
-	Blaise Boscaccy <bboscaccy@linux.microsoft.com>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, bpf <bpf@vger.kernel.org>, 
-	code@tyhicks.com, Jonathan Corbet <corbet@lwn.net>, "David S. Miller" <davem@davemloft.net>, 
-	David Howells <dhowells@redhat.com>, =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, Jarkko Sakkinen <jarkko@kernel.org>, 
-	James Morris <jmorris@namei.org>, Jan Stancek <jstancek@redhat.com>, 
-	Justin Stitt <justinstitt@google.com>, keyrings@vger.kernel.org, 
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>, 
-	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, 
-	Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, 
-	LSM List <linux-security-module@vger.kernel.org>, 
-	clang-built-linux <llvm@lists.linux.dev>, Masahiro Yamada <masahiroy@kernel.org>, 
-	=?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
-	Bill Wendling <morbo@google.com>, Nathan Chancellor <nathan@kernel.org>, Neal Gompa <neal@gompa.dev>, 
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, Nicolas Schier <nicolas@fjasle.eu>, nkapron@google.com, 
-	Roberto Sassu <roberto.sassu@huawei.com>, "Serge E . Hallyn" <serge@hallyn.com>, 
-	Shuah Khan <shuah@kernel.org>, Matteo Croce <teknoraver@meta.com>, 
-	Cong Wang <xiyou.wangcong@gmail.com>, kysrinivasan@gmail.com, 
-	Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 23 May 2025 22:34:19 +0300
+Message-Id: <DA3SIK592YXY.LG3BS9A4XH6K@kernel.org>
+Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
+ "David Howells" <dhowells@redhat.com>, <keyrings@vger.kernel.org>,
+ <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.16
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Linus Torvalds" <torvalds@linux-foundation.org>
+X-Mailer: aerc 0.20.0
 
-On Mon, May 19, 2025 at 6:58=E2=80=AFPM Paul Moore <paul@paul-moore.com> wr=
-ote:
->
-> When the kernel performs a security relevant operation, such as
-> verifying the signature on a BPF program, where the result of the
-> operation serves as input to a policy decision, system measurement,
-> audit event, etc. the LSM hook needs to be located after the security
-> relevant operation takes place so that the hook is able to properly
-> take into account the state of the event/system and record the actual
-> result as opposed to an implied result (this is critical for auditing,
-> measurement, attestation, etc.).
->
-> You explained why you believe the field/hook is not required, but I'm
-> asking for your *technical*objections*.  I understand that you believe
-> these changes are not required, but as described above, I happen to
-> disagree and therefore it would be helpful to understand the technical
-> reasons why you can't accept the field/hook changes.  Is there a
-> technical reason which would prevent such changes, or is it simply a
-> rejection of the use case and requirements above?
+The following changes since commit 3d0ebc36b0b3e8486ceb6e08e8ae173aaa6d1221=
+:
 
-Bubbling this back up to the top of your inbox ...
+  Merge tag 'soc-fixes-6.15-3' of git://git.kernel.org/pub/scm/linux/kernel=
+/git/soc/soc (2025-05-23 08:04:13 -0700)
 
---=20
-paul-moore.com
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags=
+/tpmdd-next-6.16
+
+for you to fetch changes up to ecc1ca9185c377822c66cbf61ecfed914455d884:
+
+  tpm_crb: ffa_tpm: fix/update comments describing the CRB over FFA ABI (20=
+25-05-23 19:05:51 +0300)
+
+----------------------------------------------------------------
+Hi,
+
+This is only a small pull request with fixes, as possible features moved
+to +1 release.
+
+BR, Jarkko
+
+----------------------------------------------------------------
+Colin Ian King (1):
+      tpm: remove kmalloc failure error message
+
+Stuart Yoder (1):
+      tpm_crb: ffa_tpm: fix/update comments describing the CRB over FFA ABI
+
+Yeoreum Yun (2):
+      tpm_ffa_crb: access tpm service over FF-A direct message request v2
+      tpm_crb_ffa: use dev_xx() macro to print log
+
+ drivers/char/tpm/eventlog/tpm1.c |  7 ++--
+ drivers/char/tpm/tpm_crb_ffa.c   | 74 +++++++++++++++++++++++++++---------=
+----
+ 2 files changed, 53 insertions(+), 28 deletions(-)
 
