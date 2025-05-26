@@ -1,100 +1,79 @@
-Return-Path: <keyrings+bounces-2753-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2754-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1526AC2A72
-	for <lists+keyrings@lfdr.de>; Fri, 23 May 2025 21:34:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E71AC44BC
+	for <lists+keyrings@lfdr.de>; Mon, 26 May 2025 23:20:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6A4C3ACCF0
-	for <lists+keyrings@lfdr.de>; Fri, 23 May 2025 19:34:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D80C117B549
+	for <lists+keyrings@lfdr.de>; Mon, 26 May 2025 21:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEA029AB0E;
-	Fri, 23 May 2025 19:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF2324500E;
+	Mon, 26 May 2025 21:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JV8EVC2c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kUQ9BQKg"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6E01D6DB4;
-	Fri, 23 May 2025 19:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB17244691;
+	Mon, 26 May 2025 21:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748028865; cv=none; b=JUiDjQjNtguGCIgW8mXueSoTTzktKg9MIurz1AkOK9e8K0wn4U6lNMJHfogZgBqNalWQ3vY7tvWnqndJEKWavfTmR78Qql0FvU1yf71TJRwC1pW+JEFUue1w2lxEtdFCRcQSz2VMvglr+cyv3NFluWA7ExT9J95O4WI8TdmgUm8=
+	t=1748294390; cv=none; b=IOYo9dhbkT/JFdtP7xmRL08J0aU9GWocRcduryMlk3XhAL9OG8g2bSq0riXKK2TlnBKA7wCoR1pyShQOLwQ1jiv0T1R5xPG+OGgenaInIb8XOUBIu7561/cGuGhawnE/dNclVCxxCufRkPPxAPtivJOpiMwjlT0Jzn+QE0o1GO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748028865; c=relaxed/simple;
-	bh=0UqZX81/yv/x/h+gFpsviYXaq+oaQj7FYRpkQJR7Vi4=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To; b=h4EYYAZa572XhqZ6lIlLZLs6TOlEO7mJAzErOPLnZvvXA+cp/qA/l3a4fHGbQEAI+oCmglTILM8t2Kd9VpQcMDtqHuU+XgFw7lkItKUP82hug47rH3EEa0oCCy4rS5Uju1NS8kRLPXMQsQAyiLy3HlsV6phF+AyaQHNZ7Ed6JYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JV8EVC2c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAB3C4CEE9;
-	Fri, 23 May 2025 19:34:23 +0000 (UTC)
+	s=arc-20240116; t=1748294390; c=relaxed/simple;
+	bh=UitDIQnDbHxnxuO+2DmjOVSsZwusuZzW2R4jhvhTu6c=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=RgpGg4vJ+WMZEgWw5eXDE/6Lh/IBLPCLRHjmQ4Dgr1uz0XAZqioD/i/YFNDqSTW/aILsycv1H4rYcLS5A+8atFn+RlyMkuwuvWcriMQeyqQAR9d8O7dJz0ez6eDdHdWk/SEZ7gxL8u5Yc/6taq5B+kUJq31e4lezbLc/3sYsqks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kUQ9BQKg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E528C4CEEF;
+	Mon, 26 May 2025 21:19:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748028864;
-	bh=0UqZX81/yv/x/h+gFpsviYXaq+oaQj7FYRpkQJR7Vi4=;
-	h=Date:Cc:Subject:From:To:From;
-	b=JV8EVC2chRFswuMnoG+N3m7qnKEr6qT7zoMVt0N4byBDxKQsKnuoMF69/kUqLq9C4
-	 ZpWYxB/5jzzNs63RETRkmLiGiS2EyqIDyqvuZjdMZRAF0sy17w+jd0vIjx9ZvnX94e
-	 xK1woqWohSZi5HhYz5Qc97dFEKTXUL0p4rV5JBz34JwfcMc5xrN3tjIPGQRLxRNUoQ
-	 stqvQmsyC5hypVGmmRy1vfH3qSi5OVeVe0ENqUmueNRIY4OPbjhTP0Y91hOclB8XZ8
-	 7wIgDmJKKy/W+sAutmx59jy812C5OF9JagG9pqVwoHIAOPStSexqnBXd3gwk/E2g9n
-	 v7QqeZ6N0UptQ==
+	s=k20201202; t=1748294390;
+	bh=UitDIQnDbHxnxuO+2DmjOVSsZwusuZzW2R4jhvhTu6c=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=kUQ9BQKgTzVHE4tptg6in4G8af03z4hzo6i0UyhN07kYQ6Za2Ebr4KZ8VY6n3Fgqw
+	 gxeC6JCB1JuYBOI6Kh7Oj2BTwXSLqUyynx4o92skQIxPKtZmpffcpNaClrY1SgJ42b
+	 9vt4fOfYTyFHCAC/6dSi9tPW7JT+06R1vJOU7AcDSb0FpJ3jfC968J8o88rFR0xsui
+	 fkPXp/6qIeDxcn8rG81irazX1tA57FoctvoN9Nf/ukaA7dN9FbPcC5gAd9/EkIbSIe
+	 i0PKJMsYanDfy2fIFBMj/yjA53Wu68kAbku2cLzXY5N1DW4pSmWQyxbHVlKSGGSwJW
+	 B9dlt9uStkSkw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 28C06380AAE2;
+	Mon, 26 May 2025 21:20:26 +0000 (UTC)
+Subject: Re: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.16
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <DA3SIK592YXY.LG3BS9A4XH6K@kernel.org>
+References: <DA3SIK592YXY.LG3BS9A4XH6K@kernel.org>
+X-PR-Tracked-List-Id: <keyrings.vger.kernel.org>
+X-PR-Tracked-Message-Id: <DA3SIK592YXY.LG3BS9A4XH6K@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-6.16
+X-PR-Tracked-Commit-Id: ecc1ca9185c377822c66cbf61ecfed914455d884
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 66fd704da45429e40aca6b4b09ca0267e27b29de
+Message-Id: <174829442509.1051981.1883269779537257502.pr-tracker-bot@kernel.org>
+Date: Mon, 26 May 2025 21:20:25 +0000
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 23 May 2025 22:34:19 +0300
-Message-Id: <DA3SIK592YXY.LG3BS9A4XH6K@kernel.org>
-Cc: "Peter Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
- "David Howells" <dhowells@redhat.com>, <keyrings@vger.kernel.org>,
- <linux-integrity@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.16
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Linus Torvalds" <torvalds@linux-foundation.org>
-X-Mailer: aerc 0.20.0
 
-The following changes since commit 3d0ebc36b0b3e8486ceb6e08e8ae173aaa6d1221=
-:
+The pull request you sent on Fri, 23 May 2025 22:34:19 +0300:
 
-  Merge tag 'soc-fixes-6.15-3' of git://git.kernel.org/pub/scm/linux/kernel=
-/git/soc/soc (2025-05-23 08:04:13 -0700)
+> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-6.16
 
-are available in the Git repository at:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/66fd704da45429e40aca6b4b09ca0267e27b29de
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags=
-/tpmdd-next-6.16
+Thank you!
 
-for you to fetch changes up to ecc1ca9185c377822c66cbf61ecfed914455d884:
-
-  tpm_crb: ffa_tpm: fix/update comments describing the CRB over FFA ABI (20=
-25-05-23 19:05:51 +0300)
-
-----------------------------------------------------------------
-Hi,
-
-This is only a small pull request with fixes, as possible features moved
-to +1 release.
-
-BR, Jarkko
-
-----------------------------------------------------------------
-Colin Ian King (1):
-      tpm: remove kmalloc failure error message
-
-Stuart Yoder (1):
-      tpm_crb: ffa_tpm: fix/update comments describing the CRB over FFA ABI
-
-Yeoreum Yun (2):
-      tpm_ffa_crb: access tpm service over FF-A direct message request v2
-      tpm_crb_ffa: use dev_xx() macro to print log
-
- drivers/char/tpm/eventlog/tpm1.c |  7 ++--
- drivers/char/tpm/tpm_crb_ffa.c   | 74 +++++++++++++++++++++++++++---------=
-----
- 2 files changed, 53 insertions(+), 28 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
