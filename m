@@ -1,83 +1,76 @@
-Return-Path: <keyrings+bounces-2761-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2762-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 645B6AC7B3A
-	for <lists+keyrings@lfdr.de>; Thu, 29 May 2025 11:40:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 437F7AC7BA3
+	for <lists+keyrings@lfdr.de>; Thu, 29 May 2025 12:11:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4632E1C00746
-	for <lists+keyrings@lfdr.de>; Thu, 29 May 2025 09:40:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3109E1BC7B70
+	for <lists+keyrings@lfdr.de>; Thu, 29 May 2025 10:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6111726C39F;
-	Thu, 29 May 2025 09:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D2A6274FD0;
+	Thu, 29 May 2025 10:11:38 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
 Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2A820299B;
-	Thu, 29 May 2025 09:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104F3A55;
+	Thu, 29 May 2025 10:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748511634; cv=none; b=kMx09N/rasm5oUJXlsmWNNs6BPqmWutQWmukDOwhUBXRinw25PIb1bDJd572OFShuV9N3TyRUmbc7fS1hGWo+ge1XY5DrCFWJKH/8RnLFztorJAF2ybAbThSg/RhkXl74k4quRj86iCXA/yDofS9P7o823I2fOwD+XGnn9so5nY=
+	t=1748513498; cv=none; b=Eas8Vj+WtBkJL6Nzykv3g5Ytegg6zGoLCBoMrMCDTn43zhYu0A1w/lwekve8XBajH2+6srHBAB+thY3GedQT6A+V1oR+Ux6qgVha28r2gidMh0b1TwiucInskpMnIvwli9ynkdS/ydw9qj1eMYn1IZ511tsYdL9Rr+AglM4Mgfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748511634; c=relaxed/simple;
-	bh=N2jkP1iEfBcx2MnZSi2BVAFp57oKiRPTxIoY88diJ+s=;
+	s=arc-20240116; t=1748513498; c=relaxed/simple;
+	bh=n1ZSZRRIrTneaJFYpJvpb9/RGVcZ0hY1kPCFwceGKRs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ny6V4EVeISCvX93lcnUGO9Q5NN1XUj3WzEMD8IQxtF2SNTXnexanKGCRub/l3nbXiWJjP18MHYAGArOtWYn66PPJhsHJtEDCvt1iLv5BpzUCQTj7uNbfqdouHXuePLOVdZH+QkQ5IJ7MUksiMRaojPHHnxTTtpMnfupTrK6toMA=
+	 Content-Type:Content-Disposition:In-Reply-To; b=dqcdyyvr6O1qaScbqi4I/k7vzvGsJhxJCPRypF3S5TfLPkGZcM1kSZe+ualpBiaNS4AfBA6/ZSW0X+ebCyl1LSQ4A4+5d/8ZPindSEwCRuX6V6sy+69ry37+MN8xKT0EX1jMkl9B1Z7nC6UsdqJf3ptXT7F8sraHJa7bXnnbQD8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
 	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
 	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 1579D2C000A8;
-	Thu, 29 May 2025 11:40:22 +0200 (CEST)
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 69A492C051D4;
+	Thu, 29 May 2025 12:11:33 +0200 (CEST)
 Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id C87AC20BE58; Thu, 29 May 2025 11:40:21 +0200 (CEST)
-Date: Thu, 29 May 2025 11:40:21 +0200
+	id 4D594244B9E; Thu, 29 May 2025 12:11:33 +0200 (CEST)
+Date: Thu, 29 May 2025 12:11:33 +0200
 From: Lukas Wunner <lukas@wunner.de>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
+To: Blaise Boscaccy <bboscaccy@linux.microsoft.com>
+Cc: Paul Moore <paul@paul-moore.com>, jarkko@kernel.org,
+	zeffron@riotgames.com, xiyou.wangcong@gmail.com,
+	kysrinivasan@gmail.com, code@tyhicks.com,
+	linux-security-module@vger.kernel.org, roberto.sassu@huawei.com,
+	James.Bottomley@hansenpartnership.com,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
 	David Howells <dhowells@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Woodhouse <dwmw2@infradead.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
-	linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linuxarm@huawei.com,
-	David Box <david.e.box@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	"Li, Ming" <ming4.li@intel.com>,
-	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
-	Alistair Francis <alistair.francis@wdc.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Dhaval Giani <dhaval.giani@amd.com>,
-	Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Peter Gonda <pgonda@google.com>,
-	Jerome Glisse <jglisse@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: Re: [PATCH v2 00/18] PCI device authentication
-Message-ID: <aDgrhePailpBUMJU@wunner.de>
-References: <cover.1719771133.git.lukas@wunner.de>
- <2140c4e4-6df0-47c7-8301-c6eb70ada27d@amd.com>
- <ZovrK7GsDpOMp3Bz@wunner.de>
- <b1595ceb-a916-4ff0-97bd-1a223e0cef15@amd.com>
- <Z6zN8R-E9uJpkU7j@wunner.de>
- <dab69e0c-37c2-41f1-a9db-fe116fe4cbbd@amd.com>
- <91e2985f-0815-4918-b7cf-c593bc2fa96b@amd.com>
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Quentin Monnet <qmo@kernel.org>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Anton Protopopov <aspsk@isovalent.com>,
+	Jordan Rome <linux@jordanrome.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Matteo Croce <teknoraver@meta.com>, bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org
+Subject: Re: [PATCH 1/3] bpf: Add bpf_check_signature
+Message-ID: <aDgy1Wqn7WIFNXvb@wunner.de>
+References: <20250528215037.2081066-1-bboscaccy@linux.microsoft.com>
+ <20250528215037.2081066-2-bboscaccy@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -86,30 +79,49 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <91e2985f-0815-4918-b7cf-c593bc2fa96b@amd.com>
+In-Reply-To: <20250528215037.2081066-2-bboscaccy@linux.microsoft.com>
 
-On Thu, May 29, 2025 at 03:29:23PM +1000, Alexey Kardashevskiy wrote:
-> On 20/5/25 18:35, Alexey Kardashevskiy wrote:
-> > On 13/2/25 03:36, Lukas Wunner wrote:
-> > > Please find a rebase of v2 on v6.14-rc2 on this branch:
-> > > 
-> > > https://github.com/l1k/linux/commits/doe
-> > > 
-> > > A portion of the crypto patches that were part of v2 have landed
-> > > in v6.13. So the rebased version has shrunk.
-> > > 
-> > > There was a bit of fallout caused by the upstreamed crypto patches
-> > > and dealing with that kept me occupied during the v6.13 cycle.
-> > > However I'm now back working on the PCI/CMA patches,
-> > 
-> > Any luck with these? Asking as there is another respin
-> > https://lore.kernel.org/r/20250516054732.2055093-1-dan.j.williams@intel.com
-> > and it considers merge with yours. Thanks,
-> 
-> Ping?
+On Wed, May 28, 2025 at 02:49:03PM -0700, Blaise Boscaccy wrote:
+> +	if (!attr->signature_maps_size) {
+> +		sha256((u8 *)prog->insnsi, prog->len * sizeof(struct bpf_insn), (u8 *)&hash);
+> +		err = verify_pkcs7_signature(hash, sizeof(hash), signature, attr->signature_size,
+> +				     VERIFY_USE_SECONDARY_KEYRING,
+> +				     VERIFYING_EBPF_SIGNATURE,
+> +				     NULL, NULL);
 
-I intend to push a new version to my repo after the merge window closes
-and that'll use netlink multicast to convey signatures to userspace.
+Has this ever been tested?
+
+It looks like it will always return -EINVAL because:
+
+  verify_pkcs7_signature()
+    verify_pkcs7_message_sig()
+      pkcs7_verify()
+
+... pkcs7_verify() contains a switch statement which you're not
+amending with a "case VERIFYING_EBPF_SIGNATURE" but which returns
+-EINVAL in the "default" case.
+
+Aside from that, you may want to consider introducing a new ".ebpf"
+keyring to allow adding trusted keys specifically for eBPF verification
+without having to rely on the system keyring.
+
+Constraining oneself to sha256 doesn't seem future-proof.
+
+Some minor style issues in the commit message caught my eye:
+
+> This introduces signature verification for eBPF programs inside of the
+> bpf subsystem. Two signature validation schemes are included, one that
+
+Use imperative mood, avoid repetitive "This ...", e.g.
+"Introduce signature verification of eBPF programs..."
+
+> The signature check is performed before the call to
+> security_bpf_prog_load. This allows the LSM subsystem to be clued into
+> the result of the signature check, whilst granting knowledge of the
+> method and apparatus which was employed.
+
+"Perform the signature check before calling security_bpf_prog_load()
+to allow..."
 
 Thanks,
 
