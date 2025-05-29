@@ -1,578 +1,242 @@
-Return-Path: <keyrings+bounces-2759-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2760-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43563AC7302
-	for <lists+keyrings@lfdr.de>; Wed, 28 May 2025 23:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B39FDAC77A7
+	for <lists+keyrings@lfdr.de>; Thu, 29 May 2025 07:29:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CC613A747E
-	for <lists+keyrings@lfdr.de>; Wed, 28 May 2025 21:51:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 026FBA2058D
+	for <lists+keyrings@lfdr.de>; Thu, 29 May 2025 05:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85313221FDE;
-	Wed, 28 May 2025 21:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2BB9253956;
+	Thu, 29 May 2025 05:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="GUmaaosP"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="z/KySBh5"
 X-Original-To: keyrings@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95215221268;
-	Wed, 28 May 2025 21:50:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748469060; cv=none; b=ULDRkRH+StnS4779C5IR6ChTemXEpPdRLqO+9psfVEEjAPBfiT93Grpo3FcoQrTs9SM1GBT35x7a8AZMRiQVmgD5KHr7FwbwHfILyivrAP+uTHsX3XRaC8W7h4tijg1i0UXn18lLEkdruxCpVITDMew25D8/VekdNHluMsr4YIg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748469060; c=relaxed/simple;
-	bh=QKXLmeM2oyiRMNJR+WCzcUeqU86YQJ4nAcMTTGapJfA=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hLF80soz8GLqq4cJYMporJZTiDFLMSmMywLFbkBG85AeC3NGaer47CupMXEaDcC5Yc63GHaEKz792YP/5og7JDu9S/7wtt+hTFW3xD7oMx5Waee9j0K8/h4S2bxMWdhffvN/wFkjj89ooa7+je5kyNpQh7OJLPO5Xthetc8nCOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=GUmaaosP; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from narnia.corp.microsoft.com (unknown [40.78.13.173])
-	by linux.microsoft.com (Postfix) with ESMTPSA id E9C2A2078610;
-	Wed, 28 May 2025 14:50:54 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E9C2A2078610
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1748469058;
-	bh=1BxLDLtBZo60Kp/D8p5d9bRrFm8Z8mtILTlhMSyJ2VU=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=GUmaaosPMYvCtCTsv2Kg4lPh/7MnOWk0/Vy1yUqhS30r0rmgOe9AknLajBOsoCgVe
-	 Y/1WmnXyd+7kp+swuCBwylLgmIXULEBhfMG2EolwB2+CmkH793u0hX55GvUb7wVmcZ
-	 JKhnvM6NXW4ac0o3MxzByA3Qi6tA7eYzlji5GPcQ=
-From: Blaise Boscaccy <bboscaccy@linux.microsoft.com>
-To: Paul Moore <paul@paul-moore.com>,
-	bboscaccy@linux.microsoft.com,
-	jarkko@kernel.org,
-	zeffron@riotgames.com,
-	xiyou.wangcong@gmail.com,
-	kysrinivasan@gmail.com,
-	code@tyhicks.com,
-	linux-security-module@vger.kernel.org,
-	roberto.sassu@huawei.com,
-	James.Bottomley@hansenpartnership.com,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Quentin Monnet <qmo@kernel.org>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Anton Protopopov <aspsk@isovalent.com>,
-	Jordan Rome <linux@jordanrome.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Matteo Croce <teknoraver@meta.com>,
-	bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org
-Subject: [PATCH 3/3] bpftool: Allow signing of light-skeleton programs
-Date: Wed, 28 May 2025 14:49:05 -0700
-Message-ID: <20250528215037.2081066-4-bboscaccy@linux.microsoft.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250528215037.2081066-1-bboscaccy@linux.microsoft.com>
-References: <20250528215037.2081066-1-bboscaccy@linux.microsoft.com>
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2050.outbound.protection.outlook.com [40.107.244.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D4513AC1;
+	Thu, 29 May 2025 05:29:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1748496580; cv=fail; b=Ea5V0k48cVNtX0tpf6pkfSdZTxJzwKWHB5JnzspR7qW6mPKDsNtuX4vg3/GkXjskMIh0tL6mGunCjJweUykNdpnoYqzLsL/nkfVFEi0r6uOy8Koflp2WaivM6EHc6iXR0P2DWLM3LT8dD6Bk75wBW061XjHguxzMJBsliwARECQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1748496580; c=relaxed/simple;
+	bh=C+M+TOmeeJ1BEJwYvh3f+RyebBIh+iLAUuzteZRg95E=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=MBFzuLc/kAMfxGVvAwN2MQdpqE1iMktvOf+5/cQCXaEmBCRs2LuA+LEBMjJCH+N0mWYbB9eQPyY+6/Cy5tftl/c3a+aLvc3YZ2lPGBRvszjxWW8wBV0lFXYxXDOptlygEPqHnP9CHcwUR/Ox7Ry3lSDnOmA9/NXxmtMG+5CHw0A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=z/KySBh5; arc=fail smtp.client-ip=40.107.244.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LI94LGIO6ha2ir8FzN5jRGDiQMDgE7sWE3Wbr6k2L8+v16dvLQBACaLuk6C4Z2yLF9rlOAyjv3b5P/Y7gzzx1ChWZGMR+LtfBpylWBeSmvEGg9WSUak1lxATTyQCZFzEIKUiR8i38MkZutxoOoIZcLR3taahEt6AisWtZexmYhnCCX1ldHfrZVcHL6ydZi5rm/Bdre9sFzp4A5qMDGRAgo1B/NSJXQocNXTkm4JJsP9PQ/xIE2JBpP7oJkZnTtJLNmd5JgHQGgDaQNmGJzpsuKj3cmPrDYuW/18jnEpthPzzPj5EwDCABkYjw4Q6oqp1OGoc8dFIzKDy5OtcqZ46fg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QELpkHI0pNN4A+ZvtnsJNnF2RKWRZZRBNMN88P/IYyE=;
+ b=kxcAoWQ9XSkgQHcy399tzf4p1/1BrOM+PMxOGkSth++WTfIs4SvUZDgpFQ9rg4EHCr7KfEmA9NkYT/xn0FfsmFvBr8awnaieMnoeltzw0BB9C2OxkVqLP09RCllgmHpwCA0UAkRMr0Us/DEVUP4oCSMmon77yZeI29g4Ax5CJBQnoxd9JAPP5n+O7Gx+4HLH5dz8MetrInvOHB2QtVaxU3Yvzf/GOqBJXQ9mAHBpDvsAsDkPD1wXzfYg5n6mKoD6upDNcSwQPTJJHEwkvmNAf+HzcYh/L6k+ARvaWv/g97BZOe4odSEX9gQWARUGIn5sTYhvfEmVaH4WZ5gfy+YUCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QELpkHI0pNN4A+ZvtnsJNnF2RKWRZZRBNMN88P/IYyE=;
+ b=z/KySBh52ZSLkBTRKFnn4OPoFsnyu54mIu+i6Ipz9IU3N4hwAzxEDn120H7NmzAoRRZBulB/mK6mg8y6EiMb9H81/AIkWFXz++1tQONknH4phQAJh7o/kExx4jjRNCOaiyeESoe8zaIR0NBfl8KTkL0OgA53vdUKYAAVc5uaHiw=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by SN7PR12MB7884.namprd12.prod.outlook.com (2603:10b6:806:343::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.27; Thu, 29 May
+ 2025 05:29:34 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::53fb:bf76:727f:d00f%5]) with mapi id 15.20.8769.022; Thu, 29 May 2025
+ 05:29:34 +0000
+Message-ID: <91e2985f-0815-4918-b7cf-c593bc2fa96b@amd.com>
+Date: Thu, 29 May 2025 15:29:23 +1000
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH v2 00/18] PCI device authentication
+From: Alexey Kardashevskiy <aik@amd.com>
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Bjorn Helgaas <helgaas@kernel.org>, David Howells <dhowells@redhat.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>,
+ David Woodhouse <dwmw2@infradead.org>,
+ James Bottomley <James.Bottomley@hansenpartnership.com>,
+ linux-pci@vger.kernel.org, linux-cxl@vger.kernel.org,
+ linux-coco@lists.linux.dev, keyrings@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linuxarm@huawei.com,
+ David Box <david.e.box@intel.com>, Dan Williams <dan.j.williams@intel.com>,
+ "Li, Ming" <ming4.li@intel.com>,
+ Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
+ Alistair Francis <alistair.francis@wdc.com>,
+ Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+ Damien Le Moal <dlemoal@kernel.org>, Dhaval Giani <dhaval.giani@amd.com>,
+ Gobikrishna Dhanuskodi <gdhanuskodi@nvidia.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Peter Gonda <pgonda@google.com>,
+ Jerome Glisse <jglisse@google.com>, Sean Christopherson <seanjc@google.com>,
+ Alexander Graf <graf@amazon.com>, Samuel Ortiz <sameo@rivosinc.com>,
+ Eric Biggers <ebiggers@google.com>, Stefan Berger <stefanb@linux.ibm.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Alan Stern <stern@rowland.harvard.edu>
+References: <cover.1719771133.git.lukas@wunner.de>
+ <2140c4e4-6df0-47c7-8301-c6eb70ada27d@amd.com> <ZovrK7GsDpOMp3Bz@wunner.de>
+ <b1595ceb-a916-4ff0-97bd-1a223e0cef15@amd.com> <Z6zN8R-E9uJpkU7j@wunner.de>
+ <dab69e0c-37c2-41f1-a9db-fe116fe4cbbd@amd.com>
+Content-Language: en-US
+In-Reply-To: <dab69e0c-37c2-41f1-a9db-fe116fe4cbbd@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SY6PR01CA0035.ausprd01.prod.outlook.com
+ (2603:10c6:10:eb::22) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|SN7PR12MB7884:EE_
+X-MS-Office365-Filtering-Correlation-Id: 08cf0c75-546f-48ba-0ef2-08dd9e71cb71
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QUE3Z2dvRklOc0F0azFkN3JjdlU4UmIvY2tMRld1VWovY25ON0svUldXcklE?=
+ =?utf-8?B?TStXMmlnZldjcndVOWpKUGtQRDJmVk5RcENyMVlTQXpMaFpEV1NNTHBjT3Nj?=
+ =?utf-8?B?YzNFVWc1Y1F3TG5pRldkckx5d0Z4a05ocmtHOWQxRlV0WWE5NEg3R3NXWjll?=
+ =?utf-8?B?NHUrVk0vWFdDQktTbWNsNlhOWXFFSG90Q3RVcGI5TVZ6K05BYVpuRU5meUxr?=
+ =?utf-8?B?UGJ5UHQ4SHdsMUozb2hvMGZZQlF2WjUwakxjM1pXYS9xck1HUnA3SmV6djhH?=
+ =?utf-8?B?R0FIRysxcGZHZ0Q2V0hidXQ3ZVFzWUdwa3BXS05PaERsSzVtanlYU01BeTFt?=
+ =?utf-8?B?MGhSUUFDMUlUSnVrZXE5eWJZV1lRNXFKWHJDSWozeTBYK2FqZ1BTSFJWUDd3?=
+ =?utf-8?B?SW1CTTlNUjJMMGRzaU5nUGlSL2RDZGo4NERjT0hYNUtsQVk0NDJxN09hSjJ0?=
+ =?utf-8?B?RnlpRlpEQ1Fzc1A2K2w5TmF1dGNVZE84eE50a000U0VGWFlyd3RzanZGK3pH?=
+ =?utf-8?B?MnZyWHJ0eXNOZGl5TXdCK2Y1a3pybHEzSXVrL0RlNjZsenZaR2R1aCtud0dU?=
+ =?utf-8?B?Vit3QnpnVFpFQ1dkVVd5dU9HRE5ZS1JNZWRCOWsrdEFjN3F2Q2hzRUZsalpx?=
+ =?utf-8?B?b2R1S3pXS2hMRGVwcDd5OFltWno1Zzgwclo3enFkYktzenJqc3dIbkZrbldN?=
+ =?utf-8?B?eVIrUm1Fdll0Mk1YdHFxYlFXUGxEdFYzc3FxcktOU1dZcHdOaEIrbWVmcnlX?=
+ =?utf-8?B?R2VRZFRzclR1TjlWRHJ6UUYzWmtVWklSbHdjK2t6TlV4YWtlWm5mRjZ0cDJM?=
+ =?utf-8?B?TlVZUFlrVG1kalFnb09DYktLZmkwN3JkL0V4TG50UEVMR2VjcVB4MWVoOVkx?=
+ =?utf-8?B?NmxmZVcyU0grYytjYzg3YjNiMVhKZUF2YzhZSW5ySFRiNFloQmxrZVhwNkcw?=
+ =?utf-8?B?OUVnZ0EwVVFJV2FJUlFvejkxWXdMdHpZanVIeFY0RnhqdDNGY29hc2thbG1G?=
+ =?utf-8?B?Slg5MmZmWGx5WEpPT1hSSDZWRW1LNUJtSzRjRTdKWk4vYzlZZDkzcEhrbmUx?=
+ =?utf-8?B?WVJEL05QVmpsQVJaNTZTcXgwNDJIWGVoUUhObVljci9YSkRCSnNSYWJFT2tH?=
+ =?utf-8?B?aS9WYVdBSVNlNisrYVdUNmwrVTB3Wi9sd1JIeUFMT0dMdE5pUUJjdGtpMlV1?=
+ =?utf-8?B?Ujk0MWJhRGQxcERsSDJNNWlGMWVDVDBTRmdUcGMvNm9TWW1nOXp4em1JOUto?=
+ =?utf-8?B?Ym9WU21sL2xxS1puWGVMNWxnUVIxejlIajFQZUx6RUE5UXZPQ1RkWkRubFk5?=
+ =?utf-8?B?VUdkWURsbkdCb2dXMWt6Sjl0d0VUMm04UU5wOVFTc2wxV0s0d084aDBCem5r?=
+ =?utf-8?B?NThXOHhhOGhCb1kxcXJUVGFVM1B3TjNKcVE5YXcvU05zVDg0V0paMXc3S0Qv?=
+ =?utf-8?B?M3VvS2g4bWhLRHNlaXdaTFR0c0JsVkMxM05zREIvZ29iM3k5ZTkvQ2lwdGhi?=
+ =?utf-8?B?UmpzcmRCMWxpelhPKzRkeDBtVTFWZHVGYk1qV0tFOXkzb245eTBMR01MMU9o?=
+ =?utf-8?B?bmhWLzdIa3BqdnoyLzZVT1lVcndSaGdodFhoTWJmYXYyN1JUMW9BQnJtditM?=
+ =?utf-8?B?WFFPMVJrNTQvNjNrb0l4eGZSN016alNHZW1WUG1xNEUrTlBFc1F6QWFMQ25m?=
+ =?utf-8?B?bUpjMEpXRjlYR2tDK1hqSWJwdDBxOGwvOUxad1J1R1k2WG8zakVMbXU2Qzdh?=
+ =?utf-8?B?aDJyWU9kaTk1NEZ0bUhJOE5NZCtvcjRkQXJKUmJSaXBzdmtQRDhPV3dXbHlt?=
+ =?utf-8?B?M3dobVhHc0VGZ0RCdTE5WEJObVg5S3FFcGlPRVA3UzdVSEExelJTMXQ5T1dR?=
+ =?utf-8?B?cjVoSXFDbGplcDY5QXJ6YTgyOCtQbkhxOGxvb3g1Vm1ZNy94eTR5d2F5eUFE?=
+ =?utf-8?Q?QFexsZjvISaWiBpsi4/EWN8NUZtKyUs9?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?eHhXTkhrRFMyb0VCLzF4cWkvSE9SK0pQbWlCcko4a1NvR1VoRE5PVm01enls?=
+ =?utf-8?B?N1FuRXVNMm42RXV5bGhteUhmdXdVWmJOd3p3YkhIQ0U2NkxJQzl4cWJGaG8r?=
+ =?utf-8?B?NW9BSFBRWDdFRVExTHgxRXpWQ0lHWVZUK05OQlZWUklwYTZMaGtEb2liR3RJ?=
+ =?utf-8?B?bVZIckNRb2trdFI1UWQxeC9tWi94YXpobXFBR0VKS3lnUDVLZWtsKzNiWk8y?=
+ =?utf-8?B?TU9oYmh2NVlFdUtXM1BWeHV1TUlBQ2hsdWptakxvbVlmNEJzQ29ZR2psemRq?=
+ =?utf-8?B?aVJ4czA1Vm4yNERIbWdYVU10dFBqaGhSWUJ4N29jeGVoWkNwSXpkN214NCtG?=
+ =?utf-8?B?YjRuZjc3WFIvVHJkNlAwd0VkWlNEMFRTbE93V1MvZjNsODVMZkZNWUJwWEF3?=
+ =?utf-8?B?d2FYRVFrdCtnUy91amgvR0d4NG5Sd3Bkc3lDbWp2QStCQ2hVbCsxSzZDaW1I?=
+ =?utf-8?B?dmpDOXNIcEJoU25aUnNiUFFOL1FvekM2MFFlamtEMnN6V3BSYjFrUDUwSVh0?=
+ =?utf-8?B?UUcyWFI0SHp4UzNoWTNZazA2Mmxuc1JWeFBnaXJHY2pqRUh2TmQvYmtNS0Vi?=
+ =?utf-8?B?N3BTVWsxS1VmSUdwZTJDS2lXOFIrS2V2aGZPSTlsY1NSSFh3alp0VDF3aVM3?=
+ =?utf-8?B?Yk5aNFlHS2p2ZGVhcHJqTDcrQ0ZZQm90STRkVXJrRnVRVmx4T0didmZEMDBw?=
+ =?utf-8?B?RUhHSnRBMkVHaENtK3VESk8rY1VCbHcyNk5Mb0w3Skg4TFpNV0FaaXVTQWNu?=
+ =?utf-8?B?NlBVNml2OTcycklwNHIwOGZBdWp1NzdYTzVBUVJEL0RVS3NadSsxNmRtemxi?=
+ =?utf-8?B?dmVnU1RDd2lwZkUySnJ5cE5UTFFjeFcrRG9OWkxITHMrTVNQRUJoaWRlb3FS?=
+ =?utf-8?B?ZGdwVUduYnFFdTlsaE5RcVQzTzduRnM2TUt6Yk8yN2c1eXR5OStGcDZxQ0xa?=
+ =?utf-8?B?RCs3RE1JemxmVjFQS2wrb212ME52aHpvSzZ6OFBHVjQ0UXkxRFZBOGhrREZH?=
+ =?utf-8?B?OWRGbVA3M1gveXV1VUJnYnA0dVEzTktDY0Y0QnRBanlYei84bjArb0dDN3N5?=
+ =?utf-8?B?Y1pxbmpCcmxNUVdvMTgxbVZiV1pSbWNCWGVsaUFuNGUwa2o2MlhuSDV2TmV3?=
+ =?utf-8?B?aFZmUGVUd1pyOUcwTGphM3ZaVFJzbU1pd3B3LzVVR0NGcFhMR0RhZ2dDVERC?=
+ =?utf-8?B?dS9lamx1V0x3TmlSamhwUXJjOXZoMVR2bExVMVVrMENOenltaGVrSThjb1F5?=
+ =?utf-8?B?aXZOZE9HOVV0Nm5RRkcwdWhXRE9RTDZYQnlyODhnb1dBbkp5LzZwUXo0bU81?=
+ =?utf-8?B?T0FKYVR5RkdlbjdhNzlKMVUwSlhGbkVFVTJQR2MyeU1vR1RxQmpEZjhzZTRC?=
+ =?utf-8?B?cWQ5S3ZCV0gzL2hhd0tJOG5RN3FEK3NHU0t0cTdhcDBOWk40WHBNNnh6ZkJ0?=
+ =?utf-8?B?N01uU25JNElRbHlnazVUTE4rQzk5ejJZQ1FRWGNoMFJzdEJLL2dXNTRtWWxX?=
+ =?utf-8?B?SXU3Yi93YUhqTHp6cGJaeWJqa09pTks1RjZ5YW1qVjhkQlBXV01ZUk1CN2tE?=
+ =?utf-8?B?bjFydUtQbDI5KzFqQnhXWm81SlQ5RnE5SUFGZnduTE5pKzcrTkRLSEJoVHdH?=
+ =?utf-8?B?U2xLYUxTdnU3VG44WGtsN1FLSTRETkFoUllBRDVPOW9NREtzUmZZVHFheHJT?=
+ =?utf-8?B?NzBBNHlVL0JjL0hvS2NqMVZKdUNXeUg5YXJVWW5CNVZGck5TRnd6aHFmTDZ1?=
+ =?utf-8?B?Y012KzBPRHNFU09pSUk1OUxLc29maXV2SkZLSElyWUpSQXZhMHppWkEzbW9F?=
+ =?utf-8?B?YzlXSG1xSmJ6Um5JUmtvQlZ6NU9BZzVVTTZ0ZUlDanBzbGtxZlZGYVFwYk55?=
+ =?utf-8?B?dFVuTmhIVlhBN1htUVdpNGpZZVVkZlBmblE0UWJoSVFYQXFIMXg0R29aQUhZ?=
+ =?utf-8?B?N25FZlZvdkVTUEhMaEp5WVR6aTZWQytzTHF1bFFWSFc4K2Uxa1ptS3lEUEwy?=
+ =?utf-8?B?NVZNRkVVZllWc2VCeHZoejkzOWkwQTM2SlkyZndPcXdEdmZGN0xTck5VZmk0?=
+ =?utf-8?B?dDJ4b0ppZ0FhSVd1dDN0ZjZDZ1BvTmMzR3NScDdFLzNmLzdPYW9yZjQ2NzlE?=
+ =?utf-8?Q?aEdH34zyYggg6ewDolVlrV+Tn?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 08cf0c75-546f-48ba-0ef2-08dd9e71cb71
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2025 05:29:34.3937
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: x3g+ZRPAvxFcEc45KcCG9fM0np+96lgKuC9cHKVddz1V9uDL2kN/UNmFqQpkDiZd9eSpvPzpEhrocp0pii7S1A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7884
 
-This introduces hash-chain signature support into bpftool. The
-signature generated code was adapted from sign-file and follows a
-similar set of command line switches.  The algorithm used here
-supports the signature of both the loader program and it's map
-containing the target program.
 
-Signed-off-by: Blaise Boscaccy <bboscaccy@linux.microsoft.com>
----
- tools/bpf/bpftool/Makefile |   4 +-
- tools/bpf/bpftool/common.c | 204 +++++++++++++++++++++++++++++++++++++
- tools/bpf/bpftool/gen.c    |  66 +++++++++++-
- tools/bpf/bpftool/main.c   |  24 ++++-
- tools/bpf/bpftool/main.h   |  23 +++++
- tools/lib/bpf/libbpf.h     |   4 +
- 6 files changed, 321 insertions(+), 4 deletions(-)
 
-diff --git a/tools/bpf/bpftool/Makefile b/tools/bpf/bpftool/Makefile
-index 9e9a5f006cd2..b17e295f4954 100644
---- a/tools/bpf/bpftool/Makefile
-+++ b/tools/bpf/bpftool/Makefile
-@@ -130,8 +130,8 @@ include $(FEATURES_DUMP)
- endif
- endif
- 
--LIBS = $(LIBBPF) -lelf -lz
--LIBS_BOOTSTRAP = $(LIBBPF_BOOTSTRAP) -lelf -lz
-+LIBS = $(LIBBPF) -lelf -lz -lcrypto
-+LIBS_BOOTSTRAP = $(LIBBPF_BOOTSTRAP) -lelf -lz -lcrypto
- 
- ifeq ($(feature-libelf-zstd),1)
- LIBS += -lzstd
-diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
-index ecfa790adc13..e6cfb855fc8a 100644
---- a/tools/bpf/bpftool/common.c
-+++ b/tools/bpf/bpftool/common.c
-@@ -5,6 +5,7 @@
- #define _GNU_SOURCE
- #endif
- #include <ctype.h>
-+#include <err.h>
- #include <errno.h>
- #include <fcntl.h>
- #include <ftw.h>
-@@ -31,6 +32,24 @@
- #include <bpf/libbpf.h> /* libbpf_num_possible_cpus */
- #include <bpf/btf.h>
- 
-+#include <openssl/opensslv.h>
-+#include <openssl/bio.h>
-+#include <openssl/evp.h>
-+#include <openssl/pem.h>
-+#include <openssl/err.h>
-+#include <openssl/cms.h>
-+#if OPENSSL_VERSION_MAJOR >= 3
-+# define USE_PKCS11_PROVIDER
-+# include <openssl/provider.h>
-+# include <openssl/store.h>
-+#else
-+# if !defined(OPENSSL_NO_ENGINE) && !defined(OPENSSL_NO_DEPRECATED_3_0)
-+#  define USE_PKCS11_ENGINE
-+#  include <openssl/engine.h>
-+# endif
-+#endif
-+#include "../../scripts/ssl-common.h"
-+
- #include "main.h"
- 
- #ifndef BPF_FS_MAGIC
-@@ -1181,3 +1200,188 @@ int pathname_concat(char *buf, int buf_sz, const char *path,
- 
- 	return 0;
- }
-+
-+static const char *key_pass;
-+
-+static int pem_pw_cb(char *buf, int len, int w, void *v)
-+{
-+	int pwlen;
-+
-+	if (!key_pass)
-+		return -1;
-+
-+	pwlen = strlen(key_pass);
-+	if (pwlen >= len)
-+		return -1;
-+
-+	strcpy(buf, key_pass);
-+
-+	/* If it's wrong, don't keep trying it. */
-+	key_pass = NULL;
-+
-+	return pwlen;
-+}
-+
-+static EVP_PKEY *read_private_key_pkcs11(const char *private_key_name)
-+{
-+	EVP_PKEY *pk = NULL;
-+#ifdef USE_PKCS11_PROVIDER
-+	OSSL_STORE_CTX *store;
-+
-+	if (!OSSL_PROVIDER_try_load(NULL, "pkcs11", true))
-+		ERR(1, "OSSL_PROVIDER_try_load(pkcs11)");
-+	if (!OSSL_PROVIDER_try_load(NULL, "default", true))
-+		ERR(1, "OSSL_PROVIDER_try_load(default)");
-+
-+	store = OSSL_STORE_open(private_key_name, NULL, NULL, NULL, NULL);
-+	ERR(!store, "OSSL_STORE_open");
-+
-+	while (!OSSL_STORE_eof(store)) {
-+		OSSL_STORE_INFO *info = OSSL_STORE_load(store);
-+
-+		if (!info) {
-+			drain_openssl_errors(__LINE__, 0);
-+			continue;
-+		}
-+		if (OSSL_STORE_INFO_get_type(info) == OSSL_STORE_INFO_PKEY) {
-+			pk = OSSL_STORE_INFO_get1_PKEY(info);
-+			ERR(!pk, "OSSL_STORE_INFO_get1_PKEY");
-+		}
-+		OSSL_STORE_INFO_free(info);
-+		if (pk)
-+			break;
-+	}
-+	OSSL_STORE_close(store);
-+#elif defined(USE_PKCS11_ENGINE)
-+	ENGINE *e;
-+
-+	ENGINE_load_builtin_engines();
-+	drain_openssl_errors(__LINE__, 1);
-+	e = ENGINE_by_id("pkcs11");
-+	ERR(!e, "Load PKCS#11 ENGINE");
-+	if (ENGINE_init(e))
-+		drain_openssl_errors(__LINE__, 1);
-+	else
-+		ERR(1, "ENGINE_init");
-+	if (key_pass)
-+		ERR(!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0), "Set PKCS#11 PIN");
-+	pk = ENGINE_load_private_key(e, private_key_name, NULL, NULL);
-+	ERR(!pk, "%s", private_key_name);
-+#else
-+	fprintf(stderr, "no pkcs11 engine/provider available\n");
-+	exit(1);
-+#endif
-+	return pk;
-+}
-+
-+EVP_PKEY *read_private_key(const char *private_key_name)
-+{
-+	if (!strncmp(private_key_name, "pkcs11:", 7)) {
-+		return read_private_key_pkcs11(private_key_name);
-+	} else {
-+		EVP_PKEY *pk;
-+		BIO *b;
-+
-+		b = BIO_new_file(private_key_name, "rb");
-+		ERR(!b, "%s", private_key_name);
-+		pk = PEM_read_bio_PrivateKey(b, NULL, pem_pw_cb,
-+					     NULL);
-+		ERR(!pk, "%s", private_key_name);
-+		BIO_free(b);
-+
-+		return pk;
-+	}
-+}
-+
-+X509 *read_x509(const char *x509_name)
-+{
-+	unsigned char buf[2];
-+	X509 *x509_cert;
-+	BIO *b;
-+	int n;
-+
-+	b = BIO_new_file(x509_name, "rb");
-+	ERR(!b, "%s", x509_name);
-+
-+	/* Look at the first two bytes of the file to determine the encoding */
-+	n = BIO_read(b, buf, 2);
-+	if (n != 2) {
-+		if (BIO_should_retry(b)) {
-+			fprintf(stderr, "%s: Read wanted retry\n", x509_name);
-+			exit(1);
-+		}
-+		if (n >= 0) {
-+			fprintf(stderr, "%s: Short read\n", x509_name);
-+			exit(1);
-+		}
-+		ERR(1, "%s", x509_name);
-+	}
-+
-+	ERR(BIO_reset(b) != 0, "%s", x509_name);
-+
-+	if (buf[0] == 0x30 && buf[1] >= 0x81 && buf[1] <= 0x84)
-+		/* Assume raw DER encoded X.509 */
-+		x509_cert = d2i_X509_bio(b, NULL);
-+	else
-+		/* Assume PEM encoded X.509 */
-+		x509_cert = PEM_read_bio_X509(b, NULL, NULL, NULL);
-+
-+	BIO_free(b);
-+	ERR(!x509_cert, "%s", x509_name);
-+
-+	return x509_cert;
-+}
-+
-+BIO* generate_signature(const void *buffer, size_t length)
-+{
-+	const EVP_MD *digest_algo;
-+	unsigned int use_signed_attrs;
-+#ifndef USE_PKCS7
-+	CMS_ContentInfo *cms = NULL;
-+	unsigned int use_keyid = 0;
-+#else
-+	PKCS7 *pkcs7 = NULL;
-+#endif
-+	BIO *mem = BIO_new_mem_buf(buffer, length);
-+	BIO *bd = BIO_new(BIO_s_mem());
-+
-+#ifndef USE_PKCS7
-+	use_signed_attrs = CMS_NOATTR;
-+#else
-+	use_signed_attrs = PKCS7_NOATTR;
-+#endif
-+	/* Digest the module data. */
-+	OpenSSL_add_all_digests();
-+	drain_openssl_errors(__LINE__, 0);
-+	digest_algo = EVP_get_digestbyname(hash_algo);
-+	ERR(!digest_algo, "EVP_get_digestbyname");
-+
-+#ifndef USE_PKCS7
-+	/* Load the signature message from the digest buffer. */
-+	cms = CMS_sign(NULL, NULL, NULL, NULL,
-+		       CMS_NOCERTS | CMS_PARTIAL | CMS_BINARY |
-+		       CMS_DETACHED | CMS_STREAM);
-+	ERR(!cms, "CMS_sign");
-+
-+	ERR(!CMS_add1_signer(cms, x509, private_key, digest_algo,
-+			     CMS_NOCERTS | CMS_BINARY |
-+			     CMS_NOSMIMECAP | use_keyid |
-+			     use_signed_attrs),
-+	    "CMS_add1_signer");
-+	ERR(CMS_final(cms, mem, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
-+	    "CMS_final");
-+
-+#else
-+	pkcs7 = PKCS7_sign(x509, private_key, NULL, mem,
-+			   PKCS7_NOCERTS | PKCS7_BINARY |
-+			   PKCS7_DETACHED | use_signed_attrs);
-+	ERR(!pkcs7, "PKCS7_sign");
-+#endif
-+
-+#ifndef USE_PKCS7
-+	ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) != 1, "%s", "bpftool");
-+#else
-+	ERR(i2d_PKCS7_bio(bd, pkcs7) != 1, "%s", "bpftool");
-+#endif
-+	return bd;
-+}
-diff --git a/tools/bpf/bpftool/gen.c b/tools/bpf/bpftool/gen.c
-index 67a60114368f..318b1f36d869 100644
---- a/tools/bpf/bpftool/gen.c
-+++ b/tools/bpf/bpftool/gen.c
-@@ -20,6 +20,7 @@
- #include <sys/stat.h>
- #include <sys/mman.h>
- #include <bpf/btf.h>
-+#include <openssl/sha.h>
- 
- #include "json_writer.h"
- #include "main.h"
-@@ -493,6 +494,30 @@ static size_t bpf_map_mmap_sz(const struct bpf_map *map)
- 	return map_sz;
- }
- 
-+static int sign_loader_and_map(struct gen_loader_opts *opts)
-+{
-+	BIO *bo;
-+	BUF_MEM *bptr;
-+	unsigned char hash[SHA256_DIGEST_LENGTH  * 2];
-+	unsigned char term[SHA256_DIGEST_LENGTH];
-+
-+	if (!x509)
-+		return 0;
-+
-+	SHA256((const unsigned char *)opts->insns, opts->insns_sz, hash);
-+	SHA256((const unsigned char *)opts->data, opts->data_sz, hash + SHA256_DIGEST_LENGTH);
-+	SHA256(hash, sizeof(hash), term);
-+
-+	bo = generate_signature(term, sizeof(term));
-+	if (IS_ERR(bo))
-+		return -EINVAL;
-+	BIO_get_mem_ptr(bo, &bptr);
-+	opts->signature = bptr->data;
-+	opts->signature_sz = bptr->length;
-+
-+	return 0;
-+}
-+
- /* Emit type size asserts for all top-level fields in memory-mapped internal maps. */
- static void codegen_asserts(struct bpf_object *obj, const char *obj_name)
- {
-@@ -701,6 +726,11 @@ static int gen_trace(struct bpf_object *obj, const char *obj_name, const char *h
- 		p_err("failed to load object file");
- 		goto out;
- 	}
-+	err = sign_loader_and_map(&opts);
-+	if (err) {
-+		p_err("failed to sign loader");
-+		goto out;
-+	}
- 	/* If there was no error during load then gen_loader_opts
- 	 * are populated with the loader program.
- 	 */
-@@ -778,20 +808,54 @@ static int gen_trace(struct bpf_object *obj, const char *obj_name, const char *h
- 			static const char opts_insn[] __attribute__((__aligned__(8))) = \"\\\n\
- 		");
- 	print_hex(opts.insns, opts.insns_sz);
--	codegen("\
-+	if (opts.signature) {
-+		codegen("\
- 		\n\
- 		\";							    \n\
-+			static const char opts_signature[] __attribute__((__aligned__(8))) = \"\\\n\
-+		");
-+		print_hex(opts.signature, opts.signature_sz);
-+		codegen("\
-+		\n\
-+		\";							    \n\
-+			static const int opts_signature_maps[1] __attribute__((__aligned__(8))) = {0}; \n\
-+		");
-+		codegen("\
-+		\n\
- 									    \n\
- 			opts.ctx = (struct bpf_loader_ctx *)skel;	    \n\
- 			opts.data_sz = sizeof(opts_data) - 1;		    \n\
- 			opts.data = (void *)opts_data;			    \n\
- 			opts.insns_sz = sizeof(opts_insn) - 1;		    \n\
- 			opts.insns = (void *)opts_insn;			    \n\
-+			opts.signature_sz = sizeof(opts_signature) - 1;	    \n\
-+			opts.signature = (void *)opts_signature;	    \n\
-+			opts.signature_maps_sz = 1;	                    \n\
-+			opts.signature_maps = (void *)opts_signature_maps;  \n\
- 									    \n\
- 			err = bpf_load_and_run(&opts);			    \n\
- 			if (err < 0)					    \n\
- 				return err;				    \n\
- 		");
-+
-+	} else {
-+		codegen("\
-+		\n\
-+		\";							    \n\
-+									    \n\
-+			opts.ctx = (struct bpf_loader_ctx *)skel;	    \n\
-+			opts.data_sz = sizeof(opts_data) - 1;		    \n\
-+			opts.data = (void *)opts_data;			    \n\
-+			opts.insns_sz = sizeof(opts_insn) - 1;		    \n\
-+			opts.insns = (void *)opts_insn;			    \n\
-+			opts.signature_sz  = 0;		                    \n\
-+			opts.signature = NULL;			            \n\
-+									    \n\
-+			err = bpf_load_and_run(&opts);			    \n\
-+			if (err < 0)					    \n\
-+				return err;				    \n\
-+		");
-+	}
- 	bpf_object__for_each_map(map, obj) {
- 		const char *mmap_flags;
- 
-diff --git a/tools/bpf/bpftool/main.c b/tools/bpf/bpftool/main.c
-index cd5963cb6058..01020e5f37c2 100644
---- a/tools/bpf/bpftool/main.c
-+++ b/tools/bpf/bpftool/main.c
-@@ -33,6 +33,9 @@ bool relaxed_maps;
- bool use_loader;
- struct btf *base_btf;
- struct hashmap *refs_table;
-+const char *hash_algo;
-+EVP_PKEY *private_key;
-+X509 *x509;
- 
- static void __noreturn clean_and_exit(int i)
- {
-@@ -473,7 +476,7 @@ int main(int argc, char **argv)
- 	bin_name = "bpftool";
- 
- 	opterr = 0;
--	while ((opt = getopt_long(argc, argv, "VhpjfLmndB:l",
-+	while ((opt = getopt_long(argc, argv, "VhpjfLmndB:lH:lP:lX:l",
- 				  options, NULL)) >= 0) {
- 		switch (opt) {
- 		case 'V':
-@@ -519,6 +522,25 @@ int main(int argc, char **argv)
- 		case 'L':
- 			use_loader = true;
- 			break;
-+		case 'H':
-+			hash_algo = optarg;
-+			break;
-+		case 'P':
-+			private_key = read_private_key(optarg);
-+			if (!private_key) {
-+				p_err("failed to parse private key '%s': %d\n",
-+				      optarg, -errno);
-+				return -1;
-+			}
-+			break;
-+		case 'X':
-+			x509 = read_x509(optarg);
-+			if (!x509) {
-+				p_err("failed to parse x509 '%s': %d\n",
-+				      optarg, -errno);
-+				return -1;
-+			}
-+			break;
- 		default:
- 			p_err("unrecognized option '%s'", argv[optind - 1]);
- 			if (json_output)
-diff --git a/tools/bpf/bpftool/main.h b/tools/bpf/bpftool/main.h
-index 9eb764fe4cc8..2f4aee1a8da7 100644
---- a/tools/bpf/bpftool/main.h
-+++ b/tools/bpf/bpftool/main.h
-@@ -16,6 +16,22 @@
- #include <bpf/hashmap.h>
- #include <bpf/libbpf.h>
- 
-+#include <openssl/opensslv.h>
-+#include <openssl/bio.h>
-+#include <openssl/evp.h>
-+#include <openssl/pem.h>
-+#include <openssl/err.h>
-+#if OPENSSL_VERSION_MAJOR >= 3
-+# define USE_PKCS11_PROVIDER
-+# include <openssl/provider.h>
-+# include <openssl/store.h>
-+#else
-+# if !defined(OPENSSL_NO_ENGINE) && !defined(OPENSSL_NO_DEPRECATED_3_0)
-+#  define USE_PKCS11_ENGINE
-+#  include <openssl/engine.h>
-+# endif
-+#endif
-+
- #include "json_writer.h"
- 
- /* Make sure we do not use kernel-only integer typedefs */
-@@ -84,6 +100,9 @@ extern bool relaxed_maps;
- extern bool use_loader;
- extern struct btf *base_btf;
- extern struct hashmap *refs_table;
-+extern const char *hash_algo;
-+extern EVP_PKEY *private_key;
-+extern X509 *x509;
- 
- void __printf(1, 2) p_err(const char *fmt, ...);
- void __printf(1, 2) p_info(const char *fmt, ...);
-@@ -271,4 +290,8 @@ int pathname_concat(char *buf, int buf_sz, const char *path,
- /* print netfilter bpf_link info */
- void netfilter_dump_plain(const struct bpf_link_info *info);
- void netfilter_dump_json(const struct bpf_link_info *info, json_writer_t *wtr);
-+
-+X509 *read_x509(const char *x509_name);
-+EVP_PKEY *read_private_key(const char *private_key_name);
-+BIO *generate_signature(const void *buffer, size_t length);
- #endif
-diff --git a/tools/lib/bpf/libbpf.h b/tools/lib/bpf/libbpf.h
-index e0605403f977..c6c67e8931a6 100644
---- a/tools/lib/bpf/libbpf.h
-+++ b/tools/lib/bpf/libbpf.h
-@@ -1782,8 +1782,12 @@ struct gen_loader_opts {
- 	size_t sz; /* size of this struct, for forward/backward compatibility */
- 	const char *data;
- 	const char *insns;
-+	const char *signature;
-+	const int *signature_maps;
- 	__u32 data_sz;
- 	__u32 insns_sz;
-+	__u32 signature_sz;
-+	__u32 signature_maps_sz;
- };
- 
- #define gen_loader_opts__last_field insns_sz
+On 20/5/25 18:35, Alexey Kardashevskiy wrote:
+> 
+> 
+> On 13/2/25 03:36, Lukas Wunner wrote:
+>> On Tue, Feb 11, 2025 at 12:30:21PM +1100, Alexey Kardashevskiy wrote:
+>>>>> On 1/7/24 05:35, Lukas Wunner wrote:
+>>>>>> PCI device authentication v2
+>>>>>>
+>>>>>> Authenticate PCI devices with CMA-SPDM (PCIe r6.2 sec 6.31) and
+>>>>>> expose the result in sysfs.
+>>>
+>>> Has any further development happened since then? I am asking as I have the
+>>> CMA-v2 in my TSM exercise tree (to catch conflicts, etc) but I do not see
+>>> any change in your github or kernel.org/devsec since v2 and that v2 does not
+>>> merge nicely with the current upstream.
+>>
+>> Please find a rebase of v2 on v6.14-rc2 on this branch:
+>>
+>> https://github.com/l1k/linux/commits/doe
+>>
+>> A portion of the crypto patches that were part of v2 have landed in v6.13.
+>> So the rebased version has shrunk.
+>>
+>> There was a bit of fallout caused by the upstreamed crypto patches
+>> and dealing with that kept me occupied during the v6.13 cycle.
+>> However I'm now back working on the PCI/CMA patches,
+> 
+> Any luck with these? Asking as there is another respin  https://lore.kernel.org/r/20250516054732.2055093-1-dan.j.williams@intel.com  and it considers merge with yours. Thanks,
+
+Ping?
+
+> 
+>> specifically the migration to netlink for retrieval of signatures
+>> and measurements as discussed at Plumbers.
+>>
+>> Thanks,
+>>
+>> Lukas
+> 
+
 -- 
-2.48.1
+Alexey
 
 
