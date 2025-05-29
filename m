@@ -1,133 +1,120 @@
-Return-Path: <keyrings+bounces-2763-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2764-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D711AC8051
-	for <lists+keyrings@lfdr.de>; Thu, 29 May 2025 17:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E6DAC82BF
+	for <lists+keyrings@lfdr.de>; Thu, 29 May 2025 21:32:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D13E9E2AA4
-	for <lists+keyrings@lfdr.de>; Thu, 29 May 2025 15:32:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 383C93BB772
+	for <lists+keyrings@lfdr.de>; Thu, 29 May 2025 19:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BF8C22AE68;
-	Thu, 29 May 2025 15:32:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="dEK26zK9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A29222FDEC;
+	Thu, 29 May 2025 19:32:03 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91AD6193062;
-	Thu, 29 May 2025 15:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A105143147;
+	Thu, 29 May 2025 19:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748532772; cv=none; b=a1c4Kb6QC6CTAgdVooNq1dV74V4se7+bql22wF4MtlDoZCqeoxZJJxzJLr3xXq5LqWvDUjAKriqEV7U/zB1dO83c6H0eiReQa6qLsDPkIU9zEbp+2O/rKd4jz1ysIbnc8uFrBkQpg8AFOvJWVym/PSL91fsBYf05lhXWWntoE88=
+	t=1748547122; cv=none; b=hWO3xzA1PR0ze+S9/u5IPVHShMK/MQ8HiJf7pCayK/Afxdd9fEU1CzGaHhYKPj7b9ox2ALSfauCrSUZMhU9S/+c8RnoYLjnDBw3fB/BRSvsI+0vxDhpXMm+pag+0aFzAEV/Ao0EAIGXoaooFYLfgKbpi1rQpZK+r0ALsB0UQXKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748532772; c=relaxed/simple;
-	bh=GzoA6uvTo4t9PdtiyY4JFANz807VCS4EaCaegKk/xqU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=kaXWEQgW9D2cnEgX+FkwGjd/9GayLZ/bkVw5Fm+Bu8onwnPSuz+c7jof5plnmDMNhQo3MTYk4Tt8bcxaJQTBEoB/E59lmx6L6CwkIFlJgK5suqk24BwXk0d/MC2tKqtF4nmKFT7CmGHhLog6v4TtOIiR9mna1GGJdPRtQzm2pzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=dEK26zK9; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from narnia (unknown [40.78.13.173])
-	by linux.microsoft.com (Postfix) with ESMTPSA id D0CB1207861D;
-	Thu, 29 May 2025 08:32:44 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D0CB1207861D
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1748532768;
-	bh=CVcXX0izB84lzZgI4QE93xD+b9nu6pG8yG3Y1vkIp/4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=dEK26zK9pRZZcIxz/pLWp9R4tr/wue5TYXgnS4OULTipYZlZ42H7056RrD0GTzsMo
-	 dTGT1ZmDBvivP/d3g18JAE0PJUfTa+OGPUc32VHMH24qU5tyYKN9K4gvb+f9NZPz54
-	 huicmVqCVkiLyW+j3NBbRbIIDLzsSWGgWw7UtvqY=
-From: Blaise Boscaccy <bboscaccy@linux.microsoft.com>
-To: Lukas Wunner <lukas@wunner.de>
+	s=arc-20240116; t=1748547122; c=relaxed/simple;
+	bh=l342JoDKUWtfju3StaCK8Ywx3sf3YDxLK3WRzN9tELk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CJlNK/n2QhW0SoNxhwiSBO4qzVZ5s3aIpKNoNtyD4I9FwtduvvGmyFAcBmQZeobdkUDscVNKARycjqLUbTTqI7vrNIuEDo0sOtz7u8UdRoMrc+P+LcfC0ZCRFktIaIQYMyx9yxJU0Xgv+2E6xwqaXGRFMvO20kwWBnrSvK1JnlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 676B22009D09;
+	Thu, 29 May 2025 21:31:49 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 38F2E1B829A; Thu, 29 May 2025 21:31:49 +0200 (CEST)
+Date: Thu, 29 May 2025 21:31:49 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Blaise Boscaccy <bboscaccy@linux.microsoft.com>
 Cc: Paul Moore <paul@paul-moore.com>, jarkko@kernel.org,
- zeffron@riotgames.com, xiyou.wangcong@gmail.com, kysrinivasan@gmail.com,
- code@tyhicks.com, linux-security-module@vger.kernel.org,
- roberto.sassu@huawei.com, James.Bottomley@hansenpartnership.com, Alexei
- Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, John
- Fastabend <john.fastabend@gmail.com>, Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
- <eddyz87@gmail.com>, Song Liu <song@kernel.org>, Yonghong Song
- <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, Stanislav
- Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa
- <jolsa@kernel.org>, David Howells <dhowells@redhat.com>, Ignat Korchagin
- <ignat@cloudflare.com>, Quentin Monnet <qmo@kernel.org>, Jason Xing
- <kerneljasonxing@gmail.com>, Willem de Bruijn <willemb@google.com>, Anton
- Protopopov <aspsk@isovalent.com>, Jordan Rome <linux@jordanrome.com>,
- Martin Kelly <martin.kelly@crowdstrike.com>, Alan Maguire
- <alan.maguire@oracle.com>, Matteo Croce <teknoraver@meta.com>,
- bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
- keyrings@vger.kernel.org, linux-crypto@vger.kernel.org
+	zeffron@riotgames.com, xiyou.wangcong@gmail.com,
+	kysrinivasan@gmail.com, code@tyhicks.com,
+	linux-security-module@vger.kernel.org, roberto.sassu@huawei.com,
+	James.Bottomley@hansenpartnership.com,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
+	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Quentin Monnet <qmo@kernel.org>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Anton Protopopov <aspsk@isovalent.com>,
+	Jordan Rome <linux@jordanrome.com>,
+	Martin Kelly <martin.kelly@crowdstrike.com>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Matteo Croce <teknoraver@meta.com>, bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org
 Subject: Re: [PATCH 1/3] bpf: Add bpf_check_signature
-In-Reply-To: <aDgy1Wqn7WIFNXvb@wunner.de>
+Message-ID: <aDi2JWk0jtbUpMhD@wunner.de>
 References: <20250528215037.2081066-1-bboscaccy@linux.microsoft.com>
  <20250528215037.2081066-2-bboscaccy@linux.microsoft.com>
  <aDgy1Wqn7WIFNXvb@wunner.de>
-Date: Thu, 29 May 2025 08:32:43 -0700
-Message-ID: <87msave8kk.fsf@microsoft.com>
+ <87msave8kk.fsf@microsoft.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87msave8kk.fsf@microsoft.com>
 
-Lukas Wunner <lukas@wunner.de> writes:
+On Thu, May 29, 2025 at 08:32:43AM -0700, Blaise Boscaccy wrote:
+> Lukas Wunner <lukas@wunner.de> writes:
+> > Constraining oneself to sha256 doesn't seem future-proof.
+> 
+> Definitely not a bad idea, curious, how would you envision that looking
+> from an UAPI perspective?
 
-> On Wed, May 28, 2025 at 02:49:03PM -0700, Blaise Boscaccy wrote:
->> +	if (!attr->signature_maps_size) {
->> +		sha256((u8 *)prog->insnsi, prog->len * sizeof(struct bpf_insn), (u8 *)&hash);
->> +		err = verify_pkcs7_signature(hash, sizeof(hash), signature, attr->signature_size,
->> +				     VERIFY_USE_SECONDARY_KEYRING,
->> +				     VERIFYING_EBPF_SIGNATURE,
->> +				     NULL, NULL);
->
-> Has this ever been tested?
->
-> It looks like it will always return -EINVAL because:
->
->   verify_pkcs7_signature()
->     verify_pkcs7_message_sig()
->       pkcs7_verify()
->
-> ... pkcs7_verify() contains a switch statement which you're not
-> amending with a "case VERIFYING_EBPF_SIGNATURE" but which returns
-> -EINVAL in the "default" case.
->
+If possible, extend the anonymous struct used by BPF_PROG_LOAD command
+with an additional parameter to select the hash algorithm.
 
-Looks like I missed a commit when sending this patchset. Thanks for
-finding that. 
+Alternatively, create a new command to set the hash algorithm for
+subsequent BPF_PROG_LOAD commands.
 
-> Aside from that, you may want to consider introducing a new ".ebpf"
-> keyring to allow adding trusted keys specifically for eBPF verification
-> without having to rely on the system keyring.
->
-> Constraining oneself to sha256 doesn't seem future-proof.
->
+Use enum hash_algo in include/uapi/linux/hash_info.h to encode the
+selected algorithm.  You don't need to support all of these
+(some of them are deprecated), but at least the sha3 and possibly
+sha2 family is a good idea.
 
-Definitely not a bad idea, curious, how would you envision that looking
-from an UAPI perspective? 
+Note that CNSA 2.0 has raised the minimum approved hash size to
+384 bits both for sha2 and sha3 in light of PQC:
 
-> Some minor style issues in the commit message caught my eye:
->
->> This introduces signature verification for eBPF programs inside of the
->> bpf subsystem. Two signature validation schemes are included, one that
->
-> Use imperative mood, avoid repetitive "This ...", e.g.
-> "Introduce signature verification of eBPF programs..."
->
->> The signature check is performed before the call to
->> security_bpf_prog_load. This allows the LSM subsystem to be clued into
->> the result of the signature check, whilst granting knowledge of the
->> method and apparatus which was employed.
->
-> "Perform the signature check before calling security_bpf_prog_load()
-> to allow..."
->
-> Thanks,
->
-> Lukas
+https://www.fortanix.com/blog/which-post-quantum-cryptography-pqc-algorithm-should-i-use
+
+https://media.defense.gov/2022/Sep/07/2003071836/-1/-1/0/CSI_CNSA_2.0_FAQ_.PDF
+
+Granted, there's no mainline support for PQC signature algorithms yet,
+but there's at least one out-of-tree implementation, it's only a question
+of when not if something like this is submitted for mainline:
+
+https://github.com/smuellerDD/leancrypto
+
+Thanks,
+
+Lukas
 
