@@ -1,72 +1,88 @@
-Return-Path: <keyrings+bounces-2766-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2767-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A138BAC93C5
-	for <lists+keyrings@lfdr.de>; Fri, 30 May 2025 18:42:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFE9CAC9673
+	for <lists+keyrings@lfdr.de>; Fri, 30 May 2025 22:15:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE0FA1C21319
-	for <lists+keyrings@lfdr.de>; Fri, 30 May 2025 16:42:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E03B7A37C1
+	for <lists+keyrings@lfdr.de>; Fri, 30 May 2025 20:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8353B1D63D3;
-	Fri, 30 May 2025 16:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157AB283149;
+	Fri, 30 May 2025 20:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sricLOfm"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="dq24m/Ux"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF431CD1E4
-	for <keyrings@vger.kernel.org>; Fri, 30 May 2025 16:42:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3855128312B
+	for <keyrings@vger.kernel.org>; Fri, 30 May 2025 20:15:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748623339; cv=none; b=BjnzMDfWvC+D4EynFC5s9z2c3rjNQ+xOiPmH+kzPKv5etvEbH31oKqBm3+ZZ+KLK+4pkz5gvg7PI26lRdHfSOlr8aFlv8efSU/25yGfqlTI+ZjJPrNBt2qhkVPHS0AY8MOpPueh9o+TXhGgy0CQM5vquOTuxEPJKn8oK0XU8A8E=
+	t=1748636107; cv=none; b=AMu+jVwZxmGLHPn2bJzbmiwH9WZzDNUYTEhyOmpzgkaAgWlzBfCZ6TYEORQT5fTqN0+FS/l/ub2Loan6rneqDKfsyx5fZqroB0DiibVDklixBSZhuPIcVD5fEL8PJzuJK3Q1YWDLvNRx6wzPokuXLAlUGfX9cmxyQziDOpr7CeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748623339; c=relaxed/simple;
-	bh=6IpXsTCAiLKJWps9H8u+WyFNAUSFFMG0gHMOiyUtGhA=;
+	s=arc-20240116; t=1748636107; c=relaxed/simple;
+	bh=zKZD7kycK+DTv2eWWuFIsoyy8NdEndn/seS2tgq91d0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=usyCXoLPjoyp2i0+Zc9hDnnRQBr+Bi7JlJ71nMNVlrjgzB1ZIlh0pJb8YNY+V97b78RyA0C9aAYCU626s114SQnNeeSDSu49F2cL3Thh2/vjoBJ75gGlWBRTxVsGpKIiZaXYXla7rp/p9eXczg50CpJkZMjNkVgs8wDbJKjNHpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sricLOfm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E241BC113CF
-	for <keyrings@vger.kernel.org>; Fri, 30 May 2025 16:42:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1748623338;
-	bh=6IpXsTCAiLKJWps9H8u+WyFNAUSFFMG0gHMOiyUtGhA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=sricLOfmwuEfIgfE9cKbvi3WJos64eXyTXq+TMfUOFgoS/DpM1uM/THL3NHZQ+xEG
-	 pPG/lNyEMoMDUNkSdLAYrNXA1FPmkoeTekx6KZ/8WyZFAwd+PGDfN0fQnJy91/RXrt
-	 HfJc4jIgkXf7lnywMZv3yza/TF/OsK4w58CM3Ao1Kf7DkJrfnk9jT84ECkr+B8VPu3
-	 dF/ACwHbgDm5iOUAV5tn7UaidcfGgjgwlv1sIjhewxNjvEXasb2iwfX0xd84n5C5bm
-	 Yjphb/uKgzZRrL5BnQl87Bb88/7kYJTRcSbE7iWntPONsksi1DDrAbkKIZADe8RYoY
-	 rY/bdBq2nNVBA==
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-602c3f113bbso4188683a12.0
-        for <keyrings@vger.kernel.org>; Fri, 30 May 2025 09:42:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW+WXEUSXWAMzoQuC6+OgwN7YiCBO4dWsgFiQyChkX9P5+sfneAIZKV/tkLlfNxRALjriJhW1FDwg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXMTHsLkAzt4ixQh6EzB/RgGWNArnsLtE6VExPt6VWDZZyOLP4
-	ww38jBATE4fG4JsIRHk50tpK4bAf7pTJM86e8TzQ4/FuhKqTb4x8NCU9PJdOZAtXlTDzsThyuvE
-	I3hWpywrpaG41/DFZXOnbDawiJy+BtaCPHQXTtWn4
-X-Google-Smtp-Source: AGHT+IF2FYqfEVWekW2bGIEEdeuqDw988e+H+6pMRWdod3exqVv2+/w3XumjYUA5HTJg6yynsg8WDmm2FjVwvBVk7yM=
-X-Received: by 2002:a05:6402:234d:b0:605:310a:7668 with SMTP id
- 4fb4d7f45d1cf-6056e15e067mr3642169a12.22.1748623337297; Fri, 30 May 2025
- 09:42:17 -0700 (PDT)
+	 To:Cc:Content-Type; b=qdkevGPDJY7DIRi7OSdI3/UzrUKd8fIPIMDl5kVbjDdpw5YK1Yit5T4PMEGta2PpCIDYCJ4c0NyNaXBr7goOAkJ5PV2Q0ys71B2Ad48HttNihfJab6YqVmyBrwti6ECi0aDq+AjkNQG6RMycyAnKE0BXScZUzxTbEJuxRuz6x+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=dq24m/Ux; arc=none smtp.client-ip=209.85.219.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e7387d4a336so2185697276.2
+        for <keyrings@vger.kernel.org>; Fri, 30 May 2025 13:15:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1748636104; x=1749240904; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/6M9vTIekjqMakDV8dozG4WyWbU1408sp+iknzocvmg=;
+        b=dq24m/Ux7r5bRIaTKep599VlR96VKDws42dMDOlgzHeMBRIAc3HxVFD8MN1+qCQHvI
+         uvwOjH6Mn/GOs6TqaQOQ6/qivWi6JEfgLxZU6iss3AhdZeJm6Bt+g1HOy5l9brfTc9rQ
+         squiwRu7NZroCvM9U62qg8RfhrqCIafK5aTUv4jt53kxIkRo9pEApJHZpmSLDMXOVnNo
+         bz95duKhI1yHjgUkbbRg47QmFOIpVLBEsPua6ESvIucNq1/WxzcBpb3Cm4QX8zVLsiMN
+         Mk6q+T77T+Q/5EEg8OyQh3MiWkTYKdtIW6haVImoDGyMmk05LTmd77yKS3uanxvaABAz
+         8bQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1748636104; x=1749240904;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/6M9vTIekjqMakDV8dozG4WyWbU1408sp+iknzocvmg=;
+        b=k/5czpdrmRU3x4K1E9yFMwp0siz0Gd4sYr8ZywAd83utfLlCJWP7CgzGfY04VMx1gW
+         klpvW6q5YRXqlAOUdx4abB7VIOgJz9AdLEaGAif/nqNc41q/SnQI2eXT9JuKYQH0HGbf
+         hxIJTRRqTcC4pOpJcXt3najqRv30xNK23n0KwI/E8zMiXU6PxsNbYY78hM8DRq4cgoLW
+         Dfe7ykAHA60wi0em6G9ah0TbBf8p12OC3ws3K1TiQJiuHeY1WXUy+LAyl9uphody0q6c
+         hnepG7J+fZp8Z/PVCUq9UYNvKwif2t+BCAjbGLfsfP2q0QileUtRpjBHF0FQ6ImLMFWM
+         buIw==
+X-Forwarded-Encrypted: i=1; AJvYcCXhqXH5PVtacSIyerteRUEzpjsH3tQMdj04P+X0cHPYfye6PjjT/VxbIMAMOrNnX+4379G3IMfzTw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+UKqtRkv7/zeci8lk0qSDM4yUm4Q+v8OzDASZdt7r6LFeS/H6
+	q29Kbgr0sn9bvDbTk4XuOeUEE7uJWfJq3NId8gAINyB4VOSnWNR9iCJUnQ1zb0t9vJpIxYHPGPj
+	JAjy6Fa+VVLjVi+WLeD0pt+IO4EgFkgKMmkBhz4TS
+X-Gm-Gg: ASbGncvz+w3pcf5EHoZauiSGFo+coNXPDYC/mgQIBlAkT9e9OSgzEqRNKjkL0+14C/c
+	tIHgfw5x3JZCtnulberp0SQlOGaGo1PjWyeFP8FnTsHBEiNCMMPLVmOTLyMMTUZHASWMuBx0jAH
+	9DvSKcf/bZVfdDv4oZpl2R7T1RqMUu3+vV
+X-Google-Smtp-Source: AGHT+IGEgHJSnIpVMDUNuG4nRg+8xziUWzrtuXTTXaLUVkbGQ8T73R7RDyW+rOrdzHlp1IDD3+QOw7QkKNA1Z0zveMw=
+X-Received: by 2002:a81:fe16:0:b0:70e:7503:1176 with SMTP id
+ 00721157ae682-710504bb2b5mr39109027b3.4.1748636104081; Fri, 30 May 2025
+ 13:15:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250528215037.2081066-1-bboscaccy@linux.microsoft.com>
-In-Reply-To: <20250528215037.2081066-1-bboscaccy@linux.microsoft.com>
-From: KP Singh <kpsingh@kernel.org>
-Date: Fri, 30 May 2025 18:42:05 +0200
-X-Gmail-Original-Message-ID: <CACYkzJ5oJASZ43B531gY8mESqAF3WYFKez-H5vKxnk8r48Ouxg@mail.gmail.com>
-X-Gm-Features: AX0GCFs-bIfXeMrte4iZc7juw786873JPtM7-P-E2EMKVgLQje7MKvpFUlnxFlU
-Message-ID: <CACYkzJ5oJASZ43B531gY8mESqAF3WYFKez-H5vKxnk8r48Ouxg@mail.gmail.com>
+References: <20250528215037.2081066-1-bboscaccy@linux.microsoft.com> <CACYkzJ5oJASZ43B531gY8mESqAF3WYFKez-H5vKxnk8r48Ouxg@mail.gmail.com>
+In-Reply-To: <CACYkzJ5oJASZ43B531gY8mESqAF3WYFKez-H5vKxnk8r48Ouxg@mail.gmail.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Fri, 30 May 2025 16:14:52 -0400
+X-Gm-Features: AX0GCFvae8Nhzjdj75blgRs5ebZiu1Eaj7gYSoOZMxFQAT5NXKLhQ6NPMfSadE8
+Message-ID: <CAHC9VhSLOjQr4Ph2CefyEZGiB-Vqd4a8Y9=uA2YPo79Xo=Qopg@mail.gmail.com>
 Subject: Re: [PATCH 0/3] BPF signature verification
-To: Blaise Boscaccy <bboscaccy@linux.microsoft.com>
-Cc: Paul Moore <paul@paul-moore.com>, jarkko@kernel.org, zeffron@riotgames.com, 
+To: KP Singh <kpsingh@kernel.org>
+Cc: Blaise Boscaccy <bboscaccy@linux.microsoft.com>, jarkko@kernel.org, zeffron@riotgames.com, 
 	xiyou.wangcong@gmail.com, kysrinivasan@gmail.com, code@tyhicks.com, 
 	linux-security-module@vger.kernel.org, roberto.sassu@huawei.com, 
 	James.Bottomley@hansenpartnership.com, Alexei Starovoitov <ast@kernel.org>, 
@@ -84,148 +100,58 @@ Cc: Paul Moore <paul@paul-moore.com>, jarkko@kernel.org, zeffron@riotgames.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 28, 2025 at 11:50=E2=80=AFPM Blaise Boscaccy
-<bboscaccy@linux.microsoft.com> wrote:
->
-> As suggested or mandated by KP Singh
-> https://lore.kernel.org/linux-security-module/CACYkzJ6VQUExfyt0=3D-FmXz46=
-GHJh3d=3DFXh5j4KfexcEFbHV-vg@mail.gmail.com/,
-> this patchset proposes and implements an alternative hash-chain
-> algorithm for signature verification of BPF programs.
->
->
->
-> This design diverges in two key ways:
->
-> 1. Signature Strategy
->
-> Two different signature strategies are
-> implemented. One verifies only the signature of the loader program in
-> the kernel, as described in the link above. The other verifies the
-> program=E2=80=99s maps in-kernel via a hash chain.  The original design
-> required loader programs to be =E2=80=9Cself-aborting=E2=80=9D and embedd=
-ed the
-> terminal hash verification logic as metaprogramming code generation
-> routines inside libbpf. While this patchset supports that scheme, it
-> is considered undesirable in certain environments due to the potential
-> for supply-chain attack vectors and the lack of visibility for the LSM
+On Fri, May 30, 2025 at 12:42=E2=80=AFPM KP Singh <kpsingh@kernel.org> wrot=
+e:
+> On Wed, May 28, 2025 at 11:50=E2=80=AFPM Blaise Boscaccy
+> <bboscaccy@linux.microsoft.com> wrote:
 
-The loader program is signed by a trusted entity, If you trust the
-signature, then you trust it to do the signature verification. This is
-a fairly common pattern in security and a pattern that we will be
-using in other signed bpf use-cases which can choose to depend on
-signed loaders.
+...
 
-If your build environment that signs the BPF program is compromised
-and can inject arbitrary code, then signing does not help.  Can you
-explain what a supply chain attack would look like here?
+> Please hold off on further iterations, I am working on a series and
+> will share these patches based on the design that was proposed.
 
-> subsystem.  Additionally, it is impossible to verify the code
-> performing the signature verification, as it is uniquely regenerated
+I don't think there is any harm in Blaise continuing his work in this
+area, especially as he seems to be making reasonable progress towards
+a solution that satisfies everyone's needs.  Considering all of the
+work that Blaise has already invested in this, and his continued
+willingness to try to work with everyone in the community to converge
+on a solution, wouldn't it be more beneficial to work with Blaise on
+further developing/refining his patchset instead of posting a parallel
+effort?  It's your call of course, I'm not going to tell you, or
+anyone else, to refrain from posting patches upstream, but it seems
+like this is a good opportunity to help foster the development of a
+new contributor.
 
-The LSM needs to ensure that it allows trusted LOADER programs i.e.
-with signatures and potentially trusted signed user-space binaries
-with unsigned or delegated signing (this will be needed for Cilium and
-bpftrace that dynamically generate BPF programs), that's a more
-important aspect of the LSM policy from a BPF perspective.
+> > 2. Timing of Signature Check
+> >
+> > This patchset moves the signature check to a point before
+> > security_bpf_prog_load is invoked, due to an unresolved discussion
+> > here:
+>
+> This is fine and what I had in mind, signature verification does not
+> need to happen in the verifier and the existing hooks are good enough.
 
-MAP_EXCLUSIVE is missing and is required which prevents maps from
-being accessed by other programs as explained in the proposal.
+Excellent, I'm glad we can agree on the relative placement of the
+signature verification and the LSM hook.  Perhaps I misunderstood your
+design idea, but I took your comment:
 
-Please hold off on further iterations, I am working on a series and
-will share these patches based on the design that was proposed.
+"The signature check in the verifier (during BPF_PROG_LOAD):
 
->
-> for every program.
->
->
->
-> 2. Timing of Signature Check
->
-> This patchset moves the signature check to a point before
-> security_bpf_prog_load is invoked, due to an unresolved discussion
-> here:
+ verify_pkcs7_signature(prog->aux->sha, sizeof(prog->aux->sha),
+   sig_from_bpf_attr, =E2=80=A6);"
 
-This is fine and what I had in mind, signature verification does not
-need to happen in the verifier and the existing hooks are good enough.
-I did not reply to Paul's comment since this is a fairly trivial
-detail and would be obvious in the implementation that the verifier is
-not the right place to check the signature anyways as the instruction
-buffer is only stable pre-verification.
+https://lore.kernel.org/linux-security-module/CACYkzJ6VQUExfyt0=3D-FmXz46GH=
+Jh3d=3DFXh5j4KfexcEFbHV-vg@mail.gmail.com/
 
-> https://lore.kernel.org/linux-security-module/CAHC9VhTj3=3DZXgrYMNA+G64zs=
-OyZO+78uDs1g=3Dkh91=3DGR5KypYg@mail.gmail.com/
-> This change allows the LSM subsystem to be informed of the signature
-> verification result=E2=80=94if it occurred=E2=80=94and the method used, a=
-ll without
-> introducing a new hook. It improves visibility and auditability,
-> reducing the =E2=80=9Ctrust me, friend=E2=80=9D aspect of the original de=
-sign.
+... to mean that the PKCS7 signature verification was going to happen
+*in* the verifier, with the verifier being bpf_check().  Simply for my
+own education, if bpf_check() and/or the bpf_check() call in
+bpf_prog_load() is not the verifier, it would be helpful to know that,
+and also what code is considered the be the BPF verifier.  Regardless,
+it's a good step forward that we are all on the same page with respect
+to the authorization of signed/unsigned BPF programs.  We still have a
+ways to go it looks like, but we're making good progress.
 
-
-On Wed, May 28, 2025 at 11:50=E2=80=AFPM Blaise Boscaccy
-<bboscaccy@linux.microsoft.com> wrote:
->
-> As suggested or mandated by KP Singh
-> https://lore.kernel.org/linux-security-module/CACYkzJ6VQUExfyt0=3D-FmXz46=
-GHJh3d=3DFXh5j4KfexcEFbHV-vg@mail.gmail.com/,
-> this patchset proposes and implements an alternative hash-chain
-> algorithm for signature verification of BPF programs.
->
-> This design diverges in two key ways:
->
-> 1. Signature Strategy
->
-> Two different signature strategies are
-> implemented. One verifies only the signature of the loader program in
-> the kernel, as described in the link above. The other verifies the
-> program=E2=80=99s maps in-kernel via a hash chain.  The original design
-> required loader programs to be =E2=80=9Cself-aborting=E2=80=9D and embedd=
-ed the
-> terminal hash verification logic as metaprogramming code generation
-> routines inside libbpf. While this patchset supports that scheme, it
-> is considered undesirable in certain environments due to the potential
-> for supply-chain attack vectors and the lack of visibility for the LSM
-> subsystem.  Additionally, it is impossible to verify the code
-> performing the signature verification, as it is uniquely regenerated
-> for every program.
->
-> 2. Timing of Signature Check
->
-> This patchset moves the signature check to a point before
-> security_bpf_prog_load is invoked, due to an unresolved discussion
-> here:
-> https://lore.kernel.org/linux-security-module/CAHC9VhTj3=3DZXgrYMNA+G64zs=
-OyZO+78uDs1g=3Dkh91=3DGR5KypYg@mail.gmail.com/
-> This change allows the LSM subsystem to be informed of the signature
-> verification result=E2=80=94if it occurred=E2=80=94and the method used, a=
-ll without
-> introducing a new hook. It improves visibility and auditability,
-> reducing the =E2=80=9Ctrust me, friend=E2=80=9D aspect of the original de=
-sign.
->
->
-> Blaise Boscaccy (3):
->   bpf: Add bpf_check_signature
->   bpf: Support light-skeleton signatures in autogenerated code
->   bpftool: Allow signing of light-skeleton programs
->
->  include/linux/bpf.h            |   2 +
->  include/linux/verification.h   |   1 +
->  include/uapi/linux/bpf.h       |   4 +
->  kernel/bpf/arraymap.c          |  11 +-
->  kernel/bpf/syscall.c           | 123 +++++++++++++++++++-
->  tools/bpf/bpftool/Makefile     |   4 +-
->  tools/bpf/bpftool/common.c     | 204 +++++++++++++++++++++++++++++++++
->  tools/bpf/bpftool/gen.c        |  66 ++++++++++-
->  tools/bpf/bpftool/main.c       |  24 +++-
->  tools/bpf/bpftool/main.h       |  23 ++++
->  tools/include/uapi/linux/bpf.h |   4 +
->  tools/lib/bpf/libbpf.h         |   4 +
->  tools/lib/bpf/skel_internal.h  |  28 ++++-
->  13 files changed, 491 insertions(+), 7 deletions(-)
->
-> --
-> 2.48.1
->
+--=20
+paul-moore.com
 
