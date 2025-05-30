@@ -1,87 +1,72 @@
-Return-Path: <keyrings+bounces-2767-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2768-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFE9CAC9673
-	for <lists+keyrings@lfdr.de>; Fri, 30 May 2025 22:15:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0352AC96B8
+	for <lists+keyrings@lfdr.de>; Fri, 30 May 2025 22:44:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E03B7A37C1
-	for <lists+keyrings@lfdr.de>; Fri, 30 May 2025 20:13:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58A457A5A10
+	for <lists+keyrings@lfdr.de>; Fri, 30 May 2025 20:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157AB283149;
-	Fri, 30 May 2025 20:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCAE283682;
+	Fri, 30 May 2025 20:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="dq24m/Ux"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CbPhc/no"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3855128312B
-	for <keyrings@vger.kernel.org>; Fri, 30 May 2025 20:15:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F31283154
+	for <keyrings@vger.kernel.org>; Fri, 30 May 2025 20:44:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748636107; cv=none; b=AMu+jVwZxmGLHPn2bJzbmiwH9WZzDNUYTEhyOmpzgkaAgWlzBfCZ6TYEORQT5fTqN0+FS/l/ub2Loan6rneqDKfsyx5fZqroB0DiibVDklixBSZhuPIcVD5fEL8PJzuJK3Q1YWDLvNRx6wzPokuXLAlUGfX9cmxyQziDOpr7CeI=
+	t=1748637885; cv=none; b=D+GjYJGMxXi+egMONjB8Ktz6mdYBCgzjgKkBINqwE75/vGmRcHMU8C7iRjExs0SYLuqjSLRARNiIPqgL2+8N2bn43qr0x4BQykhJc4htEUbdQ3pKbL2UAKPAiXIkRwSPUyzdlrVQnv4RKNPuTkittvgGuDqQw+cHdB3lRk7u8gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748636107; c=relaxed/simple;
-	bh=zKZD7kycK+DTv2eWWuFIsoyy8NdEndn/seS2tgq91d0=;
+	s=arc-20240116; t=1748637885; c=relaxed/simple;
+	bh=WKODy9FgXDgbxxqWIA/IwTJOy8VJdioFU2ccnli5Qqw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qdkevGPDJY7DIRi7OSdI3/UzrUKd8fIPIMDl5kVbjDdpw5YK1Yit5T4PMEGta2PpCIDYCJ4c0NyNaXBr7goOAkJ5PV2Q0ys71B2Ad48HttNihfJab6YqVmyBrwti6ECi0aDq+AjkNQG6RMycyAnKE0BXScZUzxTbEJuxRuz6x+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=dq24m/Ux; arc=none smtp.client-ip=209.85.219.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-e7387d4a336so2185697276.2
-        for <keyrings@vger.kernel.org>; Fri, 30 May 2025 13:15:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1748636104; x=1749240904; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/6M9vTIekjqMakDV8dozG4WyWbU1408sp+iknzocvmg=;
-        b=dq24m/Ux7r5bRIaTKep599VlR96VKDws42dMDOlgzHeMBRIAc3HxVFD8MN1+qCQHvI
-         uvwOjH6Mn/GOs6TqaQOQ6/qivWi6JEfgLxZU6iss3AhdZeJm6Bt+g1HOy5l9brfTc9rQ
-         squiwRu7NZroCvM9U62qg8RfhrqCIafK5aTUv4jt53kxIkRo9pEApJHZpmSLDMXOVnNo
-         bz95duKhI1yHjgUkbbRg47QmFOIpVLBEsPua6ESvIucNq1/WxzcBpb3Cm4QX8zVLsiMN
-         Mk6q+T77T+Q/5EEg8OyQh3MiWkTYKdtIW6haVImoDGyMmk05LTmd77yKS3uanxvaABAz
-         8bQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748636104; x=1749240904;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/6M9vTIekjqMakDV8dozG4WyWbU1408sp+iknzocvmg=;
-        b=k/5czpdrmRU3x4K1E9yFMwp0siz0Gd4sYr8ZywAd83utfLlCJWP7CgzGfY04VMx1gW
-         klpvW6q5YRXqlAOUdx4abB7VIOgJz9AdLEaGAif/nqNc41q/SnQI2eXT9JuKYQH0HGbf
-         hxIJTRRqTcC4pOpJcXt3najqRv30xNK23n0KwI/E8zMiXU6PxsNbYY78hM8DRq4cgoLW
-         Dfe7ykAHA60wi0em6G9ah0TbBf8p12OC3ws3K1TiQJiuHeY1WXUy+LAyl9uphody0q6c
-         hnepG7J+fZp8Z/PVCUq9UYNvKwif2t+BCAjbGLfsfP2q0QileUtRpjBHF0FQ6ImLMFWM
-         buIw==
-X-Forwarded-Encrypted: i=1; AJvYcCXhqXH5PVtacSIyerteRUEzpjsH3tQMdj04P+X0cHPYfye6PjjT/VxbIMAMOrNnX+4379G3IMfzTw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+UKqtRkv7/zeci8lk0qSDM4yUm4Q+v8OzDASZdt7r6LFeS/H6
-	q29Kbgr0sn9bvDbTk4XuOeUEE7uJWfJq3NId8gAINyB4VOSnWNR9iCJUnQ1zb0t9vJpIxYHPGPj
-	JAjy6Fa+VVLjVi+WLeD0pt+IO4EgFkgKMmkBhz4TS
-X-Gm-Gg: ASbGncvz+w3pcf5EHoZauiSGFo+coNXPDYC/mgQIBlAkT9e9OSgzEqRNKjkL0+14C/c
-	tIHgfw5x3JZCtnulberp0SQlOGaGo1PjWyeFP8FnTsHBEiNCMMPLVmOTLyMMTUZHASWMuBx0jAH
-	9DvSKcf/bZVfdDv4oZpl2R7T1RqMUu3+vV
-X-Google-Smtp-Source: AGHT+IGEgHJSnIpVMDUNuG4nRg+8xziUWzrtuXTTXaLUVkbGQ8T73R7RDyW+rOrdzHlp1IDD3+QOw7QkKNA1Z0zveMw=
-X-Received: by 2002:a81:fe16:0:b0:70e:7503:1176 with SMTP id
- 00721157ae682-710504bb2b5mr39109027b3.4.1748636104081; Fri, 30 May 2025
- 13:15:04 -0700 (PDT)
+	 To:Cc:Content-Type; b=NDd92YVnewYhCfon9xVvW7wgg7DfSKBldcj0Th71iWTB6mqgcqzMaUiGNY75WMJAnJAglmZKONFOTRR9HHVvhdkR8ZPv7mrV3hhZs2KBdJVqiYT076hsJkgK9S7im3g1uOOdyz068L8WMk1PYb30A5yhAmUPKVEfSyhmDLHMvsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CbPhc/no; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6DAC113D0
+	for <keyrings@vger.kernel.org>; Fri, 30 May 2025 20:44:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1748637884;
+	bh=WKODy9FgXDgbxxqWIA/IwTJOy8VJdioFU2ccnli5Qqw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=CbPhc/no0sprPn3MpKuqpBbsDpyw9abX5ODIn1jJi6UkVBrWyHG4hA2FG5nFkCVSp
+	 w7HUoXKR8iWP5TENPwSpNXcF31CXXNZp26hUnvXfB/+22FafWkB0EYN7V+qfKbY0TA
+	 wEo20e7ECyluRc2B8UpVE8o60SlqtVocaXAQH1/iBVgjVptT5tz6XuIOz2H2l7BYWX
+	 LmnGZ0oFerv2zqPVzvtRd/t2ZrHV0AIeRMkylsU85E1P4clXyGb2EAVLTR7W87J5p9
+	 vH/dAIJCMs1S+jWkvRQds74WhsJdCgIFqk2Vx26n+oi/CqgNPW6vFdVh2mck5Gnjki
+	 h4X3m4ZvxTUTg==
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ad883afdf0cso465603266b.0
+        for <keyrings@vger.kernel.org>; Fri, 30 May 2025 13:44:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXZNJTUd5nqq1q0LW+wObeISQfWrCcYOUj047yKkbAOv5BcIQ0GPpB4LpGYq45EE1NflG266XjSZw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBhOPypbfuy8TqWS+Se82/4hQ2AwsTpJDmHtGaNfXmXimwTeNk
+	Xv+SANbZblV4PKG+4IVDqhO+io1IHD4ngPp69CohIq9F7YGZu1dmmvhwIqlU/LopYTqGi7cd1qQ
+	kHdb1rJln/QApFIe86SPHqUvYFAWLX613lDWJulnz
+X-Google-Smtp-Source: AGHT+IFYPjLrtRmSUw02l8acZu75ZEk31voCEunbDz/ggHhtTlCZtv6L/sdj5D+DMpzfEs9+aMo/5KET1xbavpqajeo=
+X-Received: by 2002:a17:907:3d16:b0:ad8:a935:b8f9 with SMTP id
+ a640c23a62f3a-adb36ba4a97mr335177366b.32.1748637883137; Fri, 30 May 2025
+ 13:44:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250528215037.2081066-1-bboscaccy@linux.microsoft.com> <CACYkzJ5oJASZ43B531gY8mESqAF3WYFKez-H5vKxnk8r48Ouxg@mail.gmail.com>
-In-Reply-To: <CACYkzJ5oJASZ43B531gY8mESqAF3WYFKez-H5vKxnk8r48Ouxg@mail.gmail.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Fri, 30 May 2025 16:14:52 -0400
-X-Gm-Features: AX0GCFvae8Nhzjdj75blgRs5ebZiu1Eaj7gYSoOZMxFQAT5NXKLhQ6NPMfSadE8
-Message-ID: <CAHC9VhSLOjQr4Ph2CefyEZGiB-Vqd4a8Y9=uA2YPo79Xo=Qopg@mail.gmail.com>
+References: <20250528215037.2081066-1-bboscaccy@linux.microsoft.com>
+ <CACYkzJ5oJASZ43B531gY8mESqAF3WYFKez-H5vKxnk8r48Ouxg@mail.gmail.com> <CAHC9VhSLOjQr4Ph2CefyEZGiB-Vqd4a8Y9=uA2YPo79Xo=Qopg@mail.gmail.com>
+In-Reply-To: <CAHC9VhSLOjQr4Ph2CefyEZGiB-Vqd4a8Y9=uA2YPo79Xo=Qopg@mail.gmail.com>
+From: KP Singh <kpsingh@kernel.org>
+Date: Fri, 30 May 2025 22:44:32 +0200
+X-Gmail-Original-Message-ID: <CACYkzJ4W9yhET8AnwvU5hhbP8nsH12sneqzKexVs6p4C596+sA@mail.gmail.com>
+X-Gm-Features: AX0GCFtEzKd5icGNP9zMXhh3w0IjhKTZ4H9XX606OWYKl73LpaAxQPOFCdjO9vc
+Message-ID: <CACYkzJ4W9yhET8AnwvU5hhbP8nsH12sneqzKexVs6p4C596+sA@mail.gmail.com>
 Subject: Re: [PATCH 0/3] BPF signature verification
-To: KP Singh <kpsingh@kernel.org>
+To: Paul Moore <paul@paul-moore.com>
 Cc: Blaise Boscaccy <bboscaccy@linux.microsoft.com>, jarkko@kernel.org, zeffron@riotgames.com, 
 	xiyou.wangcong@gmail.com, kysrinivasan@gmail.com, code@tyhicks.com, 
 	linux-security-module@vger.kernel.org, roberto.sassu@huawei.com, 
@@ -100,58 +85,90 @@ Cc: Blaise Boscaccy <bboscaccy@linux.microsoft.com>, jarkko@kernel.org, zeffron@
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 30, 2025 at 12:42=E2=80=AFPM KP Singh <kpsingh@kernel.org> wrot=
-e:
-> On Wed, May 28, 2025 at 11:50=E2=80=AFPM Blaise Boscaccy
-> <bboscaccy@linux.microsoft.com> wrote:
-
-...
-
-> Please hold off on further iterations, I am working on a series and
-> will share these patches based on the design that was proposed.
-
-I don't think there is any harm in Blaise continuing his work in this
-area, especially as he seems to be making reasonable progress towards
-a solution that satisfies everyone's needs.  Considering all of the
-work that Blaise has already invested in this, and his continued
-willingness to try to work with everyone in the community to converge
-on a solution, wouldn't it be more beneficial to work with Blaise on
-further developing/refining his patchset instead of posting a parallel
-effort?  It's your call of course, I'm not going to tell you, or
-anyone else, to refrain from posting patches upstream, but it seems
-like this is a good opportunity to help foster the development of a
-new contributor.
-
-> > 2. Timing of Signature Check
-> >
-> > This patchset moves the signature check to a point before
-> > security_bpf_prog_load is invoked, due to an unresolved discussion
-> > here:
+On Fri, May 30, 2025 at 10:15=E2=80=AFPM Paul Moore <paul@paul-moore.com> w=
+rote:
 >
-> This is fine and what I had in mind, signature verification does not
-> need to happen in the verifier and the existing hooks are good enough.
+> On Fri, May 30, 2025 at 12:42=E2=80=AFPM KP Singh <kpsingh@kernel.org> wr=
+ote:
+> > On Wed, May 28, 2025 at 11:50=E2=80=AFPM Blaise Boscaccy
+> > <bboscaccy@linux.microsoft.com> wrote:
+>
+> ...
+>
+> > Please hold off on further iterations, I am working on a series and
+> > will share these patches based on the design that was proposed.
+>
+> I don't think there is any harm in Blaise continuing his work in this
+> area, especially as he seems to be making reasonable progress towards
+> a solution that satisfies everyone's needs.  Considering all of the
+> work that Blaise has already invested in this, and his continued
+> willingness to try to work with everyone in the community to converge
+> on a solution, wouldn't it be more beneficial to work with Blaise on
+> further developing/refining his patchset instead of posting a parallel
+> effort?  It's your call of course, I'm not going to tell you, or
+> anyone else, to refrain from posting patches upstream, but it seems
+> like this is a good opportunity to help foster the development of a
+> new contributor.
 
-Excellent, I'm glad we can agree on the relative placement of the
-signature verification and the LSM hook.  Perhaps I misunderstood your
-design idea, but I took your comment:
+I think Blaise's interactions leave a lot to be desired, especially as
+a new contributor with the replies being unnecessarily abrasive, which
+I am choosing to ignore.
 
-"The signature check in the verifier (during BPF_PROG_LOAD):
+Regardless, it would be more efficient to handle the subtleties here
+if someone from the core BPF community implements this. This is why I
+volunteered myself, but I need some time to wrap up the code and send
+it on the list. Blaise can continue to send patches that don't
+incorporate the feedback, it will only delay me further.
 
- verify_pkcs7_signature(prog->aux->sha, sizeof(prog->aux->sha),
-   sig_from_bpf_attr, =E2=80=A6);"
+>
+> > > 2. Timing of Signature Check
+> > >
+> > > This patchset moves the signature check to a point before
+> > > security_bpf_prog_load is invoked, due to an unresolved discussion
+> > > here:
+> >
+> > This is fine and what I had in mind, signature verification does not
+> > need to happen in the verifier and the existing hooks are good enough.
+>
+> Excellent, I'm glad we can agree on the relative placement of the
+> signature verification and the LSM hook.  Perhaps I misunderstood your
+> design idea, but I took your comment:
+>
+> "The signature check in the verifier (during BPF_PROG_LOAD):
 
-https://lore.kernel.org/linux-security-module/CACYkzJ6VQUExfyt0=3D-FmXz46GH=
-Jh3d=3DFXh5j4KfexcEFbHV-vg@mail.gmail.com/
+I meant during BPF_PROG_LOAD i.e. before the bpf_check is triggered,
+as I said this is better explained when implemented.
 
-... to mean that the PKCS7 signature verification was going to happen
-*in* the verifier, with the verifier being bpf_check().  Simply for my
-own education, if bpf_check() and/or the bpf_check() call in
-bpf_prog_load() is not the verifier, it would be helpful to know that,
-and also what code is considered the be the BPF verifier.  Regardless,
-it's a good step forward that we are all on the same page with respect
-to the authorization of signed/unsigned BPF programs.  We still have a
-ways to go it looks like, but we're making good progress.
+>> trust me, friend=E2=80=9D aspect of the original design.
 
---=20
-paul-moore.com
+The kernel is the TCB, both LSM and BPF are a part of the kernel and
+part of the same trust domain, LSM has sufficient information in the
+existing LSM hooks to enforce a signature policy and there is no need
+for a boolean:
+
+* If attr.signature is set, it's enforced, a new boolean does not
+convey any new information here.
+* If we specifically need auditing here, we can add an audit call in
+the signature_verification method, this can be done in a follow-up
+series.
+
+
+>
+>  verify_pkcs7_signature(prog->aux->sha, sizeof(prog->aux->sha),
+>    sig_from_bpf_attr, =E2=80=A6);"
+>
+> https://lore.kernel.org/linux-security-module/CACYkzJ6VQUExfyt0=3D-FmXz46=
+GHJh3d=3DFXh5j4KfexcEFbHV-vg@mail.gmail.com/
+>
+> ... to mean that the PKCS7 signature verification was going to happen
+> *in* the verifier, with the verifier being bpf_check().  Simply for my
+> own education, if bpf_check() and/or the bpf_check() call in
+> bpf_prog_load() is not the verifier, it would be helpful to know that,
+> and also what code is considered the be the BPF verifier.  Regardless,
+> it's a good step forward that we are all on the same page with respect
+> to the authorization of signed/unsigned BPF programs.  We still have a
+> ways to go it looks like, but we're making good progress.
+>
+> --
+> paul-moore.com
 
