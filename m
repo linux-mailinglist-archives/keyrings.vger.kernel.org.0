@@ -1,349 +1,270 @@
-Return-Path: <keyrings+bounces-2784-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2785-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47FFEACBD69
-	for <lists+keyrings@lfdr.de>; Tue,  3 Jun 2025 00:40:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 294E0ACC275
+	for <lists+keyrings@lfdr.de>; Tue,  3 Jun 2025 10:53:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04270173C03
-	for <lists+keyrings@lfdr.de>; Mon,  2 Jun 2025 22:40:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD1FE3A4D79
+	for <lists+keyrings@lfdr.de>; Tue,  3 Jun 2025 08:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F60253359;
-	Mon,  2 Jun 2025 22:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A268255F52;
+	Tue,  3 Jun 2025 08:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="VFq4dW87"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VO5Miahl"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0C01E2606
-	for <keyrings@vger.kernel.org>; Mon,  2 Jun 2025 22:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332304F5E0
+	for <keyrings@vger.kernel.org>; Tue,  3 Jun 2025 08:52:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748904049; cv=none; b=O7v+/afJnKQXXCOlk2YIWGPr/0VG1pFedJn4jMgubRjbmsOGqaUdEH3BSFjNyqO41FVgUZMnHK/+/eUl4rl3PY3hWnUv115g+Af6oQtXzq9qGQSxh8894hu2jEPsAQ9h3OUy6tvHmXjVfAhCoFJZXuFVA0iB/n50qG6fOBRf0Rs=
+	t=1748940780; cv=none; b=NXSblIcaTp1z2LUzHX1chesvtv8K+s3kRYYiNOdGCe5JnJumkHaSmcZUfcSXDy6/jOBT0OXd4da7HQiY8sIn3XHiS15JGC7PNg1hv4GEXqA8oPPwKeWb4hqp1TptdZdX8/dePWNZWeNoMd9fFTTBQBRjIxGJHu52j2C/Dijfe7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748904049; c=relaxed/simple;
-	bh=/vvqRw9cz+5hMeJ/bcZKDuYvQogKzDJ587sBcYGc52I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JhqwXnsLRRY1ZBYwOg8Snhy+eXI97X22FQDwO3z0ImeZinIcu4n9leTyR+mhD6+hPepj/Q84ly70f6SF8xOL+elvaLU845OCJFgiAoESjH9YdFk6/1EW6XniaCOIzgmQWa3wcLRy6J/9oPYCcRIIWMrStlEYHz9RrAWyBzKjzkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=VFq4dW87; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-70e5599b795so47998817b3.3
-        for <keyrings@vger.kernel.org>; Mon, 02 Jun 2025 15:40:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1748904047; x=1749508847; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T32s96RITG9z0l1YbpSqA97I6G74VAkYppjM6RayCCs=;
-        b=VFq4dW87tGINOuC6qSQD5j9WiMr2TkZgUaLSkv5zVpZqZ+zGcYj61ebt6f1ehwOQtp
-         MVvYhC+l83OW9xH2r2uuwKp86XlqlAxBphF9zVwO8hVIZaKTtrM5nOSPD9I1qzK642n6
-         C61kEJV03SOQSjW0JJvcc7CsssTjYo9DVCDpA80hXUznPOpSkElp2zYF4ANqFALJqw3B
-         8g5hO4iOahsdy0F8PJhAje2ynt7j3ITBb2G+06TMNRRnBtXAQEKg/tlEoGELLnMtNN6s
-         tGA0kUx4d7iV/6Ug+KuMDTZfoJf8CRIbYWT9nRmgP3k262G5NUfkabnrRbN2FuCUM7yO
-         RzFQ==
+	s=arc-20240116; t=1748940780; c=relaxed/simple;
+	bh=9/C2MTtGy92Vv0hPG8laZGxliqByuslaG4nla4YUdig=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=HFtJLq5HMuhv5Zss0HDJeOpS/iCaWOGQLEuA1fT0OI7Z7gHqgk+afZrPIOBBMmwug+HE8ZpkyT2sw8435YxAMPqYJiyX2eP5KnykB1w/UfyWDjFdUDxdzLnurB/zpz4UziWhukJSGlauU8onLfy4yvM5wgAYsfa7KhPNdEfI8dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VO5Miahl; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1748940777;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fokWVoE1/UZZzyISn1y7Db8mSF3EnEdFgZvjp1rn9Hg=;
+	b=VO5Miahlqqj311drb25ZuizB7Dlf6lnnbXzn72Bn9CdWLbwB7ss7EhAl8I1oM0Yrk5zsNI
+	kf70S+Yv8qrQysBpxatzzC/2eOb5CUeXgJvIblRjQ+vuqdNuhWizxGOxO3hDUpjrdRZGUU
+	sBrhq252EL8XT/nAxOHJe9IAPG83k+w=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-620-M16zju5cMxyqPtZYLAyIMw-1; Tue, 03 Jun 2025 04:52:56 -0400
+X-MC-Unique: M16zju5cMxyqPtZYLAyIMw-1
+X-Mimecast-MFC-AGG-ID: M16zju5cMxyqPtZYLAyIMw_1748940775
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3a4f6ba526eso2777558f8f.1
+        for <keyrings@vger.kernel.org>; Tue, 03 Jun 2025 01:52:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748904047; x=1749508847;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1748940775; x=1749545575;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=T32s96RITG9z0l1YbpSqA97I6G74VAkYppjM6RayCCs=;
-        b=KGCFJkfzxGQssDnmolC+t7rnKspZYQ9Nmea1bJiRboojArMl18iMabsDY/veei4VBW
-         M+C1huhmfpfRlCnmizGWf8P5U1NWrY4S1Dp476GKNFqUnFBlQDRlhiqPO9Js7zIcEaaZ
-         iYx+vjmgrm0twghQvzxUdmwJopUdXiRBk6z7vI26+jVL5xHRVEYp43oGH7080tSxtr3d
-         uF+klIxJ5kQed7hISmVOWQLavS4ZydsgoqKvZDjoga8Cxyeq+rkvJNuTDsHrQ0RAmKVk
-         TVEbaFrQVXPPDj7jvvzZLMNtDJgiAOmdZLF0dvYNkfxjNZQdI4S+X9dWrX+hGIZOd4aa
-         325w==
-X-Forwarded-Encrypted: i=1; AJvYcCWKZU/hgmZ7jhg7pwxatUTalQWJT0BJKoljbu2KF1ppZP1XgwrHW30YBatwgt+e2rP4MM9wLuCpXw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9LxuWp2OzrGB5QpCoJ2ayKYnpP3laVui4znAovaNG0ou3eoOS
-	8XeHca7YN3RPxbmcnMXvI/C3YDuWTbN7JpIFRnvRXZaV3AyomTQstMKxurxNk7Jkhy47HC05lol
-	LwcIx40ON6HSQgEPs8hDek71q3RbH+ggJp4tAM2mU
-X-Gm-Gg: ASbGncveQ5vTpuGQ/c2zX57lUV687C2mfFBfBpZlzVFY90iRRu/3Ios24vEI8dsb+85
-	GQt+IHv8d1QfxJ3pXcswwdjStr7PJwhE3Ew13bk07HWHXtRlknIr+2dfMLdFlTgvoHESfwHPtMR
-	d8gRNiYBHeGzsdKiLDW3lad07hf4yxPQOV
-X-Google-Smtp-Source: AGHT+IEoW15vP4TZMilz80sYx0Hku+Zl/sAggEOxsTe06cP7n08O7EyiHxpX3KBOESBFu/aogEn4PvBql4PlUpAmSMI=
-X-Received: by 2002:a05:690c:6382:b0:70e:7503:1181 with SMTP id
- 00721157ae682-70f97eaa4femr226665457b3.18.1748904046535; Mon, 02 Jun 2025
- 15:40:46 -0700 (PDT)
+        bh=fokWVoE1/UZZzyISn1y7Db8mSF3EnEdFgZvjp1rn9Hg=;
+        b=nEouXTdJrtWWF4HIkL4lYWWxKzrAlwS88fX1xm3tqzZjyWhGRYhrtx9DLAi0KwLwQD
+         U7UmAOJP1k/wZB9Ap2dkB90Kr2BqRCjn1gubGl5yt1P0eD9W28CL2pZoZ0HYV0XPsNNE
+         fznqRZhhyH1w5MKyQKo0H4f9sBDJG8bZCmg3cWud1y9X/XU2+UpFuCCNSLDIljjIHUow
+         2EptLgcXp0pPVRnsrewmFeTeuP6/ELXMU4L9VPNQe0PKc0XZN0ymZlpJktnYFDOGZQ43
+         U1viIRwFoPNW8rXGBVoOUvxRAgQMKg/4ObpqRevxOAJW4E8hCOSp9HdT2QBHfFKCkJoP
+         Bevg==
+X-Forwarded-Encrypted: i=1; AJvYcCVyPaTePQ9ANizRBp+LEZqmfi2f8YTGE/N4KaNj0gFxTcPyxm6mb56wBMPZ+JGZ+TdVyB2z/zU6rQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxP76mnF09yDEj+Ypt07wYZA+c3113pTCr6WBUNNqA3VacvUxPy
+	/Ra/46ySn1ht8CGfIs+kO9oUFuHXt1f51ozDtsW94EWT5WcVVnfFifpsb9vnaKLHzIItgwz1enA
+	6vIyfmYHO5JHIXe47Nqnb2xixwS/p8nHE+zRDrN5R9rOwa5m+/eP2VKLjMKHK
+X-Gm-Gg: ASbGnct/ywaatBon1WrGeUcCmArdGc0UpnCQPrKjDVw4LUpnZO+Kf4KaNpO88b56HrY
+	V1/phybHzd5ozaN/E6aaLvw48X7OAxgXtnxFh7OSaqwygbUR2vm1+uOA3XsiAxGQwgjRm/L3R7V
+	Em2pBgMwd2LU0aqGHn3X3YNXQ6c22jGlSxYH5y7VAkR4S9sP1apk1wg9SdT30WfEGaWgjeXJM//
+	wik/9C81vB80Wmc4mr+LmnKzvkLoJ4J86tZ8c114AoesN4jGOIsZ7z/XWamRRGqeUVA6Eoc1UTY
+	shpgqIE=
+X-Received: by 2002:a5d:5f50:0:b0:3a4:d994:be4b with SMTP id ffacd0b85a97d-3a4f89a47a7mr12821673f8f.1.1748940774725;
+        Tue, 03 Jun 2025 01:52:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGEHrNubrNeaL99rs9CvcijC7m6ROFlnCc2yKxqiTtySjgF89euRWCZceONTzwb++Fm8VsBg==
+X-Received: by 2002:a5d:5f50:0:b0:3a4:d994:be4b with SMTP id ffacd0b85a97d-3a4f89a47a7mr12821635f8f.1.1748940774311;
+        Tue, 03 Jun 2025 01:52:54 -0700 (PDT)
+Received: from fedora (g3.ign.cz. [91.219.240.17])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a4efe6c842sm17289467f8f.29.2025.06.03.01.52.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Jun 2025 01:52:53 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>,
+ linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org,
+ linux-modules@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>, David
+ Woodhouse <dwmw2@infradead.org>, Jonathan Corbet <corbet@lwn.net>, Luis
+ Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, Sami
+ Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>,
+ Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu
+ <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Eric Snowberg <eric.snowberg@oracle.com>, Paul Moore
+ <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn"
+ <serge@hallyn.com>, Peter Jones <pjones@redhat.com>, Robert Holmes
+ <robeholmes@gmail.com>, Jeremy Cline <jcline@redhat.com>, Coiby Xu
+ <coxu@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
+Subject: Re: [PATCH RFC 1/1] module: Make use of platform keyring for module
+ signature verify
+In-Reply-To: <948f5567fe4d9ae39aa2528965f123e42bf82b46.camel@HansenPartnership.com>
+References: <20250602132535.897944-1-vkuznets@redhat.com>
+ <20250602132535.897944-2-vkuznets@redhat.com>
+ <948f5567fe4d9ae39aa2528965f123e42bf82b46.camel@HansenPartnership.com>
+Date: Tue, 03 Jun 2025 10:52:52 +0200
+Message-ID: <87r001yzob.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250528215037.2081066-1-bboscaccy@linux.microsoft.com> <20250528215037.2081066-2-bboscaccy@linux.microsoft.com>
-In-Reply-To: <20250528215037.2081066-2-bboscaccy@linux.microsoft.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Mon, 2 Jun 2025 18:40:35 -0400
-X-Gm-Features: AX0GCFtYhBGLoq5-Qs5c7_qoke3991xjj2U1oRE7b1POKvzoUfmQJ8v4VIG2L64
-Message-ID: <CAHC9VhQT=ymqssa9ymXtvssHTdVH_64T8Mpb0Mh8oxRD0Guo_Q@mail.gmail.com>
-Subject: Re: [PATCH 1/3] bpf: Add bpf_check_signature
-To: Blaise Boscaccy <bboscaccy@linux.microsoft.com>
-Cc: jarkko@kernel.org, zeffron@riotgames.com, xiyou.wangcong@gmail.com, 
-	kysrinivasan@gmail.com, code@tyhicks.com, 
-	linux-security-module@vger.kernel.org, roberto.sassu@huawei.com, 
-	James.Bottomley@hansenpartnership.com, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, 
-	David Howells <dhowells@redhat.com>, Lukas Wunner <lukas@wunner.de>, 
-	Ignat Korchagin <ignat@cloudflare.com>, Quentin Monnet <qmo@kernel.org>, 
-	Jason Xing <kerneljasonxing@gmail.com>, Willem de Bruijn <willemb@google.com>, 
-	Anton Protopopov <aspsk@isovalent.com>, Jordan Rome <linux@jordanrome.com>, 
-	Martin Kelly <martin.kelly@crowdstrike.com>, Alan Maguire <alan.maguire@oracle.com>, 
-	Matteo Croce <teknoraver@meta.com>, bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	keyrings@vger.kernel.org, linux-crypto@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 28, 2025 at 5:50=E2=80=AFPM Blaise Boscaccy
-<bboscaccy@linux.microsoft.com> wrote:
+James Bottomley <James.Bottomley@HansenPartnership.com> writes:
+
+> On Mon, 2025-06-02 at 15:25 +0200, Vitaly Kuznetsov wrote:
+>> This patch complements commit 278311e417be ("kexec, KEYS: Make use of
+>> platform keyring for signature verify") and commit 6fce1f40e951
+>> ("dm verity: add support for signature verification with platform
+>> keyring")
+>> and allows for signing modules using keys from SecureBoot 'db'. This
+>> may
+>> come handy when the user has control over it, e.g. in a virtualized
+>> or a
+>> cloud environment.
+>>=20
+>> Suggested-by: Robert Holmes <robeholmes@gmail.com>
+>> Signed-off-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+>> ---
+>> =C2=A0Documentation/admin-guide/module-signing.rst |=C2=A0 6 ++++++
+>> =C2=A0kernel/module/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 | 11 +++++++++++
+>> =C2=A0kernel/module/signing.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 |=C2=A0 9 ++++++++-
+>> =C2=A0security/integrity/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
+=A0 2 +-
+>> =C2=A04 files changed, 26 insertions(+), 2 deletions(-)
+>>=20
+>> diff --git a/Documentation/admin-guide/module-signing.rst
+>> b/Documentation/admin-guide/module-signing.rst
+>> index a8667a777490..44ed93e586b9 100644
+>> --- a/Documentation/admin-guide/module-signing.rst
+>> +++ b/Documentation/admin-guide/module-signing.rst
+>> @@ -118,6 +118,12 @@ This has a number of options available:
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 additional certificates which will be inc=
+luded in the system
+>> keyring by
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 default.
+>> =C2=A0
+>> + (5) :menuselection:`Use .platform keyring for verifying kernel
+>> modules signatures`
+>> +=C2=A0=C2=A0=C2=A0=C2=A0 (``CONFIG_MODULE_SIG_PLATFORM``)
+>> +
+>> +=C2=A0=C2=A0=C2=A0=C2=A0 This option additionally allows modules to be =
+signed with a key
+>> present
+>> +=C2=A0=C2=A0=C2=A0=C2=A0 in ``.platform`` keyring, e.g. a SecureBoot 'd=
+b' key.
+>> +
+>> =C2=A0Note that enabling module signing adds a dependency on the OpenSSL
+>> devel
+>> =C2=A0packages to the kernel build processes for the tool that does the
+>> signing.
+>> =C2=A0
+>> diff --git a/kernel/module/Kconfig b/kernel/module/Kconfig
+>> index 39278737bb68..f1b85c14548a 100644
+>> --- a/kernel/module/Kconfig
+>> +++ b/kernel/module/Kconfig
+>> @@ -340,6 +340,17 @@ config MODULE_SIG_HASH
+>> =C2=A0	default "sha3-384" if MODULE_SIG_SHA3_384
+>> =C2=A0	default "sha3-512" if MODULE_SIG_SHA3_512
+>> =C2=A0
+>> +config MODULE_SIG_PLATFORM
+>> +	bool "Use .platform keyring for verifying kernel modules
+>> signatures"
+>> +	depends on INTEGRITY_PLATFORM_KEYRING
+>> +	depends on MODULE_SIG
+>> +	help
+>> +	=C2=A0 When selected, keys from .platform keyring can be used for
+>> verifying
+>> +	=C2=A0 modules signatures. In particular, this allows to use UEFI
+>> SecureBoot
+>> +	=C2=A0 'db' for verification.
+>> +
+>> +	=C2=A0 If unsure, say N.
+>> +
+>> =C2=A0config MODULE_COMPRESS
+>> =C2=A0	bool "Module compression"
+>> =C2=A0	help
+>> diff --git a/kernel/module/signing.c b/kernel/module/signing.c
+>> index a2ff4242e623..3327e7243211 100644
+>> --- a/kernel/module/signing.c
+>> +++ b/kernel/module/signing.c
+>> @@ -61,10 +61,17 @@ int mod_verify_sig(const void *mod, struct
+>> load_info *info)
+>> =C2=A0	modlen -=3D sig_len + sizeof(ms);
+>> =C2=A0	info->len =3D modlen;
+>> =C2=A0
+>> -	return verify_pkcs7_signature(mod, modlen, mod + modlen,
+>> sig_len,
+>> +	ret =3D verify_pkcs7_signature(mod, modlen, mod + modlen,
+>> sig_len,
+>> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 VERIFY_USE_SECONDARY_KEYRING,
+>> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 VERIFYING_MODULE_SIGNATURE,
+>> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 NULL, NULL);
+>> +	if (ret =3D=3D -ENOKEY &&
+>> IS_ENABLED(CONFIG_MODULE_SIG_PLATFORM)) {
+>> +		ret =3D verify_pkcs7_signature(mod, modlen, mod +
+>> modlen, sig_len,
+>> +				VERIFY_USE_PLATFORM_KEYRING,
+>> +				VERIFYING_MODULE_SIGNATURE,
+>> +				NULL, NULL);
+>> +	}
+>> +	return ret;
+>> =C2=A0}
 >
-> This introduces signature verification for eBPF programs inside of the
-> bpf subsystem. Two signature validation schemes are included, one that
-> only checks the instruction buffer, and another that checks over a
-> hash chain constructed from the program and a list of maps. The
-> alternative algorithm is designed to provide support to scenarios
-> where having self-aborting light-skeletons or signature checking
-> living outside the kernel-proper is insufficient or undesirable.
+> I don't think this is the correct way to do it.  If, as you say, db is
+> controlled by the end user and therefore has trusted contents, then I
+> think you want to update certs/system_keyring.c to link the platform
+> keyring into the secondary trusted one (like it does today for the
+> machine keyring), so it can be used by *every* application that checks
+> keyrings rather than just modules.
+
+Yea, that would be the solution I allude to at the end of my cover
+letter: make .platform globally trusted so we don't need the 'trusted
+for kexec', 'trusted for dm-verity' zoo we already have.
+
 >
-> An abstract hash method is introduced to allow calculating the hash of
-> maps, only arrays are implemented at this time.
->
-> A simple UAPI is introduced to provide passing signature information.
->
-> The signature check is performed before the call to
-> security_bpf_prog_load. This allows the LSM subsystem to be clued into
-> the result of the signature check, whilst granting knowledge of the
-> method and apparatus which was employed.
->
-> Signed-off-by: Blaise Boscaccy <bboscaccy@linux.microsoft.com>
-> ---
->  include/linux/bpf.h            |   2 +
->  include/linux/verification.h   |   1 +
->  include/uapi/linux/bpf.h       |   4 ++
->  kernel/bpf/arraymap.c          |  11 ++-
->  kernel/bpf/syscall.c           | 123 ++++++++++++++++++++++++++++++++-
->  tools/include/uapi/linux/bpf.h |   4 ++
->  6 files changed, 143 insertions(+), 2 deletions(-)
+> Also, are you sure a config option is the right thing?  Presumably Red
+> Hat wants to limit its number of kernels and the design of just linking
+> the machine keyring (i.e. MoK) was for the use case where trust is
+> being pivoted away from db by shim, so users don't want to trust the db
+> keys they don't control.  If the same kernel gets used for both
+> situations (trusted and untrusted db) you might want a runtime means to
+> distinguish them.
 
-...
+I was not personally involved when RH put the patch downstream (and
+wasn't very successful in getting the background story) but it doesn't
+even have an additional Kconfig, e.g.:
+https://gitlab.com/redhat/centos-stream/src/kernel/centos-stream-10/-/commi=
+t/03d4694fa6511132989bac0da11fa677ea5d29f6
+so apparently there's no desire to limit anything, basically, .platform
+is always trusted on Fedora/RHEL systems (for a long time already).
 
-> diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-> index 64c3393e8270..7dc35681d3f8 100644
-> --- a/kernel/bpf/syscall.c
-> +++ b/kernel/bpf/syscall.c
-> @@ -2753,8 +2764,113 @@ static bool is_perfmon_prog_type(enum bpf_prog_ty=
-pe prog_type)
->         }
->  }
->
-> +static int bpf_check_signature(struct bpf_prog *prog, union bpf_attr *at=
-tr, bpfptr_t uattr,
-> +                              __u32 uattr_size)
-> +{
-> +       u64 hash[4];
-> +       u64 buffer[8];
-> +       int err;
-> +       char *signature;
-> +       int *used_maps;
-> +       int n;
-> +       int map_fd;
-> +       struct bpf_map *map;
-> +
-> +       if (!attr->signature)
-> +               return 0;
-> +
-> +       signature =3D kmalloc(attr->signature_size, GFP_KERNEL);
-> +       if (!signature) {
-> +               err =3D -ENOMEM;
-> +               goto out;
-> +       }
-> +
-> +       if (copy_from_bpfptr(signature,
-> +                            make_bpfptr(attr->signature, uattr.is_kernel=
-),
-> +                            attr->signature_size) !=3D 0) {
-> +               err =3D -EINVAL;
-> +               goto free_sig;
-> +       }
-> +
-> +       if (!attr->signature_maps_size) {
-> +               sha256((u8 *)prog->insnsi, prog->len * sizeof(struct bpf_=
-insn), (u8 *)&hash);
-> +               err =3D verify_pkcs7_signature(hash, sizeof(hash), signat=
-ure, attr->signature_size,
-> +                                    VERIFY_USE_SECONDARY_KEYRING,
-> +                                    VERIFYING_EBPF_SIGNATURE,
-> +                                    NULL, NULL);
-> +       } else {
-> +               used_maps =3D kmalloc_array(attr->signature_maps_size,
-> +                                         sizeof(*used_maps), GFP_KERNEL)=
-;
-> +               if (!used_maps) {
-> +                       err =3D -ENOMEM;
-> +                       goto free_sig;
-> +               }
-> +               n =3D attr->signature_maps_size;
-> +               n--;
-> +
-> +               err =3D copy_from_bpfptr_offset(&map_fd, make_bpfptr(attr=
-->fd_array, uattr.is_kernel),
-> +                                             used_maps[n] * sizeof(map_f=
-d),
-> +                                             sizeof(map_fd));
-> +               if (err < 0)
-> +                       goto free_maps;
-> +
-> +               /* calculate the terminal hash */
-> +               CLASS(fd, f)(map_fd);
-> +               map =3D __bpf_map_get(f);
-> +               if (IS_ERR(map)) {
-> +                       err =3D PTR_ERR(map);
-> +                       goto free_maps;
-> +               }
-> +               if (__map_get_hash(map, (u8 *)hash)) {
-> +                       err =3D -EINVAL;
-> +                       goto free_maps;
-> +               }
-> +
-> +               n--;
-> +               /* calculate a link in the hash chain */
-> +               while (n >=3D 0) {
-> +                       memcpy(buffer, hash, sizeof(hash));
-> +                       err =3D copy_from_bpfptr_offset(&map_fd,
-> +                                                     make_bpfptr(attr->f=
-d_array, uattr.is_kernel),
-> +                                                     used_maps[n] * size=
-of(map_fd),
-> +                                                     sizeof(map_fd));
-> +                       if (err < 0)
-> +                               goto free_maps;
-> +
-> +                       CLASS(fd, f)(map_fd);
-> +                       map =3D __bpf_map_get(f);
-> +                       if (!map) {
-> +                               err =3D -EINVAL;
-> +                               goto free_maps;
-> +                       }
-> +                       if (__map_get_hash(map, (u8 *)buffer+4)) {
-> +                               err =3D -EINVAL;
-> +                               goto free_maps;
-> +                       }
-> +                       sha256((u8 *)buffer, sizeof(buffer), (u8 *)&hash)=
-;
+As part of the RFC, I'd like to try to understand under which conditions
+people may not want to trust 'db'. In the most common use case, 'db' is
+used to authorize shim and the kernel is signed by a cert from shim's
+vendor_db, not trusting 'db' for modules after that seems somawhat
+silly. Maybe we can detect the fact that the user took control over the
+system with MOK and untrust .platform only then (while trusting it by
+default)?
 
-James' comment about using the hash from the PKCS7 data makes a lot of
-sense.  I'm not a kernel crypto expert, but if looks like if you call
-pkcs7_parse_message() you should be able to get the hash algorithm
-from pkcs7_message->signed_infos->sig->hash_algo.
-
-I imagine there might be user/admin concerns over which algorithms
-would be considered acceptable for a signature verification, but I
-suppose one could make the argument that if you don't trust that
-algorithm it shouldn't be enabled in the kernel.
-
-> +                       n--;
-> +               }
-> +               /* calculate the root hash and verify it's signature */
-> +               sha256((u8 *)prog->insnsi, prog->len * sizeof(struct bpf_=
-insn), (u8 *)&buffer);
-> +               memcpy(buffer+4, hash, sizeof(hash));
-> +               sha256((u8 *)buffer, sizeof(buffer), (u8 *)&hash);
-> +               err =3D verify_pkcs7_signature(hash, sizeof(hash), signat=
-ure, attr->signature_size,
-> +                                    VERIFY_USE_SECONDARY_KEYRING,
-> +                                    VERIFYING_EBPF_SIGNATURE,
-> +                                    NULL, NULL);
-> +free_maps:
-> +               kfree(used_maps);
-> +       }
-> +
-> +free_sig:
-> +       kfree(signature);
-> +out:
-> +       prog->aux->signature_verified =3D !err;
-
-Considering this code supports two signature schemes, signed loader
-(with implied loader verification of maps) and signed loader + maps,
-it seems like it might be a good idea to have two flags to indicate
-what has been verified in bpf_check_signature(); a "prog_sig_verified"
-(or similar) flag to indicate the program has been verified and a
-"maps_sig_verified" (or similar) to indicate the maps have been
-verified.
-
-Beyond that, I wanted to talk a bit about the two different signature
-schemes and why I think there is value in supporting both.  The
-discussion was happening in patch 0/3, but it looks like KP wanted to
-move the discussion away from the cover letter and into that patch, so
-I'm doing that here ...
-
-The loader (+ implicit loader verification of maps w/original program)
-signature verification scheme has been requested by Alexei/KP, and
-that's fine, the code is trivial and if the user/admin is satisfied
-with that as a solution, great.  However, the loader + map signature
-verification scheme has some advantages and helps satisfy some
-requirements that are not satisfied by only verifying the loader and
-relying on the loader to verify the original program stored in the
-maps.  One obvious advantage is that the lskel loader is much simpler
-in this case as it doesn't need to worry about verification of the
-program maps as that has already been done in bpf_check_signature().
-I'm sure there are probably some other obvious reasons, but beyond the
-one mentioned above, the other advantages that I'm interested in are a
-little less obvious, or at least I haven't seen them brought up yet.
-As I mentioned in an earlier thread, it's important to have the LSM
-hook that handles authorization of a BPF program load *after* the BPF
-program's signature has been verified.  This is not simply because the
-LSM implementation might want to enforce and access control on a BPF
-program load due to the signature state (signature verified vs no
-signature), but also because the LSM might want to measure system
-state and/or provide a record of the operation.  If we only verify the
-lskel loader, at the point in time that the security_bpf_prog_load()
-hook is called, we haven't properly verified both the loader and the
-original BPF program stored in the map, that doesn't happen until much
-later when the lskel loader executes.  Yes, I understand that may
-sound very pedantic and fussy, but there are users who care very much
-about those details, and if they see an event in the logs that
-indicates that the BPF program signature has been verified as "good",
-they need that log event to be fully, 100% true, and not have an
-asterix of "only the lskel loader has been verified, the original BPF
-program will potentially be verified later without any additional
-events being logged to indicate the verification".
-
-Considering that Blaise has proposed something which satisfies both
-the loader-only and loader+maps signature requirements, I don't
-understand the objections.  KP described two technical objections in
-his replies to patch 0/3:
-
-1. "It does not align with most BPF use-cases out there as most
-use-cases need a trusted loader."
-2. "Locks us into a UAPI, whereas a signed LOADER allows us to
-incrementally build signing for all use-cases without compromising the
-security properties."
-
-In response to objection #1, the approach Blaise has described here
-fully supports signing only the lskel loader and leaving it to the
-loader to verify the original BPF program maps.  The "trusted loader"
-use cases are fully supported, as the loader+maps scheme does not
-prevent the loader-only signature scheme.
-
-In response to objection #2, honestly this seems like an extension to
-objection #1.  The trusted loader-only signature scheme is fully
-supported.  Yes, adding support for either signature schemes is an
-extension to the BPF program loading UAPI, but both schemes are
-optional and supporting both is very much in line with BPF's stated
-philosophy of "flexibility and not locking the users into a rigid
-in-kernel implementation and UAPI."
-
-> +       return err;
-> +}
-> +
+A runtime toggle is not something I thought much about: the sole purpose
+of this part of 'lockdown' (limitimg unsigned modules load) seems to be
+to prevent someone who already has 'root' on the system to gain kernel
+level access to e.g. hide its activities. In case root can decide which
+keys are trusted, isn't it all in vain? Or maybe if the toggle is to
+just trust/not trust .platform (and not e.g. disable signatures
+verification completely, inject a new key,...) this is acceptable?
+Another option is to have a kernel command line parameter but this is
+complicated for users.
 
 --=20
-paul-moore.com
+Vitaly
+
 
