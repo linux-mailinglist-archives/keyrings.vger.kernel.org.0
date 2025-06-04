@@ -1,78 +1,63 @@
-Return-Path: <keyrings+bounces-2790-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2791-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 399E0ACE22B
-	for <lists+keyrings@lfdr.de>; Wed,  4 Jun 2025 18:25:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C089FACE25E
+	for <lists+keyrings@lfdr.de>; Wed,  4 Jun 2025 18:43:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3DA63A4DE8
-	for <lists+keyrings@lfdr.de>; Wed,  4 Jun 2025 16:25:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E8621761BE
+	for <lists+keyrings@lfdr.de>; Wed,  4 Jun 2025 16:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABAF41DC98C;
-	Wed,  4 Jun 2025 16:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D8A1DE4E6;
+	Wed,  4 Jun 2025 16:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RB8BIpHd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zvecr3db"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795E1339A1;
-	Wed,  4 Jun 2025 16:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44CF1DE3DB;
+	Wed,  4 Jun 2025 16:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749054346; cv=none; b=iXZ+emyUKnEMAqqZbQu9P21cZtww+kf2LFTcw2zmWXfuVq8i9kHaa1i81PQYD6SGb+md+Rr4F5QyEiQSCinzB7uzlXYRVIsf/3mLGkxZAzlJ8zMXgV8Bc0L2VcIDn2BbwZggWEjsWG29S3b2eV7NWTSsfsLeSAX/hHUQRzKpjn4=
+	t=1749055376; cv=none; b=CWZUuh0triAfYjkyPu+9wayRwJydEYwF8XurdVNgt31gNLkyni6iBrndHXUPsunph+BTu77NhBjQtbHYW+5GGJUG+Xmd6XwWtyE3enYhXhGQfkKTbYQkdiYGafZAjJ4lUokQnCXz7IoxlL/oxa/C9xtV5L7JRpWSEFEIWYrJkbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749054346; c=relaxed/simple;
-	bh=ghWPhTJt8vtU/IFkZSAXQHMW5a8nxv+PINVZ/OZqkAQ=;
+	s=arc-20240116; t=1749055376; c=relaxed/simple;
+	bh=mejzYDp6yemYLbRK0vx0qOCqvSMgpHoIVhfXx3tCZUI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j1zlC0TJKH8YvpgrXzSlBlvCiU7FgVDhi3cQoRye/Pv2G3CBF5sLYntkzNtARS3SxfpT2SHSOo1Tu3Nud5MNJkgtsXgHCcN1tIH0bPZ1yZuPfKC4zVBppR8HLwz/UKfIpsJul8yXALt4DPIyohWGYBD593ja68+pw2emRuwkD3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RB8BIpHd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 647F0C4CEE4;
-	Wed,  4 Jun 2025 16:25:45 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ht/xCx8hzb7WnrfsVtCMdl7WeJJq5hZQyH+pq50yPuE9owgHz6hvgWmYlECbtJJKkOnGIbCitUoUnFMR/TemAXOMjXj1v1vJ5wjTpZHd8uH9JiS/p4ib0OtVyhpKih+8f8ezn2E5WLw9ztx2MoQWy24LMl2BSg7OCknGtqztb1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zvecr3db; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA13AC4CEE4;
+	Wed,  4 Jun 2025 16:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749054345;
-	bh=ghWPhTJt8vtU/IFkZSAXQHMW5a8nxv+PINVZ/OZqkAQ=;
+	s=k20201202; t=1749055376;
+	bh=mejzYDp6yemYLbRK0vx0qOCqvSMgpHoIVhfXx3tCZUI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RB8BIpHdGyIOP+ZMGEj9My7w1u3/zdQFKRAKSB2KnrlZyS46581SBgBip0r/ATuJN
-	 tTsF6Kyb9q4XzqtCj+j1idCwZMCq68jfE2vqO87sry+de6j1PJFckCmkq7TChQIUPs
-	 xRcJW58dWb25CW+Mt5Arqe/du2QfeIIL+rz6eVj08qgLadKtv3UxUKhFvEooAkUpZX
-	 XCKqFwImpwE+4J0908tC/rO1LXfWB6m1NN/de91WtAn89yONW0nN/luRPQE0V5wL7e
-	 0R3ATaLXYnEPGNF87cB7dzsNPK44LJLHsxeMKQGXPN8YlhOfMp+ldxUBQihgaMTk0j
-	 VTcmlDR0cEKJw==
-Date: Wed, 4 Jun 2025 19:25:42 +0300
+	b=Zvecr3dbW7l52g2pQsEqnBlHhSWcmWBWTimJngL4URASf9HWTQ4/XCY4ItBQaSW0t
+	 /+fwWsXy5X5kjyjwauFXC4+PBqK5X3VC0L/T9ymAe78Im8IXr3kAYGskzMXYAY9Z7d
+	 sm9XeGGAm4+eEuZn8fi0youHp1cBgbrUhapoKEMKBHpxg3qw+7/T9yAEve3KwOdxCK
+	 tOiRqGfjs9CMa1tO9kGUtRmEVHknRVV+GGJbH/taJFO8qT7GpI5BStnaJ7I+AsvxsF
+	 cqLK7T2s0SaMPe2ePdcOUVmr0rUW+mjVrQk6lzSfRmcflA9LtBTRydi2VU6mfBe/OW
+	 cHqd0onKFfpwA==
+Date: Wed, 4 Jun 2025 19:42:52 +0300
 From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Blaise Boscaccy <bboscaccy@linux.microsoft.com>
-Cc: Paul Moore <paul@paul-moore.com>, zeffron@riotgames.com,
-	xiyou.wangcong@gmail.com, kysrinivasan@gmail.com, code@tyhicks.com,
-	linux-security-module@vger.kernel.org, roberto.sassu@huawei.com,
-	James.Bottomley@hansenpartnership.com,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-	David Howells <dhowells@redhat.com>, Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Quentin Monnet <qmo@kernel.org>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Anton Protopopov <aspsk@isovalent.com>,
-	Jordan Rome <linux@jordanrome.com>,
-	Martin Kelly <martin.kelly@crowdstrike.com>,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Matteo Croce <teknoraver@meta.com>, bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org
-Subject: Re: [PATCH 1/3] bpf: Add bpf_check_signature
-Message-ID: <aEBzhhqab75jE080@kernel.org>
-References: <20250528215037.2081066-1-bboscaccy@linux.microsoft.com>
- <20250528215037.2081066-2-bboscaccy@linux.microsoft.com>
+To: Christoph Hellwig <hch@lst.de>
+Cc: Sagi Grimberg <sagi@grimberg.me>, Chuck Lever <chuck.lever@oracle.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	David Howells <dhowells@redhat.com>, linux-nfs@vger.kernel.org,
+	kernel-tls-handshake <kernel-tls-handshake@lists.linux.dev>,
+	keyrings@vger.kernel.org
+Subject: Re: [PATCH 2/2] nfs: create a kernel keyring
+Message-ID: <aEB3jDb3EK2CWqNi@kernel.org>
+References: <20250515115107.33052-1-hch@lst.de>
+ <20250515115107.33052-3-hch@lst.de>
+ <c2044daa-c68e-43bf-8c28-6ce5f5a5c129@grimberg.me>
+ <aCdv56ZcYEINRR0N@kernel.org>
+ <692256f1-9179-4c19-ba17-39422c9bad69@grimberg.me>
+ <20250602152525.GA27651@lst.de>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -81,14 +66,42 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250528215037.2081066-2-bboscaccy@linux.microsoft.com>
+In-Reply-To: <20250602152525.GA27651@lst.de>
 
-On Wed, May 28, 2025 at 02:49:03PM -0700, Blaise Boscaccy wrote:
-> This introduces signature verification for eBPF programs inside of the
+On Mon, Jun 02, 2025 at 05:25:25PM +0200, Christoph Hellwig wrote:
+> On Sat, May 17, 2025 at 12:45:02PM +0300, Sagi Grimberg wrote:
+> >
+> >
+> > On 16/05/2025 20:03, Jarkko Sakkinen wrote:
+> >> On Fri, May 16, 2025 at 02:47:18PM +0300, Sagi Grimberg wrote:
+> >>> Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+> >> Based on?
+> >
+> > Based on the same that nvme is doing. The only reason I see to have it
+> > is to avoid having the user explicitly set perms on the key for tlshd to be
+> > able to load it. nvme creates its own keyring that possessors can use, so 
+> > makes
+> > sense that nfs has this keyring as well.
+> 
+> Jarkoo, can you please state your objections clearly?  You've only
+> asked this one liner question in response to Sagi's question but not
+> even commented the original patch.
 
-s/This introduces signature verification/Introduce a signature verification ???/
+OK, I put this in simple terms, so perhaps I learn something from
+nvme and nfs code:
 
-I.e. Explain what sort of "thing" is "signature verification thing" ...
+1. The code change itself, if this keyring is needed, it looks
+   reasonable.
+2. However, I don't see any callers within the scope of patch set
+   for this keyring.
+
+I could quite quickly grab the idea how NVME uses nvme_keyring in TLS
+handshake code from drivers/nvme/target/{configfs.c,tcp.c}. I guess
+similar idea will be used in nfs code but I don't see any use for it
+in the patch set.
+
+Thus, it is hard to grasp the idea of having this patch applied without
+any supplemental patch set.
 
 BR, Jarkko
 
