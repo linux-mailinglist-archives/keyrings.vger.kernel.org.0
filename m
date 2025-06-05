@@ -1,235 +1,181 @@
-Return-Path: <keyrings+bounces-2801-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2802-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FF58ACF236
-	for <lists+keyrings@lfdr.de>; Thu,  5 Jun 2025 16:41:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61689ACF26F
+	for <lists+keyrings@lfdr.de>; Thu,  5 Jun 2025 16:56:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08F8C3A2FEE
-	for <lists+keyrings@lfdr.de>; Thu,  5 Jun 2025 14:41:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BA6B17A7CC
+	for <lists+keyrings@lfdr.de>; Thu,  5 Jun 2025 14:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C60015DBC1;
-	Thu,  5 Jun 2025 14:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F891A3145;
+	Thu,  5 Jun 2025 14:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jNG0vLci"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="StUukNQL"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D5A2E659;
-	Thu,  5 Jun 2025 14:41:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FC52C324C
+	for <keyrings@vger.kernel.org>; Thu,  5 Jun 2025 14:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749134491; cv=none; b=k1mQArOKDlmYlyXhhdb+Pf0SuiFwBUDYeTN4BSFKDfoZBUdCQP8UFVEqdRV4fe9jkvIiJVitFs43aiuK7keEWnehD4rOsQqt6ud6M77I7UdSUphul4DJoBL209e739vul8Xtlo4ittKjYCcX63qtfCv64qDmTBa9YNeiDimYSRs=
+	t=1749135369; cv=none; b=IO5S7lTHmr7oo6WQHvvXovdnn/7duSbVcSsRMb264wPngEtxyq2mTyT91q1VV77sCdyNZOwvSxAu4SnBE8Q0H9C9KZsEvLlxuYbE+ELs8+TyspzwyfRQ7WtLIAgtUuLwMeSe2G1WbguJ0tuP6uuga8OnQkewvaqHDwDvbHicO+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749134491; c=relaxed/simple;
-	bh=G4+47qc1n3bzX5gU3JB3YwOCDw7FrUpLqtOCy4J2WNk=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=blOrspqQ/StGYrJD/7hR4SXX52XZLyqbHGdiBuUsMLHTE+xwFsZUITg+jyCCR5waoeunev3gaxJy3m2dcvNen7TJ2+FzWkSBwSi58dS8IdQWfKZMHt7T00aS87P69QyOn1VU549VSomJ8B/bNE2y4EiPL+AyfGD3/DAztCMyOpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jNG0vLci; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 555BYYaP029077;
-	Thu, 5 Jun 2025 14:35:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=WMO587
-	RkCAs2RHbCh4bywkWzWURKdVqSdrgZo4cRfeQ=; b=jNG0vLciJY2CsB5MAZbwgY
-	O4QO0DDRBrQms+0ruJXhfcNzzkC1yniWGKFECzJ+MhszMCHb89xAYZ2PWGPtIwcZ
-	K/b0xogWr1Bb/0xKitRMtLw0LADyQWfeZK8qtcYns6H8ECHJbCezIc0QenuCODqO
-	M4YXSkNeNmbmGGL+UNBkE8N3xwy/2SffAO6vuXCo/fRcuGSjNWkkDgPtKIBppTmJ
-	sBdOroRnRffKAMFPxsvHMTEbq0qdinfV5SesdZa/f20mfQNQi/5yC9LIiQhMfI+T
-	Sq7kCxGX1ET8vu1OkggVfqI5EB4RmJtUz1mBOQwMy9INyljPJ8XSA8/J+b+pQ5aw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 471geyhbm9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Jun 2025 14:35:45 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 555EVwFO007403;
-	Thu, 5 Jun 2025 14:35:45 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 471geyhbm6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Jun 2025 14:35:45 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 555D1UQm012562;
-	Thu, 5 Jun 2025 14:35:44 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 470et2ms1f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Jun 2025 14:35:43 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 555EZhV515401646
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 5 Jun 2025 14:35:43 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2E18558059;
-	Thu,  5 Jun 2025 14:35:43 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C630D5804B;
-	Thu,  5 Jun 2025 14:35:40 +0000 (GMT)
-Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.24.49])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  5 Jun 2025 14:35:40 +0000 (GMT)
-Message-ID: <a7b89a65ab24454676b8eb858d2b24445abe0a30.camel@linux.ibm.com>
+	s=arc-20240116; t=1749135369; c=relaxed/simple;
+	bh=DHu18rmA0sU7oZNUXhtODTBETFCDhL2OEUU38uuVFxI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=HhYwc963RxFrouAcjboTvCx5a3haMtRltFjVJrxiGI/jooZgylxLEkyYJOidxvvI+PfPAbuSWHYYpj/fyA73j52uwB4RieEU8E38UKpsOAgqRUxRSOMHsaaWI6KiYmcKpS4gkxNj77p84T7wmzPgR9m/VmohNXDrGe6oKgEHzec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=StUukNQL; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1749135365;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HFA6j3WG2u6wCRFKF+JPzUGEfqC8djtrecvjhVi86Lo=;
+	b=StUukNQL108Y6Evi54eeZAqEf18d4Ah++jZclxB90nls9Cx2LO3Id54Q5fpM1Abt8KkR3g
+	xIHgdK7RIc94+17ieDu9KEyfwS+qP5SFsOFP5P2JQ66yOz4fjEcXd/E63sXh6J4NoWV17J
+	4kFE72t9uhzrHdicn+pCWUxkUEHEivc=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-446-T4Wcu-uZM-2IcIr2Ag_NJw-1; Thu, 05 Jun 2025 10:56:04 -0400
+X-MC-Unique: T4Wcu-uZM-2IcIr2Ag_NJw-1
+X-Mimecast-MFC-AGG-ID: T4Wcu-uZM-2IcIr2Ag_NJw_1749135363
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3a4f858bc5eso871775f8f.0
+        for <keyrings@vger.kernel.org>; Thu, 05 Jun 2025 07:56:03 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749135363; x=1749740163;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HFA6j3WG2u6wCRFKF+JPzUGEfqC8djtrecvjhVi86Lo=;
+        b=V/YQHcvIKlks7NOjizfsv+HacA3TzjoZ78XFPq+tMUeZFhxrgZRTzOxHWyRWog/i9s
+         hDDoqSKH43bZldMdkpW6sDubhdnMdBHxEg0VYQHYpbQeEFxBdJ5fzyHttF7qspO/L5yt
+         M+WH/gtqw7TagDTtszE+MCBHZ+GSLoWsCYILSxJNPX+ZVT3MQCLvREwbOEt+9K0dok90
+         EtmaRZUsgzFDA1CTNRcAqo/6EHKoirr7OZShi4H7vjaxoy+N0k294SzMWYm5utBlMn1p
+         vIANsFG84o/W7oYnGnrcwRgXKJYbA+2pCcIxe87iXgAQXAvmIjY2Q+IB2jwntB89fXfb
+         PhWw==
+X-Forwarded-Encrypted: i=1; AJvYcCUT51/NnfwH6dBgvSmnXPX0P4nSDfNiv+7mAb8B1SCSLO0nQ4xiVg49OVgiK+6v6oZpAyvaLEK5gA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFJoakThcn0DiZvw6ITr+shhzVO8LwH+HpkWtEFKrCAN1Wpczq
+	hCWmpHv1OMjuRm6KUGhnR5ClxCfvFVnazAgM+HCsldlneRaK8EWjpZZiGsKwFhJT9eXOBaSgPeH
+	JI3n0nj3CdNCPMthrMivgwaTjatdutHfEcpTWIbQyY029931j6HgyOZ5O+EWZ
+X-Gm-Gg: ASbGnctu5R1186I7MSNiG3cHYmbeu18ec5eki4cbqBmCBpksVg3YIbeBKbfT7KITd0P
+	mAWBi5Juy8zmDuICUatQQbF/aNHRXdAqkwKQi08coKw6rgujPQ52Grp1SPqZblPiXZkQqK/l8uJ
+	IDRRBomp3LK0Iz17CC/MyKWrNPDxgURhovcwvYXMg2jG6E+H8DZIlFZ1kFNxAxSnpMI2ORbu4nE
+	t9YIgiAjH70T9TXW4A4cO07oK+Zq4adRiDzYPtEMoML2dHGydDF38N5AS/vcgvTiptFq8viubzD
+	dLUMrIMqQi8f2oTgUA==
+X-Received: by 2002:adf:e38c:0:b0:3a5:2670:e220 with SMTP id ffacd0b85a97d-3a52670e28dmr3061252f8f.32.1749135362796;
+        Thu, 05 Jun 2025 07:56:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHA81c6wZglVzh0Z3/rZiV4JQo/XmLeKsTiTnUWO5wj0USvJJ+iJpt9siQ/hlalGpRgG5o3Zw==
+X-Received: by 2002:adf:e38c:0:b0:3a5:2670:e220 with SMTP id ffacd0b85a97d-3a52670e28dmr3061215f8f.32.1749135362368;
+        Thu, 05 Jun 2025 07:56:02 -0700 (PDT)
+Received: from fedora (g3.ign.cz. [91.219.240.17])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-451f990cfe3sm27314005e9.23.2025.06.05.07.56.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Jun 2025 07:56:02 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Eric Snowberg <eric.snowberg@oracle.com>
+Cc: James Bottomley <James.Bottomley@HansenPartnership.com>,
+ "linux-security-module@vger.kernel.org"
+ <linux-security-module@vger.kernel.org>, "linux-integrity@vger.kernel.org"
+ <linux-integrity@vger.kernel.org>, "linux-modules@vger.kernel.org"
+ <linux-modules@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linux-doc@vger.kernel.org"
+ <linux-doc@vger.kernel.org>, "keyrings@vger.kernel.org"
+ <keyrings@vger.kernel.org>, David Howells <dhowells@redhat.com>, David
+ Woodhouse <dwmw2@infradead.org>, Jonathan Corbet <corbet@lwn.net>, Luis
+ Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, Sami
+ Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>,
+ Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu
+ <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge
+ E. Hallyn" <serge@hallyn.com>, Peter Jones <pjones@redhat.com>, Robert
+ Holmes <robeholmes@gmail.com>, Jeremy Cline <jcline@redhat.com>, Coiby Xu
+ <coxu@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
 Subject: Re: [PATCH RFC 0/1] module: Optionally use .platform keyring for
  signatures verification
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Vitaly Kuznetsov <vkuznets@redhat.com>,
-        linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-modules@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-        keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>,
-        David
- Woodhouse	 <dwmw2@infradead.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Luis
- Chamberlain	 <mcgrof@kernel.org>,
-        Petr Pavlu <petr.pavlu@suse.com>,
-        Sami
- Tolvanen	 <samitolvanen@google.com>,
-        Daniel Gomez <da.gomez@samsung.com>,
-        Roberto Sassu	 <roberto.sassu@huawei.com>,
-        Dmitry Kasatkin
- <dmitry.kasatkin@gmail.com>,
-        Eric Snowberg <eric.snowberg@oracle.com>,
-        Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-        "Serge
- E. Hallyn"	 <serge@hallyn.com>,
-        Peter Jones <pjones@redhat.com>,
-        Robert
- Holmes	 <robeholmes@gmail.com>,
-        Jeremy Cline <jcline@redhat.com>, Coiby Xu	
- <coxu@redhat.com>,
-        James Bottomley <James.Bottomley@HansenPartnership.com>,
-        Gerd Hoffmann <kraxel@redhat.com>
-In-Reply-To: <20250602132535.897944-1-vkuznets@redhat.com>
+In-Reply-To: <435F53C6-DC08-49CA-AA36-9747FC1B50DF@oracle.com>
 References: <20250602132535.897944-1-vkuznets@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Jun 2025 10:35:40 -0400
+ <0FD18D05-6114-4A25-BD77-C32C1D706CC3@oracle.com>
+ <f0b37bc55ed3c02569c74f0fbdb6afa8efd329e2.camel@HansenPartnership.com>
+ <87zfemoc76.fsf@redhat.com>
+ <435F53C6-DC08-49CA-AA36-9747FC1B50DF@oracle.com>
+Date: Thu, 05 Jun 2025 16:56:00 +0200
+Message-ID: <87qzzynsov.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=ea09f6EH c=1 sm=1 tr=0 ts=6841ab41 cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=yPCof4ZbAAAA:8 a=D1HWW76GpMGOKR5Gno0A:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: vHFrR4Ila0Sw6f-MNBSE6vwCv-niH7M_
-X-Proofpoint-ORIG-GUID: RcUfx5CmD7cpmR59MoAjvRUeAcHLXhaN
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjA1MDEyNSBTYWx0ZWRfX67RurhBXVm98 BdyZYmy5wGJ7aaw5jqMtNbWCizupbUA2uS8Tqr03rxbi0joFb6JPq9QV4+GU6QTK7bvHLf0j1Sz gQt1qwHoYqn+YS66brb4rTFalIq/Hi//iCojEyP1+U49l9vUKLLZXfMOQVMuKm9gsaOTGBj1RKx
- 7HRkrt0bkCD9wzUHnuKt+flSboAUvguAmP3W1p4I7IVCCo7Hs8kANoBJBCISh/+H/4oKUy6nczM 5httlEmusJr4x4g42Nl7IeyoJR84CPI+cNPg1/fpqIv+aJuj8jUs32K2olnhWBweGTHSn1r81qh 0mJ6BfmBg+/HzFC8XsCLaCJ+/ufzsZnsgkKxzF17QcGRgrQuWncXGStU1pfVMy6dABaPNqDipkz
- Xmr6LaFkpx2OyJaoddr8/1FmuT0l1UwhaKkYN30tU2gaA/237EllMr8uMmI/wqge+vF4tbiP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-05_03,2025-06-05_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 bulkscore=0
- spamscore=0 suspectscore=0 lowpriorityscore=0 malwarescore=0
- impostorscore=0 phishscore=0 mlxscore=0 adultscore=0 clxscore=1011
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2506050125
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2025-06-02 at 15:25 +0200, Vitaly Kuznetsov wrote:
-> UEFI SecureBoot 'db' keys are currently not trusted for modules signature=
-s
-> verification. RedHat based downstream distros (RHEL, Fedora, ...) carry a
-> patch changing that for many years (since 2019 at least). This RFC is an
-> attempt to upstream it as the functionality seems to be generally useful.
->=20
-> Previously, pre-boot keys (SecureBoot 'db', MOK) were not trusted within
-> kernel at all. Things have changed since '.machine' keyring got introduce=
-d
-> making MOK keys optionally trusted.
+Eric Snowberg <eric.snowberg@oracle.com> writes:
 
-The changes were made incrementally:
+>> On Jun 5, 2025, at 1:54=E2=80=AFAM, Vitaly Kuznetsov <vkuznets@redhat.co=
+m> wrote:
+>>=20
+>> 'certwrapper' offers _a_ solution which is great. It may, however, not
+>> be very convenient to use when a user wants to re-use the same OS image
+>> (e.g. provided by the distro vendor) for various different use-cases as
+>> proper 'certwrapper' binary needs to be placed on the ESP (and thus
+>> we'll end up with a bunch of images instead of one). 'db' is different
+>> because it normally lives outside of the OS disk so it is possible to
+>> register the exact same OS image with different properties (e.g. with
+>> and without a custom cert which allows to load third party modules).
+>
+> Could you please provide more details? The kernel module is signed with=20
+> a specific key. The =E2=80=98db=E2=80=99  key in the cloud image must mat=
+ch whatever key=20
+> was used to sign the kernel module.
+>
+> Why can=E2=80=99t the RPM package that contains the kernel module also in=
+clude=20
+> the required =E2=80=98certwrapper=E2=80=99?  When the RPM is installed, t=
+he appropriate=20
+> =E2=80=98certwrapper=E2=80=99 is placed on the ESP.  There can be any num=
+ber of 'certwrappers'=20
+> in the ESP. Doesn=E2=80=99t this solution address the issue?
 
-The original trust model relied on the secure boot signature chain of trust=
-.
-After pivoting root, only keys that were built into the kernel were trusted=
-.=20
-Anyone building a kernel could embed their keys in the kernel image, but th=
-ere
-was no way of loading other keys.
+I think it does but let me elaborate on where I believe some (minor?)
+inconvenience comes from.
 
-- The original exception was for verifying the kexec kernel image.  For tha=
-t
-reason and that reason alone, the pre-boot keys were loaded onto the platfo=
-rm
-keyring.
+We have various actors here:
+1) The OS image which is coming from a distro vendor.
 
-- From an IMA perspective, the second exception allowed loading public keys
-needed for verifying locally signed code.  The first attempt stored and loa=
-ded
-keys from the TPM.  (Unfortunately) instead, what was upstreamed was loadin=
-g
-public keys stored in MOK.  There's an option to only load CA certificates
-stored in MOK, which would be "safer".
+2) The user, which takes the OS image and registers it with specific
+properties (including 'db') with various infrastructures (e.g. different
+clouds).
 
-Changing the existing behavior will impact everyone's security/integrity
-assumptions of the existing system trusted keyrings.=20
+3) A third party kmod vendor which produces a module compatible with the
+OS version. The module may only make sense for certain VMs on certain
+clouds.
 
-What's clear today is that we need finer key granularity than at the level =
-of
-keyrings.
+The customization of the VM normally happens upon first boot: a generic
+image from the OS vendor (1) boots and then some provisioning agent
+(cloud-init, WALA,...) takes over and e.g. installs additional
+stuff. This additional stuff may include third party kmods from (3).
 
-Mimi
+The 'certwrapper' must carry the key which the third party vendor (3) uses
+and it must be signed by a key which the user (2) put to the 'db'. If we
+want to have the 'certwrapper' shipped inside the same RPM as the kernel
+module, it will be signed by the same third party vendor (3). While this
+looks a bit weird ('self-signed certwrapper'), I don't see why this
+can't work.=20
 
-> Before that, there was a discussion to
-> make .platform trusted by default:
-> https://lore.kernel.org/lkml/1556116431-7129-1-git-send-email-robeholmes@=
-gmail.com/
-> which didn't go very far because the assumption was that this is only use=
-ful
-> when the user has control over 'db'. I believe there's a fairly common
-> use-case where this is true.
->=20
-> The use-case: virtualized and cloud infrastructure generally provide an
-> ability to customize SecureBoot variables, in particular, it is possible
-> to bring your own SecureBoot 'db'. This may come handy when a user wants =
-to
-> load a third party kernel module (self built or provided by a third party
-> vendor) while still using a distro provided kernel. Generally, distro
-> provided kernels sign modules with an ephemeral key and discard the priva=
-te
-> part during the build. While MOK can sometimes be used to sign something
-> out-of-tree, it is a tedious process requiring either a manual interventi=
-on
-> with shim or a 'certmule'=20
-> (see https://blogs.oracle.com/linux/post/the-machine-keyring). In contras=
-t,
-> the beauty of using SecureBoot 'db' in this scenario is that for public
-> clouds and virtualized infrastructure it is normally a property of the OS
-> image (or the whole infrastructure/host) and not an individual instance;
-> this means that all instances created from the same template will have 'd=
-b'
-> keys in '.platform' by default.
->=20
-> The suggested approach is not to change the default, but to introduce a
-> Kconfig variable (CONFIG_MODULE_SIG_PLATFORM) doing the job. Note, the=
-=20
-> kernel already trusts '.platform' for kexec (see commit 278311e417be=20
-> ("kexec, KEYS: Make use of platform keyring for signature verify"))
-> and dm-verity (see commit 6fce1f40e951 ("dm verity: add support for
-> signature verification with platform keyring")) so maybe changing the
-> default or introducing a generic '.plarform is fully trusted' option
-> would actually be better.
->=20
-> Vitaly Kuznetsov (1):
->   module: Make use of platform keyring for module signature verify
->=20
->  Documentation/admin-guide/module-signing.rst |  6 ++++++
->  kernel/module/Kconfig                        | 11 +++++++++++
->  kernel/module/signing.c                      |  9 ++++++++-
->  security/integrity/Kconfig                   |  2 +-
->  4 files changed, 26 insertions(+), 2 deletions(-)
->=20
+Besides the need to teach (3) how to build certwrappers, an inconvenience
+in this scheme comes from the fact that to activate a 'certwrapper'
+which we install from a custom rpm, we need a reboot. Cloud instances
+often back burstable workloads and this can be seen as annoyance.
+
+--=20
+Vitaly
 
 
