@@ -1,88 +1,56 @@
-Return-Path: <keyrings+bounces-2802-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2803-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61689ACF26F
-	for <lists+keyrings@lfdr.de>; Thu,  5 Jun 2025 16:56:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF7C0ACF368
+	for <lists+keyrings@lfdr.de>; Thu,  5 Jun 2025 17:49:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BA6B17A7CC
-	for <lists+keyrings@lfdr.de>; Thu,  5 Jun 2025 14:56:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A5C47A374B
+	for <lists+keyrings@lfdr.de>; Thu,  5 Jun 2025 15:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F891A3145;
-	Thu,  5 Jun 2025 14:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0D9188715;
+	Thu,  5 Jun 2025 15:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="StUukNQL"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="wEKIWEMW"
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FC52C324C
-	for <keyrings@vger.kernel.org>; Thu,  5 Jun 2025 14:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0E31A239F;
+	Thu,  5 Jun 2025 15:49:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749135369; cv=none; b=IO5S7lTHmr7oo6WQHvvXovdnn/7duSbVcSsRMb264wPngEtxyq2mTyT91q1VV77sCdyNZOwvSxAu4SnBE8Q0H9C9KZsEvLlxuYbE+ELs8+TyspzwyfRQ7WtLIAgtUuLwMeSe2G1WbguJ0tuP6uuga8OnQkewvaqHDwDvbHicO+M=
+	t=1749138579; cv=none; b=UR8QfPk83g+E6aDy58sKXNqQCOlLGdgjwI/GO3mDyCt/v4CpWiiYLKB9VQML0WicC24Aeq18Xb5Fr4Uh5ZoO8Tjx62Lr/qK0+9kwrPf3pSA5XklHZhbs3uAtVten7+s1S+mEEAM/fIGHknS8o8E2Hm8wZuoHgjanq7m+KC1iWhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749135369; c=relaxed/simple;
-	bh=DHu18rmA0sU7oZNUXhtODTBETFCDhL2OEUU38uuVFxI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=HhYwc963RxFrouAcjboTvCx5a3haMtRltFjVJrxiGI/jooZgylxLEkyYJOidxvvI+PfPAbuSWHYYpj/fyA73j52uwB4RieEU8E38UKpsOAgqRUxRSOMHsaaWI6KiYmcKpS4gkxNj77p84T7wmzPgR9m/VmohNXDrGe6oKgEHzec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=StUukNQL; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1749135365;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HFA6j3WG2u6wCRFKF+JPzUGEfqC8djtrecvjhVi86Lo=;
-	b=StUukNQL108Y6Evi54eeZAqEf18d4Ah++jZclxB90nls9Cx2LO3Id54Q5fpM1Abt8KkR3g
-	xIHgdK7RIc94+17ieDu9KEyfwS+qP5SFsOFP5P2JQ66yOz4fjEcXd/E63sXh6J4NoWV17J
-	4kFE72t9uhzrHdicn+pCWUxkUEHEivc=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-446-T4Wcu-uZM-2IcIr2Ag_NJw-1; Thu, 05 Jun 2025 10:56:04 -0400
-X-MC-Unique: T4Wcu-uZM-2IcIr2Ag_NJw-1
-X-Mimecast-MFC-AGG-ID: T4Wcu-uZM-2IcIr2Ag_NJw_1749135363
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3a4f858bc5eso871775f8f.0
-        for <keyrings@vger.kernel.org>; Thu, 05 Jun 2025 07:56:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1749135363; x=1749740163;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HFA6j3WG2u6wCRFKF+JPzUGEfqC8djtrecvjhVi86Lo=;
-        b=V/YQHcvIKlks7NOjizfsv+HacA3TzjoZ78XFPq+tMUeZFhxrgZRTzOxHWyRWog/i9s
-         hDDoqSKH43bZldMdkpW6sDubhdnMdBHxEg0VYQHYpbQeEFxBdJ5fzyHttF7qspO/L5yt
-         M+WH/gtqw7TagDTtszE+MCBHZ+GSLoWsCYILSxJNPX+ZVT3MQCLvREwbOEt+9K0dok90
-         EtmaRZUsgzFDA1CTNRcAqo/6EHKoirr7OZShi4H7vjaxoy+N0k294SzMWYm5utBlMn1p
-         vIANsFG84o/W7oYnGnrcwRgXKJYbA+2pCcIxe87iXgAQXAvmIjY2Q+IB2jwntB89fXfb
-         PhWw==
-X-Forwarded-Encrypted: i=1; AJvYcCUT51/NnfwH6dBgvSmnXPX0P4nSDfNiv+7mAb8B1SCSLO0nQ4xiVg49OVgiK+6v6oZpAyvaLEK5gA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFJoakThcn0DiZvw6ITr+shhzVO8LwH+HpkWtEFKrCAN1Wpczq
-	hCWmpHv1OMjuRm6KUGhnR5ClxCfvFVnazAgM+HCsldlneRaK8EWjpZZiGsKwFhJT9eXOBaSgPeH
-	JI3n0nj3CdNCPMthrMivgwaTjatdutHfEcpTWIbQyY029931j6HgyOZ5O+EWZ
-X-Gm-Gg: ASbGnctu5R1186I7MSNiG3cHYmbeu18ec5eki4cbqBmCBpksVg3YIbeBKbfT7KITd0P
-	mAWBi5Juy8zmDuICUatQQbF/aNHRXdAqkwKQi08coKw6rgujPQ52Grp1SPqZblPiXZkQqK/l8uJ
-	IDRRBomp3LK0Iz17CC/MyKWrNPDxgURhovcwvYXMg2jG6E+H8DZIlFZ1kFNxAxSnpMI2ORbu4nE
-	t9YIgiAjH70T9TXW4A4cO07oK+Zq4adRiDzYPtEMoML2dHGydDF38N5AS/vcgvTiptFq8viubzD
-	dLUMrIMqQi8f2oTgUA==
-X-Received: by 2002:adf:e38c:0:b0:3a5:2670:e220 with SMTP id ffacd0b85a97d-3a52670e28dmr3061252f8f.32.1749135362796;
-        Thu, 05 Jun 2025 07:56:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHA81c6wZglVzh0Z3/rZiV4JQo/XmLeKsTiTnUWO5wj0USvJJ+iJpt9siQ/hlalGpRgG5o3Zw==
-X-Received: by 2002:adf:e38c:0:b0:3a5:2670:e220 with SMTP id ffacd0b85a97d-3a52670e28dmr3061215f8f.32.1749135362368;
-        Thu, 05 Jun 2025 07:56:02 -0700 (PDT)
-Received: from fedora (g3.ign.cz. [91.219.240.17])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-451f990cfe3sm27314005e9.23.2025.06.05.07.56.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Jun 2025 07:56:02 -0700 (PDT)
-From: Vitaly Kuznetsov <vkuznets@redhat.com>
-To: Eric Snowberg <eric.snowberg@oracle.com>
-Cc: James Bottomley <James.Bottomley@HansenPartnership.com>,
- "linux-security-module@vger.kernel.org"
+	s=arc-20240116; t=1749138579; c=relaxed/simple;
+	bh=LvFsdaxHPWfAtXNhvilM+GMJO+IHT2LgmSh63Oc2Iiw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CqlENt9CNfybiDpwfqwtsXtZpCSmIJF5ThBnLIrRvAfKw6ROegoG8Pe7ZgPWUoRsHnJVu+yYtA0mPqTxRYwjzD3NMAaM9hdE6gJzjM60N3z0dohKN0w1AshKokkVkjTREcODirA5Pnkgz/iQNsoVFm8RFGJPZSaZ/nEUMeQIQ/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=wEKIWEMW; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1749138575;
+	bh=LvFsdaxHPWfAtXNhvilM+GMJO+IHT2LgmSh63Oc2Iiw=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=wEKIWEMWMLix1gCeR7BCRqWrKZRYWqd4+SuuyYw69QhR4hDPkMuBmWt5ThebYuiLo
+	 GDcjvdZ2b6uEYk1lrxLwlpjFLjKLuH+PwZPh4IrF4SCtLWHrzBA2dGdDDZGO2p1yu+
+	 JUNLqPQLVqXmf/dMlerQzKX5Fcx63vsjm2/VsKyw=
+Received: from [IPv6:2601:5c4:4302:c21::a774] (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 048AD1C0315;
+	Thu, 05 Jun 2025 11:49:34 -0400 (EDT)
+Message-ID: <a9bb8b0cfd1af85443ff8ee615b3be0fc705ce02.camel@HansenPartnership.com>
+Subject: Re: [PATCH RFC 0/1] module: Optionally use .platform keyring for
+ signatures verification
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Vitaly Kuznetsov <vkuznets@redhat.com>, Eric Snowberg
+	 <eric.snowberg@oracle.com>
+Cc: "linux-security-module@vger.kernel.org"
  <linux-security-module@vger.kernel.org>, "linux-integrity@vger.kernel.org"
  <linux-integrity@vger.kernel.org>, "linux-modules@vger.kernel.org"
  <linux-modules@vger.kernel.org>, "linux-kernel@vger.kernel.org"
@@ -90,92 +58,109 @@ Cc: James Bottomley <James.Bottomley@HansenPartnership.com>,
  <linux-doc@vger.kernel.org>, "keyrings@vger.kernel.org"
  <keyrings@vger.kernel.org>, David Howells <dhowells@redhat.com>, David
  Woodhouse <dwmw2@infradead.org>, Jonathan Corbet <corbet@lwn.net>, Luis
- Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, Sami
+ Chamberlain <mcgrof@kernel.org>,  Petr Pavlu <petr.pavlu@suse.com>, Sami
  Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>,
- Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu
- <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge
- E. Hallyn" <serge@hallyn.com>, Peter Jones <pjones@redhat.com>, Robert
- Holmes <robeholmes@gmail.com>, Jeremy Cline <jcline@redhat.com>, Coiby Xu
+ Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,  Paul Moore
+ <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn"
+ <serge@hallyn.com>,  Peter Jones <pjones@redhat.com>, Robert Holmes
+ <robeholmes@gmail.com>, Jeremy Cline <jcline@redhat.com>,  Coiby Xu
  <coxu@redhat.com>, Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH RFC 0/1] module: Optionally use .platform keyring for
- signatures verification
-In-Reply-To: <435F53C6-DC08-49CA-AA36-9747FC1B50DF@oracle.com>
+Date: Thu, 05 Jun 2025 11:49:33 -0400
+In-Reply-To: <87tt4unw1w.fsf@redhat.com>
 References: <20250602132535.897944-1-vkuznets@redhat.com>
- <0FD18D05-6114-4A25-BD77-C32C1D706CC3@oracle.com>
- <f0b37bc55ed3c02569c74f0fbdb6afa8efd329e2.camel@HansenPartnership.com>
- <87zfemoc76.fsf@redhat.com>
- <435F53C6-DC08-49CA-AA36-9747FC1B50DF@oracle.com>
-Date: Thu, 05 Jun 2025 16:56:00 +0200
-Message-ID: <87qzzynsov.fsf@redhat.com>
+	 <0FD18D05-6114-4A25-BD77-C32C1D706CC3@oracle.com>
+	 <f0b37bc55ed3c02569c74f0fbdb6afa8efd329e2.camel@HansenPartnership.com>
+	 <87zfemoc76.fsf@redhat.com>
+	 <e4e838d03b3619df5523d429e0cd8160a8aef9f8.camel@HansenPartnership.com>
+	 <87tt4unw1w.fsf@redhat.com>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
 
-Eric Snowberg <eric.snowberg@oracle.com> writes:
+On Thu, 2025-06-05 at 15:43 +0200, Vitaly Kuznetsov wrote:
+> James Bottomley <James.Bottomley@HansenPartnership.com> writes:
+>=20
+> > On Thu, 2025-06-05 at 09:54 +0200, Vitaly Kuznetsov wrote:
+> > > One additional consideration is the fact that we already trust
+> > > 'db' for dm-verity (since 6fce1f40e951) and kexec (since
+> > > 278311e417be) and especially the later gives someone who is able
+> > > to control 'db' access to CPL0; a 'db'-signed module (IMO)
+> > > wouldn't change much.
+> >=20
+> > Well, the kexec case is because kexec has to verify the new kernel
+> > as shim would and shim would use the UEFI keys.=C2=A0 The dm-verity one
+> > was added for a cloud use case by pressuring the maintainers in
+> > spite of the objection to using the platform keyring (it went to
+> > dm-devel only so not many integrity people saw it):
+> >=20
+> > https://lore.kernel.org/all/20240617220037.594792-1-luca.boccassi@gmail=
+.com/
+> >=20
+> > The point here is I do think the cloud use case is legitimate, but
+> > it can't be supported simply by ignoring the bare metal security
+> > domain separation concerns of the integrity community.=C2=A0 The
+> > argument that distros have done it so it must be safe isn't really
+> > a winning one (especially as there's no clear explanation of why
+> > they did it).=C2=A0 So either you need a better argument or we need a
+> > way to support both sets of communities ... which is why I was
+> > wondering about a runtime differentiator.
+>=20
+> So far, I got two 'runtime' ideas:
+> - Observe MokListTrustedRT and distrust .platform when it is
+> non-empty. This can, of course, be combine with a Kconfig for those,
+> who do not want it at all.
 
->> On Jun 5, 2025, at 1:54=E2=80=AFAM, Vitaly Kuznetsov <vkuznets@redhat.co=
-m> wrote:
->>=20
->> 'certwrapper' offers _a_ solution which is great. It may, however, not
->> be very convenient to use when a user wants to re-use the same OS image
->> (e.g. provided by the distro vendor) for various different use-cases as
->> proper 'certwrapper' binary needs to be placed on the ESP (and thus
->> we'll end up with a bunch of images instead of one). 'db' is different
->> because it normally lives outside of the OS disk so it is possible to
->> register the exact same OS image with different properties (e.g. with
->> and without a custom cert which allows to load third party modules).
->
-> Could you please provide more details? The kernel module is signed with=20
-> a specific key. The =E2=80=98db=E2=80=99  key in the cloud image must mat=
-ch whatever key=20
-> was used to sign the kernel module.
->
-> Why can=E2=80=99t the RPM package that contains the kernel module also in=
-clude=20
-> the required =E2=80=98certwrapper=E2=80=99?  When the RPM is installed, t=
-he appropriate=20
-> =E2=80=98certwrapper=E2=80=99 is placed on the ESP.  There can be any num=
-ber of 'certwrappers'=20
-> in the ESP. Doesn=E2=80=99t this solution address the issue?
+Well, not sure about that specific variable.  It seems to be set but
+not used by shim (however it is used in the kernel to decide whether to
+import the MoK list), so how would someone with a current distrusted db
+get it set?  But there's also MokIgnoreDB (which is actually a RT
+import of MokDBState) which is used to prevent importing the db certs
+into the platform keyring in the first place.
 
-I think it does but let me elaborate on where I believe some (minor?)
-inconvenience comes from.
+I think the reason this is so fragmented is because we didn't really
+co-ordinate with shim when all the variables and switches were added.=20
+Perhaps we should document all the variables and expectations before
+deciding on a mechanism?=20
 
-We have various actors here:
-1) The OS image which is coming from a distro vendor.
+The one thing we can guarantee is if the cloud use case is booting
+without shim (is it?) then none of the RT variables will get created,
+so checking any (or a set) of them would work.
 
-2) The user, which takes the OS image and registers it with specific
-properties (including 'db') with various infrastructures (e.g. different
-clouds).
+> and/or
+> - Sysctl toggle. Keep things as they are by default but make
+> .platform trusted (either for modules or for everything) when
+> switched 'on'. This can (optionally) by combined with a previous idea
+> and have e.g. an 'auto' state for the toggle which follows
+> MokListTrustedRT.
 
-3) A third party kmod vendor which produces a module compatible with the
-OS version. The module may only make sense for certain VMs on certain
-clouds.
+I'm less keen on user specifiable runtime because the security policy
+of the system using a lockdown to make root less privileged than ring 0
+can't allow a malicious root to weaken it.  However, let's see if we
+can get a proposal that would mitigate that concern.
 
-The customization of the VM normally happens upon first boot: a generic
-image from the OS vendor (1) boots and then some provisioning agent
-(cloud-init, WALA,...) takes over and e.g. installs additional
-stuff. This additional stuff may include third party kmods from (3).
+Ideally, if we can get to something that works for everyone at runtime,
+we can remove the current Kconfig explosion which is definitely adding
+to the confusion (as shown in the Debian bug reports).
 
-The 'certwrapper' must carry the key which the third party vendor (3) uses
-and it must be signed by a key which the user (2) put to the 'db'. If we
-want to have the 'certwrapper' shipped inside the same RPM as the kernel
-module, it will be signed by the same third party vendor (3). While this
-looks a bit weird ('self-signed certwrapper'), I don't see why this
-can't work.=20
+Regards,
 
-Besides the need to teach (3) how to build certwrappers, an inconvenience
-in this scheme comes from the fact that to activate a 'certwrapper'
-which we install from a custom rpm, we need a reboot. Cloud instances
-often back burstable workloads and this can be seen as annoyance.
-
---=20
-Vitaly
+James
 
 
