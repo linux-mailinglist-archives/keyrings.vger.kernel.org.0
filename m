@@ -1,76 +1,162 @@
-Return-Path: <keyrings+bounces-2810-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2811-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A008AD2CBD
-	for <lists+keyrings@lfdr.de>; Tue, 10 Jun 2025 06:35:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44C75AD30DE
+	for <lists+keyrings@lfdr.de>; Tue, 10 Jun 2025 10:50:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 111E118906DD
-	for <lists+keyrings@lfdr.de>; Tue, 10 Jun 2025 04:35:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0977A7A2FEB
+	for <lists+keyrings@lfdr.de>; Tue, 10 Jun 2025 08:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10D878F4A;
-	Tue, 10 Jun 2025 04:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C60280CD0;
+	Tue, 10 Jun 2025 08:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UO8Z0mTE"
 X-Original-To: keyrings@vger.kernel.org
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C821D7999;
-	Tue, 10 Jun 2025 04:35:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4BD727FD6E
+	for <keyrings@vger.kernel.org>; Tue, 10 Jun 2025 08:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749530104; cv=none; b=hlfXjU2WYmK2FWX6WdDvrIt6ztt+2IACW0RTg3OfyAX1OgRaVyA5eBYLoGOS6wGYavU9azNvSJwHRCp/oGNsFxgG+nvBnW7mjWeYFNY8kR5viox+FAJPZDChwwtdGbfYZVicuXnNz8jH3KtRtktL5T2+TLE6xd/0smX7B8cD7/o=
+	t=1749545439; cv=none; b=rCh+idcxDG4SqpcV+rXErSSO+KIuNKYQQwCItP97r9FjChUcVhbU8CTjnV1NzWjrTjYHdbTUc859Ac4pe3CzzJGfu3URt7DT1AxxpqBoondIHw9N4kgMOEhEdJ6HtPjWNCmVsQsXtmwyelFnBEmnImr5Wfn1+sAejBBj4MeNro8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749530104; c=relaxed/simple;
-	bh=DmSqb4RyrJEUfQc38zpgEXHaWPa4Afjzig3KPbwxgxY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a64aZq6ynbTllKFDPjPFpRr6cu6qCxMG2ESywJ1W9ArQMQsMlvQgQ07PyM0iC889YxeJN0RHZLPWqfixO8A3ye80AMiqehgyyUzRgC4z6r7nxMhFCo7maPmm5acOHBz0tCyhmy6lDRJ8LFGxdP0uQMd3XgLk+X+desWXz2P1mpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id E026968C4E; Tue, 10 Jun 2025 06:34:51 +0200 (CEST)
-Date: Tue, 10 Jun 2025 06:34:51 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	David Howells <dhowells@redhat.com>, linux-nfs@vger.kernel.org,
-	kernel-tls-handshake <kernel-tls-handshake@lists.linux.dev>,
-	keyrings@vger.kernel.org
-Subject: Re: [PATCH 2/2] nfs: create a kernel keyring
-Message-ID: <20250610043451.GA24571@lst.de>
-References: <20250515115107.33052-3-hch@lst.de> <c2044daa-c68e-43bf-8c28-6ce5f5a5c129@grimberg.me> <aCdv56ZcYEINRR0N@kernel.org> <692256f1-9179-4c19-ba17-39422c9bad69@grimberg.me> <20250602152525.GA27651@lst.de> <aEB3jDb3EK2CWqNi@kernel.org> <20250605042802.GA834@lst.de> <aEMbvQ7EekwPHQ8c@kernel.org> <20250609040143.GA26162@lst.de> <d34245cfc6c3dcf86969682e7c35a131c6100d47.camel@kernel.org>
+	s=arc-20240116; t=1749545439; c=relaxed/simple;
+	bh=Pdlo0r5TXrf3xrhsKn42sIVBAfwAWMvvvs2hVtLkZXg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=blIhkj1cL/XxHN26ab93cTQZ6iir51RFZ3n9Ouvm4RXlZkzuMOaSZ9M2r9LCN+zPpyzx8R3xWXakGJuS6EmBWEiOqcOzec57K9LCC+cW+/HPtDpsqIVhufjDS4S675yqgU0wbL/BqXux7e73W7PFKId4jljeYY/3FVKJcUjzRh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UO8Z0mTE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57369C4CEEF
+	for <keyrings@vger.kernel.org>; Tue, 10 Jun 2025 08:50:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1749545439;
+	bh=Pdlo0r5TXrf3xrhsKn42sIVBAfwAWMvvvs2hVtLkZXg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=UO8Z0mTEPRC31T+fPtnoF9sxxtZSilkW4Z0SXLstzim8GaazVMqrvqVNuGFITc0ZR
+	 TynRngECerOIsZ0RhTb9SOxdjruOPiY29P/SDmA7FhdvUgtWZIz9hau+NRArVSP/5Q
+	 yr9Ue1ko6psiQZRGLAciXJcIcBkMB2A6XXwZhrymO//uzgF6159bcmuQF4zsajPybf
+	 miU1yxOhYRT55HYNWv8T+MFgzywE3uMRo59uOWLenCyFsg2OenmgkE9fU5SMv8Bqy5
+	 NzH4nQORW0P2GEUwopU5QdHzbYdurCmri49w7K5yqj6crXNMjBWa+2l4S5ZurJwsAD
+	 6leyCeniUR6oA==
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-60780d74c85so5928305a12.2
+        for <keyrings@vger.kernel.org>; Tue, 10 Jun 2025 01:50:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUFRvsP/mfD1DK11NyFVnaGK6CGbJ85kZo/QGUn88ws2/KezpRmppcRxc47S+lq6tKvGYZ8Vox6mQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOfdq2zeUEtHcAjcB+XZq5TiDSk4w9fBDZ7RqgzEJriOO8oXzo
+	rucYwm4FzIpOzxIbW+cmmxUtDUgIA2CaVn+aqgL+VZtWGtBMVkNFN64GKWdHiTnWQZSLvv0WbBR
+	/2M9OH6/RwaFoFdIbzwlNzF/7d3r6HU7aB4WFIwnW
+X-Google-Smtp-Source: AGHT+IEGZeJ0GDw260C12WchBTXu6t51Px5b+uaoqudQPZ6vvLjx+05Ekkt2bohg85ZWUfzSS1cQw+g89jN76M+wcCc=
+X-Received: by 2002:a05:6402:3494:b0:607:206f:a2e with SMTP id
+ 4fb4d7f45d1cf-6082dbed7c3mr1533544a12.32.1749545437888; Tue, 10 Jun 2025
+ 01:50:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d34245cfc6c3dcf86969682e7c35a131c6100d47.camel@kernel.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+References: <20250606232914.317094-1-kpsingh@kernel.org> <20250606232914.317094-12-kpsingh@kernel.org>
+ <b2a0c3d722c78de38ffa2664f71654a422d77121.camel@HansenPartnership.com>
+In-Reply-To: <b2a0c3d722c78de38ffa2664f71654a422d77121.camel@HansenPartnership.com>
+From: KP Singh <kpsingh@kernel.org>
+Date: Tue, 10 Jun 2025 10:50:27 +0200
+X-Gmail-Original-Message-ID: <CACYkzJ7Mh=VV0FDsfWZbWBcdC6qLdVp4RDbnoMM_Fb4LW7t4=Q@mail.gmail.com>
+X-Gm-Features: AX0GCFsJ1BDqwk_WfkHZFG18itTtVpcvyI1cHBtZQFW_a9QjmxoaHJD6FO4pw3c
+Message-ID: <CACYkzJ7Mh=VV0FDsfWZbWBcdC6qLdVp4RDbnoMM_Fb4LW7t4=Q@mail.gmail.com>
+Subject: Re: [PATCH 11/12] bpftool: Add support for signing BPF programs
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: bpf@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	bboscaccy@linux.microsoft.com, paul@paul-moore.com, kys@microsoft.com, 
+	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	keyrings@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 10, 2025 at 12:28:49AM +0300, Jarkko Sakkinen wrote:
-> On Mon, 2025-06-09 at 06:01 +0200, Christoph Hellwig wrote:
-> > On Fri, Jun 06, 2025 at 07:47:57PM +0300, Jarkko Sakkinen wrote:
-> > > Ah, ok this cleared it up, thanks! Just learning these subsystem,
-> > > appreciate the patience with this one :-)
-> > 
-> > I'm also just learning the keyring, so double checking from that
-> > perspective is also always welcome..
-> 
-> After quickly studying tlshd, my understanding is that the ".nfs" is a
-> "vault for transient stuff" passed to "keyrings" configuration option.
-> After that serials within that vault are passed to mount-options
-> defined in 1/2.
+On Sun, Jun 8, 2025 at 4:03=E2=80=AFPM James Bottomley
+<James.Bottomley@hansenpartnership.com> wrote:
+>
+> [+keyrings]
+> On Sat, 2025-06-07 at 01:29 +0200, KP Singh wrote:
+> [...]
+> > diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
+> > index f010295350be..e1dbbca91e34 100644
+> > --- a/tools/bpf/bpftool/prog.c
+> > +++ b/tools/bpf/bpftool/prog.c
+> > @@ -23,6 +23,7 @@
+> >  #include <linux/err.h>
+> >  #include <linux/perf_event.h>
+> >  #include <linux/sizes.h>
+> > +#include <linux/keyctl.h>
+> >
+> >  #include <bpf/bpf.h>
+> >  #include <bpf/btf.h>
+> > @@ -1875,6 +1876,8 @@ static int try_loader(struct gen_loader_opts
+> > *gen)
+> >  {
+> >       struct bpf_load_and_run_opts opts =3D {};
+> >       struct bpf_loader_ctx *ctx;
+> > +     char sig_buf[MAX_SIG_SIZE];
+> > +     __u8 prog_sha[SHA256_DIGEST_LENGTH];
+> >       int ctx_sz =3D sizeof(*ctx) + 64 * max(sizeof(struct
+> > bpf_map_desc),
+> >                                            sizeof(struct
+> > bpf_prog_desc));
+> >       int log_buf_sz =3D (1u << 24) - 1;
+> > @@ -1898,6 +1901,24 @@ static int try_loader(struct gen_loader_opts
+> > *gen)
+> >       opts.insns =3D gen->insns;
+> >       opts.insns_sz =3D gen->insns_sz;
+> >       fds_before =3D count_open_fds();
+> > +
+> > +     if (sign_progs) {
+> > +             opts.excl_prog_hash =3D prog_sha;
+> > +             opts.excl_prog_hash_sz =3D sizeof(prog_sha);
+> > +             opts.signature =3D sig_buf;
+> > +             opts.signature_sz =3D MAX_SIG_SIZE;
+> > +             opts.keyring_id =3D KEY_SPEC_SESSION_KEYRING;
+> > +
+>
+> This looks wrong on a couple of levels.  Firstly, if you want system
+> level integrity you can't search the session keyring because any
+> process can join (subject to keyring permissions) and the owner, who is
+> presumably the one inserting the bpf program, can add any key they
+> like.
+>
 
-Yes.  I'll try to make it more clear for a resend, and I also plan
-to write documents for using TLS and thus the keyrings with NFS and
-nvme.
+Wanting system level integrity is a security policy question, so this
+is something that needs to be implemented at the security layer, the
+LSM can deny the keys / keyring IDs they don't trust.  Session
+keyrings are for sure useful for delegated signing of BPF programs
+when dynamically generated.
 
+> The other problem with this scheme is that the keyring_id itself has no
+> checked integrity, which means that even if a script was marked as
+
+If an attacker can modify a binary that has permissions to load BPF
+programs and update the keyring ID then we have other issues. So, this
+does not work in independence, signed BPF programs do not really make
+sense without trusted execution).
+
+> system keyring only anyone can binary edit the user space program to
+> change it to their preferred keyring and it will still work.  If you
+> want variable keyrings, they should surely be part of the validated
+> policy.
+
+The policy is what I expect to be implemented in the LSM layer. A
+variable keyring ID is a critical part of the UAPI to create different
+"rings of trust" e.g. LSM can enforce that network programs can be
+loaded with a derived key, and have a different keyring for
+unprivileged BPF programs.
+
+This patch implements the signing support, not the security policy for it.
+
+- KP
+
+>
+> Regards,
+>
+> James
+>
 
