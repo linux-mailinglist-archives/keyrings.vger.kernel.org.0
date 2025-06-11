@@ -1,217 +1,199 @@
-Return-Path: <keyrings+bounces-2814-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2815-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49980AD3F38
-	for <lists+keyrings@lfdr.de>; Tue, 10 Jun 2025 18:41:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E7EAD476D
+	for <lists+keyrings@lfdr.de>; Wed, 11 Jun 2025 02:23:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5E9017C8C4
-	for <lists+keyrings@lfdr.de>; Tue, 10 Jun 2025 16:41:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BEA21896118
+	for <lists+keyrings@lfdr.de>; Wed, 11 Jun 2025 00:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F682241C8C;
-	Tue, 10 Jun 2025 16:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8E7EBE;
+	Wed, 11 Jun 2025 00:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i52dOCwc"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="QQdEpC8t"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE31923C4F6
-	for <keyrings@vger.kernel.org>; Tue, 10 Jun 2025 16:41:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3CB134CF
+	for <keyrings@vger.kernel.org>; Wed, 11 Jun 2025 00:23:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749573689; cv=none; b=QErpC4A74pAuro6hbbPFqPG1bgU5dB+foM4jJSMy534A47wmVAlN89Y6tkvSSb6yF1P80vBMWtdtyGmHca9Z4sDZb0sL0MOgHxJQMCeSJL8GePghVz9omnF2GQtmBwuASCmaPkNCzDVykCNl4hXafu7/EG+nBcWlNUQO5pklSk0=
+	t=1749601393; cv=none; b=Xog77xZc++vGzbK63IQMWzWI4AgmEkv0fgekjmYFLpvQxAl6f7clZR/SDlqYeWptxd+d7WoRh/bVOjdRMy36MlqG3xz7yYnNhh1u+NjYsGdpXwJWP8emj9YfuykTQBnx5mHqxh9Hs8dG3rEWv2rdMknH80srZw+c99nQWEX0hro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749573689; c=relaxed/simple;
-	bh=Ndj7Cmt0Hfs1qIWmdZK1yj1YoJR5hCdlgudEcXuasHo=;
+	s=arc-20240116; t=1749601393; c=relaxed/simple;
+	bh=V3aNCDfEzfxl/wtuWs/n53MDcr+guvxs8lJ6Ns350/k=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ih8eIBKCXqPXWxrTC+Dn9gjXDvNZgu3L8CEf8/yeBwqzVU5gkT1tpmDDyS38bphd2Mp7zdfH2rdwot0R6Rz8824VyS7l5n+QnqPUTY3/A0KLjpx0I0bGwcllnvrCd6WhqXrFUS4Yt4SYaisZ9C08BcHtxsK4n9xqZNoRsuRi7e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i52dOCwc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4BD6C4AF0C
-	for <keyrings@vger.kernel.org>; Tue, 10 Jun 2025 16:41:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1749573688;
-	bh=Ndj7Cmt0Hfs1qIWmdZK1yj1YoJR5hCdlgudEcXuasHo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=i52dOCwcJpvJ/b0VBmhvIWYyYNtaKvu7LPn2eFnlUpLGTiZQNPRe6kWM6KTSYvaTe
-	 PE1AhUlB+osbIb8QDGmZnUVxtCMgN3ulKgJJpj094y7lQKio66eYv7/Yh9w7FwGXx+
-	 JNKODVTXu+Y7Td5eHnj3/hs/pVkMcN967XvoW9u9en93e7fC9ZnPuAovAvCwqkqRMA
-	 6prDb9VERZJTMAM4iBOiW0/0r7OZa04KFkZ4flHURS0RTQkJRQ33nYY1rjDyI1Umff
-	 Pui8gCimVRN/8ESUUqSMVPN6w/cFxG6wDQrlBwxvH4LkdCQhjiViQf5FW+gvpOoIBy
-	 R2QNvaozznZ/Q==
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-605b9488c28so9084197a12.2
-        for <keyrings@vger.kernel.org>; Tue, 10 Jun 2025 09:41:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXFqWMoiH6/f3W5Xr9wdPQT02cExDvCdutABno+5dcKtf/Kg99LZ8X0v4/dUDEiQa7xjOVryOEllQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwONOsd3tuZ8VxBKqI0WTWVlGTz/Z+A22aTRrWfdRTxzwctVR2Q
-	o4MINtOuC+0BIuRVJ/OCyMwdSYuyhySWcEULiF4Z1o82RfXJr3hkt2dvHP+7rZk5R9PjIDXQCD/
-	ILqq7KAptBh1MhhWi0k/8rnU+hb7DMoBN9E4JN+2G
-X-Google-Smtp-Source: AGHT+IFAf9dmAjYR/e9BsxpHhCv6SB/MCiE0hWKjf8SPA3vamNz5B67k0oQMencrquVP9O8KtceyLNozl9opiWVGCJo=
-X-Received: by 2002:a05:6402:34d6:b0:608:44cd:f91f with SMTP id
- 4fb4d7f45d1cf-60844cdf9a3mr94239a12.32.1749573687058; Tue, 10 Jun 2025
- 09:41:27 -0700 (PDT)
+	 To:Cc:Content-Type; b=dVdsT+tAV4K9TW+41F3GoFvFfIrHE8MmZOfUHYzv87umvzIxISx3nqN6uzyUs+NxXLYkvUiZJZvPOuKm+5SFxwbe8dDtgylP7D6I+4r8Fsq9MSRXrpYX88rAAg89zXRbA+WYbRWJs2sYi6MELgO1gysn3450zDxEHWb+DCa2WMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=QQdEpC8t; arc=none smtp.client-ip=209.85.219.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-e733a6ff491so5968346276.2
+        for <keyrings@vger.kernel.org>; Tue, 10 Jun 2025 17:23:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1749601390; x=1750206190; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mqyjEVOkyXwfMaGU1TDVpK5OMwZjvM7JjuGuGfqQfiw=;
+        b=QQdEpC8tvO2NYpn3COPmL+/PVmayKd1y/tEzRp0zD6fbiE8eEN/tMpdbmPxgl4EMO0
+         ScWtF+n9c/bZM6shIOECHLIXiu4uMksVUw4N2IjniUwitDomLVXsMEs0p9mBN/UZqxQg
+         9PHX0ZJhAdHoHjQL73gzqD5WWL/Dj3Ts/ki+xHpY6Ad+AY0jMdoH4HJLmlxtAuzFOPv9
+         90GBTd4WFbQMWM4bCKBKQ1RXY7p3jLNOcCJNxI1iT+If9x4AZuVqy4MJr6wuQXT4puvA
+         dZV7tUaAYEAQoe6iGv542LJH5RyAAWpsiUtdZikRLcn9Uf5NarsFa89Ah5Waf3KQDSUR
+         2JyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749601390; x=1750206190;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mqyjEVOkyXwfMaGU1TDVpK5OMwZjvM7JjuGuGfqQfiw=;
+        b=Z7q2IfNdRn3Fl3tG6dAs2kKl+YdCCkwy3s+d8XZ0G4ktB7aAwNAZ1W5NflXHvq2Y2Y
+         ADyW5I71HkzO6+JbWvplRXMIdkxFb5FgmGjVOvwmfwhiMLK23vhA91rGbxTHlijqdvgE
+         vVYC6DkrLfr1mNoK1hTbc0ix95x3j5R9W7PXKV78cFZReCOkAHVXlmHxZj0lSIO9T8c6
+         +UDdmvkomtdIuVWZpi/MF1eenXEnOJoSYKR19fDj7m1YVCM0r3pbG/TaPh5d5Bq8doNh
+         5nEYnq7LN3oXMJ4dqGpTQ46IRXnCBif+Wfozm0TSFpyy04V9xte5Mv2em7G4FjE6uSgM
+         KNQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWRBonkVTg9F1O1EiDSKDzci2M0EfveJEDh+/Iadd8xxACpbpOp/TQGUJHqsBSN2JMfkJHpYJi7/w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGHSVZfFrXZ6OWdpqcUxDWZHhnWgts9MUyIOeBIZ+eceGpKh+T
+	49x9WPlhmpKVzArgQVZzHl9d6vq53OILIYMqGXxttI+pyJ0CHqHLul/ZcI1s0ibop6El1vKkwat
+	avsdKDSKWhFrkqAyI25YIGNDqrjrRzzilMGQ4ixav
+X-Gm-Gg: ASbGncvDxOn8FoeavsTbQzSvs2bghdoyy/ykTLZOEartECkf7GAKtWVWAr9i+bePGZL
+	lK4olroTjybO3Kvh8hfXDXmNthCbi5RgU8X/7MP6YdJ+eSbij4QhOZyv2SckMcofA1SdtycyNp0
+	WLsihinPMKxbWNUVfj1/WkWCye7xW/zDbj1b8u2x/Bi8o=
+X-Google-Smtp-Source: AGHT+IE8M3LJ60ObL9WxE/FHdUjay5d0gjuX+l5wso77lgWCLyR1qO4waNRelGVeYQBTPS1XTsACv75zMxCstcB/c64=
+X-Received: by 2002:a05:690c:c92:b0:710:ead5:8a95 with SMTP id
+ 00721157ae682-71142415677mr13830317b3.14.1749601390477; Tue, 10 Jun 2025
+ 17:23:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250606232914.317094-1-kpsingh@kernel.org> <20250606232914.317094-12-kpsingh@kernel.org>
- <b2a0c3d722c78de38ffa2664f71654a422d77121.camel@HansenPartnership.com>
- <CACYkzJ7Mh=VV0FDsfWZbWBcdC6qLdVp4RDbnoMM_Fb4LW7t4=Q@mail.gmail.com> <7d0bdd9f40d1e4e1c9ff5605e5e875b1b9f5654a.camel@HansenPartnership.com>
-In-Reply-To: <7d0bdd9f40d1e4e1c9ff5605e5e875b1b9f5654a.camel@HansenPartnership.com>
-From: KP Singh <kpsingh@kernel.org>
-Date: Tue, 10 Jun 2025 18:41:16 +0200
-X-Gmail-Original-Message-ID: <CACYkzJ6k1cAVi_g9ryhMie4OXAVaO9baTc8SP=dtVE5XPVbJvA@mail.gmail.com>
-X-Gm-Features: AX0GCFtuNesKscYdp1Kq0RRXmysLkUGGNb5czU6UXuyDb-uIpAlaPxCxw_vaHBM
-Message-ID: <CACYkzJ6k1cAVi_g9ryhMie4OXAVaO9baTc8SP=dtVE5XPVbJvA@mail.gmail.com>
-Subject: Re: [PATCH 11/12] bpftool: Add support for signing BPF programs
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: bpf@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	bboscaccy@linux.microsoft.com, paul@paul-moore.com, kys@microsoft.com, 
-	ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	keyrings@vger.kernel.org
+References: <301015.1748434697@warthog.procyon.org.uk>
+In-Reply-To: <301015.1748434697@warthog.procyon.org.uk>
+From: Paul Moore <paul@paul-moore.com>
+Date: Tue, 10 Jun 2025 20:22:59 -0400
+X-Gm-Features: AX0GCFuzTbBPakT7-fabDOVnCNVNEVKiLmeRI0FjA7IWgXlosDeLqvnendebUgs
+Message-ID: <CAHC9VhRn=EGu4+0fYup1bGdgkzWvZYpMPXKoARJf2N+4sy9g2w@mail.gmail.com>
+Subject: Re: [PATCH] KEYS: Invert FINAL_PUT bit
+To: David Howells <dhowells@redhat.com>
+Cc: torvalds@linux-foundation.org, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 10, 2025 at 5:56=E2=80=AFPM James Bottomley
-<James.Bottomley@hansenpartnership.com> wrote:
+On Wed, May 28, 2025 at 8:19=E2=80=AFAM David Howells <dhowells@redhat.com>=
+ wrote:
 >
-> On Tue, 2025-06-10 at 10:50 +0200, KP Singh wrote:
-> > On Sun, Jun 8, 2025 at 4:03=E2=80=AFPM James Bottomley
-> > <James.Bottomley@hansenpartnership.com> wrote:
-> > >
-> > > [+keyrings]
-> > > On Sat, 2025-06-07 at 01:29 +0200, KP Singh wrote:
-> > > [...]
-> > > > diff --git a/tools/bpf/bpftool/prog.c b/tools/bpf/bpftool/prog.c
-> > > > index f010295350be..e1dbbca91e34 100644
-> > > > --- a/tools/bpf/bpftool/prog.c
-> > > > +++ b/tools/bpf/bpftool/prog.c
-> > > > @@ -23,6 +23,7 @@
-> > > >  #include <linux/err.h>
-> > > >  #include <linux/perf_event.h>
-> > > >  #include <linux/sizes.h>
-> > > > +#include <linux/keyctl.h>
-> > > >
-> > > >  #include <bpf/bpf.h>
-> > > >  #include <bpf/btf.h>
-> > > > @@ -1875,6 +1876,8 @@ static int try_loader(struct
-> > > > gen_loader_opts
-> > > > *gen)
-> > > >  {
-> > > >       struct bpf_load_and_run_opts opts =3D {};
-> > > >       struct bpf_loader_ctx *ctx;
-> > > > +     char sig_buf[MAX_SIG_SIZE];
-> > > > +     __u8 prog_sha[SHA256_DIGEST_LENGTH];
-> > > >       int ctx_sz =3D sizeof(*ctx) + 64 * max(sizeof(struct
-> > > > bpf_map_desc),
-> > > >                                            sizeof(struct
-> > > > bpf_prog_desc));
-> > > >       int log_buf_sz =3D (1u << 24) - 1;
-> > > > @@ -1898,6 +1901,24 @@ static int try_loader(struct
-> > > > gen_loader_opts
-> > > > *gen)
-> > > >       opts.insns =3D gen->insns;
-> > > >       opts.insns_sz =3D gen->insns_sz;
-> > > >       fds_before =3D count_open_fds();
-> > > > +
-> > > > +     if (sign_progs) {
-> > > > +             opts.excl_prog_hash =3D prog_sha;
-> > > > +             opts.excl_prog_hash_sz =3D sizeof(prog_sha);
-> > > > +             opts.signature =3D sig_buf;
-> > > > +             opts.signature_sz =3D MAX_SIG_SIZE;
-> > > > +             opts.keyring_id =3D KEY_SPEC_SESSION_KEYRING;
-> > > > +
-> > >
-> > > This looks wrong on a couple of levels.  Firstly, if you want
-> > > system level integrity you can't search the session keyring because
-> > > any process can join (subject to keyring permissions) and the
-> > > owner, who is presumably the one inserting the bpf program, can add
-> > > any key they like.
-> > >
-> >
-> > Wanting system level integrity is a security policy question, so this
-> > is something that needs to be implemented at the security layer, the
-> > LSM can deny the keys / keyring IDs they don't trust.  Session
-> > keyrings are for sure useful for delegated signing of BPF programs
-> > when dynamically generated.
+> Hi Linus,
 >
-> The problem is you're hard coding it at light skeleton creation time.
-> Plus there doesn't seem to be any ability to use the system keyrings
-> anyway as the kernel code only looks up the user keyrings.  Since
-> actual key ids are volatile handles which change from boot to boot (so
-> can't be stored in anything durable) this can only be used for keyring
-> specifiers, so it would also make sense to check this is actually a
-> specifier (system keyring specifiers are positive and user specifiers
-> negative, so it's easy to check for the range).
+> Could you apply this, please?  There shouldn't be any functional change,
+> rather it's a switch to using combined bit-barrier ops and lesser barrier=
+s.
+> A better way to do this might be to provide set_bit_release(), but the en=
+d
+> result would be much the same.
 >
-> > > The other problem with this scheme is that the keyring_id itself
-> > > has no checked integrity, which means that even if a script was
-> > > marked as
-> >
-> > If an attacker can modify a binary that has permissions to load BPF
-> > programs and update the keyring ID then we have other issues.
+> Thanks,
+> David
+> ---
+> From: Herbert Xu <herbert@gondor.apana.org.au>
 >
-> It's a classic supply chain attack (someone modifies the light skeleton
-> between the creator and the consumer), even Google is claiming SLSA
-> guarantees, so you can't just wave it away as "other issues".
+> KEYS: Invert FINAL_PUT bit
 >
-> >  So, this does not work in independence, signed BPF programs do not
-> > really make sense without trusted execution).
+> Invert the FINAL_PUT bit so that test_bit_acquire and clear_bit_unlock
+> can be used instead of smp_mb.
 >
-> The other patch set provided this ability using signed hash chains, so
-> absolutely there are signed bpf programmes that can work absent a
-> trusted user execution environment.  It may not be what you want for
-> your use case (which is why the other patch set allowed for both), but
-> there are lots of integrity use cases out there wanting precisely this.
->
-> > > system keyring only anyone can binary edit the user space program
-> > > to change it to their preferred keyring and it will still work.  If
-> > > you want variable keyrings, they should surely be part of the
-> > > validated policy.
-> >
-> > The policy is what I expect to be implemented in the LSM layer. A
-> > variable keyring ID is a critical part of the UAPI to create
-> > different "rings of trust" e.g. LSM can enforce that network programs
-> > can be loaded with a derived key, and have a different keyring for
-> > unprivileged BPF programs.
->
-> You can't really have it both ways: either the keyring is part of the
-> LSM supplied policy in which case it doesn't make much sense to have it
-> in the durable attributes (and the LSM would have to set it before the
-> signature is verified) or it's part of the durable attribute embedded
-> security information and should be integrity protected.
->
-> I suppose we could compromise and say it should not be part of the
-> light skeleton durable attributes but should be set (or supplied by
-> policy) at BPF_PROG_LOAD time.
+> Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+> cc: keyrings@vger.kernel.org
+> cc: linux-security-module@vger.kernel.org
+> cc: linux-crypto@vger.kernel.org
+> cc: linux-integrity@vger.kernel.org
+> ---
+>  include/linux/key.h |    2 +-
+>  security/keys/gc.c  |    4 ++--
+>  security/keys/key.c |    5 +++--
+>  3 files changed, 6 insertions(+), 5 deletions(-)
 
-Sure, this is expected, I added a default value there but this can be remov=
-ed.
+It doesn't look like this has made its way to Linus.  David or Jarkko,
+do one of you want to pick this up into a tree and send this to Linus
+properly?
 
+> diff --git a/include/linux/key.h b/include/linux/key.h
+> index ba05de8579ec..81b8f05c6898 100644
+> --- a/include/linux/key.h
+> +++ b/include/linux/key.h
+> @@ -236,7 +236,7 @@ struct key {
+>  #define KEY_FLAG_ROOT_CAN_INVAL        7       /* set if key can be inva=
+lidated by root without permission */
+>  #define KEY_FLAG_KEEP          8       /* set if key should not be remov=
+ed */
+>  #define KEY_FLAG_UID_KEYRING   9       /* set if key is a user or user s=
+ession keyring */
+> -#define KEY_FLAG_FINAL_PUT     10      /* set if final put has happened =
+on key */
+> +#define KEY_FLAG_USER_ALIVE    10      /* set if final put has not happe=
+ned on key yet */
 >
-> I should also note that when other systems use derived keys in
-> different keyrings, they usually have a specific named trusted keyring
-> (like _ima and .ima) which has policy enforced rules for adding keys.
+>         /* the key type and key description string
+>          * - the desc is used to match a key against search criteria
+> diff --git a/security/keys/gc.c b/security/keys/gc.c
+> index f27223ea4578..748e83818a76 100644
+> --- a/security/keys/gc.c
+> +++ b/security/keys/gc.c
+> @@ -218,8 +218,8 @@ static void key_garbage_collector(struct work_struct =
+*work)
+>                 key =3D rb_entry(cursor, struct key, serial_node);
+>                 cursor =3D rb_next(cursor);
+>
+> -               if (test_bit(KEY_FLAG_FINAL_PUT, &key->flags)) {
+> -                       smp_mb(); /* Clobber key->user after FINAL_PUT se=
+en. */
+> +               if (!test_bit_acquire(KEY_FLAG_USER_ALIVE, &key->flags)) =
+{
+> +                       /* Clobber key->user after final put seen. */
+>                         goto found_unreferenced_key;
+>                 }
+>
+> diff --git a/security/keys/key.c b/security/keys/key.c
+> index 7198cd2ac3a3..3bbdde778631 100644
+> --- a/security/keys/key.c
+> +++ b/security/keys/key.c
+> @@ -298,6 +298,7 @@ struct key *key_alloc(struct key_type *type, const ch=
+ar *desc,
+>         key->restrict_link =3D restrict_link;
+>         key->last_used_at =3D ktime_get_real_seconds();
+>
+> +       key->flags |=3D 1 << KEY_FLAG_USER_ALIVE;
+>         if (!(flags & KEY_ALLOC_NOT_IN_QUOTA))
+>                 key->flags |=3D 1 << KEY_FLAG_IN_QUOTA;
+>         if (flags & KEY_ALLOC_BUILT_IN)
+> @@ -658,8 +659,8 @@ void key_put(struct key *key)
+>                                 key->user->qnbytes -=3D key->quotalen;
+>                                 spin_unlock_irqrestore(&key->user->lock, =
+flags);
+>                         }
+> -                       smp_mb(); /* key->user before FINAL_PUT set. */
+> -                       set_bit(KEY_FLAG_FINAL_PUT, &key->flags);
+> +                       /* Mark key as safe for GC after key->user done. =
+*/
+> +                       clear_bit_unlock(KEY_FLAG_USER_ALIVE, &key->flags=
+);
+>                         schedule_work(&key_gc_work);
+>                 }
+>         }
+>
+>
 
-We can potentially add a bpf keyring but in general we don't want
-every binary on the machine to use this derived key, but the binary
-that's trusted to either load unsigned programs or use a derived key
-for which the session keyring is more apt.
-
-- KP
-
->
-> Regards,
->
-> James
->
->
-> > This patch implements the signing support, not the security policy
-> > for it.
-> >
-> > - KP
->
+--=20
+paul-moore.com
 
