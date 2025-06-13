@@ -1,183 +1,210 @@
-Return-Path: <keyrings+bounces-2834-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2836-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75101AD92AC
-	for <lists+keyrings@lfdr.de>; Fri, 13 Jun 2025 18:13:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8679AD9328
+	for <lists+keyrings@lfdr.de>; Fri, 13 Jun 2025 18:49:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29A3B166272
-	for <lists+keyrings@lfdr.de>; Fri, 13 Jun 2025 16:13:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DE847A4153
+	for <lists+keyrings@lfdr.de>; Fri, 13 Jun 2025 16:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FAB81FF1A6;
-	Fri, 13 Jun 2025 16:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="fF/4a6k4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C08020127A;
+	Fri, 13 Jun 2025 16:49:13 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CBC3594F;
-	Fri, 13 Jun 2025 16:13:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1904207F;
+	Fri, 13 Jun 2025 16:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749831228; cv=none; b=h1GXyowAY/uJaOjeyV+9xx/JsKIp5qRT+UNUZOdqgtOXh1rNwyvfItb50ZsXSQkPXPZ8khEiG+tyyuAn+3Uqih1VA8C6CJrIq8COBpSjPEc5mzeQS7VzhF6exbg6+7O1T+A0ev9mJjd1y0ZV31/tfHx29Fk0jZKQpwjXpnUwAUo=
+	t=1749833352; cv=none; b=CZiyJWuEHPulJ4gSywhOWzyvBZj8bxkXgrlxXECqOiLuE61om1JvV4Qpi8yN73sR0mahhANSkQwp6pfdyi+F73KW3fDIzx8+cnVvmledvRPIEGJKX703pDST34H3D659gmfEESv7TwshsE5kIVC3miA3+2FxKSn2ev1QjRcdGNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749831228; c=relaxed/simple;
-	bh=n9a+7U2uS1d9uvleFVp9foNZIx2OdF5F2UPWHewvtlU=;
+	s=arc-20240116; t=1749833352; c=relaxed/simple;
+	bh=Kzcv1y0IlQTrRjySbtAFTooNBaHArg/VI4VIiCWODrQ=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZJcwsS6crlfWTX6nrUNaujcr/ah0yHQUigEdKzQTJmT3ms5nI2xgIMySvkq1L5AxRiZwWm8DFSYhEkG5v5x4QPFhLe4OwdN6QpeUkX8GQEPG68ja0TpMGaE2F8yk9JkVNXl45+YpTGIdwGFBNpssc/avG0WG5zAhdPL0Vo1pIG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=fF/4a6k4; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1749831224;
-	bh=n9a+7U2uS1d9uvleFVp9foNZIx2OdF5F2UPWHewvtlU=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=fF/4a6k4RGEoNP5YtfS3VVryXT3LprD+QXBhDE1Nnw2Vac5KFTE8gzBythaz5Ov9v
-	 hVmWBl/l/5QCsRQ6EAfKZzyMafIuvxkDYtz2+eUtuCh3hftPcDmDQi7RW+MY21Nnvv
-	 QLHPZM/rGieYumKiTDCU+Gb1DkhS62Q4gzt8uPq4=
-Received: from [IPv6:2601:5c4:4302:c21::a774] (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 7DE161C0024;
-	Fri, 13 Jun 2025 12:13:44 -0400 (EDT)
-Message-ID: <01f2f3171dd0f1cd9dcb496ac66bc6903767a2d2.camel@HansenPartnership.com>
+	 Content-Type:MIME-Version; b=lH6Mfym1ahPKnheK2QLJs5RQi+TIJJPGKddMt3pQIP0R7PqEl2Vfl/BXVoI3AcpIKvG+iMbTbCVQ2kVhUnyiXfWk5PS07KNaVJA2qeVATknEJc8lsc8GnGRLvDoBI8WiVTndj71QcLZsa5yqvaU0f6hNoqxg6+bDabymzPnwVLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.18.186.51])
+	by frasgout12.his.huawei.com (SkyGuard) with ESMTPS id 4bJlKM0wr0zsSKX;
+	Sat, 14 Jun 2025 00:31:51 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.47])
+	by mail.maildlp.com (Postfix) with ESMTP id 806121402FC;
+	Sat, 14 Jun 2025 00:32:57 +0800 (CST)
+Received: from [127.0.0.1] (unknown [10.204.63.22])
+	by APP1 (Coremail) with SMTP id LxC2BwCnLUyYUkxomp2vCQ--.58407S2;
+	Fri, 13 Jun 2025 17:32:56 +0100 (CET)
+Message-ID: <5dbd2f9d79e0ffee006c5c9f448d486737d93b6a.camel@huaweicloud.com>
 Subject: Re: Module signing and post-quantum crypto public key algorithms
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: David Howells <dhowells@redhat.com>, Herbert Xu
- <herbert@gondor.apana.org.au>, Stephan Mueller <smueller@chronox.de>, Simo
- Sorce <simo@redhat.com>, torvalds@linux-foundation.org, Paul Moore
- <paul@paul-moore.com>
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>, David Howells
+ <dhowells@redhat.com>, Herbert Xu <herbert@gondor.apana.org.au>, Stephan
+ Mueller <smueller@chronox.de>, Simo Sorce <simo@redhat.com>,
+ torvalds@linux-foundation.org, Paul Moore <paul@paul-moore.com>
 Cc: Lukas Wunner <lukas@wunner.de>, Ignat Korchagin <ignat@cloudflare.com>, 
  Clemens Lang <cllang@redhat.com>, David Bohannon <dbohanno@redhat.com>,
  Roberto Sassu <roberto.sassu@huawei.com>, keyrings@vger.kernel.org, 
  linux-crypto@vger.kernel.org, linux-security-module@vger.kernel.org, 
  linux-kernel@vger.kernel.org
-Date: Fri, 13 Jun 2025 12:13:43 -0400
-In-Reply-To: <501216.1749826470@warthog.procyon.org.uk>
+Date: Fri, 13 Jun 2025 18:32:21 +0200
+In-Reply-To: <01f2f3171dd0f1cd9dcb496ac66bc6903767a2d2.camel@HansenPartnership.com>
 References: <501216.1749826470@warthog.procyon.org.uk>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=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
+	 <01f2f3171dd0f1cd9dcb496ac66bc6903767a2d2.camel@HansenPartnership.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-CM-TRANSID:LxC2BwCnLUyYUkxomp2vCQ--.58407S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3GFykJr45Zr43ZF45CrWDtwb_yoW7ZFW3pF
+	W5tFWYkrWkJFn2yFn2ka18KF4Fyws3Jw45Jr9xG348Z3Z8XFnxAr1IkFWYvFZrCrs3G3WY
+	vrWSyrn2kws5ZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvmb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
+	wI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
+	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5
+	MIIYY7kG6xAYrwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
+	x0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
+	z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
+	UI43ZEXa7IU5pmh7UUUUU==
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQASBGhLzecHGAACsD
 
-On Fri, 2025-06-13 at 15:54 +0100, David Howells wrote:
-> Hi,
+On Fri, 2025-06-13 at 12:13 -0400, James Bottomley wrote:
+> On Fri, 2025-06-13 at 15:54 +0100, David Howells wrote:
+> > Hi,
+> >=20
+> > So we need to do something about the impending quantum-related
+> > obsolescence of the RSA signatures that we use for module signing,
+> > kexec, BPF signing, IMA and a bunch of other things.
 >=20
-> So we need to do something about the impending quantum-related
-> obsolescence of the RSA signatures that we use for module signing,
-> kexec, BPF signing, IMA and a bunch of other things.
-
-Wait, that's not necessarily the whole threat.  There are two possible
-ways quantum could compromise us.  One is a computer that has enough
-qbits to run the shor algorithm and break non-quantum crypto.  The
-other is that a computer comes along with enough qbits to speed up the
-brute force attacks using the grover algorithm.  NIST still believes
-the latter will happen way before the former, so our first step should
-be doubling the number of security bits in existing algorithms, which
-means ECC of at least 512 bits (so curve25519 needs replacing with at
-least curve448) and for all practical purposes deprecating RSA (unless
-someone wants to play with huge keys).
-
-> From my point of view, the simplest way would be to implement key
-> verification in the kernel for one (or more) of the available post-
-> quantum algorithms (of which there are at least three), driving this
-> with appropriate changes to the X.509 certificate to indicate that's
-> what we want to use.
-
-Can you at least enumerate them?  There's still a dispute going on
-about whether we should use pure post-quantum or hybrid.  I tend to
-think myself that hybrid is best for durable things like digital
-signatures but given the NIST advice, we should be using > 512 bit
-curves for that.
-
-> The good news is that Stephan Mueller has an implemementation that
-> includes
-> kernel bits that we can use, or, at least, adapt:
+> Wait, that's not necessarily the whole threat.  There are two possible
+> ways quantum could compromise us.  One is a computer that has enough
+> qbits to run the shor algorithm and break non-quantum crypto.  The
+> other is that a computer comes along with enough qbits to speed up the
+> brute force attacks using the grover algorithm.  NIST still believes
+> the latter will happen way before the former, so our first step should
+> be doubling the number of security bits in existing algorithms, which
+> means ECC of at least 512 bits (so curve25519 needs replacing with at
+> least curve448) and for all practical purposes deprecating RSA (unless
+> someone wants to play with huge keys).
 >=20
-> 	https://github.com/smuellerDD/leancrypto/
-
-So the only hybrid scheme in there is dilithium+25519 which doesn't
-quite fit the bill (although I'm assuming dilithium+448 could easily be
-implemented)
-
+> > From my point of view, the simplest way would be to implement key
+> > verification in the kernel for one (or more) of the available post-
+> > quantum algorithms (of which there are at least three), driving this
+> > with appropriate changes to the X.509 certificate to indicate that's
+> > what we want to use.
 >=20
-> Note that we only need the signature verification bits.=C2=A0 One
-> question, though: he's done it as a standalone "leancrypto" module,
-> not integrated into crypto/, but should it be integrated into crypto/
-> or is the standalone fine?
+> Can you at least enumerate them?  There's still a dispute going on
+> about whether we should use pure post-quantum or hybrid.  I tend to
+> think myself that hybrid is best for durable things like digital
+> signatures but given the NIST advice, we should be using > 512 bit
+> curves for that.
 >=20
-> The not so good news, as I understand it, though, is that the X.509
-> bits are not yet standardised.
+> > The good news is that Stephan Mueller has an implemementation that
+> > includes
+> > kernel bits that we can use, or, at least, adapt:
+> >=20
+> > 	https://github.com/smuellerDD/leancrypto/
 >=20
+> So the only hybrid scheme in there is dilithium+25519 which doesn't
+> quite fit the bill (although I'm assuming dilithium+448 could easily be
+> implemented)
 >=20
-> However!=C2=A0 Not everyone agrees with this.=C2=A0 An alternative propos=
-al
-> would rather get the signature verification code out of the kernel
-> entirely.=C2=A0 Simo Sorce's proposal, for example, AIUI, is to compile
-> all the hashes we need into the kernel at build time, possibly with a
-> hashed hash list to be loaded later to reduce the amount of
-> uncompressible code in the kernel.=C2=A0 If signatures are needed at all,
-> then this should be offloaded to a userspace program (which would
-> also have to be hashed and marked unptraceable and I think
-> unswappable) to do the checking.
+> >=20
+> > Note that we only need the signature verification bits.=C2=A0 One
+> > question, though: he's done it as a standalone "leancrypto" module,
+> > not integrated into crypto/, but should it be integrated into crypto/
+> > or is the standalone fine?
+> >=20
+> > The not so good news, as I understand it, though, is that the X.509
+> > bits are not yet standardised.
+> >=20
+> >=20
+> > However!=C2=A0 Not everyone agrees with this.=C2=A0 An alternative prop=
+osal
+> > would rather get the signature verification code out of the kernel
+> > entirely.=C2=A0 Simo Sorce's proposal, for example, AIUI, is to compile
+> > all the hashes we need into the kernel at build time, possibly with a
+> > hashed hash list to be loaded later to reduce the amount of
+> > uncompressible code in the kernel.=C2=A0 If signatures are needed at al=
+l,
+> > then this should be offloaded to a userspace program (which would
+> > also have to be hashed and marked unptraceable and I think
+> > unswappable) to do the checking.
+> >=20
+> > I don't think we can dispense with signature checking entirely,
+> > though: we need it for third party module loading, quick single-
+> > module driver updates and all the non-module checking stuff.=C2=A0 If i=
+t
+> > were to be done in userspace, this might entail an upcall for each
+> > signature we want to check - either that, or the kernel has to run a
+> > server process that it can delegate checking to.
 >=20
-> I don't think we can dispense with signature checking entirely,
-> though: we need it for third party module loading, quick single-
-> module driver updates and all the non-module checking stuff.=C2=A0 If it
-> were to be done in userspace, this might entail an upcall for each
-> signature we want to check - either that, or the kernel has to run a
-> server process that it can delegate checking to.
+> I agree we can't predict everything at build time, so we need a runtime
+> scheme (like signatures) as well.  However, I'm not convinced it should
+> be run outside the kernel.  The expansion of the TCB plus the amount of
+> checking the kernel has to do to make sure the upcall is secure adds to
+> the vulnerability over in-kernel where everything just works.
+>=20
+> > It's also been suggested that PQ algorithms are really slow.=C2=A0 For
+> > kernel modules that might not matter too much as we may well not load
+> > more than 200 or so during boot - but there are other users that may
+> > get used more frequently (IMA, for example).
+>=20
+> If we go with a hybrid signature scheme, we can start off with only
+> verifying the pre-quantum signature and have a switch to verify both.
+>=20
+> > Now, there's also a possible hybrid approach, if I understand Roberto
+> > Sassu's proposal correctly, whereby it caches bundles of hashes
+> > obtained from, say, the hashes included in an RPM.=C2=A0 These bundles =
+of
+> > hashes can be checked by signature generated by the package signing
+> > process.=C2=A0 This would reduce the PQ overhead to checking a bundle a=
+nd
+> > would also make IMA's measuring easier as the hashes can be added in
+> > the right order, rather than being dependent on the order that the
+> > binaries are used.
+>=20
+> I think you're referring to the IMA digest list extension proposal:
+>=20
+> https://github.com/initlove/linux/wiki/IMA-Digest-Lists-Extension
+>=20
+> I'm not sure it's been progressed much.
 
-I agree we can't predict everything at build time, so we need a runtime
-scheme (like signatures) as well.  However, I'm not convinced it should
-be run outside the kernel.  The expansion of the TCB plus the amount of
-checking the kernel has to do to make sure the upcall is secure adds to
-the vulnerability over in-kernel where everything just works.
+The latest iteration can be found here:
 
-> It's also been suggested that PQ algorithms are really slow.=C2=A0 For
-> kernel modules that might not matter too much as we may well not load
-> more than 200 or so during boot - but there are other users that may
-> get used more frequently (IMA, for example).
+https://lore.kernel.org/linux-integrity/20241119104922.2772571-1-roberto.sa=
+ssu@huaweicloud.com/
 
-If we go with a hybrid signature scheme, we can start off with only
-verifying the pre-quantum signature and have a switch to verify both.
+It is more or less ready for upstreaming (from my point of view), with
+the exception of a few comments that I still need to address.
 
-> Now, there's also a possible hybrid approach, if I understand Roberto
-> Sassu's proposal correctly, whereby it caches bundles of hashes
-> obtained from, say, the hashes included in an RPM.=C2=A0 These bundles of
-> hashes can be checked by signature generated by the package signing
-> process.=C2=A0 This would reduce the PQ overhead to checking a bundle and
-> would also make IMA's measuring easier as the hashes can be added in
-> the right order, rather than being dependent on the order that the
-> binaries are used.
+The main problem was parsing the RPM headers in the kernel, that Linus
+didn't like, but I believe I solved it now with Mimi's suggestion of
+making the digest list parsers pluggable (so the RPM parser has been
+removed from this submission, and moved to a kernel module that is
+expected to be signed by distros).
 
-I think you're referring to the IMA digest list extension proposal:
+I explored the alternative of moving the parser to user space, but as
+you mentioned, it is a more risky approach.
 
-https://github.com/initlove/linux/wiki/IMA-Digest-Lists-Extension
+Other than that, yes, it makes IMA much faster in my benchmarks (~34
+seconds to lookup 12312 digests and verify 303 ECDSA signatures, as
+opposed to ~98 seconds to verify 12312 ECDSA signatures).
 
-I'm not sure it's been progressed much.
-
-Regards,
-
-James
+Roberto
 
 
