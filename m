@@ -1,204 +1,139 @@
-Return-Path: <keyrings+bounces-2843-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2844-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1826ADB7C3
-	for <lists+keyrings@lfdr.de>; Mon, 16 Jun 2025 19:27:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA36ADBB36
+	for <lists+keyrings@lfdr.de>; Mon, 16 Jun 2025 22:30:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 138143AC779
-	for <lists+keyrings@lfdr.de>; Mon, 16 Jun 2025 17:27:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E688A7A7C5D
+	for <lists+keyrings@lfdr.de>; Mon, 16 Jun 2025 20:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B082288C1B;
-	Mon, 16 Jun 2025 17:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 094BE20B207;
+	Mon, 16 Jun 2025 20:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jy7zZHdR"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GdNnEmI6"
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEE61F8676
-	for <keyrings@vger.kernel.org>; Mon, 16 Jun 2025 17:27:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AF2207A0C;
+	Mon, 16 Jun 2025 20:30:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750094850; cv=none; b=fK/x773nRciZyrpRtOeSd8aqDW0/mYlf6jpeabkLp1vqXaGj8C0ZM1mIjxvgpes9sZyRRz/OMIDJJNhqqXQ2NBlJTdW9Eb8K2tA5BL3/lYENJXHMvSdv9haRkayAOH90scGIXoj0qTRDRNhwor6ycMqld2aEXlOKDBnULqcDKt0=
+	t=1750105840; cv=none; b=ucP5E70R0U3Sp/DQo9t0KHHVTZOO29IYW8HhY9KhjhUxrkfYUOdG2x6OY7qsMtZEND/zmhktfDivDmI0jbCwjVv1a/oVZRMeIeO7fVUJY4c7LuzVkNGWpHRvIU6maAmUSPGW5hqQ7gd8uF/SKafYUk+77Jupak1rv45Skq5mrPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750094850; c=relaxed/simple;
-	bh=w0PWzJYGZyUO7NaF3hKUPKQCpIVIVkYsajHq504Hcsk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jdkvDKIzbUkjgt6tDezcYMxLmv1mpQNw4laeMHDfMYinXoneZ2jw50lHPSJIh0pChpGh8uMlwluVLgXTwiGXDR9u0Slj/ITEf6ZQvdKEPcI0i3O1wj+N8vzwQzIRaQG14RYRdjGLe1Z7fF6g4RCGtpExGgDzistBfrUDYGJiefU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jy7zZHdR; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1750094847;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7AAtsmpqEB0sDxRTXjGqemaYQ70O61wfZxdM4h7t6Ns=;
-	b=Jy7zZHdRnZbn88t46eEei7+oysXmMn/qdHtpBncj1aytO0bk5G/XnaMxq0HRCafiay4qrE
-	c67U6T/v7/QlBL83pDKhTsoYVzL6EsXi50cuEh1zbEksAeiLS5vwo0qqXFjSZLjhDjLej4
-	lI221UIVbuJwl54mvzs19rTuKdM/vIg=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-269-wQw2h-KlPZKuDdZrM6K6Dw-1; Mon, 16 Jun 2025 13:27:26 -0400
-X-MC-Unique: wQw2h-KlPZKuDdZrM6K6Dw-1
-X-Mimecast-MFC-AGG-ID: wQw2h-KlPZKuDdZrM6K6Dw_1750094846
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6fafc5092daso106460326d6.1
-        for <keyrings@vger.kernel.org>; Mon, 16 Jun 2025 10:27:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750094846; x=1750699646;
-        h=mime-version:user-agent:content-transfer-encoding:organization
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7AAtsmpqEB0sDxRTXjGqemaYQ70O61wfZxdM4h7t6Ns=;
-        b=ukmTC2QR6Xfu2CcrpYoannKzR0zeFIFOtRbUU5k4Em3N/+/K2NIBUNmMvjwV7G0o51
-         UvtcaJXJ1HwAhfdxyeXVUNNUSf+tFLKvKQrxZJD9VQRBTT1hKDvy7tYUxxV+/8pb+bfo
-         hHYgBc3IFexFGGjDerUiU5cTx4hZK22ZRc7lpBEIvMT6Y/omGz22tj1MCzjSvRMqA7qh
-         Eege+XqQd0z5fW9VrO0GW3JktrcGumBjFOiGVMeYYX3PqW8b2MA40xpwNHnZk6eDiLsh
-         JHeC1Y6M84mVIlgy7qwlmlcRIPZEUTsop+x7mWLKZO6qIrgPzQHOLbjJvcljR/VfQgjH
-         pzWw==
-X-Forwarded-Encrypted: i=1; AJvYcCUveSGLOp3gQJHLVv97iVP6qmckoytRXkvpQ8Efn8eJylKJBvIvVVjoOQGFS6dyMOVXULUUsZWwOg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YysBJUe7223hbXCchzUJzPdLQJcrdmIEAJQlrOwVk8N5AwVcl01
-	6RffRa2eybAPMFW1iEZgH+uH6rucu20g8ozbyQHXl4SCG+nxdSKnl7Uqi1hoy3xj3LwOGkmM3J0
-	9/CfCblHcGHBKhTsNUkFWjZ/vadAwXXzXWJWa4BqB8eP7DNyl39hEsrc2svbX
-X-Gm-Gg: ASbGncv5znfGQhPQzNY2OAdgRR61No1Nx97MVMm73pvlfllZsxkmZwcwt8Di4Odu1Tf
-	u0NXeq4R9gWI1FDckSrJUSuAHx41MDt2+STbFTpL95XwlyASxJ34hibC0tKpFaZRhCo74JmrRBX
-	qdJK9pLAlUBZCYJ4CNJfbNRH4dkn7iTmKGUxmkveSMYSC4BbfGeeauXd9mG5u2t+8sYINN7x73F
-	iG0LBZaHvPB6i1m7bhni1fDB0MUsPXQvoij0ynQmsJ78onEjCeo8cYWa+koKYTY59+o6y4C6Gt2
-	WWAk9pwNvRzJpkc+
-X-Received: by 2002:a05:6214:21cb:b0:6e6:5b8e:7604 with SMTP id 6a1803df08f44-6fb46dd8a7bmr172783996d6.12.1750094845979;
-        Mon, 16 Jun 2025 10:27:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG+VT874VaDjh9XjdWEtRP/Wjh2i/oUst+fM3UXJE4MF1bffqfULCVs+zkhlO/eICr0H8d4GA==
-X-Received: by 2002:a05:6214:21cb:b0:6e6:5b8e:7604 with SMTP id 6a1803df08f44-6fb46dd8a7bmr172783546d6.12.1750094845593;
-        Mon, 16 Jun 2025 10:27:25 -0700 (PDT)
-Received: from m8.users.ipa.redhat.com ([2603:7000:9400:fe80::baf])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fb35c6c54fsm53397876d6.98.2025.06.16.10.27.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Jun 2025 10:27:25 -0700 (PDT)
-Message-ID: <3d650cc9ff07462e5c55cc3d9c0da72a3f2c5df2.camel@redhat.com>
-Subject: Re: Module signing and post-quantum crypto public key algorithms
-From: Simo Sorce <simo@redhat.com>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>, Ignat Korchagin
-	 <ignat@cloudflare.com>, David Howells <dhowells@redhat.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>, Stephan Mueller
-	 <smueller@chronox.de>, torvalds@linux-foundation.org, Paul Moore
-	 <paul@paul-moore.com>, Lukas Wunner <lukas@wunner.de>, Clemens Lang
-	 <cllang@redhat.com>, David Bohannon <dbohanno@redhat.com>, Roberto Sassu
-	 <roberto.sassu@huawei.com>, keyrings@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Mon, 16 Jun 2025 13:27:24 -0400
-In-Reply-To: <69775877d04b8ee9f072adfd2c595187997e59fb.camel@HansenPartnership.com>
-References: <501216.1749826470@warthog.procyon.org.uk>
-		 <CALrw=nGkM9V12y7dB8y84UHKnroregUwiLBrtn5Xyf3k4pREsg@mail.gmail.com>
-		 <de070353cc7ef2cd6ad68f899f3244917030c39b.camel@redhat.com>
-		 <3081793dc1d846dccef07984520fc544f709ca84.camel@HansenPartnership.com>
-		 <7ad6d5f61d6cd602241966476252599800c6a304.camel@redhat.com>
-	 <69775877d04b8ee9f072adfd2c595187997e59fb.camel@HansenPartnership.com>
-Organization: Red Hat
+	s=arc-20240116; t=1750105840; c=relaxed/simple;
+	bh=hamgTHtQphfJLg+71cqSsH6LRWS1AgeHRNqRdZHuBZY=;
+	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=mA+1mS5bOXftVjqqC/uRe+0FeeYVYgOOfARDzlRjtVtj7HrrFi1DfGxh91mQttsqsepS207IXV8HNtgW3UFQhYgX/P5iHRKlzK/BGH7ifmI1BFqkf18yHTIC6gKkgJo5b7nHrg3CwxbQD5nwyeVq4Zh1UcPSra1uxgNW4dQzak8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=GdNnEmI6; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55GErUol009585;
+	Mon, 16 Jun 2025 20:30:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=GNzNeE
+	Bm+3DzC4Zr9XQJpngwrFW2dVlrFN3SOymuvLU=; b=GdNnEmI6smwbrBlQELGdK9
+	HFDgvBvtudUFiz+42H639vtCEnnjQy8k/hBnRMe87jezx3olvu/lbW2Iz5XkdHKN
+	FA7+Tt2OaITFj8GhJY37eSbPvwvn42lIAeZtBlg4agpycXyKAkpqPlJvM11pYSKR
+	y9m5TMLbata7pBeV6EHfSQPvQy8S9CL0NxRCY7C5F+SZI2wm1sBU/7gCztoxYyuL
+	146tlJF8KyT29fWURqJRE6d7hCB97J7Bc247uBGwJm6mNwl4KdKmFSIrY5e3jyBH
+	qixBNd+1bRhM8gg+PvKMphw3wro0MO4sfUUtnTl+Jy91QchympJM75RwbUzgyqJA
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4790r1usq7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Jun 2025 20:30:09 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55GH1hIe005490;
+	Mon, 16 Jun 2025 20:30:08 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 479mwkytv2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Jun 2025 20:30:08 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55GKU7T266716102
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 16 Jun 2025 20:30:07 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 96C4B5805A;
+	Mon, 16 Jun 2025 20:30:07 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D9F0B58054;
+	Mon, 16 Jun 2025 20:30:05 +0000 (GMT)
+Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.36.235])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 16 Jun 2025 20:30:05 +0000 (GMT)
+Message-ID: <0e70574bfae43ce939d67e89c858f303ae7ac204.camel@linux.ibm.com>
+Subject: Re: [RFC] Keyrings: How to make them more useful
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
+        Jarkko
+ Sakkinen <jarkko@kernel.org>, Steve French <sfrench@samba.org>,
+        Chuck Lever
+ <chuck.lever@oracle.com>
+Cc: Paulo Alcantara <pc@manguebit.org>,
+        Herbert Xu
+ <herbert@gondor.apana.org.au>,
+        Jeffrey Altman <jaltman@auristor.com>, hch@infradead.org,
+        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-cifs@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <462886.1749731810@warthog.procyon.org.uk>
+References: <462886.1749731810@warthog.procyon.org.uk>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1 (3.56.1-1.fc42) 
+Date: Mon, 16 Jun 2025 16:30:05 -0400
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: wXse2RC_vQ4JRRGq0lWq-Sdm9JDEdfIn
+X-Proofpoint-ORIG-GUID: wXse2RC_vQ4JRRGq0lWq-Sdm9JDEdfIn
+X-Authority-Analysis: v=2.4 cv=AqTu3P9P c=1 sm=1 tr=0 ts=68507ed1 cx=c_pps a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17 a=IkcTkHD0fZMA:10 a=6IFa9wvqVegA:10 a=JoNQkPbLKCQ6XZtbux0A:9 a=QEXdDO2ut3YA:10 a=zgiPjhLxNE0A:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjE2MDE0MCBTYWx0ZWRfX8/cI4/OlrSm1 rTcMmcQSkT8bXAKuvP126Suxa2KoCUma8s02UNrUz3zZlyCMQ6ud9aqKLBUY503LhgsjNJmWAb5 saB9BvFDbbZ73yFlY7B6+2MC/ALyGCllRpPkp2jgLPySBegRPYR4oVrkiQPQk74b6wLB2keWBjM
+ +UXEUgejZPd+ToJvVgJ28UPYc80VOc2FiXWsLECTwVuKjwQXTQr6U3UXN9IkUEaZB+zykhiLQyh hm+oRUPk/3K9ribP3YyAFjxcFAjSigrznSnSl1a3Toov0xOPCfoiT7z2LYuhefkVEF/yoRNiqe5 jlGYDjbU+a6jVhOKqrons1sJzGL8iTcb4HJ+dWayPoPUmxF3aahpIW1+P3bgA49mM8iaU6J5Rt4
+ mLmZwuf4boQZ/HmZV4rcPzdo3dYbg8rnnFhF5miWYZu9nXKmE4jQwwRgyxM3XK5xDiuuLpgr
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-16_10,2025-06-13_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ lowpriorityscore=0 suspectscore=0 adultscore=0 impostorscore=0
+ priorityscore=1501 phishscore=0 mlxlogscore=768 mlxscore=0 spamscore=0
+ bulkscore=0 malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506160140
 
-On Mon, 2025-06-16 at 11:14 -0400, James Bottomley wrote:
-> The main worry everyone has is that while it is believed that there's
-> not a quantum short cut over classical for lattice algorithms, they
-> haven't been studied long enough to believe there's no classical short
-> cut to breaking the encryption.  The only real algorithms we're sure
-> about are the hash based ones, so perhaps we should start with XMSS/LMS
-> before leaping to ML-.  Particularly for kernel uses like modules, the
-> finite signatures problem shouldn't be that limiting.
+On Thu, 2025-06-12 at 13:36 +0100, David Howells wrote:
 
-The only case where you can use LMS/XMSS in software is if you perform
-exclusively verification, or if you perform a small number of
-signatures and then immediately destroy the private key.
+[ ...]
 
-LMS/and XMSS absolutely cannot be used as software algorithms to
-generate signatures while keeping a key around because ensuring the
-status is never reused is fundamentally impossible in software. And a
-single reuse in LMS/XMSS means complete breakdown of the crypto-system.
+>  (4) I think the keyring ACLs idea need to be revived.  We have a whole b=
+unch
+>      of different keyrings, each with a specific 'domain' of usage for th=
+e
+>      keys contained therein for checking signatures on things.  Can we re=
+duce
+>      this to one keyring and use ACLs to declare the specific purposes fo=
+r
+>      which a key may be used or the specific tasks that may use it?  Use
+>      special subject IDs (ie. not simply UIDs/GIDs) to mark this.
 
-Due to the above in general implementing LMS/XMSS signature generation
-in software is a *very bad idea*(TM) because people do not understand
-how it can be used safely, and I would seriously discourage it.
+David, which keyrings are you referring to?  What do you mean by 'domain' o=
+f
+usage?  At what level of granularity are you thinking of?  This needs to be
+describe in more detail.
 
-The next option in this line of thought is SLH-DSA (which I would favor
-if not for the following).
+thanks,
 
-The problems with SLH-DSA are that it has rather large signatures and
-is the slowest of all the algorithms and that CNSA 2.0 does not list
-SLH-DSA as approved :-(
-
-> > > Current estimates say Shor's algorithm in "reasonable[1]" time
-> > > requires around a million qubits to break RSA2048, so we're still
-> > > several orders of magnitude off that.
-> >=20
-> > Note that you are citing sources that identify needed physical qbits
-> > for error correction, but what IBM publishes is a roadmap for *error
-> > corrected* logical qbits. If they can pull that off that computer
-> > will already be way too uncomfortably close (you need 2n+3 error
-> > corrected logical qbits to break RSA).
->=20
-> The roadmap is based on a linear presumption of physical to logical
-> qbit scaling.  Since quantum error effects are usually exponential in
-> nature that seems optimistic ... but, hey, we should know in a couple
-> of years.
-
-To be honest it does not really matter, either we'll have a workable
-quantum computer or not, if we do we do, and the scaling will be rapid
-enough that the difference in required bits won't really matter. I find
-it very unlikely that we'll find ourselves in a situation where we'll
-have a QC that can efficiently performer the Grover's algorithm with
-enough bits, and yet implementing Shor's one is too hard and will take
-a decade or more to reach.
-
-> >  so it is not really a concern, even with the smallest key sizes the
-> > search space is still 2^64 ... so it makes little sense to spend a
-> > lot of engineering time to find all places where doubling key size
-> > break things and then do a micro-migration to that. It is better to
-> > focus the scarce resources on the long term.
->=20
-> Well the CNSA 2.0 doc you cite above hedges and does a 1.5x security
-> bit increase, so even following it we can't do P-256, 25519 or RSA2048
-> we have to move to at least P-384 and X448 (even though it allows
-> RSA3072, I don't think we should be supporting that).  So if we're
-> going to have to increase key size anyway, we may as well up it to 256
-> bits of security.
->=20
-> So even if you believe quantum is slightly more imminent than the
-> Kazakh Gerbil invasion, we should still begin with the key size
-> increase.
-
-What I believe is that we should not worry about Grover, because if we
-get a workable Grover implementation that works we'll get Shor's too
-which breaks clsssic algorithms entirely. Therefore we better move to
-PQ algorithms and not spend time on a "small transition".
-
-Of course we can decide to hedge *all bets* and move to a composed
-signature (both a classic and a PQ one), in which case I would suggest
-looking into signatures that use ML-DSA-87 + Ed448 or ML-DSA-87 + P-521
-,ideally disjoint, with a kernel policy that can decide which (or both)
-needs to be valid/checked so that the policy can be changed quickly via
-configuration if any of the signature is broken.
-
-This will allow for fears of Lattice not being vetted enough to be
-managed as well as increasing the strength of the classic option, while
-maintaining key and signature sizes manageable.
-
---=20
-Simo Sorce
-Distinguished Engineer
-RHEL Crypto Team
-Red Hat, Inc
-
+Mimi
 
