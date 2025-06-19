@@ -1,62 +1,59 @@
-Return-Path: <keyrings+bounces-2845-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2846-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6371AADCE5C
-	for <lists+keyrings@lfdr.de>; Tue, 17 Jun 2025 15:55:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E553BAE05F2
+	for <lists+keyrings@lfdr.de>; Thu, 19 Jun 2025 14:34:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32568188A073
-	for <lists+keyrings@lfdr.de>; Tue, 17 Jun 2025 13:54:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9080B188F6CB
+	for <lists+keyrings@lfdr.de>; Thu, 19 Jun 2025 12:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242892E267D;
-	Tue, 17 Jun 2025 13:54:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qQbquBVW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8650123ED5A;
+	Thu, 19 Jun 2025 12:31:51 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98132E266E;
-	Tue, 17 Jun 2025 13:54:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E9023D2A5;
+	Thu, 19 Jun 2025 12:31:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750168460; cv=none; b=c2Mm4hIvAH4mugDHphcEXgDie0Wjodbk9w5I3DmDphdNanMX6LObfPFQFOUV5FKBJkyhgcnwZHlohYSwSF2y2hQvY95eWp3nmuAIOxaFGYDFYjS5s4BoIdkjYGvMe0g6zewvNvJouRZN2ELiTAnUBcLVhw3HgPZPo74aAifg1S4=
+	t=1750336311; cv=none; b=hqr6SnWMfHFaPDYIRjvyT/mXkZnN5G6QX96YlfA99c9WbGWqa26jdqLEmj8PN2NT+WhggGx2YBGDhJuLBG5hGGpvWsfxtlZWZsBTM4Kf0fELMVGIpFLtRSDQqVihapsudRC/0d7bRG9FSG+Cf+f4540SA51zA27Gd9imqOHog9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750168460; c=relaxed/simple;
-	bh=+mvYcib1jOLn2MJdJlLe3/Of17qNWzn3vv5uSzZoKSU=;
+	s=arc-20240116; t=1750336311; c=relaxed/simple;
+	bh=FHJKzlnEQQqv5/RHU8cRM4LVX+71p8k/NOpMFy86sKE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kl/yJjI2fxj794RFGX1W66GaO/HqBu3oYdwnoKk3K2k8e9FwB9AL+PU18zphQadJuaYjFSiQ7opWs0gwaPIdiuL/ZGKb1oGwFGi+NJ09xnnulnYlJ3vgDTZ2++LZI8W0H10gl2PuGm95LgWXOlsyIKD4gQ/kUwFuOpgtdgz27jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qQbquBVW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 161CEC4CEF5;
-	Tue, 17 Jun 2025 13:54:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750168459;
-	bh=+mvYcib1jOLn2MJdJlLe3/Of17qNWzn3vv5uSzZoKSU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qQbquBVWTNilpD9J2DZukqDqhw6dYV6sQdAC3swnhkXDCzrarHfIjtDx6+iaanIj2
-	 /w49fQnKSs5gIvxmaG8LRqyy10uW6vxniN9Vtlf836msmzLX6mULgZBsyo2VCzTtdQ
-	 v8HEJuCYV3Vzp6qLFx9lNWclFdUMun1+SF3Xe0r/IgIThr2gBMuIJcCrwNKPXlzr4k
-	 qKVgTe3En5KlysSFaraPhOlK6Hm77MlTIQOT81QI2BUf7+QXEZ3OYgm8HvmQq5bDyj
-	 EA6ptglxv3jHHKeLyaL/2d/HPCJgn2G8R6Gxm7WZ6HZYrmkdGksTvaIIGBQm3ZA2aU
-	 6u12Pn3Ty9DSA==
-Date: Tue, 17 Jun 2025 16:54:15 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=jk5v8eczlpstozfroO4uVPUBTeL/37j04o4UHcTABCOZ89XuLyuNSO+GY6Q79OTvRZp7y2U/TuotbPiJUMFxCQ4T99EeMBWCHyRB7i4xfsxsi/9y6+SrMLn7tM7qXleljqLbxkOIQ2jAPSHK0bVl/qEnHwtVOg8ZsoKD2KqKOoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 8FD0B2C000B7;
+	Thu, 19 Jun 2025 14:31:40 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 3DCA93A07F9; Thu, 19 Jun 2025 14:31:40 +0200 (CEST)
+Date: Thu, 19 Jun 2025 14:31:40 +0200
+From: Lukas Wunner <lukas@wunner.de>
 To: David Howells <dhowells@redhat.com>
-Cc: keyrings@vger.kernel.org, Steve French <sfrench@samba.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Jeffrey Altman <jaltman@auristor.com>, hch@infradead.org,
-	linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
-	linux-cifs@vger.kernel.org, linux-security-module@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-crypto@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC] Keyrings: How to make them more useful
-Message-ID: <aFFzWwPoXMhMJjTL@kernel.org>
-References: <462886.1749731810@warthog.procyon.org.uk>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
+	Stephan Mueller <smueller@chronox.de>, Simo Sorce <simo@redhat.com>,
+	torvalds@linux-foundation.org, Paul Moore <paul@paul-moore.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Clemens Lang <cllang@redhat.com>,
+	David Bohannon <dbohanno@redhat.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>, keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: Module signing and post-quantum crypto public key algorithms
+Message-ID: <aFQDLCvTs8IaAQI_@wunner.de>
+References: <501216.1749826470@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -65,118 +62,49 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <462886.1749731810@warthog.procyon.org.uk>
+In-Reply-To: <501216.1749826470@warthog.procyon.org.uk>
 
-On Thu, Jun 12, 2025 at 01:36:50PM +0100, David Howells wrote:
-> Hi Jarkko, Steve, Chuck, Mimi, et al.,
+On Fri, Jun 13, 2025 at 03:54:30PM +0100, David Howells wrote:
+> The good news is that Stephan Mueller has an implemementation that includes
+> kernel bits that we can use, or, at least, adapt:
 > 
-> I think work needs to be done on the keyrings subsystem to make them more
-> useful for network filesystems and other kernel services such as TLS and
-> crypto.
-> 
-> There are a number of issues that I think need addressing:
-> 
->  (1) One of the flaws in the initial design is that whilst keys have a type
->      (which is necessary), this has to be specified as part of the lookup or
->      the search, which is overly restrictive.
-> 
->      It probably would have been better to search by description alone and
->      then, if a key is found, have any type of key with that description
->      returned and let the app/service investigate the key to find the type.
-> 
->      Now, this is still possible to implement on top of the existing API: just
->      allow a NULL type to be passed in - but we might need some way to
->      enumerate all the keys with that description, but of different types.
->      Possibly, the search function should return all the matching keys.
-> 
->      Possibly, within the kernel, for each keyring, all the keys of the same
->      description can be stored within a group structure, and the search
->      returns the group.  This could also have the added benefit of maybe
->      making it easier to handle updates.
+> 	https://github.com/smuellerDD/leancrypto/
 
-All keys matching the description can be collected by iterating all the
-key types (instead of passing NULL).
+I assume Herbert will insist that any new algorithm is hardened
+against side channel attacks.  Thankfully, Stephan seems to have
+put some effort into that:
 
-Having only a syscall for the process has of course much better
-concurrency properties.  Just trying to understand the improvements by
-actual measure, that's all.
+   "side-channel-resistant: A valgrind-based dynamic side channel
+    analysis is applied to find time-variant code paths based on
+    secret data."
 
->  (2) For certain applications, keys need versioning - and we need to be able
->      to get access to older versions (at least to some extent) of the keys.
->      An example of this is cifs where (if I understand it correctly) the key
->      version gets cranked, but not all servers may have caught up yet, so we
->      need to be able to try the keys in descending order of version.
-> 
->      This could also work within the group idea mentioned above.
-> 
->  (3) For certain applications, such as AFS and AF_RXRPC, we may need to be
->      able to keep a number of keys around that have the same description
->      (e.g. cell name) and basic type (e.g. rxrpc) and version, but that have
->      different crypto types (e.g. Rx security classes and Kerberos types, such
->      as RxGK+aes256-cts-hmac-sha1-96, RxGK+aes128-cts-hmac-sha256-128 or
->      RxKAD) as different servers in the same cell might not support all or we
->      might be implementing a server that is offering multiple crypto types.
-> 
->      So we might need a "subtype" as well as a version.
+> However!  Not everyone agrees with this.  An alternative proposal
+> would rather get the signature verification code out of the kernel
+> entirely.  Simo Sorce's proposal, for example, AIUI, is to compile
+> all the hashes we need into the kernel at build time, possibly with
+> a hashed hash list to be loaded later to reduce the amount of
+> uncompressible code in the kernel.
 
-1. How the history is capped? I presume it is a fixed-size circular
-   buffer, where the oldest entry is deleted, when the key is updated.
-1. How history queried by the caller?
-2. How a newer version is revoked in favor of a newer version?
+Module signing isn't the only motivation to add PQC algorithms to
+the kernel.  Another is SPDM, a protocol for device authentication,
+measurement and secure channel setup.
 
->  (4) I think the keyring ACLs idea need to be revived.  We have a whole bunch
->      of different keyrings, each with a specific 'domain' of usage for the
->      keys contained therein for checking signatures on things.  Can we reduce
->      this to one keyring and use ACLs to declare the specific purposes for
->      which a key may be used or the specific tasks that may use it?  Use
->      special subject IDs (ie. not simply UIDs/GIDs) to mark this.
+The DMTF has finally published SPDM 1.4.0 on May 25th and this
+revision adds support for PQC algorithms (see list on page 216):
 
-Is subject ID some kind of token that a process can hold (and possibly
-can be sent to a process)?
+https://www.dmtf.org/sites/default/files/standards/documents/DSP0274_1.4.0.pdf
 
-> 
->  (5) Replace the upcall mechanism with a listenable service channel, so that a
->      userspace service (possibly part of systemd or driven from systemd) can
->      listen on it and perform key creation/maintenance services.
-> 
->      From previous discussions with the systemd maintainer, it would be a lot
->      easier for them to manage if the key is attached to a file descriptor -
->      at least for the duration of the maintenance operation.
-> 
->      Further, this needs to be containerised in some way so that requests from
->      different containers can be handled separately - and can be
->      distinguished
+An in-kernel implementation is being worked on by Jonathan (+cc) and me:
 
-This sounds like an universally sane idea (outside the scope of the
-patch set).
+https://github.com/l1k/linux/commits/doe
 
-> 
->  (6) Move away from keeping DNS records in a keyring, but rather keep them in
->      some sort of shrinkable list.  They could still be looked up over a
->      secure channel.
+We haven't added SPDM 1.4 support yet, but will have to eventually.
+So far we only support RSA and ECDSA, because that's the baseline
+mandated by the PCIe Base Specification for PCI device authentication.
+I expect there'll be an ECN sooner rather than later to extend the
+baseline to PQC algorithms.
 
-Don't expertise to understand the benefits of this change. 
+Thanks,
 
-
-> 
-> To aid with at least (1), (2) and (3) and possibly (4), I think it might be
-> worth adding an extended add_key() system call that takes an additional
-> parameter string:
-> 
-> 	key_serial_t add_key2(const char *type,
-> 			      const char *description,
-> 			      const char *parameters,
-> 			      const void payload, size_t plen,
-> 			      key_serial_t keyring);
-> 
-> The parameters would get passed to the key type driver for it to extract
-> things like version number and subtype from without the need to try and fold
-> it into the payload (which may, for example, be a binary ticket obtained from
-> kerberos).  Though possibly that is a bad example as the kerberos ticket may
-> contain multiple keys.
-
-Does the parameter list mimic kernel command-line style of comma
-separated attributes?
-
-BR, Jarkko
+Lukas
 
