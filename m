@@ -1,46 +1,49 @@
-Return-Path: <keyrings+bounces-2855-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2856-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F88AE9C00
-	for <lists+keyrings@lfdr.de>; Thu, 26 Jun 2025 12:58:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3110CAE9C0F
+	for <lists+keyrings@lfdr.de>; Thu, 26 Jun 2025 13:00:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D4E51C42570
-	for <lists+keyrings@lfdr.de>; Thu, 26 Jun 2025 10:58:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37DA33A6186
+	for <lists+keyrings@lfdr.de>; Thu, 26 Jun 2025 11:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC0EB271461;
-	Thu, 26 Jun 2025 10:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6CF274FFB;
+	Thu, 26 Jun 2025 11:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUeM811Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SiVTXsf1"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC337271457;
-	Thu, 26 Jun 2025 10:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2E82750EA;
+	Thu, 26 Jun 2025 11:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750935509; cv=none; b=W6hLuJ6Ls5CZ4w2DF77sjHTHD09A5Hbl9OglQ5969D877640g5HPxBdXwAIMURKIQ4hW8NtWMJw/cPC3qZIF+xUWgkCNq7sMKosbGaHWYyG0zH4h1WCMpC2uQQHN6h6fcudyrkLKBVq0tO1MOf+O3d00UHHisBy7vTBNKMg7VRc=
+	t=1750935638; cv=none; b=dpB8hms51bZxJJHYl/x38kRdZDnc63TmlL0Mez78yHcdN1rN7xOiE+ZCYdqXmKyJkcXgXDnp5Zrlf1fCL1NjmdM+jqZLJx/vcfBlL8mo40YX0Ju8vpbM2D9LgFC5hGw5ajn5PhU2SPjSErPZ6Ye4weq4Fbgwwow34tU3c3BCSI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750935509; c=relaxed/simple;
-	bh=vMb+SU98WS5/JN7fBR8wAP4QdLYbO3ss3ekl/6OODKQ=;
+	s=arc-20240116; t=1750935638; c=relaxed/simple;
+	bh=ddNRVKo8K0tfenXyApgTa21tpAnD59RnOxpMdupRAxg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PG0RGklnxAdWsTTknlL8JJMT0bPZ+pTDNhDtNfwWoEC813s/s1sdj0GR29yOa88KoUFXeYZiJjaibKEHuEXU5Sw/8D4CsCQKOF+pWgcplzlMvmbJmcUns5mD4kapaIlY4oGa7yF8ckdJpsf6/SB3iDqA62irhiMz49D47VhyfQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUeM811Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4408FC4CEEB;
-	Thu, 26 Jun 2025 10:58:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750935509;
-	bh=vMb+SU98WS5/JN7fBR8wAP4QdLYbO3ss3ekl/6OODKQ=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=MiHeZy0GXbxpfT+mLyXyH01voy1eShdxoOfqJ/kMHz+XbRxHGmyg5RNnWtFos/i4sTjWL6VMpP+So5tdOkeRYu+k2+B6yd9Zepc6PCG93Mszvo2nbwigrkFZU3BK6oJXcshqAjo+m3TVYifDTVYFrnJU8JYVZ4jEv439y0HYOS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SiVTXsf1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3AFCC4CEEB;
+	Thu, 26 Jun 2025 11:00:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750935638;
+	bh=ddNRVKo8K0tfenXyApgTa21tpAnD59RnOxpMdupRAxg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aUeM811YItX6OaSewbUEAhHdpFGD3wYKQa2QVcSmVId5Dj/mMl6L7LoWRqKhxveT2
-	 tXTLkCf4rhFZefW42S7eeV6NwMONV8yhphbQ0+iu6rwxDfvLD9gK86jgJIf6LPX5L2
-	 zqxlizeZhk7oHQJe03DJnMQqBu71G8rYoIW+QqKA=
-Date: Thu, 26 Jun 2025 11:58:26 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jarkko Sakkinen <jarkko@kernel.org>
+	b=SiVTXsf1FIH/BpKrflB7q9chXI1l7A434+C25VnLr3aj+2QSmJtxziSIpI/CapoZT
+	 eG1hU0n1odgZzGlmn1OEPfp0ncwoxX5u+1rDjuj4v4R1sWaFh5vVGY0RH4l4msiMGG
+	 oDjjsIS967tTVZvlkHjTbnvg5tEcUHzG+w0eQvkX+bZ2u90O2NGrx7+WsL8of7SXKZ
+	 0pzrCC3c9Q8i64Yw+v5mrIaPSCevMBgsCCoCPVHQ4kO2nVsM4DFIqTAB8Jjw9D4xSk
+	 jiuYMdeFXlY9MG4lLRN+nBuzqHMOIvx3MhAdOuHfuXDvTRniln6GLMomlzjQuTDw+g
+	 PVcIbeAVzSrlg==
+Date: Thu, 26 Jun 2025 14:00:34 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
 Cc: linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
 	Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
 	stable@vger.kernel.org, Peter Huewe <peterhuewe@gmx.de>,
@@ -48,8 +51,9 @@ Cc: linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
 	Stuart Yoder <stuart.yoder@arm.com>,
 	"open list:TPM DEVICE DRIVER" <linux-integrity@vger.kernel.org>
 Subject: Re: [PATCH] tpm_crb_ffa: Remove unused export
-Message-ID: <2025062651-distress-bagel-3718@gregkh>
+Message-ID: <aF0oUnrb3t5ZVo1q@kernel.org>
 References: <20250626105423.1043485-1-jarkko@kernel.org>
+ <2025062651-distress-bagel-3718@gregkh>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -58,20 +62,27 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250626105423.1043485-1-jarkko@kernel.org>
+In-Reply-To: <2025062651-distress-bagel-3718@gregkh>
 
-On Thu, Jun 26, 2025 at 01:54:23PM +0300, Jarkko Sakkinen wrote:
-> From: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
+On Thu, Jun 26, 2025 at 11:58:26AM +0100, Greg KH wrote:
+> On Thu, Jun 26, 2025 at 01:54:23PM +0300, Jarkko Sakkinen wrote:
+> > From: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
+> > 
+> > Remove the export of tpm_crb_ffa_get_interface_version() as it has no
+> > callers outside tpm_crb_ffa.
+> > 
+> > Cc: stable@vger.kernel.org # v6.15+
 > 
-> Remove the export of tpm_crb_ffa_get_interface_version() as it has no
-> callers outside tpm_crb_ffa.
+> Why is this marked for stable trees as a fix?  Seems to just be a normal
+> cleanup patch to me, what am I missing?
+
+unintentional, i added it as a reflex (was going to add the fixes tag
+for bookmark/reference)
+
 > 
-> Cc: stable@vger.kernel.org # v6.15+
+> thanks,
+> 
+> greg k-h
 
-Why is this marked for stable trees as a fix?  Seems to just be a normal
-cleanup patch to me, what am I missing?
-
-thanks,
-
-greg k-h
+BR, Jarkko
 
