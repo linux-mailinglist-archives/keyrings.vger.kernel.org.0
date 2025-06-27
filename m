@@ -1,111 +1,136 @@
-Return-Path: <keyrings+bounces-2864-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2865-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 949E6AEA9B6
-	for <lists+keyrings@lfdr.de>; Fri, 27 Jun 2025 00:36:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0659FAEB985
+	for <lists+keyrings@lfdr.de>; Fri, 27 Jun 2025 16:12:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8320E1C24E30
-	for <lists+keyrings@lfdr.de>; Thu, 26 Jun 2025 22:36:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F1EA5652CF
+	for <lists+keyrings@lfdr.de>; Fri, 27 Jun 2025 14:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4763A21ABA4;
-	Thu, 26 Jun 2025 22:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E092E06DD;
+	Fri, 27 Jun 2025 14:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HX+eokZn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mPGjOoYm"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16DEE2F1FC9;
-	Thu, 26 Jun 2025 22:36:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5523A4C8E;
+	Fri, 27 Jun 2025 14:12:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750977362; cv=none; b=mNXc1Uso0p8VIgkjuhjrP8F6bLqc2pLxaNVGowrLPIgVxMj3YrY1Vkl0piCr4cKVRLvhRqcrxjm1KHp0wpejGNPtJXkBDlRHnmwdMrY/jKV0zxG4sLplQrH0PfKTnx94HqBIMx2KYBnoETv2tVjPfmzkfrDo4PD4DvoX5OFYV6s=
+	t=1751033538; cv=none; b=mjU5oKbvBgBVQKGmB8h+/WxAnFCVA+SASekxOiSFpzBRE/SYYsQeemHkTEKWlnZD2883h9OH8cxH42UX+Az5Tv+j+u+fi6R56HkSwaV0REUcS+KhKVAMvgmNK3Gis0aC1zgv552UgHJXp5sp9ScSTFvuMfhS11/iwIl3Wd6m3OU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750977362; c=relaxed/simple;
-	bh=H1rfMDwf9pZjSftI60w8pVVvv8SLrC7CTgYtTp0yft0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DcpRpYe251rG9GkziKBboD+7PpxNICuya48f71n5sGVRMzV5RRaTDQwAbSFneekCP5PEM76Yssxvu5+E0AC//kJWH+Jr+9pgTkK70lwYJIiFX4NVFI/rnsjyk9dkeCMSWMnC5yUjksnRDbBEUS5d4fZjtN+7qtyPOGxg6zaGfa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HX+eokZn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F2AC4CEEB;
-	Thu, 26 Jun 2025 22:36:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1750977361;
-	bh=H1rfMDwf9pZjSftI60w8pVVvv8SLrC7CTgYtTp0yft0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HX+eokZntsqP0VcgXZBS6TfN95r9PfAMWyWcXOlK4FzVTWb1kA7RPcqgEEjUvksDu
-	 00wyRrqXFqmZiLXjlsxT7hrDX5ZTERnVHUflQnzA01fO9ntKlTgLurEFxS3GuY1nLY
-	 qgh5TjReihiDJOf3TteVgZnjtf/ah4LbmAoJGTZMmyG3bSlo1Z+prZomTUfwnaX2PV
-	 bXhYGMuBVnnLAW/BPBhyi/AaW4cpGhDNvHfv2gEtoJ72JQ+CF4ZTZwRv7vEBB+YqO8
-	 EFfmNrXRXs0ZjUVlmu9Npol1zjZsMdAS+OiuIWIFmhT4yISqaVasAQGwK9VPG+a5AC
-	 OsKagqRrjko5w==
-Date: Fri, 27 Jun 2025 01:35:57 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
-	Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	"open list:TPM DEVICE DRIVER" <linux-integrity@vger.kernel.org>,
-	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH v2] tpm: Cleanup class for tpm_buf
-Message-ID: <aF3LTXgI2uV6k2js@kernel.org>
-References: <20250626101935.1007898-1-jarkko@kernel.org>
- <6a70dbdba3cef9f7ec580ce0147b1c89feb28074.camel@HansenPartnership.com>
- <aF2NNHilFfZwBoxA@kernel.org>
+	s=arc-20240116; t=1751033538; c=relaxed/simple;
+	bh=hVxsob2gMzK+yoGT2YTNMVPDuNbFcM9jirOwFff9BWY=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=rp72CX6Yc3jjC3Ats8Dk5lbiREM1DNWEJwgVHgjduPp56VdB0420sa9mltowvS+rB23X+qdSMjCpaxICFp5cueJqKJcJtBUeiwFoIcmsN1cmVUAuFDQ0+R8ESV0jk2nxez7nLRk9THOkm6O4GlDzV7lu2nIOl7DqbJUsqRRn2UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mPGjOoYm; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7d3f192a64eso199491985a.2;
+        Fri, 27 Jun 2025 07:12:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1751033536; x=1751638336; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=N383MBQJeLK+4T/1dattnFOwTJK4B0ZF2Q3FHLC9rnI=;
+        b=mPGjOoYmym24QSLggjMzruxmj/IyvddDRo1CQr5GfjSg/CzGYX0uAXldLWQUe5lSET
+         MdQfj0q0OYPUbFcJGydNSbuStgsHPbO3q5bZJzpz8tJEbyJtQ9rWOp/V20XILIYqpOd2
+         iujtpGnYFqRRosorM6qP+epssp0cUWL7k7+8TyvfUZSxzjz9yp3FpeuJkt45y9mmqoXi
+         MkZUsnddDcr5XqUPjUK3/TgIDOgwZua+LNydN2DAAoo0DR8u5lJxX84QEBhK4Iv2F1dy
+         Aji59D+PRIZvUR7EBz7kZYm3L4JO94fitK2P9RTr1AFzto85Nv1+01ihZB5KyFeIXawV
+         Z88Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1751033536; x=1751638336;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=N383MBQJeLK+4T/1dattnFOwTJK4B0ZF2Q3FHLC9rnI=;
+        b=GbE76RGNHVOKRePZ+eM+s8rqOW4pE32FPuu9FkWGiTVOsgwyVC9a+Y+cIhuLyHCDVi
+         h21muVKVEetUwrcVaaBdIQvEr/34SPDKD3q7epTdnecrr048yFbXvo193hmd1xkXPQT9
+         rpSANvGeWGtjPEn34IYDvMTCyQcmVzlXYpx/gDddkQe5Hl+048rbp96bKKSzJdccsQ+c
+         Fy3KkgQAsZSECAfmBgr4D5yGz3kCnqVBBEk/nz37JOpEwPbd8vReMyDm7niuG7hJ7eGs
+         8MYytFnwXd4zxGVCrOJO8aDtj996czWrhPWnCbZDIzr4Z0Ri7YF4a9IqLbPYTT3HDyiT
+         edvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV/ZrEvITq/oX6FHMB9PhFSk0wXrW1z3vJPIXGK/JGILTitHeQFKfgt7/Vn6jGdj06Wbvhe05YLwq9cnAco@vger.kernel.org, AJvYcCXtIcRc0AaYq6+nIDPB5VhHFUKKOocBIL0J4vnLEW9UgWmIobFueIsRp4BGt2pTLhTrN/6Ctq34Yw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJx0z2bsAPjtDXXdzxOA8yLRngA6d6wDL1Zgc81zAD5XkCsa2T
+	iqKu0B7rR4EpAP4bcoGxua++59EATJR9yG5KY4rb1gj+FNVvERJ2OzBt6hT6Zrut2hWZctToCIp
+	q8rvWMa2eDaQ6Sj9dBUmSXSkGMG7CJNM=
+X-Gm-Gg: ASbGnctqIR26KRRaPjMQLSlrY6F9v78otnCwAyxVY4/x4xbT1Tuc3QdhW4yWZHUaoKJ
+	APdNQVaMt5GoMegNqvJ18Ypchv/b1yrOirJMjatLCJurxlxfxgpdTtkAEFfgFqp3sp69b8Hf3TL
+	8/gS6hQHl0rzMfkP1qmzAQurGU+0bNLKqQIhnBBhK+N8RHzZOesCPL5HjhPoaocv7SyMFkU+5uB
+	/nD
+X-Google-Smtp-Source: AGHT+IGCshPgaxEYsmETIaKF+DIOhmRobs4aM3xROcJI8wsF0mS20ESHDA8BhIyLKEBvDSxZeaqOD+gAJSRl1sdvNMg=
+X-Received: by 2002:a05:620a:1710:b0:7d4:29a5:8143 with SMTP id
+ af79cd13be357-7d443920a06mr539226085a.6.1751033536067; Fri, 27 Jun 2025
+ 07:12:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aF2NNHilFfZwBoxA@kernel.org>
+From: ritu pal <ritupal888@gmail.com>
+Date: Fri, 27 Jun 2025 19:42:03 +0530
+X-Gm-Features: Ac12FXwl8FSUxystsBE8Cczyv48plmtJeMuC6TbzwCD4uh8t1JhyYcPzuBfN224
+Message-ID: <CAEy91+b+GN1CoX7Y7RVHq2sxjU=OrrPqmbsFuVW3da4YNTH+XQ@mail.gmail.com>
+Subject: [PATCH] certs/blacklist: add error logging for hash blacklisting failures
+To: David Howells <dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, ritu pal <ritupal888@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Jun 26, 2025 at 09:11:05PM +0300, Jarkko Sakkinen wrote:
-> On Thu, Jun 26, 2025 at 10:50:22AM -0400, James Bottomley wrote:
-> > On Thu, 2025-06-26 at 13:19 +0300, Jarkko Sakkinen wrote:
-> > > From: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
-> > > 
-> > > Create a cleanup class for struct tpm_buf using DEFINE_CLASS(), which
-> > > will guarantee that the heap allocated memory will be freed
-> > > automatically for the transient instances of this structure, when
-> > > they go out of scope.
-> > > 
-> > > Wrap this all into help macro CLASS_TPM_BUF().
-> > > 
-> > > A TPM buffer can now be declared trivially:
-> > > 
-> > >     CLASS_TPM_BUF(buf, buf_size);
-> > 
-> > Well, that's not all ... you're also adding a size to the API that we
-> > didn't have before, which should at least be documented in the commit
-> > message and probably be a separate patch.
-> > 
-> > What is the reason for this, though?  The reason we currently use a
-> > page is that it's easy for the OS to manage (no slab fragmentation
-> > issues).  The TCG reference platform defines this to be just under 4k
-> > (actually 4096-0x80) precisely because TPM implementations don't do
-> > scatter gather, so they don't want it going over an ARM page, so
-> > there's no danger of us ever needing more than a page.
-> 
-> Thanks for the valuable feedback.
-> 
-> I can drop "buf_size" parameter. It is not a priority, and I also
-> agree with your comments.
+[PATCH] certs/blacklist: add error logging for hash blacklisting failures
 
-I also noticed that I had changed one log message in tpm2-sessions.c. It
-was unintended i.e. a spurious change. I'll revert that one too.
+Previously, errors returned by mark_hash_blacklisted() could be
+silently ignored by callers,
+such as uefi_blacklist_x509_tbs() and uefi_blacklist_binary(),
+which do not check or log the return value.
+This can make it difficult to detect and diagnose failures to add
+hashes to the system blacklist.
 
-I'll split this into more reasonable portions for next version so these
-should be easier to review then.
+This change adds a pr_err() message in mark_hash_blacklisted() to log
+any failure to blacklist a hash,
+including the error code. This ensures that all blacklisting failures
+are visible in the kernel log,
+improving debuggability and system integrity monitoring, even if the
+upper layers do not handle the error.
 
-BR, Jarkko
+No functional changes are made to the blacklisting logic.
+
+Signed-off-by: Ritu Pal  <ritupal888@gmail.com>
+---
+ certs/blacklist.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/certs/blacklist.c b/certs/blacklist.c
+index 675dd7a8f07a..0f5ff29ccb3d 100644
+--- a/certs/blacklist.c
++++ b/certs/blacklist.c
+@@ -208,8 +208,10 @@ int mark_hash_blacklisted(const u8 *hash, size_t hash_len,
+  int err;
+
+  buffer = get_raw_hash(hash, hash_len, hash_type);
+- if (IS_ERR(buffer))
++ if (IS_ERR(buffer)) {
++ pr_err("Failed to blacklist hash: %pe\n", buffer);
+  return PTR_ERR(buffer);
++ }
+  err = mark_raw_hash_blacklisted(buffer);
+  kfree(buffer);
+  return err;
+@@ -229,8 +231,10 @@ int is_hash_blacklisted(const u8 *hash, size_t hash_len,
+  int ret = 0;
+
+  buffer = get_raw_hash(hash, hash_len, hash_type);
+- if (IS_ERR(buffer))
++ if (IS_ERR(buffer)) {
++ pr_err("Failed to blacklist hash: %pe\n", buffer);
+  return PTR_ERR(buffer);
++ }
+  kref = keyring_search(make_key_ref(blacklist_keyring, true),
+        &key_type_blacklist, buffer, false);
+  if (!IS_ERR(kref)) {
+--
 
