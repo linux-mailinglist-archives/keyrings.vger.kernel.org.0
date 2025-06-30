@@ -1,44 +1,44 @@
-Return-Path: <keyrings+bounces-2874-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2875-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03CE3AEDF11
-	for <lists+keyrings@lfdr.de>; Mon, 30 Jun 2025 15:29:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F569AEDF0E
+	for <lists+keyrings@lfdr.de>; Mon, 30 Jun 2025 15:28:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89B59164CE1
-	for <lists+keyrings@lfdr.de>; Mon, 30 Jun 2025 13:28:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B658D188C2B5
+	for <lists+keyrings@lfdr.de>; Mon, 30 Jun 2025 13:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA02B28C031;
-	Mon, 30 Jun 2025 13:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D51728C2A0;
+	Mon, 30 Jun 2025 13:27:44 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BC528B50E;
-	Mon, 30 Jun 2025 13:27:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487CD28B7EF;
+	Mon, 30 Jun 2025 13:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751290063; cv=none; b=pHO5PcLN0XBgtrw4/mWHDT6EGYRSW8nqGX1+Tcgs+gyLto4whJz9/iHBtUulbw90qjZsL+sKmBIDRebHvyP0NqMikpOOQBABt6pGy2TW28+7uduhdBI5d8yBLqeqD2VeCSBjWNwKN35LyMQyGS9ED4ZLp9paJL+nPgYLqZnpnDk=
+	t=1751290064; cv=none; b=dFmJaYZjVeWsam4mItz1OU4EkBnlt0PaipqQHGX1Csit7kYNKJXDo9kXDyKmoRZLeTqSd+Ze6XlOseQ834dmv4UEA8D5G8149VeS4qWJyaPxGcH5Qa0DPk4sWafuF5A05EgJXcHSh4TtmhIm+s5LjGFWis8PIrVQMOmf38IX1gQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751290063; c=relaxed/simple;
-	bh=pgorgsgSpE7KOSwKVYLzqGKY42pc5SdHvbGwtU2jDcM=;
+	s=arc-20240116; t=1751290064; c=relaxed/simple;
+	bh=/kdgOgMrTQiT1/QcY/sch7kM0/HJsni0LrY67SFLLAA=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H0kvm8mjZ4ZG4baR3jw+dsG3Sm9o9VzCR4S+OJxVYLoUDeevV4zpzOGqC1Tts8TkLXVGWArE2imOBRC+EnNvUtAfAEye3uM2FsYq3LeF/1cRJnT7eNI+V3nqK73H3139e8QfCfIrCtBva/OEJkXPY0FTA7+c6Yrt3nBdICQUFy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.35
+	 MIME-Version:Content-Type; b=tql6NHj7brfaPQT9vWsnK5GncP3qZIq7T4Jc4MSoUOQ974XVkH9fJ8fwF3KF4LjXYrQDno3is6vY70Tb/3gQxMvQF9+dRvzOVtHTkV1iK6zL6I1eKE9XY1uHmAPQxaQcgz/Cn9IT8VqeA6cBe2S02uz/MleUH4XlZ6KPwiSUUIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4bW6Np1142z29dy6;
-	Mon, 30 Jun 2025 21:25:46 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4bW6LC3MVTzdbkp;
+	Mon, 30 Jun 2025 21:23:31 +0800 (CST)
 Received: from kwepemh100007.china.huawei.com (unknown [7.202.181.92])
-	by mail.maildlp.com (Postfix) with ESMTPS id AF20514027A;
-	Mon, 30 Jun 2025 21:27:30 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 82825180493;
+	Mon, 30 Jun 2025 21:27:31 +0800 (CST)
 Received: from huawei.com (10.67.174.33) by kwepemh100007.china.huawei.com
  (7.202.181.92) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 30 Jun
- 2025 21:27:29 +0800
+ 2025 21:27:30 +0800
 From: Gu Bowen <gubowen5@huawei.com>
 To: Herbert Xu <herbert@gondor.apana.org.au>, David Howells
 	<dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Lukas Wunner
@@ -52,9 +52,9 @@ CC: <keyrings@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<linux-crypto@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
 	<linux-arm-kernel@lists.infradead.org>, Lu Jialin <lujialin4@huawei.com>,
 	GONG Ruiqi <gongruiqi1@huawei.com>, Gu Bowen <gubowen5@huawei.com>
-Subject: [PATCH RFC 1/4] Revert "Revert "lib/mpi: Extend the MPI library""
-Date: Mon, 30 Jun 2025 21:39:31 +0800
-Message-ID: <20250630133934.766646-2-gubowen5@huawei.com>
+Subject: [PATCH RFC 2/4] Revert "Revert "lib/mpi: Introduce ec implementation to MPI library""
+Date: Mon, 30 Jun 2025 21:39:32 +0800
+Message-ID: <20250630133934.766646-3-gubowen5@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20250630133934.766646-1-gubowen5@huawei.com>
 References: <20250630133934.766646-1-gubowen5@huawei.com>
@@ -64,542 +64,160 @@ List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
  kwepemh100007.china.huawei.com (7.202.181.92)
 
-This reverts commit fca5cb4dd2b4a9423cb6d112cc71c33899955a1f.
+This reverts commit da4fe6815aca25603944a64b0965310512e867d0.
 
-Reintroduce the mpi library based on libgcrypt to support sm2.
+Reintroduce ec implementation to MPI library to support sm2.
 
 Signed-off-by: Gu Bowen <gubowen5@huawei.com>
 ---
- include/linux/mpi.h           |  65 +++++++
- lib/crypto/mpi/Makefile       |   1 +
- lib/crypto/mpi/mpi-add.c      |  50 +++++
- lib/crypto/mpi/mpi-bit.c      | 143 +++++++++++++++
- lib/crypto/mpi/mpi-cmp.c      |  46 ++++-
- lib/crypto/mpi/mpi-div.c      |  29 +++
- lib/crypto/mpi/mpi-internal.h |  10 +
- lib/crypto/mpi/mpi-inv.c      | 143 +++++++++++++++
- lib/crypto/mpi/mpi-mod.c      | 144 +++++++++++++++
- lib/crypto/mpi/mpicoder.c     | 336 ++++++++++++++++++++++++++++++++++
- lib/crypto/mpi/mpih-mul.c     |  25 +++
- lib/crypto/mpi/mpiutil.c      | 182 ++++++++++++++++++
- 12 files changed, 1164 insertions(+), 10 deletions(-)
- create mode 100644 lib/crypto/mpi/mpi-inv.c
+ include/linux/mpi.h     |  105 +++
+ lib/crypto/mpi/Makefile |    1 +
+ lib/crypto/mpi/ec.c     | 1507 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 1613 insertions(+)
+ create mode 100644 lib/crypto/mpi/ec.c
 
 diff --git a/include/linux/mpi.h b/include/linux/mpi.h
-index 47be46f36435..9ad7e7231ee9 100644
+index 9ad7e7231ee9..3317effe57ba 100644
 --- a/include/linux/mpi.h
 +++ b/include/linux/mpi.h
-@@ -40,33 +40,87 @@ struct gcry_mpi {
- typedef struct gcry_mpi *MPI;
+@@ -157,6 +157,111 @@ void mpi_fdiv_q(MPI quot, MPI dividend, MPI divisor);
+ /*-- mpi-inv.c --*/
+ int mpi_invm(MPI x, MPI a, MPI n);
  
- #define mpi_get_nlimbs(a)     ((a)->nlimbs)
-+#define mpi_has_sign(a)       ((a)->sign)
- 
- /*-- mpiutil.c --*/
- MPI mpi_alloc(unsigned nlimbs);
-+void mpi_clear(MPI a);
- void mpi_free(MPI a);
- int mpi_resize(MPI a, unsigned nlimbs);
- 
-+static inline MPI mpi_new(unsigned int nbits)
-+{
-+	return mpi_alloc((nbits + BITS_PER_MPI_LIMB - 1) / BITS_PER_MPI_LIMB);
-+}
++/*-- ec.c --*/
 +
- MPI mpi_copy(MPI a);
-+MPI mpi_alloc_like(MPI a);
-+void mpi_snatch(MPI w, MPI u);
-+MPI mpi_set(MPI w, MPI u);
-+MPI mpi_set_ui(MPI w, unsigned long u);
-+MPI mpi_alloc_set_ui(unsigned long u);
-+void mpi_swap_cond(MPI a, MPI b, unsigned long swap);
-+
-+/* Constants used to return constant MPIs.  See mpi_init if you
-+ * want to add more constants.
-+ */
-+#define MPI_NUMBER_OF_CONSTANTS 6
-+enum gcry_mpi_constants {
-+	MPI_C_ZERO,
-+	MPI_C_ONE,
-+	MPI_C_TWO,
-+	MPI_C_THREE,
-+	MPI_C_FOUR,
-+	MPI_C_EIGHT
++/* Object to represent a point in projective coordinates */
++struct gcry_mpi_point {
++	MPI x;
++	MPI y;
++	MPI z;
 +};
 +
-+MPI mpi_const(enum gcry_mpi_constants no);
- 
- /*-- mpicoder.c --*/
++typedef struct gcry_mpi_point *MPI_POINT;
 +
-+/* Different formats of external big integer representation. */
-+enum gcry_mpi_format {
-+	GCRYMPI_FMT_NONE = 0,
-+	GCRYMPI_FMT_STD = 1,    /* Twos complement stored without length. */
-+	GCRYMPI_FMT_PGP = 2,    /* As used by OpenPGP (unsigned only). */
-+	GCRYMPI_FMT_SSH = 3,    /* As used by SSH (like STD but with length). */
-+	GCRYMPI_FMT_HEX = 4,    /* Hex format. */
-+	GCRYMPI_FMT_USG = 5,    /* Like STD but unsigned. */
-+	GCRYMPI_FMT_OPAQUE = 8  /* Opaque format (some functions only). */
++/* Models describing an elliptic curve */
++enum gcry_mpi_ec_models {
++	/* The Short Weierstrass equation is
++	 *      y^2 = x^3 + ax + b
++	 */
++	MPI_EC_WEIERSTRASS = 0,
++	/* The Montgomery equation is
++	 *      by^2 = x^3 + ax^2 + x
++	 */
++	MPI_EC_MONTGOMERY,
++	/* The Twisted Edwards equation is
++	 *      ax^2 + y^2 = 1 + bx^2y^2
++	 * Note that we use 'b' instead of the commonly used 'd'.
++	 */
++	MPI_EC_EDWARDS
 +};
 +
- MPI mpi_read_raw_data(const void *xbuffer, size_t nbytes);
- MPI mpi_read_from_buffer(const void *buffer, unsigned *ret_nread);
-+int mpi_fromstr(MPI val, const char *str);
-+MPI mpi_scanval(const char *string);
- MPI mpi_read_raw_from_sgl(struct scatterlist *sgl, unsigned int len);
- void *mpi_get_buffer(MPI a, unsigned *nbytes, int *sign);
- int mpi_read_buffer(MPI a, uint8_t *buf, unsigned buf_len, unsigned *nbytes,
- 		    int *sign);
- int mpi_write_to_sgl(MPI a, struct scatterlist *sg, unsigned nbytes,
- 		     int *sign);
-+int mpi_print(enum gcry_mpi_format format, unsigned char *buffer,
-+			size_t buflen, size_t *nwritten, MPI a);
- 
- /*-- mpi-mod.c --*/
- int mpi_mod(MPI rem, MPI dividend, MPI divisor);
- 
-+/* Context used with Barrett reduction.  */
-+struct barrett_ctx_s;
-+typedef struct barrett_ctx_s *mpi_barrett_t;
++/* Dialects used with elliptic curves */
++enum ecc_dialects {
++	ECC_DIALECT_STANDARD = 0,
++	ECC_DIALECT_ED25519,
++	ECC_DIALECT_SAFECURVE
++};
 +
-+mpi_barrett_t mpi_barrett_init(MPI m, int copy);
-+void mpi_barrett_free(mpi_barrett_t ctx);
-+void mpi_mod_barrett(MPI r, MPI x, mpi_barrett_t ctx);
-+void mpi_mul_barrett(MPI w, MPI u, MPI v, mpi_barrett_t ctx);
++/* This context is used with all our EC functions. */
++struct mpi_ec_ctx {
++	enum gcry_mpi_ec_models model; /* The model describing this curve. */
++	enum ecc_dialects dialect;     /* The ECC dialect used with the curve. */
++	int flags;                     /* Public key flags (not always used). */
++	unsigned int nbits;            /* Number of bits.  */
 +
- /*-- mpi-pow.c --*/
- int mpi_powm(MPI res, MPI base, MPI exp, MPI mod);
- 
- /*-- mpi-cmp.c --*/
- int mpi_cmp_ui(MPI u, ulong v);
- int mpi_cmp(MPI u, MPI v);
-+int mpi_cmpabs(MPI u, MPI v);
- 
- /*-- mpi-sub-ui.c --*/
- int mpi_sub_ui(MPI w, MPI u, unsigned long vval);
-@@ -76,9 +130,16 @@ void mpi_normalize(MPI a);
- unsigned mpi_get_nbits(MPI a);
- int mpi_test_bit(MPI a, unsigned int n);
- int mpi_set_bit(MPI a, unsigned int n);
-+void mpi_set_highbit(MPI a, unsigned int n);
-+void mpi_clear_highbit(MPI a, unsigned int n);
-+void mpi_clear_bit(MPI a, unsigned int n);
-+void mpi_rshift_limbs(MPI a, unsigned int count);
- int mpi_rshift(MPI x, MPI a, unsigned int n);
-+void mpi_lshift_limbs(MPI a, unsigned int count);
-+void mpi_lshift(MPI x, MPI a, unsigned int n);
- 
- /*-- mpi-add.c --*/
-+void mpi_add_ui(MPI w, MPI u, unsigned long v);
- int mpi_add(MPI w, MPI u, MPI v);
- int mpi_sub(MPI w, MPI u, MPI v);
- int mpi_addm(MPI w, MPI u, MPI v, MPI m);
-@@ -91,6 +152,10 @@ int mpi_mulm(MPI w, MPI u, MPI v, MPI m);
- /*-- mpi-div.c --*/
- int mpi_tdiv_r(MPI rem, MPI num, MPI den);
- int mpi_fdiv_r(MPI rem, MPI dividend, MPI divisor);
-+void mpi_fdiv_q(MPI quot, MPI dividend, MPI divisor);
++	/* Domain parameters.  Note that they may not all be set and if set
++	 * the MPIs may be flagged as constant.
++	 */
++	MPI p;         /* Prime specifying the field GF(p).  */
++	MPI a;         /* First coefficient of the Weierstrass equation.  */
++	MPI b;         /* Second coefficient of the Weierstrass equation.  */
++	MPI_POINT G;   /* Base point (generator).  */
++	MPI n;         /* Order of G.  */
++	unsigned int h;       /* Cofactor.  */
 +
-+/*-- mpi-inv.c --*/
-+int mpi_invm(MPI x, MPI a, MPI n);
- 
++	/* The actual key.  May not be set.  */
++	MPI_POINT Q;   /* Public key.   */
++	MPI d;         /* Private key.  */
++
++	const char *name;      /* Name of the curve.  */
++
++	/* This structure is private to mpi/ec.c! */
++	struct {
++		struct {
++			unsigned int a_is_pminus3:1;
++			unsigned int two_inv_p:1;
++		} valid; /* Flags to help setting the helper vars below.  */
++
++		int a_is_pminus3;  /* True if A = P - 3. */
++
++		MPI two_inv_p;
++
++		mpi_barrett_t p_barrett;
++
++		/* Scratch variables.  */
++		MPI scratch[11];
++
++		/* Helper for fast reduction.  */
++		/*   int nist_nbits; /\* If this is a NIST curve, the # of bits. *\/ */
++		/*   MPI s[10]; */
++		/*   MPI c; */
++	} t;
++
++	/* Curve specific computation routines for the field.  */
++	void (*addm)(MPI w, MPI u, MPI v, struct mpi_ec_ctx *ctx);
++	void (*subm)(MPI w, MPI u, MPI v, struct mpi_ec_ctx *ec);
++	void (*mulm)(MPI w, MPI u, MPI v, struct mpi_ec_ctx *ctx);
++	void (*pow2)(MPI w, const MPI b, struct mpi_ec_ctx *ctx);
++	void (*mul2)(MPI w, MPI u, struct mpi_ec_ctx *ctx);
++};
++
++void mpi_ec_init(struct mpi_ec_ctx *ctx, enum gcry_mpi_ec_models model,
++			enum ecc_dialects dialect,
++			int flags, MPI p, MPI a, MPI b);
++void mpi_ec_deinit(struct mpi_ec_ctx *ctx);
++MPI_POINT mpi_point_new(unsigned int nbits);
++void mpi_point_release(MPI_POINT p);
++void mpi_point_init(MPI_POINT p);
++void mpi_point_free_parts(MPI_POINT p);
++int mpi_ec_get_affine(MPI x, MPI y, MPI_POINT point, struct mpi_ec_ctx *ctx);
++void mpi_ec_add_points(MPI_POINT result,
++			MPI_POINT p1, MPI_POINT p2,
++			struct mpi_ec_ctx *ctx);
++void mpi_ec_mul_point(MPI_POINT result,
++			MPI scalar, MPI_POINT point,
++			struct mpi_ec_ctx *ctx);
++int mpi_ec_curve_point(MPI_POINT point, struct mpi_ec_ctx *ctx);
++
  /* inline functions */
  
+ /**
 diff --git a/lib/crypto/mpi/Makefile b/lib/crypto/mpi/Makefile
-index 9ad84079025a..477debd7ed50 100644
+index 477debd7ed50..6e6ef9a34fe1 100644
 --- a/lib/crypto/mpi/Makefile
 +++ b/lib/crypto/mpi/Makefile
-@@ -19,6 +19,7 @@ mpi-y = \
- 	mpi-cmp.o			\
- 	mpi-sub-ui.o			\
- 	mpi-div.o			\
-+	mpi-inv.o			\
- 	mpi-mod.o			\
- 	mpi-mul.o			\
- 	mpih-cmp.o			\
-diff --git a/lib/crypto/mpi/mpi-add.c b/lib/crypto/mpi/mpi-add.c
-index 3015140d4860..020371891991 100644
---- a/lib/crypto/mpi/mpi-add.c
-+++ b/lib/crypto/mpi/mpi-add.c
-@@ -13,6 +13,56 @@
- 
- #include "mpi-internal.h"
- 
-+/****************
-+ * Add the unsigned integer V to the mpi-integer U and store the
-+ * result in W. U and V may be the same.
-+ */
-+void mpi_add_ui(MPI w, MPI u, unsigned long v)
-+{
-+	mpi_ptr_t wp, up;
-+	mpi_size_t usize, wsize;
-+	int usign, wsign;
-+
-+	usize = u->nlimbs;
-+	usign = u->sign;
-+	wsign = 0;
-+
-+	/* If not space for W (and possible carry), increase space.  */
-+	wsize = usize + 1;
-+	if (w->alloced < wsize)
-+		mpi_resize(w, wsize);
-+
-+	/* These must be after realloc (U may be the same as W).  */
-+	up = u->d;
-+	wp = w->d;
-+
-+	if (!usize) {  /* simple */
-+		wp[0] = v;
-+		wsize = v ? 1:0;
-+	} else if (!usign) {  /* mpi is not negative */
-+		mpi_limb_t cy;
-+		cy = mpihelp_add_1(wp, up, usize, v);
-+		wp[usize] = cy;
-+		wsize = usize + cy;
-+	} else {
-+		/* The signs are different.  Need exact comparison to determine
-+		 * which operand to subtract from which.
-+		 */
-+		if (usize == 1 && up[0] < v) {
-+			wp[0] = v - up[0];
-+			wsize = 1;
-+		} else {
-+			mpihelp_sub_1(wp, up, usize, v);
-+			/* Size can decrease with at most one limb. */
-+			wsize = usize - (wp[usize-1] == 0);
-+			wsign = 1;
-+		}
-+	}
-+
-+	w->nlimbs = wsize;
-+	w->sign   = wsign;
-+}
-+
- int mpi_add(MPI w, MPI u, MPI v)
- {
- 	mpi_ptr_t wp, up, vp;
-diff --git a/lib/crypto/mpi/mpi-bit.c b/lib/crypto/mpi/mpi-bit.c
-index 934d81311360..4790d5b8a216 100644
---- a/lib/crypto/mpi/mpi-bit.c
-+++ b/lib/crypto/mpi/mpi-bit.c
-@@ -32,6 +32,7 @@ void mpi_normalize(MPI a)
- 	for (; a->nlimbs && !a->d[a->nlimbs - 1]; a->nlimbs--)
- 		;
- }
-+EXPORT_SYMBOL_GPL(mpi_normalize);
- 
- /****************
-  * Return the number of bits in A.
-@@ -97,6 +98,85 @@ int mpi_set_bit(MPI a, unsigned int n)
- }
- EXPORT_SYMBOL_GPL(mpi_set_bit);
- 
-+/****************
-+ * Set bit N of A. and clear all bits above
-+ */
-+void mpi_set_highbit(MPI a, unsigned int n)
-+{
-+	unsigned int i, limbno, bitno;
-+
-+	limbno = n / BITS_PER_MPI_LIMB;
-+	bitno  = n % BITS_PER_MPI_LIMB;
-+
-+	if (limbno >= a->nlimbs) {
-+		for (i = a->nlimbs; i < a->alloced; i++)
-+			a->d[i] = 0;
-+		mpi_resize(a, limbno+1);
-+		a->nlimbs = limbno+1;
-+	}
-+	a->d[limbno] |= (A_LIMB_1<<bitno);
-+	for (bitno++; bitno < BITS_PER_MPI_LIMB; bitno++)
-+		a->d[limbno] &= ~(A_LIMB_1 << bitno);
-+	a->nlimbs = limbno+1;
-+}
-+EXPORT_SYMBOL_GPL(mpi_set_highbit);
-+
-+/****************
-+ * clear bit N of A and all bits above
-+ */
-+void mpi_clear_highbit(MPI a, unsigned int n)
-+{
-+	unsigned int limbno, bitno;
-+
-+	limbno = n / BITS_PER_MPI_LIMB;
-+	bitno  = n % BITS_PER_MPI_LIMB;
-+
-+	if (limbno >= a->nlimbs)
-+		return; /* not allocated, therefore no need to clear bits :-) */
-+
-+	for ( ; bitno < BITS_PER_MPI_LIMB; bitno++)
-+		a->d[limbno] &= ~(A_LIMB_1 << bitno);
-+	a->nlimbs = limbno+1;
-+}
-+
-+/****************
-+ * Clear bit N of A.
-+ */
-+void mpi_clear_bit(MPI a, unsigned int n)
-+{
-+	unsigned int limbno, bitno;
-+
-+	limbno = n / BITS_PER_MPI_LIMB;
-+	bitno  = n % BITS_PER_MPI_LIMB;
-+
-+	if (limbno >= a->nlimbs)
-+		return; /* Don't need to clear this bit, it's far too left.  */
-+	a->d[limbno] &= ~(A_LIMB_1 << bitno);
-+}
-+EXPORT_SYMBOL_GPL(mpi_clear_bit);
-+
-+
-+/****************
-+ * Shift A by COUNT limbs to the right
-+ * This is used only within the MPI library
-+ */
-+void mpi_rshift_limbs(MPI a, unsigned int count)
-+{
-+	mpi_ptr_t ap = a->d;
-+	mpi_size_t n = a->nlimbs;
-+	unsigned int i;
-+
-+	if (count >= n) {
-+		a->nlimbs = 0;
-+		return;
-+	}
-+
-+	for (i = 0; i < n - count; i++)
-+		ap[i] = ap[i+count];
-+	ap[i] = 0;
-+	a->nlimbs -= count;
-+}
-+
- /*
-  * Shift A by N bits to the right.
-  */
-@@ -173,3 +253,66 @@ int mpi_rshift(MPI x, MPI a, unsigned int n)
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(mpi_rshift);
-+
-+/****************
-+ * Shift A by COUNT limbs to the left
-+ * This is used only within the MPI library
-+ */
-+void mpi_lshift_limbs(MPI a, unsigned int count)
-+{
-+	mpi_ptr_t ap;
-+	int n = a->nlimbs;
-+	int i;
-+
-+	if (!count || !n)
-+		return;
-+
-+	RESIZE_IF_NEEDED(a, n+count);
-+
-+	ap = a->d;
-+	for (i = n-1; i >= 0; i--)
-+		ap[i+count] = ap[i];
-+	for (i = 0; i < count; i++)
-+		ap[i] = 0;
-+	a->nlimbs += count;
-+}
-+
-+/*
-+ * Shift A by N bits to the left.
-+ */
-+void mpi_lshift(MPI x, MPI a, unsigned int n)
-+{
-+	unsigned int nlimbs = (n/BITS_PER_MPI_LIMB);
-+	unsigned int nbits = (n%BITS_PER_MPI_LIMB);
-+
-+	if (x == a && !n)
-+		return;  /* In-place shift with an amount of zero.  */
-+
-+	if (x != a) {
-+		/* Copy A to X.  */
-+		unsigned int alimbs = a->nlimbs;
-+		int asign = a->sign;
-+		mpi_ptr_t xp, ap;
-+
-+		RESIZE_IF_NEEDED(x, alimbs+nlimbs+1);
-+		xp = x->d;
-+		ap = a->d;
-+		MPN_COPY(xp, ap, alimbs);
-+		x->nlimbs = alimbs;
-+		x->flags = a->flags;
-+		x->sign = asign;
-+	}
-+
-+	if (nlimbs && !nbits) {
-+		/* Shift a full number of limbs.  */
-+		mpi_lshift_limbs(x, nlimbs);
-+	} else if (n) {
-+		/* We use a very dump approach: Shift left by the number of
-+		 * limbs plus one and than fix it up by an rshift.
-+		 */
-+		mpi_lshift_limbs(x, nlimbs+1);
-+		mpi_rshift(x, x, BITS_PER_MPI_LIMB - nbits);
-+	}
-+
-+	MPN_NORMALIZE(x->d, x->nlimbs);
-+}
-diff --git a/lib/crypto/mpi/mpi-cmp.c b/lib/crypto/mpi/mpi-cmp.c
-index ceaebe181cd7..0835b6213235 100644
---- a/lib/crypto/mpi/mpi-cmp.c
-+++ b/lib/crypto/mpi/mpi-cmp.c
-@@ -45,28 +45,54 @@ int mpi_cmp_ui(MPI u, unsigned long v)
- }
- EXPORT_SYMBOL_GPL(mpi_cmp_ui);
- 
--int mpi_cmp(MPI u, MPI v)
-+static int do_mpi_cmp(MPI u, MPI v, int absmode)
- {
--	mpi_size_t usize, vsize;
-+	mpi_size_t usize;
-+	mpi_size_t vsize;
-+	int usign;
-+	int vsign;
- 	int cmp;
- 
- 	mpi_normalize(u);
- 	mpi_normalize(v);
-+
- 	usize = u->nlimbs;
- 	vsize = v->nlimbs;
--	if (!u->sign && v->sign)
-+	usign = absmode ? 0 : u->sign;
-+	vsign = absmode ? 0 : v->sign;
-+
-+	/* Compare sign bits.  */
-+
-+	if (!usign && vsign)
- 		return 1;
--	if (u->sign && !v->sign)
-+	if (usign && !vsign)
- 		return -1;
--	if (usize != vsize && !u->sign && !v->sign)
-+
-+	/* U and V are either both positive or both negative.  */
-+
-+	if (usize != vsize && !usign && !vsign)
- 		return usize - vsize;
--	if (usize != vsize && u->sign && v->sign)
--		return vsize - usize;
-+	if (usize != vsize && usign && vsign)
-+		return vsize + usize;
- 	if (!usize)
- 		return 0;
- 	cmp = mpihelp_cmp(u->d, v->d, usize);
--	if (u->sign)
--		return -cmp;
--	return cmp;
-+	if (!cmp)
-+		return 0;
-+	if ((cmp < 0?1:0) == (usign?1:0))
-+		return 1;
-+
-+	return -1;
-+}
-+
-+int mpi_cmp(MPI u, MPI v)
-+{
-+	return do_mpi_cmp(u, v, 0);
- }
- EXPORT_SYMBOL_GPL(mpi_cmp);
-+
-+int mpi_cmpabs(MPI u, MPI v)
-+{
-+	return do_mpi_cmp(u, v, 1);
-+}
-+EXPORT_SYMBOL_GPL(mpi_cmpabs);
-diff --git a/lib/crypto/mpi/mpi-div.c b/lib/crypto/mpi/mpi-div.c
-index 6e5044e72595..05a67d43ebc2 100644
---- a/lib/crypto/mpi/mpi-div.c
-+++ b/lib/crypto/mpi/mpi-div.c
-@@ -15,6 +15,7 @@
- #include "longlong.h"
- 
- int mpi_tdiv_qr(MPI quot, MPI rem, MPI num, MPI den);
-+void mpi_fdiv_qr(MPI quot, MPI rem, MPI dividend, MPI divisor);
- 
- int mpi_fdiv_r(MPI rem, MPI dividend, MPI divisor)
- {
-@@ -46,6 +47,34 @@ int mpi_fdiv_r(MPI rem, MPI dividend, MPI divisor)
- 	return err;
- }
- 
-+void mpi_fdiv_q(MPI quot, MPI dividend, MPI divisor)
-+{
-+	MPI tmp = mpi_alloc(mpi_get_nlimbs(quot));
-+	mpi_fdiv_qr(quot, tmp, dividend, divisor);
-+	mpi_free(tmp);
-+}
-+
-+void mpi_fdiv_qr(MPI quot, MPI rem, MPI dividend, MPI divisor)
-+{
-+	int divisor_sign = divisor->sign;
-+	MPI temp_divisor = NULL;
-+
-+	if (quot == divisor || rem == divisor) {
-+		temp_divisor = mpi_copy(divisor);
-+		divisor = temp_divisor;
-+	}
-+
-+	mpi_tdiv_qr(quot, rem, dividend, divisor);
-+
-+	if ((divisor_sign ^ dividend->sign) && rem->nlimbs) {
-+		mpi_sub_ui(quot, quot, 1);
-+		mpi_add(rem, rem, divisor);
-+	}
-+
-+	if (temp_divisor)
-+		mpi_free(temp_divisor);
-+}
-+
- /* If den == quot, den needs temporary storage.
-  * If den == rem, den needs temporary storage.
-  * If num == quot, num needs temporary storage.
-diff --git a/lib/crypto/mpi/mpi-internal.h b/lib/crypto/mpi/mpi-internal.h
-index 8a4f49e3043c..e6cf87659e29 100644
---- a/lib/crypto/mpi/mpi-internal.h
-+++ b/lib/crypto/mpi/mpi-internal.h
-@@ -67,6 +67,14 @@ static inline int RESIZE_IF_NEEDED(MPI a, unsigned b)
- 			(d)[_i] = (s)[_i];	\
- 	} while (0)
- 
-+#define MPN_COPY_INCR(d, s, n)		\
-+	do {					\
-+		mpi_size_t _i;			\
-+		for (_i = 0; _i < (n); _i++)	\
-+			(d)[_i] = (s)[_i];	\
-+	} while (0)
-+
-+
- #define MPN_COPY_DECR(d, s, n) \
- 	do {					\
- 		mpi_size_t _i;			\
-@@ -174,6 +182,8 @@ int mpihelp_mul(mpi_ptr_t prodp, mpi_ptr_t up, mpi_size_t usize,
- void mpih_sqr_n_basecase(mpi_ptr_t prodp, mpi_ptr_t up, mpi_size_t size);
- void mpih_sqr_n(mpi_ptr_t prodp, mpi_ptr_t up, mpi_size_t size,
- 		mpi_ptr_t tspace);
-+void mpihelp_mul_n(mpi_ptr_t prodp,
-+		mpi_ptr_t up, mpi_ptr_t vp, mpi_size_t size);
- 
- int mpihelp_mul_karatsuba_case(mpi_ptr_t prodp,
- 			       mpi_ptr_t up, mpi_size_t usize,
-diff --git a/lib/crypto/mpi/mpi-inv.c b/lib/crypto/mpi/mpi-inv.c
+@@ -13,6 +13,7 @@ mpi-y = \
+ 	generic_mpih-rshift.o		\
+ 	generic_mpih-sub1.o		\
+ 	generic_mpih-add1.o		\
++	ec.o				\
+ 	mpicoder.o			\
+ 	mpi-add.o			\
+ 	mpi-bit.o			\
+diff --git a/lib/crypto/mpi/ec.c b/lib/crypto/mpi/ec.c
 new file mode 100644
-index 000000000000..61e37d18f793
+index 000000000000..4781f00982ef
 --- /dev/null
-+++ b/lib/crypto/mpi/mpi-inv.c
-@@ -0,0 +1,143 @@
-+/* mpi-inv.c  -  MPI functions
-+ *	Copyright (C) 1998, 2001, 2002, 2003 Free Software Foundation, Inc.
++++ b/lib/crypto/mpi/ec.c
+@@ -0,0 +1,1507 @@
++/* ec.c -  Elliptic Curve functions
++ * Copyright (C) 2007 Free Software Foundation, Inc.
++ * Copyright (C) 2013 g10 Code GmbH
 + *
 + * This file is part of Libgcrypt.
 + *
@@ -618,887 +236,1492 @@ index 000000000000..61e37d18f793
 + */
 +
 +#include "mpi-internal.h"
-+
-+/****************
-+ * Calculate the multiplicative inverse X of A mod N
-+ * That is: Find the solution x for
-+ *		1 = (a*x) mod n
-+ */
-+int mpi_invm(MPI x, MPI a, MPI n)
-+{
-+	/* Extended Euclid's algorithm (See TAOCP Vol II, 4.5.2, Alg X)
-+	 * modified according to Michael Penk's solution for Exercise 35
-+	 * with further enhancement
-+	 */
-+	MPI u, v, u1, u2 = NULL, u3, v1, v2 = NULL, v3, t1, t2 = NULL, t3;
-+	unsigned int k;
-+	int sign;
-+	int odd;
-+
-+	if (!mpi_cmp_ui(a, 0))
-+		return 0; /* Inverse does not exists.  */
-+	if (!mpi_cmp_ui(n, 1))
-+		return 0; /* Inverse does not exists.  */
-+
-+	u = mpi_copy(a);
-+	v = mpi_copy(n);
-+
-+	for (k = 0; !mpi_test_bit(u, 0) && !mpi_test_bit(v, 0); k++) {
-+		mpi_rshift(u, u, 1);
-+		mpi_rshift(v, v, 1);
-+	}
-+	odd = mpi_test_bit(v, 0);
-+
-+	u1 = mpi_alloc_set_ui(1);
-+	if (!odd)
-+		u2 = mpi_alloc_set_ui(0);
-+	u3 = mpi_copy(u);
-+	v1 = mpi_copy(v);
-+	if (!odd) {
-+		v2 = mpi_alloc(mpi_get_nlimbs(u));
-+		mpi_sub(v2, u1, u); /* U is used as const 1 */
-+	}
-+	v3 = mpi_copy(v);
-+	if (mpi_test_bit(u, 0)) { /* u is odd */
-+		t1 = mpi_alloc_set_ui(0);
-+		if (!odd) {
-+			t2 = mpi_alloc_set_ui(1);
-+			t2->sign = 1;
-+		}
-+		t3 = mpi_copy(v);
-+		t3->sign = !t3->sign;
-+		goto Y4;
-+	} else {
-+		t1 = mpi_alloc_set_ui(1);
-+		if (!odd)
-+			t2 = mpi_alloc_set_ui(0);
-+		t3 = mpi_copy(u);
-+	}
-+
-+	do {
-+		do {
-+			if (!odd) {
-+				if (mpi_test_bit(t1, 0) || mpi_test_bit(t2, 0)) {
-+					/* one is odd */
-+					mpi_add(t1, t1, v);
-+					mpi_sub(t2, t2, u);
-+				}
-+				mpi_rshift(t1, t1, 1);
-+				mpi_rshift(t2, t2, 1);
-+				mpi_rshift(t3, t3, 1);
-+			} else {
-+				if (mpi_test_bit(t1, 0))
-+					mpi_add(t1, t1, v);
-+				mpi_rshift(t1, t1, 1);
-+				mpi_rshift(t3, t3, 1);
-+			}
-+Y4:
-+			;
-+		} while (!mpi_test_bit(t3, 0)); /* while t3 is even */
-+
-+		if (!t3->sign) {
-+			mpi_set(u1, t1);
-+			if (!odd)
-+				mpi_set(u2, t2);
-+			mpi_set(u3, t3);
-+		} else {
-+			mpi_sub(v1, v, t1);
-+			sign = u->sign; u->sign = !u->sign;
-+			if (!odd)
-+				mpi_sub(v2, u, t2);
-+			u->sign = sign;
-+			sign = t3->sign; t3->sign = !t3->sign;
-+			mpi_set(v3, t3);
-+			t3->sign = sign;
-+		}
-+		mpi_sub(t1, u1, v1);
-+		if (!odd)
-+			mpi_sub(t2, u2, v2);
-+		mpi_sub(t3, u3, v3);
-+		if (t1->sign) {
-+			mpi_add(t1, t1, v);
-+			if (!odd)
-+				mpi_sub(t2, t2, u);
-+		}
-+	} while (mpi_cmp_ui(t3, 0)); /* while t3 != 0 */
-+	/* mpi_lshift( u3, k ); */
-+	mpi_set(x, u1);
-+
-+	mpi_free(u1);
-+	mpi_free(v1);
-+	mpi_free(t1);
-+	if (!odd) {
-+		mpi_free(u2);
-+		mpi_free(v2);
-+		mpi_free(t2);
-+	}
-+	mpi_free(u3);
-+	mpi_free(v3);
-+	mpi_free(t3);
-+
-+	mpi_free(u);
-+	mpi_free(v);
-+	return 1;
-+}
-+EXPORT_SYMBOL_GPL(mpi_invm);
-diff --git a/lib/crypto/mpi/mpi-mod.c b/lib/crypto/mpi/mpi-mod.c
-index d5fdaec3d0b6..5a6475f58fa7 100644
---- a/lib/crypto/mpi/mpi-mod.c
-+++ b/lib/crypto/mpi/mpi-mod.c
-@@ -5,9 +5,153 @@
-  * This file is part of Libgcrypt.
-  */
- 
-+
- #include "mpi-internal.h"
 +#include "longlong.h"
 +
-+/* Context used with Barrett reduction.  */
-+struct barrett_ctx_s {
-+	MPI m;   /* The modulus - may not be modified. */
-+	int m_copied;   /* If true, M needs to be released.  */
-+	int k;
-+	MPI y;
-+	MPI r1;  /* Helper MPI. */
-+	MPI r2;  /* Helper MPI. */
-+	MPI r3;  /* Helper MPI allocated on demand. */
-+};
++#define point_init(a)  mpi_point_init((a))
++#define point_free(a)  mpi_point_free_parts((a))
++
++#define log_error(fmt, ...) pr_err(fmt, ##__VA_ARGS__)
++#define log_fatal(fmt, ...) pr_err(fmt, ##__VA_ARGS__)
++
++#define DIM(v) (sizeof(v)/sizeof((v)[0]))
 +
 +
- 
- int mpi_mod(MPI rem, MPI dividend, MPI divisor)
- {
- 	return mpi_fdiv_r(rem, dividend, divisor);
- }
-+
-+/* This function returns a new context for Barrett based operations on
-+ * the modulus M.  This context needs to be released using
-+ * _gcry_mpi_barrett_free.  If COPY is true M will be transferred to
-+ * the context and the user may change M.  If COPY is false, M may not
-+ * be changed until gcry_mpi_barrett_free has been called.
++/* Create a new point option.  NBITS gives the size in bits of one
++ * coordinate; it is only used to pre-allocate some resources and
++ * might also be passed as 0 to use a default value.
 + */
-+mpi_barrett_t mpi_barrett_init(MPI m, int copy)
++MPI_POINT mpi_point_new(unsigned int nbits)
 +{
-+	mpi_barrett_t ctx;
-+	MPI tmp;
++	MPI_POINT p;
 +
-+	mpi_normalize(m);
-+	ctx = kcalloc(1, sizeof(*ctx), GFP_KERNEL);
-+	if (!ctx)
-+		return NULL;
++	(void)nbits;  /* Currently not used.  */
 +
-+	if (copy) {
-+		ctx->m = mpi_copy(m);
-+		ctx->m_copied = 1;
-+	} else
-+		ctx->m = m;
-+
-+	ctx->k = mpi_get_nlimbs(m);
-+	tmp = mpi_alloc(ctx->k + 1);
-+
-+	/* Barrett precalculation: y = floor(b^(2k) / m). */
-+	mpi_set_ui(tmp, 1);
-+	mpi_lshift_limbs(tmp, 2 * ctx->k);
-+	mpi_fdiv_q(tmp, tmp, m);
-+
-+	ctx->y  = tmp;
-+	ctx->r1 = mpi_alloc(2 * ctx->k + 1);
-+	ctx->r2 = mpi_alloc(2 * ctx->k + 1);
-+
-+	return ctx;
++	p = kmalloc(sizeof(*p), GFP_KERNEL);
++	if (p)
++		mpi_point_init(p);
++	return p;
 +}
++EXPORT_SYMBOL_GPL(mpi_point_new);
 +
-+void mpi_barrett_free(mpi_barrett_t ctx)
++/* Release the point object P.  P may be NULL. */
++void mpi_point_release(MPI_POINT p)
 +{
-+	if (ctx) {
-+		mpi_free(ctx->y);
-+		mpi_free(ctx->r1);
-+		mpi_free(ctx->r2);
-+		if (ctx->r3)
-+			mpi_free(ctx->r3);
-+		if (ctx->m_copied)
-+			mpi_free(ctx->m);
-+		kfree(ctx);
++	if (p) {
++		mpi_point_free_parts(p);
++		kfree(p);
 +	}
 +}
++EXPORT_SYMBOL_GPL(mpi_point_release);
 +
-+
-+/* R = X mod M
-+ *
-+ * Using Barrett reduction.  Before using this function
-+ * _gcry_mpi_barrett_init must have been called to do the
-+ * precalculations.  CTX is the context created by this precalculation
-+ * and also conveys M.  If the Barret reduction could no be done a
-+ * straightforward reduction method is used.
-+ *
-+ * We assume that these conditions are met:
-+ * Input:  x =(x_2k-1 ...x_0)_b
-+ *     m =(m_k-1 ....m_0)_b	  with m_k-1 != 0
-+ * Output: r = x mod m
++/* Initialize the fields of a point object.  gcry_mpi_point_free_parts
++ * may be used to release the fields.
 + */
-+void mpi_mod_barrett(MPI r, MPI x, mpi_barrett_t ctx)
++void mpi_point_init(MPI_POINT p)
 +{
-+	MPI m = ctx->m;
-+	int k = ctx->k;
-+	MPI y = ctx->y;
-+	MPI r1 = ctx->r1;
-+	MPI r2 = ctx->r2;
-+	int sign;
++	p->x = mpi_new(0);
++	p->y = mpi_new(0);
++	p->z = mpi_new(0);
++}
++EXPORT_SYMBOL_GPL(mpi_point_init);
 +
-+	mpi_normalize(x);
-+	if (mpi_get_nlimbs(x) > 2*k) {
-+		mpi_mod(r, x, m);
-+		return;
++/* Release the parts of a point object. */
++void mpi_point_free_parts(MPI_POINT p)
++{
++	mpi_free(p->x); p->x = NULL;
++	mpi_free(p->y); p->y = NULL;
++	mpi_free(p->z); p->z = NULL;
++}
++EXPORT_SYMBOL_GPL(mpi_point_free_parts);
++
++/* Set the value from S into D.  */
++static void point_set(MPI_POINT d, MPI_POINT s)
++{
++	mpi_set(d->x, s->x);
++	mpi_set(d->y, s->y);
++	mpi_set(d->z, s->z);
++}
++
++static void point_resize(MPI_POINT p, struct mpi_ec_ctx *ctx)
++{
++	size_t nlimbs = ctx->p->nlimbs;
++
++	mpi_resize(p->x, nlimbs);
++	p->x->nlimbs = nlimbs;
++	mpi_resize(p->z, nlimbs);
++	p->z->nlimbs = nlimbs;
++
++	if (ctx->model != MPI_EC_MONTGOMERY) {
++		mpi_resize(p->y, nlimbs);
++		p->y->nlimbs = nlimbs;
 +	}
++}
 +
-+	sign = x->sign;
-+	x->sign = 0;
-+
-+	/* 1. q1 = floor( x / b^k-1)
-+	 *    q2 = q1 * y
-+	 *    q3 = floor( q2 / b^k+1 )
-+	 * Actually, we don't need qx, we can work direct on r2
-+	 */
-+	mpi_set(r2, x);
-+	mpi_rshift_limbs(r2, k-1);
-+	mpi_mul(r2, r2, y);
-+	mpi_rshift_limbs(r2, k+1);
-+
-+	/* 2. r1 = x mod b^k+1
-+	 *	r2 = q3 * m mod b^k+1
-+	 *	r  = r1 - r2
-+	 * 3. if r < 0 then  r = r + b^k+1
-+	 */
-+	mpi_set(r1, x);
-+	if (r1->nlimbs > k+1) /* Quick modulo operation.  */
-+		r1->nlimbs = k+1;
-+	mpi_mul(r2, r2, m);
-+	if (r2->nlimbs > k+1) /* Quick modulo operation. */
-+		r2->nlimbs = k+1;
-+	mpi_sub(r, r1, r2);
-+
-+	if (mpi_has_sign(r)) {
-+		if (!ctx->r3) {
-+			ctx->r3 = mpi_alloc(k + 2);
-+			mpi_set_ui(ctx->r3, 1);
-+			mpi_lshift_limbs(ctx->r3, k + 1);
-+		}
-+		mpi_add(r, r, ctx->r3);
-+	}
-+
-+	/* 4. while r >= m do r = r - m */
-+	while (mpi_cmp(r, m) >= 0)
-+		mpi_sub(r, r, m);
-+
-+	x->sign = sign;
++static void point_swap_cond(MPI_POINT d, MPI_POINT s, unsigned long swap,
++		struct mpi_ec_ctx *ctx)
++{
++	mpi_swap_cond(d->x, s->x, swap);
++	if (ctx->model != MPI_EC_MONTGOMERY)
++		mpi_swap_cond(d->y, s->y, swap);
++	mpi_swap_cond(d->z, s->z, swap);
 +}
 +
 +
-+void mpi_mul_barrett(MPI w, MPI u, MPI v, mpi_barrett_t ctx)
++/* W = W mod P.  */
++static void ec_mod(MPI w, struct mpi_ec_ctx *ec)
++{
++	if (ec->t.p_barrett)
++		mpi_mod_barrett(w, w, ec->t.p_barrett);
++	else
++		mpi_mod(w, w, ec->p);
++}
++
++static void ec_addm(MPI w, MPI u, MPI v, struct mpi_ec_ctx *ctx)
++{
++	mpi_add(w, u, v);
++	ec_mod(w, ctx);
++}
++
++static void ec_subm(MPI w, MPI u, MPI v, struct mpi_ec_ctx *ec)
++{
++	mpi_sub(w, u, v);
++	while (w->sign)
++		mpi_add(w, w, ec->p);
++	/*ec_mod(w, ec);*/
++}
++
++static void ec_mulm(MPI w, MPI u, MPI v, struct mpi_ec_ctx *ctx)
 +{
 +	mpi_mul(w, u, v);
-+	mpi_mod_barrett(w, w, ctx);
++	ec_mod(w, ctx);
 +}
-diff --git a/lib/crypto/mpi/mpicoder.c b/lib/crypto/mpi/mpicoder.c
-index dde01030807d..3cb6bd148fa9 100644
---- a/lib/crypto/mpi/mpicoder.c
-+++ b/lib/crypto/mpi/mpicoder.c
-@@ -25,6 +25,7 @@
- #include <linux/string.h>
- #include "mpi-internal.h"
- 
-+#define MAX_EXTERN_SCAN_BYTES (16*1024*1024)
- #define MAX_EXTERN_MPI_BITS 16384
- 
- /**
-@@ -109,6 +110,112 @@ MPI mpi_read_from_buffer(const void *xbuffer, unsigned *ret_nread)
- }
- EXPORT_SYMBOL_GPL(mpi_read_from_buffer);
- 
-+/****************
-+ * Fill the mpi VAL from the hex string in STR.
++
++/* W = 2 * U mod P.  */
++static void ec_mul2(MPI w, MPI u, struct mpi_ec_ctx *ctx)
++{
++	mpi_lshift(w, u, 1);
++	ec_mod(w, ctx);
++}
++
++static void ec_powm(MPI w, const MPI b, const MPI e,
++		struct mpi_ec_ctx *ctx)
++{
++	mpi_powm(w, b, e, ctx->p);
++	/* mpi_abs(w); */
++}
++
++/* Shortcut for
++ * ec_powm(B, B, mpi_const(MPI_C_TWO), ctx);
++ * for easier optimization.
 + */
-+int mpi_fromstr(MPI val, const char *str)
++static void ec_pow2(MPI w, const MPI b, struct mpi_ec_ctx *ctx)
 +{
-+	int sign = 0;
-+	int prepend_zero = 0;
-+	int i, j, c, c1, c2;
-+	unsigned int nbits, nbytes, nlimbs;
-+	mpi_limb_t a;
++	/* Using mpi_mul is slightly faster (at least on amd64).  */
++	/* mpi_powm(w, b, mpi_const(MPI_C_TWO), ctx->p); */
++	ec_mulm(w, b, b, ctx);
++}
 +
-+	if (*str == '-') {
-+		sign = 1;
-+		str++;
++/* Shortcut for
++ * ec_powm(B, B, mpi_const(MPI_C_THREE), ctx);
++ * for easier optimization.
++ */
++static void ec_pow3(MPI w, const MPI b, struct mpi_ec_ctx *ctx)
++{
++	mpi_powm(w, b, mpi_const(MPI_C_THREE), ctx->p);
++}
++
++static void ec_invm(MPI x, MPI a, struct mpi_ec_ctx *ctx)
++{
++	if (!mpi_invm(x, a, ctx->p))
++		log_error("ec_invm: inverse does not exist:\n");
++}
++
++static void mpih_set_cond(mpi_ptr_t wp, mpi_ptr_t up,
++		mpi_size_t usize, unsigned long set)
++{
++	mpi_size_t i;
++	mpi_limb_t mask = ((mpi_limb_t)0) - set;
++	mpi_limb_t x;
++
++	for (i = 0; i < usize; i++) {
++		x = mask & (wp[i] ^ up[i]);
++		wp[i] = wp[i] ^ x;
++	}
++}
++
++/* Routines for 2^255 - 19.  */
++
++#define LIMB_SIZE_25519 ((256+BITS_PER_MPI_LIMB-1)/BITS_PER_MPI_LIMB)
++
++static void ec_addm_25519(MPI w, MPI u, MPI v, struct mpi_ec_ctx *ctx)
++{
++	mpi_ptr_t wp, up, vp;
++	mpi_size_t wsize = LIMB_SIZE_25519;
++	mpi_limb_t n[LIMB_SIZE_25519];
++	mpi_limb_t borrow;
++
++	if (w->nlimbs != wsize || u->nlimbs != wsize || v->nlimbs != wsize)
++		log_bug("addm_25519: different sizes\n");
++
++	memset(n, 0, sizeof(n));
++	up = u->d;
++	vp = v->d;
++	wp = w->d;
++
++	mpihelp_add_n(wp, up, vp, wsize);
++	borrow = mpihelp_sub_n(wp, wp, ctx->p->d, wsize);
++	mpih_set_cond(n, ctx->p->d, wsize, (borrow != 0UL));
++	mpihelp_add_n(wp, wp, n, wsize);
++	wp[LIMB_SIZE_25519-1] &= ~((mpi_limb_t)1 << (255 % BITS_PER_MPI_LIMB));
++}
++
++static void ec_subm_25519(MPI w, MPI u, MPI v, struct mpi_ec_ctx *ctx)
++{
++	mpi_ptr_t wp, up, vp;
++	mpi_size_t wsize = LIMB_SIZE_25519;
++	mpi_limb_t n[LIMB_SIZE_25519];
++	mpi_limb_t borrow;
++
++	if (w->nlimbs != wsize || u->nlimbs != wsize || v->nlimbs != wsize)
++		log_bug("subm_25519: different sizes\n");
++
++	memset(n, 0, sizeof(n));
++	up = u->d;
++	vp = v->d;
++	wp = w->d;
++
++	borrow = mpihelp_sub_n(wp, up, vp, wsize);
++	mpih_set_cond(n, ctx->p->d, wsize, (borrow != 0UL));
++	mpihelp_add_n(wp, wp, n, wsize);
++	wp[LIMB_SIZE_25519-1] &= ~((mpi_limb_t)1 << (255 % BITS_PER_MPI_LIMB));
++}
++
++static void ec_mulm_25519(MPI w, MPI u, MPI v, struct mpi_ec_ctx *ctx)
++{
++	mpi_ptr_t wp, up, vp;
++	mpi_size_t wsize = LIMB_SIZE_25519;
++	mpi_limb_t n[LIMB_SIZE_25519*2];
++	mpi_limb_t m[LIMB_SIZE_25519+1];
++	mpi_limb_t cy;
++	int msb;
++
++	(void)ctx;
++	if (w->nlimbs != wsize || u->nlimbs != wsize || v->nlimbs != wsize)
++		log_bug("mulm_25519: different sizes\n");
++
++	up = u->d;
++	vp = v->d;
++	wp = w->d;
++
++	mpihelp_mul_n(n, up, vp, wsize);
++	memcpy(wp, n, wsize * BYTES_PER_MPI_LIMB);
++	wp[LIMB_SIZE_25519-1] &= ~((mpi_limb_t)1 << (255 % BITS_PER_MPI_LIMB));
++
++	memcpy(m, n+LIMB_SIZE_25519-1, (wsize+1) * BYTES_PER_MPI_LIMB);
++	mpihelp_rshift(m, m, LIMB_SIZE_25519+1, (255 % BITS_PER_MPI_LIMB));
++
++	memcpy(n, m, wsize * BYTES_PER_MPI_LIMB);
++	cy = mpihelp_lshift(m, m, LIMB_SIZE_25519, 4);
++	m[LIMB_SIZE_25519] = cy;
++	cy = mpihelp_add_n(m, m, n, wsize);
++	m[LIMB_SIZE_25519] += cy;
++	cy = mpihelp_add_n(m, m, n, wsize);
++	m[LIMB_SIZE_25519] += cy;
++	cy = mpihelp_add_n(m, m, n, wsize);
++	m[LIMB_SIZE_25519] += cy;
++
++	cy = mpihelp_add_n(wp, wp, m, wsize);
++	m[LIMB_SIZE_25519] += cy;
++
++	memset(m, 0, wsize * BYTES_PER_MPI_LIMB);
++	msb = (wp[LIMB_SIZE_25519-1] >> (255 % BITS_PER_MPI_LIMB));
++	m[0] = (m[LIMB_SIZE_25519] * 2 + msb) * 19;
++	wp[LIMB_SIZE_25519-1] &= ~((mpi_limb_t)1 << (255 % BITS_PER_MPI_LIMB));
++	mpihelp_add_n(wp, wp, m, wsize);
++
++	m[0] = 0;
++	cy = mpihelp_sub_n(wp, wp, ctx->p->d, wsize);
++	mpih_set_cond(m, ctx->p->d, wsize, (cy != 0UL));
++	mpihelp_add_n(wp, wp, m, wsize);
++}
++
++static void ec_mul2_25519(MPI w, MPI u, struct mpi_ec_ctx *ctx)
++{
++	ec_addm_25519(w, u, u, ctx);
++}
++
++static void ec_pow2_25519(MPI w, const MPI b, struct mpi_ec_ctx *ctx)
++{
++	ec_mulm_25519(w, b, b, ctx);
++}
++
++/* Routines for 2^448 - 2^224 - 1.  */
++
++#define LIMB_SIZE_448 ((448+BITS_PER_MPI_LIMB-1)/BITS_PER_MPI_LIMB)
++#define LIMB_SIZE_HALF_448 ((LIMB_SIZE_448+1)/2)
++
++static void ec_addm_448(MPI w, MPI u, MPI v, struct mpi_ec_ctx *ctx)
++{
++	mpi_ptr_t wp, up, vp;
++	mpi_size_t wsize = LIMB_SIZE_448;
++	mpi_limb_t n[LIMB_SIZE_448];
++	mpi_limb_t cy;
++
++	if (w->nlimbs != wsize || u->nlimbs != wsize || v->nlimbs != wsize)
++		log_bug("addm_448: different sizes\n");
++
++	memset(n, 0, sizeof(n));
++	up = u->d;
++	vp = v->d;
++	wp = w->d;
++
++	cy = mpihelp_add_n(wp, up, vp, wsize);
++	mpih_set_cond(n, ctx->p->d, wsize, (cy != 0UL));
++	mpihelp_sub_n(wp, wp, n, wsize);
++}
++
++static void ec_subm_448(MPI w, MPI u, MPI v, struct mpi_ec_ctx *ctx)
++{
++	mpi_ptr_t wp, up, vp;
++	mpi_size_t wsize = LIMB_SIZE_448;
++	mpi_limb_t n[LIMB_SIZE_448];
++	mpi_limb_t borrow;
++
++	if (w->nlimbs != wsize || u->nlimbs != wsize || v->nlimbs != wsize)
++		log_bug("subm_448: different sizes\n");
++
++	memset(n, 0, sizeof(n));
++	up = u->d;
++	vp = v->d;
++	wp = w->d;
++
++	borrow = mpihelp_sub_n(wp, up, vp, wsize);
++	mpih_set_cond(n, ctx->p->d, wsize, (borrow != 0UL));
++	mpihelp_add_n(wp, wp, n, wsize);
++}
++
++static void ec_mulm_448(MPI w, MPI u, MPI v, struct mpi_ec_ctx *ctx)
++{
++	mpi_ptr_t wp, up, vp;
++	mpi_size_t wsize = LIMB_SIZE_448;
++	mpi_limb_t n[LIMB_SIZE_448*2];
++	mpi_limb_t a2[LIMB_SIZE_HALF_448];
++	mpi_limb_t a3[LIMB_SIZE_HALF_448];
++	mpi_limb_t b0[LIMB_SIZE_HALF_448];
++	mpi_limb_t b1[LIMB_SIZE_HALF_448];
++	mpi_limb_t cy;
++	int i;
++#if (LIMB_SIZE_HALF_448 > LIMB_SIZE_448/2)
++	mpi_limb_t b1_rest, a3_rest;
++#endif
++
++	if (w->nlimbs != wsize || u->nlimbs != wsize || v->nlimbs != wsize)
++		log_bug("mulm_448: different sizes\n");
++
++	up = u->d;
++	vp = v->d;
++	wp = w->d;
++
++	mpihelp_mul_n(n, up, vp, wsize);
++
++	for (i = 0; i < (wsize + 1) / 2; i++) {
++		b0[i] = n[i];
++		b1[i] = n[i+wsize/2];
++		a2[i] = n[i+wsize];
++		a3[i] = n[i+wsize+wsize/2];
 +	}
 +
-+	/* Skip optional hex prefix.  */
-+	if (*str == '0' && str[1] == 'x')
-+		str += 2;
++#if (LIMB_SIZE_HALF_448 > LIMB_SIZE_448/2)
++	b0[LIMB_SIZE_HALF_448-1] &= ((mpi_limb_t)1UL << 32)-1;
++	a2[LIMB_SIZE_HALF_448-1] &= ((mpi_limb_t)1UL << 32)-1;
 +
-+	nbits = strlen(str);
-+	if (nbits > MAX_EXTERN_SCAN_BYTES) {
-+		mpi_clear(val);
-+		return -EINVAL;
++	b1_rest = 0;
++	a3_rest = 0;
++
++	for (i = (wsize + 1) / 2 - 1; i >= 0; i--) {
++		mpi_limb_t b1v, a3v;
++		b1v = b1[i];
++		a3v = a3[i];
++		b1[i] = (b1_rest << 32) | (b1v >> 32);
++		a3[i] = (a3_rest << 32) | (a3v >> 32);
++		b1_rest = b1v & (((mpi_limb_t)1UL << 32)-1);
++		a3_rest = a3v & (((mpi_limb_t)1UL << 32)-1);
 +	}
-+	nbits *= 4;
-+	if ((nbits % 8))
-+		prepend_zero = 1;
++#endif
 +
-+	nbytes = (nbits+7) / 8;
-+	nlimbs = (nbytes+BYTES_PER_MPI_LIMB-1) / BYTES_PER_MPI_LIMB;
++	cy = mpihelp_add_n(b0, b0, a2, LIMB_SIZE_HALF_448);
++	cy += mpihelp_add_n(b0, b0, a3, LIMB_SIZE_HALF_448);
++	for (i = 0; i < (wsize + 1) / 2; i++)
++		wp[i] = b0[i];
++#if (LIMB_SIZE_HALF_448 > LIMB_SIZE_448/2)
++	wp[LIMB_SIZE_HALF_448-1] &= (((mpi_limb_t)1UL << 32)-1);
++#endif
 +
-+	if (val->alloced < nlimbs)
-+		mpi_resize(val, nlimbs);
++#if (LIMB_SIZE_HALF_448 > LIMB_SIZE_448/2)
++	cy = b0[LIMB_SIZE_HALF_448-1] >> 32;
++#endif
 +
-+	i = BYTES_PER_MPI_LIMB - (nbytes % BYTES_PER_MPI_LIMB);
-+	i %= BYTES_PER_MPI_LIMB;
-+	j = val->nlimbs = nlimbs;
-+	val->sign = sign;
-+	for (; j > 0; j--) {
-+		a = 0;
-+		for (; i < BYTES_PER_MPI_LIMB; i++) {
-+			if (prepend_zero) {
-+				c1 = '0';
-+				prepend_zero = 0;
-+			} else
-+				c1 = *str++;
++	cy = mpihelp_add_1(b1, b1, LIMB_SIZE_HALF_448, cy);
++	cy += mpihelp_add_n(b1, b1, a2, LIMB_SIZE_HALF_448);
++	cy += mpihelp_add_n(b1, b1, a3, LIMB_SIZE_HALF_448);
++	cy += mpihelp_add_n(b1, b1, a3, LIMB_SIZE_HALF_448);
++#if (LIMB_SIZE_HALF_448 > LIMB_SIZE_448/2)
++	b1_rest = 0;
++	for (i = (wsize + 1) / 2 - 1; i >= 0; i--) {
++		mpi_limb_t b1v = b1[i];
++		b1[i] = (b1_rest << 32) | (b1v >> 32);
++		b1_rest = b1v & (((mpi_limb_t)1UL << 32)-1);
++	}
++	wp[LIMB_SIZE_HALF_448-1] |= (b1_rest << 32);
++#endif
++	for (i = 0; i < wsize / 2; i++)
++		wp[i+(wsize + 1) / 2] = b1[i];
 +
-+			if (!c1) {
-+				mpi_clear(val);
-+				return -EINVAL;
-+			}
-+			c2 = *str++;
-+			if (!c2) {
-+				mpi_clear(val);
-+				return -EINVAL;
-+			}
-+			if (c1 >= '0' && c1 <= '9')
-+				c = c1 - '0';
-+			else if (c1 >= 'a' && c1 <= 'f')
-+				c = c1 - 'a' + 10;
-+			else if (c1 >= 'A' && c1 <= 'F')
-+				c = c1 - 'A' + 10;
-+			else {
-+				mpi_clear(val);
-+				return -EINVAL;
-+			}
-+			c <<= 4;
-+			if (c2 >= '0' && c2 <= '9')
-+				c |= c2 - '0';
-+			else if (c2 >= 'a' && c2 <= 'f')
-+				c |= c2 - 'a' + 10;
-+			else if (c2 >= 'A' && c2 <= 'F')
-+				c |= c2 - 'A' + 10;
-+			else {
-+				mpi_clear(val);
-+				return -EINVAL;
-+			}
-+			a <<= 8;
-+			a |= c;
++#if (LIMB_SIZE_HALF_448 > LIMB_SIZE_448/2)
++	cy = b1[LIMB_SIZE_HALF_448-1];
++#endif
++
++	memset(n, 0, wsize * BYTES_PER_MPI_LIMB);
++
++#if (LIMB_SIZE_HALF_448 > LIMB_SIZE_448/2)
++	n[LIMB_SIZE_HALF_448-1] = cy << 32;
++#else
++	n[LIMB_SIZE_HALF_448] = cy;
++#endif
++	n[0] = cy;
++	mpihelp_add_n(wp, wp, n, wsize);
++
++	memset(n, 0, wsize * BYTES_PER_MPI_LIMB);
++	cy = mpihelp_sub_n(wp, wp, ctx->p->d, wsize);
++	mpih_set_cond(n, ctx->p->d, wsize, (cy != 0UL));
++	mpihelp_add_n(wp, wp, n, wsize);
++}
++
++static void ec_mul2_448(MPI w, MPI u, struct mpi_ec_ctx *ctx)
++{
++	ec_addm_448(w, u, u, ctx);
++}
++
++static void ec_pow2_448(MPI w, const MPI b, struct mpi_ec_ctx *ctx)
++{
++	ec_mulm_448(w, b, b, ctx);
++}
++
++struct field_table {
++	const char *p;
++
++	/* computation routines for the field.  */
++	void (*addm)(MPI w, MPI u, MPI v, struct mpi_ec_ctx *ctx);
++	void (*subm)(MPI w, MPI u, MPI v, struct mpi_ec_ctx *ctx);
++	void (*mulm)(MPI w, MPI u, MPI v, struct mpi_ec_ctx *ctx);
++	void (*mul2)(MPI w, MPI u, struct mpi_ec_ctx *ctx);
++	void (*pow2)(MPI w, const MPI b, struct mpi_ec_ctx *ctx);
++};
++
++static const struct field_table field_table[] = {
++	{
++		"0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFED",
++		ec_addm_25519,
++		ec_subm_25519,
++		ec_mulm_25519,
++		ec_mul2_25519,
++		ec_pow2_25519
++	},
++	{
++		"0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE"
++		"FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
++		ec_addm_448,
++		ec_subm_448,
++		ec_mulm_448,
++		ec_mul2_448,
++		ec_pow2_448
++	},
++	{ NULL, NULL, NULL, NULL, NULL, NULL },
++};
++
++/* Force recomputation of all helper variables.  */
++static void mpi_ec_get_reset(struct mpi_ec_ctx *ec)
++{
++	ec->t.valid.a_is_pminus3 = 0;
++	ec->t.valid.two_inv_p = 0;
++}
++
++/* Accessor for helper variable.  */
++static int ec_get_a_is_pminus3(struct mpi_ec_ctx *ec)
++{
++	MPI tmp;
++
++	if (!ec->t.valid.a_is_pminus3) {
++		ec->t.valid.a_is_pminus3 = 1;
++		tmp = mpi_alloc_like(ec->p);
++		mpi_sub_ui(tmp, ec->p, 3);
++		ec->t.a_is_pminus3 = !mpi_cmp(ec->a, tmp);
++		mpi_free(tmp);
++	}
++
++	return ec->t.a_is_pminus3;
++}
++
++/* Accessor for helper variable.  */
++static MPI ec_get_two_inv_p(struct mpi_ec_ctx *ec)
++{
++	if (!ec->t.valid.two_inv_p) {
++		ec->t.valid.two_inv_p = 1;
++		if (!ec->t.two_inv_p)
++			ec->t.two_inv_p = mpi_alloc(0);
++		ec_invm(ec->t.two_inv_p, mpi_const(MPI_C_TWO), ec);
++	}
++	return ec->t.two_inv_p;
++}
++
++static const char *const curve25519_bad_points[] = {
++	"0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffed",
++	"0x0000000000000000000000000000000000000000000000000000000000000000",
++	"0x0000000000000000000000000000000000000000000000000000000000000001",
++	"0x00b8495f16056286fdb1329ceb8d09da6ac49ff1fae35616aeb8413b7c7aebe0",
++	"0x57119fd0dd4e22d8868e1c58c45c44045bef839c55b1d0b1248c50a3bc959c5f",
++	"0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffec",
++	"0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffee",
++	NULL
++};
++
++static const char *const curve448_bad_points[] = {
++	"0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffe"
++	"ffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
++	"0x00000000000000000000000000000000000000000000000000000000"
++	"00000000000000000000000000000000000000000000000000000000",
++	"0x00000000000000000000000000000000000000000000000000000000"
++	"00000000000000000000000000000000000000000000000000000001",
++	"0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffe"
++	"fffffffffffffffffffffffffffffffffffffffffffffffffffffffe",
++	"0xffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
++	"00000000000000000000000000000000000000000000000000000000",
++	NULL
++};
++
++static const char *const *bad_points_table[] = {
++	curve25519_bad_points,
++	curve448_bad_points,
++};
++
++static void mpi_ec_coefficient_normalize(MPI a, MPI p)
++{
++	if (a->sign) {
++		mpi_resize(a, p->nlimbs);
++		mpihelp_sub_n(a->d, p->d, a->d, p->nlimbs);
++		a->nlimbs = p->nlimbs;
++		a->sign = 0;
++	}
++}
++
++/* This function initialized a context for elliptic curve based on the
++ * field GF(p).  P is the prime specifying this field, A is the first
++ * coefficient.  CTX is expected to be zeroized.
++ */
++void mpi_ec_init(struct mpi_ec_ctx *ctx, enum gcry_mpi_ec_models model,
++			enum ecc_dialects dialect,
++			int flags, MPI p, MPI a, MPI b)
++{
++	int i;
++	static int use_barrett = -1 /* TODO: 1 or -1 */;
++
++	mpi_ec_coefficient_normalize(a, p);
++	mpi_ec_coefficient_normalize(b, p);
++
++	/* Fixme: Do we want to check some constraints? e.g.  a < p  */
++
++	ctx->model = model;
++	ctx->dialect = dialect;
++	ctx->flags = flags;
++	if (dialect == ECC_DIALECT_ED25519)
++		ctx->nbits = 256;
++	else
++		ctx->nbits = mpi_get_nbits(p);
++	ctx->p = mpi_copy(p);
++	ctx->a = mpi_copy(a);
++	ctx->b = mpi_copy(b);
++
++	ctx->d = NULL;
++	ctx->t.two_inv_p = NULL;
++
++	ctx->t.p_barrett = use_barrett > 0 ? mpi_barrett_init(ctx->p, 0) : NULL;
++
++	mpi_ec_get_reset(ctx);
++
++	if (model == MPI_EC_MONTGOMERY) {
++		for (i = 0; i < DIM(bad_points_table); i++) {
++			MPI p_candidate = mpi_scanval(bad_points_table[i][0]);
++			int match_p = !mpi_cmp(ctx->p, p_candidate);
++			int j;
++
++			mpi_free(p_candidate);
++			if (!match_p)
++				continue;
++
++			for (j = 0; i < DIM(ctx->t.scratch) && bad_points_table[i][j]; j++)
++				ctx->t.scratch[j] = mpi_scanval(bad_points_table[i][j]);
 +		}
-+		i = 0;
-+		val->d[j-1] = a;
++	} else {
++		/* Allocate scratch variables.  */
++		for (i = 0; i < DIM(ctx->t.scratch); i++)
++			ctx->t.scratch[i] = mpi_alloc_like(ctx->p);
 +	}
 +
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(mpi_fromstr);
++	ctx->addm = ec_addm;
++	ctx->subm = ec_subm;
++	ctx->mulm = ec_mulm;
++	ctx->mul2 = ec_mul2;
++	ctx->pow2 = ec_pow2;
 +
-+MPI mpi_scanval(const char *string)
-+{
-+	MPI a;
++	for (i = 0; field_table[i].p; i++) {
++		MPI f_p;
 +
-+	a = mpi_alloc(0);
-+	if (!a)
-+		return NULL;
++		f_p = mpi_scanval(field_table[i].p);
++		if (!f_p)
++			break;
 +
-+	if (mpi_fromstr(a, string)) {
-+		mpi_free(a);
-+		return NULL;
++		if (!mpi_cmp(p, f_p)) {
++			ctx->addm = field_table[i].addm;
++			ctx->subm = field_table[i].subm;
++			ctx->mulm = field_table[i].mulm;
++			ctx->mul2 = field_table[i].mul2;
++			ctx->pow2 = field_table[i].pow2;
++			mpi_free(f_p);
++
++			mpi_resize(ctx->a, ctx->p->nlimbs);
++			ctx->a->nlimbs = ctx->p->nlimbs;
++
++			mpi_resize(ctx->b, ctx->p->nlimbs);
++			ctx->b->nlimbs = ctx->p->nlimbs;
++
++			for (i = 0; i < DIM(ctx->t.scratch) && ctx->t.scratch[i]; i++)
++				ctx->t.scratch[i]->nlimbs = ctx->p->nlimbs;
++
++			break;
++		}
++
++		mpi_free(f_p);
 +	}
-+	mpi_normalize(a);
-+	return a;
 +}
-+EXPORT_SYMBOL_GPL(mpi_scanval);
++EXPORT_SYMBOL_GPL(mpi_ec_init);
 +
- static int count_lzeros(MPI a)
- {
- 	mpi_limb_t alimb;
-@@ -414,3 +521,232 @@ MPI mpi_read_raw_from_sgl(struct scatterlist *sgl, unsigned int nbytes)
- 	return val;
- }
- EXPORT_SYMBOL_GPL(mpi_read_raw_from_sgl);
-+
-+/* Perform a two's complement operation on buffer P of size N bytes.  */
-+static void twocompl(unsigned char *p, unsigned int n)
++void mpi_ec_deinit(struct mpi_ec_ctx *ctx)
 +{
 +	int i;
 +
-+	for (i = n-1; i >= 0 && !p[i]; i--)
-+		;
-+	if (i >= 0) {
-+		if ((p[i] & 0x01))
-+			p[i] = (((p[i] ^ 0xfe) | 0x01) & 0xff);
-+		else if ((p[i] & 0x02))
-+			p[i] = (((p[i] ^ 0xfc) | 0x02) & 0xfe);
-+		else if ((p[i] & 0x04))
-+			p[i] = (((p[i] ^ 0xf8) | 0x04) & 0xfc);
-+		else if ((p[i] & 0x08))
-+			p[i] = (((p[i] ^ 0xf0) | 0x08) & 0xf8);
-+		else if ((p[i] & 0x10))
-+			p[i] = (((p[i] ^ 0xe0) | 0x10) & 0xf0);
-+		else if ((p[i] & 0x20))
-+			p[i] = (((p[i] ^ 0xc0) | 0x20) & 0xe0);
-+		else if ((p[i] & 0x40))
-+			p[i] = (((p[i] ^ 0x80) | 0x40) & 0xc0);
-+		else
-+			p[i] = 0x80;
++	mpi_barrett_free(ctx->t.p_barrett);
 +
-+		for (i--; i >= 0; i--)
-+			p[i] ^= 0xff;
++	/* Domain parameter.  */
++	mpi_free(ctx->p);
++	mpi_free(ctx->a);
++	mpi_free(ctx->b);
++	mpi_point_release(ctx->G);
++	mpi_free(ctx->n);
++
++	/* The key.  */
++	mpi_point_release(ctx->Q);
++	mpi_free(ctx->d);
++
++	/* Private data of ec.c.  */
++	mpi_free(ctx->t.two_inv_p);
++
++	for (i = 0; i < DIM(ctx->t.scratch); i++)
++		mpi_free(ctx->t.scratch[i]);
++}
++EXPORT_SYMBOL_GPL(mpi_ec_deinit);
++
++/* Compute the affine coordinates from the projective coordinates in
++ * POINT.  Set them into X and Y.  If one coordinate is not required,
++ * X or Y may be passed as NULL.  CTX is the usual context. Returns: 0
++ * on success or !0 if POINT is at infinity.
++ */
++int mpi_ec_get_affine(MPI x, MPI y, MPI_POINT point, struct mpi_ec_ctx *ctx)
++{
++	if (!mpi_cmp_ui(point->z, 0))
++		return -1;
++
++	switch (ctx->model) {
++	case MPI_EC_WEIERSTRASS: /* Using Jacobian coordinates.  */
++		{
++			MPI z1, z2, z3;
++
++			z1 = mpi_new(0);
++			z2 = mpi_new(0);
++			ec_invm(z1, point->z, ctx);  /* z1 = z^(-1) mod p  */
++			ec_mulm(z2, z1, z1, ctx);    /* z2 = z^(-2) mod p  */
++
++			if (x)
++				ec_mulm(x, point->x, z2, ctx);
++
++			if (y) {
++				z3 = mpi_new(0);
++				ec_mulm(z3, z2, z1, ctx);      /* z3 = z^(-3) mod p */
++				ec_mulm(y, point->y, z3, ctx);
++				mpi_free(z3);
++			}
++
++			mpi_free(z2);
++			mpi_free(z1);
++		}
++		return 0;
++
++	case MPI_EC_MONTGOMERY:
++		{
++			if (x)
++				mpi_set(x, point->x);
++
++			if (y) {
++				log_fatal("%s: Getting Y-coordinate on %s is not supported\n",
++						"mpi_ec_get_affine", "Montgomery");
++				return -1;
++			}
++		}
++		return 0;
++
++	case MPI_EC_EDWARDS:
++		{
++			MPI z;
++
++			z = mpi_new(0);
++			ec_invm(z, point->z, ctx);
++
++			mpi_resize(z, ctx->p->nlimbs);
++			z->nlimbs = ctx->p->nlimbs;
++
++			if (x) {
++				mpi_resize(x, ctx->p->nlimbs);
++				x->nlimbs = ctx->p->nlimbs;
++				ctx->mulm(x, point->x, z, ctx);
++			}
++			if (y) {
++				mpi_resize(y, ctx->p->nlimbs);
++				y->nlimbs = ctx->p->nlimbs;
++				ctx->mulm(y, point->y, z, ctx);
++			}
++
++			mpi_free(z);
++		}
++		return 0;
++
++	default:
++		return -1;
++	}
++}
++EXPORT_SYMBOL_GPL(mpi_ec_get_affine);
++
++/*  RESULT = 2 * POINT  (Weierstrass version). */
++static void dup_point_weierstrass(MPI_POINT result,
++		MPI_POINT point, struct mpi_ec_ctx *ctx)
++{
++#define x3 (result->x)
++#define y3 (result->y)
++#define z3 (result->z)
++#define t1 (ctx->t.scratch[0])
++#define t2 (ctx->t.scratch[1])
++#define t3 (ctx->t.scratch[2])
++#define l1 (ctx->t.scratch[3])
++#define l2 (ctx->t.scratch[4])
++#define l3 (ctx->t.scratch[5])
++
++	if (!mpi_cmp_ui(point->y, 0) || !mpi_cmp_ui(point->z, 0)) {
++		/* P_y == 0 || P_z == 0 => [1:1:0] */
++		mpi_set_ui(x3, 1);
++		mpi_set_ui(y3, 1);
++		mpi_set_ui(z3, 0);
++	} else {
++		if (ec_get_a_is_pminus3(ctx)) {
++			/* Use the faster case.  */
++			/* L1 = 3(X - Z^2)(X + Z^2) */
++			/*                          T1: used for Z^2. */
++			/*                          T2: used for the right term. */
++			ec_pow2(t1, point->z, ctx);
++			ec_subm(l1, point->x, t1, ctx);
++			ec_mulm(l1, l1, mpi_const(MPI_C_THREE), ctx);
++			ec_addm(t2, point->x, t1, ctx);
++			ec_mulm(l1, l1, t2, ctx);
++		} else {
++			/* Standard case. */
++			/* L1 = 3X^2 + aZ^4 */
++			/*                          T1: used for aZ^4. */
++			ec_pow2(l1, point->x, ctx);
++			ec_mulm(l1, l1, mpi_const(MPI_C_THREE), ctx);
++			ec_powm(t1, point->z, mpi_const(MPI_C_FOUR), ctx);
++			ec_mulm(t1, t1, ctx->a, ctx);
++			ec_addm(l1, l1, t1, ctx);
++		}
++		/* Z3 = 2YZ */
++		ec_mulm(z3, point->y, point->z, ctx);
++		ec_mul2(z3, z3, ctx);
++
++		/* L2 = 4XY^2 */
++		/*                              T2: used for Y2; required later. */
++		ec_pow2(t2, point->y, ctx);
++		ec_mulm(l2, t2, point->x, ctx);
++		ec_mulm(l2, l2, mpi_const(MPI_C_FOUR), ctx);
++
++		/* X3 = L1^2 - 2L2 */
++		/*                              T1: used for L2^2. */
++		ec_pow2(x3, l1, ctx);
++		ec_mul2(t1, l2, ctx);
++		ec_subm(x3, x3, t1, ctx);
++
++		/* L3 = 8Y^4 */
++		/*                              T2: taken from above. */
++		ec_pow2(t2, t2, ctx);
++		ec_mulm(l3, t2, mpi_const(MPI_C_EIGHT), ctx);
++
++		/* Y3 = L1(L2 - X3) - L3 */
++		ec_subm(y3, l2, x3, ctx);
++		ec_mulm(y3, y3, l1, ctx);
++		ec_subm(y3, y3, l3, ctx);
++	}
++
++#undef x3
++#undef y3
++#undef z3
++#undef t1
++#undef t2
++#undef t3
++#undef l1
++#undef l2
++#undef l3
++}
++
++/*  RESULT = 2 * POINT  (Montgomery version). */
++static void dup_point_montgomery(MPI_POINT result,
++				MPI_POINT point, struct mpi_ec_ctx *ctx)
++{
++	(void)result;
++	(void)point;
++	(void)ctx;
++	log_fatal("%s: %s not yet supported\n",
++			"mpi_ec_dup_point", "Montgomery");
++}
++
++/*  RESULT = 2 * POINT  (Twisted Edwards version). */
++static void dup_point_edwards(MPI_POINT result,
++		MPI_POINT point, struct mpi_ec_ctx *ctx)
++{
++#define X1 (point->x)
++#define Y1 (point->y)
++#define Z1 (point->z)
++#define X3 (result->x)
++#define Y3 (result->y)
++#define Z3 (result->z)
++#define B (ctx->t.scratch[0])
++#define C (ctx->t.scratch[1])
++#define D (ctx->t.scratch[2])
++#define E (ctx->t.scratch[3])
++#define F (ctx->t.scratch[4])
++#define H (ctx->t.scratch[5])
++#define J (ctx->t.scratch[6])
++
++	/* Compute: (X_3 : Y_3 : Z_3) = 2( X_1 : Y_1 : Z_1 ) */
++
++	/* B = (X_1 + Y_1)^2  */
++	ctx->addm(B, X1, Y1, ctx);
++	ctx->pow2(B, B, ctx);
++
++	/* C = X_1^2 */
++	/* D = Y_1^2 */
++	ctx->pow2(C, X1, ctx);
++	ctx->pow2(D, Y1, ctx);
++
++	/* E = aC */
++	if (ctx->dialect == ECC_DIALECT_ED25519)
++		ctx->subm(E, ctx->p, C, ctx);
++	else
++		ctx->mulm(E, ctx->a, C, ctx);
++
++	/* F = E + D */
++	ctx->addm(F, E, D, ctx);
++
++	/* H = Z_1^2 */
++	ctx->pow2(H, Z1, ctx);
++
++	/* J = F - 2H */
++	ctx->mul2(J, H, ctx);
++	ctx->subm(J, F, J, ctx);
++
++	/* X_3 = (B - C - D) · J */
++	ctx->subm(X3, B, C, ctx);
++	ctx->subm(X3, X3, D, ctx);
++	ctx->mulm(X3, X3, J, ctx);
++
++	/* Y_3 = F · (E - D) */
++	ctx->subm(Y3, E, D, ctx);
++	ctx->mulm(Y3, Y3, F, ctx);
++
++	/* Z_3 = F · J */
++	ctx->mulm(Z3, F, J, ctx);
++
++#undef X1
++#undef Y1
++#undef Z1
++#undef X3
++#undef Y3
++#undef Z3
++#undef B
++#undef C
++#undef D
++#undef E
++#undef F
++#undef H
++#undef J
++}
++
++/*  RESULT = 2 * POINT  */
++static void
++mpi_ec_dup_point(MPI_POINT result, MPI_POINT point, struct mpi_ec_ctx *ctx)
++{
++	switch (ctx->model) {
++	case MPI_EC_WEIERSTRASS:
++		dup_point_weierstrass(result, point, ctx);
++		break;
++	case MPI_EC_MONTGOMERY:
++		dup_point_montgomery(result, point, ctx);
++		break;
++	case MPI_EC_EDWARDS:
++		dup_point_edwards(result, point, ctx);
++		break;
 +	}
 +}
 +
-+int mpi_print(enum gcry_mpi_format format, unsigned char *buffer,
-+			size_t buflen, size_t *nwritten, MPI a)
++/* RESULT = P1 + P2  (Weierstrass version).*/
++static void add_points_weierstrass(MPI_POINT result,
++		MPI_POINT p1, MPI_POINT p2,
++		struct mpi_ec_ctx *ctx)
 +{
-+	unsigned int nbits = mpi_get_nbits(a);
-+	size_t len;
-+	size_t dummy_nwritten;
-+	int negative;
++#define x1 (p1->x)
++#define y1 (p1->y)
++#define z1 (p1->z)
++#define x2 (p2->x)
++#define y2 (p2->y)
++#define z2 (p2->z)
++#define x3 (result->x)
++#define y3 (result->y)
++#define z3 (result->z)
++#define l1 (ctx->t.scratch[0])
++#define l2 (ctx->t.scratch[1])
++#define l3 (ctx->t.scratch[2])
++#define l4 (ctx->t.scratch[3])
++#define l5 (ctx->t.scratch[4])
++#define l6 (ctx->t.scratch[5])
++#define l7 (ctx->t.scratch[6])
++#define l8 (ctx->t.scratch[7])
++#define l9 (ctx->t.scratch[8])
++#define t1 (ctx->t.scratch[9])
++#define t2 (ctx->t.scratch[10])
 +
-+	if (!nwritten)
-+		nwritten = &dummy_nwritten;
++	if ((!mpi_cmp(x1, x2)) && (!mpi_cmp(y1, y2)) && (!mpi_cmp(z1, z2))) {
++		/* Same point; need to call the duplicate function.  */
++		mpi_ec_dup_point(result, p1, ctx);
++	} else if (!mpi_cmp_ui(z1, 0)) {
++		/* P1 is at infinity.  */
++		mpi_set(x3, p2->x);
++		mpi_set(y3, p2->y);
++		mpi_set(z3, p2->z);
++	} else if (!mpi_cmp_ui(z2, 0)) {
++		/* P2 is at infinity.  */
++		mpi_set(x3, p1->x);
++		mpi_set(y3, p1->y);
++		mpi_set(z3, p1->z);
++	} else {
++		int z1_is_one = !mpi_cmp_ui(z1, 1);
++		int z2_is_one = !mpi_cmp_ui(z2, 1);
 +
-+	/* Libgcrypt does no always care to set clear the sign if the value
-+	 * is 0.  For printing this is a bit of a surprise, in particular
-+	 * because if some of the formats don't support negative numbers but
-+	 * should be able to print a zero.  Thus we need this extra test
-+	 * for a negative number.
-+	 */
-+	if (a->sign && mpi_cmp_ui(a, 0))
-+		negative = 1;
-+	else
-+		negative = 0;
++		/* l1 = x1 z2^2  */
++		/* l2 = x2 z1^2  */
++		if (z2_is_one)
++			mpi_set(l1, x1);
++		else {
++			ec_pow2(l1, z2, ctx);
++			ec_mulm(l1, l1, x1, ctx);
++		}
++		if (z1_is_one)
++			mpi_set(l2, x2);
++		else {
++			ec_pow2(l2, z1, ctx);
++			ec_mulm(l2, l2, x2, ctx);
++		}
++		/* l3 = l1 - l2 */
++		ec_subm(l3, l1, l2, ctx);
++		/* l4 = y1 z2^3  */
++		ec_powm(l4, z2, mpi_const(MPI_C_THREE), ctx);
++		ec_mulm(l4, l4, y1, ctx);
++		/* l5 = y2 z1^3  */
++		ec_powm(l5, z1, mpi_const(MPI_C_THREE), ctx);
++		ec_mulm(l5, l5, y2, ctx);
++		/* l6 = l4 - l5  */
++		ec_subm(l6, l4, l5, ctx);
 +
-+	len = buflen;
-+	*nwritten = 0;
-+	if (format == GCRYMPI_FMT_STD) {
-+		unsigned char *tmp;
-+		int extra = 0;
-+		unsigned int n;
-+
-+		tmp = mpi_get_buffer(a, &n, NULL);
-+		if (!tmp)
-+			return -EINVAL;
-+
-+		if (negative) {
-+			twocompl(tmp, n);
-+			if (!(*tmp & 0x80)) {
-+				/* Need to extend the sign.  */
-+				n++;
-+				extra = 2;
++		if (!mpi_cmp_ui(l3, 0)) {
++			if (!mpi_cmp_ui(l6, 0)) {
++				/* P1 and P2 are the same - use duplicate function. */
++				mpi_ec_dup_point(result, p1, ctx);
++			} else {
++				/* P1 is the inverse of P2.  */
++				mpi_set_ui(x3, 1);
++				mpi_set_ui(y3, 1);
++				mpi_set_ui(z3, 0);
 +			}
-+		} else if (n && (*tmp & 0x80)) {
-+			/* Positive but the high bit of the returned buffer is set.
-+			 * Thus we need to print an extra leading 0x00 so that the
-+			 * output is interpreted as a positive number.
-+			 */
-+			n++;
-+			extra = 1;
++		} else {
++			/* l7 = l1 + l2  */
++			ec_addm(l7, l1, l2, ctx);
++			/* l8 = l4 + l5  */
++			ec_addm(l8, l4, l5, ctx);
++			/* z3 = z1 z2 l3  */
++			ec_mulm(z3, z1, z2, ctx);
++			ec_mulm(z3, z3, l3, ctx);
++			/* x3 = l6^2 - l7 l3^2  */
++			ec_pow2(t1, l6, ctx);
++			ec_pow2(t2, l3, ctx);
++			ec_mulm(t2, t2, l7, ctx);
++			ec_subm(x3, t1, t2, ctx);
++			/* l9 = l7 l3^2 - 2 x3  */
++			ec_mul2(t1, x3, ctx);
++			ec_subm(l9, t2, t1, ctx);
++			/* y3 = (l9 l6 - l8 l3^3)/2  */
++			ec_mulm(l9, l9, l6, ctx);
++			ec_powm(t1, l3, mpi_const(MPI_C_THREE), ctx); /* fixme: Use saved value*/
++			ec_mulm(t1, t1, l8, ctx);
++			ec_subm(y3, l9, t1, ctx);
++			ec_mulm(y3, y3, ec_get_two_inv_p(ctx), ctx);
 +		}
++	}
 +
-+		if (buffer && n > len) {
-+			/* The provided buffer is too short. */
-+			kfree(tmp);
-+			return -E2BIG;
++#undef x1
++#undef y1
++#undef z1
++#undef x2
++#undef y2
++#undef z2
++#undef x3
++#undef y3
++#undef z3
++#undef l1
++#undef l2
++#undef l3
++#undef l4
++#undef l5
++#undef l6
++#undef l7
++#undef l8
++#undef l9
++#undef t1
++#undef t2
++}
++
++/* RESULT = P1 + P2  (Montgomery version).*/
++static void add_points_montgomery(MPI_POINT result,
++		MPI_POINT p1, MPI_POINT p2,
++		struct mpi_ec_ctx *ctx)
++{
++	(void)result;
++	(void)p1;
++	(void)p2;
++	(void)ctx;
++	log_fatal("%s: %s not yet supported\n",
++			"mpi_ec_add_points", "Montgomery");
++}
++
++/* RESULT = P1 + P2  (Twisted Edwards version).*/
++static void add_points_edwards(MPI_POINT result,
++		MPI_POINT p1, MPI_POINT p2,
++		struct mpi_ec_ctx *ctx)
++{
++#define X1 (p1->x)
++#define Y1 (p1->y)
++#define Z1 (p1->z)
++#define X2 (p2->x)
++#define Y2 (p2->y)
++#define Z2 (p2->z)
++#define X3 (result->x)
++#define Y3 (result->y)
++#define Z3 (result->z)
++#define A (ctx->t.scratch[0])
++#define B (ctx->t.scratch[1])
++#define C (ctx->t.scratch[2])
++#define D (ctx->t.scratch[3])
++#define E (ctx->t.scratch[4])
++#define F (ctx->t.scratch[5])
++#define G (ctx->t.scratch[6])
++#define tmp (ctx->t.scratch[7])
++
++	point_resize(result, ctx);
++
++	/* Compute: (X_3 : Y_3 : Z_3) = (X_1 : Y_1 : Z_1) + (X_2 : Y_2 : Z_3) */
++
++	/* A = Z1 · Z2 */
++	ctx->mulm(A, Z1, Z2, ctx);
++
++	/* B = A^2 */
++	ctx->pow2(B, A, ctx);
++
++	/* C = X1 · X2 */
++	ctx->mulm(C, X1, X2, ctx);
++
++	/* D = Y1 · Y2 */
++	ctx->mulm(D, Y1, Y2, ctx);
++
++	/* E = d · C · D */
++	ctx->mulm(E, ctx->b, C, ctx);
++	ctx->mulm(E, E, D, ctx);
++
++	/* F = B - E */
++	ctx->subm(F, B, E, ctx);
++
++	/* G = B + E */
++	ctx->addm(G, B, E, ctx);
++
++	/* X_3 = A · F · ((X_1 + Y_1) · (X_2 + Y_2) - C - D) */
++	ctx->addm(tmp, X1, Y1, ctx);
++	ctx->addm(X3, X2, Y2, ctx);
++	ctx->mulm(X3, X3, tmp, ctx);
++	ctx->subm(X3, X3, C, ctx);
++	ctx->subm(X3, X3, D, ctx);
++	ctx->mulm(X3, X3, F, ctx);
++	ctx->mulm(X3, X3, A, ctx);
++
++	/* Y_3 = A · G · (D - aC) */
++	if (ctx->dialect == ECC_DIALECT_ED25519) {
++		ctx->addm(Y3, D, C, ctx);
++	} else {
++		ctx->mulm(Y3, ctx->a, C, ctx);
++		ctx->subm(Y3, D, Y3, ctx);
++	}
++	ctx->mulm(Y3, Y3, G, ctx);
++	ctx->mulm(Y3, Y3, A, ctx);
++
++	/* Z_3 = F · G */
++	ctx->mulm(Z3, F, G, ctx);
++
++
++#undef X1
++#undef Y1
++#undef Z1
++#undef X2
++#undef Y2
++#undef Z2
++#undef X3
++#undef Y3
++#undef Z3
++#undef A
++#undef B
++#undef C
++#undef D
++#undef E
++#undef F
++#undef G
++#undef tmp
++}
++
++/* Compute a step of Montgomery Ladder (only use X and Z in the point).
++ * Inputs:  P1, P2, and x-coordinate of DIF = P1 - P1.
++ * Outputs: PRD = 2 * P1 and  SUM = P1 + P2.
++ */
++static void montgomery_ladder(MPI_POINT prd, MPI_POINT sum,
++		MPI_POINT p1, MPI_POINT p2, MPI dif_x,
++		struct mpi_ec_ctx *ctx)
++{
++	ctx->addm(sum->x, p2->x, p2->z, ctx);
++	ctx->subm(p2->z, p2->x, p2->z, ctx);
++	ctx->addm(prd->x, p1->x, p1->z, ctx);
++	ctx->subm(p1->z, p1->x, p1->z, ctx);
++	ctx->mulm(p2->x, p1->z, sum->x, ctx);
++	ctx->mulm(p2->z, prd->x, p2->z, ctx);
++	ctx->pow2(p1->x, prd->x, ctx);
++	ctx->pow2(p1->z, p1->z, ctx);
++	ctx->addm(sum->x, p2->x, p2->z, ctx);
++	ctx->subm(p2->z, p2->x, p2->z, ctx);
++	ctx->mulm(prd->x, p1->x, p1->z, ctx);
++	ctx->subm(p1->z, p1->x, p1->z, ctx);
++	ctx->pow2(sum->x, sum->x, ctx);
++	ctx->pow2(sum->z, p2->z, ctx);
++	ctx->mulm(prd->z, p1->z, ctx->a, ctx); /* CTX->A: (a-2)/4 */
++	ctx->mulm(sum->z, sum->z, dif_x, ctx);
++	ctx->addm(prd->z, p1->x, prd->z, ctx);
++	ctx->mulm(prd->z, prd->z, p1->z, ctx);
++}
++
++/* RESULT = P1 + P2 */
++void mpi_ec_add_points(MPI_POINT result,
++		MPI_POINT p1, MPI_POINT p2,
++		struct mpi_ec_ctx *ctx)
++{
++	switch (ctx->model) {
++	case MPI_EC_WEIERSTRASS:
++		add_points_weierstrass(result, p1, p2, ctx);
++		break;
++	case MPI_EC_MONTGOMERY:
++		add_points_montgomery(result, p1, p2, ctx);
++		break;
++	case MPI_EC_EDWARDS:
++		add_points_edwards(result, p1, p2, ctx);
++		break;
++	}
++}
++EXPORT_SYMBOL_GPL(mpi_ec_add_points);
++
++/* Scalar point multiplication - the main function for ECC.  If takes
++ * an integer SCALAR and a POINT as well as the usual context CTX.
++ * RESULT will be set to the resulting point.
++ */
++void mpi_ec_mul_point(MPI_POINT result,
++			MPI scalar, MPI_POINT point,
++			struct mpi_ec_ctx *ctx)
++{
++	MPI x1, y1, z1, k, h, yy;
++	unsigned int i, loops;
++	struct gcry_mpi_point p1, p2, p1inv;
++
++	if (ctx->model == MPI_EC_EDWARDS) {
++		/* Simple left to right binary method.  Algorithm 3.27 from
++		 * {author={Hankerson, Darrel and Menezes, Alfred J. and Vanstone, Scott},
++		 *  title = {Guide to Elliptic Curve Cryptography},
++		 *  year = {2003}, isbn = {038795273X},
++		 *  url = {http://www.cacr.math.uwaterloo.ca/ecc/},
++		 *  publisher = {Springer-Verlag New York, Inc.}}
++		 */
++		unsigned int nbits;
++		int j;
++
++		if (mpi_cmp(scalar, ctx->p) >= 0)
++			nbits = mpi_get_nbits(scalar);
++		else
++			nbits = mpi_get_nbits(ctx->p);
++
++		mpi_set_ui(result->x, 0);
++		mpi_set_ui(result->y, 1);
++		mpi_set_ui(result->z, 1);
++		point_resize(point, ctx);
++
++		point_resize(result, ctx);
++		point_resize(point, ctx);
++
++		for (j = nbits-1; j >= 0; j--) {
++			mpi_ec_dup_point(result, result, ctx);
++			if (mpi_test_bit(scalar, j))
++				mpi_ec_add_points(result, result, point, ctx);
 +		}
-+		if (buffer) {
-+			unsigned char *s = buffer;
++		return;
++	} else if (ctx->model == MPI_EC_MONTGOMERY) {
++		unsigned int nbits;
++		int j;
++		struct gcry_mpi_point p1_, p2_;
++		MPI_POINT q1, q2, prd, sum;
++		unsigned long sw;
++		mpi_size_t rsize;
 +
-+			if (extra == 1)
-+				*s++ = 0;
-+			else if (extra)
-+				*s++ = 0xff;
-+			memcpy(s, tmp, n-!!extra);
-+		}
-+		kfree(tmp);
-+		*nwritten = n;
-+		return 0;
-+	} else if (format == GCRYMPI_FMT_USG) {
-+		unsigned int n = (nbits + 7)/8;
-+
-+		/* Note:  We ignore the sign for this format.  */
-+		/* FIXME: for performance reasons we should put this into
-+		 * mpi_aprint because we can then use the buffer directly.
++		/* Compute scalar point multiplication with Montgomery Ladder.
++		 * Note that we don't use Y-coordinate in the points at all.
++		 * RESULT->Y will be filled by zero.
 +		 */
 +
-+		if (buffer && n > len)
-+			return -E2BIG;
-+		if (buffer) {
-+			unsigned char *tmp;
++		nbits = mpi_get_nbits(scalar);
++		point_init(&p1);
++		point_init(&p2);
++		point_init(&p1_);
++		point_init(&p2_);
++		mpi_set_ui(p1.x, 1);
++		mpi_free(p2.x);
++		p2.x = mpi_copy(point->x);
++		mpi_set_ui(p2.z, 1);
 +
-+			tmp = mpi_get_buffer(a, &n, NULL);
-+			if (!tmp)
-+				return -EINVAL;
-+			memcpy(buffer, tmp, n);
-+			kfree(tmp);
-+		}
-+		*nwritten = n;
-+		return 0;
-+	} else if (format == GCRYMPI_FMT_PGP) {
-+		unsigned int n = (nbits + 7)/8;
++		point_resize(&p1, ctx);
++		point_resize(&p2, ctx);
++		point_resize(&p1_, ctx);
++		point_resize(&p2_, ctx);
 +
-+		/* The PGP format can only handle unsigned integers.  */
-+		if (negative)
-+			return -EINVAL;
++		mpi_resize(point->x, ctx->p->nlimbs);
++		point->x->nlimbs = ctx->p->nlimbs;
 +
-+		if (buffer && n+2 > len)
-+			return -E2BIG;
++		q1 = &p1;
++		q2 = &p2;
++		prd = &p1_;
++		sum = &p2_;
 +
-+		if (buffer) {
-+			unsigned char *tmp;
-+			unsigned char *s = buffer;
-+
-+			s[0] = nbits >> 8;
-+			s[1] = nbits;
-+
-+			tmp = mpi_get_buffer(a, &n, NULL);
-+			if (!tmp)
-+				return -EINVAL;
-+			memcpy(s+2, tmp, n);
-+			kfree(tmp);
-+		}
-+		*nwritten = n+2;
-+		return 0;
-+	} else if (format == GCRYMPI_FMT_SSH) {
-+		unsigned char *tmp;
-+		int extra = 0;
-+		unsigned int n;
-+
-+		tmp = mpi_get_buffer(a, &n, NULL);
-+		if (!tmp)
-+			return -EINVAL;
-+
-+		if (negative) {
-+			twocompl(tmp, n);
-+			if (!(*tmp & 0x80)) {
-+				/* Need to extend the sign.  */
-+				n++;
-+				extra = 2;
-+			}
-+		} else if (n && (*tmp & 0x80)) {
-+			n++;
-+			extra = 1;
++		for (j = nbits-1; j >= 0; j--) {
++			sw = mpi_test_bit(scalar, j);
++			point_swap_cond(q1, q2, sw, ctx);
++			montgomery_ladder(prd, sum, q1, q2, point->x, ctx);
++			point_swap_cond(prd, sum, sw, ctx);
++			swap(q1, prd);
++			swap(q2, sum);
 +		}
 +
-+		if (buffer && n+4 > len) {
-+			kfree(tmp);
-+			return -E2BIG;
-+		}
++		mpi_clear(result->y);
++		sw = (nbits & 1);
++		point_swap_cond(&p1, &p1_, sw, ctx);
 +
-+		if (buffer) {
-+			unsigned char *s = buffer;
-+
-+			*s++ = n >> 24;
-+			*s++ = n >> 16;
-+			*s++ = n >> 8;
-+			*s++ = n;
-+			if (extra == 1)
-+				*s++ = 0;
-+			else if (extra)
-+				*s++ = 0xff;
-+			memcpy(s, tmp, n-!!extra);
-+		}
-+		kfree(tmp);
-+		*nwritten = 4+n;
-+		return 0;
-+	} else if (format == GCRYMPI_FMT_HEX) {
-+		unsigned char *tmp;
-+		int i;
-+		int extra = 0;
-+		unsigned int n = 0;
-+
-+		tmp = mpi_get_buffer(a, &n, NULL);
-+		if (!tmp)
-+			return -EINVAL;
-+		if (!n || (*tmp & 0x80))
-+			extra = 2;
-+
-+		if (buffer && 2*n + extra + negative + 1 > len) {
-+			kfree(tmp);
-+			return -E2BIG;
-+		}
-+		if (buffer) {
-+			unsigned char *s = buffer;
-+
-+			if (negative)
-+				*s++ = '-';
-+			if (extra) {
-+				*s++ = '0';
-+				*s++ = '0';
-+			}
-+
-+			for (i = 0; i < n; i++) {
-+				unsigned int c = tmp[i];
-+
-+				*s++ = (c >> 4) < 10 ? '0'+(c>>4) : 'A'+(c>>4)-10;
-+				c &= 15;
-+				*s++ = c < 10 ? '0'+c : 'A'+c-10;
-+			}
-+			*s++ = 0;
-+			*nwritten = s - buffer;
++		rsize = p1.z->nlimbs;
++		MPN_NORMALIZE(p1.z->d, rsize);
++		if (rsize == 0) {
++			mpi_set_ui(result->x, 1);
++			mpi_set_ui(result->z, 0);
 +		} else {
-+			*nwritten = 2*n + extra + negative + 1;
++			z1 = mpi_new(0);
++			ec_invm(z1, p1.z, ctx);
++			ec_mulm(result->x, p1.x, z1, ctx);
++			mpi_set_ui(result->z, 1);
++			mpi_free(z1);
 +		}
-+		kfree(tmp);
-+		return 0;
-+	} else
-+		return -EINVAL;
-+}
-+EXPORT_SYMBOL_GPL(mpi_print);
-diff --git a/lib/crypto/mpi/mpih-mul.c b/lib/crypto/mpi/mpih-mul.c
-index a93647564054..e5f1c84e3c48 100644
---- a/lib/crypto/mpi/mpih-mul.c
-+++ b/lib/crypto/mpi/mpih-mul.c
-@@ -317,6 +317,31 @@ mpih_sqr_n(mpi_ptr_t prodp, mpi_ptr_t up, mpi_size_t size, mpi_ptr_t tspace)
- 	}
- }
- 
 +
-+void mpihelp_mul_n(mpi_ptr_t prodp,
-+		mpi_ptr_t up, mpi_ptr_t vp, mpi_size_t size)
-+{
-+	if (up == vp) {
-+		if (size < KARATSUBA_THRESHOLD)
-+			mpih_sqr_n_basecase(prodp, up, size);
-+		else {
-+			mpi_ptr_t tspace;
-+			tspace = mpi_alloc_limb_space(2 * size);
-+			mpih_sqr_n(prodp, up, size, tspace);
-+			mpi_free_limb_space(tspace);
-+		}
++		point_free(&p1);
++		point_free(&p2);
++		point_free(&p1_);
++		point_free(&p2_);
++		return;
++	}
++
++	x1 = mpi_alloc_like(ctx->p);
++	y1 = mpi_alloc_like(ctx->p);
++	h  = mpi_alloc_like(ctx->p);
++	k  = mpi_copy(scalar);
++	yy = mpi_copy(point->y);
++
++	if (mpi_has_sign(k)) {
++		k->sign = 0;
++		ec_invm(yy, yy, ctx);
++	}
++
++	if (!mpi_cmp_ui(point->z, 1)) {
++		mpi_set(x1, point->x);
++		mpi_set(y1, yy);
 +	} else {
-+		if (size < KARATSUBA_THRESHOLD)
-+			mul_n_basecase(prodp, up, vp, size);
-+		else {
-+			mpi_ptr_t tspace;
-+			tspace = mpi_alloc_limb_space(2 * size);
-+			mul_n(prodp, up, vp, size, tspace);
-+			mpi_free_limb_space(tspace);
++		MPI z2, z3;
++
++		z2 = mpi_alloc_like(ctx->p);
++		z3 = mpi_alloc_like(ctx->p);
++		ec_mulm(z2, point->z, point->z, ctx);
++		ec_mulm(z3, point->z, z2, ctx);
++		ec_invm(z2, z2, ctx);
++		ec_mulm(x1, point->x, z2, ctx);
++		ec_invm(z3, z3, ctx);
++		ec_mulm(y1, yy, z3, ctx);
++		mpi_free(z2);
++		mpi_free(z3);
++	}
++	z1 = mpi_copy(mpi_const(MPI_C_ONE));
++
++	mpi_mul(h, k, mpi_const(MPI_C_THREE)); /* h = 3k */
++	loops = mpi_get_nbits(h);
++	if (loops < 2) {
++		/* If SCALAR is zero, the above mpi_mul sets H to zero and thus
++		 * LOOPs will be zero.  To avoid an underflow of I in the main
++		 * loop we set LOOP to 2 and the result to (0,0,0).
++		 */
++		loops = 2;
++		mpi_clear(result->x);
++		mpi_clear(result->y);
++		mpi_clear(result->z);
++	} else {
++		mpi_set(result->x, point->x);
++		mpi_set(result->y, yy);
++		mpi_set(result->z, point->z);
++	}
++	mpi_free(yy); yy = NULL;
++
++	p1.x = x1; x1 = NULL;
++	p1.y = y1; y1 = NULL;
++	p1.z = z1; z1 = NULL;
++	point_init(&p2);
++	point_init(&p1inv);
++
++	/* Invert point: y = p - y mod p  */
++	point_set(&p1inv, &p1);
++	ec_subm(p1inv.y, ctx->p, p1inv.y, ctx);
++
++	for (i = loops-2; i > 0; i--) {
++		mpi_ec_dup_point(result, result, ctx);
++		if (mpi_test_bit(h, i) == 1 && mpi_test_bit(k, i) == 0) {
++			point_set(&p2, result);
++			mpi_ec_add_points(result, &p2, &p1, ctx);
++		}
++		if (mpi_test_bit(h, i) == 0 && mpi_test_bit(k, i) == 1) {
++			point_set(&p2, result);
++			mpi_ec_add_points(result, &p2, &p1inv, ctx);
 +		}
 +	}
++
++	point_free(&p1);
++	point_free(&p2);
++	point_free(&p1inv);
++	mpi_free(h);
++	mpi_free(k);
 +}
++EXPORT_SYMBOL_GPL(mpi_ec_mul_point);
 +
- int
- mpihelp_mul_karatsuba_case(mpi_ptr_t prodp,
- 			   mpi_ptr_t up, mpi_size_t usize,
-diff --git a/lib/crypto/mpi/mpiutil.c b/lib/crypto/mpi/mpiutil.c
-index 979ece5a81d2..c8ab00f6f4f4 100644
---- a/lib/crypto/mpi/mpiutil.c
-+++ b/lib/crypto/mpi/mpiutil.c
-@@ -20,6 +20,63 @@
- 
- #include "mpi-internal.h"
- 
-+/* Constants allocated right away at startup.  */
-+static MPI constants[MPI_NUMBER_OF_CONSTANTS];
-+
-+/* Initialize the MPI subsystem.  This is called early and allows to
-+ * do some initialization without taking care of threading issues.
-+ */
-+static int __init mpi_init(void)
++/* Return true if POINT is on the curve described by CTX.  */
++int mpi_ec_curve_point(MPI_POINT point, struct mpi_ec_ctx *ctx)
 +{
-+	int idx;
-+	unsigned long value;
++	int res = 0;
++	MPI x, y, w;
 +
-+	for (idx = 0; idx < MPI_NUMBER_OF_CONSTANTS; idx++) {
-+		switch (idx) {
-+		case MPI_C_ZERO:
-+			value = 0;
-+			break;
-+		case MPI_C_ONE:
-+			value = 1;
-+			break;
-+		case MPI_C_TWO:
-+			value = 2;
-+			break;
-+		case MPI_C_THREE:
-+			value = 3;
-+			break;
-+		case MPI_C_FOUR:
-+			value = 4;
-+			break;
-+		case MPI_C_EIGHT:
-+			value = 8;
-+			break;
-+		default:
-+			pr_err("MPI: invalid mpi_const selector %d\n", idx);
-+			return -EFAULT;
-+		}
-+		constants[idx] = mpi_alloc_set_ui(value);
-+		constants[idx]->flags = (16|32);
-+	}
++	x = mpi_new(0);
++	y = mpi_new(0);
++	w = mpi_new(0);
 +
-+	return 0;
-+}
-+postcore_initcall(mpi_init);
-+
-+/* Return a constant MPI descripbed by NO which is one of the
-+ * MPI_C_xxx macros.  There is no need to copy this returned value; it
-+ * may be used directly.
-+ */
-+MPI mpi_const(enum gcry_mpi_constants no)
-+{
-+	if ((int)no < 0 || no > MPI_NUMBER_OF_CONSTANTS)
-+		pr_err("MPI: invalid mpi_const selector %d\n", no);
-+	if (!constants[no])
-+		pr_err("MPI: MPI subsystem not initialized\n");
-+	return constants[no];
-+}
-+EXPORT_SYMBOL_GPL(mpi_const);
-+
- /****************
-  * Note:  It was a bad idea to use the number of limbs to allocate
-  *	  because on a alpha the limbs are large but we normally need
-@@ -106,6 +163,15 @@ int mpi_resize(MPI a, unsigned nlimbs)
- 	return 0;
- }
- 
-+void mpi_clear(MPI a)
-+{
-+	if (!a)
-+		return;
-+	a->nlimbs = 0;
-+	a->flags = 0;
-+}
-+EXPORT_SYMBOL_GPL(mpi_clear);
-+
- void mpi_free(MPI a)
- {
- 	if (!a)
-@@ -146,5 +212,121 @@ MPI mpi_copy(MPI a)
- 	return b;
- }
- 
-+/****************
-+ * This function allocates an MPI which is optimized to hold
-+ * a value as large as the one given in the argument and allocates it
-+ * with the same flags as A.
-+ */
-+MPI mpi_alloc_like(MPI a)
-+{
-+	MPI b;
-+
-+	if (a) {
-+		b = mpi_alloc(a->nlimbs);
-+		b->nlimbs = 0;
-+		b->sign = 0;
-+		b->flags = a->flags;
-+	} else
-+		b = NULL;
-+
-+	return b;
-+}
-+
-+
-+/* Set U into W and release U.  If W is NULL only U will be released. */
-+void mpi_snatch(MPI w, MPI u)
-+{
-+	if (w) {
-+		mpi_assign_limb_space(w, u->d, u->alloced);
-+		w->nlimbs = u->nlimbs;
-+		w->sign   = u->sign;
-+		w->flags  = u->flags;
-+		u->alloced = 0;
-+		u->nlimbs = 0;
-+		u->d = NULL;
-+	}
-+	mpi_free(u);
-+}
-+
-+
-+MPI mpi_set(MPI w, MPI u)
-+{
-+	mpi_ptr_t wp, up;
-+	mpi_size_t usize = u->nlimbs;
-+	int usign = u->sign;
-+
-+	if (!w)
-+		w = mpi_alloc(mpi_get_nlimbs(u));
-+	RESIZE_IF_NEEDED(w, usize);
-+	wp = w->d;
-+	up = u->d;
-+	MPN_COPY(wp, up, usize);
-+	w->nlimbs = usize;
-+	w->flags = u->flags;
-+	w->flags &= ~(16|32); /* Reset the immutable and constant flags.  */
-+	w->sign = usign;
-+	return w;
-+}
-+EXPORT_SYMBOL_GPL(mpi_set);
-+
-+MPI mpi_set_ui(MPI w, unsigned long u)
-+{
-+	if (!w)
-+		w = mpi_alloc(1);
-+	/* FIXME: If U is 0 we have no need to resize and thus possible
-+	 * allocating the limbs.
++	/* Check that the point is in range.  This needs to be done here and
++	 * not after conversion to affine coordinates.
 +	 */
-+	RESIZE_IF_NEEDED(w, 1);
-+	w->d[0] = u;
-+	w->nlimbs = u ? 1 : 0;
-+	w->sign = 0;
-+	w->flags = 0;
-+	return w;
-+}
-+EXPORT_SYMBOL_GPL(mpi_set_ui);
++	if (mpi_cmpabs(point->x, ctx->p) >= 0)
++		goto leave;
++	if (mpi_cmpabs(point->y, ctx->p) >= 0)
++		goto leave;
++	if (mpi_cmpabs(point->z, ctx->p) >= 0)
++		goto leave;
 +
-+MPI mpi_alloc_set_ui(unsigned long u)
-+{
-+	MPI w = mpi_alloc(1);
-+	w->d[0] = u;
-+	w->nlimbs = u ? 1 : 0;
-+	w->sign = 0;
-+	return w;
-+}
++	switch (ctx->model) {
++	case MPI_EC_WEIERSTRASS:
++		{
++			MPI xxx;
 +
-+/****************
-+ * Swap the value of A and B, when SWAP is 1.
-+ * Leave the value when SWAP is 0.
-+ * This implementation should be constant-time regardless of SWAP.
-+ */
-+void mpi_swap_cond(MPI a, MPI b, unsigned long swap)
-+{
-+	mpi_size_t i;
-+	mpi_size_t nlimbs;
-+	mpi_limb_t mask = ((mpi_limb_t)0) - swap;
-+	mpi_limb_t x;
++			if (mpi_ec_get_affine(x, y, point, ctx))
++				goto leave;
 +
-+	if (a->alloced > b->alloced)
-+		nlimbs = b->alloced;
-+	else
-+		nlimbs = a->alloced;
-+	if (a->nlimbs > nlimbs || b->nlimbs > nlimbs)
-+		return;
++			xxx = mpi_new(0);
 +
-+	for (i = 0; i < nlimbs; i++) {
-+		x = mask & (a->d[i] ^ b->d[i]);
-+		a->d[i] = a->d[i] ^ x;
-+		b->d[i] = b->d[i] ^ x;
++			/* y^2 == x^3 + a·x + b */
++			ec_pow2(y, y, ctx);
++
++			ec_pow3(xxx, x, ctx);
++			ec_mulm(w, ctx->a, x, ctx);
++			ec_addm(w, w, ctx->b, ctx);
++			ec_addm(w, w, xxx, ctx);
++
++			if (!mpi_cmp(y, w))
++				res = 1;
++
++			mpi_free(xxx);
++		}
++		break;
++
++	case MPI_EC_MONTGOMERY:
++		{
++#define xx y
++			/* With Montgomery curve, only X-coordinate is valid. */
++			if (mpi_ec_get_affine(x, NULL, point, ctx))
++				goto leave;
++
++			/* The equation is: b * y^2 == x^3 + a · x^2 + x */
++			/* We check if right hand is quadratic residue or not by
++			 * Euler's criterion.
++			 */
++			/* CTX->A has (a-2)/4 and CTX->B has b^-1 */
++			ec_mulm(w, ctx->a, mpi_const(MPI_C_FOUR), ctx);
++			ec_addm(w, w, mpi_const(MPI_C_TWO), ctx);
++			ec_mulm(w, w, x, ctx);
++			ec_pow2(xx, x, ctx);
++			ec_addm(w, w, xx, ctx);
++			ec_addm(w, w, mpi_const(MPI_C_ONE), ctx);
++			ec_mulm(w, w, x, ctx);
++			ec_mulm(w, w, ctx->b, ctx);
++#undef xx
++			/* Compute Euler's criterion: w^(p-1)/2 */
++#define p_minus1 y
++			ec_subm(p_minus1, ctx->p, mpi_const(MPI_C_ONE), ctx);
++			mpi_rshift(p_minus1, p_minus1, 1);
++			ec_powm(w, w, p_minus1, ctx);
++
++			res = !mpi_cmp_ui(w, 1);
++#undef p_minus1
++		}
++		break;
++
++	case MPI_EC_EDWARDS:
++		{
++			if (mpi_ec_get_affine(x, y, point, ctx))
++				goto leave;
++
++			mpi_resize(w, ctx->p->nlimbs);
++			w->nlimbs = ctx->p->nlimbs;
++
++			/* a · x^2 + y^2 - 1 - b · x^2 · y^2 == 0 */
++			ctx->pow2(x, x, ctx);
++			ctx->pow2(y, y, ctx);
++			if (ctx->dialect == ECC_DIALECT_ED25519)
++				ctx->subm(w, ctx->p, x, ctx);
++			else
++				ctx->mulm(w, ctx->a, x, ctx);
++			ctx->addm(w, w, y, ctx);
++			ctx->mulm(x, x, y, ctx);
++			ctx->mulm(x, x, ctx->b, ctx);
++			ctx->subm(w, w, x, ctx);
++			if (!mpi_cmp_ui(w, 1))
++				res = 1;
++		}
++		break;
 +	}
 +
-+	x = mask & (a->nlimbs ^ b->nlimbs);
-+	a->nlimbs = a->nlimbs ^ x;
-+	b->nlimbs = b->nlimbs ^ x;
++leave:
++	mpi_free(w);
++	mpi_free(x);
++	mpi_free(y);
 +
-+	x = mask & (a->sign ^ b->sign);
-+	a->sign = a->sign ^ x;
-+	b->sign = b->sign ^ x;
++	return res;
 +}
-+
- MODULE_DESCRIPTION("Multiprecision maths library");
- MODULE_LICENSE("GPL");
++EXPORT_SYMBOL_GPL(mpi_ec_curve_point);
 -- 
 2.25.1
 
