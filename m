@@ -1,131 +1,115 @@
-Return-Path: <keyrings+bounces-2870-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2872-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2294AED318
-	for <lists+keyrings@lfdr.de>; Mon, 30 Jun 2025 05:49:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A09AAEDF08
+	for <lists+keyrings@lfdr.de>; Mon, 30 Jun 2025 15:28:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF236188C127
-	for <lists+keyrings@lfdr.de>; Mon, 30 Jun 2025 03:49:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17DDC161FE7
+	for <lists+keyrings@lfdr.de>; Mon, 30 Jun 2025 13:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C51199FB2;
-	Mon, 30 Jun 2025 03:49:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jvlrBwED"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0B928B7D0;
+	Mon, 30 Jun 2025 13:27:39 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F175194A44;
-	Mon, 30 Jun 2025 03:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA6E28B3E8;
+	Mon, 30 Jun 2025 13:27:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751255348; cv=none; b=T7QHycx2x3KXfRmwqjQOVK0ekevqZ7IEY7SAixgr/9EC3VeveI28E9qm3WdmsfukPI8izZVv1uhROLQ1z2kTY/Di0lQkma2rG52xeIobfkfktyxHx5tc3J3FHIPwaKyGEXg2AhIuJ4+8fGo/7UP0esD0Q6qc3JRRj0Kki5P0/cA=
+	t=1751290059; cv=none; b=dljtetFcyFCD4FSOA98ii6/Novu/Dfnb8rh5aCCxHU14H4PcYT3y/ES2oQ6081xfR3UZBMZ2/fTvDx3XZ7HXvvUgd32pJg2L1k6TjAHhfIvqV+1SksC+d8NYW1HOyc85k6/4DjTMfefS9NjugBKur13Zdy6rgtWqNS/Vw17WqRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751255348; c=relaxed/simple;
-	bh=QPyADK9zPp0ngvuNL56VT5gNsd2clYF5WbJ46q3uXaA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UsP/uUY/OjGjUPGOWr98bU2TXCAEVuXZEk9VT3tLtPR2N9pTaW2YpZL1/kAUOgeAmpFA4KIcrAvdCLYNdE6d6hC/cYyvhIkVwbXOCxkKaaruyYOFkL0HspYkeEWK/HjpHdvRPoJfNOhv2UPACN0gedxsw1DWbf1oMw0beii4sQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jvlrBwED; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1751255346; x=1782791346;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=QPyADK9zPp0ngvuNL56VT5gNsd2clYF5WbJ46q3uXaA=;
-  b=jvlrBwEDABjfnDySfFpwDzRE7FkRo71yuLzBmtKfC3HyVWAZhcFkWlyt
-   N7dsjx5RAF0btPtSBIfYwPTFS4JTWBL07ac5ejo2UK8L9CQzrWs4sO6/M
-   CV/WmuDxAi1T/wqM7pJP1yGC8DxuLuU5fMKcyQAfJV4IBlTxg6W5SsnXl
-   yu48PeGnqpALp+R6Ufeee6WIIJAkxJolKdJYQRdzi39+YDB27/ep07189
-   1TPV1MzxqYVujbWeUCSmxB4LeGRu0nQyP6BtbFXLiooZHmMraKIoDHG4u
-   f6ESqyVRCrCvz5OmKvvImArICiDAIdGI1exro3MwcgeCpKEWAt9OJzcZn
-   A==;
-X-CSE-ConnectionGUID: +uMWrFreTHWI/3n/lD9IUQ==
-X-CSE-MsgGUID: wrWGeLEgROGGwNjWF1JxMg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11479"; a="53412535"
-X-IronPort-AV: E=Sophos;i="6.16,276,1744095600"; 
-   d="scan'208";a="53412535"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jun 2025 20:49:05 -0700
-X-CSE-ConnectionGUID: KQUAA6GzTP+FamccfauLqQ==
-X-CSE-MsgGUID: q8TfAvgnTNqN40i//1jc3w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,276,1744095600"; 
-   d="scan'208";a="154049717"
-Received: from lkp-server01.sh.intel.com (HELO e8142ee1dce2) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 29 Jun 2025 20:49:00 -0700
-Received: from kbuild by e8142ee1dce2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uW5Vq-000YRG-1Z;
-	Mon, 30 Jun 2025 03:48:58 +0000
-Date: Mon, 30 Jun 2025 11:48:49 +0800
-From: kernel test robot <lkp@intel.com>
-To: GONG Ruiqi <gongruiqi1@huawei.com>, Mimi Zohar <zohar@linux.ibm.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: oe-kbuild-all@lists.linux.dev, Eric Snowberg <eric.snowberg@oracle.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, "Lee, Chun-Yi" <jlee@suse.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	linux-s390@vger.kernel.org, linux-integrity@vger.kernel.org,
-	keyrings@vger.kernel.org, Lu Jialin <lujialin4@huawei.com>,
-	gongruiqi1@huawei.com
-Subject: Re: [PATCH v2] integrity: Extract secure boot enquiry function out
- of IMA
-Message-ID: <202506301150.yT6MxuHD-lkp@intel.com>
-References: <20250628063251.321370-1-gongruiqi1@huawei.com>
+	s=arc-20240116; t=1751290059; c=relaxed/simple;
+	bh=QWnJbWXPx0iuO3c6M0Re7/89e5BJvtjLRSQgMPj/IsM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dFz0Y1VCrddq5hFoVx8t2ypKuw+SYokxIIJM6jPt7P2JplGRjjnZppagBcK/fnkPv2slohY+epNQ9FUkNq+ZP9EJQxBqKHnvsvZU3RHIUIhvN+BeOWahQg2ZEOEqVJ02F60gM0FAp7ItjKMNkwqjEktYC14ei8E/euOkWy2+JFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4bW6L95Wqlzdb8p;
+	Mon, 30 Jun 2025 21:23:29 +0800 (CST)
+Received: from kwepemh100007.china.huawei.com (unknown [7.202.181.92])
+	by mail.maildlp.com (Postfix) with ESMTPS id D451A140156;
+	Mon, 30 Jun 2025 21:27:29 +0800 (CST)
+Received: from huawei.com (10.67.174.33) by kwepemh100007.china.huawei.com
+ (7.202.181.92) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 30 Jun
+ 2025 21:27:28 +0800
+From: Gu Bowen <gubowen5@huawei.com>
+To: Herbert Xu <herbert@gondor.apana.org.au>, David Howells
+	<dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Lukas Wunner
+	<lukas@wunner.de>, Ignat Korchagin <ignat@cloudflare.com>, "David S . Miller"
+	<davem@davemloft.net>, Jarkko Sakkinen <jarkko@kernel.org>, Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Eric Biggers <ebiggers@kernel.org>, "Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>, Tianjia Zhang
+	<tianjia.zhang@linux.alibaba.com>, Dan Carpenter <dan.carpenter@linaro.org>
+CC: <keyrings@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-crypto@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+	<linux-arm-kernel@lists.infradead.org>, Lu Jialin <lujialin4@huawei.com>,
+	GONG Ruiqi <gongruiqi1@huawei.com>, Gu Bowen <gubowen5@huawei.com>
+Subject: [PATCH RFC 0/4] Reintroduce the sm2 algorithm
+Date: Mon, 30 Jun 2025 21:39:30 +0800
+Message-ID: <20250630133934.766646-1-gubowen5@huawei.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250628063251.321370-1-gongruiqi1@huawei.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemh100007.china.huawei.com (7.202.181.92)
 
-Hi GONG,
+To reintroduce the sm2 algorithm, the patch set did the following:
+ - Reintroduce the mpi library based on libgcrypt.
+ - Reintroduce ec implementation to MPI library.
+ - Rework sm2 algorithm.
+ - Support verification of X.509 certificates.
 
-kernel test robot noticed the following build errors:
+Gu Bowen (4):
+  Revert "Revert "lib/mpi: Extend the MPI library""
+  Revert "Revert "lib/mpi: Introduce ec implementation to MPI library""
+  crypto/sm2: Rework sm2 alg with sig_alg backend
+  crypto/sm2: support SM2-with-SM3 verification of X.509 certificates
 
-[auto build test ERROR on zohar-integrity/next-integrity]
-[also build test ERROR on powerpc/next powerpc/fixes s390/features linus/master v6.16-rc4 next-20250627]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/GONG-Ruiqi/integrity-Extract-secure-boot-enquiry-function-out-of-IMA/20250628-142236
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/zohar/linux-integrity.git next-integrity
-patch link:    https://lore.kernel.org/r/20250628063251.321370-1-gongruiqi1%40huawei.com
-patch subject: [PATCH v2] integrity: Extract secure boot enquiry function out of IMA
-config: x86_64-randconfig-102-20250630 (https://download.01.org/0day-ci/archive/20250630/202506301150.yT6MxuHD-lkp@intel.com/config)
-compiler: clang version 20.1.7 (https://github.com/llvm/llvm-project 6146a88f60492b520a36f8f8f3231e15f3cc6082)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250630/202506301150.yT6MxuHD-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202506301150.yT6MxuHD-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> ld.lld: error: undefined symbol: arch_integrity_get_secureboot
-   >>> referenced by ima_main.c:922 (security/integrity/ima/ima_main.c:922)
-   >>>               vmlinux.o:(ima_load_data)
+ certs/system_keyring.c                   |    8 +
+ crypto/Kconfig                           |   18 +
+ crypto/Makefile                          |    8 +
+ crypto/asymmetric_keys/public_key.c      |    7 +
+ crypto/asymmetric_keys/x509_public_key.c |   27 +-
+ crypto/sm2.c                             |  492 +++++++
+ crypto/sm2signature.asn1                 |    4 +
+ crypto/testmgr.c                         |    6 +
+ crypto/testmgr.h                         |   57 +
+ include/crypto/sm2.h                     |   31 +
+ include/keys/system_keyring.h            |   13 +
+ include/linux/mpi.h                      |  170 +++
+ lib/crypto/mpi/Makefile                  |    2 +
+ lib/crypto/mpi/ec.c                      | 1507 ++++++++++++++++++++++
+ lib/crypto/mpi/mpi-add.c                 |   50 +
+ lib/crypto/mpi/mpi-bit.c                 |  143 ++
+ lib/crypto/mpi/mpi-cmp.c                 |   46 +-
+ lib/crypto/mpi/mpi-div.c                 |   29 +
+ lib/crypto/mpi/mpi-internal.h            |   10 +
+ lib/crypto/mpi/mpi-inv.c                 |  143 ++
+ lib/crypto/mpi/mpi-mod.c                 |  144 +++
+ lib/crypto/mpi/mpicoder.c                |  336 +++++
+ lib/crypto/mpi/mpih-mul.c                |   25 +
+ lib/crypto/mpi/mpiutil.c                 |  182 +++
+ 24 files changed, 3447 insertions(+), 11 deletions(-)
+ create mode 100644 crypto/sm2.c
+ create mode 100644 crypto/sm2signature.asn1
+ create mode 100644 include/crypto/sm2.h
+ create mode 100644 lib/crypto/mpi/ec.c
+ create mode 100644 lib/crypto/mpi/mpi-inv.c
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.25.1
+
 
