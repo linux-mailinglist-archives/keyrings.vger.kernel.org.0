@@ -1,102 +1,95 @@
-Return-Path: <keyrings+bounces-2879-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2880-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD94CAEEB3F
-	for <lists+keyrings@lfdr.de>; Tue,  1 Jul 2025 02:26:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC883AEED17
+	for <lists+keyrings@lfdr.de>; Tue,  1 Jul 2025 05:49:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE06F17EC31
-	for <lists+keyrings@lfdr.de>; Tue,  1 Jul 2025 00:26:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA9547A4D70
+	for <lists+keyrings@lfdr.de>; Tue,  1 Jul 2025 03:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE8072631;
-	Tue,  1 Jul 2025 00:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S2y/R0/v"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D8F153598;
+	Tue,  1 Jul 2025 03:49:32 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6C242AAF;
-	Tue,  1 Jul 2025 00:26:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7091E502;
+	Tue,  1 Jul 2025 03:49:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751329614; cv=none; b=u7MCVUSwcSEH1Hk+Q6mineQ4OQsp57vMLCm2b12RLzkGWYXtXiqnYRf2ZUNidAdmAw+VNs9gusNo1ZimadzyEEmm3cNU05HBUb6zFOvYg0gD8KsBt0qA1m5VeSXS56GrwAdU5hXKhn4Gt3EIRUFllaclN0HlxQ/MFqWBGUVDtGU=
+	t=1751341772; cv=none; b=S6rWHolipSzWYUzMErI5nL2V8Wv8o0feWk2VN/VaCKBab7AO6IqEV2U4ORaQxfr3A48i0QGz9mauGL/IzOmgGyn+2y7zcNkk887hK/489zyjAIlqEdxKNCJC5sNt46ZMzRWBEHVIk5Z6T94E3Co2h37om0sU0NILi/V/KYIP+8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751329614; c=relaxed/simple;
-	bh=Fmumyu8a2ayYdfXQUUkpkpKLNK8JnwjK2FVutXPhFCM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y1PeGZj5G9X3dq5qAKEoC1kyIRxG7PSAx40qIhl7pp5WgR2Zm+Q83HPUsSUGZvs4XwmV0VxzEtIpj0z9b2g1WY/XREdgxjLGoLfU46p5scKQaqnovXfhGEQ2NiwfUYwyUkvff9d1RzrDGEOHTHEwT3IM2/WR6Fp6OJfUJ9lj11o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S2y/R0/v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F18C4CEE3;
-	Tue,  1 Jul 2025 00:26:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751329614;
-	bh=Fmumyu8a2ayYdfXQUUkpkpKLNK8JnwjK2FVutXPhFCM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=S2y/R0/v7OFXpObKUiHDb1PU7VKZwDDBO33VLJdMYUhme3nqJHE6ZvvMNtlCBck59
-	 y0AsvClr5A8LJTMmooSLYZXn8HUQBU63nSKksIVykZez33FjxpR5dl/nw88SjkYv2L
-	 xaURBkHe3f7O9k7YC8htrApA5lwjdfbE7fbQfpP34advhyW1HYulQ3A0w8bQpbgyie
-	 qDHkhJ6CChSO9f1fTL09k4/Eb0MuTV2DJjcIo7TdIDz671kJe0eTwHS7hsNYnhSMu/
-	 wqCVEM2Ik7KAZ2gBcpgDuNyF9kqcLTaNTMNZuGtrqw6JB4X66c7vLaYjvP6yvsFKJU
-	 lDM3CvYYOAbyg==
-Date: Tue, 1 Jul 2025 03:26:50 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-kernel@vger.kernel.org
-Cc: keyrings@vger.kernel.org, Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	"open list:TPM DEVICE DRIVER" <linux-integrity@vger.kernel.org>,
-	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH v3] tpm: Repeal and replace tpm_buf_init*() and
- tpm_buf_destroy()
-Message-ID: <aGMrSqY9mojJrPja@kernel.org>
-References: <20250701001153.769030-1-jarkko@kernel.org>
+	s=arc-20240116; t=1751341772; c=relaxed/simple;
+	bh=WfErUWWO0FHy2yvR45YOitzVe3ayn4SCITWeqCcEojk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Ct3Bcbq9+MofL/dlv25XgMfksyv6lHiIebU4+PaTWZKqJoHVlXYOFl2gWQgUtI8muyYfl/XUCkD+9qH4F6Rt0DgGtU1KOwFNs+YiKTbK1PrspOmhQaZx1uVlLZdNtLb4YXmtr3Rbv5ulag2ww6A4z5TG9/FJbPcgPj1gZ/bDmsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4bWTVQ6gzpz1R8g2;
+	Tue,  1 Jul 2025 11:46:54 +0800 (CST)
+Received: from kwepemh100007.china.huawei.com (unknown [7.202.181.92])
+	by mail.maildlp.com (Postfix) with ESMTPS id 61C87140295;
+	Tue,  1 Jul 2025 11:49:25 +0800 (CST)
+Received: from [10.67.111.31] (10.67.111.31) by kwepemh100007.china.huawei.com
+ (7.202.181.92) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 1 Jul
+ 2025 11:49:24 +0800
+Message-ID: <d612599a-b773-42ca-acfa-67b6867f96e6@huawei.com>
+Date: Tue, 1 Jul 2025 11:49:23 +0800
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250701001153.769030-1-jarkko@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 0/4] Reintroduce the sm2 algorithm
+To: Dan Carpenter <dan.carpenter@linaro.org>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, David Howells
+	<dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Lukas Wunner
+	<lukas@wunner.de>, Ignat Korchagin <ignat@cloudflare.com>, "David S . Miller"
+	<davem@davemloft.net>, Jarkko Sakkinen <jarkko@kernel.org>, Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Eric Biggers <ebiggers@kernel.org>, "Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>, Tianjia Zhang
+	<tianjia.zhang@linux.alibaba.com>, <keyrings@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+	<linux-stm32@st-md-mailman.stormreply.com>,
+	<linux-arm-kernel@lists.infradead.org>, Lu Jialin <lujialin4@huawei.com>,
+	GONG Ruiqi <gongruiqi1@huawei.com>
+References: <20250630133934.766646-1-gubowen5@huawei.com>
+ <0bf20f7e-117c-4495-9805-baade7f466ba@suswa.mountain>
+Content-Language: en-US
+From: Gu Bowen <gubowen5@huawei.com>
+In-Reply-To: <0bf20f7e-117c-4495-9805-baade7f466ba@suswa.mountain>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemh100007.china.huawei.com (7.202.181.92)
 
-On Tue, Jul 01, 2025 at 03:11:51AM +0300, Jarkko Sakkinen wrote:
-> From: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
+Hi,
+
+On 7/1/2025 3:41 AM, Dan Carpenter wrote:
+> On Mon, Jun 30, 2025 at 09:39:30PM +0800, Gu Bowen wrote:
+>> To reintroduce the sm2 algorithm, the patch set did the following:
+>>   - Reintroduce the mpi library based on libgcrypt.
+>>   - Reintroduce ec implementation to MPI library.
+>>   - Rework sm2 algorithm.
+>>   - Support verification of X.509 certificates.
 > 
-> Repeal and replace tpm_buf_init() and tpm_buf_init_sized() with
-> tpm_buf_alloc(), which returns PAGE_SIZE of memory with the struct tpm_buf
-> header in the beginning of the returned buffer. This leaves 4088 bytes of
-> free space for data.
+> Remind me, why did we remove these?
+> 
 
-A minor error: it is now 4090 bytes:
-
-struct tpm_buf {
-	u16 flags;
-	u16 length;
-	u16 handles;
-	u8 data[];
-};
-
-I guess this should be changed into:
-
-struct tpm_buf {
-	u8 flags;
-	u8 handles;
-	u16 length;
-	u8 data[];
-}
-
-It's not strictly necessary given that we are already "above the
-hardware spec" but it neither makes much sense to keep `handles`
-or `flags` 16-bit words with MSB always empty in both of the
-words.
-
-BR, Jarkko
+At first, the process of calculating the digest with the SM2 certificate
+was coupled with the signature verification process, and this 
+unreasonable situation was corrected with commit e5221fa6a355 ("KEYS: 
+asymmetric: Move sm2 code into x509_public_key "). However, this commit 
+also caused SM2 to be unable to verify secondary certificates due to its 
+special implementation. This issue was not resolved, which led to the 
+removal of the sm2 algorithm.
 
