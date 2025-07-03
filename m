@@ -1,198 +1,168 @@
-Return-Path: <keyrings+bounces-2899-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2900-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C149AAF7203
-	for <lists+keyrings@lfdr.de>; Thu,  3 Jul 2025 13:24:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF0EAF74ED
+	for <lists+keyrings@lfdr.de>; Thu,  3 Jul 2025 15:04:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2FBE188978D
-	for <lists+keyrings@lfdr.de>; Thu,  3 Jul 2025 11:24:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9C0E1771C7
+	for <lists+keyrings@lfdr.de>; Thu,  3 Jul 2025 13:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 278E92E3B14;
-	Thu,  3 Jul 2025 11:23:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FLua1SpB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AEC2E3AE0;
+	Thu,  3 Jul 2025 13:04:15 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from gardel.0pointer.net (gardel.0pointer.net [85.214.157.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B082E3AFF;
-	Thu,  3 Jul 2025 11:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A7228D8F1;
+	Thu,  3 Jul 2025 13:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.157.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751541826; cv=none; b=NzjX2yy/VJrWdgzL9/ZApDFFkUl/IAVcrue9sQRKL0arxOGnva85my+fCJakiOYyn42Taz0xNHtnZZacLaWWmD/KfWYkok/qrFDgPR5Yimfw+e0eTAKL9vB+DbhH7jejKRdYbTVcFO9C8/mTUSP9GY1GymZwZuEXqqn93JsEVPU=
+	t=1751547855; cv=none; b=twfLOGDolGpYBaJyZ2iVTAlaqlyAbq6anJcbbVgP1A+SKi/C5/54PhnbwYzn1kjMQnQCDpRn/8hTaR8uA+CLFsAzxfhuucQ7ohXAuGx2nLvKmjvj6U7t/SSkBj4OpQiRvB+0XIkJ4hngwEPAQMy3mhgAeR82CH4iqjnAiHoKBks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751541826; c=relaxed/simple;
-	bh=oLOZlkz4/kMnU9rgSW96ifr6RqN12imGk9bUzWGFcuU=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=NpcKrbmo5Er+pgAUsRmkihASYAJxy5YfQYBQCMmbhRx4u/IvOjp3QiQ8bZI94kzVIY+xuiaEOo5IzXcA2ZzvqvCGEgYRqXJwNPerMijvcKOZwVOvrTCKtic1ndIS2seMpA9h2cilJprtgzKDtoFWoAStk4D0pdUQ+H+c/JLCvsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=FLua1SpB; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 56307CLS009905;
-	Thu, 3 Jul 2025 11:23:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=4emJw4
-	ErehVOKAjtCy8M8j74Pv47NHFVJ+00dCO9c8g=; b=FLua1SpBxBfqAYVTSreT6f
-	SVKfMdpkHUd1jIeU0LcbAKHhzNRLOcVsJQBsmb5LRdrAMu++uvjdI2HXrbbJs1Ix
-	0C5TjBsV7FMJmdDfRvYbSfhtXA0RfkpXPNIe+mtk4TglE0gZC567BGj5b8ahrqEv
-	pzmn4iggUrr79ycaSBCXCOTo2cVggXGCvuhYBA3GKPJj5JjKjovIf9DuOJQ5nwuN
-	oF3ZSRlpl/QV3YzdOBb5jmsl0qT6hpICkUyaejrij0spaBSpezkgZiAx7rYVJ/k8
-	3/nh8FNcF3zr7saIjPiK+rAniGmYYvozsznSZgTkWhvXvt/k5OOjNnv+W/vD3Y2g
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47j5ttk553-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Jul 2025 11:23:26 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 563BHdQd025413;
-	Thu, 3 Jul 2025 11:23:26 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47j5ttk551-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Jul 2025 11:23:26 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 563AmEmC011873;
-	Thu, 3 Jul 2025 11:23:25 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 47jv7n4ex4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 03 Jul 2025 11:23:25 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 563BNOQS28115516
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 3 Jul 2025 11:23:24 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6FB2558043;
-	Thu,  3 Jul 2025 11:23:24 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 18DA858061;
-	Thu,  3 Jul 2025 11:23:23 +0000 (GMT)
-Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.102.16])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  3 Jul 2025 11:23:22 +0000 (GMT)
-Message-ID: <8401c23009db3b8447b0b06710b37b1585a081ab.camel@linux.ibm.com>
-Subject: Re: [PATCH] Revert "integrity: Do not load MOK and MOKx when
- secure boot be disabled"
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Lennart Poettering <mzxreary@0pointer.de>
+	s=arc-20240116; t=1751547855; c=relaxed/simple;
+	bh=1sv+eWZirka/W7c2+072tNVMXGRP+e/3BDtJucLxipU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Em8adUtvuev0FvFZjwZvxqfiGegdf2YYa9dyd8frg8iNSldm96qd4A59EbBmhTbHQ20DALLl9pXxxrL7ztUldJp531rVFhERyhLZP6n5PT9IEbchMKVdWkk4KTIl1/Yw+aMoGR/8/Q2zk6KLWKHpu9StvpBLE9f7q7jk+YTSQ+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0pointer.de; spf=pass smtp.mailfrom=0pointer.de; arc=none smtp.client-ip=85.214.157.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0pointer.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0pointer.de
+Received: from gardel-login.0pointer.net (gardel-mail [85.214.157.71])
+	by gardel.0pointer.net (Postfix) with ESMTP id 9F738E81788;
+	Thu,  3 Jul 2025 15:04:08 +0200 (CEST)
+Received: by gardel-login.0pointer.net (Postfix, from userid 1000)
+	id 38A1616005E; Thu,  3 Jul 2025 15:04:07 +0200 (CEST)
+Date: Thu, 3 Jul 2025 15:04:07 +0200
+From: Lennart Poettering <mzxreary@0pointer.de>
+To: Mimi Zohar <zohar@linux.ibm.com>
 Cc: Jarkko Sakkinen <jarkko@kernel.org>,
-        Roberto Sassu	
- <roberto.sassu@huawei.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        Eric Snowberg <eric.snowberg@oracle.com>,
-        Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn"	 <serge@hallyn.com>, linux-integrity@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "Lee,
- Chun-Yi" <joeyli.kernel@gmail.com>
-In-Reply-To: <aGYurikYK1ManAp3@gardel-login>
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Lee, Chun-Yi" <joeyli.kernel@gmail.com>
+Subject: Re: [PATCH] Revert "integrity: Do not load MOK and MOKx when secure
+ boot be disabled"
+Message-ID: <aGZ_x8Ar6iwzt2zV@gardel-login>
 References: <Z9wDxeRQPhTi1EIS@gardel-login>
-	 <1a6cf2097487816e4b93890ad760f18fe750bd70.camel@linux.ibm.com>
-	 <aGYurikYK1ManAp3@gardel-login>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 03 Jul 2025 07:23:22 -0400
+ <1a6cf2097487816e4b93890ad760f18fe750bd70.camel@linux.ibm.com>
+ <aGYurikYK1ManAp3@gardel-login>
+ <8401c23009db3b8447b0b06710b37b1585a081ab.camel@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: HZ8B1dRlKfYZ0lNGt2l8fRKVvedpbDAT
-X-Authority-Analysis: v=2.4 cv=UtNjN/wB c=1 sm=1 tr=0 ts=6866682e cx=c_pps a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=VnNF1IyMAAAA:8 a=JnBA2F1U-474F7nXX6wA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: d21f4K65zcBRJYncthFVJkaJrlCK98v8
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAzMDA5MyBTYWx0ZWRfXz9kgAsO/VuU/ QlEYHcaC7527+wF/Gjc7B7bcEuYcXOswmwfVT/uppKPb3b9CFXOyBic0T9k07+xPC3VMZ+mc6sz YDiJVF/V4nrlQRssFQZprr1L5WGCaDgMedCc7MyR1l7owP+TGZkaw38zqzL/aLReMzF/NWXDKtT
- BZCiS1RVZj5Lsg+/Azk+y0LJXI/tc8rih+GlkV2K3wyzJgXwNa5lkyFH9BgTFlQXSfIeUgWOOGz jdRK36T9AYAtec1FdZKbw/3QBfGeyunzx8FYz1ko7UOl/DTxXMEJNmGnwDszNxAYibooEZiQn6Y 2FVyjGsN8PFDC9sSKkO/5ihyZeGPE8+sAvVP3SWkNz/SgBs6Ph8sCujQmXUOtsE4ts5o4v4b7DJ
- lMcqHSSOGnqaxDHPTdU9O9Sc93eC9dAq/jPnS+tmAgsUHny+EqwT/K3K6EtP8jRCggNRvxTA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
- definitions=2025-07-03_03,2025-07-02_04,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- priorityscore=1501 phishscore=0 mlxscore=0 spamscore=0 mlxlogscore=999
- adultscore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0 impostorscore=0
- malwarescore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2507030093
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8401c23009db3b8447b0b06710b37b1585a081ab.camel@linux.ibm.com>
 
-On Thu, 2025-07-03 at 09:18 +0200, Lennart Poettering wrote:
-> On Mi, 02.07.25 21:40, Mimi Zohar (zohar@linux.ibm.com) wrote:
->=20
-> > On Thu, 2025-03-20 at 13:02 +0100, Lennart Poettering wrote:
-> > > This reverts commit 92ad19559ea9a8ec6f158480934ae26ebfe2c14f.
-> > >=20
-> > > This original commit this reverts creates a strange situation: it
-> > > ensures more restrictive behaviour if SecureBoot is off then when it
-> > > is on, which is the opposite of what one would expect.
-> > >=20
-> > > Typically, one would expect that if SB is off the validation of
-> > > resources during the pre-kernel and kernel initialization is less
-> > > restrictive, not more restrictive. But this check turned the world on
-> > > its head.
-> >=20
-> > Hi Lennart,
-> >=20
-> > I'm really sorry for the long delay ...
-> >=20
-> > > From an IMA perspective, the default is to only trust keys built into=
- the kernel
-> > or certificates signed by the builtin keys and loaded onto the
-> > .secondary_trusted_keys keyring.
-> >=20
-> > The ability of loading MOK keys onto the .machine keyring and linked to=
- the
-> > .secondary_trusted_keys keyring is an exception based on the assumption=
- that
-> > that there is a secure boot chain of trust.  Allowing untrusted keys on=
-to or
-> > linked to the .secondary_trusted_keys keyring, would potentially allow =
-loading
-> > code signing keys onto the IMA keyring signed by untrusted MOK keys.
-> >=20
-> > I was really hesitant to allow this exception of loading MOK keys onto =
-the
-> > .machine keyring in the first place.  I'm now even more concerned.
-> >=20
-> > This is not just an issue of being more or less restrictive, but of add=
-ing a new
-> > integrity gap when one didn't exist previously.
->=20
-> But we are talking of the case here where SecureBoot is *off*,
+On Do, 03.07.25 07:23, Mimi Zohar (zohar@linux.ibm.com) wrote:
 
-Exactly, so there is no trust in any keys other than those built into the
-kernel. True that is of course dependent on trusting the kernel.  In the ca=
-se of
-MOK, trusting additional keys requires at minimum a "safe" secure boot
-environment and other things to prevent its abuse.
+> > > The ability of loading MOK keys onto the .machine keyring and linked to the
+> > > .secondary_trusted_keys keyring is an exception based on the assumption that
+> > > that there is a secure boot chain of trust.  Allowing untrusted keys onto or
+> > > linked to the .secondary_trusted_keys keyring, would potentially allow loading
+> > > code signing keys onto the IMA keyring signed by untrusted MOK keys.
+> > >
+> > > I was really hesitant to allow this exception of loading MOK keys onto the
+> > > .machine keyring in the first place.  I'm now even more concerned.
+> > >
+> > > This is not just an issue of being more or less restrictive, but of adding a new
+> > > integrity gap when one didn't exist previously.
+> >
+> > But we are talking of the case here where SecureBoot is *off*,
+>
+> Exactly, so there is no trust in any keys other than those built into the
+> kernel.
 
-> i.e. there is a concious decision in place that there is no trust
-> chain, and that the firmware *happily* *already* accepts unsigned boot
-> loaders/kernels and just runs with them. If SecureBoot is already off,
-> then an attacker can patch around in the kernel invoked at boot
-> completely freely anyway, there is *no* authentication done. Hence
-> it's really weird to then insist that the path into the kernel keyring
-> via mok keys is off in *only* this case, because an attacker can get
-> into that anyway in this case, it's just a lot more cumbersome.
->=20
-> It's really strange that currently when people ask for tight security
-> (i.e. SB on) the linux kernel is super relaxed and allows any keys to
-> be inserted, but if people ask for security checks to be off (i.e. SB
-> off) the kernel starts being super strict and doesn't allow any keys
-> to propagate into mok. That's really confusing and contradictory, no?
+No! There *is* *no *trust* in this case where SB is off, not in those
+keys built into the kernel nor in any other. Believing there was is
+just a really broken security model!
 
-That all may be true, but you're ignoring what I said about only "trusting"=
- MOK
-in certain situations.  If you have another safer, better mechanism for
-establishing a new root of trust for keys (e.g. TPM), then by all means sha=
-re it
-and we can make additional exceptions.
+> True that is of course dependent on trusting the kernel.  In the case of
+> MOK, trusting additional keys requires at minimum a "safe" secure boot
+> environment and other things to prevent its abuse.
 
-Mimi
+The thing is that if SB is off, then all bets are off, it's really
+pointless in assuming the kernel image had any trust left you'd need
+to protect. That's just *not* the case. Where do you think that trust
+should come from?
+
+If SB is off, then anything that got loaded early enough could just
+patch arbitrary keys into the ELF image of the kernel before starting
+it, and everything will look perfect later on, because the image is
+not authenticated after all via SB. So there *already* is a way into
+the kernel keyring with this – it's just really messy to parse and
+patch ELF at runtime like this from the bootloader. My hope with just
+relaxing the rules on MOK keys when SB is off is to just make this
+stuff cleaner and more elegant (and also to leave the ELF image intact
+so that we get clean measurements, both of the kernel and of the keys
+we add).
+
+> > i.e. there is a concious decision in place that there is no trust
+> > chain, and that the firmware *happily* *already* accepts unsigned boot
+> > loaders/kernels and just runs with them. If SecureBoot is already off,
+> > then an attacker can patch around in the kernel invoked at boot
+> > completely freely anyway, there is *no* authentication done. Hence
+> > it's really weird to then insist that the path into the kernel keyring
+> > via mok keys is off in *only* this case, because an attacker can get
+> > into that anyway in this case, it's just a lot more cumbersome.
+> >
+> > It's really strange that currently when people ask for tight security
+> > (i.e. SB on) the linux kernel is super relaxed and allows any keys to
+> > be inserted, but if people ask for security checks to be off (i.e. SB
+> > off) the kernel starts being super strict and doesn't allow any keys
+> > to propagate into mok. That's really confusing and contradictory, no?
+>
+> That all may be true, but you're ignoring what I said about only "trusting" MOK
+> in certain situations.  If you have another safer, better mechanism for
+> establishing a new root of trust for keys (e.g. TPM), then by all means share it
+> and we can make additional exceptions.
+
+Yes, we have that in systemd: there's local attestation in place
+already in systemd via the "systemd-pcrlock" feature. i.e. the idea is
+that the disk encryption keys are only released to the OS if the
+measurements of the boot phase match some golden measurements. This is
+in a way a reasonable alternative (or addition) to SecureBoot: instead of
+prohibiting code to run if it doesn't carry a signature of some
+trusted key, you let it all run, but then later on you refuse to give
+it the disk encryptions keys – the keys to the kingdom – unless the
+measurements all along the way match what you expect them to be. This
+protects the OS quite nicely, and makes SB to some level optional, as
+we basically enforce security "a-posteriori" rather than "a-priori" – by
+means of the TPM's key policies.
+
+Now you might wonder: if we have such local attestation policies, why
+do we *also* want to get keys into the kernel keyring? That's because
+the attestation policies are checked (primarily) when FDE is unlocked,
+so that's our security boundary, our milestone where eveything
+*before* is protected via attestation, but which cannot protect
+anything *after*. In my model we then want to protect
+any further resources via the kernel keyring then. hence it matters to
+us to have a clean, elegant way, to insert keys *before* that
+milestone that then can protect resources comeing *after* it.
+
+Why do I want to avoid SB at all for these setups? Mostly, because
+it's a bureacractic effort to get your keys intot he Microsoft
+keyring, and if you do get them there, then their security value is
+kinda weak anyway, because the allowlist that the keyring is is such
+an extremely wide net, it's at best a denylist of bad stuff rather
+than an allowlist of good stuff at this point. It's kinda undemocratic
+too. But anyway, the pros and cons of SB are another discussion. I am
+primarily interested in making it optional, so that you can get
+security with SB and without SB, because you always have someting to
+protect the boot, and always something that protects the rest.
+
+Lennart
+
+--
+Lennart Poettering, Berlin
 
