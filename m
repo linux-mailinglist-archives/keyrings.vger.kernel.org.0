@@ -1,106 +1,199 @@
-Return-Path: <keyrings+bounces-2888-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2892-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A0FBAF657B
-	for <lists+keyrings@lfdr.de>; Thu,  3 Jul 2025 00:42:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFA88AF6739
+	for <lists+keyrings@lfdr.de>; Thu,  3 Jul 2025 03:39:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB95A1C45D62
-	for <lists+keyrings@lfdr.de>; Wed,  2 Jul 2025 22:42:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FCC8480A42
+	for <lists+keyrings@lfdr.de>; Thu,  3 Jul 2025 01:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5AF23A9A3;
-	Wed,  2 Jul 2025 22:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B4545009;
+	Thu,  3 Jul 2025 01:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e5BagjG5"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="b4L3lFIM"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E7F01DED52;
-	Wed,  2 Jul 2025 22:42:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8310F4400;
+	Thu,  3 Jul 2025 01:39:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751496133; cv=none; b=CY2hcd2bYgtM8dq6he3hex9lPhvATuCaNZaGOK7iy6ggWdbmtcYLwwsI88wxACD5MLFoF6fFuIemBLzBgDsw6a59kYQUD8wOnxoOT2Iv5aO3qQ90e2jPoiUfvWs4YMCGL0O6xTuU6CurZZCFLfhJqBJ3+wUOZcbPAU9/d/PaPiI=
+	t=1751506758; cv=none; b=FNVUPdLAGX0WmifOG3fLZ9xlA4/KqRjkj82oGyl64Lqhm/3B888nT9YrYtqIk+T5fAkE59Si6HOOq+RH6myykrIB1BUIikhAowwoURrxBAR8GZEQ1Inwv6rQTwyc1mJUE8p/L7fOxbyeJfUDEE5KY0Twdzzxo8lxOzGjvJCpq9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751496133; c=relaxed/simple;
-	bh=Qlex3J95n7fWXidhlCTd4uELRhp1holqYUtR8DTuccA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f1R+g6KhRvrG5/OkjRnBECnQYbahXsHrjfSR/GFV47qEjx7Gc/16rgZdaIb0n11MR6/dRbvFoQdOhTkmB3nEzOA5avU2DkooLIGFW6xt2xQSQWCmbdJQqcll5pq5MWYNmo3Q1M9kErosPOwdPLQnTPP7/qEFCazu2XPgIEIcGWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e5BagjG5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D6CC4CEE7;
-	Wed,  2 Jul 2025 22:42:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751496133;
-	bh=Qlex3J95n7fWXidhlCTd4uELRhp1holqYUtR8DTuccA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=e5BagjG5whxkRyCMsdar2lYqammWFThALos8csRvFrpzACoGEqBPupv9MLdOCh7cZ
-	 Q1CcMjUpev3bQb3W6rH3DHMrvmy8hVGcqHdUenkA+eDJxIJO+RaR8zGSHf5y+rD06T
-	 +A7jLI0zxLcqnW4iaEm0Y/+S0aMX1/2EpobYAkjyJPYcIHO/diVGWiakMy5IhYpNI+
-	 CX7ym/gHNeiywWrQJOjT2mbBVJarbfBVla0YbXeVgzNrrp3huCFIDpk2MzMeYQ3Rod
-	 oWjUTkQJATermMWTiwLeGAivlgniTH74KAJE+0YF0uApPXx+2Wcun1wMhazjBZyZ2R
-	 DM4III4UYxzUg==
-Date: Thu, 3 Jul 2025 01:42:09 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
-	Peter Huewe <peterhuewe@gmx.de>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	"open list:TPM DEVICE DRIVER" <linux-integrity@vger.kernel.org>,
-	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH v4] tpm: Managed allocations for tpm_buf instances
-Message-ID: <aGW1wdJQ2oFpGQwq@kernel.org>
-References: <20250701145136.82726-1-jarkko@kernel.org>
- <20250702125725.GA904431@ziepe.ca>
+	s=arc-20240116; t=1751506758; c=relaxed/simple;
+	bh=Is9CT0Pk2pnhqnJf/3yGZr2STJU9K7oUXqy0zbJFcCI=;
+	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=Bu2SddXXvnxfTUogedp9CO0/OqjeEb12avRe3RV6/j7vrh6Iw7j27xJz/FcoYqgAHwo8ynB4TcnOYtSgM0eTztW50t0F2sYXkzryrGJc1e+ZyxgPlyefO4FWwrQb8Mp0Fl8FkIO7YUh9FhhYfYlbTQs2aq/ZKoTFUOypSOlmdd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=b4L3lFIM; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 562JEAxQ003793;
+	Thu, 3 Jul 2025 01:38:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=xgpVyo
+	LPh9JdhYBwUjqBEZjWvAdIc2zVJFh7ZQkPLrQ=; b=b4L3lFIMHGyWmS95nHIWRl
+	h9DRdGUb2nGcL/94yxLei0wURBf1o8sIkM2wWKH+Sw5cpfWPMCUi/PHLXNLxC2xH
+	GBjP7tPOwggeK6mtiy2XMDP4TI9iVe3pUoZIViaZzyOOX57CVTDT+b+CoyHk6N7h
+	0FQvKDHndXCoP/gzpvoNh/FsB70oEyg2nelcqHqKf4CYYWweKNDeupcieG6y1mtn
+	Npb941m9Twm6vF/BYn8Z/VCcEiMvPERje11ZFtw0a1YQt/LSXOB7U9/rWL5EZGID
+	kABh2ml9ah7UXaVybZkhO9Sx99QVwTwFR2ANXq4r2uE0o3TX0uSV3S0NRerwCALw
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47j84dgwfs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 03 Jul 2025 01:38:45 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5631YEmd000959;
+	Thu, 3 Jul 2025 01:38:44 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47j84dgwfn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 03 Jul 2025 01:38:44 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 562MZRJ6006841;
+	Thu, 3 Jul 2025 01:38:43 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 47jvxmj8qq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 03 Jul 2025 01:38:43 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5631cgPX24511054
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 3 Jul 2025 01:38:42 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E1B0458059;
+	Thu,  3 Jul 2025 01:38:41 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C598C58058;
+	Thu,  3 Jul 2025 01:38:39 +0000 (GMT)
+Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.102.8])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  3 Jul 2025 01:38:39 +0000 (GMT)
+Message-ID: <eb91dcf034db28e457a4482faa397dd7632f00fd.camel@linux.ibm.com>
+Subject: Re: [PATCH v2] integrity: Extract secure boot enquiry function out
+ of IMA
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: GONG Ruiqi <gongruiqi1@huawei.com>,
+        Roberto Sassu
+ <roberto.sassu@huawei.com>,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Madhavan Srinivasan	
+ <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Heiko
+ Carstens	 <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander
+ Gordeev	 <agordeev@linux.ibm.com>
+Cc: Eric Snowberg <eric.snowberg@oracle.com>,
+        Christophe Leroy	
+ <christophe.leroy@csgroup.eu>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle
+ <svens@linux.ibm.com>, "Lee, Chun-Yi" <jlee@suse.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-integrity@vger.kernel.org,
+        keyrings@vger.kernel.org, Lu Jialin <lujialin4@huawei.com>,
+        Nayna Jain	
+ <nayna@linux.ibm.com>
+In-Reply-To: <20250628063251.321370-1-gongruiqi1@huawei.com>
+References: <20250628063251.321370-1-gongruiqi1@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 02 Jul 2025 21:38:39 -0400
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250702125725.GA904431@ziepe.ca>
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: AK6aKBga4oupROxNi37kIoTGk3q8-5S4
+X-Proofpoint-GUID: uDLi-sImN3F6mgsunZuJI4XJFtTsseEO
+X-Authority-Analysis: v=2.4 cv=Ib6HWXqa c=1 sm=1 tr=0 ts=6865df25 cx=c_pps a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17 a=IkcTkHD0fZMA:10 a=Wb1JkmetP80A:10 a=i0EeH86SAAAA:8 a=S3K_XBxPWrw5AGGlcUgA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNzAzMDAwOCBTYWx0ZWRfXy2T4VTZGAdYP sUju6z4tCTzdEu3yCSnNzl9jOk3a4Ybp+UEyit+nsO1F3Rgn1K5leqHez3AipMUriRQ47LArP40 9BIqUj1y+Bwq3B6h56eZ8DCtsDqi+DKDsWMDAYm4+YLvPQsohUdOM06LkKYeK88Imwvhck9/FKo
+ RqhPOZlG8YHqnt9HTM0wcWpofMPCBacYx0/fzrLe8sEh0fXC8+meVu/0kh2zeoxYclYP478kWTh sK9ePhL+SfXMtDKJaKxDGBhNzTab5Y2zo9cq55R3XU88nQ8TJSh4mTASDybyMK5UU67y0xVmxwQ ESS/8ZY/oYFc2rySDpumZmdXH5mBW1Ba2NXxmGHm4qkTbGVckU9hBrIXoqf43+N17w7NMatu3TU
+ yJrPAtqTjqPi4XMtScNX9MOfw5mHsMbrSdiWPhSSMhgXCy4Rf4Z4bRb9sltJlp2H9t2Gt+qB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.7,FMLib:17.12.80.40
+ definitions=2025-07-03_01,2025-07-02_04,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
+ clxscore=1011 mlxlogscore=691 lowpriorityscore=0 impostorscore=0
+ mlxscore=0 malwarescore=0 spamscore=0 priorityscore=1501 adultscore=0
+ bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2507030008
 
-On Wed, Jul 02, 2025 at 09:57:25AM -0300, Jason Gunthorpe wrote:
-> On Tue, Jul 01, 2025 at 05:51:35PM +0300, Jarkko Sakkinen wrote:
-> > @@ -32,28 +32,30 @@ struct tpm_readpubek_out {
-> >  static ssize_t pubek_show(struct device *dev, struct device_attribute *attr,
-> >  			  char *buf)
-> >  {
-> > -	struct tpm_buf tpm_buf;
-> > +	struct tpm_buf *tpm_buf __free(kfree) = NULL;
-> >  	struct tpm_readpubek_out *out;
-> >  	int i;
-> >  	char *str = buf;
-> >  	struct tpm_chip *chip = to_tpm_chip(dev);
-> >  	char anti_replay[20];
-> >  
-> > +	tpm_buf = tpm_buf_alloc();
-> > +	if (!tpm_buf)
-> > +		return -ENOMEM;
-> 
-> apprently this isn't the style guide, you are supposed to write:
-> 
->   	char anti_replay[20];
-> 
-> 	struct tpm_buf *tpm_buf __free(kfree) =  tpm_buf_alloc();
-> 	if (!tpm_buf)
-> 		return -ENOMEM;
+[CC: Nayna Jain]
 
-Sounds fair to me. I'll shift to this direction in the next revision.
+On Sat, 2025-06-28 at 14:32 +0800, GONG Ruiqi wrote:
+> Commit 92ad19559ea9 ("integrity: Do not load MOK and MOKx when secure
+> boot be disabled") utilizes arch_ima_get_secureboot() to perform a
+> secure boot status check before loading the Machine Owner Key (MOK).
+> However, only when CONFIG_IMA_SECURE_AND_OR_TRUSTED_BOOT=3Dy can this
+> function be functional, while this config has nothing to do with secure
+> boot or MOK loading.
+>=20
+> Given that arch_ima_get_secureboot() is just a helper to retrieve info
+> about secure boot via EFI and doesn't necessarily be a part of IMA,
+> rename it to arch_integrity_get_secureboot(), decouple its functionality
+> from IMA and extract it to be a integrity subsystem helper, so that both
+> certificate loading and IMA can make use of it.
+>=20
+> Compile-tested on powerpc, s390 and x86, with CONFIG_IMA_ARCH_POLICY=3Dn
+> and =3Dy based on defconfig and allmodconfig.
+>=20
+> Signed-off-by: GONG Ruiqi <gongruiqi1@huawei.com>
 
-> 
-> Jason
+The original reason for querying the secure boot status of the system was i=
+n
+order to differentiate IMA policies.  Subsequently, the secure boot check w=
+as
+also added to safely allow loading of the certificates stored in MOK. So lo=
+ading
+IMA policies and the MOK certificates ARE dependent on the secure boot mode=
+.
+                                                                           =
+    =20
+What is your real motivation for moving the secure boot checking out of IMA=
+?   =20
+                                                                           =
+    =20
+FYI, there are a number of problems with the patch itself.  From a very hig=
+h
+level: =20
+                                                                           =
+    =20
+- The EFI secure boot check is co-located with loading the architecture spe=
+cific
+policies.  By co-locating the secure boot check with loading the architectu=
+re
+specific IMA policies, there aren't any ifdef's in C code.  Please refer to=
+ the
+"conditional compilation" section in the kernel coding-style documentation =
+on
+avoiding ifdef's in C code.
+                                                                           =
+    =20
+- Each architecture has it's own method of detecting secure boot. Originall=
+y the
+x86 code was in arch/x86, but to prevent code duplication it was moved to I=
+MA.=20
+The new file should at least be named efi_secureboot.c. =20
+                                                                           =
+    =20
+- The patch title should be about moving and renaming the secure boot check=
+.=20
+The patch description should include a valid reason for the change.
 
-BR, Jarkko
-
-BR, Jarkko
+Mimi & Nayna
 
