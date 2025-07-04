@@ -1,188 +1,155 @@
-Return-Path: <keyrings+bounces-2908-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2909-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74E30AF85C6
-	for <lists+keyrings@lfdr.de>; Fri,  4 Jul 2025 04:53:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D68ACAF8994
+	for <lists+keyrings@lfdr.de>; Fri,  4 Jul 2025 09:34:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6937565A05
-	for <lists+keyrings@lfdr.de>; Fri,  4 Jul 2025 02:53:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CFE53A5DB8
+	for <lists+keyrings@lfdr.de>; Fri,  4 Jul 2025 07:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C27E1DBB13;
-	Fri,  4 Jul 2025 02:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IgzeqJSM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BCDA275B02;
+	Fri,  4 Jul 2025 07:34:54 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gardel.0pointer.net (gardel.0pointer.net [85.214.157.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277E51FC3;
-	Fri,  4 Jul 2025 02:53:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7B83D76;
+	Fri,  4 Jul 2025 07:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.157.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751597608; cv=none; b=VC1iyqD/g1oFx8ToNIkKe+S8bsD3j6333MugByAhmy5+RBz6JOGMVOeklzNJNvzndIdp/V8GfoJbkqFWUg3HzuG+yQuX3sP27KNgljXJ2yM5LxIUIwQ/5o8pQGV8X4OLXj7iHna3g9uShV5FG+BvYyOyFqwOrqoDdA/MERiitQA=
+	t=1751614494; cv=none; b=G2PcufFNhNuEBvs3C8KJFY0z3AyvIuxWL/V5aerovnPbK2ctpWzUZsP0qAo0ubqPhffZ0BgMgcbLALHt3wAXND6gT7Wrbcu3VGkWC3eFIvYkc6m6wI+D2r3RDkSgWqztbYK/REiZg0vGa9jwdcDBi/Zoybyk2XiVlQvx9Cm1rPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751597608; c=relaxed/simple;
-	bh=9UOWMeZLVtkwSXIS3fo46rKrNh0I1J1skAXKQCS7QZk=;
+	s=arc-20240116; t=1751614494; c=relaxed/simple;
+	bh=/hl9HDUls7N81viQPs/KKr2is9V1xf9Nb8v1sBRpp+U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GGi6btcK00b1r78HrukV3oEM3stlwbNZafeaHcvyXKM26AoDfpQ6FtovrHp5ncmvwDXlMEkgSStBR9OqR5eyvBtzYfZQxf7RSfRyfsHqcUIcFhDoDAauaCisz414CRfqTP4fBQu61o4j8S7JIH50fg1HFJr45d0S68a2VtG3GJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IgzeqJSM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B912C4CEE3;
-	Fri,  4 Jul 2025 02:53:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1751597607;
-	bh=9UOWMeZLVtkwSXIS3fo46rKrNh0I1J1skAXKQCS7QZk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IgzeqJSMKseKK7omQDZzCBBv4DBbLPEh9U0RIFksF3m2S4jguzBc5zNf1Di2F2Ar1
-	 FWgHdlp6V1NZ1mSDzod7Qn77tSMPXrdIUAV+zraDYFFJ8tAjd+UE0vNuOWOl1NkQGI
-	 Oz0cYcSVQO5w1YVCNL8UEROl7yHcXs+jHZgeSWS4C3mhz3v/fLSbSgpsuWPeL3BD4p
-	 5Si7qyVAxfWZuKLoFdoazIIjMxpxHjGg7ydu/iIKUlH9ciLlYZKpwEK27mz3U6nhh+
-	 U7GnwOuDMQam/auYi2FcvVUEj5qJg7eekf/BYUbhl8JaQv5d/Y8ns+Dkk+ssw1+TLd
-	 zlsy6L+HvChnQ==
-Date: Fri, 4 Jul 2025 05:53:23 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Stefan Berger <stefanb@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
-	Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=mEU9XIp0GMnLg2Zfz8DFPf2/GB3bBQmev/bISQg6AJXd2advXk2fcxNzTUP9CaBWjBIoQ1JiORrJJmpQ6T4+64fFQsVm4f5vv6F2KVTTUva1gQ/NKRr1GXN6HjLYvKL6d11N9dqYAUl7plDAT1ED/7W4CzhqLQUJPWNEdeKc204=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0pointer.de; spf=pass smtp.mailfrom=0pointer.de; arc=none smtp.client-ip=85.214.157.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=0pointer.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0pointer.de
+Received: from gardel-login.0pointer.net (gardel-mail [IPv6:2a01:238:43ed:c300:10c3:bcf3:3266:da74])
+	by gardel.0pointer.net (Postfix) with ESMTP id 074B6E81788;
+	Fri,  4 Jul 2025 09:34:42 +0200 (CEST)
+Received: by gardel-login.0pointer.net (Postfix, from userid 1000)
+	id 3F58E16005E; Fri,  4 Jul 2025 09:34:35 +0200 (CEST)
+Date: Fri, 4 Jul 2025 09:34:35 +0200
+From: Lennart Poettering <mzxreary@0pointer.de>
+To: Mimi Zohar <zohar@linux.ibm.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
 	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
 	"Serge E. Hallyn" <serge@hallyn.com>,
-	"open list:TPM DEVICE DRIVER" <linux-integrity@vger.kernel.org>,
-	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH v5] tpm: Managed allocations for tpm_buf instances
-Message-ID: <aGdCI7aD05aIqS6s@kernel.org>
-References: <20250703181712.923302-1-jarkko@kernel.org>
- <be1c5bef-7c97-4173-b417-986dc90d779c@linux.ibm.com>
+	linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Lee, Chun-Yi" <joeyli.kernel@gmail.com>
+Subject: Re: [PATCH] Revert "integrity: Do not load MOK and MOKx when secure
+ boot be disabled"
+Message-ID: <aGeECyNqSQoIP7d2@gardel-login>
+References: <Z9wDxeRQPhTi1EIS@gardel-login>
+ <1a6cf2097487816e4b93890ad760f18fe750bd70.camel@linux.ibm.com>
+ <aGYurikYK1ManAp3@gardel-login>
+ <8401c23009db3b8447b0b06710b37b1585a081ab.camel@linux.ibm.com>
+ <aGZ_x8Ar6iwzt2zV@gardel-login>
+ <45b30f515efc3e364e1d248ab0ed7f12f8312f5d.camel@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <be1c5bef-7c97-4173-b417-986dc90d779c@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <45b30f515efc3e364e1d248ab0ed7f12f8312f5d.camel@linux.ibm.com>
 
-On Thu, Jul 03, 2025 at 04:21:05PM -0400, Stefan Berger wrote:
-> 
-> 
-> On 7/3/25 2:17 PM, Jarkko Sakkinen wrote:
-> > From: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
-> > 
-> > Repeal and replace tpm_buf_init() and tpm_buf_init_sized() with
-> > tpm_buf_alloc(), which returns a buffer of  memory with the struct tpm_buf
-> > header at the beginning of the returned buffer. This leaves 4092 bytes of
-> > free space for the payload.
-> > 
-> > Given that kfree() becomes the destructor for struct tpm_buf instances,
-> > tpm_buf_destroy() is now obsolete, and can be removed.
-> > 
-> > The actual gist is that a struct tpm_buf instance can be declared using
-> > __free(kfree) from linux/slab.h:
-> > 
-> > 	struct tpm_buf *buf __free(kfree) buf = tpm_buf_alloc();
-> > 
-> > Doing this has two-folded benefits associated with struct tpm_buf:
-> > 
-> > 1. New features will not introduce memory leaks.
-> > 2. It addresses undiscovered memory leaks.
-> > 
-> > In addition, the barrier to contribute is lowered given that managing
-> > memory is a factor easier.
-> > 
-> > Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
-> > ---
-> 
-> > @@ -374,20 +362,18 @@ int tpm2_get_random(struct tpm_chip *chip, u8 *dest, size_t max)
-> >    */
-> >   void tpm2_flush_context(struct tpm_chip *chip, u32 handle)
-> >   {
-> > -	struct tpm_buf buf;
-> > -	int rc;
-> > +	struct tpm_buf *buf __free(kfree) = tpm_buf_alloc();
+On Do, 03.07.25 19:56, Mimi Zohar (zohar@linux.ibm.com) wrote:
+
+> > Yes, we have that in systemd: there's local attestation in place
+> > already in systemd via the "systemd-pcrlock" feature. i.e. the idea is
+> > that the disk encryption keys are only released to the OS if the
+> > measurements of the boot phase match some golden measurements. This is
+> > in a way a reasonable alternative (or addition) to SecureBoot: instead of
+> > prohibiting code to run if it doesn't carry a signature of some
+> > trusted key, you let it all run, but then later on you refuse to give
+> > it the disk encryptions keys – the keys to the kingdom – unless the
+> > measurements all along the way match what you expect them to be. This
+> > protects the OS quite nicely, and makes SB to some level optional, as
+> > we basically enforce security "a-posteriori" rather than "a-priori" – by
+> > means of the TPM's key policies.
 > >
-> 
-> Remove empty line?
+> > Now you might wonder: if we have such local attestation policies, why
+> > do we *also* want to get keys into the kernel keyring? That's because
+> > the attestation policies are checked (primarily) when FDE is unlocked,
+> > so that's our security boundary, our milestone where eveything
+> > *before* is protected via attestation, but which cannot protect
+> > anything *after*. In my model we then want to protect
+> > any further resources via the kernel keyring then. hence it matters to
+> > us to have a clean, elegant way, to insert keys *before* that
+> > milestone that then can protect resources comeing *after* it.
+> >
+> > Why do I want to avoid SB at all for these setups? Mostly, because
+> > it's a bureacractic effort to get your keys intot he Microsoft
+> > keyring, and if you do get them there, then their security value is
+> > kinda weak anyway, because the allowlist that the keyring is is such
+> > an extremely wide net, it's at best a denylist of bad stuff rather
+> > than an allowlist of good stuff at this point. It's kinda undemocratic
+> > too. But anyway, the pros and cons of SB are another discussion. I am
+> > primarily interested in making it optional, so that you can get
+> > security with SB and without SB, because you always have someting to
+> > protect the boot, and always something that protects the rest.
+>
+> You're basically relying on trusted/verified boot and, in TPM 1.2 terminology,
+> sealing a key to a TPM PCR value.  Only if the PCR matches an expected value is
+> the key released.  Instead of relying on MOK, the keys could be stored in the
+> TPM NVRAM and loaded onto the existing .machine keyring or define a new keyring
+> linked to the .secondary_trusted_keys keyring[1].  Then you could really claim
+> the TPM as a new root of trust for both trusted and secure boot without any
+> dependency on MOK.
 
-I recalled from the past that checkpatch.pl would complain if there was
-no empty line after the declarations.
+Hmm, why involve the TPM in kernel keyring population though, if all
+keys in question are vendor keys used to sign OS resources, i.e. not
+local keys? It's entirely fine to ship these keys along with UKIs or
+boot loaders, and in the model where SB is off they are protected by
+the measurements that are done of both boot loaders and UKIs.
 
-Now that I tested removing that line, it did not so I guess I can remove
-that empty line. The presumed checkpatch error was the only reason for
-having it.
-> 
-> > -	rc = tpm_buf_init(&buf, TPM2_ST_NO_SESSIONS, TPM2_CC_FLUSH_CONTEXT);
-> > -	if (rc) {
-> > +	if (!buf) {
-> >   		dev_warn(&chip->dev, "0x%08x was not flushed, out of memory\n",
-> >   			 handle);
-> >   		return;
-> >   	}
-> > -	tpm_buf_append_u32(&buf, handle);
-> > +	tpm_buf_reset(buf, TPM2_ST_NO_SESSIONS, TPM2_CC_FLUSH_CONTEXT);
-> > +	tpm_buf_append_u32(buf, handle);
-> > -	tpm_transmit_cmd(chip, &buf, 0, "flushing context");
-> > -	tpm_buf_destroy(&buf);
-> > +	tpm_transmit_cmd(chip, buf, 0, "flushing context");
-> >   }
-> >   EXPORT_SYMBOL_GPL(tpm2_flush_context);
-> > @@ -414,19 +400,20 @@ ssize_t tpm2_get_tpm_pt(struct tpm_chip *chip, u32 property_id,  u32 *value,
-> >   			const char *desc)
-> >   {
-> >   	struct tpm2_get_cap_out *out;
-> > -	struct tpm_buf buf;
-> >   	int rc;
-> > -	rc = tpm_buf_init(&buf, TPM2_ST_NO_SESSIONS, TPM2_CC_GET_CAPABILITY);
-> > -	if (rc)
-> > -		return rc;
-> > -	tpm_buf_append_u32(&buf, TPM2_CAP_TPM_PROPERTIES);
-> > -	tpm_buf_append_u32(&buf, property_id);
-> > -	tpm_buf_append_u32(&buf, 1);
-> > -	rc = tpm_transmit_cmd(chip, &buf, 0, NULL);
-> > +	struct tpm_buf *buf __free(kfree) = tpm_buf_alloc();
-> > +	if (!buf)
-> > +		return -ENOMEM;
-> > +
-> > +	tpm_buf_reset(buf, TPM2_ST_NO_SESSIONS, TPM2_CC_GET_CAPABILITY);
-> > +	tpm_buf_append_u32(buf, TPM2_CAP_TPM_PROPERTIES);
-> > +	tpm_buf_append_u32(buf, property_id);
-> > +	tpm_buf_append_u32(buf, 1);
-> > +	rc = tpm_transmit_cmd(chip, buf, 0, NULL);
-> >   	if (!rc) {
-> >   		out = (struct tpm2_get_cap_out *)
-> > -			&buf.data[TPM_HEADER_SIZE];
-> > +			&buf->data[TPM_HEADER_SIZE];
-> >   		/*
-> >   		 * To prevent failing boot up of some systems, Infineon TPM2.0
-> >   		 * returns SUCCESS on TPM2_Startup in field upgrade mode. Also
-> > @@ -438,7 +425,6 @@ ssize_t tpm2_get_tpm_pt(struct tpm_chip *chip, u32 property_id,  u32 *value,
-> >   		else
-> >   			rc = -ENODATA;
-> >   	}
-> > -	tpm_buf_destroy(&buf);
-> >   	return rc;
-> >   }
-> >   EXPORT_SYMBOL_GPL(tpm2_get_tpm_pt);
-> > @@ -455,15 +441,14 @@ EXPORT_SYMBOL_GPL(tpm2_get_tpm_pt);
-> >    */
-> >   void tpm2_shutdown(struct tpm_chip *chip, u16 shutdown_type)
-> >   {
-> > -	struct tpm_buf buf;
-> > -	int rc;
-> > +	struct tpm_buf *buf __free(kfree) = tpm_buf_alloc();
-> 
-> Remove empty line here.
-> 
-> With this nit fixed:
-> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-> 
+And what would even install the keys into the TPM in the first place?
 
-Thanks and I'm happy to fixup those. They did look also silly to me :-)
+Also note, that while a TPM can store keys, the way it is designed is
+that you actually store keys outside of it, but wrap them with the
+SRK that is the one you do store on the TPM. This in particular
+matters as people might want to boot kernels of multiple vendors at
+different times on the same system, and hence the keys for that should
+not be sticky in the TPM.
 
-BR, Jarkko
+Sorry, but storing keys in the TPM for this is just wrong for my
+usecase.
+
+> That would be preferable to changing the existing expectations to loading the
+> MOK keys when secure boot is not enabled.
+
+Sorry, but I vehemently disagree, that's a really broken security
+model. SecureBoot on should mean strict rules and, SB off should mean
+relaxed rules, and you are doing it in the opposite way.
+
+> [1] A prior attempt to load keys from TPM NVRAM.
+> https://lore.kernel.org/linux-integrity/20210225203229.363302-1-patrick@puiterwijk.org/
+
+This seems really strange to me, as no policy is enforced on the
+nvindex? The TPM is not a magic device that sprinkles "trust" magic
+dust on things: you have to define your objects with a policy that
+locks down access based on attestation, pins or other stuff, and it's
+just not obvious what that should be here for such a kernel keyring.
+
+Sorry, but this all seems backwards to me: what you propose weakens
+the current model afaics, and you insist to be strict in the case where
+an explicit request has been made to relax things by turning off SB.
+
+Lennart
+
+--
+Lennart Poettering, Berlin
 
