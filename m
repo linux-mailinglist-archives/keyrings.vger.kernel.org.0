@@ -1,60 +1,82 @@
-Return-Path: <keyrings+bounces-2918-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2919-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A24FAFFAC9
-	for <lists+keyrings@lfdr.de>; Thu, 10 Jul 2025 09:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E08B00326
+	for <lists+keyrings@lfdr.de>; Thu, 10 Jul 2025 15:17:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 626AE581731
-	for <lists+keyrings@lfdr.de>; Thu, 10 Jul 2025 07:25:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB7065C3B39
+	for <lists+keyrings@lfdr.de>; Thu, 10 Jul 2025 13:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6DDE288C27;
-	Thu, 10 Jul 2025 07:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E29B25F976;
+	Thu, 10 Jul 2025 13:14:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NO38hXx4"
 X-Original-To: keyrings@vger.kernel.org
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AF72701C0;
-	Thu, 10 Jul 2025 07:25:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.11.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BD12367CD;
+	Thu, 10 Jul 2025 13:14:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752132323; cv=none; b=O8xnOcWL58kQC2gYUDAAVQi8nC0tx7MrqqNkoVFpndwOpCawcQx9zI7nBladQJpTgiwb9t1+3EKYTSHxT8g2l5hEeOMlQ7kFjb02K58RAjyzn1Gn/I6nj8RP6xltBui4aRsZcMls9qoCv3J5dpMH3cFHwVU9RndacUzwKPAVa/Q=
+	t=1752153265; cv=none; b=ZmL4ZP3XNn04rHOrJlkrZaB7FPzAJRUlgaiQPIS/gkIblznnuThEYsDQo1LUEXcUNjaco9lzniMf54zGyTyuqM/C9UPbHZtgNUCf+Tg753U0dWdbkiLBARabibsX0RorEJ4vpn7HYI8HUTb36e5dYGptPo/dByfDUgc+ZBybAqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752132323; c=relaxed/simple;
-	bh=6z1Z5uUFlCZq7E2YDdQdCd6cRhu1KuYF7IR3HWNq+rQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CYaak/2N/KpKIfA7tgMmqI2Y/m4hH3GVt4Ew3xQsMoNVGddU/6KKVbhS64qDvVcsaRir5mlvlZwrsMD61n2yjLdW3KBYFBaFD7f7tp2xvKfu4Ekn1yTXG/0sXtkKseMFdqeuMYP8Ront/gRiV07HUIGb0VMcBMRLj5A87bcLYyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de; spf=pass smtp.mailfrom=lst.de; arc=none smtp.client-ip=213.95.11.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 057FA67373; Thu, 10 Jul 2025 09:25:18 +0200 (CEST)
-Date: Thu, 10 Jul 2025 09:25:17 +0200
-From: Christoph Hellwig <hch@lst.de>
-To: Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trondmy@kernel.org>
-Cc: Anna Schumaker <anna@kernel.org>, David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>, linux-nfs@vger.kernel.org,
-	kernel-tls-handshake <kernel-tls-handshake@lists.linux.dev>,
-	keyrings@vger.kernel.org
+	s=arc-20240116; t=1752153265; c=relaxed/simple;
+	bh=EFP1+wvOgBptEiJUGJiwXtmUQ/sObDgGxSNbaKCJvp0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=un/+5Av6pOMc/cm1fyAonyvLYKKmOnVinAghdjwwYIH8j2d/xnNO37/XKt0TZTtUIytYnJglQHgy/UpSouFAPHZQgUqTNe2FzYZEPm1X4czn6iEcBlpps3d7TX6SMey2fNGsTpqAtaP00IWTk1ZQfK0GgQ5/Dlohmmlr2CL4RR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NO38hXx4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E0DC4CEE3;
+	Thu, 10 Jul 2025 13:14:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752153264;
+	bh=EFP1+wvOgBptEiJUGJiwXtmUQ/sObDgGxSNbaKCJvp0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=NO38hXx4EB15majfdclQwOID+8WflKYQkoT41caC8pOadpB0JRRikdlfxDRwWEv/Q
+	 mY89XuQCKBkJRa4giSlNgIDf0Lzavmzp3k3N0xi66EDlWKVfd+ujupdJzEiVFj2rlA
+	 x3IUOrp5pOyoSAcoMFRvo8V273FHWlt/XIXhBH7oz1Jnpuxx6U7rTPBwjotNJZf/2t
+	 QhQi5ZTWLte2KcebH9Osn09LTrNk6e3OOrqppk/Us7Yli7Oe4aL44Q8kHTVV4yvqwF
+	 gcNtVMT8R133QygEXkiP7XOTFMpCeIKsUMoYDfMBCrbtpxwT6KMqoJ1fOAW3bFNo7h
+	 60tVqXOLMZ+bA==
+Message-ID: <1c15a03126ba907a05d1646b78580ae004c21f92.camel@kernel.org>
 Subject: Re: support keyrings for NFS TLS mounts v2
-Message-ID: <20250710072517.GA5891@lst.de>
+From: Trond Myklebust <trondmy@kernel.org>
+To: Christoph Hellwig <hch@lst.de>, Chuck Lever <chuck.lever@oracle.com>
+Cc: Anna Schumaker <anna@kernel.org>, David Howells <dhowells@redhat.com>, 
+ Jarkko Sakkinen <jarkko@kernel.org>, linux-nfs@vger.kernel.org,
+ kernel-tls-handshake	 <kernel-tls-handshake@lists.linux.dev>,
+ keyrings@vger.kernel.org
+Date: Thu, 10 Jul 2025 06:14:22 -0700
+In-Reply-To: <20250710072517.GA5891@lst.de>
 References: <20250515115107.33052-1-hch@lst.de>
+	 <20250710072517.GA5891@lst.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-1.fc42) 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250515115107.33052-1-hch@lst.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
 
-Trond/Anna:
+On Thu, 2025-07-10 at 09:25 +0200, Christoph Hellwig wrote:
+> Trond/Anna:
+>=20
+> can you queue this up?=C2=A0 If not can you tell me what is missing?
+>=20
 
-can you queue this up?  If not can you tell me what is missing?
+Sorry. That series managed to fly under the radar while I was on
+vacation. It looks good to me, so I'm picking it into my 'testing'
+branch now.
 
+Thanks for the reminder!
+
+--=20
+Trond Myklebust
+Linux NFS client maintainer, Hammerspace
+trondmy@kernel.org, trond.myklebust@hammerspace.com
 
