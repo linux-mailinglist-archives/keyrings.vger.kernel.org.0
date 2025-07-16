@@ -1,144 +1,191 @@
-Return-Path: <keyrings+bounces-2920-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2921-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 106D8B01122
-	for <lists+keyrings@lfdr.de>; Fri, 11 Jul 2025 04:14:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C172B0756F
+	for <lists+keyrings@lfdr.de>; Wed, 16 Jul 2025 14:18:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A3DA760144
-	for <lists+keyrings@lfdr.de>; Fri, 11 Jul 2025 02:14:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E31B4E58D0
+	for <lists+keyrings@lfdr.de>; Wed, 16 Jul 2025 12:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2E4146A66;
-	Fri, 11 Jul 2025 02:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C610A2F4309;
+	Wed, 16 Jul 2025 12:18:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q/Fau8LZ"
 X-Original-To: keyrings@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CEF9B665;
-	Fri, 11 Jul 2025 02:14:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922CB22068F;
+	Wed, 16 Jul 2025 12:18:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752200085; cv=none; b=s0qlKJKXkZuRh8AR64O5qHakToqU3a++r2L0amocdY0t7UreM9NBYIKrv1Cdl12m6SOJ1e1/zpPEZrLeZ5wBSTS2zkB1wI4YolgbUQR69Lt4/XIJgEfZ6fJ7pU3/kamCvNI3N86QbYPFWXSCtqXmYucpNY/nQfOYvhCSlx87Avs=
+	t=1752668308; cv=none; b=soiDDyw1GoS6wRGoDw8LyCh4fC1sgBOyhVZKyohyu/OWu/twUokeonE7/Oh8/d/Fq/jC1SyUbJZzUUDwwoRfiRqFyzkujvOH4/vYvnL698+6X5t9YrLaS+8Vcl4Yv/L06CXNVpK5RXfy16Q4/jtJhjtXwA5LaUNeY8KIIHAB/8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752200085; c=relaxed/simple;
-	bh=HsCivigBSU9t2P+tGWBlpWxJJpKVlbwpxZlqF8U0KVI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=SJJi8uogayuGID0Gu8UFuUUFlOfymGIWJF4TEcPbjJJaM2LwXXkT9bxxdf5spaKvhS8d6RSiLYphVzmOTSgQtDAGu8gHG8UL5zfm8cMLMGw7QVEk8tgeZpGaFasTAfXma56APJ5sFleL5/CNj53hsDswD+qnYi9CMR/5CAGIGYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4bdZtX72Whz2Cdk8;
-	Fri, 11 Jul 2025 10:10:28 +0800 (CST)
-Received: from kwepemh100007.china.huawei.com (unknown [7.202.181.92])
-	by mail.maildlp.com (Postfix) with ESMTPS id 90F0A140278;
-	Fri, 11 Jul 2025 10:14:33 +0800 (CST)
-Received: from [10.67.111.31] (10.67.111.31) by kwepemh100007.china.huawei.com
- (7.202.181.92) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 11 Jul
- 2025 10:14:32 +0800
-Message-ID: <3654a091-053a-4330-a019-a681d06166be@huawei.com>
-Date: Fri, 11 Jul 2025 10:14:31 +0800
+	s=arc-20240116; t=1752668308; c=relaxed/simple;
+	bh=fQcg0JlR4emu2uqamRjb41I2ds1ijPQIV210NDtKJfQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tc6dKzjcPL8prUcg6kowNBobAUyg50NEjM/ka+mC0JmQSGhlkgqmM4J9dNB+GcLiY3Jd3r9mBXY8g2ilcLWnW1oq+9QT+jXf0vsDJwflVxRue/UrC89coID6PU2SnKzdVTwJFBFVyEwqYVN8jeP3oxfp9fBd+B6cpUPAW6tfRdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q/Fau8LZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F413C4CEF0;
+	Wed, 16 Jul 2025 12:18:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1752668308;
+	bh=fQcg0JlR4emu2uqamRjb41I2ds1ijPQIV210NDtKJfQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Q/Fau8LZwsYpFWjTtkoODCUUvYqy6y1JVVGNCVtKXKFsd7eZsMRwwpRTrx0ki8Hp8
+	 3NOEJaUR75BluMyf6T7louSyrEt5GETx++fTLDAnOTnwMyE8DPW5UB67vuQ1cKDNLJ
+	 4VH3NA663e50WSvFZ7aG0v0c83Tdu2xsZ0SxcV24IzaZNYklYeDfl9ErR3IYcmA9XJ
+	 PEjdBXkss2dEWfLKrzB0ivnqu9QbGttP/OervA/0pX50Zd3bL6kdMrgtjWRsnSDjP4
+	 kbK2nvpX3hPsy85yYPDoT7v6bG7/lcAnB2td/pPA0ikr4f2nDVRSoAevbjXyqhTl2s
+	 WtnQ5ioQkBb9g==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-kernel@vger.kernel.org
+Cc: keyrings@vger.kernel.org,
+	linux-integrity@vger.kernel.org,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Frank van der Linden <fvdl@google.com>,
+	linux-doc@vger.kernel.org (open list:DOCUMENTATION)
+Subject: [RFC PATCH] tpm, tpm_vtpm_proxy: boot-time TPM
+Date: Wed, 16 Jul 2025 15:18:21 +0300
+Message-Id: <20250716121823.173949-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 0/4] Reintroduce the sm2 algorithm
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-CC: Herbert Xu <herbert@gondor.apana.org.au>, David Howells
-	<dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Lukas Wunner
-	<lukas@wunner.de>, Ignat Korchagin <ignat@cloudflare.com>, "David S . Miller"
-	<davem@davemloft.net>, Jarkko Sakkinen <jarkko@kernel.org>, Maxime Coquelin
-	<mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Tianjia
- Zhang <tianjia.zhang@linux.alibaba.com>, Dan Carpenter
-	<dan.carpenter@linaro.org>, <keyrings@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
-	<linux-stm32@st-md-mailman.stormreply.com>,
-	<linux-arm-kernel@lists.infradead.org>, Lu Jialin <lujialin4@huawei.com>,
-	GONG Ruiqi <gongruiqi1@huawei.com>
-References: <20250630133934.766646-1-gubowen5@huawei.com>
- <aGaCTOJ30KNPOBIC@zx2c4.com>
-Content-Language: en-US
-From: Gu Bowen <gubowen5@huawei.com>
-In-Reply-To: <aGaCTOJ30KNPOBIC@zx2c4.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemh100007.china.huawei.com (7.202.181.92)
 
-Hi,
+From: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
 
-On 7/3/2025 9:14 PM, Jason A. Donenfeld wrote:
-> Hi,
-> 
-> On Mon, Jun 30, 2025 at 09:39:30PM +0800, Gu Bowen wrote:
->> To reintroduce the sm2 algorithm, the patch set did the following:
->>   - Reintroduce the mpi library based on libgcrypt.
->>   - Reintroduce ec implementation to MPI library.
->>   - Rework sm2 algorithm.
->>   - Support verification of X.509 certificates.
->>
->> Gu Bowen (4):
->>    Revert "Revert "lib/mpi: Extend the MPI library""
->>    Revert "Revert "lib/mpi: Introduce ec implementation to MPI library""
->>    crypto/sm2: Rework sm2 alg with sig_alg backend
->>    crypto/sm2: support SM2-with-SM3 verification of X.509 certificates
-> 
-> I am less than enthusiastic about this. Firstly, I'm kind of biased
-> against the whole "national flag algorithms" thing. But I don't know how
-> much weight that argument will have here. More importantly, however,
-> implementing this atop MPI sounds very bad. The more MPI we can get rid
-> of, the better.
-> 
-> Is MPI constant time? Usually the good way to implement EC algorithms
-> like this is to very carefully work out constant time (and fast!) field
-> arithmetic routines, verify their correctness, and then implement your
-> ECC atop that. At this point, there's *lots* of work out there on doing
-> fast verified ECC and a bunch of different frameworks for producing good
-> implementations. There are also other implementations out there you
-> could look at that people have presumably studied a lot. This is old
-> news. (In 3 minutes of scrolling around, I noticed that
-> count_leading_zeros() on a value is used as a loop index, for example.
-> Maybe fine, maybe not, I dunno; this stuff requires analysis.)
+Provide a kernel command-line parameter named as `supplicant`, which
+contains a path to an TPM emulator binary. When defind, the kernel will
+launch the program during boot-time.
 
-Actually, I wasn't very familiar with MPI in the past. Previously, the 
-implementation of sm2 was done through MPI, so I used it as well. 
-Perhaps I could try using the ecc algorithm in the kernel.
+This feature is most useful in feature testing e.g., in environments
+where other means are not possible, such as CI runners. Its original use
+case highlights also quite well of its applicability for pre-production
+hardware: it was used to provide a TPM implemnentation for a RISC-V SoC
+running on FPGA with no TPM HW implementation at the time.
 
-> On the other hand, maybe you don't care because you only implement
-> verification, not signing, so all info is public? If so, the fact that
-> you don't care about CT should probably be made pretty visible. But
-> either way, you should still be concerned with having an actually good &
-> correct implementation of which you feel strongly about the correctness.
-> 
-> Secondly, the MPI stuff you're proposing here adds a 25519 and 448
-> implementation, and support for weierstrauss, montgomery, and edwards,
-> and... surely you don't need all of this for SM-2. Why add all this
-> unused code? Presumably because you don't really understand or "own" all
-> of the code that you're proposing to add. And that gives me a lot of
-> hesitation, because somebody is going to have to maintain this, and if
-> the person sending patches with it isn't fully on top of it, we're not
-> off to a good start.
-> 
-> Lastly, just to nip in the bud the argument, "but weierstrauss is all
-> the same, so why not just have one library to do all possible
-> weierstrauss curves?" -- the fact that this series reintroduces the
-> removed "generic EC library" indicates there's actually not another user
-> of it, even before we get into questions of whether it's a good idea.
+Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
+---
+Bumped into this in my archives so thought to make it available just in
+case anyone is interested.
+---
+ .../admin-guide/kernel-parameters.txt         | 14 +++++
+ drivers/char/tpm/tpm_vtpm_proxy.c             | 51 +++++++++++++++++++
+ 2 files changed, 65 insertions(+)
 
-Thank you for your advice, it has been very beneficial for me as I just 
-started participating in the community. I will try to implement the 
-functionality with more robust code and only submit parts that I fully 
-understand.
-
-Best Regards，
-Guber
-
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index f1f2c0874da9..e062de99480e 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -7230,6 +7230,20 @@
+ 			defined by Trusted Computing Group (TCG) see
+ 			https://trustedcomputinggroup.org/resource/pc-client-platform-tpm-profile-ptp-specification/
+ 
++	tpm_vtpm_proxy.supplicant= [TPM]
++			When defined, this field must contain a legit path to a
++			program emulating a TPM chip, which will be started
++			during the driver initialization, thus providing a
++			mechanism for the user space have an emulated TPM from
++			the get go. Kernel prepares the process with a file
++			pre-opened file descriptor in the index 3 for
++			/dev/vtpmx.
++
++			An emulator can optionally provide support for
++			localities by reacting to the vendor command defined
++			by the driver: 0x20001000. Its payload is a single
++			byte containing the new locality.
++
+ 	tp_printk	[FTRACE]
+ 			Have the tracepoints sent to printk as well as the
+ 			tracing ring buffer. This is useful for early boot up
+diff --git a/drivers/char/tpm/tpm_vtpm_proxy.c b/drivers/char/tpm/tpm_vtpm_proxy.c
+index 0818bb517805..612f5251fdc0 100644
+--- a/drivers/char/tpm/tpm_vtpm_proxy.c
++++ b/drivers/char/tpm/tpm_vtpm_proxy.c
+@@ -51,6 +51,8 @@ struct proxy_dev {
+ #define VTPM_PROXY_FLAGS_ALL  (VTPM_PROXY_FLAG_TPM2)
+ 
+ static struct workqueue_struct *workqueue;
++static char *supplicant;
++module_param(supplicant, charp, 0);
+ 
+ static void vtpm_proxy_delete_device(struct proxy_dev *proxy_dev);
+ 
+@@ -678,6 +680,55 @@ static const struct file_operations vtpmx_fops = {
+ 	.llseek = noop_llseek,
+ };
+ 
++static int vtpmx_supplicant_setup(struct subprocess_info *info, struct cred *new)
++{
++	struct vtpm_proxy_new_dev dev = { .flags = VTPM_PROXY_FLAG_TPM2 };
++	struct file *file = vtpm_proxy_create_device(&dev);
++
++	if (IS_ERR(file))
++		return PTR_ERR(file);
++
++	fd_install(dev.fd, file);
++	return 0;
++}
++
++static void vtpmx_supplicant_cleanup(struct subprocess_info *info)
++{
++}
++
++static int vtpmx_supplicant_init(void)
++{
++	static const char * const argv[] = { supplicant, NULL };
++	struct subprocess_info *info;
++	int ret;
++
++	if (!supplicant)
++		return 0;
++
++	info = call_usermodehelper_setup(argv[0], (char **)argv, NULL,
++					 GFP_KERNEL, vtpmx_supplicant_setup,
++					 vtpmx_supplicant_cleanup, NULL);
++	if (!info)
++		return -ENOMEM;
++
++	ret = call_usermodehelper_exec(info, UMH_KILLABLE | UMH_NO_WAIT);
++	if (ret)
++		return ret;
++
++	return 0;
++}
++
++static int vtpmx_init(void)
++{
++	int ret;
++
++	ret = vtpmx_supplicant_init();
++	if (ret)
++		return ret;
++
++	return misc_register(&vtpmx_miscdev);
++}
++
+ static struct miscdevice vtpmx_miscdev = {
+ 	.minor = MISC_DYNAMIC_MINOR,
+ 	.name = "vtpmx",
+-- 
+2.39.5
 
 
