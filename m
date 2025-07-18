@@ -1,86 +1,89 @@
-Return-Path: <keyrings+bounces-2925-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2926-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8309B0AC9E
-	for <lists+keyrings@lfdr.de>; Sat, 19 Jul 2025 01:46:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA267B0AC9F
+	for <lists+keyrings@lfdr.de>; Sat, 19 Jul 2025 01:46:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B8E61C4768E
-	for <lists+keyrings@lfdr.de>; Fri, 18 Jul 2025 23:46:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D3A15A50ED
+	for <lists+keyrings@lfdr.de>; Fri, 18 Jul 2025 23:46:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3E4222594;
-	Fri, 18 Jul 2025 23:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB4A49641;
+	Fri, 18 Jul 2025 23:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b="Wdl7fQ+j"
+	dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b="SxbZO/qx"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAD649641
-	for <keyrings@vger.kernel.org>; Fri, 18 Jul 2025 23:46:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C5479CD
+	for <keyrings@vger.kernel.org>; Fri, 18 Jul 2025 23:46:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752882370; cv=none; b=DkZbhlaHRIA7baqX+ZH6ehfncelibP9Km97gltL4/Z9WXONZypRDWlvX4AZdC6uIcZylGg2xY0qk/eswrYhuh6tXpHaKOXTdcdPci+Ww8d4I1KE+v4fzqKTBsI5Gir0shBj6c3YBRxIPg7XfKsgjLttYFPDD9mhke6Gf2UHxVyE=
+	t=1752882376; cv=none; b=trMYtW3sO+THL03Nghfntvak4C0/KnTVk/C2szZG+GilFF8wGOvjRW3VBivsDSh21zbMjTrNBfojAcsQPjmqdqdwfZXmffBdCsDJraLnDZIewT46rFlr+rRCu5yna6vroH+R6Fe5rmFqPxOBs9bgm6FAc18O8CBIIczCJG9xrEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752882370; c=relaxed/simple;
-	bh=GfWZmNOG0hq/W/Iv1YiUdhYkj4ETxUFCrPZ1sR3oDxs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g+vVfnTn6PDOcZdSaw/XiS7asU8QK25NHYyG1pkJejNf9kzYgp+NaYfRB2n2xK18FOVn7tMByq951VVjOxbV9mZIVXkxlJMdZNi9w09GcHtDmGzRB+ShYsq6zVoIIwGtQNS9TBi1McXwoTJyu6y8ELN4KmoMAoXpxC5d3UQlzJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com; spf=pass smtp.mailfrom=arista.com; dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b=Wdl7fQ+j; arc=none smtp.client-ip=209.85.210.173
+	s=arc-20240116; t=1752882376; c=relaxed/simple;
+	bh=Onkr0OH2V6F7j2w/NZSWwOradfAwGcHWsUtwhgHm428=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rjz1/aHkUE51qaPsSiTBmwix4GS/mZxqaIHUh9Cm3u3m9oS7xDm3UQLJvXm2fRbmakAf9epN7vZ12hNMvaZxn7o6Dp/TMx2AJclVkFrv0/DWM9jnfnCOQmLuhI/+LXljcAlN9GBvfYBK2ozmLIbvHAAE2zKI+NzwB6nrU6d1exw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com; spf=pass smtp.mailfrom=arista.com; dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b=SxbZO/qx; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arista.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-748d982e92cso1915619b3a.1
-        for <keyrings@vger.kernel.org>; Fri, 18 Jul 2025 16:46:08 -0700 (PDT)
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-749068b9b63so1889413b3a.0
+        for <keyrings@vger.kernel.org>; Fri, 18 Jul 2025 16:46:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=arista.com; s=google; t=1752882368; x=1753487168; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rlp+2sot0Gt0xLa5r44LUEA4W9NMp3e7LlnvL0KJIX8=;
-        b=Wdl7fQ+jiA663d3mNeYWTeaNF0nUoO7siTLrNPR1X2L8Wl9wDWeXvTzuqNho4jimZV
-         38TDpShugaLe+upVwD3ZBsQmgPGdGfUA/wDH0OtvIKxU5QgBsge31Yu7oP+w0V52R/Q9
-         gVKCLGKo5JXBU1o7I0jwgIia9xFv8lChs5uGTtT8KIeoaFL3TdXUTtFhqJVc7HpY28F4
-         DgjPnUsc7viVix1UEBSpfx+EAHEaHCHGSruBfRn+DEEWN3cNUj/Waqt5xibIl+mGBFg6
-         b9pauesJarfVxUrDPChngIcwMzW/6f8kKF1nq2qbGPEqGgNNU8XgAUiA9EODA9yM0CPg
-         TOeQ==
+        d=arista.com; s=google; t=1752882374; x=1753487174; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tX9FTXz6v+4nlcFIDHUki4atSIabawXY5iL71TYu2MU=;
+        b=SxbZO/qxHWFs1ZHMTIaVW3a+bkaGP7Elf9XvHQMaj6xOmwkDNuKxss3fMMNJIRMEPI
+         yVmKrtRylzrFxBD7VGp2wyxHm4B4QD4//LNGY+ckrFZcBHheGZZnNyJu4qesxU8I9vML
+         eeic+dcC70JzeBrRm/i+vEtQVkb+5JlMZm1gz5ML13G1sehs8MFluhZ5d++nEAd3ZN9m
+         KahylUfPx06gHzS15/OAj9ibmLDtNjX6+d+cNgu19Hg6aQwzTwaAaY16Z6NtQSsREiwW
+         6oWj9R1VtOh+a57VjIxC4E+kqSeuRIiuVLE5o3B8n2GO7S9JklcB4/AGyRSr3ZYoi0zm
+         Ud6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1752882368; x=1753487168;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rlp+2sot0Gt0xLa5r44LUEA4W9NMp3e7LlnvL0KJIX8=;
-        b=SG7WKUvDIPQK0iGJYjq8n0Es4KmD/yeRjLuu+bMEZ2qFW/qLzV9rxQgIigy/VYKdK2
-         SrKOWzlENXBHG/LH7CFVl3bNJiRIgf2xwxIlHC0zqvcfwPJqo96Bg3T6nf6N5u9O8oeO
-         qRp7sjoCJZFlZ+G4FTa4Q8HMWG+sJq2x0beAr8/72GU3a+15SsDg1ftdX5xI3nhKZTaH
-         sE32GEcUQwd57HDYOCiytYEH/sxprWa4cwaBE1LP43yKb3ZRJ+D+IUoShaCfApFUTrYV
-         e0F03Uh47djffdjdSo1/UF0TvB0f8bW3C0XRyVtnV9IXRUyZWBLhEfUFsYISvipLiqez
-         9qSg==
-X-Gm-Message-State: AOJu0YyaPx17C5nLlFUvtmXUkc2EOCJJHEkp3OLvWv2Dk8Amx75uBNCM
-	FF4EcX2/Z1fvBAhWBVjio+Yvsv1FsANNOVthM0LOs5k+pMVs8iiLjivqVoIcVAqdksj2mXzn2We
-	8/xpRr72N
-X-Gm-Gg: ASbGncvymLq1V4xHx6wAuz/iEqjOmpSwU7prOHyLCYdRv61fl+GpBf3V5gbLZeFPupX
-	luDD+5A+3/Ub+BhKxwe2YQ77IdSLwtEo1cNga2OxcKgRndkQR8zLMXbnIK6wH7FSzoHIaWKFdtF
-	P43KIaolXlh5fJ5ZjNhiS/cr3ISqHLNt6+qiD0/DQQSJlXFpuoXfARM7UNm9BlP/7LDHIkXpw8r
-	ssSkFj+lGgY7IsBbrOS6MfQaZ8Uk6qhMObERR8IXVFXM8xn1xyhgF0mdrtb0A7eCjOFYKCGYjSY
-	Le9jz9map0A6M2VScX5GfS7JHtv9QqmcRt6FLrP+BiiAsaYoBHhKE74Wth32+uZO9z6d4YTBGBs
-	7uVia1Wn9JTiCSXJbl5k7um/wFf7jPbTvc7j8PRibHXtIng1AHssDsKXXstd2r+aGJr36mobmUB
-	WnlA==
-X-Google-Smtp-Source: AGHT+IEcUSDakr1jp7cGp+obGP/DlgXvMwutg05P8yTQ3n1EHnvpYslwPXbbRBdow5qYz4ouOJHPEQ==
-X-Received: by 2002:a05:6a00:230b:b0:748:3964:6177 with SMTP id d2e1a72fcca58-756ea7bf77cmr18627685b3a.19.1752882367571;
-        Fri, 18 Jul 2025 16:46:07 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1752882374; x=1753487174;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tX9FTXz6v+4nlcFIDHUki4atSIabawXY5iL71TYu2MU=;
+        b=vbQ2O0Z5Y+flHbqgqe/kaUmDC6Y5stffiZRXBYvwGIqdWLE9akKl1nQOzdDlQfmdXD
+         +SwqT2BHXsILOrdDKqtOcGinLLpnYHQcg0kMyFM0QspOOCKdd9ujL/Vc1D23HsXAfIP5
+         vkqDAkBQPTtvQo2T8nDSzTIUgAcBX2LWdCvhq+93P1Dc9p+ND54N7P4MUMjLp2pnbruW
+         8atH8TSFKCRlsUVwGOtsnDTGuxEpr09zboMSPWuDbgF6/xs12JpcDCGz2RXkNx1oPjpB
+         A5N/1Xl4P359b+xaQWZnDNJmvHU7evQ0Rc3Di2495BWAI3wzoqOszzFv5/xUHNRIoidx
+         9vIQ==
+X-Gm-Message-State: AOJu0YzZUsCpCkMAY52x70oCb0dEKVohlf4E67FrsmczeMmCuFZ2Vqwm
+	1+XNtqUju7TJ0l9NJODKCI9DbKVkyvS62pW1sNhPfpLTVoTuMPmDqOeM/jmQjdylGl8NCQeiUU8
+	QAm2O/H8B
+X-Gm-Gg: ASbGncvfG5zPVrd+bp3M5XuJ3inkP0J2quVLYtEh5XZ+JKP8mrUF6mtKMwSH0lihEPA
+	bKQCCfmMev/337x1Aw6jJHFvgy22zknJ05mi5lsRV118JezuwCgH3kpLjYaw5UjvgCl3Tv0gaFw
+	ZiY32ICjnw3kcYcyATP9qpC5BQyuCEaQHKrawVI3BcI5syE70AJFZHdn4VTfTkfwKE5lFEhmDOG
+	I2oejqWQrWwoTQ3iM5KWMxDBBZBrfB9fhlun1uJVrkIpmnPHBeEJxo5PrwXNyg9Kwx/aCkksFYa
+	KRqHDWvCxrI/9Pp3SgmZesGT3gAZbN8y3ctjnqiPKrUGJYJkRIRWC8HrYhDEgcPCndQpmsOd/Rm
+	SWoCodHfXdVgehytLDHN/rPcPI9f0eFMXzcxYioUlKLvrffAst1It09+zvseOBrtwpnU=
+X-Google-Smtp-Source: AGHT+IEHsNj9UHU+PPRo5FPoqnHxisUszzui4y/K88IuEVxDKgyvYEu3CCAHXFa7pCCDtxUmd9avRQ==
+X-Received: by 2002:a05:6a00:1410:b0:748:f41d:69d2 with SMTP id d2e1a72fcca58-756e7acfa48mr19536348b3a.4.1752882373563;
+        Fri, 18 Jul 2025 16:46:13 -0700 (PDT)
 Received: from dannyhu-keyringsMachineTpm.sjc.aristanetworks.com ([74.123.28.15])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759c84e26fbsm1861635b3a.27.2025.07.18.16.46.06
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-759c84e26fbsm1861635b3a.27.2025.07.18.16.46.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Jul 2025 16:46:07 -0700 (PDT)
+        Fri, 18 Jul 2025 16:46:13 -0700 (PDT)
 From: Danny Hu <dannyhu@arista.com>
 To: keyrings@vger.kernel.org
 Cc: dhowells@redhat.com,
 	dwmw2@infradead.org,
 	Danny Hu <dannyhu@arista.com>
-Subject: [PATCH 1/2] sign-file: Fix memory leaks in the sign-file tool
-Date: Fri, 18 Jul 2025 16:45:40 -0700
-Message-ID: <20250718234541.3087-1-dannyhu@arista.com>
+Subject: [PATCH 2/2] sign-file: Extend sign-file tool to allow for certificate to be embedded in the signature
+Date: Fri, 18 Jul 2025 16:45:41 -0700
+Message-ID: <20250718234541.3087-2-dannyhu@arista.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250718234541.3087-1-dannyhu@arista.com>
+References: <20250718234541.3087-1-dannyhu@arista.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -89,72 +92,103 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix memory leaks in the sign-file tool by:
-1. Freeing the strings that have been allocated via asprintf.
-This includes sig_file_name and dest_name.
+Add an optional `-i` flag to the sign-file tool provides the ability to
+embed the signing certificate in the signature generated by the
+sign-file tool.
 
-2. Initialize X509 and EVP_PKEY pointers with NULL to avoid
-compiler warnings about uninitalized variables.
+This change is crucial for enabling the use of certificate hierarchies
+(chain of trust) within the kernel's Integrity Measurement Architecture
+(IMA). Critically, IMA can appraise kernel binaries and initrds signed by
+the sign-file tool.
 
-3. Ensuring that any structs which have been allocated are freed
-with their respective free functions.
+Without this change, kernel binaries and initrds are limited to being
+signed directly by keys present in the `.ima` keyring. The kernel
+already has the facilities to extract and process embedded certificates
+so we can leverage this by embedding the signing certificate in appended
+signature to provide the kernel the information to perform full path
+validation in the certificate hierarchy.
+
+This enhancement improves the flexibility and scalability of IMA
+deployments. Organizations can now leverage their existing Public Key
+Infrastructure by signing kernel modules, executables, or other measured
+files with certificates issued by intermediate CAs within their trusted
+hierarchy, rather than requiring direct root CA signing for every single
+appraised file.
 
 Signed-off-by: Danny Hu <dannyhu@arista.com>
 ---
- scripts/sign-file.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ scripts/sign-file.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
 diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-index 7070245edfc1..0fa9b75f1c77 100644
+index 0fa9b75f1c77..83767dc2a720 100644
 --- a/scripts/sign-file.c
 +++ b/scripts/sign-file.c
-@@ -230,14 +230,14 @@ int main(int argc, char **argv)
+@@ -80,7 +80,7 @@ static __attribute__((noreturn))
+ void format(void)
+ {
+ 	fprintf(stderr,
+-		"Usage: scripts/sign-file [-dp] <hash algo> <key> <x509> <module> [<dest>]\n");
++		"Usage: scripts/sign-file [-dpi] <hash algo> <key> <x509> <module> [<dest>]\n");
+ 	fprintf(stderr,
+ 		"       scripts/sign-file -s <raw sig> <hash algo> <x509> <module> [<dest>]\n");
+ 	exit(2);
+@@ -228,7 +228,7 @@ int main(int argc, char **argv)
+ 	bool raw_sig = false;
+ 	unsigned char buf[4096];
  	unsigned long module_size, sig_size;
- 	unsigned int use_signed_attrs;
+-	unsigned int use_signed_attrs;
++	unsigned int use_signed_attrs, include_cert;
  	const EVP_MD *digest_algo;
--	EVP_PKEY *private_key;
-+	EVP_PKEY *private_key = NULL;
+ 	EVP_PKEY *private_key = NULL;
  #ifndef USE_PKCS7
- 	CMS_ContentInfo *cms = NULL;
- 	unsigned int use_keyid = 0;
- #else
- 	PKCS7 *pkcs7 = NULL;
- #endif
--	X509 *x509;
-+	X509 *x509 = NULL;
- 	BIO *bd, *bm;
- 	int opt, n;
- 	OpenSSL_add_all_algorithms();
-@@ -351,6 +351,7 @@ int main(int argc, char **argv)
- 			ERR(i2d_PKCS7_bio(b, pkcs7) != 1,
- 			    "%s", sig_file_name);
- #endif
-+			free(sig_file_name);
- 			BIO_free(b);
- 		}
+@@ -248,16 +248,19 @@ int main(int argc, char **argv)
  
-@@ -377,10 +378,14 @@ int main(int argc, char **argv)
- 	module_size = BIO_number_written(bd);
- 
- 	if (!raw_sig) {
-+		EVP_PKEY_free(private_key);
-+		X509_free(x509);
  #ifndef USE_PKCS7
- 		ERR(i2d_CMS_bio_stream(bd, cms, NULL, 0) != 1, "%s", dest_name);
-+		CMS_ContentInfo_free(cms);
+ 	use_signed_attrs = CMS_NOATTR;
++	include_cert = CMS_NOCERTS;
  #else
- 		ERR(i2d_PKCS7_bio(bd, pkcs7) != 1, "%s", dest_name);
-+		PKCS7_free(pkcs7);
+ 	use_signed_attrs = PKCS7_NOATTR;
++	include_cert = PKCS7_NOCERTS;
  #endif
- 	} else {
- 		BIO *b;
-@@ -406,5 +411,6 @@ int main(int argc, char **argv)
- 	if (replace_orig)
- 		ERR(rename(dest_name, module_name) < 0, "%s", dest_name);
  
-+	free(dest_name);
- 	return 0;
- }
+ 	do {
+-		opt = getopt(argc, argv, "sdpk");
++		opt = getopt(argc, argv, "sdpki");
+ 		switch (opt) {
+ 		case 's': raw_sig = true; break;
+ 		case 'p': save_sig = true; break;
+ 		case 'd': sign_only = true; save_sig = true; break;
++		case 'i': include_cert = 0; break;
+ #ifndef USE_PKCS7
+ 		case 'k': use_keyid = CMS_USE_KEYID; break;
+ #endif
+@@ -317,21 +320,21 @@ int main(int argc, char **argv)
+ #ifndef USE_PKCS7
+ 		/* Load the signature message from the digest buffer. */
+ 		cms = CMS_sign(NULL, NULL, NULL, NULL,
+-			       CMS_NOCERTS | CMS_PARTIAL | CMS_BINARY |
++			       include_cert | CMS_PARTIAL | CMS_BINARY |
+ 			       CMS_DETACHED | CMS_STREAM);
+ 		ERR(!cms, "CMS_sign");
+ 
+ 		ERR(!CMS_add1_signer(cms, x509, private_key, digest_algo,
+-				     CMS_NOCERTS | CMS_BINARY |
++				     include_cert | CMS_BINARY |
+ 				     CMS_NOSMIMECAP | use_keyid |
+ 				     use_signed_attrs),
+ 		    "CMS_add1_signer");
+-		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
++		ERR(CMS_final(cms, bm, NULL, include_cert | CMS_BINARY) != 1,
+ 		    "CMS_final");
+ 
+ #else
+ 		pkcs7 = PKCS7_sign(x509, private_key, NULL, bm,
+-				   PKCS7_NOCERTS | PKCS7_BINARY |
++				   include_cert | PKCS7_BINARY |
+ 				   PKCS7_DETACHED | use_signed_attrs);
+ 		ERR(!pkcs7, "PKCS7_sign");
+ #endif
 -- 
 2.47.0
 
