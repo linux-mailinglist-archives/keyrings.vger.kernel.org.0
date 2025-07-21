@@ -1,136 +1,130 @@
-Return-Path: <keyrings+bounces-2930-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2931-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9645B0C705
-	for <lists+keyrings@lfdr.de>; Mon, 21 Jul 2025 16:56:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1557EB0C856
+	for <lists+keyrings@lfdr.de>; Mon, 21 Jul 2025 17:59:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7455B3A2D42
-	for <lists+keyrings@lfdr.de>; Mon, 21 Jul 2025 14:55:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9229188D502
+	for <lists+keyrings@lfdr.de>; Mon, 21 Jul 2025 15:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4D42D0C7E;
-	Mon, 21 Jul 2025 14:55:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D4qrwjXj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40C72D63F9;
+	Mon, 21 Jul 2025 15:59:17 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from eidolon.nox.tf (eidolon.nox.tf [185.142.180.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E45B289E07
-	for <keyrings@vger.kernel.org>; Mon, 21 Jul 2025 14:55:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4182289804
+	for <keyrings@vger.kernel.org>; Mon, 21 Jul 2025 15:59:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753109757; cv=none; b=WCOexyMGzym4HHdhPzUfRfsJG7Jhu67b/6Tl7z8ucE40scnhOHk8xc3/5NTwTsZAHmUTSyqD3DrCXjw6YeLKTpQslfgwb3yV5Cbync4NQDf62mmFG8Ymf1HhqoYnZ15tast+QQhQdhUZkljvavJzp+KyROG4KolDbxHckMT/i+k=
+	t=1753113557; cv=none; b=SpD1Nxf0HqYloauTyNH6wT8Fa9ogLVXLdLELN4clybA4ruO9PMJP0Es9MFmLDQOYmZipWfmMgZmcosB98k1tGbImdsO4p86sMBbK/6eOgC/ZyBPmPPCZzxSMKndYdD84Yvhx8fyguBCcTkj/djLgEvvFGB1eT6B2+jBCxdEaaBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753109757; c=relaxed/simple;
-	bh=icHDG6QdluZP41phR7NW3BvJGZ6CNzzMYK0DBPYI9ic=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=vBXUKfnMwyB9Hl8/RRkiQX+SHTKA4/XrlziYLd1dSomn1PbvZoQg5Cs4UaTohP0/O6B1Lx6xrZAxxdlYAdj/mk8YV0Fl/dUwg2+NQjiPOukkZGD7PlQpysQeWV2aiLnwLO/RUCEVTy1gWtHfBYM66IEZV859QP/g0c9yYEz+HHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D4qrwjXj; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753109754;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=e2Wh3wSdrb09fmYGhTRJzbMDCoAcmNLpNDTD5FVsfRU=;
-	b=D4qrwjXjgJ5NQ45+Mu4wr7D5jLHGXblRRV8XhfU7FLhquR19076h/XuMXSTEeZI1W0wDkZ
-	tpuNNj5s2bnUZMWEFhdGCVjG/2SB7fiOgw1nqlIrwFfOo7InS3UwTIvQ5NbJDA3stai9cu
-	cxnXYLYsnS48NQ/gAfrYG6fDr7Fz1iA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-688-Qni8g5HtMy-nGonJzQI5wA-1; Mon,
- 21 Jul 2025 10:55:50 -0400
-X-MC-Unique: Qni8g5HtMy-nGonJzQI5wA-1
-X-Mimecast-MFC-AGG-ID: Qni8g5HtMy-nGonJzQI5wA_1753109749
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 77CE01800292;
-	Mon, 21 Jul 2025 14:55:48 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.8])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6980130001A4;
-	Mon, 21 Jul 2025 14:55:45 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <aGKZUfjsj6kGs726@eidolon.nox.tf>
-References: <aGKZUfjsj6kGs726@eidolon.nox.tf> <462886.1749731810@warthog.procyon.org.uk>
-To: David 'equinox' Lamparter <equinox@diac24.net>
-Cc: dhowells@redhat.com, keyrings@vger.kernel.org,
-    Jarkko Sakkinen <jarkko@kernel.org>,
-    Steve French <sfrench@samba.org>,
-    Chuck Lever <chuck.lever@oracle.com>,
-    Mimi Zohar <zohar@linux.ibm.com>, Paulo Alcantara <pc@manguebit.org>,
-    Herbert Xu <herbert@gondor.apana.org.au>,
-    Jeffrey Altman <jaltman@auristor.com>, hch@infradead.org
+	s=arc-20240116; t=1753113557; c=relaxed/simple;
+	bh=yz9Hg7sl8hl+M3XUs7Vt7KjyFnttOk+FajY8UnpJqPY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OYamyY+ow0IIIv51NjZXzgTzlTyK6Cp8KlHS+pFiX5qi7zXg8P2GvIcx6sTb+8c/j/E6iWpXxI66SJRy4EzqMMxS/NIoDD3Sk9gpRKrHI8JGFah8/d16Wxi5YHhCOPhyfsqW6G880w5ZuATtjyx9Pz0gxFkJ47Yv9fupmm9Lhic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=diac24.net; spf=pass smtp.mailfrom=diac24.net; arc=none smtp.client-ip=185.142.180.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=diac24.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=diac24.net
+Received: from equinox by eidolon.nox.tf with local (Exim 4.97.1)
+	(envelope-from <equinox@diac24.net>)
+	id 1udsu6-00000001GH1-0PKV;
+	Mon, 21 Jul 2025 17:58:14 +0200
+Date: Mon, 21 Jul 2025 17:58:14 +0200
+From: David 'equinox' Lamparter <equinox@diac24.net>
+To: David Howells <dhowells@redhat.com>
+Cc: keyrings@vger.kernel.org, Jarkko Sakkinen <jarkko@kernel.org>,
+	Steve French <sfrench@samba.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jeffrey Altman <jaltman@auristor.com>, hch@infradead.org
 Subject: Re: [RFC] Keyrings: How to make them more useful
+Message-ID: <aH5jlkyhlnoHF102@eidolon.nox.tf>
+References: <aGKZUfjsj6kGs726@eidolon.nox.tf>
+ <462886.1749731810@warthog.procyon.org.uk>
+ <4120270.1753109744@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <4120269.1753109744.1@warthog.procyon.org.uk>
-Date: Mon, 21 Jul 2025 15:55:44 +0100
-Message-ID: <4120270.1753109744@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4120270.1753109744@warthog.procyon.org.uk>
 
-David 'equinox' Lamparter <equinox@diac24.net> wrote:
-
-[Apologies, I've been off fixing bugs for a few weeks]
-
-> On Thu, Jun 12, 2025 at 01:36:50PM +0100, David Howells wrote:
-> > I think work needs to be done on the keyrings subsystem to make them more
-> > useful for network filesystems and other kernel services such as TLS and
-> > crypto.
+On Mon, Jul 21, 2025 at 03:55:44PM +0100, David Howells wrote:
+> David 'equinox' Lamparter <equinox@diac24.net> wrote:
+[...]
+> > As someone who has recently tried to use keyrings from userspace (in
+> > order to bind key material to a TPM, and have it never enter user
+> > memory), I would note two things here:
+> > 
+> > * the request_key() syscall seems to be blocking.  Of course you can
+> >   work around that by creating a thread, but is it not possible to
+> >   create a better API?
 > 
-> As someone who has recently tried to use keyrings from userspace (in
-> order to bind key material to a TPM, and have it never enter user
-> memory), I would note two things here:
+> Depends what you mean by a "better API".  Unfortunately, we're somewhat stuck
+> with this API - it has to go on working pretty much as-is.  However, some
+> things can be changed.
+
+I'm painfully aware of the no breaking userspace rule, and it certainly
+applies here :(.
+
+> request_key() can block, yes - that's part of the design.  It can upcall to
+> userspace to go and get the content for a key - and this might involve, say,
+> network calls to a KDC.  Now, the exact upcalling mechanism can be done better
+> - and that's one of the things I included in my list - but it should not block
+> forever and, ideally, if someone presses Ctrl-C, it should perhaps terminate
+> the upcall.
+
+Well, I'm a networking person, so my immediate association is netlink.
+As in, request_key() is a KEYCTL_REQUEST_KEY message that you get a
+KEYCTL_RESULT_KEY response to -- at some point later.  (With request
+abort if the socket gets closed for whatever reason.)
+
+To be entirely honest I was also surprised to see the keyring monitoring
+bits have this WATCH_QUEUE thing (that nobody else seems to be using?)
+rather than just throwing up netlink multicast.  There's probably some
+backstory to this that I'm unaware of.
+
+> > * the trusted key / TPM bits are incredibly poorly documented.  It's
+> >   basically "cobble together things from old patch descriptions", e.g.
+> >   https://marc.info/?l=linux-keyrings&m=160074197025246
+> >   (I still have not figured out how to do this correctly.  Some of that
+> >   is to blame on the TPM bits, but not all.)
 > 
-> * the request_key() syscall seems to be blocking.  Of course you can
->   work around that by creating a thread, but is it not possible to
->   create a better API?
+> Note that the trusted key/TPM bits aren't part of the core keyrings code.
+> Trusted and encrypted keys are examples of key types.
 
-Depends what you mean by a "better API".  Unfortunately, we're somewhat stuck
-with this API - it has to go on working pretty much as-is.  However, some
-things can be changed.
+I know -- maybe I should make another comment here:  the trusted/TPM
+bits, through the keyring API, are *actually quite useful* for
+userspace, especially combined with AF_ALG's ALG_SET_KEY_BY_KEY_SERIAL.
+Doing crypto with a key that never enters userspace - amazing!
 
-request_key() can block, yes - that's part of the design.  It can upcall to
-userspace to go and get the content for a key - and this might involve, say,
-network calls to a KDC.  Now, the exact upcalling mechanism can be done better
-- and that's one of the things I included in my list - but it should not block
-forever and, ideally, if someone presses Ctrl-C, it should perhaps terminate
-the upcall.
+So maybe let me replace my message here with "please don't forget about
+userspace".  Which does include documenting things ;).
 
-> * the trusted key / TPM bits are incredibly poorly documented.  It's
->   basically "cobble together things from old patch descriptions", e.g.
->   https://marc.info/?l=linux-keyrings&m=160074197025246
->   (I still have not figured out how to do this correctly.  Some of that
->   is to blame on the TPM bits, but not all.)
+> > I guess the kernel itself doesn't care about the blocking API, but for
+> > trusted keys...  you'll have to tie things together from user space, and
+> > I don't see how anyone can do that, especially with any level of
+> > confidence that they didn't accidentally leave some wide-open hole (as
+> > in - you might well get something to work, but without docs you can't
+> > check you actually did it *right*.)  This is really improving keyctl
+> > itself (i.e. how its commands are invoked) and also its documentation.
+> 
+> Are you talking about keyctl() the syscall or keyctl the program?
 
-Note that the trusted key/TPM bits aren't part of the core keyrings code.
-Trusted and encrypted keys are examples of key types.
+Sorry, keyctl the program.  I haven't tried using the syscall directly,
+libkeyutils is reasonable (easier to understand than the program, maybe.)
 
-> I guess the kernel itself doesn't care about the blocking API, but for
-> trusted keys...  you'll have to tie things together from user space, and
-> I don't see how anyone can do that, especially with any level of
-> confidence that they didn't accidentally leave some wide-open hole (as
-> in - you might well get something to work, but without docs you can't
-> check you actually did it *right*.)  This is really improving keyctl
-> itself (i.e. how its commands are invoked) and also its documentation.
+Cheers,
 
-Are you talking about keyctl() the syscall or keyctl the program?
 
-David
-
+equi
 
