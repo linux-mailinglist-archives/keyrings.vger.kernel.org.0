@@ -1,149 +1,149 @@
-Return-Path: <keyrings+bounces-2928-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2929-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B492B0B05F
-	for <lists+keyrings@lfdr.de>; Sat, 19 Jul 2025 16:17:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3DAB0C3CC
+	for <lists+keyrings@lfdr.de>; Mon, 21 Jul 2025 14:05:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9E971AA1F02
-	for <lists+keyrings@lfdr.de>; Sat, 19 Jul 2025 14:17:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FE7B1658CF
+	for <lists+keyrings@lfdr.de>; Mon, 21 Jul 2025 12:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12D84F5E0;
-	Sat, 19 Jul 2025 14:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE3628C871;
+	Mon, 21 Jul 2025 12:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SVUdM+0K"
+	dkim=pass (2048-bit key) header.d=benboeckel.net header.i=@benboeckel.net header.b="NvbihBwj";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="CCeJe81Z"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E717881E;
-	Sat, 19 Jul 2025 14:17:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738111ABED9
+	for <keyrings@vger.kernel.org>; Mon, 21 Jul 2025 12:05:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1752934644; cv=none; b=n9nFkoODNn1fj084wa6EhWRMwi9NWfW2ENLLkGyP0hp3Hv9gzd6LbCDxxtf76sdRMAI64PhXbD2Agb63MtD/PJAQHfoWB1pHDEY4B9FD7tgl0eR8Oaqh1xhJ74GJLCdjHvRYeOiUyIba6UfViPyyf5BNz0Oa4HcUtnPPHSC7Go0=
+	t=1753099507; cv=none; b=cbLWqgtGH4g5vw6LmcztPSk4ZxNMwXpCA1wWbSN+5iHw8CvVaT9JbWIP0ZKfuwcuJDLys8X06nD5TM+j80VK0eaS6X8I66doGXhHRnn++k+I8cAZaqAdFZjUmI3fNdUAGTfkCdlmeU/Lvb8GNYjoUjT3VLwd02ZtJUdz4tdqS7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1752934644; c=relaxed/simple;
-	bh=KUofb521B8AZVG1D7BsR/ikz80zn5hGl17C7QpRR16o=;
+	s=arc-20240116; t=1753099507; c=relaxed/simple;
+	bh=Ph4c3DwMg9QMCL1PvGRfd6CtV2LTnwj5k8/dgjb5uEg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nyjWhbSltVZlQ6nz4nl7bkY2EvnU62K2dRVC3nDilO3y0EF+lrac2eZDrPpe2x2Bk0r4/yCnoVx7hPzWEFKMBHxBgpCL6G1DPYXYLlUwtTyIoFUT2OemMPLW9PgTCCNRim/8eNpS+lqvd+hgvE+1mDB96Lu4WKfcb3tDYW44Ph4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SVUdM+0K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F87AC4CEE7;
-	Sat, 19 Jul 2025 14:17:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1752934644;
-	bh=KUofb521B8AZVG1D7BsR/ikz80zn5hGl17C7QpRR16o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SVUdM+0K0jGe4rVqrY0b0y344DhaNF/P4l5qjcxHDZvjs1Sz5lEaHuUgqbvaNEk53
-	 qQnUBOgvlrcAm4zN71fyfN0akPvw/r1ml61YT3oGeexTcYdu/yhx9FzkdMacNyRNTE
-	 zyv+HGIXmcJ0L36rHQzw5SOny2Rg8llXUoO/L8Si1gfO5eJCm5+HS+FjpcPSHzj46P
-	 wwH+vlfJORYkYA65kjGqarey6/GIYwgDIS+PBmngoO9/dqd8SZTjQXQ77/y7bSQnem
-	 2aXfilZYH0Gma9kVAdLA7hP3yS6+DftAVDwDHFrwttCgKK6fRvpP/mcsYh6NPp0qYL
-	 8r1iJCcLOAHyw==
-Date: Sat, 19 Jul 2025 17:17:20 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-kernel@vger.kernel.org, keyrings@vger.kernel.org,
-	linux-integrity@vger.kernel.org,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
-	Jonathan Corbet <corbet@lwn.net>, Peter Huewe <peterhuewe@gmx.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Frank van der Linden <fvdl@google.com>,
-	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>
-Subject: Re: [RFC PATCH] tpm, tpm_vtpm_proxy: boot-time TPM
-Message-ID: <aHuo8Fh_S8aEi7VM@kernel.org>
-References: <20250716121823.173949-1-jarkko@kernel.org>
- <bfcc3a24-b48c-48a6-8280-07f7a2669e6b@infradead.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hj0uSdFwmAUgjAuMfipDJcALztDaqK/p4oEEl7kH2/b8aRRLVjWGTac8Seq1eV9kl23fXbJXbRODa3V0rMmVNNwv+r3p5GnqTQ9UmijNsuGrwNzwXFxXhO2YAxwFvKbaNkhQTUd8erAAgsrGeI5iLd6buXPsL9IGPTiFr4AhXgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=benboeckel.net; spf=pass smtp.mailfrom=benboeckel.net; dkim=pass (2048-bit key) header.d=benboeckel.net header.i=@benboeckel.net header.b=NvbihBwj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=CCeJe81Z; arc=none smtp.client-ip=202.12.124.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=benboeckel.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=benboeckel.net
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 408D77A022A;
+	Mon, 21 Jul 2025 08:05:04 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Mon, 21 Jul 2025 08:05:04 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:reply-to:subject:subject:to:to; s=fm1; t=1753099504;
+	 x=1753185904; bh=ZfQmaoVfbESot+jsp968Q7KG6MJ/X4wre3iM3AU35rA=; b=
+	NvbihBwjtJweRNLRLCqjMwH5QZvvf58agE1x5t48GrLpoxcCtzVsWMICYVSsGYmU
+	D6gg/q/+KhC2ekVIRMCE/0hbq+IqtfjjnFtmsjUxgzmSTRXWjfxPYbZEJjRxNytB
+	6J70q4TvzFxcn9ql5QH8tCmGF1UZriqZicf1Svr4+BXirUsZMSgEuS6KQH04wYoQ
+	t5Z5QYSsO1yI3iF025PJxVcdJvP9zyabgoNv5PargdwslhohzW4Dn98hral2SgDQ
+	o3gXU89sv+w/df5MO8tzcdh3W50ecz0Ygi6Oj5Or8MgjpcZEeqMs5ks+fxfVKlAT
+	JztKPoBH/Yl1v3o6NPK87A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1753099504; x=1753185904; bh=ZfQmaoVfbESot+jsp968Q7KG6MJ/
+	X4wre3iM3AU35rA=; b=CCeJe81Z8avm+qf3eKbhhjpccPOPR5hJVkuiaEBa6ig9
+	czMv3f1VbU03P51tdHnSsrOpsQO+ftrQoO8HSMOaLXQHZ48JNhOmjInKztYQEnD7
+	LIzK35t5eDZpb94Wcyrhv3Jql8+JFuqs+fo2Tru2U2eFD1RgHdthfJQjEfeF0z2N
+	S9XRW0VbZjGMBuXFTesFLEf4yj88NSP1tee8clq17K/3s9OaEY4SkyucNfeCF4B6
+	IMJaQMIY8OLmjSUWl5UZnSmvzhdbI79vNFryEud7dxS/E99tWhWtW3t8arqLnsW2
+	EasxxgaXYIcowa3RI7BiQMkfJLJ8e35YB8O+hTEYEg==
+X-ME-Sender: <xms:7ix-aDn0heZHAuBNtED_NYjbTUplhBkS4mOuvkKnLXdrC6wDzYVlYA>
+    <xme:7ix-aLNrUdtSWBpzCXg3ngS3aWyA3t7Z5S12fjypMzhjE1RBkFs5AEdw1IxVib1mI
+    1H6f8itHLiZO8jL-xY>
+X-ME-Received: <xmr:7ix-aHjqHz6SMi2M1XH6uYpN5XSknDr1GOgue4iDiilZK98ZhA_7rzoBRF5F31no9-uHeueJbaTRcV3s8TZhxaM2HC3Gu117gY0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdefgdejvddtgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfhrfhggtggujggfsehttdertddtreejnecuhfhrohhmpeeuvghnuceu
+    ohgvtghkvghluceomhgvsegsvghnsghovggtkhgvlhdrnhgvtheqnecuggftrfgrthhtvg
+    hrnhepudevhfejffeigfffhefguedvfeefueffudeiiefgudekhfdugeegkedujedujeeh
+    necuffhomhgrihhnpehmrghrtgdrihhnfhhopdhgihhthhhusgdrtghomhdpthhruhhsth
+    gvugdrrhhsnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhho
+    mhepmhgvsegsvghnsghovggtkhgvlhdrnhgvthdpnhgspghrtghpthhtohepuddupdhmoh
+    guvgepshhmthhpohhuthdprhgtphhtthhopegvqhhuihhnohigseguihgrtgdvgedrnhgv
+    thdprhgtphhtthhopehkvgihrhhinhhgshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopeguhhhofigvlhhlshesrhgvughhrghtrdgtohhmpdhrtghpthhtohepjhgr
+    rhhkkhhosehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsfhhrvghntghhsehsrghmsg
+    grrdhorhhgpdhrtghpthhtoheptghhuhgtkhdrlhgvvhgvrhesohhrrggtlhgvrdgtohhm
+    pdhrtghpthhtohepiihohhgrrheslhhinhhugidrihgsmhdrtghomhdprhgtphhtthhope
+    hptgesmhgrnhhguhgvsghithdrohhrghdprhgtphhtthhopehhvghrsggvrhhtsehgohhn
+    ughorhdrrghprghnrgdrohhrghdrrghu
+X-ME-Proxy: <xmx:7ix-aJg7aZ1opVNvMAwB8NxndFYGsa6U6JWpGOOpS8CnMajnC9d7JQ>
+    <xmx:7ix-aGLBd3wGkPx9ppj4g0Y2w5G5A1q-pG3Q_asdS7xFFI4QM2qPzw>
+    <xmx:7ix-aIlwrKLwbGN6zJ1RFy3bvPp9JQ4r5b42mVRwrXJACU5AwgfvYg>
+    <xmx:7ix-aON-PQ-_o7rIvu7M0KhfzJArQoE-BNgWca8zdPU0w3XkDV-d7A>
+    <xmx:8Cx-aB17XLKtzP7st3mU-1KW0UkQXq6mR7HVn0cYwyECTxBq4y53V0um>
+Feedback-ID: iffc1478b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 21 Jul 2025 08:05:01 -0400 (EDT)
+Date: Mon, 21 Jul 2025 08:04:59 -0400
+From: Ben Boeckel <me@benboeckel.net>
+To: David 'equinox' Lamparter <equinox@diac24.net>
+Cc: keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Steve French <sfrench@samba.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Paulo Alcantara <pc@manguebit.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Jeffrey Altman <jaltman@auristor.com>, hch@infradead.org
+Subject: Re: [RFC] Keyrings: How to make them more useful
+Message-ID: <aH4s6w6AgEJ2LDVr@farprobe>
+Reply-To: list.lkml.keyrings@me.benboeckel.net
+References: <462886.1749731810@warthog.procyon.org.uk>
+ <aGKZUfjsj6kGs726@eidolon.nox.tf>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <bfcc3a24-b48c-48a6-8280-07f7a2669e6b@infradead.org>
+In-Reply-To: <aGKZUfjsj6kGs726@eidolon.nox.tf>
+User-Agent: Mutt/2.2.14 (2025-02-20)
 
-On Wed, Jul 16, 2025 at 11:44:02AM -0700, Randy Dunlap wrote:
-> (mostly nits, along with Paul's comments)
+On Mon, Jun 30, 2025 at 16:04:01 +0200, David 'equinox' Lamparter wrote:
+> * the trusted key / TPM bits are incredibly poorly documented.  It's
+>   basically "cobble together things from old patch descriptions", e.g.
+>   https://marc.info/?l=linux-keyrings&m=160074197025246
+>   (I still have not figured out how to do this correctly.  Some of that
+>   is to blame on the TPM bits, but not all.)
 > 
-> 
-> On 7/16/25 5:18 AM, Jarkko Sakkinen wrote:
-> > From: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
-> > 
-> > Provide a kernel command-line parameter named as `supplicant`, which
-> > contains a path to an TPM emulator binary. When defind, the kernel will
-> 
->                   to a TPM
-> 
-> > launch the program during boot-time.
-> > 
-> > This feature is most useful in feature testing e.g., in environments
-> 
->                                          testing, e.g.,
-> 
-> > where other means are not possible, such as CI runners. Its original use
-> > case highlights also quite well of its applicability for pre-production
-> > hardware: it was used to provide a TPM implemnentation for a RISC-V SoC
-> > running on FPGA with no TPM HW implementation at the time.
-> > 
-> > Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
-> > ---
-> > Bumped into this in my archives so thought to make it available just in
-> > case anyone is interested.
-> > ---
-> >  .../admin-guide/kernel-parameters.txt         | 14 +++++
-> >  drivers/char/tpm/tpm_vtpm_proxy.c             | 51 +++++++++++++++++++
-> >  2 files changed, 65 insertions(+)
-> > 
-> > diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-> > index f1f2c0874da9..e062de99480e 100644
-> > --- a/Documentation/admin-guide/kernel-parameters.txt
-> > +++ b/Documentation/admin-guide/kernel-parameters.txt
-> > @@ -7230,6 +7230,20 @@
-> >  			defined by Trusted Computing Group (TCG) see
-> >  			https://trustedcomputinggroup.org/resource/pc-client-platform-tpm-profile-ptp-specification/
-> >  
-> > +	tpm_vtpm_proxy.supplicant= [TPM]
-> > +			When defined, this field must contain a legit path to a
-> 
-> 			                                        legitimate
-> or			                                        valid
-> 
-> > +			program emulating a TPM chip, which will be started
-> > +			during the driver initialization, thus providing a
-> > +			mechanism for the user space have an emulated TPM from
-> > +			the get go. Kernel prepares the process with a file
-> 
-> 			    get-go.
-> or just don't use slang terms.
-> 
-> > +			pre-opened file descriptor in the index 3 for
-> > +			/dev/vtpmx.
-> > +
-> > +			An emulator can optionally provide support for
-> > +			localities by reacting to the vendor command defined
-> > +			by the driver: 0x20001000. Its payload is a single
-> > +			byte containing the new locality.
-> > +
-> >  	tp_printk	[FTRACE]
-> >  			Have the tracepoints sent to printk as well as the
-> >  			tracing ring buffer. This is useful for early boot up
-> 
-> thanks.
-> -- 
-> ~Randy
-> 
+> I guess the kernel itself doesn't care about the blocking API, but for
+> trusted keys...  you'll have to tie things together from user space, and
+> I don't see how anyone can do that, especially with any level of
+> confidence that they didn't accidentally leave some wide-open hole (as
+> in - you might well get something to work, but without docs you can't
+> check you actually did it *right*.)  This is really improving keyctl
+> itself (i.e. how its commands are invoked) and also its documentation.
 
-Thank you for reviewing this (especially given how bad shape it was)!
+You may be interested in some of the work I've done here:
 
-BR, Jarkko
+    https://github.com/mathstuf/rust-keyutils
+
+In particular:
+
+    https://github.com/mathstuf/rust-keyutils/blob/master/src/keytypes/trusted.rs
+
+There are assorted issues and PRs that may be of interest for trusted
+keys as well.
+
+Unfortunately, I've not had the time to dedicate to it, so it has
+languished a bit over time.
+
+--Ben
 
