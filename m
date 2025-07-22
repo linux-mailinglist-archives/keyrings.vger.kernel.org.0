@@ -1,90 +1,118 @@
-Return-Path: <keyrings+bounces-2932-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2933-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B26BB0E446
-	for <lists+keyrings@lfdr.de>; Tue, 22 Jul 2025 21:32:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DF05B0E503
+	for <lists+keyrings@lfdr.de>; Tue, 22 Jul 2025 22:34:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B2A51898B72
-	for <lists+keyrings@lfdr.de>; Tue, 22 Jul 2025 19:33:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C427E547EFE
+	for <lists+keyrings@lfdr.de>; Tue, 22 Jul 2025 20:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B408680C02;
-	Tue, 22 Jul 2025 19:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F9C8265CCB;
+	Tue, 22 Jul 2025 20:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WURZNqgz"
+	dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b="IRVrG245"
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D015027C879
-	for <keyrings@vger.kernel.org>; Tue, 22 Jul 2025 19:32:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1A527E7DD
+	for <keyrings@vger.kernel.org>; Tue, 22 Jul 2025 20:34:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753212761; cv=none; b=LMdwhYGbEe06xkkI73ycalLhM8EiiHPjQNwQanLeXwLQfcPgyNChtGyjsjkQTXpkFVH++qLKmwIM1vkoqHHnDO3N1ev714ql6v/DKIrhvZVCUUu3A3HbOc5GbBaY59z+z+WK6P6xIS27ONpeqBTY0bLq8LEEWNDkxx6UxsXdsdg=
+	t=1753216479; cv=none; b=lt9LdQBflPe7bbhHQVigyajkTsi5jzqONxfK30lDOVcvN7JbT3v7TisYmm+g10bjm7NNkIfyrcFYgMlEjCcVAumE+YoROylu5aQxlbss/6ctClMi9ONMjZm2X2mLPFBlxD8TynfY7WO3uQNdU3xymvtocebRnq2u4vzEAMOF7C4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753212761; c=relaxed/simple;
-	bh=3KyfJlUkLCRwp+f2YqsX8H+p99rIZ92dwERoQcjA3dw=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=LZOXmQZF9/gp0Q8hHLasaFNN2STEti5/IUlK12LPG36Ly5zn+ddHvBc/8Uat3HvaGgUm+762ixxngTM53zm2nlHo9jpl6gW7nvGnFj5d30rMgvMu2daJ91Ji+ImOSCZ/scyfKLaPDpXIj/GjePE/EjlH2Pq0x7QRBZJJmZn+9IQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WURZNqgz; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1753212758;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OXAQrQlK5kLwu3DV4bl7R9Dm3tLz30sH5JZ7+WxgTGk=;
-	b=WURZNqgzsj0KHEUzAqz5WrFY/ENjw5JTPUUx3aNtSq33XjoRAp3IURYEaAKpuljuHhzBoF
-	qcZWlLYdGYhsxxxN8q964/XK9Amb0AJScdWdhCrWcK+T25k5dL+yZZSDkHVAsKTAxd7Uvn
-	VunmcvKE1wrmUA3UFJEMjVHpSP4Amww=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-151-hVwe5aZwMPika7Dzi9OwrQ-1; Tue,
- 22 Jul 2025 15:32:35 -0400
-X-MC-Unique: hVwe5aZwMPika7Dzi9OwrQ-1
-X-Mimecast-MFC-AGG-ID: hVwe5aZwMPika7Dzi9OwrQ_1753212754
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DEA4019560B4;
-	Tue, 22 Jul 2025 19:32:33 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.8])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 23F0619560AD;
-	Tue, 22 Jul 2025 19:32:31 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20250718234541.3087-1-dannyhu@arista.com>
-References: <20250718234541.3087-1-dannyhu@arista.com>
-To: Danny Hu <dannyhu@arista.com>
-Cc: dhowells@redhat.com, keyrings@vger.kernel.org, dwmw2@infradead.org
-Subject: Re: [PATCH 1/2] sign-file: Fix memory leaks in the sign-file tool
+	s=arc-20240116; t=1753216479; c=relaxed/simple;
+	bh=fAx4SuEW5nG4bEcZYEBD8UwuYAsMULoGgyEKtiWdvUk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=GTpesMT2WaqBoH+1iOpZYNkzxxXa/MTcXJKL6s05iY5dinaJEcd4Mz+1qQEYTXkKr/jFwmHeGHhvVE9YjGisNt5eOu4ZOXgYoNBq23MJ4DjUt6vieLZLVjRVBoJkKsLP5voj0Z2eD1q6bm50qRrgY+hr1PKGnVyV6E+vhZ6snQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com; spf=pass smtp.mailfrom=arista.com; dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b=IRVrG245; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arista.com
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-702cbfe860cso48664406d6.1
+        for <keyrings@vger.kernel.org>; Tue, 22 Jul 2025 13:34:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=arista.com; s=google; t=1753216476; x=1753821276; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A/QJMBZb+DpBcSJtaRxCCyoukp0oBMfIDt/D+IokmP8=;
+        b=IRVrG245rSGoHwG/0muHNRkPbvq9Mi8Vtz4/47kjoZXRR+yXWHDaHAF8qjxHlL7wQw
+         2fSB8Wc0KJWJQeY7Y7CD7+pPQ89ENiis0PhqryIs/EJnmRRI347CpQ0H/XuswBWns/me
+         RbsWoCvDSLwDuKAhPhQ9h5YX3jdZlExItORQHqpNTHAAGiSFhFSo66uf75L6gLqlnt9g
+         Sg00xmqYbgN8SlhS8f1f5I8sT6hNiy1AxJQrBG1SrKiF7edWkB/FTPSe+Rh1n5CiObPy
+         8aiWattCgMvTwLw66vsMr0l8/5ASXLVqyQ77aBNMuoPJEk5LOVK5gUQxunf0s7auIBNb
+         R5zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1753216476; x=1753821276;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=A/QJMBZb+DpBcSJtaRxCCyoukp0oBMfIDt/D+IokmP8=;
+        b=ib09/MXFG8tULb2+byUqDBZnDXdtq0Q+pHfmQCQwm0HXLJxBA9DL0NdKYeCFYI+uK/
+         Kme9Xa3+UatZhpLbS4mC8z5yIWD5FQfD5wH3iaqJ8E9YQQOCaG3Qb3UcUTLHT5Zd+i1c
+         2wry9f7TdWjV6stZUHi4nW5ifSn6oJpqNPSn/HyHM4RxB7wunf5PQ28Q11DuezvxxbXV
+         sV43OZpHkMDNXdve9PcI0oA9oS8icMfEICLpybceXml5+DhJ900Nbus/YfBZmLiQzdAl
+         9RiGn2Ie0GkjPYy/RCV/By3m0PJOXIeM7pu/XF6sPjYR7ALJdovaD1WDnzqiLQmX5BRT
+         eGHg==
+X-Gm-Message-State: AOJu0YywPFZd8kQPzC4leaLsrOhMhNyRJlIlHzdo2OGWvcM3ssR/cBct
+	66Xi9+VPM4LxAd9tV8Z9yx+NmURA6qEDZw9GSABP6sg8J9q/Ae6ZOxVOk2ojwU5fWvsJnuUYNuW
+	jXfFlXgm4FHHPOaHQPfI1LHUaeYif75Wit5FUGLzpA1V5EKkd/PeCVg==
+X-Gm-Gg: ASbGncsjNwaicJLAJw7I1mvp/qQnsKVF//QYo98OYmorSepUzDbFmq8CwYGra8Q2EpN
+	6WTacpUQtltXPorgscHZtdnmE13c7dOsBClUHMc5c4gqcdYWkExjfrf77jrlF5eSXw2ZCEFGNb2
+	BllKZ2fTLF9T2hIgHuHsURAOZfCR2UjtuAatLzeHder3nD5q/weybepRs82muc6NGAnVYmePA/D
+	RWc3xM=
+X-Google-Smtp-Source: AGHT+IFHLWinE9F638XWiNqrj3dhtsDaki/0TEDOJ/Nv1HZStVrNn/XQ9slE3dsEfSPyrMf0mmDrfL/WVXJYVjmHZ7o=
+X-Received: by 2002:a05:6214:c6c:b0:701:77a:88b with SMTP id
+ 6a1803df08f44-707005ab0camr8733776d6.21.1753216476503; Tue, 22 Jul 2025
+ 13:34:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <188740.1753212750.1@warthog.procyon.org.uk>
-Date: Tue, 22 Jul 2025 20:32:30 +0100
-Message-ID: <188741.1753212750@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+References: <20250718234541.3087-1-dannyhu@arista.com> <188741.1753212750@warthog.procyon.org.uk>
+In-Reply-To: <188741.1753212750@warthog.procyon.org.uk>
+From: Danny Hu <dannyhu@arista.com>
+Date: Tue, 22 Jul 2025 13:34:25 -0700
+X-Gm-Features: Ac12FXwKHFtdmJWGHHT2_wPlZSqRnjBvEccvd6U1dOxZo58V19_rNotjWDM78Fs
+Message-ID: <CAFn2k5B6gizddQsWy-k07z5krxA7KkaMp9yNyX7CSnVk=zmmLg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] sign-file: Fix memory leaks in the sign-file tool
+To: keyrings@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Danny Hu <dannyhu@arista.com> wrote:
+> Why?  exit() will clean that up.
 
-> 3. Ensuring that any structs which have been allocated are freed
-> with their respective free functions.
+You are right that `exit()` will clean up all allocated memory.
+However, when this binary runs within tests instrumented with
+AddressSanitizer (ASan) and LeakSanitizer (LSan), these leaks cause
+the instrumented tests to fail. This happens even if the program isn't
+leaking in a way that would cause long-term resource exhaustion.
 
-Why?  exit() will clean that up.
+The main reason for this change is to satisfy LSan. By doing so, we
+avoid false positives in LSan-instrumented test suites, which allows
+us to rely on LSan to detect actual, problematic leaks that need
+fixing. The alternative would be to omit any tests that use the
+`sign-file` binary from LSan instrumentation, but that would mean
+sacrificing test coverage, which isn't ideal.
 
-David
+Thanks,
+Danny
 
+On Tue, Jul 22, 2025 at 12:32=E2=80=AFPM David Howells <dhowells@redhat.com=
+> wrote:
+>
+> Danny Hu <dannyhu@arista.com> wrote:
+>
+> > 3. Ensuring that any structs which have been allocated are freed
+> > with their respective free functions.
+>
+> Why?  exit() will clean that up.
+>
+> David
+>
 
