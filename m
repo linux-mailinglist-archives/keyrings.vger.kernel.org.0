@@ -1,118 +1,132 @@
-Return-Path: <keyrings+bounces-2933-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2934-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DF05B0E503
-	for <lists+keyrings@lfdr.de>; Tue, 22 Jul 2025 22:34:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1DF0B0E787
+	for <lists+keyrings@lfdr.de>; Wed, 23 Jul 2025 02:18:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C427E547EFE
-	for <lists+keyrings@lfdr.de>; Tue, 22 Jul 2025 20:34:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9D104E6F41
+	for <lists+keyrings@lfdr.de>; Wed, 23 Jul 2025 00:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F9C8265CCB;
-	Tue, 22 Jul 2025 20:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D4E134CB;
+	Wed, 23 Jul 2025 00:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b="IRVrG245"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fK/tmZme"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1A527E7DD
-	for <keyrings@vger.kernel.org>; Tue, 22 Jul 2025 20:34:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF1FCA6B;
+	Wed, 23 Jul 2025 00:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753216479; cv=none; b=lt9LdQBflPe7bbhHQVigyajkTsi5jzqONxfK30lDOVcvN7JbT3v7TisYmm+g10bjm7NNkIfyrcFYgMlEjCcVAumE+YoROylu5aQxlbss/6ctClMi9ONMjZm2X2mLPFBlxD8TynfY7WO3uQNdU3xymvtocebRnq2u4vzEAMOF7C4=
+	t=1753229923; cv=none; b=j3O1kIgDNQ8n3lmkf9tE9Li8OTrL9b04QuEkrBpI6NiYrZSdlvMKqqynIjMzPjSw6ohuafCWsfpRkEOdN9TJQnKhzW82Imd6cXv2KM0E6O3f/pBVq6o+neWITyD4Y/R++djuTngr38pciY6nG3A3lm0xJP6Qnz5Xy27633cglLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753216479; c=relaxed/simple;
-	bh=fAx4SuEW5nG4bEcZYEBD8UwuYAsMULoGgyEKtiWdvUk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=GTpesMT2WaqBoH+1iOpZYNkzxxXa/MTcXJKL6s05iY5dinaJEcd4Mz+1qQEYTXkKr/jFwmHeGHhvVE9YjGisNt5eOu4ZOXgYoNBq23MJ4DjUt6vieLZLVjRVBoJkKsLP5voj0Z2eD1q6bm50qRrgY+hr1PKGnVyV6E+vhZ6snQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com; spf=pass smtp.mailfrom=arista.com; dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b=IRVrG245; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arista.com
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-702cbfe860cso48664406d6.1
-        for <keyrings@vger.kernel.org>; Tue, 22 Jul 2025 13:34:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=arista.com; s=google; t=1753216476; x=1753821276; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A/QJMBZb+DpBcSJtaRxCCyoukp0oBMfIDt/D+IokmP8=;
-        b=IRVrG245rSGoHwG/0muHNRkPbvq9Mi8Vtz4/47kjoZXRR+yXWHDaHAF8qjxHlL7wQw
-         2fSB8Wc0KJWJQeY7Y7CD7+pPQ89ENiis0PhqryIs/EJnmRRI347CpQ0H/XuswBWns/me
-         RbsWoCvDSLwDuKAhPhQ9h5YX3jdZlExItORQHqpNTHAAGiSFhFSo66uf75L6gLqlnt9g
-         Sg00xmqYbgN8SlhS8f1f5I8sT6hNiy1AxJQrBG1SrKiF7edWkB/FTPSe+Rh1n5CiObPy
-         8aiWattCgMvTwLw66vsMr0l8/5ASXLVqyQ77aBNMuoPJEk5LOVK5gUQxunf0s7auIBNb
-         R5zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1753216476; x=1753821276;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=A/QJMBZb+DpBcSJtaRxCCyoukp0oBMfIDt/D+IokmP8=;
-        b=ib09/MXFG8tULb2+byUqDBZnDXdtq0Q+pHfmQCQwm0HXLJxBA9DL0NdKYeCFYI+uK/
-         Kme9Xa3+UatZhpLbS4mC8z5yIWD5FQfD5wH3iaqJ8E9YQQOCaG3Qb3UcUTLHT5Zd+i1c
-         2wry9f7TdWjV6stZUHi4nW5ifSn6oJpqNPSn/HyHM4RxB7wunf5PQ28Q11DuezvxxbXV
-         sV43OZpHkMDNXdve9PcI0oA9oS8icMfEICLpybceXml5+DhJ900Nbus/YfBZmLiQzdAl
-         9RiGn2Ie0GkjPYy/RCV/By3m0PJOXIeM7pu/XF6sPjYR7ALJdovaD1WDnzqiLQmX5BRT
-         eGHg==
-X-Gm-Message-State: AOJu0YywPFZd8kQPzC4leaLsrOhMhNyRJlIlHzdo2OGWvcM3ssR/cBct
-	66Xi9+VPM4LxAd9tV8Z9yx+NmURA6qEDZw9GSABP6sg8J9q/Ae6ZOxVOk2ojwU5fWvsJnuUYNuW
-	jXfFlXgm4FHHPOaHQPfI1LHUaeYif75Wit5FUGLzpA1V5EKkd/PeCVg==
-X-Gm-Gg: ASbGncsjNwaicJLAJw7I1mvp/qQnsKVF//QYo98OYmorSepUzDbFmq8CwYGra8Q2EpN
-	6WTacpUQtltXPorgscHZtdnmE13c7dOsBClUHMc5c4gqcdYWkExjfrf77jrlF5eSXw2ZCEFGNb2
-	BllKZ2fTLF9T2hIgHuHsURAOZfCR2UjtuAatLzeHder3nD5q/weybepRs82muc6NGAnVYmePA/D
-	RWc3xM=
-X-Google-Smtp-Source: AGHT+IFHLWinE9F638XWiNqrj3dhtsDaki/0TEDOJ/Nv1HZStVrNn/XQ9slE3dsEfSPyrMf0mmDrfL/WVXJYVjmHZ7o=
-X-Received: by 2002:a05:6214:c6c:b0:701:77a:88b with SMTP id
- 6a1803df08f44-707005ab0camr8733776d6.21.1753216476503; Tue, 22 Jul 2025
- 13:34:36 -0700 (PDT)
+	s=arc-20240116; t=1753229923; c=relaxed/simple;
+	bh=rUIHAK6R3Mb+47KhSDQxNS0rxC1YMuLaNzFUfX0huRM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=TJFlnX5x7SRv38R6hSEJgDGr9kZQ6+9qxeEZt8X7Rw7AnwZBgq4KgDYHYQP4jcOOmr6HVf66L1OLi2lSX3KYVQCMHrvsWoqMJnURsBQ4Q97HnN2sBvKVkLkneBifbWI3v1cY5q3a1kEtKjGVgeVWuudnSGQ9wYrvyiZVN/pOvCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fK/tmZme; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F7EC4CEEB;
+	Wed, 23 Jul 2025 00:18:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753229923;
+	bh=rUIHAK6R3Mb+47KhSDQxNS0rxC1YMuLaNzFUfX0huRM=;
+	h=Date:From:To:Cc:Subject:From;
+	b=fK/tmZmehLb2qr4shPhJrxftCEPjokE9IyPz5RcbyGDJMO4exC9/ba504CKGweW3R
+	 NMn/Tm1szT6okf4vuT+aEp1TIC/wh8iGoA52R86FPFCjScWTYdzAouEXbClmfN9wGc
+	 IXbbkjt7XWM+t+iWkCgjX62d39FBuJZ+dYo8LYCyS/GWFVyaNCVvxWlECWK4yjq9tk
+	 +vPgQpsyXvbYWt5vGLc+Y36WA6q/nkGl0zdtQMJhzRqKAwRlkYwytHdsybmcJuqeHN
+	 E2275sIkGuqTAY0lGH3ibGzbltjG59KlCcpVLHNZ6WUt6EudmhdbBMKdMbpafIxM+b
+	 EaqrGOj4yWNjA==
+Date: Wed, 23 Jul 2025 03:18:39 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>,
+	keyrings@vger.kernel.org, linux-integrity@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.17-rc1
+Message-ID: <aIAqX1qFnxUzayTR@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250718234541.3087-1-dannyhu@arista.com> <188741.1753212750@warthog.procyon.org.uk>
-In-Reply-To: <188741.1753212750@warthog.procyon.org.uk>
-From: Danny Hu <dannyhu@arista.com>
-Date: Tue, 22 Jul 2025 13:34:25 -0700
-X-Gm-Features: Ac12FXwKHFtdmJWGHHT2_wPlZSqRnjBvEccvd6U1dOxZo58V19_rNotjWDM78Fs
-Message-ID: <CAFn2k5B6gizddQsWy-k07z5krxA7KkaMp9yNyX7CSnVk=zmmLg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] sign-file: Fix memory leaks in the sign-file tool
-To: keyrings@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> Why?  exit() will clean that up.
+The following changes since commit 89be9a83ccf1f88522317ce02f854f30d6115c41:
 
-You are right that `exit()` will clean up all allocated memory.
-However, when this binary runs within tests instrumented with
-AddressSanitizer (ASan) and LeakSanitizer (LSan), these leaks cause
-the instrumented tests to fail. This happens even if the program isn't
-leaking in a way that would cause long-term resource exhaustion.
+  Linux 6.16-rc7 (2025-07-20 15:18:33 -0700)
 
-The main reason for this change is to satisfy LSan. By doing so, we
-avoid false positives in LSan-instrumented test suites, which allows
-us to rely on LSan to detect actual, problematic leaks that need
-fixing. The alternative would be to omit any tests that use the
-`sign-file` binary from LSan instrumentation, but that would mean
-sacrificing test coverage, which isn't ideal.
+are available in the Git repository at:
 
-Thanks,
-Danny
+  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/ tags/tpmdd-next-6.17-rc1
 
-On Tue, Jul 22, 2025 at 12:32=E2=80=AFPM David Howells <dhowells@redhat.com=
-> wrote:
->
-> Danny Hu <dannyhu@arista.com> wrote:
->
-> > 3. Ensuring that any structs which have been allocated are freed
-> > with their respective free functions.
->
-> Why?  exit() will clean that up.
->
-> David
->
+for you to fetch changes up to 7f0c6675b3194461ad7bb8db1d822445121fb029:
+
+  tpm_crb_ffa: handle tpm busy return code (2025-07-23 02:32:00 +0300)
+
+----------------------------------------------------------------
+Hi,
+
+This PR has quite a few commits but nothing really that would be worth of
+spending too much time for, or would want to emphasize in particular.
+
+BR, Jarkko
+
+----------------------------------------------------------------
+Chelsy Ratnawat (1):
+      tpm: Replace scnprintf() with sysfs_emit() and sysfs_emit_at() in sysfs show functions
+
+Jarkko Sakkinen (2):
+      tpm_crb_ffa: Remove unused export
+      tpm: Check for completion after timeout
+
+Prachotan Bathi (3):
+      tpm_crb_ffa: Fix typos in function name
+      tpm_crb_ffa: Remove memset usage
+      tpm_crb_ffa: handle tpm busy return code
+
+Rob Herring (1):
+      tpm: Use of_reserved_mem_region_to_resource() for "memory-region"
+
+Stefano Garzarella (4):
+      tpm: add bufsiz parameter in the .send callback
+      tpm: support devices with synchronous send()
+      tpm/tpm_ftpm_tee: support TPM_CHIP_FLAG_SYNC
+      tpm/tpm_svsm: support TPM_CHIP_FLAG_SYNC
+
+Yeoreum Yun (2):
+      firmware: arm_ffa: Change initcall level of ffa_init() to rootfs_initcall
+      tpm: tpm_crb_ffa: try to probe tpm_crb_ffa when it's built-in
+
+ Documentation/admin-guide/kernel-parameters.txt |  8 +++
+ drivers/char/tpm/eventlog/of.c                  |  8 +--
+ drivers/char/tpm/st33zp24/st33zp24.c            |  2 +-
+ drivers/char/tpm/tpm-interface.c                | 39 ++++++++--
+ drivers/char/tpm/tpm_atmel.c                    |  3 +-
+ drivers/char/tpm/tpm_crb.c                      |  2 +-
+ drivers/char/tpm/tpm_crb_ffa.c                  | 94 +++++++++++++++++--------
+ drivers/char/tpm/tpm_crb_ffa.h                  |  2 -
+ drivers/char/tpm/tpm_ftpm_tee.c                 | 66 ++++++-----------
+ drivers/char/tpm/tpm_ftpm_tee.h                 |  4 --
+ drivers/char/tpm/tpm_i2c_atmel.c                |  3 +-
+ drivers/char/tpm/tpm_i2c_infineon.c             |  3 +-
+ drivers/char/tpm/tpm_i2c_nuvoton.c              |  3 +-
+ drivers/char/tpm/tpm_ibmvtpm.c                  |  6 +-
+ drivers/char/tpm/tpm_infineon.c                 |  3 +-
+ drivers/char/tpm/tpm_nsc.c                      |  3 +-
+ drivers/char/tpm/tpm_ppi.c                      | 52 +++++++-------
+ drivers/char/tpm/tpm_svsm.c                     | 28 ++++----
+ drivers/char/tpm/tpm_tis_core.c                 |  3 +-
+ drivers/char/tpm/tpm_tis_i2c_cr50.c             |  6 +-
+ drivers/char/tpm/tpm_vtpm_proxy.c               |  4 +-
+ drivers/char/tpm/xen-tpmfront.c                 |  3 +-
+ drivers/firmware/arm_ffa/driver.c               |  2 +-
+ include/linux/tpm.h                             |  4 +-
+ 24 files changed, 199 insertions(+), 152 deletions(-)
 
