@@ -1,128 +1,79 @@
-Return-Path: <keyrings+bounces-2936-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2937-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B3FBB13A51
-	for <lists+keyrings@lfdr.de>; Mon, 28 Jul 2025 14:17:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72441B14617
+	for <lists+keyrings@lfdr.de>; Tue, 29 Jul 2025 04:24:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 320FD3A904B
-	for <lists+keyrings@lfdr.de>; Mon, 28 Jul 2025 12:16:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A12584E341F
+	for <lists+keyrings@lfdr.de>; Tue, 29 Jul 2025 02:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7AD250C06;
-	Mon, 28 Jul 2025 12:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CB91CBEB9;
+	Tue, 29 Jul 2025 02:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o7mBRrNb"
 X-Original-To: keyrings@vger.kernel.org
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D257A3B280;
-	Mon, 28 Jul 2025 12:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44EF20ED;
+	Tue, 29 Jul 2025 02:24:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1753705041; cv=none; b=OOVvGuI+UJ9vqYkW2UjTCVoUgeU5WsdnI2Xdh+zgC4Z7XXNw+OIik3z935jMoLD3A8ltgNn2NGpRtYZwwYGkc0x8ckgj8eF0syUxwt1eIsROWSh/WW0qREjSX36DuhGhgK3qxOEx0K8jFbX9w5Ny0mI9yAc8IkcKy5ze6V/r+Qs=
+	t=1753755857; cv=none; b=EnoXXmUt+OWHYIjVvJREoR3XzQr9IOeJIT1mgVSwuV4DsL04N/Qw9bQNchQnmm95MAo69C/KHBHaZkleJAxAtPXgN7vLReNTBZQ1JPagv4c5UxtQAPkuZzY3SnCMJRkVg1HIYJ5ZTfuEZaVsMNq8XGR9wQqn1XUndd9PC6fqrAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1753705041; c=relaxed/simple;
-	bh=my8xQtIIqget5FC/01hNyxi+xx7G96/J8OXPtSZnfCs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=QQJwn4XqcCeZhqpttzNjHWCkYWaVLZ498t1B7s2+5aMj9VFGa4c+KjrgXy9R2YSC+DyMUgn2pMRMwZgXZzhYSv5CAq/OVQmoBlA52tyQRk3E8uEzJIXXTCa4XFaUxnZ9HUK37784R1H7BWcj3OKC/gVfFDSpve90Y158VTMf9i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4brHRw6X1Bzdbw2;
-	Mon, 28 Jul 2025 20:13:00 +0800 (CST)
-Received: from kwepemg100016.china.huawei.com (unknown [7.202.181.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id 939681402EA;
-	Mon, 28 Jul 2025 20:17:13 +0800 (CST)
-Received: from [10.67.110.48] (10.67.110.48) by kwepemg100016.china.huawei.com
- (7.202.181.57) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 28 Jul
- 2025 20:17:12 +0800
-Message-ID: <a8bec841-149c-4349-b7a0-ffebe43dd671@huawei.com>
-Date: Mon, 28 Jul 2025 20:17:12 +0800
+	s=arc-20240116; t=1753755857; c=relaxed/simple;
+	bh=MEl9oiXHuZXLDTCTZQ7vgeP8P/oqPzXqPryDzOxJqVA=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=L1vh1RcAV5Ezc/wEgYaK47nKnuosxItVUZMfbGfbGT07bSxLvnSphd4Gt8nTZrdIR4UTImCe7O2eiOaZeVQHjkhx2IhTEdZjWr69YfTsXv+Ir4zI7pi1gA3OTdANxjf0bjFx1VnBULOEfdpV+DRlMEDlw+qtRHNiChLzPXGKLg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o7mBRrNb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C46C0C4CEE7;
+	Tue, 29 Jul 2025 02:24:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1753755856;
+	bh=MEl9oiXHuZXLDTCTZQ7vgeP8P/oqPzXqPryDzOxJqVA=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=o7mBRrNbDq393cdXvhoKadTzll+l4FFFjrepHAEsNCfKaHN6rhDbeu0CZKZ6erFyJ
+	 dSYYC7msQPirX3IyfqsVKaGeRRwL0YyxMZZAWnJT6cyJ678HW+DvBJaoGHtWNj3I4K
+	 JEUGhzaJN0UN3iESfeljHn4PL4m+KqS3569/fm8f/rWcDxwoXnAYp7p1m5w+gTneyd
+	 yeZS/1wUIhami2Hp9dzAD3V/nDanm9x/Tz/ahpgTHAh1k50NzuMEuPEotGmGkYHuk8
+	 ATq84qtRoAh+YWdJEqTuSLbd1xPIadvFu7dUhaiJfG7GMBg/WCWHjKsAdDBobcbovp
+	 jkEJy3bvdF+Qw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70FC0383BF5F;
+	Tue, 29 Jul 2025 02:24:34 +0000 (UTC)
+Subject: Re: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.17-rc1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <aIAqX1qFnxUzayTR@kernel.org>
+References: <aIAqX1qFnxUzayTR@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <aIAqX1qFnxUzayTR@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/ tags/tpmdd-next-6.17-rc1
+X-PR-Tracked-Commit-Id: 7f0c6675b3194461ad7bb8db1d822445121fb029
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 4d40b59d8b0568769d10ac9b2a97e0af0a39d371
+Message-Id: <175375587311.935612.1471229988567269593.pr-tracker-bot@kernel.org>
+Date: Tue, 29 Jul 2025 02:24:33 +0000
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] integrity: Extract secure boot enquiry function out of
- IMA
-To: Nayna Jain <nayna@linux.ibm.com>, Mimi Zohar <zohar@linux.ibm.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin
-	<dmitry.kasatkin@gmail.com>, Jarkko Sakkinen <jarkko@kernel.org>, Madhavan
- Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-CC: Eric Snowberg <eric.snowberg@oracle.com>, Christophe Leroy
-	<christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, Christian
- Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>,
-	"Lee, Chun-Yi" <jlee@suse.com>, <linuxppc-dev@lists.ozlabs.org>,
-	<linux-kernel@vger.kernel.org>, <linux-s390@vger.kernel.org>,
-	<linux-integrity@vger.kernel.org>, <keyrings@vger.kernel.org>, Lu Jialin
-	<lujialin4@huawei.com>
-References: <20250628063251.321370-1-gongruiqi1@huawei.com>
- <eb91dcf034db28e457a4482faa397dd7632f00fd.camel@linux.ibm.com>
- <4c59f417-86cc-4dec-ae45-8fcf8c7eb16a@huawei.com>
- <e8aa7f94-3e52-488d-a858-564d3d1edd4b@linux.ibm.com>
- <362b3e8a-0949-42d1-a1d0-90bd12d86b09@huawei.com>
- <683380bb-ef1b-44ab-b7df-83c23dd76ff7@linux.ibm.com>
-Content-Language: en-US
-From: GONG Ruiqi <gongruiqi1@huawei.com>
-In-Reply-To: <683380bb-ef1b-44ab-b7df-83c23dd76ff7@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemg100016.china.huawei.com (7.202.181.57)
 
+The pull request you sent on Wed, 23 Jul 2025 03:18:39 +0300:
 
-On 7/26/2025 2:29 AM, Nayna Jain wrote:
-> 
-> On 7/17/25 8:29 AM, GONG Ruiqi wrote:
->> On 7/8/2025 4:35 AM, Nayna Jain wrote:
->>> On 7/2/25 10:07 PM, GONG Ruiqi wrote:
->>>> ...
->>
->> Yes, IMA_ARCH_POLICY was not set. The testing was conducted on
->> openEuler[1], a Linux distro mainly for arm64 & x86, and the kernel was
->> compiled based on its own openeuler_defconfig[2], which set
->> IMA_ARCH_POLICY to N.
-> 
-> Thanks Ruiqi for the response.
-> 
-> It seems the main cause of the problem was that IMA_ARCH_POLICY config
-> wasn't enabled; and it sounds like you don't need IMA arch policies but
-> you do need the arch specific function to get the secure boot status.
-> 
-> In that case, removing IMA_SECURE_AND_OR_TRUSTED_BOOT config dependency
-> on IMA_ARCH_POLICY config and updating the corresponding help is all
-> that is needed.
+> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/ tags/tpmdd-next-6.17-rc1
 
-I think it doesn't solve the real problems, which are: 1. the implicit
-dependency of LOAD_UEFI_KEYS to IMA_SECURE_AND_OR_TRUSTED_BOOT, which
-surprises people, and 2. what arch_ima_get_secureboot() does is
-essentially a stand-alone function and it's not necessarily be a part of
-IMA, but it's still controlled by IMA_SECURE_AND_OR_TRUSTED_BOOT.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/4d40b59d8b0568769d10ac9b2a97e0af0a39d371
 
-I agree that adjusting Kconfig could be simpler, but breaking
-IMA_SECURE_AND_OR_TRUSTED_BOOT's dependency to IMA_ARCH_POLICY doesn't
-help on both. If that's gonna be the way we will take, what I would
-propose is to let LOAD_UEFI_KEYS select IMA_SECURE_AND_OR_TRUSTED_BOOT,
-which states the dependency explicitly so at least solves the problem 1.
+Thank you!
 
--Ruiqi
-
-> 
-> The help text can be updated to:
-> This option is selected by architectures to detect systems with secure
-> and/or trusted boot enabled, in order to load the appropriate IMA
-> runtime policies and keys.
-> 
-> Thanks & Regards,
-> 
->     - Nayna
-> 
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
