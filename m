@@ -1,183 +1,277 @@
-Return-Path: <keyrings+bounces-2943-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2944-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D38B183F0
-	for <lists+keyrings@lfdr.de>; Fri,  1 Aug 2025 16:35:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C399B1B51D
+	for <lists+keyrings@lfdr.de>; Tue,  5 Aug 2025 15:42:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 505803AAE38
-	for <lists+keyrings@lfdr.de>; Fri,  1 Aug 2025 14:35:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D381018A4E7B
+	for <lists+keyrings@lfdr.de>; Tue,  5 Aug 2025 13:42:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91AF2512C3;
-	Fri,  1 Aug 2025 14:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FBA7246BB6;
+	Tue,  5 Aug 2025 13:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="aENFPpjm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C2Fp+3CO"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0EB21ABAD;
-	Fri,  1 Aug 2025 14:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CF7221FDC;
+	Tue,  5 Aug 2025 13:42:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754058920; cv=none; b=qOqhUSuMmvcs8V9UdLhsgoEDwBKQkr4kYjrLlBIa59efv2YwM2kxX2BPlfnjGMVoj1yrNOpm44woc88I7Fmgk2+8TpxbXtWRtuilwKQRF4cq4n1gJb31FxJKLGEJWdYB1pqowBI8RsEgOt55/pJbTz7ecBevyVBR8xZq5XlqDjQ=
+	t=1754401322; cv=none; b=ZmMZLnYtAO+5dP1mxXtcltWduYtBQrdT9l94HxYNZ12rZ5TKBVs9o4ftCxg1QSO22BpLtdofck2wSUsKPgM2bzMmALYT3/9frwVYNzM3RuxHY7Kh/cVusHCeTu/Fi7CDEAncU081N78b2X1wC780/MNPdqF+zHIU35mQx6NFfrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754058920; c=relaxed/simple;
-	bh=iyvsQ18yYqj4fCp5SbE2v88eqM2TIGGqkzcLgNYgrC0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lOnOqw4NNrzOxkFBPyc6jOuc19ftUg/q71jd2TCLVnChS5pSjoxrYFsdTYqS/UDuViPP6Y/tLAbDIuvnIXf8HAjJgaa5BBZEsZ43sZsfulFpvW4vU1TOTyVQRXJOq2+efix4KQsN35B3vJJ1Tm/5kxxH+3i9z0VszZYfREXGLZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=aENFPpjm; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5716IvOJ015303;
-	Fri, 1 Aug 2025 14:34:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=0Fh54U
-	wRV2BtBP8uMeZ/klACHAuZ+qlHEHSV5od96Mw=; b=aENFPpjmI6dFI7fwlcsV5G
-	5FTKYKVqlYru1SIt62pXoEPDXDJ9Va6pRmTie9F6ZXX2GO8yrBRFJ57P9HGXq3nu
-	E4w603Dnmsk7m6KRuP7L6xF5CjH+wQBVO/BCgBXB97YkCovMwSnWj595zPK5t8Cj
-	7h6PZoW3O9a76W9RMIMZSoYvdyw0aYPlphYo7inluGfLgHuQS/N5UUorUiPhbZI3
-	1uYnXLjUB8DCAF2jsfg7CpVx1xu77+8F4Yn1NOoHUtFH9tBGSRz64O0g0Pt9Atqm
-	csV5e6OaPyCqpHwnNE6rAAV0znAd8qbBB7klcc9Ce3yUr2X2ELazeWNYQUrKK18g
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 484qfr978n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Aug 2025 14:34:46 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 571ENkjn023507;
-	Fri, 1 Aug 2025 14:34:45 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 484qfr978h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Aug 2025 14:34:45 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 571EJQiM006269;
-	Fri, 1 Aug 2025 14:34:44 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 485bjmhk47-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Aug 2025 14:34:44 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 571EYZ2D8848086
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 1 Aug 2025 14:34:35 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5A26C58056;
-	Fri,  1 Aug 2025 14:34:42 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2852E58052;
-	Fri,  1 Aug 2025 14:34:41 +0000 (GMT)
-Received: from [9.61.166.13] (unknown [9.61.166.13])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  1 Aug 2025 14:34:41 +0000 (GMT)
-Message-ID: <48f22e9a-7212-49f1-8989-128bbc2d6d32@linux.ibm.com>
-Date: Fri, 1 Aug 2025 10:34:40 -0400
+	s=arc-20240116; t=1754401322; c=relaxed/simple;
+	bh=XbRYgfJ+geI5OO1Rq6X6cDJ2AEma+6mBOwpRheFGvd0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XI07ynb1ZRYKWHGDXZB1QNtTM2GbOMxRb7eYJ7djGFYm4AY9wdPqcFkOhbexF1jlVpa5P35Z1Ma0ke+j09l4q7c7YVB8yuTe5i/0iOrBMTihx6H3/q4Sp08cwr5iRGrW14TQAj9nLIwcMz+JeDOSlYvAB9kbyZFcCJSSnIClmEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C2Fp+3CO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 457B8C4CEF0;
+	Tue,  5 Aug 2025 13:42:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1754401321;
+	bh=XbRYgfJ+geI5OO1Rq6X6cDJ2AEma+6mBOwpRheFGvd0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=C2Fp+3CO9Bq8go2tq12gtmdzE1KUg5uhql2WhxsXJZNK8YujiIhB1v8P20kVvQOT6
+	 oS8uLIhH87ximBsDazFt/Xjwp1oonLPCxnuCEAOSC7NfjOgXX2LXzJ9K1sxq9aNtuy
+	 /N1ukA12eVsH6DdRZaX5MusB2rOXgM3WipnlcBgnMzINGQ8T39NucxyYtiNEUHFGLa
+	 kIR9heo7zkTWfgo09d9m8764ijgJP6t69jcNXFV2ATUWaw6T1jcWVGi/9JEgKPEfg8
+	 wjAySetrHHOKLNjRfRB/Wbe018DJr8yWIPumGu3J/wPUH29PeMSwmUljjruFyWkwyE
+	 4YWlopVMIHFbw==
+Date: Tue, 5 Aug 2025 16:41:58 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: keyrings@vger.kernel.org, David Howells <dhowells@redhat.com>,
+	Mimi Zohar <zohar@linux.ibm.com>, linux-integrity@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KEYS: encrypted: Use SHA-256 library instead of
+ crypto_shash
+Message-ID: <aJIKH3-fRizRV8fi@kernel.org>
+References: <20250731184747.12335-1-ebiggers@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] integrity: Extract secure boot enquiry function out of
- IMA
-To: GONG Ruiqi <gongruiqi1@huawei.com>, Mimi Zohar <zohar@linux.ibm.com>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Eric Snowberg <eric.snowberg@oracle.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, "Lee, Chun-Yi" <jlee@suse.com>,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-integrity@vger.kernel.org,
-        keyrings@vger.kernel.org, Lu Jialin <lujialin4@huawei.com>
-References: <20250628063251.321370-1-gongruiqi1@huawei.com>
- <eb91dcf034db28e457a4482faa397dd7632f00fd.camel@linux.ibm.com>
- <4c59f417-86cc-4dec-ae45-8fcf8c7eb16a@huawei.com>
- <e8aa7f94-3e52-488d-a858-564d3d1edd4b@linux.ibm.com>
- <362b3e8a-0949-42d1-a1d0-90bd12d86b09@huawei.com>
- <683380bb-ef1b-44ab-b7df-83c23dd76ff7@linux.ibm.com>
- <a8bec841-149c-4349-b7a0-ffebe43dd671@huawei.com>
-Content-Language: en-US
-From: Nayna Jain <nayna@linux.ibm.com>
-In-Reply-To: <a8bec841-149c-4349-b7a0-ffebe43dd671@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwODAxMDEwOSBTYWx0ZWRfX+WIeMAV0XBKN
- RaWK1tzAuLZnSdyc9E70QdXieA9k3Jd59+L1Jg5pBMBa2Gm8L+jbYrgFd+OFE46ZuVvqW3TBC2J
- cloJ9fwXRbT+MopZGRTx4sA2AYoAHRwo9ke9Io/O8NkDimxcPl+7CVTsMQB4hVFZqITcrs7qn0K
- YhpEELuU5wPL4n2NULMyHcXz6HBsz4kX8dSJY+Fc9DwEsLWXnv0BdB/9PL2qCT0e11oGyWYMh7j
- nZ6dHp1dZURen/ZYTtin4sirodAqzsYLaaKQArepNpABIvoZJO5jN/lO7q7lYiMFRJZ7Wxm3+Xv
- ZeXodmZDoLaKPsIaMGNTppXcFmfrRmzNt/1AiLp0O0GnsVJ1CSX5Av9/xxtsn3s7yysz0vQ7mlX
- G+XH6WNHilNnhMcgkF1SDCC9xJJ8DLj2S7Um+8e3c6Tb8nW+gIaPe1MGjJGDV9A/xAdEUbT4
-X-Authority-Analysis: v=2.4 cv=Je28rVKV c=1 sm=1 tr=0 ts=688cd086 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=2OwXVqhp2XgA:10 a=BvK2hnnmbDh7ilCDGIwA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: OrGcTJJWHdqCDmgNhoqcU4YEqchGXRbd
-X-Proofpoint-ORIG-GUID: nLWSheMwDMjNSBon4kmqOoX4VrsiAC_G
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-08-01_04,2025-08-01_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- mlxlogscore=999 clxscore=1015 lowpriorityscore=0 spamscore=0 adultscore=0
- suspectscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 phishscore=0
- mlxscore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
- definitions=main-2508010109
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250731184747.12335-1-ebiggers@kernel.org>
 
+On Thu, Jul 31, 2025 at 11:47:47AM -0700, Eric Biggers wrote:
+> Instead of the "sha256" crypto_shash, just use sha256().  Similarly,
+> instead of the "hmac(sha256)" crypto_shash, just use
+> hmac_sha256_usingrawkey().  This is simpler and faster.
+> 
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 
-On 7/28/25 8:17 AM, GONG Ruiqi wrote:
-> On 7/26/2025 2:29 AM, Nayna Jain wrote:
->> On 7/17/25 8:29 AM, GONG Ruiqi wrote:
->>> On 7/8/2025 4:35 AM, Nayna Jain wrote:
->>>> On 7/2/25 10:07 PM, GONG Ruiqi wrote:
->>>>> ...
->>> Yes, IMA_ARCH_POLICY was not set. The testing was conducted on
->>> openEuler[1], a Linux distro mainly for arm64 & x86, and the kernel was
->>> compiled based on its own openeuler_defconfig[2], which set
->>> IMA_ARCH_POLICY to N.
->> Thanks Ruiqi for the response.
->>
->> It seems the main cause of the problem was that IMA_ARCH_POLICY config
->> wasn't enabled; and it sounds like you don't need IMA arch policies but
->> you do need the arch specific function to get the secure boot status.
->>
->> In that case, removing IMA_SECURE_AND_OR_TRUSTED_BOOT config dependency
->> on IMA_ARCH_POLICY config and updating the corresponding help is all
->> that is needed.
-> I think it doesn't solve the real problems, which are: 1. the implicit
-> dependency of LOAD_UEFI_KEYS to IMA_SECURE_AND_OR_TRUSTED_BOOT, which
-> surprises people, and 2. what arch_ima_get_secureboot() does is
-> essentially a stand-alone function and it's not necessarily be a part of
-> IMA, but it's still controlled by IMA_SECURE_AND_OR_TRUSTED_BOOT.
->
-> I agree that adjusting Kconfig could be simpler, but breaking
-> IMA_SECURE_AND_OR_TRUSTED_BOOT's dependency to IMA_ARCH_POLICY doesn't
-> help on both. If that's gonna be the way we will take, what I would
-> propose is to let LOAD_UEFI_KEYS select IMA_SECURE_AND_OR_TRUSTED_BOOT,
-> which states the dependency explicitly so at least solves the problem 1.
+Yeah, fully agree.
 
-Hi Ruiqi,
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-IMA_SECURE_AND_OR_TRUSTED_BOOT is already enabled by different 
-architectures. Having LOAD_UEFI_KEYS select it would help only if 
-IMA_ARCH_POLICY is also selected.
+David, will you pick this?
 
-Thanks & Regards,
+BR, Jarkko
 
-    - Nayna
-
+> ---
+>  security/keys/Kconfig                    |  3 +-
+>  security/keys/encrypted-keys/encrypted.c | 63 ++++--------------------
+>  2 files changed, 11 insertions(+), 55 deletions(-)
+> 
+> diff --git a/security/keys/Kconfig b/security/keys/Kconfig
+> index d4f5fc1e72638..64477e2c4a212 100644
+> --- a/security/keys/Kconfig
+> +++ b/security/keys/Kconfig
+> @@ -85,14 +85,13 @@ endif
+>  
+>  config ENCRYPTED_KEYS
+>  	tristate "ENCRYPTED KEYS"
+>  	depends on KEYS
+>  	select CRYPTO
+> -	select CRYPTO_HMAC
+>  	select CRYPTO_AES
+>  	select CRYPTO_CBC
+> -	select CRYPTO_SHA256
+> +	select CRYPTO_LIB_SHA256
+>  	select CRYPTO_RNG
+>  	help
+>  	  This option provides support for create/encrypting/decrypting keys
+>  	  in the kernel.  Encrypted keys are instantiated using kernel
+>  	  generated random numbers or provided decrypted data, and are
+> diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encrypted-keys/encrypted.c
+> index 831cb84fd75a1..513c09e2b01cf 100644
+> --- a/security/keys/encrypted-keys/encrypted.c
+> +++ b/security/keys/encrypted-keys/encrypted.c
+> @@ -25,22 +25,19 @@
+>  #include <linux/random.h>
+>  #include <linux/rcupdate.h>
+>  #include <linux/scatterlist.h>
+>  #include <linux/ctype.h>
+>  #include <crypto/aes.h>
+> -#include <crypto/hash.h>
+>  #include <crypto/sha2.h>
+>  #include <crypto/skcipher.h>
+>  #include <crypto/utils.h>
+>  
+>  #include "encrypted.h"
+>  #include "ecryptfs_format.h"
+>  
+>  static const char KEY_TRUSTED_PREFIX[] = "trusted:";
+>  static const char KEY_USER_PREFIX[] = "user:";
+> -static const char hash_alg[] = "sha256";
+> -static const char hmac_alg[] = "hmac(sha256)";
+>  static const char blkcipher_alg[] = "cbc(aes)";
+>  static const char key_format_default[] = "default";
+>  static const char key_format_ecryptfs[] = "ecryptfs";
+>  static const char key_format_enc32[] = "enc32";
+>  static unsigned int ivsize;
+> @@ -52,12 +49,10 @@ static int blksize;
+>  #define HASH_SIZE SHA256_DIGEST_SIZE
+>  #define MAX_DATA_SIZE 4096
+>  #define MIN_DATA_SIZE  20
+>  #define KEY_ENC32_PAYLOAD_LEN 32
+>  
+> -static struct crypto_shash *hash_tfm;
+> -
+>  enum {
+>  	Opt_new, Opt_load, Opt_update, Opt_err
+>  };
+>  
+>  enum {
+> @@ -327,39 +322,18 @@ static struct key *request_user_key(const char *master_desc, const u8 **master_k
+>  	*master_keylen = upayload->datalen;
+>  error:
+>  	return ukey;
+>  }
+>  
+> -static int calc_hmac(u8 *digest, const u8 *key, unsigned int keylen,
+> -		     const u8 *buf, unsigned int buflen)
+> -{
+> -	struct crypto_shash *tfm;
+> -	int err;
+> -
+> -	tfm = crypto_alloc_shash(hmac_alg, 0, 0);
+> -	if (IS_ERR(tfm)) {
+> -		pr_err("encrypted_key: can't alloc %s transform: %ld\n",
+> -		       hmac_alg, PTR_ERR(tfm));
+> -		return PTR_ERR(tfm);
+> -	}
+> -
+> -	err = crypto_shash_setkey(tfm, key, keylen);
+> -	if (!err)
+> -		err = crypto_shash_tfm_digest(tfm, buf, buflen, digest);
+> -	crypto_free_shash(tfm);
+> -	return err;
+> -}
+> -
+>  enum derived_key_type { ENC_KEY, AUTH_KEY };
+>  
+>  /* Derive authentication/encryption key from trusted key */
+>  static int get_derived_key(u8 *derived_key, enum derived_key_type key_type,
+>  			   const u8 *master_key, size_t master_keylen)
+>  {
+>  	u8 *derived_buf;
+>  	unsigned int derived_buf_len;
+> -	int ret;
+>  
+>  	derived_buf_len = strlen("AUTH_KEY") + 1 + master_keylen;
+>  	if (derived_buf_len < HASH_SIZE)
+>  		derived_buf_len = HASH_SIZE;
+>  
+> @@ -372,14 +346,13 @@ static int get_derived_key(u8 *derived_key, enum derived_key_type key_type,
+>  	else
+>  		strcpy(derived_buf, "ENC_KEY");
+>  
+>  	memcpy(derived_buf + strlen(derived_buf) + 1, master_key,
+>  	       master_keylen);
+> -	ret = crypto_shash_tfm_digest(hash_tfm, derived_buf, derived_buf_len,
+> -				      derived_key);
+> +	sha256(derived_buf, derived_buf_len, derived_key);
+>  	kfree_sensitive(derived_buf);
+> -	return ret;
+> +	return 0;
+>  }
+>  
+>  static struct skcipher_request *init_skcipher_req(const u8 *key,
+>  						  unsigned int key_len)
+>  {
+> @@ -501,14 +474,14 @@ static int datablob_hmac_append(struct encrypted_key_payload *epayload,
+>  	ret = get_derived_key(derived_key, AUTH_KEY, master_key, master_keylen);
+>  	if (ret < 0)
+>  		goto out;
+>  
+>  	digest = epayload->format + epayload->datablob_len;
+> -	ret = calc_hmac(digest, derived_key, sizeof derived_key,
+> -			epayload->format, epayload->datablob_len);
+> -	if (!ret)
+> -		dump_hmac(NULL, digest, HASH_SIZE);
+> +	hmac_sha256_usingrawkey(derived_key, sizeof(derived_key),
+> +				epayload->format, epayload->datablob_len,
+> +				digest);
+> +	dump_hmac(NULL, digest, HASH_SIZE);
+>  out:
+>  	memzero_explicit(derived_key, sizeof(derived_key));
+>  	return ret;
+>  }
+>  
+> @@ -532,13 +505,12 @@ static int datablob_hmac_verify(struct encrypted_key_payload *epayload,
+>  		p = epayload->master_desc;
+>  		len -= strlen(epayload->format) + 1;
+>  	} else
+>  		p = epayload->format;
+>  
+> -	ret = calc_hmac(digest, derived_key, sizeof derived_key, p, len);
+> -	if (ret < 0)
+> -		goto out;
+> +	hmac_sha256_usingrawkey(derived_key, sizeof(derived_key), p, len,
+> +				digest);
+>  	ret = crypto_memneq(digest, epayload->format + epayload->datablob_len,
+>  			    sizeof(digest));
+>  	if (ret) {
+>  		ret = -EINVAL;
+>  		dump_hmac("datablob",
+> @@ -1009,33 +981,18 @@ EXPORT_SYMBOL_GPL(key_type_encrypted);
+>  
+>  static int __init init_encrypted(void)
+>  {
+>  	int ret;
+>  
+> -	hash_tfm = crypto_alloc_shash(hash_alg, 0, 0);
+> -	if (IS_ERR(hash_tfm)) {
+> -		pr_err("encrypted_key: can't allocate %s transform: %ld\n",
+> -		       hash_alg, PTR_ERR(hash_tfm));
+> -		return PTR_ERR(hash_tfm);
+> -	}
+> -
+>  	ret = aes_get_sizes();
+>  	if (ret < 0)
+> -		goto out;
+> -	ret = register_key_type(&key_type_encrypted);
+> -	if (ret < 0)
+> -		goto out;
+> -	return 0;
+> -out:
+> -	crypto_free_shash(hash_tfm);
+> -	return ret;
+> -
+> +		return ret;
+> +	return register_key_type(&key_type_encrypted);
+>  }
+>  
+>  static void __exit cleanup_encrypted(void)
+>  {
+> -	crypto_free_shash(hash_tfm);
+>  	unregister_key_type(&key_type_encrypted);
+>  }
+>  
+>  late_initcall(init_encrypted);
+>  module_exit(cleanup_encrypted);
+> 
+> base-commit: d6084bb815c453de27af8071a23163a711586a6c
+> -- 
+> 2.50.1
+> 
 
