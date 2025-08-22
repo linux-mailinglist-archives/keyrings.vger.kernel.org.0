@@ -1,109 +1,136 @@
-Return-Path: <keyrings+bounces-2968-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2969-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A7CB256FA
-	for <lists+keyrings@lfdr.de>; Thu, 14 Aug 2025 00:51:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C7DB31BC3
+	for <lists+keyrings@lfdr.de>; Fri, 22 Aug 2025 16:35:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54AE81C22D28
-	for <lists+keyrings@lfdr.de>; Wed, 13 Aug 2025 22:51:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B1E4B24871
+	for <lists+keyrings@lfdr.de>; Fri, 22 Aug 2025 14:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5732FB962;
-	Wed, 13 Aug 2025 22:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C693054DE;
+	Fri, 22 Aug 2025 14:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b="bGTBQM/I"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RrTR3sPG"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D192FB96F
-	for <keyrings@vger.kernel.org>; Wed, 13 Aug 2025 22:51:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F79F308F0A
+	for <keyrings@vger.kernel.org>; Fri, 22 Aug 2025 14:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755125478; cv=none; b=Ddz7gwijtBKg3ofb4qXbPKfY6exJfvqw1R00BYgCmX5MFLuZ0XcOEBLlDJ1cvAhAQj71CqKmIY70CsE6pEP6pz+ibH81zXTj0g39o1wsuimQv01vqy1fCDluZuwG6Yynov0D+e909RG8L59K7Zpm/3s1NhIRi+KsbS1HSDSP1xo=
+	t=1755872545; cv=none; b=uXEA8Grx7v9kKFfTojiTKHOiqbyMlGWuksyG8ZgsZEeduXuWxHkY6RmBAWj9hnXmIuJPFtavniqQODYXBSAJGWeENH5Q1FPzGVYRzJBJFFJwqtQEVW2hiMjuqWTwrtLT5kSr2dOyKfEnEdV+ceY52JH6tmW80KYkaRGp0cPU+zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755125478; c=relaxed/simple;
-	bh=+QMZYCpYmISKDe8esyPmnsJcY7v4/c6URivX2WpgQ+U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cKuxrH1522YMxHsJ4n5CZiBbqeP6Km5xE0MlsRWkZBKVOPGpWTq2mCZo/XhiiIz8DhZS1+ujf27+twbyiphQjdUCtpl4UeQ+vxDTmU7ZE6D7V/YCmZLIszAFhuhO/fIv1sCe3yBFBnSR3dQyeXU84e4Ht6DovyVrVe8PmOwJ224=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com; spf=pass smtp.mailfrom=arista.com; dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b=bGTBQM/I; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arista.com
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7e8706c880eso45627185a.3
-        for <keyrings@vger.kernel.org>; Wed, 13 Aug 2025 15:51:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=arista.com; s=google; t=1755125475; x=1755730275; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oKiv6wl+jImpJWRZhxxyuJZvdfk+D/HeaOoJPyHB4H0=;
-        b=bGTBQM/IisnK3Hi0aRgnHd15GBbJqjelB33BroCsJOOA1dKSPwr9cpl9OmM6vy2AIj
-         HVd1If4i+on1MLehPsk//515ZYEzkNdDegVm/ZSAN5saMuCMzqJcSd5RnXSW5ZiQp0aK
-         YNDBQx5fztp1v2oc8AGGvNTVPEeFcALUUdsU0vJaRXyfI1Eqy1HJTo9d4ozor6FkiPaf
-         6j8G/wJ5SSKLxauMct192ywDhWYlTmHkyHt64mb7gcYNw7KtCD97iEePRSVOU0JO/BU6
-         5EzQsqjuhZ8AVkKO5umSURiCHmTPtBhh/i1rQKBQ+0r98mmvlZ3AbMedb3ub0MUhXM9K
-         VMSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1755125475; x=1755730275;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oKiv6wl+jImpJWRZhxxyuJZvdfk+D/HeaOoJPyHB4H0=;
-        b=i2+Y0aH1Hnsiz4CDEJyT2q+MuwEXrSp+glW8+gzdMxHqe8M6Og+QP85T9NMpI0i6+d
-         69swu8AfYdzWlVNYmuejepA/MC/neN2qAMH5ev6Kv8MLi5LzUvcXzocyKOPG5Tnn5ksw
-         OUxdtw2E32MMgZEmuU1pywF3+9bJJGjF9jk4M5xPKogaGbv9y3CRpJw17HjGx0LIas5a
-         yz2vTvqJmO9wu8mVBz/2W4/lcFebAGnaAg3fhu5Hk0OWhY+Hn+tSA2Wg80+u60XZe853
-         cgRdIoktS6neIxz5rCbEIgEd/CqFYMFnJsTgdcMAkysiRx5O57LBExPnkKclVjHqU5xN
-         rfLg==
-X-Gm-Message-State: AOJu0Yxhi6SMMFh35RQBY0A6/97qW+lbWNKOQ4ekn2zKDoGUfLZpnnl7
-	tsr/e9sZ9sayKKvjqzYgtfASiovN7gSqr4Btsl+rRRa18i9gubdJjca8hBKQw8OjZp1MvyYHHM7
-	i07R27w4npDMq5P85RHe3jx5o5xqd3Y/rEmZePAv4
-X-Gm-Gg: ASbGncsyW9Qva/GRC9veUq5PfW7hyREs1+4slMYvoSHP+I4iB3YyqH2XXSHWejq+6PB
-	IdYB4i9MwJS7CzBtjKjf6LHE3dgUXa5+KHQNWtcloTNpiLZzxZuNF1Z3cvnVfFRC7tU221LfNqO
-	7JpGYSNmIeDzgRjw0RcHTdRf9i9njjj5cbIHPRDi0BBF3gaYXIBXVSFk0PzxGVq3K0l662bltzC
-	x4wqvB+uaKLqA==
-X-Google-Smtp-Source: AGHT+IEDrLwXr33eZrsGB8hileXp3lWWmGqjiKU5XkfJQNEoE2lmdZGTwIkoK/QI8KxT1HHTk+QdTtZ3//7k3hYxEoc=
-X-Received: by 2002:a05:620a:2a0e:b0:7e8:6e78:8de0 with SMTP id
- af79cd13be357-7e8702e024amr168230685a.10.1755125474735; Wed, 13 Aug 2025
- 15:51:14 -0700 (PDT)
+	s=arc-20240116; t=1755872545; c=relaxed/simple;
+	bh=8ZVMFePCcmuvKN3zUl4JuagXydzmkex1k4x6NVYwros=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lwTRfinCvk2DQ9josEY50sHnAnYtPSipW/7MAAwk/LMTSBC7X1btpi7ZOG+YbKTQB3OfA2ygNjuMVsXRqFjMm+cbR/qF25EUgzT+7e0lNsKlvelSObPtCbBfqM1TryJPXO0r+n0B85wQ0cR0pQJLG5dEjyqx/tbUgxu8JRNXZZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RrTR3sPG; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1755872542;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=cpjy/pUDUNyfo8e4gHCFPQR08+f7DODSHaC7gYdHggk=;
+	b=RrTR3sPGqxFDUtLmO3MGNIhMa5KiKj9jZ3C4rWVPUpzU97cbUY3UaqXOyjCWnRg2B/5Os9
+	PL9kGApFIeM1yPZmdI6KPfzk896+GLrr1cogqJCfP6cYwEKKBBzoVVtqd05sMavrnfdMNu
+	695Oa1UuAS+ZXQ6+JN2pDLpLfkr2Gpg=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-361-MU3CQMfCMDOBfvOCF8rLKg-1; Fri,
+ 22 Aug 2025 10:22:20 -0400
+X-MC-Unique: MU3CQMfCMDOBfvOCF8rLKg-1
+X-Mimecast-MFC-AGG-ID: MU3CQMfCMDOBfvOCF8rLKg_1755872540
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DB967195608E;
+	Fri, 22 Aug 2025 14:22:19 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.132])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9AF1A30001A1;
+	Fri, 22 Aug 2025 14:22:18 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: David Howells <dhowells@redhat.com>,
+	keyrings@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/7] keyutils: Add some fixes and updates
+Date: Fri, 22 Aug 2025 15:22:07 +0100
+Message-ID: <20250822142215.2475014-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250718234541.3087-1-dannyhu@arista.com> <188741.1753212750@warthog.procyon.org.uk>
-In-Reply-To: <188741.1753212750@warthog.procyon.org.uk>
-From: Danny Hu <dannyhu@arista.com>
-Date: Wed, 13 Aug 2025 15:51:03 -0700
-X-Gm-Features: Ac12FXxZOBmFHULFcTS9uP64TOgZxwFm-t3VmWsopTAgLyDtShj2yrwcZiBTTx4
-Message-ID: <CAFn2k5AsoZf1znsQqbRs9huX4ccx2v5TGqMidCoHXVpDvk19Og@mail.gmail.com>
-Subject: Re: [PATCH 1/2] sign-file: Fix memory leaks in the sign-file tool
-To: David Howells <dhowells@redhat.com>
-Cc: keyrings@vger.kernel.org, dwmw2@infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Tue, Jul 22, 2025 at 12:32=E2=80=AFPM David Howells <dhowells@redhat.com=
-> wrote:
+Hi Jarkko,
 
-> Why?  exit() will clean that up.
+Here are some patches that I'm proposing to add to keyutils:
 
-You are right that exit() will clean up all allocated memory. However,
-when this binary runs within tests instrumented with AddressSanitizer
-(ASan) and LeakSanitizer (LSan), these leaks cause the instrumented
-tests to fail. This happens even if the program isn't leaking in a way
-that would cause long-term resource exhaustion.
+ (1) Fix a couple of potential signed overflows in the library.
 
-The main reason for this change is to satisfy LSan. By doing so, we
-avoid false positives in LSan-instrumented test suites, which allows
-us to rely on LSan to detect actual, problematic leaks that need
-fixing. The alternative would be to omit any tests that use the
-`sign-file` binary from LSan instrumentation, but that would mean
-sacrificing test coverage, which isn't ideal.
+ (2) In request-key, fix the mishandling of the last line of the
+     request-key.conf file if it doesn't have a newline at the end.
 
-Thanks,
-Danny
+ (3) In the tests, hide the endianness of raw binary content (such as
+     keyring content) by using od to byteswap it appropriately rather than
+     trying to do this manually.
+
+ (4) In the tests, add skips for unsupported features.
+
+ (5) In request-key, add help text if "--help" is given or no parameters
+     are given.
+
+ (6) Add a simpler way to do configuration testing:
+
+	request-key --check [-lnv] type desc [info] [op]
+
+ (7) Add support for multiwildcard matching in request-key.conf.  This can
+     be tested with:
+
+	request-key --match [-v] pattern datum [datum...]
+
+Apologies, some of these should have been committed a while ago.
+
+David
+
+David Howells (7):
+  lib: Fix a couple of potential signed oveflows
+  request-key: Fix mishandling of last line of config file
+  test: Hide endianness
+  tests: Add skips for testing of unsupported features
+  request-key: Add help text
+  request-key: Add a simpler debug test
+  request-key: Support the promised multiwildcard matching
+
+ keyutils.c                                |   5 +
+ man/request-key.8                         |  85 +++-
+ request-key.c                             | 504 ++++++++++++++++------
+ tests/features/limits/runtest.sh          |   6 +
+ tests/hex2bin.pl                          |  21 +
+ tests/keyctl/id/bad-args/runtest.sh       |   6 +
+ tests/keyctl/id/noargs/runtest.sh         |   6 +
+ tests/keyctl/id/valid/runtest.sh          |   6 +
+ tests/keyctl/move/bad-args/runtest.sh     |   6 +
+ tests/keyctl/move/noargs/runtest.sh       |   6 +
+ tests/keyctl/move/recursion/runtest.sh    |   6 +
+ tests/keyctl/move/valid/runtest.sh        |   6 +
+ tests/keyctl/reading/valid/runtest.sh     |   9 +-
+ tests/keyctl/session/valid2/runtest.sh    |   6 +
+ tests/keyctl/supports/bad-args/runtest.sh |   6 +
+ tests/keyctl/supports/valid/runtest.sh    |   6 +
+ tests/prepare.inc.sh                      |  23 +-
+ tests/toolbox.inc.sh                      |  69 ++-
+ 18 files changed, 619 insertions(+), 163 deletions(-)
+ create mode 100644 tests/hex2bin.pl
+
 
