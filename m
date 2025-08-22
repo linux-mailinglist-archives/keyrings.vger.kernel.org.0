@@ -1,70 +1,70 @@
-Return-Path: <keyrings+bounces-2974-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2973-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 394F5B31BC0
-	for <lists+keyrings@lfdr.de>; Fri, 22 Aug 2025 16:35:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC5EEB31BD1
+	for <lists+keyrings@lfdr.de>; Fri, 22 Aug 2025 16:37:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1FD76437C0
-	for <lists+keyrings@lfdr.de>; Fri, 22 Aug 2025 14:29:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3250B1CC754C
+	for <lists+keyrings@lfdr.de>; Fri, 22 Aug 2025 14:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1333128B6;
-	Fri, 22 Aug 2025 14:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E563128B5;
+	Fri, 22 Aug 2025 14:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h+qMWtEN"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fJoTTNAI"
 X-Original-To: keyrings@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293A73128AC
-	for <keyrings@vger.kernel.org>; Fri, 22 Aug 2025 14:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48FC3128A8
+	for <keyrings@vger.kernel.org>; Fri, 22 Aug 2025 14:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755872560; cv=none; b=IsHbzCB7ZD34F589XC2nCrjh9hP0xULNBntcKVXZMIOAQyRUL6Mowq/grxt86fp3jB/LRW/Q0g69NfF/TDQqz8wbmU8jBxD4Yq2sYd5Fqt3jj85VBuEaOZgIpL6U/fw8B5qhEtuXVE85gR/vQ5ZKT6Uszp5wEuhFTyokOMn42Bw=
+	t=1755872559; cv=none; b=JOpv+rX2y3GANhyoiLJVWaG1oFIF+uTWp4cw31tnoGNWp0DpM2g+yXca7z4uMZ47Qk8bUHGrUzDbWlX03zZNuHjDmpnPyPjXrzsCplG/F3teDIYnY9JAv6WvE1gZkYb/TstBVgwgo6tcO8wwNINOVUaJmSWsCZe1YEfRwHLZHzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755872560; c=relaxed/simple;
-	bh=TraykhXuNIeDPi+bm5l609BGmj55Eaa3Z/gNt9JbzHQ=;
+	s=arc-20240116; t=1755872559; c=relaxed/simple;
+	bh=8ZSK0v83UzgndVd+6j+Ob2zWxBO+LwO1vSvTVJ6AS7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JhZ43DgnM0nxrkBbd12defkebbZY6yETiKaeFBnzYTnqNsaTylL0Z7o9sA1YE6IU8omBqvtXli+e3cvkIOEI/jGl8cs6Lxe9nI49P60iKHatBufb9ktfe2QuCu7CvalbFb7ZiBdctsmSMeXvzdwDkpdx2m2OLkzfrcDPjXQU8xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h+qMWtEN; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=Iqc9OmOBTaJ1iE6evdkdK+k/ttlrkDXLPVOrsqKIQlVN0+RbwxRSHwrgyxez9Aa/TWKFwdLtCsagaHEouzwweU53kIj2/JkHPWYIKynTWlIav1GGe0Ywa39chlodZsMhq8hNeGAk1r0ePv8XAOCzXUI1raBiaB6TfEdYO3TEMWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fJoTTNAI; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1755872555;
+	s=mimecast20190719; t=1755872556;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ySRlbhyiwv/BltP0wsJJxLGif0rcRHsxShcb/MRRnzw=;
-	b=h+qMWtENXWuSuARrxRWrW/rWVfkerq5IiRaQB0O8zE2N1KGqCI8ij5Ig0G8ZjJ7dcQfVWV
-	jjmxcNnOFaFIcktr46qLOCkm9uwuiWtVnH31VkiU0WtYAl5fPqfftk9T6FmQiHRFORmQrq
-	3PX6a9ftiGjja6e60RZApbtAvrzt4pE=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	bh=Zg5th46DkHtvRDX7ITaK0hA9kgkdfvZehuTYviRd8Ck=;
+	b=fJoTTNAI89/42xevbltxY0hLGmtLPp62/0jwaRFTWeFkE285ikhWzDR5U/LqRuDs2cEpH0
+	Fetg0Lrbi1q1o8XhbvssIisvJwNdkUNNDYymfM86WCUG1Rtq5RW/6kkNCCyobmDH8BrJOd
+	Q/is0wXAbmNqycjQatXoEbAP1Bb5Vts=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-613-9-FfmtpcN8CA_5njh_efFg-1; Fri,
- 22 Aug 2025 10:22:31 -0400
-X-MC-Unique: 9-FfmtpcN8CA_5njh_efFg-1
-X-Mimecast-MFC-AGG-ID: 9-FfmtpcN8CA_5njh_efFg_1755872550
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-35-3B29MiX5Nwub36e3U3GTUg-1; Fri,
+ 22 Aug 2025 10:22:34 -0400
+X-MC-Unique: 3B29MiX5Nwub36e3U3GTUg-1
+X-Mimecast-MFC-AGG-ID: 3B29MiX5Nwub36e3U3GTUg_1755872553
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A57681956089;
-	Fri, 22 Aug 2025 14:22:30 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4AE4919560B4;
+	Fri, 22 Aug 2025 14:22:33 +0000 (UTC)
 Received: from warthog.procyon.org.com (unknown [10.42.28.132])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 72F9718003FC;
-	Fri, 22 Aug 2025 14:22:29 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1457E19560B0;
+	Fri, 22 Aug 2025 14:22:31 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Jarkko Sakkinen <jarkko@kernel.org>
 Cc: David Howells <dhowells@redhat.com>,
 	keyrings@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 4/7] tests: Add skips for testing of unsupported features
-Date: Fri, 22 Aug 2025 15:22:11 +0100
-Message-ID: <20250822142215.2475014-5-dhowells@redhat.com>
+Subject: [PATCH 5/7] request-key: Add help text
+Date: Fri, 22 Aug 2025 15:22:12 +0100
+Message-ID: <20250822142215.2475014-6-dhowells@redhat.com>
 In-Reply-To: <20250822142215.2475014-1-dhowells@redhat.com>
 References: <20250822142215.2475014-1-dhowells@redhat.com>
 Precedence: bulk
@@ -74,345 +74,175 @@ List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Add skips for features that are either unsupported by the kernel or by the
-keyutils package.
+Add --help text to /sbin/request-key.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lore.kernel.org/keyrings/3089643.1745491480@warthog.procyon.org.uk/
 ---
- tests/features/limits/runtest.sh          |  6 +++++
- tests/hex2bin.pl                          | 21 +++++++++++++++
- tests/keyctl/id/bad-args/runtest.sh       |  6 +++++
- tests/keyctl/id/noargs/runtest.sh         |  6 +++++
- tests/keyctl/id/valid/runtest.sh          |  6 +++++
- tests/keyctl/move/bad-args/runtest.sh     |  6 +++++
- tests/keyctl/move/noargs/runtest.sh       |  6 +++++
- tests/keyctl/move/recursion/runtest.sh    |  6 +++++
- tests/keyctl/move/valid/runtest.sh        |  6 +++++
- tests/keyctl/session/valid2/runtest.sh    |  6 +++++
- tests/keyctl/supports/bad-args/runtest.sh |  6 +++++
- tests/keyctl/supports/valid/runtest.sh    |  6 +++++
- tests/prepare.inc.sh                      | 23 +++++++++++++++-
- tests/toolbox.inc.sh                      | 33 ++++++++++++++++++-----
- 14 files changed, 136 insertions(+), 7 deletions(-)
- create mode 100644 tests/hex2bin.pl
+ man/request-key.8 | 42 +++++++++++++++++++++++++++-------
+ request-key.c     | 57 ++++++++++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 85 insertions(+), 14 deletions(-)
 
-diff --git a/tests/features/limits/runtest.sh b/tests/features/limits/runtest.sh
-index 3af2f5a..7642071 100644
---- a/tests/features/limits/runtest.sh
-+++ b/tests/features/limits/runtest.sh
-@@ -9,6 +9,12 @@
- result=PASS
- echo "++++ BEGINNING TEST" >$OUTPUTFILE
+diff --git a/man/request-key.8 b/man/request-key.8
+index 50a7506..15b6bb8 100644
+--- a/man/request-key.8
++++ b/man/request-key.8
+@@ -7,20 +7,37 @@
+ .\" as published by the Free Software Foundation; either version
+ .\" 2 of the License, or (at your option) any later version.
+ .\"
+-.TH REQUEST-KEY 8 "15 Nov 2011" Linux "Linux Key Management Utilities"
++.TH REQUEST-KEY 8 "22 Aug 2025" Linux "Linux Key Management Utilities"
+ .SH NAME
+ request\-key \- handle key instantiation callback requests from the kernel
+ .SH SYNOPSIS
+-\fB/sbin/request\-key \fR<op> <key> <uid> <gid> <threadring> <processring>
+-	<sessionring> [<info>]
++.nf
++\fB/sbin/request\-key\fP [\fB--help\fP|\fB--version\fP]
++\fB/sbin/request\-key\fP \fIop key uid gid t-ring p-ring s-ring\fP [\fIinfo\fP]
++\fB/sbin/request\-key -d [-lnv] -D\fP \fIdesc\fP \fIop key\fP...
++.fi
+ .SH DESCRIPTION
+ This program is invoked by the kernel when the kernel is asked for a key that
+ it doesn't have immediately available. The kernel creates a partially set up
+-key and then calls out to this program to instantiate it. It is not intended
+-to be called directly.
++key and then calls out to this program to instantiate it. It is not intended to
++be called directly.  A debugging capability is available through command line
++options, however, to aid in testing and in debugging configuration.
+ .PP
+-However, for debugging purposes, it can be given some options on the command
+-line:
++The normally required parameters are:
++.IP \fBop\fP
++The operation being done, such as "create" if a key is being instantiated for
++creation.
++.IP \fBkey\fP
++The ID of the key being operated upon.
++.IP "\fBuid\fP, \fBgid\fP"
++The ownership of the task that caused the key to be created.
++.IP "\fBt-ring\fP, \fBp-ring\fP, \fBs-ring\fP"
++The thread, process and session keyrings of the task that caused the key to be
++created.
++.IP \fBinfo\fP
++The optional callout info that can be passed by \fIrequest_key(2)\fP.
++.PP
++The options that may also be supplied are:
+ .IP \fB-d\fP
+ Turn on debugging mode.  In this mode, no attempts are made to access any keys
+ and, if a handler program is selected, it won't be executed; instead, this
+@@ -39,10 +56,19 @@ will be copied to the system log - this will prevent that.
+ .IP \fB-v\fP
+ Turn on debugging output.  This may be specified multiple times to produce
+ increasing levels of verbosity.
++.IP \fB--help\fP
++Print help text and exit.
+ .IP \fB--version\fP
+ Print the program version and exit.
++.SH EXAMPLES
++When using the debugging mode, all the parameters must be given, though a lot
++of them don't matter and can be just set to 0, e.g.:
++.PP
++.nf
++request-key -d -D "user;0;0;0;debug:bar" create 0 0 0 0 0 0 foo
++.fi
+ .SH ERRORS
+-All errors will be logged to the syslog.
++All errors will be logged to the syslog unless the \fB-n\fP option is given.
+ .SH FILES
+ .ul
+ /etc/request\-key.d/*.conf
+diff --git a/request-key.c b/request-key.c
+index d1feec3..9a7d741 100644
+--- a/request-key.c
++++ b/request-key.c
+@@ -111,7 +111,7 @@ static void error(const char *fmt, ...)
+ {
+ 	va_list va;
  
-+if ! keyutils_at_or_later_than 1.6.2
-+then
-+    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl --test'"
-+    exit 0
-+fi
+-	if (verbosity) {
++	if (verbosity || debug_mode) {
+ 		va_start(va, fmt);
+ 		vfprintf(stderr, fmt, va);
+ 		va_end(va);
+@@ -138,6 +138,45 @@ static void oops(int x)
+ 	error("Died on signal %d", x);
+ }
+ 
++static const char help_text[] =
++	"Usage: request-key [OPTIONS] [PARAMS]\n"
++	"       request-key [OPTIONS] -d -D <desc> [PARAMS]\n"
++	"\n"
++	"Where the required parameters, [PARAMS], are, in order:\n"
++	"  <op>     : The operation type (e.g. 'create')\n"
++	"  <key>    : The ID of the key to be operated upon\n"
++	"  <uid>    : The UID of the requesting process\n"
++	"  <gid>    : The GID of the requesting process\n"
++	"  <t-ring> : The thread keyring of the requesting process (or 0)\n"
++	"  <p-ring> : The process keyring of the requesting process (or 0)\n"
++	"  <s-ring> : The session keyring of the requesting process (or 0)\n"
++	"  <callout>: The callout data supplied to the request\n"
++	"\n"
++	"and [OPTIONS] are none or more of\n"
++	"  -d       : Debug mode for direct cmdline testing\n"
++	"  -D <desc>: Description for debug mode\n"
++	"  -l       : Use config from local dir, not /etc\n"
++	"  -n       : Don't log to syslog\n"
++	"  -v       : Turn up verbosity (can use multiple times)\n"
++	"  --version: Print version and exit\n"
++	"  --help   : Print this text and exit\n"
++	"\n"
++	"Service program lookup testing can be done with the '-d' option, but\n"
++	"as there is no actual key to query, the called must supply the key's\n"
++	"attributes manually using '-D' in the form returned by the\n"
++	"'keyctl rdescribe' command, for example:\n"
++	"\n"
++	"  ./request-key -d -D \"user;0;0;0;debug:bar\" create 0 0 0 0 0 0 foo\n"
++	"\n"
++	"where 'user' is the key type and 'debug:bar' is the key description.\n"
++	;
 +
- # This doesn't work on MIPS earler than 3.19 because of a kernel bug
- kver=`uname -r`
- kmch=`uname -m`
-diff --git a/tests/hex2bin.pl b/tests/hex2bin.pl
-new file mode 100644
-index 0000000..4f0f27a
---- /dev/null
-+++ b/tests/hex2bin.pl
-@@ -0,0 +1,21 @@
-+#!/usr/bin/perl -w
-+use strict;
++static struct option long_options[] = {
++	{ .name = "help",	.val = 1 },
++	{ .name = "version",	.val = 2 },
++	{}
++};
 +
-+die "Format:\n\t$0 <hex> [<hex>]*\n\t$0 -\n" unless (@ARGV);
-+
-+my $str = "";
-+
-+if ($ARGV[0] eq "-") {
-+    shift(@ARGV);
-+    $str .= $_ while (<STDIN>);
-+} else {
-+    $str = join("", @ARGV);
-+}
-+
-+$str =~ s/[ \t\n]//g;
-+die "odd length string\n" if (length($str) & 1);
-+
-+for (; $str; $str = substr($str, 2)) {
-+    my $pair = hex(substr($str, 0, 2));
-+    print pack("C", $pair);
-+}
-diff --git a/tests/keyctl/id/bad-args/runtest.sh b/tests/keyctl/id/bad-args/runtest.sh
-index 957d1a5..bba62c6 100644
---- a/tests/keyctl/id/bad-args/runtest.sh
-+++ b/tests/keyctl/id/bad-args/runtest.sh
-@@ -6,6 +6,12 @@
+ /*****************************************************************************/
+ /*
+  *
+@@ -149,19 +188,25 @@ int main(int argc, char *argv[])
+ 	char *buf;
+ 	int ret, ntype, dpos, n, fd, opt;
  
- # ---- do the actual testing ----
+-	if (argc == 2 && strcmp(argv[1], "--version") == 0) {
+-		printf("request-key from %s (Built %s)\n",
+-		       keyutils_version_string, keyutils_build_string);
+-		return 0;
++	if (argc == 1) {
++		fputs(help_text, stderr);
++		exit(2);
+ 	}
  
-+if [ $have_id_command = 0 ]
-+then
-+    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl id'"
-+    exit 0
-+fi
-+
- result=PASS
- echo "++++ BEGINNING TEST" >$OUTPUTFILE
+ 	signal(SIGSEGV, oops);
+ 	signal(SIGBUS, oops);
+ 	signal(SIGPIPE, SIG_IGN);
  
-diff --git a/tests/keyctl/id/noargs/runtest.sh b/tests/keyctl/id/noargs/runtest.sh
-index aff9de6..b95c596 100644
---- a/tests/keyctl/id/noargs/runtest.sh
-+++ b/tests/keyctl/id/noargs/runtest.sh
-@@ -6,6 +6,12 @@
- 
- # ---- do the actual testing ----
- 
-+if [ $have_id_command = 0 ]
-+then
-+    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl id'"
-+    exit 0
-+fi
-+
- result=PASS
- echo "++++ BEGINNING TEST" >$OUTPUTFILE
- 
-diff --git a/tests/keyctl/id/valid/runtest.sh b/tests/keyctl/id/valid/runtest.sh
-index ffed995..2c06b3d 100644
---- a/tests/keyctl/id/valid/runtest.sh
-+++ b/tests/keyctl/id/valid/runtest.sh
-@@ -6,6 +6,12 @@
- 
- # ---- do the actual testing ----
- 
-+if [ $have_id_command = 0 ]
-+then
-+    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl id'"
-+    exit 0
-+fi
-+
- result=PASS
- echo "++++ BEGINNING TEST" >$OUTPUTFILE
- 
-diff --git a/tests/keyctl/move/bad-args/runtest.sh b/tests/keyctl/move/bad-args/runtest.sh
-index b1c7e66..9410941 100644
---- a/tests/keyctl/move/bad-args/runtest.sh
-+++ b/tests/keyctl/move/bad-args/runtest.sh
-@@ -6,6 +6,12 @@
- 
- # ---- do the actual testing ----
- 
-+if [ $have_move_key = 0 ]
-+then
-+    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl move'"
-+    exit 0
-+fi
-+
- result=PASS
- echo "++++ BEGINNING TEST" >$OUTPUTFILE
- 
-diff --git a/tests/keyctl/move/noargs/runtest.sh b/tests/keyctl/move/noargs/runtest.sh
-index 29a91f1..8ad91e9 100644
---- a/tests/keyctl/move/noargs/runtest.sh
-+++ b/tests/keyctl/move/noargs/runtest.sh
-@@ -6,6 +6,12 @@
- 
- # ---- do the actual testing ----
- 
-+if [ $have_move_key = 0 ]
-+then
-+    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl move'"
-+    exit 0
-+fi
-+
- result=PASS
- echo "++++ BEGINNING TEST" >$OUTPUTFILE
- 
-diff --git a/tests/keyctl/move/recursion/runtest.sh b/tests/keyctl/move/recursion/runtest.sh
-index 36cd5cb..8b90be8 100644
---- a/tests/keyctl/move/recursion/runtest.sh
-+++ b/tests/keyctl/move/recursion/runtest.sh
-@@ -6,6 +6,12 @@
- 
- # ---- do the actual testing ----
- 
-+if [ $have_move_key = 0 ]
-+then
-+    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl move'"
-+    exit 0
-+fi
-+
- result=PASS
- echo "++++ BEGINNING TEST" >$OUTPUTFILE
- 
-diff --git a/tests/keyctl/move/valid/runtest.sh b/tests/keyctl/move/valid/runtest.sh
-index 31b51d7..20ccff2 100644
---- a/tests/keyctl/move/valid/runtest.sh
-+++ b/tests/keyctl/move/valid/runtest.sh
-@@ -6,6 +6,12 @@
- 
- # ---- do the actual testing ----
- 
-+if [ $have_move_key = 0 ]
-+then
-+    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl move'"
-+    exit 0
-+fi
-+
- result=PASS
- echo "++++ BEGINNING TEST" >$OUTPUTFILE
- 
-diff --git a/tests/keyctl/session/valid2/runtest.sh b/tests/keyctl/session/valid2/runtest.sh
-index 12ad234..1642395 100644
---- a/tests/keyctl/session/valid2/runtest.sh
-+++ b/tests/keyctl/session/valid2/runtest.sh
-@@ -6,6 +6,12 @@
- 
- # ---- do the actual testing ----
- 
-+if [ $have_id_command = 0 ]
-+then
-+    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl id'"
-+    exit 0
-+fi
-+
- result=PASS
- echo "++++ BEGINNING TEST" >$OUTPUTFILE
- 
-diff --git a/tests/keyctl/supports/bad-args/runtest.sh b/tests/keyctl/supports/bad-args/runtest.sh
-index 05581a4..f87f517 100644
---- a/tests/keyctl/supports/bad-args/runtest.sh
-+++ b/tests/keyctl/supports/bad-args/runtest.sh
-@@ -6,6 +6,12 @@
- 
- # ---- do the actual testing ----
- 
-+if [ $have_capabilities = 0 ]
-+then
-+    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl supports'"
-+    exit 0
-+fi
-+
- result=PASS
- echo "++++ BEGINNING TEST" >$OUTPUTFILE
- 
-diff --git a/tests/keyctl/supports/valid/runtest.sh b/tests/keyctl/supports/valid/runtest.sh
-index 2c62ef2..4e41200 100644
---- a/tests/keyctl/supports/valid/runtest.sh
-+++ b/tests/keyctl/supports/valid/runtest.sh
-@@ -6,6 +6,12 @@
- 
- # ---- do the actual testing ----
- 
-+if [ $have_capabilities = 0 ]
-+then
-+    toolbox_skip_test $TEST "SKIPPING DUE TO LACK OF 'keyctl supports'"
-+    exit 0
-+fi
-+
- result=PASS
- echo "++++ BEGINNING TEST" >$OUTPUTFILE
- 
-diff --git a/tests/prepare.inc.sh b/tests/prepare.inc.sh
-index 4033d69..be134da 100644
---- a/tests/prepare.inc.sh
-+++ b/tests/prepare.inc.sh
-@@ -112,11 +112,14 @@ then
-     esac
- fi
- 
-+have_capabilities=0
- have_key_invalidate=0
- have_big_key_type=0
- have_dh_compute=0
--have_restrict_keyring=0
-+have_move_key=0
- have_notify=0
-+have_public_key=0
-+have_restrict_keyring=0
- 
- if keyctl supports capabilities >&/dev/null
- then
-@@ -179,3 +182,21 @@ if [ "$SKIPINSTALLREQ" = "yes" ]
- then
-     skip_install_required=1
- fi
-+
-+#
-+# Check if "keyctl id" is supported
-+#
-+have_id_command=0
-+if keyutils_at_or_later_than 1.6.2
-+then
-+    have_id_command=1
-+fi
-+
-+#
-+# Check if "keyctl pkey_*" are supported
-+#
-+have_pkey_commands=0
-+if keyutils_at_or_later_than 1.6
-+then
-+    have_pkey_commands=1
-+fi
-diff --git a/tests/toolbox.inc.sh b/tests/toolbox.inc.sh
-index 6f4fb18..212b353 100644
---- a/tests/toolbox.inc.sh
-+++ b/tests/toolbox.inc.sh
-@@ -613,8 +613,15 @@ function create_key ()
- 	my_keyring=$4
-     fi
- 
--    echo keyctl add "$@" >>$OUTPUTFILE
--    keyctl add "$@" >>$OUTPUTFILE 2>&1
-+    if [ "$1" = "-x" ] && version_less_than $OSRELEASE 9
-+    then
-+	shift
-+	echo perl ../../../hex2bin.pl "$3" "|" keyctl padd "$1 $2 $4" >>$OUTPUTFILE
-+	perl ../../../hex2bin.pl "$3" | keyctl padd "$1" "$2" "$4" >>$OUTPUTFILE
-+    else
-+	echo keyctl add "$@" >>$OUTPUTFILE
-+	keyctl add "$@" >>$OUTPUTFILE 2>&1
-+    fi
-     e=$?
-     if [ $e == $my_exitval ]
-     then
-@@ -682,8 +689,15 @@ function pcreate_key ()
- 	my_keyring=$3
-     fi
- 
--    echo echo -n $data \| keyctl padd "$@" >>$OUTPUTFILE
--    echo -n $data | keyctl padd "$@" >>$OUTPUTFILE 2>&1
-+    if [ "$1" = "-x" ] && version_less_than $OSRELEASE 9
-+    then
-+	shift
-+	echo echo -n $data \| perl ../../../hex2bin.pl "|" keyctl padd "$@" >>$OUTPUTFILE
-+	echo -n $data | perl ../../../hex2bin.pl - | keyctl padd "$@" >>$OUTPUTFILE
-+    else
-+	echo echo -n $data \| keyctl padd "$@" >>$OUTPUTFILE
-+	echo -n $data | keyctl padd "$@" >>$OUTPUTFILE 2>&1
-+	fi
-     e=$?
-     if [ $e == $my_exitval ]
-     then
-@@ -1232,8 +1246,15 @@ function update_key ()
- 	shift
-     fi
- 
--    echo keyctl update "$@" >>$OUTPUTFILE
--    keyctl update "$@" >>$OUTPUTFILE 2>&1
-+    if [ "x$1" = "x-x" ] && version_less_than $OSRELEASE 9
-+    then
-+	shift
-+	echo perl ../../../hex2bin.pl "$2" "|" keyctl pupdate "$1" >>$OUTPUTFILE
-+	perl ../../../hex2bin.pl "$2" | keyctl pupdate "$1" >>$OUTPUTFILE
-+    else
-+	echo keyctl update "$@" >>$OUTPUTFILE
-+	keyctl update "$@" >>$OUTPUTFILE 2>&1
-+    fi
-     e=$?
-     if [ $e == $my_exitval ]
-     then
+-	while (opt = getopt(argc, argv, "D:dlnv"),
++	while (opt = getopt_long(argc, argv, "D:dlnv", long_options, NULL),
+ 	       opt != -1) {
+ 		switch (opt) {
++		case 1:
++			fputs(help_text, stderr);
++			exit(2);
++		case 2:
++			printf("request-key from %s (Built %s)\n",
++			       keyutils_version_string, keyutils_build_string);
++			return 0;
+ 		case 'D':
+ 			test_desc = optarg;
+ 			break;
 
 
