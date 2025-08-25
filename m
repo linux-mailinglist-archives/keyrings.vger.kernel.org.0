@@ -1,63 +1,64 @@
-Return-Path: <keyrings+bounces-2982-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2983-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99719B3332D
-	for <lists+keyrings@lfdr.de>; Mon, 25 Aug 2025 00:28:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 104F6B34C10
+	for <lists+keyrings@lfdr.de>; Mon, 25 Aug 2025 22:32:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D8B4177061
-	for <lists+keyrings@lfdr.de>; Sun, 24 Aug 2025 22:28:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F15C1B22D27
+	for <lists+keyrings@lfdr.de>; Mon, 25 Aug 2025 20:32:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0737B246799;
-	Sun, 24 Aug 2025 22:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C320D1EDA0B;
+	Mon, 25 Aug 2025 20:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="JXGdYpk9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CPaV73yP"
 X-Original-To: keyrings@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82B88229B1F;
-	Sun, 24 Aug 2025 22:28:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D870393DE3;
+	Mon, 25 Aug 2025 20:32:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756074497; cv=none; b=iZLlmMf5S3z7ZNfHwBnDkec+ntw0Rl8OkQWswZ1VJYrAOFZg3Kkd9GVg+KjeNJ+BSjoNqdiiObGUnpTvy1Ug9QiBIegscR69XfbJCgmN0/RLbDylnqv03Ty0vtGnIwYMql26p5jyu7+r4os7+r3yBQ3f4wjyBQTTCbsXvS9C9Hw=
+	t=1756153955; cv=none; b=oTrBiaD/S+uUkceq7FvW3EYC6CAIsx7kntty8US2bYt5SFmjTK7lJkwSzZaGMXaPRaCCRWbcQw5ujo1iMY7hD1vm+rCyFzXJ8Lmr/lZf6c9ZvMaqTw3Cnee/C8ZHBNNm7XqIe07Hbc2a4GZV/rkqZVPXjXKD+xf248AD//KQB8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756074497; c=relaxed/simple;
-	bh=c1HYkOS02SERE6ZyBgpgeGdEUEJ9BTC0gRpz/poHTdU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VnnfDyAopIL3uB/PnzN5Rh0+b+0O/pm38m9isSYei/BEvJ8tWHvC/wNugFngtnd/wigRjtgrOO4KuRRlmbcCgQzRV6zhdnblbCSkR08VoKC3gYDBjSYFXyYFnfhrWoqM+QgGil4pPuLQ/B72Yno0pyDH1FP7YTga/9pzHlDyWYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=JXGdYpk9; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=Mu1Oi+QR9EoyJ6fex19tF1jhNQq7NS4mjwJGuQRIIgI=; b=JXGdYpk9oHPGFYxNZCwCfXFyIO
-	euoFraMAsQMb6kim/UxTRpwo1eSFbMXSZdf/kvbsONgFVXwFDHZHgjeSVBn2kCng5PstymDPI4q7f
-	fXuJZ8HcXhVB+j+S2gyVnBz/wgRi68JnxVsX+bL3q+4ghoarro0WTASQGfskMkb9k0QDKEh8jWcYL
-	tKWCDaaojlmCAyUFiE/OkN4xPSSOGK376jUDQ//5KosMydHc99m8Y6a8d99w2SeQdQtXE8kTUT6Np
-	phx2vvSBeZSo0YBr6oMvHwIxfgasxbCV31kDr++sipQiMYaTXTGhh0mfhvpp4SD+lXg1KcwbqcYGQ
-	Yg058etA==;
-Received: from [50.53.25.54] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uqJCB-00000006b6r-2VJb;
-	Sun, 24 Aug 2025 22:28:15 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
+	s=arc-20240116; t=1756153955; c=relaxed/simple;
+	bh=Ucxf6ONPWnqwGHzIJMurAJvEDHnfQwUW0d4rP7PrkbM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XxoR0kLYzkUaKXShkg51LmlTQ5vOUDAgLh+ggCxbH7rYxUt64xX44j0dOmq6hq4GXRRZyiL5KvCdoB4UecekmqTjW4W4SE8f4ojqaonc0jKqNBSVF/XTe1enkZesl7ssvsFaNqQNrQ53IdyVdv62vC7k6faWyB4a45YhWdpinG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CPaV73yP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CECC4CEED;
+	Mon, 25 Aug 2025 20:32:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1756153955;
+	bh=Ucxf6ONPWnqwGHzIJMurAJvEDHnfQwUW0d4rP7PrkbM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CPaV73yPqybMX1kBLGC5zIfe9FgKTCfYnlJ2he/y1tEcHv/LnPkByU9PHTS2778hK
+	 2u9QSDSDZXr0BUtNzxXgXEPf7mFGH9J3LB2sKrdgzbLFQWQggoxkf2ZoBQ1AGx4tW/
+	 5PtwmsoZ3fiE3ZCgSAaTukTvZy7xic1CP332tZN54pIhT5T5varuG6pIQvizU8rdaW
+	 rNHdquu/K0tTeymVtwnBYp/43CJyr2V1CbFcFXzGlisxY7KKa4YwjPl8jrkLj8ToRw
+	 n8oSKQlh+4hv4l2Hh2FzD4r9AG7l4uHk5kZHE+8G60UzSiXC0cvRVIuCGKtOIUrhML
+	 mQM9ltQUDsP5Q==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-integrity@vger.kernel.org
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	stable@vger.kernel.or,
+	Chris Fenner <cfenn@google.com>,
+	Peter Huewe <peterhuewe@gmx.de>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
 	David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
 	Paul Moore <paul@paul-moore.com>,
 	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>
-Subject: [PATCH] security: keys: use menuconfig for KEYS symbol
-Date: Sun, 24 Aug 2025 15:28:13 -0700
-Message-ID: <20250824222813.92300-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.51.0
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	linux-kernel@vger.kernel.org (open list),
+	keyrings@vger.kernel.org (open list:KEYS/KEYRINGS),
+	linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM)
+Subject: [PATCH] tpm: Disable TPM2_TCG_HMAC by default
+Date: Mon, 25 Aug 2025 23:32:23 +0300
+Message-Id: <20250825203223.629515-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -66,99 +67,58 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Give the KEYS kconfig symbol and its associated symbols a separate
-menu space under Security options by using "menuconfig" instead of
-"config".
+After reading all the feedback, right now disabling the TPM2_TCG_HMAC
+is the right call.
 
-This also makes it easier to find the security and LSM options.
+Other views discussed:
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+A. Having a kernel command-line parameter or refining the feature
+   otherwise. This goes to the area of improvements.  E.g., one
+   example is my own idea where the null key specific code would be
+   replaced with a persistent handle parameter (which can be
+   *unambigously* defined as part of attestation process when
+   done correctly).
+
+B. Removing the code. I don't buy this because that is same as saying
+   that HMAC encryption cannot work at all (if really nitpicking) in
+   any form. Also I disagree on the view that the feature could not
+   be refined to something more reasoable.
+
+Also, both A and B are worst options in terms of backporting.
+
+Thuss, this is the best possible choice.
+
+Cc: stable@vger.kernel.or # v6.10+
+Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
+Suggested-by: Chris Fenner <cfenn@google.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
-Cc: David Howells <dhowells@redhat.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: keyrings@vger.kernel.org
-Cc: linux-security-module@vger.kernel.org
-Cc: Paul Moore <paul@paul-moore.com>
-Cc: James Morris <jmorris@namei.org>
-Cc: "Serge E. Hallyn" <serge@hallyn.com>
+PS. I did not post this last week because that would have been most
+likely the most counter-productive action to taken. It's better
+sometimes to take a bit of time to think (which can be seen that
+I've given also more reasonable weight to my own eaerlier
+proposals).
 
- security/keys/Kconfig |   14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+I also accept further changes, if there is e.g., inconsistency
+with TCG_TPM_HMAC setting or similar (obviously).
+---
+ drivers/char/tpm/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- linux-next-20250819.orig/security/keys/Kconfig
-+++ linux-next-20250819/security/keys/Kconfig
-@@ -3,7 +3,7 @@
- # Key management configuration
- #
+diff --git a/drivers/char/tpm/Kconfig b/drivers/char/tpm/Kconfig
+index dddd702b2454..3e4684f6b4af 100644
+--- a/drivers/char/tpm/Kconfig
++++ b/drivers/char/tpm/Kconfig
+@@ -29,7 +29,7 @@ if TCG_TPM
  
--config KEYS
-+menuconfig KEYS
- 	bool "Enable access key retention support"
- 	select ASSOCIATIVE_ARRAY
- 	help
-@@ -21,9 +21,10 @@ config KEYS
- 
- 	  If you are unsure as to whether this is required, answer N.
- 
-+if KEYS
-+
- config KEYS_REQUEST_CACHE
- 	bool "Enable temporary caching of the last request_key() result"
--	depends on KEYS
- 	help
- 	  This option causes the result of the last successful request_key()
- 	  call that didn't upcall to the kernel to be cached temporarily in the
-@@ -41,7 +42,6 @@ config KEYS_REQUEST_CACHE
- 
- config PERSISTENT_KEYRINGS
- 	bool "Enable register of persistent per-UID keyrings"
--	depends on KEYS
- 	help
- 	  This option provides a register of persistent per-UID keyrings,
- 	  primarily aimed at Kerberos key storage.  The keyrings are persistent
-@@ -58,7 +58,6 @@ config PERSISTENT_KEYRINGS
- 
- config BIG_KEYS
- 	bool "Large payload keys"
--	depends on KEYS
- 	depends on TMPFS
- 	select CRYPTO_LIB_CHACHA20POLY1305
- 	help
-@@ -70,7 +69,6 @@ config BIG_KEYS
- 
- config TRUSTED_KEYS
- 	tristate "TRUSTED KEYS"
--	depends on KEYS
- 	help
- 	  This option provides support for creating, sealing, and unsealing
- 	  keys in the kernel. Trusted keys are random number symmetric keys,
-@@ -85,7 +83,6 @@ endif
- 
- config ENCRYPTED_KEYS
- 	tristate "ENCRYPTED KEYS"
--	depends on KEYS
- 	select CRYPTO
- 	select CRYPTO_HMAC
- 	select CRYPTO_AES
-@@ -114,7 +111,6 @@ config USER_DECRYPTED_DATA
- 
- config KEY_DH_OPERATIONS
-        bool "Diffie-Hellman operations on retained keys"
--       depends on KEYS
-        select CRYPTO
-        select CRYPTO_KDF800108_CTR
-        select CRYPTO_DH
-@@ -127,9 +123,11 @@ config KEY_DH_OPERATIONS
- 
- config KEY_NOTIFICATIONS
- 	bool "Provide key/keyring change notifications"
--	depends on KEYS && WATCH_QUEUE
-+	depends on WATCH_QUEUE
- 	help
- 	  This option provides support for getting change notifications
- 	  on keys and keyrings on which the caller has View permission.
- 	  This makes use of pipes to handle the notification buffer and
- 	  provides KEYCTL_WATCH_KEY to enable/disable watches.
-+
-+endif # KEYS
+ config TCG_TPM2_HMAC
+ 	bool "Use HMAC and encrypted transactions on the TPM bus"
+-	default X86_64
++	default n
+ 	select CRYPTO_ECDH
+ 	select CRYPTO_LIB_AESCFB
+ 	select CRYPTO_LIB_SHA256
+-- 
+2.39.5
+
 
