@@ -1,154 +1,146 @@
-Return-Path: <keyrings+bounces-2985-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2986-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C2C5B356BE
-	for <lists+keyrings@lfdr.de>; Tue, 26 Aug 2025 10:25:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 370F9B372BD
+	for <lists+keyrings@lfdr.de>; Tue, 26 Aug 2025 20:58:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B870F1B6381D
-	for <lists+keyrings@lfdr.de>; Tue, 26 Aug 2025 08:25:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E2DE7A1CE5
+	for <lists+keyrings@lfdr.de>; Tue, 26 Aug 2025 18:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5452728688C;
-	Tue, 26 Aug 2025 08:25:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="usCqbP7u"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986D92F3603;
+	Tue, 26 Aug 2025 18:58:43 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248892AE8D;
-	Tue, 26 Aug 2025 08:25:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDC89476;
+	Tue, 26 Aug 2025 18:58:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756196729; cv=none; b=Peqqe+TKLsl0op5KN0KKYJ5+jrUA19mEg/BciFtDiOvfefOyuXTJGpflokYmlFqx6lGZDVVMsshO30rP6jo1dl6CBgzwySic9uQO2jcgPLCp+ajb6cM3t8RghR3B7OlVnFK20iPSy13smAPcZuuaM33iIN9pQIBoAXK9yP3JKRs=
+	t=1756234723; cv=none; b=aBKOfLwc3m7C0ITJ+hVJOsXMOtwiKUxZiqeTul/Gkljld4O4AI5dta4JTtVxikEJhYw/6ANby9iNB/khVAEtlE4T4B70EbDunHP6bY0YnUiD40PZzEKZCAEave0wyYRdR2/Ay27yt8iFYF0A/vk73NKkkOafNPRHj5b4lk/wAUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756196729; c=relaxed/simple;
-	bh=VkeszMZY1ksdwbOs73xgWaFT2kBLSssyVgThE5cmC1k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AsGk6KVALGLQly6syq0a5kf608D4+mjc1bW509WHW2VNNcN1G7iQvmYEmhSpkPu/Ewq1Mr5zUtQE4wOJCb2nxVPx1zokp1e/ygt+Yx1lvl+xKEhzzPb7TPW3nzeeQHYIJBvV7ck1o21j7GnSSyiKrLVHoxrjWKDNeHiYmx0ZW1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=usCqbP7u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2586BC4CEF1;
-	Tue, 26 Aug 2025 08:25:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1756196728;
-	bh=VkeszMZY1ksdwbOs73xgWaFT2kBLSssyVgThE5cmC1k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=usCqbP7uRNQ13YBhnWf1Zp3LRYsBKqu9s5ZGGYDjRlye9lEVBvycZ/a1VLH9/QqAS
-	 05y4bWzLtoV7x+7zQ88isnbgga89Ei82D+NnIk/gGnB7BeADgNPnPxGCRw1jIRSpOo
-	 j96cUSDlXjWNJs/al4euZUYjJccKcrQoy9M4N9Ith4QrHWkE9qkuPv2yq7S7JNU0Fb
-	 j/3bUpJMDW4zlVcHH/qfntY4p6sSgDiW8WAoE0Bfv7/mvx4wCpGxqPJNJckF+DfrdW
-	 aaQRM5QUzqmwP4hc2YpG+q+A5UJpgTgZYAtCDoDMlFZRKSE5GL1Tig5J6VAmC48TM3
-	 UDprsaBEvhw4Q==
-Date: Tue, 26 Aug 2025 11:25:24 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-	Andreas.Fuchs@infineon.com, James Prestwood <prestwoj@gmail.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	linux-crypto@vger.kernel.org, Stefan Berger <stefanb@linux.ibm.com>,
-	Lennart Poettering <lennart@poettering.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	open list <linux-kernel@vger.kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: [PATCH v7 4/5] keys: asymmetric: Add tpm2_key_rsa
-Message-ID: <aK1vdEcuN_xjhjyY@kernel.org>
-References: <20240528210823.28798-1-jarkko@kernel.org>
- <20240528210823.28798-5-jarkko@kernel.org>
- <ZmLnyp9j_QoPgj7W@gondor.apana.org.au>
- <D24EZPFV6DBS.1LZVHIVPITE83@kernel.org>
+	s=arc-20240116; t=1756234723; c=relaxed/simple;
+	bh=5RnesvrqWbneWkaDrRLIKJSGQ+BJxqPzKrfrwi9jjRk=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=DnOadBCiz52VIo2+RGlVL8aq3l3yHlDedHxAR+lQr8FjZ7UFkUW5+MubGg6+vb6wq2rryKaybQFNoJ/lNrDH5dBVuCy53YgHg3ML3YzoLnbEAH9iAvyrQ6Mo9mZ+chw38csPK9bsABzXkRcPQUQUfsGr4zwOOiMzvRRaq3XYw+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b49d7a11c0aso557364a12.0;
+        Tue, 26 Aug 2025 11:58:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1756234721; x=1756839521;
+        h=content-transfer-encoding:organization:subject:from:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+GnJSs7z1NxEWE4UhegoOllTPFbqENM36ABV1n4d6AA=;
+        b=XqicINBLgOC0qrQOX2OOo2hRIf/uTmdTua0a93K3aoEAet2GmYFekqMUUQhTxBbwUA
+         doFxe2aOimQUjM55WV1mJ5feBTFigY4zOU+EQWJUG6InmrNFczBNNd6H/bGIse28hR4k
+         cg9WXqCR268/4aUYEzas9VYWUTfe31l+M/fNl8SF0nRam266FO4dA/AYFcXh7MMZNHlJ
+         EEmkYaVT5o+ocLX2Zy4t/UGfMA6wehUtC9hRAy+vw6P+MBsta9s8/brlJiysOdEtZxhT
+         RkNIkBjP+rFZ0sxyzJkJxn+kL6zyrUjbwRwKhmb0Y3rEv/J2ZdqIDJ+WyJIec49nWn2o
+         tg5w==
+X-Forwarded-Encrypted: i=1; AJvYcCU2PgKM1s06A4Le4BeF5yjoJOp98ecEEe5KMIiQFIoCsSidEnPenMRGYBa662B3ZAuRzfivtkyh8g==@vger.kernel.org, AJvYcCX62yKnz4G9HFWrTNgRgpMv9Vrivc7DGidS6fS1NZyDqnFDZghLaTjFdrApn7XVUjC6xi9etavT5sTAggmI@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0AYruFKOAXX+Y/FXsBqwsYzIasGfi14nojiVkq/H0rK9hXvdj
+	oDF1HQwyACj4oNl5I+roBL2F2G/xqJxnyVjfLnwlx/NOw261ZX5Ny2DQ
+X-Gm-Gg: ASbGncsHWZxO2Ybeja0aG9i51w1ntsurAOQqlAYz3nGJQkjnGxyIBERgTKX/EC3/7Vw
+	S7dMKf+p5rDVY3Fr0heoEgfmDn84nsy6ihQdkDp4yz7TsjilOta0PResZSDoDVW7mvchj583skj
+	lJ5zMEWDMKmUtHgiedXi9v94NerMBBjGIzi6st3EPEbOLzCnzWaX7PijbFl74pqOTQPUrCLFIYw
+	Vdw4tQT/KXoQa6GSWipNubq47ukGnUeaW2FHyTT71iXF2tj6mEDbU9mAQwUnJVFkWzcrb0V91p5
+	I5i5PhM3BMUv8PoWgdDn/gsYU6nmy4SlQmURpsCKcxih1DaO9t4ZEiCRZLTqwB8Tc2Ku9P2vvUd
+	yceGu715/bcEVG2+XUe7+xvzv8FdZ2QO4uV2VsxbWHf5qTRNj5UlInhIqr2VM8ChaBsnHdbRupR
+	5ez+Ki2D6o/fkSvFPcyfzqxLxDgUde
+X-Google-Smtp-Source: AGHT+IGlPCWJla+VIK78TyPqI8GO2lbDHDihFAu9ZjqEGJkUg/QO6oHFPtoau7+xY/JgaBWRWmByJA==
+X-Received: by 2002:a17:90b:1b44:b0:325:5998:751d with SMTP id 98e67ed59e1d1-3255998780amr8209025a91.5.1756234721220;
+        Tue, 26 Aug 2025 11:58:41 -0700 (PDT)
+Received: from [192.168.50.136] ([118.32.98.101])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3276b07f38dsm203072a91.19.2025.08.26.11.58.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Aug 2025 11:58:40 -0700 (PDT)
+Message-ID: <a40e660e-5a45-420a-8d37-51324242ab9b@kzalloc.com>
+Date: Wed, 27 Aug 2025 03:58:35 +0900
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D24EZPFV6DBS.1LZVHIVPITE83@kernel.org>
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+ Daniel Gomez <da.gomez@kernel.org>,
+ "Sami Tolvanen <samitolvanen@google.com> David Howells"
+ <dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>
+Cc: linux-modules@vger.kernel.org, keyrings@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+From: Yunseong Kim <ysk@kzalloc.com>
+Subject: [Question] Non-usage of PKEY_ID_PGP and PKEY_ID_X509 in module
+ signing
+Organization: kzalloc
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 20, 2024 at 03:23:20AM +0300, Jarkko Sakkinen wrote:
-> On Fri Jun 7, 2024 at 1:58 PM EEST, Herbert Xu wrote:
-> > On Wed, May 29, 2024 at 12:08:09AM +0300, Jarkko Sakkinen wrote:
-> > >
-> > > +/*
-> > > + * Sign operation is an encryption using the TPM's private key. With RSA the
-> > > + * only difference between encryption and decryption is where the padding goes.
-> > > + * Since own padding can be used, TPM2_RSA_Decrypt can be repurposed to do
-> > > + * encryption.
-> > > + */
-> > > +static int tpm2_key_rsa_sign(struct tpm_chip *chip, struct tpm2_key *key,
-> > > +			     struct kernel_pkey_params *params,
-> > > +			     const void *in, void *out)
-> > > +{
-> > > +	const off_t o = key->priv_len + 2 + sizeof(*key->desc);
-> > > +	const struct tpm2_rsa_parms *p =
-> > > +		(const struct tpm2_rsa_parms *)&key->data[o];
-> > > +	const u16 mod_size = be16_to_cpu(p->modulus_size);
-> > > +	const struct rsa_asn1_template *asn1;
-> > > +	u32 in_len = params->in_len;
-> > > +	void *asn1_wrapped = NULL;
-> > > +	u8 *padded;
-> > > +	int ret;
-> > > +
-> > > +	if (strcmp(params->encoding, "pkcs1") != 0) {
-> > > +		ret = -ENOPKG;
-> > > +		goto err;
-> > > +	}
-> > > +
-> > > +	if (params->hash_algo) {
-> > > +		asn1 = rsa_lookup_asn1(params->hash_algo);
-> >
-> > Could you please explain why this can't be done through pkcs1pad
-> > instead of going to raw RSA?
-> 
-> Sorry was away couple of weeks from here. I replace this with TPM2_Sign
-> as is done already in the ECDSA module, so I guess that is a "yes".
+I would like to inquire about the purpose of the PKEY_ID_PGP and
+PKEY_ID_X509 identifiers defined in include/linux/module_signature.h.
 
-Time travelling back to 2024 ;-)
+The enum pkey_id_type is defined as follows:
 
-I can't recall what I was thining here butI'm glad that I did not put
-the patch set further as now I have much more sane angle to this.
+ enum pkey_id_type {
+     PKEY_ID_PGP,        /* OpenPGP generated key ID */
+     PKEY_ID_X509,       /* X.509 arbitrary subjectKeyIdentifier */
+     PKEY_ID_PKCS7,      /* Signature in PKCS#7 message */
+ };
 
-I realized while working on [1] that I'm better of making this to work
-as API on rsapubkey.asn1 and rsaprivkey.asn1 and matching files for
-ECC and do all steps inside kernel from this:
+While examining the module signing and verification process, it appears
+that the current implementation strictly assumes the use of PKCS#7, making
+PKEY_ID_PGP and PKEY_ID_X509 seem unused in this context.
 
-tpm2_createprimary --hierarchy o -G rsa2048 -c owner.txt
-tpm2_evictcontrol -c owner.txt 0x81000001
-tpm2_getcap handles-persistent
-openssl genrsa -out private.pem 2048
-tpm2_import -C 0x81000001 -G rsa -i private.pem -u key.pub -r key.priv
-tpm2_encodeobject -C 0x81000001 -u key.pub -r key.priv -o key.priv.pem
-openssl asn1parse -inform pem -in key.priv.pem -noout -out key.priv.der
+I observed the following:
 
-I.e. my test tool does everything else except
+1. In scripts/sign-file.c, the module_signature structure is explicitly
+initialized assuming PKCS#7:
 
-openssl genrsa -out private.pem 2048
+ /* Key identifier type [PKEY_ID_PKCS7] */
+ struct module_signature sig_info = { .id_type = PKEY_ID_PKCS7 };
 
-Im now pretty familiar with import procedure and how to prepare data
-for TPM2_Import and is like the "spirit" of it i.e., take external
-key and store it inside TPM2. That as side effect removes all the
-use of tpm2key.asn1 from the patch set and simplifies flows
-greatly.
+2. In kernel/module_signature.c, the verification function mod_check_sig()
+strictly enforces this type and rejects others:
 
-And my Rust works help to get the preparation procedure exactly
-right and none of those crazy tools and commands will be needed.
+ int mod_check_sig(const struct module_signature *ms, size_t file_len,
+           const char *name)
+ {
+     if (be32_to_cpu(ms->sig_len) >= file_len - sizeof(*ms))
+         return -EBADMSG;
+ 
+     if (ms->id_type != PKEY_ID_PKCS7) {
+         pr_err("%s: not signed with expected PKCS#7 message\n",
+                name);
+         return -ENOPKG;
+     }
+     // ...
+ }
 
-The matching C code following TCG Architecture spec  I'll first write in
-user space and then port that kernel crypto APIs
 
-That spans a question tho: should it be its own key type (as it is
-right now or would it be better idea to have parameter/option for
-hardware pre-existing RSA key types, or what would be the best
-direction API wise to approach this?
+3. Furthermore, I noticed that certs/extract-cert.c only defines
+   PKEY_ID_PKCS7 locally, seemingly without utilizing the definitions from
+   the header for the other types:
 
-[1] https://lore.kernel.org/tpm2/aKzaTYCI2GO_UPRB@kernel.org/T/#u
+#define PKEY_ID_PKCS7 2
 
-BR, Jarkko
+Given that the module signature infrastructure seems hardcoded to use
+PKCS#7, could anyone clarify if PKEY_ID_PGP and PKEY_ID_X509 are used
+elsewhere in the kernel? Are they perhaps placeholders for future
+implementations or remnants of past ones?
+
+If they are indeed unused and there are no plans to support them, would
+a patch to clean up these unused enum values be welcome? Or is there
+another reason for keeping them?
+
+Thank you for your time and clarification.
+
+
+Best regards,
+Yunseong Kim
 
