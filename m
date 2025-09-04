@@ -1,146 +1,149 @@
-Return-Path: <keyrings+bounces-2986-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2987-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 370F9B372BD
-	for <lists+keyrings@lfdr.de>; Tue, 26 Aug 2025 20:58:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C589B44146
+	for <lists+keyrings@lfdr.de>; Thu,  4 Sep 2025 17:56:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E2DE7A1CE5
-	for <lists+keyrings@lfdr.de>; Tue, 26 Aug 2025 18:57:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DD11169F0B
+	for <lists+keyrings@lfdr.de>; Thu,  4 Sep 2025 15:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986D92F3603;
-	Tue, 26 Aug 2025 18:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4E2284696;
+	Thu,  4 Sep 2025 15:55:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="mGWof7UB"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BDC89476;
-	Tue, 26 Aug 2025 18:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B753127AC3E;
+	Thu,  4 Sep 2025 15:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1756234723; cv=none; b=aBKOfLwc3m7C0ITJ+hVJOsXMOtwiKUxZiqeTul/Gkljld4O4AI5dta4JTtVxikEJhYw/6ANby9iNB/khVAEtlE4T4B70EbDunHP6bY0YnUiD40PZzEKZCAEave0wyYRdR2/Ay27yt8iFYF0A/vk73NKkkOafNPRHj5b4lk/wAUU=
+	t=1757001356; cv=none; b=IDkIF0ozaVJ6EzsytCgnvfs1nyPzs1rgrUNerLaGDbpme3sB8geKaw27QNiLirCbuk1J9Wi0V1zPWXQaWsaMfHy9S6EBcxOfud+f2b1A3UFYaeBsergXB+qceaEWJ7+cFJF/aaIhwXfSHNh92g672HnQokym6eipGzQ4NWGuyu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1756234723; c=relaxed/simple;
-	bh=5RnesvrqWbneWkaDrRLIKJSGQ+BJxqPzKrfrwi9jjRk=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=DnOadBCiz52VIo2+RGlVL8aq3l3yHlDedHxAR+lQr8FjZ7UFkUW5+MubGg6+vb6wq2rryKaybQFNoJ/lNrDH5dBVuCy53YgHg3ML3YzoLnbEAH9iAvyrQ6Mo9mZ+chw38csPK9bsABzXkRcPQUQUfsGr4zwOOiMzvRRaq3XYw+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kzalloc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-b49d7a11c0aso557364a12.0;
-        Tue, 26 Aug 2025 11:58:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1756234721; x=1756839521;
-        h=content-transfer-encoding:organization:subject:from:cc:to
-         :content-language:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+GnJSs7z1NxEWE4UhegoOllTPFbqENM36ABV1n4d6AA=;
-        b=XqicINBLgOC0qrQOX2OOo2hRIf/uTmdTua0a93K3aoEAet2GmYFekqMUUQhTxBbwUA
-         doFxe2aOimQUjM55WV1mJ5feBTFigY4zOU+EQWJUG6InmrNFczBNNd6H/bGIse28hR4k
-         cg9WXqCR268/4aUYEzas9VYWUTfe31l+M/fNl8SF0nRam266FO4dA/AYFcXh7MMZNHlJ
-         EEmkYaVT5o+ocLX2Zy4t/UGfMA6wehUtC9hRAy+vw6P+MBsta9s8/brlJiysOdEtZxhT
-         RkNIkBjP+rFZ0sxyzJkJxn+kL6zyrUjbwRwKhmb0Y3rEv/J2ZdqIDJ+WyJIec49nWn2o
-         tg5w==
-X-Forwarded-Encrypted: i=1; AJvYcCU2PgKM1s06A4Le4BeF5yjoJOp98ecEEe5KMIiQFIoCsSidEnPenMRGYBa662B3ZAuRzfivtkyh8g==@vger.kernel.org, AJvYcCX62yKnz4G9HFWrTNgRgpMv9Vrivc7DGidS6fS1NZyDqnFDZghLaTjFdrApn7XVUjC6xi9etavT5sTAggmI@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0AYruFKOAXX+Y/FXsBqwsYzIasGfi14nojiVkq/H0rK9hXvdj
-	oDF1HQwyACj4oNl5I+roBL2F2G/xqJxnyVjfLnwlx/NOw261ZX5Ny2DQ
-X-Gm-Gg: ASbGncsHWZxO2Ybeja0aG9i51w1ntsurAOQqlAYz3nGJQkjnGxyIBERgTKX/EC3/7Vw
-	S7dMKf+p5rDVY3Fr0heoEgfmDn84nsy6ihQdkDp4yz7TsjilOta0PResZSDoDVW7mvchj583skj
-	lJ5zMEWDMKmUtHgiedXi9v94NerMBBjGIzi6st3EPEbOLzCnzWaX7PijbFl74pqOTQPUrCLFIYw
-	Vdw4tQT/KXoQa6GSWipNubq47ukGnUeaW2FHyTT71iXF2tj6mEDbU9mAQwUnJVFkWzcrb0V91p5
-	I5i5PhM3BMUv8PoWgdDn/gsYU6nmy4SlQmURpsCKcxih1DaO9t4ZEiCRZLTqwB8Tc2Ku9P2vvUd
-	yceGu715/bcEVG2+XUe7+xvzv8FdZ2QO4uV2VsxbWHf5qTRNj5UlInhIqr2VM8ChaBsnHdbRupR
-	5ez+Ki2D6o/fkSvFPcyfzqxLxDgUde
-X-Google-Smtp-Source: AGHT+IGlPCWJla+VIK78TyPqI8GO2lbDHDihFAu9ZjqEGJkUg/QO6oHFPtoau7+xY/JgaBWRWmByJA==
-X-Received: by 2002:a17:90b:1b44:b0:325:5998:751d with SMTP id 98e67ed59e1d1-3255998780amr8209025a91.5.1756234721220;
-        Tue, 26 Aug 2025 11:58:41 -0700 (PDT)
-Received: from [192.168.50.136] ([118.32.98.101])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3276b07f38dsm203072a91.19.2025.08.26.11.58.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Aug 2025 11:58:40 -0700 (PDT)
-Message-ID: <a40e660e-5a45-420a-8d37-51324242ab9b@kzalloc.com>
-Date: Wed, 27 Aug 2025 03:58:35 +0900
+	s=arc-20240116; t=1757001356; c=relaxed/simple;
+	bh=LEEF+tzGiW/O8S/Dp318GpZJprlPN9OhJf6zA6oP0Wk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=K6XNM0PEHWF6MmZ/54VgMvl8EbQI8utu8Ujq/TvKGDVeUJRt/zPYWlSpsps2qFkjDvJkbcq1BNQ2SIyHmTZ/t4M8yr/W9e0s+UnETYu4jXyXq8cVsDZpfiqCrERJT6mkXBbU/s2DIXD59gO9KlsoMkm8YUMk4ObSeWpn2k768Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=mGWof7UB; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 584FjpHd008879;
+	Thu, 4 Sep 2025 15:55:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=corp-2025-04-25; bh=b0xBg
+	MFvCnQ8oQ4XyquylrWb2Efu8L4wuFiOFRBuc0w=; b=mGWof7UBEXtB7+PWcCFqh
+	MG1zo/gjx38mBMVYi5lwF2miLXre44BocgDagtN+8j6Rc8K8HI/7waLrtdL0/Bz7
+	r/dpN9WicyaWYKh2aIMoFGOi5tbido+SkGfKv6mjrQxleelAGKuQERBgtSirQRV4
+	610wTmig5yMjvUcflxWDNwBjtpTsqEhr4bQZEP45XLVfef2uTgGN+Bnyo4i/2paP
+	OHIubgXQBavP8KxdMqbgG61WzM+MUOdV8FQ4PtEBELTE9emUtywSUvOnyFjmZkWj
+	vSeURVNMt210m5STOtMQCNbHGsvxlGOT4ou7KNUjyjidmMJvCLUx/Pqmr/rAm8vO
+	w==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 48yd1004sg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 04 Sep 2025 15:55:39 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 584FgNUL040151;
+	Thu, 4 Sep 2025 15:55:38 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 48uqrhtm9x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 04 Sep 2025 15:55:38 +0000
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 584Fsx54000707;
+	Thu, 4 Sep 2025 15:55:37 GMT
+Received: from localhost.localdomain (dhcp-10-154-122-161.vpn.oracle.com [10.154.122.161])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 48uqrhtkds-10;
+	Thu, 04 Sep 2025 15:55:37 +0000
+From: Vegard Nossum <vegard.nossum@oracle.com>
+To: Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>, linux-crypto@vger.kernel.org,
+        Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+        Daniel Gomez <da.gomez@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, Eric Biggers <ebiggers@kernel.org>,
+        "Jason A . Donenfeld" <Jason@zx2c4.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Wang, Jay" <wanjay@amazon.com>, Nicolai Stange <nstange@suse.com>,
+        Vladis Dronov <vdronov@redhat.com>,
+        Stephan Mueller <smueller@chronox.de>,
+        Sami Tolvanen <samitolvanen@google.com>, linux-modules@vger.kernel.org,
+        Vegard Nossum <vegard.nossum@oracle.com>,
+        David Howells <dhowells@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>, keyrings@vger.kernel.org
+Subject: [PATCH RFC 009/104] certs/system_keyring: export restrict_link_by_builtin_*trusted
+Date: Thu,  4 Sep 2025 17:50:41 +0200
+Message-Id: <20250904155216.460962-10-vegard.nossum@oracle.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250904155216.460962-1-vegard.nossum@oracle.com>
+References: <20250904155216.460962-1-vegard.nossum@oracle.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
- Daniel Gomez <da.gomez@kernel.org>,
- "Sami Tolvanen <samitolvanen@google.com> David Howells"
- <dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>
-Cc: linux-modules@vger.kernel.org, keyrings@vger.kernel.org,
- linux-kernel@vger.kernel.org
-From: Yunseong Kim <ysk@kzalloc.com>
-Subject: [Question] Non-usage of PKEY_ID_PGP and PKEY_ID_X509 in module
- signing
-Organization: kzalloc
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1117,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-09-04_06,2025-09-04_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 phishscore=0 bulkscore=0
+ adultscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2508110000
+ definitions=main-2509040156
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwOTA0MDE0OCBTYWx0ZWRfXzH2R/tRc3FKN
+ y5EXbMoxYwVXsitxURzXjv0mCJKjsyaKl1U4nEQWo6gMEruSX+dbK3JZ/cOO9XwlJzj1ZKIotzl
+ c9RBIavged0XZFze48EBV+gtElnUg6C+HnXAkyeXEww4ENFlb3QQJlO2AjfjMR9k8+piO9L2WiU
+ IDQHYaxG4F57mM2IoDGVqBGsI+SqCWTnpiNxiLFjlbXK5pdCxbq3b33yW0yWQ8UsqvIIYWeBs9K
+ r4OB2xj1pvr/o4hcQKCOENCbWjpPGWPG1jYeQoSXcmHHxFW9OFoujl9yx6FLuTjCEvXDckl9Y9+
+ 2rG0iviswvQvr67ZwuyAIub9+SdDdRUlbfvEtDS0353wthVi86XdYfxTLWXO+0U8NEOf+AbStGi
+ 6q61vckMJD9ykqje7RxTGciNBOE7oA==
+X-Authority-Analysis: v=2.4 cv=CbkI5Krl c=1 sm=1 tr=0 ts=68b9b67b b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=yJojWOMRYYMA:10 a=20KFwNOVAAAA:8 a=JfrnYn6hAAAA:8 a=VwQbUJbxAAAA:8
+ a=yPCof4ZbAAAA:8 a=-90ldKIzPkhNXM-SrBcA:9 a=1CNFftbPRP8L7MoqJWF3:22 cc=ntf
+ awl=host:12068
+X-Proofpoint-ORIG-GUID: ENc0i0RQor8jhI_5tUlXLmDsgpln_c46
+X-Proofpoint-GUID: ENc0i0RQor8jhI_5tUlXLmDsgpln_c46
 
-I would like to inquire about the purpose of the PKEY_ID_PGP and
-PKEY_ID_X509 identifiers defined in include/linux/module_signature.h.
+This allows us to call these functions from modules, specifically
+the standalone FIPS module (which we're adding support for in this patch
+series).
 
-The enum pkey_id_type is defined as follows:
+Cc: David Howells <dhowells@redhat.com>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Cc: keyrings@vger.kernel.org
+Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
+---
+ certs/system_keyring.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
- enum pkey_id_type {
-     PKEY_ID_PGP,        /* OpenPGP generated key ID */
-     PKEY_ID_X509,       /* X.509 arbitrary subjectKeyIdentifier */
-     PKEY_ID_PKCS7,      /* Signature in PKCS#7 message */
- };
-
-While examining the module signing and verification process, it appears
-that the current implementation strictly assumes the use of PKCS#7, making
-PKEY_ID_PGP and PKEY_ID_X509 seem unused in this context.
-
-I observed the following:
-
-1. In scripts/sign-file.c, the module_signature structure is explicitly
-initialized assuming PKCS#7:
-
- /* Key identifier type [PKEY_ID_PKCS7] */
- struct module_signature sig_info = { .id_type = PKEY_ID_PKCS7 };
-
-2. In kernel/module_signature.c, the verification function mod_check_sig()
-strictly enforces this type and rejects others:
-
- int mod_check_sig(const struct module_signature *ms, size_t file_len,
-           const char *name)
- {
-     if (be32_to_cpu(ms->sig_len) >= file_len - sizeof(*ms))
-         return -EBADMSG;
- 
-     if (ms->id_type != PKEY_ID_PKCS7) {
-         pr_err("%s: not signed with expected PKCS#7 message\n",
-                name);
-         return -ENOPKG;
-     }
-     // ...
+diff --git a/certs/system_keyring.c b/certs/system_keyring.c
+index 9de610bf1f4b..b9a882b627b4 100644
+--- a/certs/system_keyring.c
++++ b/certs/system_keyring.c
+@@ -50,6 +50,7 @@ int restrict_link_by_builtin_trusted(struct key *dest_keyring,
+ 	return restrict_link_by_signature(dest_keyring, type, payload,
+ 					  builtin_trusted_keys);
  }
++EXPORT_SYMBOL_GPL(restrict_link_by_builtin_trusted);
+ 
+ /**
+  * restrict_link_by_digsig_builtin - Restrict digitalSignature key additions by the built-in keyring
+@@ -102,6 +103,7 @@ int restrict_link_by_builtin_and_secondary_trusted(
+ 	return restrict_link_by_signature(dest_keyring, type, payload,
+ 					  secondary_trusted_keys);
+ }
++EXPORT_SYMBOL_GPL(restrict_link_by_builtin_and_secondary_trusted);
+ 
+ /**
+  * restrict_link_by_digsig_builtin_and_secondary - Restrict by digitalSignature.
+-- 
+2.39.3
 
-
-3. Furthermore, I noticed that certs/extract-cert.c only defines
-   PKEY_ID_PKCS7 locally, seemingly without utilizing the definitions from
-   the header for the other types:
-
-#define PKEY_ID_PKCS7 2
-
-Given that the module signature infrastructure seems hardcoded to use
-PKCS#7, could anyone clarify if PKEY_ID_PGP and PKEY_ID_X509 are used
-elsewhere in the kernel? Are they perhaps placeholders for future
-implementations or remnants of past ones?
-
-If they are indeed unused and there are no plans to support them, would
-a patch to clean up these unused enum values be welcome? Or is there
-another reason for keeping them?
-
-Thank you for your time and clarification.
-
-
-Best regards,
-Yunseong Kim
 
