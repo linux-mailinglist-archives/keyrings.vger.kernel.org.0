@@ -1,135 +1,119 @@
-Return-Path: <keyrings+bounces-2993-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-2994-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 552A1B54894
-	for <lists+keyrings@lfdr.de>; Fri, 12 Sep 2025 12:00:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A1AB54F09
+	for <lists+keyrings@lfdr.de>; Fri, 12 Sep 2025 15:15:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81D441899283
-	for <lists+keyrings@lfdr.de>; Fri, 12 Sep 2025 10:00:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 901E5189AF70
+	for <lists+keyrings@lfdr.de>; Fri, 12 Sep 2025 13:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0171292B44;
-	Fri, 12 Sep 2025 10:00:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="J/i/tQva"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A2130DD05;
+	Fri, 12 Sep 2025 13:14:18 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099A72848AE
-	for <keyrings@vger.kernel.org>; Fri, 12 Sep 2025 10:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47CB230DEBC;
+	Fri, 12 Sep 2025 13:14:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1757671229; cv=none; b=DacS0Hkk2FpVZTQjHf3d2xUf8YBeQL4oZUIrun3p19Poz/0bfo06EyuIEKRKdqIRtmX3RwfFH7tzcwYiJQb3HVXqOXy3JY9aqO89fJSyE9xvDjUHlucITc/q2VdDkk76krhhrjMDD2sQv1fiudss4quGcWfwWmb/8XMVoE5cEVw=
+	t=1757682858; cv=none; b=dmfmCJ6sKLkXyRDGXKtz8e+t5ppaLacqzBVvCqSyoGx3rzO/lXQNaOHLaAzkUIKo1hohld+a35razu+H2Mnc3RzKEiNR2/Zv27hd/35rwHNIZ7aVHMpxufD2XaJCnONQnhEtG4K/DyGOWXeMlJy9rqaskVNZAgH9WVB45U7stqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1757671229; c=relaxed/simple;
-	bh=S/x/ppCYsVKnPqW5lJ3vPbClxwzvq+hWg15z5y1V1lI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=G+MW225OG1+g2CF8q+r7URwn2Fd7mkJRnRP4scIDRGJ7uKnpC0uHS2JfbiJxSEOwFME1ssbiBtn8feYsH9COsUUnsxTAH0DGwFPPTJZXdWRa2CZWTxwZWLEpSHsgX54IaLzRjkSpPA6B5mvdyg5YQz008ezcwbo6gRSq1YyOVVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--gprocida.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=J/i/tQva; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--gprocida.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45b9a856d58so16361485e9.0
-        for <keyrings@vger.kernel.org>; Fri, 12 Sep 2025 03:00:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1757671226; x=1758276026; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=lwTohfVuh5PCFcdhMILG+0i9bjyVI3+AI7hJz72zYt4=;
-        b=J/i/tQvamjKLeyiOch0xq77ssiKWCSZaHXE/d/FaghHnry3LQG0zrY/F/HpymfcDzu
-         dMowwCPESycQ/9LIYZiWmznAO9Ah5+o0R9MTG3jEH5ck07lXdCRvNA1AAlCYfYVGZi2v
-         CJN+VkqJeWHzJysjcs8ckTCHIIxUAZ/0gaAolWYqkiP38Ud0ahpHaPmmmE5avTjBl9Tr
-         g+oLFxC2s14XUksw027IVso4spXvu7M1bKeDSiYDElXPBnpd1woD+2FzcQfMuTS8olcH
-         pXDNmKHFY6/tyZIYngpYI9nOOGsqRDMJzuy62su5ZL3Cn/pAW+qqSCQ3rXpu8sCV07hl
-         E9cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1757671226; x=1758276026;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lwTohfVuh5PCFcdhMILG+0i9bjyVI3+AI7hJz72zYt4=;
-        b=PC/VlsUje22a/IB3mLWruOGY9ICtz2RCPzwu+Bn0F4ilKSe09+K7SI9d2hDxPi/J/N
-         NJqFwB1pIg4Xq5oDGnTI2U6HFqG17hiB5hvyT6PV2EiqUVsi7vImLEz/iNaobFGPPEMD
-         GB5fubdsDlNRJHgDsQ3zL6aTmwqQEv7/cBK5m5QB6ATTQmefzt7hAm8OPueSXGOeogPI
-         1SJkXHwRxrEB9ClwEP87LQpF66Gd5tQMoGiWflYEImZwU1J6DAtl/ClAS6LK+/omFREo
-         9g/4MSh7z/TPDook8PcHuk9+c68PCT+pZYNg9idNPOL5vab/cEbLxnHoVtSk3+EEmuDU
-         uxpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcreO6BBy7b5OMZR7oGJtPmqrz+4U0rldE8RJbyM3ET2VRElyit1w4jQwuV4WuMctM0sZX50ESUQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5W8PESfrxJyFK5GPynm19qJHHCzOzI3/rFTjhW+rZRJY8dwYZ
-	KPwoxDXvFAGjL+gepig8UhBfnWiC95VjluSyhPNzdGliKmjvNMnUY9BHBbBM7jueBZQTui8hJg+
-	MFCYkcvNH+RvvJQ==
-X-Google-Smtp-Source: AGHT+IH1ZphgVBskCHC7cnBOzxeNR0ANeresyUwpGGhDl92WBxqq9bOPNP8hkuW2FGkocQtamiJF3VTVIKItpw==
-X-Received: from wmth22.prod.google.com ([2002:a05:600c:8b76:b0:45c:b62f:ca0d])
- (user=gprocida job=prod-delivery.src-stubby-dispatcher) by
- 2002:a7b:c8c3:0:b0:45b:b05a:aeeb with SMTP id 5b1f17b1804b1-45f211ffa3bmr17986815e9.28.1757671226243;
- Fri, 12 Sep 2025 03:00:26 -0700 (PDT)
-Date: Fri, 12 Sep 2025 11:00:15 +0100
+	s=arc-20240116; t=1757682858; c=relaxed/simple;
+	bh=6e+sVle9MifWvb6/53/ryU72tPHkEfNKBpFNkBJjL+Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JzDhU4ce0Xm+6bskW9P3PjdCtiVvTQwHTo4vp2RApnCuj+C9tMiomilP7psWzWLGj9CRzt/G5ubD1ieTji84XNdw8MqzzreSv8inrJiAmy3ea2V+h+hdT1OvoOvrOSRTPqBoqW/ekjrOrYAdB77njyORgpu4N2Uzkm0xjYAUKR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id D57E32C09E2B;
+	Fri, 12 Sep 2025 15:14:06 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id ABA63121533; Fri, 12 Sep 2025 15:14:06 +0200 (CEST)
+Date: Fri, 12 Sep 2025 15:14:06 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: wufan@kernel.org
+Cc: dhowells@redhat.com, ignat@cloudflare.com, herbert@gondor.apana.org.au,
+	davem@davemloft.net, jarkko@kernel.org, zohar@linux.ibm.com,
+	eric.snowberg@oracle.com, keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KEYS: X.509: Fix Basic Constraints CA flag parsing
+Message-ID: <aMQcnoETIt4t4Tqz@wunner.de>
+References: <20250911225356.2678-1-wufan@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.51.0.384.g4c02a37b29-goog
-Message-ID: <20250912100015.1267643-1-gprocida@google.com>
-Subject: [PATCH] system certificates: specify byte alignment
-From: Giuliano Procida <gprocida@google.com>
-To: dhowells@redhat.com, dwmw2@infradead.org
-Cc: gregkh@linuxfoundation.org, keyrings@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Giuliano Procida <gprocida@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250911225356.2678-1-wufan@kernel.org>
 
-The .align macro is architecture dependent. On arm64 it behaves as
-.p2align. The various alignments in this file are all bytes.
+On Thu, Sep 11, 2025 at 10:53:56PM +0000, wufan@kernel.org wrote:
+> Fix the X.509 Basic Constraints CA flag parsing to correctly handle
+> the ASN.1 DER encoded structure. The parser was incorrectly treating
+> the length field as the boolean value.
+> 
+> According to ITU-T X.690 section 8.2, a BOOLEAN is encoded as:
+> 
+> Tag (0x01), Length (0x01), Value (0x00 for FALSE, non-zero for TRUE)
+> 
+> The basicConstraints extension with CA:TRUE is encoded as:
+> 
+>   SEQUENCE (0x30) | Length | BOOLEAN (0x01) | Length (0x01) | Value (0xFF)
+>                              ^-- v[2]         ^-- v[3]        ^-- v[4]
+> 
+> The parser was checking v[3] (the length field, always 0x01) instead
+> of v[4] (the actual boolean value, 0xFF for TRUE).
 
-So use the .balign macro to avoid unnecessary padding due to
-over-alignment.
+Excellent catch!  How did you find it?
 
-Signed-off-by: Giuliano Procida <gprocida@google.com>
----
- certs/system_certificates.S | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+> +++ b/crypto/asymmetric_keys/x509_cert_parser.c
+> @@ -623,7 +625,7 @@ int x509_process_extension(void *context, size_t hdrlen,
+>  		if (v[0] != (ASN1_CONS_BIT | ASN1_SEQ))
+>  			return -EBADMSG;
+>  		if (vlen < 2)
+>  			return -EBADMSG;
+>  		if (v[1] != vlen - 2)
+>  			return -EBADMSG;
+> -		if (vlen >= 4 && v[1] != 0 && v[2] == ASN1_BOOL && v[3] == 1)
+> +		if (vlen >= 5 && v[1] != 0 && v[2] == ASN1_BOOL && v[3] == 1 && v[4] != 0)
+>  			ctx->cert->pub->key_eflags |= 1 << KEY_EFLAG_CA;
+>  		return 0;
+>  	}
 
-diff --git a/certs/system_certificates.S b/certs/system_certificates.S
-index 003e25d4a17e..ea6984b427c9 100644
---- a/certs/system_certificates.S
-+++ b/certs/system_certificates.S
-@@ -4,7 +4,7 @@
- 
- 	__INITRODATA
- 
--	.align 8
-+	.balign 8
- 	.globl system_certificate_list
- system_certificate_list:
- __cert_list_start:
-@@ -20,14 +20,14 @@ __cert_list_end:
- system_extra_cert:
- 	.fill CONFIG_SYSTEM_EXTRA_CERTIFICATE_SIZE, 1, 0
- 
--	.align 4
-+	.balign 4
- 	.globl system_extra_cert_used
- system_extra_cert_used:
- 	.int 0
- 
- #endif /* CONFIG_SYSTEM_EXTRA_CERTIFICATE */
- 
--	.align 8
-+	.balign 8
- 	.globl system_certificate_list_size
- system_certificate_list_size:
- #ifdef CONFIG_64BIT
-@@ -36,7 +36,7 @@ system_certificate_list_size:
- 	.long __cert_list_end - __cert_list_start
- #endif
- 
--	.align 8
-+	.balign 8
- 	.globl module_cert_size
- module_cert_size:
- #ifdef CONFIG_64BIT
--- 
-2.51.0.384.g4c02a37b29-goog
+Your patch is correct, however the conditions ...
 
+  vlen >= 5 && v[1] != 0 && v[2] == ASN1_BOOL && v[3] == 1
+
+... all check well-formedness of the BasicConstraints object,
+so it seems if any of those checks fails, -EBADMSG should be returned.
+
+The check "if (vlen < 2)" could be changed to "if (vlen < 5)" because
+5 bytes seems to be the minimum size of a well-formed BasicConstraints
+object.  Then the "vlen >= 5" and "v[1] != 0" checks can be dropped.
+
+Up to you whether to respin this patch or make those changes in
+a separate patch on top.  And up to Herbert whether to take this
+patch as is or wait for a respin.
+
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+
+I note that parsing the v[] array is quite error-prone and it
+might have been better to either declare a packed struct for the
+BasicConstraints object with human-readable member names,
+or create a separate ASN.1 module for it.
+
+Thanks,
+
+Lukas
 
