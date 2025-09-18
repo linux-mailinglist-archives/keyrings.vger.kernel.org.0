@@ -1,103 +1,143 @@
-Return-Path: <keyrings+bounces-3018-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3019-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82264B86B5F
-	for <lists+keyrings@lfdr.de>; Thu, 18 Sep 2025 21:37:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52166B86C53
+	for <lists+keyrings@lfdr.de>; Thu, 18 Sep 2025 21:51:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 425373A7551
-	for <lists+keyrings@lfdr.de>; Thu, 18 Sep 2025 19:37:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 151E117AFB9
+	for <lists+keyrings@lfdr.de>; Thu, 18 Sep 2025 19:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F3A2D29DF;
-	Thu, 18 Sep 2025 19:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D592EA493;
+	Thu, 18 Sep 2025 19:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NipuHruV"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qtlC/w5o"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4713534BA3C;
-	Thu, 18 Sep 2025 19:37:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F232EC0A3
+	for <keyrings@vger.kernel.org>; Thu, 18 Sep 2025 19:51:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758224248; cv=none; b=RJoLQK+UOhYSrgkU2sMjFi68ev7gG3a+ui4r4XzkxyGCY0/cz8uuqRV7XINdtt8MSHsVYi1EgS81ydYhtXC81OMSa0Xs1+pHGZ86VFpH726PKF4ukOrJrIqeKDklEBX3bskuQ6TU4OkB+mxBNEI8TCwCP3QgPE7ZUalRr5C4aqU=
+	t=1758225079; cv=none; b=he5r96fH5QACh8h4fFdghdsmiQqhqTqkqaGWWwEC8SnF3JBnchmoeBJQFZ29E5Xc019JNUQ3aT+ixSYaAnM0a1gALir6OGMK6j5+9kzgiGyK6TrI+eHiMcMI0Ms6FdGnVXTC2L5/F61wX+TyOdMRegDXK/MYvGkhdI/c3YTSTwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758224248; c=relaxed/simple;
-	bh=+EB4SzBfZR/amiQ8BIqGBgbta9naOpf5ImXW+P2rNYg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uT/hUXkEX20SK32s9M9dXmwChwvmIQ5QkqWzSPALwQQOQBpvozR7QMfgtPzXZTwwNLZ1Cd+FobedeUOmj0AZT/N0v9Bza8hjzH4/quAQru4YVC8fMUl23goIqZB6dWe0iCOC3GtV6Kds5UAzxPX42H+BVSCNcXn0y2ZxZbt/p+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NipuHruV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6E0C4CEE7;
-	Thu, 18 Sep 2025 19:37:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758224247;
-	bh=+EB4SzBfZR/amiQ8BIqGBgbta9naOpf5ImXW+P2rNYg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NipuHruVDBqIIsFRVOz4Gnvt8yMQT5tTBpBLtOcfRMqRwRZD/RuSmoCGwad7JyL94
-	 lyhlKVonQmuwEUWGB23lAW4PClS9nsxu4k59++1wDl322rJT/eFU71G4vOIuigaaEk
-	 Ms+nwALU3MGDgftrvflW3GDBp7chYIC/YTetaUK9ANOLWVOInwYhZhUT8KFIdeV+uc
-	 QtsDbi8uLt7OLXjEcWB70R7KZA2o/wNRyEBhXUTKqGoqjPIr+AAJG0IpbtMCgIIpa/
-	 gBIfjZwve+Bt2+Q8q2fXYHDnQ7TaDaEaORhgd3H3qYYtp4jZ/J03ZCcAe3ibeqPu7e
-	 aCQnLmVAlBpXg==
-Date: Thu, 18 Sep 2025 22:37:24 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org
-Cc: =?iso-8859-1?Q?Fr=E9d=E9ric?= Jouen <fjouen@sealsq.com>,
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:KEYS-TRUSTED" <keyrings@vger.kernel.org>,
-	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH v2] tpm: use a map for tpm2_calc_ordinal_duration()
-Message-ID: <aMxfdLZeQWha0tQg@kernel.org>
-References: <20250918193019.4018706-1-jarkko@kernel.org>
+	s=arc-20240116; t=1758225079; c=relaxed/simple;
+	bh=6syJdSpwOuKgxvfK6CJQXA1mo4R5z+GK0PPQjQL52Qs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Vvd9r+J4qu0l+FlTl5VfeSkLBekCR830AKThMUo/NVRH19EXJoaLQhdv2eSC/Tpr+QLHqo0qYVA/t1ZgF/mfnOTmkVCqXSyg3Adg0dLq17f/pZdBKgVD1kJYX3a/Oz71WezOo9gXsRM5j2tGqN9ZEeTAWvwgGlkOO3sJvT2oX0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qtlC/w5o; arc=none smtp.client-ip=209.85.222.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-827923a97e9so141437985a.3
+        for <keyrings@vger.kernel.org>; Thu, 18 Sep 2025 12:51:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758225076; x=1758829876; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X8krst8IwRhvi5nQ0njnzXjVOua4V4UJe+k0j+3GNts=;
+        b=qtlC/w5o7oqOt5KSb8eVYY1qgdu3W7fm5pAqzP3WjBB5U7exzjiIZcbYBt0mm2kOxZ
+         OIOV3SMCZF5x+Clo7Oafwv8CnJbMP2DICBWQuuv4WUo4My17i5uejgr7oqOl31kV6inJ
+         1lEps0ZL4zreN8RteZmoMCipGv2TFW4VokO7tHk2Y5pPOSWq7DvlVVsHfsN9hW12BxTQ
+         Ing7kEhgkMvZPosbxf75UJWJjWBbLlfRwtDNQGabgqrvmjNfFwEyD9ivpQA91ZqHuUI0
+         DR5pTEkkFys3awuuAmviJb5LI0z4KBQPjaVmX1vex08ieXfUDxD+8YpBIC6Eqm5luwTJ
+         wvbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758225076; x=1758829876;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=X8krst8IwRhvi5nQ0njnzXjVOua4V4UJe+k0j+3GNts=;
+        b=UCDzLRL/H6SlerpFg2WScXiBHX0OgB2tHQHxdcktYmxgm3kpTaQkOb52LB9lGn6xWQ
+         hxqS20EXKPWPDC6wZZKBP+IW4DBWqYcgN2q+t9wOJb/zI5WNf4UA5tKLs0YC+i0COpqp
+         9UGyF8AZHLsdE6ZsZEro3K1Ln11+4zIw8lq3miM3meI5Q59xGEC7mRTkR9ruGy6umJXX
+         4fwbsUZ4QOlKyZT8EJF611Pnjo2ktlB3eqeC5jledRqDLBCiMY+xOCpJ3l0/F1sWLHRG
+         OXf/1LLxNwMumERNwFrWibjbVfX+KyASa78E7oiv3hqkEEmLGiqbyJCvHQvohWs2x1Zm
+         p6hA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPTyCDyFpnBxZdP9+equVILPdeZvtuXRSx7hleQvyiG9jrFR8ckhKt7ZGbgPdysyL8ttozuH4CfA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbCbRe42QobVgg4LGdkY01KR20prWqiKeVeKu9bkiPxR3tKxfU
+	iyJfh9Dp/zeI62OtN7AjcdZiaN8EJWL47zyT152UwtRiTwy3fuNfDPsB3vvbo8Rh+vvUCvrIICF
+	+Ojv0cKgIShx6QlGpOxsnFEta0azS9ohqU3/Kf+ON
+X-Gm-Gg: ASbGncuNYbNM7OPyvs50qt1tx01JxQfqK2M/SCGU6R6+i8crhmzRvLflP2U8C2zIccf
+	XySglsCcZCIMR8MT7GwWhi+v4OIfLwqRld6h1M8jkhE/IYFdDjkB2FKwc5DN78h9OIuJHOCJ9kS
+	MOeSCY0Bid0jO/6EicXFOmbCSYQEafHLHcSvF++sTIffnr/k/QrzUX+7Hsupbqd7rfYyCtLiWf7
+	+fa3dIPMv1QLxK/rWlJQl+fUQ70J/eAv/26Nm0pP8KMBYEdL79JAGsHDt8PZ8M=
+X-Google-Smtp-Source: AGHT+IEBRicdafJf3u77ctjkGg0qQE01vvq76y8OfmUEZq9l+r7vlVJkRpkH6O+HQWrp9aS+8G9GRAXwfO+KbOCqR1U=
+X-Received: by 2002:a05:620a:2615:b0:82b:15c2:509 with SMTP id
+ af79cd13be357-83ba29b6776mr106004485a.1.1758225075919; Thu, 18 Sep 2025
+ 12:51:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250918193019.4018706-1-jarkko@kernel.org>
+References: <20250825203223.629515-1-jarkko@kernel.org> <aMxV9fB0E72QQY2G@earth.li>
+ <aMxZlHn9bfa5LGEU@kernel.org>
+In-Reply-To: <aMxZlHn9bfa5LGEU@kernel.org>
+From: Chris Fenner <cfenn@google.com>
+Date: Thu, 18 Sep 2025 12:50:57 -0700
+X-Gm-Features: AS18NWCj6f0C0cTQbPavL2yzofztQlVPZRuus3lDO36bJFzWpZEEGANZWXKMSrk
+Message-ID: <CAMigqh2gJ+ALqxb8RcNFENJg-Z0FfKE2DZjaGdOER7G3AGZvKg@mail.gmail.com>
+Subject: Re: [PATCH] tpm: Disable TPM2_TCG_HMAC by default
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Jonathan McDowell <noodles@earth.li>, linux-integrity@vger.kernel.org, 
+	stable@vger.kernel.or, Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	David Howells <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:KEYS/KEYRINGS" <keyrings@vger.kernel.org>, 
+	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 18, 2025 at 10:30:18PM +0300, Jarkko Sakkinen wrote:
-> The current shenanigans for duration calculation introduce too much
-> complexity for a trivial problem, and further the code is hard to patch and
-> maintain.
-> 
-> Address these issues with a flat look-up table, which is easy to understand
-> and patch. If leaf driver specific patching is required in future, it is
-> easy enough to make a copy of this table during driver initialization and
-> add the chip parameter back.
-> 
-> 'chip->duration' is retained for TPM 1.x.
-> 
-> As the first entry for this new behavior address TCG spec update mentioned
-> in this issue:
-> 
-> https://github.com/raspberrypi/linux/issues/7054
-> 
-> Therefore, for TPM_SelfTest the duration is set to 3000 ms.
-> 
-> This does not categorize a as bug, given that this is introduced to the
-> spec after the feature was originally made.
-> 
-> Cc: Frédéric Jouen <fjouen@sealsq.com>
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> ---
-> v2:
-> - Add the missing msec_to_jiffies() calls.
-> - Drop redundant stuff.
+Agreed, the feature needs some work in order to provide meaningful
+security value, and disabling it by default facilitates that work.
 
-Run also through kselftest.
+Reviewed-By: Chris Fenner <cfenn@google.com>
 
-BR, Jarkko
+On Thu, Sep 18, 2025 at 12:12=E2=80=AFPM Jarkko Sakkinen <jarkko@kernel.org=
+> wrote:
+>
+> On Thu, Sep 18, 2025 at 07:56:53PM +0100, Jonathan McDowell wrote:
+> > On Mon, Aug 25, 2025 at 11:32:23PM +0300, Jarkko Sakkinen wrote:
+> > > After reading all the feedback, right now disabling the TPM2_TCG_HMAC
+> > > is the right call.
+> > >
+> > > Other views discussed:
+> > >
+> > > A. Having a kernel command-line parameter or refining the feature
+> > >   otherwise. This goes to the area of improvements.  E.g., one
+> > >   example is my own idea where the null key specific code would be
+> > >   replaced with a persistent handle parameter (which can be
+> > >   *unambigously* defined as part of attestation process when
+> > >   done correctly).
+> > >
+> > > B. Removing the code. I don't buy this because that is same as saying
+> > >   that HMAC encryption cannot work at all (if really nitpicking) in
+> > >   any form. Also I disagree on the view that the feature could not
+> > >   be refined to something more reasoable.
+> > >
+> > > Also, both A and B are worst options in terms of backporting.
+> > >
+> > > Thus, this is the best possible choice.
+> >
+> > I think this is reasonable; it's adding runtime overhead and not adding
+> > enough benefit to be the default upstream.
+>
+> Yes, I think this is a balanced change. I agree what you say and at the
+> same time this gives more space to refine it something usable. Right now
+> it is much harder to tackle those issue, as it is part of the default
+> config. By looking at things from this angle, the change is also
+> benefical for the feature itself (in the long run).
+>
+> > Reviewed-By: Jonathan McDowell <noodles@earth.li>
+>
+> Thank you! I appreciate this and will append this to the commit.
+>
+> BR, Jarkko
 
