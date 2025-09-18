@@ -1,172 +1,142 @@
-Return-Path: <keyrings+bounces-3012-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3013-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2FFB82ECE
-	for <lists+keyrings@lfdr.de>; Thu, 18 Sep 2025 07:04:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EAE2B86984
+	for <lists+keyrings@lfdr.de>; Thu, 18 Sep 2025 20:57:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B7D03B133C
-	for <lists+keyrings@lfdr.de>; Thu, 18 Sep 2025 05:04:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31CB3564073
+	for <lists+keyrings@lfdr.de>; Thu, 18 Sep 2025 18:57:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B374288DA;
-	Thu, 18 Sep 2025 05:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3046D2D24B2;
+	Thu, 18 Sep 2025 18:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GIq8H4S5"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=earth.li header.i=@earth.li header.b="q4ZxZa03"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from the.earth.li (the.earth.li [93.93.131.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6998D34BA43;
-	Thu, 18 Sep 2025 05:04:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19603C465;
+	Thu, 18 Sep 2025 18:57:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.93.131.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758171840; cv=none; b=LjP0Jz9bK6lEmdg7yBgUSBjRyW/emsHCxvlBkJNl9OGmRiHNzwiWkHBz0FTh4+zMi4+6UUe+C1KM0CBSlw4zkla/8Ex97D4b094Yqps/1oXgSJXOWDlXwRoVmiRr1dHQzfR9m3wITRrKNfpBCqdq5rarKM2gDdx3gHVXh7BO4Go=
+	t=1758221839; cv=none; b=G9SbmFJEvI94Vu0JAU37l7yrBgt4TJwwcmoCZG80dcyPtL9gVlzIwwI+JdShnHgABQ6RKESTfh+LNjmzQYhBgBhL3eLFomA/g4hVypr5OILubaNzscrGamk6vGGydncKa4ByYdplLUdrzKmg6YMMSjbpEzZE5hYxFvPtLtIjpgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758171840; c=relaxed/simple;
-	bh=xEw7pIOEI0A+4r0NalC4RyzD0RTXdu8oCCdB5ILHM7Q=;
+	s=arc-20240116; t=1758221839; c=relaxed/simple;
+	bh=n3lbOBSHHN6qjgd0ZGik8Gxu1EjlZkYg8FEfJYQxmjg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kl1kQ6OLI5Gy4WVzrfuvJq0GPWxpKJ2LNFN1fJs/FsKjT8krZou25hqzXMG1KouDxg2WB4L8uDDoWqxE0kkJm3CND/Y80wjx3BaKe2ueJqVXXRx71C8AuMEmClTQbwngVEgP1cWMRd0/CjIjRSWoSCUFLOKeRJf/ueNkW7AWBxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GIq8H4S5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1EB9C4CEE7;
-	Thu, 18 Sep 2025 05:03:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758171840;
-	bh=xEw7pIOEI0A+4r0NalC4RyzD0RTXdu8oCCdB5ILHM7Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GIq8H4S5iX5eQavz4HsElGAnb6U1OegTvbPlPdlOwJLaYCxc/tv63xoHv7iHYmSDS
-	 piGCD1/BG7CHtI+NtBVvgsa0YO2LUE5nd8jpL3oD77RkbXLY7XUfGI70bCQLvgvddO
-	 u4v37IeYHJbRw7OBjVUCyj51MajmfeHl5+N6XOJDRKf5WRC/9TPZJZLjaQ8WSmP33u
-	 +F2N6CPF1g7Z+FJLUGJ6560MfhK8VH8Ugs23mOyw+a6j66YSG+rzwU5+HOd52SGrXz
-	 k+oCY+a242uZf2WEG6KGAjXu+sUupKmYNpXEUNvDfjpLhYisNfPOLY+g07C4UNALBp
-	 T9z2j9nmf3+Qg==
-Date: Thu, 18 Sep 2025 08:03:56 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-	Andreas.Fuchs@infineon.com, James Prestwood <prestwoj@gmail.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Eric Biggers <ebiggers@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=jAQ3VI3Rz67TZNkXY0i1fzzKS7MFyhmGqZAgD675W/J8vdwrDj2/kjjDxSulwUqVTSrq+mkirXWTcQkp6zEUkvpb4iLH14O/KXeBX2EI30hQcDvuajQqobCeXBiwA0Rzp5oZjqShXoFabmK94xwPMgtQrYjJ1L6wi+Yt+fAiE+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li; spf=pass smtp.mailfrom=earth.li; dkim=pass (2048-bit key) header.d=earth.li header.i=@earth.li header.b=q4ZxZa03; arc=none smtp.client-ip=93.93.131.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=earth.li
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=earth.li;
+	s=the; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:
+	Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=Dq+1iSG82r9yQIVHmumBoetFqjeDWLapJ2V4N8waYYE=; b=q4ZxZa03qHI68xQGdp1+HoucWC
+	A6UKcRRoF7upoBx+/JQDcOnmpTpM+Gei1qTcmgUadALtWTjpfnhzEAzVt/x7MW/pYZLd14Aq1LvrW
+	N0aDiWpJ0VKi8lOSIwAq4ngUjO1vknuFPaaCNjj6b86XUj1Pv7vaGObohPsiS1Xo+PlqNhCKtAemf
+	RvZcobPmZv6pLKkD8DB0nZmNXQDeMj5+YmQB13tVTxPaU4nmzrjcjOfH8LKguncAqW6GoDEpdjNkP
+	1/CCJsWoIb8Dvk7Nwdj1cpdAijA7x2xeZLqKwZRQW+ThWmXa1aAs46Y60v2xEpJ/E/a1aVVEExdWR
+	GDrxP/0Q==;
+Received: from noodles by the.earth.li with local (Exim 4.96)
+	(envelope-from <noodles@earth.li>)
+	id 1uzJoL-00Fya0-13;
+	Thu, 18 Sep 2025 19:56:53 +0100
+Date: Thu, 18 Sep 2025 19:56:53 +0100
+From: Jonathan McDowell <noodles@earth.li>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: linux-integrity@vger.kernel.org, stable@vger.kernel.or,
+	Chris Fenner <cfenn@google.com>, Peter Huewe <peterhuewe@gmx.de>,
+	Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
 	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	linux-crypto@vger.kernel.org, Stefan Berger <stefanb@linux.ibm.com>,
-	Lennart Poettering <lennart@poettering.net>,
-	"David S. Miller" <davem@davemloft.net>,
 	open list <linux-kernel@vger.kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: [PATCH v7 4/5] keys: asymmetric: Add tpm2_key_rsa
-Message-ID: <aMuSvJNt2KdVBIOA@kernel.org>
-References: <20240528210823.28798-1-jarkko@kernel.org>
- <20240528210823.28798-5-jarkko@kernel.org>
- <ZmLnyp9j_QoPgj7W@gondor.apana.org.au>
- <D24EZPFV6DBS.1LZVHIVPITE83@kernel.org>
- <aK1vdEcuN_xjhjyY@kernel.org>
+	"open list:KEYS/KEYRINGS" <keyrings@vger.kernel.org>,
+	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
+Subject: Re: [PATCH] tpm: Disable TPM2_TCG_HMAC by default
+Message-ID: <aMxV9fB0E72QQY2G@earth.li>
+References: <20250825203223.629515-1-jarkko@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <aK1vdEcuN_xjhjyY@kernel.org>
+In-Reply-To: <20250825203223.629515-1-jarkko@kernel.org>
 
-On Tue, Aug 26, 2025 at 11:25:24AM +0300, Jarkko Sakkinen wrote:
-> On Thu, Jun 20, 2024 at 03:23:20AM +0300, Jarkko Sakkinen wrote:
-> > On Fri Jun 7, 2024 at 1:58 PM EEST, Herbert Xu wrote:
-> > > On Wed, May 29, 2024 at 12:08:09AM +0300, Jarkko Sakkinen wrote:
-> > > >
-> > > > +/*
-> > > > + * Sign operation is an encryption using the TPM's private key. With RSA the
-> > > > + * only difference between encryption and decryption is where the padding goes.
-> > > > + * Since own padding can be used, TPM2_RSA_Decrypt can be repurposed to do
-> > > > + * encryption.
-> > > > + */
-> > > > +static int tpm2_key_rsa_sign(struct tpm_chip *chip, struct tpm2_key *key,
-> > > > +			     struct kernel_pkey_params *params,
-> > > > +			     const void *in, void *out)
-> > > > +{
-> > > > +	const off_t o = key->priv_len + 2 + sizeof(*key->desc);
-> > > > +	const struct tpm2_rsa_parms *p =
-> > > > +		(const struct tpm2_rsa_parms *)&key->data[o];
-> > > > +	const u16 mod_size = be16_to_cpu(p->modulus_size);
-> > > > +	const struct rsa_asn1_template *asn1;
-> > > > +	u32 in_len = params->in_len;
-> > > > +	void *asn1_wrapped = NULL;
-> > > > +	u8 *padded;
-> > > > +	int ret;
-> > > > +
-> > > > +	if (strcmp(params->encoding, "pkcs1") != 0) {
-> > > > +		ret = -ENOPKG;
-> > > > +		goto err;
-> > > > +	}
-> > > > +
-> > > > +	if (params->hash_algo) {
-> > > > +		asn1 = rsa_lookup_asn1(params->hash_algo);
-> > >
-> > > Could you please explain why this can't be done through pkcs1pad
-> > > instead of going to raw RSA?
-> > 
-> > Sorry was away couple of weeks from here. I replace this with TPM2_Sign
-> > as is done already in the ECDSA module, so I guess that is a "yes".
-> 
-> Time travelling back to 2024 ;-)
-> 
-> I can't recall what I was thining here butI'm glad that I did not put
-> the patch set further as now I have much more sane angle to this.
-> 
-> I realized while working on [1] that I'm better of making this to work
-> as API on rsapubkey.asn1 and rsaprivkey.asn1 and matching files for
-> ECC and do all steps inside kernel from this:
-> 
-> tpm2_createprimary --hierarchy o -G rsa2048 -c owner.txt
-> tpm2_evictcontrol -c owner.txt 0x81000001
-> tpm2_getcap handles-persistent
-> openssl genrsa -out private.pem 2048
-> tpm2_import -C 0x81000001 -G rsa -i private.pem -u key.pub -r key.priv
-> tpm2_encodeobject -C 0x81000001 -u key.pub -r key.priv -o key.priv.pem
-> openssl asn1parse -inform pem -in key.priv.pem -noout -out key.priv.der
-> 
-> I.e. my test tool does everything else except
-> 
-> openssl genrsa -out private.pem 2048
-> 
-> Im now pretty familiar with import procedure and how to prepare data
-> for TPM2_Import and is like the "spirit" of it i.e., take external
-> key and store it inside TPM2. That as side effect removes all the
-> use of tpm2key.asn1 from the patch set and simplifies flows
-> greatly.
-> 
-> And my Rust works help to get the preparation procedure exactly
-> right and none of those crazy tools and commands will be needed.
-> 
-> The matching C code following TCG Architecture spec  I'll first write in
-> user space and then port that kernel crypto APIs
-> 
-> That spans a question tho: should it be its own key type (as it is
-> right now or would it be better idea to have parameter/option for
-> hardware pre-existing RSA key types, or what would be the best
-> direction API wise to approach this?
+On Mon, Aug 25, 2025 at 11:32:23PM +0300, Jarkko Sakkinen wrote:
+>After reading all the feedback, right now disabling the TPM2_TCG_HMAC
+>is the right call.
+>
+>Other views discussed:
+>
+>A. Having a kernel command-line parameter or refining the feature
+>   otherwise. This goes to the area of improvements.  E.g., one
+>   example is my own idea where the null key specific code would be
+>   replaced with a persistent handle parameter (which can be
+>   *unambigously* defined as part of attestation process when
+>   done correctly).
+>
+>B. Removing the code. I don't buy this because that is same as saying
+>   that HMAC encryption cannot work at all (if really nitpicking) in
+>   any form. Also I disagree on the view that the feature could not
+>   be refined to something more reasoable.
+>
+>Also, both A and B are worst options in terms of backporting.
+>
+>Thus, this is the best possible choice.
 
-This response was filled wrong conclusions. The current
-separate key types is the correct path. It's best to use TpmKey ASN.1
-import as the keys might also source from TPM2_Create command, not
-necessarily necessarily from external source, or at least it would be
-stupid to limit it to only external keys.
+I think this is reasonable; it's adding runtime overhead and not adding 
+enough benefit to be the default upstream.
 
-So yeah two options to get this finally somehere are either pkcs1pad
-route or more likely to change this to use TPM2_Sign, which should
-be able to address padding internally at the chip.
+Reviewed-By: Jonathan McDowell <noodles@earth.li>
 
-Also I think RSA key should only expose here signinig operation for
-the time being and encryption should be something reconsidered later
-(if ever).
+>Cc: stable@vger.kernel.or # v6.10+
+>Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
+>Suggested-by: Chris Fenner <cfenn@google.com>
+>Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+>---
+>PS. I did not post this last week because that would have been most
+>likely the most counter-productive action to taken. It's better
+>sometimes to take a bit of time to think (which can be seen that
+>I've given also more reasonable weight to my own eaerlier
+>proposals).
+>
+>I also accept further changes, if there is e.g., inconsistency
+>with TCG_TPM_HMAC setting or similar (obviously).
+>---
+> drivers/char/tpm/Kconfig | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/drivers/char/tpm/Kconfig b/drivers/char/tpm/Kconfig
+>index dddd702b2454..3e4684f6b4af 100644
+>--- a/drivers/char/tpm/Kconfig
+>+++ b/drivers/char/tpm/Kconfig
+>@@ -29,7 +29,7 @@ if TCG_TPM
+>
+> config TCG_TPM2_HMAC
+> 	bool "Use HMAC and encrypted transactions on the TPM bus"
+>-	default X86_64
+>+	default n
+> 	select CRYPTO_ECDH
+> 	select CRYPTO_LIB_AESCFB
+> 	select CRYPTO_LIB_SHA256
+>-- 
+>2.39.5
 
-Just had a such a long pause since I've revisited this that did not
-recall the reasoning why it was implemeted like it was.
+J.
 
-
-BR, Jarkko
+-- 
+] https://www.earth.li/~noodles/ []  Is this real - that's the first   [
+]  PGP/GPG Key @ the.earth.li    []    thing I think every morning.    [
+] via keyserver, web or email.   []                                    [
+] RSA: 4096/0x94FA372B2DA8B985   []                                    [
 
