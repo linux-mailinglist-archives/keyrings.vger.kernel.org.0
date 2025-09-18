@@ -1,143 +1,81 @@
-Return-Path: <keyrings+bounces-3019-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3020-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52166B86C53
-	for <lists+keyrings@lfdr.de>; Thu, 18 Sep 2025 21:51:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1004CB86F5B
+	for <lists+keyrings@lfdr.de>; Thu, 18 Sep 2025 22:52:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 151E117AFB9
-	for <lists+keyrings@lfdr.de>; Thu, 18 Sep 2025 19:51:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5C6A1B27436
+	for <lists+keyrings@lfdr.de>; Thu, 18 Sep 2025 20:53:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D592EA493;
-	Thu, 18 Sep 2025 19:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3315A2F0698;
+	Thu, 18 Sep 2025 20:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qtlC/w5o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aVV2WfjC"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F232EC0A3
-	for <keyrings@vger.kernel.org>; Thu, 18 Sep 2025 19:51:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0156E264A72;
+	Thu, 18 Sep 2025 20:52:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758225079; cv=none; b=he5r96fH5QACh8h4fFdghdsmiQqhqTqkqaGWWwEC8SnF3JBnchmoeBJQFZ29E5Xc019JNUQ3aT+ixSYaAnM0a1gALir6OGMK6j5+9kzgiGyK6TrI+eHiMcMI0Ms6FdGnVXTC2L5/F61wX+TyOdMRegDXK/MYvGkhdI/c3YTSTwo=
+	t=1758228756; cv=none; b=fo0TmCk//WP1bxFTaATFuUziUwhKU7G2PyRca35SKCnqupux1dTNIHWbU/LvdNgQUfmipjvvsp5fgwY1yCSuDBRWOfffjwlB8xs0RPFetliKWlUEwnh+WXtTmVUzfKdOTpx0GcwtSwJXMvjQadBpRet63qPC8sgf6wpjEmL0yM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758225079; c=relaxed/simple;
-	bh=6syJdSpwOuKgxvfK6CJQXA1mo4R5z+GK0PPQjQL52Qs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vvd9r+J4qu0l+FlTl5VfeSkLBekCR830AKThMUo/NVRH19EXJoaLQhdv2eSC/Tpr+QLHqo0qYVA/t1ZgF/mfnOTmkVCqXSyg3Adg0dLq17f/pZdBKgVD1kJYX3a/Oz71WezOo9gXsRM5j2tGqN9ZEeTAWvwgGlkOO3sJvT2oX0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qtlC/w5o; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-827923a97e9so141437985a.3
-        for <keyrings@vger.kernel.org>; Thu, 18 Sep 2025 12:51:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758225076; x=1758829876; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X8krst8IwRhvi5nQ0njnzXjVOua4V4UJe+k0j+3GNts=;
-        b=qtlC/w5o7oqOt5KSb8eVYY1qgdu3W7fm5pAqzP3WjBB5U7exzjiIZcbYBt0mm2kOxZ
-         OIOV3SMCZF5x+Clo7Oafwv8CnJbMP2DICBWQuuv4WUo4My17i5uejgr7oqOl31kV6inJ
-         1lEps0ZL4zreN8RteZmoMCipGv2TFW4VokO7tHk2Y5pPOSWq7DvlVVsHfsN9hW12BxTQ
-         Ing7kEhgkMvZPosbxf75UJWJjWBbLlfRwtDNQGabgqrvmjNfFwEyD9ivpQA91ZqHuUI0
-         DR5pTEkkFys3awuuAmviJb5LI0z4KBQPjaVmX1vex08ieXfUDxD+8YpBIC6Eqm5luwTJ
-         wvbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758225076; x=1758829876;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X8krst8IwRhvi5nQ0njnzXjVOua4V4UJe+k0j+3GNts=;
-        b=UCDzLRL/H6SlerpFg2WScXiBHX0OgB2tHQHxdcktYmxgm3kpTaQkOb52LB9lGn6xWQ
-         hxqS20EXKPWPDC6wZZKBP+IW4DBWqYcgN2q+t9wOJb/zI5WNf4UA5tKLs0YC+i0COpqp
-         9UGyF8AZHLsdE6ZsZEro3K1Ln11+4zIw8lq3miM3meI5Q59xGEC7mRTkR9ruGy6umJXX
-         4fwbsUZ4QOlKyZT8EJF611Pnjo2ktlB3eqeC5jledRqDLBCiMY+xOCpJ3l0/F1sWLHRG
-         OXf/1LLxNwMumERNwFrWibjbVfX+KyASa78E7oiv3hqkEEmLGiqbyJCvHQvohWs2x1Zm
-         p6hA==
-X-Forwarded-Encrypted: i=1; AJvYcCUPTyCDyFpnBxZdP9+equVILPdeZvtuXRSx7hleQvyiG9jrFR8ckhKt7ZGbgPdysyL8ttozuH4CfA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbCbRe42QobVgg4LGdkY01KR20prWqiKeVeKu9bkiPxR3tKxfU
-	iyJfh9Dp/zeI62OtN7AjcdZiaN8EJWL47zyT152UwtRiTwy3fuNfDPsB3vvbo8Rh+vvUCvrIICF
-	+Ojv0cKgIShx6QlGpOxsnFEta0azS9ohqU3/Kf+ON
-X-Gm-Gg: ASbGncuNYbNM7OPyvs50qt1tx01JxQfqK2M/SCGU6R6+i8crhmzRvLflP2U8C2zIccf
-	XySglsCcZCIMR8MT7GwWhi+v4OIfLwqRld6h1M8jkhE/IYFdDjkB2FKwc5DN78h9OIuJHOCJ9kS
-	MOeSCY0Bid0jO/6EicXFOmbCSYQEafHLHcSvF++sTIffnr/k/QrzUX+7Hsupbqd7rfYyCtLiWf7
-	+fa3dIPMv1QLxK/rWlJQl+fUQ70J/eAv/26Nm0pP8KMBYEdL79JAGsHDt8PZ8M=
-X-Google-Smtp-Source: AGHT+IEBRicdafJf3u77ctjkGg0qQE01vvq76y8OfmUEZq9l+r7vlVJkRpkH6O+HQWrp9aS+8G9GRAXwfO+KbOCqR1U=
-X-Received: by 2002:a05:620a:2615:b0:82b:15c2:509 with SMTP id
- af79cd13be357-83ba29b6776mr106004485a.1.1758225075919; Thu, 18 Sep 2025
- 12:51:15 -0700 (PDT)
+	s=arc-20240116; t=1758228756; c=relaxed/simple;
+	bh=ZkLGh94phtEema8WHbBi3csQqtKxGnStCf7APFvKzJU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IijCFLCS5d5h1rWfXZ+nIIY/SmTQrXgtLCx7M6wmmiHMt3gL5Rw19i7IdH1BNfbfkYTVRnWZGchlvaiyQLMpKAT7f0G9h7TpMOXlkquYIRDTF/2+cVf4sjFPsUcmOzqw6xcdSNkeV5YnpaA4DB7qQhhOF2sKezpxOBVrDdzIjF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aVV2WfjC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C96CC4CEE7;
+	Thu, 18 Sep 2025 20:52:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1758228755;
+	bh=ZkLGh94phtEema8WHbBi3csQqtKxGnStCf7APFvKzJU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aVV2WfjC5H1gdj4iSWHYx271IJeBQTrxvJmiRDclZyHbaniBt9KROllyoJ9XucerC
+	 nWpb2S21nB6LeCdQjHbxhp16GVaVjXwXbPmRlm2NIAmPinOy6aeDzNhigfiQqDJCTf
+	 pU3s1u3xt0mGO/P9mDcEVmv8oZJO6xTBTGUpdWIJbPdh83gQ/YXPJnuLH6Eb3Dm5Je
+	 y78bCn/6uSd4nBMtJy1B5h4xydIouc0m+feX61ESKAphyetjGpVWyfGxAxv7FU+Qn/
+	 9bn2iI9fIr7zq83rNXunyOewOZyAMdN7m49optUtLZOPtFUZ+biJamhObLYAtyZgk+
+	 75pueFdQMlQEQ==
+Date: Thu, 18 Sep 2025 23:52:31 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Chris Fenner <cfenn@google.com>
+Cc: Jonathan McDowell <noodles@earth.li>, linux-integrity@vger.kernel.org,
+	stable@vger.kernel.or, Peter Huewe <peterhuewe@gmx.de>,
+	Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:KEYS/KEYRINGS" <keyrings@vger.kernel.org>,
+	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
+Subject: Re: [PATCH] tpm: Disable TPM2_TCG_HMAC by default
+Message-ID: <aMxxD1QvAgZyQkaM@kernel.org>
+References: <20250825203223.629515-1-jarkko@kernel.org>
+ <aMxV9fB0E72QQY2G@earth.li>
+ <aMxZlHn9bfa5LGEU@kernel.org>
+ <CAMigqh2gJ+ALqxb8RcNFENJg-Z0FfKE2DZjaGdOER7G3AGZvKg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250825203223.629515-1-jarkko@kernel.org> <aMxV9fB0E72QQY2G@earth.li>
- <aMxZlHn9bfa5LGEU@kernel.org>
-In-Reply-To: <aMxZlHn9bfa5LGEU@kernel.org>
-From: Chris Fenner <cfenn@google.com>
-Date: Thu, 18 Sep 2025 12:50:57 -0700
-X-Gm-Features: AS18NWCj6f0C0cTQbPavL2yzofztQlVPZRuus3lDO36bJFzWpZEEGANZWXKMSrk
-Message-ID: <CAMigqh2gJ+ALqxb8RcNFENJg-Z0FfKE2DZjaGdOER7G3AGZvKg@mail.gmail.com>
-Subject: Re: [PATCH] tpm: Disable TPM2_TCG_HMAC by default
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Jonathan McDowell <noodles@earth.li>, linux-integrity@vger.kernel.org, 
-	stable@vger.kernel.or, Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	David Howells <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
-	James Bottomley <James.Bottomley@hansenpartnership.com>, 
-	open list <linux-kernel@vger.kernel.org>, 
-	"open list:KEYS/KEYRINGS" <keyrings@vger.kernel.org>, 
-	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMigqh2gJ+ALqxb8RcNFENJg-Z0FfKE2DZjaGdOER7G3AGZvKg@mail.gmail.com>
 
-Agreed, the feature needs some work in order to provide meaningful
-security value, and disabling it by default facilitates that work.
+On Thu, Sep 18, 2025 at 12:50:57PM -0700, Chris Fenner wrote:
+> Agreed, the feature needs some work in order to provide meaningful
+> security value, and disabling it by default facilitates that work.
+> 
+> Reviewed-By: Chris Fenner <cfenn@google.com>
 
-Reviewed-By: Chris Fenner <cfenn@google.com>
+Thanks!
 
-On Thu, Sep 18, 2025 at 12:12=E2=80=AFPM Jarkko Sakkinen <jarkko@kernel.org=
-> wrote:
->
-> On Thu, Sep 18, 2025 at 07:56:53PM +0100, Jonathan McDowell wrote:
-> > On Mon, Aug 25, 2025 at 11:32:23PM +0300, Jarkko Sakkinen wrote:
-> > > After reading all the feedback, right now disabling the TPM2_TCG_HMAC
-> > > is the right call.
-> > >
-> > > Other views discussed:
-> > >
-> > > A. Having a kernel command-line parameter or refining the feature
-> > >   otherwise. This goes to the area of improvements.  E.g., one
-> > >   example is my own idea where the null key specific code would be
-> > >   replaced with a persistent handle parameter (which can be
-> > >   *unambigously* defined as part of attestation process when
-> > >   done correctly).
-> > >
-> > > B. Removing the code. I don't buy this because that is same as saying
-> > >   that HMAC encryption cannot work at all (if really nitpicking) in
-> > >   any form. Also I disagree on the view that the feature could not
-> > >   be refined to something more reasoable.
-> > >
-> > > Also, both A and B are worst options in terms of backporting.
-> > >
-> > > Thus, this is the best possible choice.
-> >
-> > I think this is reasonable; it's adding runtime overhead and not adding
-> > enough benefit to be the default upstream.
->
-> Yes, I think this is a balanced change. I agree what you say and at the
-> same time this gives more space to refine it something usable. Right now
-> it is much harder to tackle those issue, as it is part of the default
-> config. By looking at things from this angle, the change is also
-> benefical for the feature itself (in the long run).
->
-> > Reviewed-By: Jonathan McDowell <noodles@earth.li>
->
-> Thank you! I appreciate this and will append this to the commit.
->
-> BR, Jarkko
+BR, Jarkko
 
