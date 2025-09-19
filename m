@@ -1,126 +1,125 @@
-Return-Path: <keyrings+bounces-3043-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3044-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E82AB8B370
-	for <lists+keyrings@lfdr.de>; Fri, 19 Sep 2025 22:47:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF7ECB8B523
+	for <lists+keyrings@lfdr.de>; Fri, 19 Sep 2025 23:20:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70F821CC31B8
-	for <lists+keyrings@lfdr.de>; Fri, 19 Sep 2025 20:48:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 899C93BCF46
+	for <lists+keyrings@lfdr.de>; Fri, 19 Sep 2025 21:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A9C286D40;
-	Fri, 19 Sep 2025 20:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995032C11F1;
+	Fri, 19 Sep 2025 21:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EsEu5tP0"
+	dkim=pass (2048-bit key) header.d=chronox.de header.i=@chronox.de header.b="N5ZHmvb8"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2232206AC;
-	Fri, 19 Sep 2025 20:47:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758314875; cv=none; b=l5+TJl3A5uIcITRfcYtGFJtyL1O1YEy1VKr7/6T0Hc2t7AGg/HkuFp/JXlINy5z4gAtzlAZLIk6Fc2+GZtosmL8XoxpKl4IuJZEooWKsXXOBZ2b6msillDi29XyQ5SO8iVu0fc6uS8bnpY7aFwRMOe8N8A0zGoTL8KPbDPWwbyw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758314875; c=relaxed/simple;
-	bh=jDC8h7t5c8O6Q8IkBOy7nxDb1kTMRuXzYJroSv/Rvqg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=deV1f5hg7BDBEi/OzN9VPBS9Pj1P0SpzL0VMqjUDbzVgfBKjZF+gKNXIOb0BfOrZYYCcP/vs6olZxkAQcUyAp/deccQXU42aT8r/BXrAp43KhaTGE7hj6XzONp1ZnMIuLXsX/hGKVmTUqVSdPb9maMJ9UZWQF45T2IBZd0Fq76Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EsEu5tP0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077B2C4CEF0;
-	Fri, 19 Sep 2025 20:47:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758314875;
-	bh=jDC8h7t5c8O6Q8IkBOy7nxDb1kTMRuXzYJroSv/Rvqg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EsEu5tP0qMTUshyVmneAm4wpkV/Tr/raDmQXlY0X8BwsNa4IyPJ5nCORa2WpEEqmt
-	 1Uf3Ch+DOw3dPiv+vmzQ7rwoDv8GA+kZVyyJ/gga1Br8yopDyUpOlNuOODiz5MFCVU
-	 OCG2RioV2tTDBlmReDVFCH8/l7tnlrciITVw6jDS2PvIZgDDWMUlX8E6Bgy9BRQjQ1
-	 qxXZwpOIISYRql8CXy/56IhzgGlb7CgsbDRX6ghIE2aLvPXlpN9BE1tXA0wEAuw2Hl
-	 BLbpMgUGJLLrV92o7kRDOFb+aaTQQqmiwUIG37IyYAI4GDrelFUtmgjtUl1P3mxsHi
-	 LzstBPNehYgUw==
-Date: Fri, 19 Sep 2025 15:47:49 -0500
-From: Eric Biggers <ebiggers@kernel.org>
-To: Stephan Mueller <smueller@chronox.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08E0223702;
+	Fri, 19 Sep 2025 21:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.166
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758316839; cv=pass; b=Ew9YUz2k/PYHG3jb/z4HmkplYEB33gtw6W3Mjc4hj/IPZhWQXHT/EXsf6kngmG+XXjhlFi4i2YH7YP5arnN9HGFQzpViD9nSpCKsuyqx0IVGmYQiGfhuOLKahw6/cfWRZ3/i7lFq4XigbjdMNw3ajbPwncTFwiAo/NaCDBp4yvk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758316839; c=relaxed/simple;
+	bh=et7a0xIBeTVDYV6MTLXeECVFQkoVbXTTzVLxvFUQstQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JqBomVl8dFOPvRQj7blE/IY3NdKlTe3gxs3zdNIckGc3+hyPN2IyT9QATKGcCOx7qm9Nn2L1tXfIUsyxAI3iXJ2lKhrohgFi8WcDBu+tszBfypE5DBVFDxK217CV8pfLhrtSmBW+EH32OaG2nIW+jzuMRJoB5z/n+UZrkp2eoew=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chronox.de; spf=none smtp.mailfrom=chronox.de; dkim=pass (2048-bit key) header.d=chronox.de header.i=@chronox.de header.b=N5ZHmvb8; arc=pass smtp.client-ip=81.169.146.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=chronox.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=chronox.de
+ARC-Seal: i=1; a=rsa-sha256; t=1758316833; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=G4j2I9OVl5BPNwLQ3yV4z8Hj70ZcrJeei6XyIgvmKZM2M2wEkIigu6T8x7dkznhQH+
+    BWA4VG2z2BVLNN6nqM8Z1gQlrvcyRVKQgvQcGiJwpGiYHpGlz4cMrPLXVntSjptZHa0D
+    Xm/7KWNbrxaGIAK6HS4SPQ+RV+wUEEAqUj83jMpacwM2xKg/bMq9lIRobs/HfNY/D1un
+    jdGzoVKrWzRB54MVX6o2H112pHmxn3a0y7WDRVbwa/9ZctS7JvHKbWrCB273c4PXyqZR
+    xLBfz79fLuZNRYV+G9V8YedtEmLldlq1i0MP/uRLdmg54zk7Qn5EYzzM3UVyzvwy99F7
+    JdGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1758316833;
+    s=strato-dkim-0002; d=strato.com;
+    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=vmheLRMDygrXWpSVmbnURUE2CG296RLm+NPL4yIwudE=;
+    b=l6bXmkGnDElMl/256UFdkklSwYbvuHq2B6Yoqqr9TtooZjxV3Jhvl+3fJnSLJR0daB
+    29pLPQh1L1teZRbBc2hQehXry3dBtZYaOYsxxuJucjCGyb1xX7Q/yuiDmvGF1jqqbX3z
+    VeswnhqngXx/ap0sBJJZGvTxt9fN3UGa+WHviCj8qqPzdnM3XQL/J2cNbVtnw9ftutSG
+    CGNDvbX1HjfS/muyMnvx30UdW1wN22D3B1AqZFGOmB64ipHICfstCoSQS0RrM4q8yPgV
+    INxqoZSVMWdqgZcGgbaLD23Kz499eCzvoVZ03HXqxyxvP3aGHbSF/MyIeGd9zj4NA6QC
+    prCg==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1758316833;
+    s=strato-dkim-0002; d=chronox.de;
+    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=vmheLRMDygrXWpSVmbnURUE2CG296RLm+NPL4yIwudE=;
+    b=N5ZHmvb8L2/6MzYtBXU7zVyUa96OQlicjdls2hJizBamT7bB3tvlwlMMDmmdsElmJA
+    l0DEF7bpznyrDFQPtFLC4xn7vnJPlXUcVpLWPocD1k1Ex6U3lx5vaRuBImxPWKS0IgmZ
+    r34SpnLp5rUer4PRZolAK85NOi2bu/9zDGHM2gRCXXePxWl1/jLLsoOhGe5CA7HAYd8q
+    iD1uUNq679qMEWeQ+I+ekpbUeIe1RzqXz1ufOVdXwA6KGTnj0KP0I95VRb5XDzEW5tpP
+    8R/QF3TDPhSMYVU0ZFqC0E+kNzlULay+HHDD9SrPwEavCwft1miDQDMZjhpC4ASjpX/c
+    QdBw==
+X-RZG-AUTH: ":P2ERcEykfu11Y98lp/T7+hdri+uKZK8TKWEqNyiHySGSa9k9zmwdP57PWmc+BP1jdA=="
+Received: from tauon.localnet
+    by smtp.strato.de (RZmta 52.1.2 AUTH)
+    with ESMTPSA id f01e6318JLKTLOw
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Fri, 19 Sep 2025 23:20:29 +0200 (CEST)
+From: Stephan Mueller <smueller@chronox.de>
+To: Eric Biggers <ebiggers@kernel.org>
 Cc: David Howells <dhowells@redhat.com>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Simo Sorce <simo@redhat.com>, linux-crypto@vger.kernel.org,
-	linux-s390@vger.kernel.org, keyrings@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] lib/crypto: Add SHA3-224, SHA3-256, SHA3-384,
- SHA-512, SHAKE128, SHAKE256
-Message-ID: <20250919204749.GB8350@quark>
-References: <20250919190413.GA2249@quark>
- <3936580.1758299519@warthog.procyon.org.uk>
- <3975735.1758311280@warthog.procyon.org.uk>
- <5078839.1IzOArtZ34@tauon>
+ "Jason A. Donenfeld" <Jason@zx2c4.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Harald Freudenberger <freude@linux.ibm.com>,
+ Holger Dengler <dengler@linux.ibm.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Simo Sorce <simo@redhat.com>,
+ linux-crypto@vger.kernel.org, linux-s390@vger.kernel.org,
+ keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] lib/crypto: Add SHA3-224, SHA3-256, SHA3-384, SHA-512,
+ SHAKE128, SHAKE256
+Date: Fri, 19 Sep 2025 23:20:28 +0200
+Message-ID: <3030391.1BCLMh4Saa@tauon>
+In-Reply-To: <20250919204749.GB8350@quark>
+References:
+ <20250919190413.GA2249@quark> <5078839.1IzOArtZ34@tauon>
+ <20250919204749.GB8350@quark>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5078839.1IzOArtZ34@tauon>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Sep 19, 2025 at 09:53:17PM +0200, Stephan Mueller wrote:
-> Am Freitag, 19. September 2025, 21:48:00 Mitteleuropäische Sommerzeit 
-> schrieb David Howells:
-> 
-> Hi David,
-> 
-> > > I see you also have a test in sha3_mod_init(), which doesn't make 
-> sense.
-> > > The tests should be in the KUnit test suite(s).  If you intended for 
-> the
-> > > sha3_mod_init() test to be a FIPS pre-operational self-test, then (1) 
-> it
-> > > would first need to be confirmed with the people doing FIPS
-> > > certifications that a FIPS pre-operational self-test is actually
-> > > necessary here, (2) it would need to be fixed to actually fulfill the
-> > > requirements for that type of test such as panicing the kernel on
-> > > failure, and (3) it would need to come in its own patch with its own
-> > > explanation.  But, unless you are sure you actually need the FIPS test,
-> > > just omit it out for now and focus on the real tests.
-> > 
-> > I disagree.  It should have at least a single self-test.  If we fail to 
-> load
-> > any modules because the hash is broken on a particular CPU, it would be
-> > useful to have a note in dmesg.  Loading kunit test modules becomes 
-> tricky
-> > in such a case.
+Am Freitag, 19. September 2025, 22:47:49 Mitteleurop=C3=A4ische Sommerzeit =
+schrieb=20
+Eric Biggers:
 
-Well, testing is supposed to be done before the kernel is released, not
-on every end user's computer.
+Hi Eric,
 
-If you insist, at least keep it lightweight and make sure it doesn't
-detract from the real tests.
+> Yes.  But I'm still a bit puzzled why there suddenly seems to be
+> interest in a FIPS pre-operational self-test for SHA-3 specifically.
+> lib/ has had SHA-1 for two decades without a FIPS pre-operational
+> self-test.  If someone actually needs this, surely they would also need
+> it, and have already needed it, for other algorithms?
 
-> Just for clarifications of the FIPS requirements: One test of any of the 
-> SHA3/SHAKE algorithms during startup is sufficient for *one* Keccak 
-> implementation. FIPS wants the actual Keccak sponge being tested, it does 
-> not care for the miniscule differences between the different SHA/SHAKE 
-> definitions.
+I just answered on the FIPS requirements as I interpreted your question in=
+=20
+this regard. I am not saying it needs to be added here.
 
-Yes.  But I'm still a bit puzzled why there suddenly seems to be
-interest in a FIPS pre-operational self-test for SHA-3 specifically.
-lib/ has had SHA-1 for two decades without a FIPS pre-operational
-self-test.  If someone actually needs this, surely they would also need
-it, and have already needed it, for other algorithms?
+I am currently a bit confused between crypto vs lib/crypto with its FIPS vs=
+=20
+non-FIPS support. That, perhaps, contributed to my answer.
 
-> Yet, if we have multiple Keccak sponge implementations, then each needs its 
-> own self test.
+Ciao
+Stephan
 
-While lib/crypto/ often has multiple implementations of the algorithms,
-only one implementation is used on a given system.
 
-- Eric
 
