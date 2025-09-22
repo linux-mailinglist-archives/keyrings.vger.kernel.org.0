@@ -1,137 +1,108 @@
-Return-Path: <keyrings+bounces-3069-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3070-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDD46B92657
-	for <lists+keyrings@lfdr.de>; Mon, 22 Sep 2025 19:22:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B506B93335
+	for <lists+keyrings@lfdr.de>; Mon, 22 Sep 2025 22:17:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0040190347C
-	for <lists+keyrings@lfdr.de>; Mon, 22 Sep 2025 17:22:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03677164F89
+	for <lists+keyrings@lfdr.de>; Mon, 22 Sep 2025 20:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC11F3126BF;
-	Mon, 22 Sep 2025 17:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17892EF676;
+	Mon, 22 Sep 2025 20:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=benboeckel.net header.i=@benboeckel.net header.b="dspsx8At";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DkOyr9XC"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MSmaDQ51"
 X-Original-To: keyrings@vger.kernel.org
-Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CAE305E33;
-	Mon, 22 Sep 2025 17:22:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19D2286893
+	for <keyrings@vger.kernel.org>; Mon, 22 Sep 2025 20:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758561739; cv=none; b=R6e8Fhqgz1JYQ1glEZhl56Av1EFlbWCd0xkkqEldMivUHtfqzJUsXNGJG4xbkyvh9QKzwKdsBCOOqLf83gvE4itVv+/nUOOSmtC8OAD/SpsPk4XZa3bai0cpjcUNjpc4EzVZ83/n9peB/V905aPOyHpq50Z0H8zGPo4/MYB0N+U=
+	t=1758572262; cv=none; b=Z4u/xZUmxicqaktRezeKujDQRrqyj70/z+A90N0+fWzcGvKwPUulqIqqaKNX0duDBJ21lRlv5JMiaIT9uYSGZMhPa9s+ATCcdx1L/eLD2WFZ4Z+mrTQE5vNbhairRlWAQn6c57ibU0otne5fKjYnw2rMJU/erN8sddC9mgwziPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758561739; c=relaxed/simple;
-	bh=VN0yMScQ8pb/61s20XjaSKiW9Mzun4YWkxHCUCwd0Gc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BOR4YY7YppoVDp0EWEfk4fPx9BafX04JjTS3HZkkhB66bx/Z/OGMrX5WD1lkaHRYeh+1KNgVmbmvIv+bcP80iithPyW2tELdAd10p+qAmYfpNZgESuWHA1DaBH34x7lIqho2M9kJZvxDDzj2S82SlykWKGEr1vyB4X2c5XcfWOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=benboeckel.net; spf=pass smtp.mailfrom=benboeckel.net; dkim=pass (2048-bit key) header.d=benboeckel.net header.i=@benboeckel.net header.b=dspsx8At; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DkOyr9XC; arc=none smtp.client-ip=202.12.124.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=benboeckel.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=benboeckel.net
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.stl.internal (Postfix) with ESMTP id BD0261D00232;
-	Mon, 22 Sep 2025 13:22:15 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Mon, 22 Sep 2025 13:22:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=benboeckel.net;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:reply-to:subject:subject:to:to; s=fm3; t=1758561735;
-	 x=1758648135; bh=K8LjtBRRLWLzn/Sx28Fp4ytkbkynjN1owR8vzMqVA6E=; b=
-	dspsx8AtAyFXyefXTGJ4sjqIyY4LfhNOU+EEYgr+OmVPdxz+xaEfcoeBds6hURwo
-	tnCCMDWmhkyuOhKHKq2kPpJlknzTVJdBSHDrSwAFLnzeXlpthVyDRYKMknHSdltm
-	olRsCg++XOH6ocGn8NSJCTQNGY9Z0t+S5Uj22iYCyJp+X/IfGL/i7UfZisuR+g7L
-	YRmVI4BgjaIip6oQAitSU8SPjNVBBUWGxZlTIlHu5lu3x7PgbRSVoq2UI8HJviXc
-	6SQHx0t79b6R0xZ6ZSUD05/VRhLFFLz4woqymB+hqmbHOTyStEIvCFOl7aDKdKNn
-	vq0tfkSUtNYNrPxSkISEIw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:reply-to:subject
-	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1758561735; x=1758648135; bh=K8LjtBRRLWLzn/Sx28Fp4ytkbkyn
-	jN1owR8vzMqVA6E=; b=DkOyr9XCnn2hEyg4t2q2lgLtX0SZl21VY3bNu2KxCLrm
-	KX8cu3HobsPNkvexCMBTSNFKfkOsvTlHjMrsz3xl/csH86RIsTpvbpV/t1kGAnep
-	pwTlOJSBM4iu+m6a158InW/B6LK9SA3HBdsXEKWmb3evSiW4lrma0dpdx+1gOCDC
-	Y92kwzEqGzLf40sWoNFKw7GUqwIPDE5sw/o4g8MQ3zBMciA46hLCbtXDC2lHmBG+
-	R3yHdhCk6ZU8yo1I8dwS5kVcs+2A+aBGFa1bF4PJSNsN/FJ4pfZ5mATcPCr2BgRP
-	Lo5OsnjEAB5n9mxccvpP8siONFEbvxC/ac42zRmz+A==
-X-ME-Sender: <xms:xoXRaFnmkVF92qNKvTBHQ9iPteMpTnxZWfSbOnPBLPHolxlo1f-fcQ>
-    <xme:xoXRaLMeVN9iMefaWNPy6xGx5-_7I26c1V2FBMItnCQBLyX9hFxFj3bu_cHXXhPuN
-    caik4I1l9kZZn0IVlCi8LN3EBWt6MJrnOmKR2z5qQLnzuIKDyd3tXM>
-X-ME-Received: <xmr:xoXRaByEMN6cxitMggZyHrEPzfsLPyM3a6hprqzo-_Eb0e77rfwmruepwv4mcuJdR4JZksQAF87DG_CsepiNpb9tNxpP52KTbzk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdehkeeggecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfhrfhggtggujggfsehttdertddtreejnecuhfhrohhmpeeuvghnuceu
-    ohgvtghkvghluceomhgvsegsvghnsghovggtkhgvlhdrnhgvtheqnecuggftrfgrthhtvg
-    hrnhepudethefgfeduffefleffhfehjefgvdffhfelvdeukeduueeigeeujeeiffdvieeg
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgvse
-    gsvghnsghovggtkhgvlhdrnhgvthdpnhgspghrtghpthhtohepudegpdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopehjrghrkhhkoheskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htoheplhhinhhugidqihhnthgvghhrihhthiesvhhgvghrrdhkvghrnhgvlhdrohhrghdp
-    rhgtphhtthhopehjrghrkhhkohdrshgrkhhkihhnvghnsehophhinhhshihsrdgtohhmpd
-    hrtghpthhtohepphgvthgvrhhhuhgvfigvsehgmhigrdguvgdprhgtphhtthhopehjghhg
-    seiiihgvphgvrdgtrgdprhgtphhtthhopeguhhhofigvlhhlshesrhgvughhrghtrdgtoh
-    hmpdhrtghpthhtohepphgruhhlsehprghulhdqmhhoohhrvgdrtghomhdprhgtphhtthho
-    pehjmhhorhhrihhssehnrghmvghirdhorhhgpdhrtghpthhtohepshgvrhhgvgeshhgrlh
-    hlhihnrdgtohhm
-X-ME-Proxy: <xmx:xoXRaAuMkF7IXrFJh6e5fN5VJar92zm3cO6qvt01pTPDIKLxgBSsjw>
-    <xmx:xoXRaMaHrFk2VhMb8C44mXdZS8_mZSagw0H7JvZ4UUOtiM6x5i6jRQ>
-    <xmx:xoXRaH0mpEJa9wZFbSxS5SWNe1ETCw4dMBjbmsBdt1Kcq_rFHSZLLw>
-    <xmx:xoXRaGshmBzBkuIQBM42-f5I5ldP693bfcP0jqmTKHrW9-4Us9vHHg>
-    <xmx:x4XRaHS1-MM6ljfBrMOKe1CL1eAKp4rsLESzUtcuIrwLmtrr_9ug_Hp2>
-Feedback-ID: iffc1478b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 22 Sep 2025 13:22:14 -0400 (EDT)
-Date: Mon, 22 Sep 2025 13:22:13 -0400
-From: Ben Boeckel <me@benboeckel.net>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: linux-integrity@vger.kernel.org,
-	Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:KEYS/KEYRINGS" <keyrings@vger.kernel.org>,
-	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH 3/4] tpm2-sessions: Remove unnecessary wrapper
-Message-ID: <aNGFv-nGZF5chGIb@rotor>
-Reply-To: list.lkml.keyrings@me.benboeckel.net
-References: <20250922164318.3540792-1-jarkko@kernel.org>
- <20250922164318.3540792-4-jarkko@kernel.org>
+	s=arc-20240116; t=1758572262; c=relaxed/simple;
+	bh=nmtqbHU/w/B61zuLXPpSmmuVWqr/lOlDK84jUWG4zdE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qnWSNG5iw5ZXDOroNGb/wPStkaGSaGfnV0H4iDrcIO50U2DQZk6Jp35HGNYE0evHPlAdJDZoSFM7N9kbFr5NCTLP5JNrp14l01HmmLqPuYE/VN4lrMmcgO2Zn/OsooS1sBsUKNTgeWDjmR82tjTJC3AUyQmMG0dd/FTwNO7k8yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MSmaDQ51; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-57abcb8a41eso492e87.1
+        for <keyrings@vger.kernel.org>; Mon, 22 Sep 2025 13:17:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1758572259; x=1759177059; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=FWtQpQUzJ9r+dDTG1AXpfBAR2RpoIfe3F7cTMYfaN2A=;
+        b=MSmaDQ51fKyzm6PI1NTJw21GpO6V3rz8skHp0uPwapIEEqCT4rtgVz/caC5i1ugkgI
+         T81temQRVCw5fAUKfI+KuIZqMESLl/Pd4+MOSMEBvOygVgRKZEefPD2c3lFbTRCmAKmZ
+         HFf4JtUELBa+fdBNxuWEH9ama8zkApepJaGH2IrqAIQihpsLHKcsLIXlncw16xh0UcSP
+         q1XKp069hDHU+V67oa69A2Q6myYMsMuh4N8E1Q0lYe80VPH2mRE3b/ciFKd163FfDoac
+         yrRHzkZ0v0VbZou6usffI0LPQvE8H/xgbS0FGepru/hBIbOUHTo14+jyAkbZY83IG5Mi
+         i7xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1758572259; x=1759177059;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FWtQpQUzJ9r+dDTG1AXpfBAR2RpoIfe3F7cTMYfaN2A=;
+        b=NsrLtOT/rA1JGGwg482evKZGGMHRTU12h2retwRzpo8hCLceaV+5NEkmPrM65sMfPK
+         FFPKvJXGjyqv8fsCQVGY/X2NC1zp8Bxd0qhYofJGDbb38mXm3C/QcNDcQ83ebv6O18V4
+         0LZYIkfDkRM/criZMvFPMbGk37jM7mrx0vBhYf21OcOGMrx2pOUAkDE7kH/5t043ksEp
+         T6og0y8YrY5ApRlCg/gkkZ6u/WjMuMkZ/H5zhkRmmP9UUhfZ6kRfWIp/Hgd2JVGgbb63
+         YP40weYfXsyk0oUQUI82VhPxb5HfbbdJTd9eS+F+Y8acSWUzAdzojd5hEc84m4C++6iM
+         6/Cg==
+X-Forwarded-Encrypted: i=1; AJvYcCVbTMiS3oHiO5ddtezJhrXw6lHXR+0r8748kJmroI22F25bDb1C74cAlcN9wOq6QK/ZIbM9q1fZWw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YynhgthNniWTumjy5W24HvVzWBILqb0VPUVObi/VdZ/F1JGiHgL
+	4rULHOC9KAMeSVMJ0Dvacg0xRu/FU4SNzpzprC4FcHBRZudd1FOmCLj+5drPoO4/Pr0eecAqwgl
+	bgaTqr9eK2qLajW87XsSxZ9y4bChoVpG1SgE+yNGx
+X-Gm-Gg: ASbGncvN+VMXz7MLv4rkeTBtvNKRJsLQXrbzXEYzPpAF/tTTEiQLebWyQWd2vpFiw5O
+	4C96Fda93XSlu4UrqOhBQ1C3+NsI1tcib/VJNt9p6rJ80FVoqOU+pNw32M8LjmdkWXzBpqPuwoX
+	gJmuTtCehASz1n4Oa5xOaRS19Ohj1Y6lsF8pPV+P+IG+6BR/3fLfQXhyZ6/yXz01moIqCgPkYSQ
+	HUuH15s
+X-Google-Smtp-Source: AGHT+IGj40k0Zzp2Zts4gKKxfvVZo7SESC+oB/L/7btr7Jz+gFTswsnF97s93sXgwzMxhRFPeFiftbI656ORBiYokwI=
+X-Received: by 2002:a05:6512:39d6:b0:57b:43e0:ab17 with SMTP id
+ 2adb3069b0e04-5805f834784mr14939e87.7.1758572258627; Mon, 22 Sep 2025
+ 13:17:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250922164318.3540792-4-jarkko@kernel.org>
-User-Agent: Mutt/2.2.14 (2025-02-20)
+References: <20250912100015.1267643-1-gprocida@google.com> <aNF7bMbCLctgZQXq@willie-the-truck>
+In-Reply-To: <aNF7bMbCLctgZQXq@willie-the-truck>
+From: Giuliano Procida <gprocida@google.com>
+Date: Mon, 22 Sep 2025 21:17:01 +0100
+X-Gm-Features: AS18NWCRygDx1l5PpFOEIBdc9FaO-Su34gj887gjfAMUSPHftRgTWnJ_N8qLGLs
+Message-ID: <CAGvU0H=Jup8bYYgZ1EbYHZMSnf_SkazXDfOm7h1QrcL-ZKw55A@mail.gmail.com>
+Subject: Re: [PATCH] system certificates: specify byte alignment
+To: Will Deacon <will@kernel.org>
+Cc: dhowells@redhat.com, dwmw2@infradead.org, gregkh@linuxfoundation.org, 
+	keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Sep 22, 2025 at 19:43:16 +0300, Jarkko Sakkinen wrote:
-> From: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
-> 
-> Open code tpm_buf_append_hmac_session_opt() because it adds unnecessary
-> disperancy to the call sites (and reduces the amount of code).
-  ^^^^^^^^^^
+On Mon, 22 Sept 2025 at 17:38, Will Deacon <will@kernel.org> wrote:
+>
+> On Fri, Sep 12, 2025 at 11:00:15AM +0100, Giuliano Procida wrote:
+> > The .align macro is architecture dependent. On arm64 it behaves as
+> > .p2align. The various alignments in this file are all bytes.
+> >
+> > So use the .balign macro to avoid unnecessary padding due to
+> > over-alignment.
+> >
+> > Signed-off-by: Giuliano Procida <gprocida@google.com>
+> > ---
+> >  certs/system_certificates.S | 8 ++++----
+> >  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> Does certs/revocation_certificates.S need fixing as well?
 
-"discrepancy" as in "difference"? But that doesn't feel like the right
-usage either. Perhaps "unnecessary abstraction"? Also, open coding it
-reduces the amount of code, so some clarification to not read as
-something else that "it" (`tpm_buf_append_hmac_session_opt`) does would
-be clearer.
+Yes. I will post a v2.
 
-Thanks,
-
---Ben
+> Will
 
