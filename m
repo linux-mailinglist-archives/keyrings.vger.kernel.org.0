@@ -1,108 +1,161 @@
-Return-Path: <keyrings+bounces-3070-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3071-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B506B93335
-	for <lists+keyrings@lfdr.de>; Mon, 22 Sep 2025 22:17:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27711B94F1A
+	for <lists+keyrings@lfdr.de>; Tue, 23 Sep 2025 10:14:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03677164F89
-	for <lists+keyrings@lfdr.de>; Mon, 22 Sep 2025 20:17:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB1413AB663
+	for <lists+keyrings@lfdr.de>; Tue, 23 Sep 2025 08:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17892EF676;
-	Mon, 22 Sep 2025 20:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2873191C4;
+	Tue, 23 Sep 2025 08:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MSmaDQ51"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f9dOI/jO"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19D2286893
-	for <keyrings@vger.kernel.org>; Mon, 22 Sep 2025 20:17:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8303191A6
+	for <keyrings@vger.kernel.org>; Tue, 23 Sep 2025 08:14:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758572262; cv=none; b=Z4u/xZUmxicqaktRezeKujDQRrqyj70/z+A90N0+fWzcGvKwPUulqIqqaKNX0duDBJ21lRlv5JMiaIT9uYSGZMhPa9s+ATCcdx1L/eLD2WFZ4Z+mrTQE5vNbhairRlWAQn6c57ibU0otne5fKjYnw2rMJU/erN8sddC9mgwziPM=
+	t=1758615248; cv=none; b=pX8/z0ACzbLQ3CU1RGjVAnKzN1n7JodhITZuZNJ94QFCh699Lr3HYgL4E4vKnvLsY7XAiZbvmxZmaQq7LTdVUrJGYIUUkPlfno9D63F3eejB5zVwYKxj/5uiPeujNR4Z6N9n3j/6yuWcCfA823W5Q8JVfGL2dFu7EniE/Q2vnOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758572262; c=relaxed/simple;
-	bh=nmtqbHU/w/B61zuLXPpSmmuVWqr/lOlDK84jUWG4zdE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qnWSNG5iw5ZXDOroNGb/wPStkaGSaGfnV0H4iDrcIO50U2DQZk6Jp35HGNYE0evHPlAdJDZoSFM7N9kbFr5NCTLP5JNrp14l01HmmLqPuYE/VN4lrMmcgO2Zn/OsooS1sBsUKNTgeWDjmR82tjTJC3AUyQmMG0dd/FTwNO7k8yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MSmaDQ51; arc=none smtp.client-ip=209.85.167.47
+	s=arc-20240116; t=1758615248; c=relaxed/simple;
+	bh=QDvnj6fh+ODknLGOSNnz4hKVoYTOdLHSrUupxVTo67Q=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ADYwi7iUzr7AC9I+YWre6JgXydYvk7Ctu/eT/ib5Y/iF570xRIuM7HQpLOBwOVAnhA/iIMYewjHHCuEVX/kq8nj6vue5rL1vkrfCsjTGJafqLTvR+JSvQoXZzmdWTE6UdNZ2w3MWF46zbzTNNA0PveuQ28vvXSVr+j5ui708Wrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--gprocida.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f9dOI/jO; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-57abcb8a41eso492e87.1
-        for <keyrings@vger.kernel.org>; Mon, 22 Sep 2025 13:17:40 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--gprocida.bounces.google.com
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-45b986a7b8aso30962175e9.0
+        for <keyrings@vger.kernel.org>; Tue, 23 Sep 2025 01:14:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1758572259; x=1759177059; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=FWtQpQUzJ9r+dDTG1AXpfBAR2RpoIfe3F7cTMYfaN2A=;
-        b=MSmaDQ51fKyzm6PI1NTJw21GpO6V3rz8skHp0uPwapIEEqCT4rtgVz/caC5i1ugkgI
-         T81temQRVCw5fAUKfI+KuIZqMESLl/Pd4+MOSMEBvOygVgRKZEefPD2c3lFbTRCmAKmZ
-         HFf4JtUELBa+fdBNxuWEH9ama8zkApepJaGH2IrqAIQihpsLHKcsLIXlncw16xh0UcSP
-         q1XKp069hDHU+V67oa69A2Q6myYMsMuh4N8E1Q0lYe80VPH2mRE3b/ciFKd163FfDoac
-         yrRHzkZ0v0VbZou6usffI0LPQvE8H/xgbS0FGepru/hBIbOUHTo14+jyAkbZY83IG5Mi
-         i7xA==
+        d=google.com; s=20230601; t=1758615245; x=1759220045; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nZEs14HFxkMeOy3Dt9XfbOyW5vve1fjK1o1XLyd0jzg=;
+        b=f9dOI/jOr12vSFIfwMTtSu5YZNiIRMm0X/jQQjSrXsI9zFCqKJp8eiZ0YIL3qzmTtq
+         /EMw71fBiVyiiT/bD0Eg5pt07mvJRkrvrIK7c3Yk3nAe9BtgWCNYHsQ+PpJkSep0j/W2
+         p046HTUCjS0TyJr/ZzDeuQnP26UOihkXEIOoa/tRY7Y8el5Ze7gEX0OrANzCoff2axhm
+         SP3lxBmQ1woSd1gu8CfK9gD1rly0zIdkZnWNs4KQVNRPwMpbbAftDTn5fzxl5W/jxIKT
+         Fqa4/wk5B7X2w/7YFrnKcO/WtHmvMtP5HUcJyGpryrrquPUUjxe6B7CBCfgn+/qEoBdS
+         +v0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1758572259; x=1759177059;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FWtQpQUzJ9r+dDTG1AXpfBAR2RpoIfe3F7cTMYfaN2A=;
-        b=NsrLtOT/rA1JGGwg482evKZGGMHRTU12h2retwRzpo8hCLceaV+5NEkmPrM65sMfPK
-         FFPKvJXGjyqv8fsCQVGY/X2NC1zp8Bxd0qhYofJGDbb38mXm3C/QcNDcQ83ebv6O18V4
-         0LZYIkfDkRM/criZMvFPMbGk37jM7mrx0vBhYf21OcOGMrx2pOUAkDE7kH/5t043ksEp
-         T6og0y8YrY5ApRlCg/gkkZ6u/WjMuMkZ/H5zhkRmmP9UUhfZ6kRfWIp/Hgd2JVGgbb63
-         YP40weYfXsyk0oUQUI82VhPxb5HfbbdJTd9eS+F+Y8acSWUzAdzojd5hEc84m4C++6iM
-         6/Cg==
-X-Forwarded-Encrypted: i=1; AJvYcCVbTMiS3oHiO5ddtezJhrXw6lHXR+0r8748kJmroI22F25bDb1C74cAlcN9wOq6QK/ZIbM9q1fZWw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YynhgthNniWTumjy5W24HvVzWBILqb0VPUVObi/VdZ/F1JGiHgL
-	4rULHOC9KAMeSVMJ0Dvacg0xRu/FU4SNzpzprC4FcHBRZudd1FOmCLj+5drPoO4/Pr0eecAqwgl
-	bgaTqr9eK2qLajW87XsSxZ9y4bChoVpG1SgE+yNGx
-X-Gm-Gg: ASbGncvN+VMXz7MLv4rkeTBtvNKRJsLQXrbzXEYzPpAF/tTTEiQLebWyQWd2vpFiw5O
-	4C96Fda93XSlu4UrqOhBQ1C3+NsI1tcib/VJNt9p6rJ80FVoqOU+pNw32M8LjmdkWXzBpqPuwoX
-	gJmuTtCehASz1n4Oa5xOaRS19Ohj1Y6lsF8pPV+P+IG+6BR/3fLfQXhyZ6/yXz01moIqCgPkYSQ
-	HUuH15s
-X-Google-Smtp-Source: AGHT+IGj40k0Zzp2Zts4gKKxfvVZo7SESC+oB/L/7btr7Jz+gFTswsnF97s93sXgwzMxhRFPeFiftbI656ORBiYokwI=
-X-Received: by 2002:a05:6512:39d6:b0:57b:43e0:ab17 with SMTP id
- 2adb3069b0e04-5805f834784mr14939e87.7.1758572258627; Mon, 22 Sep 2025
- 13:17:38 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1758615245; x=1759220045;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nZEs14HFxkMeOy3Dt9XfbOyW5vve1fjK1o1XLyd0jzg=;
+        b=bP0QQ694BpKbIr+LSi/FoUNvQoVt86dcvXQT5PY0aZEeMu3kVIeN7yzjDJAksLM65t
+         LkwJwhwz8eEOYrjZodWNAl7hDvKwJ9qXBY/VC8t9W4ipo24nl7PjMwpMOOlBxjuJOF5i
+         lEuVDpxsBvmuPHB19vcgX21usV86l5sixTJcDpEL/gQB9Ia9Yyn0FKvnoWSo24rBosiv
+         a/fyvTaeolliNkqjGAWWEv56xiApVLzJkK+ECXkGEHQmC3K8hzmG+VVPTZvQRwfLoXYw
+         69cQlX7EqmqCWjq/5ciTPAbdCIFaBAS0Awlvn4NYTXnOecW8HttTa0x+6yRWi4ApCAD+
+         ayHA==
+X-Forwarded-Encrypted: i=1; AJvYcCUWSc1AEEi+VBc/84uR1VuzS9fYLquUedGWPIj6N1stJuaTrIhgG93flGk6Ay8InKVI2zBiyHSqXw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4qjv0hx7rh7uXgZ2pRMAueK7vrCcfgZjALsLiMPR7v97vIUKI
+	VRuAoj7nmET3HXSOqDaGwA0LDyS1bkx93a2//i239Clruv3h4uhUjX1Hztp3jr4KxESLOJ7v4YC
+	FOW3O2aIUXFLq/A==
+X-Google-Smtp-Source: AGHT+IETXAufy5rC37WgUvjNJhJuvlT1ZCiSimNBELDAoA4V3HzxARk1cjs4fD+l+3YUgJdmCLNu1c6fXuVhZg==
+X-Received: from wmbdr20.prod.google.com ([2002:a05:600c:6094:b0:45c:b62f:ca0d])
+ (user=gprocida job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2511:b0:3ee:ff1:d627 with SMTP id ffacd0b85a97d-405c6efa3f4mr1424841f8f.28.1758615244929;
+ Tue, 23 Sep 2025 01:14:04 -0700 (PDT)
+Date: Tue, 23 Sep 2025 09:13:42 +0100
+In-Reply-To: <20250912100015.1267643-1-gprocida@google.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250912100015.1267643-1-gprocida@google.com> <aNF7bMbCLctgZQXq@willie-the-truck>
-In-Reply-To: <aNF7bMbCLctgZQXq@willie-the-truck>
+Mime-Version: 1.0
+References: <20250912100015.1267643-1-gprocida@google.com>
+X-Mailer: git-send-email 2.51.0.534.gc79095c0ca-goog
+Message-ID: <20250923081344.1657783-1-gprocida@google.com>
+Subject: [PATCH v2] certs: specify byte alignment
 From: Giuliano Procida <gprocida@google.com>
-Date: Mon, 22 Sep 2025 21:17:01 +0100
-X-Gm-Features: AS18NWCRygDx1l5PpFOEIBdc9FaO-Su34gj887gjfAMUSPHftRgTWnJ_N8qLGLs
-Message-ID: <CAGvU0H=Jup8bYYgZ1EbYHZMSnf_SkazXDfOm7h1QrcL-ZKw55A@mail.gmail.com>
-Subject: Re: [PATCH] system certificates: specify byte alignment
-To: Will Deacon <will@kernel.org>
-Cc: dhowells@redhat.com, dwmw2@infradead.org, gregkh@linuxfoundation.org, 
-	keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
+To: dhowells@redhat.com, dwmw2@infradead.org
+Cc: Giuliano Procida <gprocida@google.com>, gregkh@linuxfoundation.org, 
+	keyrings@vger.kernel.org, linux-kernel@vger.kernel.org, will@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 22 Sept 2025 at 17:38, Will Deacon <will@kernel.org> wrote:
->
-> On Fri, Sep 12, 2025 at 11:00:15AM +0100, Giuliano Procida wrote:
-> > The .align macro is architecture dependent. On arm64 it behaves as
-> > .p2align. The various alignments in this file are all bytes.
-> >
-> > So use the .balign macro to avoid unnecessary padding due to
-> > over-alignment.
-> >
-> > Signed-off-by: Giuliano Procida <gprocida@google.com>
-> > ---
-> >  certs/system_certificates.S | 8 ++++----
-> >  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> Does certs/revocation_certificates.S need fixing as well?
+The alignments specified in system_certificates.S and
+revocation_certificates.S are intended to be byte quantities.
 
-Yes. I will post a v2.
+However, the .align macro is architecture dependent and on arm64 it
+behaves as .p2align. So use the .balign macro to avoid unnecessary
+padding due to over-alignment.
 
-> Will
+Signed-off-by: Giuliano Procida <gprocida@google.com>
+---
+ certs/revocation_certificates.S | 4 ++--
+ certs/system_certificates.S     | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/certs/revocation_certificates.S b/certs/revocation_certificates.S
+index f21aae8a8f0e..a53b49d49931 100644
+--- a/certs/revocation_certificates.S
++++ b/certs/revocation_certificates.S
+@@ -4,14 +4,14 @@
+ 
+ 	__INITRODATA
+ 
+-	.align 8
++	.balign 8
+ 	.globl revocation_certificate_list
+ revocation_certificate_list:
+ __revocation_list_start:
+ 	.incbin "certs/x509_revocation_list"
+ __revocation_list_end:
+ 
+-	.align 8
++	.balign 8
+ 	.globl revocation_certificate_list_size
+ revocation_certificate_list_size:
+ #ifdef CONFIG_64BIT
+diff --git a/certs/system_certificates.S b/certs/system_certificates.S
+index 003e25d4a17e..ea6984b427c9 100644
+--- a/certs/system_certificates.S
++++ b/certs/system_certificates.S
+@@ -4,7 +4,7 @@
+ 
+ 	__INITRODATA
+ 
+-	.align 8
++	.balign 8
+ 	.globl system_certificate_list
+ system_certificate_list:
+ __cert_list_start:
+@@ -20,14 +20,14 @@ __cert_list_end:
+ system_extra_cert:
+ 	.fill CONFIG_SYSTEM_EXTRA_CERTIFICATE_SIZE, 1, 0
+ 
+-	.align 4
++	.balign 4
+ 	.globl system_extra_cert_used
+ system_extra_cert_used:
+ 	.int 0
+ 
+ #endif /* CONFIG_SYSTEM_EXTRA_CERTIFICATE */
+ 
+-	.align 8
++	.balign 8
+ 	.globl system_certificate_list_size
+ system_certificate_list_size:
+ #ifdef CONFIG_64BIT
+@@ -36,7 +36,7 @@ system_certificate_list_size:
+ 	.long __cert_list_end - __cert_list_start
+ #endif
+ 
+-	.align 8
++	.balign 8
+ 	.globl module_cert_size
+ module_cert_size:
+ #ifdef CONFIG_64BIT
+-- 
+2.51.0.534.gc79095c0ca-goog
+
 
