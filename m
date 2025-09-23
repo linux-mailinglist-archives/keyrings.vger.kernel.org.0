@@ -1,145 +1,89 @@
-Return-Path: <keyrings+bounces-3086-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3087-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00BE7B97156
-	for <lists+keyrings@lfdr.de>; Tue, 23 Sep 2025 19:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24A8AB97EA6
+	for <lists+keyrings@lfdr.de>; Wed, 24 Sep 2025 02:42:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C63472E69B2
-	for <lists+keyrings@lfdr.de>; Tue, 23 Sep 2025 17:45:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DABD7163053
+	for <lists+keyrings@lfdr.de>; Wed, 24 Sep 2025 00:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C2682820A0;
-	Tue, 23 Sep 2025 17:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445FF19D071;
+	Wed, 24 Sep 2025 00:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gLBwm0NZ"
+	dkim=pass (1024-bit key) header.d=maguitec.com.mx header.i=@maguitec.com.mx header.b="DU4UD/Io"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-g3-154.zohomail360.com (sender4-g3-154.zohomail360.com [136.143.188.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27EBF21C9F4;
-	Tue, 23 Sep 2025 17:45:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1758649544; cv=none; b=NtAxak3if7CX9v+mgSnyJzISaxp5I1nclZg0Aw1V8RDyhoi6BaZhE2DiesEssorCWTJBxVzJb9HsaWnqQcEprhq1ihkbpUqRdoWEsfRoPwVMJgOipzmgLgB5uFtwpv6lLPqtvDttB06ZhbW3EtRcxYRDoQUsRpX13byrkf9pZ5w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1758649544; c=relaxed/simple;
-	bh=4eo/a1KUEFY7fEWdOih7ebHnYSPIXBQbHE0axcplA7o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F61CTTlccrxYWITMPxU9J8ROpp45f1tl3/LwkR/pI5IA6d94Iqd2ASapAQ1hYqotLxAjRm2XsaPwaS1zpnTKFIZm9CsLxMtH2UwEnGPnYvH3o0ual6ijFvF7iEQVwF21alc2uU78aZlGnlVmCiL53Jkicb7DiJmpfVBr5jzNYI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gLBwm0NZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42797C4CEF5;
-	Tue, 23 Sep 2025 17:45:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1758649543;
-	bh=4eo/a1KUEFY7fEWdOih7ebHnYSPIXBQbHE0axcplA7o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gLBwm0NZiP5WB54dyrSCDfzdzAje1hFBdha6vFXsG445cBLf+e6Apbuu92tfpoqRM
-	 YIdf/xrhOjQwvFltc//95KCDvZV69WQVXSAmreR2fEOIL32Mtj8EOXw5ZplzpgRKbM
-	 Iy2dSlUL1pUrKtKQU383z9+OigzrojzAR8rVZNoKirYFsKDs2aKM0hrWNcHKB3MHX4
-	 tDagc/uepq0esC/KnPok/F1Nqe9/tKYoVV9KwTIGdCs8PsQ02Na0doFrenPIrBd+Kv
-	 EH9bY68Ds/grUtEwBuj8qBLnHUCHC4P9WzO6wpLfNJJswt/nG4PpMKyPoF3FvJ8pDo
-	 1lp8LevcFd8Uw==
-Date: Tue, 23 Sep 2025 17:45:41 +0000
-From: Eric Biggers <ebiggers@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Stephan Mueller <smueller@chronox.de>, Simo Sorce <simo@redhat.com>,
-	linux-crypto@vger.kernel.org, linux-s390@vger.kernel.org,
-	keyrings@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] lib/crypto: Add SHA3-224, SHA3-256, SHA3-384,
- SHA-512, SHAKE128, SHAKE256
-Message-ID: <20250923174541.GA2695109@google.com>
-References: <20250919203208.GA8350@quark>
- <20250919190413.GA2249@quark>
- <3936580.1758299519@warthog.procyon.org.uk>
- <3975735.1758311280@warthog.procyon.org.uk>
- <538563.1758648981@warthog.procyon.org.uk>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A0CC2E0
+	for <keyrings@vger.kernel.org>; Wed, 24 Sep 2025 00:42:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.154
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1758674559; cv=pass; b=NTsUjFGztxqBI+5P+L8yW+uBaEW/Qi3Xy9xJBRBK1Qka/iAKTmaoB1VnbA0REFCFtply/nEjI/4KBwZJN4yZxujcb9Xav9xwCvQffk9EcYQfZ5jjGxwTXX3tRh1yKNOhDhYI2ktn0VM8iHeH6xeVjjYZR77EjkMRPj7ALwRS6t8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1758674559; c=relaxed/simple;
+	bh=DUtdIXjaREy7WfBZCel2VW8rBjJ3oorPzh/52xKYVfs=;
+	h=Date:From:To:Message-ID:Subject:MIME-Version:Content-Type; b=EhB5M4eZ8u5j0eOH5duOqyboW4VlxRCJW/9vPE3QrlKKvZLF6jrw726usaNGtA+YS8JIqASq3FNWRlPxWt9mvx1r5AyGaEHCXgcmdIjG5p1EbD4NmpBdOif95D+3guFbUEbIZ/1fJiG+I3Y2FDW+Vj6qBNZnms7o/FvDbkwxyb8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=maguitec.com.mx; spf=pass smtp.mailfrom=bounce-zem.maguitec.com.mx; dkim=pass (1024-bit key) header.d=maguitec.com.mx header.i=@maguitec.com.mx header.b=DU4UD/Io; arc=pass smtp.client-ip=136.143.188.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=maguitec.com.mx
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bounce-zem.maguitec.com.mx
+ARC-Seal: i=1; a=rsa-sha256; t=1758674556; cv=none; 
+	d=us.zohomail360.com; s=zohoarc; 
+	b=jHHCq7YEg0Z7Ltc2Mr84kLAbn7m6dfBAbfwCSjaMPgOgKKOvDnUUZK+qkYDNxP1v8IKSvbBMZogJ7LS84tAbB/2CPURBLUfvVIYzzXO3oNC6yAlySp1pIfyvAzUz8xWUGfSrHXxgDs3sp4PZ8uOb9DhydoiqRxSeNeLlREV9xSE=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=us.zohomail360.com; s=zohoarc; 
+	t=1758674556; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:MIME-Version:Message-ID:Reply-To:Reply-To:Subject:Subject:To:To:Message-Id:Cc; 
+	bh=DUtdIXjaREy7WfBZCel2VW8rBjJ3oorPzh/52xKYVfs=; 
+	b=goMGTg4P3LzDm9aZL421XryMY6Xh0WtGM4s6/xZijXNkBqtmjHRYPdAFg1+QUXBQ5+idZ0nffWzVbbuAz5iuX9f1RLgjj+WVEpISY/VRiMxcSYdg5GZ8OTspjMVhrDWNnDTJNSduOJt71hK1lU9klzT2f50rC2ZJCmbL/wzLzBM=
+ARC-Authentication-Results: i=1; mx.us.zohomail360.com;
+	dkim=pass  header.i=maguitec.com.mx;
+	spf=pass  smtp.mailfrom=investorrelations+6f266330-98d8-11f0-8217-5254007ea3ec_vt1@bounce-zem.maguitec.com.mx;
+	dmarc=pass header.from=<investorrelations@maguitec.com.mx>
+Received: by mx.zohomail.com with SMTPS id 1758671580624301.85232319838497;
+	Tue, 23 Sep 2025 16:53:00 -0700 (PDT)
+DKIM-Signature: a=rsa-sha256; b=DU4UD/IoZ/gCyN3m2WkIjvYtyTtFZUlZBejR9TRbCD0LXRhTC3c9CBvpyy0zatTEo1iQHBdOavh3gRv41izLLxNACgG/uNk7+d7q5ovjHM011VXmsAfudZL3M/vrP3oPg0xUQeuTskYL7pyYaGPagze2QO/yzcA5byho1xtzBRk=; c=relaxed/relaxed; s=15205840; d=maguitec.com.mx; v=1; bh=DUtdIXjaREy7WfBZCel2VW8rBjJ3oorPzh/52xKYVfs=; h=date:from:reply-to:to:message-id:subject:mime-version:content-type:content-transfer-encoding:date:from:reply-to:to:message-id:subject;
+Date: Tue, 23 Sep 2025 16:53:00 -0700 (PDT)
+From: Al Sayyid Sultan <investorrelations@maguitec.com.mx>
+Reply-To: investorrelations@alhaitham-investment.ae
+To: keyrings@vger.kernel.org
+Message-ID: <2d6f.1aedd99b146bc1ac.m1.6f266330-98d8-11f0-8217-5254007ea3ec.19978fea8e3@bounce-zem.maguitec.com.mx>
+Subject: Thematic Funds Letter Of Intent
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <538563.1758648981@warthog.procyon.org.uk>
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+content-transfer-encoding-Orig: quoted-printable
+content-type-Orig: text/plain;\r\n\tcharset="utf-8"
+Original-Envelope-Id: 2d6f.1aedd99b146bc1ac.m1.6f266330-98d8-11f0-8217-5254007ea3ec.19978fea8e3
+X-JID: 2d6f.1aedd99b146bc1ac.s1.6f266330-98d8-11f0-8217-5254007ea3ec.19978fea8e3
+TM-MAIL-JID: 2d6f.1aedd99b146bc1ac.m1.6f266330-98d8-11f0-8217-5254007ea3ec.19978fea8e3
+X-App-Message-ID: 2d6f.1aedd99b146bc1ac.m1.6f266330-98d8-11f0-8217-5254007ea3ec.19978fea8e3
+X-Report-Abuse: <abuse+2d6f.1aedd99b146bc1ac.m1.6f266330-98d8-11f0-8217-5254007ea3ec.19978fea8e3@zeptomail.com>
+X-ZohoMailClient: External
 
-On Tue, Sep 23, 2025 at 06:36:21PM +0100, David Howells wrote:
-> Eric Biggers <ebiggers@kernel.org> wrote:
-> 
-> > > > and that the functions can be called in any context.
-> > > 
-> > > "Context" as in?
-> > 
-> > See the "Function context" section of
-> > Documentation/doc-guide/kernel-doc.rst
-> 
-> Btw, in include/crypto/sha1.h:
-> 
-> /**
->  * hmac_sha1_update() - Update an HMAC-SHA1 context with message data
->  * @ctx: the HMAC context to update; must have been initialized
->  * @data: the message data
->  * @data_len: the data length in bytes
->  *
->  * This can be called any number of times.
->  *
->  * Context: Any context.
->  */
-> static inline void hmac_sha1_update(struct hmac_sha1_ctx *ctx,
-> 				    const u8 *data, size_t data_len)
-> {
-> 	sha1_update(&ctx->sha_ctx, data, data_len);
-> }
-> 
-> for example, your specification of "Context: Any context." is probably not
-> correct if FPU/Vector registers are used by optimised assembly as part of the
-> function.  See:
-> 
-> void kernel_fpu_begin_mask(unsigned int kfpu_mask)
-> {
-> 	if (!irqs_disabled())
-> 		fpregs_lock();
-> 
-> 	WARN_ON_FPU(!irq_fpu_usable());
-> 
-> 	/* Toggle kernel_fpu_allowed to false: */
-> 	WARN_ON_FPU(!this_cpu_read(kernel_fpu_allowed));
-> 	this_cpu_write(kernel_fpu_allowed, false);
-> 
-> 	if (!(current->flags & (PF_KTHREAD | PF_USER_WORKER)) &&
-> 	    !test_thread_flag(TIF_NEED_FPU_LOAD)) {
-> 		set_thread_flag(TIF_NEED_FPU_LOAD);
-> 		save_fpregs_to_fpstate(x86_task_fpu(current));
-> 	}
-> 	__cpu_invalidate_fpregs_state();
-> 
-> 	/* Put sane initial values into the control registers. */
-> 	if (likely(kfpu_mask & KFPU_MXCSR) && boot_cpu_has(X86_FEATURE_XMM))
-> 		ldmxcsr(MXCSR_DEFAULT);
-> 
-> 	if (unlikely(kfpu_mask & KFPU_387) && boot_cpu_has(X86_FEATURE_FPU))
-> 		asm volatile ("fninit");
-> }
-> 
-> If you try and access the function in IRQ mode, for example, you'll get a
-> warning, and if IRQs are not disabled, it will disable BH/preemption.
-> 
-> You also can't use it from inside something else that uses FPU registers.
-> 
-> I suggest something like:
-> 
->  * Context: Arch-dependent: May use the FPU/Vector unit registers.
+To: keyrings@vger.kernel.org
+Date: 24-09-2025
+Thematic Funds Letter Of Intent
 
-Kernel-mode FPU is used only when irq_fpu_usable().
+It's a pleasure to connect with you
 
-The tests verify that the functions do work in IRQ context.
+Having been referred to your investment by my team, we would be=20
+honored to review your available investment projects for onward=20
+referral to my principal investors who can allocate capital for=20
+the financing of it.
 
-- Eric
+kindly advise at your convenience
+
+Best Regards,
+
+Respectfully,
+Al Sayyid Sultan Yarub Al Busaidi
+Director
 
