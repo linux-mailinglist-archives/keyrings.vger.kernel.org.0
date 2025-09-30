@@ -1,185 +1,263 @@
-Return-Path: <keyrings+bounces-3123-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3124-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84284BAAAFB
-	for <lists+keyrings@lfdr.de>; Tue, 30 Sep 2025 00:29:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56741BACA31
+	for <lists+keyrings@lfdr.de>; Tue, 30 Sep 2025 13:09:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 312713C50D3
-	for <lists+keyrings@lfdr.de>; Mon, 29 Sep 2025 22:29:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02D1F17691F
+	for <lists+keyrings@lfdr.de>; Tue, 30 Sep 2025 11:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A13B7221275;
-	Mon, 29 Sep 2025 22:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096FB23D288;
+	Tue, 30 Sep 2025 11:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b="Zpw2lhzx"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=earth.li header.i=@earth.li header.b="voJ6ybdW"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from the.earth.li (the.earth.li [93.93.131.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73494433AD
-	for <keyrings@vger.kernel.org>; Mon, 29 Sep 2025 22:28:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F0C23BF83;
+	Tue, 30 Sep 2025 11:09:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.93.131.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759184938; cv=none; b=Iw1t5MYP4ey1C7LpyPisln6aMij+gBQuIjmdYT7XDnOxBpT1HoCnGAsyV5mjWXasNj/rykYJHouJ0C1+yL9UcUEKtTt8KlLR+zsARIQ16auXHLMBKJRCSfx5f9sr73SyTFppl1H14uBedLX4igw6qKWbQTB9xhcDG0ms0TAhVwM=
+	t=1759230588; cv=none; b=AF0TSr4U/E+fPswrvIeWEY9cGveAyiBflfbJ63JPkgB+UACoJDwDpMIf5YJzzbhLwdeWgQE1so+AbsYiuvLMoszfwcqBULeckzIKabAXUzyxbPREwOcUjxvMZLA9PdPeWhlqd8mMTHaqq3TzZP4UeTj3v/HOc6XenIKMBOrEZCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759184938; c=relaxed/simple;
-	bh=dK90VPlOhr5bqMA4TRaGYyTGuVECc6g3haiuK1xgONk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SP0HiGXWqi0OJ38ftB9cWYRTQzeufMZmuHtTJvhazK2XR9PTrzo/YlMPFuGqrK6O2kXCbvpXUuPcXQln1vggY8BjNVpvBVQV4DUMtE6tSb6BqrkW+77NUE938j+MfCM6rhTi3li9WFmlsjhIffo5ufEp94EjPgClqoXeK548+TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com; spf=pass smtp.mailfrom=arista.com; dkim=pass (2048-bit key) header.d=arista.com header.i=@arista.com header.b=Zpw2lhzx; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=arista.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arista.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7835321bc98so2301518b3a.2
-        for <keyrings@vger.kernel.org>; Mon, 29 Sep 2025 15:28:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=arista.com; s=google; t=1759184935; x=1759789735; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xREsacjqu6xDqjsqMjhayVf5+sVvuh3AjVx8GvkxbX0=;
-        b=Zpw2lhzxgCpueZumxjZynOHOLqwaH0tOp7jTNNVXLjxMEFnbzfC9/QTsEB95VxveLj
-         zwW3AcB3MepTtBmimmWrEhNxqgLgDhBw4viJSkPSzTG0fFFEzts8yHOvDuSlCS74DjDI
-         Uxr4cqj5b+wVH44ZgxkEQd5JxI9iBO+Uwm47LTrsa+AvSx0/4bkrMiPxQo/z0V1Mlrdd
-         Yr6ZAjio7QIw6CzbAiKvmyeaDVMyMciQ7gJa/pbFTxyis+IEPaz7rXKC8pOCt6ezM/hS
-         llFjTx0twVfTWyBk65dX9esUUZk8Kysz/VagL8fj67yAmKerSenjjSbI1fnWbUkCV1MS
-         CBww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1759184935; x=1759789735;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xREsacjqu6xDqjsqMjhayVf5+sVvuh3AjVx8GvkxbX0=;
-        b=COBA2EuPFlHJPVCENQK6vU9W0vI0mzc6ve4xuUjPbFv3SB4RhOYOcyMbEmnaUXGED3
-         hJRlNTqr/nTKeFKkRzI0k4srox6pqvvedLPX3EZc3VPJH7INEgkNfIynMSSSTT2wGwJm
-         0tDB+gdjZmGb4DCJvejnuRXbllPbT0hy86xnU9L745PL1KPsoWN0Q9Zsn1cghpeL+DYN
-         j1s/YgZ2D4YC7KBhc021n1JRx9pxXoTsDVLm/01oQgOgvmD8xq7ovRX+F12ZOhh4+qkQ
-         jpV3wV7Osr/gkFnZKcsn6ogn+F2g7tLD7IZR61QrWy6IOEUhFoia2gRQP/ZoUwUrdWUO
-         SPJw==
-X-Gm-Message-State: AOJu0Yw8vpLCQWgFfCYjI9pw33lTvlJpVPOcpUlIeA8ZVmk6mG0tc/iW
-	mc99vtFGJ26FaUXxWEMpXEfxEXojdMk84qW4Y6GLnoTs68iC1v6E2T1fYI3+NUdxILcaNPF734d
-	SmoEgAw==
-X-Gm-Gg: ASbGncvL6o9RWUuHMN0SSdTdcvtbepT4YBwK5O1f2P22qHewqOKL/qpkBOUX79U2o6z
-	Bd3xLelxqafuCMgJnRVMEg9TVMJGb4VWP2/9M0xN0kgrnVCopLTzQv5ViNDsSz2h2BEzmkFqig2
-	SE+cz9A9P6ReV0ST9l3MJhkBXeCuVkg8B15kLyc6ckl3rTSDnZ5GehoTxR7FasAb/NRASkiCTMh
-	Ot5gSpZEJb1Ez28bEJleTXkTRcPYgdqrnexANzCSY0Q3s2rT5sZmIlzvv4l824oJ2IIvcVFlOut
-	OJ/j3XlE9qZInRe3h/VjcbIQJ3YYlfElB5FSJ7cA5O6llkVi6S3QXP/lZHMbrufITmcLmnXf9IQ
-	6GrjXoWetwlUanIwUJQ2UcPeeyG1+fsaANDqTV47NGsNzYTMWMf4vOsYrMLjbFaNec5hmSYDSbA
-	0=
-X-Google-Smtp-Source: AGHT+IGxSwKxc0V9oPeuQKQ+P3I1EIijA2hWzCj+7FOY1vVfafkWTdnL+u5V6EqdN4+gGIiIrVeK4w==
-X-Received: by 2002:a05:6a00:3a18:b0:77f:143d:eff2 with SMTP id d2e1a72fcca58-780fcee097emr18020302b3a.28.1759184935386;
-        Mon, 29 Sep 2025 15:28:55 -0700 (PDT)
-Received: from dannyhu-updateImaSupport.sjc.aristanetworks.com ([74.123.28.18])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-78102c0700dsm11835673b3a.84.2025.09.29.15.28.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Sep 2025 15:28:55 -0700 (PDT)
-From: Danny Hu <dannyhu@arista.com>
-To: keyrings@vger.kernel.org
-Cc: dhowells@redhat.com,
-	dwmw2@infradead.org,
-	Danny Hu <dannyhu@arista.com>
-Subject: [PATCH] sign-file: Add option to include certificate in sign-file tool
-Date: Mon, 29 Sep 2025 15:28:52 -0700
-Message-ID: <20250929222852.116986-1-dannyhu@arista.com>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1759230588; c=relaxed/simple;
+	bh=+uM48FBNgAszSyWHgTOUgexeTYLwgEXzwU03YYcitSA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aMpaksiV1MonKIoSBWIk278ebASIqTLS0j2iW4Xqfs658R5X5VKteO1e7JpyhmZjyUJv3WJ1dr+cHX5HskrX4WzRmAzYO/jwic4AunKEsIPc1UJTtNKKaV0K9pRE2xsQMc+E6u4ayKLCwg5WexL5c6gQW4PvhBeFyaJ0nZIRVTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li; spf=pass smtp.mailfrom=earth.li; dkim=pass (2048-bit key) header.d=earth.li header.i=@earth.li header.b=voJ6ybdW; arc=none smtp.client-ip=93.93.131.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=earth.li
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=earth.li;
+	s=the; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:
+	Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=gmYmDmPVGG6EDpdyOlVODOpmWPBaka9dH36EYjVQnao=; b=voJ6ybdWyIqRuHYMNfZmoGAXcI
+	RentZSrbjUnBa12IO6d9Vecm2/YtAIcRNdMogYglDJfDxAyUWG5U5VC6m5kOkPv8PJusUKeQuR4T7
+	baq/Co1F25DPvfdJyBwO9lRcO1ylgn4eB9rqfWZNX6d3tjQfhg90wfemSJFdyOAlQloJJqE9rXIm1
+	7Qx2ULA7sL29UEbTE1Iuhn7rYw4WwmxCWQoFCWg9D8dm7ydu8k2osUiA9Wyxompdzu9Nfm5E5/uKY
+	GpItQvVB56x3BPoPF1ESgLbgo3s5Kv3sdr7FxFmUXgIqEuwdV5UxrCWWmoFVDGq7Z2j4JORRMI+pD
+	FDvgVc4Q==;
+Received: from noodles by the.earth.li with local (Exim 4.96)
+	(envelope-from <noodles@earth.li>)
+	id 1v3YEN-006wrA-0F;
+	Tue, 30 Sep 2025 12:09:15 +0100
+Date: Tue, 30 Sep 2025 12:09:15 +0100
+From: Jonathan McDowell <noodles@earth.li>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: linux-integrity@vger.kernel.org, dpsmith@apertussolutions.com,
+	ross.philipson@oracle.com,
+	Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:KEYS/KEYRINGS" <keyrings@vger.kernel.org>,
+	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
+Subject: Re: [PATCH v3 01/10] tpm: Cap the number of PCR banks
+Message-ID: <aNu6W0GagfCliWTx@earth.li>
+References: <20250929194832.2913286-1-jarkko@kernel.org>
+ <20250929194832.2913286-2-jarkko@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250929194832.2913286-2-jarkko@kernel.org>
 
-The sign-file tool currently generates a signature that does not include
-the signing certificate. This requires that the public key used for
-verification be loaded directly into the `.ima` keyring.
+On Mon, Sep 29, 2025 at 10:48:23PM +0300, Jarkko Sakkinen wrote:
+> From: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
+> 
+> tpm2_get_pcr_allocation() does not cap any upper limit for the number of
+> banks. Cap the limit to four banks so that out of bounds values coming
+> from external I/O cause on only limited harm.
+> 
+> Cc: Roberto Sassu <roberto.sassu@huawei.com>
+> Fixes: bcfff8384f6c ("tpm: dynamically allocate the allocated_banks array")
+> Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
+> ---
+> v3:
+> - Wrote a more clear commit message.
+> - Fixed pr_err() message.
+> v2:
+> - A new patch.
+> ---
+>  drivers/char/tpm/tpm-chip.c | 13 +++++++++----
+>  drivers/char/tpm/tpm.h      |  1 -
+>  drivers/char/tpm/tpm1-cmd.c | 25 -------------------------
+>  drivers/char/tpm/tpm2-cmd.c |  8 +++-----
+>  include/linux/tpm.h         | 18 ++++++++----------
+>  5 files changed, 20 insertions(+), 45 deletions(-)
+> 
+> diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
+> index 687f6d8cd601..9a6538f76f50 100644
+> --- a/drivers/char/tpm/tpm-chip.c
+> +++ b/drivers/char/tpm/tpm-chip.c
+> @@ -559,14 +559,19 @@ static int tpm_add_hwrng(struct tpm_chip *chip)
+>  
+>  static int tpm_get_pcr_allocation(struct tpm_chip *chip)
+>  {
+> -	int rc;
+> +	int rc = 0;
+>  
+>  	if (tpm_is_firmware_upgrade(chip))
+>  		return 0;
+>  
+> -	rc = (chip->flags & TPM_CHIP_FLAG_TPM2) ?
+> -	     tpm2_get_pcr_allocation(chip) :
+> -	     tpm1_get_pcr_allocation(chip);
+> +	if (!(chip->flags & TPM_CHIP_FLAG_TPM2)) {
+> +		chip->allocated_banks[0].alg_id = TPM_ALG_SHA1;
+> +		chip->allocated_banks[0].digest_size = hash_digest_size[HASH_ALGO_SHA1];
+> +		chip->allocated_banks[0].crypto_id = HASH_ALGO_SHA1;
+> +		chip->nr_allocated_banks = 1;
+> +	} else {
+> +		rc = tpm2_get_pcr_allocation(chip);
+> +	}
+>  
+>  	if (rc > 0)
+>  		return -ENODEV;
+> diff --git a/drivers/char/tpm/tpm.h b/drivers/char/tpm/tpm.h
+> index 57ef8589f5f5..769fa6b00c54 100644
+> --- a/drivers/char/tpm/tpm.h
+> +++ b/drivers/char/tpm/tpm.h
+> @@ -252,7 +252,6 @@ int tpm1_pcr_read(struct tpm_chip *chip, u32 pcr_idx, u8 *res_buf);
+>  ssize_t tpm1_getcap(struct tpm_chip *chip, u32 subcap_id, cap_t *cap,
+>  		    const char *desc, size_t min_cap_length);
+>  int tpm1_get_random(struct tpm_chip *chip, u8 *out, size_t max);
+> -int tpm1_get_pcr_allocation(struct tpm_chip *chip);
+>  unsigned long tpm_calc_ordinal_duration(struct tpm_chip *chip, u32 ordinal);
+>  int tpm_pm_suspend(struct device *dev);
+>  int tpm_pm_resume(struct device *dev);
+> diff --git a/drivers/char/tpm/tpm1-cmd.c b/drivers/char/tpm/tpm1-cmd.c
+> index cf64c7385105..5c49bdff33de 100644
+> --- a/drivers/char/tpm/tpm1-cmd.c
+> +++ b/drivers/char/tpm/tpm1-cmd.c
+> @@ -786,28 +786,3 @@ int tpm1_pm_suspend(struct tpm_chip *chip, u32 tpm_suspend_pcr)
+>  
+>  	return rc;
+>  }
+> -
+> -/**
+> - * tpm1_get_pcr_allocation() - initialize the allocated bank
+> - * @chip: TPM chip to use.
+> - *
+> - * The function initializes the SHA1 allocated bank to extend PCR
+> - *
+> - * Return:
+> - * * 0 on success,
+> - * * < 0 on error.
+> - */
+> -int tpm1_get_pcr_allocation(struct tpm_chip *chip)
+> -{
+> -	chip->allocated_banks = kcalloc(1, sizeof(*chip->allocated_banks),
+> -					GFP_KERNEL);
+> -	if (!chip->allocated_banks)
+> -		return -ENOMEM;
+> -
+> -	chip->allocated_banks[0].alg_id = TPM_ALG_SHA1;
+> -	chip->allocated_banks[0].digest_size = hash_digest_size[HASH_ALGO_SHA1];
+> -	chip->allocated_banks[0].crypto_id = HASH_ALGO_SHA1;
+> -	chip->nr_allocated_banks = 1;
+> -
+> -	return 0;
+> -}
+> diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
+> index 7d77f6fbc152..a7cddd4b5626 100644
+> --- a/drivers/char/tpm/tpm2-cmd.c
+> +++ b/drivers/char/tpm/tpm2-cmd.c
+> @@ -538,11 +538,9 @@ ssize_t tpm2_get_pcr_allocation(struct tpm_chip *chip)
+>  
+>  	nr_possible_banks = be32_to_cpup(
+>  		(__be32 *)&buf.data[TPM_HEADER_SIZE + 5]);
+> -
+> -	chip->allocated_banks = kcalloc(nr_possible_banks,
+> -					sizeof(*chip->allocated_banks),
+> -					GFP_KERNEL);
+> -	if (!chip->allocated_banks) {
+> +	if (nr_possible_banks > TPM2_MAX_BANKS) {
+> +		pr_err("tpm: unexpected number of banks: %u > %u",
+> +		       nr_possible_banks, TPM2_MAX_BANKS);
+>  		rc = -ENOMEM;
+>  		goto out;
+>  	}
+> diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+> index 900c81a2bc41..fc7df87dfb9a 100644
+> --- a/include/linux/tpm.h
+> +++ b/include/linux/tpm.h
+> @@ -27,7 +27,12 @@
+>  #include <crypto/aes.h>
+>  
+>  #define TPM_DIGEST_SIZE 20	/* Max TPM v1.2 PCR size */
+> -#define TPM_MAX_DIGEST_SIZE SHA512_DIGEST_SIZE
+> +#define TPM_HEADER_SIZE		10
+> +
+> +#define TPM2_PLATFORM_PCR	24
+> +#define TPM2_PCR_SELECT_MIN	3
 
-This approach prevents the use of certificate hierarchies, where a file
-is signed by an intermediate key that chains up to a trusted root key in
-the keyring.
+By changing this to 3 we lose the fact it's related to TPM2_PLATFORM_PCR 
+- it's the number of bytes required to hold a bitmap with at least 
+ TPM2_PLATFORM_PCR entries. Can we at least have a comment about that 
+fact?
 
-This patch adds a `-i` flag to the sign-file tool to embed the signing
-certificate directly into the signature file. This allows the kernel's
-Integrity Measurement Architecture (IMA) to perform a full path
-validation on the certificate chain, enabling more flexible and scalable
-key management for IMA appraisal.
+> +#define TPM2_MAX_DIGEST_SIZE	SHA512_DIGEST_SIZE
+> +#define TPM2_MAX_BANKS		4
 
-Signed-off-by: Danny Hu <dannyhu@arista.com>
----
- scripts/sign-file.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+Where does this max come from? It matches what I see with swtpm by 
+default (SHA1, SHA2-256, SHA2-384, SHA-512), so I haven't seen anything 
+that exceeds it myself.
 
-diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-index 7070245edfc1..59a76bca6683 100644
---- a/scripts/sign-file.c
-+++ b/scripts/sign-file.c
-@@ -80,7 +80,7 @@ static __attribute__((noreturn))
- void format(void)
- {
- 	fprintf(stderr,
--		"Usage: scripts/sign-file [-dp] <hash algo> <key> <x509> <module> [<dest>]\n");
-+		"Usage: scripts/sign-file [-dpi] <hash algo> <key> <x509> <module> [<dest>]\n");
- 	fprintf(stderr,
- 		"       scripts/sign-file -s <raw sig> <hash algo> <x509> <module> [<dest>]\n");
- 	exit(2);
-@@ -228,14 +228,16 @@ int main(int argc, char **argv)
- 	bool raw_sig = false;
- 	unsigned char buf[4096];
- 	unsigned long module_size, sig_size;
--	unsigned int use_signed_attrs;
-+	unsigned int use_signed_attrs, include_cert;
- 	const EVP_MD *digest_algo;
- 	EVP_PKEY *private_key;
- #ifndef USE_PKCS7
- 	CMS_ContentInfo *cms = NULL;
- 	unsigned int use_keyid = 0;
-+	include_cert = CMS_NOCERTS;
- #else
- 	PKCS7 *pkcs7 = NULL;
-+	include_cert = PKCS7_NOCERTS;
- #endif
- 	X509 *x509;
- 	BIO *bd, *bm;
-@@ -253,11 +255,12 @@ int main(int argc, char **argv)
- #endif
- 
- 	do {
--		opt = getopt(argc, argv, "sdpk");
-+		opt = getopt(argc, argv, "sdpki");
- 		switch (opt) {
- 		case 's': raw_sig = true; break;
- 		case 'p': save_sig = true; break;
- 		case 'd': sign_only = true; save_sig = true; break;
-+		case 'i': include_cert = 0; break;
- #ifndef USE_PKCS7
- 		case 'k': use_keyid = CMS_USE_KEYID; break;
- #endif
-@@ -317,21 +320,21 @@ int main(int argc, char **argv)
- #ifndef USE_PKCS7
- 		/* Load the signature message from the digest buffer. */
- 		cms = CMS_sign(NULL, NULL, NULL, NULL,
--			       CMS_NOCERTS | CMS_PARTIAL | CMS_BINARY |
-+			       include_cert | CMS_PARTIAL | CMS_BINARY |                              
- 			       CMS_DETACHED | CMS_STREAM);
- 		ERR(!cms, "CMS_sign");
- 
- 		ERR(!CMS_add1_signer(cms, x509, private_key, digest_algo,
--				     CMS_NOCERTS | CMS_BINARY |
-+				     include_cert | CMS_BINARY |
- 				     CMS_NOSMIMECAP | use_keyid |
- 				     use_signed_attrs),
- 		    "CMS_add1_signer");
--		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
-+		ERR(CMS_final(cms, bm, NULL, include_cert | CMS_BINARY) != 1,
- 		    "CMS_final");
- 
- #else
- 		pkcs7 = PKCS7_sign(x509, private_key, NULL, bm,
--				   PKCS7_NOCERTS | PKCS7_BINARY |
-+				   include_cert | PKCS7_BINARY |
- 				   PKCS7_DETACHED | use_signed_attrs);
- 		ERR(!pkcs7, "PKCS7_sign");
- #endif
+>  struct tpm_chip;
+>  struct trusted_key_payload;
+> @@ -69,7 +74,7 @@ enum tpm2_curves {
+>  
+>  struct tpm_digest {
+>  	u16 alg_id;
+> -	u8 digest[TPM_MAX_DIGEST_SIZE];
+> +	u8 digest[TPM2_MAX_DIGEST_SIZE];
+>  } __packed;
+>  
+>  struct tpm_bank_info {
+> @@ -190,7 +195,7 @@ struct tpm_chip {
+>  	unsigned int groups_cnt;
+>  
+>  	u32 nr_allocated_banks;
+> -	struct tpm_bank_info *allocated_banks;
+> +	struct tpm_bank_info allocated_banks[TPM2_MAX_BANKS];
+>  #ifdef CONFIG_ACPI
+>  	acpi_handle acpi_dev_handle;
+>  	char ppi_version[TPM_PPI_VERSION_LEN + 1];
+> @@ -217,13 +222,6 @@ struct tpm_chip {
+>  #endif
+>  };
+>  
+> -#define TPM_HEADER_SIZE		10
+> -
+> -enum tpm2_const {
+> -	TPM2_PLATFORM_PCR       =     24,
+> -	TPM2_PCR_SELECT_MIN     = ((TPM2_PLATFORM_PCR + 7) / 8),
+> -};
+> -
+>  enum tpm2_timeouts {
+>  	TPM2_TIMEOUT_A          =    750,
+>  	TPM2_TIMEOUT_B          =   4000,
+> -- 
+> 2.39.5
+> 
+> 
+
+J.
+
 -- 
-2.47.0
-
+"How the f**k did you work that out?" -- Pythagoras
 
