@@ -1,68 +1,55 @@
-Return-Path: <keyrings+bounces-3163-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3164-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0214BB0629
-	for <lists+keyrings@lfdr.de>; Wed, 01 Oct 2025 14:53:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEECDBB8F04
+	for <lists+keyrings@lfdr.de>; Sat, 04 Oct 2025 16:46:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44FC11945A42
-	for <lists+keyrings@lfdr.de>; Wed,  1 Oct 2025 12:53:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A96093C4BB2
+	for <lists+keyrings@lfdr.de>; Sat,  4 Oct 2025 14:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07232D12EA;
-	Wed,  1 Oct 2025 12:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E79224B1F;
+	Sat,  4 Oct 2025 14:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bz5ng6Bo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pq5geyj+"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00A9278158;
-	Wed,  1 Oct 2025 12:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A622153E7;
+	Sat,  4 Oct 2025 14:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759323182; cv=none; b=uY9NmWzgxb1VuJz9dHsphHlz8v79f/14L4QagiLmjyEFaVZ3Yp//zcl8CvMO9BD1SX9T74KRCdVNJukdeHXcv60ZTZSznWyNZPo8DsPVWLuEEAg0Srk6gt4lu0YXqxRBFBlYnLd/Iy5aFnZu+jTQ2J2sLvovGAlnLFcvHe7mGQU=
+	t=1759589207; cv=none; b=nIrwyi3rm98ZMivfJyKWoHx9o6sSKciC7NxiIwOKIIrFx3UdhCwX0tzRWrdwPvfFuHzcc30HplP0UnWrUcLwClmlCj4j6H6/5D/ntqlpIWSfQFxKokQ9qDa1r6HPX38Jl9iivIueqG2arPse6cbpo04qEhe7JhrfmV55EuRINLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759323182; c=relaxed/simple;
-	bh=s9cMI0NQ6Ghw1OeMLa07wrwdZ05xUb732GXBSIqGFvM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gbh3q4cgqbD/idxfjKJN4mTDk3/HAM4RWRTIoYzcG+cTacRXxP3QGwUvFHfKJfyrj8x2yDDxggWcxYRKg1C7hMwK3AVNQjorzScta6tmDhmZo34Rs575zHKVYQ0C8CLhbHiyyShIG6CShV57wf1ku4kMMA5tduL+Hc1ZsA+ke7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bz5ng6Bo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3192C4CEF4;
-	Wed,  1 Oct 2025 12:52:59 +0000 (UTC)
+	s=arc-20240116; t=1759589207; c=relaxed/simple;
+	bh=Z3juchlwRA/FAepjF1qkRlq8lUY077dtuthI6jIjqnM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=FmLTpY4ua85v+xwg/QgcNCXjYA5rvDOMOoGHHLIiNYWcLF6GKGsDNYw1g+qhyILM9U6rH4TXmTPxndkg1tj8816dlMNWum9/oJNrLuapbLSNlYsgKAbqj75os9J0QdtOoLOCFaJj6VW2jAwpb34oifDiolZScy2Hsr+Q7zz/iKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pq5geyj+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE46C4CEF1;
+	Sat,  4 Oct 2025 14:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1759323180;
-	bh=s9cMI0NQ6Ghw1OeMLa07wrwdZ05xUb732GXBSIqGFvM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bz5ng6BoKKY/o+/webLqSD6ZbY7l3wci5aQg/hJ7lEWnI6zOgk2hjk/dto+6YbfzZ
-	 XIakcR0EwE4jtediRa59Nx7yQj+RGQ2P4UIqtb1H3ttxHpZsaYSIlbN3t9d+GWHkIL
-	 23J20PczNvwSOet5Oj05LxclVItO4W6K9ubwqD9Xy2D7yA4MFjHQVPGPP9rhBHGMda
-	 zAu6bPfhbqP9T3llsXqm0nsoF7kFrIQY2XIUAybkdZNIcT3CWT0eySkcDkOWXhDUgZ
-	 U25ULVyLtx9fRi0oEFLo0OaigyxWaWXXT1GDJiqg6xSrLivbSQbPxPWEyB1h3cB3MX
-	 DUXNkk5QTYxPg==
-Date: Wed, 1 Oct 2025 15:52:56 +0300
+	s=k20201202; t=1759589207;
+	bh=Z3juchlwRA/FAepjF1qkRlq8lUY077dtuthI6jIjqnM=;
+	h=Date:From:To:Cc:Subject:From;
+	b=Pq5geyj+tbyZRPRLBgsFxU9dI5n6INQAbgC5cmTpVxFjIidHBjGQbKGXxh9Ct8/gF
+	 MfMinmvwmOLO3hj8SDqjrduMFic88aObnBDxEYbDjowE/1hkXwxJ+qPPgasRXKy8Nx
+	 KCe6fNB+olv4Aw4iV7B6eLFnNumonFx1SesR/tTFCvNkD1rQDf5q1Ha3sF/49woI7t
+	 1dU/CbPqY3zCh5BijwoAcsXzeAjvf3uGV+BpvcJHGdTjXe7F9LKcSZKbzssYTAsUlO
+	 Hh7G3wxAVDRsfmtdjswcQt1hwNWx1FpvhY8nHwg/4Ys28Uz4r/eNoKNXrOEOD/SHdm
+	 m93E1A7QOLEEA==
+Date: Sat, 4 Oct 2025 17:46:43 +0300
 From: Jarkko Sakkinen <jarkko@kernel.org>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: Jonathan McDowell <noodles@earth.li>, linux-integrity@vger.kernel.org,
-	dpsmith@apertussolutions.com, ross.philipson@oracle.com,
-	Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:KEYS/KEYRINGS" <keyrings@vger.kernel.org>,
-	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
-Subject: Re: [PATCH v3 01/10] tpm: Cap the number of PCR banks
-Message-ID: <aN0kKHvc0DRWJPbo@kernel.org>
-References: <20250929194832.2913286-1-jarkko@kernel.org>
- <20250929194832.2913286-2-jarkko@kernel.org>
- <aNu6W0GagfCliWTx@earth.li>
- <aNvO0ZsZz_jkmpoi@kernel.org>
- <cf3fb265dd70a23d598fc3d68562b4be5355e7ae.camel@HansenPartnership.com>
- <aN0NcIlyrUsejMXW@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: David Howells <dhowells@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
+	linux-integrity@vger.kernel.org
+Subject: [GIT PULL] KEYS: keys-next-6.18
+Message-ID: <aOEzU7dRErEmbUqN@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -71,44 +58,40 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aN0NcIlyrUsejMXW@kernel.org>
 
-On Wed, Oct 01, 2025 at 02:16:04PM +0300, Jarkko Sakkinen wrote:
-> On Tue, Sep 30, 2025 at 10:17:22AM -0400, James Bottomley wrote:
-> > On Tue, 2025-09-30 at 15:36 +0300, Jarkko Sakkinen wrote:
-> > > On Tue, Sep 30, 2025 at 12:09:15PM +0100, Jonathan McDowell wrote:
-> > > > On Mon, Sep 29, 2025 at 10:48:23PM +0300, Jarkko Sakkinen wrote:
-> > [...]
-> > > > > +#define TPM2_MAX_DIGEST_SIZE	SHA512_DIGEST_SIZE
-> > > > > +#define TPM2_MAX_BANKS		4
-> > > > 
-> > > > Where does this max come from? It matches what I see with swtpm by 
-> > > > default (SHA1, SHA2-256, SHA2-384, SHA-512), so I haven't seen
-> > > > anything that exceeds it myself.
-> > > 
-> > > I've never seen hardware TPM that would have more than one or two
-> > > banks. We can double it to leave some room. This was tested with
-> > > swtpm defaults.
-> > 
-> > I've got a hardware TPM that comes with 3 banks by default (it's a
-> > chinese one which has sha1 sha256 and sm2).  swtpm isn't a good
-> > indicator because it's default allocation is rather pejorative (it
-> > disables sha1 whereas most field TPMs don't).
-> > 
-> > However, if you look at how the reference implementation works, the
-> > user is allowed to define any number of banks they want, up to the
-> > number of supported hashes.  The only limitation being there can't be
-> > >1 bank for the same hash.  Field TPM implementations are allowed to
-> > constrain this, but most don't.   The question you should be asking
-> > here is not how many banks does a particular implementation allow by
-> > default, but what's the maximum number a user could configure.
-> 
-> It needs some compilation time cap as the value comes from external
-> device. If someone hits to that value, then it needs to be increased
-> but as unconstrained it's a bug.
+The following changes since commit fec734e8d564d55fb6bd4909ae2e68814d21d0a1:
 
-Maximum eight banks should be spacy enough for the time being (and for
-the foreseeable future).
+  Merge tag 'riscv-for-linus-v6.17-rc8' of git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux (2025-09-26 14:39:12 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/keys-next-6.18
+
+for you to fetch changes up to 8be70a8fc667c33e69257a72e8092f07c828241e:
+
+  security: keys: use menuconfig for KEYS symbol (2025-10-04 17:25:35 +0300)
+
+----------------------------------------------------------------
+Hi,
+
+A few minor updates/fixes for keys.
 
 BR, Jarkko
+
+----------------------------------------------------------------
+Eric Biggers (4):
+      KEYS: trusted_tpm1: Compare HMAC values in constant time
+      KEYS: trusted_tpm1: Use SHA-1 library instead of crypto_shash
+      KEYS: trusted_tpm1: Move private functionality out of public header
+      KEYS: encrypted: Use SHA-256 library instead of crypto_shash
+
+Randy Dunlap (1):
+      security: keys: use menuconfig for KEYS symbol
+
+ include/keys/trusted_tpm.h                |  79 ---------
+ security/keys/Kconfig                     |  17 +-
+ security/keys/encrypted-keys/encrypted.c  |  63 ++-----
+ security/keys/trusted-keys/Kconfig        |   5 +-
+ security/keys/trusted-keys/trusted_tpm1.c | 284 +++++++++++-------------------
+ 5 files changed, 117 insertions(+), 331 deletions(-)
 
