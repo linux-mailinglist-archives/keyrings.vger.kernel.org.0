@@ -1,122 +1,148 @@
-Return-Path: <keyrings+bounces-3179-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3180-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22FF1BBF975
-	for <lists+keyrings@lfdr.de>; Mon, 06 Oct 2025 23:40:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B5FABBFA3D
+	for <lists+keyrings@lfdr.de>; Tue, 07 Oct 2025 00:09:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 11ED34EA5D7
-	for <lists+keyrings@lfdr.de>; Mon,  6 Oct 2025 21:40:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D03363C2261
+	for <lists+keyrings@lfdr.de>; Mon,  6 Oct 2025 22:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161C826056A;
-	Mon,  6 Oct 2025 21:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E841DF99A;
+	Mon,  6 Oct 2025 22:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=earth.li header.i=@earth.li header.b="V5ItXtRd"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="T28ejsoa"
 X-Original-To: keyrings@vger.kernel.org
-Received: from the.earth.li (the.earth.li [93.93.131.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820C438DD8;
-	Mon,  6 Oct 2025 21:40:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.93.131.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D048B1D432D
+	for <keyrings@vger.kernel.org>; Mon,  6 Oct 2025 22:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1759786848; cv=none; b=JFg0n95JYLkOAeQSn+4tRKirBOyUjqZ1smXQSveoYSlBqdLn8msyrKG2nHaLkYAn1mOkbUmDo+ixg287cS/RYfVWyNJq8PayP0s6ihVCC4UqUbheAw9Q0pJvzpvvA4NLAC+xvdUwhavYO3rThZ5ITf5GQ3l8uplZX2qHL/tbFzk=
+	t=1759788590; cv=none; b=GBOwka7c44d83uxqBM52jyI2HDEaju8dLeDLYG2VM32mTesg16xy/R3+0UF30aTB4cEPEIpXl1SkSNBUhnnYEPvcLJFs70e7exaQzqKvAbbqH8B14MvGJDjcB3lL6OlP0IQSn547S1p8x9FrugzUQuXWEghwWzE3eGPUI36snvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1759786848; c=relaxed/simple;
-	bh=R7XJ2TwiqWioySK4ASyyWjFauTibf7eH+Ah4O0qelOc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XLm5M6qLXMGkic05liJLrClpmP5RBKJ2ZGjbShKwQTDPpnxNlKlCA4ZZsGIfWIA6oUsmMirUd/6DM9zPl5f13Ku4uY32/Qtz8nkZtNJG4Gbb6ijlUOBk6pNTQsY1qEy86tz/uw3aLy2QovTXa86FC94y0CppzE3eyD9CHP9SQ5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li; spf=pass smtp.mailfrom=earth.li; dkim=pass (2048-bit key) header.d=earth.li header.i=@earth.li header.b=V5ItXtRd; arc=none smtp.client-ip=93.93.131.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=earth.li
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=earth.li;
-	s=the; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:
-	Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=nNVpGvBktBIV6LStDv6qPWdxU9sKQpVF+6HYIuoef9Y=; b=V5ItXtRdPH7mZRf/7Zq0xp3wum
-	jBbDngG7xBpJnFvh8Q7gofz96DMetMPLcYJG5wuDQYPVTCzQE9Cw/lch2OxGuDV61WZkELaJQNH7a
-	QGBQ9xLZ93BDvSB4ndIhMH/vU3Zh/NBdZek2Zi/3q+mzL6MOMei91C0KxLVj9PobkvAjpmdgCY6Hw
-	mL96x7v5C2nUen2JOxnM3y/mWKH6WDGBkD5OYI1MvKRFLmIFz5BsZ8Entm8QL8p0tdJ09171jAbXi
-	Z+e34steG9axVXvQ6s5CzDpA38R9EX8oKGm3wddZ0newHfmGmsSntRm/IYxaTtswn1hILG6ca03Kb
-	ERRljmUA==;
-Received: from noodles by the.earth.li with local (Exim 4.96)
-	(envelope-from <noodles@earth.li>)
-	id 1v5swh-003CRO-2Q;
-	Mon, 06 Oct 2025 22:40:39 +0100
-Date: Mon, 6 Oct 2025 22:40:39 +0100
-From: Jonathan McDowell <noodles@earth.li>
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
-	linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Jonathan McDowell <noodles@meta.com>
-Subject: Re: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-v6.18
-Message-ID: <aOQ3V6M-wWQxxCWK@earth.li>
-References: <aOKTFv1vh1cvvcLk@kernel.org>
- <CAHk-=whSe9AGigVydkwo=ewE6_GFTJ_rU=XzO=v1N1sWyfVmAw@mail.gmail.com>
- <aOO3NKegSrUQ4ewg@kernel.org>
+	s=arc-20240116; t=1759788590; c=relaxed/simple;
+	bh=CHD0J+xjJcGVkTXfHKoo2fZhpHdZNaSK3j/FMipOEMs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iBt+lSHlm3U+KMFbqxOlZ1Q8KrcXmLY0ldyYuvzAZf7E58AQxEVDjwxl+fy63jgfBmzv8pBjW7b75yoK84s9Kovn4eUbsArLKldMYk68n3NYfzONrKZAyNg7GT+soOB7ILKaHIf2XHC37jlYHFYXWOy3ClKpDLtt+vsHG6IIKmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=T28ejsoa; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-637ef0137f7so9007191a12.1
+        for <keyrings@vger.kernel.org>; Mon, 06 Oct 2025 15:09:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1759788587; x=1760393387; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=6uGao8D5BSZy4tBpGeUoA8r3hr67oWCrLy7wILsVxn4=;
+        b=T28ejsoam+4zzalJ2z2lAnDekJEwWPyjQ3gw+jwOWBJHNGU0ohQ6dznY/xOO8iGaUO
+         2tSaCQWQZ3yCjQsmBTEuw3YM3a/hM93OTvxIbjSy/PxSuzRqrrJnELnfAbzp2mWpwxCE
+         I2+/5YW+EmNWjqZwL5c6TGqJ2d1ocfS2E2QRo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1759788587; x=1760393387;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6uGao8D5BSZy4tBpGeUoA8r3hr67oWCrLy7wILsVxn4=;
+        b=NLJqR7SxZNCW8XzHB6Y/oelLmNFSlbkkiwocl8colOkvR/HL/hxKgP5Asfbmn18N48
+         yA1XHUlLylsy3Uk9qxu1tuBL93wRW924bAMMhrJV6SzQWBb+4jC4rM/k+X0JxpXQmbqd
+         T+GP76b3llzApkVEUghzt/J6HB5WHwJmIsDqla4CllqYd/PYrdtAbyAf1RHDWVMa0bap
+         58m43sylXluSOmk3lIR024IBI/ch2kasEtEbIEiLu3fxRMqWaFjRky1LAh2IA+yEf7lx
+         3ISWL28mi/Et7CoDJthndge2OnAK210+vjqpOTLEmq6vulVZ/7broB46FrmTPFkePclB
+         myYg==
+X-Forwarded-Encrypted: i=1; AJvYcCVRq/avtOZdIP1+ikqFPaP8reQftJLKeCIorEIQd8lyNbqnkNFi+sGO8GgfS0JegxwBrM0/40DgVQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCXXrQghhrNzeD+AtzCXG+37mPcgiJ3S+/6cMvK2PtYAyUtK8a
+	2duz626eon4mtybBTNmU52abCjBjX9saC8myoRs90sEvpNKTTSedkJOOXcqhSsaFB/xGmQ70u6l
+	JTVmK5Hg=
+X-Gm-Gg: ASbGncshPDAbK81KEz3gXXSdHjQziudhhL5mJLcShTopShV9UhcB7OPoyEs9C4GF9EY
+	BmYNWUTnlPF4eKKruEKHw4vCrWP3lrh+jzQVcsMOZMjonFB8DN/A+lBaYLVciiDCOScgLaqWCMT
+	bNbtm5iOq2T7GZbJBABpj22pnRVYWP0sPx9S5tIcskmE+7dfLZaA8OX0i6uWIJgEuN8lemlHcbQ
+	xMBxfPEw2/lTNs7Xf32aePfBp4/nt4o+POJ9xC58+2zKP4/0MP/S9b6ysLk4OAUpQBYhTGYGZX8
+	25gaW4CEUqO04PhgWzlV7QQFqMzLEk51IWyUI56QQqiCyGl22jcAkmFyEUvIVX5GOrh2ulB2iei
+	ypNelpiGpKJKa+QBxxlEj40PG5lZOytswDvVHx9gyE9zdYKVGJAK4BG8SJBDDls3WwWYBA7NYFj
+	5lAXk6Z0t5jerWG9DLvyvQ2huG0hjI6I0=
+X-Google-Smtp-Source: AGHT+IGvBLgw6m0MY1rmvleBkb/X3LfWdj6s6pL9/RztR8QVq8Bvq2n/YEE/saz2eDwKb7jYIglXNw==
+X-Received: by 2002:a17:907:7284:b0:b47:de64:df26 with SMTP id a640c23a62f3a-b49c373ed08mr1522767266b.35.1759788586917;
+        Mon, 06 Oct 2025 15:09:46 -0700 (PDT)
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com. [209.85.208.51])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6396b09746csm5913543a12.19.2025.10.06.15.09.45
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Oct 2025 15:09:46 -0700 (PDT)
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6318855a83fso11354739a12.2
+        for <keyrings@vger.kernel.org>; Mon, 06 Oct 2025 15:09:45 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUViqTPUzip0kzVFlKf3vJ8mOEnHcEWat6dfQYC75TTk0JvRX0eX+uXaZ6+BqN4c1eta8+JnI9V/A==@vger.kernel.org
+X-Received: by 2002:a05:6402:34c6:b0:638:1599:6c34 with SMTP id
+ 4fb4d7f45d1cf-63939c24f04mr14265679a12.21.1759788584720; Mon, 06 Oct 2025
+ 15:09:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aOO3NKegSrUQ4ewg@kernel.org>
+References: <aOKTFv1vh1cvvcLk@kernel.org> <CAHk-=whSe9AGigVydkwo=ewE6_GFTJ_rU=XzO=v1N1sWyfVmAw@mail.gmail.com>
+ <aOO3NKegSrUQ4ewg@kernel.org> <aOQ3V6M-wWQxxCWK@earth.li>
+In-Reply-To: <aOQ3V6M-wWQxxCWK@earth.li>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Mon, 6 Oct 2025 15:09:27 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wgEszQD56Q2EZ83EhzJK+OnqPaAkUavfPWako2rA8Z4uA@mail.gmail.com>
+X-Gm-Features: AS18NWC-seoJUwFefSk_kijwQa6IpywQiR1JR3Kf97fiLCY3_kM93cgcwAVjtWw
+Message-ID: <CAHk-=wgEszQD56Q2EZ83EhzJK+OnqPaAkUavfPWako2rA8Z4uA@mail.gmail.com>
+Subject: Re: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-v6.18
+To: Jonathan McDowell <noodles@earth.li>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>, Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, 
+	linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Jonathan McDowell <noodles@meta.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Oct 06, 2025 at 03:33:56PM +0300, Jarkko Sakkinen wrote:
-> On Sun, Oct 05, 2025 at 11:24:09AM -0700, Linus Torvalds wrote:
-> > On Sun, 5 Oct 2025 at 08:47, Jarkko Sakkinen <jarkko@kernel.org> wrote:
-> > The exclusive access looks debatable to me too. I think you should
-> > also require that the open was done not only with O_EXCL, but as a
-> > write too.
-> > 
-> > Exclusive reads do not make sense.
-> 
-> True, I agree with this.
+On Mon, 6 Oct 2025 at 14:40, Jonathan McDowell <noodles@earth.li> wrote:
+>
+> I'm not sure _reads_ make sense for the TPM device files at all. It's a
+> command + response interface.
 
-I'm not sure _reads_ make sense for the TPM device files at all. It's a 
-command + response interface.
+Yeah, I won't disagree. My main worry was one of "existing users doing
+odd things shouldn't then get new semantics"
 
-What should we do if we get O_EXCL and O_RDONLY? Return an error? Ignore 
-the O_EXCL flag?
+I don't actually _expect_ people to do odd things wrt /dev/tpm and
+friends, but I've so often been surprised by the odd things that do
+happen that...
 
-> After reading this email I realized also another issue with these patch
-> when I tested them sequentially building a VM for each commit ID.
-> 
-> Without "tpm: Require O_EXCL for exclusive /dev/tpm access" applied,
-> there's a regression: usually a daemon of some sort opens /dev/tpm0:
-> 
-> COMMAND      PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
-> tpm2-abrm 771444  tss    5u   CHR 10,224      0t0   94 /dev/tpm0
-> 
-> Without top patch this leaves /dev/tpmrm0 unusuable, which is a huge
-> developer experience downgrade as it is nice and covenient device
-> to try and do things. I.e. tail patch needs to be squashed and
-> the whole patch set needs to be re-reviewed.
+> What should we do if we get O_EXCL and O_RDONLY? Return an error? Ignore
+> the O_EXCL flag?
 
-That's a fair point; I structured the patches in that fashion because I 
-felt the O_EXCL patch was potentially contentious and might not be 
-accepted.
+Either of those likely is perfectly fine. Just ignoring it is the one
+that adds the smallest possible ABI change, so in that sense it's the
+"safer" option.
 
-> And based on this I'm happy to postpone O_EXCL changes to 6.19.
-> Patch set just needs to be restructured better so that in-the
-> middle of the series patches don't break things. And also it'd
-> be better if this patch would be relocated as the first in the
-> series: "tpm: Remove tpm_find_get_ops".
+But you are probably right that there aren't any users that open that
+thing read-only in the first place, much less then using O_EXCL.
 
-I'll spin a set with the tpm_find_get_ops removal first, then the O_EXCL 
-patch, then the other two, which I think fixes all the ordering 
-concerns.
+Except I've seen programs that "work" by virtue of having done
+entirely the wrong thing that just happened to work. Things like using
+the wrong values entirely for 'flags' to open(), but the bits we cared
+about happened to be ok, so...
 
-J.
+And we have *traditionally* very much ignored O_EXCL when not paired
+with O_CREAT (and even then it's iffy with NFS).
 
--- 
-... Nice world. Let's make it weirder.
+So people might just have random crud in the flags. That's why I
+reacted originally: O_EXCL does make sense as a "open exclusively"
+based on the name, but realistically we never actually *use* it that
+way except for block devices.
+
+So we *have* had those semantics for block devices, and they make
+sense, and I don't mind the change at all per se.
+
+But this is the kind of thing that I react to just because we have had
+unexpected behavior in the past when a bit goes from "don't care" to
+"meaningful".
+
+Put another way: I'm probably just being unreasonably worried.
+
+                     Linus
 
