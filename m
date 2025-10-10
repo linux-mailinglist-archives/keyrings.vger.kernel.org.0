@@ -1,79 +1,109 @@
-Return-Path: <keyrings+bounces-3203-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3204-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F43BCE369
-	for <lists+keyrings@lfdr.de>; Fri, 10 Oct 2025 20:25:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31739BCEB78
+	for <lists+keyrings@lfdr.de>; Sat, 11 Oct 2025 00:48:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5156019A7773
-	for <lists+keyrings@lfdr.de>; Fri, 10 Oct 2025 18:25:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 268B7544357
+	for <lists+keyrings@lfdr.de>; Fri, 10 Oct 2025 22:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255EB22B8D0;
-	Fri, 10 Oct 2025 18:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1BC2749CE;
+	Fri, 10 Oct 2025 22:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KnaqN1Bi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bQsVZVQF"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5FE3594A;
-	Fri, 10 Oct 2025 18:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CFA61A9FAE;
+	Fri, 10 Oct 2025 22:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760120717; cv=none; b=fwrFQBgDEdTCKBQg9cWAJrp8Zz74UHbyijoPwfI6pPTBNXSPOoHsZsPTGf9qixzDAiPHO/V8iEol8ECEAgxokzdtrND4QDJJQA+0g+15oe0CtOjTOYaXT2I+SjIy9428xZ2Vg/Giqp4HiLb0SzRGRBXQXoSG9oqvMrHSToQ0Ye8=
+	t=1760136529; cv=none; b=RbOcGsjulq/fJ7qc3mw96ZyEhITuIACCF8JJhi8waTlzFkYhXviU4QT8nsrGhVmlOqWv6FYDwlbX7sNgd9EBnoawrAoOWY5pHeHaFx9fR8Ohwrt/WHwaTCHbAHsTnTeqRx+RouXaoSZM92zxl7nhrDtM5hVSeoTtd1a9kWS9mo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760120717; c=relaxed/simple;
-	bh=xUvxJC7CWV59HdtMcMGpp042vdVJlzAvIOU18M9NhSQ=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=u/FwJ+/0TpeO+FXeMsCLPdes/uuO2wAjaRQFTNJJzaqKowl5Xg91azzo81A3mtllpyebrakQcIclH4MsMgdHmXpShmuiAkPN18VdYNAFsZQivNUC3Mbfa0XYPtpu/6YE6w62AKpZJaPwwACXSvIDLuM+N4KHxzCDeGRRwy52FoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KnaqN1Bi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9842C4CEF1;
-	Fri, 10 Oct 2025 18:25:16 +0000 (UTC)
+	s=arc-20240116; t=1760136529; c=relaxed/simple;
+	bh=NDaXxkg4WVnhjRIYtHKKMx/ePf8Uc1IZ0z3IkB9f5Qc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hDxiR3n8onX8Jyy8sjNEAmKcduRFxZLJCZovJl8nTOLf+TPudcXW+rTcijgrmpEZ4GvPhH6/LxWFM4PFT2xhRoEKHR3w/xykKHBQ3YPtQ2ctVSkYPFUReblJP4tabu6OrKVz8VP78bATs1fp4OyMKbxOR1DbKUowoHTYRJgHHWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bQsVZVQF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C2CC4CEF1;
+	Fri, 10 Oct 2025 22:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760120716;
-	bh=xUvxJC7CWV59HdtMcMGpp042vdVJlzAvIOU18M9NhSQ=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=KnaqN1BiCSsxFJyDUnb6zo0kegCluwg28l99ix/pFCkFQ6+Ln/GC9AOF+p1FTSde+
-	 hbsmUX28Tq3nJ9VbE/zqtieDDOmQsvkyeTCZpkF/NJ0OeqGxjuG6IrixpOanOe309h
-	 bBbq3CuHRjE3t0214PHIXRWZjbrCMUoTVXn6qo/e9wkywZnApFOMG+FwpknkbqEb2K
-	 C7tXyacK7qZsuAxF+vVpNVViBn+JkrIVDNuYkAkjqmsu2IMXBv+9OMcXcYLeqrfBTB
-	 naW+tuZ2sn/IiJg4Js3Mfw3+yAhnLJm/YTo6jbL5V4DLK17zqR+FBJvo2PtAwtnCeO
-	 z3yHVCIaNpjSg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 719F03809A00;
-	Fri, 10 Oct 2025 18:25:05 +0000 (UTC)
-Subject: Re: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-v6.18-2
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <aOibAOKu_lEsSlC8@kernel.org>
-References: <aOibAOKu_lEsSlC8@kernel.org>
-X-PR-Tracked-List-Id: <keyrings.vger.kernel.org>
-X-PR-Tracked-Message-Id: <aOibAOKu_lEsSlC8@kernel.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-v6.18-2
-X-PR-Tracked-Commit-Id: a29ad21b988652dc60aa99c6d3b1e3d52dc69c30
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 84d4e8b613e073d9dfde782c471aedbcefdede6c
-Message-Id: <176012070396.1074429.12294527218652525477.pr-tracker-bot@kernel.org>
-Date: Fri, 10 Oct 2025 18:25:03 +0000
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org
+	s=k20201202; t=1760136529;
+	bh=NDaXxkg4WVnhjRIYtHKKMx/ePf8Uc1IZ0z3IkB9f5Qc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bQsVZVQF3BIMmkn2VPTcxeKY4FHr4qZ5GeZUkuuPmKFI+xil2tmWJydijUCDVzXAN
+	 4MOQSzOg5cJcACzDDHtEuq1vgKsep7YUbBOX+EXi49+CM6/F1oh/plh251Nqlb7b26
+	 BmL2alMcZdqJyfghVyP4IQMDl7JllD+whkRMDX1nnGNApJMFO904uVv8DO11Ppq7P0
+	 f+/+n3UTdDEl7axHe/ABMWChXBns0F3LCAvhzaptYGv8HDjOqB3yxsGXR340PE47WA
+	 NVoTb16R2NU2lzYX0Pcag5KQLAohTYSNI0bOnamfKYLnnICeqaEu33ofaeXPNg+Skl
+	 dYiS/J4Ruz0Jw==
+Date: Fri, 10 Oct 2025 15:48:48 -0700
+From: Kees Cook <kees@kernel.org>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	linux-hardening@vger.kernel.org, linux-integrity@vger.kernel.org,
+	keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] keys: Replace deprecated strncpy in
+ ecryptfs_fill_auth_tok
+Message-ID: <202510101543.80A1D4E3@keescook>
+References: <20251010161340.458707-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251010161340.458707-2-thorsten.blum@linux.dev>
 
-The pull request you sent on Fri, 10 Oct 2025 08:34:56 +0300:
+On Fri, Oct 10, 2025 at 06:13:41PM +0200, Thorsten Blum wrote:
+> strncpy() is deprecated for NUL-terminated destination buffers; use
+> strscpy_pad() instead to retain the zero-padding behavior of strncpy().
+> 
+> strscpy_pad() automatically determines the size of the fixed-length
+> destination buffer via sizeof() when the optional size argument is
+> omitted, making an explicit size unnecessary.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-v6.18-2
+I would explicitly say that the old code was NUL terminating the buffer
+due to it being "ECRYPTFS_PASSWORD_SIG_SIZE + 1" sized with strncpy
+left to fill ECRYPTFS_PASSWORD_SIG_SIZE. And then you have to answer the
+question, "how was this initialized?" and trace it back to:
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/84d4e8b613e073d9dfde782c471aedbcefdede6c
+        epayload = kzalloc(sizeof(*epayload) + payload_datalen +
+                           datablob_len + HASH_SIZE + 1, GFP_KERNEL);
 
-Thank you!
+so the final byte was always being zeroed there, but now we're
+explicitly zeroing it (good). So there _is_ a functional change (we're
+writing 1 more byte here now), but it's more robust that way. There is
+no expected _logical_ change, though, yes.
+
+> 
+> In encrypted_init(), the source string 'key_desc' is validated by
+> valid_ecryptfs_desc() before calling ecryptfs_fill_auth_tok(), and is
+> therefore NUL-terminated and satisfies the __must_be_cstr() requirement
+> of strscpy_pad().
+> 
+> No functional changes.
+> 
+> Link: https://github.com/KSPP/linux/issues/90
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+
+With "ECRYPTFS_PASSWORD_SIG_SIZE + 1" and tracing of the destination
+buffer initialization added to the commit log:
+
+Reviewed-by: Kees Cook <kees@kernel.org>
+
+-Kees
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Kees Cook
 
