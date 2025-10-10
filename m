@@ -1,110 +1,139 @@
-Return-Path: <keyrings+bounces-3200-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3201-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD984BCDEF8
-	for <lists+keyrings@lfdr.de>; Fri, 10 Oct 2025 18:15:21 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9517BBCE135
+	for <lists+keyrings@lfdr.de>; Fri, 10 Oct 2025 19:26:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8F45189D573
-	for <lists+keyrings@lfdr.de>; Fri, 10 Oct 2025 16:15:44 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 2DA3A356605
+	for <lists+keyrings@lfdr.de>; Fri, 10 Oct 2025 17:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A0C259C9C;
-	Fri, 10 Oct 2025 16:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D964321ABAC;
+	Fri, 10 Oct 2025 17:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="a4u622Eb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sq3SIhWP"
 X-Original-To: keyrings@vger.kernel.org
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE53E2FBE0F
-	for <keyrings@vger.kernel.org>; Fri, 10 Oct 2025 16:15:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AD018EAB;
+	Fri, 10 Oct 2025 17:26:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760112915; cv=none; b=OPZATeUA02MQzzw85lRKZ17fp7kET+SwDifZW27ilsWI4zj/XxAzflpH+c8qxEVYhnugdSUEW0g1KcH/iqar6ZOZlj8v1asJKNoQJ9srZlvcmUfIe1qz0cBGlVky8tMaPBAJpzlg1iAlmSuLKNRqYzvL3lZ7YJfxdPaGKAYqvA8=
+	t=1760117202; cv=none; b=kikyAaTM+pyg8b5snnLRrclCbosLfw6CorcMk/eXrhV30hA39MVzUxXgHQH6OuL7PJb+N381UOkbnd9/cFddKLh2uOrETAxlngS5PNkQJls8eYVueqgcmjG05aAfhTQayRRwK837ASVL5dF2gpsgmuhAiGikl3FhQE3ndgGU1XI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760112915; c=relaxed/simple;
-	bh=Jm7FTEMnwjzg9jCDhP0RaeNpgQAQIuFpj4woyZcdomM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K6Ww/gwFL5bxw4nP3Y9SvIr/5+kQ6MVHJB10MKEsNXmlRa8+BBKCPVk3dgXpIFLwN2LzMrIzxqhcbU69f84KdhKNmd+LqLH95lmdQ4HdqCxY5NvdJZHopzN/FfTP0MkuSoK9XnVu6UCmURh18qCx1vT9q+Aqiz/gIK1dqaMgXAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=a4u622Eb; arc=none smtp.client-ip=95.215.58.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760112898;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=hUesLH0rkewj8vRVTXAeO7f9nSxFyDmZ3Qc6OIr3lm4=;
-	b=a4u622Eb4ZSvgArHIk5fPgdu1k17rOGmf/4fRPbQljU+fQxK/9fe/JiElatGD0zc1ARxrX
-	TugZNrgFJUpOVXSGGOBbti5r0QC5UtTpOxRDjswqE2ml6gfesdsfghNLZBAWlRASbT/Ltj
-	jxnf7W/XJiALR33Joa9uub0762lEye8=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Kees Cook <kees@kernel.org>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>
-Cc: linux-hardening@vger.kernel.org,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	linux-integrity@vger.kernel.org,
-	keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] keys: Replace deprecated strncpy in ecryptfs_fill_auth_tok
-Date: Fri, 10 Oct 2025 18:13:41 +0200
-Message-ID: <20251010161340.458707-2-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1760117202; c=relaxed/simple;
+	bh=yfT6N5HMuFsulEv0jGG9X/xOELVYT6TNPjuWTZgZtEw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QBLtbIyOr1PTB8g1tALLNdXoS9RfIIx1GCkg2njC/QlmrGZKJQwOJapnqN5tJkeQrPs9rTCAMEB5aBWCem8hI9EEONwiEM4vasgr+M9b9H4USiApHSRZe/tri14yvD70GTEET/vWDq5kyDW1XwmEd0J7yzqF2Leh7VXA0JrJFTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sq3SIhWP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD345C4CEF1;
+	Fri, 10 Oct 2025 17:26:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760117202;
+	bh=yfT6N5HMuFsulEv0jGG9X/xOELVYT6TNPjuWTZgZtEw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sq3SIhWPFFFawAC65sWBDnx3tGFLkK00472iXjCe81Br9kVaLuo1nbrVbD3zeDhbT
+	 NlNvHs+1Bbjns3sbWM58EvEilWCrCpZbbAdOuviig/HJek4RqhABaXpVRTIiU3M5ta
+	 1taWXP+m+56FuxBFrewFx0g4yUjC8GTAjRUXmQVrtdij0DXJ+yw+dDhBRD2FRiJWZ7
+	 Oz8s1XYRV6PFYZ0N8vtJd63NKk/fZi0GrrQY2ttMrcRyU7pYfALGWbQPyihas11xOI
+	 nqgIDkXfeo1x3ac0TGPqL/R+2XkOXcDfkgn1iyE7pzBk+Jcso5dUwmFsc8KihEd400
+	 9U5vYDJLg+h1A==
+Date: Fri, 10 Oct 2025 20:26:38 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+	David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
+	linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-v6.18-2
+Message-ID: <aOlBzobMDAQ39WgU@kernel.org>
+References: <aOibAOKu_lEsSlC8@kernel.org>
+ <CAHk-=whUUZpENHKMrrVQwqfBgP9Lm=SxW+a3WmoxZR3JObdrUA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=whUUZpENHKMrrVQwqfBgP9Lm=SxW+a3WmoxZR3JObdrUA@mail.gmail.com>
 
-strncpy() is deprecated for NUL-terminated destination buffers; use
-strscpy_pad() instead to retain the zero-padding behavior of strncpy().
+On Fri, Oct 10, 2025 at 08:51:09AM -0700, Linus Torvalds wrote:
+> On Thu, 9 Oct 2025 at 22:35, Jarkko Sakkinen <jarkko@kernel.org> wrote:
+> >
+> >   git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-v6.18-2
+> 
+> So I've pulled this, but I'm still unhappy about the explanation.
+> 
+> You tried to explain a one-line single-character change in that pull
+> request, and even in that explanation you spent most effort on
+> dismissing other peoples concerns.
 
-strscpy_pad() automatically determines the size of the fixed-length
-destination buffer via sizeof() when the optional size argument is
-omitted, making an explicit size unnecessary.
+For what it is, most of it comes from:
 
-In encrypted_init(), the source string 'key_desc' is validated by
-valid_ecryptfs_desc() before calling ecryptfs_fill_auth_tok(), and is
-therefore NUL-terminated and satisfies the __must_be_cstr() requirement
-of strscpy_pad().
+1. "tpm: use a map for tpm2_calc_ordinal_duration()"
+    Flattened out timeout calculations to a table and increase timeout
+    for TPM2_SelfTest, which addresses longer timeout on Raspeberry Pi.
+2. "tpm: Prevent local DOS via tpm/tpm0/ppi/*operations"
+   Caches TPM physical presence interface ACPI functions on first run
+   instead of requesting for every read.
 
-No functional changes.
+Also:
 
-Link: https://github.com/KSPP/linux/issues/90
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
-Changes in v2:
-- Improve commit message as suggested by Jarkko and Kees
-- Link to v1: https://lore.kernel.org/lkml/20251009180316.394708-3-thorsten.blum@linux.dev/
----
- security/keys/encrypted-keys/ecryptfs_format.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+1. I went through Chris' email because you asked to refer to it.
+2. I also spent time re-testing O_EXCL change throughly once more. From
+   my subjective perspective I was exactly trying to address other people's
+   concerns.
 
-diff --git a/security/keys/encrypted-keys/ecryptfs_format.c b/security/keys/encrypted-keys/ecryptfs_format.c
-index 8fdd76105ce3..2fc6f3a66135 100644
---- a/security/keys/encrypted-keys/ecryptfs_format.c
-+++ b/security/keys/encrypted-keys/ecryptfs_format.c
-@@ -54,8 +54,7 @@ int ecryptfs_fill_auth_tok(struct ecryptfs_auth_tok *auth_tok,
- 	auth_tok->version = (((uint16_t)(major << 8) & 0xFF00)
- 			     | ((uint16_t)minor & 0x00FF));
- 	auth_tok->token_type = ECRYPTFS_PASSWORD;
--	strncpy((char *)auth_tok->token.password.signature, key_desc,
--		ECRYPTFS_PASSWORD_SIG_SIZE);
-+	strscpy_pad(auth_tok->token.password.signature, key_desc);
- 	auth_tok->token.password.session_key_encryption_key_bytes =
- 		ECRYPTFS_MAX_KEY_BYTES;
- 	/*
--- 
-2.51.0
+That said, I fell off the track and yeah not well delivered agreed.
+ 
+> That one-liner would have been - and is - sufficiently explained by
+> "it performs badly and breaks some configurations". There's absolutely
+> no reason to then go on to describe how *you* don't care about those
+> configurations.
 
+Maybe I had a bad choice of words but there's no configuration that
+breaks with anything sold as discrete TPM chips, embedded SoC, fTPM's
+or anything really. I got the impression of a bug in the wild, other
+than the perf regression.
+
+> 
+> But lookie here:
+> 
+>  8 files changed, 137 insertions(+), 199 deletions(-)
+> 
+> that's the actual meat of the pull request, and it gets not a peep of
+> commentary.
+> 
+> I'd also like to point out that Microsoft spent *years* trying to do
+> the "we require certain typical TPM setups", and people complained
+> about their idiocy.
+> 
+> For all I know, they still push that crap.
+> 
+> I would certainly are *NOT* that stupid, and we are not going down that path.
+> 
+> So when it comes to TPM, the rule is not "typical cases work".
+> 
+> The rule is "if it causes problems, we acknowledge them and we avoid them".
+
+I deeply care anything that can be bought with money or even anything
+that drifts away from a spec manageable amount.
+
+
+ 
+> Thus the whole "disable TCG_TPM2_HMAC" really doesn't merit this kind
+> of long explanation.
+> 
+> In contrast, the *other* changes are probably much more interesting than that.
+
+Very true :-)
+
+ 
+>              Linus
+
+BR, Jarkko
 
