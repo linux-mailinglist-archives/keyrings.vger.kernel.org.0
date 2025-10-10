@@ -1,55 +1,60 @@
-Return-Path: <keyrings+bounces-3197-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3198-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7AF5BCBBAE
-	for <lists+keyrings@lfdr.de>; Fri, 10 Oct 2025 07:38:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4E5DBCDBC7
+	for <lists+keyrings@lfdr.de>; Fri, 10 Oct 2025 17:12:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D572919E3E8B
-	for <lists+keyrings@lfdr.de>; Fri, 10 Oct 2025 05:39:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E93D1A64647
+	for <lists+keyrings@lfdr.de>; Fri, 10 Oct 2025 15:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF7C1FE451;
-	Fri, 10 Oct 2025 05:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A44E2F83C2;
+	Fri, 10 Oct 2025 15:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7Tb5QJs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BybgFjSK"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3872AE70;
-	Fri, 10 Oct 2025 05:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97112EF673;
+	Fri, 10 Oct 2025 15:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760074731; cv=none; b=X+rJ9wKMopUxQx+o48YzurEcoZcyHtfRaH5UkcFRSs2Zu8H/TGzvndOJW6raSv/6XWwsBPRq4anelV6ih7dShWn4UEiuxi3n1YR/AJD7W4UZDcatcuURcS9WZb3/Q6S8gbP7HMf48hARFaoBm4nfiAUM22Tl1B5h0Op9leMO1Hg=
+	t=1760109149; cv=none; b=jBgBHg1Et7UgtSGP+kqIiS0OCCD0RIBZhrSr2aMCzsfKA7GvjB11NupARWnRH93vmFKLL9lP1Np90OmRJBY6pCcO+tqSRIWLIcENfXCR0Ky9d0VfXSQJ7uQZ/Nq9luC/2PECKlAp93GK/4Zpk56nKJVvriBQFI0UnZA9+ATAl1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760074731; c=relaxed/simple;
-	bh=F7O07B2LlSVeGYLipoh5LnBlEanKkhrcvSpVxLznUi0=;
+	s=arc-20240116; t=1760109149; c=relaxed/simple;
+	bh=yshfDsTOOWK6gqSvXr7KOoCHt5sbdAxuEqM16sfOhz0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LzfOgK+2vWDcF4kS63Fod64JMlwy4aIHV+whFe6hHK4Y/Ffz1FAX/D1MzOjkxFQ+cRTrA9y6EwnN32Nl/MAxp8bMN0M7ZLJbut1lIhFKO6DVfD+zWIJZLw4mfLflSnH+7Txxx1PrtT/RFcrYa4CqSg80XrKVLcMMccEiaLqEgf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7Tb5QJs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC54C4CEF1;
-	Fri, 10 Oct 2025 05:38:50 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=j9a+zcXkcAN+XyD9p13pGx2MWj/GXTlsu2yNQxftMGId8DxljPJlGm1vxkKmxVfx+oVdTk6NIZ7dBeu2S7HTChWRCUVBvvMpUkrEm6x3HnI4ijZDKVE0nyFNffqhjbgBoXXYcrOgS9QPw0ZSoFlCfS615OmemVVL2vljjRh7SjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BybgFjSK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D2BC4CEF1;
+	Fri, 10 Oct 2025 15:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760074730;
-	bh=F7O07B2LlSVeGYLipoh5LnBlEanKkhrcvSpVxLznUi0=;
+	s=k20201202; t=1760109148;
+	bh=yshfDsTOOWK6gqSvXr7KOoCHt5sbdAxuEqM16sfOhz0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k7Tb5QJsKj9BY9Hmmuu/c0VOajg2Qj7o0FDzvbBRRGnzW6Q3BD/D8C2acY3j2vsYJ
-	 v4RvcQ7vp1oxIxEhtKlmw2taE4xZbqFAsbdfXfM61xxfgyTkkBc58LpDvJBAu1pptj
-	 UavfvZZ9yNkDaxNvulWvTn55RVUGCo9Idqmsow+LO9kDfGBYvCIEjHweXNu52xiOUH
-	 EDWh/U5N7182eDb6R/H0va5pjUYOLc3PqNpFwc2FvdUqQvp3Yk9XJalrGgik9RxvCh
-	 xDrmQfICRQSI7kdK2/Z0QIZUcGLWj9Jx8VKDLcM0bLMdMRTlLtTQZi4xZVmatZupR/
-	 atYUvZESwW9XA==
-Date: Fri, 10 Oct 2025 08:38:46 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
-	linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-v6.18-2
-Message-ID: <aOib5vbM4qDZr7sL@kernel.org>
-References: <aOibAOKu_lEsSlC8@kernel.org>
+	b=BybgFjSK9i2YumvD5/RNEp3khQ03alvRBzSCVbrUtEV4j/CqANuE382VIvazr/lOI
+	 ad+sK3RK8Sk16oDu4VfPbTI338ejwx3JuR7U/dor2EP5+iIPxcboDxbpwirjUtLyy8
+	 CwvdNBo7pk58CXG3fYve9+buYvQsfROYyIC1buxDBxzXlPdC7Y8F6bviKM/GWiGc8H
+	 G9aE3urx2neadGQ9szCxNuvZ6ajdJcr9f3gnt4YQmwOpju7wzvMYWLP2+fKNwDpRlN
+	 LBYveurSldBOIQFRFywYLchHnUc7KGenEM1lJr8YbTxrrfynFbMt149/XC2FtOzrid
+	 zd7aneQXB5KQw==
+Date: Fri, 10 Oct 2025 08:12:28 -0700
+From: Kees Cook <kees@kernel.org>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	linux-hardening@vger.kernel.org, linux-integrity@vger.kernel.org,
+	keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] keys: Replace deprecated strncpy in
+ ecryptfs_fill_auth_tok
+Message-ID: <202510100808.E634CF9@keescook>
+References: <20251009180316.394708-3-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -58,16 +63,47 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aOibAOKu_lEsSlC8@kernel.org>
+In-Reply-To: <20251009180316.394708-3-thorsten.blum@linux.dev>
 
-On Fri, Oct 10, 2025 at 08:35:00AM +0300, Jarkko Sakkinen wrote:
-> As per Chris' feedback, commands fail because it is based on Google's a
-> non-standard proprietary TPM alike implementation. And the issue is not
-> PC Client Profile specific. "typical profiles" are fine when they become
-                              "atypical profiles"
+On Thu, Oct 09, 2025 at 08:03:17PM +0200, Thorsten Blum wrote:
+> strncpy() is deprecated for NUL-terminated destination buffers; use
+> strscpy_pad() instead.
 
-> "typical profiles".
- 
+Remember for strncpy->strscpy conversions, the commit message needs
+to include:
 
-BR, Jarkko
+- how did you determine this was a NUL-terminated destination?
+- how did you determine the need for padding or not?
+- how do you know that final byte truncation is not a problem?
+
+-Kees
+
+> 
+> Link: https://github.com/KSPP/linux/issues/90
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+>  security/keys/encrypted-keys/ecryptfs_format.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/security/keys/encrypted-keys/ecryptfs_format.c b/security/keys/encrypted-keys/ecryptfs_format.c
+> index 8fdd76105ce3..2fc6f3a66135 100644
+> --- a/security/keys/encrypted-keys/ecryptfs_format.c
+> +++ b/security/keys/encrypted-keys/ecryptfs_format.c
+> @@ -54,8 +54,7 @@ int ecryptfs_fill_auth_tok(struct ecryptfs_auth_tok *auth_tok,
+>  	auth_tok->version = (((uint16_t)(major << 8) & 0xFF00)
+>  			     | ((uint16_t)minor & 0x00FF));
+>  	auth_tok->token_type = ECRYPTFS_PASSWORD;
+> -	strncpy((char *)auth_tok->token.password.signature, key_desc,
+> -		ECRYPTFS_PASSWORD_SIG_SIZE);
+> +	strscpy_pad(auth_tok->token.password.signature, key_desc);
+>  	auth_tok->token.password.session_key_encryption_key_bytes =
+>  		ECRYPTFS_MAX_KEY_BYTES;
+>  	/*
+> -- 
+> 2.51.0
+> 
+> 
+
+-- 
+Kees Cook
 
