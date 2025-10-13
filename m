@@ -1,123 +1,100 @@
-Return-Path: <keyrings+bounces-3213-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3214-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6ECBD1C2E
-	for <lists+keyrings@lfdr.de>; Mon, 13 Oct 2025 09:22:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A9ECBD2044
+	for <lists+keyrings@lfdr.de>; Mon, 13 Oct 2025 10:23:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 997C23A4F4A
-	for <lists+keyrings@lfdr.de>; Mon, 13 Oct 2025 07:22:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F0651898F3F
+	for <lists+keyrings@lfdr.de>; Mon, 13 Oct 2025 08:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E84E154BE2;
-	Mon, 13 Oct 2025 07:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CA742EC0AF;
+	Mon, 13 Oct 2025 08:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YODe4cti"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="O2nd+b5Z"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE2F2566;
-	Mon, 13 Oct 2025 07:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8462EB5C9
+	for <keyrings@vger.kernel.org>; Mon, 13 Oct 2025 08:23:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760340138; cv=none; b=DlUADpvfL2Z0jdzTis47FM8xFy0EgmNiqEDEmskFIxACJwjPo7InLKHwy2cNEBaQKNFq7MeJKEUuwa3KRkQ3uZ9H2zA1wLTwY4lM1PHQGiEnDu6Xr+/Hm1wF0EFgu6Jw4aIeHR9pegpiyVBdlySrlQnuEgpaS8tYouTksjxFfgQ=
+	t=1760343800; cv=none; b=GQFPmb48lQc4vVQenJ7n5rSLIV0XsHdoDBfj/BsuZakX6ts+OxlKgoxM3FSZhK3E5ehjgfm1QQ0fr/77RPb5G6PkWMDWeaBGFeTgw4VjshU3I3SGUflF4nslm/lbmE1UV4ykmaLovTHXythU8r5I0EOAGWKfiJxVrN+hXo2tHqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760340138; c=relaxed/simple;
-	bh=G2x5sg9A9w1B3YbjixDZET8wQw7wwwOLYYyFNWZCQ6E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OyOMJl6Adp85cEDG7w7tDL8syTmLwvoADRPE3whfCxvtl0rAgNZ+QlawujlVh/S5yx0eR8yFn4ZKlPfaq4mteGSNUiGnIF6CE6Kf94ZdVUw1GWJqmHdurFGNUb+dD/F/h8SZRdJS8QYewn6cMjN8pQI/M+R9cFjDLBCXCnC/MPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YODe4cti; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7C2C4CEE7;
-	Mon, 13 Oct 2025 07:22:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760340137;
-	bh=G2x5sg9A9w1B3YbjixDZET8wQw7wwwOLYYyFNWZCQ6E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YODe4ctiyAHqifa+d1bqWl6u2Wn0+80JlnSbABnz245cARDAUJcEsh5rQnkDd/1Wq
-	 do6MUm3uucJztudtqdqOcpZuquwhNeVR9O1C7SfjCeMM/qaLw/T6Vrw6Kp9m2owhrl
-	 c36QxzuW1zh3A0Zg5ySk1a1cGWg/BJmGKhJChyrqesr/vt6LEVG1GrTNO8cOK33EBt
-	 TP9RolxpPrmkV00rHFFsqSwHOwga2hPZ6J8MLGINjuOU8Tx2XbFri7V8bz74Nof60s
-	 yWLfndXmPzheRWFNjks3p6geBpHNyMmmNWav+gL4h4RRwnk/K0vwwVvI/8Bw27fRgC
-	 dyUdV3+Lulj8Q==
-Date: Mon, 13 Oct 2025 10:22:13 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Kees Cook <kees@kernel.org>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	linux-hardening@vger.kernel.org, linux-integrity@vger.kernel.org,
-	keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] keys: Replace deprecated strncpy in
- ecryptfs_fill_auth_tok
-Message-ID: <aOyopfvzg9HNPB4k@kernel.org>
-References: <20251010161340.458707-2-thorsten.blum@linux.dev>
- <202510101543.80A1D4E3@keescook>
+	s=arc-20240116; t=1760343800; c=relaxed/simple;
+	bh=1kR31gbBKnUscwS6ZTjsnygKJs8ivj+9YtUWNXRZP3Q=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Lj89fq5eAsThVgX4l6QjJM7WeSVOuM9EnibLqoGEFNAP/5gumK0Tq2s4MX+q0W1w7S7vH6XAmXiUxOxuYWpEzOj0mms2+qyr4Vl3/1JHr7rL4OQvmmxugIGhcbjy/e6PsAbEWQ+pY41CPprzFCA35v/E8N7xOcO3pW71FXZ1kDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=O2nd+b5Z; arc=none smtp.client-ip=95.215.58.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1760343786;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vvAwE+mYlFFTAsj2rEKkqTesljDavewgCpk7RarO+os=;
+	b=O2nd+b5ZQqqRTbpp7mYz1uktv8h7XNclbxxqpyGymBYBngnMHmyYjuFOAgkEMdPm8i0pzh
+	P+JyicDM6y7IsHrVTw1R7I7HNePuy38/7pTu2zdYsYE3XVc5zlyKySaLNJ/bZIVwE2lNnc
+	qtcTON8QsOaizF3zblxb4jSQlMXxQAE=
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202510101543.80A1D4E3@keescook>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH v2 1/2] crypto: asymmetric_keys - prevent overflow in
+ asymmetric_key_generate_id
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Thorsten Blum <thorsten.blum@linux.dev>
+In-Reply-To: <aOybIZ2iqXExpTUw@wunner.de>
+Date: Mon, 13 Oct 2025 10:23:01 +0200
+Cc: David Howells <dhowells@redhat.com>,
+ Ignat Korchagin <ignat@cloudflare.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ "David S. Miller" <davem@davemloft.net>,
+ Vivek Goyal <vgoyal@redhat.com>,
+ stable@vger.kernel.org,
+ keyrings@vger.kernel.org,
+ linux-crypto@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <4AF8BE0F-D400-4020-A8F6-EF61A797A24E@linux.dev>
+References: <20251012203841.60230-1-thorsten.blum@linux.dev>
+ <aOybIZ2iqXExpTUw@wunner.de>
+To: Lukas Wunner <lukas@wunner.de>
+X-Migadu-Flow: FLOW_OUT
 
-On Fri, Oct 10, 2025 at 03:48:48PM -0700, Kees Cook wrote:
-> On Fri, Oct 10, 2025 at 06:13:41PM +0200, Thorsten Blum wrote:
-> > strncpy() is deprecated for NUL-terminated destination buffers; use
-> > strscpy_pad() instead to retain the zero-padding behavior of strncpy().
-> > 
-> > strscpy_pad() automatically determines the size of the fixed-length
-> > destination buffer via sizeof() when the optional size argument is
-> > omitted, making an explicit size unnecessary.
-> 
-> I would explicitly say that the old code was NUL terminating the buffer
-> due to it being "ECRYPTFS_PASSWORD_SIG_SIZE + 1" sized with strncpy
-> left to fill ECRYPTFS_PASSWORD_SIG_SIZE. And then you have to answer the
-> question, "how was this initialized?" and trace it back to:
-> 
->         epayload = kzalloc(sizeof(*epayload) + payload_datalen +
->                            datablob_len + HASH_SIZE + 1, GFP_KERNEL);
-> 
-> so the final byte was always being zeroed there, but now we're
-> explicitly zeroing it (good). So there _is_ a functional change (we're
-> writing 1 more byte here now), but it's more robust that way. There is
-> no expected _logical_ change, though, yes.
+On 13. Oct 2025, at 08:24, Lukas Wunner wrote:
+> On Sun, Oct 12, 2025 at 10:38:40PM +0200, Thorsten Blum wrote:
+>> +++ b/crypto/asymmetric_keys/asymmetric_type.c
+>> @@ -141,12 +142,14 @@ struct asymmetric_key_id =
+*asymmetric_key_generate_id(const void *val_1,
+>> 						     size_t len_2)
+>> {
+>> 	struct asymmetric_key_id *kid;
+>> +	size_t len;
+>>=20
+>> -	kid =3D kmalloc(sizeof(struct asymmetric_key_id) + len_1 + =
+len_2,
+>> -		      GFP_KERNEL);
+>> +	if (check_add_overflow(len_1, len_2, &len))
+>> +		return ERR_PTR(-EOVERFLOW);
+>> +	kid =3D kmalloc(struct_size(kid, data, len), GFP_KERNEL);
+>=20
+> This will add (at least) 2 bytes to len (namely the size of struct
+> asymmetric_key_id)) and may cause an overflow (even if len_1 + len_2
+> did not overflow).
 
-Thanks for the remarks.
+Could you explain which part adds "(at least) 2 bytes to len"?
 
-Thorsten, would you mind posting +1 with the commit message changes,
-and reviewed-by tags (from me and Kees).
+Thanks,
+Thorsten
 
-> 
-> > 
-> > In encrypted_init(), the source string 'key_desc' is validated by
-> > valid_ecryptfs_desc() before calling ecryptfs_fill_auth_tok(), and is
-> > therefore NUL-terminated and satisfies the __must_be_cstr() requirement
-> > of strscpy_pad().
-> > 
-> > No functional changes.
-
-[just as reminder: removing this sentence was my earlier remark]
-
-> > 
-> > Link: https://github.com/KSPP/linux/issues/90
-> > Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> 
-> With "ECRYPTFS_PASSWORD_SIG_SIZE + 1" and tracing of the destination
-> buffer initialization added to the commit log:
-> 
-> Reviewed-by: Kees Cook <kees@kernel.org>
-> 
-> -Kees
-> 
-> -- 
-> Kees Cook
-
-BR, Jarkko
 
