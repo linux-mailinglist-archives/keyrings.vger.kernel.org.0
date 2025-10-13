@@ -1,76 +1,128 @@
-Return-Path: <keyrings+bounces-3218-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3219-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF78BD530E
-	for <lists+keyrings@lfdr.de>; Mon, 13 Oct 2025 18:47:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88153BD4E97
+	for <lists+keyrings@lfdr.de>; Mon, 13 Oct 2025 18:19:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06C2D543F6A
-	for <lists+keyrings@lfdr.de>; Mon, 13 Oct 2025 15:59:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27A7D18A6941
+	for <lists+keyrings@lfdr.de>; Mon, 13 Oct 2025 16:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4823F30DD26;
-	Mon, 13 Oct 2025 15:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CC02EC08B;
+	Mon, 13 Oct 2025 16:12:41 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [83.223.78.240])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC6B30DD19;
-	Mon, 13 Oct 2025 15:39:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.223.78.240
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B3A2E7F1C;
+	Mon, 13 Oct 2025 16:12:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760369969; cv=none; b=TW79WodZtv3ewtCyk7QcuwMsB5q7OLScViXsHa/REYGVvKl2IwrD8ubJa2yQXSS63gxHv1jV9c+s/AIA6RD6VNAuxXCxsauKB/JJyCx2BoyrMk57zSIezAkmWGK/F6INyrtcASvs87v3oVCZbsctROC39Nbc1MJEYgDNjzzkq1U=
+	t=1760371961; cv=none; b=EDrRvuXiARTMkNY+EX9WOZYQoYDaUSEGn/yRzSM8kif3wIgfKGOD7PGCzYqvgcL2kKvA1x0vT4O7JC3fjVdTXkM1k8lBD6U2+HHwK3y3ow7JAk+LOgf262dYBo9XEVhGAcROZA/FZwsqsLaYHQCypL+VGI+h87x019os26ZAsZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760369969; c=relaxed/simple;
-	bh=xEXvG76TBhcCLLDPHeeQUiOmT61E7FaywA6jCqOdt90=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rWneAsESMVpLKfrRV9iCAvrZASMRPxL2n8M7LkjeDNATYTu4kUjdZSCwwm/NgLQAexp4rMKLvRpNyw26Hv8lO0jCwi/W5u0wnwv8efZ9YSmUyinjX5vmYooHqSzd66bANy/ujBJ0yxWh1jUkZHbuGTdsegNzJsAMVEcYwV8dTNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=83.223.78.240
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout2.hostsharing.net (Postfix) with ESMTPS id 562FC200803F;
-	Mon, 13 Oct 2025 17:39:17 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 3E0B44A12; Mon, 13 Oct 2025 17:39:17 +0200 (CEST)
-Date: Mon, 13 Oct 2025 17:39:17 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: David Howells <dhowells@redhat.com>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Vivek Goyal <vgoyal@redhat.com>, keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] crypto: asymmetric_keys - prevent overflow in
- asymmetric_key_generate_id
-Message-ID: <aO0dJeqb9E99xVvD@wunner.de>
-References: <20251013114010.28983-2-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1760371961; c=relaxed/simple;
+	bh=PseHAGZYK1WKtHbtTtVXAxSraQA4gMJcLWscQyyUYJw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MyuH6BoMEd5/a+bGVzkRk1p/KHwTkoFGhRT7/1xiEmxcezh8wpeVey+aIhqy352c3/IIvovzId77BQK/7iOZz/MMiaYdjn5htgR1JyWO3RECVZObtpJWKbTrgDeey9M2N7fLzIi5B22YaueNuoNkOyzrP451qws+++Ei4Ivan6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [172.27.27.12] (unknown [195.37.142.75])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 7E49C60288272;
+	Mon, 13 Oct 2025 18:11:39 +0200 (CEST)
+Message-ID: <b9246396-c9d9-4452-a16c-f2c8166a32ee@molgen.mpg.de>
+Date: Mon, 13 Oct 2025 18:11:38 +0200
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251013114010.28983-2-thorsten.blum@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] keys: Replace deprecated strncpy in
+ ecryptfs_fill_auth_tok
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>,
+ Jarkko Sakkinen <jarkko@kernel.org>, Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ linux-hardening@vger.kernel.org, Kees Cook <kees@kernel.org>,
+ linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
+ linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20251013152627.98231-2-thorsten.blum@linux.dev>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20251013152627.98231-2-thorsten.blum@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Oct 13, 2025 at 01:40:10PM +0200, Thorsten Blum wrote:
-> Use check_add_overflow() to guard against potential integer overflows
-> when adding the binary blob lengths and the size of an asymmetric_key_id
-> structure and return ERR_PTR(-EOVERFLOW) accordingly. This prevents a
-> possible buffer overflow when copying data from potentially malicious
-> X.509 certificate fields that can be arbitrarily large, such as ASN.1
-> INTEGER serial numbers, issuer names, etc.
+Dear Thorsten,
+
+
+Thank you for the patch.
+
+Am 13.10.25 um 17:26 schrieb Thorsten Blum:
+> strncpy() is deprecated for NUL-terminated destination buffers; use
+> strscpy_pad() instead to retain the NUL-padding behavior of strncpy().
 > 
-> Fixes: 7901c1a8effb ("KEYS: Implement binary asymmetric key ID handling")
+> The destination buffer is initialized using kzalloc() with a 'signature'
+> size of ECRYPTFS_PASSWORD_SIG_SIZE + 1. strncpy() then copies up to
+> ECRYPTFS_PASSWORD_SIG_SIZE bytes from 'key_desc', NUL-padding any
+> remaining bytes if needed, but expects the last byte to be zero.
+> 
+> strscpy_pad() also copies the source string to 'signature', and NUL-pads
+> the destination buffer if needed, but ensures it's always NUL-terminated
+> without relying on it being zero-initialized.
+> 
+> strscpy_pad() automatically determines the size of the fixed-length
+> destination buffer via sizeof() when the optional size argument is
+> omitted, making an explicit size unnecessary.
+> 
+> In encrypted_init(), the source string 'key_desc' is validated by
+> valid_ecryptfs_desc() before calling ecryptfs_fill_auth_tok(), and is
+> therefore NUL-terminated and satisfies the __must_be_cstr() requirement
+> of strscpy_pad().
+> 
+> Link: https://github.com/KSPP/linux/issues/90
+> Reviewed-by: Kees Cook <kees@kernel.org>
+> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 > Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+> Changes in v3:
+> - Improve commit message
+> - Link to v2: https://lore.kernel.org/lkml/20251010161340.458707-2-thorsten.blum@linux.dev/
+> 
+> Changes in v2:
+> - Improve commit message as suggested by Jarkko and Kees
+> - Link to v1: https://lore.kernel.org/lkml/20251009180316.394708-3-thorsten.blum@linux.dev/
+> ---
+>   security/keys/encrypted-keys/ecryptfs_format.c | 3 +--
+>   1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/security/keys/encrypted-keys/ecryptfs_format.c b/security/keys/encrypted-keys/ecryptfs_format.c
+> index 8fdd76105ce3..2fc6f3a66135 100644
+> --- a/security/keys/encrypted-keys/ecryptfs_format.c
+> +++ b/security/keys/encrypted-keys/ecryptfs_format.c
+> @@ -54,8 +54,7 @@ int ecryptfs_fill_auth_tok(struct ecryptfs_auth_tok *auth_tok,
+>   	auth_tok->version = (((uint16_t)(major << 8) & 0xFF00)
+>   			     | ((uint16_t)minor & 0x00FF));
+>   	auth_tok->token_type = ECRYPTFS_PASSWORD;
+> -	strncpy((char *)auth_tok->token.password.signature, key_desc,
+> -		ECRYPTFS_PASSWORD_SIG_SIZE);
+> +	strscpy_pad(auth_tok->token.password.signature, key_desc);
+>   	auth_tok->token.password.session_key_encryption_key_bytes =
+>   		ECRYPTFS_MAX_KEY_BYTES;
+>   	/*
 
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+
+
+Kind regards,
+
+Paul
 
