@@ -1,60 +1,54 @@
-Return-Path: <keyrings+bounces-3223-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3224-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E370FBE1062
-	for <lists+keyrings@lfdr.de>; Thu, 16 Oct 2025 01:21:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76AE7BE36CA
+	for <lists+keyrings@lfdr.de>; Thu, 16 Oct 2025 14:37:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1F9A1A20F6D
-	for <lists+keyrings@lfdr.de>; Wed, 15 Oct 2025 23:22:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E78619C7668
+	for <lists+keyrings@lfdr.de>; Thu, 16 Oct 2025 12:37:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05983164D4;
-	Wed, 15 Oct 2025 23:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C1B32D452;
+	Thu, 16 Oct 2025 12:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NbnSpDOX"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LTYERUt6"
 X-Original-To: keyrings@vger.kernel.org
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6E13161B9
-	for <keyrings@vger.kernel.org>; Wed, 15 Oct 2025 23:21:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3948530EF69;
+	Thu, 16 Oct 2025 12:36:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760570512; cv=none; b=NrE3SeA5+R3hXm8Z+7AODSim38AOtHad3OJ/qjhQv0OsukeskoVrJYq7fQPeBn1JTxFxhoieSCNo4mrMl5IjoFQGQEI6yWGPgJtyrBhLP9pt6s3UK/TTwYCrcpZ7V2TwEetIi+Cs27ehK4B6H1fijILOfUUmWyY9F2tXHgdrCCI=
+	t=1760618216; cv=none; b=sXA7nRyvIDtajdbEuaZuY2mt3gHizyUDuPqgCrgQOGL4H623JheONld/QzBusFXPZuvBNlDd+0ubcpyoglj7Y7wEaPIUuxYf/wF1L0P4hN6SEfSjynn64jrsFDxYhjdk/5uCaLST0QQ14P5w04LHRDKI2MC5azukudw3SxSPVMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760570512; c=relaxed/simple;
-	bh=yWic66bS3VynQ/DlDLVXJvCD4KLELc71hnpgwtJZVKI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FGN5HYZwKNnVGXwDDiNxHKmi92SIQtdK9IogAVU3RTsO+jirl5VkpYoPb7naJHzwSTamKIJ/rIFCx9kWmP8AI3zz3QEFqioYXhZfGIvKx2hQesiuZbgnMHOJWbAa5fItPg/SZs7srA8nUOuxTLQ4KcT3T7jEHofwo2QpAdL+OiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NbnSpDOX; arc=none smtp.client-ip=95.215.58.182
+	s=arc-20240116; t=1760618216; c=relaxed/simple;
+	bh=7c9eMXHeGqJcw7KNa8kwwC0fT9mvAlHas4yGf0VKIJs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hUNm2guud55AUvbV5NQvQ3lE90UFZltDvo+CiukxBMBRdzQwN5Jdx0GguVlXk3A+l3xEbOWBTaK5XA3JdLND88kUTyo0ji2SfezUE2UR1PmN19V613n+1LniK+RlhjCz3WJloPnxmCO4fbRiiKsv1vuv6HoCnvojp/fCaQupKvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LTYERUt6; arc=none smtp.client-ip=91.218.175.186
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1760570508;
+	t=1760618210;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=I5xh0RH6Adw5rpUXdBY/V9hNljoQ73UVKA6h/cH9mIs=;
-	b=NbnSpDOXfgB+2vXNaETYYzcZnRsvNYkp/oD8PO15y+dwLD/qd5pEYUVNUjyxHLR6Hjt1El
-	7klBluFJmj5Bn05GWOfmQMpfYTPmOOmcd4GNBuak70EvFYkViDipUsjUAGIeHBo0oUChz/
-	WplCn4rgsEg1j9AxIew0ofoR8DfswHk=
+	bh=06z0G05KtkWaNEEmKf+OciiLQUFcgpHCIAOW7CAuQrA=;
+	b=LTYERUt6/QwXQ5jP3Qm+gcCsypgqiPhKqPKEr/79ZE4lKF2DVifh834mVmU+rAp0yOglaT
+	MyTWwFqQ5VUDXC930Mz3U6QzyoASEthciuZbfzaCE5NdQkNEuPVmemHyjx0OxalAQLj398
+	EORzfIolIQFImi7KiwNahaxy5uuMi5c=
 From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>
+To: David Howells <dhowells@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>
 Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	linux-integrity@vger.kernel.org,
 	keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] KEYS: encrypted: Simplify determining 'format_len'
-Date: Thu, 16 Oct 2025 01:21:12 +0200
-Message-ID: <20251015232111.71276-2-thorsten.blum@linux.dev>
+Subject: [PATCH] keys: Fix typos in 'struct key_type' function pointer comments
+Date: Thu, 16 Oct 2025 14:36:19 +0200
+Message-ID: <20251016123619.98728-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -64,36 +58,31 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-Don't unnecessarily negate 'format' and simplify the calculation of
-'format_len' in encrypted_key_alloc() and __ekey_init().
+s/it/if/ and s/revokation/revocation/
 
 Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 ---
- security/keys/encrypted-keys/encrypted.c | 4 ++--
+ include/linux/key-type.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encrypted-keys/encrypted.c
-index aef438d18da8..d70f71d37f5f 100644
---- a/security/keys/encrypted-keys/encrypted.c
-+++ b/security/keys/encrypted-keys/encrypted.c
-@@ -581,7 +581,7 @@ static struct encrypted_key_payload *encrypted_key_alloc(struct key *key,
- 	if (ret < 0 || dlen < MIN_DATA_SIZE || dlen > MAX_DATA_SIZE)
- 		return ERR_PTR(-EINVAL);
+diff --git a/include/linux/key-type.h b/include/linux/key-type.h
+index 5caf3ce82373..5eb2e64803db 100644
+--- a/include/linux/key-type.h
++++ b/include/linux/key-type.h
+@@ -107,11 +107,11 @@ struct key_type {
+ 	 */
+ 	int (*match_preparse)(struct key_match_data *match_data);
  
--	format_len = (!format) ? strlen(key_format_default) : strlen(format);
-+	format_len = strlen(format ?: key_format_default);
- 	decrypted_datalen = dlen;
- 	payload_datalen = decrypted_datalen;
+-	/* Free preparsed match data (optional).  This should be supplied it
++	/* Free preparsed match data (optional).  This should be supplied if
+ 	 * ->match_preparse() is supplied. */
+ 	void (*match_free)(struct key_match_data *match_data);
  
-@@ -704,7 +704,7 @@ static void __ekey_init(struct encrypted_key_payload *epayload,
- {
- 	unsigned int format_len;
- 
--	format_len = (!format) ? strlen(key_format_default) : strlen(format);
-+	format_len = strlen(format ?: key_format_default);
- 	epayload->format = epayload->payload_data + epayload->payload_datalen;
- 	epayload->master_desc = epayload->format + format_len + 1;
- 	epayload->datalen = epayload->master_desc + strlen(master_desc) + 1;
+-	/* clear some of the data from a key on revokation (optional)
++	/* clear some of the data from a key on revocation (optional)
+ 	 * - the key's semaphore will be write-locked by the caller
+ 	 */
+ 	void (*revoke)(struct key *key);
 -- 
 2.51.0
 
