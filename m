@@ -1,84 +1,95 @@
-Return-Path: <keyrings+bounces-3241-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3244-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EFF7BE94C1
-	for <lists+keyrings@lfdr.de>; Fri, 17 Oct 2025 16:47:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2F9ABEB28C
+	for <lists+keyrings@lfdr.de>; Fri, 17 Oct 2025 20:11:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43E73581C90
-	for <lists+keyrings@lfdr.de>; Fri, 17 Oct 2025 14:47:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48343744439
+	for <lists+keyrings@lfdr.de>; Fri, 17 Oct 2025 18:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B50D2F12C5;
-	Fri, 17 Oct 2025 14:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C3432F757;
+	Fri, 17 Oct 2025 18:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GS4VuOY1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dl4OBVZl"
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF3E336EC9
-	for <keyrings@vger.kernel.org>; Fri, 17 Oct 2025 14:44:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF1932E13C
+	for <keyrings@vger.kernel.org>; Fri, 17 Oct 2025 18:11:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760712301; cv=none; b=kUHibWnP/aOLoduVV3mZXGChvio8ofRD6g+5t/dfaKHBEIKhyREgFB0sMNbruIL7C3pvhetmrWiOjG5Vk7/WwYYq0VPYgVzEGM/lOlKcHqrb06IP7oQ5L2iFNh+HQqup2xtgRWajr9uTuF5zKg+1+LB0avDK7HflBwdfAZkCUMg=
+	t=1760724706; cv=none; b=eCxbm9/NWRcn58OxEwvDGtkwLIlcnwjcWSbI/jrqOFC+XQ0edSQ/Rp2phWErGaLOFRAPfvg3w6Q11m+2mp2vup4GONo/+eJtohheH/lRQLS9aJPOnYyeUM3i/AkS8BeITVoB+1MzfEvQxNceAT7a7+Suz9h9h1OB3/yvmSCq5oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760712301; c=relaxed/simple;
-	bh=zdhUsYsNuD5UVZ5sdV6O5KnrH9qTzwzetvx3pp2yM4U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UBfJsKWSFixfwP9VNZEKasBbxx1Z+FyztfpYFwKmBh+UrWnH55vMTtCUM9i92Maol81JurwS/vfRACYFge8ChS83tOuDvMHCrefYQUozGgtJ43R2+apHqgis0SfpFNKVa90Xy2Q8SGdIHsjO6mTPMZJdXVzuE1baK5qtgW6HrfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GS4VuOY1; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760712296;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xuF1zI/X45JtGhKorM1SQByR7PQAM32rNvbgQYcWujw=;
-	b=GS4VuOY1J7RxIFtm8XBss7txT+BR1pPXoDyRGq97X0qrC7ZWKwJtA2usATEBWCEGerZtYa
-	e9QW6FLbUPgLu7lqjgLqiIyLCFWiJMv2xGVabG6gEyhraedtNwe8Q9dH9fqbLZJ02gK/Sp
-	iLyRXhw7eqvlgJlYhmMWvybMHUqP0cg=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-RzTApwSQPB6rBUQSwUbHaQ-1; Fri,
- 17 Oct 2025 10:44:55 -0400
-X-MC-Unique: RzTApwSQPB6rBUQSwUbHaQ-1
-X-Mimecast-MFC-AGG-ID: RzTApwSQPB6rBUQSwUbHaQ_1760712293
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6FC271800592;
-	Fri, 17 Oct 2025 14:44:53 +0000 (UTC)
-Received: from warthog.procyon.org.com (unknown [10.42.28.57])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E098F1800452;
-	Fri, 17 Oct 2025 14:44:49 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: David Howells <dhowells@redhat.com>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Stephan Mueller <smueller@chronox.de>,
-	Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	linux-crypto@vger.kernel.org,
+	s=arc-20240116; t=1760724706; c=relaxed/simple;
+	bh=r3dihmDf7EmTwHyOQk7Zkgw4snf1eF5k1wp6/pUMG+A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PoAaB7/jQs6z/YTETlkWG+CuRAVlqGh+woZHkrSa3i6id+GZXCXKOwQ8toieBvUPq741uaRzCmjuIPnF8lxtLMSkDJTMVAlrYK17wo/TUORRH0vdc3EUtXuRazxpfFR6R0AgnLo2rqlAngPTyotgGrFJuROnqeQGdHkgcxwQz+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dl4OBVZl; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-7833765433cso3024878b3a.0
+        for <keyrings@vger.kernel.org>; Fri, 17 Oct 2025 11:11:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1760724704; x=1761329504; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=VFIEDJTAopNEIqPSdh3Jplcei1xeOHRhpzrjHf2iOMc=;
+        b=dl4OBVZlGLH3QZINSVf9RfP3FLWtOp1hDEcpU56LB/ck2q7dy7iBk85r9prlZs01mb
+         la8iwuKAsdssVw6rtHthQhzwF7EJCDa1Q9XEH8jnWt8DM3bRIz8QztQZuuFM5sRWW0yZ
+         iTUnjGWqvle8X7tUtXd7uZEGIKnIC2u8uV5KvdOcI6HasgF4rYo3E1Hp244fHcpxGeBV
+         k03ssilvPliiIgA6beHebkKRwRUDuFOcmVMfyoBNPj7Wmm6V0E7NIvs9BJolOQjj8cKC
+         2/QbVuopRzIeIH+xsiAmoSl0sOShQZZfn8vo0hsuC/oG7WDjE6No/pmRsYQ0Ddyppt1J
+         5ctQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1760724704; x=1761329504;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VFIEDJTAopNEIqPSdh3Jplcei1xeOHRhpzrjHf2iOMc=;
+        b=jQy319ynqORNIQwq61dI4p4HhUz1yzMh9wlDLAmE5YHahWralPxJGpxgzCuEVz+i8j
+         IhO+8YQJyg6usslNUuKqheUN4Ar0zXSTDeIquThzZAp+FTxxwUqOezvYleogE3V5P6dI
+         ksuBvQTHj/kDSI5Zi4Ao6hHJtrZNK9VSNeyqGO10yvh+/rFzC367207yoZpXWcpU53pr
+         wapeyT70GbnN9OAuF9MSvBWBh+oKEs9JdBoKGeaIIGz3jVSWQMu6SbG5RWZO0CQkbBiH
+         zhh2Enr7zDfjmJbiyPhA+yHTYJVPV1O0PsF55jyxUSzrMfiUHTk4hOZc68NDLCkPkgqU
+         PYfA==
+X-Forwarded-Encrypted: i=1; AJvYcCXOUNgr49NVWHwP/GfgZtqD5z6+0ZH/vKEPVLpVJKHLbYZu9xz/JjbaTB+0KIgUvtH9kEi1iQxTuw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3TkSvNTs9JR7eK+k+p3WtX1att5uEcumol0DB64Iwt7OqtKUD
+	hzE11qIQtBRFDGvIwKDk0vMglqy+BYq8WJQKcelwt9a2ivl6GCZP1SGu
+X-Gm-Gg: ASbGnctv11w/zOLarqwUanCIK+zzObrtRdJH2zGD7oKcBmnbcLyGT+TJvAc+xUVgOvY
+	ZAU9aCPo4swvNzsbwk+jYRqUNYE5ojcuQ1xFjGO85NYKbQcg0SHoBhrjPMKSkeLhScUsI8wa9B3
+	wTua9vCbKPQcuamfNabm2UIVSNXkkCX3jCco6Ssd9y7q1bPL5Ewi7M7HPdSG1IrWLr9h8NmPY35
+	9SvRpSLThWdq9LGn7SgMTXJ73HPtA8HJKQH5FrWd9WAaILse6S/Cxy5Z91BwaKbcSfCK0dltNaB
+	T6PjSxKQ2WBiy4ti0Tl7z8E0NzeEd3RHxtPC6mOHRy8hUMpBLPKtokIXgJjpBbwXoYeY+288FOq
+	J0Ff03t7eguZIVGlB5JDmD7qW1eW+iPIPNsxpap8S1lY4hFlajbEkG0+/LyBZGI4kUVphEQPnjB
+	6SrKJKJcSNRvDE/TZhb6s=
+X-Google-Smtp-Source: AGHT+IE1h8o5AFVacUuJYOfSDEzDV+0FD/VCXQsxR8OMX32EA6L/ZDfNJDJ4BWWf59gxnTA0758alA==
+X-Received: by 2002:a05:6a00:182a:b0:781:556:f41 with SMTP id d2e1a72fcca58-7a220b07183mr5214886b3a.19.1760724704302;
+        Fri, 17 Oct 2025 11:11:44 -0700 (PDT)
+Received: from kforge.gk.pfsense.com ([103.70.166.143])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a2300f24desm200093b3a.48.2025.10.17.11.11.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 17 Oct 2025 11:11:43 -0700 (PDT)
+From: Gopi Krishna Menon <krishnagopi487@gmail.com>
+To: zohar@linux.ibm.com,
+	James.Bottomley@HansenPartnership.com,
+	jarkko@kernel.org,
+	corbet@lwn.net
+Cc: Gopi Krishna Menon <krishnagopi487@gmail.com>,
+	linux-integrity@vger.kernel.org,
 	keyrings@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 17/17] modsign: Enable ML-DSA module signing
-Date: Fri, 17 Oct 2025 15:43:01 +0100
-Message-ID: <20251017144311.817771-18-dhowells@redhat.com>
-In-Reply-To: <20251017144311.817771-1-dhowells@redhat.com>
-References: <20251017144311.817771-1-dhowells@redhat.com>
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	david.hunter.linux@gmail.com,
+	linux-kernel-mentees@lists.linux.dev,
+	khalid@kernel.org
+Subject: [PATCH] docs: trusted-encrypted: fix htmldocs build error
+Date: Fri, 17 Oct 2025 23:41:15 +0530
+Message-ID: <20251017181135.354411-1-krishnagopi487@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -86,199 +97,44 @@ List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Allow ML-DSA module signing to be enabled.
+Running "make htmldocs" generates the following build error and
+warning in trusted-encrypted.rst:
 
-Note that openssl's CMS_*() function suite does not, as of openssl-3.5.1,
-support the use of CMS_NOATTR with ML-DSA, so the prohibition against using
-authenticatedAttributes with module signing has to be removed.  The selected
-digest then applies only to the algorithm used to calculate the digest
-stored in the messageDigest attribute.
+Documentation/security/keys/trusted-encrypted.rst:18: ERROR: Unexpected indentation.
+Documentation/security/keys/trusted-encrypted.rst:19: WARNING: Block quote ends without a blank line; unexpected unindent.
 
-The ML-DSA algorithm uses its own internal choice of digest (SHAKE256)
-without regard to what's specified in the CMS message.  This is, in theory,
-configurable, but there's currently no hook in the crypto_sig API to do
-that, though possibly it could be done by parameterising the name of the
-algorithm, e.g. ("ml-dsa87(sha512)").
+Add a blank line before bullet list and fix the indentation of text to
+fix the build error and resolve the warning.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Lukas Wunner <lukas@wunner.de>
-cc: Ignat Korchagin <ignat@cloudflare.com>
-cc: Stephan Mueller <smueller@chronox.de>
-cc: Eric Biggers <ebiggers@kernel.org>
-cc: Herbert Xu <herbert@gondor.apana.org.au>
-cc: keyrings@vger.kernel.org
-cc: linux-crypto@vger.kernel.org
+Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
 ---
- Documentation/admin-guide/module-signing.rst | 15 +++++------
- certs/Kconfig                                | 24 ++++++++++++++++++
- certs/Makefile                               |  3 +++
- crypto/asymmetric_keys/pkcs7_verify.c        |  4 ---
- kernel/module/Kconfig                        |  5 ++++
- scripts/sign-file.c                          | 26 ++++++++++++++------
- 6 files changed, 58 insertions(+), 19 deletions(-)
 
-diff --git a/Documentation/admin-guide/module-signing.rst b/Documentation/admin-guide/module-signing.rst
-index a8667a777490..6daff80c277b 100644
---- a/Documentation/admin-guide/module-signing.rst
-+++ b/Documentation/admin-guide/module-signing.rst
-@@ -28,10 +28,11 @@ trusted userspace bits.
- 
- This facility uses X.509 ITU-T standard certificates to encode the public keys
- involved.  The signatures are not themselves encoded in any industrial standard
--type.  The built-in facility currently only supports the RSA & NIST P-384 ECDSA
--public key signing standard (though it is pluggable and permits others to be
--used).  The possible hash algorithms that can be used are SHA-2 and SHA-3 of
--sizes 256, 384, and 512 (the algorithm is selected by data in the signature).
-+type.  The built-in facility currently only supports the RSA, NIST P-384 ECDSA
-+and NIST FIPS-204 ML-DSA (Dilithium) public key signing standards (though it is
-+pluggable and permits others to be used).  For RSA and ECDSA, the possible hash
-+algorithms that can be used are SHA-2 and SHA-3 of sizes 256, 384, and 512 (the
-+algorithm is selected by data in the signature); ML-DSA uses SHAKE256.
- 
- 
- ==========================
-@@ -146,9 +147,9 @@ into vmlinux) using parameters in the::
- 
- file (which is also generated if it does not already exist).
- 
--One can select between RSA (``MODULE_SIG_KEY_TYPE_RSA``) and ECDSA
--(``MODULE_SIG_KEY_TYPE_ECDSA``) to generate either RSA 4k or NIST
--P-384 keypair.
-+One can select between RSA (``MODULE_SIG_KEY_TYPE_RSA``), ECDSA
-+(``MODULE_SIG_KEY_TYPE_ECDSA``) and ML-DSA (``MODULE_SIG_KEY_TYPE_ML_DSA``) to
-+generate an RSA 4k, a NIST P-384 keypair or an ML-DSA keypair.
- 
- It is strongly recommended that you provide your own x509.genkey file.
- 
-diff --git a/certs/Kconfig b/certs/Kconfig
-index 78307dc25559..a09db4b2c87c 100644
---- a/certs/Kconfig
-+++ b/certs/Kconfig
-@@ -39,6 +39,30 @@ config MODULE_SIG_KEY_TYPE_ECDSA
- 	 Note: Remove all ECDSA signing keys, e.g. certs/signing_key.pem,
- 	 when falling back to building Linux 5.14 and older kernels.
- 
-+config MODULE_SIG_KEY_TYPE_ML_DSA_44
-+	bool "ML-DSA (Dilithium) 44"
-+	select CRYPTO_ML_DSA
-+	select LIB_SHA3
-+	help
-+	  Use an ML-DSA (Dilithium) 87 key (NIST FIPS 204) for module signing
-+	  with a SHAKE256 'hash' of the message.
+Tested by running "make htmldocs" before and after the change,
+ensuring that output renders correctly in browsers.
+
+ Documentation/security/keys/trusted-encrypted.rst | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
+index 2bcaaa7d119b..eae6a36b1c9a 100644
+--- a/Documentation/security/keys/trusted-encrypted.rst
++++ b/Documentation/security/keys/trusted-encrypted.rst
+@@ -14,10 +14,11 @@ Trusted Keys as Protected key
+ =============================
+ It is the secure way of keeping the keys in the kernel key-ring as Trusted-Key,
+ such that:
 +
-+config MODULE_SIG_KEY_TYPE_ML_DSA_65
-+	bool "ML-DSA (Dilithium) 65"
-+	select CRYPTO_ML_DSA
-+	select LIB_SHA3
-+	help
-+	  Use an ML-DSA (Dilithium) 87 key (NIST FIPS 204) for module signing
-+	  with a SHAKE256 'hash' of the message.
-+
-+config MODULE_SIG_KEY_TYPE_ML_DSA_87
-+	bool "ML-DSA (Dilithium) 87"
-+	select CRYPTO_ML_DSA
-+	select LIB_SHA3
-+	help
-+	  Use an ML-DSA (Dilithium) 87 key (NIST FIPS 204) for module signing
-+	  with a SHAKE256 'hash' of the message.
-+
- endchoice
+ - Key-blob, an encrypted key-data, created to be stored, loaded and seen by
+-            userspace.
++  userspace.
+ - Key-data, the plain-key text in the system memory, to be used by
+-            kernel space only.
++  kernel space only.
  
- config SYSTEM_TRUSTED_KEYRING
-diff --git a/certs/Makefile b/certs/Makefile
-index f6fa4d8d75e0..231379c91b86 100644
---- a/certs/Makefile
-+++ b/certs/Makefile
-@@ -43,6 +43,9 @@ targets += x509_certificate_list
- ifeq ($(CONFIG_MODULE_SIG_KEY),certs/signing_key.pem)
- 
- keytype-$(CONFIG_MODULE_SIG_KEY_TYPE_ECDSA) := -newkey ec -pkeyopt ec_paramgen_curve:secp384r1
-+keytype-$(CONFIG_MODULE_SIG_KEY_TYPE_ML_DSA_44) := -newkey ml-dsa-44
-+keytype-$(CONFIG_MODULE_SIG_KEY_TYPE_ML_DSA_65) := -newkey ml-dsa-65
-+keytype-$(CONFIG_MODULE_SIG_KEY_TYPE_ML_DSA_87) := -newkey ml-dsa-87
- 
- quiet_cmd_gen_key = GENKEY  $@
-       cmd_gen_key = openssl req -new -nodes -utf8 -$(CONFIG_MODULE_SIG_HASH) -days 36500 \
-diff --git a/crypto/asymmetric_keys/pkcs7_verify.c b/crypto/asymmetric_keys/pkcs7_verify.c
-index 0f9f515b784d..f7ea1d41771d 100644
---- a/crypto/asymmetric_keys/pkcs7_verify.c
-+++ b/crypto/asymmetric_keys/pkcs7_verify.c
-@@ -424,10 +424,6 @@ int pkcs7_verify(struct pkcs7_message *pkcs7,
- 			pr_warn("Invalid module sig (not pkcs7-data)\n");
- 			return -EKEYREJECTED;
- 		}
--		if (pkcs7->have_authattrs) {
--			pr_warn("Invalid module sig (has authattrs)\n");
--			return -EKEYREJECTED;
--		}
- 		break;
- 	case VERIFYING_FIRMWARE_SIGNATURE:
- 		if (pkcs7->data_type != OID_data) {
-diff --git a/kernel/module/Kconfig b/kernel/module/Kconfig
-index 2a1beebf1d37..4b5d1601d537 100644
---- a/kernel/module/Kconfig
-+++ b/kernel/module/Kconfig
-@@ -327,6 +327,10 @@ config MODULE_SIG_SHA3_512
- 	bool "SHA3-512"
- 	select CRYPTO_SHA3
- 
-+config MODULE_SIG_SHAKE256
-+	bool "SHAKE256"
-+	select CRYPTO_SHA3
-+
- endchoice
- 
- config MODULE_SIG_HASH
-@@ -339,6 +343,7 @@ config MODULE_SIG_HASH
- 	default "sha3-256" if MODULE_SIG_SHA3_256
- 	default "sha3-384" if MODULE_SIG_SHA3_384
- 	default "sha3-512" if MODULE_SIG_SHA3_512
-+	default "shake256" if MODULE_SIG_SHAKE256
- 
- config MODULE_COMPRESS
- 	bool "Module compression"
-diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-index 7070245edfc1..b726581075f9 100644
---- a/scripts/sign-file.c
-+++ b/scripts/sign-file.c
-@@ -315,18 +315,28 @@ int main(int argc, char **argv)
- 		ERR(!digest_algo, "EVP_get_digestbyname");
- 
- #ifndef USE_PKCS7
-+
-+		unsigned int flags =
-+			CMS_NOCERTS |
-+			CMS_PARTIAL |
-+			CMS_BINARY |
-+			CMS_DETACHED |
-+			CMS_STREAM  |
-+			CMS_NOSMIMECAP |
-+			CMS_NO_SIGNING_TIME |
-+			use_keyid;
-+		if (!EVP_PKEY_is_a(private_key, "ML-DSA-44") &&
-+		    !EVP_PKEY_is_a(private_key, "ML-DSA-65") &&
-+		    !EVP_PKEY_is_a(private_key, "ML-DSA-87"))
-+			flags |= use_signed_attrs;
-+
- 		/* Load the signature message from the digest buffer. */
--		cms = CMS_sign(NULL, NULL, NULL, NULL,
--			       CMS_NOCERTS | CMS_PARTIAL | CMS_BINARY |
--			       CMS_DETACHED | CMS_STREAM);
-+		cms = CMS_sign(NULL, NULL, NULL, NULL, flags);
- 		ERR(!cms, "CMS_sign");
- 
--		ERR(!CMS_add1_signer(cms, x509, private_key, digest_algo,
--				     CMS_NOCERTS | CMS_BINARY |
--				     CMS_NOSMIMECAP | use_keyid |
--				     use_signed_attrs),
-+		ERR(!CMS_add1_signer(cms, x509, private_key, digest_algo, flags),
- 		    "CMS_add1_signer");
--		ERR(CMS_final(cms, bm, NULL, CMS_NOCERTS | CMS_BINARY) != 1,
-+		ERR(CMS_final(cms, bm, NULL, flags) != 1,
- 		    "CMS_final");
- 
- #else
+ Though key-data is not accessible to the user-space in plain-text, but it is in
+ plain-text in system memory, when used in kernel space. Even though kernel-space
+-- 
+2.43.0
 
 
