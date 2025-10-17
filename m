@@ -1,111 +1,398 @@
-Return-Path: <keyrings+bounces-3225-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3226-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20F36BE50D6
-	for <lists+keyrings@lfdr.de>; Thu, 16 Oct 2025 20:25:12 +0200 (CEST)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F84CBE9413
+	for <lists+keyrings@lfdr.de>; Fri, 17 Oct 2025 16:43:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 4AEEE502683
-	for <lists+keyrings@lfdr.de>; Thu, 16 Oct 2025 18:25:04 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 23A8B35AA0C
+	for <lists+keyrings@lfdr.de>; Fri, 17 Oct 2025 14:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4265F231836;
-	Thu, 16 Oct 2025 18:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF1F32E14B;
+	Fri, 17 Oct 2025 14:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="VNsEPQwA"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XhRo6Ed5"
 X-Original-To: keyrings@vger.kernel.org
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6683D23BF91;
-	Thu, 16 Oct 2025 18:24:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4778A32E149
+	for <keyrings@vger.kernel.org>; Fri, 17 Oct 2025 14:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760639085; cv=none; b=gMRk5YH6XuDvTGFluG0CzxqZDCmYdMpkBNRWfzMXfSTudNN2TsShdVof68JRyIu6Pvmo835sNy4j++08zes91IRvrYauC7AN+rjuzyaMIz2ybxmqZZc+ufw2v3Ti1WDtHeLDSC+ipnduKijMe+M7waD6+rsKc3x3J2nz4sxfmd0=
+	t=1760712209; cv=none; b=rVBZWQZpTkuvwzWZCRaugeezdLo2+4kGYYcVf90cZcRi4Rux951GmrnKRxJWLiqM0FQCYP3sU2UFm4EUP+s06AcF+CO6CbupsXVtYK/rbQAF7CmlcyZR2QlK/UW9XkofSMMMOTIoeCd1zuRt3CKPiq3obAVDJYosjLf+HZMtC8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760639085; c=relaxed/simple;
-	bh=Zj4cGoVhPGnJQKJjyvguYTpwshkGfXgc/aoy6xB2k18=;
-	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=ufSlTOE7Ba4Lt2EGi5F2L8wL3VxVtuWr8QbMZjTbSKEB3Yici04MjafxxqdynZLB5cXimK5xUuiMBViAAjd8P5qPweh/DivoLJ//BGrrJZTVYfGBDlpoHa02YFT7iUuX9wBxeq1fWrGKBnLcvjEVHv/sBl4so5i1mQvr41e9mOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=VNsEPQwA; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1760639081;
-	bh=Zj4cGoVhPGnJQKJjyvguYTpwshkGfXgc/aoy6xB2k18=;
-	h=Message-ID:Subject:From:To:Date:From;
-	b=VNsEPQwAar5DW7l5xxne7HlI9Q2kcn0rbDn2D0ru7lstcQlnaVFZxhheXYvKtp6YF
-	 LRsYhDkTUfan3otWW5y+Oq7UCjaNle6zBRxaBXdzIaqJ+s5e67O6+9/rtdNfrojC6g
-	 fPukJv9ScB4rlpLNu6e4r/v8nDzHcYkV27Hg2S/w=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	s=arc-20240116; t=1760712209; c=relaxed/simple;
+	bh=f6nD4djMYQgfQ/PcFUuYlUpUunQlgLDJUAOmA87ZgR0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nP00o3sd7BDOyUCdHMJkDSzqEBP1jQh82KoyuFN1Xtln4AMHxmQEGaNyj/bcaUeyHcLGs3AfYEXOOzbLxnaGitovjcIbT+ap15IypC3mvzjnftttjfaYjujrCZ0s68tgtYwpwIZPa4Ra9aPPW8KIEziXvQdKS0yCWNttti2mMK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XhRo6Ed5; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760712206;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zXwTMHKkWFXxpJLBCwwAHLQwSYGklsh5d/qyVpVH2d8=;
+	b=XhRo6Ed5lX/y50WGfe3PPOkGjvKSLSOTVe/lk/CK7roykkhfTaBs5dVLn/jOWatTigzlya
+	fU4lG5yjuzWiOIR+UL+TOSNbJUpzWXlxfNoFwObhGRCuoQUaQxQmE4qAatM850YIOaiAZA
+	q0DxUMMggOe3OIC+UyzX5IxOnEfrnjE=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-119-ferk57nzMCWTLEQ7yG1yNg-1; Fri,
+ 17 Oct 2025 10:43:22 -0400
+X-MC-Unique: ferk57nzMCWTLEQ7yG1yNg-1
+X-Mimecast-MFC-AGG-ID: ferk57nzMCWTLEQ7yG1yNg_1760712200
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 1BDE11C02B9;
-	Thu, 16 Oct 2025 14:24:41 -0400 (EDT)
-Message-ID: <b419422e5e8f280e698c62461d04ccf6c8ba060f.camel@HansenPartnership.com>
-Subject: [PATCH] lib: update the licence of the ASN.1 encoder and decoder
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: keyrings@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>, AndrewMorton
-	 <akpm@linux-foundation.org>, linux-kernel <linux-kernel@vger.kernel.org>
-Date: Thu, 16 Oct 2025 14:24:40 -0400
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9184F1954197;
+	Fri, 17 Oct 2025 14:43:19 +0000 (UTC)
+Received: from warthog.procyon.org.com (unknown [10.42.28.57])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 127CC180044F;
+	Fri, 17 Oct 2025 14:43:14 +0000 (UTC)
+From: David Howells <dhowells@redhat.com>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: David Howells <dhowells@redhat.com>,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Stephan Mueller <smueller@chronox.de>,
+	Lukas Wunner <lukas@wunner.de>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	linux-crypto@vger.kernel.org,
+	keyrings@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v6 00/17] lib/crypto: Move SHA3 to lib/crypto, add SHAKE* and add ML-DSA signing
+Date: Fri, 17 Oct 2025 15:42:44 +0100
+Message-ID: <20251017144311.817771-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-The open source project leancrypto (github.com/smuellerDD/leancrypto)
-has asked to use the ASN.1 encoder/decoder files from the kernel.
-Since leancrypto is licensed under BSD-3-Clause the fairest thing to do
-for everyone is add BSD-3-Clause as an OR to the SPDX tag so every
-project could import them under the same terms.
+Hi Eric, Herbert, et al.,
 
-The copyright holders of both files have agreed to this change.
+Here's a set of patches does the following:
 
-Signed-off-by: James Bottomley <James.Bottomley@HansenPartnership.com>
----
- lib/asn1_decoder.c | 2 +-
- lib/asn1_encoder.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Firstly, SHA-3 is implemented in lib/crypto and SHAKE* support is added:
 
-diff --git a/lib/asn1_decoder.c b/lib/asn1_decoder.c
-index 5738ae286b41..1be81a80aed7 100644
---- a/lib/asn1_decoder.c
-+++ b/lib/asn1_decoder.c
-@@ -1,4 +1,4 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
-+// SPDX-License-Identifier: GPL-2.0-or-later OR BSD-3-Clause
- /* Decoder for ASN.1 BER/DER/CER encoded bytestream
-  *
-  * Copyright (C) 2012 Red Hat, Inc. All Rights Reserved.
-diff --git a/lib/asn1_encoder.c b/lib/asn1_encoder.c
-index 92f35aae13b1..e1285208478d 100644
---- a/lib/asn1_encoder.c
-+++ b/lib/asn1_encoder.c
-@@ -1,4 +1,4 @@
--// SPDX-License-Identifier: GPL-2.0-only
-+// SPDX-License-Identifier: GPL-2.0-only OR BSD-3-Clause
- /*
-  * Simple encoder primitives for ASN.1 BER/DER/CER
-  *
---=20
-2.51.0
+ (1) Renames s390 and arm64 sha3_* functions to avoid name collisions.
 
+ (2) Copies the core of SHA3 support from crypto/ to lib/crypto/.
+
+ (3) Simplifies the internal code to maintain the buffer in little endian
+     form, thereby simplifying the update and extraction code which don't
+     then need to worry about this.  Instead, the state buffer is
+     byteswapped before and after.
+
+ (4) Moves the Iota transform into the function with the rest of the
+     transforms.
+
+ (5) Adds SHAKE128 and SHAKE256 support (needed for ML-DSA).
+
+ (6) Adds a kunit test for SHA3 in lib/crypto/tests/.
+
+ (7) Adds API documentation for SHA3.
+
+Note that only the generic code is moved across; the asm-optimised stuff is
+not touched as I'm not familiar with that.
+
+Secondly, SHA-3 crypto/ support is added, though this turns out not to be
+necessary for ML-DSA:
+
+ (8) Make the jitterentropy random number generator use lib/crypto sha-3.
+     I can't get it to work with crypto/sha3_generic when that is modified
+     to use lib/crypto.  It looks like there's some race that prevents the
+     kernel from booting, but I can't tell what and it's really hard to
+     debug.  However, it works fine with lib/crypto/sha3 directly.
+
+ (9) Make crypto/sha3_generic use lib/crypto/sha3.
+
+(10) Add SHAKE-128 and SHAKE-256 crypto_sig support, generating 16-byte and
+     32-byte fixed output respectively.  The XOF features aren't available
+     through this.
+
+Thirdly, add ML-DSA support and allow module signing to use it.  This needs
+some more code cleanup, but it does work.  OpenSSL doesn't support
+CMS_NOATTR with ML-DSA, unfortunately, so that has to be turned off for
+ML-DSA.
+
+(11) Add ML-DSA signing and signature verification code, extracted from
+     Stephan Mueller's Leancrypto project.  This needs more code cleanup,
+     but I think it's worth posting it now.  I also suspect I should remove
+     the in-kernel signature generation side of things and only keep the
+     verification side.  It is accessed through crypto_sig.
+
+(12) Add ML-DSA keypair generation code.  I don't think we want this.
+
+(13) Add a kunit test in three installments (due to size) to add some
+     testing for the three different levels of ML-DSA (44, 65 and 87).
+
+(14) Modify PKCS#7 support to allow kernel module signatures to carry
+     authenticatedAttributes as OpenSSL refuses to let them be opted out of
+     for ML-DSA (CMS_NOATTR).  This adds an extra digest calculation to the
+     process.
+
+(15) Modify PKCS#7 to pass the authenticatedAttributes directly to the
+     ML-DSA algorithm rather than passing over a digest as is done with RSA
+     as ML-DSA wants to do its own hashing and will add other stuff into
+     the hash.  We could use hashML-DSA or an external mu instead, but they
+     aren't standardised for CMS yet.
+
+(16) Add support to the PKCS#7 and X.509 parsers for ML-DSA.
+
+(17) Modify sign-file to handle OpenSSL not permitting CMS_NOATTR with
+     ML-DSA.
+
+(18) Allow SHA-3 algorithms, including SHAKE256, to be used for the message
+     digest and add ML-DSA to the choice of algorithm with which to sign.
+
+With that, ML-DSA signing appears to work.
+
+This is based on Eric's libcrypto-next branch.
+
+The patches can also be found here:
+
+	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=keys-pqc
+
+David
+
+Changes
+=======
+ver #6)
+ - Added a patch to make the jitterentropy RNG use lib/sha3.
+ - Added back the crypto/sha3_generic changes.
+ - Added ML-DSA implementation (still needs more cleanup).
+ - Added kunit test for ML-DSA.
+ - Modified PKCS#7 to accommodate ML-DSA.
+ - Modified PKCS#7 and X.509 to allow ML-DSA to be specified and used.
+ - Modified sign-file to not use CMS_NOATTR with ML-DSA.
+ - Allowed SHA3 and SHAKE* algorithms for module signing default.
+ - Allowed ML-DSA-{44,65,87} to be selected as the module signing default.
+
+ver #5)
+ - Fix gen-hash-testvecs.py to correctly handle algo names that contain a
+   dash.
+ - Fix gen-hash-testvecs.py to not generate HMAC for SHA3-* or SHAKE* as
+   these don't currently have HMAC variants implemented.
+ - Fix algo names to be correct.
+ - Fix kunit module description as it now tests all SHA3 variants.
+
+ver #4)
+ - Fix a couple of arm64 build problems.
+ - Doc fixes:
+   - Fix the description of the algorithm to be closer to the NIST spec's
+     terminology.
+   - Don't talk of finialising the context for XOFs.
+   - Don't say "Return: None".
+   - Declare the "Context" to be "Any context" and make no mention of the
+     fact that it might use the FPU.
+   - Change "initialise" to "initialize".
+   - Don't warn that the context is relatively large for stack use.
+ - Use size_t for size parameters/variables.
+ - Make the module_exit unconditional.
+ - Dropped the crypto/ dir-affecting patches for the moment.
+
+ver #3)
+ - Renamed conflicting arm64 functions.
+ - Made a separate wrapper API for each algorithm in the family.
+ - Removed sha3_init(), sha3_reinit() and sha3_final().
+ - Removed sha3_ctx::digest_size.
+ - Renamed sha3_ctx::partial to sha3_ctx::absorb_offset.
+ - Refer to the output of SHAKE* as "output" not "digest".
+ - Moved the Iota transform into the one-round function.
+ - Made sha3_update() warn if called after sha3_squeeze().
+ - Simplified the module-load test to not do update after squeeze.
+ - Added Return: and Context: kdoc statements and expanded the kdoc
+   headers.
+ - Added an API description document.
+ - Overhauled the kunit tests.
+   - Only have one kunit test.
+   - Only call the general hash tester on one algo.
+   - Add separate simple cursory checks for the other algos.
+   - Add resqueezing tests.
+   - Add some NIST example tests.
+ - Changed crypto/sha3_generic to use this
+ - Added SHAKE128/256 to crypto/sha3_generic and crypto/testmgr
+ - Folded struct sha3_state into struct sha3_ctx.
+
+ver #2)
+  - Simplify the endianness handling.
+  - Rename sha3_final() to sha3_squeeze() and don't clear the context at the
+    end as it's permitted to continue calling sha3_final() to extract
+    continuations of the digest (needed by ML-DSA).
+  - Don't reapply the end marker to the hash state in continuation
+    sha3_squeeze() unless sha3_update() gets called again (needed by
+    ML-DSA).
+  - Give sha3_squeeze() the amount of digest to produce as a parameter
+    rather than using ctx->digest_size and don't return the amount digested.
+  - Reimplement sha3_final() as a wrapper around sha3_squeeze() that
+    extracts ctx->digest_size amount of digest and then zeroes out the
+    context.  The latter is necessary to avoid upsetting
+    hash-test-template.h.
+  - Provide a sha3_reinit() function to clear the state, but to leave the
+    parameters that indicate the hash properties unaffected, allowing for
+    reuse.
+  - Provide a sha3_set_digestsize() function to change the size of the
+    digest to be extracted by sha3_final().  sha3_squeeze() takes a
+    parameter for this instead.
+  - Don't pass the digest size as a parameter to shake128/256_init() but
+    rather default to 128/256 bits as per the function name.
+  - Provide a sha3_clear() function to zero out the context.
+
+David Howells (17):
+  s390/sha3: Rename conflicting functions
+  arm64/sha3: Rename conflicting functions
+  lib/crypto: Add SHA3-224, SHA3-256, SHA3-384, SHA3-512, SHAKE128,
+    SHAKE256
+  lib/crypto: Move the SHA3 Iota transform into the single round
+    function
+  lib/crypto: Add SHA3 kunit tests
+  crypto/jitterentropy: Use lib/crypto/sha3
+  crypto/sha3: Use lib/crypto/sha3
+  crypto/sha3: Add SHAKE128/256 support
+  crypto: SHAKE tests
+  crypto: Add ML-DSA/Dilithium support
+  crypto: Add ML-DSA/Dilithium keypair generation support
+  crypto: Add ML-DSA-44 pure rejection test vectors as a kunit test
+  crypto: Add ML-DSA-65 pure rejection test vectors as a kunit test
+  crypto: Add ML-DSA-87 pure rejection test vectors as a kunit test
+  pkcs7: Allow the signing algo to calculate the digest itself
+  pkcs7, x509: Add ML-DSA support
+  modsign: Enable ML-DSA module signing
+
+ Documentation/admin-guide/module-signing.rst  |    15 +-
+ Documentation/crypto/index.rst                |     1 +
+ Documentation/crypto/sha3.rst                 |   237 +
+ arch/arm64/crypto/sha3-ce-glue.c              |    47 +-
+ arch/s390/crypto/sha3_256_s390.c              |    26 +-
+ arch/s390/crypto/sha3_512_s390.c              |    26 +-
+ certs/Kconfig                                 |    24 +
+ certs/Makefile                                |     3 +
+ crypto/Kconfig                                |     1 +
+ crypto/Makefile                               |     1 +
+ crypto/asymmetric_keys/pkcs7_parser.c         |    19 +-
+ crypto/asymmetric_keys/pkcs7_verify.c         |    52 +-
+ crypto/asymmetric_keys/public_key.c           |     7 +
+ crypto/asymmetric_keys/x509_cert_parser.c     |    24 +
+ crypto/jitterentropy-kcapi.c                  |   100 +-
+ crypto/jitterentropy.c                        |     7 +-
+ crypto/jitterentropy.h                        |     8 +-
+ crypto/ml_dsa/Kconfig                         |    32 +
+ crypto/ml_dsa/Makefile                        |    20 +
+ crypto/ml_dsa/dilithium.h                     |   804 ++
+ crypto/ml_dsa/dilithium_44.c                  |    33 +
+ crypto/ml_dsa/dilithium_44.h                  |   412 +
+ crypto/ml_dsa/dilithium_65.c                  |    33 +
+ crypto/ml_dsa/dilithium_65.h                  |   412 +
+ crypto/ml_dsa/dilithium_87.c                  |    33 +
+ crypto/ml_dsa/dilithium_87.h                  |   412 +
+ crypto/ml_dsa/dilithium_api.c                 |   821 ++
+ crypto/ml_dsa/dilithium_debug.h               |    80 +
+ crypto/ml_dsa/dilithium_ntt.c                 |    89 +
+ crypto/ml_dsa/dilithium_ntt.h                 |    35 +
+ crypto/ml_dsa/dilithium_pack.h                |   285 +
+ crypto/ml_dsa/dilithium_pct.h                 |    53 +
+ crypto/ml_dsa/dilithium_poly.c                |   586 +
+ crypto/ml_dsa/dilithium_poly.h                |   190 +
+ crypto/ml_dsa/dilithium_poly_c.h              |   149 +
+ crypto/ml_dsa/dilithium_poly_common.h         |    35 +
+ crypto/ml_dsa/dilithium_polyvec.h             |   363 +
+ crypto/ml_dsa/dilithium_polyvec_c.h           |   114 +
+ .../dilithium_pure_rejection_vectors_44.h     |   812 ++
+ .../dilithium_pure_rejection_vectors_65.h     |  8290 ++++++++++++
+ .../dilithium_pure_rejection_vectors_87.h     | 10761 ++++++++++++++++
+ crypto/ml_dsa/dilithium_reduce.h              |   108 +
+ crypto/ml_dsa/dilithium_rounding.c            |   128 +
+ crypto/ml_dsa/dilithium_rounding.h            |    45 +
+ crypto/ml_dsa/dilithium_selftest.c            |   183 +
+ crypto/ml_dsa/dilithium_service_helpers.h     |    99 +
+ crypto/ml_dsa/dilithium_sig.c                 |   404 +
+ crypto/ml_dsa/dilithium_signature_c.c         |   198 +
+ crypto/ml_dsa/dilithium_signature_c.h         |    60 +
+ crypto/ml_dsa/dilithium_signature_helper.c    |   110 +
+ crypto/ml_dsa/dilithium_signature_impl.h      |  1033 ++
+ crypto/ml_dsa/dilithium_type.h                |   281 +
+ crypto/ml_dsa/dilithium_zetas.c               |    67 +
+ crypto/ml_dsa/fips_mode.h                     |    45 +
+ crypto/ml_dsa/signature_domain_separation.c   |   213 +
+ crypto/ml_dsa/signature_domain_separation.h   |    33 +
+ crypto/ml_dsa/small_stack_support.h           |    40 +
+ crypto/sha3_generic.c                         |   241 +-
+ crypto/testmgr.c                              |    14 +
+ crypto/testmgr.h                              |    59 +
+ include/crypto/algapi.h                       |     2 +-
+ include/crypto/public_key.h                   |     1 +
+ include/crypto/sha3.h                         |   433 +-
+ include/linux/oid_registry.h                  |     5 +
+ kernel/module/Kconfig                         |     5 +
+ lib/crypto/Kconfig                            |     7 +
+ lib/crypto/Makefile                           |     6 +
+ lib/crypto/sha3.c                             |   511 +
+ lib/crypto/tests/Kconfig                      |    11 +
+ lib/crypto/tests/Makefile                     |     1 +
+ lib/crypto/tests/sha3_kunit.c                 |   342 +
+ lib/crypto/tests/sha3_testvecs.h              |   231 +
+ scripts/crypto/gen-hash-testvecs.py           |    10 +-
+ scripts/sign-file.c                           |    26 +-
+ 74 files changed, 30050 insertions(+), 354 deletions(-)
+ create mode 100644 Documentation/crypto/sha3.rst
+ create mode 100644 crypto/ml_dsa/Kconfig
+ create mode 100644 crypto/ml_dsa/Makefile
+ create mode 100644 crypto/ml_dsa/dilithium.h
+ create mode 100644 crypto/ml_dsa/dilithium_44.c
+ create mode 100644 crypto/ml_dsa/dilithium_44.h
+ create mode 100644 crypto/ml_dsa/dilithium_65.c
+ create mode 100644 crypto/ml_dsa/dilithium_65.h
+ create mode 100644 crypto/ml_dsa/dilithium_87.c
+ create mode 100644 crypto/ml_dsa/dilithium_87.h
+ create mode 100644 crypto/ml_dsa/dilithium_api.c
+ create mode 100644 crypto/ml_dsa/dilithium_debug.h
+ create mode 100644 crypto/ml_dsa/dilithium_ntt.c
+ create mode 100644 crypto/ml_dsa/dilithium_ntt.h
+ create mode 100644 crypto/ml_dsa/dilithium_pack.h
+ create mode 100644 crypto/ml_dsa/dilithium_pct.h
+ create mode 100644 crypto/ml_dsa/dilithium_poly.c
+ create mode 100644 crypto/ml_dsa/dilithium_poly.h
+ create mode 100644 crypto/ml_dsa/dilithium_poly_c.h
+ create mode 100644 crypto/ml_dsa/dilithium_poly_common.h
+ create mode 100644 crypto/ml_dsa/dilithium_polyvec.h
+ create mode 100644 crypto/ml_dsa/dilithium_polyvec_c.h
+ create mode 100644 crypto/ml_dsa/dilithium_pure_rejection_vectors_44.h
+ create mode 100644 crypto/ml_dsa/dilithium_pure_rejection_vectors_65.h
+ create mode 100644 crypto/ml_dsa/dilithium_pure_rejection_vectors_87.h
+ create mode 100644 crypto/ml_dsa/dilithium_reduce.h
+ create mode 100644 crypto/ml_dsa/dilithium_rounding.c
+ create mode 100644 crypto/ml_dsa/dilithium_rounding.h
+ create mode 100644 crypto/ml_dsa/dilithium_selftest.c
+ create mode 100644 crypto/ml_dsa/dilithium_service_helpers.h
+ create mode 100644 crypto/ml_dsa/dilithium_sig.c
+ create mode 100644 crypto/ml_dsa/dilithium_signature_c.c
+ create mode 100644 crypto/ml_dsa/dilithium_signature_c.h
+ create mode 100644 crypto/ml_dsa/dilithium_signature_helper.c
+ create mode 100644 crypto/ml_dsa/dilithium_signature_impl.h
+ create mode 100644 crypto/ml_dsa/dilithium_type.h
+ create mode 100644 crypto/ml_dsa/dilithium_zetas.c
+ create mode 100644 crypto/ml_dsa/fips_mode.h
+ create mode 100644 crypto/ml_dsa/signature_domain_separation.c
+ create mode 100644 crypto/ml_dsa/signature_domain_separation.h
+ create mode 100644 crypto/ml_dsa/small_stack_support.h
+ create mode 100644 lib/crypto/sha3.c
+ create mode 100644 lib/crypto/tests/sha3_kunit.c
+ create mode 100644 lib/crypto/tests/sha3_testvecs.h
 
 
