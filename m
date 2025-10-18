@@ -1,62 +1,55 @@
-Return-Path: <keyrings+bounces-3255-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3256-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C388BECE81
-	for <lists+keyrings@lfdr.de>; Sat, 18 Oct 2025 13:24:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8814BECEF2
+	for <lists+keyrings@lfdr.de>; Sat, 18 Oct 2025 14:03:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 27A954E9608
-	for <lists+keyrings@lfdr.de>; Sat, 18 Oct 2025 11:24:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CFCE42832D
+	for <lists+keyrings@lfdr.de>; Sat, 18 Oct 2025 12:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080B91E47A5;
-	Sat, 18 Oct 2025 11:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02161E5B64;
+	Sat, 18 Oct 2025 12:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f8U8zij2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NBzlZTtH"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FB719A2A3;
-	Sat, 18 Oct 2025 11:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A1116DEB1;
+	Sat, 18 Oct 2025 12:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760786660; cv=none; b=Dg0xfOOjpXDaoG1OJXgSn8J4y6lpXqZROplAKTCdw5t4n9wKXcCqb18tRhqGCnHbQAFP7cyo9Xv6HdrHIx6WK/wvMKksc5T4gAaU5qo9Z7UA6NLGtsfeRwQyM0MT2p9YC9Osj5uGLO+QvgBVUsW7dDX5sE4ErZRZl5z+15+NTxg=
+	t=1760789019; cv=none; b=fiwQndD3ALVUzcpVxNj3fiGqZ3r5IrGgRyng4bTmkr63mCgNE8Ryvehss0ZkBEl2hl7zzZRAo+prwqt+/wT/NzCKRSCK5LO5hR6/sWQ0SORG59s9Af7BTEd9Od8F+qqV9ofxIUg81LjlWQ1wHZIBG2qP6PPW6TVvMoFASW7C1OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760786660; c=relaxed/simple;
-	bh=vIX+zASVCEWJgvgHuP0y3ZQ3+YtqE6IF2mGxnKPU3/c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kuYg2IW/3Dd+RhvHZrBmlBw1/8pqzgF6IOMiL4bdQ8KahLaI3qQ/89og6nB3e6e2Ch3wc/YLL4NbP+nxVdvTAMp49J2XzkYR3zme4lswrGPatptT5sMhWgkXmAnPrD8nVuRiHECDcYUcB6gk/qsRhkIaS+TqQdiQk4YTPizjHqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f8U8zij2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 401A8C4CEF8;
-	Sat, 18 Oct 2025 11:24:20 +0000 (UTC)
+	s=arc-20240116; t=1760789019; c=relaxed/simple;
+	bh=gYZBW/sWS31ilT+M/E2kXGN9eI1Lhq0dGc4w9/AS2iY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ekOHCqYeJBhHTg8ln7jeDt0/NQh/AdP32MZJImKzZquN8eoXxKn74KmXa4sNRHUiwWvYpvKB46bAYpRbS0jcOEXMZcdaPCmjW4U3Sa/wD8VaVeE0MKo0jUhbcEmuJtOpzYJqQLUwLVF8vDpoyTahkCOlryAWgFrWFadieba7oWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NBzlZTtH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D50C4CEF8;
+	Sat, 18 Oct 2025 12:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760786660;
-	bh=vIX+zASVCEWJgvgHuP0y3ZQ3+YtqE6IF2mGxnKPU3/c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f8U8zij2IuWdF7RuKtpq8H00vV5AIAKz3SCEdteoXkI6zkf404UAKU+cWnW/6/BE2
-	 lRgvaD7MLJvlN0tPuCpJJJTurWimo9JSItGt5KKbR4RWOO428+iI5V1fPKYMth0tWR
-	 bHPUVQfYSB7sGk/STLO+UknHGaIB4Wo/6wJPZt9cbxLNNqIGvLtcK+QqrRmdB7PiKs
-	 VA6YnNfD04IHPIcaY0dlItgXyEtOred16PWXNu/eRiZqn+WhLmvIi+KhHRGxu3/P3d
-	 7SeL/x+Fwo+XVzSRPyQb7TXoLFJrQPOy4/8jy3JEKrx5Geuzkti7MPm6fT+gMCHEid
-	 Fc4AcN7IsbGUA==
-Date: Sat, 18 Oct 2025 14:24:17 +0300
+	s=k20201202; t=1760789019;
+	bh=gYZBW/sWS31ilT+M/E2kXGN9eI1Lhq0dGc4w9/AS2iY=;
+	h=Date:From:To:Cc:Subject:From;
+	b=NBzlZTtHgufiqmMRKOjNF3nci0n7fHcV6NwpfkopUpgS5lJcz1uQqsflYePLC2pT8
+	 9KmAOliQbaqdsO63IFHncCDH8AGxacZTvNWMfKGKTFAviYwwQEivWkB+fETMOZjuyD
+	 WbVGr38uAQ7AIywYGsUUZYc6ZNAB92ndT6Otzg4Z20f+SngJXdgg0ah63GUpHd/Hzx
+	 8SNeJW6SYhsC5Fjkr6FE2vTDbp1Mke3HzQb74r0QV7Dao9Jy9ysPZUVfaQvLyxkLnY
+	 h2xKVLDbW4EnNtpdklOs83rN8CoaV2muNgf50wTTteWdZ/OD1wRjWvxUHt4gUEgLW4
+	 PLAYQbCyvAmpA==
+Date: Sat, 18 Oct 2025 15:03:35 +0300
 From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: Gopi Krishna Menon <krishnagopi487@gmail.com>, zohar@linux.ibm.com,
-	James.Bottomley@hansenpartnership.com, corbet@lwn.net,
-	Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>,
-	Pankaj Gupta <pankaj.gupta@nxp.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org, david.hunter.linux@gmail.com,
-	linux-kernel-mentees@lists.linux.dev, khalid@kernel.org
-Subject: Re: [PATCH] docs: trusted-encrypted: fix htmldocs build error
-Message-ID: <aPN44cFbtIvwnbbY@kernel.org>
-References: <20251017181135.354411-1-krishnagopi487@gmail.com>
- <7928c851-649d-47f4-a747-3314c0d45706@infradead.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+	David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
+	linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Stuart Yoder <stuart.yoder@arm.com>
+Subject: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-v6.18-rc2
+Message-ID: <aPOB9lMvnrXLf4ZD@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -65,32 +58,34 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7928c851-649d-47f4-a747-3314c0d45706@infradead.org>
 
-On Fri, Oct 17, 2025 at 12:27:43PM -0700, Randy Dunlap wrote:
-> Adding patch signers.
-> 
-> Fixes: 95c46f40aac4 ("docs: trusted-encrypted: trusted-keys as protected keys")
-> 
-> although that might not matter if this patch is only in a -next tree.
-> 
-> 
-> On 10/17/25 11:11 AM, Gopi Krishna Menon wrote:
-> > Running "make htmldocs" generates the following build error and
-> > warning in trusted-encrypted.rst:
-> > 
-> > Documentation/security/keys/trusted-encrypted.rst:18: ERROR: Unexpected indentation.
-> > Documentation/security/keys/trusted-encrypted.rst:19: WARNING: Block quote ends without a blank line; unexpected unindent.
-> > 
-> > Add a blank line before bullet list and fix the indentation of text to
-> > fix the build error and resolve the warning.
-> > 
-> > Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
-> 
-> Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-> Tested-by: Randy Dunlap <rdunlap@infradead.org>
+The following changes since commit f406055cb18c6e299c4a783fc1effeb16be41803:
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+  Merge tag 'arm64-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux (2025-10-17 13:04:21 -1000)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-v6.18-rc2
+
+for you to fetch changes up to dbfdaeb381a49a7bc753d18e2876bc56a15e01cc:
+
+  tpm_crb: Add idle support for the Arm FF-A start method (2025-10-18 14:33:22 +0300)
+
+----------------------------------------------------------------
+Hi,
+
+If possible, could you still pick this change for v6.18 [1]? The change in
+question  corrects the state transitions for ARM FF-A to match the spec and
+how tpm_crb behaves on other platforms.
+
+[1] https://lore.kernel.org/linux-integrity/aPN59bwcUrieMACf@kernel.org/
 
 BR, Jarkko
+
+----------------------------------------------------------------
+Stuart Yoder (1):
+      tpm_crb: Add idle support for the Arm FF-A start method
+
+ drivers/char/tpm/tpm_crb.c | 29 ++++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
 
