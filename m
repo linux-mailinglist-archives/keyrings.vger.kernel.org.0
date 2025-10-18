@@ -1,113 +1,79 @@
-Return-Path: <keyrings+bounces-3258-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3259-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0A04BECF70
-	for <lists+keyrings@lfdr.de>; Sat, 18 Oct 2025 14:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECAD2BEDA44
+	for <lists+keyrings@lfdr.de>; Sat, 18 Oct 2025 21:25:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0149F3BA04C
-	for <lists+keyrings@lfdr.de>; Sat, 18 Oct 2025 12:17:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 847C65E52ED
+	for <lists+keyrings@lfdr.de>; Sat, 18 Oct 2025 19:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1DA2C3774;
-	Sat, 18 Oct 2025 12:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 766C42D979F;
+	Sat, 18 Oct 2025 19:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ti9sBBQZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mkIg6/ll"
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63392874E4
-	for <keyrings@vger.kernel.org>; Sat, 18 Oct 2025 12:17:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49514275B06;
+	Sat, 18 Oct 2025 19:23:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760789865; cv=none; b=Sh7AcesPm4W8wCvYd3nq2cyJL/M1RfQRCtktcxUTBn/8AnYTz9rzYEXovco4VYJYNDrFLFtv3Tn4VlwB463Lo5CCMFgJc/SF78jOZ+6cMtyZAxOhDdSU5Ph19HxuJs32WFsRB365IJqjpQwg4YwQE6hwdJcZsW/nl2B0pNNucug=
+	t=1760815393; cv=none; b=ecnnU1lfABYhqh2SRFLcXerOEOYwfI02P2mK1I5ur9T2Ds8xCuzMQ0Spjv+bJfRm8SQHuqt1ec6aZZqxdw0FfKrY5oB42ydRAH0vgunnmZcx0oumaqs2cUmNBV9JzSZ1E89aT78Z7+O51Bs9ukzgxOxpkB6zT6pqX6Cnc2O+Gqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760789865; c=relaxed/simple;
-	bh=gGt73CVvuv5BT7hEaNbmyxUbjAu15wTDGJLTO48O5vg=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=IyPc3dh0HUANZRDmFiThEOOFdRjn3PjMsDxTUBoXMoGRhF6e8L6g+l9a02x+VWBCS9lk0eyijx2nbbDxkwL3PdUXwiqzGR5gVuILGFh38Hqs8tcmhD2ho0/38kKQhUh2ghYH1Aax8fZ7eite3c916ARssBbfXJhG5AT5EEsbMgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ti9sBBQZ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1760789862;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OlH8cS7HLtTecR83sZbVKnOJnUxVHiktjAnu92Jotug=;
-	b=Ti9sBBQZDYQnbzqlE/KYKPPFWyXHuzS2VAyf8EQZlxhwpxGQyAr/po2q0rxtemK56s12ns
-	VxeiCWyfWH3pZB7sefgiBNNcjHGvergrtZsZcRGa2BqdDi0opuEW0F0AtMzEtiAmv8IKvj
-	hRpEnN+TUuv0c1EuteCMPZR0ov5Dd9s=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-10-g8kbWojGPBKO4eyAIDi7jg-1; Sat,
- 18 Oct 2025 08:17:36 -0400
-X-MC-Unique: g8kbWojGPBKO4eyAIDi7jg-1
-X-Mimecast-MFC-AGG-ID: g8kbWojGPBKO4eyAIDi7jg_1760789854
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3C2D8195608A;
-	Sat, 18 Oct 2025 12:17:33 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.57])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CD5F51800353;
-	Sat, 18 Oct 2025 12:17:27 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <395b82fc-728b-45da-afa8-c4ac8b625a45@csgroup.eu>
-References: <395b82fc-728b-45da-afa8-c4ac8b625a45@csgroup.eu> <20251017144311.817771-1-dhowells@redhat.com> <20251017144311.817771-2-dhowells@redhat.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: dhowells@redhat.com, Eric Biggers <ebiggers@kernel.org>,
-    "Jason A . Donenfeld" <Jason@zx2c4.com>,
-    Ard Biesheuvel <ardb@kernel.org>,
-    Herbert Xu <herbert@gondor.apana.org.au>,
-    Stephan Mueller <smueller@chronox.de>,
-    Lukas Wunner <lukas@wunner.de>,
-    Ignat Korchagin <ignat@cloudflare.com>,
-    Luis Chamberlain <mcgrof@kernel.org>,
-    Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>,
-    Sami Tolvanen <samitolvanen@google.com>,
-    linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
-    linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
-    Harald Freudenberger <freude@linux.ibm.com>,
-    Holger Dengler <dengler@linux.ibm.com>, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v6 01/17] s390/sha3: Rename conflicting functions
+	s=arc-20240116; t=1760815393; c=relaxed/simple;
+	bh=okaLHNChsfatPFsextwxLTnkXUZZn0XdmVRPBuesZG0=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=EAi0/uds8b2Opxp+bVcJmlDCUnFdDvuveGkpB+G98B3Dc3TGhonwtXB9SSN2haxxnbaCkoSTPul7gSK2sPuiJQ2gvtRB9RbsVNsEMIcjYWk0pu8nfS02jb9dDe5J/VYJ+xfcTN9BTbO0fNfdDTCz24kTaaV1DFbsPzmrVhVe4eA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mkIg6/ll; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242DDC4CEF8;
+	Sat, 18 Oct 2025 19:23:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1760815393;
+	bh=okaLHNChsfatPFsextwxLTnkXUZZn0XdmVRPBuesZG0=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=mkIg6/llf7adv5heJFy3Ov0LoZTOITS/Ai+fY8DmEPPOoUy6n8CS18kWj6NyD3DqH
+	 JA+FbD0B0oqkYr5z64jEItRIRE8oFrD92vicS8gtqewci68ziJCJJycnf0LdS6ql8U
+	 wvcTgKqyvgaqg8f+6Vs93nqzMkELz7HpNbYGGBgsZX7Z1dgQAPhQ8WNJaMoExNs5mE
+	 teQ75DTGVaNOdMGTo69LqymTqkI+I/XjUqs13c11w5/+z71IAaU1fzRnl7oVqxgauA
+	 Su3tbP+TchuiE0CjbyxJyncVajxKIQU5wGUQg/BK8XPuPOlTQO1RohcCmjFhKpae63
+	 LbvdGSC5b0Ucw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70E4139EFBBA;
+	Sat, 18 Oct 2025 19:22:57 +0000 (UTC)
+Subject: Re: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-v6.18-rc2
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <aPOB9lMvnrXLf4ZD@kernel.org>
+References: <aPOB9lMvnrXLf4ZD@kernel.org>
+X-PR-Tracked-List-Id: <linux-integrity.vger.kernel.org>
+X-PR-Tracked-Message-Id: <aPOB9lMvnrXLf4ZD@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-v6.18-rc2
+X-PR-Tracked-Commit-Id: dbfdaeb381a49a7bc753d18e2876bc56a15e01cc
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 648937f64a09ae4a938a6793f95207d955098038
+Message-Id: <176081537600.3081941.14515189649303697967.pr-tracker-bot@kernel.org>
+Date: Sat, 18 Oct 2025 19:22:56 +0000
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org, linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org, Stuart Yoder <stuart.yoder@arm.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 18 Oct 2025 13:17:26 +0100
-Message-ID: <937031.1760789846@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
+The pull request you sent on Sat, 18 Oct 2025 15:03:35 +0300:
 
-> Le 17/10/2025 =C3=A0 16:42, David Howells a =C3=A9crit=C2=A0:
-> > Rename the s390 sha3_* functions to have an "s390_" prefix to avoid
-> > conflict with generic code.
->=20
-> The functions are static, why would they conflict with generic code ?
+> git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-v6.18-rc2
 
-Because of #include <crypto/sha3.h>
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/648937f64a09ae4a938a6793f95207d955098038
 
-> Also generic code doesn't have such functions at the moment, are they add=
-ed by
-> a follow patch ?
+Thank you!
 
-Yes.  See patch 3.
-
-David
-
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
