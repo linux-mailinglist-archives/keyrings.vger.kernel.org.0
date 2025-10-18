@@ -1,108 +1,113 @@
-Return-Path: <keyrings+bounces-3257-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3258-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id B38ADBECEFD
-	for <lists+keyrings@lfdr.de>; Sat, 18 Oct 2025 14:06:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0A04BECF70
+	for <lists+keyrings@lfdr.de>; Sat, 18 Oct 2025 14:17:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 824B04E0F1D
-	for <lists+keyrings@lfdr.de>; Sat, 18 Oct 2025 12:06:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0149F3BA04C
+	for <lists+keyrings@lfdr.de>; Sat, 18 Oct 2025 12:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DCB922DF99;
-	Sat, 18 Oct 2025 12:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1DA2C3774;
+	Sat, 18 Oct 2025 12:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E8bFEcfm"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ti9sBBQZ"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66981EE033;
-	Sat, 18 Oct 2025 12:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63392874E4
+	for <keyrings@vger.kernel.org>; Sat, 18 Oct 2025 12:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1760789201; cv=none; b=SzpppgMV76pZDTMov5di0tZIITres5n1VdOUNld+shuiYpqSlqB9DRnyTvCx+0+Ss3F/F42Kz4/MmgucSZ2dvUgJAvUPrs6xM3EKrVkMaTOJALIwmlOsBt8TPNJ6GplO5kQkLms/OCO/4WL2bqesn9jzBPW5CiAc+iSTFvbKMaU=
+	t=1760789865; cv=none; b=Sh7AcesPm4W8wCvYd3nq2cyJL/M1RfQRCtktcxUTBn/8AnYTz9rzYEXovco4VYJYNDrFLFtv3Tn4VlwB463Lo5CCMFgJc/SF78jOZ+6cMtyZAxOhDdSU5Ph19HxuJs32WFsRB365IJqjpQwg4YwQE6hwdJcZsW/nl2B0pNNucug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1760789201; c=relaxed/simple;
-	bh=MU8Do5ebwRc7sGjXYEfAMbTRJAmvXnfsw8vvxe+7bI8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=px/vjLYPrJlNLltoHzEuRHL3wDVP+WHietBEklWZvFwhpeVjgLWylUxOh004bqwvojEQtwi6ie8nWQQkRtlqbpyY9OGNUvfMVQ4HYWaUmTNXYGqxE0UJNljslyVjSSgZgot9cqsV8KdCDut3IGgoh/GE/LVsCmVjGH62ot/smSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E8bFEcfm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11282C4CEFE;
-	Sat, 18 Oct 2025 12:06:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1760789200;
-	bh=MU8Do5ebwRc7sGjXYEfAMbTRJAmvXnfsw8vvxe+7bI8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E8bFEcfmDdhVSBjYEaQ4jl3ALMi97RgWN+BNQnqO5cmjilFsZWalAslV2iO0+V2Th
-	 +WtYgW1UYiwVbtYPFFC5LFVfcmFOdP//FWbRj2y+W6cn5LNyK1OR59vvyLVD6hiAFP
-	 eIOysACLOflXSae+7fpWB/YHYFfYplAvpir2wJRvwdnU1cQnv+Qnm7uIH0WdPtbKmA
-	 autVx5VNSvXO5loG6enbhkRb0vra29OBJZis0rY8qKeeDNieSBo2CJLuuABzAys2Pm
-	 k8uZKQz460KuOxCnvcFiv068YdDYdUBHINKChLNnet4aUtTZ4h1oWxmyj8db0WkrGm
-	 YESE6VEV42xRg==
-Date: Sat, 18 Oct 2025 15:06:36 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
-	David Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
-	linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Stuart Yoder <stuart.yoder@arm.com>
-Subject: Re: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-v6.18-rc2
-Message-ID: <aPOCzO_kDRojN4wi@kernel.org>
-References: <aPOB9lMvnrXLf4ZD@kernel.org>
+	s=arc-20240116; t=1760789865; c=relaxed/simple;
+	bh=gGt73CVvuv5BT7hEaNbmyxUbjAu15wTDGJLTO48O5vg=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=IyPc3dh0HUANZRDmFiThEOOFdRjn3PjMsDxTUBoXMoGRhF6e8L6g+l9a02x+VWBCS9lk0eyijx2nbbDxkwL3PdUXwiqzGR5gVuILGFh38Hqs8tcmhD2ho0/38kKQhUh2ghYH1Aax8fZ7eite3c916ARssBbfXJhG5AT5EEsbMgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ti9sBBQZ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1760789862;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OlH8cS7HLtTecR83sZbVKnOJnUxVHiktjAnu92Jotug=;
+	b=Ti9sBBQZDYQnbzqlE/KYKPPFWyXHuzS2VAyf8EQZlxhwpxGQyAr/po2q0rxtemK56s12ns
+	VxeiCWyfWH3pZB7sefgiBNNcjHGvergrtZsZcRGa2BqdDi0opuEW0F0AtMzEtiAmv8IKvj
+	hRpEnN+TUuv0c1EuteCMPZR0ov5Dd9s=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-10-g8kbWojGPBKO4eyAIDi7jg-1; Sat,
+ 18 Oct 2025 08:17:36 -0400
+X-MC-Unique: g8kbWojGPBKO4eyAIDi7jg-1
+X-Mimecast-MFC-AGG-ID: g8kbWojGPBKO4eyAIDi7jg_1760789854
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3C2D8195608A;
+	Sat, 18 Oct 2025 12:17:33 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.57])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CD5F51800353;
+	Sat, 18 Oct 2025 12:17:27 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <395b82fc-728b-45da-afa8-c4ac8b625a45@csgroup.eu>
+References: <395b82fc-728b-45da-afa8-c4ac8b625a45@csgroup.eu> <20251017144311.817771-1-dhowells@redhat.com> <20251017144311.817771-2-dhowells@redhat.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: dhowells@redhat.com, Eric Biggers <ebiggers@kernel.org>,
+    "Jason A . Donenfeld" <Jason@zx2c4.com>,
+    Ard Biesheuvel <ardb@kernel.org>,
+    Herbert Xu <herbert@gondor.apana.org.au>,
+    Stephan Mueller <smueller@chronox.de>,
+    Lukas Wunner <lukas@wunner.de>,
+    Ignat Korchagin <ignat@cloudflare.com>,
+    Luis Chamberlain <mcgrof@kernel.org>,
+    Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>,
+    Sami Tolvanen <samitolvanen@google.com>,
+    linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
+    linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
+    Harald Freudenberger <freude@linux.ibm.com>,
+    Holger Dengler <dengler@linux.ibm.com>, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v6 01/17] s390/sha3: Rename conflicting functions
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aPOB9lMvnrXLf4ZD@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 18 Oct 2025 13:17:26 +0100
+Message-ID: <937031.1760789846@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Sat, Oct 18, 2025 at 03:03:39PM +0300, Jarkko Sakkinen wrote:
-> The following changes since commit f406055cb18c6e299c4a783fc1effeb16be41803:
-> 
->   Merge tag 'arm64-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux (2025-10-17 13:04:21 -1000)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git tags/tpmdd-next-v6.18-rc2
-> 
-> for you to fetch changes up to dbfdaeb381a49a7bc753d18e2876bc56a15e01cc:
-> 
->   tpm_crb: Add idle support for the Arm FF-A start method (2025-10-18 14:33:22 +0300)
-> 
-> ----------------------------------------------------------------
-> Hi,
-> 
-> If possible, could you still pick this change for v6.18 [1]? The change in
-> question  corrects the state transitions for ARM FF-A to match the spec and
-> how tpm_crb behaves on other platforms.
-> 
-> [1] https://lore.kernel.org/linux-integrity/aPN59bwcUrieMACf@kernel.org/
-> 
-> BR, Jarkko
-> 
-> ----------------------------------------------------------------
-> Stuart Yoder (1):
->       tpm_crb: Add idle support for the Arm FF-A start method
-> 
->  drivers/char/tpm/tpm_crb.c | 29 ++++++++++++++++++++---------
->  1 file changed, 20 insertions(+), 9 deletions(-)
+Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 
-I don't have the specific hardware to test this but I did a quick
-compilation test:
+> Le 17/10/2025 =C3=A0 16:42, David Howells a =C3=A9crit=C2=A0:
+> > Rename the s390 sha3_* functions to have an "s390_" prefix to avoid
+> > conflict with generic code.
+>=20
+> The functions are static, why would they conflict with generic code ?
 
-make CROSS_COMPILE=aarch64-linux-gnu- ARCH=arm64 tinyconfig && ./scripts/config --file .config -e CONFIG_KEYS -e CONFIG_TCG_TPM -e CONFIG_64BIT -e CONFIG_TRUSTED_KEYS -e CONFIG_TTY -e CONFIG_PROCFS -e CONFIG_SYSFS -e CONFIG_TCG_VTPM_PROXY -e CONFIG_EFI -e CONFIG_ACPI -e CONFIG_ARM_FFA_TRANSPORT -e CONFIG_TCG_CRB && yes '' | make CROSS_COMPILE=aarch64-linux-gnu- ARCH=arm64 oldconfig && make CROSS_COMPILE=aarch64-linux-gnu- ARCH=arm64 -j$(nproc)
+Because of #include <crypto/sha3.h>
 
-And in addition with similar features x86 compilation test and run
-my smoke tests with swtpm emulating tpm_crb (kselftest, keyring,
-trusted keys type of stuff automated).
+> Also generic code doesn't have such functions at the moment, are they add=
+ed by
+> a follow patch ?
 
-Those should localize any possible corrateral damage to only FFA,
-if any (and not very likely).
+Yes.  See patch 3.
 
-BR, Jarkko
+David
+
 
