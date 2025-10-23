@@ -1,62 +1,60 @@
-Return-Path: <keyrings+bounces-3267-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3268-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C37C01D6F
-	for <lists+keyrings@lfdr.de>; Thu, 23 Oct 2025 16:40:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4956C02CD0
+	for <lists+keyrings@lfdr.de>; Thu, 23 Oct 2025 19:52:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C9553B245B
-	for <lists+keyrings@lfdr.de>; Thu, 23 Oct 2025 14:33:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E3B93AB453
+	for <lists+keyrings@lfdr.de>; Thu, 23 Oct 2025 17:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF571DFDA1;
-	Thu, 23 Oct 2025 14:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5363934AAE5;
+	Thu, 23 Oct 2025 17:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ARAU11sL"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="J6jXXkXM"
 X-Original-To: keyrings@vger.kernel.org
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677A232BF3A
-	for <keyrings@vger.kernel.org>; Thu, 23 Oct 2025 14:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340F134A787
+	for <keyrings@vger.kernel.org>; Thu, 23 Oct 2025 17:52:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761230012; cv=none; b=NRGFrTJ/e0gTvYQpCS/jjmKpeJ+cEJmwF0z0WCevkbCPO6BZKsG/JHITT4qKzV3zlaz+xCStP20r0V7Uo9FXVegDmA03VqAb3wv56AstKf+/7c5R1XfnTLbWIU+poK75QBJ9bfoj1d3LRXC+gktHRapgzkPi+OQq3sBkyMcZZow=
+	t=1761241977; cv=none; b=ayJ5C0RWd2GdCOWX91LyVvu/z2/DRWx2qfiFc+Ko6aC/aDug5wO0qO9fItvAtEHNLLrLVADvb5sp5X7s5jey2yTpf9Rg5yWtEz+xnWYNS3vgw0KlMuKJa+3YvNgTPwKEAlTTE8wO0LYCY2ELN7mFCXLiJcnLJO5fLnK4K95DA8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761230012; c=relaxed/simple;
-	bh=q1noXuVmhs6IzlRRMFuZy58aKYcPzSJFmQpmGkuDL18=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EK8P6RPJyBuJ6nmNUbPZF9b4f0qqm0yGDXUanKRk0SqS3/wV0JerJjW8ZzahDm32bg8nM2k/7WZZvl/rwtuoiO+XbUu352q1yL8XiFctf6QDE1M7mtDWlrKlP+19gdzrKm0UKoZP9CeziCP0dBrqplFA/WhgTlFFyn/oPxzasRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ARAU11sL; arc=none smtp.client-ip=91.218.175.172
+	s=arc-20240116; t=1761241977; c=relaxed/simple;
+	bh=3/Hb62kc+NYq2C0hsOSogiX9/a2NhcysJRz/S17ajqo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tRnlrq5J6NkjTdPMnpn/zUa527JOll3EksVd8XLxY1H5Mgh7NEovNOaW7Q+nAPTLj7AmOve1qGiQawjW9vutsFafco9YmONt3/1QDNbdxn0xlZlujSGaeiySgKTmi0vaOvxEVTcJlMs/+dS5Upr/wogKd95hCdYr6shX5ztgWvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=J6jXXkXM; arc=none smtp.client-ip=91.218.175.183
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761230008;
+	t=1761241963;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cI5x2xe0LgJrlOJDS01Ib8lu2qcPZVA4kvnCx2FtvEk=;
-	b=ARAU11sLfSlto6LfgVIvpg8VCG786XBRpbRUGlpOnhdSTI3veQOPtRMbwqdkrvU6iU2De8
-	ZCHpG4ThiWZ8OuV/qbIil8iw5kSYtEyvVFH88Q+sVDf0KDHfc3pihX3+5lzkf9dn4VdmjS
-	u46a48AJdtQRJqI0LSUJBwtA3X8OlQk=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vENFCP7b3Pf6ElRkmq5+rmKi7BK0xmEqT+h7PKf7AdY=;
+	b=J6jXXkXMi8Ubq7RroFsuYEnRLp8rKwwL6hlNp0XDYItLFMdhPWHPb5Hn5PwIZhfMh/cdwb
+	NOPmbD/jd23Pk3v5Sbd7GPkIrW2MeVDMzak4b00jtpZ5ktFeMlxdVKsflh3kZBuFsiDCsw
+	/fsTnKEcza+D9bagRrMkNpLuzQUXQrI=
 From: Thorsten Blum <thorsten.blum@linux.dev>
 To: David Howells <dhowells@redhat.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Ignat Korchagin <ignat@cloudflare.com>,
 	Jarkko Sakkinen <jarkko@kernel.org>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>
 Cc: Thorsten Blum <thorsten.blum@linux.dev>,
 	keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] keys: Remove unnecessary local variable from proc_keys_show
-Date: Thu, 23 Oct 2025 16:32:33 +0200
-Message-ID: <20251023143231.2086-4-thorsten.blum@linux.dev>
-In-Reply-To: <20251023143231.2086-2-thorsten.blum@linux.dev>
-References: <20251023143231.2086-2-thorsten.blum@linux.dev>
+	linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH] keys: Annotate struct asymmetric_key_id with __counted_by
+Date: Thu, 23 Oct 2025 19:48:11 +0200
+Message-ID: <20251023174810.75805-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -66,37 +64,28 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-The local variable 'rc' is only used to temporary store the result of
-calling key_task_permission(). Use the result directly and remove the
-local variable.
+Add the __counted_by() compiler attribute to the flexible array member
+'data' to improve access bounds-checking via CONFIG_UBSAN_BOUNDS and
+CONFIG_FORTIFY_SOURCE.
 
 Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 ---
- security/keys/proc.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/keys/asymmetric-type.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/security/keys/proc.c b/security/keys/proc.c
-index 4f4e2c1824f1..39af57af2aad 100644
---- a/security/keys/proc.c
-+++ b/security/keys/proc.c
-@@ -160,7 +160,6 @@ static int proc_keys_show(struct seq_file *m, void *v)
- 	char xbuf[16];
- 	short state;
- 	u64 timo;
--	int rc;
+diff --git a/include/keys/asymmetric-type.h b/include/keys/asymmetric-type.h
+index 69a13e1e5b2e..1b91c8f98688 100644
+--- a/include/keys/asymmetric-type.h
++++ b/include/keys/asymmetric-type.h
+@@ -49,7 +49,7 @@ enum asymmetric_payload_bits {
+  */
+ struct asymmetric_key_id {
+ 	unsigned short	len;
+-	unsigned char	data[];
++	unsigned char	data[] __counted_by(len);
+ };
  
- 	struct keyring_search_context ctx = {
- 		.index_key		= key->index_key,
-@@ -188,8 +187,7 @@ static int proc_keys_show(struct seq_file *m, void *v)
- 	}
- 
- 	/* check whether the current task is allowed to view the key */
--	rc = key_task_permission(key_ref, ctx.cred, KEY_NEED_VIEW);
--	if (rc < 0)
-+	if (key_task_permission(key_ref, ctx.cred, KEY_NEED_VIEW) < 0)
- 		return 0;
- 
- 	now = ktime_get_real_seconds();
+ struct asymmetric_key_ids {
 -- 
 2.51.0
 
