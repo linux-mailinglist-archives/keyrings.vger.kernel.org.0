@@ -1,106 +1,89 @@
-Return-Path: <keyrings+bounces-3273-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3274-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ECC3C07D5F
-	for <lists+keyrings@lfdr.de>; Fri, 24 Oct 2025 21:04:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AFE5C0810A
+	for <lists+keyrings@lfdr.de>; Fri, 24 Oct 2025 22:30:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1C543BF34F
-	for <lists+keyrings@lfdr.de>; Fri, 24 Oct 2025 19:04:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBAE81C424E7
+	for <lists+keyrings@lfdr.de>; Fri, 24 Oct 2025 20:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53CFF34D4F5;
-	Fri, 24 Oct 2025 19:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D762F4A04;
+	Fri, 24 Oct 2025 20:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CThPa4s0"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="sD9SzhQj"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAD534D4EE;
-	Fri, 24 Oct 2025 19:04:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889A82F4A1B
+	for <keyrings@vger.kernel.org>; Fri, 24 Oct 2025 20:30:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761332654; cv=none; b=d0hhUnqi/w5MVPxdYeIYs//i8b2x2i7bwfnoelzKjvEN7RS9uKDfWuCAWE4lGNLSrkVdGmIAu0hisF+G8x0i5yDTXCDyXjFJN5t3nz0ZUVmI7gch/zoeGg373J/OZqy3JGyfZdc2pP0eKvfKVHfla3x5bM+G+WfZ7mEU6ADaz/E=
+	t=1761337834; cv=none; b=I2sqcWQT3CkFLZDpYWwNI9JRm/UCDzX/e5XVtDcQbLwCEfR3j7GaAIVbSvfHUeVMvHq3L+/+Bb/ALyjxCaegGeZH0YmXHpOw3Mu1QXQ/czoowqjtsDuMxQhaf51Ez3lNZCFjPS5rvUtq3eOM7lNzv0M2sIFlCYlzW44aIqoc2sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761332654; c=relaxed/simple;
-	bh=5OHx+g8YoIqzlXMWXSG4M5gqkZw0P+ihv8h0OH2RW7Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kh8aZ8a1cg0A1ubQidj1L9NMNaJuIuSkybh2wKX6kJt6WYip6+/H/NroIsAzYVuf2ov251UWa/ApT/Lmsl1xPY2UYez6knlpLW2BkPQRkRYe09v5uCh99rdcS6zwTJjmoc93aVYFPKf/KdsymoLTzmVOqenCiteR3sYL/F9in+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CThPa4s0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F392C4CEF1;
-	Fri, 24 Oct 2025 19:04:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761332652;
-	bh=5OHx+g8YoIqzlXMWXSG4M5gqkZw0P+ihv8h0OH2RW7Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CThPa4s0ODWejOicDfOlbkuKQZSxQRA9CGpWnTN7EeHmgI0Qw61usVe9xR1CxfaY5
-	 65THjRN/qGKktWySFUMMA8WslJpjo1jF+jkdT86Lijpa/kBaM7HORHP/7r+o85AaHs
-	 nahRJympom+M1zUwIlXMMHftgtBZfqJw8owGaEplO58piF/MfIDZo370wN3uVwOHH6
-	 sFXpJIdRZSHnA9dhrM1lfGAkjCUXJ6PVZuJeeC45R1+2McXnhUbNahv7T/zphQGEm+
-	 lt2SLu5PXWDyQq1ElOqmjc7ywhHoDllWauIeN7XAwGG7yiM4CWDKn1hinpvy/DXGXa
-	 s2Q6vYRWWHbgA==
-Date: Fri, 24 Oct 2025 22:04:08 +0300
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>, keyrings@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] keys: Fix typos in 'struct key_type' function pointer
- comments
-Message-ID: <aPvNqCRlMN5c8GaR@kernel.org>
-References: <20251016123619.98728-2-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1761337834; c=relaxed/simple;
+	bh=nQeNx77M9GNsvNsj0uaAFNT8vsSZ1sInNZwHTtssP74=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=VnlBqAU4ZYjrkMMTO6tJu8sB6mVolupJRAfmdYEzA/BvRg7FvWyLjF20mswkfQ40iMsfCraTFuUyH3o5hXYX/lCeGqea8nPPJegyCal5UB+yYan5sJFC1wZmMGd6o9mTGMNqd99vY/yY+IWkRn47keOXmDHsB2dBSOlyTicCGe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=sD9SzhQj; arc=none smtp.client-ip=95.215.58.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761337829;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LUAc7RyUs/W8P3y6SnjtTEvtL3gBSKAWO9I3OtKKUT8=;
+	b=sD9SzhQjlOjtKL1woGx3mGNpYb1wkdGlAcJHLUr+y+V5Y4WWsIudhfcQT+aI4FEBMrTUjt
+	id+AnqQCxynrDsy+hWlLpv+tmlP5WQDHtbSyihS4VkjetUg8dBoHqfOdDhf01lQws4RY7Z
+	ItMf9dbP12KBmABelSybbtQ2h9MJACU=
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251016123619.98728-2-thorsten.blum@linux.dev>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH] keys: Fix typos in 'struct key_type' function pointer
+ comments
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Thorsten Blum <thorsten.blum@linux.dev>
+In-Reply-To: <aPvNqCRlMN5c8GaR@kernel.org>
+Date: Fri, 24 Oct 2025 22:29:57 +0200
+Cc: David Howells <dhowells@redhat.com>,
+ keyrings@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <E9856573-8D4D-4392-9AE5-5D40D1FC13F9@linux.dev>
+References: <20251016123619.98728-2-thorsten.blum@linux.dev>
+ <aPvNqCRlMN5c8GaR@kernel.org>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 
- On Thu, Oct 16, 2025 at 02:36:19PM +0200, Thorsten Blum wrote:
-> s/it/if/ and s/revokation/revocation/
+On 24. Oct 2025, at 21:04, Jarkko Sakkinen wrote:
+> On Thu, Oct 16, 2025 at 02:36:19PM +0200, Thorsten Blum wrote:
+>> s/it/if/ and s/revokation/revocation/
+>> ...
 > 
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> ---
->  include/linux/key-type.h | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> The comment is also formatted incorrectly. It should be:
 > 
-> diff --git a/include/linux/key-type.h b/include/linux/key-type.h
-> index 5caf3ce82373..5eb2e64803db 100644
-> --- a/include/linux/key-type.h
-> +++ b/include/linux/key-type.h
-> @@ -107,11 +107,11 @@ struct key_type {
->  	 */
->  	int (*match_preparse)(struct key_match_data *match_data);
->  
-> -	/* Free preparsed match data (optional).  This should be supplied it
-> +	/* Free preparsed match data (optional).  This should be supplied if
->  	 * ->match_preparse() is supplied. */
+> 	/* 
+> 	 * Free preparsed match data (optional).  This should be supplied if
+> 	 * ->match_preparse() is supplied. 
+> 	 */
 
-The comment is also formatted incorrectly. It should be:
+The other struct fields are all commented with the first sentence
+starting after the '/*'.
 
-	/* 
-	 * Free preparsed match data (optional).  This should be supplied if
-	 * ->match_preparse() is supplied. 
-	 */
+I can fix this one trailing '*/' in v2, but the others should probably
+be fixed in a separate patch?
 
->  	void (*match_free)(struct key_match_data *match_data);
->  
-> -	/* clear some of the data from a key on revokation (optional)
-> +	/* clear some of the data from a key on revocation (optional)
->  	 * - the key's semaphore will be write-locked by the caller
->  	 */
+Thanks,
+Thorsten
 
-Ditto.
-
->  	void (*revoke)(struct key *key);
-> -- 
-> 2.51.0
-> 
-
-BR, Jarkko
 
