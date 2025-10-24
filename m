@@ -1,92 +1,144 @@
-Return-Path: <keyrings+bounces-3268-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3269-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4956C02CD0
-	for <lists+keyrings@lfdr.de>; Thu, 23 Oct 2025 19:52:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA5EC04743
+	for <lists+keyrings@lfdr.de>; Fri, 24 Oct 2025 08:12:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E3B93AB453
-	for <lists+keyrings@lfdr.de>; Thu, 23 Oct 2025 17:52:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 575EE1AA10D6
+	for <lists+keyrings@lfdr.de>; Fri, 24 Oct 2025 06:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5363934AAE5;
-	Thu, 23 Oct 2025 17:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="J6jXXkXM"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28C7265CB2;
+	Fri, 24 Oct 2025 06:12:09 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340F134A787
-	for <keyrings@vger.kernel.org>; Thu, 23 Oct 2025 17:52:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A9CC141;
+	Fri, 24 Oct 2025 06:12:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761241977; cv=none; b=ayJ5C0RWd2GdCOWX91LyVvu/z2/DRWx2qfiFc+Ko6aC/aDug5wO0qO9fItvAtEHNLLrLVADvb5sp5X7s5jey2yTpf9Rg5yWtEz+xnWYNS3vgw0KlMuKJa+3YvNgTPwKEAlTTE8wO0LYCY2ELN7mFCXLiJcnLJO5fLnK4K95DA8M=
+	t=1761286329; cv=none; b=tU7sHSISaMiaFFeG7kJZ23tRB9pWiCAuQK37uOGidEzBdCjTqPj+6RH/pgClr03hfM6WBJ+N3tdP0xOxuClVHoJr2OLF6l8XOATdF6Ri9zJnlyhRkjwsR5BqZ2ZDKrFYD0kWjDxDAbIYtcc6qr4pfGUOLshXloJjo9SVHX0iP3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761241977; c=relaxed/simple;
-	bh=3/Hb62kc+NYq2C0hsOSogiX9/a2NhcysJRz/S17ajqo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tRnlrq5J6NkjTdPMnpn/zUa527JOll3EksVd8XLxY1H5Mgh7NEovNOaW7Q+nAPTLj7AmOve1qGiQawjW9vutsFafco9YmONt3/1QDNbdxn0xlZlujSGaeiySgKTmi0vaOvxEVTcJlMs/+dS5Upr/wogKd95hCdYr6shX5ztgWvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=J6jXXkXM; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761241963;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=vENFCP7b3Pf6ElRkmq5+rmKi7BK0xmEqT+h7PKf7AdY=;
-	b=J6jXXkXMi8Ubq7RroFsuYEnRLp8rKwwL6hlNp0XDYItLFMdhPWHPb5Hn5PwIZhfMh/cdwb
-	NOPmbD/jd23Pk3v5Sbd7GPkIrW2MeVDMzak4b00jtpZ5ktFeMlxdVKsflh3kZBuFsiDCsw
-	/fsTnKEcza+D9bagRrMkNpLuzQUXQrI=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: David Howells <dhowells@redhat.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@cloudflare.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	s=arc-20240116; t=1761286329; c=relaxed/simple;
+	bh=JHUJkSdHanYTCFYFFsB2WciSNPaCojLOlMIkm/lc3bs=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type; b=oY7SOhoLwr92wJBUOBbCRtbk3JaxDrCP7iMmaSKiEp58wqv4nMoMb74jASQfCwgOKWs9SXA72db2MrQcypFMN1OlsNj96XOSg3CJa35kTy5uDIR0oI96m/nQjzKKJC09tunnjr6bgkMqCcTr58+Vuk58WHi2y4tYguGWO8hj+So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4ctCFj09JszKHMVb;
+	Fri, 24 Oct 2025 14:11:05 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.75])
+	by mail.maildlp.com (Postfix) with ESMTP id 6AE191A0194;
+	Fri, 24 Oct 2025 14:11:55 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.50.159.234])
+	by APP2 (Coremail) with SMTP id Syh0CgCHK0SpGPto3WC1BQ--.60135S4;
+	Fri, 24 Oct 2025 14:11:55 +0800 (CST)
+From: Ye Bin <yebin@huaweicloud.com>
+To: a.fatoum@pengutronix.de,
+	kernel@pengutronix.de,
+	James.Bottomley@HansenPartnership.com,
+	jarkko@kernel.org,
+	zohar@linux.ibm.com,
+	dhowells@redhat.com,
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	linux-integrity@vger.kernel.org,
 	keyrings@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH] keys: Annotate struct asymmetric_key_id with __counted_by
-Date: Thu, 23 Oct 2025 19:48:11 +0200
-Message-ID: <20251023174810.75805-2-thorsten.blum@linux.dev>
+	linux-security-module@vger.kernel.org,
+	yebin@huaweicloud.com,
+	yebin10@huawei.com
+Subject: [PATCH] KEYS: fix compilation warnings in the dump_options() function
+Date: Fri, 24 Oct 2025 14:11:53 +0800
+Message-Id: <20251024061153.61470-1-yebin@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-CM-TRANSID:Syh0CgCHK0SpGPto3WC1BQ--.60135S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7ZrW5CF1DCrykJrW8JF4fKrg_yoW8tF17pa
+	1Yka4UXrWjyF9Fg3yUGF4kCa43C395KFW7Gws7tayYgFnxA347XFyUurWa9r13ZFySgryU
+	Za4jyF1Fgwsrur7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
+	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
+	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
+	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
+	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
+	nIWIevJa73UjIFyTuYvjfUonmRUUUUU
+X-CM-SenderInfo: p1hex046kxt4xhlfz01xgou0bp/
 
-Add the __counted_by() compiler attribute to the flexible array member
-'data' to improve access bounds-checking via CONFIG_UBSAN_BOUNDS and
-CONFIG_FORTIFY_SOURCE.
+From: Ye Bin <yebin10@huawei.com>
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+There's issue as follows:
+security/keys/trusted-keys/trusted_caam.c: In function ‘dump_options’:
+security/keys/trusted-keys/trusted_caam.c:37:20: note: the ABI of passing struct with a flexible array member has changed in GCC 4.4
+   37 | static inline void dump_options(struct caam_pkey_info pkey_info)
+      |                    ^~~~~~~~~~~~
+
+To solve the above problem, pass 'struct caam_pkey_info*' type parameter
+to the dump_options() function.
+
+Fixes: 9eb25ca6c973 ("KEYS: trusted: caam based protected key")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
 ---
- include/keys/asymmetric-type.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/keys/trusted-keys/trusted_caam.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/keys/asymmetric-type.h b/include/keys/asymmetric-type.h
-index 69a13e1e5b2e..1b91c8f98688 100644
---- a/include/keys/asymmetric-type.h
-+++ b/include/keys/asymmetric-type.h
-@@ -49,7 +49,7 @@ enum asymmetric_payload_bits {
-  */
- struct asymmetric_key_id {
- 	unsigned short	len;
--	unsigned char	data[];
-+	unsigned char	data[] __counted_by(len);
+diff --git a/security/keys/trusted-keys/trusted_caam.c b/security/keys/trusted-keys/trusted_caam.c
+index 090099d1b04d..dd7a69bcf6a3 100644
+--- a/security/keys/trusted-keys/trusted_caam.c
++++ b/security/keys/trusted-keys/trusted_caam.c
+@@ -29,12 +29,12 @@ static const match_table_t key_tokens = {
  };
  
- struct asymmetric_key_ids {
+ #ifdef CAAM_DEBUG
+-static inline void dump_options(struct caam_pkey_info pkey_info)
++static inline void dump_options(struct caam_pkey_info *pkey_info)
+ {
+-	pr_info("key encryption algo %d\n", pkey_info.key_enc_algo);
++	pr_info("key encryption algo %d\n", pkey_info->key_enc_algo);
+ }
+ #else
+-static inline void dump_options(struct caam_pkey_info pkey_info)
++static inline void dump_options(struct caam_pkey_info *pkey_info)
+ {
+ }
+ #endif
+@@ -108,7 +108,7 @@ static int trusted_caam_seal(struct trusted_key_payload *p, char *datablob)
+ 		ret = get_pkey_options(datablob, &info.pkey_info);
+ 		if (ret < 0)
+ 			return 0;
+-		dump_options(info.pkey_info);
++		dump_options(&info.pkey_info);
+ 	}
+ 
+ 	ret = caam_encap_blob(blobifier, &info);
+@@ -140,7 +140,7 @@ static int trusted_caam_unseal(struct trusted_key_payload *p, char *datablob)
+ 		ret = get_pkey_options(datablob, &info.pkey_info);
+ 		if (ret < 0)
+ 			return 0;
+-		dump_options(info.pkey_info);
++		dump_options(&info.pkey_info);
+ 
+ 		p->key_len = p->blob_len + sizeof(struct caam_pkey_info);
+ 		memcpy(p->key, &info.pkey_info, sizeof(struct caam_pkey_info));
 -- 
-2.51.0
+2.34.1
 
 
