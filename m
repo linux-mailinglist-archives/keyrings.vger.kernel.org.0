@@ -1,96 +1,71 @@
-Return-Path: <keyrings+bounces-3275-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3276-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD33C08EAD
-	for <lists+keyrings@lfdr.de>; Sat, 25 Oct 2025 11:56:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B039C0A51E
+	for <lists+keyrings@lfdr.de>; Sun, 26 Oct 2025 10:03:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1D4A3AF008
-	for <lists+keyrings@lfdr.de>; Sat, 25 Oct 2025 09:55:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C69AE3ACD04
+	for <lists+keyrings@lfdr.de>; Sun, 26 Oct 2025 09:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DACD2E7F3E;
-	Sat, 25 Oct 2025 09:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KUxXU7Tp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A6828751B;
+	Sun, 26 Oct 2025 09:03:05 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2911DE3DF
-	for <keyrings@vger.kernel.org>; Sat, 25 Oct 2025 09:55:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E198A611E;
+	Sun, 26 Oct 2025 09:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.242.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761386158; cv=none; b=rSdW1V+iuCSS7YFc0VqyrD+W0aHHq2bFoiQw4JBf3Ofc9mmW6Whg9FSvpt8/OU8ynS5DWBMR1kUQt9GcUmokJtLDN+KOMe1flOZuykhPl+XTnh7lnew0t2zoBwPgC1diw8ttOCqiBAxx5FeW1WqmFpepbTG/K0VNpk4FxozesKI=
+	t=1761469385; cv=none; b=iCgQ25FXWgL3gS5GiMSvgderSBtDsl9jO7xh6MAg9Qo1XIhsak6tTsXA+6WsXVy0H0ULyghToars9VeXoc+hU1qrcPfv8TvftHVuvmJu8VYmkKgANXTqToycF/w7hkrRK5iz4jVZieOjFDUz0mfyH2orFP/0o77u03cMARwOIWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761386158; c=relaxed/simple;
-	bh=LsIeYJ0IaSk91icRdNWcw+3GlqKmlaLIkttzeyXajMU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LZDO0das6OlOapFcyBuRLATnjDGVd6Q7ACmZz8CXAC9WtUDXz4PtqptflYtFtZLVCejLZ548SVtBTcR+TEQmYhzawg7nqawrSzYjUq0SpLqvlMqRQc5CQVpSH8DRuy0VUbHC00vAuYvE0+cU5vbB3OAaNZ7r11nVDjjclQ2Q+yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KUxXU7Tp; arc=none smtp.client-ip=91.218.175.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761386144;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=WoJJKjJi2LQjMP2jbXzS14o3BnF8YeuXsVCA+1r7Fa8=;
-	b=KUxXU7Tpnc1YQ9PlBN0GgilTOQ/8mFEXioIMkzSo6F+vH8zD1NvERj7/anoq7DkRDAysM4
-	baowLPU14Hc+GFnCpYuSSZROw7fH/gcIm4csl9IyObSL+vfIh13dRJaaXdY/4boNgxjhpI
-	ehbAW06i5B3YkTX8npqG3N/84keHN9o=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	keyrings@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] keys: Fix typos in 'struct key_type' function pointer comments
-Date: Sat, 25 Oct 2025 11:55:19 +0200
-Message-ID: <20251025095519.84361-1-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1761469385; c=relaxed/simple;
+	bh=mE+oC5AupLSk0QKiZ3gvwBoqI56AdzoHcuair5Y5DpI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=anSUkh6Ut86rjwkEj3L1bc7DcQUwUbDdIB3m8hJz/a1TwJ/89BawG85mBPJNrtqZnu1gj8nydYL8cVFfL/I8WBNG1HUokkeXSauMe5XFvivoZNC1zOoB3c1woxLlVpOxRloYobz20TsXTQNDnTjp9EEx8J0Qi7b1TyiXJ9ZR6gE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=none smtp.mailfrom=h08.hostsharing.net; arc=none smtp.client-ip=176.9.242.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=h08.hostsharing.net
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 64E222C000AC;
+	Sun, 26 Oct 2025 10:02:53 +0100 (CET)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id 3E3964A12; Sun, 26 Oct 2025 10:02:53 +0100 (CET)
+Date: Sun, 26 Oct 2025 10:02:53 +0100
+From: Lukas Wunner <lukas@wunner.de>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: David Howells <dhowells@redhat.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>, Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] keys: Annotate struct asymmetric_key_id with __counted_by
+Message-ID: <aP3jvbe3gfDucycd@wunner.de>
+References: <20251023174810.75805-2-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251023174810.75805-2-thorsten.blum@linux.dev>
 
-s/it/if/ and s/revokation/revocation/ and adjust the formatting to be
-consistent with the other comments.
+On Thu, Oct 23, 2025 at 07:48:11PM +0200, Thorsten Blum wrote:
+> Add the __counted_by() compiler attribute to the flexible array member
+> 'data' to improve access bounds-checking via CONFIG_UBSAN_BOUNDS and
+> CONFIG_FORTIFY_SOURCE.
+> 
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
-Changes in v2:
-- Adjust the trailing '*/' as suggested by Jarkko
-- Link to v1: https://lore.kernel.org/lkml/20251016123619.98728-2-thorsten.blum@linux.dev/
----
- include/linux/key-type.h | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/include/linux/key-type.h b/include/linux/key-type.h
-index 5caf3ce82373..5dfda728ff69 100644
---- a/include/linux/key-type.h
-+++ b/include/linux/key-type.h
-@@ -107,11 +107,12 @@ struct key_type {
- 	 */
- 	int (*match_preparse)(struct key_match_data *match_data);
- 
--	/* Free preparsed match data (optional).  This should be supplied it
--	 * ->match_preparse() is supplied. */
-+	/* Free preparsed match data (optional).  This should be supplied if
-+	 * ->match_preparse() is supplied.
-+	 */
- 	void (*match_free)(struct key_match_data *match_data);
- 
--	/* clear some of the data from a key on revokation (optional)
-+	/* clear some of the data from a key on revocation (optional)
- 	 * - the key's semaphore will be write-locked by the caller
- 	 */
- 	void (*revoke)(struct key *key);
--- 
-2.51.0
-
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
 
