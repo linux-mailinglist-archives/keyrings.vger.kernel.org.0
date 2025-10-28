@@ -1,141 +1,192 @@
-Return-Path: <keyrings+bounces-3286-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3287-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B804C12AEF
-	for <lists+keyrings@lfdr.de>; Tue, 28 Oct 2025 03:42:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F01DDC133A9
+	for <lists+keyrings@lfdr.de>; Tue, 28 Oct 2025 08:04:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 5FD524E242B
-	for <lists+keyrings@lfdr.de>; Tue, 28 Oct 2025 02:42:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 075481AA1D23
+	for <lists+keyrings@lfdr.de>; Tue, 28 Oct 2025 07:04:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B559271440;
-	Tue, 28 Oct 2025 02:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E26326ED35;
+	Tue, 28 Oct 2025 07:04:17 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15690F50F;
-	Tue, 28 Oct 2025 02:41:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504F717BA6
+	for <keyrings@vger.kernel.org>; Tue, 28 Oct 2025 07:04:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761619323; cv=none; b=fXDezob7U+ZtRPFih4VOH0r+DX65Iq+QirJozCwoo4ZzsNtEQh8GtTQ7MMRzM94F8P3zXULWkbFvFruu7Mpjy8QVoLK+t8eZLyIexDRk3BJ6v59M+mW0McyhPJi34B+bdxsQt4kH4hv3exC52OJxmW+O7sba43LPTgFB2iD9dlI=
+	t=1761635057; cv=none; b=RcjmLRV6MxSVIrVi0RSkg45wJj2h0LjBvob2aC/2OldGMfp2ABjiOkTUfGmXI/GsaPY6p5m2rqB/VeZsyYYVQJaji/22wz58Jub080u5dFfS49nv7fZZrEPv8XBYXmJXbPIeHaLG5Jcwb2zom/17OxNRCCj2yES+zM7s2761gjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761619323; c=relaxed/simple;
-	bh=KcFH18GmIKZGGZoTubLhxbTNRmUD+KGx5g5hz3E+Gmk=;
-	h=Subject:To:References:Cc:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=Vf6guzOSd3IUp6CvnGiGkFb/f7BA8QEZnFsAqkTzwOzWyyXchHpkOjeQwHh+o5IJIo1LP5bYz8/loh5+LZ+UfCpKKQCSK2uSotq2K2Qr4am00ORo6eO5XmJSPHSjlP6w1Vu2/DZaNvBYl1hmQ6DSV5deuR6ssl2Tud+6wODTuOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4cwZPL43CRzKHMMf;
-	Tue, 28 Oct 2025 10:40:54 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id 98EDE1A018D;
-	Tue, 28 Oct 2025 10:41:50 +0800 (CST)
-Received: from [10.174.178.185] (unknown [10.174.178.185])
-	by APP2 (Coremail) with SMTP id Syh0CgBXrERsLQBp2dBtBw--.4806S3;
-	Tue, 28 Oct 2025 10:41:48 +0800 (CST)
-Subject: Re: [PATCH] KEYS: fix compilation warnings in the dump_options()
- function
-To: Jarkko Sakkinen <jarkko@kernel.org>
-References: <20251024061153.61470-1-yebin@huaweicloud.com>
- <aP_QWHPHpGr-nUZD@kernel.org>
-Cc: a.fatoum@pengutronix.de, kernel@pengutronix.de,
- James.Bottomley@hansenpartnership.com, zohar@linux.ibm.com,
- dhowells@redhat.com, paul@paul-moore.com, jmorris@namei.org,
- serge@hallyn.com, linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
- linux-security-module@vger.kernel.org, yebin10@huawei.com
-From: yebin <yebin@huaweicloud.com>
-Message-ID: <69002D6C.8050403@huaweicloud.com>
-Date: Tue, 28 Oct 2025 10:41:48 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.1.0
+	s=arc-20240116; t=1761635057; c=relaxed/simple;
+	bh=gKJXGUDHhlGGKZfRNYSTnr+8Eb3KMdSmndKsqs4e0YM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=RqSnKKF3TYoFDwSLFQidW0oHUgfvZy+lZoOLC1v2oSBFZaPB1yAnTbkJ6o4ECxbfvWxcRWzkrjm0hSfF1ACbu72WfeLrWrx8uH+XPxNYpsu0/DbVR2Mo4q56G8LLF2dbe86TkAPTs+bw3QTTy980YBaiPmaMsm2LYTnVP1qCw8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vDdkG-0001Lk-BI; Tue, 28 Oct 2025 08:03:52 +0100
+Message-ID: <3e1da766-7b1a-4b35-a1bd-45ff735c3cec@pengutronix.de>
+Date: Tue, 28 Oct 2025 08:03:45 +0100
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <aP_QWHPHpGr-nUZD@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KEYS: fix compilation warnings in the dump_options()
+ function
+To: yebin <yebin@huaweicloud.com>, kernel@pengutronix.de,
+ James.Bottomley@HansenPartnership.com, jarkko@kernel.org,
+ zohar@linux.ibm.com, dhowells@redhat.com, paul@paul-moore.com,
+ jmorris@namei.org, serge@hallyn.com, linux-integrity@vger.kernel.org,
+ keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
+ yebin10@huawei.com, =?UTF-8?Q?Horia_Geant=C4=83?= <horia.geanta@nxp.com>,
+ Pankaj Gupta <pankaj.gupta@nxp.com>, Gaurav Jain <gaurav.jain@nxp.com>,
+ linux-crypto@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
+ Meenakshi Aggarwal <meenakshi.aggarwal@nxp.com>
+References: <20251024061153.61470-1-yebin@huaweicloud.com>
+ <68FB2470.4000206@huaweicloud.com>
+ <85aca6f9-f279-4977-8888-416af127edac@pengutronix.de>
+ <69002CFA.2040701@huaweicloud.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <69002CFA.2040701@huaweicloud.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgBXrERsLQBp2dBtBw--.4806S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7WF4kCr4rCrWfGF4fAFyDGFg_yoW8uFWxpa
-	15CFyj9FW8tF9Fg3yDGrZ7CF1ak398KFW7CwsxKa42gFnxJryUJFyj9F45ur13ZFyIgryj
-	vay8Zr1Yg39F9rJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Ib4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7Mxk0xIA0c2IE
-	e2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4I
-	kC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWU
-	WwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr
-	0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWU
-	JVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJb
-	IYCTnIWIevJa73UjIFyTuYvjxUOBMKDUUUU
-X-CM-SenderInfo: p1hex046kxt4xhlfz01xgou0bp/
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: keyrings@vger.kernel.org
 
+Hi,
 
+On 10/28/25 3:39 AM, yebin wrote:
+> 
+> 
+> On 2025/10/24 16:10, Ahmad Fatoum wrote:
+>> Hello,
+>>
+>> On 10/24/25 9:02 AM, yebin wrote:
+>>> Ignore this patch as 275a9a3f9b6a（“KEYS: trusted: Pass argument by
+>>> pointer in dump_options”）already fix this issue.
+>>
+>> What tree are you looking at? I can't find this commit in my git and the
+>> code you are purportedly patching never existed upstream.
+>>
+>> If you run into issues exclusive to a vendor fork, you need to submit
+>> your patches to the vendor. The upstream mailing lists are for upstream.
+>>
+> This patch was submitted by Herbert Xu and is on linux-next.
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/herbert/cryptodev-2.6.git
+> commit 275a9a3f9b6a2158bfb7826074b72d5bdfb2ac35
+> Author: Herbert Xu <herbert@gondor.apana.org.au>
+> Date:   Tue Oct 21 12:07:56 2025 +0800
+> 
+>     KEYS: trusted: Pass argument by pointer in dump_options
+> 
+>     Instead of passing pkey_info into dump_options by value, using a
+>     pointer instead.
+> 
+>     Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+>     Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 
-On 2025/10/28 4:04, Jarkko Sakkinen wrote:
-> On Fri, Oct 24, 2025 at 02:11:53PM +0800, Ye Bin wrote:
->> From: Ye Bin <yebin10@huawei.com>
->>
->> There's issue as follows:
->> security/keys/trusted-keys/trusted_caam.c: In function ‘dump_options’:
->> security/keys/trusted-keys/trusted_caam.c:37:20: note: the ABI of passing struct with a flexible array member has changed in GCC 4.4
->>     37 | static inline void dump_options(struct caam_pkey_info pkey_info)
->>        |                    ^~~~~~~~~~~~
->>
->> To solve the above problem, pass 'struct caam_pkey_info*' type parameter
->> to the dump_options() function.
->>
->> Fixes: 9eb25ca6c973 ("KEYS: trusted: caam based protected key")
->> Signed-off-by: Ye Bin <yebin10@huawei.com>
->> ---
->>   security/keys/trusted-keys/trusted_caam.c | 10 +++++-----
->>   1 file changed, 5 insertions(+), 5 deletions(-)
->>
->> diff --git a/security/keys/trusted-keys/trusted_caam.c b/security/keys/trusted-keys/trusted_caam.c
->> index 090099d1b04d..dd7a69bcf6a3 100644
->> --- a/security/keys/trusted-keys/trusted_caam.c
->> +++ b/security/keys/trusted-keys/trusted_caam.c
->> @@ -29,12 +29,12 @@ static const match_table_t key_tokens = {
->>   };
->>
->>   #ifdef CAAM_DEBUG
->> -static inline void dump_options(struct caam_pkey_info pkey_info)
->> +static inline void dump_options(struct caam_pkey_info *pkey_info)
->>   {
->> -	pr_info("key encryption algo %d\n", pkey_info.key_enc_algo);
->> +	pr_info("key encryption algo %d\n", pkey_info->key_enc_algo);
->>   }
->>   #else
->> -static inline void dump_options(struct caam_pkey_info pkey_info)
->> +static inline void dump_options(struct caam_pkey_info *pkey_info)
->>   {
->>   }
->>   #endif
->
-> Please fix the broken design while at it:
->
-> 1. Remove the ad-hoc compilation flag (i.e., CAAM_DEBUG).
-> 2. Substitute pr_info calls with pr_debug calls.
->
-Alright, I'll fix the two points you mentioned.
+Thanks for the clarification. The maintainers for trusted keys were
+unfortunately not Cc'd on that submission, so it flew at least under my
+radar. :/
 
-> Then you can turn then on and off either dynamically, or alternatively
-> from the kernel command-line [1].
->
-> [1] https://www.kernel.org/doc/html/latest/admin-guide/dynamic-debug-howto.html
->
-> BR, Jarkko
->
+Cheers,
+Ahmad
+
+> 
+> 
+>> Thanks,
+>> Ahmad
+>>
+>>>
+>>> On 2025/10/24 14:11, Ye Bin wrote:
+>>>> From: Ye Bin <yebin10@huawei.com>
+>>>>
+>>>> There's issue as follows:
+>>>> security/keys/trusted-keys/trusted_caam.c: In function ‘dump_options’:
+>>>> security/keys/trusted-keys/trusted_caam.c:37:20: note: the ABI of
+>>>> passing struct with a flexible array member has changed in GCC 4.4
+>>>>      37 | static inline void dump_options(struct caam_pkey_info
+>>>> pkey_info)
+>>>>         |                    ^~~~~~~~~~~~
+>>>>
+>>>> To solve the above problem, pass 'struct caam_pkey_info*' type
+>>>> parameter
+>>>> to the dump_options() function.
+>>>>
+>>>> Fixes: 9eb25ca6c973 ("KEYS: trusted: caam based protected key")
+>>>> Signed-off-by: Ye Bin <yebin10@huawei.com>
+>>>> ---
+>>>>    security/keys/trusted-keys/trusted_caam.c | 10 +++++-----
+>>>>    1 file changed, 5 insertions(+), 5 deletions(-)
+>>>>
+>>>> diff --git a/security/keys/trusted-keys/trusted_caam.c b/security/
+>>>> keys/trusted-keys/trusted_caam.c
+>>>> index 090099d1b04d..dd7a69bcf6a3 100644
+>>>> --- a/security/keys/trusted-keys/trusted_caam.c
+>>>> +++ b/security/keys/trusted-keys/trusted_caam.c
+>>>> @@ -29,12 +29,12 @@ static const match_table_t key_tokens = {
+>>>>    };
+>>>>
+>>>>    #ifdef CAAM_DEBUG
+>>>> -static inline void dump_options(struct caam_pkey_info pkey_info)
+>>>> +static inline void dump_options(struct caam_pkey_info *pkey_info)
+>>>>    {
+>>>> -    pr_info("key encryption algo %d\n", pkey_info.key_enc_algo);
+>>>> +    pr_info("key encryption algo %d\n", pkey_info->key_enc_algo);
+>>>>    }
+>>>>    #else
+>>>> -static inline void dump_options(struct caam_pkey_info pkey_info)
+>>>> +static inline void dump_options(struct caam_pkey_info *pkey_info)
+>>>>    {
+>>>>    }
+>>>>    #endif
+>>>> @@ -108,7 +108,7 @@ static int trusted_caam_seal(struct
+>>>> trusted_key_payload *p, char *datablob)
+>>>>            ret = get_pkey_options(datablob, &info.pkey_info);
+>>>>            if (ret < 0)
+>>>>                return 0;
+>>>> -        dump_options(info.pkey_info);
+>>>> +        dump_options(&info.pkey_info);
+>>>>        }
+>>>>
+>>>>        ret = caam_encap_blob(blobifier, &info);
+>>>> @@ -140,7 +140,7 @@ static int trusted_caam_unseal(struct
+>>>> trusted_key_payload *p, char *datablob)
+>>>>            ret = get_pkey_options(datablob, &info.pkey_info);
+>>>>            if (ret < 0)
+>>>>                return 0;
+>>>> -        dump_options(info.pkey_info);
+>>>> +        dump_options(&info.pkey_info);
+>>>>
+>>>>            p->key_len = p->blob_len + sizeof(struct caam_pkey_info);
+>>>>            memcpy(p->key, &info.pkey_info, sizeof(struct
+>>>> caam_pkey_info));
+>>>>
+>>>
+>>>
+>>
+> 
+> 
+
+-- 
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
