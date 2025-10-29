@@ -1,61 +1,60 @@
-Return-Path: <keyrings+bounces-3288-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3289-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DDABC14CF7
-	for <lists+keyrings@lfdr.de>; Tue, 28 Oct 2025 14:23:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A120AC1C223
+	for <lists+keyrings@lfdr.de>; Wed, 29 Oct 2025 17:38:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDEEC1B26BDB
-	for <lists+keyrings@lfdr.de>; Tue, 28 Oct 2025 13:23:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82DB61884077
+	for <lists+keyrings@lfdr.de>; Wed, 29 Oct 2025 16:33:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D09330217D;
-	Tue, 28 Oct 2025 13:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1464A41AAC;
+	Wed, 29 Oct 2025 16:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Dsfb1GSa"
 X-Original-To: keyrings@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE413314DD;
-	Tue, 28 Oct 2025 13:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171CB2EA178
+	for <keyrings@vger.kernel.org>; Wed, 29 Oct 2025 16:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1761657783; cv=none; b=JSZuWIGYucSZb/3bPFImWOrTEPXBQ4tW0HS5wh3JUoyXdXXON8YXI/OzI3XHrVXfxZc935B7iotlppnrylYK3nrcIsYUUGfJx5y7iGudA6788upChuMh7kTH4hwf82ZBqjeYHUN8/mLggdPuDEJovgg/CCusHz0/tNeyr1bnV80=
+	t=1761755556; cv=none; b=DsuscoQIOsvwNbXlpexG6+BwbS4o3iqXfuH0O9nNgx3Ua46u3Vtiv3APWCdcsw4xp7CDF+CqpP5LgA/Tmdv1umle4f70tVIPpo6oMfC0uXDmDmMBcvUogoOoViSlE3YoNUcy8QSz/kFx6kt6Wrdi2PQGcnG+Rc4jsZ7GnZOU5rA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1761657783; c=relaxed/simple;
-	bh=xVKZGVqMEj0xdek51jF3cz28uC5ZI8sS3UZo6n7Q/4c=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version; b=czebslnw+yWdXqfw/uwaKoLnE2aVbU+UsX0J8QXEWyxh/J3OwUcF0kybZ03bysRRKX+L3frtYcsAce/lW0tuIdWUeI2Alq/IFvmXajIsLxViBlr9FcQhJyMhnrapptf/c2XyZqdfhLIvXugb4CYquEUaPLOavGnilTCU8AEXR7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4cwrf563d7zYQtnm;
-	Tue, 28 Oct 2025 21:22:53 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id 0FFE11A0359;
-	Tue, 28 Oct 2025 21:22:57 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.50.87.132])
-	by APP2 (Coremail) with SMTP id Syh0CgBHnESuwwBpYnmgBw--.21541S4;
-	Tue, 28 Oct 2025 21:22:55 +0800 (CST)
-From: Ye Bin <yebin@huaweicloud.com>
-To: a.fatoum@pengutronix.de,
-	kernel@pengutronix.de,
-	James.Bottomley@HansenPartnership.com,
-	jarkko@kernel.org,
-	zohar@linux.ibm.com,
-	dhowells@redhat.com,
-	paul@paul-moore.com,
-	jmorris@namei.org,
-	serge@hallyn.com,
+	s=arc-20240116; t=1761755556; c=relaxed/simple;
+	bh=Ca7xEzFRwrwszkpl4txHQpXwetMMS+OAj7NM+yP3tuk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rQGRNlgjbf2uBPV0cRsvrr5oLfL7Zm1O7OleMv0COqLjmLyGExD/Hs8Y8/zOxp3A37xJUWLsGn99CR7fhuI6VpTbAzA9Mht8mib2OX7BJrXkBvw1Fc3zPZd/0lVK10wcXC/CGhH76pEyHNv2zJ20xk8WOBsDacYJ0AbzU60zt1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Dsfb1GSa; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761755543;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=GOAJ/2xYVpU7WKRC8hlYtRql72lR/1lCG+XFgyo4CmM=;
+	b=Dsfb1GSa8mB+EMKzo+G38eO/WnewpdrJhs1oiAo1Li435FydEB6Afj4u9H9uG0Oe569RrQ
+	BLD+KIslC0Z3QEForE0vzS4NojqugJLrS7SM43Sa3lV6u/qQ+QmKHY2AH5w1Xzx1qbNt09
+	/ZiesvcXOAgBy7p1GCXac+1orbPZuA0=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Mimi Zohar <zohar@linux.ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
 	linux-integrity@vger.kernel.org,
 	keyrings@vger.kernel.org,
 	linux-security-module@vger.kernel.org,
-	yebin@huaweicloud.com,
-	yebin10@huawei.com
-Subject: [PATCH] KEYS: Remove the ad-hoc compilation flag CAAM_DEBUG
-Date: Tue, 28 Oct 2025 21:22:54 +0800
-Message-Id: <20251028132254.841715-1-yebin@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] KEYS: encrypted: Return early on allocation failure and drop goto
+Date: Wed, 29 Oct 2025 17:31:56 +0100
+Message-ID: <20251029163157.119000-1-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -63,61 +62,53 @@ List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgBHnESuwwBpYnmgBw--.21541S4
-X-Coremail-Antispam: 1UD129KBjvJXoW7Ar4DGw17AF1rGr1xAw45Awb_yoW8JFW3pa
-	n0kFyjgrW7KFyqg3yDCFWxCF13C3s8KFW7GrWqya42gFnrA34UJrWI9F43ur13ZFyxGryj
-	vayxZr1Fg3y293DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
-	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
-	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
-	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
-	nIWIevJa73UjIFyTuYvjfUonmRUUUUU
-X-CM-SenderInfo: p1hex046kxt4xhlfz01xgou0bp/
+X-Migadu-Flow: FLOW_OUT
 
-From: Ye Bin <yebin10@huawei.com>
+Return ERR_PTR(-ENOMEM) immediately if memory allocation fails, instead
+of using goto and returning a NULL pointer, and remove the now-unused
+'out' label.
 
-Fix the broken design based on Jarkko Sakkinen's suggestions as follows:
+At the call site, check 'ascii_buf' with IS_ERR() and propagate the
+error code returned by datablob_format().
 
-1. Remove the ad-hoc compilation flag (i.e., CAAM_DEBUG).
-2. Substitute pr_info calls with pr_debug calls.
-
-Closes: https://patchwork.kernel.org/project/linux-integrity/patch/20251024061153.61470-1-yebin@huaweicloud.com/
-Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 ---
- security/keys/trusted-keys/trusted_caam.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ security/keys/encrypted-keys/encrypted.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/security/keys/trusted-keys/trusted_caam.c b/security/keys/trusted-keys/trusted_caam.c
-index 601943ce0d60..c903ee7328ca 100644
---- a/security/keys/trusted-keys/trusted_caam.c
-+++ b/security/keys/trusted-keys/trusted_caam.c
-@@ -28,16 +28,10 @@ static const match_table_t key_tokens = {
- 	{opt_err, NULL}
- };
+diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encrypted-keys/encrypted.c
+index be1f2118447c..25df00b7dbe9 100644
+--- a/security/keys/encrypted-keys/encrypted.c
++++ b/security/keys/encrypted-keys/encrypted.c
+@@ -276,7 +276,7 @@ static char *datablob_format(struct encrypted_key_payload *epayload,
  
--#ifdef CAAM_DEBUG
- static inline void dump_options(const struct caam_pkey_info *pkey_info)
- {
--	pr_info("key encryption algo %d\n", pkey_info->key_enc_algo);
-+	pr_debug("key encryption algo %d\n", pkey_info->key_enc_algo);
+ 	ascii_buf = kmalloc(asciiblob_len + 1, GFP_KERNEL);
+ 	if (!ascii_buf)
+-		goto out;
++		return ERR_PTR(-ENOMEM);
+ 
+ 	ascii_buf[asciiblob_len] = '\0';
+ 
+@@ -288,7 +288,6 @@ static char *datablob_format(struct encrypted_key_payload *epayload,
+ 	bufp = &ascii_buf[len];
+ 	for (i = 0; i < (asciiblob_len - len) / 2; i++)
+ 		bufp = hex_byte_pack(bufp, iv[i]);
+-out:
+ 	return ascii_buf;
  }
--#else
--static inline void dump_options(const struct caam_pkey_info *pkey_info)
--{
--}
--#endif
  
- static int get_pkey_options(char *c,
- 			    struct caam_pkey_info *pkey_info)
+@@ -932,8 +931,8 @@ static long encrypted_read(const struct key *key, char *buffer,
+ 		goto out;
+ 
+ 	ascii_buf = datablob_format(epayload, asciiblob_len);
+-	if (!ascii_buf) {
+-		ret = -ENOMEM;
++	if (IS_ERR(ascii_buf)) {
++		ret = PTR_ERR(ascii_buf);
+ 		goto out;
+ 	}
+ 
 -- 
-2.34.1
+2.51.0
 
 
