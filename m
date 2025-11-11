@@ -1,168 +1,143 @@
-Return-Path: <keyrings+bounces-3325-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3326-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCBD7C4EF53
-	for <lists+keyrings@lfdr.de>; Tue, 11 Nov 2025 17:15:11 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 911F6C4F03D
+	for <lists+keyrings@lfdr.de>; Tue, 11 Nov 2025 17:23:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5ADAC3B5616
-	for <lists+keyrings@lfdr.de>; Tue, 11 Nov 2025 16:15:10 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id D03214EBF0F
+	for <lists+keyrings@lfdr.de>; Tue, 11 Nov 2025 16:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E1236C5A3;
-	Tue, 11 Nov 2025 16:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4752936C5A1;
+	Tue, 11 Nov 2025 16:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ShpdqHqd";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="f7gO8GYo"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j9Zqu+Ab"
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DB136A02E
-	for <keyrings@vger.kernel.org>; Tue, 11 Nov 2025 16:15:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0BF2F7464
+	for <keyrings@vger.kernel.org>; Tue, 11 Nov 2025 16:23:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762877706; cv=none; b=aypNPRfkNV+Nl98zacWQTZI9nV1p+xUtuAT4WNclJUjEg8DPyu2rlD8eyNPkmBhe3mxWCGx3VfTREdPuFfdUF5zGRv374NnggpfE9uKdn9HpqVyk7cFzqGGKF/U3TxcL0YhkBdVNMAyxDIlrE8oJZTia7ouX85pvlsnx6/QB97E=
+	t=1762878193; cv=none; b=cCqAdRH6v1p9AtMKQns55sAohiuKRpxQDW/vecQLYvbGNglsvGxmnw+5SZsmDble/eijHhng2tK4FL5QrfN2aKWpxdHmQ5QQzQ0GiIe/qP4RN7tmJC5f12CHVExlzYFKAzjfash4kDLr4WkMRcBRd5mtnESdXD/d1Dz+uBmlufg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762877706; c=relaxed/simple;
-	bh=CAzz4tdO9jRd3NYeIx+mzCdWu/XNR9YZQNSh6xs3tkM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Bo11sOAn9FeGonubVe4DQVrsGzqpJExwSnfh9hcoNU0pKgB0vCYOBoEHXqJN8eyA4QU06lmiHiF3is5i0hxU4G/CNfC6dVS54halpYI4AaJC1+QJfOtAwd3Gx9U5kxdov00Llmw/GKgqc5exS359DsMlhWecvw8oWnGETH5TMUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ShpdqHqd; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=f7gO8GYo; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762877703;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CAzz4tdO9jRd3NYeIx+mzCdWu/XNR9YZQNSh6xs3tkM=;
-	b=ShpdqHqd+rzXQjaYRwkTL8gcJ24Pgkfs9TIw6ziKC4xuK2NdrxtcRnkVHXUony4ixqWMAZ
-	T+pG42eOOzzv/Ga/HnJxqzdBHw9Xy7bvHAYjroeN7yIJiOhyFSssJTpSKgRtbqnqry6tCq
-	ju2Co95NeFB89rsiYwwfkIYg1M3KAPM=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-57-N0YxVipQOdOID84XcmyKug-1; Tue, 11 Nov 2025 11:15:02 -0500
-X-MC-Unique: N0YxVipQOdOID84XcmyKug-1
-X-Mimecast-MFC-AGG-ID: N0YxVipQOdOID84XcmyKug_1762877702
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8b26e9214deso706832085a.0
-        for <keyrings@vger.kernel.org>; Tue, 11 Nov 2025 08:15:02 -0800 (PST)
+	s=arc-20240116; t=1762878193; c=relaxed/simple;
+	bh=6K2M6sXqSfWuHEO5SZZB6vJuswyuFAvFpqwznwwaw6s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qt/dq+Fj9puut3WQzClqVPhWVY3o2f8RxGt/qCCDw90dg3sXI7G5Y4+nbu4pyeNZa9XOqQLxE+RIuklkGv1yCA0Gcqnl50uFV7UxLA3+EJDVydHc/eYR/L+P2WGTobfJgOQf+tgZkEZ0F0OSShDlSUCctVaBJXDcze1S514vjSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j9Zqu+Ab; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2980343d9d1so193945ad.1
+        for <keyrings@vger.kernel.org>; Tue, 11 Nov 2025 08:23:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1762877702; x=1763482502; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:organization
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=CAzz4tdO9jRd3NYeIx+mzCdWu/XNR9YZQNSh6xs3tkM=;
-        b=f7gO8GYoC8MqmXdqCaeuPrwYc/o1ZTt5TwoG+7p497nALVc5haN6UkLoPC1fPUq4i6
-         aqqVaMBUoXfZvcMvIIucuWFbg/+UeQGALsvDt9eabZLkj6ekGsR1pJY2zne/54OIbeOH
-         RXhpKQw7KJs5Kauii1V+AVaDnTUecJ/QynXXQh03T4hwpopeyBgdR36oOGytl/XahJPV
-         Y5nNtsQlj/K0UGYfQYABkfQP80YJWEa/6V+PspzlB1ogQRgNFQ/q5pOOuMqH2yggMaC+
-         GZhw5EnbnY5BILZUiV3AyeYhNMPt7DPHSwpQs8XkQvO9yPslLowfkwaBnTQLK9doxkRl
-         ldEA==
+        d=google.com; s=20230601; t=1762878191; x=1763482991; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZkUuhGxVx7htjf3miH8SdELPvuF/att6+BPRWArWBaA=;
+        b=j9Zqu+Abxe+ZBg4SeKM+8X36f3Og+vdq/13ynSR/ZhdVwzIbxM7l9Gd4jSdvSQ4YV5
+         CFW/e5YuTIvolzjrE2W8xkBaAz2Sj2r3BUTSkVMFhB8tu1fr1xiMEJ2nRAoqIwKQ33IN
+         YrVrL7Q/9FyjhmZuZHEoaFs6B1b3nvhkCPrCWT2RLMpTJueBpzLxcEPiSFmejLKXibxk
+         c6Np+H5KRyB7iKEMEkvRqLOA9vyqTuWj+gQpohpEqweQqjKD4ZfTunMLCbCUrG1z/5JL
+         7OuZ05XfqMfV/DSI6YeZpPyr4qWTWlfvJhJmD+1qNs+6Bh4Wp68VvMh37C7ZtOGJJyzu
+         IUjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762877702; x=1763482502;
-        h=mime-version:user-agent:content-transfer-encoding:organization
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CAzz4tdO9jRd3NYeIx+mzCdWu/XNR9YZQNSh6xs3tkM=;
-        b=shnDcIZUKL3loBJFg17zAHaGU6pV+3DdZrJ6B8sqkKH/DHVgek00YHE1by61gU3Kih
-         KuQbPd/gBxw/gjU/xV18IVzsW/Gk/yA4p4yWEMfyi9T+2XGpJZGiJh71ovIXjLtevcUx
-         2k/lEq+UpuWw4o+ZMwCDVbDc4ms3V7++NYJfUbhkeAzBzwp24m9/OiMNs5lUDq0qaVry
-         cq5mhD4UtqGqbM5FmVQGF0yKq1AY+PjgxNVGGkKWI8mMlGAxE3JP6QVopBHZgjRprLiP
-         FJirJG858ZRnSS4NPFFtj3uy9oqHy4pWuOYyjdI8phYS8NYvQAFxBAViEniJ6471KOIo
-         vKqA==
-X-Forwarded-Encrypted: i=1; AJvYcCUuJ3jaMLsReuly0RRzxH/pptPD2+WEoIMB4YuJswZGspYuumhnqCTsLyJJ8K4aszL5F8RPwda6lg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzsg09yZvQmD4QgzeE4ml4Ft7kQpCs7NUd2tRzmIU0dU5tm55Mm
-	/WGLp58CRvXmawog5edFDG/Ua0/duw7DgZ8QpYiJBTasCQFey4ZuQoTwgqSVhKgeC7laYr7BV1y
-	HehfEhYP+Q0V7iUDovX8YnAG6DSoRhworxxtddshC1ry9sFQ7J4/wc1xzqv3A
-X-Gm-Gg: ASbGnct9MrxydIagL2iB1H/9qOzocR7x67ZEgMcLHWuYEn9VU/mq2f62ycXuYraekGi
-	fT/UotrQHAO8zdDqb0J22HRVSA7if0OSUhSugfPkGhAlAmDTg0YFV6lt4li+B1lfRh5yRZd0dII
-	uqCC+Rh0b91yjYW/33vCuWAK/7nMrovGiPz/BrBK/7vKbBJTTrQJqRiUt7MErP3xYpdLwrwD1uO
-	fA9E4Go2xSx5Z6VLGOTagEOzS+gzbgO5EKC0EZxhpRmsuq00xBHsAikNl79KTT8IRiLkw/uDh1r
-	FgAyR+Z+AuGTIkJS8q8UarvEo3MXkdO+gbe6JFhzeMxpnRyJvcmNyxTwfY75SEt62MIPdQ==
-X-Received: by 2002:a05:620a:6914:b0:8b2:1f64:7bc5 with SMTP id af79cd13be357-8b257f69f9emr1539503885a.86.1762877701870;
-        Tue, 11 Nov 2025 08:15:01 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGZzM88+sgVGmR4fCbMdvG+bTstulnQHQtfzsOqHKlcvJHTzfGD4ZKhDU5deE0z92drdTBPyA==
-X-Received: by 2002:a05:620a:6914:b0:8b2:1f64:7bc5 with SMTP id af79cd13be357-8b257f69f9emr1539498485a.86.1762877701360;
-        Tue, 11 Nov 2025 08:15:01 -0800 (PST)
-Received: from m8.users.ipa.redhat.com ([2603:7000:9400:fe80::318])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b29aa25791sm9814985a.52.2025.11.11.08.15.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Nov 2025 08:15:00 -0800 (PST)
-Message-ID: <1ce413b202ca7c008e077a6f1cfa88f94a3a7cbd.camel@redhat.com>
-Subject: Re: Module signing and post-quantum crypto public key algorithms
-From: Simo Sorce <simo@redhat.com>
-To: "Elliott, Robert (Servers)" <elliott@hpe.com>, David Howells
-	 <dhowells@redhat.com>
-Cc: James Bottomley <James.Bottomley@HansenPartnership.com>, Ignat Korchagin
-	 <ignat@cloudflare.com>, Herbert Xu <herbert@gondor.apana.org.au>, Stephan
- Mueller <smueller@chronox.de>, "torvalds@linux-foundation.org"
- <torvalds@linux-foundation.org>,  Paul Moore <paul@paul-moore.com>, Lukas
- Wunner <lukas@wunner.de>, Clemens Lang <cllang@redhat.com>,  David Bohannon
- <dbohanno@redhat.com>, Roberto Sassu <roberto.sassu@huawei.com>,
- "keyrings@vger.kernel.org"	 <keyrings@vger.kernel.org>,
- "linux-crypto@vger.kernel.org"	 <linux-crypto@vger.kernel.org>,
- "linux-security-module@vger.kernel.org"	
- <linux-security-module@vger.kernel.org>, "linux-kernel@vger.kernel.org"	
- <linux-kernel@vger.kernel.org>
-Date: Tue, 11 Nov 2025 11:14:59 -0500
-In-Reply-To: <IA4PR84MB4011485C0EFFFF9F2820A1BFABC1A@IA4PR84MB4011.NAMPRD84.PROD.OUTLOOK.COM>
-References: 
-	<IA4PR84MB4011FE5ABA934DEF08F1A263ABC3A@IA4PR84MB4011.NAMPRD84.PROD.OUTLOOK.COM>
-	 <501216.1749826470@warthog.procyon.org.uk>
-	 <CALrw=nGkM9V12y7dB8y84UHKnroregUwiLBrtn5Xyf3k4pREsg@mail.gmail.com>
-	 <de070353cc7ef2cd6ad68f899f3244917030c39b.camel@redhat.com>
-	 <3081793dc1d846dccef07984520fc544f709ca84.camel@HansenPartnership.com>
-	 <7ad6d5f61d6cd602241966476252599800c6a304.camel@redhat.com>
-	 <69775877d04b8ee9f072adfd2c595187997e59fb.camel@HansenPartnership.com>
-	 <3d650cc9ff07462e5c55cc3d9c0da72a3f2c5df2.camel@redhat.com>
-	 <534145.1762588015@warthog.procyon.org.uk>
-	 <IA4PR84MB4011485C0EFFFF9F2820A1BFABC1A@IA4PR84MB4011.NAMPRD84.PROD.OUTLOOK.COM>
-Organization: Red Hat
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+        d=1e100.net; s=20230601; t=1762878191; x=1763482991;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZkUuhGxVx7htjf3miH8SdELPvuF/att6+BPRWArWBaA=;
+        b=OTcuGct2TG2Cy+h+YwxPWYChuK4IC4gycsVjY8W0prtD8hKB7b0IZhCxDsdhbLveyJ
+         RPf8csa3eohu50ZT3KfO7BNZHyVm6//mtVOReDwuBJyEeOuIIfQabSkhUODEJC7LEcUX
+         NG3tfFOfl+ukRqAfXe9IUvqkhOO+clLElSI8dvu7eCppDA2k345Or0gQMI3ZmR3j/+94
+         xLQjT9LW7dmWWkEQ5/GNhWpNZDWolqh2Unnmxt4ySmsSU1cXuMmosaRq9OGiOVpV2aa2
+         AwZeX7is8ZwTxp0rSqQ1LnqhHLrc5WII9EGDuU7QgOMKHMG/f6P2g7+72AUjwfJNhuRh
+         rA9A==
+X-Forwarded-Encrypted: i=1; AJvYcCUVMGK9vd7SqACw4x7/TCcx1RZ0NMb0Z7QZrM18epppcT167Y1aFccY/Bjq2aRPgPE0iVoHYUh7dw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPZM8FOGIIdF/acsRoHoCehrM1Y68X/KmtHm6NJ+0TX8kKpdiP
+	owLEyeq8g4XnAuYB8JIrD5oSnw6hHKgm6VX3z57mjgeIqd0jk3pDNm7OGWSSapyxU2kwq3o0XDx
+	ajYqG3qf+dvy37nEAm07L7JDd4A2DziJdXTaDKp2K
+X-Gm-Gg: ASbGnct0zEMXR0KtSXEd8fCezr7LU67ILEas+IXlJJUiCRjwqBj5g37J2yIAvYsXHzm
+	D++4rqBEgNCYkRFdmeX6TndClB12WFR3bTDuTDtHCFGOSiCaoroUYt+WUzR4X0xOlUedNBE1s5m
+	9u5UW4i/kCgfP96SwP+UExwMmMjeiEm7gb8um5w8HJGj6dAhcKOOjusvJKHxJfzJcQZxurLUodN
+	lUwwXfouIFchLbZg5ixyJMQnmTUezqb0UB8eTPeXoPv68k4MUs70LkIqOyj/C2TfxovZ/45SRw/
+	qLE=
+X-Google-Smtp-Source: AGHT+IGjW9VeCdmnQlOPDbbOtgrUBcup+YzsUPtCtblVRIqj97xYrG1xVzenjeYmpZa+4PI1E9DpGWY0UTrKvAd+0z0=
+X-Received: by 2002:a17:902:b715:b0:294:e585:1f39 with SMTP id
+ d9443c01a7336-29841595fc8mr4192095ad.14.1762878190750; Tue, 11 Nov 2025
+ 08:23:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20251111154923.978181-1-petr.pavlu@suse.com>
+In-Reply-To: <20251111154923.978181-1-petr.pavlu@suse.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Tue, 11 Nov 2025 08:22:34 -0800
+X-Gm-Features: AWmQ_bkt--52MX6mbNFrxPL1Hwy8cf5iG1Co9zB8o3_9L6IQpFMw_TrpSWKzpZE
+Message-ID: <CABCJKucEqEnXtV0TCqxq8_vcZtdcgRCz85jqjbckYq1xuJc9Tw@mail.gmail.com>
+Subject: Re: [PATCH 0/2] module: Remove SHA-1 support for module signing
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: David Howells <dhowells@redhat.com>, David Woodhouse <dwmw2@infradead.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>, 
+	Aaron Tomlin <atomlin@atomlin.com>, keyrings@vger.kernel.org, 
+	linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, 2025-11-09 at 19:30 +0000, Elliott, Robert (Servers) wrote:
-> The composite motivation is to provide some protection if someone
-> discovers a basic flaw in the PQC algorithm. If quantum computers
-> haven't arrived yet to break the traditional algorithm, the
-> composite still proves validity.
+Hi Petr,
 
-Given you quoted me wrt composite signatures, I'd like to make clear I
-do *not* necessarily favor it.
+On Tue, Nov 11, 2025 at 7:49=E2=80=AFAM Petr Pavlu <petr.pavlu@suse.com> wr=
+ote:
+>
+> SHA-1 is considered deprecated and insecure due to vulnerabilities that c=
+an
+> lead to hash collisions. Most distributions have already been using SHA-2
+> for module signing because of this. The default was also changed last yea=
+r
+> from SHA-1 to SHA-512 in f3b93547b91a ("module: sign with sha512 instead =
+of
+> sha1 by default"). This was not reported to cause any issues. Therefore, =
+it
+> now seems to be a good time to remove SHA-1 support for module signing.
+>
+> Looking at the configs of several distributions [1], it seems only Androi=
+d
+> still uses SHA-1 for module signing.
+>
+> @Sami, it this correct and is there a specific reason for using SHA-1?
 
-Unlike regular software or firmware, kernel modules are generally tied
-to a specific version of the kernel, therefore there is no real need
-for long term resistance (unless you plan to never upgrade a kernel).
+It looks like GKI just uses the defaults here. Overall, Android
+doesn't rely on module signing for security, it's only used to
+differentiate between module types. Dropping SHA-1 support sounds like
+a good idea to me.
 
-If a defect in a signing algorithm is found you can simply distribute a
-new kernel with modules resigned with a different algorithm.
+> Note: The second patch has a minor conflict with the sign-file update in =
+the
+> series "lib/crypto: Add ML-DSA signing" [2].
+>
+> [1] https://oracle.github.io/kconfigs/?config=3DUTS_RELEASE&config=3DMODU=
+LE_SIG_SHA1&version=3Dbe8f5f6abf0b0979be20ee8d9afa2a49a13500b8
+> [2] https://lore.kernel.org/linux-crypto/61637.1762509938@warthog.procyon=
+.org.uk/
+>
+> Petr Pavlu (2):
+>   module: Remove SHA-1 support for module signing
+>   sign-file: Remove support for signing with PKCS#7
+>
+>  kernel/module/Kconfig |  5 ----
+>  scripts/sign-file.c   | 66 ++-----------------------------------------
+>  2 files changed, 3 insertions(+), 68 deletions(-)
 
-The problem of using composite algorithms are many:
-- You need composite keys (or at least two keys, depending on the
-implementation).
-- You will pay a higher price in terms of CPU/time for verification for
-each signature.=20
-- You will pay a higher price in terms of disk/ram space to store
-multiple signatures.
+For the series:
 
-It is generally not worth paying this price when the remediation is
-easy.
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
 
---=20
-Simo Sorce
-Distinguished Engineer
-RHEL Crypto Team
-Red Hat, Inc
-
+Sami
 
