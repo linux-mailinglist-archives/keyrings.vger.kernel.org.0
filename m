@@ -1,161 +1,115 @@
-Return-Path: <keyrings+bounces-3331-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3332-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 305D4C52965
-	for <lists+keyrings@lfdr.de>; Wed, 12 Nov 2025 15:00:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3AAC53687
+	for <lists+keyrings@lfdr.de>; Wed, 12 Nov 2025 17:32:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 229CD4E5E57
-	for <lists+keyrings@lfdr.de>; Wed, 12 Nov 2025 13:51:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72A38563C92
+	for <lists+keyrings@lfdr.de>; Wed, 12 Nov 2025 15:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE97222587;
-	Wed, 12 Nov 2025 13:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07052BEC31;
+	Wed, 12 Nov 2025 14:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="NhjKngH4"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HT8+sipB"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6514021FF46
-	for <keyrings@vger.kernel.org>; Wed, 12 Nov 2025 13:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9592857F6
+	for <keyrings@vger.kernel.org>; Wed, 12 Nov 2025 14:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762955490; cv=none; b=DHlKPkcTdcsMQ6ChMlRFa/JClh79e1LItbjAC29BM+ds3XQMlkO6Zc3za6304v/1yS7f6kXa6kuLUb6SSxUgG+Mt0W4zeL6tvHU6YHsui0DkvOrsiOIQw7S/Y0dELMWAHDEg7BbBiPxtqYzjUr3NsQt/fKXjtbU7CB6BKwEjGxI=
+	t=1762959331; cv=none; b=XDWEYXOaR0W4o6PcXKxf1Sua9OEBYA8eXSZJNaOkdNkP47MY+br7Pp0rm3YuKCMtjXbexzK5N4LBYGmxAuUPsUEUK/ASDpBZFSH2PFENJcwDi0p1OojcbtNx/nU7+EnReyu+1xJKkGsvd7Gbtkhb2zjrmVsHT6ssQaN60mkgJxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762955490; c=relaxed/simple;
-	bh=n3z9Jw7bEHMAgnOiDe5IhWMfzXL5QaG73RaPQ8hsiRk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=prss4knQf8l+F6mui1LUNbdm7eDv8lL6sefXpRTHaZKC2EW6OFcgmPtdZRHQogruDhM8Ch0925H8R81tZUED5xsSSPD5nLYTlMlg1HXdxJ9Pa5a9jw/M8v/tiLoSr0v72FHbUIQi71YhTer1Ka4xWQwdwht+pdvAlSRGvGstGJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=NhjKngH4; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b3c2db014easo157688466b.0
-        for <keyrings@vger.kernel.org>; Wed, 12 Nov 2025 05:51:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1762955487; x=1763560287; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6eiNlO9W/s4a9ATMZ+5tC2gxgF5OkwPuLSe2qOti34o=;
-        b=NhjKngH4QwqCocKpnN5eT4FBJ1deZrwJaqsRkjprC3UrH7Pm2iiJ8OuKw6oQOe4sA1
-         Q3WByqVtQt7KVx75osmvuakFUVSR5vx+oqsMRfjW3q6jyEKmjQ34bEPT1UOX9mh/MPf9
-         M5TXQoKN5A6l+HbxJ9us9XDK4Pr0B7MkYCRlewNkckKUnTE2GKBa1PYq3hsjRUanGkdP
-         SVhhDtty4vlCPeqLM79OQM4qauB4zJJQmic/5w93FYrHF6ye7rtQ+gjMfxbTnTevS8NO
-         nqUlGOhLMvXYqYYcAkJ3bJFQuOLsDKengXD6h5PVppnfhX203LclBqRHr9zvdapRyFar
-         CGiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762955487; x=1763560287;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6eiNlO9W/s4a9ATMZ+5tC2gxgF5OkwPuLSe2qOti34o=;
-        b=fmCl2z1qWVCq4AchK4Nr2ZgVNq9IomXdWygySMUgLntcAouAINAPgH30RV/mqNLpQx
-         xfK5VJhYWcmWVHdWDqZhfCDc2m7fetCCCSKQmUbN0vV2swwWrB49qovjHKrbqOhZFIax
-         ycA44uZVWOhIYLfLLvzBYtvc8dldiLJbeZxr95z9LJxObCtiuEFB+EgkoJAICiw3cJDH
-         trNNAHENzEs4sEekCwnNKx1IhLd4+X5DlCZBe39myqNah+kPYKl1SwhdwpG18sLh4jJk
-         JrcRJCxAnuU2qP2u1dFmYjPT17FzTDEits1uHk264ZbdbxIf9NeuahugZXXZm/xec9ru
-         NLBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWFFTThvfKu4hBfM2fpqC8d4RN2JeU5gJ6xSNGIdRRA3ayyWZU1xhIA8eBt1ThJJbMozP9NlN6GoA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyA+x4Y5wNGKISlakgC+nJk6AJM6fbhoUspddTe3dTPSDndx5bm
-	KuSOV3Fn/maocRo/9HChIJFeJmgxD+JSd0Pe9l8KX8cCIRg6LOBIP1jWphjiK/47YGc=
-X-Gm-Gg: ASbGncvRZEsLgyBdSqcNtbHL3xZnNNRzJxG+OhNAmrUHNTw3ntdIOT/p30KgWIREMmL
-	3jvctaF/WQR+67KqYGuSmMYim529AQov4ELfuF+qCprrygSEIhH4O4qwq9XK8d7/CB9wL3lBxxw
-	4ibjqSLd/zjJ1FoSLxUOw9QoJLxCrRkqScx3UgJ2RjpYsAC1VFVAVpvpwGa6ilZrUe92+DAEzbi
-	sZGjNEXMP7iFpueWxFLZdMnANMIRBA9Nxhvjg7Hq7xvYtYKIeHuf6g4cqvkw8nWS2Kze4+JosKM
-	r7OmX2IGwsdIIgiII7JDh/LR1HJJWOoUXrjckOl96RnWNEa9PRHXRS74GI1i4H+Ba4O9JXrgTPy
-	oi+9uFBDh018G54ZAWAJrYL0/EHfU3Wzq2kY9fypH5UTPp8JrS+lts6q6uX6Jv2JEUIJQLHFMqu
-	/f5To5ft3ATJQyQhALD68BpiNjW5a7Lp+KVfMl1PB3q2K7HDBEk8kj5pZpDdEOuENhrKPapGCS1
-	l8LrRnWu3SLED0rQlaEE8sIRsEpuK+kF/abnI1Nh5bOE8c=
-X-Google-Smtp-Source: AGHT+IGh4KgZmhD9Tv0Q7r99njOC0g5Ef0gAEOLC9RYQ++zh2fc2FZ85E0tUpZs0DA8Ec4kM3FudQA==
-X-Received: by 2002:a17:907:1c0a:b0:b39:57ab:ec18 with SMTP id a640c23a62f3a-b7331a9aa6fmr284237266b.45.1762955486563;
-        Wed, 12 Nov 2025 05:51:26 -0800 (PST)
-Received: from ?IPV6:2a00:1028:838d:271e:8e3b:4aff:fe4c:a100? (dynamic-2a00-1028-838d-271e-8e3b-4aff-fe4c-a100.ipv6.o2.cz. [2a00:1028:838d:271e:8e3b:4aff:fe4c:a100])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bf9be184sm1587077766b.56.2025.11.12.05.51.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Nov 2025 05:51:26 -0800 (PST)
-Message-ID: <e624c242-b297-4bb7-a76a-cbb18b027472@suse.com>
-Date: Wed, 12 Nov 2025 14:51:24 +0100
+	s=arc-20240116; t=1762959331; c=relaxed/simple;
+	bh=VvaOpU8/UH8cMCHv+j437vMmYuAqux2R0UTK+ai0Se4=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=WOyQGpTYN+KrV9dT5xwPjVuQs550Z/YAQaSzKD7GCsK+RFoVpeJReduOzHsc+82aD71hwZk+jwjyDbeQfRmVsxKJ5j0N1XB6qJUuKL8/LIGvvuXur/0M31654SFBwdD1TeclpEgxwkgL8EL53kM8sAz6w3Ye4mge0l3eJxxXgDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HT8+sipB; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762959329;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XnEcES/eMdb8xcUNYxyYTP/uMJ28lCAKuvb73LvVDYA=;
+	b=HT8+sipBfJ6gMN9y/UF2kulU+S2MmszMieDWLquc4Xnz1go7UnuSgUzM3t78q9b5Bfc50a
+	ih6gKw2laGnifBLQXwfm0y64DEBODZUk/DbTbIkvApJ/jhYd0OxzYIZ2ZokEjqfPEBT730
+	IKm895xSJNhJ5NLmuKqzmf3RO6c5tgc=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-241-YfQTWq4hM2iYIckLzPN4Jw-1; Wed,
+ 12 Nov 2025 09:55:28 -0500
+X-MC-Unique: YfQTWq4hM2iYIckLzPN4Jw-1
+X-Mimecast-MFC-AGG-ID: YfQTWq4hM2iYIckLzPN4Jw_1762959324
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EA89119373F3;
+	Wed, 12 Nov 2025 14:55:23 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.87])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0EA1F30044E0;
+	Wed, 12 Nov 2025 14:55:18 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20251106192016.GA3318@quark>
+References: <20251106192016.GA3318@quark> <20251106174456.31818-1-dhowells@redhat.com> <20251106174456.31818-3-dhowells@redhat.com>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: dhowells@redhat.com, Herbert Xu <herbert@gondor.apana.org.au>,
+    Luis Chamberlain <mcgrof@kernel.org>,
+    Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>,
+    Sami Tolvanen <samitolvanen@google.com>,
+    "Jason A .
+ Donenfeld" <Jason@zx2c4.com>,
+    Ard Biesheuvel <ardb@kernel.org>,
+    Stephan Mueller <smueller@chronox.de>,
+    Lukas Wunner <lukas@wunner.de>,
+    Ignat Korchagin <ignat@cloudflare.com>, linux-crypto@vger.kernel.org,
+    keyrings@vger.kernel.org, linux-modules@vger.kernel.org,
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 2/8] crypto: Add ML-DSA/Dilithium verify support
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] sign-file: Remove support for signing with PKCS#7
-To: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: David Howells <dhowells@redhat.com>, David Woodhouse
- <dwmw2@infradead.org>, Luis Chamberlain <mcgrof@kernel.org>,
- Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
- Aaron Tomlin <atomlin@atomlin.com>, keyrings@vger.kernel.org,
- linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251111154923.978181-1-petr.pavlu@suse.com>
- <20251111154923.978181-3-petr.pavlu@suse.com>
- <922480ff44bda3b6ecfda1ae780c659644560f94.camel@HansenPartnership.com>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <922480ff44bda3b6ecfda1ae780c659644560f94.camel@HansenPartnership.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <1232847.1762959317.1@warthog.procyon.org.uk>
+Date: Wed, 12 Nov 2025 14:55:17 +0000
+Message-ID: <1232848.1762959317@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On 11/11/25 5:53 PM, James Bottomley wrote:
-> On Tue, 2025-11-11 at 16:48 +0100, Petr Pavlu wrote:
->> The PKCS#7 code in sign-file allows for signing only with SHA-1.
->> Since SHA-1 support for module signing has been removed, drop PKCS#7
->> support in favor of using only CMS.
-> 
-> The change log is a bit alarmist.  CMS really *is* PKCS7 and most
-> literature will refer to CMS as PKCS7.  What you're really deprecating
-> is the use of the PKCS7_sign() API which can only produce SHA-1
-> Signatures ... openssl is fully capable of producing any hash PKCS7
-> signatures using a different PKCS7_... API set but the CMS_... API is
-> newer.
-> 
-> The point being the module signature type is still set to PKEY_ID_PKCS7
-> so it doesn't square with the commit log saying "drop PKCS#7 support".
-> What you really mean is only use the openssl CMS_... API for producing
-> PKCS7 signatures.
+Eric Biggers <ebiggers@kernel.org> wrote:
 
-Ok, I plan to update the description to the following in v2:
+> As I mentioned before
+> (https://lore.kernel.org/linux-crypto/20250613170456.GA1284@sol/), this
+> code should go in lib/crypto/.  There seems to be a clean API in
+> crypto/ml_dsa/dilithium.h already.  Just make that the library API.
 
-sign-file: Use only the OpenSSL CMS API for signing
+It's not that simple, as it turns out.  Various of the API structures are
+dependent on the strength-specific #include magic stuff.
+dilithium_{44,65,87}.h (or parts thereof) are used in the generation of those
+structs.
 
-The USE_PKCS7 code in sign-file utilizes PKCS7_sign(), which allows signing
-only with SHA-1. Since SHA-1 support for module signing has been removed,
-drop the use of the OpenSSL PKCS7 API by the tool in favor of using only
-the newer CMS API.
+Now, I can move all that stuff into one header file in include/crypto/, but
+it's exposing a lot of the internals.
 
-The use of the PKCS7 API is selected by the following:
+It also requires the caller to do some of the work in expanding the public key
+and signature into those API structs, so it's probably better to wrap the
+dilithium.h API to a simpler one with just init, update, fini and all-in-one
+functions and have the crypto_sig interface call those (the helper functions
+are pretty much the wrappers I need anyway).
 
- #if defined(LIBRESSL_VERSION_NUMBER) || \
- 	OPENSSL_VERSION_NUMBER < 0x10000000L || \
- 	defined(OPENSSL_NO_CMS)
- #define USE_PKCS7
- #endif
+David
 
-Looking at the individual ifdefs:
-
-* LIBRESSL_VERSION_NUMBER: LibreSSL added the CMS API implementation from
-  OpenSSL in 3.1.0, making the ifdef no longer relevant. This version was
-  released on April 8, 2020.
-
-* OPENSSL_VERSION_NUMBER < 0x10000000L: OpenSSL 1.0.0 was released on March
-  29, 2010. Supporting earlier versions should no longer be necessary. The
-  file Documentation/process/changes.rst already states that at least
-  version 1.0.0 is required to build the kernel.
-
-* OPENSSL_NO_CMS: OpenSSL can be configured with "no-cms" to disable CMS
-  support. In this case, sign-file will no longer be usable. The CMS API
-  support is now required.
-
-In practice, since distributions now typically sign modules with SHA-2, for
-which sign-file already required CMS API support, removing the USE_PKCS7
-code shouldn't cause any issues.
-
--- 
-Thanks,
-Petr
 
