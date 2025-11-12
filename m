@@ -1,226 +1,161 @@
-Return-Path: <keyrings+bounces-3330-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3331-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F4C5C4FFBA
-	for <lists+keyrings@lfdr.de>; Tue, 11 Nov 2025 23:37:40 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 305D4C52965
+	for <lists+keyrings@lfdr.de>; Wed, 12 Nov 2025 15:00:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 9899C342576
-	for <lists+keyrings@lfdr.de>; Tue, 11 Nov 2025 22:37:39 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 229CD4E5E57
+	for <lists+keyrings@lfdr.de>; Wed, 12 Nov 2025 13:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA55293C4E;
-	Tue, 11 Nov 2025 22:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE97222587;
+	Wed, 12 Nov 2025 13:51:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="NhjKngH4"
 X-Original-To: keyrings@vger.kernel.org
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020141.outbound.protection.outlook.com [52.101.195.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E0F257831;
-	Tue, 11 Nov 2025 22:37:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.141
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762900656; cv=fail; b=IB/kGIxLfpeh75vu+pEMXmHrymanK1tD6I2yMbEWGDQN9IhlMB3V6ro3r/wtp5sc5s+AV4HajG3N1fyRoPoNnI035U5P5HtUR1kz24I4lk1qnFUbhBWmpUJRj2h7nXQWZqw9Odx7GmDO0A0S0WVlPCSmGF9FIJugQnsT5IbgM4s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762900656; c=relaxed/simple;
-	bh=vZKJPiIT5v6D7I8Jp7v/rCD21/kqTy3UOW8a0pThM6o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=iYIPJUkIjuProarFnlZlPoi/SFsiAbeuH2rBrJbqC5zNlbDM7lCw2zinA1b45FcPRbaM0YqCIfhVACbtd6YzX+sp3drQ1uUCKrD9ojPkHR4TUrYYNojR+TrIQqAHac6AigqSE1MVdk/u5ZiIjz4pRO/VSJAaFyHGuZ8UMftLMc4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomlin.com; spf=pass smtp.mailfrom=atomlin.com; arc=fail smtp.client-ip=52.101.195.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atomlin.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sq6Oj4+zZzYfit7KnRWi16uWc7AnDRWmvzYppY4DnaDXMf7dv4JCO+tNTP1+f8xGzBtsM8N7o1tIcIynA+kVx5A8mIGHAL8bgn6Iw3blQ3psSzA2cdXXLO2SMPM74pmIfzxkbb2oaaMEuzvif+7tsks5Tq8EHH+ADXVGZT1Y5do+BgxDDRn+HgxAwHH+LdENQU1acoxkY6HXoGBAFTlFRuJn2iQ9Q9WCM/8ENCDdT/5ygIbkWu7om7P9yDfjaMsJt4TDHmYE9MkMHatVmoKB4MgXvdMen0RK/G60lTSQ7i25v0ad8lJzxd3SYPHDMxdJtUStXMHCU4rAspnRXvGDmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E0WQfMq/aRF3WBkWcoTUfHYHkSHEz8Z/J/g3rTetRR8=;
- b=M2r6leLuRNXkkvN2MyIP1m0BQE2YeXuw1F0LDgIyb2D87QeLP5wpdKrhGT1XMtdfEQ/D7lOUK+hutWpa4rFXS4roP6D1FNV4J67QK9sa9rbMwy9dhOzDzhXLsw4BqdQxaqeZ0B4Zrky8rVogyW3dVoc3US8CjEviujVT4obXYO5ZUo/xQ9Ej1D6zZva8b9HuoJ3DsUY/riwMYc5TWlirKz+ReYBPdfW2cjE8Fz/nSaBfwi58Cg6LKqrZXuSRHMMr7J1QIt3Jdbmv6hDSpAtLdR38VkVv2QyHVnFqgxkcAeJoh7E6j3Htr7lg37Ln0hx0L4mh23gxg2B0tZObERF86w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=atomlin.com; dmarc=pass action=none header.from=atomlin.com;
- dkim=pass header.d=atomlin.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=atomlin.com;
-Received: from LO3P123MB3531.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:be::10)
- by LO6P123MB7271.GBRP123.PROD.OUTLOOK.COM (2603:10a6:600:33c::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Tue, 11 Nov
- 2025 22:37:32 +0000
-Received: from LO3P123MB3531.GBRP123.PROD.OUTLOOK.COM
- ([fe80::8242:da40:efa0:8375]) by LO3P123MB3531.GBRP123.PROD.OUTLOOK.COM
- ([fe80::8242:da40:efa0:8375%4]) with mapi id 15.20.9320.013; Tue, 11 Nov 2025
- 22:37:31 +0000
-Date: Tue, 11 Nov 2025 17:37:28 -0500
-From: Aaron Tomlin <atomlin@atomlin.com>
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: David Howells <dhowells@redhat.com>, 
-	David Woodhouse <dwmw2@infradead.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
-	keyrings@vger.kernel.org, linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] module: Remove SHA-1 support for module signing
-Message-ID: <d54jhudd6xjf2y554aneavoa5mdg7gjjrt46ivlioz3y6i5wvj@s4picdthkoxy>
-References: <20251111154923.978181-1-petr.pavlu@suse.com>
- <20251111154923.978181-2-petr.pavlu@suse.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20251111154923.978181-2-petr.pavlu@suse.com>
-X-ClientProxiedBy: BN0PR03CA0046.namprd03.prod.outlook.com
- (2603:10b6:408:e7::21) To CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:400:70::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6514021FF46
+	for <keyrings@vger.kernel.org>; Wed, 12 Nov 2025 13:51:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1762955490; cv=none; b=DHlKPkcTdcsMQ6ChMlRFa/JClh79e1LItbjAC29BM+ds3XQMlkO6Zc3za6304v/1yS7f6kXa6kuLUb6SSxUgG+Mt0W4zeL6tvHU6YHsui0DkvOrsiOIQw7S/Y0dELMWAHDEg7BbBiPxtqYzjUr3NsQt/fKXjtbU7CB6BKwEjGxI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1762955490; c=relaxed/simple;
+	bh=n3z9Jw7bEHMAgnOiDe5IhWMfzXL5QaG73RaPQ8hsiRk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=prss4knQf8l+F6mui1LUNbdm7eDv8lL6sefXpRTHaZKC2EW6OFcgmPtdZRHQogruDhM8Ch0925H8R81tZUED5xsSSPD5nLYTlMlg1HXdxJ9Pa5a9jw/M8v/tiLoSr0v72FHbUIQi71YhTer1Ka4xWQwdwht+pdvAlSRGvGstGJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=NhjKngH4; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b3c2db014easo157688466b.0
+        for <keyrings@vger.kernel.org>; Wed, 12 Nov 2025 05:51:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1762955487; x=1763560287; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6eiNlO9W/s4a9ATMZ+5tC2gxgF5OkwPuLSe2qOti34o=;
+        b=NhjKngH4QwqCocKpnN5eT4FBJ1deZrwJaqsRkjprC3UrH7Pm2iiJ8OuKw6oQOe4sA1
+         Q3WByqVtQt7KVx75osmvuakFUVSR5vx+oqsMRfjW3q6jyEKmjQ34bEPT1UOX9mh/MPf9
+         M5TXQoKN5A6l+HbxJ9us9XDK4Pr0B7MkYCRlewNkckKUnTE2GKBa1PYq3hsjRUanGkdP
+         SVhhDtty4vlCPeqLM79OQM4qauB4zJJQmic/5w93FYrHF6ye7rtQ+gjMfxbTnTevS8NO
+         nqUlGOhLMvXYqYYcAkJ3bJFQuOLsDKengXD6h5PVppnfhX203LclBqRHr9zvdapRyFar
+         CGiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762955487; x=1763560287;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6eiNlO9W/s4a9ATMZ+5tC2gxgF5OkwPuLSe2qOti34o=;
+        b=fmCl2z1qWVCq4AchK4Nr2ZgVNq9IomXdWygySMUgLntcAouAINAPgH30RV/mqNLpQx
+         xfK5VJhYWcmWVHdWDqZhfCDc2m7fetCCCSKQmUbN0vV2swwWrB49qovjHKrbqOhZFIax
+         ycA44uZVWOhIYLfLLvzBYtvc8dldiLJbeZxr95z9LJxObCtiuEFB+EgkoJAICiw3cJDH
+         trNNAHENzEs4sEekCwnNKx1IhLd4+X5DlCZBe39myqNah+kPYKl1SwhdwpG18sLh4jJk
+         JrcRJCxAnuU2qP2u1dFmYjPT17FzTDEits1uHk264ZbdbxIf9NeuahugZXXZm/xec9ru
+         NLBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWFFTThvfKu4hBfM2fpqC8d4RN2JeU5gJ6xSNGIdRRA3ayyWZU1xhIA8eBt1ThJJbMozP9NlN6GoA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyA+x4Y5wNGKISlakgC+nJk6AJM6fbhoUspddTe3dTPSDndx5bm
+	KuSOV3Fn/maocRo/9HChIJFeJmgxD+JSd0Pe9l8KX8cCIRg6LOBIP1jWphjiK/47YGc=
+X-Gm-Gg: ASbGncvRZEsLgyBdSqcNtbHL3xZnNNRzJxG+OhNAmrUHNTw3ntdIOT/p30KgWIREMmL
+	3jvctaF/WQR+67KqYGuSmMYim529AQov4ELfuF+qCprrygSEIhH4O4qwq9XK8d7/CB9wL3lBxxw
+	4ibjqSLd/zjJ1FoSLxUOw9QoJLxCrRkqScx3UgJ2RjpYsAC1VFVAVpvpwGa6ilZrUe92+DAEzbi
+	sZGjNEXMP7iFpueWxFLZdMnANMIRBA9Nxhvjg7Hq7xvYtYKIeHuf6g4cqvkw8nWS2Kze4+JosKM
+	r7OmX2IGwsdIIgiII7JDh/LR1HJJWOoUXrjckOl96RnWNEa9PRHXRS74GI1i4H+Ba4O9JXrgTPy
+	oi+9uFBDh018G54ZAWAJrYL0/EHfU3Wzq2kY9fypH5UTPp8JrS+lts6q6uX6Jv2JEUIJQLHFMqu
+	/f5To5ft3ATJQyQhALD68BpiNjW5a7Lp+KVfMl1PB3q2K7HDBEk8kj5pZpDdEOuENhrKPapGCS1
+	l8LrRnWu3SLED0rQlaEE8sIRsEpuK+kF/abnI1Nh5bOE8c=
+X-Google-Smtp-Source: AGHT+IGh4KgZmhD9Tv0Q7r99njOC0g5Ef0gAEOLC9RYQ++zh2fc2FZ85E0tUpZs0DA8Ec4kM3FudQA==
+X-Received: by 2002:a17:907:1c0a:b0:b39:57ab:ec18 with SMTP id a640c23a62f3a-b7331a9aa6fmr284237266b.45.1762955486563;
+        Wed, 12 Nov 2025 05:51:26 -0800 (PST)
+Received: from ?IPV6:2a00:1028:838d:271e:8e3b:4aff:fe4c:a100? (dynamic-2a00-1028-838d-271e-8e3b-4aff-fe4c-a100.ipv6.o2.cz. [2a00:1028:838d:271e:8e3b:4aff:fe4c:a100])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bf9be184sm1587077766b.56.2025.11.12.05.51.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Nov 2025 05:51:26 -0800 (PST)
+Message-ID: <e624c242-b297-4bb7-a76a-cbb18b027472@suse.com>
+Date: Wed, 12 Nov 2025 14:51:24 +0100
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO3P123MB3531:EE_|LO6P123MB7271:EE_
-X-MS-Office365-Filtering-Correlation-Id: d2ef842a-47a9-481a-e002-08de2172e6b5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Q3daaDdDQkxnNWRrVkZRdGM2bkZYMmJUMzErQlJUREY0c2VXOEIyTHNCc0RK?=
- =?utf-8?B?eTJtTG9ZSUgxMHltVVdLSVM1MDBhSDZGcHFEZW5OdUlvOHBISjN3TUpRckNB?=
- =?utf-8?B?aHRFdWg5ZlhjQ3dEZy83WWhGUng0d1BGUGR5dWJhZVZQdWtVY0hGZkRTY3Ft?=
- =?utf-8?B?K2xZS1ZGL0d5UjVZMTBCUW5GbWo3ZTBreXVjcXUyM3puYzFFUWs4Y2hwM0VK?=
- =?utf-8?B?cTBKQ00xM0g0YU1qb1FvN21vcW9LQi9qZ1FlMkEzbXp1UklJaStJejN6Tmhu?=
- =?utf-8?B?S3FwT3UrMVVlMVNuL2l1Z0ZCdnFqZjBVa2N3MEg3M1RidThpNURKWkJHN3dq?=
- =?utf-8?B?UXV6V0IxMHN5eXZnODFaV21jZDBhTHVwREhzV1c2OHBHZDNweDVZSU1OYmNV?=
- =?utf-8?B?VHNBUkVqQlJHc0Nwd3FWUmoxb3hVaXFtb29SekxMY2t4NHlzWCsrcHNzVGw0?=
- =?utf-8?B?a2NjeVF1Q01ENk1KczU5U0FCRWk0bld3NEtxMjh6VU1QZTVML1Fzd09yVFo0?=
- =?utf-8?B?MnluZXBlVXhGMnB0Zm50WkVLYTNpb0I1ekRsZWw3OU44aDhWdGdvbGlKWnBa?=
- =?utf-8?B?TUNFbmgxWklOS3JWNUxBQXg4UlZGT1ZQV1o3N0d3WHViT1ZyYS9aQUVDTGpI?=
- =?utf-8?B?ZzZWWUE5N0orVXJXei9jeG9USXVlQ2N3ZTc1aFBNNk8rbm1KVTVKSEtNbVlY?=
- =?utf-8?B?a1FCRXBoWmUxbmMxelRDcU9HZGhvQ1hlaXJROS91aDdrcFU2aThTbkZ6MjBE?=
- =?utf-8?B?MmNPcFNyZkZWdGFPRHpWZnA1UW5YcWdweGw5b0tqUHdjL3VkNWJGcTVyeU4w?=
- =?utf-8?B?amRwM2I1aVBDejNJbFF6YmZTY0RzcGh1dFRxeW9VUTZtc24wVkJFeE9CTXRr?=
- =?utf-8?B?dmEvZ0Z0TWNFZSt2cElVUy83V2dRL2ExR1BWeUdKV3ovWForblBJZHAwK3Rz?=
- =?utf-8?B?K0psTWRZTUI2ZURlTEhCaVZUdktsS1lHQkdsTGZjSTdXUFRYcW5IRVB3MjB0?=
- =?utf-8?B?NFBGbmxRU29VSUhKWnQ2bkVpaGxYcnk3YWtRK0dwWHI1cGxPTXBGdER1ZUMw?=
- =?utf-8?B?ck1INEo4WGNhb2N1VVh5ODJjWHZLb3dIZjd2QVFKSVRtamRpRWRjQmd2bFA4?=
- =?utf-8?B?QkVIZzdERDVZdm9MNFIyRUMxZjFsWGVhYkUvTC9mMjlRRGJ5UmdEdVgzR3Az?=
- =?utf-8?B?WVh0WS9wY1MxcndudDNOMVpDNSt4cEd6Ly9iZGlCNVpLT014dHhWZE8veXpJ?=
- =?utf-8?B?RUdoNXZUYlQvL2NYZklPY1ppeEY4cWhTRk5HRURtTW1MY1pUOFRuS1Frd3ho?=
- =?utf-8?B?T05KQkRSaGc0MG82a0hIc1BLZXc2MEl1cGZWRC9KWUNxMUM2NVBxSzZjV0RU?=
- =?utf-8?B?R2xENlRWVW11ZW9NU3lrU0p1VVF0cXc0TnVzWTR0Qkg5NW4yR2dJZlM3eXNm?=
- =?utf-8?B?YTBpNDlISXhGK3BqekNMVk1DcktMVUtyU2pCbXp1bUdvMndDTU1Bb1JoOGNB?=
- =?utf-8?B?K1l0SDJmUndpbFZXOC80TUVlb016MjBnNUJkeTNicWg1MFFRYVBUa3Zpakor?=
- =?utf-8?B?dGJmd1RaZVlFa3FVTUplOUt5YktRZk56TjB3NnJQYnhoNitNUGJFb3QwdTMv?=
- =?utf-8?B?VlJETUFtb2Z4OS9FZkV5N1VNOTlPZmdIV2o2SjhTN1g2aCtycTFxa3o4U3VB?=
- =?utf-8?B?VjhKdmNaYUNjeG12UFVyWDRLd0lrVXRmM1lDNmYwZm5ubDVWcUFoRG40bTly?=
- =?utf-8?B?N0FwQTVpbVVJZTF1b0ZmZTAzZVdjZHZEUFJibXc3ak4vMHYrZHhQbXpWSVBE?=
- =?utf-8?B?TTdsTzByTGt0Q2dER3EvT2o1cG9LQVlPR1NZZ0U2R0ZhL01DVXdMODJrNm11?=
- =?utf-8?B?bWZoZzRtZE9kKzJBYkFMeG82U0QzL25pQjZoaXllbGNZYnVYOXhxMTJaVndX?=
- =?utf-8?Q?26wVYytWuLFFhlMxHybhoRxLLoyq44Tg?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO3P123MB3531.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SUtMZTJjdWQzbm1lWi9Qb3lPbGtFZ3BqSjhMSlVoRjAxUDFCazUzUG1zUWht?=
- =?utf-8?B?aElGVm9WR3RYcE1qSTdWYXZnMDZkR2QweFBIekNWNk1YYlY4Yi9QMjhyUUtk?=
- =?utf-8?B?aEVWS2NreDhjVXNjaTJRMDA1RkZQN3F2eFFqUUo2TTEvOEtkZ2JuVVhMVE0y?=
- =?utf-8?B?UnhSMmhjL1ZwVXc0Y3pRY0FQSGJkalNpbVREN3krWGVjVDhiYllIQ2w2RFpj?=
- =?utf-8?B?SUg3UGl4MHE2ZWZSd08yWnQ1OVp1cXUwektub2Nxb0tEUFFEc1gyTnlVODdR?=
- =?utf-8?B?T2ZSL2ZYeVlvL0IrTnUxdHgvVUdwNFN6UHEvc1ZIamlrLzZ1ZjZBRkJVc21o?=
- =?utf-8?B?MEJsY296a3Fmck9uVE9yQkZuS09QbWx5S05DYUxYMjRicndaRGd2Q3NVRDJo?=
- =?utf-8?B?R3hHWWdLTXh0V3A1dUgxdFNuWG51ZStXOTZIbEI1blRFQ0xOekthNjFsUjdS?=
- =?utf-8?B?ZHBlWUpjVS9XOVYyZTN6MlRVREIrSkErSE9LdlB2TThBMUsvUlA0eGt1aW51?=
- =?utf-8?B?cGtYdEJGY1RWcEE3UmNEcTZrb05sZmFZQlNGZWFHU3M5UnVRT2U0V2N1U21U?=
- =?utf-8?B?Tjh6M0FWQVVicmNXM2VNT01UNGJsSmhtRkpRQkVSMEFXVEJBM2F2UUJNWFgz?=
- =?utf-8?B?Y0xSNXBsNS9JZXV3aDVNdnR1VEFJaW1TYnUzOS9pTWRId09aTE9WaXNZSThl?=
- =?utf-8?B?WEVoMzRKV3pUL08vb1ROMFA0YXhwOVNocm9ZQVE0VTFRZXl4eUp5dWhqL0E2?=
- =?utf-8?B?bmp2ZnRFUUY3T3FEVEJKQXBDKzVNeWY4aStnd2psVXk1NStMdDV6Y1dRWGFo?=
- =?utf-8?B?SnFQTFhSVUdZNVl4QWIwMG1jamcrRGRmT1lHMElFK09maTZDL2IrZ1ZRZkQ0?=
- =?utf-8?B?MG8vQmMrRE5KSDU0VDJwWk5tSGtTR1IvSmxFdlZTSnZPWHFSeThQY2NtU01L?=
- =?utf-8?B?bi9ySEp4YTd0YTZhc1Rab0dWckdvNmoraXo4SFVXdTZ6OVJmNk1RTFdodml6?=
- =?utf-8?B?YWN0ajRLOEtuam41dnduOXhrMDlWREQra2Y0OE0yYXpmajU1WHlTSG5rRU9m?=
- =?utf-8?B?M0NhQk1OSUVON21PVUhla3VrM3NnNDh5RmJGcnJoWUtGSGhaRy9abC8zME8y?=
- =?utf-8?B?dlREYXBUN3VTSzFBUG05QldaTnBOaGZEUStYbkljOUIvSnhwTGdRRnJxbTlq?=
- =?utf-8?B?OVVBWTNQbTlnZFBSSHR1c3lNQjFycHU3ampndUxySGpmVUJqek44R2V0T1NF?=
- =?utf-8?B?RHduZTMxUXlsbVN6ZWFKdVBLdUdLMFNKQ1lvbFNSbW5DbzRzQ0h0ZGNrOWVN?=
- =?utf-8?B?endLU3BqZncwRFhQeE0xcitRLy9DUTNNQy9uWWRvR2RWSmZMRXFacjlPcWNS?=
- =?utf-8?B?bWczYWdFSlNLZVdZUWpFSEw3U0FTSUl2eFNuV3d0RHNXTTZiNVYxdE91UC9t?=
- =?utf-8?B?dEdoZjVBTmlTWEkzWUhVclhwNTBuKzJBQlJGMG5HUGJvSnYwY3NVbnZXYzZP?=
- =?utf-8?B?eWpZZ1grZEczVmVIMlhua2UrSGhtaDczak1GTHBYYnBPLzAvNVFpYThRdTY1?=
- =?utf-8?B?UjQ5dlVyUzhMcFNyZCtXTTZlYjlnNW1xTWRmY3AwdVFPR0VvNWR4TmcxMDdQ?=
- =?utf-8?B?eUI1Mm9xU0tSc0hmMHVPSGdWVGFjVkwrcHpPMEMrV1U4T2ZINDZDUzBhalpJ?=
- =?utf-8?B?cWtKZ2ZYSTd5NVNyRU1Dc0NnWmFXcExqcEd5TDJqMFI2LzlMVzdyUXFvb2Yy?=
- =?utf-8?B?ajN5cTBySmNaSFhMYnlON1VFdGdGTzB3RnNxTnk3WXM4ajFVSGJoNFlPOFZI?=
- =?utf-8?B?Q3RHNERWcm9Ramx3M0dlS3MxaVpxRUN2djV4QUN6R1hXbFlNTW9hVUQyTmtX?=
- =?utf-8?B?Nlo1bVllbVFaKzNILysxTDJvc0FHVDc2OE5WdUNkTlNma2hFQ1IrTlJyOVhI?=
- =?utf-8?B?SGx4SDJUcVVXakxaNHlqMGZJVXhseS9vcFVGNDJ4cjZyMWxOc2c3b3RXNm1n?=
- =?utf-8?B?b3BnNGJmR3IvNGt0SHVDdkJMcU5TY0NrS1dpUGp6c09TeHVaZ1hFZnZsQk9G?=
- =?utf-8?B?SUlNN21JQ1NZUTNrWkN1SVdnZEZoV0psMUI5VTZJd01FY1AwSEQ0Nk1TUWd6?=
- =?utf-8?Q?ZZmDaPfs9HrwccPp8CDj5X9LI?=
-X-OriginatorOrg: atomlin.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d2ef842a-47a9-481a-e002-08de2172e6b5
-X-MS-Exchange-CrossTenant-AuthSource: CWLP123MB3523.GBRP123.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2025 22:37:31.8006
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: e6a32402-7d7b-4830-9a2b-76945bbbcb57
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7mUU4itvpQsiF494noEtLEPhyB0Cp4RLnrFmq939c4e/8W4Vj223eaygQzvEqvoOs8+9gp0W7MFX7VaN8+zODA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P123MB7271
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] sign-file: Remove support for signing with PKCS#7
+To: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: David Howells <dhowells@redhat.com>, David Woodhouse
+ <dwmw2@infradead.org>, Luis Chamberlain <mcgrof@kernel.org>,
+ Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ Aaron Tomlin <atomlin@atomlin.com>, keyrings@vger.kernel.org,
+ linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20251111154923.978181-1-petr.pavlu@suse.com>
+ <20251111154923.978181-3-petr.pavlu@suse.com>
+ <922480ff44bda3b6ecfda1ae780c659644560f94.camel@HansenPartnership.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <922480ff44bda3b6ecfda1ae780c659644560f94.camel@HansenPartnership.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 11, 2025 at 04:48:31PM +0100, Petr Pavlu wrote:
-> SHA-1 is considered deprecated and insecure due to vulnerabilities that can
-> lead to hash collisions. Most distributions have already been using SHA-2
-> for module signing because of this. The default was also changed last year
-> from SHA-1 to SHA-512 in commit f3b93547b91a ("module: sign with sha512
-> instead of sha1 by default"). This was not reported to cause any issues.
-> Therefore, it now seems to be a good time to remove SHA-1 support for
-> module signing.
+On 11/11/25 5:53 PM, James Bottomley wrote:
+> On Tue, 2025-11-11 at 16:48 +0100, Petr Pavlu wrote:
+>> The PKCS#7 code in sign-file allows for signing only with SHA-1.
+>> Since SHA-1 support for module signing has been removed, drop PKCS#7
+>> support in favor of using only CMS.
 > 
-> Commit 16ab7cb5825f ("crypto: pkcs7 - remove sha1 support") previously
-> removed support for reading PKCS#7/CMS signed with SHA-1, along with the
-> ability to use SHA-1 for module signing. This change broke iwd and was
-> subsequently completely reverted in commit 203a6763ab69 ("Revert "crypto:
-> pkcs7 - remove sha1 support""). However, dropping only the support for
-> using SHA-1 for module signing is unrelated and can still be done
-> separately.
+> The change log is a bit alarmist.  CMS really *is* PKCS7 and most
+> literature will refer to CMS as PKCS7.  What you're really deprecating
+> is the use of the PKCS7_sign() API which can only produce SHA-1
+> Signatures ... openssl is fully capable of producing any hash PKCS7
+> signatures using a different PKCS7_... API set but the CMS_... API is
+> newer.
 > 
-> Note that this change only removes support for new modules to be SHA-1
-> signed, but already signed modules can still be loaded.
-> 
-> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-> ---
->  kernel/module/Kconfig | 5 -----
->  1 file changed, 5 deletions(-)
-> 
-> diff --git a/kernel/module/Kconfig b/kernel/module/Kconfig
-> index 2a1beebf1d37..be74917802ad 100644
-> --- a/kernel/module/Kconfig
-> +++ b/kernel/module/Kconfig
-> @@ -299,10 +299,6 @@ choice
->  	  possible to load a signed module containing the algorithm to check
->  	  the signature on that module.
->  
-> -config MODULE_SIG_SHA1
-> -	bool "SHA-1"
-> -	select CRYPTO_SHA1
-> -
->  config MODULE_SIG_SHA256
->  	bool "SHA-256"
->  	select CRYPTO_SHA256
-> @@ -332,7 +328,6 @@ endchoice
->  config MODULE_SIG_HASH
->  	string
->  	depends on MODULE_SIG || IMA_APPRAISE_MODSIG
-> -	default "sha1" if MODULE_SIG_SHA1
->  	default "sha256" if MODULE_SIG_SHA256
->  	default "sha384" if MODULE_SIG_SHA384
->  	default "sha512" if MODULE_SIG_SHA512
-> -- 
-> 2.51.1
-> 
+> The point being the module signature type is still set to PKEY_ID_PKCS7
+> so it doesn't square with the commit log saying "drop PKCS#7 support".
+> What you really mean is only use the openssl CMS_... API for producing
+> PKCS7 signatures.
 
-Agreed.
+Ok, I plan to update the description to the following in v2:
 
-Reviewed-by: Aaron Tomlin <atomlin@atomlin.com>
+sign-file: Use only the OpenSSL CMS API for signing
+
+The USE_PKCS7 code in sign-file utilizes PKCS7_sign(), which allows signing
+only with SHA-1. Since SHA-1 support for module signing has been removed,
+drop the use of the OpenSSL PKCS7 API by the tool in favor of using only
+the newer CMS API.
+
+The use of the PKCS7 API is selected by the following:
+
+ #if defined(LIBRESSL_VERSION_NUMBER) || \
+ 	OPENSSL_VERSION_NUMBER < 0x10000000L || \
+ 	defined(OPENSSL_NO_CMS)
+ #define USE_PKCS7
+ #endif
+
+Looking at the individual ifdefs:
+
+* LIBRESSL_VERSION_NUMBER: LibreSSL added the CMS API implementation from
+  OpenSSL in 3.1.0, making the ifdef no longer relevant. This version was
+  released on April 8, 2020.
+
+* OPENSSL_VERSION_NUMBER < 0x10000000L: OpenSSL 1.0.0 was released on March
+  29, 2010. Supporting earlier versions should no longer be necessary. The
+  file Documentation/process/changes.rst already states that at least
+  version 1.0.0 is required to build the kernel.
+
+* OPENSSL_NO_CMS: OpenSSL can be configured with "no-cms" to disable CMS
+  support. In this case, sign-file will no longer be usable. The CMS API
+  support is now required.
+
+In practice, since distributions now typically sign modules with SHA-2, for
+which sign-file already required CMS API support, removing the USE_PKCS7
+code shouldn't cause any issues.
 
 -- 
-Aaron Tomlin
+Thanks,
+Petr
 
