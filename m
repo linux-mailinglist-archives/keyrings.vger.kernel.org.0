@@ -1,65 +1,68 @@
-Return-Path: <keyrings+bounces-3335-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3337-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A79C53664
-	for <lists+keyrings@lfdr.de>; Wed, 12 Nov 2025 17:31:26 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F8AC534E5
+	for <lists+keyrings@lfdr.de>; Wed, 12 Nov 2025 17:12:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 1C61A501E74
-	for <lists+keyrings@lfdr.de>; Wed, 12 Nov 2025 15:48:29 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 431913566EC
+	for <lists+keyrings@lfdr.de>; Wed, 12 Nov 2025 16:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1F6340A73;
-	Wed, 12 Nov 2025 15:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637E124E4A1;
+	Wed, 12 Nov 2025 15:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="wfZnAUBr"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="cEyyZt65"
 X-Original-To: keyrings@vger.kernel.org
 Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD05339B36;
-	Wed, 12 Nov 2025 15:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FF733BBD8;
+	Wed, 12 Nov 2025 15:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1762962447; cv=none; b=nXSeJaYZZLrmkp7uBMdd7WW8srzGwD+XQzZn7VTw0pmmuK/y3CbzjMhvFdXlTiq589FDxtr2QLE/LNS6yvECL/jCfDBQrUs9H9j0pWmLw9/k5i1LLxu1o9/O2oA/XHnkteyC1zJ7cmvZASH+v3W/H/J3tBEBQIDRbfz20Pw5Mf0=
+	t=1762963116; cv=none; b=mg+8k+QtUh4nNO76CVwh/aOaz5uKXhECHxQdq7/SsznXa+TZhhMK4OdF151FcxaoU5851E11tI1tJ+Qz2JH4wd+M1LK60+8cFDsQSiDMxgWsIavaaaR1tXwZVaaW4EBVZH6W0LO6M4GH6sQDTJrjiBdytdkAL3ChVJSTTBV0Zss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1762962447; c=relaxed/simple;
-	bh=50CeiLqRWHXQ1GXVtayEe/V8tO2Eub08jm7OSn3+PIc=;
+	s=arc-20240116; t=1762963116; c=relaxed/simple;
+	bh=QIfd+2FMvyx1RpmPD/PeTleUpm5HI2AvrcBOnPp/7ns=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CpPE1SWrB+RRDNDEPDGfA15MxPPpSwM5UT4MvDaeBYaNcABCZ3lQs65/YUo00mzQh2ykRd4S6nxjg5qizgAcmrjRmhWYoaNGkIorkmmamX4Fv2KOV1KWAqsAMfmPzCoHbBO4Idc8phdzr/6PXxjGojod4W4GpqGMB1nUE0+0HYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=wfZnAUBr; arc=none smtp.client-ip=198.37.111.173
+	 Content-Type:MIME-Version; b=uf6ld2VUEyqykp8/uUGZZxRnLAhdxT3E3q/t1H+EDSG+YK0se1LAAP0kP61cew+IB5cm6u/V0TrqISTQFr4Ynp4zVj0KJHTcRVo1nxrHkqp9YRoyAz5WnQ/RB7hoW5TtqjlZ0/1jRN9slZpVZsnw8+SXZUXya8ZyQT5ttf00Brk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=cEyyZt65; arc=none smtp.client-ip=198.37.111.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1762962444;
-	bh=50CeiLqRWHXQ1GXVtayEe/V8tO2Eub08jm7OSn3+PIc=;
+	d=hansenpartnership.com; s=20151216; t=1762963113;
+	bh=QIfd+2FMvyx1RpmPD/PeTleUpm5HI2AvrcBOnPp/7ns=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=wfZnAUBrMZpUV0dfLqqRgwzRuCHcDrWUN1b9pT7LJhq7gtM1JZN8oHQgu946oxP20
-	 m5HAnFJn1dY8Usdpc68vY/HGlAUdBG41TJUrqVDy/3UhfUYEhBuutVymhm/JccQGOn
-	 /3YLIypcrys13LSYC6S+gry0JrMUkmRu1dKk9Yn4=
+	b=cEyyZt65bPBdOtqoHNbWa9if4C0xduBKNbhfX/6Yp64jFeQ4CIw1P34faPz6nFx/B
+	 h27hwjf9CaOuxBRCeHEdHXDRVwHmO9TxtQXgqFR5+MGXVNhPOv0yT0xw3949WyEvLG
+	 GHm6NpU51eyLfVn3v11kOUAmZFlL9/pTIeal3PPI=
 Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 81C091C0192;
-	Wed, 12 Nov 2025 10:47:24 -0500 (EST)
-Message-ID: <0b18e4cd726c6d986e969a78bff0aaaf6affd3a0.camel@HansenPartnership.com>
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id D153E1C021D;
+	Wed, 12 Nov 2025 10:58:32 -0500 (EST)
+Message-ID: <a1f844ff4817a6b183ac857527df6505449c8af6.camel@HansenPartnership.com>
 Subject: Re: [PATCH 2/2] sign-file: Remove support for signing with PKCS#7
 From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: David Howells <dhowells@redhat.com>, Petr Pavlu <petr.pavlu@suse.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, Luis Chamberlain
- <mcgrof@kernel.org>,  Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen
- <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
- keyrings@vger.kernel.org, linux-modules@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Date: Wed, 12 Nov 2025 10:47:23 -0500
-In-Reply-To: <1234920.1762961817@warthog.procyon.org.uk>
-References: <e624c242-b297-4bb7-a76a-cbb18b027472@suse.com>
+To: David Howells <dhowells@redhat.com>
+Cc: Petr Pavlu <petr.pavlu@suse.com>, David Woodhouse <dwmw2@infradead.org>,
+  Luis Chamberlain <mcgrof@kernel.org>, Daniel Gomez <da.gomez@kernel.org>,
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin
+ <atomlin@atomlin.com>,  keyrings@vger.kernel.org,
+ linux-modules@vger.kernel.org,  linux-kernel@vger.kernel.org
+Date: Wed, 12 Nov 2025 10:58:31 -0500
+In-Reply-To: <1235767.1762962760@warthog.procyon.org.uk>
+References: 
+	<0b18e4cd726c6d986e969a78bff0aaaf6affd3a0.camel@HansenPartnership.com>
+	 <e624c242-b297-4bb7-a76a-cbb18b027472@suse.com>
 	 <20251111154923.978181-1-petr.pavlu@suse.com>
 	 <20251111154923.978181-3-petr.pavlu@suse.com>
 	 <922480ff44bda3b6ecfda1ae780c659644560f94.camel@HansenPartnership.com>
 	 <1234920.1762961817@warthog.procyon.org.uk>
+	 <1235767.1762962760@warthog.procyon.org.uk>
 Autocrypt: addr=James.Bottomley@HansenPartnership.com;
  prefer-encrypt=mutual;
  keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNElecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHURfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvdHRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmBLmY0FCRs1hL0ACgkQgUrkfCFIVNaEiQgAg18F4G7PGWQ68xqnIrccke7Reh5thjUz6kQIii6Dh64BDW6/UvXn20UxK2uSs/0TBLO81k1mV4c6rNE+H8b7IEjieGR9frBsp/+Q01JpToJfzzMUY7ZTDV1IXQZ+AY9L7vRzyimnJHx0Ba4JTlAyHB+Ly5i4Ab2+uZcnNfBXquWrG3oPWz+qPK88LJLya5Jxse1m1QT6R/isDuPivBzntLOooxPk+Cwf5sFAAJND+idTAzWzslexr9j7rtQ1UW6FjO4CvK9yVNz7dgG6FvEZl6J/HOr1rivtGgpCZTBzKNF8jg034n49zGfKkkzWLuXbPUOp3/oGfsKv8pnEu1c2GbQpSmFtZXMgQm90dG9tbGV5IDxqZWpiQGxpbnV4LnZuZXQuaWJtLmNvbT6JAVYEEwEIAEACGwMHCwkIBwMCAQYVC
@@ -80,22 +83,36 @@ List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Wed, 2025-11-12 at 15:36 +0000, David Howells wrote:
-> Petr Pavlu <petr.pavlu@suse.com> wrote:
+On Wed, 2025-11-12 at 15:52 +0000, David Howells wrote:
+> James Bottomley <James.Bottomley@HansenPartnership.com> wrote:
 >=20
-> > In practice, since distributions now typically sign modules with
-> > SHA-2, for which sign-file already required CMS API support,
-> > removing the USE_PKCS7 code shouldn't cause any issues.
+> > > We're looking at moving to ML-DSA, and the CMS support there is
+> > > slightly dodgy at the moment, so we need to hold off a bit on
+> > > this change.
+> >=20
+> > How will removing PKCS7_sign, which can only do sha1 signatures
+> > affect that? Is the dodginess that the PKCS7_... API is better than
+> > CMS_... for PQS at the moment?=C2=A0 In which case we could pretty much
+> > do a rip and replace of the CMS_ API if necessary, but that would
+> > be a completely separate patch.
 >=20
-> We're looking at moving to ML-DSA, and the CMS support there is
-> slightly dodgy at the moment, so we need to hold off a bit on this
-> change.
+> OpenSSL-3.5.1's ML-DSA support isn't completely right - in particular
+> CMS_NOATTR is not currently supported.=C2=A0 I believe there is a fix in
+> the works there, but I doubt it has made it to all the distributions
+> yet.
 
-How will removing PKCS7_sign, which can only do sha1 signatures affect
-that? Is the dodginess that the PKCS7_... API is better than CMS_...
-for PQS at the moment?  In which case we could pretty much do a rip and
-replace of the CMS_ API if necessary, but that would be a completely
-separate patch.
+I get that PQC in openssl-3.5 is highly experimental, but that merely
+means we tell people not to use it for a while.  However, what I don't
+see is how this impacts PKCS7_sign removal.  The CMS API can do a sha1
+signature if that's what people want and keeping the PKCS7_sign API
+won't prevent anyone with openssl-3.5 installed from trying a PQ
+signature.=20
+
+> =C2=A0 I'm only asking that we hold off a cycle; that will probably
+> suffice.
+
+Right but why?  Is your thought that we'll have to change the CMS_ code
+slightly and this might conflict?
 
 Regards,
 
