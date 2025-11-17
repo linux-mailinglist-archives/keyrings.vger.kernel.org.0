@@ -1,47 +1,47 @@
-Return-Path: <keyrings+bounces-3368-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3369-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E54BC6543B
-	for <lists+keyrings@lfdr.de>; Mon, 17 Nov 2025 17:55:20 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80294C654F3
+	for <lists+keyrings@lfdr.de>; Mon, 17 Nov 2025 18:04:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A8E894E9E0F
-	for <lists+keyrings@lfdr.de>; Mon, 17 Nov 2025 16:53:14 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 1358F360D29
+	for <lists+keyrings@lfdr.de>; Mon, 17 Nov 2025 16:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3922877C2;
-	Mon, 17 Nov 2025 16:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 701E72FE574;
+	Mon, 17 Nov 2025 16:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nnKDcFT9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pk2r95xi"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5092C0F8F;
-	Mon, 17 Nov 2025 16:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3659B2FC890;
+	Mon, 17 Nov 2025 16:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763398351; cv=none; b=EQ2u4susuqA/MILKrd/1Bz/aH+o4829kFAbEnSRMAbN9nmTeu2UKqLVd6pRW085GZ5ws9pUrL2O2XDR520X+i3bGqWPTg+A1mGiwNfLCoEGsldWtQt5yOqWcbH7IZbKsGPuTGPSwOm3qqxkpn5yToELqZTyFGTb9qOEVWLlvTWE=
+	t=1763398558; cv=none; b=ltVUD3/Lu4o4rf1S8Otlt7ftfnoZ/YmPiD9MDp+qs49+x+fVDWJnz45uFmVOk/1d6ndJWzW3OhfQ8L+O5xXBpgfmQmIVFf3HBShBnsTEKdGkz0xXUPu+VhBJv27GjU4rP9lqO0VeO6u6Y/R+Yx00SFJy2zu0Uyf/s4Ce2OEfK7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763398351; c=relaxed/simple;
-	bh=gcvUtZeqbS09AGZ6c1cgh/msOkfCj35dkoodZpbTvww=;
+	s=arc-20240116; t=1763398558; c=relaxed/simple;
+	bh=KSJUzwn36aYmzSijXMS3vLUqgHm17tglwEeTlWVa2s8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t7u7Va+/g0ysKL0ddddoKWlxzqPVlKOpwTxauOrBC/lsT2Pbhkley6tvYuEQVwqPOz1VDj/1cwG6XB/NuSob+FSqlQbfe54suJ4lXeJAHwxvgpPReZK2cVNRoZos3hA1dkW4zrrJPXT/zlBcL9J3HhareaNxDT4XP5f0DvYE5jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nnKDcFT9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F689C19423;
-	Mon, 17 Nov 2025 16:52:29 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=aHrVo+ap8eMssg+g1fek9B1ErSzoDHz9RGMlpU7nC5LDOUDTO0Z0aejp9Bb/fJjYLLhhoNm6SRP4pxccfEpNApwFVlkqKbJIGMrwM9dqNXBSMaX72Od6Fdf1kH2nI2AHtZpKO1zOGJT6CP5JVOTz691kuylaGUI4IgvF+ZzPWXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pk2r95xi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4253BC4CEF1;
+	Mon, 17 Nov 2025 16:55:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763398350;
-	bh=gcvUtZeqbS09AGZ6c1cgh/msOkfCj35dkoodZpbTvww=;
+	s=k20201202; t=1763398557;
+	bh=KSJUzwn36aYmzSijXMS3vLUqgHm17tglwEeTlWVa2s8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nnKDcFT9Mqmu4v/tJqXL6iD/rv4Yv0Ma96+7y/2IE2CkveQl9xHefSFCxaORZ4/iy
-	 lywhjMYzC/4JwA77O+2vDOs5FG3VettKztd3wkSD/jJQde+xerk/fUeXWTKstau6Rx
-	 2H+lpHBJWdlfHSwgTHgJolsAHubVczhGPZeQF1pNegPELtGOWuQFgfH3PtQmUUpeFW
-	 rMual399t6OfBO7kY69akS0zmYikkcsOKkDTqICX6yjhpBvAUEd1hBiUFrSvbvpPLS
-	 OWM8Lu7Ba0epvoThxmw+nkU139+ciH1q4Ng3ct79Cq1ecUsvdhl0xptvqSISuzZy0O
-	 SZ6ovPau1la5g==
-Date: Mon, 17 Nov 2025 08:50:47 -0800
+	b=pk2r95xitwhnTtZK/QeFCcxyvph47vXNblgHgn56yHF/aw1xYSiquSccPw+sIgprZ
+	 C4xCvR/XwWzePc4FFxr8M4E4+xIzPkMCOg/lnh4bM5scyDTZmkWVqfWgX4aGwMtgFe
+	 hypH4NY/A0D6nCOPt3HJrbaat4oaHfNthMGfnGFwRv+07sTbKjI58w2Lt5csKZvzj1
+	 8yWfB6xBatAzbp90TtlbIkCp5dZiyz0hK4hwPrDlVMIOhkl3YwO7qgGgJ6yujxEm7D
+	 tyjYF0DpIy8lwdRi7ehp+Jm8I2KET0PDv4zrrLWpSPKZ0X4HVMJRLgyAJOt7N6zWTI
+	 MBuCNwylvJK5A==
+Date: Mon, 17 Nov 2025 08:54:15 -0800
 From: Eric Biggers <ebiggers@kernel.org>
 To: David Howells <dhowells@redhat.com>
 Cc: Herbert Xu <herbert@gondor.apana.org.au>,
@@ -56,11 +56,10 @@ Cc: Herbert Xu <herbert@gondor.apana.org.au>,
 	Ignat Korchagin <ignat@cloudflare.com>,
 	linux-crypto@vger.kernel.org, keyrings@vger.kernel.org,
 	linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 1/9] crypto: Add support for shake256 through
- crypto_shash
-Message-ID: <20251117165047.GA1584@sol>
+Subject: Re: Where to add FIPS tests
+Message-ID: <20251117165415.GB1584@sol>
 References: <20251117145606.2155773-1-dhowells@redhat.com>
- <20251117145606.2155773-2-dhowells@redhat.com>
+ <2158596.1763395299@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -69,15 +68,34 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251117145606.2155773-2-dhowells@redhat.com>
+In-Reply-To: <2158596.1763395299@warthog.procyon.org.uk>
 
-On Mon, Nov 17, 2025 at 02:55:50PM +0000, David Howells wrote:
-> Add shake256 support to the SHA-3 crypto_sig module so that ML-DSA can use
-> it.
+On Mon, Nov 17, 2025 at 04:01:39PM +0000, David Howells wrote:
+> Hi Herbert,
+> 
+> I'm wondering from where I should invoke the FIPS tests for ML-DSA.
+> 
+> Currently, the asymmetric key type has some FIPS selftests for RSA and ECDSA
+> built into it, but I wonder if that's the best way.  The problem is that it
+> does the selftest during module init - but that can only test whatever
+> algorithms are built into the base kernel image and initialised at the time
+> late_initcall() happens.
+> 
+> It might be better to put the tests into the algorithm modules themselves -
+> but that then has a potential circular dependency issue.  However, that might
+> not matter as the asymmetric key type won't be built as a module and will be
+> built into the kernel (though some of the components such as X.509 and PKCS#7
+> can be built as modules).
+> 
+> If I don't involve X.509/PKCS#7 in the selftest, then doing it from the ML-DSA
+> modules during module init would be fine.
+> 
+> Do you (or anyone else) have any thoughts?
 
-Why?  Not only does this patch not expose SHAKE256 support correctly,
-the ML-DSA code just accesses SHAKE256 via the library API, not
-crypto_shash.  So this seems unnecessary.
+The FIPS self-test should just go in the algorithm module itself and
+test ML-DSA directly.  See the other lib/crypto/ FIPS self-tests.
+Please check the FIPS Implementation Guidance documentation to see what
+is needed; it isn't actually very much.
 
 - Eric
 
