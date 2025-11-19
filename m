@@ -1,104 +1,119 @@
-Return-Path: <keyrings+bounces-3384-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3385-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98DCBC6F367
-	for <lists+keyrings@lfdr.de>; Wed, 19 Nov 2025 15:20:34 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF58DC6F69F
+	for <lists+keyrings@lfdr.de>; Wed, 19 Nov 2025 15:49:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sea.lore.kernel.org (Postfix) with ESMTPS id 4263C28A9A
-	for <lists+keyrings@lfdr.de>; Wed, 19 Nov 2025 14:20:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTPS id 3DCD629B3F
+	for <lists+keyrings@lfdr.de>; Wed, 19 Nov 2025 14:48:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963C427466A;
-	Wed, 19 Nov 2025 14:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6FD432FA37;
+	Wed, 19 Nov 2025 14:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aAwrmkki"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZPBb6PBl"
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3B0276046
-	for <keyrings@vger.kernel.org>; Wed, 19 Nov 2025 14:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC199366545
+	for <keyrings@vger.kernel.org>; Wed, 19 Nov 2025 14:45:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763562031; cv=none; b=JMmWea9UjH2bEx0NJ/7P7PJdFb8cvm/fQX1Be+Kl+gteOH/MI3XDpbRFm2ZaJFPb13DWSUckF4b39nt0dPHleAxXzLx/TaC05cRChrpaaWXAug8+f86FJZ2b3oxhrTdqtsvb4eymBxfRmuAUH/wxqSN1IgPoMVVfg2mBZ+DMAcM=
+	t=1763563523; cv=none; b=P9+3ZgJlcV2yHscBp6KZ32VdMJBEbc9nOQxd0i5ZqAxm7dcYInc+skIsmIWlyhE4U+afRlKN0B5aCduvHsFQPdhIX3t0fOPBueLWHBbfWd0VHzBiVjgyAuY1Ql95e91S75gTMYpYFOC3+h7ZYJcbRiIk9qPJy4YInGkUEvgIVYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763562031; c=relaxed/simple;
-	bh=XzRalQKs57czmv5x4N/a/52SISZhq2Nkv4q9UkJ+pyo=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=Inf0WeNkDGcGthmQRpdtTmGEBZOOZ8Ww15MztnTphImxEWu0/NViFTkpbICG8Kxig6xHSlv3lMFD2OTEY2ww5xaIXLLSwa9Q+oTar7Cun3cT2rXGe632W7cxpPCgz0doq41ViyKHlh3Mt+7p5fgwnuvWwHiS3y6ETAaPzN7hruQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aAwrmkki; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1763562028;
+	s=arc-20240116; t=1763563523; c=relaxed/simple;
+	bh=lrb00y6uGsIWW3VAlnHGMzLSI26EzNLA1W/wtqFFvm8=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=kmLcaO3fU7xvOX3t28lUGyKSvJ1NgsImvZIxHjX3/DC/cggdTt8FSzlzQjEO36IaGcONAFyW4riOASmQeGVes0/PsjeHQA9YUKnT+Rlo9OWErM+YblOJjeiP3Mq6UvXu835zkEbcaDELZ6CnAmlbt10cjZPbNECMrbt3jzv2teA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZPBb6PBl; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1763563508;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+eUfWZZGN6Clg4COI6/ZdHoTco2pZOYMsSV3TEOpY1Y=;
-	b=aAwrmkki7/Yw94OnR/hbm/vHawT/X7F3EuyMXW8L8tUCpGyDMQVAwVbNtXt0PzAOrX9/K/
-	vuBiCZNMQGA+v+n1DW28+b/Exe/qo9sLomtdigBv094P8nW/TAwjR/3pMmiyYFMkji890X
-	7oUCO1q4xEv34l9XEvXVSE9CMTND5I8=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-57-E_mdSrUXMpmGvhiu52itOA-1; Wed,
- 19 Nov 2025 09:20:25 -0500
-X-MC-Unique: E_mdSrUXMpmGvhiu52itOA-1
-X-Mimecast-MFC-AGG-ID: E_mdSrUXMpmGvhiu52itOA_1763562023
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id BA6C818D95C7;
-	Wed, 19 Nov 2025 14:20:22 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.42.28.5])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B14971800876;
-	Wed, 19 Nov 2025 14:20:17 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20251119035905.GA1743@sol>
-References: <20251119035905.GA1743@sol> <20251117171003.GC1584@sol> <20251117145606.2155773-1-dhowells@redhat.com> <20251117145606.2155773-3-dhowells@redhat.com> <2165074.1763409175@warthog.procyon.org.uk> <20251117201233.GA3993@sol>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: dhowells@redhat.com, Herbert Xu <herbert@gondor.apana.org.au>,
-    Luis Chamberlain <mcgrof@kernel.org>,
-    Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>,
-    Sami Tolvanen <samitolvanen@google.com>,
-    "Jason A .
- Donenfeld" <Jason@zx2c4.com>,
-    Ard Biesheuvel <ardb@kernel.org>,
-    Stephan Mueller <smueller@chronox.de>,
-    Lukas Wunner <lukas@wunner.de>,
-    Ignat Korchagin <ignat@cloudflare.com>, linux-crypto@vger.kernel.org,
-    keyrings@vger.kernel.org, linux-modules@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 2/9] crypto: Add ML-DSA/Dilithium verify support
+	bh=O5eB5R3KhKTh4SL2bkwwFe1+9RO/J8AQ627rC4N+gXI=;
+	b=ZPBb6PBlRfqf5p3bWOpqovbaULqqILB2bZwUS2TiXMYP9quvbSq6YuHmtTiWTm7pV2vB0A
+	BvcihvMRamdevjrS91WHWEg0BCpGiexn7Vx+0AR6ftQsfcTBgkOzVgj1XX7rvcgyRsWGUU
+	1mPa0CqFYNpq9rp0yUktUNa1VWwlzYY=
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <2450666.1763562016.1@warthog.procyon.org.uk>
-Date: Wed, 19 Nov 2025 14:20:16 +0000
-Message-ID: <2450667.1763562016@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81\))
+Subject: Re: [PATCH] KEYS: encrypted: Use pr_fmt()
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Thorsten Blum <thorsten.blum@linux.dev>
+In-Reply-To: <aR0v9mLOKJsr_0Zm@kernel.org>
+Date: Wed, 19 Nov 2025 15:45:02 +0100
+Cc: Mimi Zohar <zohar@linux.ibm.com>,
+ David Howells <dhowells@redhat.com>,
+ Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>,
+ linux-integrity@vger.kernel.org,
+ keyrings@vger.kernel.org,
+ linux-security-module@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <83C83079-0354-4642-A980-DBC7AE572A53@linux.dev>
+References: <20251113123544.11287-2-thorsten.blum@linux.dev>
+ <aR0v9mLOKJsr_0Zm@kernel.org>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 
-Eric Biggers <ebiggers@kernel.org> wrote:
+On 19. Nov 2025, at 03:48, Jarkko Sakkinen wrote:
+> On Thu, Nov 13, 2025 at 01:35:44PM +0100, Thorsten Blum wrote:
+>> Use pr_fmt() to automatically prefix all pr_<level>() log messages =
+with
+>=20
+> This fails to describe what "use" means.
 
-> I've written an implementation of ML-DSA verification in about 600
-> lines.  It may grow slightly as I clean it up and test it, but we
-> definitely don't need 4800 lines.  I'll send it out once it's ready.
+I don't understand what you mean. What's wrong with "use ... to ..."?
 
-Could you post what you have now so that I can have a look at it, please?  It
-doesn't matter if it's fully tested, but I can at least compare the algorithm
-to that of Leancrypto.
+>> "encrypted_key: " and remove all manually added prefixes.
+>>=20
+>> Reformat the code accordingly and avoid line breaks in log messages.
+>>=20
+>> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+>> ---
+>> security/keys/encrypted-keys/encrypted.c | 74 =
++++++++++++-------------
+>> security/keys/encrypted-keys/encrypted.h |  2 +-
+>> 2 files changed, 35 insertions(+), 41 deletions(-)
+>>=20
+>> diff --git a/security/keys/encrypted-keys/encrypted.c =
+b/security/keys/encrypted-keys/encrypted.c
+>> index 513c09e2b01c..a8e8bf949b4b 100644
+>> --- a/security/keys/encrypted-keys/encrypted.c
+>> +++ b/security/keys/encrypted-keys/encrypted.c
+>> @@ -11,6 +11,8 @@
+>>  * See Documentation/security/keys/trusted-encrypted.rst
+>>  */
+>>=20
+>=20
+> Should have undef prepending.
 
-David
+Why is this necessary when the #define is at the top of a source file?
+The kernel documentation [1] doesn't mention this anywhere. Isn't #undef
+only needed when redefining 'pr_fmt' in the middle of a file to avoid a
+compiler warning/error?
+
+>> +#define pr_fmt(fmt) "encrypted_key: " fmt
+>> +
+>> [...]
+
+Thanks,
+Thorsten
+
+[1] https://docs.kernel.org/core-api/printk-basics.html
 
 
