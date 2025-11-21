@@ -1,91 +1,126 @@
-Return-Path: <keyrings+bounces-3412-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3413-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC04C778EB
-	for <lists+keyrings@lfdr.de>; Fri, 21 Nov 2025 07:22:05 +0100 (CET)
+Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF042C790AB
+	for <lists+keyrings@lfdr.de>; Fri, 21 Nov 2025 13:42:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sin.lore.kernel.org (Postfix) with ESMTPS id 89833333FD
-	for <lists+keyrings@lfdr.de>; Fri, 21 Nov 2025 06:18:15 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 7F97D4EA342
+	for <lists+keyrings@lfdr.de>; Fri, 21 Nov 2025 12:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0766C305E14;
-	Fri, 21 Nov 2025 06:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C6331158A;
+	Fri, 21 Nov 2025 12:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XAtN777A"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FLfATZ1+"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB6930597E;
-	Fri, 21 Nov 2025 06:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535AC311C39
+	for <keyrings@vger.kernel.org>; Fri, 21 Nov 2025 12:41:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763705892; cv=none; b=eV1iuTblXlp+k3uvuakzvDr67zG+aS8CllB5Y4jPdmLMfLqkGPxSv5+ulsweOF+S5AEdrjQsRkyYCN0Z8Kt/onS7sdd8lNCm+W2bK9vFpe5huhqBg6YL7GQUkqAsVZPwh1zl2dJ5iaSl4RzpFn3TCCEjHjY75p06Lwds+H5IDtg=
+	t=1763728917; cv=none; b=QOmH8e1m/WAn0kUkgTsRr4c3akvcXwiPvpW6TdEpSguS64r4Em+VROr27E2aLL4KhG1n5Sf7h7Z6CPR+gYlGbmjupNUgco0BxyRpdEWtxq+0+9az7Gxej9K8sUM/v+3cbV5gJwWNQ4NqOHrXKjlw9QmWPbdwGCOlJUPQRWVVpXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763705892; c=relaxed/simple;
-	bh=HO4na2m6whVvr7y4Ia0nxGjnaVEn4flWXUAZOQAc90Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iiR8Oz80xQV/m3+lVFc/utYoHZxTbQ+yMXe0frOOUGqId8bltfxFukcYQeVuNRUHLdQ2WptPvQZcFwGvSb3XySxjBkpf5YtEuEzfVsy1hMbpK1H7RScYhSDNAQXBoO/lUmJsjQMHRqrOYn22NEka1hnZdvP7B2WuGrcRz9rUIYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XAtN777A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D818C4CEF1;
-	Fri, 21 Nov 2025 06:18:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763705891;
-	bh=HO4na2m6whVvr7y4Ia0nxGjnaVEn4flWXUAZOQAc90Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XAtN777Ad4o/ydmQ4JtcOfmYqUYJRaGZ/xWJrYztDooL6GEHOAfa6BL1cw8npVENw
-	 O1EtPqUpmlxj2/5HWrhBPV0HjOw0mE8I3tz/30PdK3xTm17N9y4NchuEg1hRgHeahe
-	 wofu8Fe7N72hj+OvAAQtDzvex8jhwF0dTIUiVAZufFa15rr/ab6yPXiROEDQQUXqDi
-	 VZjlmGYbBRsDAljcwnqu5mxoBT1F/u/Rbq1TH1CcPih80ql8xKY8HplNg8KzgV5eCY
-	 BwY8ZpjSCIhbcDS2aLYveVOfVQd16IQKDC0moULDaEeFZwL3vkebqIg+RGgrhys2mg
-	 XXwB9lQG0D/sw==
-Date: Thu, 20 Nov 2025 22:16:25 -0800
-From: Eric Biggers <ebiggers@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: linux-crypto@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Stephan Mueller <smueller@chronox.de>,
-	Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@cloudflare.com>, keyrings@vger.kernel.org,
-	linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/4] lib/crypto: ML-DSA verification support
-Message-ID: <20251121061625.GA1855@sol>
-References: <20251120003653.335863-1-ebiggers@kernel.org>
- <2528923.1763626276@warthog.procyon.org.uk>
+	s=arc-20240116; t=1763728917; c=relaxed/simple;
+	bh=Vap15O/LCeEV3yjhE8W7o8qtxMXTBX6RyW3ZEv7xYs8=;
+	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=qLTVPKbyDXCoeWHo4SyCjRM/924cJ56/Tn8TxtmueLFTmJv0Dm9PRJ0Y5opCTtk4g0k74QbNQwOf95d09FDFdiqF48UrjAVss7X/xHQJQGDDjHUNNySfP+32xM5BMF+HrVFsy3hi3Ju/o0nEnzT7F+bEjIJ+Y4EihXb2g1qjPtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FLfATZ1+; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1763728914;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SJyQizyUQfr4vBGiRcxbci2GL/tku31+RZUix1dYDTk=;
+	b=FLfATZ1+i9Bpih2wLvuXerskJRsnVM3ugMlFHcYmVqEdKQ265eaFzwNuB5suJxeiDsNSAU
+	Kbfpix4P04f+45N1xF2QT2EzoqfUfvH9pR4qBdy1YnmzZKN4sQjAy9yAfA7runzMsI4PSq
+	VkF4h0Fw0k0NwwcetES2Nq6b33jxARQ=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-558--A0WeA1uN_uDpccxjrM_Lw-1; Fri,
+ 21 Nov 2025 07:41:49 -0500
+X-MC-Unique: -A0WeA1uN_uDpccxjrM_Lw-1
+X-Mimecast-MFC-AGG-ID: -A0WeA1uN_uDpccxjrM_Lw_1763728908
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 739C9195608A;
+	Fri, 21 Nov 2025 12:41:47 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.5])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B555030044DB;
+	Fri, 21 Nov 2025 12:41:42 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20251121005017.GD3532564@google.com>
+References: <20251121005017.GD3532564@google.com> <20251120003653.335863-2-ebiggers@kernel.org> <20251120003653.335863-1-ebiggers@kernel.org> <2624664.1763646918@warthog.procyon.org.uk>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: dhowells@redhat.com, linux-crypto@vger.kernel.org,
+    Herbert Xu <herbert@gondor.apana.org.au>,
+    Luis Chamberlain <mcgrof@kernel.org>,
+    Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>,
+    Sami Tolvanen <samitolvanen@google.com>,
+    "Jason A . Donenfeld" <Jason@zx2c4.com>,
+    Ard Biesheuvel <ardb@kernel.org>,
+    Stephan Mueller <smueller@chronox.de>,
+    Lukas Wunner <lukas@wunner.de>,
+    Ignat Korchagin <ignat@cloudflare.com>, keyrings@vger.kernel.org,
+    linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] lib/crypto: Add ML-DSA verification support
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2528923.1763626276@warthog.procyon.org.uk>
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2755898.1763728901.1@warthog.procyon.org.uk>
+Date: Fri, 21 Nov 2025 12:41:41 +0000
+Message-ID: <2755899.1763728901@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On Thu, Nov 20, 2025 at 08:11:16AM +0000, David Howells wrote:
-> Note that your emailed patches seem corrupt somehow, but I can fetch the git
-> branch.
+Eric Biggers <ebiggers@kernel.org> wrote:
 
-Works for me:
+> On Thu, Nov 20, 2025 at 01:55:18PM +0000, David Howells wrote:
+> > Eric Biggers <ebiggers@kernel.org> wrote:
+> > 
+> > > +	/* Compute d = (c mod 2^32) * (q^-1 mod 2^32). */
+> > > +	s32 d = (s32)c * QINV_MOD_R;
+> > 
+> > Hmmm...  is "(s32)c" actually "(c mod 2^32)"?  Should that be:
+> > 
+> > 	u32 d = (u32)c * QINV_MOD_R;
+> > 
+> > This is followed up by casting 'd' to "s64".  I don't think that should
+> > sign-extend it, but...
+> 
+> It selects the representative in the range [INT32_MIN, INT32_MAX],
+> rather than the representative in the range [0, UINT32_MAX].  The sign
+> extension is intentional.
 
-git checkout -d 10a1140107e0b98bd67d37ae7af72989dd7df00b
-b4 am 20251120003653.335863-1-ebiggers@kernel.org
-git am ./20251119_ebiggers_lib_crypto_ml_dsa_verification_support.mbx
+I'm concerned about the basis on which it becomes positive or negative.  It
+looks like the sign bit ends up being chosen arbitrarily.
 
-10a1140107e0b98bd67d37ae7af72989dd7df00b is the base-commit listed in
-the cover letter, via the --base option to 'git format-patch'.  It's the
-current head of libcrypto-next and is also in linux-next.  Maybe you
-tried applying the series to a different commit.
+> > > +		/* Reduce to [0, q), then tmp = w'_1 = UseHint(h, w'_Approx) */
+> > 
+> > Bracket mismatch.  "[0, q]"
+> 
+> It's intentional, since it denotes a mathematical range.  Elsewhere I
+> used the words "the range" explicitly, so I'll add that above too.  (Or
+> maybe reword it differently.)
 
-Anyway, using the git repo is fine too.  This sort of stuff is exactly
-why I usually provide a git link too.
+I meant you have an opening square bracket and a closing round bracket in
+"[0, q)".
 
-- Eric
+David
+
 
