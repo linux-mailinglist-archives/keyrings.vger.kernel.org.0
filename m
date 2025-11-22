@@ -1,133 +1,131 @@
-Return-Path: <keyrings+bounces-3424-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3425-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56CC9C7D2C1
-	for <lists+keyrings@lfdr.de>; Sat, 22 Nov 2025 15:25:27 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35CEDC7D4BC
+	for <lists+keyrings@lfdr.de>; Sat, 22 Nov 2025 18:20:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14F3A3AA416
-	for <lists+keyrings@lfdr.de>; Sat, 22 Nov 2025 14:25:26 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id C2AAF34FDA2
+	for <lists+keyrings@lfdr.de>; Sat, 22 Nov 2025 17:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BBF5248878;
-	Sat, 22 Nov 2025 14:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C34C3238C2A;
+	Sat, 22 Nov 2025 17:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FUd8D8Zj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TlWVCnM4"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A483B186;
-	Sat, 22 Nov 2025 14:25:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A501C3C11
+	for <keyrings@vger.kernel.org>; Sat, 22 Nov 2025 17:19:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763821525; cv=none; b=OEvAy27Ci/bkemkFNNzewHn7pSNIPPtli31Y0m1GpeUPhi552wdc8Tt4iynOgX0svZ3zaXHeLsLiljEMzaf+fD4E2AwqwA/HYJBrCKqr5MJCUXUJwoBOOir9ZE1yzGDM1inC74Q+BfyMIxc1/Q9x6TDlS5kIs1dCNFGjdJtqcc0=
+	t=1763831949; cv=none; b=Ndcvrs1oi3eP2m4uNQCj/lbe7qYxt7AcuWwNwEpjAcs9Nk2qYVms/b5iY4dCWIKRDiLOK9o4zaKStsxiNvI3GnjUT+fYfH1LKRL905iRhZHVaFeT7CvsCkkjxwfNUvleQWZITZQ37FsYGpc59HCm7D5uUWwYHwB+hVVjy9+hoO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763821525; c=relaxed/simple;
-	bh=3yyHdau4VWZ0JVtzRx9SRmfqZ9vqv1ao8BfdCC800UE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A/HDA66/pl4qQry0ivcfyzDWJHSVJ55FW0daWP49spUco9yCVpdBY3Gd+4hcnsWlHemLhdaz2rJKxxaNSufbIaZv79ZuubNhAGo/39UHnEU6OnG6Xk+H0tG6V+KYaf8rB4nAuZf9DoiiXLtNwClixSjRF1CtlFYa900iL2Q/E9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FUd8D8Zj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241B0C4CEF5;
-	Sat, 22 Nov 2025 14:25:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763821524;
-	bh=3yyHdau4VWZ0JVtzRx9SRmfqZ9vqv1ao8BfdCC800UE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FUd8D8ZjxVGpwTuV/+TUl24UyMvtCEFLCualumBOBCAeZtubn52vmmIym7BWTueZA
-	 YJUgTQhzfHruUJXGFtN2Q4sIeOWJgMdlJcrZLua/AEmlvdT+X3ptaJQiZLFwEK/wao
-	 /MU9lgvm8ubtNxhTklLA5hagrt3uu9HkDF3f8dJkOygXqEVBnXZ/0C2EL0rxFlzLHY
-	 eS48zx2G1h5g3zwopygavHp355Y7xRzJaFJwNdIvSPyYmPzGwBu+xwzqZqdOjfdQWD
-	 s8AdJPWzcwoVDwaD4XHm9QkkTF8A/xyLvFcIVG0mebPK+w/76hCgmVVPdIl1Ke+an6
-	 MllfUjAaa/7JA==
-Message-ID: <531dba90-247e-481a-a26b-2dc9e7927d6d@kernel.org>
-Date: Sat, 22 Nov 2025 15:25:20 +0100
+	s=arc-20240116; t=1763831949; c=relaxed/simple;
+	bh=YdVcIwGwKDh/6sNNooTobnWdLRFBymQDy/hqcAiUbLg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=G4d5biTunj72aCAOFcscclWo5NGlZjyThX/H8IcKjXp3wZ/kV1X4mUWZxdna/ZWm+GVfMpEHzDPpie1txCnsICit6EJJGbkdxUN4cXKB26DO1FbYnxg922TZXbqlec4udTVf45oktLeF68baO2qbIYCjyY5Hxgju1buWsIkhFU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TlWVCnM4; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-298250d7769so22736715ad.0
+        for <keyrings@vger.kernel.org>; Sat, 22 Nov 2025 09:19:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1763831946; x=1764436746; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=YdVcIwGwKDh/6sNNooTobnWdLRFBymQDy/hqcAiUbLg=;
+        b=TlWVCnM4nTfqURfZsmDv7A+sN4t+k5G0hkw315A6YvKGECZcoJIvTGAZIUt6Xx73Br
+         91ZBfUFBJlO2ItrUb7yTjcPLErT6a+yUEQ5CPge9iU+5Se7KMyg+pPzwrhaGuyht0R3T
+         2WBYZhw+ZktmDRM9aDX+WR7hozY9inlax+gpwojdL79D9IVBiQMgsXDdO8HynVpFwRZA
+         g6zCPAFgkBCozbU/3vOaaWDFtU/MBFY2DcAXHvISPe8FxyPQTs2Mui6FOf2eCC/IYZKh
+         iQ5QjrpYuMRaHiIyoD5jvHRg3AEXYh3sRQzSYwko5JfTVKG9P8QEwD5Pk7A+7g8IHuN3
+         VD0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1763831946; x=1764436746;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YdVcIwGwKDh/6sNNooTobnWdLRFBymQDy/hqcAiUbLg=;
+        b=VOoutzZFHvomI/sUNH8o2YTL738AcNPQbAVNdHHsYhqR34fJgYrGnW804m4uVww2zQ
+         Vbvb04CrON1te8RTW5GIc8HNr3ezYWBqEokRd8wanbwFvhs5SE5mAGGi9i8yClryVyT8
+         ZLk0GqwrEt+utcBh+lVkkYbCIZDQUKTonnFZkszh+6lqYd2UtW7CziS1W9crgyxpYtwc
+         rABJIPC17mlUDIaVM+Yv46RKG6pCwMddHRjqEbL3X+xKjKY3lIPjvFWRPzn5RvprAEAC
+         /iBoy6eFdxu6THXhcb2rm1P5sJULlXdR99lD1SM5TfnywvqQOcTvISwCO9HYJOla7Ug4
+         o0Aw==
+X-Gm-Message-State: AOJu0Yw4PvINlZMfI2zV728sQbnvE0jfiCo3Riii9ioCa9XKGeRjojlA
+	/RxTvS6rKIQnE7mJrEvjoAeRMQk9hGj7fO1r/2+MMtpkIefr5C92mSBJ
+X-Gm-Gg: ASbGncvFx6v0NaS0hAZyeHmyhOOWFv6mXk4ajo3MMoIcp19RWDaR8dWzj1dxo/AMSMH
+	kwWM0NbR3S/dJm+8689mGJlHBCLPN9O7LqlBXhIwopmAQwKJKAVib4nmt1K2dA7upg23a8KBbzZ
+	t3K8+OElzhgSlgwyu+xBfRDTQHj+VIA9TieuQiNSrvFoNE0yUIHbqHOya5oE1kN7beEDRMKhcFv
+	dlU6N+JMG5fE5rXG/oBrD4vFTt21aj+dtkc7KE/2w8Yk9ZeUtFEEJfayiobO/9/u9UZAtOha1QI
+	v3zdajP5xQ8sQiseXBuhUFoNfNgxCqADYJ1BDbAjeQmJ9Ajamo0A60xSkXhkyHYTYdWiAR/aTtO
+	iwxgiSj9LTfY7NMzJdpG4++vq79wtkPrxes9dPBGe/JLvV9SrRzBsbPL9W3YfvopT9kiCHRiMXu
+	OUv3Fi9QPN4mtlclY0rkA7WIK5AqdVDD5hu7n4EiHXQ2HN+m6YQLMtOAGuRA==
+X-Google-Smtp-Source: AGHT+IHsrLiktElDl4VpBRWD7TSKCwrK/iXEsY4HhXbo8d2kQN4F0sY+95g5j41nDQTVNYF7qGlfkg==
+X-Received: by 2002:a17:903:2c06:b0:290:94ed:184c with SMTP id d9443c01a7336-29b6c3e86acmr69614135ad.15.1763831946402;
+        Sat, 22 Nov 2025 09:19:06 -0800 (PST)
+Received: from ?IPv6:2401:4900:8fcd:4575:1ad3:3d1a:3314:cdd0? ([2401:4900:8fcd:4575:1ad3:3d1a:3314:cdd0])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7c3f024b7c5sm9536723b3a.43.2025.11.22.09.19.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Nov 2025 09:19:05 -0800 (PST)
+Message-ID: <b296730415a6b4e261d431bc6adf864ed3b2a630.camel@gmail.com>
+Subject: Re: [PATCH v2] crypto: asymmetric_keys: fix uninitialized pointers
+ with free attribute
+From: ally heev <allyheev@gmail.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>, David Howells
+ <dhowells@redhat.com>,  Lukas Wunner <lukas@wunner.de>, Ignat Korchagin
+ <ignat@cloudflare.com>, Herbert Xu	 <herbert@gondor.apana.org.au>, "David
+ S. Miller" <davem@davemloft.net>
+Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Dan Carpenter <dan.carpenter@linaro.org>
+Date: Sat, 22 Nov 2025 22:49:00 +0530
+In-Reply-To: <531dba90-247e-481a-a26b-2dc9e7927d6d@kernel.org>
+References: 
+	<20251111-aheev-uninitialized-free-attr-crypto-v2-1-33699a37a3ed@gmail.com>
+	 <531dba90-247e-481a-a26b-2dc9e7927d6d@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] crypto: asymmetric_keys: fix uninitialized pointers
- with free attribute
-To: Ally Heev <allyheev@gmail.com>, David Howells <dhowells@redhat.com>,
- Lukas Wunner <lukas@wunner.de>, Ignat Korchagin <ignat@cloudflare.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>
-Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
- linux-kernel@vger.kernel.org, Dan Carpenter <dan.carpenter@linaro.org>
-References: <20251111-aheev-uninitialized-free-attr-crypto-v2-1-33699a37a3ed@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <20251111-aheev-uninitialized-free-attr-crypto-v2-1-33699a37a3ed@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 11/11/2025 14:36, Ally Heev wrote:
-> Uninitialized pointers with `__free` attribute can cause undefined
-> behavior as the memory assigned randomly to the pointer is freed
-> automatically when the pointer goes out of scope.
-> 
-> crypto/asymmetric_keys doesn't have any bugs related to this as of now,
-> but, it is better to initialize and assign pointers with `__free`
-> attribute in one statement to ensure proper scope-based cleanup
-> 
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/all/aPiG_F5EBQUjZqsl@stanley.mountain/
-> Signed-off-by: Ally Heev <allyheev@gmail.com>
-> ---
-> Changes in v2:
-> - moved declarations to the top and initialized them with NULL
+On Sat, 2025-11-22 at 15:25 +0100, Krzysztof Kozlowski wrote:
+> On 11/11/2025 14:36, Ally Heev wrote:
+> > Uninitialized pointers with `__free` attribute can cause undefined
+> > behavior as the memory assigned randomly to the pointer is freed
+> > automatically when the pointer goes out of scope.
+> >=20
+> > crypto/asymmetric_keys doesn't have any bugs related to this as of now,
+> > but, it is better to initialize and assign pointers with `__free`
+> > attribute in one statement to ensure proper scope-based cleanup
+> >=20
+> > Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> > Closes: https://lore.kernel.org/all/aPiG_F5EBQUjZqsl@stanley.mountain/
+> > Signed-off-by: Ally Heev <allyheev@gmail.com>
+> > ---
+> > Changes in v2:
+> > - moved declarations to the top and initialized them with NULL
+>=20
+> Why? This is not the syntax we want for cleanup.h. Either initialize it
+> with proper constructor or don't use cleanup.h.
+>=20
+>=20
+> Best regards,
+> Krzysztof
 
-Why? This is not the syntax we want for cleanup.h. Either initialize it
-with proper constructor or don't use cleanup.h.
+This is the only one I missed reverting :(
+(after the disc=C2=A0https://lore.kernel.org/lkml/58fd478f408a34b578ee8d949=
+c5c4b4da4d4f41d.camel@HansenPartnership.com/)
 
-
-Best regards,
-Krzysztof
+Regards,
+Ally
 
