@@ -1,48 +1,48 @@
-Return-Path: <keyrings+bounces-3423-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3424-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F833C7D2B8
-	for <lists+keyrings@lfdr.de>; Sat, 22 Nov 2025 15:24:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56CC9C7D2C1
+	for <lists+keyrings@lfdr.de>; Sat, 22 Nov 2025 15:25:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 6F1844E50EF
-	for <lists+keyrings@lfdr.de>; Sat, 22 Nov 2025 14:23:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14F3A3AA416
+	for <lists+keyrings@lfdr.de>; Sat, 22 Nov 2025 14:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E8E22156C;
-	Sat, 22 Nov 2025 14:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BBF5248878;
+	Sat, 22 Nov 2025 14:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Owj1L+wU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FUd8D8Zj"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4479E221265;
-	Sat, 22 Nov 2025 14:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A483B186;
+	Sat, 22 Nov 2025 14:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1763821432; cv=none; b=DLjQqvJr03Ul04l9D7I6smU52GKKUyMPf+UFnq2cqCryIMjk9nnF1X8sseMMxfMvwZQmlQ+6dSjHN0uW3rSRnaN0LlXgmheYkl7OaXi+TlTy77Ow10McAzhs291EukSJvG6eImRlROH3D1Sba5ibFEvhLoXMUI2BXmA9wy+0vOU=
+	t=1763821525; cv=none; b=OEvAy27Ci/bkemkFNNzewHn7pSNIPPtli31Y0m1GpeUPhi552wdc8Tt4iynOgX0svZ3zaXHeLsLiljEMzaf+fD4E2AwqwA/HYJBrCKqr5MJCUXUJwoBOOir9ZE1yzGDM1inC74Q+BfyMIxc1/Q9x6TDlS5kIs1dCNFGjdJtqcc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1763821432; c=relaxed/simple;
-	bh=1Q5wr4hBGau0NJPeRkF+HrhSnysI8a1AWimWdnTLJso=;
+	s=arc-20240116; t=1763821525; c=relaxed/simple;
+	bh=3yyHdau4VWZ0JVtzRx9SRmfqZ9vqv1ao8BfdCC800UE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z8hpSs2oW1BFPACdZRIZGGW1JACSQt9b55bpai/y/YGbL9c4UHC+0Ji4AJh/6ySoUv4ADUm8GC3PyfiXXrtlAqdRSgTL53mkgxxORCMAIhZK1xXnRyGDWueYVZl8sXIWwf96d4QcTSKDbuOQ7gYBv4R7cTRWjrWoIOjLSTYxA+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Owj1L+wU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81535C4CEF5;
-	Sat, 22 Nov 2025 14:23:49 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=A/HDA66/pl4qQry0ivcfyzDWJHSVJ55FW0daWP49spUco9yCVpdBY3Gd+4hcnsWlHemLhdaz2rJKxxaNSufbIaZv79ZuubNhAGo/39UHnEU6OnG6Xk+H0tG6V+KYaf8rB4nAuZf9DoiiXLtNwClixSjRF1CtlFYa900iL2Q/E9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FUd8D8Zj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241B0C4CEF5;
+	Sat, 22 Nov 2025 14:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763821431;
-	bh=1Q5wr4hBGau0NJPeRkF+HrhSnysI8a1AWimWdnTLJso=;
+	s=k20201202; t=1763821524;
+	bh=3yyHdau4VWZ0JVtzRx9SRmfqZ9vqv1ao8BfdCC800UE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Owj1L+wUSfr9VSJhlIVGds6Taa5hzZth8P+bavORgS1FciflzCJboEyzbAxrOkwtb
-	 ffLWrYaWnX+xbgPrpN1qGePDuX8+M3nRkAi6A/qCiHESjCZt/lGx07bCi/RfqW4sGB
-	 +qRmF1u18oSm/VHgIgMNXg5QLOiiVCFVfOkZzSfWyXa6exsV2ggkD3gfFpEgi32bNc
-	 fXztghGz3VAcy1VYUrDNe0k+8cr6oP/5Uj32pyxRsXi87xDzB8MUUCQjJECdEFONN2
-	 osYskzgVWilFQj+7tuMpFardvtlZbJCPBdwa1PdCEkCWYoFtKvWlTx78tu2gmsQCwq
-	 UtjdVtqJeGkQg==
-Message-ID: <33e351fb-4ecc-4894-b3c8-c0511d8fcc88@kernel.org>
-Date: Sat, 22 Nov 2025 15:23:47 +0100
+	b=FUd8D8ZjxVGpwTuV/+TUl24UyMvtCEFLCualumBOBCAeZtubn52vmmIym7BWTueZA
+	 YJUgTQhzfHruUJXGFtN2Q4sIeOWJgMdlJcrZLua/AEmlvdT+X3ptaJQiZLFwEK/wao
+	 /MU9lgvm8ubtNxhTklLA5hagrt3uu9HkDF3f8dJkOygXqEVBnXZ/0C2EL0rxFlzLHY
+	 eS48zx2G1h5g3zwopygavHp355Y7xRzJaFJwNdIvSPyYmPzGwBu+xwzqZqdOjfdQWD
+	 s8AdJPWzcwoVDwaD4XHm9QkkTF8A/xyLvFcIVG0mebPK+w/76hCgmVVPdIl1Ke+an6
+	 MllfUjAaa/7JA==
+Message-ID: <531dba90-247e-481a-a26b-2dc9e7927d6d@kernel.org>
+Date: Sat, 22 Nov 2025 15:25:20 +0100
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -50,16 +50,15 @@ List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] crypto: asymmetric_keys: fix uninitialized pointers with
- free attr
-To: Ignat Korchagin <ignat@cloudflare.com>, Ally Heev <allyheev@gmail.com>
-Cc: David Howells <dhowells@redhat.com>, Lukas Wunner <lukas@wunner.de>,
+Subject: Re: [PATCH v2] crypto: asymmetric_keys: fix uninitialized pointers
+ with free attribute
+To: Ally Heev <allyheev@gmail.com>, David Howells <dhowells@redhat.com>,
+ Lukas Wunner <lukas@wunner.de>, Ignat Korchagin <ignat@cloudflare.com>,
  Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>, keyrings@vger.kernel.org,
- linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
- Dan Carpenter <dan.carpenter@linaro.org>
-References: <20251105-aheev-uninitialized-free-attr-crypto-v1-1-83da1e10e8c4@gmail.com>
- <CALrw=nH8z0p=nyM_S0BN0JfdUB8fQHvkH6AULD3qj6sPQ1qJig@mail.gmail.com>
+ "David S. Miller" <davem@davemloft.net>
+Cc: keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Dan Carpenter <dan.carpenter@linaro.org>
+References: <20251111-aheev-uninitialized-free-attr-crypto-v2-1-33699a37a3ed@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -105,50 +104,28 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  jWt87ecuHlpL3uuQ0ZZNWqHgZoQLXoqC2ZV5KrtKWb/jyiFX/sxSrodALf0zf+tfHv0FZWT2
  zHjUqd0t4njD/UOsuIMOQn4Ig0SdivYPfZukb5cdasKJukG1NOpbW7yRNivaCnfZz6dTawXw
  XRIV/KDsHQiyVxKvN73bThKhONkcX2LWuD928tAR6XMM2G5ovxLe09vuOzzfTWQDsm++9UKF a/A=
-In-Reply-To: <CALrw=nH8z0p=nyM_S0BN0JfdUB8fQHvkH6AULD3qj6sPQ1qJig@mail.gmail.com>
+In-Reply-To: <20251111-aheev-uninitialized-free-attr-crypto-v2-1-33699a37a3ed@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 11/11/2025 14:12, Ignat Korchagin wrote:
-> Hi,
+On 11/11/2025 14:36, Ally Heev wrote:
+> Uninitialized pointers with `__free` attribute can cause undefined
+> behavior as the memory assigned randomly to the pointer is freed
+> automatically when the pointer goes out of scope.
 > 
-> On Wed, Nov 5, 2025 at 9:53 AM Ally Heev <allyheev@gmail.com> wrote:
->>
->> Uninitialized pointers with `__free` attribute can cause undefined
->> behaviour as the memory assigned(randomly) to the pointer is freed
->> automatically when the pointer goes out of scope
->>
->> crypto/asymmetric_keys doesn't have any bugs related to this as of now,
->> but, it is better to initialize and assign pointers with `__free` attr
->> in one statement to ensure proper scope-based cleanup
->>
->> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
->> Closes: https://lore.kernel.org/all/aPiG_F5EBQUjZqsl@stanley.mountain/
->> Signed-off-by: Ally Heev <allyheev@gmail.com>
->> ---
->>  crypto/asymmetric_keys/x509_cert_parser.c | 11 +++++++----
->>  crypto/asymmetric_keys/x509_public_key.c  | 14 ++++++++------
->>  2 files changed, 15 insertions(+), 10 deletions(-)
->>
->> diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
->> index 8df3fa60a44f80fbd71af17faeca2e92b6cc03ce..bfd2cb2a9d81e3c615dfd4fe6f41653869a8cbd6 100644
->> --- a/crypto/asymmetric_keys/x509_cert_parser.c
->> +++ b/crypto/asymmetric_keys/x509_cert_parser.c
->> @@ -60,12 +60,12 @@ EXPORT_SYMBOL_GPL(x509_free_certificate);
->>   */
->>  struct x509_certificate *x509_cert_parse(const void *data, size_t datalen)
->>  {
->> -       struct x509_certificate *cert __free(x509_free_certificate);
+> crypto/asymmetric_keys doesn't have any bugs related to this as of now,
+> but, it is better to initialize and assign pointers with `__free`
+> attribute in one statement to ensure proper scope-based cleanup
 > 
-> Should this be just initialized to NULL instead of moving the declaration?
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Closes: https://lore.kernel.org/all/aPiG_F5EBQUjZqsl@stanley.mountain/
+> Signed-off-by: Ally Heev <allyheev@gmail.com>
+> ---
+> Changes in v2:
+> - moved declarations to the top and initialized them with NULL
 
-No, it should not. That's not the syntax of cleanup.h... and if you do
-not like that syntax (I fully understand), then please do not allow to
-use cleanup.h in this/yours subsystem.
-
-> 
->> -       struct x509_parse_context *ctx __free(kfree) = NULL;
-> 
+Why? This is not the syntax we want for cleanup.h. Either initialize it
+with proper constructor or don't use cleanup.h.
 
 
 Best regards,
