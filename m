@@ -1,122 +1,203 @@
-Return-Path: <keyrings+bounces-3470-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3471-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id D92DAC90D45
-	for <lists+keyrings@lfdr.de>; Fri, 28 Nov 2025 05:18:38 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56965C917EB
+	for <lists+keyrings@lfdr.de>; Fri, 28 Nov 2025 10:45:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id B82553423DA
-	for <lists+keyrings@lfdr.de>; Fri, 28 Nov 2025 04:18:36 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 463EC348AE1
+	for <lists+keyrings@lfdr.de>; Fri, 28 Nov 2025 09:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81A22FCC04;
-	Fri, 28 Nov 2025 04:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87CF02FFF95;
+	Fri, 28 Nov 2025 09:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="P01U9C/i"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=earth.li header.i=@earth.li header.b="GTgNNcLe"
 X-Original-To: keyrings@vger.kernel.org
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+Received: from the.earth.li (the.earth.li [93.93.131.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A5C1EFFB7;
-	Fri, 28 Nov 2025 04:18:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584EE17736;
+	Fri, 28 Nov 2025 09:44:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.93.131.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1764303512; cv=none; b=KzVtGxJBCw+5Pk08LXf/qZN55mms8iQDHceUVKa/qNoehkxuFgm+EtrBQ/v8eniuYbnpPPTB4ZRXQXo6K/vEMhwIwsF266KLldhFiN3Gi3X6pMrTP0hiAq2U2diFzTSiNHbHsXfiDleRX+plTpSianjaKJyxURqcR1/MMKh8+8U=
+	t=1764323099; cv=none; b=W7s1WWXsp3hgV3AW9VvUZ0iAf7MP70CQOkFJLqGMLmxtDP6HNHQ+wFBYFvgZgYx3tCSZwosDG2Hf/e2GWyeRYpA7JDHD8bvhvdKrfMztpBF26+qDhPzQcHMcHVFjwYb5b4Jd+lbM66lIbvqdCJavntmwOhP46bpRLJysHJ+hI6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1764303512; c=relaxed/simple;
-	bh=HDrIsWjgAgjKGZ0traUxe4EJ9nNJ26XEgdoz18NGIR0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZO3fp8f+frh3An0Pz7+147SwJxqex7KJhKR0yF2BSidC17+yDw4RaRPaIO+qQvU2kfNg2P2Fc6ccipJdcCSjhC9iOOQVMzZKCPVwkEmEabCuIjwXeGJQCPUpmsIkVvwu+JLdB+bpHcAwzH8/m8l9kDeKB9uw8Tkt7uJGx/V+HRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=P01U9C/i; arc=none smtp.client-ip=198.37.111.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1764303508;
-	bh=HDrIsWjgAgjKGZ0traUxe4EJ9nNJ26XEgdoz18NGIR0=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=P01U9C/i4bckzIFjuP0RfGcvaCtr5z45VRqEKKU2WD8gCHcGZ07zX8xACakprV8WC
-	 dmgaPGV3i+pxPnWb0ZwBMHOE5K84wPhxDPHo7XA4Dl9zXpKN3+el83DmELl3UournU
-	 qdT/XUryXAG8FVPTd+RY6kGpqjvxpdHYcFus17hA=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 760521C001D;
-	Thu, 27 Nov 2025 23:18:28 -0500 (EST)
-Message-ID: <86514a6ab364e01f163470a91cacef120e1b8b47.camel@HansenPartnership.com>
-Subject: Re: [GIT PULL] TPM DEVICE DRIVER: tpmdd-next-6.19-rc1
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>, Linus Torvalds
-	 <torvalds@linux-foundation.org>
-Cc: Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>, David
- Howells <dhowells@redhat.com>, keyrings@vger.kernel.org,
- linux-integrity@vger.kernel.org,  linux-kernel@vger.kernel.org
-Date: Thu, 27 Nov 2025 23:18:27 -0500
-In-Reply-To: <aSjP_BsakvhxSDYR@kernel.org>
-References: <aSjP_BsakvhxSDYR@kernel.org>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	s=arc-20240116; t=1764323099; c=relaxed/simple;
+	bh=oC6vyIsI+W/xXOBsy9FLVP9iGnfADrvC3JaB1+wfgVg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ku4U7cyvB8CEHeRq6y4Gm+ptIffHRdFJDuAvKjEEggIFlWRBR8MyiZWnYJJ9w4p8YraibFFUwef4BIt2xPKzigh5LZrX197vMAYJcHCrGqgV9+BK53ClCJ0Uk4bhQc3zXgAKopFMof6O248CyyFVpUd1OsNi4NRAv+Esu+WVQ30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li; spf=pass smtp.mailfrom=earth.li; dkim=pass (2048-bit key) header.d=earth.li header.i=@earth.li header.b=GTgNNcLe; arc=none smtp.client-ip=93.93.131.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=earth.li
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=earth.li
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=earth.li;
+	s=the; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:Subject:
+	Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=DsDz+4XYke85unOw/PommzhvKZvdbMz/WrAoo0TX6Fo=; b=GTgNNcLe2Y8Duaoeca11ALLojL
+	KCM9pjiI6KEJS/Umw11nLrBFpTIf9pGEKlGnaLfYTMIdpCuVjBB5M6yAECG3UrnlMe1y2U3IMu9z1
+	lGIiS/6CZjjlCN+jmawHAfYoeUM/V05J7YrpedhveN3LfvU1vPBpevBlRvWkw0CtDBWlCs2z8Ek/t
+	KubNB1nXTl+p4+NVKsF2i5RR+9zWUPc3zWuWA0gPPneOB+djv52H2atNdQc5by4UlYZEjJ1Qwolzc
+	fKonI7u5wmJkjOcldCb7KTcvCX+6W2CWj5m7Hm6FNhhBy8dkLZb8iHNmP3dZsNKhi723E+8bNv57A
+	KGhIRULA==;
+Received: from noodles by the.earth.li with local (Exim 4.96)
+	(envelope-from <noodles@earth.li>)
+	id 1vOv1t-007T0x-0J;
+	Fri, 28 Nov 2025 09:44:41 +0000
+Date: Fri, 28 Nov 2025 09:44:41 +0000
+From: Jonathan McDowell <noodles@earth.li>
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: linux-integrity@vger.kernel.org, ross.philipson@oracle.com,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Peter Huewe <peterhuewe@gmx.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>, linux-kernel@vger.kernel.org,
+	keyrings@vger.kernel.org, linux-security-module@vger.kernel.org
+Subject: Re: [PATCH v9 3/8] KEYS: trusted: Replace a redundant instance of
+ tpm2_hash_map
+Message-ID: <aSlvCROaUqwZ244Z@earth.li>
+References: <20251128025402.4147024-1-jarkko@kernel.org>
+ <20251128025402.4147024-4-jarkko@kernel.org>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20251128025402.4147024-4-jarkko@kernel.org>
 
-On Fri, 2025-11-28 at 00:26 +0200, Jarkko Sakkinen wrote:
-> The following changes since commit
-> e1afacb68573c3cd0a3785c6b0508876cd3423bc:
->=20
-> =C2=A0 Merge tag 'ceph-for-6.18-rc8' of
-> https://github.com/ceph/ceph-client=C2=A0(2025-11-27 11:11:03 -0800)
->=20
-> are available in the Git repository at:
->=20
-> =C2=A0 git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-
-> tpmdd.git tags/tpmdd-next-6.19-rc1
->=20
-> for you to fetch changes up to
-> 35ef1e24392ff0f3b28654b452f9720f07e9533f:
->=20
-> =C2=A0 KEYS: trusted: Use tpm_ret_to_err() in trusted_tpm2 (2025-11-28
-> 00:17:26 +0200)
->=20
-> ----------------------------------------------------------------
-> Hi
->=20
-> The first pull request for TPM driver contains changes to unify TPM
-> return code translation between trusted_tpm2 and TPM driver itself.
-> Other than that the changes are either bug fixes or small
-> adjustments.
->=20
-> BR, Jarkko
->=20
-> ----------------------------------------------------------------
-> Bagas Sanjaya (1):
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Documentation: tpm-security.rst: change ti=
-tle to section
-> heading
+On Fri, Nov 28, 2025 at 04:53:55AM +0200, Jarkko Sakkinen wrote:
+>'trusted_tpm2' duplicates 'tpm2_hash_map' originally part of the TPN
+>driver, which is suboptimal.
+>
+>Implement and export `tpm2_find_hash_alg()` in the driver, and substitute
+>the redundant code in 'trusted_tpm2' with a call to the new function.
+>
+>Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-This shouldn't to be in there.  I think you might have missed the
-discussion where I explained it was supposed to be a separate section:
+Reviewed-by: Jonathan McDowell <noodles@meta.com>
 
-https://lore.kernel.org/all/50acd6bfbc8b9006bef5d7d0376b7ce4ab35f94c.camel@=
-HansenPartnership.com/
+>---
+>v9:
+>- Improved the commit message a bit.
+>v8:
+>- Remove spurious tpm2_alg_to_crypto_id.
+>- Check return value of tpm2_find_hash_alg correctly in trusted_tpm2.c
+>  i.e, fail on "hash_alg < 0". Trusted keys were tested but I had my
+>  test harness misconfigured. I bisected the failure to this patch.
+>- The diff was not exactly minimal. Further optimize it.
+>v7:
+>- A new patch.
+>---
+> drivers/char/tpm/tpm2-cmd.c               | 14 +++++++++++++-
+> include/linux/tpm.h                       |  1 +
+> security/keys/trusted-keys/trusted_tpm2.c | 23 ++++-------------------
+> 3 files changed, 18 insertions(+), 20 deletions(-)
+>
+>diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
+>index e298194883e8..a121c518ff6f 100644
+>--- a/drivers/char/tpm/tpm2-cmd.c
+>+++ b/drivers/char/tpm/tpm2-cmd.c
+>@@ -18,7 +18,7 @@ static bool disable_pcr_integrity;
+> module_param(disable_pcr_integrity, bool, 0444);
+> MODULE_PARM_DESC(disable_pcr_integrity, "Disable integrity protection of TPM2_PCR_Extend");
+>
+>-static struct tpm2_hash tpm2_hash_map[] = {
+>+struct tpm2_hash tpm2_hash_map[] = {
+> 	{HASH_ALGO_SHA1, TPM_ALG_SHA1},
+> 	{HASH_ALGO_SHA256, TPM_ALG_SHA256},
+> 	{HASH_ALGO_SHA384, TPM_ALG_SHA384},
+>@@ -26,6 +26,18 @@ static struct tpm2_hash tpm2_hash_map[] = {
+> 	{HASH_ALGO_SM3_256, TPM_ALG_SM3_256},
+> };
+>
+>+int tpm2_find_hash_alg(unsigned int crypto_id)
+>+{
+>+	int i;
+>+
+>+	for (i = 0; i < ARRAY_SIZE(tpm2_hash_map); i++)
+>+		if (crypto_id == tpm2_hash_map[i].crypto_id)
+>+			return tpm2_hash_map[i].tpm_id;
+>+
+>+	return -EINVAL;
+>+}
+>+EXPORT_SYMBOL_GPL(tpm2_find_hash_alg);
+>+
+> int tpm2_get_timeouts(struct tpm_chip *chip)
+> {
+> 	chip->timeout_a = msecs_to_jiffies(TPM2_TIMEOUT_A);
+>diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+>index 973458a38250..cbd3a70c0378 100644
+>--- a/include/linux/tpm.h
+>+++ b/include/linux/tpm.h
+>@@ -477,6 +477,7 @@ extern int tpm_pcr_extend(struct tpm_chip *chip, u32 pcr_idx,
+> extern int tpm_get_random(struct tpm_chip *chip, u8 *data, size_t max);
+> extern struct tpm_chip *tpm_default_chip(void);
+> void tpm2_flush_context(struct tpm_chip *chip, u32 handle);
+>+int tpm2_find_hash_alg(unsigned int crypto_id);
+>
+> static inline void tpm_buf_append_empty_auth(struct tpm_buf *buf, u32 handle)
+> {
+>diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+>index c414a7006d78..4467e880ebd5 100644
+>--- a/security/keys/trusted-keys/trusted_tpm2.c
+>+++ b/security/keys/trusted-keys/trusted_tpm2.c
+>@@ -18,14 +18,6 @@
+>
+> #include "tpm2key.asn1.h"
+>
+>-static struct tpm2_hash tpm2_hash_map[] = {
+>-	{HASH_ALGO_SHA1, TPM_ALG_SHA1},
+>-	{HASH_ALGO_SHA256, TPM_ALG_SHA256},
+>-	{HASH_ALGO_SHA384, TPM_ALG_SHA384},
+>-	{HASH_ALGO_SHA512, TPM_ALG_SHA512},
+>-	{HASH_ALGO_SM3_256, TPM_ALG_SM3_256},
+>-};
+>-
+> static u32 tpm2key_oid[] = { 2, 23, 133, 10, 1, 5 };
+>
+> static int tpm2_key_encode(struct trusted_key_payload *payload,
+>@@ -244,20 +236,13 @@ int tpm2_seal_trusted(struct tpm_chip *chip,
+> 	off_t offset = TPM_HEADER_SIZE;
+> 	struct tpm_buf buf, sized;
+> 	int blob_len = 0;
+>-	u32 hash;
+>+	int hash;
+> 	u32 flags;
+>-	int i;
+> 	int rc;
+>
+>-	for (i = 0; i < ARRAY_SIZE(tpm2_hash_map); i++) {
+>-		if (options->hash == tpm2_hash_map[i].crypto_id) {
+>-			hash = tpm2_hash_map[i].tpm_id;
+>-			break;
+>-		}
+>-	}
+>-
+>-	if (i == ARRAY_SIZE(tpm2_hash_map))
+>-		return -EINVAL;
+>+	hash = tpm2_find_hash_alg(options->hash);
+>+	if (hash < 0)
+>+		return hash;
+>
+> 	if (!options->keyhandle)
+> 		return -EINVAL;
+>-- 
+>2.52.0
+>
 
-Regards,
+J.
 
-James
-
+-- 
+I am afraid of the dark.
+This .sig brought to you by the letter O and the number  5
+Product of the Republic of HuggieTag
 
