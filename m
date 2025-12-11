@@ -1,78 +1,78 @@
-Return-Path: <keyrings+bounces-3576-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3577-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C22CECB6AA5
-	for <lists+keyrings@lfdr.de>; Thu, 11 Dec 2025 18:21:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FC36CB6A69
+	for <lists+keyrings@lfdr.de>; Thu, 11 Dec 2025 18:18:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 15031302C200
-	for <lists+keyrings@lfdr.de>; Thu, 11 Dec 2025 17:16:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BFDC8304345C
+	for <lists+keyrings@lfdr.de>; Thu, 11 Dec 2025 17:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0768C31A056;
-	Thu, 11 Dec 2025 17:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F0731A076;
+	Thu, 11 Dec 2025 17:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="evrcycxE"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="IgjWqMd9"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A113195FD
-	for <keyrings@vger.kernel.org>; Thu, 11 Dec 2025 17:16:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543DE31984C
+	for <keyrings@vger.kernel.org>; Thu, 11 Dec 2025 17:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765473373; cv=none; b=HYEikWOSzik7h2AEDUf2CNBvcqPZhorCJIlAO0R8+osOHqFAZTJXLxIiTykp2UMxFOHpmFTR/sY7xvXhwAsnaar140kiOoznYpaTZjIXauimrnATIbr3saAoQ1fi1NOU3/vpKMWtKA/5j8NEfExsz4L/8MVwWYF0Ca0uScXNQlM=
+	t=1765473374; cv=none; b=R2LXDyYqfiZqAl77It+uBVENbNcl7F65ow22lUj7B4f5yDe5PYHEmC7Q/Gd8HQUGS7+bKKPhU6jlQFFkRUtgmRDG4e8tMF/OTA8gzJjbw0LWKieJODcykqetH4xoybP42uMxJLpLtcOpPGUreie4RTAbw2c3oy/bMgraWee3S40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765473373; c=relaxed/simple;
-	bh=PWG1Uz/7pwDZMqUJE8wpnS6Sgs1oh93ryPafYte5lCg=;
+	s=arc-20240116; t=1765473374; c=relaxed/simple;
+	bh=CzasmjigxMDc3RbPNhKzZOfqJrGSXpxinQ87lLaAs6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nzXnK1ce+reDBynJWN8hQpLpfYFw6fBghpjqiMkpUAU6aDAcviK1d61339YRjurdskKeULZnhUw4vjoGA5oVbkOPNCiyNVjkRY/AaHuSCs6hkXmAqoARq7Su2uwVTMyc41iSd2M7Zt5FLY4fJ/C5QxVYhAX94v6nsBo+CFmIkeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=evrcycxE; arc=none smtp.client-ip=209.85.128.49
+	 MIME-Version:Content-Type; b=YH1p3sdC48TNMoE7//D06FFQknV44ErsXFXtMs9N52HN8WUiHq0EGbSOZhgh2Uc16GXd4tpyunb7poQCFtvMMXB4CVauj/cpppYtRRDChfZgQtRQIn6Nu31g/eKpGZcytdFF+d8Y4ZlSJbVcIqVweCrX8JcYXpYtRd7Fj2qwiOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=IgjWqMd9; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-47118259fd8so4287825e9.3
-        for <keyrings@vger.kernel.org>; Thu, 11 Dec 2025 09:16:10 -0800 (PST)
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-42f9ece6387so175072f8f.0
+        for <keyrings@vger.kernel.org>; Thu, 11 Dec 2025 09:16:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765473369; x=1766078169; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765473370; x=1766078170; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8tX/pvRZ03DwrZb4C0GHe6B+z8lS6Bu0suU9z+WmGCw=;
-        b=evrcycxEyxXWRxHBsgB/8CiWvdgVxTbkzR+AbIVAwgMBS0rklVbuYbV1jcrqjeR02j
-         W9y5+yAgrKU67wc/TGQ0Tfm7U7bU5oW0sp+drCXaSO+YYajSSdjc6iA9zRFIPFUzTQFa
-         egeHeXGe6df6Jve0kbp+0ZJyIli+mEQWmHg+nqNfwxdo1fILDnGRWUXti+E2eZvmJ/18
-         GMHLT5xdjpR78Bod/OaH45wrMu9/QV240SEc/dmm2TVG6FUkhMmplCKWAsRdshlS9ocE
-         zt4rElplny/M6NUCUSVOaQDQ01WfY56kFq31mzrV7AKJSGipGN0Ugli3MbxPWSUSDESW
-         NpJw==
+        bh=n+SHfa6vAHr55xEpYtx8saNp/3XbgtX4zTiJHIYfZ1k=;
+        b=IgjWqMd9j04SJLnMtl+zQippp7RKIYHp0avf98okpcRZctk9dwkIOVIm/h4F6e9gNG
+         R16rEHDttSX2nlOUb3axfIPs4SuLcNY4LqlwuLMAfkpjnkgJKDR24Lna63MRVnVgDSSC
+         jf7dnvXuHKEVjgw9LKWcfMglWf4gAWzWNNPKaDPXx+Y5/0Mr9F4At1yrO9Bbd1Y2nWTg
+         jarUF9Kxpy/Tys7m/Ep46iyTD2tiErOlkA+vhf1Z1vlU/EtGTY8GHzudzxKNpqxIo6wC
+         /v/R6T0N866RML9olQDqs+ehSlADhbM2VBcSDbTYQmkpmi9a7I1MlpwP6bSwLLS5N/CO
+         RNJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765473369; x=1766078169;
+        d=1e100.net; s=20230601; t=1765473370; x=1766078170;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=8tX/pvRZ03DwrZb4C0GHe6B+z8lS6Bu0suU9z+WmGCw=;
-        b=AwALa5Sli0VPHCxAbSPUeh8Mnhgxf3xYvIqmdeNDFvpg642/bF58Aa6SQBDnQ1tvmr
-         k3hUNAzkbgf8anvP8ZN3zlqv+70P5SljUp9zRbY4eLaMVcFFfXFTGuMdJtaiU//RyLMc
-         uySpmkU0NFBlqDCV9FILgiED1hjPKXqPn6vETHQx7pTGKUzX2UZbuKZDjTSCemwsdz94
-         vnlk4SPy1Q2gqDkE1hYv/xo+5qP+0VwbaM55pFp1hX2JT1XuFpNaKOr5trfxypazs+e2
-         yN2swkXPRk8zoybcbT27GdsQQnFL/raK1bAz/1pi1DRUKE5QESkbVvmK0gpzNy4wXYtz
-         bAyw==
-X-Forwarded-Encrypted: i=1; AJvYcCXDhlfArIa46WdxpoJnO/XTULt2rAmsUIW/4j6o4o+cyNCBgoK0bkOoLnp3EhHgtTjb9Fs6tGoxLg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuRqcy/Q8KZaoAf1FSGeYxIOH5izFwUV+ImUxIK+k5cz7gqTsc
-	Fh9ZeOHjtcIJYZJA6JCGQzkGpZnjOrNZYRlvLH3riPkEWD7sGtxSsrtyop3MwV6CoXI=
-X-Gm-Gg: AY/fxX67S55f441oFusa3bn3vmGUWAz/FZd1z9qxzAt5EVkmiCyENAdraFlAeabylMf
-	r4rv63N+6ZHpIKJ+5XH2pLLF3IAygkLY1N7CgTNr7xAzqbZYEGIOq505ByRZKVYFKySIYGe8ARy
-	vttdWuNLdt2mKqhmmpOmtrWFZwmv3jxU1F14mE6dI2AnHxU5qj6uAIVC19B8p+2h2cwNdyny4d1
-	3pE3Zu3wut9MdA/KqQydxNGlIQYWmT4BqvYAZnbimdFjfCsfdG72dEV5jzblTWKSERgrPRvIIL/
-	KtAn8Wwcgykjcw/i+pY4N3haHDcSJb7muo1+ZdPchd6KJmc3wx0IJulV7iICtd2tCdDHXBiqw0v
-	nvkvnK15u+jQVutToYpGUwZsRqS/aO2/a6CMCs/E1CCNQSNOfVW2Jfcbue3C+Hzmr/ov7t+x8i+
-	M2RkGIOSlJzpY4/i1nGjpO090RNechpJJpxgHZUrhdUbJ8NAqmEWmfUoWF1qYIlfJrG36RShwQT
-	uQ=
-X-Google-Smtp-Source: AGHT+IHGBUOwE9r4ORaulvN3C5ZVCojqUo6qjWJCQQ7Y+7ElotvWRIvUrk2Iy3v9fIQm2AQbku9BvA==
-X-Received: by 2002:a05:600c:8010:b0:479:3046:6bb3 with SMTP id 5b1f17b1804b1-47a837aca24mr61787215e9.23.1765473369183;
-        Thu, 11 Dec 2025 09:16:09 -0800 (PST)
+        bh=n+SHfa6vAHr55xEpYtx8saNp/3XbgtX4zTiJHIYfZ1k=;
+        b=B4FK7eE0i/+9pZtKe07PUNv63/jQp3VJRwfKye8zlInOA5wROtJQg2aaR1yzMFFM6F
+         8PveQPrx8FjVPswcp25bgRKOM10ihnTdafMicGe8wpqGLdg3yTezJh9F1z5ap1JxIa8A
+         G0V1rCGSbjrHQvk2XRtwxRdKO9lYeP6eaa8mI/pxX9weFXExZzMpODb4eVcjlcYAPg/M
+         M89GUpz0PRrW8jeU6a64P2WBXOcUKXutz8n4iyF5jfRb1dg8W84cN92aVayENZzPzKzf
+         U7xqpxmGE37zxEazTgbM5FBEBDtOxQFrnqkCfcRrIBMOtZFT7v7T6KuVNQCqz9NhXRbF
+         ikxg==
+X-Forwarded-Encrypted: i=1; AJvYcCUabbKAHwv0/CkNVGa5apBrMr2eDUVjJ9mefKzTHQM3afsRfuLkpnX3EoxMsqjpc959PqAyoVDiAw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4MB8kFE/V5eHgKzKVnLFlT/BK6e/qQgXpsUqN7jKlOh1NqmN0
+	tL/qEIYsNkW98yb2n0P+ql6wLSA4/JeY7HBa15dnElhqath7FnMYeP20gb4g3KhI0/M=
+X-Gm-Gg: AY/fxX4Oj9EF5q21C/lAGs/oBpiDR9MTJWIUFA3/8rZvBrElSXhTm++Uw6ScpRKHTIT
+	kaFLJXm0AUck5c6od8qBd559gmm0ZIoMl3YCYyGqdx8igNTd0nYOmoK/G8huBaUGcW2zvYbXh7Y
+	Uwct+0ipmZO3EGitUlbGbTMh79BTFX64Ws3/uNeUeLvjwg2Er/uz0O77jK6oeZLVjDfnGkJIu4+
+	mWr9Ga4ylOHZdO/z6kiUANjPNfSf/qVuCF4NRRztLW2GbiGefQ1TXf6pbSuAc9A3k65k9/cE6a3
+	N8VJeneStV7GRcjREegh2/cdjVtzD+TcickxgDWeBEzo0TFqJj24SpbkR8zAjLl2Kms7lGVmGoS
+	RT+EEsnS1JzQBHsaVH0taiRHhR0W2MQAWzIFiOah5qSFgup3qVEiVWZi1p8VO+/z2m3sLRYaOVA
+	wx7KXPgO0cT+9y6rnCX1fA0QcTiCRKTHA1iHYepLtwE9/JvFe6pg/cMCOaiHZbIJXyrnkhnOa/G
+	UQ=
+X-Google-Smtp-Source: AGHT+IEVlfLgsF/P2fkju8/EGLrakjagEMlQtCpgWX8RHB5vEnT2Q9O+No1JYvdMM/sRnem0fYfvQQ==
+X-Received: by 2002:a05:6000:2012:b0:42b:3978:158e with SMTP id ffacd0b85a97d-42fa3af895fmr6416347f8f.30.1765473370344;
+        Thu, 11 Dec 2025 09:16:10 -0800 (PST)
 Received: from localhost (p200300f65f006608b66517f2bd017279.dip0.t-ipconnect.de. [2003:f6:5f00:6608:b665:17f2:bd01:7279])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-47a89f0e42asm44521885e9.14.2025.12.11.09.16.08
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-42fa8b8a973sm7064875f8f.36.2025.12.11.09.16.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Dec 2025 09:16:08 -0800 (PST)
+        Thu, 11 Dec 2025 09:16:09 -0800 (PST)
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 To: Jens Wiklander <jens.wiklander@linaro.org>,
 	Sumit Garg <sumit.garg@kernel.org>,
@@ -88,9 +88,9 @@ Cc: op-tee@lists.trustedfirmware.org,
 	keyrings@vger.kernel.org,
 	linux-security-module@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v1 14/17] KEYS: trusted: Migrate to use tee specific driver registration function
-Date: Thu, 11 Dec 2025 18:15:08 +0100
-Message-ID:  <0b3ce259fa26e59ef24a91ca070e2b08feeede82.1765472125.git.u.kleine-koenig@baylibre.com>
+Subject: [PATCH v1 15/17] KEYS: trusted: Make use of tee bus methods
+Date: Thu, 11 Dec 2025 18:15:09 +0100
+Message-ID:  <aab4c00b7e89abce7bcd8241c47f3398fb7227f8.1765472125.git.u.kleine-koenig@baylibre.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <cover.1765472125.git.u.kleine-koenig@baylibre.com>
 References: <cover.1765472125.git.u.kleine-koenig@baylibre.com>
@@ -101,47 +101,64 @@ List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1407; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=PWG1Uz/7pwDZMqUJE8wpnS6Sgs1oh93ryPafYte5lCg=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBpOvw4fJEaOX0vcpHk3eLvUdGT9H5CpTDKlptW8 lA5zTtov2yJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaTr8OAAKCRCPgPtYfRL+ Tus6B/46H6BzlY4ooZ66vBemZu+u9k40M56CS1npEuvxZzdqVdr5+yYBtvf0sFepZiA1kZLByHC qmvwOMfVSURaQxhSnUSW3sf5PogyKEeJGChX0Aet1HFsu5I0s3KtUZq9MwTR+bcWJnQOEU7xT1w fhU1DQ87m1Qu3KgVdq1fZKtzmUPAQHqXryaG1Onoy8LTkDRF3SQYO6h278bsvtBs38kRzaOcAvz hOgLGCS5wqtWh94/e0lQHwClfg0b+BQsNClTafeNu0B+HnvcDhTyHoEGqOQk0MWRf5Pa3laE0BV XoyAv8patZJKyEfoJDbzwDswrq0Vny5P+AXykut/8qQ3Ajgq
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1908; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=CzasmjigxMDc3RbPNhKzZOfqJrGSXpxinQ87lLaAs6M=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBpOvw6brlrzvg29fcU3xprVy3jDUvD6QI895K+A 4P0ITtETEGJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaTr8OgAKCRCPgPtYfRL+ ToAKCACHrdHSasYStywLZJGRNAkC64NWvFb/BwKzZCoF8C+nTT45O0JbfN5t/ZZlz3WQUTo5Kj7 m5QHbprAIkb7KlG6c9wMZpIvnIBvKwpE7j+PUzZ2X2+UD2nnn20123zaagJYaJHriTJetqmRK/g fl4EgbD/AzpOofrYMbezG60UvGRmRCPd4NvhNQ6GXkzjyAH5oICnrjI/ufaG65GzQSejD8nT5qK UIdLIccaehc7imlrk0QNv17cD5+/y0ZIwdI2uAIuelzdvUdNHWDYI1/zMNQ3t+FkqM+vgaElDdx 8Ft+pQXoK9ErCp8MIxolmLzr+4840mvUoLiV3YhnVRyUrSkT
 X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-The tee subsystem recently got a set of dedicated functions to register
-(and unregister) a tee driver. Make use of them. These care for setting the
-driver's bus (so the explicit assignment can be dropped) and the driver
-owner (which is an improvement this driver benefits from).
+The tee bus got dedicated callbacks for probe and remove.
+Make use of these. This fixes a runtime warning about the driver needing
+to be converted to the bus methods.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 ---
- security/keys/trusted-keys/trusted_tee.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ security/keys/trusted-keys/trusted_tee.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/security/keys/trusted-keys/trusted_tee.c b/security/keys/trusted-keys/trusted_tee.c
-index aa3d477de6db..3cea9a377955 100644
+index 3cea9a377955..6e465c8bef5e 100644
 --- a/security/keys/trusted-keys/trusted_tee.c
 +++ b/security/keys/trusted-keys/trusted_tee.c
-@@ -264,7 +264,6 @@ static struct tee_client_driver trusted_key_driver = {
+@@ -202,9 +202,9 @@ static int optee_ctx_match(struct tee_ioctl_version_data *ver, const void *data)
+ 		return 0;
+ }
+ 
+-static int trusted_key_probe(struct device *dev)
++static int trusted_key_probe(struct tee_client_device *rng_device)
+ {
+-	struct tee_client_device *rng_device = to_tee_client_device(dev);
++	struct device *dev = &rng_device->dev;
+ 	int ret;
+ 	struct tee_ioctl_open_session_arg sess_arg;
+ 
+@@ -244,13 +244,11 @@ static int trusted_key_probe(struct device *dev)
+ 	return ret;
+ }
+ 
+-static int trusted_key_remove(struct device *dev)
++static void trusted_key_remove(struct tee_client_device *dev)
+ {
+ 	unregister_key_type(&key_type_trusted);
+ 	tee_client_close_session(pvt_data.ctx, pvt_data.session_id);
+ 	tee_client_close_context(pvt_data.ctx);
+-
+-	return 0;
+ }
+ 
+ static const struct tee_client_device_id trusted_key_id_table[] = {
+@@ -261,11 +259,11 @@ static const struct tee_client_device_id trusted_key_id_table[] = {
+ MODULE_DEVICE_TABLE(tee, trusted_key_id_table);
+ 
+ static struct tee_client_driver trusted_key_driver = {
++	.probe		= trusted_key_probe,
++	.remove		= trusted_key_remove,
  	.id_table	= trusted_key_id_table,
  	.driver		= {
  		.name		= DRIVER_NAME,
--		.bus		= &tee_bus_type,
- 		.probe		= trusted_key_probe,
- 		.remove		= trusted_key_remove,
+-		.probe		= trusted_key_probe,
+-		.remove		= trusted_key_remove,
  	},
-@@ -272,12 +271,12 @@ static struct tee_client_driver trusted_key_driver = {
+ };
  
- static int trusted_tee_init(void)
- {
--	return driver_register(&trusted_key_driver.driver);
-+	return tee_client_driver_register(&trusted_key_driver);
- }
- 
- static void trusted_tee_exit(void)
- {
--	driver_unregister(&trusted_key_driver.driver);
-+	tee_client_driver_unregister(&trusted_key_driver);
- }
- 
- struct trusted_key_ops trusted_key_tee_ops = {
 -- 
 2.47.3
 
