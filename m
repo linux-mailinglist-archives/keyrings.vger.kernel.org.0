@@ -1,63 +1,64 @@
-Return-Path: <keyrings+bounces-3611-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3612-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61CB3CBBD27
-	for <lists+keyrings@lfdr.de>; Sun, 14 Dec 2025 16:42:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F4DCBBE8D
+	for <lists+keyrings@lfdr.de>; Sun, 14 Dec 2025 19:17:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C61DF308886C
-	for <lists+keyrings@lfdr.de>; Sun, 14 Dec 2025 15:39:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EEBEA3003F80
+	for <lists+keyrings@lfdr.de>; Sun, 14 Dec 2025 18:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35EC92D321D;
-	Sun, 14 Dec 2025 15:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1308236437;
+	Sun, 14 Dec 2025 18:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FbpN8bSR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cBqUcf2E"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057172C158A;
-	Sun, 14 Dec 2025 15:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D89E1C3C18;
+	Sun, 14 Dec 2025 18:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765726753; cv=none; b=mgH4ksmPkJ2+Nzy4ChRLjDZesK7p6qtpgrxIXHRtj6bbzTl5cTEXGvMfGUhK9NSKi9GEsRMSF0iTktYh8oGK9zIW5uw6skCR+VvnT6O1+12aaxo/130KeTAoNdFQipq2FoXKa1SF4xVsPsWcu4znQofsMMxZBTUEFeSkdboK0Ys=
+	t=1765736261; cv=none; b=hSrn6aYeK4x4Y/P1E6MjZ7G0U5lZux+PvHYp3ho6KuvToPLSzHhebdtosg7PBLu/zDU8rHVfltVgoRML1G8U/D1f0h9P7KGwAqiURo/F57Xjf4R2mL1jPsdsPhoUaTcE8Yi3n92Rfj0vdwJezSIAgmgOSpS+XranNc2MlTvVhWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765726753; c=relaxed/simple;
-	bh=gba68+JSLdi+m3uhKMTQ8YBJGES3meTKv4nLqMJcEzQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WXNl5LhQnXNm0hEo/EmICfTvzj/L9YR9TtznpqQ9d0SxL5r7iNys1AOwD0K1K22z4wPgXtWErSN990A3ueB7iTV/qKeFPIsLAkilfg4drWXxw1qKFcqJA3bj2HV9JMA6XtMdqdaKSYnT1Rc/gsOzBi3nclpLqYt77WALsNkbQs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FbpN8bSR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 018D8C4CEF1;
-	Sun, 14 Dec 2025 15:39:10 +0000 (UTC)
+	s=arc-20240116; t=1765736261; c=relaxed/simple;
+	bh=eDNg7zn+1BGklyVXvNYnYEFYO1WB7bV7JoPmAT68Cr4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mEfL29gIMiY2p82HjhYQLkAVK8vFb34wQgABk+qfLO9RIxJqnNzQNisa2wMX+ARbVi876xUJ1efBCXKidKduecEzTcYCPdP+231VrV5+NIwLyg2rB7Mmxt/LPIVeAuTrPxJRj+LlLL7WHm/P2W5P8TjSp91GXmaTJHAQBLxXC0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cBqUcf2E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6736C4CEF1;
+	Sun, 14 Dec 2025 18:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765726751;
-	bh=gba68+JSLdi+m3uhKMTQ8YBJGES3meTKv4nLqMJcEzQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FbpN8bSRDl8TEGbOivzs4+/7HyV/Tt7WhbuCXOq37q4rAs/5OQZ3lYnXFNOOaJ4Hh
-	 gAX+YQVQBAmEy28+zVQcn5FS0DPevIaOQX/RWtsPC+ZkSfnw8pxxnAj6zrfJ7gLc0z
-	 bP03EIeZqt7t3/NBnWUwPjTnEJo5DkroWFKjXqb3lLPE3rjuz6RV3lK1v8CPW1nahL
-	 Y2/fkPuzLIlcSlm7TsERUCNUn+UP/GOmU05fJuCMFiHBLWLFmcuaRxP8vgDVvvKUoD
-	 0luZ4sCDoft1jual71txS4BPX1EJQlIIF/VwPxAApH3U8fryxJ9RSQPsJ2PKNmr/+V
-	 DoQOfM7EGk27A==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org
-Cc: Ross Philipson <ross.philipson@oracle.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Peter Huewe <peterhuewe@gmx.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	linux-kernel@vger.kernel.org (open list),
-	keyrings@vger.kernel.org (open list:KEYS/KEYRINGS),
-	linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM)
-Subject: [PATCH v6 11/11] tpm-buf: Remove tpm_buf_append_handle
-Date: Sun, 14 Dec 2025 17:38:08 +0200
-Message-Id: <20251214153808.73831-12-jarkko@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20251214153808.73831-1-jarkko@kernel.org>
-References: <20251214153808.73831-1-jarkko@kernel.org>
+	s=k20201202; t=1765736261;
+	bh=eDNg7zn+1BGklyVXvNYnYEFYO1WB7bV7JoPmAT68Cr4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cBqUcf2ElXwfMswJdHM+8JiX0GCJazjz2gxO9K9UHPK8yECKKeFuxIqcxlxCEIXPR
+	 rlXGdKesYLt44Rc9z7kYkaH9Td7XUp4VX/avM0epAc65eoa5oBdUDcPgUGDIxUQEh0
+	 5RMfj9j1jFT16EBghMZzoYs6KP3tnb3XqrWLLqC8J7tyaaEl0DViat2+zZBN2Joz/4
+	 ykZJcQgBt8todzi+JwDnYfYytbo8KrIlx3G7zzqib9NsN7cIX9SKkFqlTtPple1mXI
+	 wg5LDzoTgbzUyn6ycNlr70Z7Ng8qhAZrp+Rk9XZmaiEDvw6w9gDgZ43FQkX74c1lYo
+	 hl7Z5sfcrA18w==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org
+Cc: David Howells <dhowells@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Stephan Mueller <smueller@chronox.de>,
+	Lukas Wunner <lukas@wunner.de>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	keyrings@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/2] lib/crypto: ML-DSA verification support
+Date: Sun, 14 Dec 2025 10:17:10 -0800
+Message-ID: <20251214181712.29132-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -66,137 +67,70 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since the number of handles is fixed to a single handle, eliminate all uses
-of buf->handles and deduce values during compile-time.
+This series can also be retrieved from:
 
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
-v2:
-- Streamline the code change and remove dead code.
----
- drivers/char/tpm/tpm-buf.c       | 26 --------------------------
- drivers/char/tpm/tpm2-cmd.c      |  2 +-
- drivers/char/tpm/tpm2-sessions.c | 14 ++------------
- include/linux/tpm.h              |  2 --
- 4 files changed, 3 insertions(+), 41 deletions(-)
+    git fetch https://git.kernel.org/pub/scm/linux/kernel/git/ebiggers/linux.git mldsa-v4
 
-diff --git a/drivers/char/tpm/tpm-buf.c b/drivers/char/tpm/tpm-buf.c
-index 6134eabe6961..752c69b8a4f5 100644
---- a/drivers/char/tpm/tpm-buf.c
-+++ b/drivers/char/tpm/tpm-buf.c
-@@ -40,7 +40,6 @@ static void __tpm_buf_reset(struct tpm_buf *buf, u16 buf_size, u16 tag, u32 ordi
- 	buf->flags = 0;
- 	buf->length = sizeof(*head);
- 	buf->capacity = buf_size - sizeof(*buf);
--	buf->handles = 0;
- 	head->tag = cpu_to_be16(tag);
- 	head->length = cpu_to_be32(sizeof(*head));
- 	head->ordinal = cpu_to_be32(ordinal);
-@@ -56,7 +55,6 @@ static void __tpm_buf_reset_sized(struct tpm_buf *buf, u16 buf_size)
- 	buf->flags = TPM_BUF_TPM2B;
- 	buf->length = 2;
- 	buf->capacity = buf_size - sizeof(*buf);
--	buf->handles = 0;
- 	buf->data[0] = 0;
- 	buf->data[1] = 0;
- }
-@@ -177,30 +175,6 @@ void tpm_buf_append_u32(struct tpm_buf *buf, const u32 value)
- }
- EXPORT_SYMBOL_GPL(tpm_buf_append_u32);
- 
--/**
-- * tpm_buf_append_handle() - Add a handle
-- * @chip:	&tpm_chip instance
-- * @buf:	&tpm_buf instance
-- * @handle:	a TPM object handle
-- *
-- * Add a handle to the buffer, and increase the count tracking the number of
-- * handles in the command buffer. Works only for command buffers.
-- */
--void tpm_buf_append_handle(struct tpm_chip *chip, struct tpm_buf *buf, u32 handle)
--{
--	if (buf->flags & TPM_BUF_INVALID)
--		return;
--
--	if (buf->flags & TPM_BUF_TPM2B) {
--		dev_err(&chip->dev, "Invalid buffer type (TPM2B)\n");
--		buf->flags |= TPM_BUF_INVALID;
--		return;
--	}
--
--	tpm_buf_append_u32(buf, handle);
--	buf->handles++;
--}
--
- /**
-  * tpm_buf_read() - Read from a TPM buffer
-  * @buf:	&tpm_buf instance
-diff --git a/drivers/char/tpm/tpm2-cmd.c b/drivers/char/tpm/tpm2-cmd.c
-index 27069ebabe9a..f066efb54a2c 100644
---- a/drivers/char/tpm/tpm2-cmd.c
-+++ b/drivers/char/tpm/tpm2-cmd.c
-@@ -205,7 +205,7 @@ int tpm2_pcr_extend(struct tpm_chip *chip, u32 pcr_idx,
- 			return rc;
- 		tpm_buf_append_hmac_session(chip, buf, 0, NULL, 0);
- 	} else {
--		tpm_buf_append_handle(chip,buf, pcr_idx);
-+		tpm_buf_append_u32(buf, pcr_idx);
- 		tpm_buf_append_auth(chip, buf, NULL, 0);
- 	}
- 
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index 8c9a7e7c82d5..f2b8ca893e15 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -261,7 +261,7 @@ int tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
- 	}
- 
- 	if (!tpm2_chip_auth(chip)) {
--		tpm_buf_append_handle(chip, buf, handle);
-+		tpm_buf_append_u32(buf, handle);
- 		return 0;
- 	}
- 
-@@ -288,17 +288,7 @@ EXPORT_SYMBOL_GPL(tpm_buf_append_name);
- void tpm_buf_append_auth(struct tpm_chip *chip, struct tpm_buf *buf,
- 			 u8 *passphrase, int passphrase_len)
- {
--	/* offset tells us where the sessions area begins */
--	int offset = buf->handles * 4 + TPM_HEADER_SIZE;
--	u32 len = 9 + passphrase_len;
--
--	if (tpm_buf_length(buf) != offset) {
--		/* not the first session so update the existing length */
--		len += get_unaligned_be32(&buf->data[offset]);
--		put_unaligned_be32(len, &buf->data[offset]);
--	} else {
--		tpm_buf_append_u32(buf, len);
--	}
-+	tpm_buf_append_u32(buf, 9 + passphrase_len);
- 	/* auth handle */
- 	tpm_buf_append_u32(buf, TPM2_RS_PW);
- 	/* nonce */
-diff --git a/include/linux/tpm.h b/include/linux/tpm.h
-index 24b1d253e7f5..177833d6b965 100644
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -395,7 +395,6 @@ enum tpm_buf_flags {
-  */
- struct tpm_buf {
- 	u8 flags;
--	u8 handles;
- 	u16 length;
- 	u16 capacity;
- 	u8 data[];
-@@ -441,7 +440,6 @@ void tpm_buf_append_u32(struct tpm_buf *buf, const u32 value);
- u8 tpm_buf_read_u8(struct tpm_buf *buf, off_t *offset);
- u16 tpm_buf_read_u16(struct tpm_buf *buf, off_t *offset);
- u32 tpm_buf_read_u32(struct tpm_buf *buf, off_t *offset);
--void tpm_buf_append_handle(struct tpm_chip *chip, struct tpm_buf *buf, u32 handle);
- 
- /*
-  * Check if TPM device is in the firmware upgrade mode.
+This series adds support for verifying ML-DSA signatures to lib/crypto/.
+Patch 1 is the ML-DSA implementation itself.  See that for full details.
+Patch 2 adds the KUnit test suite.
+
+The initial use case for this will be kernel module signature
+verification.  For more details, see David Howells' patchset
+https://lore.kernel.org/linux-crypto/20251120104439.2620205-1-dhowells@redhat.com/
+
+Note: I'm planning to apply this to libcrypto-next for 6.20.
+
+Changed in v4:
+- Added missing MODULE_IMPORT_NS() to fix build error when building the
+  KUnit test suite as a loadable module
+- Added David's Reviewed-by and Tested-by
+- Clarified a comment slightly
+- Rebased onto v6.19-rc1
+
+Changed in v3:
+- Moved SHAKE128 block buffer off the stack
+- Reworked use_hint() again, simplifying it further
+- Added unit test for use_hint()
+- Moved some of the reduction logic into invntt_and_mul_2_32() and
+  simplified it slightly
+- Updated Zq_mult() to not rely on signed integer overflow having
+  defined behavior, though this is unnecessary in the kernel
+- Formatted the documented return values into a list
+- Other minor tweaks
+
+Changed in v2:
+- Reworked the KUnit test suite
+- Improved commit messages and comments
+- Added missing MODULE_DESCRIPTION() and MODULE_LICENSE()
+- Made the return values of mldsa_verify() differentiate between an
+  input being malformed and the "real" signature check failing
+- Refactored w1 encoding into a helper function
+- Used kfree() instead of kfree_sensitive()
+- Avoided unusal C syntax by accessing the hint vector via 'u8 *'
+- Reworked use_hint() to be better optimized and documented
+
+Eric Biggers (2):
+  lib/crypto: Add ML-DSA verification support
+  lib/crypto: tests: Add KUnit tests for ML-DSA verification
+
+ include/crypto/mldsa.h            |   60 +
+ lib/crypto/Kconfig                |    7 +
+ lib/crypto/Makefile               |    5 +
+ lib/crypto/mldsa.c                |  652 ++++++++++
+ lib/crypto/tests/Kconfig          |    9 +
+ lib/crypto/tests/Makefile         |    1 +
+ lib/crypto/tests/mldsa-testvecs.h | 1887 +++++++++++++++++++++++++++++
+ lib/crypto/tests/mldsa_kunit.c    |  438 +++++++
+ 8 files changed, 3059 insertions(+)
+ create mode 100644 include/crypto/mldsa.h
+ create mode 100644 lib/crypto/mldsa.c
+ create mode 100644 lib/crypto/tests/mldsa-testvecs.h
+ create mode 100644 lib/crypto/tests/mldsa_kunit.c
+
+
+base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
 -- 
-2.39.5
+2.52.0
 
 
