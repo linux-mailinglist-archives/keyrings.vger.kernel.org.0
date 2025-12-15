@@ -1,123 +1,99 @@
-Return-Path: <keyrings+bounces-3625-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3626-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDAB9CBE4E1
-	for <lists+keyrings@lfdr.de>; Mon, 15 Dec 2025 15:35:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D323CBEA69
+	for <lists+keyrings@lfdr.de>; Mon, 15 Dec 2025 16:29:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 09E6E30D0E89
-	for <lists+keyrings@lfdr.de>; Mon, 15 Dec 2025 14:27:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B895030FC875
+	for <lists+keyrings@lfdr.de>; Mon, 15 Dec 2025 15:18:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41BC2DE6F5;
-	Mon, 15 Dec 2025 14:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9C9340286;
+	Mon, 15 Dec 2025 14:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="0/MwqUlQ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="euLqReZi"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mail-ed1-f66.google.com (mail-ed1-f66.google.com [209.85.208.66])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED87733CEB4
-	for <keyrings@vger.kernel.org>; Mon, 15 Dec 2025 14:17:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67A733EB15
+	for <keyrings@vger.kernel.org>; Mon, 15 Dec 2025 14:18:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765808260; cv=none; b=UcMi7kNmZHitSUdRgY/7c7UUpVxw2cab0+0gZ+fovheaeaFwDhRCAGx23XlK2k2GRF//GpL8kehlWVTonhzwi+cNG4tRn1YhVeWTtIoPSkQgGpXjpLOWz8UCuMnJlMVZEzPLrUeX0RtI/gJEYuF6nZ/V1sam4m4o28yqiBW8+Fo=
+	t=1765808285; cv=none; b=LDL60l8+Qtfc0t+Z5pmWKUtLU/LVz5czGIiub7X5a4LUn5ERzMnWC9redvsDcVszoarnU3eabduNOF+QtuZwrjYStsVPxnjkb8hMYdp6NS+6OHBrWpNr++q75Sv4vTsyfLKL6BEeYCZp4/7E5GrJnWkwqKsljERplfSfPmmTg+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765808260; c=relaxed/simple;
-	bh=KVuyHGeUtpLkpGJYZbfb5WtDJicjtg3giXBlS+vhN0U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UxeKJE+r2mq52wtuWhcG++yXCI5opGiWFsPlYsSRMC6TzTfiPKPI3b0O0gG6T5wa7BEMYUUebyCUhIrRaCSyPOHpxhBl+lp6ni5Th8u4mCswNN/nhwAQgQd9K4PyhVzFXmgL4PbNhIWszMrQ17jQvID9eCxatAUw8P0BS1qSg60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=0/MwqUlQ; arc=none smtp.client-ip=209.85.208.66
+	s=arc-20240116; t=1765808285; c=relaxed/simple;
+	bh=Zg7mCOEZ4Z6I10BCWu77BY4uJ1KchHXm6/KivSfImCk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=n+80HmtWDhbA+HOxjCIxzjy/0WWk7HxPjEzog8VqjItgbTq21+SDs1xsyXKrkiilQ1k3mMFren7pXgUZTvZih0IPYuXwfyFgexx6lHolU3t9f2wUE6x0lvc1fsXo/UtDOp1FeUz5BRqy0yUIBSjzLbzSWQMVwsMnir6clxHLyPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=euLqReZi; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ed1-f66.google.com with SMTP id 4fb4d7f45d1cf-640e9f5951aso5334517a12.1
-        for <keyrings@vger.kernel.org>; Mon, 15 Dec 2025 06:17:36 -0800 (PST)
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-641977dc00fso5661196a12.1
+        for <keyrings@vger.kernel.org>; Mon, 15 Dec 2025 06:18:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765808255; x=1766413055; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ppOcPFqIwq9P7NGqZqTz1/tjn18c3F+fMKSBb9x2/Cg=;
-        b=0/MwqUlQdu789oy/P41nfqLWb7EnWXY85sbaj1smEzYO15dtuHKqLxDRGab17o4MUA
-         D9TVJCvajbSn5mubZh7M9K5h4OT9pI/1qbh3beoBI1s+cs7/fK/G4sJRfPkfXVwqwBh3
-         SXWcXenTFagxpnUecAa9mbcMVNCQ0U0akf+J4xD5CfLDcNwb1vJBMEz8cd19gt/edXo+
-         6prwzju0rCEY9Jjuz4PQX50jj8chQizO7srmUjvdHU5PwJBwJQDO9vd0BIIvgTsOQttn
-         fOSTaGyo9VctrEKOw8TJvYNlkT8bhVXwWSOKvHyDcKwgwrFzGeqWEX80uILWCX3i0XTf
-         hi4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1765808255; x=1766413055;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1765808279; x=1766413079; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ppOcPFqIwq9P7NGqZqTz1/tjn18c3F+fMKSBb9x2/Cg=;
-        b=H3zN0myZ5U6oArn9BL7yZ92lLIrRamNIVnGxem26Qs1aY1N2OxtdtFiZ6dP0pgd34A
-         dxqu3/90suZGaPmwRCQVJJg92oN9fndSGdX5S1oXrvINBzx6MJ/Jn8Tb7TwrZrUeG8CG
-         sovu/iU8rr5uHaws45uwiJcysCTcWZRmS1RbdVnXojnYTmUZEZYYQ1x+L1Hit+vCtF9a
-         2QO6QIxtRTQ5tGU89xzOD5WAM6pnkCWZ56Pgacz9OQid0TmFAEs1BJSYpL3lGRiwsf2f
-         A9d48ia45kyVHUO43SBaCKwqQIsFbuZcL7QHw5pVddeuAQCLbLnSfy8lpx4nL8mfbO0O
-         BDtw==
-X-Forwarded-Encrypted: i=1; AJvYcCWCGlJa4FAnW1kSxf1Jz1wf4X77rdN+M8DBceaU9dd+Vt/UrBO7BBCSbQ0sC3E6wMto1ge9jMmCzQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxAmFMi08X/b1QdFkFDDReS59OxcuCI1ETDTfGzgT5gneTjuymd
-	3GC/MZbezg2WKHqNloCDsUcqq2kdpwG9DxO6Mqy8BQomNHe5eZq2y5DH6K8vg9x45Xk=
-X-Gm-Gg: AY/fxX5t80HtCcdaItua1+1ISYhKWOgXItpwpeKerhC0rtuRfyVghlv/6L5yPixNI9/
-	uej41rZ8qVUxM0PGwm3Fjw2MwDoUwbWI29BmVbiKwnumnqeG/tEYj4h88FRZB3uIH5hPcCTAy/d
-	95AtSpYn8JaBuPXlGZNSiflKuzs6KqkGVZvUgFCcxinJLBel2VvAcCqGJM4dR4ocj//PMJTcBXU
-	F4Ygvlk8ZK4Fn5qsw/F72NecLFpmrQTgPz48cWj/E5y1cs7souj7quLXfEF5SKTu9MV8mViYK/n
-	sTWJ1yGlrJsfz2I7/85usPgZ+i6u5zEYaxpMyXNIddr+N7GIdvI743ebvZHgcfOLIg40axxSNvl
-	gOXppYyQ3SvsoRwkp8cxlYW2SRQ5D0ZYAaomWCyZWvLnQQO8sr/tPwCdIqmjZdHRLgPmcgjL95v
-	HveyRsSMMil8/ogDhwGQD9CnocPiuLCjy2QXFRo6oHxHKKlzXkSAnTYSg5xQ==
-X-Google-Smtp-Source: AGHT+IF5kWl8asvVZ2gDn2/ukMC7FmJVzWuHgbBPUo4GSSTrWpKfiHxIiV3JEK3vNep6zj7EVQ2rxQ==
-X-Received: by 2002:a17:907:a909:b0:b7c:cc8d:14ef with SMTP id a640c23a62f3a-b7d218d55fdmr1188092466b.32.1765808254923;
-        Mon, 15 Dec 2025 06:17:34 -0800 (PST)
+        bh=6+EJpP28ACswVH+s22Escdl3RH0kKfptytDh+TM4ml8=;
+        b=euLqReZi1buW9Pt6pFNFg1JGQi6ms8IluV+HAjs7TSAJoOBB3hfCWEXlVAPXCTmRKJ
+         /nd80Q3krOT0rb7g37WOv3lO1POnMZOPISgXRuRy92dm+jK+ZFw+xWsuR04N6KZZlf8R
+         t3QmgdWnFRqRZluw3OBNlODMZoiNXRsnSj/pSsl++MIOObUQ/qozfHEVNnCP0VvwYAnJ
+         ixY78zV/uOD5HPgZhrqg/bXdMLkIC9IsvCRAuQc6yHnP4UMaLuiq2DKwqwmU3kR/BzZ6
+         X2nTEvzrlMIOe37VNRZ/ALJ8IR3ZA3H3EEVzQ7PtFoBUOvul2UMZIVJpWZ1mq4xtMNHr
+         GgXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1765808279; x=1766413079;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6+EJpP28ACswVH+s22Escdl3RH0kKfptytDh+TM4ml8=;
+        b=tJolRpU24gGjKoCmYJGCq/QofMwaFSNPNxAhHd48Muy2C3I6w//lof2RVQXd44Zgsl
+         W3tEpFGo8NJ96XEaaKVgskdwwnKDkXZyJZF1CkVu2bm/dAQvPYwez+XmdS4w2l1vMqLT
+         XeWo+dJjxklzK7VY13PLde+odv5kz3djSnLLgyqxtMqGYDl9NUqce9z87tXbOISrmA2H
+         kIT3orKsCxTMdlnM/h0LBs+tLuVjqx4bAUchkjhOrbHUjeW+L7MBirpgyuueljXoPWOB
+         tt3NcYQF5uYebQplj8BJPcRcycRM61wUwwBrZplisr5z68XstH6Qqe7D++5FQ5UVmiBd
+         ZW5w==
+X-Forwarded-Encrypted: i=1; AJvYcCUqXq++D2IKqSY9U89pMEK6WQW0g0kqO0xJ/RBRJXvU1wQKJOMoHzNJpfUaY3WDKQmlmlbftBVvRg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyBKVyXW92GSWVIQzbUnMUL5UJcErZZ0fxWJrf5QsBBCArD9lnC
+	XWzlC3QOQb57wOiiYdKKgwwffJT0ApnzxzuDVYFCm8PfIyrTM929TZWL+8z7lLtYnAA=
+X-Gm-Gg: AY/fxX5kHmL5rAQQF9YDv2vbxTQEVLtcex4pucyCtbEjkH0d7k3tpcV0TqS1TGZKW61
+	bqxeZfSK7TYW6XZRq09EYGoo/wnAZR73wiNyk5lZZWmU5Cklb+xTvzujfDnxmjIX9UP4xQadrq0
+	3OGMMgQ737G1DVXfyIt7yg9zx4/hS23cSIHeogCVCNqcIQ85p08Y2h6TTRxrK5Rb09jhGC1aKa6
+	yyE26LG1av236NLzFZQrxz39p+MWAAA6TdWgQseo2erg5EBu9L2ijiHJz478bVHmRloqBfC9ex0
+	63a1jY+j4FjvLFIf2X4pxjaf1G0Mokm42aB9P7+44Uny8vKSqwOTOyaOslO8sksYMGVIqQ+ylEB
+	NaPaBfAG/jAx/5wdFMpu6GfuSLTsHVljdDVz6Eu2EYMuJ46miCOKs0q2GkG9FJgDDoIk43VM00H
+	AeUYaRY8NgK6A8tqhVm+Mh41vkxCTPKoY4OyewbOTbEKOmDmYuIgjdmd58Kw==
+X-Google-Smtp-Source: AGHT+IEK116a+hzlpDVrTZCFE6XuiyE4/HJN0uW0RxfmRWXh+Z7K4wAXn5iM/HwRNMkehyWwuERbtA==
+X-Received: by 2002:a17:907:944a:b0:b7c:f5b6:bb52 with SMTP id a640c23a62f3a-b7d23a22c68mr1176743866b.43.1765808279239;
+        Mon, 15 Dec 2025 06:17:59 -0800 (PST)
 Received: from localhost (ip-046-005-122-062.um12.pools.vodafone-ip.de. [46.5.122.62])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b7cfa56c152sm1380034166b.56.2025.12.15.06.17.34
+        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b7cfa29e060sm1447274266b.2.2025.12.15.06.17.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Dec 2025 06:17:34 -0800 (PST)
+        Mon, 15 Dec 2025 06:17:58 -0800 (PST)
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
 To: Jens Wiklander <jens.wiklander@linaro.org>,
-	Jonathan Corbet <corbet@lwn.net>,
 	Sumit Garg <sumit.garg@kernel.org>,
-	Olivia Mackall <olivia@selenic.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	=?utf-8?b?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	=?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	=?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
 	James Bottomley <James.Bottomley@HansenPartnership.com>,
 	Jarkko Sakkinen <jarkko@kernel.org>,
 	Mimi Zohar <zohar@linux.ibm.com>,
 	David Howells <dhowells@redhat.com>,
 	Paul Moore <paul@paul-moore.com>,
 	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Peter Huewe <peterhuewe@gmx.de>
-Cc: op-tee@lists.trustedfirmware.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-rtc@vger.kernel.org,
-	linux-efi@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	arm-scmi@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-integrity@vger.kernel.org,
+	"Serge E. Hallyn" <serge@hallyn.com>
+Cc: linux-integrity@vger.kernel.org,
 	keyrings@vger.kernel.org,
 	linux-security-module@vger.kernel.org,
-	Jason Gunthorpe <jgg@ziepe.ca>
-Subject: [PATCH v2 00/17] tee: Use bus callbacks instead of driver callbacks
-Date: Mon, 15 Dec 2025 15:16:30 +0100
-Message-ID: <cover.1765791463.git.u.kleine-koenig@baylibre.com>
+	op-tee@lists.trustedfirmware.org,
+	linux-kernel@vger.kernel.org,
+	Sumit Garg <sumit.garg@oss.qualcomm.com>
+Subject: [PATCH v2 14/17] KEYS: trusted: Migrate to use tee specific driver registration function
+Date: Mon, 15 Dec 2025 15:16:44 +0100
+Message-ID:  <687c004c32718ba7044ffa9165f33842267a745d.1765791463.git.u.kleine-koenig@baylibre.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1765791463.git.u.kleine-koenig@baylibre.com>
+References: <cover.1765791463.git.u.kleine-koenig@baylibre.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -125,75 +101,48 @@ List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3083; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=KVuyHGeUtpLkpGJYZbfb5WtDJicjtg3giXBlS+vhN0U=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBpQBhBsL1Z+rYFoGFHUfEy6nbD85QotpwGnuS0G OxYNqNRFI2JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaUAYQQAKCRCPgPtYfRL+ TugUB/9E31O/wKyUkNJNEPUiyayhLen3mT/3afyja8AKlZtLRRSDYD85SklWs8WUYR25f620Tug HCQFCBGP6zvWFDFUJWDts8iS5V7u/2f3fzK4EwWEIO8RjWf//RCGbcOXzrjD+gHhyiO4ntF2NWr 3ospR0B/APcHFEMI3zfkmIaPNlyEhNrddsNRbaHKA+WTWhZm7A/yqOnVYIJ6MLuTrhjHLZZoL5u gBimMOyT/Dmu6TUF9ex7Rhk+vookCt9jpn+vbxsz0ArRtMIo0W8fVdouxPDFA9SMn/bCn6BBJ+B fl85F7WiQwNbfWoeC8/qrjWMCGDfxgyRZi39jRQ+nWgTC5V5
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1462; i=u.kleine-koenig@baylibre.com; h=from:subject:message-id; bh=Zg7mCOEZ4Z6I10BCWu77BY4uJ1KchHXm6/KivSfImCk=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBpQBhuRfKfm9AOVl8Q/VvcEeDtJDpwUt6Lmf7cq XA9w6mZtvWJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCaUAYbgAKCRCPgPtYfRL+ TsZpCACirKqeCOo4fBLSL2yhYE15pWpKfHROUGgAZZeKbVTJC+rvy2kfsHLSn29V5iUFd6n/aBB RLMpQStbyHgc70HfHAyCuTdZObAa7h3bTSPGnjOjmLZigHIKG8/6g3+CqxBL8pTOH97z5DxZWNX VvkFx7JbUtReVr6BFh73Afq+MQ+f5TAL8pAFAgaE/nIFZCpM/LtSoIbp2blmkVrNpNEeNa0PYfd RA5nfTVhDCElUIctzgjpURVdvtEdKi8neQAbH6MIaiIU0cei0mA1FAKf6PQmApjRoegk+gVMHbu EBwmm55AFygfkyiAxcXwwxwcne/wKbaG9kvdFW74ByDZmhIM
 X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 
-Hello,
+The tee subsystem recently got a set of dedicated functions to register
+(and unregister) a tee driver. Make use of them. These care for setting the
+driver's bus (so the explicit assignment can be dropped) and the driver
+owner (which is an improvement this driver benefits from).
 
-the objective of this series is to make tee driver stop using callbacks
-in struct device_driver. These were superseded by bus methods in 2006
-(commit 594c8281f905 ("[PATCH] Add bus_type probe, remove, shutdown
-methods.")) but nobody cared to convert all subsystems accordingly.
+Reviewed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+---
+ security/keys/trusted-keys/trusted_tee.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-Here the tee drivers are converted. The first commit is somewhat
-unrelated, but simplifies the conversion (and the drivers). It
-introduces driver registration helpers that care about setting the bus
-and owner. (The latter is missing in all drivers, so by using these
-helpers the drivers become more correct.)
-
-v1 of this series is available at
-https://lore.kernel.org/all/cover.1765472125.git.u.kleine-koenig@baylibre.com
-
-Changes since v1:
-
- - rebase to v6.19-rc1 (no conflicts)
- - add tags received so far
- - fix whitespace issues pointed out by Sumit Garg
- - fix shutdown callback to shutdown and not remove
-
-As already noted in v1's cover letter, this series should go in during a
-single merge window as there are runtime warnings when the series is
-only applied partially. Sumit Garg suggested to apply the whole series
-via Jens Wiklander's tree.
-If this is done the dependencies in this series are honored, in case the
-plan changes: Patches #4 - #17 depend on the first two.
-
-Note this series is only build tested.
-
-Uwe Kleine-König (17):
-  tee: Add some helpers to reduce boilerplate for tee client drivers
-  tee: Add probe, remove and shutdown bus callbacks to tee_client_driver
-  tee: Adapt documentation to cover recent additions
-  hwrng: optee - Make use of module_tee_client_driver()
-  hwrng: optee - Make use of tee bus methods
-  rtc: optee: Migrate to use tee specific driver registration function
-  rtc: optee: Make use of tee bus methods
-  efi: stmm: Make use of module_tee_client_driver()
-  efi: stmm: Make use of tee bus methods
-  firmware: arm_scmi: optee: Make use of module_tee_client_driver()
-  firmware: arm_scmi: Make use of tee bus methods
-  firmware: tee_bnxt: Make use of module_tee_client_driver()
-  firmware: tee_bnxt: Make use of tee bus methods
-  KEYS: trusted: Migrate to use tee specific driver registration
-    function
-  KEYS: trusted: Make use of tee bus methods
-  tpm/tpm_ftpm_tee: Make use of tee specific driver registration
-  tpm/tpm_ftpm_tee: Make use of tee bus methods
-
- Documentation/driver-api/tee.rst             | 18 +----
- drivers/char/hw_random/optee-rng.c           | 26 ++----
- drivers/char/tpm/tpm_ftpm_tee.c              | 31 +++++---
- drivers/firmware/arm_scmi/transports/optee.c | 32 +++-----
- drivers/firmware/broadcom/tee_bnxt_fw.c      | 30 ++-----
- drivers/firmware/efi/stmm/tee_stmm_efi.c     | 25 ++----
- drivers/rtc/rtc-optee.c                      | 27 ++-----
- drivers/tee/tee_core.c                       | 84 ++++++++++++++++++++
- include/linux/tee_drv.h                      | 12 +++
- security/keys/trusted-keys/trusted_tee.c     | 17 ++--
- 10 files changed, 164 insertions(+), 138 deletions(-)
-
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+diff --git a/security/keys/trusted-keys/trusted_tee.c b/security/keys/trusted-keys/trusted_tee.c
+index aa3d477de6db..3cea9a377955 100644
+--- a/security/keys/trusted-keys/trusted_tee.c
++++ b/security/keys/trusted-keys/trusted_tee.c
+@@ -264,7 +264,6 @@ static struct tee_client_driver trusted_key_driver = {
+ 	.id_table	= trusted_key_id_table,
+ 	.driver		= {
+ 		.name		= DRIVER_NAME,
+-		.bus		= &tee_bus_type,
+ 		.probe		= trusted_key_probe,
+ 		.remove		= trusted_key_remove,
+ 	},
+@@ -272,12 +271,12 @@ static struct tee_client_driver trusted_key_driver = {
+ 
+ static int trusted_tee_init(void)
+ {
+-	return driver_register(&trusted_key_driver.driver);
++	return tee_client_driver_register(&trusted_key_driver);
+ }
+ 
+ static void trusted_tee_exit(void)
+ {
+-	driver_unregister(&trusted_key_driver.driver);
++	tee_client_driver_unregister(&trusted_key_driver);
+ }
+ 
+ struct trusted_key_ops trusted_key_tee_ops = {
 -- 
 2.47.3
 
