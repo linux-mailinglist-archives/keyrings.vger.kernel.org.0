@@ -1,145 +1,146 @@
-Return-Path: <keyrings+bounces-3635-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3636-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB53DCC014C
-	for <lists+keyrings@lfdr.de>; Mon, 15 Dec 2025 23:04:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 250E8CC0293
+	for <lists+keyrings@lfdr.de>; Tue, 16 Dec 2025 00:14:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CD6023014135
-	for <lists+keyrings@lfdr.de>; Mon, 15 Dec 2025 22:04:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B6083017F2D
+	for <lists+keyrings@lfdr.de>; Mon, 15 Dec 2025 23:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FFC52DC34B;
-	Mon, 15 Dec 2025 22:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4696329376;
+	Mon, 15 Dec 2025 23:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SUKm5xfU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qOn+Dr4P"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002341DED63;
-	Mon, 15 Dec 2025 22:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3959328244;
+	Mon, 15 Dec 2025 23:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765836263; cv=none; b=X9qNo8RiGzDTGdcQXiVLRZmhSKF7VnOLyYjO4WJaDDRgQt4sovYbUOMkmZs1M49PfbiR/OL2kFsay95/sVkFdP3Q0gJVS2VGA/s8V6OUBVY9hVx6P9MScOIFJpMwjBKT1RHeAVCArEq+jRowEZUjOfanydWmw+VM5lD33wRLcKE=
+	t=1765840490; cv=none; b=ekUGkFCpwvRbeda0gCr3Kmmbp9Wo1+AZ1AT2Z4YUP7O9g1Td8AOCyRtFbIYzqNTOuGJhyGIAOaRPK4ahIz37SUbbpar26pSNpMZtrzdosOSDN7/KCK+1YkM7vH6yejMrsh7CD4kwrG6xSu3GfXRqMGD1m29FpMPF+QuX9wzNS3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765836263; c=relaxed/simple;
-	bh=vGjzAFwNR6AwMM6AHlInRy9NxfEhAAxRUMwgbnwUrRY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QcuZXgLnKHBWekSjnKygxc/Ucb5G4vnJ8/M6jr2iT1TGxhKlXVuxqyuJR61GTasQN96Y+y3ZzDUojwb/hq0CxuWdqNJZ9D2qAPYjGxV4yWVWrX0cQ/CqLlu9jC0quh3XDvQ6c6gc7HhykrTO1jEIIekb61Jk2prvaOwNSS8wd2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SUKm5xfU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CAC0C4CEF5;
-	Mon, 15 Dec 2025 22:04:22 +0000 (UTC)
+	s=arc-20240116; t=1765840490; c=relaxed/simple;
+	bh=NGAR1aUtk+RPWjoJ/iLtnB5aelDIPnRmXuvE5A8Ntsc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mhuqK9D2hu+ULX4LVIbKiwDyHeuEoI3aWqsRggsPSzo9QQGAQq+7RhMW3l0sJTRfSj4DHGEb8M+5XPJ939Qiqd5JtIw+m7HXF4vMUocFYY894TPE+eF2sQwyimRAX/JSHiCKN9qQJ1eLohkeiPqiDvQNTDWrpM+15d+KNEcihGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qOn+Dr4P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73C5C4CEF5;
+	Mon, 15 Dec 2025 23:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765836262;
-	bh=vGjzAFwNR6AwMM6AHlInRy9NxfEhAAxRUMwgbnwUrRY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SUKm5xfUsV5V4rQCL33sfiBzcllYGtrINx8fdzN1II6y8s9L8bFrS/WjreGUe2mF3
-	 LTRi7dAJIUKT4ezPv2jS8o4tQDUG0Dnk/8ObVQnvpo6dy3kLKpyn+DrYuPyHa3tbXO
-	 0zkUeWtgS0WQH8a4oFMLXnff6NTWFbcaI+9Bely9b/wYt+ANdxw+y11zrakHvYrs9M
-	 fTJQb2OHTokhmcpxPMagNeHIEBIzuZ++htRPAIpnFObryhskdWwadJExa02VBVM0L/
-	 beaDosIYe76m6M4vdTs8wxC4bSLA+ZVEv4LMM8VoRb3AdlhWbXMg2jJLnOUdS6mJ4P
-	 addsMDYiks5Fg==
-Date: Tue, 16 Dec 2025 00:04:18 +0200
+	s=k20201202; t=1765840490;
+	bh=NGAR1aUtk+RPWjoJ/iLtnB5aelDIPnRmXuvE5A8Ntsc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=qOn+Dr4PfqGd99biALYKPsk9nRb/aFJyyNGKfpn934TTj6AO7FLbSGcbIBntZC4dq
+	 cNc+35/7KkAf0qV5l3lYUCMHiTc+8GgjVNjc7+zHXTfvSR/IE+2wZoIm68MaulU+XQ
+	 UkzIEDQLrDprcSOKgH7tf7+S7oWuWFthe9lpWcR5oGV6NRVP2aeEhPSUpFUFw36xOg
+	 EwK+eO+BBnvcDuJEqJ9H0E99vq9YDDsrGqWUMN0t8LRLOvZQrNp0xpoHN9boPuJ/qs
+	 oOSv6FWy5Gw35O7IAwjVX4VkQebrNKhdTi2YuNQ2Z8Pgp9yW9siZLv2Cz1/w6FkxXK
+	 DNyvx7pOYpDiA==
 From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Cc: Jens Wiklander <jens.wiklander@linaro.org>,
-	Sumit Garg <sumit.garg@kernel.org>,
-	James Bottomley <James.Bottomley@hansenpartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
+To: linux-integrity@vger.kernel.org
+Cc: Jarkko Sakkinen <jarkko@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>,
 	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
 	"Serge E. Hallyn" <serge@hallyn.com>,
-	linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	op-tee@lists.trustedfirmware.org, linux-kernel@vger.kernel.org,
-	Sumit Garg <sumit.garg@oss.qualcomm.com>
-Subject: Re: [PATCH v2 15/17] KEYS: trusted: Make use of tee bus methods
-Message-ID: <aUCF4hW5xkvpv9lt@kernel.org>
-References: <cover.1765791463.git.u.kleine-koenig@baylibre.com>
- <ad8aaa343c1e8523659259290f63aea8be906977.1765791463.git.u.kleine-koenig@baylibre.com>
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	keyrings@vger.kernel.org (open list:KEYS/KEYRINGS),
+	linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v2] KEYS: trusted: Use get_random-fallback for TPM
+Date: Tue, 16 Dec 2025 01:14:38 +0200
+Message-Id: <20251215231438.565522-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ad8aaa343c1e8523659259290f63aea8be906977.1765791463.git.u.kleine-koenig@baylibre.com>
 
-On Mon, Dec 15, 2025 at 03:16:45PM +0100, Uwe Kleine-König wrote:
-> The tee bus got dedicated callbacks for probe and remove.
-> Make use of these. This fixes a runtime warning about the driver needing
-> to be converted to the bus methods.
-> 
-> Reviewed-by: Sumit Garg <sumit.garg@oss.qualcomm.com>
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-> ---
->  security/keys/trusted-keys/trusted_tee.c | 12 +++++-------
->  1 file changed, 5 insertions(+), 7 deletions(-)
-> 
-> diff --git a/security/keys/trusted-keys/trusted_tee.c b/security/keys/trusted-keys/trusted_tee.c
-> index 3cea9a377955..6e465c8bef5e 100644
-> --- a/security/keys/trusted-keys/trusted_tee.c
-> +++ b/security/keys/trusted-keys/trusted_tee.c
-> @@ -202,9 +202,9 @@ static int optee_ctx_match(struct tee_ioctl_version_data *ver, const void *data)
->  		return 0;
->  }
->  
-> -static int trusted_key_probe(struct device *dev)
-> +static int trusted_key_probe(struct tee_client_device *rng_device)
->  {
-> -	struct tee_client_device *rng_device = to_tee_client_device(dev);
-> +	struct device *dev = &rng_device->dev;
->  	int ret;
->  	struct tee_ioctl_open_session_arg sess_arg;
+1. tpm2_get_random() is costly when TCG_TPM2_HMAC is enabled and thus its
+   use should be pooled rather than directly used. This both reduces
+   latency and improves its predictability.
 
-I'm sorry but cannot help saying but these not being in reverse tree
-order hurts my eyes ;-)
+2. Linux is better off overall if every subsystem uses the same source for
+   generating the random numbers required.
 
-I.e., I'd personally move declaration of sess_arg right after rng_device
-despite being additional change to the scope of the patch.
+Thus, unset '.get_random', which causes fallback to kernel_get_random().
 
-That said, Sumit has the ultimate veto right here, and this not any kind
-of fault in this patch so I will obviously ack the patch;
+One might argue that TPM RNG should be used so that generated trusted keys
+have the matching entropy with the TPM internally generated objects.
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+This argument does some weight into it but as far cryptography goes, FIPS
+certification sets the exact bar, not which exact FIPS certified RNG will
+be used. Thus, the rational choice is obviously to pick the lowest latency
+path.
 
+Finally, there also some actual defence in depth benefits on using kernel
+RNG. E.g., it helps to mitigate TPM firmware bugs concerning RNG
+implementation, which do happen in the wild occasionally.
 
->  
-> @@ -244,13 +244,11 @@ static int trusted_key_probe(struct device *dev)
->  	return ret;
->  }
->  
-> -static int trusted_key_remove(struct device *dev)
-> +static void trusted_key_remove(struct tee_client_device *dev)
->  {
->  	unregister_key_type(&key_type_trusted);
->  	tee_client_close_session(pvt_data.ctx, pvt_data.session_id);
->  	tee_client_close_context(pvt_data.ctx);
-> -
-> -	return 0;
->  }
->  
->  static const struct tee_client_device_id trusted_key_id_table[] = {
-> @@ -261,11 +259,11 @@ static const struct tee_client_device_id trusted_key_id_table[] = {
->  MODULE_DEVICE_TABLE(tee, trusted_key_id_table);
->  
->  static struct tee_client_driver trusted_key_driver = {
-> +	.probe		= trusted_key_probe,
-> +	.remove		= trusted_key_remove,
->  	.id_table	= trusted_key_id_table,
->  	.driver		= {
->  		.name		= DRIVER_NAME,
-> -		.probe		= trusted_key_probe,
-> -		.remove		= trusted_key_remove,
->  	},
->  };
->  
-> -- 
-> 2.47.3
-> 
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
+v2:
+- Added Eric's reviewed-by tag.
+- Addressed concerns from James by writing more details to the commit
+  message and documenting random number generation to the source
+  code.
+---
+ security/keys/trusted-keys/trusted_tpm1.c | 6 ------
+ security/keys/trusted-keys/trusted_tpm2.c | 9 +++++++++
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
-BR, Jarkko
+diff --git a/security/keys/trusted-keys/trusted_tpm1.c b/security/keys/trusted-keys/trusted_tpm1.c
+index 636acb66a4f6..33b7739741c3 100644
+--- a/security/keys/trusted-keys/trusted_tpm1.c
++++ b/security/keys/trusted-keys/trusted_tpm1.c
+@@ -936,11 +936,6 @@ static int trusted_tpm_unseal(struct trusted_key_payload *p, char *datablob)
+ 	return ret;
+ }
+ 
+-static int trusted_tpm_get_random(unsigned char *key, size_t key_len)
+-{
+-	return tpm_get_random(chip, key, key_len);
+-}
+-
+ static int __init init_digests(void)
+ {
+ 	int i;
+@@ -992,6 +987,5 @@ struct trusted_key_ops trusted_key_tpm_ops = {
+ 	.init = trusted_tpm_init,
+ 	.seal = trusted_tpm_seal,
+ 	.unseal = trusted_tpm_unseal,
+-	.get_random = trusted_tpm_get_random,
+ 	.exit = trusted_tpm_exit,
+ };
+diff --git a/security/keys/trusted-keys/trusted_tpm2.c b/security/keys/trusted-keys/trusted_tpm2.c
+index a7ea4a1c3bed..d16be47f1305 100644
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -2,6 +2,15 @@
+ /*
+  * Copyright (C) 2004 IBM Corporation
+  * Copyright (C) 2014 Intel Corporation
++
++/**
++ * DOC: Random Number Generation
++ *
++ * tpm_get_random() was previously used here as the RNG in order to have equal
++ * entropy with the objects fully inside the TPM. However, as far as goes,
++ * kernel RNG is equally fine, as long as long as it is FIPS certified. Also,
++ * using kernel RNG has the benefit of mitigating bugs in the TPM firmware
++ * associated with the RNG.
+  */
+ 
+ #include <linux/asn1_encoder.h>
+-- 
+2.39.5
+
 
