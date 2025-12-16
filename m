@@ -1,146 +1,102 @@
-Return-Path: <keyrings+bounces-3639-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3640-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E54CCC03B0
-	for <lists+keyrings@lfdr.de>; Tue, 16 Dec 2025 00:50:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C78ACC130B
+	for <lists+keyrings@lfdr.de>; Tue, 16 Dec 2025 07:53:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D83AF3011191
-	for <lists+keyrings@lfdr.de>; Mon, 15 Dec 2025 23:50:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 14B7D307D37C
+	for <lists+keyrings@lfdr.de>; Tue, 16 Dec 2025 06:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A0633EB11;
-	Mon, 15 Dec 2025 23:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D44524A078;
+	Tue, 16 Dec 2025 06:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Crnh2DGm"
+	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="tUX9qhC3"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FEA146A66;
-	Mon, 15 Dec 2025 23:50:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6146D321442;
+	Tue, 16 Dec 2025 06:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.37.111.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765842604; cv=none; b=ZCLYsr3NidTIqbo8AHkmpRNnUPN5D02yGbvjc1AjrD3r2ePBHAFCW7hC1VITFOYYFqpQrNO/MCJ85GiCGbiJUo93EZf1BbGVdjyxVmT8w8ogmxQkBd0A5kA1zEGNSjwlRZ7B8WTVjFy9fkcc7exEv1VJkSpFasvqCssMg33nYJk=
+	t=1765867712; cv=none; b=EzQTzZcOtMCxDfA3u9sPFkvSBaGfzkr1HCvbf943pFp4S4SxFLgAUc7dqwmr1u9V5BTzPcifsQtCCr+DzFlK7SonIks75nFjmATXdrqO55AU1aONdYB3X0HVpqjLvFPKgVNwUXyOOBdjJYkwBkuwi8Z2NNmXNBTVYGZLnG7E7DU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765842604; c=relaxed/simple;
-	bh=5x88HEIkTgYf1xD7GovmrI5/UkL+Hu1QJ4lkwsKBz+I=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SdStvJ+EqYwhSMVjlH9ig+ayjKzibvbqTWjC8WqaPwCucWWBtANcG9UZn5NNVHbe7BMzir3zZW+Lehry8KpwnHrqBEa8DFAL5zLAQCFVuyUdwJXuEMC5SQpMXMCC+G/SKf6ui61b7ajRKJbO6GNF+JOXfoQqk0SupfAoU5Cm6wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Crnh2DGm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E788CC4CEF5;
-	Mon, 15 Dec 2025 23:50:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1765842602;
-	bh=5x88HEIkTgYf1xD7GovmrI5/UkL+Hu1QJ4lkwsKBz+I=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Crnh2DGmFv5/LJoE3V1lqZ7itegKM1oPvG+UaRL9ZkZCGuHERR75/GzfotBNia8T0
-	 DSU37glOuBAFTrNHnX3aspMh+s3ggVzHxNoULAskPOUo1R2QyJan0OIs5CVGW7MgQK
-	 z3j6rOXXKOYyOUx6RUX30T0tnTRZogXNzwYTNOBjHfO8gI6UI2KT4mafpzS3I8EvVt
-	 zz/c4q93B03Gf8a4CuvYxxhrsGsd58UG6BIZDtTbgna+7CnnE/z8teVFhlRVVwHpPn
-	 S0jaeCZJmAlaMo9DsU8ewkM9LOGr0ItyXNIBER1TzXI431mU7s4YiXsBgkYgEAeN4e
-	 xyF6OmQqH21UA==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org
-Cc: Jarkko Sakkinen <jarkko@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	keyrings@vger.kernel.org (open list:KEYS/KEYRINGS),
-	linux-security-module@vger.kernel.org (open list:SECURITY SUBSYSTEM),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v3] KEYS: trusted: Use get_random-fallback for TPM
-Date: Tue, 16 Dec 2025 01:49:54 +0200
-Message-Id: <20251215234954.607848-1-jarkko@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1765867712; c=relaxed/simple;
+	bh=7hJvRz6vwdZirckhWi0Jb4gANaI51gofOFt3bbHBTfM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=DHk+mqAJ+25tJ28BbSqR/3Pt8oGRmNSMu5xTIsEsQureX9ci/qBiK9EYTU5eC/KdP+TtcYoJZYAzn0SRHu5zrkQ48lqC8XV0a16Ntq6oCkQyRWfG4AlcofjSsrnqyYMvwBQh47PLElqzpW+GP/Yf4Lzax2IDgUPrWyo7RM74/do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=tUX9qhC3; arc=none smtp.client-ip=198.37.111.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=HansenPartnership.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1765867704;
+	bh=7hJvRz6vwdZirckhWi0Jb4gANaI51gofOFt3bbHBTfM=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=tUX9qhC3MDlMV5CZj96zgFkxWkWK72LnCS/ZH6tB/xpTJPtTe+7zK40D5XrgiM5C4
+	 +FNaffTOM2t6iGJi94yPHTVFsr9nOe0Wpw5VzcC3iAhtY4KEP7pqhvemLUrGWDfiJF
+	 5fhoihWDO/gOKTiBs1f5CKkxvrrUJhWc+gKoOxpg=
+Received: from [192.168.59.47] (unknown [46.140.184.114])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 535CB1C024E;
+	Tue, 16 Dec 2025 01:48:22 -0500 (EST)
+Message-ID: <1981bcdad096a820accf3a783181ae366cf2f8dd.camel@HansenPartnership.com>
+Subject: Re: [PATCH] KEYS: trusted: Use get_random-fallback for TPM
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>, Eric Biggers <ebiggers@kernel.org>
+Cc: linux-integrity@vger.kernel.org, David Howells <dhowells@redhat.com>, 
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge
+ E. Hallyn" <serge@hallyn.com>,  Mimi Zohar <zohar@linux.ibm.com>, "open
+ list:KEYS/KEYRINGS" <keyrings@vger.kernel.org>, "open list:SECURITY
+ SUBSYSTEM" <linux-security-module@vger.kernel.org>, open list
+ <linux-kernel@vger.kernel.org>, "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date: Tue, 16 Dec 2025 07:48:20 +0100
+In-Reply-To: <aUB5IsJeWhFvX-cA@kernel.org>
+References: <20251214213236.339586-1-jarkko@kernel.org>
+	 <20251215200939.GA10539@google.com> <aUBxKqL5hFibwI3r@kernel.org>
+	 <aUB5IsJeWhFvX-cA@kernel.org>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-1. tpm2_get_random() is costly when TCG_TPM2_HMAC is enabled and thus its
-   use should be pooled rather than directly used. This both reduces
-   latency and improves its predictability.
+On Mon, 2025-12-15 at 23:09 +0200, Jarkko Sakkinen wrote:
+> Using combined entropy also decreases corrateral damage caused by
+> e.g., a buggy TPM firmware, which does happen sometimes in the wild.
 
-2. Linux is better off overall if every subsystem uses the same source for
-   generating the random numbers required.
+Just to allay concerns on this point: the random number generator of a
+physical TPM is always based on a hardware entropy generating element.
+NIST specifies (and FIPS testing requires) that this hardware element
+conform to SP 800-90B which is about 84 pages of how a RNG should be
+conditioned and tested (and certified), so there should be very little
+chance of issues here.
 
-Thus, unset '.get_random', which causes fallback to kernel_get_random().
+While TPMs have had problems caused by buggy firmware in the past, it's
+always affected areas that the FIPS testing doesn't cover in such depth
+(like the Infineon weak prime problem).  People should feel confident
+in the TPM random number generator (particularly because it's the
+primary boot time entropy source for the in-kernel RNG on most
+laptops).
 
-One might argue that TPM RNG should be used for the generated trusted keys,
-so that they have matching entropy with the TPM internally generated
-objects.
+Regards,
 
-This argument does have some weight into it but as far cryptography goes,
-FIPS certification sets the exact bar, not which exact FIPS certified RNG
-will be used. Thus, the rational choice is obviously to pick the lowest
-latency path, which is kernel RNG.
-
-Finally, there is an actual defence in depth benefit when using kernel RNG
-as it helps to mitigate TPM firmware bugs concerning RNG implementation,
-given the obfuscation by the other entropy sources.
-
-Reviewed-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
-v3:
-- Fixed typos in the commit message.
-- Moved the documentation comment to the correct location.
-v2:
-- Added Eric's reviewed-by tag.
-- Addressed concerns from James by writing more details to the commit
-  message and documenting random number generation to the source
-  code.
----
- security/keys/trusted-keys/trusted_tpm1.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
-
-diff --git a/security/keys/trusted-keys/trusted_tpm1.c b/security/keys/trusted-keys/trusted_tpm1.c
-index 636acb66a4f6..7ce7e31bcdfb 100644
---- a/security/keys/trusted-keys/trusted_tpm1.c
-+++ b/security/keys/trusted-keys/trusted_tpm1.c
-@@ -6,6 +6,16 @@
-  * See Documentation/security/keys/trusted-encrypted.rst
-  */
- 
-+/**
-+ * DOC: Random Number Generation
-+ *
-+ * tpm_get_random() was previously used here as the RNG in order to have equal
-+ * entropy with the objects fully inside the TPM. However, as far as goes,
-+ * kernel RNG is equally fine, as long as long as it is FIPS certified. Also,
-+ * using kernel RNG has the benefit of mitigating bugs in the TPM firmware
-+ * associated with the RNG.
-+ */
-+
- #include <crypto/hash_info.h>
- #include <crypto/sha1.h>
- #include <crypto/utils.h>
-@@ -936,11 +946,6 @@ static int trusted_tpm_unseal(struct trusted_key_payload *p, char *datablob)
- 	return ret;
- }
- 
--static int trusted_tpm_get_random(unsigned char *key, size_t key_len)
--{
--	return tpm_get_random(chip, key, key_len);
--}
--
- static int __init init_digests(void)
- {
- 	int i;
-@@ -992,6 +997,5 @@ struct trusted_key_ops trusted_key_tpm_ops = {
- 	.init = trusted_tpm_init,
- 	.seal = trusted_tpm_seal,
- 	.unseal = trusted_tpm_unseal,
--	.get_random = trusted_tpm_get_random,
- 	.exit = trusted_tpm_exit,
- };
--- 
-2.39.5
+James
 
 
