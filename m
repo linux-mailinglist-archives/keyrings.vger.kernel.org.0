@@ -1,243 +1,197 @@
-Return-Path: <keyrings+bounces-3681-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3682-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA09ECC935E
-	for <lists+keyrings@lfdr.de>; Wed, 17 Dec 2025 19:10:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88DA8CCAA15
+	for <lists+keyrings@lfdr.de>; Thu, 18 Dec 2025 08:23:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D896D303B66E
-	for <lists+keyrings@lfdr.de>; Wed, 17 Dec 2025 18:10:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 266763064BFC
+	for <lists+keyrings@lfdr.de>; Thu, 18 Dec 2025 07:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB2F34D4C8;
-	Wed, 17 Dec 2025 17:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00DB331223;
+	Thu, 18 Dec 2025 07:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Rwm9Aewd"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hFvxQjnf"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A1234AB1D;
-	Wed, 17 Dec 2025 17:25:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E9D330D24
+	for <keyrings@vger.kernel.org>; Thu, 18 Dec 2025 07:21:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765992353; cv=none; b=m3susX51Gc4ED6X9rcuQbpK2yweG2h/LfuyoH4RadME3peeclicC/X+YdcOQEddJPhsmS+tGl2p6BPfVH97iDPIGuySvIWUCBj2Ix41ge6gNqr9h/1+1/smMbQ3z43TNmfVdPc+O9CYN0ptVvmU3VTgDvcJGmiVm4MTB8ORdWoY=
+	t=1766042505; cv=none; b=ZW0P2lUnrIFWrXfPUfNMYHet/ZGf2fbewBFATnxBpU6JnyEkNL/qPvjaDNcmIEVPpAd5rRjTQW8PQWEkgQZFJcjY5MD15qDp6jlJVAT12szila74hlOg10bFbXZnrTrmbZqsbh3rW8kS/pfMaS5HpH74v5wyDzaCV41xZ/8EQ6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765992353; c=relaxed/simple;
-	bh=g3hDqujwfMm5c7xBIQRMCL5HocOk3QR/RfT0la6lVZo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UD0Axx/kBnmZXNRasAXgdmKuEAldIMmD3sz0Kw9YPJ3mecBw1wkkkOfwb9LxEwN7MBaaX5D7teSDz9id7LScmunkHSO4fynAI8uXySIFr+V1sLhLt090lCfFgyIx1CC0/GRV1emNt9gxFsfEa829/TwFpOn9+y/KODbBKTdq1lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Rwm9Aewd; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5BHAksvY006284;
-	Wed, 17 Dec 2025 17:25:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=Bkv9uUW89YkDzEWaH
-	v1ObgoIXGJD2YqlGrw2O8ISsIM=; b=Rwm9AewdjgZ6PVtdnfehaWoypjOkFlRTq
-	KkPumMFBEQH3TXVwFkA7pOdfrHqPQYtiXEnOwJZHfYvEtDAdNfgi8r20+aJdUv6B
-	KeXyl4qJise6kXn4QvlYFbXj94JIGmuowXfYxM4Jlv+83lDhD3q4sxOFlh8btkOl
-	D+yl7mbpbuX+pzxke7tqLnFOR+IPRQCGUUKO3+gjP1rqY/WyEEzc7tdxrlO0R9NN
-	ul6bkV1FdAgCXeat+M5dD1fK4EB3Sn5r+kvv3TFob4jBWJD5LQsok6EQq53ixvxK
-	pnSvZeHUf7qmSX4k+hub1SRyg/cK22SqBjTlpfbrAt0BsSfKg9dTA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0xjm5gm4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Dec 2025 17:25:35 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5BHHKHj5026044;
-	Wed, 17 Dec 2025 17:25:35 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4b0xjm5gkx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Dec 2025 17:25:34 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5BHH9ZqO002960;
-	Wed, 17 Dec 2025 17:25:34 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4b1kykuf9x-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 17 Dec 2025 17:25:34 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5BHHPUL529622806
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 17 Dec 2025 17:25:30 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0F34320043;
-	Wed, 17 Dec 2025 17:25:30 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F01C820040;
-	Wed, 17 Dec 2025 17:25:26 +0000 (GMT)
-Received: from li-fc74f8cc-3279-11b2-a85c-ef5828687581.ibm.com.com (unknown [9.124.211.226])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 17 Dec 2025 17:25:26 +0000 (GMT)
-From: Srish Srinivasan <ssrish@linux.ibm.com>
-To: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, James.Bottomley@HansenPartnership.com,
-        jarkko@kernel.org, zohar@linux.ibm.com, nayna@linux.ibm.com,
-        rnsastry@linux.ibm.com, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, ssrish@linux.ibm.com
-Subject: [PATCH v2 6/6] docs: trusted-encryped: add PKWM as a new trust source
-Date: Wed, 17 Dec 2025 22:55:05 +0530
-Message-ID: <20251217172505.112398-7-ssrish@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20251217172505.112398-1-ssrish@linux.ibm.com>
-References: <20251217172505.112398-1-ssrish@linux.ibm.com>
+	s=arc-20240116; t=1766042505; c=relaxed/simple;
+	bh=oRDVeoSH7AN/+1EKf418Edx8/qjw/FEB71Hmt8IhBro=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZJIgjNSkw0GtzsmS9npIIzbqR8oui5jz8TiEx4oxdpltIm0jWJjiAp8qZwDci1J0cH8nKC36Gln1hyvOlsPnKS6gYxZq7hi2esqB0RdpfiJj/Ry3gkgMB0fWHg5nS1VCPW1XnxpVlXEFOS4RgtNLwJ2oNvwDDyh2mlsQ++JAzD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hFvxQjnf; arc=none smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7c6da42fbd4so121249a34.1
+        for <keyrings@vger.kernel.org>; Wed, 17 Dec 2025 23:21:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1766042501; x=1766647301; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u95c9TyT1XdaOnIyGBwMeLSiKMNJeuqg+7XxBfANtKE=;
+        b=hFvxQjnfCf2CUAqy40N2AHyq5MIDA0GgC5LKgr2+oJWxzVnQ/H2BlDj/PRT3fjn6YS
+         6uoMn7+YEL0+8O2LkRt30f+/2R5PDahttu121Fq4t7CeI0ECWbcDX44yZNP52rNK3/eA
+         fPojzuLnONspq5CUtSTCNO3/tkNye7HZkr84BB+Y/ocSOeYeJ03l/SmFCJB5qTJptZdQ
+         RbLfAkSfM0ummJWRnc7E8aYHqgmwBJNI/c/pFs/M401mDi2bS0euznuCTV9DcKpXnQ1t
+         H/xEDBrHcjuX6fA2f9gHgqEpAJVqBMy72GfMnDPZoRbg6fOFBpJbmBiSpijWbwGJ9Uu8
+         +Vxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1766042501; x=1766647301;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=u95c9TyT1XdaOnIyGBwMeLSiKMNJeuqg+7XxBfANtKE=;
+        b=HkFNAvQne8s2R4otHBnYdl+C17zPi8w4BoTe9NA22sSHpYncq+qOR/gZ+CSINvF5J9
+         hpAAzbfcz77cmmqHihpTbXdfvEFe3zGLF8ozX8UGbjB44/RrHG9ZPEKedhxvvmAad18z
+         XNidOhwwOXZ2MEvaDxpR0jfBtSNziKmlFRCQO4sDfSUX4mfI9VVfru6PCponKJ+sxM4D
+         5xhz2hqZE5+2+IrKcUy4tBc2JreNYzZjC54vsVSUvyVib7mjkwIokBaisuwyl4YQ9eta
+         6kS+lrhZjRWt09Zblu8Mz81XmnuM10i8nfDaHA5suQY7WpRMqHuNVAZhuvGgXP8f2uSU
+         4weg==
+X-Forwarded-Encrypted: i=1; AJvYcCV4yna1Yde5+GAvOwxr6Vj0IDUz1NRcYuNAE/mhKiNL8X29DYeXcMRxAXS1nDz7ZPS/30c4Pfhxkw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxreEnYk3iEmQcuUnpZJBFkkgjbBtXfO0//vgOa4mToXyOkdJhC
+	xozYxE0smf6y/x3ySjaMhsI3vZrvc/HQbq4UNOyQpqBWTmi29iO5zSUNL9GQa/51JnUVtQVrSAW
+	IlcqqiNsM7p6qvywsFqf9vwGANLfTJ+B64HzrnODHsg==
+X-Gm-Gg: AY/fxX6TfcXZ3CIDP2Yytmt6Jg2n+iSZPKjfkYuMi3KeVunMa5YjNiqlfspESOySUIa
+	2m1tcv4fP2QOYpTibOFL+qPOJOORH7ojnR+4LG9xMpYnhDVgIAc12isojOW3jsQsgfxULFSp7fv
+	7PSRwurVlEG/PlnMq8CCP2pH2KReM1JW5IoLR2QbJYqdEGiKoKemujX5Uk4RwOLLr2VRSU1hW2h
+	wZQqARplc+GIM3JJ2JKESD7u1gCuoqrwaR/TieJgZeJOxihlIjoC5QF77t3AoLzgzBfOYGRo81T
+	rmPNy4Z5X6W1DrF3O8GRGOO0bQ==
+X-Google-Smtp-Source: AGHT+IHdzsrnh67Z+uk7sg0iAMocZMySikku48EGz5g7L5MG+hq7iSRlseyY2l5vM8LHePwozU/hD6rMNUuAq73AgFc=
+X-Received: by 2002:a05:6820:828:b0:65c:f41b:7119 with SMTP id
+ 006d021491bc7-65cf41b750emr1784992eaf.5.1766042500598; Wed, 17 Dec 2025
+ 23:21:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ceeOyiP6uF2BvNLHd10ohXNW5vn1otzm
-X-Authority-Analysis: v=2.4 cv=CLgnnBrD c=1 sm=1 tr=0 ts=6942e78f cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=wP3pNCr1ah4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=T8Lk_pw-g3mOOJD1yd4A:9
-X-Proofpoint-GUID: vOmHre_G-yGWxqiKVb5Ic0lRl4uaAeUZ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMjEzMDAwOSBTYWx0ZWRfX+yNIHZ5fBBmo
- DmuJLc+Fr+H4Xxc07KwI4ji8pJzhohjS3GVMuqPh/MRk2QBZ7mWVgk1vvcUmNV4guytylTcluW4
- G5WJVi8pthzWmd8EvLI+XOVHFp8zj46CuFznMz1bSfNc+XP3bVi0M7D5GJ/WLrHyLiNXZMD551y
- Mk9eY3K3D3n2WKCUDdv3juvy0mZGrEDEGxvXCgtufl3T5rWJ7rYvDPr1ho+PJnY482ZoURA+z14
- nv6kWo00MdtKX2aRKn007yd4Nk1I9xY5CGGbCUD2L6wWMGFcPrRJNPrqoZSaUuYHK6XdCmr0LSH
- EgVMRDhDi5pyQyDXwd8qe2DJq0FE0os0/K1ooa9Y4sJA9Ret5SL+9JE7GAFPckTyqkqHCe+HnAC
- NAPI5niPw0eu1Mf/UuRFL/W/3l6Veg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-12-17_03,2025-12-16_05,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 lowpriorityscore=0 malwarescore=0 suspectscore=0
- phishscore=0 priorityscore=1501 bulkscore=0 impostorscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2512130009
+References: <cover.1765791463.git.u.kleine-koenig@baylibre.com>
+In-Reply-To: <cover.1765791463.git.u.kleine-koenig@baylibre.com>
+From: Jens Wiklander <jens.wiklander@linaro.org>
+Date: Thu, 18 Dec 2025 08:21:27 +0100
+X-Gm-Features: AQt7F2r_j21Nqcv1IzhOT6jk9UPtvnwA1D3etXiTv5WveGJRYXXMC9qqoGF_Yc4
+Message-ID: <CAHUa44FrDZbvRvfN8obf80_k=Eqxe9YxHpjaE5jU7nkxPUwfag@mail.gmail.com>
+Subject: Re: [PATCH v2 00/17] tee: Use bus callbacks instead of driver callbacks
+To: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Sumit Garg <sumit.garg@kernel.org>, 
+	Olivia Mackall <olivia@selenic.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	=?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Sumit Garg <sumit.garg@oss.qualcomm.com>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Jan Kiszka <jan.kiszka@siemens.com>, 
+	Sudeep Holla <sudeep.holla@arm.com>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
+	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, 
+	Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Peter Huewe <peterhuewe@gmx.de>, op-tee@lists.trustedfirmware.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, linux-rtc@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, 
+	Cristian Marussi <cristian.marussi@arm.com>, arm-scmi@vger.kernel.org, 
+	linux-mips@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Nayna Jain <nayna@linux.ibm.com>
+Hi,
 
-Update Documentation/security/keys/trusted-encrypted.rst and Documentation/
-admin-guide/kernel-parameters.txt with PowerVM Key Wrapping Module (PKWM)
-as a new trust source
+On Mon, Dec 15, 2025 at 3:17=E2=80=AFPM Uwe Kleine-K=C3=B6nig
+<u.kleine-koenig@baylibre.com> wrote:
+>
+> Hello,
+>
+> the objective of this series is to make tee driver stop using callbacks
+> in struct device_driver. These were superseded by bus methods in 2006
+> (commit 594c8281f905 ("[PATCH] Add bus_type probe, remove, shutdown
+> methods.")) but nobody cared to convert all subsystems accordingly.
+>
+> Here the tee drivers are converted. The first commit is somewhat
+> unrelated, but simplifies the conversion (and the drivers). It
+> introduces driver registration helpers that care about setting the bus
+> and owner. (The latter is missing in all drivers, so by using these
+> helpers the drivers become more correct.)
+>
+> v1 of this series is available at
+> https://lore.kernel.org/all/cover.1765472125.git.u.kleine-koenig@baylibre=
+.com
+>
+> Changes since v1:
+>
+>  - rebase to v6.19-rc1 (no conflicts)
+>  - add tags received so far
+>  - fix whitespace issues pointed out by Sumit Garg
+>  - fix shutdown callback to shutdown and not remove
+>
+> As already noted in v1's cover letter, this series should go in during a
+> single merge window as there are runtime warnings when the series is
+> only applied partially. Sumit Garg suggested to apply the whole series
+> via Jens Wiklander's tree.
+> If this is done the dependencies in this series are honored, in case the
+> plan changes: Patches #4 - #17 depend on the first two.
+>
+> Note this series is only build tested.
+>
+> Uwe Kleine-K=C3=B6nig (17):
+>   tee: Add some helpers to reduce boilerplate for tee client drivers
+>   tee: Add probe, remove and shutdown bus callbacks to tee_client_driver
+>   tee: Adapt documentation to cover recent additions
+>   hwrng: optee - Make use of module_tee_client_driver()
+>   hwrng: optee - Make use of tee bus methods
+>   rtc: optee: Migrate to use tee specific driver registration function
+>   rtc: optee: Make use of tee bus methods
+>   efi: stmm: Make use of module_tee_client_driver()
+>   efi: stmm: Make use of tee bus methods
+>   firmware: arm_scmi: optee: Make use of module_tee_client_driver()
+>   firmware: arm_scmi: Make use of tee bus methods
+>   firmware: tee_bnxt: Make use of module_tee_client_driver()
+>   firmware: tee_bnxt: Make use of tee bus methods
+>   KEYS: trusted: Migrate to use tee specific driver registration
+>     function
+>   KEYS: trusted: Make use of tee bus methods
+>   tpm/tpm_ftpm_tee: Make use of tee specific driver registration
+>   tpm/tpm_ftpm_tee: Make use of tee bus methods
+>
+>  Documentation/driver-api/tee.rst             | 18 +----
+>  drivers/char/hw_random/optee-rng.c           | 26 ++----
+>  drivers/char/tpm/tpm_ftpm_tee.c              | 31 +++++---
+>  drivers/firmware/arm_scmi/transports/optee.c | 32 +++-----
+>  drivers/firmware/broadcom/tee_bnxt_fw.c      | 30 ++-----
+>  drivers/firmware/efi/stmm/tee_stmm_efi.c     | 25 ++----
+>  drivers/rtc/rtc-optee.c                      | 27 ++-----
+>  drivers/tee/tee_core.c                       | 84 ++++++++++++++++++++
+>  include/linux/tee_drv.h                      | 12 +++
+>  security/keys/trusted-keys/trusted_tee.c     | 17 ++--
+>  10 files changed, 164 insertions(+), 138 deletions(-)
+>
+> base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> --
+> 2.47.3
+>
 
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
----
- .../admin-guide/kernel-parameters.txt         |  1 +
- .../security/keys/trusted-encrypted.rst       | 50 +++++++++++++++++++
- 2 files changed, 51 insertions(+)
+Thank you for the nice cleanup, Uwe.
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index a8d0afde7f85..ccb9c2f502fb 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -7755,6 +7755,7 @@ Kernel parameters
- 			- "tee"
- 			- "caam"
- 			- "dcp"
-+			- "pkwm"
- 			If not specified then it defaults to iterating through
- 			the trust source list starting with TPM and assigns the
- 			first trust source as a backend which is initialized
-diff --git a/Documentation/security/keys/trusted-encrypted.rst b/Documentation/security/keys/trusted-encrypted.rst
-index eae6a36b1c9a..ddff7c7c2582 100644
---- a/Documentation/security/keys/trusted-encrypted.rst
-+++ b/Documentation/security/keys/trusted-encrypted.rst
-@@ -81,6 +81,14 @@ safe.
-          and the UNIQUE key. Default is to use the UNIQUE key, but selecting
-          the OTP key can be done via a module parameter (dcp_use_otp_key).
- 
-+     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
-+
-+         Rooted to a unique, per-LPAR key, which is derived from a system-wide,
-+         randomly generated LPAR root key. Both the per-LPAR keys and the LPAR
-+         root key are stored in hypervisor-owned secure memory at runtime,
-+         and the LPAR root key is additionally persisted in secure locations
-+         such as the processor SEEPROMs and encrypted NVRAM.
-+
-   *  Execution isolation
- 
-      (1) TPM
-@@ -102,6 +110,14 @@ safe.
-          environment. Only basic blob key encryption is executed there.
-          The actual key sealing/unsealing is done on main processor/kernel space.
- 
-+     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
-+
-+         Fixed set of cryptographic operations done on on-chip hardware
-+         cryptographic acceleration unit NX. Keys for wrapping and unwrapping
-+         are managed by PowerVM Platform KeyStore, which stores keys in an
-+         isolated in-memory copy in secure hypervisor memory, as well as in a
-+         persistent copy in hypervisor-encrypted NVRAM.
-+
-   * Optional binding to platform integrity state
- 
-      (1) TPM
-@@ -129,6 +145,11 @@ safe.
-          Relies on Secure/Trusted boot process (called HAB by vendor) for
-          platform integrity.
- 
-+     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
-+
-+         Relies on secure and trusted boot process of IBM Power systems for
-+         platform integrity.
-+
-   *  Interfaces and APIs
- 
-      (1) TPM
-@@ -149,6 +170,11 @@ safe.
-          Vendor-specific API that is implemented as part of the DCP crypto driver in
-          ``drivers/crypto/mxs-dcp.c``.
- 
-+     (5) PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
-+
-+         Platform Keystore has well documented interfaces in PAPR document.
-+         Refer to ``Documentation/arch/powerpc/papr_hcalls.rst``
-+
-   *  Threat model
- 
-      The strength and appropriateness of a particular trust source for a given
-@@ -191,6 +217,10 @@ selected trust source:
-      a dedicated hardware RNG that is independent from DCP which can be enabled
-      to back the kernel RNG.
- 
-+   * PKWM (PowerVM Key Wrapping Module: IBM PowerVM + Platform KeyStore)
-+
-+     The normal kernel random number generator is used to generate keys.
-+
- Users may override this by specifying ``trusted.rng=kernel`` on the kernel
- command-line to override the used RNG with the kernel's random number pool.
- 
-@@ -321,6 +351,26 @@ Usage::
- specific to this DCP key-blob implementation.  The key length for new keys is
- always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
- 
-+Trusted Keys usage: PKWM
-+------------------------
-+
-+Usage::
-+
-+    keyctl add trusted name "new keylen [options]" ring
-+    keyctl add trusted name "load hex_blob" ring
-+    keyctl print keyid
-+
-+    options:
-+       wrap_flags=   ascii hex value of security policy requirement
-+                       0x00: no secure boot requirement (default)
-+                       0x01: require secure boot to be in either audit or
-+                             enforced mode
-+                       0x02: require secure boot to be in enforced mode
-+
-+"keyctl print" returns an ASCII hex copy of the sealed key, which is in format
-+specific to PKWM key-blob implementation.  The key length for new keys is
-+always in bytes. Trusted Keys can be 32 - 128 bytes (256 - 1024 bits).
-+
- Encrypted Keys usage
- --------------------
- 
--- 
-2.47.3
+I've applied patch 1-3 to the branch tee_bus_callback_for_6.20 in my
+tree at https://git.kernel.org/pub/scm/linux/kernel/git/jenswi/linux-tee.gi=
+t/
 
+The branch is based on v6.19-rc1, and I'll try to keep it stable for
+others to depend on, if needed. Let's see if we can agree on taking
+the remaining patches via that branch.
+
+Cheers,
+Jens
 
