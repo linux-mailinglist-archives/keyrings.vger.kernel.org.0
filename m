@@ -1,139 +1,253 @@
-Return-Path: <keyrings+bounces-3704-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3705-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D2A9CEF193
-	for <lists+keyrings@lfdr.de>; Fri, 02 Jan 2026 18:48:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8063CCF2ACF
+	for <lists+keyrings@lfdr.de>; Mon, 05 Jan 2026 10:16:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B4DA300D49A
-	for <lists+keyrings@lfdr.de>; Fri,  2 Jan 2026 17:48:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 99FE63012CE1
+	for <lists+keyrings@lfdr.de>; Mon,  5 Jan 2026 09:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE5F2F12A1;
-	Fri,  2 Jan 2026 17:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4EE7314A95;
+	Mon,  5 Jan 2026 09:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IJZn8vfi"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aYsHIRYZ"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C260D1D5CD1;
-	Fri,  2 Jan 2026 17:48:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57FD032B995
+	for <keyrings@vger.kernel.org>; Mon,  5 Jan 2026 09:16:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767376137; cv=none; b=JQ7G7aERYDTkloUN+v4f0t9Irhqy7A44pHl7qgCm6ge7WVhzbdCQwKx+U5KsdlWoOCpVE9n72uwHR19mIfK7asy8cS7LJaOlAZxowcHvXSOQRXE5cA4JiljHEGPrLk4H7E/776Igt2QB1z9PuDmO2U/R0ysKjVUztblk4EVOIP8=
+	t=1767604587; cv=none; b=kQrfP0pMrWJCCnBt86hTMwDmxsJtJuWhyH/FYbAM7xxGumBvZjgga3lnqs8qhFCCbJ4a4mc6/Rnq22lCsNETTjKxdgZgfoPY3u7M877CsBtvpG8zSvhImOhh7y0/lPmvqAnlDjRz8yMDLqi/7WAuMKwkpsvdknUoDVuqaaH87Hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767376137; c=relaxed/simple;
-	bh=dCvSZMHRcIMvmMrk8Xrdw9qHq3fJKcUlxZqsI0VmiWg=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=mIotwwGDmqh32ErqaI9dCcraCJEWzsIILTB7V3ZQD6UZrHJs0jI7J9B6nxIUNA0wu5tWTP4qiosTu2ksoyVAWHnCB5f8DmMl1IhMWHvdCyYHjdBB5s1DyTrkdr76jumzowwDZNVxc9+nreAj1zgc9rqpa5KSdnsVT+RHh3KfTug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IJZn8vfi; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 601Ksb03012496;
-	Fri, 2 Jan 2026 17:48:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=dCvSZM
-	HRcIMvmMrk8Xrdw9qHq3fJKcUlxZqsI0VmiWg=; b=IJZn8vfi+DxfslAX9b0UJH
-	6R58TPo0+eFtgYhZ3s0rKmT6H2BZfXa9rzn05tVNffDrmekru8vyx0Wz+nuR1BTR
-	BnXRhb3caDH/0nvx5pb4U3VBog7TUHBsXhetZcaqagmEcx4hh0wAqhlYgiEklVWj
-	0VAuQSlKexwe+UmnzPrrq1bvqbRIqXd8bHHzxjOynQJrLht8sKA77+l09CXjXRKm
-	F/tPfITw01yC9OjeXIWds64Elyt8/By4Cp9YfRsai/Oo+E6lExF2rIAoAzbiz0dE
-	hgUafzfVk6ncsPBFWVBqfn4vXykrYlh1zOvOmEVSsSG9SOVs9ZYlXqVzEQvlzePg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ba73w5b0r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Jan 2026 17:48:42 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 602Hh28L004763;
-	Fri, 2 Jan 2026 17:48:41 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ba73w5b0n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Jan 2026 17:48:41 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 602FWKkX003076;
-	Fri, 2 Jan 2026 17:48:40 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bavg279g8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 02 Jan 2026 17:48:40 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 602HmdhL22807084
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 2 Jan 2026 17:48:39 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0A1D15803F;
-	Fri,  2 Jan 2026 17:48:39 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9452F58054;
-	Fri,  2 Jan 2026 17:48:37 +0000 (GMT)
-Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.43.105])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  2 Jan 2026 17:48:37 +0000 (GMT)
-Message-ID: <02583d9d0691468e7facfbbc9a13b591fbdaadb2.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 6/6] docs: trusted-encryped: add PKWM as a new trust
- source
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Srish Srinivasan <ssrish@linux.ibm.com>, linux-integrity@vger.kernel.org,
-        keyrings@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, James.Bottomley@HansenPartnership.com,
-        jarkko@kernel.org, nayna@linux.ibm.com, rnsastry@linux.ibm.com,
-        linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
-In-Reply-To: <20251217172505.112398-7-ssrish@linux.ibm.com>
-References: <20251217172505.112398-1-ssrish@linux.ibm.com>
-	 <20251217172505.112398-7-ssrish@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 02 Jan 2026 12:48:37 -0500
+	s=arc-20240116; t=1767604587; c=relaxed/simple;
+	bh=OWC+AHxZdxUuVZM/YaeSNjU/c5cKFkHpncudd9Oa0yE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XXYr1rRd8jv/Ceo7w65MlZ+70Svi+HRzBCIEDhxJto8SUK/ZMEYin8LirdjOHnGAQ+pLUNNhXl37YDl+pIk/k3nfR8nKacXWwhgDiLE/hSfHKqNGZcpUFHxWMLUZY2oIZP/BEU3GxRy4h/Gi3X/DR5zjrd/Xztf5gwaZtVwY5EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aYsHIRYZ; arc=none smtp.client-ip=209.85.160.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-3eae4e590a4so7202263fac.1
+        for <keyrings@vger.kernel.org>; Mon, 05 Jan 2026 01:16:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1767604581; x=1768209381; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xS4Pieemzy4r1o+XZyR7jxfKf1/JCiqumXmtg6ZAf0Y=;
+        b=aYsHIRYZmEqubVaB/nFOB2ZSyZ5mdUAJQ2e8vK7U6xa1ASeFd6LWH955d9+nh53ktb
+         xr1P49S3syRT14RFGDCfbl+SIJj8H1shK6l/HJyqERcZfy8YT9XcW9ovCyPlV1JPbept
+         stVuPPdDv4O0rskrIVR6VeYaEnAM5RPbtavEumXMM3wqDI/5YZbPJj/fIsEwMgjbttlW
+         vq78fx3LM7I7y53tg3lpxh5jqIHVy7So3PmCqVqS6shGFcQdOC2kuMGEH3Kt5Owzm2Qm
+         rjvtr+TvOeiiwnoqs3PniCzuVCCjBVzPM3FD6VXVz+bPcHzpEmbFp1Ii0V1COQygdl4e
+         lteA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767604581; x=1768209381;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xS4Pieemzy4r1o+XZyR7jxfKf1/JCiqumXmtg6ZAf0Y=;
+        b=NncLwxV+0sS8libSFDDtSIEw4sKrgx1B1Wc2GP7k4rhdGMf/Cca+wF34HcxJgcs/PF
+         tcYqZsXWK515tN5Sfg7xry4A4Kkib1cBBsz1tPHm2gDemWk9u39CEv+F7e6E1WBygQyx
+         zjAMzkDKXZ31m4J6k6wTLiJ5/anJ4xNaKDZN+VjF6SM9K7wqB6i3zpRp/LBNZXKQDd+q
+         hWDiodaJbqgrB1fhejlhOups1cJ7wX9ZfirjUL7OjzC7jJb4nU0MOS8yVKzEM2eQKB6g
+         Pn9hGbnnNYAgzjq786uMmEhhtI/MttTOENapu6rJQ8zzqYL2c1XdyXL3O7IQyibgOzXN
+         FPMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU0PsM3grSELIoz/RcWw+qo9Y8MgPnsVHPgoJ5hnQONuMzMHzrERxjLmTbnm7SC0gt0obNgc+IteQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxaUFqMPd1v+wpxkvGbmRsKNV/vNGRTml+06pUcLXOOdPFOBcNT
+	uyAUDQReUTf5eb5buJPBn/478D2q/5f8Bgy7cu3Dryaq/OHATDKXNRZv0JscO8hvJODnLZbYLr9
+	/xdjYq9MZAbkZA9AfCXNnT+mVRbXbPrjAa7d5eZhJgA==
+X-Gm-Gg: AY/fxX4LE7qL9XZrd8JU5W9WfaJx4KlZec4e8xodAmwmnegrgUHiipQEI0oVh92CilH
+	cXMOW45A4mSO0ho/4sjwKvOS4lJa1jvy6MXjysvgFx+YSLkOH3SUWmU2+YG2qzPRcPEb+F2mUb5
+	4w5IzJNX1JUpWZlxQduupE+lKAXncWeJgN1gu5B+OiQzgc+KjZfx7Zs3+sCHBHY/1nPh7Qqe7W5
+	EhXK8zGcn4HMzS/3sQnYHMWooW5ZoAPELI4zmtA+jxZVUstDhYnFUcRM8opRNQHQ/iKoKWtOAPy
+	4XuEqql2+C+fWwKyBB4PLO7fJA==
+X-Google-Smtp-Source: AGHT+IHdtu3uK1YvLPvRXmBmsYletnr+Fy6yEnWw7FcQJMBZUAFsUyE2L/0PG3GpU/2KGeBY95bkFD0S8glmAzrpFaU=
+X-Received: by 2002:a05:6820:2289:b0:65c:f9c1:cba0 with SMTP id
+ 006d021491bc7-65d0ea16a88mr23376881eaf.37.1767604581140; Mon, 05 Jan 2026
+ 01:16:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Evolution 3.54.3 (3.54.3-2.fc41) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: bqQUh9EJFkG1jRU0auuKMxYkwrx6rNqK
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTAyMDE1OSBTYWx0ZWRfX1BXqiSNK8fx+
- Vx5+FlFJ4qDFD6cxTRDSmrrxfWez+1x6Viv0jExQMb8ypAaxoQ80dcqNwI2JV9NNScCCJBWAAtT
- U0/APwC2YKYpdBKvxZOyDE0tKNcnv88lfFWwNRxNduQa90i09lEWUryDbFrmZZhMqiaZNUPNU0p
- U5HF6JfLokqdSZeMNYmbXd0/hwxL9PwmPNK7ofSrBMUdHV0Fn3W9Yg2KNTwIN46rT4E18TKVqQ0
- lb1UuJZ3Qk9da2tMRabLrstKCOVw0iNJXmLJpZHtuVbZ+xYHjYeBbAiNwRt3nnTbaRat6C68W9V
- LBN1A3+POYjxseC2asAd1AN3xx4rt/A8aQXr0ff73TG9Pvs+eVGMcOgfMi2PANWgPmHr1KZ/j5e
- ipI4qr0NODKBojM4imHVWOQ9c92WDT3tDovXwAXfkF25od7e4ypY5KbRseQCMc6N8pW6+uQcC5r
- 8AGnzQivA9Q7xlJwFwg==
-X-Authority-Analysis: v=2.4 cv=fobRpV4f c=1 sm=1 tr=0 ts=695804fa cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=sgltXFsEcmSdi6oR4GcA:9 a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10
-X-Proofpoint-GUID: Opj_w7Q9PCZHxaSEFXVcrEa_BqVYe0v4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-02_02,2025-12-31_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 suspectscore=0 phishscore=0 adultscore=0 malwarescore=0
- spamscore=0 bulkscore=0 impostorscore=0 priorityscore=1501 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601020159
+References: <cover.1765791463.git.u.kleine-koenig@baylibre.com>
+ <CAHUa44FrDZbvRvfN8obf80_k=Eqxe9YxHpjaE5jU7nkxPUwfag@mail.gmail.com>
+ <20251218135332f323fa91@mail.local> <CAHUa44GpW5aO26GDyL9RZub9vVYvVcJ7etwO0yXBN_mUi0W4AA@mail.gmail.com>
+In-Reply-To: <CAHUa44GpW5aO26GDyL9RZub9vVYvVcJ7etwO0yXBN_mUi0W4AA@mail.gmail.com>
+From: Jens Wiklander <jens.wiklander@linaro.org>
+Date: Mon, 5 Jan 2026 10:16:09 +0100
+X-Gm-Features: AQt7F2q8lTcIoa5xBnvz2Mkjx2axWX5OMGPJpQNfFM5WoFI2KGlEdVoT6sJvPQg
+Message-ID: <CAHUa44HqRbCJTXsrTCm0G5iwtkQtq+Si=yOspCjpAn-N2uVSVg@mail.gmail.com>
+Subject: Re: [PATCH v2 00/17] tee: Use bus callbacks instead of driver callbacks
+To: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Sumit Garg <sumit.garg@kernel.org>, 
+	Olivia Mackall <olivia@selenic.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	=?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Sumit Garg <sumit.garg@oss.qualcomm.com>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Jan Kiszka <jan.kiszka@siemens.com>, 
+	Sudeep Holla <sudeep.holla@arm.com>, Christophe JAILLET <christophe.jaillet@wanadoo.fr>, 
+	=?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>, 
+	Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi <pavan.chebbi@broadcom.com>, 
+	James Bottomley <James.Bottomley@hansenpartnership.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Peter Huewe <peterhuewe@gmx.de>, op-tee@lists.trustedfirmware.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-crypto@vger.kernel.org, linux-rtc@vger.kernel.org, 
+	linux-efi@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, 
+	Cristian Marussi <cristian.marussi@arm.com>, arm-scmi@vger.kernel.org, 
+	linux-mips@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2025-12-17 at 22:55 +0530, Srish Srinivasan wrote:
-> From: Nayna Jain <nayna@linux.ibm.com>
->=20
-> Update Documentation/security/keys/trusted-encrypted.rst and Documentatio=
-n/
-> admin-guide/kernel-parameters.txt with PowerVM Key Wrapping Module (PKWM)
-> as a new trust source
->=20
-> Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-> Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
+Hi,
 
-Thanks, Nayna, Srish.
+On Thu, Dec 18, 2025 at 5:29=E2=80=AFPM Jens Wiklander
+<jens.wiklander@linaro.org> wrote:
+>
+> On Thu, Dec 18, 2025 at 2:53=E2=80=AFPM Alexandre Belloni
+> <alexandre.belloni@bootlin.com> wrote:
+> >
+> > On 18/12/2025 08:21:27+0100, Jens Wiklander wrote:
+> > > Hi,
+> > >
+> > > On Mon, Dec 15, 2025 at 3:17=E2=80=AFPM Uwe Kleine-K=C3=B6nig
+> > > <u.kleine-koenig@baylibre.com> wrote:
+> > > >
+> > > > Hello,
+> > > >
+> > > > the objective of this series is to make tee driver stop using callb=
+acks
+> > > > in struct device_driver. These were superseded by bus methods in 20=
+06
+> > > > (commit 594c8281f905 ("[PATCH] Add bus_type probe, remove, shutdown
+> > > > methods.")) but nobody cared to convert all subsystems accordingly.
+> > > >
+> > > > Here the tee drivers are converted. The first commit is somewhat
+> > > > unrelated, but simplifies the conversion (and the drivers). It
+> > > > introduces driver registration helpers that care about setting the =
+bus
+> > > > and owner. (The latter is missing in all drivers, so by using these
+> > > > helpers the drivers become more correct.)
+> > > >
+> > > > v1 of this series is available at
+> > > > https://lore.kernel.org/all/cover.1765472125.git.u.kleine-koenig@ba=
+ylibre.com
+> > > >
+> > > > Changes since v1:
+> > > >
+> > > >  - rebase to v6.19-rc1 (no conflicts)
+> > > >  - add tags received so far
+> > > >  - fix whitespace issues pointed out by Sumit Garg
+> > > >  - fix shutdown callback to shutdown and not remove
+> > > >
+> > > > As already noted in v1's cover letter, this series should go in dur=
+ing a
+> > > > single merge window as there are runtime warnings when the series i=
+s
+> > > > only applied partially. Sumit Garg suggested to apply the whole ser=
+ies
+> > > > via Jens Wiklander's tree.
+> > > > If this is done the dependencies in this series are honored, in cas=
+e the
+> > > > plan changes: Patches #4 - #17 depend on the first two.
+> > > >
+> > > > Note this series is only build tested.
+> > > >
+> > > > Uwe Kleine-K=C3=B6nig (17):
+> > > >   tee: Add some helpers to reduce boilerplate for tee client driver=
+s
+> > > >   tee: Add probe, remove and shutdown bus callbacks to tee_client_d=
+river
+> > > >   tee: Adapt documentation to cover recent additions
+> > > >   hwrng: optee - Make use of module_tee_client_driver()
+> > > >   hwrng: optee - Make use of tee bus methods
+> > > >   rtc: optee: Migrate to use tee specific driver registration funct=
+ion
+> > > >   rtc: optee: Make use of tee bus methods
+> > > >   efi: stmm: Make use of module_tee_client_driver()
+> > > >   efi: stmm: Make use of tee bus methods
+> > > >   firmware: arm_scmi: optee: Make use of module_tee_client_driver()
+> > > >   firmware: arm_scmi: Make use of tee bus methods
+> > > >   firmware: tee_bnxt: Make use of module_tee_client_driver()
+> > > >   firmware: tee_bnxt: Make use of tee bus methods
+> > > >   KEYS: trusted: Migrate to use tee specific driver registration
+> > > >     function
+> > > >   KEYS: trusted: Make use of tee bus methods
+> > > >   tpm/tpm_ftpm_tee: Make use of tee specific driver registration
+> > > >   tpm/tpm_ftpm_tee: Make use of tee bus methods
+> > > >
+> > > >  Documentation/driver-api/tee.rst             | 18 +----
+> > > >  drivers/char/hw_random/optee-rng.c           | 26 ++----
+> > > >  drivers/char/tpm/tpm_ftpm_tee.c              | 31 +++++---
+> > > >  drivers/firmware/arm_scmi/transports/optee.c | 32 +++-----
+> > > >  drivers/firmware/broadcom/tee_bnxt_fw.c      | 30 ++-----
+> > > >  drivers/firmware/efi/stmm/tee_stmm_efi.c     | 25 ++----
+> > > >  drivers/rtc/rtc-optee.c                      | 27 ++-----
+> > > >  drivers/tee/tee_core.c                       | 84 ++++++++++++++++=
+++++
+> > > >  include/linux/tee_drv.h                      | 12 +++
+> > > >  security/keys/trusted-keys/trusted_tee.c     | 17 ++--
+> > > >  10 files changed, 164 insertions(+), 138 deletions(-)
+> > > >
+> > > > base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
+> > > > --
+> > > > 2.47.3
+> > > >
+> > >
+> > > Thank you for the nice cleanup, Uwe.
+> > >
+> > > I've applied patch 1-3 to the branch tee_bus_callback_for_6.20 in my
+> > > tree at https://git.kernel.org/pub/scm/linux/kernel/git/jenswi/linux-=
+tee.git/
+> > >
+> > > The branch is based on v6.19-rc1, and I'll try to keep it stable for
+> > > others to depend on, if needed. Let's see if we can agree on taking
+> > > the remaining patches via that branch.
+> >
+> > 6 and 7 can go through your branch.
+>
+> Good, I've added them to my branch now.
 
-Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+This entire patch set should go in during a single merge window. I
+will not send any pull request until I'm sure all patches will be
+merged.
 
+So far (if I'm not mistaken), only the patches I've already added to
+next have appeared next. I can take the rest of the patches, too, but
+I need OK for the following:
 
+Jarkko, you seem happy with the following patches
+- KEYS: trusted: Migrate to use tee specific driver registration function
+- KEYS: trusted: Make use of tee bus methods
+- tpm/tpm_ftpm_tee: Make use of tee specific driver registration
+- tpm/tpm_ftpm_tee: Make use of tee bus methods
+OK if I take them via my tree, or would you rather take them yourself?
+
+Herbert, you seem happy with the following patches
+- hwrng: optee - Make use of module_tee_client_driver()
+- hwrng: optee - Make use of tee bus methods
+OK if I take them via my tree, or would you rather take them yourself?
+
+Sudeep, you seem happy with the following patches
+- firmware: arm_scmi: optee: Make use of module_tee_client_driver()
+- firmware: arm_scmi: Make use of tee bus methods
+OK if I take them via my tree, or would you rather take them yourself?
+
+Michael, Pavan, are you OK with the following patches
+- firmware: tee_bnxt: Make use of module_tee_client_driver()
+- firmware: tee_bnxt: Make use of tee bus methods
+OK if I take them via my tree, or would you rather take them yourself?
+
+Thanks,
+Jens
 
