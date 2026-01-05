@@ -1,60 +1,60 @@
-Return-Path: <keyrings+bounces-3715-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3716-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E37ECCF477F
-	for <lists+keyrings@lfdr.de>; Mon, 05 Jan 2026 16:43:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85CE0CF471F
+	for <lists+keyrings@lfdr.de>; Mon, 05 Jan 2026 16:39:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F05030C6648
-	for <lists+keyrings@lfdr.de>; Mon,  5 Jan 2026 15:33:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C2880315828C
+	for <lists+keyrings@lfdr.de>; Mon,  5 Jan 2026 15:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F6C53314D1;
-	Mon,  5 Jan 2026 15:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F472309DD2;
+	Mon,  5 Jan 2026 15:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eBmvgi1a"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UAu0cj9Q"
 X-Original-To: keyrings@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876FC331229
-	for <keyrings@vger.kernel.org>; Mon,  5 Jan 2026 15:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECD1332EB7
+	for <keyrings@vger.kernel.org>; Mon,  5 Jan 2026 15:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767626573; cv=none; b=t7LIBFWnFRvW9a39EDfJpYYDVJU0kErXWJU4w1AvHdveeyYBoEm28djGHB/zTHf9e9KBqXaLZ6jf37fkPE2fr30Iap20OD7X00JDNZETHo2xPI3Jg6XEC1MyyAb3hgUvlG+oyV6lpb7HA+AQyq/drKJvMHCf0l/xNQ+9TiYom2w=
+	t=1767626577; cv=none; b=DBUGG/szUkMnJaYs4kQ6fU64AMnv32y87Rh0dpva55WEWplcDNlDfJDpncSteFEPcv68IaF4e814fCyQN27unWWpaHU2KYUeeDGP0ciC+oRJz6Oi4rx4a1RYixtnD2wfhcn7yr+tslQHcDNTIgy7YXMvvQc6WiENj375enYLav8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767626573; c=relaxed/simple;
-	bh=OvX/sy/CyoJ7z56fS1TP2A6tzhdziac52amoDCvk/AM=;
+	s=arc-20240116; t=1767626577; c=relaxed/simple;
+	bh=dbX9nHJ5REzRp8QaFOHK2ee2n38HwBnQPeTWNbT3JoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PuuwB0UIlAvzmJ06RSgErGgpIB/W5opTtyMlMz41WRm4qdqPZsczmQpJakRqcEZFHu9Ohki00cDqfSrika31nm24OxBIj/sV0rMSbjSpwktWfhGqIn4swIN2oKIxAMApyAGBNgkkZvbQB+vST4Jm6kuzWklRHOSZ4yx/NP10FFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eBmvgi1a; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=YrFTdbasbgv9tUBwq5Kw7mjAa57s3gTPkMFSD7sOudmuSOTpMl/LQs9GVipKqGAVdRLMPlGiOUUm7tMCUKTd8/NQaP41r1CyRjjnnWtIlXlZTHC4Bilz7H/gfLKCD8DHUNQwhcFDsJXjM+YKRt3kevK3yqotoFwtpw350lTuhC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UAu0cj9Q; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1767626568;
+	s=mimecast20190719; t=1767626574;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dzLPjf1BJ4I1gH9XJaalIbwUkJls+c/KgNF/cINQpyU=;
-	b=eBmvgi1as9/2Y0cL+j5ZnnJ5OS7Xh29MFc4cqB0wkpq0g8tg8KdqTwbbU/Hk3y5iV5zwJE
-	Esk7GPpH93szRMdqtep8H9PLkw4IGuD3jjMT8qDf8FYg+yI34U/jz2KCEcKMP35VXaxD8I
-	4P/U+p6M/Uc+Z6B0LuR2mUSvXYpdX9w=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=e9kgzsLwkkfNxmetAJNcral3H3dTIGoaCL0v9z96wpg=;
+	b=UAu0cj9Q+bXhC3IjapJoUzoh2tqNE6m3EIwpWbFprAYZjMiTw3T8d1k9TlKRH86g5ErD4d
+	ZH6Mjy/rR0zwQvVUST7zeiNAeb4RtU41yywr3+r3eOapogxxpQTvuiw4q88e8aDJQAKHq0
+	xSahXn7XPpB2zTFrTN8Jx8EyriP5JuQ=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-244-uFOzPDS8PVKxH8sNS7lNiQ-1; Mon,
- 05 Jan 2026 10:22:45 -0500
-X-MC-Unique: uFOzPDS8PVKxH8sNS7lNiQ-1
-X-Mimecast-MFC-AGG-ID: uFOzPDS8PVKxH8sNS7lNiQ_1767626563
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-26-KQWT_SDsNDmINssT8d_tdA-1; Mon,
+ 05 Jan 2026 10:22:50 -0500
+X-MC-Unique: KQWT_SDsNDmINssT8d_tdA-1
+X-Mimecast-MFC-AGG-ID: KQWT_SDsNDmINssT8d_tdA_1767626568
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 19FBB1800669;
-	Mon,  5 Jan 2026 15:22:43 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 90468195609D;
+	Mon,  5 Jan 2026 15:22:48 +0000 (UTC)
 Received: from warthog.procyon.org.uk.com (unknown [10.42.28.4])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0B126180035A;
-	Mon,  5 Jan 2026 15:22:38 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AE50419560AB;
+	Mon,  5 Jan 2026 15:22:44 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Lukas Wunner <lukas@wunner.de>,
 	Ignat Korchagin <ignat@cloudflare.com>
@@ -73,9 +73,9 @@ Cc: David Howells <dhowells@redhat.com>,
 	keyrings@vger.kernel.org,
 	linux-modules@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v11 7/8] pkcs7, x509: Add RSASSA-PSS support
-Date: Mon,  5 Jan 2026 15:21:32 +0000
-Message-ID: <20260105152145.1801972-8-dhowells@redhat.com>
+Subject: [PATCH v11 8/8] modsign: Enable RSASSA-PSS module signing
+Date: Mon,  5 Jan 2026 15:21:33 +0000
+Message-ID: <20260105152145.1801972-9-dhowells@redhat.com>
 In-Reply-To: <20260105152145.1801972-1-dhowells@redhat.com>
 References: <20260105152145.1801972-1-dhowells@redhat.com>
 Precedence: bulk
@@ -85,13 +85,15 @@ List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Add support for RSASSA-PSS keys and signatures to the PKCS#7 and X.509
-implementations.  This requires adding support for algorithm parameters for
-keys and signatures as RSASSA-PSS needs metadata.  The ASN.1 encoded data
-is converted into a printable key=value list string and passed to the
-verification code.
+Add support for RSASSA-PSS signatures (RFC8017) for use with module signing
+and other public key cryptography done by the kernel.
+
+Note that only signature verification is supported by the kernel.
+
+Note further that this alters some of the same code as the MLDSA support,
+so that needs to be applied first to avoid conflicts.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Lukas Wunner <lukas@wunner.de>
@@ -100,909 +102,101 @@ cc: Herbert Xu <herbert@gondor.apana.org.au>
 cc: keyrings@vger.kernel.org
 cc: linux-crypto@vger.kernel.org
 ---
- crypto/asymmetric_keys/Makefile           |  12 +-
- crypto/asymmetric_keys/mgf1_params.asn1   |  12 ++
- crypto/asymmetric_keys/pkcs7.asn1         |   2 +-
- crypto/asymmetric_keys/pkcs7_parser.c     | 113 ++++++-----
- crypto/asymmetric_keys/public_key.c       |  10 +
- crypto/asymmetric_keys/rsassa_params.asn1 |  25 +++
- crypto/asymmetric_keys/rsassa_parser.c    | 233 ++++++++++++++++++++++
- crypto/asymmetric_keys/rsassa_parser.h    |  25 +++
- crypto/asymmetric_keys/x509.asn1          |   2 +-
- crypto/asymmetric_keys/x509_cert_parser.c |  96 +++++----
- crypto/asymmetric_keys/x509_parser.h      |  33 ++-
- crypto/asymmetric_keys/x509_public_key.c  |  28 ++-
- include/linux/oid_registry.h              |   2 +
- 13 files changed, 490 insertions(+), 103 deletions(-)
- create mode 100644 crypto/asymmetric_keys/mgf1_params.asn1
- create mode 100644 crypto/asymmetric_keys/rsassa_params.asn1
- create mode 100644 crypto/asymmetric_keys/rsassa_parser.c
- create mode 100644 crypto/asymmetric_keys/rsassa_parser.h
+ certs/Kconfig       |  6 ++++++
+ certs/Makefile      |  1 +
+ scripts/sign-file.c | 39 +++++++++++++++++++++++++++++++++++++--
+ 3 files changed, 44 insertions(+), 2 deletions(-)
 
-diff --git a/crypto/asymmetric_keys/Makefile b/crypto/asymmetric_keys/Makefile
-index bc65d3b98dcb..c5aed382ee8a 100644
---- a/crypto/asymmetric_keys/Makefile
-+++ b/crypto/asymmetric_keys/Makefile
-@@ -21,7 +21,11 @@ x509_key_parser-y := \
- 	x509_akid.asn1.o \
- 	x509_cert_parser.o \
- 	x509_loader.o \
--	x509_public_key.o
-+	x509_public_key.o \
-+	rsassa_params.asn1.o \
-+	rsassa_parser.o \
-+	mgf1_params.asn1.o
-+
- obj-$(CONFIG_FIPS_SIGNATURE_SELFTEST) += x509_selftest.o
- x509_selftest-y += selftest.o
- x509_selftest-$(CONFIG_FIPS_SIGNATURE_SELFTEST_RSA) += selftest_rsa.o
-@@ -31,8 +35,14 @@ $(obj)/x509_cert_parser.o: \
- 	$(obj)/x509.asn1.h \
- 	$(obj)/x509_akid.asn1.h
+diff --git a/certs/Kconfig b/certs/Kconfig
+index 94b086684d07..beb8991ad761 100644
+--- a/certs/Kconfig
++++ b/certs/Kconfig
+@@ -27,6 +27,12 @@ config MODULE_SIG_KEY_TYPE_RSA
+ 	help
+ 	 Use an RSA key for module signing.
  
-+$(obj)/rsassa_parser.o: \
-+	$(obj)/rsassa_params.asn1.h \
-+	$(obj)/mgf1_params.asn1.h
++config MODULE_SIG_KEY_TYPE_RSASSA_PSS
++	bool "RSASSA-PSS"
++	select CRYPTO_RSA
++	help
++	 Use an RSASSA-PSS key for module signing.
 +
- $(obj)/x509.asn1.o: $(obj)/x509.asn1.c $(obj)/x509.asn1.h
- $(obj)/x509_akid.asn1.o: $(obj)/x509_akid.asn1.c $(obj)/x509_akid.asn1.h
-+$(obj)/rsassa_params.asn1.o: $(obj)/rsassa_params.asn1.c $(obj)/rsassa_params.asn1.h
-+$(obj)/mgf1_params.asn1.o: $(obj)/mgf1_params.asn1.c $(obj)/mgf1_params.asn1.h
+ config MODULE_SIG_KEY_TYPE_ECDSA
+ 	bool "ECDSA"
+ 	select CRYPTO_ECDSA
+diff --git a/certs/Makefile b/certs/Makefile
+index 3ee1960f9f4a..3b5a3a303f4c 100644
+--- a/certs/Makefile
++++ b/certs/Makefile
+@@ -42,6 +42,7 @@ targets += x509_certificate_list
+ # boolean option and we unfortunately can't make it depend on !RANDCONFIG.
+ ifeq ($(CONFIG_MODULE_SIG_KEY),certs/signing_key.pem)
  
- #
- # PKCS#8 private key handling
-diff --git a/crypto/asymmetric_keys/mgf1_params.asn1 b/crypto/asymmetric_keys/mgf1_params.asn1
-new file mode 100644
-index 000000000000..c3bc4643e72c
---- /dev/null
-+++ b/crypto/asymmetric_keys/mgf1_params.asn1
-@@ -0,0 +1,12 @@
-+-- SPDX-License-Identifier: BSD-3-Clause
-+--
-+-- Copyright (C) 2009 IETF Trust and the persons identified as authors
-+-- of the code
-+--
-+--
-+-- https://datatracker.ietf.org/doc/html/rfc4055 Section 6.
++keytype-$(CONFIG_MODULE_SIG_KEY_TYPE_RSASSA_PSS) := -newkey rsassa-pss
+ keytype-$(CONFIG_MODULE_SIG_KEY_TYPE_ECDSA) := -newkey ec -pkeyopt ec_paramgen_curve:secp384r1
+ keytype-$(CONFIG_MODULE_SIG_KEY_TYPE_MLDSA_44) := -newkey ml-dsa-44
+ keytype-$(CONFIG_MODULE_SIG_KEY_TYPE_MLDSA_65) := -newkey ml-dsa-65
+diff --git a/scripts/sign-file.c b/scripts/sign-file.c
+index b726581075f9..ca605095194e 100644
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -233,6 +233,7 @@ int main(int argc, char **argv)
+ 	EVP_PKEY *private_key;
+ #ifndef USE_PKCS7
+ 	CMS_ContentInfo *cms = NULL;
++	CMS_SignerInfo *signer;
+ 	unsigned int use_keyid = 0;
+ #else
+ 	PKCS7 *pkcs7 = NULL;
+@@ -329,13 +330,47 @@ int main(int argc, char **argv)
+ 		    !EVP_PKEY_is_a(private_key, "ML-DSA-65") &&
+ 		    !EVP_PKEY_is_a(private_key, "ML-DSA-87"))
+ 			flags |= use_signed_attrs;
++		if (EVP_PKEY_is_a(private_key, "RSASSA-PSS"))
++			flags |= CMS_KEY_PARAM;
++	if (EVP_PKEY_is_a(private_key, "RSASSA-PSS")) {
++			EVP_PKEY_CTX *pkctx;
++			char mdname[1024] = {};
 +
-+AlgorithmIdentifier ::= SEQUENCE {
-+	algorithm	OBJECT IDENTIFIER ({ mgf1_note_OID }),
-+	parameters	ANY OPTIONAL
-+}
-diff --git a/crypto/asymmetric_keys/pkcs7.asn1 b/crypto/asymmetric_keys/pkcs7.asn1
-index 28e1f4a41c14..03c2248f23bc 100644
---- a/crypto/asymmetric_keys/pkcs7.asn1
-+++ b/crypto/asymmetric_keys/pkcs7.asn1
-@@ -124,7 +124,7 @@ UnauthenticatedAttribute ::= SEQUENCE {
- 
- DigestEncryptionAlgorithmIdentifier ::= SEQUENCE {
- 	algorithm		OBJECT IDENTIFIER ({ pkcs7_note_OID }),
--	parameters		ANY OPTIONAL
-+	parameters		ANY OPTIONAL ({ pkcs7_sig_note_algo_params })
- }
- 
- EncryptedDigest ::= OCTET STRING ({ pkcs7_sig_note_signature })
-diff --git a/crypto/asymmetric_keys/pkcs7_parser.c b/crypto/asymmetric_keys/pkcs7_parser.c
-index 90c36fe1b5ed..81996b60c1f1 100644
---- a/crypto/asymmetric_keys/pkcs7_parser.c
-+++ b/crypto/asymmetric_keys/pkcs7_parser.c
-@@ -14,6 +14,7 @@
- #include <linux/oid_registry.h>
- #include <crypto/public_key.h>
- #include "pkcs7_parser.h"
-+#include "rsassa_parser.h"
- #include "pkcs7.asn1.h"
- 
- MODULE_DESCRIPTION("PKCS#7 parser");
-@@ -30,6 +31,8 @@ struct pkcs7_parse_context {
- 	enum OID	last_oid;		/* Last OID encountered */
- 	unsigned	x509_index;
- 	unsigned	sinfo_index;
-+	unsigned	algo_params_size;
-+	const void	*algo_params;
- 	const void	*raw_serial;
- 	unsigned	raw_serial_size;
- 	unsigned	raw_issuer_size;
-@@ -225,45 +228,29 @@ int pkcs7_sig_note_digest_algo(void *context, size_t hdrlen,
- 			       const void *value, size_t vlen)
- {
- 	struct pkcs7_parse_context *ctx = context;
-+	const char *algo;
- 
--	switch (ctx->last_oid) {
--	case OID_sha1:
--		ctx->sinfo->sig->hash_algo = "sha1";
--		break;
--	case OID_sha256:
--		ctx->sinfo->sig->hash_algo = "sha256";
--		break;
--	case OID_sha384:
--		ctx->sinfo->sig->hash_algo = "sha384";
--		break;
--	case OID_sha512:
--		ctx->sinfo->sig->hash_algo = "sha512";
--		break;
--	case OID_sha224:
--		ctx->sinfo->sig->hash_algo = "sha224";
--		break;
--	case OID_sm3:
--		ctx->sinfo->sig->hash_algo = "sm3";
--		break;
--	case OID_gost2012Digest256:
--		ctx->sinfo->sig->hash_algo = "streebog256";
--		break;
--	case OID_gost2012Digest512:
--		ctx->sinfo->sig->hash_algo = "streebog512";
--		break;
--	case OID_sha3_256:
--		ctx->sinfo->sig->hash_algo = "sha3-256";
--		break;
--	case OID_sha3_384:
--		ctx->sinfo->sig->hash_algo = "sha3-384";
--		break;
--	case OID_sha3_512:
--		ctx->sinfo->sig->hash_algo = "sha3-512";
--		break;
--	default:
--		printk("Unsupported digest algo: %u\n", ctx->last_oid);
-+	algo = oid_to_hash(ctx->last_oid);
-+	if (!algo) {
-+		pr_notice("Unsupported digest algo: %u\n", ctx->last_oid);
- 		return -ENOPKG;
- 	}
++			pkctx = EVP_PKEY_CTX_new(private_key, NULL);
 +
-+	ctx->sinfo->sig->hash_algo = algo;
-+	return 0;
-+}
++			ERR(!EVP_PKEY_sign_init(pkctx), "EVP_PKEY_sign_init");
++			ERR(!EVP_PKEY_CTX_set_rsa_padding(pkctx, RSA_PKCS1_PSS_PADDING),
++			    "EVP_PKEY_CTX_set_rsa_padding");
++			ERR(!EVP_PKEY_CTX_set_rsa_mgf1_md_name(pkctx, hash_algo, NULL),
++			    "EVP_PKEY_CTX_set_rsa_mgf1_md_name");
 +
-+/*
-+ * Note the parameters for the signature.
-+ */
-+int pkcs7_sig_note_algo_params(void *context, size_t hdrlen,
-+			       unsigned char tag,
-+			       const void *value, size_t vlen)
-+{
-+	struct pkcs7_parse_context *ctx = context;
-+
-+	ctx->algo_params = value - hdrlen;
-+	ctx->algo_params_size = vlen + hdrlen;
- 	return 0;
- }
- 
-@@ -275,12 +262,16 @@ int pkcs7_sig_note_pkey_algo(void *context, size_t hdrlen,
- 			     const void *value, size_t vlen)
- {
- 	struct pkcs7_parse_context *ctx = context;
-+	struct public_key_signature *sig = ctx->sinfo->sig;
-+	int err;
- 
- 	switch (ctx->last_oid) {
- 	case OID_rsaEncryption:
--		ctx->sinfo->sig->pkey_algo = "rsa";
--		ctx->sinfo->sig->encoding = "pkcs1";
-+		sig->pkey_algo = "rsa";
-+		sig->encoding = "pkcs1";
- 		break;
-+	case OID_id_rsassa_pss:
-+		goto rsassa_pss;
- 	case OID_id_ecdsa_with_sha1:
- 	case OID_id_ecdsa_with_sha224:
- 	case OID_id_ecdsa_with_sha256:
-@@ -289,34 +280,52 @@ int pkcs7_sig_note_pkey_algo(void *context, size_t hdrlen,
- 	case OID_id_ecdsa_with_sha3_256:
- 	case OID_id_ecdsa_with_sha3_384:
- 	case OID_id_ecdsa_with_sha3_512:
--		ctx->sinfo->sig->pkey_algo = "ecdsa";
--		ctx->sinfo->sig->encoding = "x962";
-+		sig->pkey_algo = "ecdsa";
-+		sig->encoding = "x962";
- 		break;
- 	case OID_gost2012PKey256:
- 	case OID_gost2012PKey512:
--		ctx->sinfo->sig->pkey_algo = "ecrdsa";
--		ctx->sinfo->sig->encoding = "raw";
-+		sig->pkey_algo = "ecrdsa";
-+		sig->encoding = "raw";
- 		break;
- 	case OID_id_ml_dsa_44:
--		ctx->sinfo->sig->pkey_algo = "mldsa44";
--		ctx->sinfo->sig->encoding = "raw";
--		ctx->sinfo->sig->algo_does_hash = true;
-+		sig->pkey_algo = "mldsa44";
-+		sig->encoding = "raw";
-+		sig->algo_does_hash = true;
- 		break;
- 	case OID_id_ml_dsa_65:
--		ctx->sinfo->sig->pkey_algo = "mldsa65";
--		ctx->sinfo->sig->encoding = "raw";
--		ctx->sinfo->sig->algo_does_hash = true;
-+		sig->pkey_algo = "mldsa65";
-+		sig->encoding = "raw";
-+		sig->algo_does_hash = true;
- 		break;
- 	case OID_id_ml_dsa_87:
--		ctx->sinfo->sig->pkey_algo = "mldsa87";
--		ctx->sinfo->sig->encoding = "raw";
--		ctx->sinfo->sig->algo_does_hash = true;
-+		sig->pkey_algo = "mldsa87";
-+		sig->encoding = "raw";
-+		sig->algo_does_hash = true;
- 		break;
- 	default:
--		printk("Unsupported pkey algo: %u\n", ctx->last_oid);
-+		pr_notice("Unsupported pkey algo: %u\n", ctx->last_oid);
- 		return -ENOPKG;
- 	}
-+
-+out:
-+	ctx->algo_params = NULL;
-+	ctx->algo_params_size = 0;
- 	return 0;
-+
-+rsassa_pss:
-+	if (!ctx->algo_params || !ctx->algo_params_size) {
-+		pr_debug("RSASSA-PSS sig algo without parameters\n");
-+		return -EBADMSG;
-+	}
-+
-+	err = rsassa_parse_sig_params(sig, ctx->algo_params, ctx->algo_params_size);
-+	if (err < 0)
-+		return err;
-+
-+	sig->pkey_algo = "rsa";
-+	sig->encoding = "emsa-pss";
-+	goto out;
- }
- 
- /*
-diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
-index 61dc4f626620..13a5616becaa 100644
---- a/crypto/asymmetric_keys/public_key.c
-+++ b/crypto/asymmetric_keys/public_key.c
-@@ -100,6 +100,16 @@ software_key_determine_akcipher(const struct public_key *pkey,
- 			}
- 			return n >= CRYPTO_MAX_ALG_NAME ? -EINVAL : 0;
- 		}
-+		if (strcmp(encoding, "emsa-pss") == 0) {
-+			if (op != kernel_pkey_sign &&
-+			    op != kernel_pkey_verify)
-+				return -EINVAL;
-+			*sig = true;
-+			if (!hash_algo)
-+				hash_algo = "none";
-+			n = snprintf(alg_name, CRYPTO_MAX_ALG_NAME, "rsassa-pss");
-+			return n >= CRYPTO_MAX_ALG_NAME ? -EINVAL : 0;
++			ERR(!EVP_PKEY_CTX_get_rsa_mgf1_md_name(pkctx, mdname, sizeof(mdname)),
++			    "EVP_PKEY_CTX_get_rsa_mgf1_md_name");
++			printf("RSASSA-PSS %s\n", mdname);
 +		}
- 		if (strcmp(encoding, "raw") != 0)
- 			return -EINVAL;
- 		/*
-diff --git a/crypto/asymmetric_keys/rsassa_params.asn1 b/crypto/asymmetric_keys/rsassa_params.asn1
-new file mode 100644
-index 000000000000..95a4e5f0dcd5
---- /dev/null
-+++ b/crypto/asymmetric_keys/rsassa_params.asn1
-@@ -0,0 +1,25 @@
-+-- SPDX-License-Identifier: BSD-3-Clause
-+--
-+-- Copyright (C) 2009 IETF Trust and the persons identified as authors
-+-- of the code
-+--
-+--
-+-- https://datatracker.ietf.org/doc/html/rfc4055 Section 6.
+ 
+ 		/* Load the signature message from the digest buffer. */
+ 		cms = CMS_sign(NULL, NULL, NULL, NULL, flags);
+ 		ERR(!cms, "CMS_sign");
+ 
+-		ERR(!CMS_add1_signer(cms, x509, private_key, digest_algo, flags),
+-		    "CMS_add1_signer");
++		signer = CMS_add1_signer(cms, x509, private_key, digest_algo, flags);
++		ERR(!signer, "CMS_add1_signer");
 +
-+RSASSA-PSS-params ::= SEQUENCE {
-+	hashAlgorithm      [0] HashAlgorithm,
-+	maskGenAlgorithm   [1] MaskGenAlgorithm,
-+	saltLength         [2] INTEGER ({ rsassa_note_salt_length }),
-+	trailerField       [3] TrailerField OPTIONAL
-+}
++		if (EVP_PKEY_is_a(private_key, "RSASSA-PSS")) {
++			EVP_PKEY_CTX *pkctx;
++			char mdname[1024] = {};
 +
-+TrailerField ::= INTEGER ({ rsassa_note_trailer })
-+-- { trailerFieldBC(1) }
++			pkctx = CMS_SignerInfo_get0_pkey_ctx(signer);
++			ERR(!EVP_PKEY_CTX_set_rsa_padding(pkctx, RSA_PKCS1_PSS_PADDING),
++			    "EVP_PKEY_CTX_set_rsa_padding");
++			ERR(!EVP_PKEY_CTX_set_rsa_mgf1_md_name(pkctx, hash_algo, NULL),
++			    "EVP_PKEY_CTX_set_rsa_mgf1_md_name");
 +
-+HashAlgorithm ::= AlgorithmIdentifier ({ rsassa_note_hash_algo })
-+MaskGenAlgorithm ::= AlgorithmIdentifier ({ rsassa_note_maskgen_algo })
-+
-+AlgorithmIdentifier ::= SEQUENCE {
-+	algorithm	OBJECT IDENTIFIER ({ rsassa_note_OID }),
-+	parameters	ANY OPTIONAL ({ rsassa_note_params })
-+}
-diff --git a/crypto/asymmetric_keys/rsassa_parser.c b/crypto/asymmetric_keys/rsassa_parser.c
-new file mode 100644
-index 000000000000..8c598517f785
---- /dev/null
-+++ b/crypto/asymmetric_keys/rsassa_parser.c
-@@ -0,0 +1,233 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/* RSASSA-PSS ASN.1 parameter parser
-+ *
-+ * Copyright (C) 2025 Red Hat, Inc. All Rights Reserved.
-+ * Written by David Howells (dhowells@redhat.com)
-+ */
-+
-+#define pr_fmt(fmt) "RSAPSS: "fmt
-+#include <linux/kernel.h>
-+#include <linux/slab.h>
-+#include <linux/err.h>
-+#include <linux/asn1.h>
-+#include <crypto/hash.h>
-+#include <crypto/hash_info.h>
-+#include <crypto/public_key.h>
-+#include "x509_parser.h"
-+#include "rsassa_parser.h"
-+#include "rsassa_params.asn1.h"
-+#include "mgf1_params.asn1.h"
-+
-+struct rsassa_parse_context {
-+	struct rsassa_parameters *rsassa;	/* The parsed parameters */
-+	unsigned long	data;			/* Start of data */
-+	const void	*params;		/* Algo parameters */
-+	unsigned int	params_len;		/* Length of algo parameters */
-+	enum OID	last_oid;		/* Last OID encountered */
-+	enum OID	mgf1_last_oid;		/* Last OID encountered in MGF1 */
-+};
-+
-+/*
-+ * Parse an RSASSA parameter block.
-+ */
-+struct rsassa_parameters *rsassa_params_parse(const void *data, size_t datalen)
-+{
-+	struct rsassa_parse_context ctx = {};
-+	struct rsassa_parameters *rsassa __free(kfree);
-+	long ret;
-+
-+	rsassa = kzalloc(sizeof(*rsassa), GFP_KERNEL);
-+	if (!rsassa)
-+		return ERR_PTR(-ENOMEM);
-+
-+	ctx.rsassa = rsassa;
-+	ctx.data = (unsigned long)data;
-+
-+	/* Attempt to decode the parameters */
-+	ret = asn1_ber_decoder(&rsassa_params_decoder, &ctx, data, datalen);
-+	if (ret < 0) {
-+		pr_debug("RSASSA parse failed %ld\n", ret);
-+		return ERR_PTR(ret);
-+	}
-+
-+	return no_free_ptr(rsassa);
-+}
-+
-+/*
-+ * Note an OID when we find one for later processing when we know how
-+ * to interpret it.
-+ */
-+int rsassa_note_OID(void *context, size_t hdrlen, unsigned char tag,
-+		    const void *value, size_t vlen)
-+{
-+	struct rsassa_parse_context *ctx = context;
-+
-+	ctx->last_oid = look_up_OID(value, vlen);
-+	if (ctx->last_oid == OID__NR) {
-+		char buffer[56];
-+		sprint_oid(value, vlen, buffer, sizeof(buffer));
-+		pr_debug("Unknown OID: %s\n", buffer);
-+	}
-+	return 0;
-+}
-+
-+/*
-+ * Parse trailerField.  We only accept trailerFieldBC.
-+*/
-+int rsassa_note_trailer(void *context, size_t hdrlen, unsigned char tag,
-+			const void *value, size_t vlen)
-+{
-+	if (vlen != 1 || *(u8 *)value != 0x01) {
-+		pr_debug("Unknown trailerField\n");
-+		return -EINVAL;
-+	}
-+	return 0;
-+}
-+
-+int rsassa_note_hash_algo(void *context, size_t hdrlen, unsigned char tag,
-+			  const void *value, size_t vlen)
-+{
-+	struct rsassa_parse_context *ctx = context;
-+
-+	ctx->rsassa->hash_algo = ctx->last_oid;
-+	pr_debug("HASH-ALGO %u %u\n", ctx->rsassa->hash_algo, ctx->params_len);
-+	ctx->params = NULL;
-+	return 0;
-+}
-+
-+int rsassa_note_maskgen_algo(void *context, size_t hdrlen, unsigned char tag,
-+			     const void *value, size_t vlen)
-+{
-+	struct rsassa_parse_context *ctx = context;
-+	int ret;
-+
-+	ctx->rsassa->maskgen_algo = ctx->last_oid;
-+	pr_debug("MGF-ALGO %u %u\n", ctx->rsassa->maskgen_algo, ctx->params_len);
-+
-+	switch (ctx->rsassa->maskgen_algo) {
-+	case OID_id_mgf1:
-+		if (!vlen) {
-+			pr_debug("MGF1 missing parameters\n");
-+			return -EBADMSG;
++			ERR(!EVP_PKEY_CTX_get_rsa_mgf1_md_name(pkctx, mdname, sizeof(mdname)),
++			    "EVP_PKEY_CTX_get_rsa_mgf1_md_name");
++			printf("RSASSA-PSS %s\n", mdname);
 +		}
 +
-+		ret = asn1_ber_decoder(&mgf1_params_decoder, ctx,
-+				       ctx->params, ctx->params_len);
-+		if (ret < 0) {
-+			pr_debug("MGF1 parse failed %d\n", ret);
-+			return ret;
-+		}
-+		ctx->rsassa->maskgen_hash = ctx->mgf1_last_oid;
-+		break;
-+
-+	default:
-+		pr_debug("Unsupported MaskGenAlgorithm %d\n", ret);
-+		return -ENOPKG;
-+	}
-+
-+	ctx->params = NULL;
-+	return 0;
-+}
-+
-+int rsassa_note_salt_length(void *context, size_t hdrlen, unsigned char tag,
-+			    const void *value, size_t vlen)
-+{
-+	struct rsassa_parse_context *ctx = context;
-+	u32 salt_len = 0;
-+
-+	if (!vlen) {
-+		pr_debug("Salt len bad integer\n");
-+		return -EBADMSG;
-+	}
-+	if (vlen > 4) {
-+		pr_debug("Salt len too long %zu\n", vlen);
-+		return -EBADMSG;
-+	}
-+	if (((u8 *)value)[0] & 0x80) {
-+		pr_debug("Salt len negative\n");
-+		return -EBADMSG;
-+	}
-+
-+	for (size_t i = 0; i < vlen; i++) {
-+		salt_len <<= 8;
-+		salt_len |= ((u8 *)value)[i];
-+	}
-+
-+	ctx->rsassa->salt_len = salt_len;
-+	pr_debug("Salt-Len %u\n", salt_len);
-+	return 0;
-+}
-+
-+/*
-+ * Extract arbitrary parameters.
-+ */
-+int rsassa_note_params(void *context, size_t hdrlen, unsigned char tag,
-+		       const void *value, size_t vlen)
-+{
-+	struct rsassa_parse_context *ctx = context;
-+
-+	ctx->params	= value - hdrlen;
-+	ctx->params_len	= vlen + hdrlen;
-+	return 0;
-+}
-+
-+/*
-+ * Note an OID when we find one for later processing when we know how to
-+ * interpret it.
-+ */
-+int mgf1_note_OID(void *context, size_t hdrlen, unsigned char tag,
-+		  const void *value, size_t vlen)
-+{
-+	struct rsassa_parse_context *ctx = context;
-+
-+	ctx->mgf1_last_oid = look_up_OID(value, vlen);
-+	if (ctx->mgf1_last_oid == OID__NR) {
-+		char buffer[56];
-+		sprint_oid(value, vlen, buffer, sizeof(buffer));
-+		pr_debug("Unknown MGF1 OID: %s\n", buffer);
-+	}
-+	return 0;
-+}
-+
-+/*
-+ * Parse the signature parameter block and generate a suitable info string from
-+ * it.
-+ */
-+int rsassa_parse_sig_params(struct public_key_signature *sig,
-+			    const u8 *sig_params, unsigned int sig_params_size)
-+{
-+	struct rsassa_parameters *rsassa __free(rsassa_params_free) = NULL;
-+	const char *mf, *mh;
-+
-+	rsassa = rsassa_params_parse(sig_params, sig_params_size);
-+	if (IS_ERR(rsassa))
-+		return PTR_ERR(rsassa);
-+
-+	sig->hash_algo = oid_to_hash(rsassa->hash_algo);
-+	if (!sig->hash_algo) {
-+		pr_notice("Unsupported hash: %u\n", rsassa->hash_algo);
-+		return -ENOPKG;
-+	}
-+
-+	switch (rsassa->maskgen_algo) {
-+	case OID_id_mgf1:
-+		mf = "mgf1";
-+		break;
-+	default:
-+		pr_notice("Unsupported maskgen algo: %u\n", rsassa->maskgen_algo);
-+		return -ENOPKG;
-+	}
-+
-+	mh = oid_to_hash(rsassa->maskgen_hash);
-+	if (!mh) {
-+		pr_notice("Unsupported MGF1 hash: %u\n", rsassa->maskgen_hash);
-+		return -ENOPKG;
-+	}
-+
-+	sig->info = kasprintf(GFP_KERNEL, "sighash=%s pss_mask=%s,%s pss_salt=%u",
-+			      sig->hash_algo, mf, mh, rsassa->salt_len);
-+	if (!sig->info)
-+		return -ENOMEM;
-+	pr_debug("Info string: %s\n", sig->info);
-+	return 0;
-+}
-diff --git a/crypto/asymmetric_keys/rsassa_parser.h b/crypto/asymmetric_keys/rsassa_parser.h
-new file mode 100644
-index 000000000000..b80401a3de8f
---- /dev/null
-+++ b/crypto/asymmetric_keys/rsassa_parser.h
-@@ -0,0 +1,25 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* RSASSA-PSS parameter parsing context
-+ *
-+ * Copyright (C) 2025 Red Hat, Inc. All Rights Reserved.
-+ * Written by David Howells (dhowells@redhat.com)
-+ */
-+
-+#include <linux/oid_registry.h>
-+
-+struct rsassa_parameters {
-+	enum OID	hash_algo;		/* Hash algorithm identifier */
-+	enum OID	maskgen_algo;		/* Mask gen algorithm identifier */
-+	enum OID	maskgen_hash;		/* Mask gen hash algorithm identifier */
-+	u32		salt_len;
-+};
-+
-+struct rsassa_parameters *rsassa_params_parse(const void *data, size_t datalen);
-+int rsassa_parse_sig_params(struct public_key_signature *sig,
-+			    const u8 *sig_params, unsigned int sig_params_size);
-+
-+static inline void rsassa_params_free(struct rsassa_parameters *params)
-+{
-+	kfree(params);
-+}
-+DEFINE_FREE(rsassa_params_free,  struct rsassa_parameters*, rsassa_params_free(_T))
-diff --git a/crypto/asymmetric_keys/x509.asn1 b/crypto/asymmetric_keys/x509.asn1
-index feb9573cacce..453b72eba1fe 100644
---- a/crypto/asymmetric_keys/x509.asn1
-+++ b/crypto/asymmetric_keys/x509.asn1
-@@ -29,7 +29,7 @@ CertificateSerialNumber ::= INTEGER
+ 		ERR(CMS_final(cms, bm, NULL, flags) != 1,
+ 		    "CMS_final");
  
- AlgorithmIdentifier ::= SEQUENCE {
- 	algorithm		OBJECT IDENTIFIER ({ x509_note_OID }),
--	parameters		ANY OPTIONAL ({ x509_note_params })
-+	parameters		ANY OPTIONAL ({ x509_note_algo_id_params })
- }
- 
- Name ::= SEQUENCE OF RelativeDistinguishedName
-diff --git a/crypto/asymmetric_keys/x509_cert_parser.c b/crypto/asymmetric_keys/x509_cert_parser.c
-index 5ab5b4e5f1b4..6c431bf181f2 100644
---- a/crypto/asymmetric_keys/x509_cert_parser.c
-+++ b/crypto/asymmetric_keys/x509_cert_parser.c
-@@ -15,28 +15,7 @@
- #include "x509_parser.h"
- #include "x509.asn1.h"
- #include "x509_akid.asn1.h"
--
--struct x509_parse_context {
--	struct x509_certificate	*cert;		/* Certificate being constructed */
--	unsigned long	data;			/* Start of data */
--	const void	*key;			/* Key data */
--	size_t		key_size;		/* Size of key data */
--	const void	*params;		/* Key parameters */
--	size_t		params_size;		/* Size of key parameters */
--	enum OID	key_algo;		/* Algorithm used by the cert's key */
--	enum OID	last_oid;		/* Last OID encountered */
--	enum OID	sig_algo;		/* Algorithm used to sign the cert */
--	u8		o_size;			/* Size of organizationName (O) */
--	u8		cn_size;		/* Size of commonName (CN) */
--	u8		email_size;		/* Size of emailAddress */
--	u16		o_offset;		/* Offset of organizationName (O) */
--	u16		cn_offset;		/* Offset of commonName (CN) */
--	u16		email_offset;		/* Offset of emailAddress */
--	unsigned	raw_akid_size;
--	const void	*raw_akid;		/* Raw authorityKeyId in ASN.1 */
--	const void	*akid_raw_issuer;	/* Raw directoryName in authorityKeyId */
--	unsigned	akid_raw_issuer_size;
--};
-+#include "rsassa_parser.h"
- 
- /*
-  * Free an X.509 certificate
-@@ -104,15 +83,15 @@ struct x509_certificate *x509_cert_parse(const void *data, size_t datalen)
- 
- 	cert->pub->keylen = ctx->key_size;
- 
--	cert->pub->params = kmemdup(ctx->params, ctx->params_size, GFP_KERNEL);
-+	cert->pub->params = kmemdup(ctx->key_params, ctx->key_params_size, GFP_KERNEL);
- 	if (!cert->pub->params)
- 		return ERR_PTR(-ENOMEM);
- 
--	cert->pub->paramlen = ctx->params_size;
-+	cert->pub->paramlen = ctx->key_params_size;
- 	cert->pub->algo = ctx->key_algo;
- 
- 	/* Grab the signature bits */
--	ret = x509_get_sig_params(cert);
-+	ret = x509_get_sig_params(cert, ctx);
- 	if (ret < 0)
- 		return ERR_PTR(ret);
- 
-@@ -146,7 +125,7 @@ int x509_note_OID(void *context, size_t hdrlen,
- 
- 	ctx->last_oid = look_up_OID(value, vlen);
- 	if (ctx->last_oid == OID__NR) {
--		char buffer[50];
-+		char buffer[56];
- 		sprint_oid(value, vlen, buffer, sizeof(buffer));
- 		pr_debug("Unknown OID: [%lu] %s\n",
- 			 (unsigned long)value - ctx->data, buffer);
-@@ -179,6 +158,7 @@ int x509_note_sig_algo(void *context, size_t hdrlen, unsigned char tag,
- 		       const void *value, size_t vlen)
- {
- 	struct x509_parse_context *ctx = context;
-+	int err;
- 
- 	pr_debug("PubKey Algo: %u\n", ctx->last_oid);
- 
-@@ -210,6 +190,9 @@ int x509_note_sig_algo(void *context, size_t hdrlen, unsigned char tag,
- 		ctx->cert->sig->hash_algo = "sha1";
- 		goto ecdsa;
- 
-+	case OID_id_rsassa_pss:
-+		goto rsassa_pss;
-+
- 	case OID_id_rsassa_pkcs1_v1_5_with_sha3_256:
- 		ctx->cert->sig->hash_algo = "sha3-256";
- 		goto rsa_pkcs1;
-@@ -268,6 +251,24 @@ int x509_note_sig_algo(void *context, size_t hdrlen, unsigned char tag,
- 		goto ml_dsa;
- 	}
- 
-+rsassa_pss:
-+	if (!ctx->algo_params || !ctx->algo_params_size) {
-+		pr_debug("RSASSA-PSS sig algo without parameters\n");
-+		return -EBADMSG;
-+	}
-+
-+	err = rsassa_parse_sig_params(ctx->cert->sig,
-+				      ctx->algo_params, ctx->algo_params_size);
-+	if (err < 0)
-+		return err;
-+
-+	ctx->cert->sig->pkey_algo = "rsa";
-+	ctx->cert->sig->encoding = "emsa-pss";
-+	ctx->sig_algo = ctx->last_oid;
-+	ctx->algo_params = NULL;
-+	ctx->algo_params_size = 0;
-+	return 0;
-+
- rsa_pkcs1:
- 	ctx->cert->sig->pkey_algo = "rsa";
- 	ctx->cert->sig->encoding = "pkcs1";
-@@ -324,8 +325,8 @@ int x509_note_signature(void *context, size_t hdrlen,
- 		vlen--;
- 	}
- 
--	ctx->cert->raw_sig = value;
--	ctx->cert->raw_sig_size = vlen;
-+	ctx->sig = value;
-+	ctx->sig_size = vlen;
- 	return 0;
- }
- 
-@@ -479,23 +480,16 @@ int x509_note_subject(void *context, size_t hdrlen,
- }
- 
- /*
-- * Extract the parameters for the public key
-+ * Extract the parameters for an AlgorithmIdentifier.
-  */
--int x509_note_params(void *context, size_t hdrlen,
--		     unsigned char tag,
--		     const void *value, size_t vlen)
-+int x509_note_algo_id_params(void *context, size_t hdrlen,
-+			     unsigned char tag,
-+			     const void *value, size_t vlen)
- {
- 	struct x509_parse_context *ctx = context;
- 
--	/*
--	 * AlgorithmIdentifier is used three times in the x509, we should skip
--	 * first and ignore third, using second one which is after subject and
--	 * before subjectPublicKey.
--	 */
--	if (!ctx->cert->raw_subject || ctx->key)
--		return 0;
--	ctx->params = value - hdrlen;
--	ctx->params_size = vlen + hdrlen;
-+	ctx->algo_params = value - hdrlen;
-+	ctx->algo_params_size = vlen + hdrlen;
- 	return 0;
- }
- 
-@@ -514,12 +508,28 @@ int x509_extract_key_data(void *context, size_t hdrlen,
- 	case OID_rsaEncryption:
- 		ctx->cert->pub->pkey_algo = "rsa";
- 		break;
-+	case OID_id_rsassa_pss:
-+		/* Parameters are optional for the key itself. */
-+		if (ctx->algo_params_size) {
-+			struct rsassa_parameters *params __free(rsassa_params_free) = NULL;
-+			ctx->key_params = ctx->algo_params;
-+			ctx->key_params_size = ctx->algo_params_size;
-+			ctx->algo_params = NULL;
-+			ctx->algo_params_size = 0;
-+
-+			params = rsassa_params_parse(ctx->key_params, ctx->key_params_size);
-+			if (IS_ERR(params))
-+				return PTR_ERR(params);
-+			break;
-+		}
-+		ctx->cert->pub->pkey_algo = "rsa";
-+		break;
- 	case OID_gost2012PKey256:
- 	case OID_gost2012PKey512:
- 		ctx->cert->pub->pkey_algo = "ecrdsa";
- 		break;
- 	case OID_id_ecPublicKey:
--		if (parse_OID(ctx->params, ctx->params_size, &oid) != 0)
-+		if (parse_OID(ctx->algo_params, ctx->algo_params_size, &oid) != 0)
- 			return -EBADMSG;
- 
- 		switch (oid) {
-@@ -557,6 +567,8 @@ int x509_extract_key_data(void *context, size_t hdrlen,
- 		return -EBADMSG;
- 	ctx->key = value + 1;
- 	ctx->key_size = vlen - 1;
-+	ctx->algo_params = NULL;
-+	ctx->algo_params_size = 0;
- 	return 0;
- }
- 
-diff --git a/crypto/asymmetric_keys/x509_parser.h b/crypto/asymmetric_keys/x509_parser.h
-index 0688c222806b..be2e1f6cb9f5 100644
---- a/crypto/asymmetric_keys/x509_parser.h
-+++ b/crypto/asymmetric_keys/x509_parser.h
-@@ -23,8 +23,6 @@ struct x509_certificate {
- 	time64_t	valid_to;
- 	const void	*tbs;			/* Signed data */
- 	unsigned	tbs_size;		/* Size of signed data */
--	unsigned	raw_sig_size;		/* Size of signature */
--	const void	*raw_sig;		/* Signature data */
- 	const void	*raw_serial;		/* Raw serial number in ASN.1 */
- 	unsigned	raw_serial_size;
- 	unsigned	raw_issuer_size;
-@@ -41,6 +39,34 @@ struct x509_certificate {
- 	bool		blacklisted;
- };
- 
-+struct x509_parse_context {
-+	struct x509_certificate	*cert;		/* Certificate being constructed */
-+	unsigned long	data;			/* Start of data */
-+	const void	*key;			/* Key data */
-+	size_t		key_size;		/* Size of key data */
-+	const void	*algo_params;		/* AlgorithmIdentifier: parameters */
-+	size_t		algo_params_size;	/* AlgorithmIdentifier: parameters size */
-+	const void	*key_params;		/* Key parameters */
-+	size_t		key_params_size;	/* Size of key parameters */
-+	const void	*sig_params;		/* Signature parameters */
-+	unsigned int	sig_params_size;	/* Size of sig parameters */
-+	unsigned int	sig_size;		/* Size of signature */
-+	const void	*sig;			/* Signature data */
-+	enum OID	key_algo;		/* Algorithm used by the cert's key */
-+	enum OID	last_oid;		/* Last OID encountered */
-+	enum OID	sig_algo;		/* Algorithm used to sign the cert */
-+	u8		o_size;			/* Size of organizationName (O) */
-+	u8		cn_size;		/* Size of commonName (CN) */
-+	u8		email_size;		/* Size of emailAddress */
-+	u16		o_offset;		/* Offset of organizationName (O) */
-+	u16		cn_offset;		/* Offset of commonName (CN) */
-+	u16		email_offset;		/* Offset of emailAddress */
-+	unsigned	raw_akid_size;
-+	const void	*raw_akid;		/* Raw authorityKeyId in ASN.1 */
-+	const void	*akid_raw_issuer;	/* Raw directoryName in authorityKeyId */
-+	unsigned	akid_raw_issuer_size;
-+};
-+
- /*
-  * x509_cert_parser.c
-  */
-@@ -55,5 +81,6 @@ extern int x509_decode_time(time64_t *_t,  size_t hdrlen,
- /*
-  * x509_public_key.c
-  */
--extern int x509_get_sig_params(struct x509_certificate *cert);
-+extern const char *oid_to_hash(enum OID oid);
-+extern int x509_get_sig_params(struct x509_certificate *cert, struct x509_parse_context *parse);
- extern int x509_check_for_self_signed(struct x509_certificate *cert);
-diff --git a/crypto/asymmetric_keys/x509_public_key.c b/crypto/asymmetric_keys/x509_public_key.c
-index 12e3341e806b..b2f8542accc4 100644
---- a/crypto/asymmetric_keys/x509_public_key.c
-+++ b/crypto/asymmetric_keys/x509_public_key.c
-@@ -17,11 +17,32 @@
- #include "asymmetric_keys.h"
- #include "x509_parser.h"
- 
-+/*
-+ * Translate OIDs to hash algorithm names.
-+ */
-+const char *oid_to_hash(enum OID oid)
-+{
-+	switch (oid) {
-+	case OID_sha1:			return "sha1";
-+	case OID_sha256:		return "sha256";
-+	case OID_sha384:		return "sha384";
-+	case OID_sha512:		return "sha512";
-+	case OID_sha224:		return "sha224";
-+	case OID_sm3:			return "sm3";
-+	case OID_gost2012Digest256:	return "streebog256";
-+	case OID_gost2012Digest512:	return "streebog512";
-+	case OID_sha3_256:		return "sha3-256";
-+	case OID_sha3_384:		return "sha3-384";
-+	case OID_sha3_512:		return "sha3-512";
-+	default:			return NULL;
-+	}
-+}
-+
- /*
-  * Set up the signature parameters in an X.509 certificate.  This involves
-  * digesting the signed data and extracting the signature.
-  */
--int x509_get_sig_params(struct x509_certificate *cert)
-+int x509_get_sig_params(struct x509_certificate *cert, struct x509_parse_context *parse)
- {
- 	struct public_key_signature *sig = cert->sig;
- 	struct crypto_shash *tfm;
-@@ -31,11 +52,11 @@ int x509_get_sig_params(struct x509_certificate *cert)
- 
- 	pr_devel("==>%s()\n", __func__);
- 
--	sig->s = kmemdup(cert->raw_sig, cert->raw_sig_size, GFP_KERNEL);
-+	sig->s = kmemdup(parse->sig, parse->sig_size, GFP_KERNEL);
- 	if (!sig->s)
- 		return -ENOMEM;
- 
--	sig->s_size = cert->raw_sig_size;
-+	sig->s_size = parse->sig_size;
- 
- 	/* Allocate the hashing algorithm we're going to need and find out how
- 	 * big the hash operational data will be.
-@@ -43,6 +64,7 @@ int x509_get_sig_params(struct x509_certificate *cert)
- 	tfm = crypto_alloc_shash(sig->hash_algo, 0, 0);
- 	if (IS_ERR(tfm)) {
- 		if (PTR_ERR(tfm) == -ENOENT) {
-+			pr_debug("Unsupported hash %s\n", sig->hash_algo);
- 			cert->unsupported_sig = true;
- 			return 0;
- 		}
-diff --git a/include/linux/oid_registry.h b/include/linux/oid_registry.h
-index 30821a6a4f72..d546ea7999b9 100644
---- a/include/linux/oid_registry.h
-+++ b/include/linux/oid_registry.h
-@@ -31,6 +31,8 @@ enum OID {
- 	/* PKCS#1 {iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-1(1)} */
- 	OID_rsaEncryption,		/* 1.2.840.113549.1.1.1 */
- 	OID_sha1WithRSAEncryption,	/* 1.2.840.113549.1.1.5 */
-+	OID_id_mgf1,			/* 1.2.840.113549.1.1.8 */
-+	OID_id_rsassa_pss,		/* 1.2.840.113549.1.1.10 */
- 	OID_sha256WithRSAEncryption,	/* 1.2.840.113549.1.1.11 */
- 	OID_sha384WithRSAEncryption,	/* 1.2.840.113549.1.1.12 */
- 	OID_sha512WithRSAEncryption,	/* 1.2.840.113549.1.1.13 */
 
 
