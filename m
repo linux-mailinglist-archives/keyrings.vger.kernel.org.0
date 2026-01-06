@@ -1,184 +1,137 @@
-Return-Path: <keyrings+bounces-3719-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3721-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D48CF6BD3
-	for <lists+keyrings@lfdr.de>; Tue, 06 Jan 2026 06:10:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED42CCF7370
+	for <lists+keyrings@lfdr.de>; Tue, 06 Jan 2026 09:06:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B4B6C300A362
-	for <lists+keyrings@lfdr.de>; Tue,  6 Jan 2026 05:10:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BA60D307725E
+	for <lists+keyrings@lfdr.de>; Tue,  6 Jan 2026 08:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA542F4A19;
-	Tue,  6 Jan 2026 05:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FBB30AAA9;
+	Tue,  6 Jan 2026 08:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pL6YUpXz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b7ZoPwzf"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB442F3C19;
-	Tue,  6 Jan 2026 05:10:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE10F20C00C;
+	Tue,  6 Jan 2026 08:03:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767676206; cv=none; b=IThaPnWhNHGcGctbTbEVzl2346SKX9y4mNCdsDagLfSx9dJK13cgbEy97Yie5BE4Zi+AlHk470StS4RXTjD+iiXCZXxtwpFArMbpFixCecQG1ZUqdlDYHCFnvhgqP3S7OlO3OG12fq+Mwq4e3qIU8AUPd5wAZvVPTBpq339oEDQ=
+	t=1767686591; cv=none; b=Wzm0FzSi2LQ6PIBunxHCcw5wUdSkoqdCBmmKllhbhwmiNBxwMFsG6kQ4sttvmqi7o/EcMlSQJiWvzeCtNFakIBsVnSYutGtSfpKcXe8bNO5HgwKl6dHphd6XVJ/8tOmiuHGz4JH61qgimgUap5cePxA61RqfxcX6L9l7v2gCulU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767676206; c=relaxed/simple;
-	bh=0lzdmg1n2qwWSgmJeaNC9U/IlJxudK9aYtcSvTh1JyI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mak6SuVVu52BFDZtWY953PHDnOsQHfTokRuiverA43e5anPjTba+dt81YYspMGkGVEFykn8zyAF82XIt60MhZ/tU6YXBIaYKH+0VC+8rwENoInz+UoNfGOMe24V+7XUTyjNyvT6wUudM6I4JLec/gdZ6N8oPkpmKjvymkOV3/P4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pL6YUpXz; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 605EhWbe014268;
-	Tue, 6 Jan 2026 05:09:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=+kaidP
-	U2r9UG5d+cT39AxQa40CxkXVRvwfc0y61s5NY=; b=pL6YUpXzSa0p3Q4ELWkgvo
-	2ayEZ8sy/I2POBTvkYsEEKLpRbwpiTlQRj12ncjP6bHdvVqI0cOr+IQyz+pIdUNe
-	h054D9+Y12xnK40SGEsuOl1ZsrjoISBmg2FCqaqM+Q218sUhdgw7IZrg9JZTcXzF
-	rQ/s7UJ+W8XEQHygPqqmDPMEGAC2suLNeBibDVhzKXL/6wHWb5xz9Owxs77xIzlO
-	Rv9nzty8xnLnPDFPSNeZuR2gaL62EtN/jPMkkuOKMF5HrvvS9DyIaaEzRZ0beqKy
-	JwiucgW85tCly96kPv3+u3jVz1i/qsMknKwIHKN4jSUo2DkN4QVnQzFuOope+FPA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betu62dfq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Jan 2026 05:09:51 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60659pns013961;
-	Tue, 6 Jan 2026 05:09:51 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4betu62dfm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Jan 2026 05:09:51 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6064nbDs023501;
-	Tue, 6 Jan 2026 05:09:50 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bg3rm67ed-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Jan 2026 05:09:50 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60659mcC4064084
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 6 Jan 2026 05:09:49 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ACCC258051;
-	Tue,  6 Jan 2026 05:09:48 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B46985805A;
-	Tue,  6 Jan 2026 05:09:44 +0000 (GMT)
-Received: from [9.124.214.6] (unknown [9.124.214.6])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  6 Jan 2026 05:09:44 +0000 (GMT)
-Message-ID: <9f2f041d-37a7-42ed-bc06-540b65e8b54f@linux.ibm.com>
-Date: Tue, 6 Jan 2026 10:39:42 +0530
+	s=arc-20240116; t=1767686591; c=relaxed/simple;
+	bh=39mtTD1mKtUBs1ueaRg937mqdeu4uq3k6CxZDHkqtPk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fukyH2uS0FSqgcfM879zUceaa+5tyuQUcchh5bmBf3wyKWprZQDIZQXPaAqpEcDVqumBrInc0GEUB6hW7yA/mNx6ZOmHc1q35rNpP/C3540XTieYA2x4koyOpEk53eqo45TwPOUADXICAc6JKuzsRNkVd9CRQFjegOjN1/3C4Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b7ZoPwzf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6635C116C6;
+	Tue,  6 Jan 2026 08:03:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767686590;
+	bh=39mtTD1mKtUBs1ueaRg937mqdeu4uq3k6CxZDHkqtPk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b7ZoPwzfnmcabNZsXhhFPkC0diNTcbxD8MOxWwMcIR/D0rfnIcat+g9pKl3D4vNR8
+	 p8eE3YSZadhKUqx9GtmY6slFcA+wwf2J0zl8waciGXk0txzdYSJXkag4jGw7NzIEBN
+	 R5qVh8gAYMRiPLwh62oWiz1lUlVGvsRaCcbxXB76h6blFAxh0Ywu5PR44n3fmcoC21
+	 XWCx3T+Gd/5jijysHW6D+l4yPhy2J6ypLMLYrDMOuOYyVS7HS/e9i29GPQjPoG5w/y
+	 n5+3xJI2ity3YIpNwBZMmfYaC8SfT/W2UI5RiEAPnjyEgfNKmNRdBwMuKFFHHGdIp1
+	 gdgZ6mgUBy+3Q==
+Date: Tue, 6 Jan 2026 00:02:51 -0800
+From: Eric Biggers <ebiggers@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Lukas Wunner <lukas@wunner.de>, Ignat Korchagin <ignat@cloudflare.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Daniel Gomez <da.gomez@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	"Jason A . Donenfeld" <Jason@zx2c4.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Stephan Mueller <smueller@chronox.de>, linux-crypto@vger.kernel.org,
+	keyrings@vger.kernel.org, linux-modules@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v11 3/8] pkcs7, x509: Add ML-DSA support
+Message-ID: <20260106080251.GD2630@sol>
+References: <20260105152145.1801972-1-dhowells@redhat.com>
+ <20260105152145.1801972-4-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] keys/trusted_keys: establish PKWM as a trusted
- source
-To: Mimi Zohar <zohar@linux.ibm.com>, linux-integrity@vger.kernel.org,
-        keyrings@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, James.Bottomley@HansenPartnership.com,
-        jarkko@kernel.org, nayna@linux.ibm.com, rnsastry@linux.ibm.com,
-        linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
-References: <20251217172505.112398-1-ssrish@linux.ibm.com>
- <20251217172505.112398-6-ssrish@linux.ibm.com>
- <14a30e37e0cf8ef373b63d3b905ec1a7d807118a.camel@linux.ibm.com>
-Content-Language: en-US
-From: Srish Srinivasan <ssrish@linux.ibm.com>
-In-Reply-To: <14a30e37e0cf8ef373b63d3b905ec1a7d807118a.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=QbNrf8bv c=1 sm=1 tr=0 ts=695c9920 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=zoI4ALCl8jw1XMAjGw4A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: DmxY2bha4venHbUU40UgUVK-KtoI7j_Z
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTA2MDAzOCBTYWx0ZWRfXyoFXHwCbfM8y
- YBwaQNxTCM7fVJXN60Rlnw7lJH33D64qhnZfrRs05T1KkyDWLS/wXJJLN/GGNFIoayvipBiOMIN
- E1qkxWkrPY5xiXbfCGVFLUqza/yUMWxtAfmUaffqjDh9smmhSkASZQtk9zY5kVbZPDlM8kd+hwb
- 8lP0NRSejJ9XwCII0dPhcdC8mlybz/I4xNgwJ/pRqUDT/iYe124ljOmTxbyhSAE4BouooWEwLly
- tsFFaak7NVQhE1MNtVr4hJya42s948amnOX2YNoYuqlzcEdhyggxkoRg0SoV2qBeBAp+aBWEBPM
- uFv2iUR238zwSiqqrYPh81L5fKKrrBGlR4FlQ+HNwPVKxFfBagh+Frivur4oNZGWqwMDhRy1faF
- Rhz/aFU7VtqEG1BWAlNEWufY3TissCCL1yim5ZJDymICCgFm5hAA6KivxYnvVfIPybFIStRKmHn
- c6gN534DrKdD8lE9Fiw==
-X-Proofpoint-GUID: s2y3tF9tsH2IQgG83SdIEOTTrg7_KjkK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-05_02,2026-01-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 clxscore=1015 bulkscore=0 suspectscore=0 priorityscore=1501
- adultscore=0 lowpriorityscore=0 impostorscore=0 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2512120000 definitions=main-2601060038
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260105152145.1801972-4-dhowells@redhat.com>
 
-Hi Mimi,
-thanks for taking a look.
+On Mon, Jan 05, 2026 at 03:21:28PM +0000, David Howells wrote:
+> Add support for ML-DSA keys and signatures to the PKCS#7 and X.509
+> implementations.
+> 
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Lukas Wunner <lukas@wunner.de>
+> cc: Ignat Korchagin <ignat@cloudflare.com>
+> cc: Stephan Mueller <smueller@chronox.de>
+> cc: Eric Biggers <ebiggers@kernel.org>
+> cc: Herbert Xu <herbert@gondor.apana.org.au>
+> cc: keyrings@vger.kernel.org
+> cc: linux-crypto@vger.kernel.org
+> ---
+>  crypto/asymmetric_keys/pkcs7_parser.c     | 15 ++++++++++++++
+>  crypto/asymmetric_keys/public_key.c       |  7 +++++++
+>  crypto/asymmetric_keys/x509_cert_parser.c | 24 +++++++++++++++++++++++
+>  include/linux/oid_registry.h              |  5 +++++
+>  4 files changed, 51 insertions(+)
 
-On 1/2/26 11:14 PM, Mimi Zohar wrote:
-> On Wed, 2025-12-17 at 22:55 +0530, Srish Srinivasan wrote:
->> The wrapping key does not exist by default and is generated by the
->> hypervisor as a part of PKWM initialization. This key is then persisted by
->> the hypervisor and is used to wrap trusted keys. These are variable length
->> symmetric keys, which in the case of PowerVM Key Wrapping Module (PKWM) are
->> generated using the kernel RNG. PKWM can be used as a trust source through
->> the following example keyctl command
-> -> commands:
+This "PKCS#7" (really CMS -- the kernel misleadingly uses the old name)
+stuff is really hard to understand.  I'm trying to understand what
+message you're actually passing to mldsa_verify().  That's kind of the
+whole point, after all.
 
-Yes, I will fix this.
+The message comes from the byte array public_key_signature::digest
+(which is misleadingly named, as it's not always a digest).  In turn,
+that comes from the following:
 
->
->> keyctl add trusted my_trusted_key "new 32" @u
->>
->> Use the wrap_flags command option to set the secure boot requirement for
->> the wrapping request through the following keyctl commands
->>
->> case1: no secure boot requirement. (default)
->> keyctl usage: keyctl add trusted my_trusted_key "new 32" @u
->> 	      OR
->> 	      keyctl add trusted my_trusted_key "new 32 wrap_flags=0x00" @u
->>
->> case2: secure boot required to in either audit or enforce mode. set bit 0
->> keyctl usage: keyctl add trusted my_trusted_key "new 32 wrap_flags=0x01" @u
->>
->> case3: secure boot required to be in enforce mode. set bit 1
->> keyctl usage: keyctl add trusted my_trusted_key "new 32 wrap_flags=0x02" @u
->>
->> NOTE:
->> -> Setting the secure boot requirement is NOT a must.
->> -> Only either of the secure boot requirement options should be set. Not
->> both.
->> -> All the other bits are requied to be not set.
-> -> required
+1.) If the CMS object doesn't include signed attributes, then it's a
+    digest of the real message the caller provided.
 
-Noted.
-Will fix this.
+2.) If the CMS object includes signed attributes, then the message is
+    the signed attributes as a byte array.  The signed attributes are
+    required to include a message digest attribute whose value matches a
+    digest of the real message the caller provided.
 
->
->> -> Set the kernel parameter trusted.source=pkwm to choose PKWM as the
->> backend for trusted keys implementation.
->> -> CONFIG_PSERIES_PLPKS must be enabled to build PKWM.
->>
->> Add PKWM, which is a combination of IBM PowerVM and Power LPAR Platform
->> KeyStore, as a new trust source for trusted keys.
->>
->> Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
-> Thanks, Srish.  Other than fixing the typo and other suggestion above,
-> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+In either (1) or (2), the digest algorithm used comes from the CMS
+object itself, from SignerInfo::digestAlgorithm.  The kernel allows
+SHA-1, SHA-224, SHA-256, SHA-384, SHA-512, SM3, Streebog-256,
+Streebog-512, SHA3-256, SHA3-384, and SHA3-512.
 
-Thanks for the review Mimi.
-Will fix these typos and send out v3.
+So, a couple issues.  First, case (1) isn't actually compatible with
+RFC 9882 (https://datatracker.ietf.org/doc/rfc9882/) which is the
+specification for ML-DSA support in CMS.  RFC 9882 is clear that if
+there are no signed attributes, then the ML-DSA signature is computed
+directly over the signed-data, not over a digest of it.
 
-thanks,
-Srish.
+That needs to either be implemented correctly, or not at all.  (If only
+(2) is actually needed, then "not at all" probably would be preferable.)
+
+Second, because the digest algorithm comes from the untrusted signature
+object and the kernel is allowing different many digest algorithms,
+attackers are free to search for preimages across algorithms.  For
+example, if an attacker can find a Streebog-512 digest that matches a
+particular SHA-512 digest that was used in a valid signature, they could
+forge signatures.  This would only require a weakness in Streebog-512.
+
+While the root cause of this seems to be a flaw in CMS itself, it can be
+mitigated by more strictly limiting the allowed digest algorithms.  The
+kernel already does this for the existing signature algorithms.
+
+For simplicity and to avoid this issue entirely, I suggest just allowing
+SHA-512 only.  That's the only one that RFC 9882 says MUST be supported
+with ML-DSA.
+
+- Eric
 
