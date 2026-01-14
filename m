@@ -1,60 +1,59 @@
-Return-Path: <keyrings+bounces-3754-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3755-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E37D1F9C5
-	for <lists+keyrings@lfdr.de>; Wed, 14 Jan 2026 16:06:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31D80D1FF9A
+	for <lists+keyrings@lfdr.de>; Wed, 14 Jan 2026 16:55:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E32F3042295
-	for <lists+keyrings@lfdr.de>; Wed, 14 Jan 2026 15:02:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A85EA300101F
+	for <lists+keyrings@lfdr.de>; Wed, 14 Jan 2026 15:55:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481143101BB;
-	Wed, 14 Jan 2026 15:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D043839E6D6;
+	Wed, 14 Jan 2026 15:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QzO8n8GL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hLqgfKlE"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 221143043DC;
-	Wed, 14 Jan 2026 15:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF4536C593;
+	Wed, 14 Jan 2026 15:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768402958; cv=none; b=XVjO277spnuU9oVhdZ+MHxMVEpHxTlTZM24sdPRHM5iDMKxn7Oq7OrDwtU2kO6OOw8nUXMzjBXsGgA5ao8D6o4YTGBYqutq4V1ut78U8TsGe9STIagBJ0v9wDdRoZktY2EeQlXMgl8DJ6/wc86qxikG3rAiRx5TzipgFzY/NstI=
+	t=1768406148; cv=none; b=rlKWPyucxLn927PzrTDMLGoOyxc/8GJFonNMOehwyEw8OgRoWo6/UayW+0MEDgbIJHPn6FNpW08UVQjGIuKUVou0YD2x7SFE9HkDfHfu8v2/X7rZNQOUz/1YZDuJgZavs3EgqXcuz+PTleGRVYg9d5CrfDDH/UIoAmAjnoSXxWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768402958; c=relaxed/simple;
-	bh=IrXNkb7+O2a5FS75Ce6sMiMpoMJuAOMDHFUCS2UIwZc=;
+	s=arc-20240116; t=1768406148; c=relaxed/simple;
+	bh=3XHv7ZEnMk+PyC7RV409KSNNeltVgoxSRxarob/cQNI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZwqVgts7vjXlanS34VBf8HaRiacLkRsFoew7lbVbhOvKHbb8Sf7CY7CYrEKGnJwq87NNlpNv6aiDopBvhQEjExTarbnUFLq7Pm7ZFYdcGXt0rIP/eE6PFyJoWUrQNhM+7ETJa/zcFj/Y8QSg9HnaeVB7ziCkfLLKPXFS9FeElF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QzO8n8GL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296D5C4CEF7;
-	Wed, 14 Jan 2026 15:02:36 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=cDpy6yq7SiH+R4+glwpdwFC0dnm6RmfZuVJGARa/W2D6Nco4jH2gPB3+JSylm+P0ne+nNztlWgTStHuPkemhQ8yzS/Y48AGBoJ0AiJ/s2RnIS5HXc7yiBLEKo4dxRrqqBYqxClZk7c16jNyVxreGQZZs/iWJsNKqmvOCyuNUX+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hLqgfKlE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB976C4CEF7;
+	Wed, 14 Jan 2026 15:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768402957;
-	bh=IrXNkb7+O2a5FS75Ce6sMiMpoMJuAOMDHFUCS2UIwZc=;
+	s=k20201202; t=1768406148;
+	bh=3XHv7ZEnMk+PyC7RV409KSNNeltVgoxSRxarob/cQNI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QzO8n8GLwApQr1TsVGAtRowdTala4QPCk1ENrMhWOgOZSPnTGkjv942Gy3fmt7cMG
-	 r5tgmpzZCAhhOarHpcR/met3QGyLEf1Iwj8uZc58gQH3caxqRjveSurHY+EnYYMIz/
-	 lwPLam3NMP09Vk9CAbuIUru/JM35JEWSVdZfpKLwWz8jGv1pUBh+CrVseDwgjkcpwf
-	 QPDGhr+361HEzhxXVSEByzdp5eXak9QfePlFGZ+TNXSnRT30dThnI53zMD/ufDS5o0
-	 58/qW/4x7icNXc1peB7qbeyhNXIzdXWyq5J2aN6diuMVxjMbW44ERpRo3I9s1wP/fF
-	 FFu+I+3LwlG1w==
-Date: Wed, 14 Jan 2026 17:02:32 +0200
+	b=hLqgfKlEDbzqIf/8H0X/wrSEG4vMA2wXGr4XWz/oZPCgJjovqqUU53w8oHfnRLdRD
+	 6D8aNoqQ7QLdWMTkgbvWsdmHfFAJ9BPwqtqQXHCmGj6YlTusW5ZvBuBIYx0j4IPiK1
+	 bfGzK635MiFv86/aIZnGvJIVhUiYGftGvtszJp3MNcG4VBmWRYrUTE3ocd10ShYNCZ
+	 JefYPoTJMyw8dF/OvpWx+C+MyY7vcc1gPPJgg/A8MY/94YPtvPJUys9wGCdDoOV34v
+	 lWwDVU+lRU8KiSmDnybPZCt+/djVEFCrMge/CJFXYOMF82eRFqSnXKFUFgEKxlt4mt
+	 qv2c86d4kJcEQ==
+Date: Wed, 14 Jan 2026 17:55:43 +0200
 From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Srish Srinivasan <ssrish@linux.ibm.com>
-Cc: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
-	mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-	James.Bottomley@hansenpartnership.com, zohar@linux.ibm.com,
-	nayna@linux.ibm.com, rnsastry@linux.ibm.com,
-	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v3 5/6] keys/trusted_keys: establish PKWM as a trusted
- source
-Message-ID: <aWewCEy3wT-1a6zn@kernel.org>
-References: <20260106150527.446525-1-ssrish@linux.ibm.com>
- <20260106150527.446525-6-ssrish@linux.ibm.com>
- <aV-w2NbxAPuuXy_U@kernel.org>
- <b5086ef7-6f4c-4e4c-81d2-a6a663ee891e@linux.ibm.com>
+To: ross.philipson@oracle.com
+Cc: linux-integrity@vger.kernel.org, Peter Huewe <peterhuewe@gmx.de>,
+	Jason Gunthorpe <jgg@ziepe.ca>, David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:KEYS/KEYRINGS" <keyrings@vger.kernel.org>,
+	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>
+Subject: Re: [PATCH v6 05/11] tpm2-sessions: Remove AUTH_MAX_NAMES
+Message-ID: <aWe8fwkw3tN9mFO9@kernel.org>
+References: <20251214153808.73831-1-jarkko@kernel.org>
+ <20251214153808.73831-6-jarkko@kernel.org>
+ <b19c064b-9dfe-45d6-b23d-1bfaca6afb02@oracle.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -63,121 +62,109 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b5086ef7-6f4c-4e4c-81d2-a6a663ee891e@linux.ibm.com>
+In-Reply-To: <b19c064b-9dfe-45d6-b23d-1bfaca6afb02@oracle.com>
 
-On Fri, Jan 09, 2026 at 02:17:52PM +0530, Srish Srinivasan wrote:
-> Hi Jarkko,
-> thank you for taking a look.
-> 
-> On 1/8/26 6:57 PM, Jarkko Sakkinen wrote:
-> > On Tue, Jan 06, 2026 at 08:35:26PM +0530, Srish Srinivasan wrote:
-> > > The wrapping key does not exist by default and is generated by the
-> > > hypervisor as a part of PKWM initialization. This key is then persisted by
-> > > the hypervisor and is used to wrap trusted keys. These are variable length
-> > > symmetric keys, which in the case of PowerVM Key Wrapping Module (PKWM) are
-> > > generated using the kernel RNG. PKWM can be used as a trust source through
-> > > the following example keyctl commands:
-> > > 
-> > > keyctl add trusted my_trusted_key "new 32" @u
-> > > 
-> > > Use the wrap_flags command option to set the secure boot requirement for
-> > > the wrapping request through the following keyctl commands
-> > > 
-> > > case1: no secure boot requirement. (default)
-> > > keyctl usage: keyctl add trusted my_trusted_key "new 32" @u
-> > > 	      OR
-> > > 	      keyctl add trusted my_trusted_key "new 32 wrap_flags=0x00" @u
-> > > 
-> > > case2: secure boot required to in either audit or enforce mode. set bit 0
-> > > keyctl usage: keyctl add trusted my_trusted_key "new 32 wrap_flags=0x01" @u
-> > > 
-> > > case3: secure boot required to be in enforce mode. set bit 1
-> > > keyctl usage: keyctl add trusted my_trusted_key "new 32 wrap_flags=0x02" @u
-> > > 
-> > > NOTE:
-> > > -> Setting the secure boot requirement is NOT a must.
-> > > -> Only either of the secure boot requirement options should be set. Not
-> > > both.
-> > > -> All the other bits are required to be not set.
-> > > -> Set the kernel parameter trusted.source=pkwm to choose PKWM as the
-> > > backend for trusted keys implementation.
-> > > -> CONFIG_PSERIES_PLPKS must be enabled to build PKWM.
-> > > 
-> > > Add PKWM, which is a combination of IBM PowerVM and Power LPAR Platform
-> > > KeyStore, as a new trust source for trusted keys.
-> > > 
-> > > Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
-> > > Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-> > > ---
-> > >   MAINTAINERS                               |   9 ++
-> > >   include/keys/trusted-type.h               |   7 +-
-> > >   include/keys/trusted_pkwm.h               |  22 +++
-> > >   security/keys/trusted-keys/Kconfig        |   8 ++
-> > >   security/keys/trusted-keys/Makefile       |   2 +
-> > >   security/keys/trusted-keys/trusted_core.c |   6 +-
-> > >   security/keys/trusted-keys/trusted_pkwm.c | 168 ++++++++++++++++++++++
-> > >   7 files changed, 220 insertions(+), 2 deletions(-)
-> > >   create mode 100644 include/keys/trusted_pkwm.h
-> > >   create mode 100644 security/keys/trusted-keys/trusted_pkwm.c
-> > > 
-> > > diff --git a/MAINTAINERS b/MAINTAINERS
-> > > index a0dd762f5648..ba51eff21a16 100644
-> > > --- a/MAINTAINERS
-> > > +++ b/MAINTAINERS
-> > > @@ -14003,6 +14003,15 @@ S:	Supported
-> > >   F:	include/keys/trusted_dcp.h
-> > >   F:	security/keys/trusted-keys/trusted_dcp.c
-> > > +KEYS-TRUSTED-PLPKS
-> > > +M:	Srish Srinivasan <ssrish@linux.ibm.com>
-> > > +M:	Nayna Jain <nayna@linux.ibm.com>
-> > > +L:	linux-integrity@vger.kernel.org
-> > > +L:	keyrings@vger.kernel.org
-> > > +S:	Supported
-> > > +F:	include/keys/trusted_plpks.h
-> > > +F:	security/keys/trusted-keys/trusted_pkwm.c
-> > > +
-> > >   KEYS-TRUSTED-TEE
-> > >   M:	Sumit Garg <sumit.garg@kernel.org>
-> > >   L:	linux-integrity@vger.kernel.org
-> > > diff --git a/include/keys/trusted-type.h b/include/keys/trusted-type.h
-> > > index 4eb64548a74f..45c6c538df22 100644
-> > > --- a/include/keys/trusted-type.h
-> > > +++ b/include/keys/trusted-type.h
-> > > @@ -19,7 +19,11 @@
-> > >   #define MIN_KEY_SIZE			32
-> > >   #define MAX_KEY_SIZE			128
-> > > -#define MAX_BLOB_SIZE			512
-> > > +#if IS_ENABLED(CONFIG_TRUSTED_KEYS_PKWM)
-> > > +#define MAX_BLOB_SIZE			1152
-> > > +#else
-> > > +#define MAX_BLOB_SIZE                   512
-> > > +#endif
-> > >   #define MAX_PCRINFO_SIZE		64
-> > >   #define MAX_DIGEST_SIZE			64
-> > > @@ -46,6 +50,7 @@ struct trusted_key_options {
-> > >   	uint32_t policydigest_len;
-> > >   	unsigned char policydigest[MAX_DIGEST_SIZE];
-> > >   	uint32_t policyhandle;
-> > > +	uint16_t wrap_flags;
-> > >   };
-> > We should introduce:
+On Mon, Jan 12, 2026 at 04:22:24PM -0800, ross.philipson@oracle.com wrote:
+> On 12/14/25 7:38 AM, Jarkko Sakkinen wrote:
+> > In all of the call sites only one session is ever append. Thus, reduce
+> > AUTH_MAX_NAMES, which leads into removing constant completely.
 > > 
-> > 	void *private;
+> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > ---
+> >   drivers/char/tpm/tpm2-sessions.c | 31 +++++++++++--------------------
+> >   1 file changed, 11 insertions(+), 20 deletions(-)
 > > 
-> > And hold backend specific fields there.
-> > 
-> > This patch set does not necessarily have to migrate TPM fields to this
-> > new framework, only start a better convention before this turns into
-> > a chaos.
+> > diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+> > index 3bc3c31cf512..37570dc088cf 100644
+> > --- a/drivers/char/tpm/tpm2-sessions.c
+> > +++ b/drivers/char/tpm/tpm2-sessions.c
+> > @@ -72,9 +72,6 @@
+> >   #include <crypto/sha2.h>
+> >   #include <crypto/utils.h>
+> > -/* maximum number of names the TPM must remember for authorization */
+> > -#define AUTH_MAX_NAMES	3
+> > -
+> >   #define AES_KEY_BYTES	AES_KEYSIZE_128
+> >   #define AES_KEY_BITS	(AES_KEY_BYTES*8)
+> > @@ -136,8 +133,8 @@ struct tpm2_auth {
+> >   	 * handle, but they are part of the session by name, which
+> >   	 * we must compute and remember
+> >   	 */
+> > -	u8 name[AUTH_MAX_NAMES][TPM2_MAX_NAME_SIZE];
+> > -	u16 name_size_tbl[AUTH_MAX_NAMES];
+> > +	u8 name[TPM2_MAX_NAME_SIZE];
+> > +	u16 name_size;
+> >   };
+> >   #ifdef CONFIG_TCG_TPM2_HMAC
+> > @@ -261,11 +258,14 @@ EXPORT_SYMBOL_GPL(tpm2_read_public);
+> >   int tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
+> >   			u32 handle, u8 *name, u16 name_size)
+> >   {
+> > -#ifdef CONFIG_TCG_TPM2_HMAC
 > 
-> 
-> Sure,
-> thanks for bringing this up.
-> I will make the required changes in my next version.
+> Removing CONFIG_TCG_TPM2_HMAC here causes a warning during compile since the
+> auth variable is only used in the CONFIG_TCG_TPM2_HMAC block below.
 
-Great! TPM fields are where they are more like through history and
-evolution than by design. While not required, of course migrating
-also them is a most welcome additional patch :-)
+Thanks for the remark, I'll look into this.
+
+I should have next week bandwidth to look into your patch set too (still
+rebooting from the holidays)
+
+> 
+> Ross
+> 
+> >   	struct tpm2_auth *auth;
+> > -	int slot;
+> >   	int ret;
+> > -#endif
+> > +
+> > +	if (tpm_buf_length(buf) != TPM_HEADER_SIZE) {
+> > +		dev_err(&chip->dev, "too many handles\n");
+> > +		ret = -EIO;
+> > +		goto err;
+> > +	}
+> >   	if (!tpm2_chip_auth(chip)) {
+> >   		tpm_buf_append_handle(chip, buf, handle);
+> > @@ -273,12 +273,6 @@ int tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
+> >   	}
+> >   #ifdef CONFIG_TCG_TPM2_HMAC
+> > -	slot = (tpm_buf_length(buf) - TPM_HEADER_SIZE) / 4;
+> > -	if (slot >= AUTH_MAX_NAMES) {
+> > -		dev_err(&chip->dev, "too many handles\n");
+> > -		ret = -EIO;
+> > -		goto err;
+> > -	}
+> >   	auth = chip->auth;
+> >   	if (auth->session != tpm_buf_length(buf)) {
+> >   		dev_err(&chip->dev, "session state malformed");
+> > @@ -287,16 +281,14 @@ int tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
+> >   	}
+> >   	tpm_buf_append_u32(buf, handle);
+> >   	auth->session += 4;
+> > -	memcpy(auth->name[slot], name, name_size);
+> > -	auth->name_size_tbl[slot] = name_size;
+> > +	memcpy(auth->name, name, name_size);
+> > +	auth->name_size = name_size;
+> >   #endif
+> >   	return 0;
+> > -#ifdef CONFIG_TCG_TPM2_HMAC
+> >   err:
+> >   	tpm2_end_auth_session(chip);
+> >   	return ret;
+> > -#endif
+> >   }
+> >   EXPORT_SYMBOL_GPL(tpm_buf_append_name);
+> > @@ -665,8 +657,7 @@ int tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
+> >   	/* ordinal is already BE */
+> >   	sha256_update(&sctx, (u8 *)&head->ordinal, sizeof(head->ordinal));
+> >   	/* add the handle names */
+> > -	for (i = 0; i < handles; i++)
+> > -		sha256_update(&sctx, auth->name[i], auth->name_size_tbl[i]);
+> > +	sha256_update(&sctx, auth->name, auth->name_size);
+> >   	if (offset_s != tpm_buf_length(buf))
+> >   		sha256_update(&sctx, &buf->data[offset_s],
+> >   			      tpm_buf_length(buf) - offset_s);
+> 
 
 BR, Jarkko
 
