@@ -1,469 +1,251 @@
-Return-Path: <keyrings+bounces-3820-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3821-lists+keyrings=lfdr.de@vger.kernel.org>
 X-Original-To: lists+keyrings@lfdr.de
 Delivered-To: lists+keyrings@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED4D8D3BB9B
-	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 00:14:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD5BD3BBA2
+	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 00:14:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C9ECE3027598
-	for <lists+keyrings@lfdr.de>; Mon, 19 Jan 2026 23:14:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4D0073007518
+	for <lists+keyrings@lfdr.de>; Mon, 19 Jan 2026 23:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8009F27A107;
-	Mon, 19 Jan 2026 23:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A022E8B9F;
+	Mon, 19 Jan 2026 23:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RYye7BJ5"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="TtjvlLGm"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010038.outbound.protection.outlook.com [52.101.193.38])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598106FC3;
-	Mon, 19 Jan 2026 23:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768864483; cv=none; b=UP0XO8bFYNxt5ELBGVH/NeSkyoBFRqkjFmhU2q33jSGmC4IqE6KksjG0a0XbhZBqvdbem822EKQBawUxTTLixBgAqM4Gl7EGHFG2OJK9zbiOgqhGYrHNssPpJGW41XgnjTothwjQLdTUIB2JTWOndR2c18oRkRqbpe19uPU6u5s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768864483; c=relaxed/simple;
-	bh=B0RnHYgliM3UDg4G4RKMHcZtze9PbAuj8QZ7UfX+upA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KwYxrhcFxIEhtCBzmG0NgAFYw+2nJJo5hqef+Ysf3AjsZmme2jB4JYzAXsPVRb0mnrVulJGISo1jmXKsjfYbuLM6QiF42lCgaQB+PdnqY/dvLk0zC3ty09wSXKSeg31fCwkn2UD2Zru8t8FvMgE7t4KrkLTwtg5Kfz+0Iv8pLnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RYye7BJ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BBCC116C6;
-	Mon, 19 Jan 2026 23:14:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768864483;
-	bh=B0RnHYgliM3UDg4G4RKMHcZtze9PbAuj8QZ7UfX+upA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RYye7BJ55Wc0+ly+G5fSi0/TRrqWy7YzKziAEUBdWv8aHmBC32+c62cddwjrjdGtV
-	 m52o2VcZx2a3PoZeFvR6q7Rg8l0no1/QT7kM/v36GODhyOjzj/da3HqMLSmB6GMRA8
-	 iFDSsP8lZYG/1uAENEPlzwgnbTmNLR3xYw/orIZVwvBT3HA581iTg8+YPXYnj/aPp8
-	 fv2XbbtQy9ceAR9iTPjN4WjZm5M+7uzLoY1Pz4RmtxEPkQQPK3HTrb3iY8aoZSp1he
-	 YIkGHiZSYvZnMYQJrZb/5KE8YCkUDGmYv0a065bcEsByNnSWrWpio9iBlTZ8QoDQwA
-	 bUGzVbpq7+0Rg==
-Date: Tue, 20 Jan 2026 01:14:38 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: Srish Srinivasan <ssrish@linux.ibm.com>
-Cc: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
-	mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-	James.Bottomley@hansenpartnership.com, zohar@linux.ibm.com,
-	nayna@linux.ibm.com, rnsastry@linux.ibm.com,
-	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v4 5/6] keys/trusted_keys: establish PKWM as a trusted
- source
-Message-ID: <aW663paEk9Cd8eUn@kernel.org>
-References: <20260115100504.488665-1-ssrish@linux.ibm.com>
- <20260115100504.488665-6-ssrish@linux.ibm.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63CB227B35B;
+	Mon, 19 Jan 2026 23:14:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.38
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768864488; cv=fail; b=qXaiHE/wRXa1+87vLgNQrrOfSwN7ajDPRQtBAClGSFDh/N7bFX41MuAQnIS80bvQT3gX9k1LZzGWQaYRwUHppayzQnywdxdEeJbNB8WDkjYcXO7R8lwVaNVzMP+Xz8uYsZ8/ZN8A7lywBEFKDaxw2JEo3FgWolGx2HgTvNS+nAU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768864488; c=relaxed/simple;
+	bh=MhhBrV8sKb3rN21IWqiOsn226fQpdDw6AuVBTgHxxWg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=PPEm58AYY/J9C/4oJSX8yp64KdM1A1MGNTcDiJTNRvoCYSkPBOP3f4rGvCLaRoLw6zrMUKJgTMunf6aqLlCin+D2UpJOWhUzq9TUENdhBbqYpUTRqRe8pkTvvMC2RkCONQ3Xajf6dVi/ejqy/ypWbHFd1CJXPDONWqeFVpncD9M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=TtjvlLGm; arc=fail smtp.client-ip=52.101.193.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=f0eZfFMM1jrMWSW9YoVhpzCjLDQ/o95Kui+dfY+7ZNHKKZlZQF9wdTSAfJ6jVrZkf1FXswKG8hTS4XrJygDBJgM4vQtWX4gaNIfPnKs2khu+LGYc4xFzIbKXrQqPK3cJdd1A5V8jkUQEzu/0WVp2q6RMKSIU+8dRR/2lQc3UecOKL+yW5VHJclJbhTVZbes0mjsDr+/ESkDteZGGz0vHYMt3Obciig1nI7RPXu00fA7rO1zKCIiX7ryIqxocIe56d71FGyT3Kc+L57OH09xbZ+N6EhyvGPscM5WNGUud5GEPOT2tefKyRHfk+1hUjJvoglpvZs0mtSq35lBBlKml6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=0S8O1hiHlQ4m25SuE6tEjrKZ/RCiI+pmncwMyOxQetM=;
+ b=SeO5ZCLGvdbCPNb/A7JVPvAoKBQR+MEje5VM5WGnZlBcLOy8EZRGooDI//0P4mBljz4QR3ECCKPvN3deC8k1FGVEXwQLu6V5CjAKOfm5fFWkwonzYzL8vnfYz20awDIlhE6BJ58wvnWF2VN1rK/qi1gcuH81BMg3qGmVddBfnBB0HPpQ8XpZvH5+T4gAt/mL7+0kpvVdVTPeFHbMewpjrzL3HyOr1H4fSATGnqdkoXOduyDVb6pIopHNswr6yCTORdS1UTgEsjjbU6UYtnT0V3qQCcMsXZMqBLVjDg6SiuTnMfBroLFyFR/wzfl092s8UW8bVPRt22uJSMTSwc8bew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0S8O1hiHlQ4m25SuE6tEjrKZ/RCiI+pmncwMyOxQetM=;
+ b=TtjvlLGmpy3u+yC2gCrf1KMi2b4Bh6HfgOso6ZcaGaJ9ymKuhIfG8OZE2dWBkpFbgED68rejYWbigauF+fO3BT5jh8oEzbfnWIi4k/NJogvbTysgV2F36HOzHDliNIZGEQuG+lJrjrFXY6S9M8RnJXkbMn92URU/si6cxGfRXzgEcl35AXDl2GyLv9Ci2E/lSKnq7dcsJPM69ajPdJstLdDmeggLkdaNgxGjye54d2vNRn/TkgVyHbs9BL1Hk5hfNLCZOehCjcZ9sIV4ySLz4E2AVw+WLCB/Fn6oqM9RwVfVTg0LEzJ3pL00uNNZsjw9T/jlj9/orOZwu77LIpJJ4g==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by PH7PR12MB7116.namprd12.prod.outlook.com (2603:10b6:510:1ef::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9520.12; Mon, 19 Jan
+ 2026 23:14:44 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::1b59:c8a2:4c00:8a2c]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::1b59:c8a2:4c00:8a2c%3]) with mapi id 15.20.9520.011; Mon, 19 Jan 2026
+ 23:14:44 +0000
+Date: Mon, 19 Jan 2026 19:14:43 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Vishal Verma <vishal.l.verma@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	Benjamin LaHaise <bcrl@kvack.org>, Gao Xiang <xiang@kernel.org>,
+	Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
+	Jeffle Xu <jefflexu@linux.alibaba.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	Chunhai Guo <guochunhai@vivo.com>, Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Mike Marshall <hubcap@omnibond.com>,
+	Martin Brandenburg <martin@omnibond.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Dave Martin <Dave.Martin@arm.com>,
+	James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>,
+	Carlos Maiolino <cem@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Johannes Thumshirn <jth@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Zi Yan <ziy@nvidia.com>, Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E . Hallyn" <serge@hallyn.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	linux-sgx@vger.kernel.org, linux-kernel@vger.kernel.org,
+	nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+	linux-fsdevel@vger.kernel.org, linux-aio@kvack.org,
+	linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
+	linux-mm@kvack.org, ntfs3@lists.linux.dev, devel@lists.orangefs.org,
+	linux-xfs@vger.kernel.org, keyrings@vger.kernel.org,
+	linux-security-module@vger.kernel.org
+Subject: Re: [PATCH RESEND 00/12] mm: add bitmap VMA flag helpers and convert
+ all mmap_prepare to use them
+Message-ID: <20260119231443.GT1134360@nvidia.com>
+References: <cover.1768857200.git.lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1768857200.git.lorenzo.stoakes@oracle.com>
+X-ClientProxiedBy: MN2PR17CA0008.namprd17.prod.outlook.com
+ (2603:10b6:208:15e::21) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260115100504.488665-6-ssrish@linux.ibm.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|PH7PR12MB7116:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6456cf91-f409-460b-1fec-08de57b08802
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?tSplX4pOJ8CmO18rSXCqTCkufV0sadsiAhorP8Vb+UsIHmWt8lzctSzYV0CG?=
+ =?us-ascii?Q?5UYsfYrg8BvFUCKC3tfnAwdtsS3hveUfnhmAZQ3rqwzAaEXV1Hd/bGBjKxQ0?=
+ =?us-ascii?Q?3UPmDHFyQ8gj3/QtCK/5UNz5SBHZhcowyNGnx5cWbyS5A2NvfM/2ILanzMu8?=
+ =?us-ascii?Q?6Ey5Zv7GtNYM1z9k7Racn9Njt8bJ8RXAvaP9R6mZmEbNeTEffLZ+da7zAHTr?=
+ =?us-ascii?Q?4u0Z+nO67rG4ec8wZh/DvfUPZU7tWuimLC0N3f0/noJdIfoUHUV9QvIr3xW9?=
+ =?us-ascii?Q?oiwuENwtN3DPXBtX4O1Ta9/me/5sFubn8L8KTOZv+HoTtVd/KcYH+fPtLc/F?=
+ =?us-ascii?Q?4yTU2UncOhSE7AGon97RQMQctIAOaehtRP7k//9zsRJFZOXHqGionhP4TMmE?=
+ =?us-ascii?Q?pXZ5f+f78xSu2YOo3tTaLDiPjy2C+ik36c+c9Fd91hcWES9GubrIAVMJnzos?=
+ =?us-ascii?Q?kbBVtF6WJQm2raa19BaVS9W2faObyQUyXmy9RLyoMd4DeRgiArBpN/7aOubS?=
+ =?us-ascii?Q?cO3AJR6QsyaPLbE1xPR/tiF5lLPP8jvJ8WP6Q2wOeMtdUEktwtg9yCNm+eIO?=
+ =?us-ascii?Q?ljCZCdpXBxryqz1gENxKo1K+mGEBgUwaSt+2p/C2c21wJuNE1B+76hFS2Lrv?=
+ =?us-ascii?Q?SAdYvoTVARzUCDYgwuMoWIq6FyxdGHZza88w7LLpY7P4uJurgSMFa4LvFiLr?=
+ =?us-ascii?Q?3vHkABBbnhELGPg591UF5o3NsXa6cW+OeDpVVQ4QmkrO2oq40UCwQfHY7ihZ?=
+ =?us-ascii?Q?yhBliPB2raNgUlTtbp45N8Fp3cf8lJOlYWreyUFfp/GDIfm9ywFhvUCgd6Vd?=
+ =?us-ascii?Q?kuL/lgQFwoZj7YSFiXQ4PL+muSmdZWVnhv5Yz3gmxfqNiCvn8pEEn+L6Mt19?=
+ =?us-ascii?Q?3mGaDTsgLexaL/79LgiJkiG/lEu31mpdvjQuWwMI6VObMzPNlS2RqHdHh37y?=
+ =?us-ascii?Q?YHDYYWOodqFWN5ttfkWsp94RnPivtB9zeXzuVy3w2ctDlG+ihb8R18Cdd14p?=
+ =?us-ascii?Q?f+8o+t/wkVmpuiBmOT/m+kNmemNwakvDV2qYwTAfq39f2LGwxVqAvR6OKGtg?=
+ =?us-ascii?Q?zxTsT5huRTBsziV6NMBz587f1m4RMqSdKjSF4CiFr3geCtAhZ2zpGTsq4Xe3?=
+ =?us-ascii?Q?suEcCXU/l2oFoNg+ROti2gmgcHiYa5obqhDCx6dFbhy6WCZqaS+WKDoXKK6T?=
+ =?us-ascii?Q?2qeiU6UHDz857E33ibG0jkktJwTU74F5iKOEPbDqkjy3rDmgwpunr8IL8gkM?=
+ =?us-ascii?Q?z67Cic0qHCvJgbju2/JBM2tiC/OP2SKJUnkz1gIPOkZSCMjIdShCfmus8x+j?=
+ =?us-ascii?Q?QoPNm4nmBv3HTdfXcx535QFvgXfGvnlKiMO6O9QyZP51rRmnKN8Vpwidneb+?=
+ =?us-ascii?Q?fIRWJsHS4ed3wjCmgIMcVpBdNpNyWbiC2AiBF1PWzUOTYMcOB3iZpsyQpoWH?=
+ =?us-ascii?Q?pMJpxXWXwI+cV4rtuB7G32ueEK3GPG0zrdq/N9lf9XMAWAVpSMTY5/DeYHrf?=
+ =?us-ascii?Q?oTgok96huMQ8CEQOCyJFduDUFGimhw0dA89xQhIQCUjBOmvqbCzCJ69PCNsY?=
+ =?us-ascii?Q?8366SGuvwSO6A5j5v0Q=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?TOHMVlVDrrTvXiIYN2+I5cimEGsEGbRgC3X1N2FgfdirFY2nZ1xkoy7pZdky?=
+ =?us-ascii?Q?dgooqNqG9nGppKOMCMZ9jP66PTVGXzJQHbIeouRni72LjDAvPpLy2qDzL3wo?=
+ =?us-ascii?Q?uMYXcqKzGntioMUdEmJnfb7KtYk/FLrep6rlV5yZlYdsfXrLZcZsrYJhN0SV?=
+ =?us-ascii?Q?EoRluN08AQvBZxbknVPI/o8TK69yFl62QDx0xuHqEK+xr2jkFaoAx4vJXhg0?=
+ =?us-ascii?Q?IvCUeTFMYK4PWSr841C5MJh+KLRgBNl5s8qyKrnP3OveODG+RfyKUZVsfqLV?=
+ =?us-ascii?Q?s3cneyyctZGObC56r0iUdXCdoJu+oAybeBjjQ1Xn9TVGX+ZilJF8MIV4ZIEF?=
+ =?us-ascii?Q?z6MsOAUdMUdEKnA8tki4nqJAw4BOUPuDhTUy8rDr8LeyKCUYJGTpg2XLSn85?=
+ =?us-ascii?Q?deX3bBN1z5kjpU4ullUZWHNoN+T3TxPJ2wumVCG/s6JbGvZDfGBTRtJfsMda?=
+ =?us-ascii?Q?Scxj0qpyrAjPx0X/iZoUM9XeQLEZCAHvH6CXwAXNtBzVNalhUQMUWtCPhH+1?=
+ =?us-ascii?Q?DNl5xaPZSTHE0zNS2/cXwO2T7nDtT3WnG1zzXACP5jcZX8ktMh+lK7zGwAjn?=
+ =?us-ascii?Q?MHB2k5H8p6UMTaD3F0jj5DAmlzPqUARKoI4DZhvWRHJWmgGiGRNy+Ehr6JSB?=
+ =?us-ascii?Q?T1489eEMKK5kDN/vPjPT3zBGXPSinXJMH18m7Fq5HL18RGLtY43atzuPvAyO?=
+ =?us-ascii?Q?/b0MSgloMQY8UtigHEguklCjmbb4Elx81uRQVQcy5/r8XSB8yOWRs8dbm9KL?=
+ =?us-ascii?Q?znm+T2lqmWd/Nfv49uGTIo+ieeDCPb+JGXtdtYCGZZsBf5X4hBsxElH/LW5G?=
+ =?us-ascii?Q?RI9+uLVYl3d+jKYGRNiZlMthDXkkn5QTmR/6g5MWfAODcQ9dPJ0MLnn5P7J1?=
+ =?us-ascii?Q?PUPNXmt9z5GyERkpwSWo4Nc9Kq/znamNgz7epXh4irtZC2JoPZIn+YoCE30N?=
+ =?us-ascii?Q?zt/Z8gEdKd1sslOPI/MJOCzLlut9H/b+R7MQrhUZWCwGR5lThNsWCfTKhXz8?=
+ =?us-ascii?Q?28YGzY9m9qy3oS/D9NMQ+g9n3PSvxaDXy8lnULlNwqAsv+P96ta3QTb9yPcO?=
+ =?us-ascii?Q?EdjCUqd8l5fnhtdmA0wNtch2CGls0pbQBFVjp6NWRfxxXFeZXEtK+3AtACbn?=
+ =?us-ascii?Q?25HtRXz7M6f3IP1NvCF5riQV8oCPyBodRMC+zQpfQA7MEiL+Pg1OmcSPUJNk?=
+ =?us-ascii?Q?L74SUweakrZf3f33iDeuJUtDGlmWmirlMn6x0baexD2H5FpiUW9w2BhlbyDP?=
+ =?us-ascii?Q?PdEJnh8imD/embnx57mCSRQMPdsJjxTJ7eCiwEen086N5XVIKvT/W5wctDxY?=
+ =?us-ascii?Q?OlPtWP9yvkH8WGjxiShvzCZa76sByLU6cbh9PQj81Z+ShE4TLFdIigbG/hIH?=
+ =?us-ascii?Q?T/GBVAUXm8pXlSfMLS77eJgVzvago8ouxS7n0XMazZhHNiBmJ1kazydjQNPi?=
+ =?us-ascii?Q?4BXHNl3T5CatY/zvw+MW66Ice6flpYgysgrTQGT2kHUfmdAUYbALEFI/9YsV?=
+ =?us-ascii?Q?Ba+ZL/+VWPBopQNFOcRMlNlAc7tdBa2M+bauVYwuEifm4z0+zp+bhKYU5lNn?=
+ =?us-ascii?Q?yHpY2cIdt1jv6E7umHvNBT+Y4zbMu7T3aGifRjMuCq1yPLYNiktnrEtcOKm4?=
+ =?us-ascii?Q?sIQCfxi+VPUYv+IYdSbJ12iuQJU5YKI5CfkAh40nB/CAoG5ezJ4qp7VFg03S?=
+ =?us-ascii?Q?NcEWjqrEnjlo4gkcecT/YSGgYnLHocknvsDCvcGBs+MeXfYKONwcCbve7Irm?=
+ =?us-ascii?Q?lfoEg+cBsQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6456cf91-f409-460b-1fec-08de57b08802
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2026 23:14:44.2173
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Zwk2joAm/V7SnpJ0UEnUaOsAV6uczrKchITot2iVGb92xsSkJWrPBZ2oVYFKsVZ8
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7116
 
-On Thu, Jan 15, 2026 at 03:35:03PM +0530, Srish Srinivasan wrote:
-> The wrapping key does not exist by default and is generated by the
-> hypervisor as a part of PKWM initialization. This key is then persisted by
-> the hypervisor and is used to wrap trusted keys. These are variable length
-> symmetric keys, which in the case of PowerVM Key Wrapping Module (PKWM) are
-> generated using the kernel RNG. PKWM can be used as a trust source through
-> the following example keyctl commands:
+On Mon, Jan 19, 2026 at 09:19:02PM +0000, Lorenzo Stoakes wrote:
+> We introduced the bitmap VMA type vma_flags_t in the aptly named commit
+> 9ea35a25d51b ("mm: introduce VMA flags bitmap type") in order to permit
+> future growth in VMA flags and to prevent the asinine requirement that VMA
+> flags be available to 64-bit kernels only if they happened to use a bit
+> number about 32-bits.
 > 
-> keyctl add trusted my_trusted_key "new 32" @u
+> This is a long-term project as there are very many users of VMA flags
+> within the kernel that need to be updated in order to utilise this new
+> type.
 > 
-> Use the wrap_flags command option to set the secure boot requirement for
-> the wrapping request through the following keyctl commands
+> In order to further this aim, this series adds a number of helper functions
+> to enable ordinary interactions with VMA flags - that is testing, setting
+> and clearing them.
 > 
-> case1: no secure boot requirement. (default)
-> keyctl usage: keyctl add trusted my_trusted_key "new 32" @u
-> 	      OR
-> 	      keyctl add trusted my_trusted_key "new 32 wrap_flags=0x00" @u
+> In order to make working with VMA bit numbers less cumbersome this series
+> introduces the mk_vma_flags() helper macro which generates a vma_flags_t
+> from a variadic parameter list, e.g.:
 > 
-> case2: secure boot required to in either audit or enforce mode. set bit 0
-> keyctl usage: keyctl add trusted my_trusted_key "new 32 wrap_flags=0x01" @u
-> 
-> case3: secure boot required to be in enforce mode. set bit 1
-> keyctl usage: keyctl add trusted my_trusted_key "new 32 wrap_flags=0x02" @u
-> 
-> NOTE:
-> -> Setting the secure boot requirement is NOT a must.
-> -> Only either of the secure boot requirement options should be set. Not
-> both.
-> -> All the other bits are required to be not set.
-> -> Set the kernel parameter trusted.source=pkwm to choose PKWM as the
-> backend for trusted keys implementation.
-> -> CONFIG_PSERIES_PLPKS must be enabled to build PKWM.
-> 
-> Add PKWM, which is a combination of IBM PowerVM and Power LPAR Platform
-> KeyStore, as a new trust source for trusted keys.
-> 
-> Signed-off-by: Srish Srinivasan <ssrish@linux.ibm.com>
-> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-> ---
->  This version introduces a private pointer for backend specific fields and
->  related changes specific to the PKWM backend, but defers migrating the TPM
->  fields to this new framework. That will be done independently of this
->  patch series.
->  MAINTAINERS                               |   9 +
->  include/keys/trusted-type.h               |   7 +-
->  include/keys/trusted_pkwm.h               |  33 ++++
->  security/keys/trusted-keys/Kconfig        |   8 +
->  security/keys/trusted-keys/Makefile       |   2 +
->  security/keys/trusted-keys/trusted_core.c |   6 +-
->  security/keys/trusted-keys/trusted_pkwm.c | 190 ++++++++++++++++++++++
->  7 files changed, 253 insertions(+), 2 deletions(-)
->  create mode 100644 include/keys/trusted_pkwm.h
->  create mode 100644 security/keys/trusted-keys/trusted_pkwm.c
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index cf755238c429..c98f1811f836 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -14008,6 +14008,15 @@ S:	Supported
->  F:	include/keys/trusted_dcp.h
->  F:	security/keys/trusted-keys/trusted_dcp.c
->  
-> +KEYS-TRUSTED-PLPKS
-> +M:	Srish Srinivasan <ssrish@linux.ibm.com>
-> +M:	Nayna Jain <nayna@linux.ibm.com>
-> +L:	linux-integrity@vger.kernel.org
-> +L:	keyrings@vger.kernel.org
-> +S:	Supported
-> +F:	include/keys/trusted_pkwm.h
-> +F:	security/keys/trusted-keys/trusted_pkwm.c
-> +
->  KEYS-TRUSTED-TEE
->  M:	Sumit Garg <sumit.garg@kernel.org>
->  L:	linux-integrity@vger.kernel.org
-> diff --git a/include/keys/trusted-type.h b/include/keys/trusted-type.h
-> index 4eb64548a74f..03527162613f 100644
-> --- a/include/keys/trusted-type.h
-> +++ b/include/keys/trusted-type.h
-> @@ -19,7 +19,11 @@
->  
->  #define MIN_KEY_SIZE			32
->  #define MAX_KEY_SIZE			128
-> -#define MAX_BLOB_SIZE			512
-> +#if IS_ENABLED(CONFIG_TRUSTED_KEYS_PKWM)
-> +#define MAX_BLOB_SIZE			1152
-> +#else
-> +#define MAX_BLOB_SIZE                   512
-> +#endif
->  #define MAX_PCRINFO_SIZE		64
->  #define MAX_DIGEST_SIZE			64
->  
-> @@ -46,6 +50,7 @@ struct trusted_key_options {
->  	uint32_t policydigest_len;
->  	unsigned char policydigest[MAX_DIGEST_SIZE];
->  	uint32_t policyhandle;
-> +	void *private;
->  };
+> 	vma_flags_t flags = mk_vma_flags(VMA_READ_BIT, VMA_WRITE_BIT,
+> 					 VMA_EXEC_BIT);
 
+I didn't try to check every conversion, but the whole approach looks
+nice to me and I think this design is ergonomic!
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-
->  
->  struct trusted_key_ops {
-> diff --git a/include/keys/trusted_pkwm.h b/include/keys/trusted_pkwm.h
-> new file mode 100644
-> index 000000000000..4035b9776394
-> --- /dev/null
-> +++ b/include/keys/trusted_pkwm.h
-> @@ -0,0 +1,33 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef __PKWM_TRUSTED_KEY_H
-> +#define __PKWM_TRUSTED_KEY_H
-> +
-> +#include <keys/trusted-type.h>
-> +#include <linux/bitops.h>
-> +#include <linux/printk.h>
-> +
-> +extern struct trusted_key_ops pkwm_trusted_key_ops;
-> +
-> +struct trusted_pkwm_options {
-> +	u16 wrap_flags;
-> +};
-> +
-> +static inline void dump_options(struct trusted_key_options *o)
-> +{
-> +	const struct trusted_pkwm_options *pkwm;
-> +	bool sb_audit_or_enforce_bit;
-> +	bool sb_enforce_bit;
-> +
-> +	pkwm = o->private;
-> +	sb_audit_or_enforce_bit = pkwm->wrap_flags & BIT(0);
-> +	sb_enforce_bit = pkwm->wrap_flags & BIT(1);
-> +
-> +	if (sb_audit_or_enforce_bit)
-> +		pr_debug("secure boot mode required: audit or enforce");
-> +	else if (sb_enforce_bit)
-> +		pr_debug("secure boot mode required: enforce");
-> +	else
-> +		pr_debug("secure boot mode required: disabled");
-> +}
-> +
-> +#endif
-> diff --git a/security/keys/trusted-keys/Kconfig b/security/keys/trusted-keys/Kconfig
-> index 204a68c1429d..9e00482d886a 100644
-> --- a/security/keys/trusted-keys/Kconfig
-> +++ b/security/keys/trusted-keys/Kconfig
-> @@ -46,6 +46,14 @@ config TRUSTED_KEYS_DCP
->  	help
->  	  Enable use of NXP's DCP (Data Co-Processor) as trusted key backend.
->  
-> +config TRUSTED_KEYS_PKWM
-> +	bool "PKWM-based trusted keys"
-> +	depends on PSERIES_PLPKS >= TRUSTED_KEYS
-> +	default y
-> +	select HAVE_TRUSTED_KEYS
-> +	help
-> +	  Enable use of IBM PowerVM Key Wrapping Module (PKWM) as a trusted key backend.
-> +
->  if !HAVE_TRUSTED_KEYS
->  	comment "No trust source selected!"
->  endif
-> diff --git a/security/keys/trusted-keys/Makefile b/security/keys/trusted-keys/Makefile
-> index f0f3b27f688b..5fc053a21dad 100644
-> --- a/security/keys/trusted-keys/Makefile
-> +++ b/security/keys/trusted-keys/Makefile
-> @@ -16,3 +16,5 @@ trusted-$(CONFIG_TRUSTED_KEYS_TEE) += trusted_tee.o
->  trusted-$(CONFIG_TRUSTED_KEYS_CAAM) += trusted_caam.o
->  
->  trusted-$(CONFIG_TRUSTED_KEYS_DCP) += trusted_dcp.o
-> +
-> +trusted-$(CONFIG_TRUSTED_KEYS_PKWM) += trusted_pkwm.o
-> diff --git a/security/keys/trusted-keys/trusted_core.c b/security/keys/trusted-keys/trusted_core.c
-> index b1680ee53f86..2d328de170e8 100644
-> --- a/security/keys/trusted-keys/trusted_core.c
-> +++ b/security/keys/trusted-keys/trusted_core.c
-> @@ -12,6 +12,7 @@
->  #include <keys/trusted_caam.h>
->  #include <keys/trusted_dcp.h>
->  #include <keys/trusted_tpm.h>
-> +#include <keys/trusted_pkwm.h>
->  #include <linux/capability.h>
->  #include <linux/err.h>
->  #include <linux/init.h>
-> @@ -31,7 +32,7 @@ MODULE_PARM_DESC(rng, "Select trusted key RNG");
->  
->  static char *trusted_key_source;
->  module_param_named(source, trusted_key_source, charp, 0);
-> -MODULE_PARM_DESC(source, "Select trusted keys source (tpm, tee, caam or dcp)");
-> +MODULE_PARM_DESC(source, "Select trusted keys source (tpm, tee, caam, dcp or pkwm)");
->  
->  static const struct trusted_key_source trusted_key_sources[] = {
->  #if defined(CONFIG_TRUSTED_KEYS_TPM)
-> @@ -46,6 +47,9 @@ static const struct trusted_key_source trusted_key_sources[] = {
->  #if defined(CONFIG_TRUSTED_KEYS_DCP)
->  	{ "dcp", &dcp_trusted_key_ops },
->  #endif
-> +#if defined(CONFIG_TRUSTED_KEYS_PKWM)
-> +	{ "pkwm", &pkwm_trusted_key_ops },
-> +#endif
->  };
->  
->  DEFINE_STATIC_CALL_NULL(trusted_key_seal, *trusted_key_sources[0].ops->seal);
-> diff --git a/security/keys/trusted-keys/trusted_pkwm.c b/security/keys/trusted-keys/trusted_pkwm.c
-> new file mode 100644
-> index 000000000000..4f391b77a907
-> --- /dev/null
-> +++ b/security/keys/trusted-keys/trusted_pkwm.c
-> @@ -0,0 +1,190 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2025 IBM Corporation, Srish Srinivasan <ssrish@linux.ibm.com>
-> + */
-> +
-> +#include <keys/trusted_pkwm.h>
-> +#include <keys/trusted-type.h>
-> +#include <linux/build_bug.h>
-> +#include <linux/key-type.h>
-> +#include <linux/parser.h>
-> +#include <asm/plpks.h>
-> +
-> +enum {
-> +	Opt_err,
-> +	Opt_wrap_flags,
-> +};
-> +
-> +static const match_table_t key_tokens = {
-> +	{Opt_wrap_flags, "wrap_flags=%s"},
-> +	{Opt_err, NULL}
-> +};
-> +
-> +static int getoptions(char *datablob, struct trusted_key_options *opt)
-> +{
-> +	substring_t args[MAX_OPT_ARGS];
-> +	char *p = datablob;
-> +	int token;
-> +	int res;
-> +	u16 wrap_flags;
-> +	unsigned long token_mask = 0;
-> +	struct trusted_pkwm_options *pkwm;
-> +
-> +	if (!datablob)
-> +		return 0;
-> +
-> +	pkwm = opt->private;
-> +
-> +	while ((p = strsep(&datablob, " \t"))) {
-> +		if (*p == '\0' || *p == ' ' || *p == '\t')
-> +			continue;
-> +
-> +		token = match_token(p, key_tokens, args);
-> +		if (test_and_set_bit(token, &token_mask))
-> +			return -EINVAL;
-> +
-> +		switch (token) {
-> +		case Opt_wrap_flags:
-> +			res = kstrtou16(args[0].from, 16, &wrap_flags);
-> +			if (res < 0 || wrap_flags > 2)
-> +				return -EINVAL;
-> +			pkwm->wrap_flags = wrap_flags;
-> +			break;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	}
-> +	return 0;
-> +}
-> +
-> +static struct trusted_key_options *trusted_options_alloc(void)
-> +{
-> +	struct trusted_key_options *options;
-> +	struct trusted_pkwm_options *pkwm;
-> +
-> +	options = kzalloc(sizeof(*options), GFP_KERNEL);
-> +
-> +	if (options) {
-> +		pkwm = kzalloc(sizeof(*pkwm), GFP_KERNEL);
-> +
-> +		if (!pkwm) {
-> +			kfree_sensitive(options);
-> +			options = NULL;
-> +		} else {
-> +			options->private = pkwm;
-> +		}
-> +	}
-> +
-> +	return options;
-> +}
-> +
-> +static int trusted_pkwm_seal(struct trusted_key_payload *p, char *datablob)
-> +{
-> +	struct trusted_key_options *options = NULL;
-> +	struct trusted_pkwm_options *pkwm = NULL;
-> +	u8 *input_buf, *output_buf;
-> +	u32 output_len, input_len;
-> +	int rc;
-> +
-> +	options = trusted_options_alloc();
-> +
-> +	if (!options)
-> +		return -ENOMEM;
-> +
-> +	rc = getoptions(datablob, options);
-> +	if (rc < 0)
-> +		goto out;
-> +	dump_options(options);
-> +
-> +	input_len = p->key_len;
-> +	input_buf = kmalloc(ALIGN(input_len, 4096), GFP_KERNEL);
-> +	if (!input_buf) {
-> +		pr_err("Input buffer allocation failed. Returning -ENOMEM.");
-> +		rc = -ENOMEM;
-> +		goto out;
-> +	}
-> +
-> +	memcpy(input_buf, p->key, p->key_len);
-> +
-> +	pkwm = options->private;
-> +
-> +	rc = plpks_wrap_object(&input_buf, input_len, pkwm->wrap_flags,
-> +			       &output_buf, &output_len);
-> +	if (!rc) {
-> +		memcpy(p->blob, output_buf, output_len);
-> +		p->blob_len = output_len;
-> +		dump_payload(p);
-> +	} else {
-> +		pr_err("Wrapping of payload key failed: %d\n", rc);
-> +	}
-> +
-> +	kfree(input_buf);
-> +	kfree(output_buf);
-> +
-> +out:
-> +	kfree_sensitive(options->private);
-> +	kfree_sensitive(options);
-> +	return rc;
-> +}
-> +
-> +static int trusted_pkwm_unseal(struct trusted_key_payload *p, char *datablob)
-> +{
-> +	u8 *input_buf, *output_buf;
-> +	u32 input_len, output_len;
-> +	int rc;
-> +
-> +	input_len = p->blob_len;
-> +	input_buf = kmalloc(ALIGN(input_len, 4096), GFP_KERNEL);
-> +	if (!input_buf) {
-> +		pr_err("Input buffer allocation failed. Returning -ENOMEM.");
-> +		return -ENOMEM;
-> +	}
-> +
-> +	memcpy(input_buf, p->blob, p->blob_len);
-> +
-> +	rc = plpks_unwrap_object(&input_buf, input_len, &output_buf,
-> +				 &output_len);
-> +	if (!rc) {
-> +		memcpy(p->key, output_buf, output_len);
-> +		p->key_len = output_len;
-> +		dump_payload(p);
-> +	} else {
-> +		pr_err("Unwrapping of payload failed: %d\n", rc);
-> +	}
-> +
-> +	kfree(input_buf);
-> +	kfree(output_buf);
-> +
-> +	return rc;
-> +}
-> +
-> +static int trusted_pkwm_init(void)
-> +{
-> +	int ret;
-> +
-> +	if (!plpks_wrapping_is_supported()) {
-> +		pr_err("H_PKS_WRAP_OBJECT interface not supported\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	ret = plpks_gen_wrapping_key();
-> +	if (ret) {
-> +		pr_err("Failed to generate default wrapping key\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	return register_key_type(&key_type_trusted);
-> +}
-> +
-> +static void trusted_pkwm_exit(void)
-> +{
-> +	unregister_key_type(&key_type_trusted);
-> +}
-> +
-> +struct trusted_key_ops pkwm_trusted_key_ops = {
-> +	.migratable = 0, /* non-migratable */
-> +	.init = trusted_pkwm_init,
-> +	.seal = trusted_pkwm_seal,
-> +	.unseal = trusted_pkwm_unseal,
-> +	.exit = trusted_pkwm_exit,
-> +};
-> -- 
-> 2.47.3
-> 
-
-BR, Jarkko
+Jason
 
