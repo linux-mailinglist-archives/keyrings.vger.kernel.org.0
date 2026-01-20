@@ -1,67 +1,67 @@
-Return-Path: <keyrings+bounces-3836-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3839-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2N4UNEu5b2kOMQAAu9opvQ
-	(envelope-from <keyrings+bounces-3836-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 18:20:11 +0100
+	id 4HTIN0+4b2kOMQAAu9opvQ
+	(envelope-from <keyrings+bounces-3839-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 18:15:59 +0100
 X-Original-To: lists+keyrings@lfdr.de
 Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [IPv6:2605:f480:58:1:0:1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FAB548735
-	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 18:20:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7787548637
+	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 18:15:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id F18229A2129
-	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 15:05:42 +0000 (UTC)
+	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id 9F52A9A3AAD
+	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 15:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5AC4657F0;
-	Tue, 20 Jan 2026 14:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFAF43CEC3;
+	Tue, 20 Jan 2026 14:52:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iq7AIRAz"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BM/FXD90"
 X-Original-To: keyrings@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C824E44D6BB
-	for <keyrings@vger.kernel.org>; Tue, 20 Jan 2026 14:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADA544DB6A
+	for <keyrings@vger.kernel.org>; Tue, 20 Jan 2026 14:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768920712; cv=none; b=TYwxH0/WAMKN+yOlFE/5lWj8qX5Rekh+1Nf09+b7wzeGVjUJWLbU+zYvQ1+aNXDsKRHiioMqaCfxXIG9wM0Jr/aSD8P0xUOsgI91nngO+QNUjujwZu4taFuN2vQXEnHDLEC2c4W3k8TIpXDB3Lk9EDRdV6jpdeQ6whvEW77QNL0=
+	t=1768920733; cv=none; b=pyxP2Ygfkwj9V4j4W2iIQfcAVvP3u/md55F0oWkhOSNkKQm+ZnNHfUsqvi/hZ2+1e+ag8WVQEkpEPP4SOvtIyEzRxbfLzWgnOVWSX4P9HLb6xCWMzg6MoEnXOfnUizZ79SfayDvrF3vFnEmtjruTcbCjq5NOlgLPf7Y84k7xBkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768920712; c=relaxed/simple;
-	bh=n1BDRy3Mvfe/G1vb8i8C8BKTdmhCmOstljaPklfb8zg=;
+	s=arc-20240116; t=1768920733; c=relaxed/simple;
+	bh=Q+uHu4u/Mbi+H9rK60Sh6pfaEXhFj8X2WigDcbk50uM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OmED92qKSvVNiRF51j3CoUqddxZn53gsKz1dF7z5aB4JJpHj3W6w6rLTniYFAbawZGuJIwRhL6JLQVc82dKssJ8yvmf4lhPC761RvpvNa56XNBYXxIMdD0jPy2D1MD+/EkiIvnduQ4pjDcpoi2YZSqOaB3WUUHk1RSVYe9etoDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iq7AIRAz; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=fjc5vlE2bwZqFbmqTj7yid6tH2wbOev59MYS2322k6x826fOKMHkFbMS5DyZgAgCmpgkM4XLRPXRw7rKs6cIH+zai9p542gakHf5OaNX0Hl+Ee27y+/VLGLVoXZcp09jL/ZxD5KBUk91N5MfmEhZNkKbEfhUz5TE43qNC0Qap2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BM/FXD90; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768920710;
+	s=mimecast20190719; t=1768920728;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XXT2OGyjfHPFHeZtvk+/jjDN9ReDwfhhRYI9tCo0qxI=;
-	b=iq7AIRAzdZECbzg1TT86fa2oTQmHruAup/9/prhxnsGJfEPxHzneFZ/lO56s9ufRTrGLE3
-	X66Ow8ApgZIXglL+cmpy348PuexRXaBuEOibWgZiVVmr0qVVbg9pPEvL6xzWqIJwlefAZM
-	OQI1/MxqF6bFfjry4F+R2x5oJ5P6oXY=
+	bh=5ONdEFTmuicRpc0uh8shFoPeyhLNYTCObn7PLvjP6bE=;
+	b=BM/FXD907sWeWvmAzh7e1AYt9DepDUBCcplBtFjKWI8tuobiBG5nXoeH485P4iPJgboFVj
+	GJ6LKLcybkIuVrbRvjn7GOx7iP+xMwfti02PxMt7U1C4ALnlxdodDGzfAHhvuShMsrsV8q
+	iZQwTa4En35rVGMjvLy72gx2QGYl3H0=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-558-n35gbfTsPrOPoGkHPD_slg-1; Tue,
- 20 Jan 2026 09:51:46 -0500
-X-MC-Unique: n35gbfTsPrOPoGkHPD_slg-1
-X-Mimecast-MFC-AGG-ID: n35gbfTsPrOPoGkHPD_slg_1768920704
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-346-bnZRZQjPMv-mUWpXnO0GdQ-1; Tue,
+ 20 Jan 2026 09:52:04 -0500
+X-MC-Unique: bnZRZQjPMv-mUWpXnO0GdQ-1
+X-Mimecast-MFC-AGG-ID: bnZRZQjPMv-mUWpXnO0GdQ_1768920720
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 21EB91956053;
-	Tue, 20 Jan 2026 14:51:44 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 88E5C19560B7;
+	Tue, 20 Jan 2026 14:52:00 +0000 (UTC)
 Received: from warthog.procyon.org.uk.com (unknown [10.42.28.2])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1BD9519560A2;
-	Tue, 20 Jan 2026 14:51:39 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BFEE818001D5;
+	Tue, 20 Jan 2026 14:51:56 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Lukas Wunner <lukas@wunner.de>,
 	Ignat Korchagin <ignat@cloudflare.com>
@@ -79,11 +79,10 @@ Cc: David Howells <dhowells@redhat.com>,
 	linux-crypto@vger.kernel.org,
 	keyrings@vger.kernel.org,
 	linux-modules@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH v13 06/12] crypto: Add supplementary info param to asymmetric key signature verification
-Date: Tue, 20 Jan 2026 14:50:52 +0000
-Message-ID: <20260120145103.1176337-7-dhowells@redhat.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v13 09/12] modsign: Enable RSASSA-PSS module signing
+Date: Tue, 20 Jan 2026 14:50:55 +0000
+Message-ID: <20260120145103.1176337-10-dhowells@redhat.com>
 In-Reply-To: <20260120145103.1176337-1-dhowells@redhat.com>
 References: <20260120145103.1176337-1-dhowells@redhat.com>
 Precedence: bulk
@@ -93,7 +92,7 @@ List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 X-Spamd-Result: default: False [-0.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
@@ -103,12 +102,12 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	DMARC_POLICY_ALLOW(0.00)[redhat.com,quarantine];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-3836-lists,keyrings=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-3839-lists,keyrings=lfdr.de];
 	DKIM_TRACE(0.00)[redhat.com:+];
 	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
@@ -120,269 +119,137 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	TAGGED_RCPT(0.00)[keyrings];
 	RCVD_COUNT_FIVE(0.00)[6];
 	ASN(0.00)[asn:7979, ipnet:2605:f480::/32, country:US];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[cloudflare.com:email,wunner.de:email,dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,apana.org.au:email,davemloft.net:email]
-X-Rspamd-Queue-Id: 3FAB548735
+	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:rdns,dfw.mirrors.kernel.org:helo,cloudflare.com:email,wunner.de:email,apana.org.au:email]
+X-Rspamd-Queue-Id: 7787548637
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Add a supplementary information parameter to the asymmetric key signature
-verification API, in particular crypto_sig_verify() and sig_alg::verify.
-This takes the form of a printable string containing of key=val elements.
+Add support for RSASSA-PSS signatures (RFC8017) for use with module signing
+and other public key cryptography done by the kernel.
 
-This is needed as some algorithms require additional metadata
-(e.g. RSASSA-PSS) and this extra metadata is included in the X.509
-certificates and PKCS#7 messages.  Furthermore, keyctl(KEYCTL_PKEY_VERIFY)
-already allows for this to be passed to the kernel, as do the _SIGN,
-_ENCRYPT and _DECRYPT keyctls.
+Note that only signature verification is supported by the kernel.
+
+Note further that this alters some of the same code as the MLDSA support,
+so that needs to be applied first to avoid conflicts.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
 Reviewed-by: Ignat Korchagin <ignat@cloudflare.com>
-cc: Herbert Xu <herbert@gondor.apana.org.au>
-cc: "David S. Miller" <davem@davemloft.net>
 cc: Lukas Wunner <lukas@wunner.de>
+cc: Herbert Xu <herbert@gondor.apana.org.au>
 cc: keyrings@vger.kernel.org
 cc: linux-crypto@vger.kernel.org
 ---
- crypto/asymmetric_keys/asymmetric_type.c | 1 +
- crypto/asymmetric_keys/public_key.c      | 2 +-
- crypto/asymmetric_keys/signature.c       | 1 +
- crypto/ecdsa-p1363.c                     | 5 +++--
- crypto/ecdsa-x962.c                      | 5 +++--
- crypto/ecdsa.c                           | 3 ++-
- crypto/ecrdsa.c                          | 3 ++-
- crypto/mldsa.c                           | 3 ++-
- crypto/rsassa-pkcs1.c                    | 3 ++-
- crypto/sig.c                             | 3 ++-
- crypto/testmgr.c                         | 2 +-
- crypto/testmgr.h                         | 1 +
- include/crypto/public_key.h              | 1 +
- include/crypto/sig.h                     | 9 ++++++---
- 14 files changed, 28 insertions(+), 14 deletions(-)
+ Documentation/admin-guide/module-signing.rst |  5 ++-
+ certs/Kconfig                                |  6 +++
+ certs/Makefile                               |  1 +
+ scripts/sign-file.c                          | 39 +++++++++++++++++++-
+ 4 files changed, 47 insertions(+), 4 deletions(-)
 
-diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
-index 348966ea2175..dad4f0edfa25 100644
---- a/crypto/asymmetric_keys/asymmetric_type.c
-+++ b/crypto/asymmetric_keys/asymmetric_type.c
-@@ -596,6 +596,7 @@ static int asymmetric_key_verify_signature(struct kernel_pkey_params *params,
- 		.digest_size	= params->in_len,
- 		.encoding	= params->encoding,
- 		.hash_algo	= params->hash_algo,
-+		.info		= params->info,
- 		.digest		= (void *)in,
- 		.s		= (void *)in2,
- 	};
-diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
-index ed6b4b5ae4ef..61dc4f626620 100644
---- a/crypto/asymmetric_keys/public_key.c
-+++ b/crypto/asymmetric_keys/public_key.c
-@@ -433,7 +433,7 @@ int public_key_verify_signature(const struct public_key *pkey,
- 		goto error_free_key;
+diff --git a/Documentation/admin-guide/module-signing.rst b/Documentation/admin-guide/module-signing.rst
+index 7f2f127dc76f..aa24715cd2d8 100644
+--- a/Documentation/admin-guide/module-signing.rst
++++ b/Documentation/admin-guide/module-signing.rst
+@@ -32,8 +32,9 @@ type.  The built-in facility currently only supports the RSA, NIST P-384 ECDSA
+ and NIST FIPS-204 ML-DSA public key signing standards (though it is pluggable
+ and permits others to be used).  For RSA and ECDSA, the possible hash
+ algorithms that can be used are SHA-2 and SHA-3 of sizes 256, 384, and 512 (the
+-algorithm is selected by data in the signature); ML-DSA does its own hashing,
+-but is allowed to be used with a SHA512 hash for signed attributes.
++algorithm is selected by data in the signature); RSASSA-PSS is allowed to use
++SHA512 only; ML-DSA does its own hashing, but is allowed to be used with a
++SHA512 hash for signed attributes.
  
- 	ret = crypto_sig_verify(tfm, sig->s, sig->s_size,
--				sig->digest, sig->digest_size);
-+				sig->digest, sig->digest_size, sig->info);
  
- error_free_key:
- 	kfree_sensitive(key);
-diff --git a/crypto/asymmetric_keys/signature.c b/crypto/asymmetric_keys/signature.c
-index bea01cf27d0a..30ba50eb44af 100644
---- a/crypto/asymmetric_keys/signature.c
-+++ b/crypto/asymmetric_keys/signature.c
-@@ -30,6 +30,7 @@ void public_key_signature_free(struct public_key_signature *sig)
- 		kfree(sig->s);
- 		if (sig->digest_free)
- 			kfree(sig->digest);
-+		kfree(sig->info);
- 		kfree(sig);
- 	}
- }
-diff --git a/crypto/ecdsa-p1363.c b/crypto/ecdsa-p1363.c
-index e0c55c64711c..fa987dba1213 100644
---- a/crypto/ecdsa-p1363.c
-+++ b/crypto/ecdsa-p1363.c
-@@ -18,7 +18,8 @@ struct ecdsa_p1363_ctx {
+ ==========================
+diff --git a/certs/Kconfig b/certs/Kconfig
+index 67a5786423b5..524d1747c541 100644
+--- a/certs/Kconfig
++++ b/certs/Kconfig
+@@ -27,6 +27,12 @@ config MODULE_SIG_KEY_TYPE_RSA
+ 	help
+ 	 Use an RSA key for module signing.
  
- static int ecdsa_p1363_verify(struct crypto_sig *tfm,
- 			      const void *src, unsigned int slen,
--			      const void *digest, unsigned int dlen)
-+			      const void *digest, unsigned int dlen,
-+			      const char *info)
- {
- 	struct ecdsa_p1363_ctx *ctx = crypto_sig_ctx(tfm);
- 	unsigned int keylen = DIV_ROUND_UP_POW2(crypto_sig_keysize(ctx->child),
-@@ -32,7 +33,7 @@ static int ecdsa_p1363_verify(struct crypto_sig *tfm,
- 	ecc_digits_from_bytes(src, keylen, sig.r, ndigits);
- 	ecc_digits_from_bytes(src + keylen, keylen, sig.s, ndigits);
++config MODULE_SIG_KEY_TYPE_RSASSA_PSS
++	bool "RSASSA-PSS"
++	select CRYPTO_RSA
++	help
++	 Use an RSASSA-PSS key for module signing.
++
+ config MODULE_SIG_KEY_TYPE_ECDSA
+ 	bool "ECDSA"
+ 	select CRYPTO_ECDSA
+diff --git a/certs/Makefile b/certs/Makefile
+index 3ee1960f9f4a..3b5a3a303f4c 100644
+--- a/certs/Makefile
++++ b/certs/Makefile
+@@ -42,6 +42,7 @@ targets += x509_certificate_list
+ # boolean option and we unfortunately can't make it depend on !RANDCONFIG.
+ ifeq ($(CONFIG_MODULE_SIG_KEY),certs/signing_key.pem)
  
--	return crypto_sig_verify(ctx->child, &sig, sizeof(sig), digest, dlen);
-+	return crypto_sig_verify(ctx->child, &sig, sizeof(sig), digest, dlen, info);
- }
++keytype-$(CONFIG_MODULE_SIG_KEY_TYPE_RSASSA_PSS) := -newkey rsassa-pss
+ keytype-$(CONFIG_MODULE_SIG_KEY_TYPE_ECDSA) := -newkey ec -pkeyopt ec_paramgen_curve:secp384r1
+ keytype-$(CONFIG_MODULE_SIG_KEY_TYPE_MLDSA_44) := -newkey ml-dsa-44
+ keytype-$(CONFIG_MODULE_SIG_KEY_TYPE_MLDSA_65) := -newkey ml-dsa-65
+diff --git a/scripts/sign-file.c b/scripts/sign-file.c
+index 547b97097230..800e2e2e36c3 100644
+--- a/scripts/sign-file.c
++++ b/scripts/sign-file.c
+@@ -233,6 +233,7 @@ int main(int argc, char **argv)
+ 	EVP_PKEY *private_key;
+ #ifndef USE_PKCS7
+ 	CMS_ContentInfo *cms = NULL;
++	CMS_SignerInfo *signer;
+ 	unsigned int use_keyid = 0;
+ #else
+ 	PKCS7 *pkcs7 = NULL;
+@@ -338,12 +339,46 @@ int main(int argc, char **argv)
  
- static unsigned int ecdsa_p1363_key_size(struct crypto_sig *tfm)
-diff --git a/crypto/ecdsa-x962.c b/crypto/ecdsa-x962.c
-index ee71594d10a0..5d7f1078989c 100644
---- a/crypto/ecdsa-x962.c
-+++ b/crypto/ecdsa-x962.c
-@@ -75,7 +75,8 @@ int ecdsa_get_signature_s(void *context, size_t hdrlen, unsigned char tag,
+ 		flags |= use_signed_attrs;
  
- static int ecdsa_x962_verify(struct crypto_sig *tfm,
- 			     const void *src, unsigned int slen,
--			     const void *digest, unsigned int dlen)
-+			     const void *digest, unsigned int dlen,
-+			     const char *info)
- {
- 	struct ecdsa_x962_ctx *ctx = crypto_sig_ctx(tfm);
- 	struct ecdsa_x962_signature_ctx sig_ctx;
-@@ -89,7 +90,7 @@ static int ecdsa_x962_verify(struct crypto_sig *tfm,
- 		return err;
++		if (EVP_PKEY_is_a(private_key, "RSASSA-PSS")) {
++			EVP_PKEY_CTX *pkctx;
++			char mdname[1024] = {};
++
++			pkctx = EVP_PKEY_CTX_new(private_key, NULL);
++
++			ERR(!EVP_PKEY_sign_init(pkctx), "EVP_PKEY_sign_init");
++			ERR(!EVP_PKEY_CTX_set_rsa_padding(pkctx, RSA_PKCS1_PSS_PADDING),
++			    "EVP_PKEY_CTX_set_rsa_padding");
++			ERR(!EVP_PKEY_CTX_set_rsa_mgf1_md_name(pkctx, hash_algo, NULL),
++			    "EVP_PKEY_CTX_set_rsa_mgf1_md_name");
++
++			ERR(!EVP_PKEY_CTX_get_rsa_mgf1_md_name(pkctx, mdname, sizeof(mdname)),
++			    "EVP_PKEY_CTX_get_rsa_mgf1_md_name");
++			printf("RSASSA-PSS %s\n", mdname);
++			flags |= CMS_KEY_PARAM;
++		}
++
+ 		/* Load the signature message from the digest buffer. */
+ 		cms = CMS_sign(NULL, NULL, NULL, NULL, flags);
+ 		ERR(!cms, "CMS_sign");
  
- 	return crypto_sig_verify(ctx->child, &sig_ctx.sig, sizeof(sig_ctx.sig),
--				 digest, dlen);
-+				 digest, dlen, info);
- }
+-		ERR(!CMS_add1_signer(cms, x509, private_key, digest_algo, flags),
+-		    "CMS_add1_signer");
++		signer = CMS_add1_signer(cms, x509, private_key, digest_algo, flags);
++		ERR(!signer, "CMS_add1_signer");
++
++		if (EVP_PKEY_is_a(private_key, "RSASSA-PSS")) {
++			EVP_PKEY_CTX *pkctx;
++			char mdname[1024] = {};
++
++			pkctx = CMS_SignerInfo_get0_pkey_ctx(signer);
++			ERR(!EVP_PKEY_CTX_set_rsa_padding(pkctx, RSA_PKCS1_PSS_PADDING),
++			    "EVP_PKEY_CTX_set_rsa_padding");
++			ERR(!EVP_PKEY_CTX_set_rsa_mgf1_md_name(pkctx, hash_algo, NULL),
++			    "EVP_PKEY_CTX_set_rsa_mgf1_md_name");
++
++			ERR(!EVP_PKEY_CTX_get_rsa_mgf1_md_name(pkctx, mdname, sizeof(mdname)),
++			    "EVP_PKEY_CTX_get_rsa_mgf1_md_name");
++			printf("RSASSA-PSS %s\n", mdname);
++		}
++
+ 		ERR(CMS_final(cms, bm, NULL, flags) != 1,
+ 		    "CMS_final");
  
- static unsigned int ecdsa_x962_key_size(struct crypto_sig *tfm)
-diff --git a/crypto/ecdsa.c b/crypto/ecdsa.c
-index ce8e4364842f..144fd6b9168b 100644
---- a/crypto/ecdsa.c
-+++ b/crypto/ecdsa.c
-@@ -65,7 +65,8 @@ static int _ecdsa_verify(struct ecc_ctx *ctx, const u64 *hash, const u64 *r, con
-  */
- static int ecdsa_verify(struct crypto_sig *tfm,
- 			const void *src, unsigned int slen,
--			const void *digest, unsigned int dlen)
-+			const void *digest, unsigned int dlen,
-+			const char *info)
- {
- 	struct ecc_ctx *ctx = crypto_sig_ctx(tfm);
- 	size_t bufsize = ctx->curve->g.ndigits * sizeof(u64);
-diff --git a/crypto/ecrdsa.c b/crypto/ecrdsa.c
-index 2c0602f0cd40..59f2d5bb3be4 100644
---- a/crypto/ecrdsa.c
-+++ b/crypto/ecrdsa.c
-@@ -69,7 +69,8 @@ static const struct ecc_curve *get_curve_by_oid(enum OID oid)
- 
- static int ecrdsa_verify(struct crypto_sig *tfm,
- 			 const void *src, unsigned int slen,
--			 const void *digest, unsigned int dlen)
-+			 const void *digest, unsigned int dlen,
-+			 const char *info)
- {
- 	struct ecrdsa_ctx *ctx = crypto_sig_ctx(tfm);
- 	unsigned int ndigits = dlen / sizeof(u64);
-diff --git a/crypto/mldsa.c b/crypto/mldsa.c
-index 2146c774b5ca..ba071d030ab0 100644
---- a/crypto/mldsa.c
-+++ b/crypto/mldsa.c
-@@ -25,7 +25,8 @@ static int crypto_mldsa_sign(struct crypto_sig *tfm,
- 
- static int crypto_mldsa_verify(struct crypto_sig *tfm,
- 			       const void *sig, unsigned int sig_len,
--			       const void *msg, unsigned int msg_len)
-+			       const void *msg, unsigned int msg_len,
-+			       const char *info)
- {
- 	const struct crypto_mldsa_ctx *ctx = crypto_sig_ctx(tfm);
- 
-diff --git a/crypto/rsassa-pkcs1.c b/crypto/rsassa-pkcs1.c
-index 94fa5e9600e7..6283050e609a 100644
---- a/crypto/rsassa-pkcs1.c
-+++ b/crypto/rsassa-pkcs1.c
-@@ -215,7 +215,8 @@ static int rsassa_pkcs1_sign(struct crypto_sig *tfm,
- 
- static int rsassa_pkcs1_verify(struct crypto_sig *tfm,
- 			       const void *src, unsigned int slen,
--			       const void *digest, unsigned int dlen)
-+			       const void *digest, unsigned int dlen,
-+			       const char *info)
- {
- 	struct sig_instance *inst = sig_alg_instance(tfm);
- 	struct rsassa_pkcs1_inst_ctx *ictx = sig_instance_ctx(inst);
-diff --git a/crypto/sig.c b/crypto/sig.c
-index beba745b6405..c56fea3a53ae 100644
---- a/crypto/sig.c
-+++ b/crypto/sig.c
-@@ -92,7 +92,8 @@ static int sig_default_sign(struct crypto_sig *tfm,
- 
- static int sig_default_verify(struct crypto_sig *tfm,
- 			      const void *src, unsigned int slen,
--			      const void *dst, unsigned int dlen)
-+			      const void *dst, unsigned int dlen,
-+			      const char *info)
- {
- 	return -ENOSYS;
- }
-diff --git a/crypto/testmgr.c b/crypto/testmgr.c
-index 5df204d9c9dd..51f76b15f134 100644
---- a/crypto/testmgr.c
-+++ b/crypto/testmgr.c
-@@ -3969,7 +3969,7 @@ static int test_sig_one(struct crypto_sig *tfm, const struct sig_testvec *vecs)
- 	 * (which does not require a private key)
- 	 */
- 	err = crypto_sig_verify(tfm, vecs->c, vecs->c_size,
--				vecs->m, vecs->m_size);
-+				vecs->m, vecs->m_size, vecs->verify_info);
- 	if (err) {
- 		pr_err("alg: sig: verify test failed: err %d\n", err);
- 		return err;
-diff --git a/crypto/testmgr.h b/crypto/testmgr.h
-index 1a3329e1c325..305adad2f2d0 100644
---- a/crypto/testmgr.h
-+++ b/crypto/testmgr.h
-@@ -146,6 +146,7 @@ struct akcipher_testvec {
- 
- struct sig_testvec {
- 	const unsigned char *key;
-+	const unsigned char *verify_info;
- 	const unsigned char *params;
- 	const unsigned char *m;
- 	const unsigned char *c;
-diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
-index 68899a49cd0d..b6f2f2218aae 100644
---- a/include/crypto/public_key.h
-+++ b/include/crypto/public_key.h
-@@ -48,6 +48,7 @@ struct public_key_signature {
- 	u32 digest_size;	/* Number of bytes in digest */
- 	bool digest_free;	/* T if digest needs freeing */
- 	bool algo_does_hash;	/* Public key algo does its own hashing */
-+	char *info;		/* Supplementary parameters */
- 	const char *pkey_algo;
- 	const char *hash_algo;
- 	const char *encoding;
-diff --git a/include/crypto/sig.h b/include/crypto/sig.h
-index fa6dafafab3f..885fa6487780 100644
---- a/include/crypto/sig.h
-+++ b/include/crypto/sig.h
-@@ -56,7 +56,8 @@ struct sig_alg {
- 		    void *dst, unsigned int dlen);
- 	int (*verify)(struct crypto_sig *tfm,
- 		      const void *src, unsigned int slen,
--		      const void *digest, unsigned int dlen);
-+		      const void *digest, unsigned int dlen,
-+		      const char *info);
- 	int (*set_pub_key)(struct crypto_sig *tfm,
- 			   const void *key, unsigned int keylen);
- 	int (*set_priv_key)(struct crypto_sig *tfm,
-@@ -209,16 +210,18 @@ static inline int crypto_sig_sign(struct crypto_sig *tfm,
-  * @slen:	source length
-  * @digest:	digest
-  * @dlen:	digest length
-+ * @info:	Additional parameters as a set of k=v
-  *
-  * Return: zero on verification success; error code in case of error.
-  */
- static inline int crypto_sig_verify(struct crypto_sig *tfm,
- 				    const void *src, unsigned int slen,
--				    const void *digest, unsigned int dlen)
-+				    const void *digest, unsigned int dlen,
-+				    const char *info)
- {
- 	struct sig_alg *alg = crypto_sig_alg(tfm);
- 
--	return alg->verify(tfm, src, slen, digest, dlen);
-+	return alg->verify(tfm, src, slen, digest, dlen, info);
- }
- 
- /**
 
 
