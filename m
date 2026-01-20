@@ -1,72 +1,55 @@
-Return-Path: <keyrings+bounces-3840-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3853-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4DTDCdSLcWkLJAAAu9opvQ
-	(envelope-from <keyrings+bounces-3840-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Thu, 22 Jan 2026 03:30:44 +0100
+	id 4JFPOZ7Xb2n8RwAAu9opvQ
+	(envelope-from <keyrings+bounces-3853-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 20:29:34 +0100
 X-Original-To: lists+keyrings@lfdr.de
-Received: from dfw.mirrors.kernel.org (dfw.mirrors.kernel.org [142.0.200.124])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67D6860F28
-	for <lists+keyrings@lfdr.de>; Thu, 22 Jan 2026 03:30:43 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 112E94A661
+	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 20:29:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.mirrors.kernel.org (Postfix) with ESMTPS id A69119A3E4E
-	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 15:07:12 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 207778827DC
+	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 17:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D39A546AECC;
-	Tue, 20 Jan 2026 14:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C4243E9DC;
+	Tue, 20 Jan 2026 17:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SnenmOVe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R52wzwus"
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6F244DB70
-	for <keyrings@vger.kernel.org>; Tue, 20 Jan 2026 14:52:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770D743E4B5;
+	Tue, 20 Jan 2026 17:53:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768920734; cv=none; b=Qkf40IEFRfkVt56+fb1GqQAa7t1O4Pg8AjBM6c0fGhfaxVJ0xouT8BZ9z2/uylWcXmR69GchaPwEcSFpUVUUh8+j2UZCLPXos+TyXeb9zHthsefGSHyuYPBoxSg8vbiJntx4QZUCr6Qh0AQgnSDwLmGB0eCVU1R80jh9izv6T6A=
+	t=1768931591; cv=none; b=r0CM5Duybl3hcyE4nwPZTRpjlWiieSjgtlmtJ2UFi7IsSWFLxTpks6F/C4VgAyOngW20qye2zk85AGj5JCgt5mu8TSlvfpSavjfkxP9QReqAZvcDe4G+rlA53yf2UNDCTrN46ZQ8TQJHaDVJRj6Ir6PmIv3nwvf3vIIPqMCQ9IA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768920734; c=relaxed/simple;
-	bh=fa+hShREMObsVCRFCK1oY+hHlTsq6I2YzMatIFRH6sM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=McZ3+PvmggOXW4yhfzy40Yy9vBDx0/leylc9oI1JhAOMbRanJfRyDmwtbJAK3DzZ7rAedIYLvgZyKaGeDnIFTAmrCOhUdsmfCV+GyFs19uByHhj+Ns1YpAuieCWwdHVy+p8B2iqJj9as7I4JcMAw15Evks0i/gEQLJDB+V/cvHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SnenmOVe; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768920731;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IJXG7C/rLs0omri3bbxgUI5NvxadAAIhwS22q6nf80s=;
-	b=SnenmOVeq1W6HIrkkhN5sn9x5tKM2o0LgitJCr2AsJqoz6/ofJBkpUrasfdjrq4EAo0qMh
-	pl4tFzmPcjhkoHQ7AeODugMeqHWxl5dQ0PvXvhOcgF630fmBZPw3/7e8WRg9WoL5/xNUlg
-	LDBEUCZblPoYSuOb6zwY2mGr5FwU2qA=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-159-LHAAb3gbO4aq5Hg_2SEKEQ-1; Tue,
- 20 Jan 2026 09:52:08 -0500
-X-MC-Unique: LHAAb3gbO4aq5Hg_2SEKEQ-1
-X-Mimecast-MFC-AGG-ID: LHAAb3gbO4aq5Hg_2SEKEQ_1768920726
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D621619560B1;
-	Tue, 20 Jan 2026 14:52:05 +0000 (UTC)
-Received: from warthog.procyon.org.uk.com (unknown [10.42.28.2])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E8D3130001A8;
-	Tue, 20 Jan 2026 14:52:01 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@cloudflare.com>
-Cc: David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
+	s=arc-20240116; t=1768931591; c=relaxed/simple;
+	bh=BM9xqbGtIsX/gKKfenu8o5AXySIZUT57aB3PCy4BLYg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L08z+rMXuf7/6LfDlqc3g2s/V2pA6dutLQF7BAFgwF3F9eOv/VOZvvBayq+AIWXyAytvFsLuZ3JJDkickWERBhUTzu49f2ih9f2F/7XEwfHRI0dbBhlf/qk3iqiJb6eqQc7EmJeTeaJaa7MFJlpeZ73WotbyrR+pBjtbP45x6Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R52wzwus; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24841C16AAE;
+	Tue, 20 Jan 2026 17:53:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768931590;
+	bh=BM9xqbGtIsX/gKKfenu8o5AXySIZUT57aB3PCy4BLYg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=R52wzwusPh/a2iuVHCJHCsXWPfOsJzW4enkSaApnl92mwhHZN5M4ny/1ejyRNcZW+
+	 8gU9ehG5FMgeuEGA4FTA5UW+p+FJKFQvWzZvJBqN5XDMggetj3VpQUlLdX8Q9DcOL+
+	 wlVThlSjiGy5t0NOrlRFDoJlO49DOr03M5uACDbgLBSaChxmNg0FiE08ok/Yqd4Q0l
+	 TKo7IiYJrbAZFkUvmfcMQ3Dnw0keM7/JSZJp2ruMYwgMDYh69zRxbj3YHmG/Cgxyd5
+	 gPJtCl9cfDoJKnPeZXLDZu8t6AlDJLHeMEvZGNsntxwHkEpNZhfY9SEq6Tqv496YQo
+	 mfPhEkcvXtyYA==
+Date: Tue, 20 Jan 2026 19:53:05 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Lukas Wunner <lukas@wunner.de>, Ignat Korchagin <ignat@cloudflare.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Eric Biggers <ebiggers@kernel.org>,
 	Luis Chamberlain <mcgrof@kernel.org>,
@@ -75,220 +58,192 @@ Cc: David Howells <dhowells@redhat.com>,
 	Sami Tolvanen <samitolvanen@google.com>,
 	"Jason A . Donenfeld" <Jason@zx2c4.com>,
 	Ard Biesheuvel <ardb@kernel.org>,
-	Stephan Mueller <smueller@chronox.de>,
-	linux-crypto@vger.kernel.org,
-	keyrings@vger.kernel.org,
-	linux-modules@vger.kernel.org,
+	Stephan Mueller <smueller@chronox.de>, linux-crypto@vger.kernel.org,
+	keyrings@vger.kernel.org, linux-modules@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v13 10/12] pkcs7: Add FIPS selftest for RSASSA-PSS
-Date: Tue, 20 Jan 2026 14:50:56 +0000
-Message-ID: <20260120145103.1176337-11-dhowells@redhat.com>
-In-Reply-To: <20260120145103.1176337-1-dhowells@redhat.com>
+Subject: Re: [PATCH v13 02/12] pkcs7: Allow the signing algo to calculate the
+ digest itself
+Message-ID: <aW_BAchcx2_TXASz@kernel.org>
 References: <20260120145103.1176337-1-dhowells@redhat.com>
+ <20260120145103.1176337-3-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [0.54 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260120145103.1176337-3-dhowells@redhat.com>
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DATE_IN_PAST(1.00)[35];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-3840-lists,keyrings=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
+	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
+	TAGGED_FROM(0.00)[bounces-3853-lists,keyrings=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	DMARC_POLICY_ALLOW(0.00)[redhat.com,quarantine];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[keyrings];
-	FROM_NEQ_ENVFROM(0.00)[dhowells@redhat.com,keyrings@vger.kernel.org];
-	ASN(0.00)[asn:7979, ipnet:142.0.200.0/24, country:US];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jarkko@kernel.org,keyrings@vger.kernel.org];
+	R_SPF_SOFTFAIL(0.00)[~all];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[dfw.mirrors.kernel.org:helo,dfw.mirrors.kernel.org:rdns,cloudflare.com:email,wunner.de:email,186-3rsatestvectors.zip:url]
-X-Rspamd-Queue-Id: 67D6860F28
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[keyrings];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chronox.de:email,ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,cloudflare.com:email,wunner.de:email]
+X-Rspamd-Queue-Id: 112E94A661
 X-Rspamd-Action: no action
+X-Rspamd-Server: lfdr
 
-Add a FIPS selftest for RSASSA-PSS.
+On Tue, Jan 20, 2026 at 02:50:48PM +0000, David Howells wrote:
+> The ML-DSA public key algorithm really wants to calculate the message
+> digest itself, rather than having the digest precalculated and fed to it
+> separately as RSA does[*].  The kernel's PKCS#7 parser, however, is
+> designed around the latter approach.
+> 
+>   [*] ML-DSA does allow for an "external mu", but CMS doesn't yet have that
+>   standardised.
+> 
+> Fix this by noting in the public_key_signature struct when the signing
+> algorithm is going to want this and then, rather than doing the digest of
+> the authenticatedAttributes ourselves and overwriting the sig->digest with
+> that, replace sig->digest with a copy of the contents of the
+> authenticatedAttributes section and adjust the digest length to match.
+> 
+> This will then be fed to the public key algorithm as normal which can do
+> what it wants with the data.
+> 
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Lukas Wunner <lukas@wunner.de>
+> cc: Ignat Korchagin <ignat@cloudflare.com>
+> cc: Stephan Mueller <smueller@chronox.de>
+> cc: Eric Biggers <ebiggers@kernel.org>
+> cc: Herbert Xu <herbert@gondor.apana.org.au>
+> cc: keyrings@vger.kernel.org
+> cc: linux-crypto@vger.kernel.org
+> ---
+>  crypto/asymmetric_keys/pkcs7_parser.c |  4 +--
+>  crypto/asymmetric_keys/pkcs7_verify.c | 48 ++++++++++++++++++---------
+>  include/crypto/public_key.h           |  1 +
+>  3 files changed, 36 insertions(+), 17 deletions(-)
+> 
+> diff --git a/crypto/asymmetric_keys/pkcs7_parser.c b/crypto/asymmetric_keys/pkcs7_parser.c
+> index 423d13c47545..3cdbab3b9f50 100644
+> --- a/crypto/asymmetric_keys/pkcs7_parser.c
+> +++ b/crypto/asymmetric_keys/pkcs7_parser.c
+> @@ -599,8 +599,8 @@ int pkcs7_sig_note_set_of_authattrs(void *context, size_t hdrlen,
+>  	}
+>  
+>  	/* We need to switch the 'CONT 0' to a 'SET OF' when we digest */
+> -	sinfo->authattrs = value - (hdrlen - 1);
+> -	sinfo->authattrs_len = vlen + (hdrlen - 1);
+> +	sinfo->authattrs = value - hdrlen;
+> +	sinfo->authattrs_len = vlen + hdrlen;
+>  	return 0;
+>  }
+>  
+> diff --git a/crypto/asymmetric_keys/pkcs7_verify.c b/crypto/asymmetric_keys/pkcs7_verify.c
+> index 6d6475e3a9bf..0f9f515b784d 100644
+> --- a/crypto/asymmetric_keys/pkcs7_verify.c
+> +++ b/crypto/asymmetric_keys/pkcs7_verify.c
+> @@ -70,8 +70,6 @@ static int pkcs7_digest(struct pkcs7_message *pkcs7,
+>  	 * digest we just calculated.
+>  	 */
+>  	if (sinfo->authattrs) {
+> -		u8 tag;
+> -
+>  		if (!sinfo->msgdigest) {
+>  			pr_warn("Sig %u: No messageDigest\n", sinfo->index);
+>  			ret = -EKEYREJECTED;
+> @@ -97,20 +95,40 @@ static int pkcs7_digest(struct pkcs7_message *pkcs7,
+>  		 * as the contents of the digest instead.  Note that we need to
+>  		 * convert the attributes from a CONT.0 into a SET before we
+>  		 * hash it.
+> +		 *
+> +		 * However, for certain algorithms, such as ML-DSA, the digest
+> +		 * is integrated into the signing algorithm.  In such a case,
+> +		 * we copy the authattrs, modifying the tag type, and set that
+> +		 * as the digest.
+>  		 */
+> -		memset(sig->digest, 0, sig->digest_size);
+> -
+> -		ret = crypto_shash_init(desc);
+> -		if (ret < 0)
+> -			goto error;
+> -		tag = ASN1_CONS_BIT | ASN1_SET;
+> -		ret = crypto_shash_update(desc, &tag, 1);
+> -		if (ret < 0)
+> -			goto error;
+> -		ret = crypto_shash_finup(desc, sinfo->authattrs,
+> -					 sinfo->authattrs_len, sig->digest);
+> -		if (ret < 0)
+> -			goto error;
+> +		if (sig->algo_does_hash) {
+> +			kfree(sig->digest);
+> +
+> +			ret = -ENOMEM;
+> +			sig->digest = kmalloc(umax(sinfo->authattrs_len, sig->digest_size),
+> +					      GFP_KERNEL);
+> +			if (!sig->digest)
+> +				goto error_no_desc;
+> +
+> +			sig->digest_size = sinfo->authattrs_len;
+> +			memcpy(sig->digest, sinfo->authattrs, sinfo->authattrs_len);
+> +			((u8 *)sig->digest)[0] = ASN1_CONS_BIT | ASN1_SET;
+> +			ret = 0;
+> +		} else {
+> +			u8 tag = ASN1_CONS_BIT | ASN1_SET;
+> +
+> +			ret = crypto_shash_init(desc);
+> +			if (ret < 0)
+> +				goto error;
+> +			ret = crypto_shash_update(desc, &tag, 1);
+> +			if (ret < 0)
+> +				goto error;
+> +			ret = crypto_shash_finup(desc, sinfo->authattrs + 1,
+> +						 sinfo->authattrs_len - 1,
+> +						 sig->digest);
+> +			if (ret < 0)
+> +				goto error;
+> +		}
+>  		pr_devel("AADigest = [%*ph]\n", 8, sig->digest);
+>  	}
+>  
+> diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
+> index 81098e00c08f..e4ec8003a3a4 100644
+> --- a/include/crypto/public_key.h
+> +++ b/include/crypto/public_key.h
+> @@ -46,6 +46,7 @@ struct public_key_signature {
+>  	u8 *digest;
+>  	u32 s_size;		/* Number of bytes in signature */
+>  	u32 digest_size;	/* Number of bytes in digest */
+> +	bool algo_does_hash;	/* Public key algo does its own hashing */
 
-This is the 267th test vector taken from NIST's SigVerPSS_186-3.rsp in
-186-3rsatestvectors.zip on line 2460, packaged into a rudimentary X.509
-cert and PKCS#7 message.
+I'd use the wording you used already in commit message, which
+factors more descriptive than what you have here. E.g., name
+it "external_digest".
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Lukas Wunner <lukas@wunner.de>
-cc: Ignat Korchagin <ignat@cloudflare.com>
-cc: Herbert Xu <herbert@gondor.apana.org.au>
-cc: keyrings@vger.kernel.org
-cc: linux-crypto@vger.kernel.org
----
- crypto/asymmetric_keys/selftest_rsa.c | 133 ++++++++++++++++++++++++++
- 1 file changed, 133 insertions(+)
+It would be easier to digest this when revisiting the code later...
 
-diff --git a/crypto/asymmetric_keys/selftest_rsa.c b/crypto/asymmetric_keys/selftest_rsa.c
-index 09c9815e456a..c06e32da0f7e 100644
---- a/crypto/asymmetric_keys/selftest_rsa.c
-+++ b/crypto/asymmetric_keys/selftest_rsa.c
-@@ -159,6 +159,131 @@ static const u8 certs_selftest_rsa_sig[] __initconst = {
- 	"\x77\x55\x3c\x6f\x0c\x32\xd3\x8c\x44\x39\x71\x25\xfe\x96\xd2"
- };
- 
-+/*
-+ * RSASSA-PSS test vector from SigVerPSS_186-3.rsp published by NIST
-+ * in 186-3rsatestvectors.zip.  This is the 267th test on line 2460.
-+ */
-+static const u8 certs_selftest_rsassa_keys[] __initconst = {
-+	"\x30\x82\x04\x4c\x30\x82\x02\x84\xa0\x03\x02\x01\x02\x02\x04\x01"
-+	"\x23\x41\x0b\x30\x3d\x06\x09\x2a\x86\x48\x86\xf7\x0d\x01\x01\x0a"
-+	"\x30\x30\xa0\x0d\x30\x0b\x06\x09\x60\x86\x48\x01\x65\x03\x04\x02"
-+	"\x03\xa1\x1a\x30\x18\x06\x09\x2a\x86\x48\x86\xf7\x0d\x01\x01\x08"
-+	"\x30\x0b\x06\x09\x60\x86\x48\x01\x65\x03\x04\x02\x03\xa2\x03\x02"
-+	"\x01\x00\x30\x0f\x31\x0d\x30\x0b\x06\x03\x55\x04\x03\x0c\x04\x46"
-+	"\x72\x65\x64\x30\x20\x17\x0d\x32\x36\x30\x31\x30\x31\x30\x30\x30"
-+	"\x30\x30\x30\x5a\x18\x0f\x32\x31\x39\x39\x30\x31\x30\x31\x30\x30"
-+	"\x30\x30\x30\x30\x5a\x30\x1c\x31\x1a\x30\x18\x06\x03\x55\x04\x03"
-+	"\x0c\x11\x6e\x69\x73\x74\x5f\x72\x73\x61\x70\x73\x73\x5f\x32\x36"
-+	"\x37\x5f\x50\x30\x82\x01\xa1\x30\x0b\x06\x09\x2a\x86\x48\x86\xf7"
-+	"\x0d\x01\x01\x0a\x03\x82\x01\x90\x00\x30\x82\x01\x8b\x02\x82\x01"
-+	"\x81\x00\xa3\xf2\x23\x5a\xd2\x05\x3b\x4c\x83\xfa\x38\xf8\x28\x4e"
-+	"\xd8\x05\x42\x16\x21\xfe\x98\x84\x5f\xb0\x1b\x68\x9f\x5b\x82\xb3"
-+	"\x25\x11\xb6\xd1\x61\x73\xe7\xb4\x0a\x66\xa3\xa9\x99\xc1\x89\xbe"
-+	"\xb9\xe0\x68\x22\x15\x0a\xc8\xbe\x67\x71\x86\x37\x0c\x82\x3b\x52"
-+	"\x77\xd9\x09\xde\x07\x56\x4e\x28\x1c\xca\x2f\x13\x87\x3d\x9d\x07"
-+	"\xb7\xbd\x85\xa2\xb9\xac\x66\xf4\xce\x4f\x5e\x38\xb8\xe9\xee\xbe"
-+	"\xc0\x4c\x8c\xaf\x31\x1e\x37\x5d\x69\xe8\x08\x51\xd5\x59\xb8\xe9"
-+	"\x0e\x85\xba\x6b\x96\x47\x67\x90\xf7\x27\xc2\x5a\xa8\x16\x30\x62"
-+	"\xec\x85\x43\xfc\xc7\x75\x9b\xe6\x2c\x77\x68\xec\xc3\x7f\x34\x0b"
-+	"\xb0\x61\x02\x76\x2b\xf0\x44\x1c\xa1\xaa\x2c\x7a\x81\xbf\x37\xdc"
-+	"\x8b\x27\x43\x9d\x3a\xbb\xa9\x38\x12\xc9\xbb\x44\xfe\x4d\x6a\x94"
-+	"\xba\xae\x70\x93\x79\xf5\xce\x5d\x0c\x8f\x81\xd0\x00\x86\xb9\xca"
-+	"\xa3\x02\x68\x19\x58\x8f\x49\x1b\x52\x58\x07\x89\x9c\xda\xb3\x3d"
-+	"\x8e\x99\x21\x50\xd2\xb1\x05\xd3\xaa\xb6\x15\x21\x7c\x6a\x3d\x74"
-+	"\x08\x31\xc7\xdc\x76\xfa\xab\xd9\xc9\xb9\x81\x7e\xad\x0b\x49\x45"
-+	"\x66\xde\x14\x33\xff\xf5\xba\x46\x04\xc6\xb8\x44\x6f\x6f\xc3\x5e"
-+	"\x74\x6a\xff\x84\xff\x8b\xd7\x50\x04\x10\xd1\x0e\x82\xbf\x4c\x90"
-+	"\x36\x48\x9d\xe4\x7d\xee\x9a\x32\x7a\x5c\x45\x10\xd8\x56\x13\x21"
-+	"\xb9\x1d\x55\x55\x9a\x4c\xba\x85\xe0\xc3\x61\x76\x70\x84\xb2\x52"
-+	"\x17\xe8\xa6\x3c\x4e\x15\x1a\x1e\x88\x68\x9f\xee\xcf\xfd\x16\xfa"
-+	"\x0a\x65\xae\x41\xd2\xba\xbc\xa9\x9c\xf1\xb9\x59\xc3\xc0\x76\xc0"
-+	"\xf7\x59\x74\x14\x6f\x2c\xc4\x94\x12\x6f\xbe\xca\xd4\x21\x7b\x9a"
-+	"\xaa\x00\xf1\x69\xfa\x51\x25\x27\xff\x5a\x0b\x50\xda\x46\xd6\xbe"
-+	"\x87\x0e\xce\xf2\xaf\x7a\x1e\x6c\x45\x56\xf6\xf7\xa0\xa0\x0b\x9f"
-+	"\x47\xcb\x02\x04\x00\xb3\xf5\x7f\xa3\x42\x30\x40\x30\x0c\x06\x03"
-+	"\x55\x1d\x13\x01\x01\xff\x04\x02\x30\x00\x30\x0e\x06\x03\x55\x1d"
-+	"\x0f\x01\x01\x00\x04\x04\x03\x02\x07\x80\x30\x20\x06\x03\x55\x1d"
-+	"\x0e\x01\x01\x00\x04\x16\x04\x14\x2b\x73\x93\x2c\xf0\x6c\x34\x1a"
-+	"\xa7\x2c\xce\xa4\xe0\xac\x35\xa9\x6c\xcc\x01\x0b\x30\x3d\x06\x09"
-+	"\x2a\x86\x48\x86\xf7\x0d\x01\x01\x0a\x30\x30\xa0\x0d\x30\x0b\x06"
-+	"\x09\x60\x86\x48\x01\x65\x03\x04\x02\x03\xa1\x1a\x30\x18\x06\x09"
-+	"\x2a\x86\x48\x86\xf7\x0d\x01\x01\x08\x30\x0b\x06\x09\x60\x86\x48"
-+	"\x01\x65\x03\x04\x02\x03\xa2\x03\x02\x01\x00\x03\x82\x01\x81\x00"
-+	"\x78\x7c\xdd\x6e\x1d\x4f\xdf\x9a\x0d\x9f\x96\x5e\xb8\x57\x25\x23"
-+	"\x2a\x9e\xfc\xc1\x2a\xbf\xa1\xef\x25\xa8\x1e\x09\x83\x11\x1d\x90"
-+	"\x00\xd4\x94\xfc\x7d\x32\x01\xeb\x3b\xba\x32\x73\x02\x72\x7f\x70"
-+	"\x86\x14\x7a\x75\x5b\x48\x27\x03\x0c\x72\x76\x53\x6f\x42\x55\x93"
-+	"\xab\x2e\x91\x27\xa1\x49\xe7\x54\xde\x7a\xd7\x7f\x8c\x20\x43\x26"
-+	"\x7d\xb4\x9f\x8a\x35\x03\x1d\x83\xf1\x3d\x14\x0d\x5d\xf4\xd4\x24"
-+	"\xb4\x74\x54\x04\x1a\x23\xb9\x2f\xf6\x81\x8e\x74\x9d\x65\xd0\x1f"
-+	"\xc5\x0b\xeb\xf6\x91\x52\xf3\xf5\xfc\xb4\x87\x3b\x10\x36\x21\x9e"
-+	"\x22\xb1\xe7\x4f\x83\x68\xc8\xc5\x01\xce\x65\xf2\xc9\x29\xd9\x0a"
-+	"\x8e\xc8\x99\x63\x0e\x80\x25\x47\xa7\xca\x6e\xf1\x8a\xb3\xcb\x3e"
-+	"\xb4\xa6\x91\xee\x68\xae\xbe\xaf\x1b\x9c\x05\x5a\xd1\x22\x18\x03"
-+	"\x9c\xf4\x80\xcd\x8d\x29\x43\x32\xc5\xe1\x6e\xbb\xe6\xaf\x11\xf8"
-+	"\xf4\xbf\x49\xf9\xb4\xed\x2f\x51\x11\x26\xae\x78\x0a\x3b\x78\x4b"
-+	"\xe8\xf4\x42\x6a\xbd\x17\xf8\x60\x00\x74\x48\x3f\x2a\xf3\xb7\x1a"
-+	"\x89\x64\xc6\xe0\xfa\x00\x04\x9a\x1d\x94\x0d\x34\xcc\x08\x83\x9e"
-+	"\x0c\x59\x25\x3d\x99\xe9\x0d\x17\x87\x1d\x48\x96\x74\x69\x56\x63"
-+	"\x62\x61\x66\xd3\x6f\xf9\x1d\x8c\x22\x99\xa2\xf0\x51\xea\xe2\xd6"
-+	"\x0e\x8e\xd0\xbc\x3f\xac\x1e\x49\x0b\x47\x0c\x12\xf3\xd6\x97\xf6"
-+	"\xfb\xfd\x88\x0d\xe2\xe9\x0e\x9f\xcb\xd4\x85\xfa\x33\x93\x19\x83"
-+	"\x72\xfb\x01\xe4\xce\xc5\xc1\x59\x17\xec\xdd\x42\xe5\x7c\x43\xec"
-+	"\xf5\x5a\x8c\x0e\xcb\xdc\xef\x1b\xce\x4e\x36\xd9\x6d\x46\xb1\x12"
-+	"\x57\x0b\x53\xf8\x2f\x3d\x20\x64\xb0\x8a\xc7\x86\x13\x67\x0a\x28"
-+	"\xea\x69\xd7\x9c\x71\x7e\xb1\xc2\x94\x09\x0d\xbd\x56\x1f\xa6\xe5"
-+	"\x04\xd0\x9d\x26\x57\x24\xe3\x7a\x2d\xc6\xf4\x45\xf6\xf5\x28\xc9"
-+};
-+
-+static const u8 certs_selftest_rsassa_data[] __initconst = {
-+	"\xbe\x2f\x3e\x1d\xc8\xa3\x71\x15\x70\x40\x1b\xd5\x35\x18\x54\x26"
-+	"\x94\x4d\x09\x4e\x84\x81\xa1\x2a\x43\x8d\xe0\x7d\x54\x76\x0c\x88"
-+	"\xc9\x9d\x4f\xdb\xbe\x35\x5d\x6a\x26\xfa\x56\xe3\xca\x20\xee\x3f"
-+	"\x8e\x8a\xcb\x98\xf6\x3d\x2f\x3a\xea\x14\xd6\xfc\xb6\xb5\x22\xd1"
-+	"\x55\xc3\x75\x9a\xef\x56\xde\x3e\xa0\xa8\xf9\xfd\x7b\x11\x10\x01"
-+	"\xcf\x35\x86\x36\xa8\x7c\x76\x5c\x99\xc2\x97\x5b\xb9\x50\x63\xd6"
-+	"\xec\x0b\x78\x02\x64\xec\x3e\xb9\x67\xb0\xca\xca\x52\xd1\x02\x94"
-+	"\xde\xb4\x02\xd3\xa2\x24\xbf\xb9\xd9\xff\xea\x41\x66\x2f\x18\xc0"
-+};
-+
-+static const u8 certs_selftest_rsassa_sig[] __initconst = {
-+	"\x30\x82\x02\x26\x06\x09\x2a\x86\x48\x86\xf7\x0d\x01\x07\x02\xa0"
-+	"\x82\x02\x17\x30\x82\x02\x13\x02\x01\x01\x31\x0d\x30\x0b\x06\x09"
-+	"\x60\x86\x48\x01\x65\x03\x04\x02\x03\x30\x0b\x06\x09\x2a\x86\x48"
-+	"\x86\xf7\x0d\x01\x07\x01\x31\x82\x01\xf0\x30\x82\x01\xec\x02\x01"
-+	"\x01\x30\x17\x30\x0f\x31\x0d\x30\x0b\x06\x03\x55\x04\x03\x0c\x04"
-+	"\x46\x72\x65\x64\x02\x04\x01\x23\x41\x0b\x30\x0b\x06\x09\x60\x86"
-+	"\x48\x01\x65\x03\x04\x02\x03\x30\x3d\x06\x09\x2a\x86\x48\x86\xf7"
-+	"\x0d\x01\x01\x0a\x30\x30\xa0\x0d\x30\x0b\x06\x09\x60\x86\x48\x01"
-+	"\x65\x03\x04\x02\x03\xa1\x1a\x30\x18\x06\x09\x2a\x86\x48\x86\xf7"
-+	"\x0d\x01\x01\x08\x30\x0b\x06\x09\x60\x86\x48\x01\x65\x03\x04\x02"
-+	"\x03\xa2\x03\x02\x01\x00\x04\x82\x01\x80\x78\x7c\xdd\x6e\x1d\x4f"
-+	"\xdf\x9a\x0d\x9f\x96\x5e\xb8\x57\x25\x23\x2a\x9e\xfc\xc1\x2a\xbf"
-+	"\xa1\xef\x25\xa8\x1e\x09\x83\x11\x1d\x90\x00\xd4\x94\xfc\x7d\x32"
-+	"\x01\xeb\x3b\xba\x32\x73\x02\x72\x7f\x70\x86\x14\x7a\x75\x5b\x48"
-+	"\x27\x03\x0c\x72\x76\x53\x6f\x42\x55\x93\xab\x2e\x91\x27\xa1\x49"
-+	"\xe7\x54\xde\x7a\xd7\x7f\x8c\x20\x43\x26\x7d\xb4\x9f\x8a\x35\x03"
-+	"\x1d\x83\xf1\x3d\x14\x0d\x5d\xf4\xd4\x24\xb4\x74\x54\x04\x1a\x23"
-+	"\xb9\x2f\xf6\x81\x8e\x74\x9d\x65\xd0\x1f\xc5\x0b\xeb\xf6\x91\x52"
-+	"\xf3\xf5\xfc\xb4\x87\x3b\x10\x36\x21\x9e\x22\xb1\xe7\x4f\x83\x68"
-+	"\xc8\xc5\x01\xce\x65\xf2\xc9\x29\xd9\x0a\x8e\xc8\x99\x63\x0e\x80"
-+	"\x25\x47\xa7\xca\x6e\xf1\x8a\xb3\xcb\x3e\xb4\xa6\x91\xee\x68\xae"
-+	"\xbe\xaf\x1b\x9c\x05\x5a\xd1\x22\x18\x03\x9c\xf4\x80\xcd\x8d\x29"
-+	"\x43\x32\xc5\xe1\x6e\xbb\xe6\xaf\x11\xf8\xf4\xbf\x49\xf9\xb4\xed"
-+	"\x2f\x51\x11\x26\xae\x78\x0a\x3b\x78\x4b\xe8\xf4\x42\x6a\xbd\x17"
-+	"\xf8\x60\x00\x74\x48\x3f\x2a\xf3\xb7\x1a\x89\x64\xc6\xe0\xfa\x00"
-+	"\x04\x9a\x1d\x94\x0d\x34\xcc\x08\x83\x9e\x0c\x59\x25\x3d\x99\xe9"
-+	"\x0d\x17\x87\x1d\x48\x96\x74\x69\x56\x63\x62\x61\x66\xd3\x6f\xf9"
-+	"\x1d\x8c\x22\x99\xa2\xf0\x51\xea\xe2\xd6\x0e\x8e\xd0\xbc\x3f\xac"
-+	"\x1e\x49\x0b\x47\x0c\x12\xf3\xd6\x97\xf6\xfb\xfd\x88\x0d\xe2\xe9"
-+	"\x0e\x9f\xcb\xd4\x85\xfa\x33\x93\x19\x83\x72\xfb\x01\xe4\xce\xc5"
-+	"\xc1\x59\x17\xec\xdd\x42\xe5\x7c\x43\xec\xf5\x5a\x8c\x0e\xcb\xdc"
-+	"\xef\x1b\xce\x4e\x36\xd9\x6d\x46\xb1\x12\x57\x0b\x53\xf8\x2f\x3d"
-+	"\x20\x64\xb0\x8a\xc7\x86\x13\x67\x0a\x28\xea\x69\xd7\x9c\x71\x7e"
-+	"\xb1\xc2\x94\x09\x0d\xbd\x56\x1f\xa6\xe5\x04\xd0\x9d\x26\x57\x24"
-+	"\xe3\x7a\x2d\xc6\xf4\x45\xf6\xf5\x28\xc9"
-+};
-+
- void __init fips_signature_selftest_rsa(void)
- {
- 	fips_signature_selftest("RSA",
-@@ -168,4 +293,12 @@ void __init fips_signature_selftest_rsa(void)
- 				sizeof(certs_selftest_rsa_data) - 1,
- 				certs_selftest_rsa_sig,
- 				sizeof(certs_selftest_rsa_sig) - 1);
-+
-+	fips_signature_selftest("RSASSA",
-+				certs_selftest_rsassa_keys,
-+				sizeof(certs_selftest_rsassa_keys) - 1,
-+				certs_selftest_rsassa_data,
-+				sizeof(certs_selftest_rsassa_data) - 1,
-+				certs_selftest_rsassa_sig,
-+				sizeof(certs_selftest_rsassa_sig) - 1);
- }
+>  	const char *pkey_algo;
+>  	const char *hash_algo;
+>  	const char *encoding;
+> 
 
+Allocation scheme is not the prettiest but I neither have
+anything other to offer, so other than the rename request,
+I think this is acceptable.
+
+BR, Jarkko
 
