@@ -1,52 +1,52 @@
-Return-Path: <keyrings+bounces-3858-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3859-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8MUEGCHub2m+UQAAu9opvQ
-	(envelope-from <keyrings+bounces-3858-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 22:05:37 +0100
+	id SD64Atv6b2mUUgAAu9opvQ
+	(envelope-from <keyrings+bounces-3859-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 22:59:55 +0100
 X-Original-To: lists+keyrings@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id F14BD4BF0B
-	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 22:05:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9EBD4CA45
+	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 22:59:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id E365490ED04
-	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 20:59:59 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 39D8E9262B8
+	for <lists+keyrings@lfdr.de>; Tue, 20 Jan 2026 21:12:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD8147AF4E;
-	Tue, 20 Jan 2026 20:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA533E95B5;
+	Tue, 20 Jan 2026 21:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VHl86lUh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UlfGpW5t"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E54E478869;
-	Tue, 20 Jan 2026 20:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4640D3B8D68;
+	Tue, 20 Jan 2026 21:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768942373; cv=none; b=V5NEJaBgPtUPzHDSFiMmXdc3IVqa0bmzUrC85DM4PNUATu9SNh6qtzBFXTPhH1kMm+RsUrg+Sej01WO4w58Ff1rvhmNT4DY1hFvRFAOZ+k9HZgS4G4qcb5eZYsa/ZfyE7j7P/CCT/26ba++JtvJ9qJzadD0ABfkHTFm3+RhdZQQ=
+	t=1768943555; cv=none; b=FdTUNoCEyWP4vgz61KskpN30OCwSPH5bJ2f+tcUaHDvKRvIfWJAup432sWB0ecTu3oAslBdNpL6gkxCsPrbNCQAgYpd49iqvyT1ZaU4jXCre1fwzxgnjCDxT7/kMs85sCbTo4LJ7MHjft3mdNozCRfjzVJyxRO05W21WrQE2gx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768942373; c=relaxed/simple;
-	bh=cWBmd+6SVqCMDlWlRDRyy1mmdiX760SlRrPD4p0g28o=;
+	s=arc-20240116; t=1768943555; c=relaxed/simple;
+	bh=EjTJZz3QAncMdQfiVyB8kJwhYsBN1P9XfIJbtmpj6PY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=stFqBtX2hkZ2p6pmErGlYEndvLYY6geUENH5QGg6CKSzVd/yrtOQYtKl6LBJ2AjV6uGiAmG43bMGeR88RaU9SZXVZOX04a2oBatkCZ22JIpCV+FyZHqWAnWl26Vs7j75p/WMnc9vPoZqlyCeiJVHcQEc0J86kUTVRl5Cdx+sNzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VHl86lUh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9B0C16AAE;
-	Tue, 20 Jan 2026 20:52:50 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=qxBeu9nSIztfihAe1sEFzKi7MmZkHRLpSj/vNupKCpexa0MURenXE+WTqvGVdzcB7xyiRF/TGVu2w9YlJ2NyXR9z1gmbaihkJ+hsHw2i6Rl14JLzB3/pE4XeNQQZKAGo9SpjpzIuB9j5hpZn/CEK5lALkuHjSITMx8Al4ccvL2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UlfGpW5t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31CBC16AAE;
+	Tue, 20 Jan 2026 21:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768942371;
-	bh=cWBmd+6SVqCMDlWlRDRyy1mmdiX760SlRrPD4p0g28o=;
+	s=k20201202; t=1768943554;
+	bh=EjTJZz3QAncMdQfiVyB8kJwhYsBN1P9XfIJbtmpj6PY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VHl86lUhY0auHqalxqSkh8KfGqaWm2aDNOCB5QCqfGX2RGydBdJi/QXetiwhA9ObL
-	 cUl/0gsQws6Ck8C/OhTzY078OVX6uLp5D5iXT2rLdNZacqIoDXrGy/mRXbTQcWe0jq
-	 +l7DCmWtmdRocejG6UUu46R5foCZGqBRhiql743qMYSdMaAG9tb5ZhNS88uzQqr5qf
-	 442pqt/7QoBU9bJ4OqUnw+ANiGXdw/ZIeiLeXjEc0QgSwBhdQVQTGqJuydvdckybD4
-	 8DgXiqY7eWwO+m7RQBXuyFo5SWxMBCcqkxO5ZZw+gLhNWf+VszWbJ0VZOe0fufHO7e
-	 nGIJ1F09daVVQ==
-Date: Tue, 20 Jan 2026 12:52:49 -0800
+	b=UlfGpW5tJc83mFO8S3Plauah4xYEux8tc53vC6rTsEDdzj7ejsSJxXdDd4Xp7O6cV
+	 8fT80cHVWpMss2Cw/W2JxsfAASaO34ip0ORKcEaPirdhrCN6yTeUwyGzh1gjPTpMFx
+	 9cNZQHE4qoIvhZXoNZRs7gjaSBQcmya9mj4w6QK9Oo1C+qOzdubzGsCnQxwMD3atEj
+	 G06YqPEE7UIqBQE0cM46iDjifIva4cVhvsXcUWMIAThcHqfmSu8SJaRBII+06ULkcT
+	 Hjiv/LXzbpdX0rno3gsGjp2TVTC3jvcmg9YT46/uuqHwaiTK5koz6ii+W8znIPa7wq
+	 bSfMQM2q+MdaQ==
+Date: Tue, 20 Jan 2026 13:12:32 -0800
 From: Eric Biggers <ebiggers@kernel.org>
 To: David Howells <dhowells@redhat.com>
 Cc: Lukas Wunner <lukas@wunner.de>, Ignat Korchagin <ignat@cloudflare.com>,
@@ -61,10 +61,11 @@ Cc: Lukas Wunner <lukas@wunner.de>, Ignat Korchagin <ignat@cloudflare.com>,
 	Stephan Mueller <smueller@chronox.de>, linux-crypto@vger.kernel.org,
 	keyrings@vger.kernel.org, linux-modules@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v13 01/12] crypto: Add ML-DSA crypto_sig support
-Message-ID: <20260120205249.GA2657@quark>
+Subject: Re: [PATCH v13 02/12] pkcs7: Allow the signing algo to calculate the
+ digest itself
+Message-ID: <20260120211232.GB2657@quark>
 References: <20260120145103.1176337-1-dhowells@redhat.com>
- <20260120145103.1176337-2-dhowells@redhat.com>
+ <20260120145103.1176337-3-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -73,7 +74,7 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260120145103.1176337-2-dhowells@redhat.com>
+In-Reply-To: <20260120145103.1176337-3-dhowells@redhat.com>
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
@@ -83,7 +84,7 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-3858-lists,keyrings=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-3859-lists,keyrings=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
@@ -101,32 +102,30 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: F14BD4BF0B
+X-Rspamd-Queue-Id: D9EBD4CA45
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Jan 20, 2026 at 02:50:47PM +0000, David Howells wrote:
-> +config CRYPTO_MLDSA
-> +	tristate "ML-DSA (Module-Lattice-Based Digital Signature Algorithm)"
-> +	select CRYPTO_SIG
-> +	select CRYPTO_LIB_MLDSA
-> +	select CRYPTO_LIB_SHA3
-> +	help
-> +	  ML-DSA (Module-Lattice-Based Digital Signature Algorithm) (FIPS-204).
+On Tue, Jan 20, 2026 at 02:50:48PM +0000, David Howells wrote:
+> replace sig->digest with a copy of the contents of the
+> authenticatedAttributes section and adjust the digest length to match.
 
-The selection of CRYPTO_LIB_SHA3 is unnecessary.
+As I mentioned on v11, it's misleading to start using the term digest
+for something that isn't a digest.
 
-> +struct crypto_mldsa_ctx {
-> +	u8 pk[MAX(MAX(MLDSA44_PUBLIC_KEY_SIZE,
-> +		      MLDSA65_PUBLIC_KEY_SIZE),
-> +		  MLDSA87_PUBLIC_KEY_SIZE)];
-> +	unsigned int pk_len;
-> +	enum mldsa_alg strength;
-> +	u8 key_set;
-> +};
+Naturally, this confusing introduction of non-digest digests seems to
+have already caused a bug: IMA calls pkcs7_get_digest() to calculate the
+digest of the module.  But now that's no longer necessarily a digest.
+It could be the entire signed attributes.
 
-'key_set' should have type 'bool'.   Or just use pk_len == 0 to mean the
-key hasn't been set yet.
+For security-critical code like this we need to have a clear design, not
+just patch in hacks that overload existing code like this.
+
+I'll also note that this commit doesn't fully implement "Allow the
+signing algo to calculate the digest itself" as claimed, since only the
+signed attributes case is handled.  It looks like the next patch is
+intended to handle the other case.  But it's not made clear at all that
+it's a two-part thing; this patch implies that it's complete.
 
 - Eric
 
