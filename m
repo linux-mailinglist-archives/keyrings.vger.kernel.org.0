@@ -1,52 +1,52 @@
-Return-Path: <keyrings+bounces-3871-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3872-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEeTDnkYcGkEVwAAu9opvQ
-	(envelope-from <keyrings+bounces-3871-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 01:06:17 +0100
+	id eB3RApk2cGl9XAAAu9opvQ
+	(envelope-from <keyrings+bounces-3872-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 03:14:49 +0100
 X-Original-To: lists+keyrings@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8DED4E477
-	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 01:06:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C264F994
+	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 03:14:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id F212D7CADAE
-	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 00:06:15 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 6DA4466F8B4
+	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 02:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B955A1D5151;
-	Wed, 21 Jan 2026 00:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274592E54B6;
+	Wed, 21 Jan 2026 02:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H7LGzDff"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EvaCi02j"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870D21D555;
-	Wed, 21 Jan 2026 00:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E250127B4F7;
+	Wed, 21 Jan 2026 02:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768953970; cv=none; b=XbUHK69c7g6PmkwifjWC8UXvnQgyQB+dEoYpmZKVPoiT+H/fXTMqxa5YNB+akx4FPB3bzXJNLFQT1Y8UCIWis83hahW4fICeHN/7NpsWk86c0QtP8/75FKFTZbYO8UkPS2hLR+8WTh3JGTc9FZrR39qxCaGjhl94nYJBx/3BC9Y=
+	t=1768961656; cv=none; b=ks7eg3jJy79+EyOMmM7vojnEuXpy64tPUW1zG98JNs4cR2/+YMU3ne1VIQtlUfrwerL3gUNnbl2GmuHLqDbNJ5uNB+UecO49V1RyspUuee8nPYUsNfVOsulEtQl0A1lazpCprj3Yr64oNa8fFsTffYqWFupJDdXOHmpJlUYMcZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768953970; c=relaxed/simple;
-	bh=Zr0dKdI8zxsaxfaFyAG1kkUBLfApTCk9CJiwbxwsKCQ=;
+	s=arc-20240116; t=1768961656; c=relaxed/simple;
+	bh=BG9pkfBir7XLyspne+cVryo9UhHMwaspQ+CurD6p3FU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jhEdwKD059aXmngLVnmJ1llIGebx20vlzX7sybyE9PeoulDKYJbZ8WnThxs3DacQ8jb4+Sk46vqSNk8RUjs0nbvWPA/Ny1AzyEsgzf2o0R/jNpLivd4v+bXhyq0omZeHxB+J/UhTJ/j2O3QYWoVncKlNTlp8g6ffFq2h9g82jmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H7LGzDff; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616E7C16AAE;
-	Wed, 21 Jan 2026 00:06:09 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=SB7SLF6dK34mzoLy2m7XUohqNrDWH5sf2skln+/U0WKxU6Fu0G5FyhzqvbGybN1RpVvSquIzzJ4YaT9jdNuJyQACiNaTNvPqIJQpY0YnCmAwpMlBU362q5M5KkGkfM7HAZq1Bpv96ht0QuSdE5p59ZvHTsKL+NlEmQZu+zQb//s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EvaCi02j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1443C16AAE;
+	Wed, 21 Jan 2026 02:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768953970;
-	bh=Zr0dKdI8zxsaxfaFyAG1kkUBLfApTCk9CJiwbxwsKCQ=;
+	s=k20201202; t=1768961655;
+	bh=BG9pkfBir7XLyspne+cVryo9UhHMwaspQ+CurD6p3FU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H7LGzDffzTRPU3xC6K6VXLfr0zWpDmVdO+arqxzcv3vHcE7AN0yPzRu0t0631o0iq
-	 N6yL9Lz6qgNKqFqo6wFdduct9lwA1ckvgY1R7ZRJX9cX6kJNWw21uZH1nlSHuioEiF
-	 qzEZ8Buk4v4zA16UzEGKM/CP8JjYlhw/MB7gNKtuGO11R/SkBA4agJpJLUJNI///2b
-	 j3e4hZ+hmXtGbRzv+fxHYN+oKNy39/IsElmkRqQMIIsgLTAKX+h1kYvPxzvWDlKhuZ
-	 HD8O/yEfL/+fHQscHM1IfpATmIMTZ/P6YXbwRFVle8pHe7YgRVZ3Zn44/ggnjOUWq9
-	 tXOlQ2aFQ3rZw==
-Date: Tue, 20 Jan 2026 16:06:07 -0800
+	b=EvaCi02jvSfBnscmszmkY55oB161aLkf/C22HgL3eo/DNjXp0/zofrFZqvJDd43V6
+	 pYHbAUY0dqogzyBrASpPMNyVhaO+CbCFC3KDypx/zF4XRF2MtC0S0tQLTux14rREby
+	 fvifk2bX+kwc7WuZ9mtQQipM4W+DYrJAuoh9vPu37qbFMZUoCYv6GUhn9wyGMEwj0E
+	 9ViYiH57Lb9eJl6Cpx5xm9vQReGpQhad37drvG7B8vum5Gn5NLgQSAqcWoykVI5xP/
+	 CofAwUQQ5OtYYl3borIK/4fTtxTHvvlXs3UHHNwiHGOSdx7v7hbl+uiEQwtY48kLBj
+	 JG067t3fMS4tA==
+Date: Wed, 21 Jan 2026 02:14:13 +0000
 From: Eric Biggers <ebiggers@kernel.org>
 To: David Howells <dhowells@redhat.com>
 Cc: Lukas Wunner <lukas@wunner.de>, Ignat Korchagin <ignat@cloudflare.com>,
@@ -61,14 +61,13 @@ Cc: Lukas Wunner <lukas@wunner.de>, Ignat Korchagin <ignat@cloudflare.com>,
 	Stephan Mueller <smueller@chronox.de>, linux-crypto@vger.kernel.org,
 	keyrings@vger.kernel.org, linux-modules@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	Tadeusz Struk <tadeusz.struk@intel.com>,
 	"David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v12 06/10] crypto: Add supplementary info param to
- asymmetric key signature verification
-Message-ID: <20260121000607.GA12110@quark>
-References: <20260120220321.GA6191@quark>
- <20260115215100.312611-1-dhowells@redhat.com>
- <20260115215100.312611-7-dhowells@redhat.com>
- <1418295.1768952386@warthog.procyon.org.uk>
+Subject: Re: [PATCH v13 07/12] crypto: Add RSASSA-PSS support
+Message-ID: <20260121021413.GA998999@google.com>
+References: <20260120145103.1176337-1-dhowells@redhat.com>
+ <20260120145103.1176337-8-dhowells@redhat.com>
+ <20260120224108.GC6191@quark>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -77,22 +76,21 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1418295.1768952386@warthog.procyon.org.uk>
-X-Spamd-Result: default: False [-1.46 / 15.00];
+In-Reply-To: <20260120224108.GC6191@quark>
+X-Spamd-Result: default: False [-1.96 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-3871-lists,keyrings=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-3872-lists,keyrings=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
@@ -104,35 +102,71 @@ X-Spamd-Result: default: False [-1.46 / 15.00];
 	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo]
-X-Rspamd-Queue-Id: D8DED4E477
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,metzdowd.com:url,googlesource.com:url]
+X-Rspamd-Queue-Id: B0C264F994
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Jan 20, 2026 at 11:39:46PM +0000, David Howells wrote:
-> Eric Biggers <ebiggers@kernel.org> wrote:
+On Tue, Jan 20, 2026 at 02:41:11PM -0800, Eric Biggers wrote:
+> On Tue, Jan 20, 2026 at 02:50:53PM +0000, David Howells wrote:
+> > Add support for RSASSA-PSS [RFC8017 sec 8.1] signature verification support
+> > to the RSA driver in crypto/.
 > 
-> > As I'm sure you're aware, C has native support for function parameters.
+> This additional feature significantly increases the scope of your
+> patchset, especially considering that the kernel previously didn't
+> implement RSASSA-PSS at all.  This patchset also doesn't include any
+> explanation for why this additional feature is needed.  It might make
+> sense to add this feature, but it needs to be properly explained, and it
+> would be preferable for it to be its own patchset.
 > 
-> And we have a syscall interface to honour that takes a parameter string *for
-> this very purpose*.  It just wasn't threaded into the akcipher API.
+> > The verification function requires an info string formatted as a
+> > space-separated list of key=value pairs.  The following parameters need to
+> > be provided:
+> > 
+> >  (1) sighash=<algo>
+> > 
+> >      The hash algorithm to be used to digest the data.
+> > 
+> >  (2) pss_mask=<type>,...
+> > 
+> >      The mask generation function (MGF) and its parameters.
+> > 
+> >  (3) pss_salt=<len>
+> > 
+> >      The length of the salt used.
+> > 
+> > The only MGF currently supported is "mgf1".  This takes an additional
+> > parameter indicating the mask-generating hash (which need not be the same
+> > as the data hash).  E.g.:
+> > 
+> >      "sighash=sha256 pss_mask=mgf1,sha256 pss_salt=32"
+> 
+> One of the issues with RSASSA-PSS is the excessive flexibility in the
+> parameters, which often end up being attacker controlled.  Therefore
+> many implementations of RSASSA-PSS restrict the allowed parameters to
+> something reasonable, e.g. restricting the allowed hash algorithms,
+> requiring the two hash algorithms to be the same, and requiring the salt
+> size to match the digest size.  We should do likewise if possible.
 
-This seems to be more of a bug than a feature, though.  It seems the
-actual goals of this patchset are to add ML-DSA and RSASSA-PSS support
-to kernel module signing.  But because of how the code is organized, as
-a side effect it ended up extending the KEYCTL_PKEY_* UAPIs as well.
-Linux's UAPI stability guarantee holds for these UAPIs; anything that we
-add to them, including these ad-hoc and undocumented parameter strings,
-will likely have to be supported forever.
+Looking into this a bit more, I'm increasingly skeptical that RSASSA-PSS
+would be a worthwhile addition, especially when integrated into CMS and
+X.509.  It seems that while in theory it's an improvement over PKCS#1
+v1.5 padding, the specifications were messed up and it has way too many
+unnecessary and error-prone parameters.  Here are some references that
+describe some of the issues in RSASSA-PSS:
 
-Unless these keyctl UAPI extensions are well-justified and come with
-documentation and tests, we should just hold off on them for now.
-What's the hurry?
+    * https://boringssl-review.googlesource.com/c/boringssl/+/81656
+    * https://www.metzdowd.com/pipermail/cryptography/2019-November/035449.html
 
-BTW, we got hit by this when there was an attempt to remove SHA-1
-support from module signing.  Due to the design defect where the signing
-is also exposed through KEYCTL_PKEY_*, it caused a UAPI regression as
-well and had to be reverted.
+It seems it might not be very widely used either.
+
+I think the fact that this patchset implements RSASSA-PSS verification
+incorrectly (by not verifying that the leading bit is zero) further
+validates these concerns.
+
+With RSA also being two generations behind the current generation of
+signature algorithms (RSA => elliptic curves => lattices), I'm wondering
+what the motivation for this feature is.
 
 - Eric
 
