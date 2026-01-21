@@ -1,151 +1,184 @@
-Return-Path: <keyrings+bounces-3873-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3874-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6NJuHOODcGktYAAAu9opvQ
-	(envelope-from <keyrings+bounces-3873-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 08:44:35 +0100
+	id CD+OFvWKcGnPYQAAu9opvQ
+	(envelope-from <keyrings+bounces-3874-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 09:14:45 +0100
 X-Original-To: lists+keyrings@lfdr.de
-Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DDB52F98
-	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 08:44:35 +0100 (CET)
+Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [213.196.21.55])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25C1B53555
+	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 09:14:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 83DF13A295F
-	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 07:44:34 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 095F0540A89
+	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 08:12:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805D54657EE;
-	Wed, 21 Jan 2026 07:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2FF3359701;
+	Wed, 21 Jan 2026 08:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="v1Zs+WH1";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="I+lOgm+p"
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="ZdVhO9OQ"
 X-Original-To: keyrings@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EAEE43636E;
-	Wed, 21 Jan 2026 07:44:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768981469; cv=none; b=DHvWmgQV6jHBJFsbo8b6GETALoXhrBkrikPyLbiHjn99XzEdEpHQpAZN7sQ4tAg3GrdLAcz44wIp0CzWk67Bpn2F0eZT/gV/Xc77+FWA0INjO0Jc1vGimmANJgDpKXN0wJBTijpqcqj+iDZe4yI81nHEkuKxs6UJE+N4W44tdIM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768981469; c=relaxed/simple;
-	bh=rUxz+eQcTiT8Eocx/OCaRzNUkBbr9jqRN7boZLQK8kM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=XWHqHNDhWG7rhV7BHxwgThytloqIDFYB0pvd0vHOCyHQcECEsSizv7pkJsZ3IYSbj7iMGfB8vQNReZjF8JdcE03G3p20SMecxo4isVp7qNozAlF0gZdDIfNlSOlJ3WuTzL9yXNzr5SE2cvQieRV29us2PTx3Jcwb/Kxdul7FN9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=v1Zs+WH1; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=I+lOgm+p; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1768981465;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=fIvYdrSQBe9ir4MS5HtE9uB33oKlBqD71NakOZFLopY=;
-	b=v1Zs+WH1ZyOow+0YL/klnFj6EK3JbtDcumtsZMtjSZeUaEyo50+5oKd//MMRHOGJl+rHJI
-	RIury9GryLw7J4qopejXD5U2heogd0InaTELCdDN+QRizrVEtDGS1UJ887Ezl/9fvKQuPb
-	dSmLxzjQ5jqGaPG5V1tmX4MJSvZmx9UB0rgPfMzVBeXIV+qnKdJLIqvFv6kDOUiYYpJChc
-	J1Jx7zW2vCtjRYsyGcozqgjtV5awTQOecnLZL4miTU6iFdK565NFDV42/OkmZQkdLD6xxv
-	e1P7VNg1MpE9ZYioywMqF3vAqSTc6faVFQiGLI6CKN8bRPHyCLm0xxEoROWsdw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1768981465;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=fIvYdrSQBe9ir4MS5HtE9uB33oKlBqD71NakOZFLopY=;
-	b=I+lOgm+pzQ36/jjh6Ru+zjwb3Sa/maN/GGeH14pqIN1KlUt9nZHb7P/lr92HOXKqNpv/U5
-	iK1AYX3VPyQtd/CQ==
-Date: Wed, 21 Jan 2026 08:43:59 +0100
-Subject: [PATCH] efi: Mark UEFI skip cert quirks list as __initconst
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DE3449EB4
+	for <keyrings@vger.kernel.org>; Wed, 21 Jan 2026 08:12:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768983126; cv=pass; b=i4EzHQ6dEt94w7lBbCKlnL1acbMV6Ao1OxkR/vUKoWvb4RoFO0I8wucn3XqtYjCAEAGE0Wa7uwi96wJEIC1/4IcDwPFxFT+JRdrudkSuv0z8zKdK0++jPmSCtB1oZ+dgnCV2QDFa2/0gDV9PrbVBj+0L7yr6oM67TN0A5Hjwg5E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768983126; c=relaxed/simple;
+	bh=NcPcHijqCx7t3zPi3d2W+9QUjcbq1aI+GVwFFFeFbq4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dpExtbEDMocdfckdts4UtNdv15IPNkkJNWcTrrKa7B7RW5IMqBqVwXDv6s+BHngWebHJBGoEw/7j/msQAGn+KjGe6SCZZCa33FBxrOwow1Y/pCJYnnn9rQz1QzWZZWSjNZ2tD41kQckLSeX4mKceBtNKgMRbiUg2fYfuXWb0PPI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=ZdVhO9OQ; arc=pass smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-59dd490be5fso101994e87.2
+        for <keyrings@vger.kernel.org>; Wed, 21 Jan 2026 00:12:04 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1768983123; cv=none;
+        d=google.com; s=arc-20240605;
+        b=UgSRh/gR7XlNisq7J0H16C5XMPEIG4/x3Ku46cs6YWag/O+vhe2rAiAlXA217vMva3
+         GGe392FyYK+VPhg0hT0Afot3rjPdaW+/6bW6SMu93QQTSrXpHqEIQIjNOJZ60ijcRbah
+         i7qSXezBXSXwWMOUChyj1uDEDfhCjXUBtEfMwHJIr8jrxw9d7YZCC3+gMvsTGOXm3j8u
+         EgMpryrjhBR+UkOjuYH728F9VMhzhprD5f0yRLGeTm6swzJDeBS4Mwe6rZ9T0tqe0dKs
+         /kb7K7DI/5iR30FhDFqNs9C4lJsSG2CMzjw0+z3eWcQMXsH+dIHgp+jIdsoccYhqEgrH
+         /SlQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7fXCBugNbG8UpDEmEOBmP8ra4Bif5NvnVW2PAsTZKdM=;
+        fh=y+JxrItci4pZsHFX3JuPh5ZkP+nRmw3bE6iCsCwYWh8=;
+        b=BiTKQbxpuYXPvnixLys9SfwxsqIofcvNjSC/OI7ll8miqg1qGfdC21rEhiD6GuGvtZ
+         V/iy2oStxCS7sFIbXhj8Zf3kDaNnk6ZNIzFWqgrUX/XHVqCBspubFBwjz54NCldcOhfZ
+         Wphy8DpzZys6jjoNJhNVYNvNKZ+ftwUgfz1bPNNyutRGY4uB7QdMdud5fVajz5yZjHn5
+         zsCzM6MFq1lDTzOBbfdElxun3PHIJl3P3GzxgjuTG/AVkltYaOMG2LRYj6zgpfd6ebBL
+         tbmkh/gFod7azEtpbCB5I/vxatrPfmUpkWQ7U5YkzFl2ZBYKbmadRl5FFyqpS6uin7Q8
+         TePw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloudflare.com; s=google09082023; t=1768983123; x=1769587923; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7fXCBugNbG8UpDEmEOBmP8ra4Bif5NvnVW2PAsTZKdM=;
+        b=ZdVhO9OQUc0wiKmBFlmD8k8TUGqsMUSipCPOvNPYADDKeiTc6sa99VIgDi2FHKkZ/U
+         Awkh2QH5dLTlkwim2U0tmBzoezXZIt391oDRSB8q2+eF46TUcVLaE5lyHBezcI0rGyGX
+         3gRH2QPt/ybJ8oj79BkHF/V87RMdLtTZx/m3mQPAaxSwc3316N9I+ufcZQa/FAOHBKrx
+         KkDqoxXHMtVYME+lgECQbFbuNoTnZztld4VI8sgtKWgUzM01s/I6jl0t28uH8S7NCGDj
+         cKdh0oboHRLvXVG6ac6s4kUaodyOt0hTQG5dVDS3n4mumRZ3/0/OgbiW1TKMj8abHGzo
+         z98Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768983123; x=1769587923;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7fXCBugNbG8UpDEmEOBmP8ra4Bif5NvnVW2PAsTZKdM=;
+        b=HtR2YM083mwHCew9VxigUamkBYGvIh7DYIIHlzj8L0gnBhkSRd3xvn1/qns4CCazTc
+         9CnnEsDpUYnw6hpCW9K+mgoArROFQYWjTbGPllAMFP8OBV11zA7C7VcZGbfKQqmvQMQu
+         ptxqPcgsRb4VSByGJYCkODluc/9Bvngsb8RD/e8pYEhGoJgnkMPxQQrHwX2t+ptunFXx
+         x7x4p9nlSkhKyeN/o4lgf/50JBoRtFzA08RNwv/RCYrNjKJgLaT8Uud7g2aa2FvWyssO
+         BG9J9Jl/fDw26sZsyKnI7VEXpWnmr7C+ZCrfepTprfgh7Ky115SYTdQE/1I4xscsUOmU
+         ZJJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU2TMkA2IPoMeyGe7EkSASsB4ofITEQyRK2NKCmsqFVEc+tIXmqYiv9Ij+LgKiRRgL6bJ4uDzt4Mw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz332yNnSNNvJA7ysKlK7bNCt4eyQQQU7wWJhkOyfcUQVo/O+q3
+	A1TlOlsh+IyjuaAlRTQscnMFyBtRDix9oi0vZWFVh72BbfEJp54S1TYkTNE9faMsOat5M09sOdD
+	gxhKTx34La4UwojdlC0/uUyPzHBnoKr7yHJIPWE9jHA==
+X-Gm-Gg: AZuq6aKVRMbVc0d0scvqE98RM0a93+smDcjLMKfVtG6L8R+GXBhWYlT354mFjG+EHC2
+	W+HSY9QYOompOZt9XoDBgT81oGbIZ5iuJokCU3Q+nF7f8wDaNNSntk10bglWIpZQfd7I89rUJdo
+	hbC/22uW3XmpglP+t2L0B2xSmfiQFnHqunam4ThwzXdaotURC0eq/gHVCQxZnFRLxOQF5qEU4IF
+	A2HZZw++l3NiFhUDneM24SHRnyE5olg4foW1dgknIXOXxMpzPF4A1pWI7L6kbw7mMmstPlbCY6Q
+	mcAk5/5e9JhQsNMcNasgfEv55dl5
+X-Received: by 2002:a05:6512:138f:b0:59a:183c:4863 with SMTP id
+ 2adb3069b0e04-59baeeb1d8cmr5444078e87.8.1768983122854; Wed, 21 Jan 2026
+ 00:12:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260121-uefi-certs-initconst-v1-1-896458b3e03f@linutronix.de>
-X-B4-Tracking: v=1; b=H4sIAL6DcGkC/x2MMQqAMAwAvyKZDbSFOvgVcZAkapZWmiqC+HeL4
- 8HdPWBSVAzG7oEil5rm1MD3HdC+pE1QuTEEFwbng8dTVkWSUg01aaWcrCJHXpji6jwztPQozbr
- /7TS/7wd/MpKaZgAAAA==
-X-Change-ID: 20260121-uefi-certs-initconst-d5dadc5f01dd
-To: Jarkko Sakkinen <jarkko@kernel.org>, Mimi Zohar <zohar@linux.ibm.com>, 
- Roberto Sassu <roberto.sassu@huawei.com>, 
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
- Eric Snowberg <eric.snowberg@oracle.com>, Paul Moore <paul@paul-moore.com>, 
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>
-Cc: linux-integrity@vger.kernel.org, keyrings@vger.kernel.org, 
- linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768981459; l=1160;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=rUxz+eQcTiT8Eocx/OCaRzNUkBbr9jqRN7boZLQK8kM=;
- b=fqjAEQi5K3fgms6TjBCPCBImC+o0haepvCf5+TaCGsw84+grszBlGM2qZ6enMjLeQX3SfzWF8
- gpqH/W4EsxTA0KetSS/PRDctqoA/EQ+YacRTYYU+aNdihPtdyjlqxNd
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Spamd-Result: default: False [-0.46 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+References: <20260120224108.GC6191@quark> <20260120145103.1176337-1-dhowells@redhat.com>
+ <20260120145103.1176337-8-dhowells@redhat.com> <1416722.1768950957@warthog.procyon.org.uk>
+ <20260120233617.GA10653@quark>
+In-Reply-To: <20260120233617.GA10653@quark>
+From: Ignat Korchagin <ignat@cloudflare.com>
+Date: Wed, 21 Jan 2026 08:11:51 +0000
+X-Gm-Features: AZwV_QiRbs3OO4qM3uwaFGGNt_nfptg6k5-iiQUJvwUGMqgS-PCFW0-TncfBeF8
+Message-ID: <CALrw=nGHEf3zT0yb2ybpH58ah4dT4_H11TseDL7Fs-w7RBY6hQ@mail.gmail.com>
+Subject: Re: [PATCH v13 07/12] crypto: Add RSASSA-PSS support
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: David Howells <dhowells@redhat.com>, Lukas Wunner <lukas@wunner.de>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	"Jason A . Donenfeld" <Jason@zx2c4.com>, Ard Biesheuvel <ardb@kernel.org>, Stephan Mueller <smueller@chronox.de>, 
+	linux-crypto@vger.kernel.org, keyrings@vger.kernel.org, 
+	linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Tadeusz Struk <tadeusz.struk@intel.com>, "David S. Miller" <davem@davemloft.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-8.96 / 15.00];
+	WHITELIST_DMARC(-7.00)[cloudflare.com:D:+];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	R_DKIM_ALLOW(-0.20)[cloudflare.com:s=google09082023];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-3873-lists,keyrings=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,linux.ibm.com,huawei.com,gmail.com,oracle.com,paul-moore.com,namei.org,hallyn.com];
+	TAGGED_FROM(0.00)[bounces-3874-lists,keyrings=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCPT_COUNT_TWELVE(0.00)[13];
+	DMARC_POLICY_ALLOW(0.00)[cloudflare.com,reject];
+	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[linutronix.de,none];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[cloudflare.com:+];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	R_SPF_SOFTFAIL(0.00)[~all:c];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thomas.weissschuh@linutronix.de,keyrings@vger.kernel.org];
-	DKIM_TRACE(0.00)[linutronix.de:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
+	FROM_NEQ_ENVFROM(0.00)[ignat@cloudflare.com,keyrings@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	R_SPF_SOFTFAIL(0.00)[~all:c];
+	ASN(0.00)[asn:7979, ipnet:213.196.21.0/24, country:US];
 	TAGGED_RCPT(0.00)[keyrings];
 	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,linutronix.de:email,linutronix.de:dkim,linutronix.de:mid]
-X-Rspamd-Queue-Id: 37DDB52F98
+	DBL_BLOCKED_OPENRESOLVER(0.00)[ams.mirrors.kernel.org:rdns,ams.mirrors.kernel.org:helo,mail.gmail.com:mid,cloudflare.com:dkim]
+X-Rspamd-Queue-Id: 25C1B53555
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The only user is marked as __init, so there is no reason to keep this
-data around after bootup.
+On Tue, Jan 20, 2026 at 11:36=E2=80=AFPM Eric Biggers <ebiggers@kernel.org>=
+ wrote:
+>
+> On Tue, Jan 20, 2026 at 11:15:57PM +0000, David Howells wrote:
+> > Eric Biggers <ebiggers@kernel.org> wrote:
+> >
+> > > As I mentioned in another reply, error-prone string parsing isn't a
+> > > great choice.  C has native support for function parameters.
+> >
+> > But is constrained that it has to work with KEYCTL_PKEY_VERIFY's info
+> > parameter.
+>
+> The cover letter of this patchset summarizes it as "These patches add
+> ML-DSA module signing and RSASSA-PSS module signing."  Adding
+> KEYCTL_PKEY_VERIFY support for these algorithms would be a significant
+> new UAPI feature that would need its own justification and its own
+> documentation and test updates.
+>
+> However, it was established pretty clearly in past discussions that
+> KEYCTL_PKEY_* are a mistake and basically exist only for backwards
+> compatibility with iwd.
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
----
- security/integrity/platform_certs/load_uefi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I disagree that it was "established". It is some folks opinion here,
+but I find it quite useful and hope it would be actually extended by
+good algorithm support.
 
-diff --git a/security/integrity/platform_certs/load_uefi.c b/security/integrity/platform_certs/load_uefi.c
-index d1fdd113450a..26523a2b29c7 100644
---- a/security/integrity/platform_certs/load_uefi.c
-+++ b/security/integrity/platform_certs/load_uefi.c
-@@ -19,7 +19,7 @@
-  * a crash disabling EFI runtime services. The following quirk skips reading
-  * these variables.
-  */
--static const struct dmi_system_id uefi_skip_cert[] = {
-+static const struct dmi_system_id uefi_skip_cert[] __initconst = {
- 	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookPro15,1") },
- 	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookPro15,2") },
- 	{ UEFI_QUIRK_SKIP_CERT("Apple Inc.", "MacBookPro15,3") },
-
----
-base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-change-id: 20260121-uefi-certs-initconst-d5dadc5f01dd
-
-Best regards,
--- 
-Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-
+> So I don't understand why you're advocating for adding new features to
+> them.
+>
+> - Eric
 
