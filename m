@@ -1,65 +1,67 @@
-Return-Path: <keyrings+bounces-3881-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3882-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qOTJCARVcWkNEwAAu9opvQ
-	(envelope-from <keyrings+bounces-3881-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 23:36:52 +0100
+	id aIyUCCRVcWkNEwAAu9opvQ
+	(envelope-from <keyrings+bounces-3882-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 23:37:24 +0100
 X-Original-To: lists+keyrings@lfdr.de
 Received: from ams.mirrors.kernel.org (ams.mirrors.kernel.org [IPv6:2a01:60a::1994:3:14])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD5415EE63
-	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 23:36:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2E565EE88
+	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 23:37:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 37F675638CE
-	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 22:36:38 +0000 (UTC)
+	by ams.mirrors.kernel.org (Postfix) with ESMTPS id 0D0FB5885D7
+	for <lists+keyrings@lfdr.de>; Wed, 21 Jan 2026 22:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7C83D5245;
-	Wed, 21 Jan 2026 22:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B864244B699;
+	Wed, 21 Jan 2026 22:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U98F4t3E"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jbu7pldI"
 X-Original-To: keyrings@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F5C43DA4B
-	for <keyrings@vger.kernel.org>; Wed, 21 Jan 2026 22:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9924744BC91
+	for <keyrings@vger.kernel.org>; Wed, 21 Jan 2026 22:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769034985; cv=none; b=uYNZCvWtnUmj2eEW5GktT+RR2LwKVzdq6tnUQBuotRgH/PUIDhnMREnpLtKBzSkfst04SWyJe8l3Dvuc2elqe/zHMcBJ3ZVl9vGmIYkMQUru7eklWA9VnZnj3TWPan1lW10xQbpk2Ku+X+wXWG0OfoMEFH8iYE1cq/OgRrekNIc=
+	t=1769034992; cv=none; b=Rkwb/C8VST+WYPEvWX73uOWHvJQR8VbpLCyzE2BZbg2VUclKlUiESf0412bTKkb6x42V2/JkAC6kjc9bLrtm9ZVtO6i0huSm9LzLgXhoK0aeYYnjGuD3QbLl/ULFyUt93lBZ1QBOACIGI7Gp2sPf362rnnq3IZQRqqCEMi3lfno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769034985; c=relaxed/simple;
-	bh=me9m+0dJ9oPfjpig03DU0rnpncdZFahuk+lj+0A1rYM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IN19xWJ6MLGfDcPr1ckBeU2XaB5XLkhXBzlWSZmdjJ7Ctc5jhB7B9/R/9JTACwg+FZcFrWV0+mov2+166pEgw+R1H/saVjG+T8k2Z/Am0PyYqufBuPDu3+Q6R1zAk2rEvUinZAurrGQtrNFNhrwcnt/hxk2s3VdZbkIsbE/76TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U98F4t3E; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1769034992; c=relaxed/simple;
+	bh=yxuz1XGwka25nwbP3TQtMQjnCd1A9XYnkw4fpQ+1zI4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KI1Ss1EBBQr/BuFhP6spHb1bjLlZItgPLvV0nd4bH5Scc7CRAPCM6DRl1Wwyo6dhXhazq5/oOdPZQ9+UpBeBZCTwCWh6ispUqBU9098tOpKCbBKXvSyZJqWdbJJ+UOts4M+vwGUymF6hDiGqp6Kni/DzCtgf0+3PIYJwq4+47VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jbu7pldI; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769034982;
+	s=mimecast20190719; t=1769034989;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=modYtiA0MJDhvp/xfmsCXxdPjWq41pNdftXRNlEPoi0=;
-	b=U98F4t3EH7UvOcVDBCfDlDW5SZKgf856qbFc9nrOATLtF5hn0JCTjq8gZd38exO5DwEkDK
-	ejBHRR0vEN9IN+ICGkg+8JnmOUlVv3qfs5f3j2ju3g3RVJgd6Xw67O5fMOmizPSZaXDu9B
-	/DOOziBvRYLVaTfYUuP2xSQfbUN+q3s=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PrapPTZIg/B6PDqm9XjQ/SresbhuKzegBZp9ZIwUVT0=;
+	b=Jbu7pldIxU6l5rHecUBc6sPNYkzdOHuOu7oeXhTWEIfn7RDhutfuTxqrQn78bfJfCc8LpY
+	1FEXUdlLgF1vF752R13ceU2AA6v8A4b2070ANyV1RU3WU0x2bLYsCW0ikAz5LzsPWnMrLt
+	R/9GErfQcGoY5iwBw7Oo64j2PvMfmfs=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-KKSxy_s6MD6ipWDNG5O3HA-1; Wed,
- 21 Jan 2026 17:36:18 -0500
-X-MC-Unique: KKSxy_s6MD6ipWDNG5O3HA-1
-X-Mimecast-MFC-AGG-ID: KKSxy_s6MD6ipWDNG5O3HA_1769034976
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-49-dYnw1CgzOrq1_sn54fzVwg-1; Wed,
+ 21 Jan 2026 17:36:24 -0500
+X-MC-Unique: dYnw1CgzOrq1_sn54fzVwg-1
+X-Mimecast-MFC-AGG-ID: dYnw1CgzOrq1_sn54fzVwg_1769034982
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2576D1800473;
-	Wed, 21 Jan 2026 22:36:16 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B1AA6180034D;
+	Wed, 21 Jan 2026 22:36:21 +0000 (UTC)
 Received: from warthog.procyon.org.uk.com (unknown [10.42.28.2])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2D4E519560A2;
-	Wed, 21 Jan 2026 22:36:11 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B939918004D8;
+	Wed, 21 Jan 2026 22:36:17 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: Lukas Wunner <lukas@wunner.de>,
 	Ignat Korchagin <ignat@cloudflare.com>
@@ -78,9 +80,11 @@ Cc: David Howells <dhowells@redhat.com>,
 	keyrings@vger.kernel.org,
 	linux-modules@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v14 0/5] x509, pkcs7, crypto: Add ML-DSA and RSASSA-PSS signing
-Date: Wed, 21 Jan 2026 22:36:02 +0000
-Message-ID: <20260121223609.1650735-1-dhowells@redhat.com>
+Subject: [PATCH v14 1/5] crypto: Add ML-DSA crypto_sig support
+Date: Wed, 21 Jan 2026 22:36:03 +0000
+Message-ID: <20260121223609.1650735-2-dhowells@redhat.com>
+In-Reply-To: <20260121223609.1650735-1-dhowells@redhat.com>
+References: <20260121223609.1650735-1-dhowells@redhat.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -88,24 +92,23 @@ List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCPT_COUNT_TWELVE(0.00)[17];
 	DMARC_POLICY_ALLOW(0.00)[redhat.com,quarantine];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a01:60a::1994:3:14:from];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-3881-lists,keyrings=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-3882-lists,keyrings=lfdr.de];
 	DKIM_TRACE(0.00)[redhat.com:+];
 	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
@@ -114,271 +117,272 @@ X-Spamd-Result: default: False [-0.46 / 15.00];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	R_SPF_SOFTFAIL(0.00)[~all:c];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[170.10.129.124:received,10.42.28.2:received,35.165.154.97:received,52.25.139.140:received];
+	TAGGED_RCPT(0.00)[keyrings];
 	RCVD_COUNT_FIVE(0.00)[6];
 	ASN(0.00)[asn:7979, ipnet:2a01:60a::/32, country:US];
-	TAGGED_RCPT(0.00)[keyrings];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gen-hash-testvecs.py:url,ams.mirrors.kernel.org:helo,ams.mirrors.kernel.org:rdns]
-X-Rspamd-Queue-Id: BD5415EE63
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cloudflare.com:email,ams.mirrors.kernel.org:helo,ams.mirrors.kernel.org:rdns,wunner.de:email]
+X-Rspamd-Queue-Id: F2E565EE88
 X-Rspamd-Action: no action
 
-Hi Lukas, Ignat,
+Add verify-only public key crypto support for ML-DSA so that the
+X.509/PKCS#7 signature verification code, as used by module signing,
+amongst other things, can make use of it through the common crypto_sig API.
 
-[Note this is based on Eric Bigger's libcrypto-next branch].
-
-These patches add ML-DSA module signing and RSASSA-PSS module signing.  The
-first half of the set adds ML-DSA signing:
-
- (1) Add a crypto_sig interface for ML-DSA, verification only.
-
- (2) Modify PKCS#7 support to allow kernel module signatures to carry
-     authenticatedAttributes as OpenSSL refuses to let them be opted out of
-     for ML-DSA (CMS_NOATTR).  This adds an extra digest calculation to the
-     process.
-
-     Modify PKCS#7 to pass the authenticatedAttributes directly to the
-     ML-DSA algorithm rather than passing over a digest as is done with RSA
-     as ML-DSA wants to do its own hashing and will add other stuff into
-     the hash.  We could use hashML-DSA or an external mu instead, but they
-     aren't standardised for CMS yet.
-
- (3) Add support to the PKCS#7 and X.509 parsers for ML-DSA.
-
- (4) Modify sign-file to handle OpenSSL not permitting CMS_NOATTR with
-     ML-DSA and add ML-DSA to the choice of algorithm with which to sign
-     modules.  Note that this might need some more 'select' lines in the
-     Kconfig to select the lib stuff as well.
-
-This is based on Eric's libcrypto-next branch which has the core
-implementation of ML-DSA.
-
-The second half of the set adds RSASSA-PSS signing:
-
- (5) Add an info string parameter to the internal signature verification
-     routines where that does not already exist.  This is necessary to pass
-     extra parameters and is already supported in the KEYCTL_PKEY_VERIFY
-     keyctl.
-
-     Both X.509 and PKCS#7 provide for these parameters to be supplied, but
-     it is tricky to pass the parameters in a blob with the signature or
-     key data as there are checks on these sizes that are then violated;
-     further, the way the parameters are laid out in the ASN.1 doesn't lend
-     itself easily to simply extracting out a larger blob.
-
- (6) Add RSASSA-PSS support to the RSA driver in crypto/.  This parses the
-     info string to get the verification parameters.
-
- (7) Add support to the PKCS#7 and X.509 parsers for RSASSA-PSS.
-
- (8) Modify sign-file to pass the extra parameters necessary to be able
-     generate RSASSA-PSS.  For the moment, only select MGF1 with the same
-     hash algorithm as for the data for the mask function.  Add RSASSA-PSS
-     to the choice of algorithm with which to sign modules.
-
-Note that I do still need to add some FIPS tests for ML-DSA in the form of
-X.509 certs, data and detached PKCS#7 signatures.  I'm not sure if I can
-use FIPS-standard tests for that.
-
-The patches can also be found here:
-
-	https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/linux-fs.git/log/?h=keys-pqc
-
-David
-
-Changes
-=======
-ver #14)
- - public_key:
-   - Rename public_key::digest to public_key::m.
- - X.509:
-   - Independently calculate the SHA256 hash for the blacklist check as
-     an ML-DSA-signed X.509 cert doesn't generate a digest we can use.
-   - Point public_key::m at the TBS data for ML-DSA.
- - PKCS#7:
-   - Allocate a big enough digest buffer rather than reallocating in order
-     to store the authattrs/signedattrs instead.
-   - Merge the two patches that add direct signing support.
- - ML-DSA:
-   - Use bool instead of u8.
-   - Remove references to SHAKE in Kconfig and mention OpenSSL requirements
-     there.
-   - Limit ML-DSA with an intermediate hash (e.g. signedAttrs) to using
-     SHA512 only.
-   - Don't select CRYPTO_LIB_SHA3 for CRYPTO_MLDSA.
- - RSASSA-PSS:
-   - Allow use with SHA256 and SHA384.
-   - Fix calculation of emBits to be number of bits in the RSA modulus 'n'.
-   - Use strncmp() not memcmp() to avoid reading beyond end of string.
-   - Use correct destructor in rsassa_params_parse().
-   - Drop this algo for the moment.
- - Drop the pefile_context::digest_free for now - it's only set to true and
-   is unrelated to public_key::digest_free.
-
-ver #13)
- - Allow a zero-length salt in RSASSA-PSS.
- - Don't reject ECDSA/ECRDSA with SHA256 and SHA384 otherwise the FIPS
-   selftest panics when used.
- - Add a FIPS test for RSASSA-PSS (from NIST's SigVerPSS_186-3.rsp).
- - Add a FIPS test for ML-DSA (from NIST's FIPS204 JSON set).
-
-ver #12)
- - Rebased on Eric's libcrypto-next branch.
- - Delete references to Dilithium (ML-DSA derived from this).
- - Made sign-file supply CMS_NOATTR for ML-DSA if openssl >= v4.
- - Made it possible to do ML-DSA over the data without signedAttrs.
- - Made RSASSA-PSS info parser use strsep() and match_token().
- - Cleaned the RSASSA-PSS param parsing.
- - Added limitation on what hashes can be used with what algos.
- - Moved __free()-marked variables to the point of setting.
-
-ver #11)
- - Rebased on Eric's libcrypto-next branch.
- - Added RSASSA-PSS support patches.
-
-ver #10)
- - Replaced the Leancrypto ML-DSA implementation with Eric's.
- - Fixed Eric's implementation to have MODULE_* info.
- - Added a patch to drive Eric's ML-DSA implementation from crypto_sig.
- - Removed SHAKE256 from the list of available module hash algorithms.
- - Changed a some more ML_DSA to MLDSA in config symbols.
-
-ver #9)
- - ML-DSA changes:
-   - Separate output into four modules (1 common, 3 strength-specific).
-     - Solves Kconfig issue with needing to select at least one strength.
-   - Separate the strength-specific crypto-lib APIs.
-     - This is now generated by preprocessor-templating.
-   - Remove the multiplexor code.
-   - Multiplex the crypto-lib APIs by C type.
- - Fix the PKCS#7/X.509 code to have the correct algo names.
-
-ver #8)
- - Moved the ML-DSA code to lib/crypto/mldsa/.
- - Renamed some bits from ml-dsa to mldsa.
- - Created a simplified API and placed that in include/crypto/mldsa.h.
- - Made the testing code use the simplified API.
- - Fixed a warning about implicitly casting between uint16_t and __le16.
-
-ver #7)
- - Rebased on Eric's tree as that now contains all the necessary SHA-3
-   infrastructure and drop the SHA-3 patches from here.
- - Added a minimal patch to provide shake256 support for crypto_sig.
- - Got rid of the memory allocation wrappers.
- - Removed the ML-DSA keypair generation code and the signing code, leaving
-   only the signature verification code.
- - Removed the secret key handling code.
- - Removed the secret keys from the kunit tests and the signing testing.
- - Removed some unused bits from the ML-DSA code.
- - Downgraded the kdoc comments to ordinary comments, but keep the markup
-   for easier comparison to Leancrypto.
-
-ver #6)
- - Added a patch to make the jitterentropy RNG use lib/sha3.
- - Added back the crypto/sha3_generic changes.
- - Added ML-DSA implementation (still needs more cleanup).
- - Added kunit test for ML-DSA.
- - Modified PKCS#7 to accommodate ML-DSA.
- - Modified PKCS#7 and X.509 to allow ML-DSA to be specified and used.
- - Modified sign-file to not use CMS_NOATTR with ML-DSA.
- - Allowed SHA3 and SHAKE* algorithms for module signing default.
- - Allowed ML-DSA-{44,65,87} to be selected as the module signing default.
-
-ver #5)
- - Fix gen-hash-testvecs.py to correctly handle algo names that contain a
-   dash.
- - Fix gen-hash-testvecs.py to not generate HMAC for SHA3-* or SHAKE* as
-   these don't currently have HMAC variants implemented.
- - Fix algo names to be correct.
- - Fix kunit module description as it now tests all SHA3 variants.
-
-ver #4)
- - Fix a couple of arm64 build problems.
- - Doc fixes:
-   - Fix the description of the algorithm to be closer to the NIST spec's
-     terminology.
-   - Don't talk of finialising the context for XOFs.
-   - Don't say "Return: None".
-   - Declare the "Context" to be "Any context" and make no mention of the
-     fact that it might use the FPU.
-   - Change "initialise" to "initialize".
-   - Don't warn that the context is relatively large for stack use.
- - Use size_t for size parameters/variables.
- - Make the module_exit unconditional.
- - Dropped the crypto/ dir-affecting patches for the moment.
-
-ver #3)
- - Renamed conflicting arm64 functions.
- - Made a separate wrapper API for each algorithm in the family.
- - Removed sha3_init(), sha3_reinit() and sha3_final().
- - Removed sha3_ctx::digest_size.
- - Renamed sha3_ctx::partial to sha3_ctx::absorb_offset.
- - Refer to the output of SHAKE* as "output" not "digest".
- - Moved the Iota transform into the one-round function.
- - Made sha3_update() warn if called after sha3_squeeze().
- - Simplified the module-load test to not do update after squeeze.
- - Added Return: and Context: kdoc statements and expanded the kdoc
-   headers.
- - Added an API description document.
- - Overhauled the kunit tests.
-   - Only have one kunit test.
-   - Only call the general hash tester on one algo.
-   - Add separate simple cursory checks for the other algos.
-   - Add resqueezing tests.
-   - Add some NIST example tests.
- - Changed crypto/sha3_generic to use this
- - Added SHAKE128/256 to crypto/sha3_generic and crypto/testmgr
- - Folded struct sha3_state into struct sha3_ctx.
-
-ver #2)
-  - Simplify the endianness handling.
-  - Rename sha3_final() to sha3_squeeze() and don't clear the context at the
-    end as it's permitted to continue calling sha3_final() to extract
-    continuations of the digest (needed by ML-DSA).
-  - Don't reapply the end marker to the hash state in continuation
-    sha3_squeeze() unless sha3_update() gets called again (needed by
-    ML-DSA).
-  - Give sha3_squeeze() the amount of digest to produce as a parameter
-    rather than using ctx->digest_size and don't return the amount digested.
-  - Reimplement sha3_final() as a wrapper around sha3_squeeze() that
-    extracts ctx->digest_size amount of digest and then zeroes out the
-    context.  The latter is necessary to avoid upsetting
-    hash-test-template.h.
-  - Provide a sha3_reinit() function to clear the state, but to leave the
-    parameters that indicate the hash properties unaffected, allowing for
-    reuse.
-  - Provide a sha3_set_digestsize() function to change the size of the
-    digest to be extracted by sha3_final().  sha3_squeeze() takes a
-    parameter for this instead.
-  - Don't pass the digest size as a parameter to shake128/256_init() but
-    rather default to 128/256 bits as per the function name.
-  - Provide a sha3_clear() function to zero out the context.
-
-David Howells (5):
-  crypto: Add ML-DSA crypto_sig support
-  x509: Separately calculate sha256 for blacklist
-  pkcs7: Allow the signing algo to do whatever digestion it wants itself
-  pkcs7, x509: Add ML-DSA support
-  modsign: Enable ML-DSA module signing
-
- Documentation/admin-guide/module-signing.rst |  16 +-
- certs/Kconfig                                |  30 +++
- certs/Makefile                               |   3 +
- crypto/Kconfig                               |   9 +
- crypto/Makefile                              |   2 +
- crypto/asymmetric_keys/asymmetric_type.c     |   4 +-
- crypto/asymmetric_keys/pkcs7_parser.c        |  28 ++-
- crypto/asymmetric_keys/pkcs7_verify.c        |  83 +++++---
- crypto/asymmetric_keys/public_key.c          |  13 +-
- crypto/asymmetric_keys/signature.c           |   3 +-
- crypto/asymmetric_keys/x509_cert_parser.c    |  27 ++-
- crypto/asymmetric_keys/x509_parser.h         |   2 +
- crypto/asymmetric_keys/x509_public_key.c     |  42 ++--
- crypto/mldsa.c                               | 201 +++++++++++++++++++
- include/crypto/public_key.h                  |   6 +-
- include/linux/oid_registry.h                 |   5 +
- scripts/sign-file.c                          |  34 +++-
- security/integrity/digsig_asymmetric.c       |   4 +-
- 18 files changed, 438 insertions(+), 74 deletions(-)
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+cc: Eric Biggers <ebiggers@kernel.org>
+cc: Lukas Wunner <lukas@wunner.de>
+cc: Ignat Korchagin <ignat@cloudflare.com>
+cc: Stephan Mueller <smueller@chronox.de>
+cc: Herbert Xu <herbert@gondor.apana.org.au>
+cc: keyrings@vger.kernel.org
+cc: linux-crypto@vger.kernel.org
+---
+ crypto/Kconfig  |   9 +++
+ crypto/Makefile |   2 +
+ crypto/mldsa.c  | 201 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 212 insertions(+)
  create mode 100644 crypto/mldsa.c
+
+diff --git a/crypto/Kconfig b/crypto/Kconfig
+index 12a87f7cf150..a210575fa5e0 100644
+--- a/crypto/Kconfig
++++ b/crypto/Kconfig
+@@ -344,6 +344,15 @@ config CRYPTO_ECRDSA
+ 	  One of the Russian cryptographic standard algorithms (called GOST
+ 	  algorithms). Only signature verification is implemented.
+ 
++config CRYPTO_MLDSA
++	tristate "ML-DSA (Module-Lattice-Based Digital Signature Algorithm)"
++	select CRYPTO_SIG
++	select CRYPTO_LIB_MLDSA
++	help
++	  ML-DSA (Module-Lattice-Based Digital Signature Algorithm) (FIPS-204).
++
++	  Only signature verification is implemented.
++
+ endmenu
+ 
+ menu "Block ciphers"
+diff --git a/crypto/Makefile b/crypto/Makefile
+index 23d3db7be425..267d5403045b 100644
+--- a/crypto/Makefile
++++ b/crypto/Makefile
+@@ -60,6 +60,8 @@ ecdsa_generic-y += ecdsa-p1363.o
+ ecdsa_generic-y += ecdsasignature.asn1.o
+ obj-$(CONFIG_CRYPTO_ECDSA) += ecdsa_generic.o
+ 
++obj-$(CONFIG_CRYPTO_MLDSA) += mldsa.o
++
+ crypto_acompress-y := acompress.o
+ crypto_acompress-y += scompress.o
+ obj-$(CONFIG_CRYPTO_ACOMP2) += crypto_acompress.o
+diff --git a/crypto/mldsa.c b/crypto/mldsa.c
+new file mode 100644
+index 000000000000..d8de082cc67a
+--- /dev/null
++++ b/crypto/mldsa.c
+@@ -0,0 +1,201 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * crypto_sig wrapper around ML-DSA library.
++ */
++#include <linux/init.h>
++#include <linux/module.h>
++#include <crypto/internal/sig.h>
++#include <crypto/mldsa.h>
++
++struct crypto_mldsa_ctx {
++	u8 pk[MAX(MAX(MLDSA44_PUBLIC_KEY_SIZE,
++		      MLDSA65_PUBLIC_KEY_SIZE),
++		  MLDSA87_PUBLIC_KEY_SIZE)];
++	unsigned int pk_len;
++	enum mldsa_alg strength;
++	bool key_set;
++};
++
++static int crypto_mldsa_sign(struct crypto_sig *tfm,
++			     const void *msg, unsigned int msg_len,
++			     void *sig, unsigned int sig_len)
++{
++	return -EOPNOTSUPP;
++}
++
++static int crypto_mldsa_verify(struct crypto_sig *tfm,
++			       const void *sig, unsigned int sig_len,
++			       const void *msg, unsigned int msg_len)
++{
++	const struct crypto_mldsa_ctx *ctx = crypto_sig_ctx(tfm);
++
++	if (unlikely(!ctx->key_set))
++		return -EINVAL;
++
++	return mldsa_verify(ctx->strength, sig, sig_len, msg, msg_len,
++			    ctx->pk, ctx->pk_len);
++}
++
++static unsigned int crypto_mldsa_key_size(struct crypto_sig *tfm)
++{
++	struct crypto_mldsa_ctx *ctx = crypto_sig_ctx(tfm);
++
++	switch (ctx->strength) {
++	case MLDSA44:
++		return MLDSA44_PUBLIC_KEY_SIZE;
++	case MLDSA65:
++		return MLDSA65_PUBLIC_KEY_SIZE;
++	case MLDSA87:
++		return MLDSA87_PUBLIC_KEY_SIZE;
++	default:
++		WARN_ON_ONCE(1);
++		return 0;
++	}
++}
++
++static int crypto_mldsa_set_pub_key(struct crypto_sig *tfm,
++				    const void *key, unsigned int keylen)
++{
++	struct crypto_mldsa_ctx *ctx = crypto_sig_ctx(tfm);
++	unsigned int expected_len = crypto_mldsa_key_size(tfm);
++
++	if (keylen != expected_len)
++		return -EINVAL;
++
++	ctx->pk_len = keylen;
++	memcpy(ctx->pk, key, keylen);
++	ctx->key_set = true;
++	return 0;
++}
++
++static int crypto_mldsa_set_priv_key(struct crypto_sig *tfm,
++				     const void *key, unsigned int keylen)
++{
++	return -EOPNOTSUPP;
++}
++
++static unsigned int crypto_mldsa_max_size(struct crypto_sig *tfm)
++{
++	struct crypto_mldsa_ctx *ctx = crypto_sig_ctx(tfm);
++
++	switch (ctx->strength) {
++	case MLDSA44:
++		return MLDSA44_SIGNATURE_SIZE;
++	case MLDSA65:
++		return MLDSA65_SIGNATURE_SIZE;
++	case MLDSA87:
++		return MLDSA87_SIGNATURE_SIZE;
++	default:
++		WARN_ON_ONCE(1);
++		return 0;
++	}
++}
++
++static int crypto_mldsa44_alg_init(struct crypto_sig *tfm)
++{
++	struct crypto_mldsa_ctx *ctx = crypto_sig_ctx(tfm);
++
++	ctx->strength = MLDSA44;
++	ctx->key_set = false;
++	return 0;
++}
++
++static int crypto_mldsa65_alg_init(struct crypto_sig *tfm)
++{
++	struct crypto_mldsa_ctx *ctx = crypto_sig_ctx(tfm);
++
++	ctx->strength = MLDSA65;
++	ctx->key_set = false;
++	return 0;
++}
++
++static int crypto_mldsa87_alg_init(struct crypto_sig *tfm)
++{
++	struct crypto_mldsa_ctx *ctx = crypto_sig_ctx(tfm);
++
++	ctx->strength = MLDSA87;
++	ctx->key_set = false;
++	return 0;
++}
++
++static void crypto_mldsa_alg_exit(struct crypto_sig *tfm)
++{
++}
++
++static struct sig_alg crypto_mldsa_algs[] = {
++	{
++		.sign			= crypto_mldsa_sign,
++		.verify			= crypto_mldsa_verify,
++		.set_pub_key		= crypto_mldsa_set_pub_key,
++		.set_priv_key		= crypto_mldsa_set_priv_key,
++		.key_size		= crypto_mldsa_key_size,
++		.max_size		= crypto_mldsa_max_size,
++		.init			= crypto_mldsa44_alg_init,
++		.exit			= crypto_mldsa_alg_exit,
++		.base.cra_name		= "mldsa44",
++		.base.cra_driver_name	= "mldsa44-lib",
++		.base.cra_ctxsize	= sizeof(struct crypto_mldsa_ctx),
++		.base.cra_module	= THIS_MODULE,
++		.base.cra_priority	= 5000,
++	}, {
++		.sign			= crypto_mldsa_sign,
++		.verify			= crypto_mldsa_verify,
++		.set_pub_key		= crypto_mldsa_set_pub_key,
++		.set_priv_key		= crypto_mldsa_set_priv_key,
++		.key_size		= crypto_mldsa_key_size,
++		.max_size		= crypto_mldsa_max_size,
++		.init			= crypto_mldsa65_alg_init,
++		.exit			= crypto_mldsa_alg_exit,
++		.base.cra_name		= "mldsa65",
++		.base.cra_driver_name	= "mldsa65-lib",
++		.base.cra_ctxsize	= sizeof(struct crypto_mldsa_ctx),
++		.base.cra_module	= THIS_MODULE,
++		.base.cra_priority	= 5000,
++	}, {
++		.sign			= crypto_mldsa_sign,
++		.verify			= crypto_mldsa_verify,
++		.set_pub_key		= crypto_mldsa_set_pub_key,
++		.set_priv_key		= crypto_mldsa_set_priv_key,
++		.key_size		= crypto_mldsa_key_size,
++		.max_size		= crypto_mldsa_max_size,
++		.init			= crypto_mldsa87_alg_init,
++		.exit			= crypto_mldsa_alg_exit,
++		.base.cra_name		= "mldsa87",
++		.base.cra_driver_name	= "mldsa87-lib",
++		.base.cra_ctxsize	= sizeof(struct crypto_mldsa_ctx),
++		.base.cra_module	= THIS_MODULE,
++		.base.cra_priority	= 5000,
++	},
++};
++
++static int __init mldsa_init(void)
++{
++	int ret, i;
++
++	for (i = 0; i < ARRAY_SIZE(crypto_mldsa_algs); i++) {
++		ret = crypto_register_sig(&crypto_mldsa_algs[i]);
++		if (ret < 0)
++			goto error;
++	}
++	return 0;
++
++error:
++	pr_err("Failed to register (%d)\n", ret);
++	for (i--; i >= 0; i--)
++		crypto_unregister_sig(&crypto_mldsa_algs[i]);
++	return ret;
++}
++module_init(mldsa_init);
++
++static void mldsa_exit(void)
++{
++	for (int i = 0; i < ARRAY_SIZE(crypto_mldsa_algs); i++)
++		crypto_unregister_sig(&crypto_mldsa_algs[i]);
++}
++module_exit(mldsa_exit);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Crypto API support for ML-DSA signature verification");
++MODULE_ALIAS_CRYPTO("mldsa44");
++MODULE_ALIAS_CRYPTO("mldsa65");
++MODULE_ALIAS_CRYPTO("mldsa87");
 
 
