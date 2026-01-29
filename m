@@ -1,333 +1,188 @@
-Return-Path: <keyrings+bounces-3973-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3974-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAOtIq2Yemm58QEAu9opvQ
-	(envelope-from <keyrings+bounces-3973-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Thu, 29 Jan 2026 00:15:57 +0100
+	id oNXYFVQze2lJCQIAu9opvQ
+	(envelope-from <keyrings+bounces-3974-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Thu, 29 Jan 2026 11:15:48 +0100
 X-Original-To: lists+keyrings@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB63EA9E02
-	for <lists+keyrings@lfdr.de>; Thu, 29 Jan 2026 00:15:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5B8AE739
+	for <lists+keyrings@lfdr.de>; Thu, 29 Jan 2026 11:15:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4756130046A7
-	for <lists+keyrings@lfdr.de>; Wed, 28 Jan 2026 23:15:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 592313006177
+	for <lists+keyrings@lfdr.de>; Thu, 29 Jan 2026 10:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E21833F8B1;
-	Wed, 28 Jan 2026 23:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEC832D0E6;
+	Thu, 29 Jan 2026 10:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U6goQrMS"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Gfei5IjR"
 X-Original-To: keyrings@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A722335554;
-	Wed, 28 Jan 2026 23:15:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0B327E06C;
+	Thu, 29 Jan 2026 10:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769642148; cv=none; b=mOi0WG+glvpEmcBvI/cQpbNh/ZHNth/1kcajZ2u2zG2ho7qQQIg72EiHbNe7YgWz/KMNJIIp7jLJVUnE4fH92t3QTSe9pEkiF9ZCs4GugMZMeoJnDpNVyVb6uGJdH/M1aOta3p/TT5IByEbqJ99rYR/n5XD8QerVV+wlsvBXr8c=
+	t=1769681745; cv=none; b=M5xRK60WgFsoC5Lkef6XfY5hhf7RbUp/nzUWVMbFeY1JbkK9UZK1ZyVgM9KLRiOOjMwS79/YIwp0/zFDmJtZzi5tbzDyK+hwt+LkAZmQ1Lduf8rfQb+dDyZOUa2/TKtk94gN5SytnMlh19KQ0XSe7mNt055kd4m1S7eRNy9k6hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769642148; c=relaxed/simple;
-	bh=/g5GQCRx9VQ1qpx5c23mUIMjE6qDTKlKhm2i5tJzEEI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B+fpcsTswn21XnBeuGsZUFpp8w+hUFyMJhOfneoFrHa/GP6EkOLgcXPCGOtNJ+gszasKJvpjP2Qxh02h/I/EkbnO0X845O3ZFalozsVb5uGcJDwqGC6IwHZYSEUiggaX0OBQfxOZ9aYJuLoXyLG95nq2V+yXq2Y542/sKLOmbkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U6goQrMS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17FC4C4CEF1;
-	Wed, 28 Jan 2026 23:15:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769642147;
-	bh=/g5GQCRx9VQ1qpx5c23mUIMjE6qDTKlKhm2i5tJzEEI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U6goQrMSmWlTGBjF1g8gIXvwlczh4NG7n3FI0tec8IkWwjfTkqzDXSIsV20Q3lfhO
-	 7fypmBfJbkor5lM7uCar6mNAQMxuOpx/fNM1HLtjyffrReJN/amEDJQ8pn7SOuRJLe
-	 vE3SXwlZaBJaulwAlJ+2Mx2C+ooO5fheJ6XaJsW7UO6+frWJnQ3ICfO/hP3UTCXa+m
-	 18gwCBmRvd4Bz8wP+rv8kFrgb+PzleKUqjHAzIgZ4CkG3GlCMjebdV5gfml8IwCKhl
-	 xKKMT3QX0DjE/X457KCcw/+1aI+cdYYfzjoOV9rFZHo6Yk0OERKCUmPWntC/eeJYPj
-	 ySuqBNfrcCcAQ==
-Date: Thu, 29 Jan 2026 01:15:42 +0200
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Lukas Wunner <lukas@wunner.de>, Ignat Korchagin <ignat@cloudflare.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Stephan Mueller <smueller@chronox.de>, linux-crypto@vger.kernel.org,
-	keyrings@vger.kernel.org, linux-modules@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v15 3/7] pkcs7, x509: Rename ->digest to ->m
-Message-ID: <aXqYnh92VWroe8AJ@kernel.org>
-References: <20260126142931.1940586-1-dhowells@redhat.com>
- <20260126142931.1940586-4-dhowells@redhat.com>
+	s=arc-20240116; t=1769681745; c=relaxed/simple;
+	bh=YJkxGuRbVI3wzytxknHvdWJ9TCuj+K0iGTi9NJ0Fssk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eXcBVsluBM+oPG6nsLq8qQ/N410+4Aknz0HKiU8oRBq9p0QzATvl1nXJ7VOOLfps/YkEm+8GR78Bo3CXgBdYWS1ZNY7yhthfnrQORPvvr5gm8fHQ5E2dTmk6U6UqCKIwmbuZftzgwkgm7GD1cPeEDyLgQXGnOw/5I4mvg7Kuk44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Gfei5IjR; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60SLbECQ024618;
+	Thu, 29 Jan 2026 10:15:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=YJkxGu
+	RbVI3wzytxknHvdWJ9TCuj+K0iGTi9NJ0Fssk=; b=Gfei5IjRy3xcuy9TfyMB5b
+	LRmc4cJ+tHxL3nX5jgsy/S65VBw0Mpptp9K24vVMbO558eOJ6K4Gm8dQVoj+sHXH
+	2ppM0tJU5kN9FbdW+0QDv+bQvXt8NUFl+vfh/7DsJOQl7iQ4N5nNdlwkuyPl5h3z
+	bKyYwcE6eu7LE2Te334T4nHO0/a5hw8I0ktOAN7RW6ns4H/OlX21cu5/1vc+p1uR
+	oyS+Ya1KVWk2XBmD20J3neliHGlH/uh2EFTOSywbKJX/VaMUVKbxlWPN+Ji0IOXc
+	2+GHUYP3y6xBLcnmT+nOqe9yeFnqSo9mryckz2uOqx2uL4pMfct05QZ822zTKF5w
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnrtqy9d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Jan 2026 10:15:28 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60TAFRk4022601;
+	Thu, 29 Jan 2026 10:15:27 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnrtqy99-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Jan 2026 10:15:27 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60T63g7A019630;
+	Thu, 29 Jan 2026 10:15:26 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bw9dn984j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Jan 2026 10:15:26 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60TAFO8i28508820
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 29 Jan 2026 10:15:24 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2B80058059;
+	Thu, 29 Jan 2026 10:15:24 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0B3AB58043;
+	Thu, 29 Jan 2026 10:15:23 +0000 (GMT)
+Received: from [9.61.90.223] (unknown [9.61.90.223])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 29 Jan 2026 10:15:22 +0000 (GMT)
+Message-ID: <64228832-ebdb-4899-916c-a68f2d85096e@linux.ibm.com>
+Date: Thu, 29 Jan 2026 05:15:22 -0500
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260126142931.1940586-4-dhowells@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 0/6] Extend "trusted" keys to support a new trust
+ source named the PowerVM Key Wrapping Module (PKWM)
+To: Srish Srinivasan <ssrish@linux.ibm.com>, linux-integrity@vger.kernel.org,
+        keyrings@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, James.Bottomley@HansenPartnership.com,
+        jarkko@kernel.org, zohar@linux.ibm.com, rnsastry@linux.ibm.com,
+        linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
+References: <20260127145228.48320-1-ssrish@linux.ibm.com>
+Content-Language: en-US
+From: Nayna Jain <nayna@linux.ibm.com>
+In-Reply-To: <20260127145228.48320-1-ssrish@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: RsLaDV3LTNJQuePLSr4C0DweVWaf7PGP
+X-Authority-Analysis: v=2.4 cv=Uptu9uwB c=1 sm=1 tr=0 ts=697b3340 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VnNF1IyMAAAA:8 a=N8QNvH2uwYDi7y4ex84A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: yla_fuBo9BtvuM0keuW97l87MgMjoYjV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI5MDA2MyBTYWx0ZWRfXzm8LUkLb5s7i
+ 9S30rTWPv/Ma7tqcly6ezIyW0L6/nKbo2oBs2+KHJhj2h3NE6Za/EcjQeQpfR5YKk6wnyZndSqi
+ DE1zW/Ru3I0vdUeOwhuzI2hZHQm5CiaNyoqqw470jtHR8bOb9skcRmPIjAVa2ZTSVFY14XQVO+2
+ 1hdYzw0C68V2+wzZVBjedioxVagLEaMtYx2Mj15goJRDkZVvBN/gGNFZrwzxQiUZwP2LuFfRWJV
+ 4omvLi+5+ak4Ol3KFczafcJ73ykuTCGwRGJHRuQpKfQ3svZZblDQ3XkTLzZ952kwXX3mCpxvnhO
+ HgXYSuHs1dEabmAqINJLQtJ9s9yZxG7ByM55frqBX+B+L+ENJphW/K2Q3TKrBcnm3rsXOon/gTZ
+ 7FjPXHx9WG5qOGgjjDIQaPqf+HvxHgCtv4nqWezjdWjIzBzCX843L/0dads1GS8PRn/Dw/jxBTE
+ r7CMKSPV6qVYFtXwYuw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-01-29_01,2026-01-28_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 priorityscore=1501 clxscore=1015 lowpriorityscore=0
+ phishscore=0 adultscore=0 impostorscore=0 bulkscore=0 spamscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2601290063
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-3973-lists,keyrings=lfdr.de];
+	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,HansenPartnership.com,kernel.org,vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-3974-lists,keyrings=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jarkko@kernel.org,keyrings@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[keyrings];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[ibm.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[cloudflare.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,apana.org.au:email]
-X-Rspamd-Queue-Id: AB63EA9E02
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nayna@linux.ibm.com,keyrings@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_TWELVE(0.00)[13];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[keyrings];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: ED5B8AE739
 X-Rspamd-Action: no action
 
-On Mon, Jan 26, 2026 at 02:29:24PM +0000, David Howells wrote:
-> Rename ->digest and ->digest_len to ->m and ->m_size to represent the input
-> to the signature verification algorithm, reflecting that ->digest may no
-> longer actually *be* a digest.
-> 
-> Signed-off-by: David Howells <dhowells@redhat.com>
-> cc: Lukas Wunner <lukas@wunner.de>
-> cc: Ignat Korchagin <ignat@cloudflare.com>
-> cc: Jarkko Sakkinen <jarkko@kernel.org>
-> cc: Stephan Mueller <smueller@chronox.de>
-> cc: Eric Biggers <ebiggers@kernel.org>
-> cc: Herbert Xu <herbert@gondor.apana.org.au>
-> cc: keyrings@vger.kernel.org
-> cc: linux-crypto@vger.kernel.org
-> ---
->  crypto/asymmetric_keys/asymmetric_type.c |  4 ++--
->  crypto/asymmetric_keys/pkcs7_verify.c    | 28 ++++++++++++------------
->  crypto/asymmetric_keys/public_key.c      |  3 +--
->  crypto/asymmetric_keys/signature.c       |  2 +-
->  crypto/asymmetric_keys/x509_public_key.c | 10 ++++-----
->  include/crypto/public_key.h              |  4 ++--
->  security/integrity/digsig_asymmetric.c   |  4 ++--
->  7 files changed, 26 insertions(+), 29 deletions(-)
-> 
-> diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
-> index 348966ea2175..2326743310b1 100644
-> --- a/crypto/asymmetric_keys/asymmetric_type.c
-> +++ b/crypto/asymmetric_keys/asymmetric_type.c
-> @@ -593,10 +593,10 @@ static int asymmetric_key_verify_signature(struct kernel_pkey_params *params,
->  {
->  	struct public_key_signature sig = {
->  		.s_size		= params->in2_len,
-> -		.digest_size	= params->in_len,
-> +		.m_size		= params->in_len,
->  		.encoding	= params->encoding,
->  		.hash_algo	= params->hash_algo,
-> -		.digest		= (void *)in,
-> +		.m		= (void *)in,
->  		.s		= (void *)in2,
->  	};
->  
-> diff --git a/crypto/asymmetric_keys/pkcs7_verify.c b/crypto/asymmetric_keys/pkcs7_verify.c
-> index 6d6475e3a9bf..aa085ec6fb1c 100644
-> --- a/crypto/asymmetric_keys/pkcs7_verify.c
-> +++ b/crypto/asymmetric_keys/pkcs7_verify.c
-> @@ -31,7 +31,7 @@ static int pkcs7_digest(struct pkcs7_message *pkcs7,
->  	kenter(",%u,%s", sinfo->index, sinfo->sig->hash_algo);
->  
->  	/* The digest was calculated already. */
-> -	if (sig->digest)
-> +	if (sig->m)
->  		return 0;
->  
->  	if (!sinfo->sig->hash_algo)
-> @@ -45,11 +45,11 @@ static int pkcs7_digest(struct pkcs7_message *pkcs7,
->  		return (PTR_ERR(tfm) == -ENOENT) ? -ENOPKG : PTR_ERR(tfm);
->  
->  	desc_size = crypto_shash_descsize(tfm) + sizeof(*desc);
-> -	sig->digest_size = crypto_shash_digestsize(tfm);
-> +	sig->m_size = crypto_shash_digestsize(tfm);
->  
->  	ret = -ENOMEM;
-> -	sig->digest = kmalloc(sig->digest_size, GFP_KERNEL);
-> -	if (!sig->digest)
-> +	sig->m = kmalloc(sig->m_size, GFP_KERNEL);
-> +	if (!sig->m)
->  		goto error_no_desc;
->  
->  	desc = kzalloc(desc_size, GFP_KERNEL);
-> @@ -59,11 +59,10 @@ static int pkcs7_digest(struct pkcs7_message *pkcs7,
->  	desc->tfm   = tfm;
->  
->  	/* Digest the message [RFC2315 9.3] */
-> -	ret = crypto_shash_digest(desc, pkcs7->data, pkcs7->data_len,
-> -				  sig->digest);
-> +	ret = crypto_shash_digest(desc, pkcs7->data, pkcs7->data_len, sig->m);
->  	if (ret < 0)
->  		goto error;
-> -	pr_devel("MsgDigest = [%*ph]\n", 8, sig->digest);
-> +	pr_devel("MsgDigest = [%*ph]\n", 8, sig->m);
->  
->  	/* However, if there are authenticated attributes, there must be a
->  	 * message digest attribute amongst them which corresponds to the
-> @@ -78,14 +77,14 @@ static int pkcs7_digest(struct pkcs7_message *pkcs7,
->  			goto error;
->  		}
->  
-> -		if (sinfo->msgdigest_len != sig->digest_size) {
-> +		if (sinfo->msgdigest_len != sig->m_size) {
->  			pr_warn("Sig %u: Invalid digest size (%u)\n",
->  				sinfo->index, sinfo->msgdigest_len);
->  			ret = -EBADMSG;
->  			goto error;
->  		}
->  
-> -		if (memcmp(sig->digest, sinfo->msgdigest,
-> +		if (memcmp(sig->m, sinfo->msgdigest,
->  			   sinfo->msgdigest_len) != 0) {
->  			pr_warn("Sig %u: Message digest doesn't match\n",
->  				sinfo->index);
-> @@ -98,7 +97,8 @@ static int pkcs7_digest(struct pkcs7_message *pkcs7,
->  		 * convert the attributes from a CONT.0 into a SET before we
->  		 * hash it.
->  		 */
-> -		memset(sig->digest, 0, sig->digest_size);
-> +		memset(sig->m, 0, sig->m_size);
-> +
->  
->  		ret = crypto_shash_init(desc);
->  		if (ret < 0)
-> @@ -108,10 +108,10 @@ static int pkcs7_digest(struct pkcs7_message *pkcs7,
->  		if (ret < 0)
->  			goto error;
->  		ret = crypto_shash_finup(desc, sinfo->authattrs,
-> -					 sinfo->authattrs_len, sig->digest);
-> +					 sinfo->authattrs_len, sig->m);
->  		if (ret < 0)
->  			goto error;
-> -		pr_devel("AADigest = [%*ph]\n", 8, sig->digest);
-> +		pr_devel("AADigest = [%*ph]\n", 8, sig->m);
->  	}
->  
->  error:
-> @@ -138,8 +138,8 @@ int pkcs7_get_digest(struct pkcs7_message *pkcs7, const u8 **buf, u32 *len,
->  	if (ret)
->  		return ret;
->  
-> -	*buf = sinfo->sig->digest;
-> -	*len = sinfo->sig->digest_size;
-> +	*buf = sinfo->sig->m;
-> +	*len = sinfo->sig->m_size;
->  
->  	i = match_string(hash_algo_name, HASH_ALGO__LAST,
->  			 sinfo->sig->hash_algo);
-> diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
-> index e5b177c8e842..a46356e0c08b 100644
-> --- a/crypto/asymmetric_keys/public_key.c
-> +++ b/crypto/asymmetric_keys/public_key.c
-> @@ -425,8 +425,7 @@ int public_key_verify_signature(const struct public_key *pkey,
->  	if (ret)
->  		goto error_free_key;
->  
-> -	ret = crypto_sig_verify(tfm, sig->s, sig->s_size,
-> -				sig->digest, sig->digest_size);
-> +	ret = crypto_sig_verify(tfm, sig->s, sig->s_size, sig->m, sig->m_size);
->  
->  error_free_key:
->  	kfree_sensitive(key);
-> diff --git a/crypto/asymmetric_keys/signature.c b/crypto/asymmetric_keys/signature.c
-> index 041d04b5c953..f4ec126121b3 100644
-> --- a/crypto/asymmetric_keys/signature.c
-> +++ b/crypto/asymmetric_keys/signature.c
-> @@ -28,7 +28,7 @@ void public_key_signature_free(struct public_key_signature *sig)
->  		for (i = 0; i < ARRAY_SIZE(sig->auth_ids); i++)
->  			kfree(sig->auth_ids[i]);
->  		kfree(sig->s);
-> -		kfree(sig->digest);
-> +		kfree(sig->m);
->  		kfree(sig);
->  	}
->  }
-> diff --git a/crypto/asymmetric_keys/x509_public_key.c b/crypto/asymmetric_keys/x509_public_key.c
-> index 79cc7b7a0630..3854f7ae4ed0 100644
-> --- a/crypto/asymmetric_keys/x509_public_key.c
-> +++ b/crypto/asymmetric_keys/x509_public_key.c
-> @@ -63,11 +63,11 @@ int x509_get_sig_params(struct x509_certificate *cert)
->  	}
->  
->  	desc_size = crypto_shash_descsize(tfm) + sizeof(*desc);
-> -	sig->digest_size = crypto_shash_digestsize(tfm);
-> +	sig->m_size = crypto_shash_digestsize(tfm);
->  
->  	ret = -ENOMEM;
-> -	sig->digest = kmalloc(sig->digest_size, GFP_KERNEL);
-> -	if (!sig->digest)
-> +	sig->m = kmalloc(sig->m_size, GFP_KERNEL);
-> +	if (!sig->m)
->  		goto error;
->  
->  	desc = kzalloc(desc_size, GFP_KERNEL);
-> @@ -76,9 +76,7 @@ int x509_get_sig_params(struct x509_certificate *cert)
->  
->  	desc->tfm = tfm;
->  
-> -	ret = crypto_shash_digest(desc, cert->tbs, cert->tbs_size,
-> -				  sig->digest);
-> -
-> +	ret = crypto_shash_digest(desc, cert->tbs, cert->tbs_size, sig->m);
->  	if (ret < 0)
->  		goto error_2;
->  
-> diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
-> index 81098e00c08f..bd38ba4d217d 100644
-> --- a/include/crypto/public_key.h
-> +++ b/include/crypto/public_key.h
-> @@ -43,9 +43,9 @@ extern void public_key_free(struct public_key *key);
->  struct public_key_signature {
->  	struct asymmetric_key_id *auth_ids[3];
->  	u8 *s;			/* Signature */
-> -	u8 *digest;
-> +	u8 *m;			/* Message data to pass to verifier */
->  	u32 s_size;		/* Number of bytes in signature */
-> -	u32 digest_size;	/* Number of bytes in digest */
-> +	u32 m_size;		/* Number of bytes in ->m */
->  	const char *pkey_algo;
->  	const char *hash_algo;
->  	const char *encoding;
-> diff --git a/security/integrity/digsig_asymmetric.c b/security/integrity/digsig_asymmetric.c
-> index 457c0a396caf..87be85f477d1 100644
-> --- a/security/integrity/digsig_asymmetric.c
-> +++ b/security/integrity/digsig_asymmetric.c
-> @@ -121,8 +121,8 @@ int asymmetric_verify(struct key *keyring, const char *sig,
->  		goto out;
->  	}
->  
-> -	pks.digest = (u8 *)data;
-> -	pks.digest_size = datalen;
-> +	pks.m = (u8 *)data;
-> +	pks.m_size = datalen;
->  	pks.s = hdr->sig;
->  	pks.s_size = siglen;
->  	ret = verify_signature(key, &pks);
-> 
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+On 1/27/26 9:52 AM, Srish Srinivasan wrote:
+> Power11 has introduced a feature called the PowerVM Key Wrapping Module
+> (PKWM), where PowerVM in combination with Power LPAR Platform KeyStore
+> (PLPKS) [1] supports a new feature called "Key Wrapping" [2] to protect
+> user secrets by wrapping them using a hypervisor generated wrapping key.
+> This wrapping key is an AES-GCM-256 symmetric key that is stored as an
+> object in the PLPKS. It has policy based protections that prevents it from
+> being read out or exposed to the user. This wrapping key can then be used
+> by the OS to wrap or unwrap secrets via hypervisor calls.
+>
+> This patchset intends to add the PKWM, which is a combination of IBM
+> PowerVM and PLPKS, as a new trust source for trusted keys. The wrapping key
+> does not exist by default and its generation is requested by the kernel at
+> the time of PKWM initialization. This key is then persisted by the PKWM and
+> is used for wrapping any kernel provided key, and is never exposed to the
+> user. The kernel is aware of only the label to this wrapping key.
+>
+> Along with the PKWM implementation, this patchset includes two preparatory
+> patches: one fixing the kernel-doc inconsistencies in the PLPKS code and
+> another reorganizing PLPKS config variables in the sysfs.
+Tested the entire patch series. Seems to work as expected.
 
-BR, Jarkko
+Tested-by: Nayna Jain <nayna@linux.ibm.com>
+
+Thanks & Regards,
+
+      - Nayna
+
+
 
