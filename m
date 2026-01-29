@@ -1,188 +1,207 @@
-Return-Path: <keyrings+bounces-3974-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3975-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNXYFVQze2lJCQIAu9opvQ
-	(envelope-from <keyrings+bounces-3974-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Thu, 29 Jan 2026 11:15:48 +0100
+	id cK+kGIeIe2mlFQIAu9opvQ
+	(envelope-from <keyrings+bounces-3975-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Thu, 29 Jan 2026 17:19:19 +0100
 X-Original-To: lists+keyrings@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED5B8AE739
-	for <lists+keyrings@lfdr.de>; Thu, 29 Jan 2026 11:15:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C0B6B20D5
+	for <lists+keyrings@lfdr.de>; Thu, 29 Jan 2026 17:19:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 592313006177
-	for <lists+keyrings@lfdr.de>; Thu, 29 Jan 2026 10:15:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CE3713002D03
+	for <lists+keyrings@lfdr.de>; Thu, 29 Jan 2026 16:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEC832D0E6;
-	Thu, 29 Jan 2026 10:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Gfei5IjR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE4233F39C;
+	Thu, 29 Jan 2026 16:19:13 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0B327E06C;
-	Thu, 29 Jan 2026 10:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E92133E35F;
+	Thu, 29 Jan 2026 16:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769681745; cv=none; b=M5xRK60WgFsoC5Lkef6XfY5hhf7RbUp/nzUWVMbFeY1JbkK9UZK1ZyVgM9KLRiOOjMwS79/YIwp0/zFDmJtZzi5tbzDyK+hwt+LkAZmQ1Lduf8rfQb+dDyZOUa2/TKtk94gN5SytnMlh19KQ0XSe7mNt055kd4m1S7eRNy9k6hs=
+	t=1769703553; cv=none; b=YqXWUjsq6gvgOEkKWS9zinTKdeKys2FGIzKx1O1jqbcp2IADA8NJLVP1THCY4w6/l3t2lCKRVP30ACMP/EY/qlnwoLDd/WFkQpbRmF8F9zMkfEln2/5CHmeJ9e41g/49sXPHDlKlMzV+vohH1rbY3r1a+LyoyVl8ur9O64s+TU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769681745; c=relaxed/simple;
-	bh=YJkxGuRbVI3wzytxknHvdWJ9TCuj+K0iGTi9NJ0Fssk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eXcBVsluBM+oPG6nsLq8qQ/N410+4Aknz0HKiU8oRBq9p0QzATvl1nXJ7VOOLfps/YkEm+8GR78Bo3CXgBdYWS1ZNY7yhthfnrQORPvvr5gm8fHQ5E2dTmk6U6UqCKIwmbuZftzgwkgm7GD1cPeEDyLgQXGnOw/5I4mvg7Kuk44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Gfei5IjR; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60SLbECQ024618;
-	Thu, 29 Jan 2026 10:15:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=YJkxGu
-	RbVI3wzytxknHvdWJ9TCuj+K0iGTi9NJ0Fssk=; b=Gfei5IjRy3xcuy9TfyMB5b
-	LRmc4cJ+tHxL3nX5jgsy/S65VBw0Mpptp9K24vVMbO558eOJ6K4Gm8dQVoj+sHXH
-	2ppM0tJU5kN9FbdW+0QDv+bQvXt8NUFl+vfh/7DsJOQl7iQ4N5nNdlwkuyPl5h3z
-	bKyYwcE6eu7LE2Te334T4nHO0/a5hw8I0ktOAN7RW6ns4H/OlX21cu5/1vc+p1uR
-	oyS+Ya1KVWk2XBmD20J3neliHGlH/uh2EFTOSywbKJX/VaMUVKbxlWPN+Ji0IOXc
-	2+GHUYP3y6xBLcnmT+nOqe9yeFnqSo9mryckz2uOqx2uL4pMfct05QZ822zTKF5w
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnrtqy9d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Jan 2026 10:15:28 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 60TAFRk4022601;
-	Thu, 29 Jan 2026 10:15:27 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bvnrtqy99-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Jan 2026 10:15:27 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60T63g7A019630;
-	Thu, 29 Jan 2026 10:15:26 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bw9dn984j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Jan 2026 10:15:26 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60TAFO8i28508820
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 29 Jan 2026 10:15:24 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2B80058059;
-	Thu, 29 Jan 2026 10:15:24 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0B3AB58043;
-	Thu, 29 Jan 2026 10:15:23 +0000 (GMT)
-Received: from [9.61.90.223] (unknown [9.61.90.223])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 29 Jan 2026 10:15:22 +0000 (GMT)
-Message-ID: <64228832-ebdb-4899-916c-a68f2d85096e@linux.ibm.com>
-Date: Thu, 29 Jan 2026 05:15:22 -0500
+	s=arc-20240116; t=1769703553; c=relaxed/simple;
+	bh=B3UA3hNrFo9BU/nOejIsF2QM+GSGPXVwTM8pl0g0+nE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=EceyCtNg3CCBxn9krHe3d9EHtczzVJFVyQrzRYxw1aKJ2QzzMfSZ3G0a5jK5UePl+rXmrrpJXp40LnZaLq+ga1JxDQmIea3IryaS9Oonv7OS6UNqQp2KXR1X2nTjToSx3Q7ktDXRrt1LrQzTSAbvpEtDKiucyMzEorME+sD+tBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.18.224.196])
+	by frasgout12.his.huawei.com (SkyGuard) with ESMTPS id 4f245b6R62ztfjS;
+	Fri, 30 Jan 2026 00:16:35 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.47])
+	by mail.maildlp.com (Postfix) with ESMTP id 513834009B;
+	Fri, 30 Jan 2026 00:19:07 +0800 (CST)
+Received: from [10.204.63.22] (unknown [10.204.63.22])
+	by APP1 (Coremail) with SMTP id LxC2BwBHhAZyiHtpQVzcAg--.46756S2;
+	Thu, 29 Jan 2026 17:19:06 +0100 (CET)
+Message-ID: <facea3621fc240ebb05dedb0127d8a514970d40d.camel@huaweicloud.com>
+Subject: Re: [PATCH v9 01/11] KEYS: trusted: Use get_random-fallback for TPM
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org
+Cc: Eric Biggers <ebiggers@kernel.org>, James Bottomley
+ <James.Bottomley@HansenPartnership.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+ David Howells <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>,  "Serge E. Hallyn" <serge@hallyn.com>,
+ "open list:KEYS-TRUSTED" <keyrings@vger.kernel.org>,  "open list:SECURITY
+ SUBSYSTEM" <linux-security-module@vger.kernel.org>, open list
+ <linux-kernel@vger.kernel.org>
+Date: Thu, 29 Jan 2026 17:18:55 +0100
+In-Reply-To: <20260125192526.782202-2-jarkko@kernel.org>
+References: <20260125192526.782202-1-jarkko@kernel.org>
+	 <20260125192526.782202-2-jarkko@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/6] Extend "trusted" keys to support a new trust
- source named the PowerVM Key Wrapping Module (PKWM)
-To: Srish Srinivasan <ssrish@linux.ibm.com>, linux-integrity@vger.kernel.org,
-        keyrings@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, James.Bottomley@HansenPartnership.com,
-        jarkko@kernel.org, zohar@linux.ibm.com, rnsastry@linux.ibm.com,
-        linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
-References: <20260127145228.48320-1-ssrish@linux.ibm.com>
-Content-Language: en-US
-From: Nayna Jain <nayna@linux.ibm.com>
-In-Reply-To: <20260127145228.48320-1-ssrish@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: RsLaDV3LTNJQuePLSr4C0DweVWaf7PGP
-X-Authority-Analysis: v=2.4 cv=Uptu9uwB c=1 sm=1 tr=0 ts=697b3340 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=N8QNvH2uwYDi7y4ex84A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: yla_fuBo9BtvuM0keuW97l87MgMjoYjV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI5MDA2MyBTYWx0ZWRfXzm8LUkLb5s7i
- 9S30rTWPv/Ma7tqcly6ezIyW0L6/nKbo2oBs2+KHJhj2h3NE6Za/EcjQeQpfR5YKk6wnyZndSqi
- DE1zW/Ru3I0vdUeOwhuzI2hZHQm5CiaNyoqqw470jtHR8bOb9skcRmPIjAVa2ZTSVFY14XQVO+2
- 1hdYzw0C68V2+wzZVBjedioxVagLEaMtYx2Mj15goJRDkZVvBN/gGNFZrwzxQiUZwP2LuFfRWJV
- 4omvLi+5+ak4Ol3KFczafcJ73ykuTCGwRGJHRuQpKfQ3svZZblDQ3XkTLzZ952kwXX3mCpxvnhO
- HgXYSuHs1dEabmAqINJLQtJ9s9yZxG7ByM55frqBX+B+L+ENJphW/K2Q3TKrBcnm3rsXOon/gTZ
- 7FjPXHx9WG5qOGgjjDIQaPqf+HvxHgCtv4nqWezjdWjIzBzCX843L/0dads1GS8PRn/Dw/jxBTE
- r7CMKSPV6qVYFtXwYuw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-29_01,2026-01-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 priorityscore=1501 clxscore=1015 lowpriorityscore=0
- phishscore=0 adultscore=0 impostorscore=0 bulkscore=0 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
- definitions=main-2601290063
+X-CM-TRANSID:LxC2BwBHhAZyiHtpQVzcAg--.46756S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxZry3Kw43Ww48ZF4xZw4xWFg_yoW5Cr15pF
+	W8KF12qws7trZ7J3s3Ca1IkF1a934rKrW3Gr4rK34qgFsxJF1xJry0vFW5Ka4jyrWqgF1a
+	qFWxXFyjga4DAw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
+	wI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
+	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43
+	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
+	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
+	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUF1
+	v3UUUUU
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAIBGl60h0SsgAAsy
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,HansenPartnership.com,kernel.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-3974-lists,keyrings=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nayna@linux.ibm.com,keyrings@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_TWELVE(0.00)[13];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	TAGGED_RCPT(0.00)[keyrings];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: ED5B8AE739
+	MID_RHS_MATCH_FROM(0.00)[];
+	R_DKIM_NA(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[roberto.sassu@huaweicloud.com,keyrings@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-3975-lists,keyrings=lfdr.de];
+	DMARC_NA(0.00)[huaweicloud.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huaweicloud.com:mid]
+X-Rspamd-Queue-Id: 7C0B6B20D5
 X-Rspamd-Action: no action
 
+On Sun, 2026-01-25 at 21:25 +0200, Jarkko Sakkinen wrote:
+> 1. tpm2_get_random() is costly when TCG_TPM2_HMAC is enabled and thus its
+>    use should be pooled rather than directly used. This both reduces
+>    latency and improves its predictability.
+>=20
+> 2. Linux is better off overall if every subsystem uses the same source fo=
+r
+>    generating the random numbers required.
+>=20
+> Thus, unset '.get_random', which causes fallback to kernel_get_random().
+>=20
+> One might argue that TPM RNG should be used for the generated trusted key=
+s,
+> so that they have matching entropy with the TPM internally generated
+> objects.
+>=20
+> This argument does have some weight into it but as far cryptography goes,
+> FIPS certification sets the exact bar, not which exact FIPS certified RNG
+> will be used. Thus, the rational choice is obviously to pick the lowest
+> latency path, which is kernel RNG.
+>=20
+> Finally, there is an actual defence in depth benefit when using kernel RN=
+G
+> as it helps to mitigate TPM firmware bugs concerning RNG implementation,
+> given the obfuscation by the other entropy sources.
+>=20
+> Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> ---
+> v7:
+> - A new patch. Simplifies follow up patches.
+> ---
+>  security/keys/trusted-keys/trusted_tpm1.c | 16 ++++++++++------
+>  1 file changed, 10 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/security/keys/trusted-keys/trusted_tpm1.c b/security/keys/tr=
+usted-keys/trusted_tpm1.c
+> index 636acb66a4f6..7ce7e31bcdfb 100644
+> --- a/security/keys/trusted-keys/trusted_tpm1.c
+> +++ b/security/keys/trusted-keys/trusted_tpm1.c
+> @@ -6,6 +6,16 @@
+>   * See Documentation/security/keys/trusted-encrypted.rst
+>   */
+> =20
+> +/**
+> + * DOC: Random Number Generation
+> + *
+> + * tpm_get_random() was previously used here as the RNG in order to have=
+ equal
+> + * entropy with the objects fully inside the TPM. However, as far as goe=
+s,
+> + * kernel RNG is equally fine, as long as long as it is FIPS certified. =
+Also,
+> + * using kernel RNG has the benefit of mitigating bugs in the TPM firmwa=
+re
+> + * associated with the RNG.
+> + */
 
-On 1/27/26 9:52 AM, Srish Srinivasan wrote:
-> Power11 has introduced a feature called the PowerVM Key Wrapping Module
-> (PKWM), where PowerVM in combination with Power LPAR Platform KeyStore
-> (PLPKS) [1] supports a new feature called "Key Wrapping" [2] to protect
-> user secrets by wrapping them using a hypervisor generated wrapping key.
-> This wrapping key is an AES-GCM-256 symmetric key that is stored as an
-> object in the PLPKS. It has policy based protections that prevents it from
-> being read out or exposed to the user. This wrapping key can then be used
-> by the OS to wrap or unwrap secrets via hypervisor calls.
->
-> This patchset intends to add the PKWM, which is a combination of IBM
-> PowerVM and PLPKS, as a new trust source for trusted keys. The wrapping key
-> does not exist by default and its generation is requested by the kernel at
-> the time of PKWM initialization. This key is then persisted by the PKWM and
-> is used for wrapping any kernel provided key, and is never exposed to the
-> user. The kernel is aware of only the label to this wrapping key.
->
-> Along with the PKWM implementation, this patchset includes two preparatory
-> patches: one fixing the kernel-doc inconsistencies in the PLPKS code and
-> another reorganizing PLPKS config variables in the sysfs.
-Tested the entire patch series. Seems to work as expected.
+If we switch to the kernel RNG that is better, and the TPM one is
+flawed, I guess we are going to have big problems anyway, since the TPM
+random number generator is used by the TPM itself internally.
 
-Tested-by: Nayna Jain <nayna@linux.ibm.com>
+I think it makes sense to leave as it is.
 
-Thanks & Regards,
+Thanks
 
-      - Nayna
+Roberto
 
+> +
+>  #include <crypto/hash_info.h>
+>  #include <crypto/sha1.h>
+>  #include <crypto/utils.h>
+> @@ -936,11 +946,6 @@ static int trusted_tpm_unseal(struct trusted_key_pay=
+load *p, char *datablob)
+>  	return ret;
+>  }
+> =20
+> -static int trusted_tpm_get_random(unsigned char *key, size_t key_len)
+> -{
+> -	return tpm_get_random(chip, key, key_len);
+> -}
+> -
+>  static int __init init_digests(void)
+>  {
+>  	int i;
+> @@ -992,6 +997,5 @@ struct trusted_key_ops trusted_key_tpm_ops =3D {
+>  	.init =3D trusted_tpm_init,
+>  	.seal =3D trusted_tpm_seal,
+>  	.unseal =3D trusted_tpm_unseal,
+> -	.get_random =3D trusted_tpm_get_random,
+>  	.exit =3D trusted_tpm_exit,
+>  };
 
 
