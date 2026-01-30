@@ -1,207 +1,225 @@
-Return-Path: <keyrings+bounces-3975-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-3976-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cK+kGIeIe2mlFQIAu9opvQ
-	(envelope-from <keyrings+bounces-3975-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Thu, 29 Jan 2026 17:19:19 +0100
+	id OE9tBhGVfGkQNwIAu9opvQ
+	(envelope-from <keyrings+bounces-3976-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Fri, 30 Jan 2026 12:25:05 +0100
 X-Original-To: lists+keyrings@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C0B6B20D5
-	for <lists+keyrings@lfdr.de>; Thu, 29 Jan 2026 17:19:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77368BA0A7
+	for <lists+keyrings@lfdr.de>; Fri, 30 Jan 2026 12:25:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CE3713002D03
-	for <lists+keyrings@lfdr.de>; Thu, 29 Jan 2026 16:19:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 809A8301176F
+	for <lists+keyrings@lfdr.de>; Fri, 30 Jan 2026 11:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE4233F39C;
-	Thu, 29 Jan 2026 16:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D1A367F28;
+	Fri, 30 Jan 2026 11:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UAbo0KdU";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="TOlX2r+l"
 X-Original-To: keyrings@vger.kernel.org
-Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E92133E35F;
-	Thu, 29 Jan 2026 16:19:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3973590CD
+	for <keyrings@vger.kernel.org>; Fri, 30 Jan 2026 11:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769703553; cv=none; b=YqXWUjsq6gvgOEkKWS9zinTKdeKys2FGIzKx1O1jqbcp2IADA8NJLVP1THCY4w6/l3t2lCKRVP30ACMP/EY/qlnwoLDd/WFkQpbRmF8F9zMkfEln2/5CHmeJ9e41g/49sXPHDlKlMzV+vohH1rbY3r1a+LyoyVl8ur9O64s+TU8=
+	t=1769772030; cv=none; b=W7ymqY/y5B3xfBcGrFjJWrSDEZVIP6IdpZEXLm6Jcfv9LeGaLlWMMroFqIAFDHNKCMg7KWhYSsKgQAT1GE1RXu4HraEmnaiWxM1Wo26fxcKiVXmoXBTioan6DrSWtGQMEVpyZDP7AYKC2uSbFtw1ok74w/STMEhrcSMGKL8cGD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769703553; c=relaxed/simple;
-	bh=B3UA3hNrFo9BU/nOejIsF2QM+GSGPXVwTM8pl0g0+nE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EceyCtNg3CCBxn9krHe3d9EHtczzVJFVyQrzRYxw1aKJ2QzzMfSZ3G0a5jK5UePl+rXmrrpJXp40LnZaLq+ga1JxDQmIea3IryaS9Oonv7OS6UNqQp2KXR1X2nTjToSx3Q7ktDXRrt1LrQzTSAbvpEtDKiucyMzEorME+sD+tBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.224.196])
-	by frasgout12.his.huawei.com (SkyGuard) with ESMTPS id 4f245b6R62ztfjS;
-	Fri, 30 Jan 2026 00:16:35 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.47])
-	by mail.maildlp.com (Postfix) with ESMTP id 513834009B;
-	Fri, 30 Jan 2026 00:19:07 +0800 (CST)
-Received: from [10.204.63.22] (unknown [10.204.63.22])
-	by APP1 (Coremail) with SMTP id LxC2BwBHhAZyiHtpQVzcAg--.46756S2;
-	Thu, 29 Jan 2026 17:19:06 +0100 (CET)
-Message-ID: <facea3621fc240ebb05dedb0127d8a514970d40d.camel@huaweicloud.com>
-Subject: Re: [PATCH v9 01/11] KEYS: trusted: Use get_random-fallback for TPM
-From: Roberto Sassu <roberto.sassu@huaweicloud.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org
-Cc: Eric Biggers <ebiggers@kernel.org>, James Bottomley
- <James.Bottomley@HansenPartnership.com>, Mimi Zohar <zohar@linux.ibm.com>, 
- David Howells <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>,  "Serge E. Hallyn" <serge@hallyn.com>,
- "open list:KEYS-TRUSTED" <keyrings@vger.kernel.org>,  "open list:SECURITY
- SUBSYSTEM" <linux-security-module@vger.kernel.org>, open list
- <linux-kernel@vger.kernel.org>
-Date: Thu, 29 Jan 2026 17:18:55 +0100
-In-Reply-To: <20260125192526.782202-2-jarkko@kernel.org>
-References: <20260125192526.782202-1-jarkko@kernel.org>
-	 <20260125192526.782202-2-jarkko@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1 
+	s=arc-20240116; t=1769772030; c=relaxed/simple;
+	bh=zdaxgBWHfOjQ1zh3GrG3YLN/+zyFU3lbY6MfKIPUukw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kLDkNI0VY7hvG5UyZ+oga2c3q3619Mh5JQ9iOWD30LqB9CbR/sXeHpDAXW/nO37jBkX1O7POGy8Dmxng00AA3pDJwywXQsNOsjE3ZvCRU6y+9wllcgseBhUb4IUHvgeNPJiW07Xn1O2Qexo7wRjEBODIcZMmPZS4cp0xLu+aUM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UAbo0KdU; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=TOlX2r+l; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769772027;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Qi7R1t4hPvfEKk8VW4gjKJE0vso+HGJ4y2WhvsIHDuc=;
+	b=UAbo0KdUrU8ViTpysH/WQ9rQBAgH8bQgD0SIEZEsvT+7cgXDemy7tFk4qujrPrQqC3hecF
+	J+24Z7WvFAguSjpZETptlE6+H/aksggPiMVH5E9bwnxNpKCRzAcrG6AMsxmysYJBUr4cVo
+	r6M3+/LiQq6sWNnfBNXVN8MmfBVpRBA=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-554-tlANtwjDMsaCZ9jvua8TPw-1; Fri, 30 Jan 2026 06:20:26 -0500
+X-MC-Unique: tlANtwjDMsaCZ9jvua8TPw-1
+X-Mimecast-MFC-AGG-ID: tlANtwjDMsaCZ9jvua8TPw_1769772026
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2a773db3803so23832285ad.1
+        for <keyrings@vger.kernel.org>; Fri, 30 Jan 2026 03:20:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1769772026; x=1770376826; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qi7R1t4hPvfEKk8VW4gjKJE0vso+HGJ4y2WhvsIHDuc=;
+        b=TOlX2r+l305YUCPNU5nTuFbsbGNAzRCRbdczHGrnIRQzV9y8iMAg8KONhHzFWcE8Zq
+         98R2GNKoCLJh6GGlaGC+Az62ptbFqkNhmEZWyKvuuWxl8ko/MJglOVlvtC/uymMR7mB6
+         WCSdRZL1iKyEPZPDD05dtKbIFNpDXTx14x3BT1PSKQ5cki9xMropIDIU5ntq1ZamJvxe
+         Bk26peZnfPiUeWQq5mm3nKIGByadfO0YVbXp9EOGfu/tpVKsgODKXbVsovoEjXNgWy1t
+         pdXBD6PBDUoVnrp0rQb3BBnUrLajJvufZaCqGFZTevEee8UBEscoYllpyflT710lv/fe
+         T9dQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769772026; x=1770376826;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Qi7R1t4hPvfEKk8VW4gjKJE0vso+HGJ4y2WhvsIHDuc=;
+        b=wn3pnYITcu7XuJun9TnZjgb6ajMKhI2+M9hQS6ZGQ/h8H3lOkE5pp8qSmKgRDV9no6
+         I4J9+xx+YbBHoF2uEqykzu5gFXFfV7vG85KbgeFk3qtsqrV64+YXcWGt7uytZpTg/jfO
+         /BfSRPXm41643il3eHXulhanrg7u+ig9cBnC/tsjnsDomVaMIJ0PDbR9+vrUg6WBkaGb
+         wO4FM3/Z5zvVPjD+HQoyX7+QFHWpcnAEP1EaoqVwNOcRjJ9NHsc1/55diAw+5kFN7+wz
+         rsiCZIrJTZwXfBxFtMSWqX5W2rQHQZfe4qWO31JxEdK7/kVesI97mpsS5BdAjfjaOg+z
+         Nesw==
+X-Forwarded-Encrypted: i=1; AJvYcCUIhAUE3RFJPPRgkrYabtG5voKHwzmTUZYg4aIlNKpNP8gFBXLZv9DskUvt2jnkaIWK8jHRl87QhA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJ1rd/p371QS0LIxqNck10dA6IhAMLsAp0Dxaq2gXRrtDs8xfQ
+	sKKGFes94xz8xWGheXju9ZnBv/vZS2NR64q9tc6rOxjfIYRmAHY/rQOiTRlqG3x4qw7+6wxhbgP
+	VHS4lJZiyjB5fP6NGMWuc1I9p1foyxBSgWARR4rX3+Ye9r3J2nF2uaYbn6722
+X-Gm-Gg: AZuq6aL6kfEIF7vWb65vXVJc2KnID8EtyuQMikW2TSH9Ph5PRi7NvWJQaElmL4yZiYO
+	0cdbwgcFg1yAxRSDpigpN/XCCpfYL2Oi9jP9/uDFm8Q11PbUA+RwwaSRs8v/rsAO+jzqzYnH0S2
+	WxC67kVmX+8l2XwHPRe+pVSOIQ8/pYP4apna4o3Oniqk3LzDWtlodN6LkWnF5xhQtg4Xi3KpcUw
+	by4Oy9Ebe6zoDuu9dGCXcl7XugXzQYfMSfAcTShyFoWL88OnGHqVHM2lym5TApxrrcih6ZBM0K/
+	DXNDRBvB/XGdAkJv8F2tsdClrYtBpsxX3Q+LDRwG7KLuHGKetZNDXgepJVLIYwSexbWohko+zpF
+	1
+X-Received: by 2002:a17:903:b0b:b0:2a0:d46d:f990 with SMTP id d9443c01a7336-2a8d992f0c2mr25748605ad.31.1769772025505;
+        Fri, 30 Jan 2026 03:20:25 -0800 (PST)
+X-Received: by 2002:a17:903:b0b:b0:2a0:d46d:f990 with SMTP id d9443c01a7336-2a8d992f0c2mr25748205ad.31.1769772024877;
+        Fri, 30 Jan 2026 03:20:24 -0800 (PST)
+Received: from localhost ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b3eedd0sm72565075ad.3.2026.01.30.03.20.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Jan 2026 03:20:24 -0800 (PST)
+Date: Fri, 30 Jan 2026 19:17:16 +0800
+From: Coiby Xu <coxu@redhat.com>
+To: David Howells <dhowells@redhat.com>
+Cc: Mimi Zohar <zohar@linux.ibm.com>, Simo Sorce <simo@redhat.com>, 
+	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+	Eric Snowberg <eric.snowberg@oracle.com>, Eric Biggers <ebiggers@kernel.org>, 
+	linux-integrity@vger.kernel.org, linux-crypto@vger.kernel.org, keyrings@vger.kernel.org, 
+	linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: IMA and PQC
+Message-ID: <aXrKaTem9nnWNuGV@Rk>
+References: <1783975.1769190197@warthog.procyon.org.uk>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-CM-TRANSID:LxC2BwBHhAZyiHtpQVzcAg--.46756S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxZry3Kw43Ww48ZF4xZw4xWFg_yoW5Cr15pF
-	W8KF12qws7trZ7J3s3Ca1IkF1a934rKrW3Gr4rK34qgFsxJF1xJry0vFW5Ka4jyrWqgF1a
-	qFWxXFyjga4DAw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
-	wI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUF1
-	v3UUUUU
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgAIBGl60h0SsgAAsy
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <1783975.1769190197@warthog.procyon.org.uk>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_RCPT(0.00)[keyrings];
-	MID_RHS_MATCH_FROM(0.00)[];
-	R_DKIM_NA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[roberto.sassu@huaweicloud.com,keyrings@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-3975-lists,keyrings=lfdr.de];
-	DMARC_NA(0.00)[huaweicloud.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huaweicloud.com:mid]
-X-Rspamd-Queue-Id: 7C0B6B20D5
+	TAGGED_FROM(0.00)[bounces-3976-lists,keyrings=lfdr.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linux.ibm.com,redhat.com,huawei.com,gmail.com,oracle.com,kernel.org,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[coxu@redhat.com,keyrings@vger.kernel.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[keyrings];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,ietf.org:url]
+X-Rspamd-Queue-Id: 77368BA0A7
 X-Rspamd-Action: no action
 
-On Sun, 2026-01-25 at 21:25 +0200, Jarkko Sakkinen wrote:
-> 1. tpm2_get_random() is costly when TCG_TPM2_HMAC is enabled and thus its
->    use should be pooled rather than directly used. This both reduces
->    latency and improves its predictability.
->=20
-> 2. Linux is better off overall if every subsystem uses the same source fo=
-r
->    generating the random numbers required.
->=20
-> Thus, unset '.get_random', which causes fallback to kernel_get_random().
->=20
-> One might argue that TPM RNG should be used for the generated trusted key=
-s,
-> so that they have matching entropy with the TPM internally generated
-> objects.
->=20
-> This argument does have some weight into it but as far cryptography goes,
-> FIPS certification sets the exact bar, not which exact FIPS certified RNG
-> will be used. Thus, the rational choice is obviously to pick the lowest
-> latency path, which is kernel RNG.
->=20
-> Finally, there is an actual defence in depth benefit when using kernel RN=
-G
-> as it helps to mitigate TPM firmware bugs concerning RNG implementation,
-> given the obfuscation by the other entropy sources.
->=20
-> Reviewed-by: Eric Biggers <ebiggers@kernel.org>
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> ---
-> v7:
-> - A new patch. Simplifies follow up patches.
-> ---
->  security/keys/trusted-keys/trusted_tpm1.c | 16 ++++++++++------
->  1 file changed, 10 insertions(+), 6 deletions(-)
->=20
-> diff --git a/security/keys/trusted-keys/trusted_tpm1.c b/security/keys/tr=
-usted-keys/trusted_tpm1.c
-> index 636acb66a4f6..7ce7e31bcdfb 100644
-> --- a/security/keys/trusted-keys/trusted_tpm1.c
-> +++ b/security/keys/trusted-keys/trusted_tpm1.c
-> @@ -6,6 +6,16 @@
->   * See Documentation/security/keys/trusted-encrypted.rst
->   */
-> =20
-> +/**
-> + * DOC: Random Number Generation
-> + *
-> + * tpm_get_random() was previously used here as the RNG in order to have=
- equal
-> + * entropy with the objects fully inside the TPM. However, as far as goe=
-s,
-> + * kernel RNG is equally fine, as long as long as it is FIPS certified. =
-Also,
-> + * using kernel RNG has the benefit of mitigating bugs in the TPM firmwa=
-re
-> + * associated with the RNG.
-> + */
+Hi David, 
 
-If we switch to the kernel RNG that is better, and the TPM one is
-flawed, I guess we are going to have big problems anyway, since the TPM
-random number generator is used by the TPM itself internally.
+Thanks for starting the discussion on potential issues or challenges for
+IMA PQC support!
 
-I think it makes sense to leave as it is.
+On Fri, Jan 23, 2026 at 05:43:17PM +0000, David Howells wrote:
+>Hi Mimi,
+>
+>I've posted patches which I hope will accepted to implement ML-DSA module
+>signing:
+>
+>	https://lore.kernel.org/linux-crypto/1753972.1769166821@warthog.procyon.org.uk/T/#t
+>
+>but for the moment, it will give an error to pkcs7_get_digest() if there's no
+>digest available (which there won't be with ML-DSA).  This means that there
+>isn't a hash for IMA to get at for TPM measurement.
+>
+>Now, I probably have to make a SHA256 hash anyway for UEFI blacklisting
+>purposes, so that could be used.  Alternatively, we can require the use of
+>authenticatedAttributes/signedAttrs and give you the hash of that - but then
+>you're a bit at the mercy of whatever hashes were used.
 
-Thanks
+IMA also uses pkcs7_get_digest mainly for the purpose of checking if the
+digest has been blacklisted:) So you making a SHA256 hash for UEFI
+blacklisting will automatically resolve this issue.
 
-Roberto
+>
+>Further, we need to think how we're going to do PQC support in IMA -
+>particularly as the signatures are so much bigger and verification slower.
 
-> +
->  #include <crypto/hash_info.h>
->  #include <crypto/sha1.h>
->  #include <crypto/utils.h>
-> @@ -936,11 +946,6 @@ static int trusted_tpm_unseal(struct trusted_key_pay=
-load *p, char *datablob)
->  	return ret;
->  }
-> =20
-> -static int trusted_tpm_get_random(unsigned char *key, size_t key_len)
-> -{
-> -	return tpm_get_random(chip, key, key_len);
-> -}
-> -
->  static int __init init_digests(void)
->  {
->  	int i;
-> @@ -992,6 +997,5 @@ struct trusted_key_ops trusted_key_tpm_ops =3D {
->  	.init =3D trusted_tpm_init,
->  	.seal =3D trusted_tpm_seal,
->  	.unseal =3D trusted_tpm_unseal,
-> -	.get_random =3D trusted_tpm_get_random,
->  	.exit =3D trusted_tpm_exit,
->  };
+According to my experiments done so far, for verification speed,
+ML-DSA-65 is consistently faster than ECDSA P-384 which is used by
+current CentOS/RHEL to sign files in a package. 
+
+The size of a single ML-DSA-65 signature indeed increases dramatically
+compared with ECDSA P-384 (3309 bytes vs ~100 bytes). But I'm not sure
+it can be a big problem when considering the storage capacity. Take
+latest fresh CentOS Stream 10 x86_64 KVM guest as example, without any
+file system optimization, extra ~189MB disk space is needed if all files
+in /usr signed using by ML-DSA-65 where the disk size is 50G. But I
+don't have enough experience to tell how users will perceive it and I'll
+try to collect more feedback.
+
+For the details of my experiments, you can check
+https://gist.github.com/coiby/41cf3a4d59cd64fb19d35b9ac42e4cd7
+And here's the tldr; version,
+- Verification Speed: ML-DSA-65 is consistently ~10-12% faster
+   at verification than ECDSA P-384 when verifying all files in /usr;
+   ML-DSA-65 is 2.5x or 3x faster by "openssl speed"
+
+- Signing Speed: ML-DSA-65 appears ~25-30% slower when signing
+   all files in /usr; ML-DSA-65 is 4x or 4.8x slower by "openssl speed"
+
+- Storage overhead: For ML-DSA-65, /usr will increase by 189MB and
+   430MB when there are 27346 and 58341 files respectively. But total
+   size of pure IMA signatures are estimated (files x (3309+20) bytes) to
+   be ~87MB and ~185MB respectively.
+
+>Would ML-DSA-44 be acceptable?  Should we grab some internal state out of
+>ML-DSA to use in lieu of a hash?
+
+According to 
+https://www.ietf.org/archive/id/draft-salter-lamps-cms-ml-dsa-00.html
+ML-DSA-44 is intended to meet NIST's level 2 security category. Will
+NIST level 2 meet users' security requirements?
+
+>
+>David
+>
+>
+
+-- 
+Best regards,
+Coiby
 
 
