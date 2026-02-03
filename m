@@ -1,260 +1,258 @@
-Return-Path: <keyrings+bounces-4018-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-4019-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4GYqL77DgWnZJgMAu9opvQ
-	(envelope-from <keyrings+bounces-4018-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Tue, 03 Feb 2026 10:45:34 +0100
+	id qFPwCaz5gWk7NQMAu9opvQ
+	(envelope-from <keyrings+bounces-4019-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Tue, 03 Feb 2026 14:35:40 +0100
 X-Original-To: lists+keyrings@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4316ED708E
-	for <lists+keyrings@lfdr.de>; Tue, 03 Feb 2026 10:45:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E76ED9EE5
+	for <lists+keyrings@lfdr.de>; Tue, 03 Feb 2026 14:35:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 77A0D3063ADB
-	for <lists+keyrings@lfdr.de>; Tue,  3 Feb 2026 09:43:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B35C03007A73
+	for <lists+keyrings@lfdr.de>; Tue,  3 Feb 2026 13:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97DBC399005;
-	Tue,  3 Feb 2026 09:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6431839E191;
+	Tue,  3 Feb 2026 13:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="USzTc2XU"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Fz5BJZa0";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="lpWbaqrA"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4549B28BA83;
-	Tue,  3 Feb 2026 09:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864F439E195
+	for <keyrings@vger.kernel.org>; Tue,  3 Feb 2026 13:35:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770111785; cv=none; b=ThodsQScT0HMMt5GbmXzEuXWzFuuTRf71BuvJcD+NV2uew0KmVHWx9GS+dpkQJATwvQoRTHlLvW0axLHy9epAs3LMIe2Jdmw5mimoh3GkDTKUbsj2+u7UlqU6Sy4dPQ9ol98M8JZKnc/MOS3Wi/SpX7qNcVa5yyUxtHx/f1jjek=
+	t=1770125733; cv=none; b=RiMJ1HOFAytdOUTlmAuzjvHVQVdIrp70EHrbZxB/eqGWqQSepQt9MUP3b7m9OHdcJ3VeXOazq7T9VaFAM+BRru1djiu8CD9cnBEb0JIoteKxr8lDqiMKschwCL4UlRsez7E9cWsWjeBf/SMaoFnB9S+lgILG+DKrfiiOJRoo+5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770111785; c=relaxed/simple;
-	bh=lOZQHVi4hmxAUcpIgzZE60VaqTen2FCOq592t4zbDJQ=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=eJME1rBDNRn5P1a/z9rKmbzrexsts5EKWI+2nN9bOSgFXVTjbvuUDAu4QetUMqHujyAo7nZ1ud4g5wgGRI4/SBlmuROCVRtTy+OTX/eOI5xav9bvEMmM6D9ytPNqWjsnvI2+M4s45VYGFY/ro66+DyrlTu1wXrPvfU84/lOQq5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=USzTc2XU; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 612KC6WJ032406;
-	Tue, 3 Feb 2026 09:42:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=gx3TgW
-	DUvL3wItL6n9GMbEcEVu0dSA1u5L6Uc0rhGcQ=; b=USzTc2XUnlbkpQC8fXi0fU
-	O6PJwu+58quhwQenf2XmZhHu07vwnC+RHDm5MqiuIPLotMOi9RCh64W0lbFFu1qH
-	C8WRhS0/agYggRHQPMd3Gl11fu7WFZKBpg1xYRSrWDoSfOhp3bvdQ4zkckbUrThq
-	8UlIb3RYC3QaZHdhrhMcm86H4Y2JOcppbYMn/Jc00QM0zJ1ix6qLs4jFhG29T05P
-	ZZTvEj6kiiLiKV2tN9U/jbSu1CBoEJ01Zvvs+StmCOkjMDiLS7yfwyUubLPwZG6z
-	LZ5ZcSPBcuvQSIspB+o6IQcmcL1/mDjttcPoetCOPv9D9/LvNZ2QcI5heCqttoFA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c19dt4jyv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Feb 2026 09:42:49 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 6139gnkO012972;
-	Tue, 3 Feb 2026 09:42:49 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c19dt4jyr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Feb 2026 09:42:49 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6135ud0w004466;
-	Tue, 3 Feb 2026 09:42:47 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c1wjjrfw3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Feb 2026 09:42:47 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6139gRox5112326
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 3 Feb 2026 09:42:28 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7552158050;
-	Tue,  3 Feb 2026 09:42:47 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CF71158045;
-	Tue,  3 Feb 2026 09:42:41 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.109.248.127])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  3 Feb 2026 09:42:41 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1770125733; c=relaxed/simple;
+	bh=io/EYxv7ttfZ5c/LLL9VvcayFvS43ID701JLwnZ6lKY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ABA9Q85I8+6EK1z75hNGG9SQ8yHDYvFpVLlWekD1QJjGa2BVsDHu3q/sPDcxfn7EzYYn9IkwqEbxQHI5pP2ntq5jlQrv0+FF8BVtjJepk88Xvgvki1VAoWhJ8NiK5KPz2/572nm3ioX0zoXTz6BbUCnAe2ol9n96+8StJZdvkGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Fz5BJZa0; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=lpWbaqrA; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770125729;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4BpfLzNQISMcvb3bYUowH+LAX7zmYdRcPREXRs4s810=;
+	b=Fz5BJZa02fKd2R/ktjSlFmcWRsZLsBkIJAmPlB9h5UftgkgMXcaN1SX1gCbINntsbcSnYt
+	dBKcB5n1QUPogBIKAXYW6OP0bm24cKQdVxyPxEuJ2OJMMD82pOgbk5DEOhsXGUZpCc2s+Z
+	rQ+ZWR18YseUttMcGQ2B1r1KccwPa1E=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-48-tu5NOzHWMiie3uWWmemL_A-1; Tue, 03 Feb 2026 08:35:28 -0500
+X-MC-Unique: tu5NOzHWMiie3uWWmemL_A-1
+X-Mimecast-MFC-AGG-ID: tu5NOzHWMiie3uWWmemL_A_1770125727
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2a77040ede0so55908205ad.2
+        for <keyrings@vger.kernel.org>; Tue, 03 Feb 2026 05:35:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1770125727; x=1770730527; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4BpfLzNQISMcvb3bYUowH+LAX7zmYdRcPREXRs4s810=;
+        b=lpWbaqrAqaJRaYbc1ybv2Ucqx11nF82dGvFMj7aQe26XVyKS63ImwXTt4yQV1OJOFd
+         zbbXFnkA5Vqj0qWehdKuJmpfE4USQVqU8ZV04xjSn7cFiZCpXyCQ0zYz2OfruEB8qJzY
+         g87DlfrReDJG30Ebwdxxuk4Xi86yk3nd8BbfvSyXwqtrYfnzO0Q8caI2UhhBMck45Kns
+         2B/Q4bHmS6YjEq+wM/veOSeEGnAMgQjGtRkl92YVR1cJ4N3REhoWxfifgpA5YK8uA8Ae
+         hxgeLtRgOd413PM6jOKRx16nuhuAYPkYkJ7ct3sQ/+FpECiROxL4UkLUiuMrk6WijCjN
+         z/FA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770125727; x=1770730527;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4BpfLzNQISMcvb3bYUowH+LAX7zmYdRcPREXRs4s810=;
+        b=f+prsPBj74TgJaKCKf+NyZOn9ILJ/Vzj/ocBENGv14UqNRwZmJccKHrm0dibPel+PA
+         y4NwXi2zYDjT6Xn6382GnUC/Wqzo0SPk+AXiekAwELAAt9vUhkRmKIi8n64anrmlcnrh
+         kwgLd+QWxRxbfRhOHRcouZjrk5DULhiMR0T1xXovbQcmY6/3gM2l7bmJ5sWT34ghjE6v
+         wqFLRoxaDqLk5//B8pY5oR+m5BJ6NzVfPJq0yu+2UskQc48Deqf5EFHqJEKN5i7bn0OA
+         BjaYDjsQu8aX96gPn6bG9A7Wm9oSjMG/Klw7JTvKDw1rwo5+fk8ietWebBvaoDNLrEqu
+         MwjA==
+X-Forwarded-Encrypted: i=1; AJvYcCWeQ7MDaQhOWuMjyjcUVKuCySIDHL5ObsqrIA6CtnAI0UD7ka4NJSuT+WAyJgguwyOlCB/f4vh3tw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxf+UNg3Sa/2ChygRpp4hpk+2k1DyV+xcyvOac974u6834L8dPR
+	1Bt9wGe1u/NkWh3qGJ88bARyYTqWPpXtJwXNJI/Sj79/ZpynDuyzX1SYWNzyDxv9gR8z9stQ4bV
+	6h8Sn0zCCzGWwQP7uVMZh+QINasfBC88BpjVEkw7LU8RbPjih6SS044hinKyq
+X-Gm-Gg: AZuq6aLh9ZjJblkS7eY0aW+n95nAa98am5NIdF1lTtk8bONPv2uHNHz8NwfoZc7uaUy
+	rQuWCX/nvHpZc0xVFcE0dDheGrT1ciD1zrt8p2DtxfULaf3vxRpQWmXvSfXA5K2k/rzDTH7sNE7
+	vKgv/XdqUD9ulkq5fkUUSQZO+psOCcJlggOFrJETBshKUqZJrAZuZOfL7Ji+ixPBLR+KrVfLfrc
+	bC5PnC/021CY3xSKvud1goen29Wm+cazwOoYGlYRZDgyhy2dwy0/V/Wo5HuulzVU4n2RtcNWqbH
+	SG+k6hnG54Ogf4E5LvO35nxFA9QU7w0B5+L93zh78n557kGYAUorWYugif5GkfZvAsZKSZW23iR
+	s
+X-Received: by 2002:a17:902:e891:b0:2a0:d662:7285 with SMTP id d9443c01a7336-2a8d8945522mr156161785ad.0.1770125727247;
+        Tue, 03 Feb 2026 05:35:27 -0800 (PST)
+X-Received: by 2002:a17:902:e891:b0:2a0:d662:7285 with SMTP id d9443c01a7336-2a8d8945522mr156161175ad.0.1770125726520;
+        Tue, 03 Feb 2026 05:35:26 -0800 (PST)
+Received: from localhost ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b4c3df6sm177027765ad.49.2026.02.03.05.35.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Feb 2026 05:35:25 -0800 (PST)
+Date: Tue, 3 Feb 2026 21:32:44 +0800
+From: Coiby Xu <coxu@redhat.com>
+To: Johannes =?utf-8?B?V2llc2LDtmNr?= <johannes.wiesboeck@aisec.fraunhofer.de>
+Cc: dhowells@redhat.com, dmitry.kasatkin@gmail.com, ebiggers@kernel.org, 
+	eric.snowberg@oracle.com, keyrings@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	roberto.sassu@huawei.com, simo@redhat.com, zohar@linux.ibm.com, 
+	michael.weiss@aisec.fraunhofer.de
+Subject: Re: IMA and PQC
+Message-ID: <aYHznG6vbptVOjHQ@Rk>
+References: <aXrKaTem9nnWNuGV@Rk>
+ <20260130203126.662082-1-johannes.wiesboeck@aisec.fraunhofer.de>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.300.41.1.7\))
-Subject: Re: [PATCH v15 6/7] modsign: Enable ML-DSA module signing
-From: Venkat <venkat88@linux.ibm.com>
-In-Reply-To: <2416273.1770032906@warthog.procyon.org.uk>
-Date: Tue, 3 Feb 2026 15:12:28 +0530
-Cc: Michael Kelley <mhklinux@outlook.com>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Lukas Wunner <lukas@wunner.de>, Ignat Korchagin <ignat@cloudflare.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Eric Biggers <ebiggers@kernel.org>,
-        Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
-        Daniel Gomez <da.gomez@kernel.org>,
-        "Jason A . Donenfeld" <Jason@zx2c4.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Stephan Mueller <smueller@chronox.de>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "keyrings@vger.kernel.org" <keyrings@vger.kernel.org>,
-        "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <7973F81B-FDA4-46EE-B4AF-2206BCB24861@linux.ibm.com>
-References: <SN6PR02MB4157EE01F25375784EB7C507D49DA@SN6PR02MB4157.namprd02.prod.outlook.com>
- <SN6PR02MB415708C0A6E2EB1B5C7BBFB0D49CA@SN6PR02MB4157.namprd02.prod.outlook.com>
- <20260126142931.1940586-1-dhowells@redhat.com>
- <20260126142931.1940586-7-dhowells@redhat.com>
- <2315764.1769964282@warthog.procyon.org.uk>
- <2416273.1770032906@warthog.procyon.org.uk>
-To: David Howells <dhowells@redhat.com>
-X-Mailer: Apple Mail (2.3864.300.41.1.7)
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjAzMDA3NCBTYWx0ZWRfX+fqCqLe1n9br
- xgr7I/RG8e86X36QbM+/8bWSqs1g4vivrFpM+aZCk53DW4jPHUhWqtu5cq0rC0nV47cTyazk7o5
- sXE18zW0Cbsm1P+k2BYT65bfptKsYTOdamcg1iFSnFSH7Rl1L9mpO1VM7KvUXc8kaPbpidd3bC+
- aW+HcG9g0EYRkC8Xa+NIoCd0Qt/UxafemU3vgJlxHrpUkASPi8COwIv3jtTj6Ll0RGibt+wxMJ+
- XnVhfHrFcBhIUV2AxD5nQ4uc4tQoxsmYYVfhirigoOR7JlgvX1srd3vav69NYq1kE2ULf2qbDlL
- IUXH5zYqvg5FL1QRyprOfDoxidDDCo2RBxf0yYpXY2T56z8snH9uVsd12MEwJcl9KuPtMZckK4a
- xPXVGjCC3skVISFLrLs+sx/7urK8wQmE8nf1rtI6mqBEi4hJu9FvUSbOn+/kxXlzax03GNoY6dA
- KnO0jHDHV64YElze26A==
-X-Proofpoint-GUID: H0IieDiGXO0GsQ90uT4aX8TWp8o6c3cc
-X-Proofpoint-ORIG-GUID: vRNDAkrzWSujNhA_OPpjbpzNBVhrQJU3
-X-Authority-Analysis: v=2.4 cv=LesxKzfi c=1 sm=1 tr=0 ts=6981c319 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=20KFwNOVAAAA:8 a=UqCG9HQmAAAA:8 a=VnNF1IyMAAAA:8 a=ASrTm7EkTYZRIX76TdgA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-03_03,2026-02-02_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0 clxscore=1011
- adultscore=0 suspectscore=0 priorityscore=1501 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2602030074
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260130203126.662082-1-johannes.wiesboeck@aisec.fraunhofer.de>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	MV_CASE(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[outlook.com,google.com,wunner.de,cloudflare.com,kernel.org,gondor.apana.org.au,suse.com,zx2c4.com,chronox.de,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-4018-lists,keyrings=lfdr.de];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-4019-lists,keyrings=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[redhat.com,gmail.com,kernel.org,oracle.com,vger.kernel.org,huawei.com,linux.ibm.com,aisec.fraunhofer.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[venkat88@linux.ibm.com,keyrings@vger.kernel.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCVD_COUNT_TWELVE(0.00)[13];
-	NEURAL_HAM(-0.00)[-1.000];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[coxu@redhat.com,keyrings@vger.kernel.org];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[keyrings];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,linux.ibm.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4316ED708E
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[wsbck.net:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3E76ED9EE5
 X-Rspamd-Action: no action
 
+On Fri, Jan 30, 2026 at 09:31:26PM +0100, Johannes Wiesböck wrote:
+>Hi all,
 
+Hi Johannes,
 
-> On 2 Feb 2026, at 5:18=E2=80=AFPM, David Howells <dhowells@redhat.com> =
-wrote:
->=20
-> Michael Kelley <mhklinux@outlook.com> wrote:
->=20
->> Pardon my ignorance of the signing details, but I don't see an =
-indication
->> of having selected PKCS#7 with SHA1 in my .config. What am I looking =
-for?
->=20
-> Actually, if you have openssl >=3D 1.0.0 then it sign-file will be =
-built to use
-> CMS rather than PKCS#7, and will use the configured hash algo, so you =
-can
-> ignore this.
->=20
->> The symbols CMS_NO_SIGNING_TIME,
->=20
-> I can probably just not add that.
->=20
->> EVP_PKEY_is_a()
->=20
-> I guess I can probably make this contingent on >=3D 3.0.0.
->=20
->> and OPENSSL_VERSION_MAJOR don't exist in the include/openssl/* files =
-for
->> that old version.
->=20
-> I should probably use OPENSSL_VERSION_NUMBER instead - though we =
-already use
-> it for selecting #includes (I guess #if doesn't complain).
->=20
-> Do the attached changes work for you?
->=20
-> David
-> ---
-> diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-> index 547b97097230..78276b15ab23 100644
-> --- a/scripts/sign-file.c
-> +++ b/scripts/sign-file.c
-> @@ -27,7 +27,7 @@
-> #include <openssl/evp.h>
-> #include <openssl/pem.h>
-> #include <openssl/err.h>
-> -#if OPENSSL_VERSION_MAJOR >=3D 3
-> +#if OPENSSL_VERSION_NUMBER >=3D 0x30000000L
-> # define USE_PKCS11_PROVIDER
-> # include <openssl/provider.h>
-> # include <openssl/store.h>
-> @@ -323,18 +323,21 @@ int main(int argc, char **argv)
-> CMS_DETACHED |
-> CMS_STREAM  |
-> CMS_NOSMIMECAP |
-> +#ifdef CMS_NO_SIGNING_TIME
-> CMS_NO_SIGNING_TIME |
-> +#endif
-> use_keyid;
->=20
-> - if ((EVP_PKEY_is_a(private_key, "ML-DSA-44") ||
-> -     EVP_PKEY_is_a(private_key, "ML-DSA-65") ||
-> -     EVP_PKEY_is_a(private_key, "ML-DSA-87")) &&
-> -    OPENSSL_VERSION_MAJOR < 4) {
-> +#if OPENSSL_VERSION_NUMBER >=3D 0x30000000L && OPENSSL_VERSION_NUMBER =
-< 0x40000000L
-> + if (EVP_PKEY_is_a(private_key, "ML-DSA-44") ||
-> +    EVP_PKEY_is_a(private_key, "ML-DSA-65") ||
-> +    EVP_PKEY_is_a(private_key, "ML-DSA-87")) {
-> /* ML-DSA + CMS_NOATTR is not supported in openssl-3.5
->  * and before.
->  */
-> use_signed_attrs =3D 0;
-> }
-> +#endif
->=20
-> flags |=3D use_signed_attrs;
->=20
+>
+>we conducted an evaluation regarding PQC use in IMA last year (see [1] for all
+>details) where we also considered the interplay of different PQC signatures and
+>file systems (ext4, btrfs, XFS, f2fs).
 
-Tested this, and build is successful. Please add below tag.
+Thanks for sharing this comprehensive study! There are many nuances in
+this research paper!
 
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+>
+>Coiby Xu <coxu@redhat.com> wrote:
+>
+>>According to my experiments done so far, for verification speed,
+>>ML-DSA-65 is consistently faster than ECDSA P-384 which is used by
+>>current CentOS/RHEL to sign files in a package.
+>
+>Regarding performance, similar to Coiby, we found that all variants of ML-DSA
+>consistently outperformed ECDSA P-256.
 
-Regards,
-Venkat.
+Glad to know ML-DSA is also faster than ECDSA P-256!
+
+>
+>>The size of a single ML-DSA-65 signature indeed increases dramatically
+>>compared with ECDSA P-384 (3309 bytes vs ~100 bytes). But I'm not sure
+>>it can be a big problem when considering the storage capacity. Take
+>>latest fresh CentOS Stream 10 x86_64 KVM guest as example, without any
+>>file system optimization, extra ~189MB disk space is needed if all files
+>>in /usr signed using by ML-DSA-65 where the disk size is 50G. But I
+>>don't have enough experience to tell how users will perceive it and I'll
+>>try to collect more feedback.
+>>
+>>For the details of my experiments, you can check
+>>https://gist.github.com/coiby/41cf3a4d59cd64fb19d35b9ac42e4cd7
+>>And here's the tldr; version,
+>>- Verification Speed: ML-DSA-65 is consistently ~10-12% faster
+>>   at verification than ECDSA P-384 when verifying all files in /usr;
+>>   ML-DSA-65 is 2.5x or 3x faster by "openssl speed"
+>>
+>>- Signing Speed: ML-DSA-65 appears ~25-30% slower when signing
+>>   all files in /usr; ML-DSA-65 is 4x or 4.8x slower by "openssl speed"
+>>
+>>- Storage overhead: For ML-DSA-65, /usr will increase by 189MB and
+>>   430MB when there are 27346 and 58341 files respectively. But total
+>>   size of pure IMA signatures are estimated (files x (3309+20) bytes) to
+>>   be ~87MB and ~185MB respectively.
+>
+>Two relevant aspects we discovered regard the signature size. TL;DR:
+>
+>1. Most file systems need to be tuned to support the larger extended attributes
+>(signatures) if their size goes above a certain threshold (e.g. enable EA_INODE
+>in ext4). This influences not only disk usage but overall compatibility between
+>file systems and PQC signatures. A file system that would not provide the
+>functionality to store larger extended attributes would be incompatible with
+>large signatures.
+>
+>2. For most smaller signatures (like ML-DSA-44/65), we believe that the overhead
+>of signatures is actually compensated by fragmentation within the file systems.
+>For example, ext4 will allocate a full file system block for extended attributes.
+>As long as the signature size is below this block size, we did not observe less
+>free space on the file system despite the larger signatures.
+
+I think this explains why I didn't see any disk overhead when using ECDSA P-384:)
+
+>
+>Overall, we concluded that ML-DSA-65 provides the best combination of disk
+>overhead, performance and security level. Performace was good and for all
+>algorithms with larger signatures than ML-DSA-65, file systems would need to be
+>tuned.
+
+Thanks for summarizing your findings regarding the signature size and
+also sharing your evaluation!
+
+>
+>>According to
+>>https://www.ietf.org/archive/id/draft-salter-lamps-cms-ml-dsa-00.html
+>>ML-DSA-44 is intended to meet NIST's level 2 security category. Will
+>>NIST level 2 meet users' security requirements?
+>
+>Regarding security levels:
+>For security levels, we referred to NIST IR 8547 ipd [2].
+>ECDSA P-256 has a classical security strength of 128bits (P-384: 192bits).
+>According to [2] Table 3, these levels are met by the different ML-DSA variants.
+>So, if you are migrating from ECDSA P-384, you need to use at least ML-DSA-65 to
+>meet the same security strength.
+
+This is helpful info! And thanks for sharing the perspective of
+migration!
+
+>
+>Best regards,
+>Johannes
+>
+>[1] https://www.wsbck.net/publications/pqc-ima.pdf
+>[2] https://nvlpubs.nist.gov/nistpubs/ir/2024/NIST.IR.8547.ipd.pdf
+>
+
+-- 
+Best regards,
+Coiby
 
 
