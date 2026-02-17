@@ -1,127 +1,191 @@
-Return-Path: <keyrings+bounces-4064-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-4065-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UK4KM4QolGlGAQIAu9opvQ
-	(envelope-from <keyrings+bounces-4064-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Tue, 17 Feb 2026 09:36:20 +0100
+	id 2N7+DX15lGkfFAIAu9opvQ
+	(envelope-from <keyrings+bounces-4065-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Tue, 17 Feb 2026 15:21:49 +0100
 X-Original-To: lists+keyrings@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F31214A044
-	for <lists+keyrings@lfdr.de>; Tue, 17 Feb 2026 09:36:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D37A514D176
+	for <lists+keyrings@lfdr.de>; Tue, 17 Feb 2026 15:21:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E9411300B9D7
-	for <lists+keyrings@lfdr.de>; Tue, 17 Feb 2026 08:35:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 79A2F3011A43
+	for <lists+keyrings@lfdr.de>; Tue, 17 Feb 2026 14:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40B72D59FA;
-	Tue, 17 Feb 2026 08:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF2336C0A5;
+	Tue, 17 Feb 2026 14:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b5TShg69"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B8svIcDT"
 X-Original-To: keyrings@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D282E92A6
-	for <keyrings@vger.kernel.org>; Tue, 17 Feb 2026 08:35:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4994136B066;
+	Tue, 17 Feb 2026 14:21:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771317359; cv=none; b=gfAlwk0qkJqr7Kr83njlmLbGE6rmxbEUADAnwcs724YndFTmYZwJUnkcmAHKmNJO0G7w7bqLsuXZXraYClCaT3HQJ7vwHMeIZyOeAthsgAkVb9sXuSGLlVtIbVP2+PXO4VybKRi6HI/DKvuZsF3/JrYO86vK1p23Wo+N6KS8UHU=
+	t=1771338106; cv=none; b=AWfPj8LIRsYjf16O6U8p0oEHhISaJaI4Qnb0Zrv7nLGwV48RNMsjzq++22dWiN80KHh0zcuvDpjq0pv7cNSzfwk8TuVV0xodgNRkKavyD1SzYTomSoSm2GYwbJ51pach5k5i1YwqIlpyw31WYCrbfp5iexDMDABQ+qRqId9Ks6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771317359; c=relaxed/simple;
-	bh=GsPH1it93cBSSaSMcft/eEKKpedOcCglhw3uxqFZpEE=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=PzvYn7XVEPSVT9yJ3oI/p8wxpl3XhtgrJIk71oA6uh+IJCx0TbDRy5c9oxSM5QQIcJ9Eh1KpBLRayrWuROlGLAiaeVXI4ogx9IyXKaGGhFoTjWah848D0ZcMpPmWnGgSxNUbJOYA2qrpkXdYTqrPrwq28J0RwiNDk+TNmuhL5Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b5TShg69; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771317357;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9grVDW8AZxJbfIkeJFe8IQduDAoxBnE9/JhYwG+hwok=;
-	b=b5TShg69qRMK5H0JBUgac5juXYLIkc/HJnM/HZpHwcY5gBZkMYrhvX7Rn5uKUihokYvNk0
-	5blsgPXWR6ikwHSKODd55tRzYLQ0X+qPnufabCedM83OafkkLYJHlSm2C843lt5H3H9HeX
-	YqAJOnL1txaot3/JMJ13MorArPvD5ZI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-444-9c_sTZ-MMDaMFhu7z8Pw1A-1; Tue,
- 17 Feb 2026 03:35:52 -0500
-X-MC-Unique: 9c_sTZ-MMDaMFhu7z8Pw1A-1
-X-Mimecast-MFC-AGG-ID: 9c_sTZ-MMDaMFhu7z8Pw1A_1771317350
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A14F31956060;
-	Tue, 17 Feb 2026 08:35:49 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.45.225.173])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 931861800666;
-	Tue, 17 Feb 2026 08:35:45 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <1015832.1771316809@warthog.procyon.org.uk>
-References: <1015832.1771316809@warthog.procyon.org.uk>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: dhowells@redhat.com, Arnd Bergmann <arnd@kernel.org>,
-    Lukas Wunner <lukas@wunner.de>,
-    Ignat Korchagin <ignat@cloudflare.com>,
-    Herbert Xu <herbert@gondor.apana.org.au>,
-    "David S. Miller" <davem@davemloft.net>,
-    Jarkko Sakkinen <jarkko@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-    keyrings@vger.kernel.org, linux-crypto@vger.kernel.org,
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] x509: select CONFIG_CRYPTO_LIB_SHA256
+	s=arc-20240116; t=1771338106; c=relaxed/simple;
+	bh=b4YXp4Doy/1JvSdAtQaHXNMAj7nhowBDstvdnJgDnRU=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=uN5TUsOdD/nqnq2cfat1FSHot4b/vKNgRy8CSJMZaPynSGdtZYJu467LFlzX97dBz7Xc2kWEfV+Qj86ubFjckqb67FceccEoRvOrNUcgT/FfOXyZFt4sZTLXZj5coljyyUas7Ke9L2YToWbQ8NWV4YtI7Rrrl77qzESrWveUbQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B8svIcDT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D6AC4AF0B;
+	Tue, 17 Feb 2026 14:21:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771338105;
+	bh=b4YXp4Doy/1JvSdAtQaHXNMAj7nhowBDstvdnJgDnRU=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=B8svIcDTSEa5yWDTuiwxmJ2luP6QEn1JuMb0L+LKTMGIS/+voSxEqm4KqW6fHd6i9
+	 DXi76QB1O+3kd8asd2ZmfWZvMtKbzROWRKvQ503r9Bbm03xtqusdVv5FnfCGoof5Jm
+	 5WdeloR4EgWJaV1cWmURNv9HrAcpsJsN24z1urSy2IIoCw7cXLOe05P0IHb8KI9XB9
+	 37AoPU/uy5nHa+gcuszUi5tBXkdYdohrFganzv5dDBuv9Ca7g0B7cOZBF42TyINukY
+	 h4q7EI7g6/Gp6VgZ/MLr8CA5+8Zlegu3G0+Y9hcUXuyHu+RfHkDs/EKzUG+B82XwNc
+	 iKUv+birv9YlA==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 89597F40068;
+	Tue, 17 Feb 2026 09:21:44 -0500 (EST)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Tue, 17 Feb 2026 09:21:44 -0500
+X-ME-Sender: <xms:eHmUac5-kpBcU512In2Gd_-S3_JOV_sacFz4auPvatRgklveCVqnIA>
+    <xme:eHmUaYvlw5EMa3RAd9ais2CqXLo-qaXJEAFz3F5EvV6NhRvLAErSR7EZIU78BRAp-
+    lC9jkqr0Dw3elaxVqZmj4AGcTWHLCi9Ukp_oryQ9PdrXq8PXCvNoZ8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvudelleelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdejnecuhfhrohhmpedfvehhuhgt
+    khcunfgvvhgvrhdfuceotggvlheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
+    hnpeejleeftdetjeellefgtdelfffhueefhfejgfehtddvkeefgeevffevudefveeuieen
+    ucffohhmrghinhepphhlrghnvgdrnhgvthdpghhithhhuhgsrdgtohhmnecuvehluhhsth
+    gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheptghhuhgtkhhlvghvvghr
+    odhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieefgeelleelheelqdefvd
+    elkeeggedvfedqtggvlheppehkvghrnhgvlhdrohhrghesfhgrshhtmhgrihhlrdgtohhm
+    pdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehnsh
+    hpmhgrnhhgrghlohhrvgesghhmrghilhdrtghomhdprhgtphhtthhopegsrhgruhhnvghr
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlshhfqdhptgeslhhishhtshdrlhhinh
+    hugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepughhohifvghllhhssehr
+    vgguhhgrthdrtghomhdprhgtphhtthhopehkvgihrhhinhhgshesvhhgvghrrdhkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdgtihhfshesvhhgvghrrdhkvghrnhgv
+    lhdrohhrghdprhgtphhtthhopehlihhnuhigqdhfshguvghvvghlsehvghgvrhdrkhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqnhhfshesvhhgvghrrdhkvghrnhgv
+    lhdrohhrgh
+X-ME-Proxy: <xmx:eHmUaQJTFBaxA55MSGdoV1LGZik03Iv_bsP7HUiGO4dfcVE7b8x6IA>
+    <xmx:eHmUaQnatPz4snrriLH1CAW3LEUZPhEXkCSkvwWpN59eyyYhs6-GKw>
+    <xmx:eHmUaRboN6yNperUCfb-FbVrdTVKYeQiheQAU9Nxk-y6nfgadHslbA>
+    <xmx:eHmUaU98ZQ42Jah3AnOQaaaCuS2H5G8gcVS0IPtxZmmdtCIcoUKRdg>
+    <xmx:eHmUaYYgX93v66rSNGfGAPff1dBs9b_LDQDIzFA28uilTjy5ig7ajXmy>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 5D4F278007A; Tue, 17 Feb 2026 09:21:44 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1017226.1771317344.1@warthog.procyon.org.uk>
-Date: Tue, 17 Feb 2026 08:35:44 +0000
-Message-ID: <1017227.1771317344@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-ThreadId: A-xRDuNKAwPJ
+Date: Tue, 17 Feb 2026 09:21:23 -0500
+From: "Chuck Lever" <cel@kernel.org>
+To: "Shyam Prasad N" <nspmangalore@gmail.com>
+Cc: lsf-pc@lists.linux-foundation.org,
+ linux-fsdevel <linux-fsdevel@vger.kernel.org>, keyrings@vger.kernel.org,
+ CIFS <linux-cifs@vger.kernel.org>, linux-nfs@vger.kernel.org,
+ "Christian Brauner" <brauner@kernel.org>,
+ "David Howells" <dhowells@redhat.com>
+Message-Id: <510c1f0a-4f42-4ce5-ab85-20d491019c53@app.fastmail.com>
+In-Reply-To: 
+ <CANT5p=rpJDx0xXfeS3G01VEWGS4SzTeFqm2vO6tEnq9kS=+iOw@mail.gmail.com>
+References: 
+ <CANT5p=rDxeYKXoCJoWRwGGXv4tPCM2OuX+US_G3hm_tL3UyqtA@mail.gmail.com>
+ <7570f43c-8f6c-4419-a8b8-141efdb1363a@app.fastmail.com>
+ <CANT5p=rpJDx0xXfeS3G01VEWGS4SzTeFqm2vO6tEnq9kS=+iOw@mail.gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Namespace-aware upcalls from kernel filesystems
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-2.15 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-4064-lists,keyrings=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-4065-lists,keyrings=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[redhat.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dhowells@redhat.com,keyrings@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[cel@kernel.org,keyrings@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	TAGGED_RCPT(0.00)[keyrings];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[warthog.procyon.org.uk:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6F31214A044
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: D37A514D176
 X-Rspamd-Action: no action
 
-Apologies, I forgot the:
 
-From: Arnd Bergmann <arnd@kernel.org>
 
-at the beginning.  Do you want me to resend the patch?
+On Mon, Feb 16, 2026, at 11:14 PM, Shyam Prasad N wrote:
+> On Sat, Feb 14, 2026 at 9:10=E2=80=AFPM Chuck Lever <cel@kernel.org> w=
+rote:
+>>
+>>
+>> On Sat, Feb 14, 2026, at 5:06 AM, Shyam Prasad N wrote:
+>> > Kernel filesystems sometimes need to upcall to userspace to get some
+>> > work done, which cannot be achieved in kernel code (or rather it is
+>> > better to be done in userspace). Some examples are DNS resolutions,
+>> > user authentication, ID mapping etc.
+>> >
+>> > Filesystems like SMB and NFS clients use the kernel keys subsystem =
+for
+>> > some of these, which has an upcall facility that can exec a binary =
+in
+>> > userspace. However, this upcall mechanism is not namespace aware and
+>> > upcalls to the host namespaces (namespaces of the init process).
+>>
+>> Hello Shyam, we've been introducing netlink control interfaces, which
+>> are namespace-aware. The kernel TLS handshake mechanism now uses
+>> this approach, as does the new NFSD netlink protocol.
+>>
+>>
+>> --
+>> Chuck Lever
+>
+> Hi Chuck,
+>
+> Interesting. Let me explore this a bit more.
+> I'm assuming that this is the file that I should be looking into:
+> fs/nfsd/nfsctl.c
 
-David
+Yes, clustered towards the end of the file. NFSD's use of netlink
+is as a downcall-style administrative control plane.
 
+net/handshake/netlink.c uses netlink as an upcall for driving
+kernel-initiated TLS handshake requests up to a user daemon. This
+mechanism has been adopted by NFSD, the NFS client, and the NVMe
+over TCP drivers. An in-kernel QUIC implementation is planned and
+will also be using this.
+
+
+> And that there would be a corresponding handler in nfs-utils?
+
+For NFSD, nfs-utils has a new tool called nfsdctl.
+
+The TLS handshake user space components are in ktls-utils. See:
+https://github.com/oracle/ktls-utils
+
+--=20
+Chuck Lever
 
