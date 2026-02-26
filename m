@@ -1,74 +1,72 @@
-Return-Path: <keyrings+bounces-4086-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-4087-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cPr6EpuNoGkokwQAu9opvQ
-	(envelope-from <keyrings+bounces-4086-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 19:14:51 +0100
+	id GLNgHwSVoGmvkwQAu9opvQ
+	(envelope-from <keyrings+bounces-4087-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 19:46:28 +0100
 X-Original-To: lists+keyrings@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BC851AD6B0
-	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 19:14:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E0371ADF0C
+	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 19:46:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8CB443080E22
-	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 18:06:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 00A28300615E
+	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 18:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CD13603E0;
-	Thu, 26 Feb 2026 18:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D32FC3D3D00;
+	Thu, 26 Feb 2026 18:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V0al8PCb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FTAQLlRx"
 X-Original-To: keyrings@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9330E3246EB;
-	Thu, 26 Feb 2026 18:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF14D3A783E;
+	Thu, 26 Feb 2026 18:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772129190; cv=none; b=G1yCn5Tqr6saYK2TpdNt6IFgEUB6xHc83JVYR5ZvgiHFHf/0LcIFITR8f1Q5msyelGWqssEuIxWSC3kQ2KktdyE8++6ZVJcM3Yglw786hD665RDgV8a2pkUNhP66+xWfw6qGcGxyJZ+eCK3nSTOyzfauUh27gCL7lWcD0lAVInI=
+	t=1772130820; cv=none; b=hRV46n1Po2Kkl86ndAaEdSdvue1du2eEMaOn+dUl8O2nyrmi1mgZbgUme5u4UHgXeoyfAywa/DtOw7Q3ttRRw8TCuBRSJv3DZ3lPGVd9EMRFLhoypg4LbD8ws1IuDXvKvzA+7QzFSXA3SWKECuSPF4rZ/bnPo8xjuuCXaV04dMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772129190; c=relaxed/simple;
-	bh=/VC1zI8gyRjIqgWzQZ2wTqewHEcl/+S3+ikq7qvbGPo=;
+	s=arc-20240116; t=1772130820; c=relaxed/simple;
+	bh=U/Z/ceAeahWvC5StdVOl3pvQlYfwBIFDv5N/bOtobZc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cct0I/8ZYf9tig5ZDRa7U9AsGsxJHOkO228lxM4s/SucFPoZNXeOxebx2JP96xKzeC+D8kfiwhW1CEvN6/jpVj7oaqa4MboRWSo4gFBdgLpk1GFuhEwdR+LtqKtK6b9CLC1IxpCkhaNJGk9c/68I2oeuH/QOJnTRJ/3v54+Mp1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V0al8PCb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA86AC116C6;
-	Thu, 26 Feb 2026 18:06:29 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=r2pMJfcnYQC9rpp2ZqG3Xc5EwzTl8dce8ksDJwiy9ePZuRXz3uWyeXZCzuSCb0kOTUlhieXWh9Jdk0pu4kiuPNahdxQ4Ncl8tOwadghaTJFOExV2e/DSw09vXJaxRX9y9xn2eJgH9GKPvJptXr9ESwNcyXivx1PUZrajKijiHJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FTAQLlRx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF94AC19423;
+	Thu, 26 Feb 2026 18:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772129190;
-	bh=/VC1zI8gyRjIqgWzQZ2wTqewHEcl/+S3+ikq7qvbGPo=;
+	s=k20201202; t=1772130820;
+	bh=U/Z/ceAeahWvC5StdVOl3pvQlYfwBIFDv5N/bOtobZc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V0al8PCbDfksz3c923c59Vass7yvTlhiEYg97IgF2KYsKXPwfxU5UNWMaUFeQAT+v
-	 44X3HQzzXrj5g/ejCYL0MWU78TauqjzkWBeSFzhSiXb+kS7USaQFlqQfuK0WHyTuMw
-	 Wrx19GwVDQwXDDDkWiKkepPXSIvWVq6NQPuGIqGoXM0Qjc7x5VdCDPXICImYweDNcl
-	 rkhdWZPyVoCGKjhEPPJT5M2F1qLriZsXCCmO9xgZhLh3v5x0AmdrphO1l56ESK/yio
-	 m9KnyVplDWLW//fag0HYjADJPoo7G4H5naqXyIMhL6wEAHMikl8vBOcMz0acUZF6PW
-	 xQJEKn/HQL9MA==
-Date: Thu, 26 Feb 2026 10:05:38 -0800
+	b=FTAQLlRxPUjjgPbzWiRTzE2gQd92DDGXxIkXnAyRFzc1l43gafZ00xivzEexR4TCi
+	 YNPdDJO96XhcA2oiS2qhiR258bmNMPE2Cv+EGOb4esvJ3tYl2INV8t9S+IjjJj2pKK
+	 6uVClLDkjGMGRUNzdTKJuBTcbOVeqs2mfXo6yemyuUCEaououaMsYthJHvU/2m32pk
+	 tr55IbvLZMmExU8QcyToUVqn19iVOfSj0KxlK2c1BulINQopqaZxKymx3TzJPRDQKb
+	 5H7qgynGr+plJit0uMRLAdRw5uXP5smUYokuUfxHT0KAIrV3Wj1+mjB1v4/257CYOI
+	 24SqxqBnoD0SQ==
+Date: Thu, 26 Feb 2026 10:32:48 -0800
 From: Eric Biggers <ebiggers@kernel.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>
-Cc: linux-crypto@vger.kernel.org, David Howells <dhowells@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Daniel Gomez <da.gomez@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	"Jason A . Donenfeld" <Jason@zx2c4.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Stephan Mueller <smueller@chronox.de>,
-	Lukas Wunner <lukas@wunner.de>,
-	Ignat Korchagin <ignat@cloudflare.com>, keyrings@vger.kernel.org,
-	linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
-	KUnit Development <kunit-dev@googlegroups.com>
-Subject: Re: [PATCH v4 2/2] lib/crypto: tests: Add KUnit tests for ML-DSA
- verification
-Message-ID: <20260226180538.GC2251@sol>
-References: <20251214181712.29132-1-ebiggers@kernel.org>
- <20251214181712.29132-3-ebiggers@kernel.org>
- <CAMuHMdULzMdxuTVfg8_4jdgzbzjfx-PHkcgbGSthcUx_sHRNMg@mail.gmail.com>
+To: Stefan Berger <stefanb@linux.ibm.com>
+Cc: Simo Sorce <simo@redhat.com>, Coiby Xu <coxu@redhat.com>,
+	Johannes =?iso-8859-1?Q?Wiesb=F6ck?= <johannes.wiesboeck@aisec.fraunhofer.de>,
+	dhowells@redhat.com, dmitry.kasatkin@gmail.com,
+	eric.snowberg@oracle.com, keyrings@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+	roberto.sassu@huawei.com, zohar@linux.ibm.com,
+	michael.weiss@aisec.fraunhofer.de
+Subject: Re: IMA and PQC
+Message-ID: <20260226183248.GE2251@sol>
+References: <aXrKaTem9nnWNuGV@Rk>
+ <20260130203126.662082-1-johannes.wiesboeck@aisec.fraunhofer.de>
+ <aYHznG6vbptVOjHQ@Rk>
+ <ee36981d-d658-4296-9acb-874c72606b3e@linux.ibm.com>
+ <20260226001049.GA3135@quark>
+ <cba10ac6-3557-4fc1-9b86-55361d14156d@linux.ibm.com>
+ <dc09be79-5efe-4756-a295-5b0428985525@linux.ibm.com>
+ <da190dbbc692b9da8464bbbfffdde7bab26b3f1c.camel@redhat.com>
+ <20260226165819.GA2251@sol>
+ <969c74f3-81ed-442c-87dd-381274a642a7@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -77,129 +75,72 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMuHMdULzMdxuTVfg8_4jdgzbzjfx-PHkcgbGSthcUx_sHRNMg@mail.gmail.com>
+In-Reply-To: <969c74f3-81ed-442c-87dd-381274a642a7@linux.ibm.com>
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-4087-lists,keyrings=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-4086-lists,keyrings=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[redhat.com,aisec.fraunhofer.de,gmail.com,oracle.com,vger.kernel.org,huawei.com,linux.ibm.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[ebiggers@kernel.org,keyrings@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[keyrings];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0BC851AD6B0
+X-Rspamd-Queue-Id: 2E0371ADF0C
 X-Rspamd-Action: no action
 
-On Thu, Feb 26, 2026 at 02:09:47PM +0100, Geert Uytterhoeven wrote:
-> On Sun, 14 Dec 2025 at 19:18, Eric Biggers <ebiggers@kernel.org> wrote:
-> > Add a KUnit test suite for ML-DSA verification, including the following
-> > for each ML-DSA parameter set (ML-DSA-44, ML-DSA-65, and ML-DSA-87):
-> >
-> > - Positive test (valid signature), using vector imported from leancrypto
-> > - Various negative tests:
-> >     - Wrong length for signature, message, or public key
-> >     - Out-of-range coefficients in z vector
-> >     - Invalid encoded hint vector
-> >     - Any bit flipped in signature, message, or public key
-> > - Unit test for the internal function use_hint()
-> > - A benchmark
-> >
-> > ML-DSA inputs and outputs are very large.  To keep the size of the tests
-> > down, use just one valid test vector per parameter set, and generate the
-> > negative tests at runtime by mutating the valid test vector.
-> >
-> > I also considered importing the test vectors from Wycheproof.  I've
-> > tested that mldsa_verify() indeed passes all of Wycheproof's ML-DSA test
-> > vectors that use an empty context string.  However, importing these
-> > permanently would add over 6 MB of source.  That's too much to be a
-> > reasonable addition to the Linux kernel tree for one algorithm.  It also
-> > wouldn't actually provide much better test coverage than this commit.
-> > Another potential issue is that Wycheproof uses the Apache license.
-> >
-> > Similarly, this also differs from the earlier proposal to import a long
-> > list of test vectors from leancrypto.  I retained only one valid
-> > signature for each algorithm, and I also added (runtime-generated)
-> > negative tests which were missing.  I think this is a better tradeoff.
-> >
-> > Reviewed-by: David Howells <dhowells@redhat.com>
-> > Tested-by: David Howells <dhowells@redhat.com>
-> > Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+On Thu, Feb 26, 2026 at 12:22:32PM -0500, Stefan Berger wrote:
+> > I see that IMA indeed never upgraded full file hashes to use
+> > 'struct ima_file_id'.  Building a new feature that relies on this seems
+> > like a bad idea though, given that it's a security bug that makes the> IMA
+> protocol cryptographically ambiguous.  I.e., it means that in IMA,
+> > when the contents of some file are signed, that signature is sometimes
+> > also valid for some other file contents which the signer didn't intend.
 > 
-> Thanks for your patch, which is now commit ed894faccb8de55c
-> ("lib/crypto: tests: Add KUnit tests for ML-DSA verification")
-> in v7.0-rc1.
+> You mean IMA should not sign the digest in the ima_file_id structure but
+> hash the ima_file_id structure in which this file digest is written into
+> (that we currently sign) and sign/verify this digest? And we would do this
+> to avoid two different files (with presumably different content) from having
+> the same hashes leading to the same signature? Which hashes (besides the
+> non-recommended ones) are so weak now that you must not merely sign a file's
+> hash?
 > 
-> > --- a/lib/crypto/tests/Kconfig
-> > +++ b/lib/crypto/tests/Kconfig
-> > @@ -36,10 +36,19 @@ config CRYPTO_LIB_MD5_KUNIT_TEST
-> >         select CRYPTO_LIB_MD5
-> >         help
-> >           KUnit tests for the MD5 cryptographic hash function and its
-> >           corresponding HMAC.
-> >
-> > +config CRYPTO_LIB_MLDSA_KUNIT_TEST
-> > +       tristate "KUnit tests for ML-DSA" if !KUNIT_ALL_TESTS
-> > +       depends on KUNIT
-> > +       default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
-> > +       select CRYPTO_LIB_BENCHMARK_VISIBLE
-> > +       select CRYPTO_LIB_MLDSA
-> 
-> These two selects mean that enabling KUNIT_ALL_TESTS also enables
-> extra functionality, which may not be desirable in a production system.
-> Fortunately CRYPTO_LIB_MLDSA is tristate, so in the modular case
-> the extra functionality is a module, too, and not part of the running system
-> by default.  Unfortunately CRYPTO_LIB_MLDSA is invisible, so this cannot
-> just be changed from "select" to "depends on". But as CRYPTO_MLDSA
-> also selects it, perhaps the test can be made dependent on CRYPTO_MLDSA?
+> The problem with this is that older kernels (without patching) won't be able
+> to handle newer signatures.
 
-"depends on CRYPTO_MLDSA" doesn't make sense, since the test is for the
-code in CRYPTO_LIB_MLDSA, not CRYPTO_MLDSA.  CRYPTO_MLDSA just happens
-to be one of the users of CRYPTO_LIB_MLDSA.  In this case the names
-happen to be similar, but consider e.g. CRYPTO_LIB_AESGCM which is
-selected by AMD_MEM_ENCRYPT.  If we added a test for CRYPTO_LIB_AESGCM,
-it clearly shouldn't use "depends on AMD_MEM_ENCRYPT".
+IMA needs to sign the entire ima_file_id structure, which is indeed what
+IMA already does when it uses that structure.  (Well, actually it signs
+a hash of the struct, but that's best thought of an implementation
+detail of legacy signature algorithms that can only sign hashes.  For a
+modern algorithm the whole struct should be passed instead.)  Just IMA
+uses that structure only for fsverity hashes, which is a bug that makes
+the IMA protocol ambiguous.  It needs to use ima_file_id consistently,
+otherwise a signed message sometimes corresponds to multiple unique file
+contents even without a break in the cryptographic hash function.
 
-So, "depends on CRYPTO_LIB_MLDSA" would be the correct way to switch it
-from a selection to a dependency.
-
-It's just a bit annoying to do this for hidden symbols, given that it
-makes it so that anyone who wants to unconditionally enable the test,
-like what I do to test all the crypto library code, has to find and
-enable some other random kconfig symbol that enables the code.
-
-Also, the series that originally added CRYPTO_LIB_MLDSA and its test
-(https://lore.kernel.org/linux-crypto/20251214181712.29132-1-ebiggers@kernel.org/)
-didn't add any user of CRYPTO_LIB_MLDSA besides the test, as the real
-user came a bit later.  So if I had used "depends on CRYPTO_LIB_MLDSA",
-my series wouldn't have received any build bot coverage, and I'd have
-needed to temporarily carry local patches to build and test the code.
-
-But if this is really the convention for KUnit, as it seems to be, I
-will follow it and work around it for my own testing.  So I'll plan to
-change the crypto library and CRC tests to use "depends on".
-
-But any thoughts from the KUnit maintainers would also be appreciated.
-Is it indeed intended that the tests for library modules depend on those
-modules rather than selecting them, despite their symbols being hidden?
+Sure, when that bug is fixed, old kernels won't support the new
+signatures for files that use a full-file hash.  But the same applies to
+starting to use a new signature algorithm, such as ML-DSA.
 
 - Eric
 
