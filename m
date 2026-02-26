@@ -1,214 +1,210 @@
-Return-Path: <keyrings+bounces-4080-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-4081-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ENv/D09AoGmrhAQAu9opvQ
-	(envelope-from <keyrings+bounces-4080-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 13:45:03 +0100
+	id C/JIHS5GoGkuhwQAu9opvQ
+	(envelope-from <keyrings+bounces-4081-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 14:10:06 +0100
 X-Original-To: lists+keyrings@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95B7C1A5DB2
-	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 13:45:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCCF41A61EF
+	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 14:10:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 540BA303C602
-	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 12:42:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 54355305E380
+	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 13:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE9C3859C1;
-	Thu, 26 Feb 2026 12:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="L+X9J8rA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEDD52DECBF;
+	Thu, 26 Feb 2026 13:10:01 +0000 (UTC)
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f50.google.com (mail-vs1-f50.google.com [209.85.217.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D014261B9B;
-	Thu, 26 Feb 2026 12:42:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE2930ACEE
+	for <keyrings@vger.kernel.org>; Thu, 26 Feb 2026 13:10:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772109741; cv=none; b=pkb+k1LmVZt/OXBMicxz5o1Z85OQYFfW33OBwkqttfbloTokvnCkQMff+qQeHtTamP4X5GYrSNrsI8wc2MlkocIuTuCORVTqrzgXQcIV5Sm9AaQqBfxN5S5oob+wtavJ+rh96RMCO4zuCRnjlkMrb3H6OUvlA4JHy9GcOAvMMgM=
+	t=1772111401; cv=none; b=gCdVnIvFcY+H1FCjLsFLeyn++SkQO6L8tOzRibgPRZTUG4CXrDLQcfAtVCLh0c6vwsbD6EVV8TKme+9P5mdH775YMItCFkfg4RoTQue0iWHM68JTiAyN41Ifry+XeA92jiuapxzzWtb59ZZWyG9irH7vEeuHiNxZqFmzQWmG2mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772109741; c=relaxed/simple;
-	bh=IcNay0btSOXeeAE+kAiTYTA7H/ekXPFYc0x4SXrQGwg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WMwYcgHO1xuFXOWTlGS2vkkqS22USBGxdBr0PAI5UJ3qAL9c3HIql2tAWMjZHxHsVEDt61xZa5QUs8ly8zuiKx+Hpl1ljVK+HO687vBezjiOyRpPzzZiuqKNIR/akx62K2974caUTHONzHK1Z82XtOFbYba6TZvT6+Je9XG5x4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=L+X9J8rA; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61Q493Wp2713427;
-	Thu, 26 Feb 2026 12:42:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=41aTUf
-	zGa4ZfEXMXDAU3CDN2adSNbMjM07L4F0tJvg8=; b=L+X9J8rA88lWvXn+ijgWP0
-	/XJeOUauzAKwg1J2eYqk6k1RJd4HpqZGoTGUK/FgRsWTJuLXQFejCcBC/iZByF6t
-	1s0pS/ocO776SmFWhWcr1Hk6KYuKclljgsCld9PM1/gWsUs3/3AHSNU0WA8eKluV
-	ZKJpB02NCFQTR/ldbpCpdH81ojTQaA4gaAAOCP7PZgm0yppZrs8hFsV2oYOkeTwd
-	SsZmDvw+av7toQQ8ksBbnYyx7dDYo3ZWQVEerUUNkPgp0Fd0f5xYpZh/yu2Bm57M
-	9IHT3QQpXTQVQi5i3WdDvIFnPb8spAsZi74yf5jX1YS7eSEozneVXOi7QvyzkLdA
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf34cdhh8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 12:42:03 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61QB9Qpl003386;
-	Thu, 26 Feb 2026 12:42:02 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cfs8k34qa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 12:42:02 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61QCg21W21234390
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Feb 2026 12:42:02 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1FF2958054;
-	Thu, 26 Feb 2026 12:42:02 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CA7B25803F;
-	Thu, 26 Feb 2026 12:42:00 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 26 Feb 2026 12:42:00 +0000 (GMT)
-Message-ID: <cba10ac6-3557-4fc1-9b86-55361d14156d@linux.ibm.com>
-Date: Thu, 26 Feb 2026 07:42:00 -0500
+	s=arc-20240116; t=1772111401; c=relaxed/simple;
+	bh=a1p1msLbl85XGiJLc5pnzixV/EAE95C8WZQeXpg7yPU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oI9pAJ/j4O48Ro8Gk3yklKdgBBMoiIBRvszVKZOcH4u4d+0PP92Ebs+MSZYaqKgtkbFOU9zI3FVoJZnrxVew4+r5yM5w4mUlQOTapg8EvKUw8beJq54ia42A1NyiDWPmOuYWBaaK4IqszZzsediqt/5FU/M2yvCNJEMJqyCGxCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.217.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f50.google.com with SMTP id ada2fe7eead31-5ff14dd9be4so584731137.1
+        for <keyrings@vger.kernel.org>; Thu, 26 Feb 2026 05:10:00 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772111399; x=1772716199;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iFo4C5bqe5c13AwLxjM1MlDIBZrqfqokVA35lsfZfy0=;
+        b=KfYPwyU3OVEn4HIbj4RsCmSLbJy+s+3Kz+NPa5MLnKdWzjcUROmPJZsEmL29A1JQnu
+         NYm2WPaUP+ARiN01MhNS/4B3p2xHkbzCDZLW0NoeVKX5+fRAJwGJE55e1nYHCdiMH8lW
+         jbO6syk4clYK3ygs8S3KAI62v10eSADqUv6vnL9q3jyX0f1DQzgO5hZFwMIduDOGBqvR
+         QdFkcdJPGvcogxEoeXIaVWVJM8YMQXXRa573Xvo5K3eJ0lWnG32ozRlCQLpeopJzgsgs
+         3l6IC0HgXWSbwZRY0VZddWtF2P5EBs3vI91UQPpD6UxE6TPAgeKlRLtyYxql3b2fB2bO
+         WMIg==
+X-Forwarded-Encrypted: i=1; AJvYcCW1Pzp8PmTkOMlnSb8eigNHVCXw1+0dfgD8hVqj1anSI59rdKgvhnTBdZgibLWIqagOlKCVI6PLMA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1DYeia4T79alxyYDYcqunTIsX4BqXsp+Ylu4jxRRf6kiiaqUp
+	HVnJ09mQbvnyw0nme/TgI9H7qiuXKguC+0e4kL1tMYVPc3povGtFtJRqgVSF0fS3
+X-Gm-Gg: ATEYQzwlgF+/9CjmAcAVNhsjs/nAKfQk2qyQ4uiMhX9d1YGaE3cf/qLfpAbAt03tWnY
+	RsjMNO45lnCUs0RcaBZQODCazCc5P6u4xLR1jf1/vO6GmjInh9ra7ifyIs+HaMR9x3zSrp8AErI
+	QnglECP4SMb0Tm5DIN9akvMmBhQhnvMQ1k8DT1SGUGklxfoDl6w87h2zuVWhRCVTwRGUCDv7v6q
+	jUiZWI40OPTsDzvMNuX5EdF83lGdGZ0fQY9zVW3zbyxsNXnC1CyIfaGCsWQ2JK1yQyp6sVlSdV7
+	8C8H4dc2aV4h5muzyF9SpkkNZG1rVZzPOLLWs9SGJrFy6iRbGx0smVdek+sN8KFJ9jfMB523g4x
+	+AIMvNcqBQ6JLnyl0fVs+9zlVnP+jOSk1sV8uK09sDJyjVqyscxkQFTWMgaMc1zh+44j5knv4z7
+	KJlQxw1P7fZMDuP2FgPTBeQw3nufwBqGS9gVwyOEVhWgw27j472RG8ZFtKp9Nh
+X-Received: by 2002:a05:6102:2ac7:b0:5f8:e4c1:7bd2 with SMTP id ada2fe7eead31-5ff20a57882mr1136805137.16.1772111399479;
+        Thu, 26 Feb 2026 05:09:59 -0800 (PST)
+Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com. [209.85.222.49])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5ff1ea15925sm2166158137.8.2026.02.26.05.09.58
+        for <keyrings@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Feb 2026 05:09:58 -0800 (PST)
+Received: by mail-ua1-f49.google.com with SMTP id a1e0cc1a2514c-94a231b285dso523371241.1
+        for <keyrings@vger.kernel.org>; Thu, 26 Feb 2026 05:09:58 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWhhmaz0SCLIa/zBECZ7JcUdRFynOcJJCak4RZN7UfpB4LD71ymDBFapQhAlhLaAfx1lYINijOe3g==@vger.kernel.org
+X-Received: by 2002:a05:6102:5112:b0:5dd:c3ec:b66 with SMTP id
+ ada2fe7eead31-5ff20c30021mr989167137.30.1772111398038; Thu, 26 Feb 2026
+ 05:09:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: IMA and PQC
+References: <20251214181712.29132-1-ebiggers@kernel.org> <20251214181712.29132-3-ebiggers@kernel.org>
+In-Reply-To: <20251214181712.29132-3-ebiggers@kernel.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 26 Feb 2026 14:09:47 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdULzMdxuTVfg8_4jdgzbzjfx-PHkcgbGSthcUx_sHRNMg@mail.gmail.com>
+X-Gm-Features: AaiRm51PaPKg5xcCQeCnUb9vy0Lr9tZrrIwLkmaSIGSq-OyO54vQniCM8N9qQps
+Message-ID: <CAMuHMdULzMdxuTVfg8_4jdgzbzjfx-PHkcgbGSthcUx_sHRNMg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] lib/crypto: tests: Add KUnit tests for ML-DSA verification
 To: Eric Biggers <ebiggers@kernel.org>
-Cc: Coiby Xu <coxu@redhat.com>,
-        =?UTF-8?Q?Johannes_Wiesb=C3=B6ck?= <johannes.wiesboeck@aisec.fraunhofer.de>,
-        dhowells@redhat.com, dmitry.kasatkin@gmail.com,
-        eric.snowberg@oracle.com, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
-        roberto.sassu@huawei.com, simo@redhat.com, zohar@linux.ibm.com,
-        michael.weiss@aisec.fraunhofer.de
-References: <aXrKaTem9nnWNuGV@Rk>
- <20260130203126.662082-1-johannes.wiesboeck@aisec.fraunhofer.de>
- <aYHznG6vbptVOjHQ@Rk> <ee36981d-d658-4296-9acb-874c72606b3e@linux.ibm.com>
- <20260226001049.GA3135@quark>
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20260226001049.GA3135@quark>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDExNCBTYWx0ZWRfX25OFoWMW75Pw
- wDfGunJuHnlJ0zriWVZDtbkuIN0N0kXBXvP0kZKWvjdQ1LI22alQTCw8s5iGalNYxd128SadDob
- eRRNxrDVzr88sXxMj81bIksnSWknNrXl4Bqmao30StuKaPuMC9Inp33iGk9iaLa1JDSDUuivsXK
- rtW+wbu7/jLsF4pYFPCcm2Z/iGia+6Cq7KiMWC+kgSfqHK509mhqEcrDE8015Ux6wlHpjzZdPI5
- qJi3JTC0DLlZffODO7JZmfyZdWPhKglI36ZMKd/5jisBoTNcV/djDQloGDwyvyrAGuV3zcvMSUQ
- HUCewC8+bp1pHZ69rtSSK5JDLKR5qACyxlyBf5A26KNJi7iBUkJIf0O0PcWJzyJMUyJ7oxgNHpD
- UEt7WkiCtcblRZ1b7AIJNzoDaun4wYD3EH22asFYCAtfFbTW42l/aQcI5/BCQwJn/zM8127dhhq
- buWLq8lsYyJGvePJtzQ==
-X-Proofpoint-ORIG-GUID: dLyHBasPuk35xkQkVwjL6WfHqoq8z0qU
-X-Authority-Analysis: v=2.4 cv=F9lat6hN c=1 sm=1 tr=0 ts=69a03f9c cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=NEAV23lmAAAA:8
- a=or4u6VGYAAAA:8 a=LpeavwYcytEc06GjzjIA:9 a=QEXdDO2ut3YA:10
- a=f52p4T1hNPgkgD0SKpRM:22
-X-Proofpoint-GUID: -d0xVr0Tbl_weNYPZuUqlD4u7ZGPQL9_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-25_04,2026-02-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
- clxscore=1015 suspectscore=0 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602260114
+Cc: linux-crypto@vger.kernel.org, David Howells <dhowells@redhat.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Daniel Gomez <da.gomez@kernel.org>, 
+	Sami Tolvanen <samitolvanen@google.com>, "Jason A . Donenfeld" <Jason@zx2c4.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Stephan Mueller <smueller@chronox.de>, Lukas Wunner <lukas@wunner.de>, 
+	Ignat Korchagin <ignat@cloudflare.com>, keyrings@vger.kernel.org, 
+	linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, 
+	KUnit Development <kunit-dev@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-4080-lists,keyrings=lfdr.de];
-	FREEMAIL_CC(0.00)[redhat.com,aisec.fraunhofer.de,gmail.com,oracle.com,vger.kernel.org,huawei.com,linux.ibm.com];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,keymaterial.net:url];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-4081-lists,keyrings=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stefanb@linux.ibm.com,keyrings@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	NEURAL_HAM(-0.00)[-0.989];
-	TAGGED_RCPT(0.00)[keyrings];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[linux-m68k.org];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: 95B7C1A5DB2
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[geert@linux-m68k.org,keyrings@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[keyrings];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-m68k.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CCCF41A61EF
 X-Rspamd-Action: no action
 
+Hi Eric,
 
+CC kunit
 
-On 2/25/26 7:10 PM, Eric Biggers wrote:
-> On Wed, Feb 25, 2026 at 09:25:43AM -0500, Stefan Berger wrote:
->> To avoid duplicate work: Is either one of you planning on writing patches
->> for IMA to use ML-DSA and convert the current ML-DSA to also support HashML?
->> I had done the work on this before and could dig out the patches again...
-> 
-> IMA already had to add its own digest prefixing support, since it was
-> needed to disambiguate between full-file digests and fsverity digests.
-> See 'struct ima_file_id'.  Thus the message signed is at most 66 bytes.
+On Sun, 14 Dec 2025 at 19:18, Eric Biggers <ebiggers@kernel.org> wrote:
+> Add a KUnit test suite for ML-DSA verification, including the following
+> for each ML-DSA parameter set (ML-DSA-44, ML-DSA-65, and ML-DSA-87):
+>
+> - Positive test (valid signature), using vector imported from leancrypto
+> - Various negative tests:
+>     - Wrong length for signature, message, or public key
+>     - Out-of-range coefficients in z vector
+>     - Invalid encoded hint vector
+>     - Any bit flipped in signature, message, or public key
+> - Unit test for the internal function use_hint()
+> - A benchmark
+>
+> ML-DSA inputs and outputs are very large.  To keep the size of the tests
+> down, use just one valid test vector per parameter set, and generate the
+> negative tests at runtime by mutating the valid test vector.
+>
+> I also considered importing the test vectors from Wycheproof.  I've
+> tested that mldsa_verify() indeed passes all of Wycheproof's ML-DSA test
+> vectors that use an empty context string.  However, importing these
+> permanently would add over 6 MB of source.  That's too much to be a
+> reasonable addition to the Linux kernel tree for one algorithm.  It also
+> wouldn't actually provide much better test coverage than this commit.
+> Another potential issue is that Wycheproof uses the Apache license.
+>
+> Similarly, this also differs from the earlier proposal to import a long
+> list of test vectors from leancrypto.  I retained only one valid
+> signature for each algorithm, and I also added (runtime-generated)
+> negative tests which were missing.  I think this is a better tradeoff.
+>
+> Reviewed-by: David Howells <dhowells@redhat.com>
+> Tested-by: David Howells <dhowells@redhat.com>
+> Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 
-The hash there is still only a hash over a file and that hash is signed, 
-isn't it?
+Thanks for your patch, which is now commit ed894faccb8de55c
+("lib/crypto: tests: Add KUnit tests for ML-DSA verification")
+in v7.0-rc1.
 
-> 
-> With that being the case, HashML-DSA isn't necessary.  It's not even
-> possible to use here, since there are no OIDs assigned for the fsverity
-> digests, so it cannot replace the ima_file_id.
+> --- a/lib/crypto/tests/Kconfig
+> +++ b/lib/crypto/tests/Kconfig
+> @@ -36,10 +36,19 @@ config CRYPTO_LIB_MD5_KUNIT_TEST
+>         select CRYPTO_LIB_MD5
+>         help
+>           KUnit tests for the MD5 cryptographic hash function and its
+>           corresponding HMAC.
+>
+> +config CRYPTO_LIB_MLDSA_KUNIT_TEST
+> +       tristate "KUnit tests for ML-DSA" if !KUNIT_ALL_TESTS
+> +       depends on KUNIT
+> +       default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
+> +       select CRYPTO_LIB_BENCHMARK_VISIBLE
+> +       select CRYPTO_LIB_MLDSA
 
-For non-fsverify IMA signatures it is 'possible' to use HashML-DSA and 
-it's 'working' (recycled old patches yesterday):
+These two selects mean that enabling KUNIT_ALL_TESTS also enables
+extra functionality, which may not be desirable in a production system.
+Fortunately CRYPTO_LIB_MLDSA is tristate, so in the modular case
+the extra functionality is a module, too, and not part of the running system
+by default.  Unfortunately CRYPTO_LIB_MLDSA is invisible, so this cannot
+just be changed from "select" to "depends on". But as CRYPTO_MLDSA
+also selects it, perhaps the test can be made dependent on CRYPTO_MLDSA?
 
-Linux: https://github.com/stefanberger/linux/commits/dhmlsa%2Bima.202602025/
+> +       help
+> +         KUnit tests for the ML-DSA digital signature algorithm.
+> +
+>  config CRYPTO_LIB_POLY1305_KUNIT_TEST
+>         tristate "KUnit tests for Poly1305" if !KUNIT_ALL_TESTS
+>         depends on KUNIT
+>         default KUNIT_ALL_TESTS || CRYPTO_SELFTESTS
+>         select CRYPTO_LIB_BENCHMARK_VISIBLE
 
-ima-evm-utils: 
-https://github.com/linux-integrity/ima-evm-utils/pull/19/commits
+Gr{oetje,eeting}s,
 
-> 
-> I'll also note that HashML-DSA is controversial (e.g. see
-> https://keymaterial.net/2024/11/05/hashml-dsa-considered-harmful/),
+                        Geert
 
-The problem with this is that NIST would have to react to these 
-controversies as we race to support PQC. If something is wrong with the 
-standard then it would be best for NIST to withdraw/modify HashML-DSA 
-asap. Otherwise it's the best to follow the standard IMO because if you 
-don't you get criticism otherwise.
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-> since it was added to the ML-DSA specification at a late stage without
-> sufficient review, and what it does can be achieved in better ways.
-
-In case of doubt I would use the standard, though. It's probably not a 
-good idea for everyone to implement their own (bad) solution.
-
-> Which is exactly what we are seeing here, since again, IMA needs to do
-> the digest calculation and prefixing itself anyway.
-
-Use the standard...
-
-    Stefan
-
-> 
-> - Eric
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
