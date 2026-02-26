@@ -1,237 +1,289 @@
-Return-Path: <keyrings+bounces-4082-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-4083-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEkICShZoGlPigQAu9opvQ
-	(envelope-from <keyrings+bounces-4082-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 15:31:04 +0100
+	id ILI8D/JroGk3jgQAu9opvQ
+	(envelope-from <keyrings+bounces-4083-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 16:51:14 +0100
 X-Original-To: lists+keyrings@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E77721A7919
-	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 15:31:02 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 935111A91C9
+	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 16:51:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C5A8312ECCE
-	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 14:16:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 72B563034B3D
+	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 15:27:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61F93B52EA;
-	Thu, 26 Feb 2026 14:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C813E95A9;
+	Thu, 26 Feb 2026 15:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="cnn489YU"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="du1O4iV2";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="WX2LLoxW"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564A920DD52;
-	Thu, 26 Feb 2026 14:16:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CA031329B
+	for <keyrings@vger.kernel.org>; Thu, 26 Feb 2026 15:27:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772115417; cv=none; b=tEyhYBuovji2IcsuJEnJ6hjVU0I6cNTzch73Eu8u478d87zTqXNKnCLNeUPYzd8X0f7V7PQ4OMenlVenQFtT2luhq/i9Ybbrs4U+l5tRQYkq3eOcSrkcr+3rIc/DCu0iJkIZge8pdTCs+3F7zmXtmBl3s7dg07DRzGxFs70ctKA=
+	t=1772119670; cv=none; b=DCLw68qv1IBRh/iQ417+TVIxCuEO2o48/blPmGQAWJ6BzamKntx/bfTBBekZThEzHGB+6Lg3a6RVNclINr7NHmMqnleSdyifs0yTTcTP/A9TO2vDg+yHVN7KT/yDR4U7htJxFk0w2DXKS//Nig0rddl+41RdCKKfty79Fp4dloQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772115417; c=relaxed/simple;
-	bh=E8DKflhAVL3TKeub7x1adlGOAnbNXueSf0qELTC/N+I=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ZE2Y3Rb2ZWx1/bd2kPuoGs0aBcVyu8x6gcx4aT+u6D0slwjd2SfFoP2Z6PT20CgXnMTUsKB94wXLQbPv4O6pVGBvnCznvNULS2wnzy0ah+cpBCJNarK8wIqC4cmttwtMkPglPcbXALsVnTi0YTLWD62Z3sk0ZakfIChYkdBQ5pE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=cnn489YU; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61Q63mEO1361599;
-	Thu, 26 Feb 2026 14:16:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Cm/laZ
-	GdtotgeWcA9ew0IQ+N4BXALkMFoQEJiztxDEo=; b=cnn489YUqixYZLjkU2KQlO
-	8TMwQ2KLFJ1n4mNieHh1E874u7CVWqf9k01qtn3p/C5dn4ZPXu1c62UWFRSOo/88
-	CP8fGyr+0xyeeLiNaOyQQqGMnoKrDJbsl8+8LhsWnlMGO6+VCIVuckhyZLLWsHKa
-	yHik4d2wQiCP0kn0EFJcCgvepVyB7HWLB47ZjLjF/9y9E0QMloFzYB/YyotgCFzX
-	fIhdEz9t+8U+QniXIeBKpH5rZcsQfP0CF/PnalvhXn/5mVBPJYSXj/hEWYlMISLU
-	za87ulnFDwf1dIlX2w7+nTnfiMqsZkajQq+2fSBy0rO+6SGzad9Z0HTXpLAynFeg
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf34ce1e6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 14:16:35 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61QCvPoA001646;
-	Thu, 26 Feb 2026 14:16:35 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cfr1nbwaa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 14:16:35 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61QEGYCT16319182
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Feb 2026 14:16:34 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 17F825803F;
-	Thu, 26 Feb 2026 14:16:34 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A59C858056;
-	Thu, 26 Feb 2026 14:16:32 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 26 Feb 2026 14:16:32 +0000 (GMT)
-Message-ID: <dc09be79-5efe-4756-a295-5b0428985525@linux.ibm.com>
-Date: Thu, 26 Feb 2026 09:16:32 -0500
+	s=arc-20240116; t=1772119670; c=relaxed/simple;
+	bh=WdeCGCTL6JPLNjQboPf6jlsCpxs5JFZtnDaqVpFIDdc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=iK8K+YZo/GaBYAvPkGIzYcnFzUqHm6npuzz+CAMaLjGwqYJ5ynEgC2ma7k5sT0Cv+QFGuvLVq9Frg1mrUg7dWvYUw0EQ9LTCwaFKnEjyBBIv8u3vNjuMvmfSlnNeIBE9l0yrRhqpSTniyDWEWTS7C1lR8jbCxElZBFYRLaub1e4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=du1O4iV2; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=WX2LLoxW; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772119668;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RAyu0qMgQFztjvGBxM+KVZ6vBWyzEz+Ckm03PfSHbXI=;
+	b=du1O4iV2ULwOlitVJIlsCf8uhLyDFXxnbuSiUA1S+rBhfxZUoiKtzoYh7Ttr7VCWnphznY
+	YesbGivl/3vt5ov0X8tqRHr97G5SJcMHFujUprKOymoepj/ig58UaI8pAYqbpQaRh++NvF
+	3sglz5xXtSEY6idjoh5xSE94qecPbyw=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-279-qLtoxGbsOrSCKuDBEChQHQ-1; Thu, 26 Feb 2026 10:27:47 -0500
+X-MC-Unique: qLtoxGbsOrSCKuDBEChQHQ-1
+X-Mimecast-MFC-AGG-ID: qLtoxGbsOrSCKuDBEChQHQ_1772119666
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8cb3a2eb984so1092175185a.0
+        for <keyrings@vger.kernel.org>; Thu, 26 Feb 2026 07:27:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1772119666; x=1772724466; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:organization
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=RAyu0qMgQFztjvGBxM+KVZ6vBWyzEz+Ckm03PfSHbXI=;
+        b=WX2LLoxWt6hvLP3jV0Og6ZzYw9aYiPL+n5Mnja/lU2r30Q3d5LDZauYt2p/i4wYnyB
+         b8fZEBzsCEiUVzeJ1c6F/FneoNVZCNuaDdJy+Si3xE54E6et0IFAFB8HKK0TxBPtdCwj
+         5WdaVp/fb0HPdi1y7G3Q1zgZa3G6uXpgsXz2b71yORhhksnSYT+FMkYD4Wyu/fgtNF2y
+         o1R/1ZyrSFactKQ3SQ5LrK9kgv09l9MV7EiQo3EqDIU8kqK1s9kWCR3o/Yv0OrMQi+ul
+         gseZJl3BJaPOG0Y9e0hfnyq3vINyMqusFA2IDHC9FlZe6r4J7QWHtqLc42yx0oUxjLp/
+         2dYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772119666; x=1772724466;
+        h=mime-version:user-agent:content-transfer-encoding:organization
+         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RAyu0qMgQFztjvGBxM+KVZ6vBWyzEz+Ckm03PfSHbXI=;
+        b=akRxpfDnsWngE18qUOWN9lvKYtoDFhgZzH3kpqg2AXwzt8yFXZvha13HmNhVrxpsCa
+         VjKO36lFMxREoMElpbMUjwLHEow2v8JqpLLRuq+cwU/P9huYZVIEy3g6Yu72wkVkGeI6
+         Fm09526NMg0ECUQHN2yONhIvv/DkrYRCV1hMsmLYj2QHdGinBzSk4gkEYnDT+NTmf6QV
+         wCS7t44+L58qT+C5wZ6wzXY6OI4LYTgamhzaFsPIp+2HBkF8k808wdIzxB8H0BJ8WBvm
+         RhEL4S21pbuIofbne/xFghtZt/3KqRdcm8R79YUVECxJUEAGZhWvyX9LdLSuU/LwjtVg
+         rtOw==
+X-Forwarded-Encrypted: i=1; AJvYcCWxDh93s5qAc4dLaNTtpMgU12O1rykXX14XugGJjvYBpqUYzy+HroRzTb3PCwKy3BiqpqtjQn6xTA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKo5B7tnr8UR5MFOoL6RT+Bn5FEBqDsD0T9BTa+GmE4qY+1jGC
+	DWznyTTmM4xVVs0xGRCXN0D9GTtqAs7BleuEGICuHCHROjn8oSWWekzCvRpvME5Q7umzt1HQBfz
+	EocHqMeaTJUFQZAAZjXbiOEPdPsH5kyiVgqsPdPu68i/bmFqb2LDG+6t/jv2E
+X-Gm-Gg: ATEYQzzdYZSp19WOD6kv0+tbqzvMVrvwdRNQaFztZwkvWo3GeFMQcWTIbInuHg+CtcP
+	uFc+50IcJNH8nIyVNkfPWvNdKVXSZh/Dk32BoWeMRMXo/D0/cbsjP/bBQSB1ztBPG/Dsha6VlZ3
+	B9A3FzO1dKUrW+ZKP987nAIsWaRo0cE/VWok1ejQSVnEGY9WWamKO9J0ViMDaJrIa9pp1/h84aL
+	o0E7t76FPkGQsU/7ROvKfiILxDrE5WQ6i6/6RxbPwZoBhtghpNtvockxU2lRw+b2TfZFvcmgoiY
+	TYl20DORpMuy+5OLyUGt583qW8xt/r1Jzam+MWRPyw74ZXgMghz9z4xm8nY9oJ+oqiD0fYfjOa4
+	MxRLuTnPOukEU5AYU
+X-Received: by 2002:a05:620a:d8a:b0:8a3:1b83:1036 with SMTP id af79cd13be357-8cbbcf7e84amr649027685a.29.1772119666329;
+        Thu, 26 Feb 2026 07:27:46 -0800 (PST)
+X-Received: by 2002:a05:620a:d8a:b0:8a3:1b83:1036 with SMTP id af79cd13be357-8cbbcf7e84amr649021385a.29.1772119665670;
+        Thu, 26 Feb 2026 07:27:45 -0800 (PST)
+Received: from m8.users.ipa.redhat.com ([2603:7000:9400:fe80::7a7])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf6730afsm262894585a.13.2026.02.26.07.27.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 07:27:44 -0800 (PST)
+Message-ID: <da190dbbc692b9da8464bbbfffdde7bab26b3f1c.camel@redhat.com>
+Subject: Re: IMA and PQC
+From: Simo Sorce <simo@redhat.com>
+To: Stefan Berger <stefanb@linux.ibm.com>, Eric Biggers <ebiggers@kernel.org>
+Cc: Coiby Xu <coxu@redhat.com>, Johannes =?ISO-8859-1?Q?Wiesb=F6ck?=	
+ <johannes.wiesboeck@aisec.fraunhofer.de>, dhowells@redhat.com, 
+	dmitry.kasatkin@gmail.com, eric.snowberg@oracle.com,
+ keyrings@vger.kernel.org, 	linux-crypto@vger.kernel.org,
+ linux-integrity@vger.kernel.org, 	linux-kernel@vger.kernel.org,
+ linux-modules@vger.kernel.org, 	roberto.sassu@huawei.com,
+ zohar@linux.ibm.com, michael.weiss@aisec.fraunhofer.de
+Date: Thu, 26 Feb 2026 10:27:43 -0500
+In-Reply-To: <dc09be79-5efe-4756-a295-5b0428985525@linux.ibm.com>
+References: <aXrKaTem9nnWNuGV@Rk>
+	 <20260130203126.662082-1-johannes.wiesboeck@aisec.fraunhofer.de>
+	 <aYHznG6vbptVOjHQ@Rk> <ee36981d-d658-4296-9acb-874c72606b3e@linux.ibm.com>
+	 <20260226001049.GA3135@quark>
+	 <cba10ac6-3557-4fc1-9b86-55361d14156d@linux.ibm.com>
+	 <dc09be79-5efe-4756-a295-5b0428985525@linux.ibm.com>
+Organization: Red Hat
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: IMA and PQC
-From: Stefan Berger <stefanb@linux.ibm.com>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Coiby Xu <coxu@redhat.com>,
-        =?UTF-8?Q?Johannes_Wiesb=C3=B6ck?= <johannes.wiesboeck@aisec.fraunhofer.de>,
-        dhowells@redhat.com, dmitry.kasatkin@gmail.com,
-        eric.snowberg@oracle.com, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
-        roberto.sassu@huawei.com, simo@redhat.com, zohar@linux.ibm.com,
-        michael.weiss@aisec.fraunhofer.de
-References: <aXrKaTem9nnWNuGV@Rk>
- <20260130203126.662082-1-johannes.wiesboeck@aisec.fraunhofer.de>
- <aYHznG6vbptVOjHQ@Rk> <ee36981d-d658-4296-9acb-874c72606b3e@linux.ibm.com>
- <20260226001049.GA3135@quark>
- <cba10ac6-3557-4fc1-9b86-55361d14156d@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <cba10ac6-3557-4fc1-9b86-55361d14156d@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDEyOCBTYWx0ZWRfX55CZZsp+wRNu
- EvykSJ1COzivLjDSdolsjrmXB5SyAHGcs7wBghqvvsXEiB98jPGvAoliGx7hgnu8AuFQh+Bsj5s
- oSSF3y8G30bWlWX0qHYKrikCS/B4s2uVTe3Nw+A+IPJY/LOVK57fS2+txUAOP0TSuzsYyAydQDp
- lwYFDN+HRxw8MS9EuOCK6jpj69/kePlUPhqWUWiIeVc8j3wTzO1RmkF2VUXoTOYK01ULeoNQR70
- H7qgvnx6pG+lu+JjLDyAZFbDFausDtgCZGcVhkn9GlauWc7yNKmp8Li4iCljN5sR/rtvuTBxXp7
- oFvYvfFa2wlWfVxSTn7pvlKr8j4TzWNliUdjuuObcGt6wWEU55/NtvQf5zFBdmX9+ICr3VQgUoa
- P3qgmb833eV+mmEvzPQOLXIdBXnEmRNrnaUOjM/YKL6Bka4hhCW/br7NGKuOPeZiFPgVwlrjyNp
- SsPWRidSJG5WOkP/IMw==
-X-Proofpoint-ORIG-GUID: vKkRArfHCBC2sY0dOEq3UVMMthAC4oCz
-X-Authority-Analysis: v=2.4 cv=F9lat6hN c=1 sm=1 tr=0 ts=69a055c4 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=NEAV23lmAAAA:8
- a=or4u6VGYAAAA:8 a=0-tci4tB3JD_nLbTkkIA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=f52p4T1hNPgkgD0SKpRM:22
-X-Proofpoint-GUID: auGwW4fRF8eMQ05GAA8LePE63cIzrQgW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-26_01,2026-02-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
- clxscore=1015 suspectscore=0 malwarescore=0 lowpriorityscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602260128
 X-Rspamd-Server: lfdr
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWELVE(0.00)[15];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-4082-lists,keyrings=lfdr.de];
 	FREEMAIL_CC(0.00)[redhat.com,aisec.fraunhofer.de,gmail.com,oracle.com,vger.kernel.org,huawei.com,linux.ibm.com];
+	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,keymaterial.net:url];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-4083-lists,keyrings=lfdr.de];
+	DKIM_TRACE(0.00)[redhat.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stefanb@linux.ibm.com,keyrings@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	NEURAL_HAM(-0.00)[-0.988];
-	TAGGED_RCPT(0.00)[keyrings];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: E77721A7919
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[simo@redhat.com,keyrings@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[keyrings];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,keymaterial.net:url]
+X-Rspamd-Queue-Id: 935111A91C9
 X-Rspamd-Action: no action
 
+On Thu, 2026-02-26 at 09:16 -0500, Stefan Berger wrote:
+>=20
+> On 2/26/26 7:42 AM, Stefan Berger wrote:
+> >=20
+> >=20
+> > On 2/25/26 7:10 PM, Eric Biggers wrote:
+> > > On Wed, Feb 25, 2026 at 09:25:43AM -0500, Stefan Berger wrote:
+> > > > To avoid duplicate work: Is either one of you planning on writing=
+=20
+> > > > patches
+> > > > for IMA to use ML-DSA and convert the current ML-DSA to also suppor=
+t=20
+> > > > HashML?
+> > > > I had done the work on this before and could dig out the patches=
+=20
+> > > > again...
+> > >=20
+> > > IMA already had to add its own digest prefixing support, since it was
+> > > needed to disambiguate between full-file digests and fsverity digests=
+.
+> > > See 'struct ima_file_id'.=C2=A0 Thus the message signed is at most 66=
+ bytes.
+> >=20
+> > The hash there is still only a hash over a file and that hash is signed=
+,=20
+> > isn't it?
+> >=20
+> > >=20
+> > > With that being the case, HashML-DSA isn't necessary.=C2=A0 It's not =
+even
+> > > possible to use here, since there are no OIDs assigned for the fsveri=
+ty
+> > > digests, so it cannot replace the ima_file_id.
+> >=20
+> > For non-fsverify IMA signatures it is 'possible' to use HashML-DSA and=
+=20
+> > it's 'working' (recycled old patches yesterday):
+> >=20
+> > Linux: https://github.com/stefanberger/linux/commits/=20
+> > dhmlsa%2Bima.202602025/
+> >=20
+> > ima-evm-utils: https://github.com/linux-integrity/ima-evm-utils/pull/19=
+/=20
+> > commits
+> >=20
+> > >=20
+> > > I'll also note that HashML-DSA is controversial (e.g. see
+> > > https://keymaterial.net/2024/11/05/hashml-dsa-considered-harmful/),
+> >=20
+> > The problem with this is that NIST would have to react to these=20
+> > controversies as we race to support PQC. If something is wrong with the=
+=20
+> > standard then it would be best for NIST to withdraw/modify HashML-DSA=
+=20
+> > asap. Otherwise it's the best to follow the standard IMO because if you=
+=20
+> > don't you get criticism otherwise.
+>=20
+> What I am not clear about from FIPS-204 is whether availability of=20
+> HashML-DSA is a "must-use" or  a "may-use". What speaks against it for=
+=20
+> our use case is performance. The lookup of a hash's ID (last digit of=20
+> OID) and the creation of the 11 byte encoding to prepend before every=20
+> digest for every signature takes cycles.
 
+It is a recommendation, but there are plenty of protocols (TLS,
+OpenPGP, etc...) where the decision has been made to use "pure" ML-DSA
+only, even if what you are signing is not the full data, but something
+containing a hash.
 
-On 2/26/26 7:42 AM, Stefan Berger wrote:
-> 
-> 
-> On 2/25/26 7:10 PM, Eric Biggers wrote:
->> On Wed, Feb 25, 2026 at 09:25:43AM -0500, Stefan Berger wrote:
->>> To avoid duplicate work: Is either one of you planning on writing 
->>> patches
->>> for IMA to use ML-DSA and convert the current ML-DSA to also support 
->>> HashML?
->>> I had done the work on this before and could dig out the patches 
->>> again...
->>
->> IMA already had to add its own digest prefixing support, since it was
->> needed to disambiguate between full-file digests and fsverity digests.
->> See 'struct ima_file_id'.  Thus the message signed is at most 66 bytes.
-> 
-> The hash there is still only a hash over a file and that hash is signed, 
-> isn't it?
-> 
->>
->> With that being the case, HashML-DSA isn't necessary.  It's not even
->> possible to use here, since there are no OIDs assigned for the fsverity
->> digests, so it cannot replace the ima_file_id.
-> 
-> For non-fsverify IMA signatures it is 'possible' to use HashML-DSA and 
-> it's 'working' (recycled old patches yesterday):
-> 
-> Linux: https://github.com/stefanberger/linux/commits/ 
-> dhmlsa%2Bima.202602025/
->
-> ima-evm-utils: https://github.com/linux-integrity/ima-evm-utils/pull/19/ 
-> commits
-> 
->>
->> I'll also note that HashML-DSA is controversial (e.g. see
->> https://keymaterial.net/2024/11/05/hashml-dsa-considered-harmful/),
-> 
-> The problem with this is that NIST would have to react to these 
-> controversies as we race to support PQC. If something is wrong with the 
-> standard then it would be best for NIST to withdraw/modify HashML-DSA 
-> asap. Otherwise it's the best to follow the standard IMO because if you 
-> don't you get criticism otherwise.
+Ideally you do not sign *just* a hash, but some structured data, like a
+context label that identifies the hash and some other related metadata
+for example. In order to make forgeries much harder should the hashing
+algorithm used to hash the data weaken over time. But it is not
+strictly necessary (NIST mentioned in some forum, sorry I do not have
+the message handy for quoting, that a structured packet is perfectly
+fine for use with pure ML-DSA, because it does enough to address the
+same issues that a separate internal context does with HashML-DSA).
 
-What I am not clear about from FIPS-204 is whether availability of 
-HashML-DSA is a "must-use" or  a "may-use". What speaks against it for 
-our use case is performance. The lookup of a hash's ID (last digit of 
-OID) and the creation of the 11 byte encoding to prepend before every 
-digest for every signature takes cycles.
+If pure-ML-DSA works better for IMA, just use pure ML-DSA.
 
-Maybe it should explicitly state in FIPS-204 something along the lines 
-of "with a given hash either ML-DSA or HashML-DSA can be used (for as 
-long as you use it in the same way from then on)." At least this way 
-nobody can point out that HashML-DSA should have been used when you didn't.
+> Maybe it should explicitly state in FIPS-204 something along the lines=
+=20
+> of "with a given hash either ML-DSA or HashML-DSA can be used (for as=20
+> long as you use it in the same way from then on)." At least this way=20
+> nobody can point out that HashML-DSA should have been used when you didn'=
+t.
 
-> 
->> since it was added to the ML-DSA specification at a late stage without
->> sufficient review, and what it does can be achieved in better ways.
-> 
-> In case of doubt I would use the standard, though. It's probably not a 
-> good idea for everyone to implement their own (bad) solution.
-> 
->> Which is exactly what we are seeing here, since again, IMA needs to do
->> the digest calculation and prefixing itself anyway.
-> 
-> Use the standard...
-> 
->     Stefan
-> 
->>
->> - Eric
-> 
-> 
+NIST will not change the standard documents any time soon, but for FIPS
+certification there are Implementation Guidelines.
 
+In any case a FIPS module cannot distinguish between data that happens
+to be 32 bytes long and a hash of larger data, so the point is kind of
+moot. From the FIPS perspective HashML-DSA is just an available
+algorithm that protocol implementations can use, or not.
+
+There are additional guidelines on what this may be useful for, but so
+far NIST has not objected to the use of pure ML-DSA even where
+theoretically HashML-DSA could be used.
+
+> >=20
+> > > since it was added to the ML-DSA specification at a late stage withou=
+t
+> > > sufficient review, and what it does can be achieved in better ways.
+> >=20
+> > In case of doubt I would use the standard, though. It's probably not a=
+=20
+> > good idea for everyone to implement their own (bad) solution.
+> >=20
+> > > Which is exactly what we are seeing here, since again, IMA needs to d=
+o
+> > > the digest calculation and prefixing itself anyway.
+> >=20
+> > Use the standard...
+> >=20
+> >  =C2=A0=C2=A0 Stefan
+> >=20
+> > >=20
+> > > - Eric
+> >=20
+> >=20
+>=20
+
+--=20
+Simo Sorce
+Distinguished Engineer
+RHEL Crypto Team
+Red Hat, Inc
 
 
