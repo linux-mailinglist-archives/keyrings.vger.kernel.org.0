@@ -1,78 +1,51 @@
-Return-Path: <keyrings+bounces-4092-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-4093-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0CDBL8C1oGnClwQAu9opvQ
-	(envelope-from <keyrings+bounces-4092-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 22:06:08 +0100
+	id WNprFhBNoWkfsAQAu9opvQ
+	(envelope-from <keyrings+bounces-4093-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Fri, 27 Feb 2026 08:51:44 +0100
 X-Original-To: lists+keyrings@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB381AF667
-	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 22:06:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD4021B41B4
+	for <lists+keyrings@lfdr.de>; Fri, 27 Feb 2026 08:51:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 33423303F57E
-	for <lists+keyrings@lfdr.de>; Thu, 26 Feb 2026 21:05:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5694D302D0AD
+	for <lists+keyrings@lfdr.de>; Fri, 27 Feb 2026 07:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5C339527A;
-	Thu, 26 Feb 2026 21:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A704355F51;
+	Fri, 27 Feb 2026 07:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="kMWwDEBX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mnJR1Ri0"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AB013939C6;
-	Thu, 26 Feb 2026 21:05:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CEC3290CA;
+	Fri, 27 Feb 2026 07:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772139936; cv=none; b=Nhx4516qDQds6ANkHtykVD0BqNRVMJIxKvNkZUGrG/ZV7KJ3L1dJ6kfbbxhiPV1REl2cyLY9phB2JaFGo9+iov2WMnCu3kjW7h+XpS+IS9cWY2FTX30vNZOKJzyRnZV1HxSTpiRCzSIVpQpmGgQY79MgXc00MbqIOVrn45f6aHs=
+	t=1772178682; cv=none; b=c1Pjt0xXwBnT0cxFH2fXSdGwmnkhs4QNh2W9A+eWpNj3f4oHnRr0GIBe9FYs5zlOW/0PrE5kW4Ih7TirIg+OM9Ccz77QwsnMWXksqG/ck/K7IvxsleQM0uHabunMA5k9SdZ11Cd0KmR6nrBlrTT5QhGa3qVHv4FmKhwOI5QVa8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772139936; c=relaxed/simple;
-	bh=CGJOtdEq3F146PP+b+MPdofOSSJn1EG7PDzHAp8/b3Q=;
+	s=arc-20240116; t=1772178682; c=relaxed/simple;
+	bh=FuwJ4dFEMoOWUXSsbBn5R1/MzLKf04Ey3jVnqdyvQaA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IsEqU8jVVCGfweW1NxPv/lbde/9kAJrQSv5U0v4KlOUU/TqRVIG1UwAK7I/iLfh8naoT281sZ7IY1TxYmpKqe9cFRB+1Q0hG5a1s0U71c1dswcj8E0sD/+BIfEISUvnJbuJ7Wx680GGx6/R9sQxp9BHK4Vh4ztTeT3lOVdfuiII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=kMWwDEBX; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61QHtqJC3003598;
-	Thu, 26 Feb 2026 21:05:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=//3GCo
-	5ghP7YnX/8DlB/b0HC567HIVL4lqpc0QRGdAA=; b=kMWwDEBXtVjB1FCTNB9RNg
-	+Dwfah2GZAy0VXXdviJQWi6JByYjpQhPnbKPgZs2QnZrTnx1UZrlBIDOM7qVRr/4
-	+Dus2pqqBQGiY/gk9CN58RcoNKFWxxr6V04qCYqwfPPDh6iD+RUfXdg1H6TE43+K
-	N4H8jViSHaTc4IPsnwtkXWgxWPc718r9BW0+8i8qI2BxUv76fcLSGfZuSBwde/1o
-	fxyYfB6m0RM2la/OIiyuYCPH8JRdR2bH70XEXs/EagtuD9i+SQ64S/lQ5LLT3l1S
-	C7B2iFSoFOT26KQPomP6JVCHoDwzdYaH2xtw0p2hTsYAi4ZNuA/oBzAaV14+tw3Q
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cf4bs861v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 21:05:20 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61QIV3aJ015983;
-	Thu, 26 Feb 2026 21:05:19 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cfq1sx8sy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Feb 2026 21:05:19 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61QL5JPY27329254
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Feb 2026 21:05:19 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 462B358056;
-	Thu, 26 Feb 2026 21:05:19 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 641C65803F;
-	Thu, 26 Feb 2026 21:05:18 +0000 (GMT)
-Received: from [9.47.158.152] (unknown [9.47.158.152])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 26 Feb 2026 21:05:18 +0000 (GMT)
-Message-ID: <1faaa368-451c-49fa-8ba2-82610dfef3e8@linux.ibm.com>
-Date: Thu, 26 Feb 2026 16:05:17 -0500
+	 In-Reply-To:Content-Type; b=e7yylkQ2GiR1jEkq+bViMTGK21XFPpUUeci58F7IUa72C76AlVdkc1LJl7MUQGU0hR4I6yryjnkBJ5NXlSZxEgrL4pytD1Mje9GuJGKycHAJndFCyOnn2Un/BDlVq61yqfe5tgrVogfa2wC0tMVXZ/85MS/GUT+iDlP8vJ8v57w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mnJR1Ri0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0F4C116C6;
+	Fri, 27 Feb 2026 07:51:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772178681;
+	bh=FuwJ4dFEMoOWUXSsbBn5R1/MzLKf04Ey3jVnqdyvQaA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mnJR1Ri0HlkV4Dai35gEyErjrdRIBpO4AcgWYMZ32L/4AGLK5MBEWxqmkTaZ318N5
+	 pB7otq2jdQRQV1+qztqAs9fehuvEo9GgL0FoEw2Cht9wEXi2gUbi/U54aeB3C9nMad
+	 5az7xMleO+ONHOEwNTW90zNb9vJ5fkCtOleepZjN96Irept03ErO8dGTgSAdNbDrc+
+	 QSUyNhDg4W7+2/GL4RJ9jdI9N5xbD3YM7wKB9d4r26aDN1fyzsjE1eV1tEcQyHPIs3
+	 mNOilMCYGlXI3qJ6g4zThYMdKBtv1LA7MZauVX1rewLA+k2y8mhK/0LXxGpxfmxuWw
+	 juPlTGhSjEPCg==
+Message-ID: <31dfcf7a-5b3d-406d-bdd4-c8b09f7eb1f0@kernel.org>
+Date: Fri, 27 Feb 2026 08:51:15 +0100
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -80,184 +53,165 @@ List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: IMA and PQC
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Simo Sorce <simo@redhat.com>, Coiby Xu <coxu@redhat.com>,
-        =?UTF-8?Q?Johannes_Wiesb=C3=B6ck?= <johannes.wiesboeck@aisec.fraunhofer.de>,
-        dhowells@redhat.com, dmitry.kasatkin@gmail.com,
-        eric.snowberg@oracle.com, keyrings@vger.kernel.org,
-        linux-crypto@vger.kernel.org, linux-integrity@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
-        roberto.sassu@huawei.com, zohar@linux.ibm.com,
-        michael.weiss@aisec.fraunhofer.de
-References: <aYHznG6vbptVOjHQ@Rk>
- <ee36981d-d658-4296-9acb-874c72606b3e@linux.ibm.com>
- <20260226001049.GA3135@quark>
- <cba10ac6-3557-4fc1-9b86-55361d14156d@linux.ibm.com>
- <dc09be79-5efe-4756-a295-5b0428985525@linux.ibm.com>
- <da190dbbc692b9da8464bbbfffdde7bab26b3f1c.camel@redhat.com>
- <20260226165819.GA2251@sol>
- <969c74f3-81ed-442c-87dd-381274a642a7@linux.ibm.com>
- <20260226183248.GE2251@sol>
- <13ebe763-dcaf-4379-b9a7-82d06fd0fdb3@linux.ibm.com>
- <20260226194406.GG2251@sol>
-Content-Language: en-US
-From: Stefan Berger <stefanb@linux.ibm.com>
-In-Reply-To: <20260226194406.GG2251@sol>
+Subject: Re: [PATCH v6 0/6] Extend "trusted" keys to support a new trust
+ source named the PowerVM Key Wrapping Module (PKWM)
+To: Srish Srinivasan <ssrish@linux.ibm.com>, linux-integrity@vger.kernel.org,
+ keyrings@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+ James.Bottomley@HansenPartnership.com, jarkko@kernel.org,
+ zohar@linux.ibm.com, nayna@linux.ibm.com, rnsastry@linux.ibm.com,
+ linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
+References: <20260201135930.898721-1-ssrish@linux.ibm.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260201135930.898721-1-ssrish@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: vX2zSuxstHXhjgCw-A1HAYqr-CGGzolU
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI2MDE4OCBTYWx0ZWRfX/a2JQU9aa5ee
- 2rKqdPf62pG74+XDCUnKIphMQ/4jhR5R4mE02G+Wm/dTV0ngzD2zU1a17D7kkbhZjWQyU4Je7Gj
- pilRlxcKp0OgA1ix4MKPI+5c6gKCq1VMifrNl9RW7gT4xE9VW86VT40OGHpIaXRsgZtSj1304/M
- m2myg4j8wgA+664aRPCdSjCdYgYrQVrgfD2bXfOkRVQFmUHibUu0bnzHXKdN/Mh7bCfV1S09VZw
- HlUgab1lgA2nZzKVgZ84vEHb4MRX4ZUVx0DmxeUuiOiQRehYmJTTjyZle+9sARyDJgHCiNL0JpQ
- himd4x0yeXVUoaXySaxyIUQb+a/IpGcQV3uL+2D3nTK6+gRR9TnIvU7zCzal8cWYoZQnGK5IUDi
- uy33sHXS2KmBg9yRrkqs0oiVaOPAY9eH8psumb12xcH5FWUd6dxI7KawEk9EjNkDLiS63N6NGwg
- 2jZR7eOHQSPv05dbG8A==
-X-Authority-Analysis: v=2.4 cv=eNceTXp1 c=1 sm=1 tr=0 ts=69a0b590 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=TKsHhThkkL6ydXzSVRkA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: WxIQyzXbclRQMkqPy7P1Z_1PNO7y14kp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-26_03,2026-02-26_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 priorityscore=1501 phishscore=0 suspectscore=0 adultscore=0
- bulkscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602260188
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-4092-lists,keyrings=lfdr.de];
-	FREEMAIL_CC(0.00)[redhat.com,aisec.fraunhofer.de,gmail.com,oracle.com,vger.kernel.org,huawei.com,linux.ibm.com];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stefanb@linux.ibm.com,keyrings@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-4093-lists,keyrings=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,HansenPartnership.com,kernel.org,vger.kernel.org];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[ibm.com:+];
-	NEURAL_HAM(-0.00)[-0.990];
-	TAGGED_RCPT(0.00)[keyrings];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[chleroy@kernel.org,keyrings@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[keyrings];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[11]
-X-Rspamd-Queue-Id: 3EB381AF667
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: AD4021B41B4
 X-Rspamd-Action: no action
 
 
 
-On 2/26/26 2:44 PM, Eric Biggers wrote:
-> On Thu, Feb 26, 2026 at 02:21:41PM -0500, Stefan Berger wrote:
->>
->>
->> On 2/26/26 1:32 PM, Eric Biggers wrote:
->>> On Thu, Feb 26, 2026 at 12:22:32PM -0500, Stefan Berger wrote:
->>>>> I see that IMA indeed never upgraded full file hashes to use
->>>>> 'struct ima_file_id'.  Building a new feature that relies on this seems
->>>>> like a bad idea though, given that it's a security bug that makes the> IMA
->>>> protocol cryptographically ambiguous.  I.e., it means that in IMA,
->>>>> when the contents of some file are signed, that signature is sometimes
->>>>> also valid for some other file contents which the signer didn't intend.
->>>>
->>>> You mean IMA should not sign the digest in the ima_file_id structure but
->>>> hash the ima_file_id structure in which this file digest is written into
->>>> (that we currently sign) and sign/verify this digest? And we would do this
->>>> to avoid two different files (with presumably different content) from having
->>>> the same hashes leading to the same signature? Which hashes (besides the
->>>> non-recommended ones) are so weak now that you must not merely sign a file's
->>>> hash?
->>>>
->>>> The problem with this is that older kernels (without patching) won't be able
->>>> to handle newer signatures.
->>>
->>> IMA needs to sign the entire ima_file_id structure, which is indeed what
->>> IMA already does when it uses that structure.  (Well, actually it signs
->>> a hash of the struct, but that's best thought of an implementation
->>> detail of legacy signature algorithms that can only sign hashes.  For a
->>> modern algorithm the whole struct should be passed instead.)  Just IMA
->>> uses that structure only for fsverity hashes, which is a bug that makes
->>> the IMA protocol ambiguous.  It needs to use ima_file_id consistently,
->>> otherwise a signed message sometimes corresponds to multiple unique file
->>> contents even without a break in the cryptographic hash function.
->>
->> Before we jump into making changes on this old stuff I think it's good to
->> understand the underlying problem and the likelyhood of signatures
->> validating different data, such as a file and fsverity data. How likely is
->> this?
->>
->> Assuming a strong hash I suppose that is not a concern with RSA because here
->> the digest is padded and then directly encrypted with the private key. Upon
->> verification (pub key decrypt) we would unpad and memcmp the digests.
->>
->> Again, assuming a strong hash: With ECDSA NIST P256 for example we have a 32
->> byte signature. With a SHA512 being used for hashing for example we would be
->> doing a projection of a 64byte hash space to a 32byte signature space with.
->> Just by this projection of a much larger space into a smaller space
->> signatures that validate multiple input data could be a problem. One 'easy'
->> case where signatures for different input data is the same (not exactly the
->> same due to nonce involved the signature is verifyable), albeit unlikely, is
->> that there could be different input data for the SHA512 that lead to the
->> same 32bytes prefix, which is then used after truncating the sha512 to the
->> first 32 bytes for the ECDSA signature, and this then leads to a signature
->> that is verifyable for different input data. So that's the 'simple' case at
->> least for this thought experiment for a non-expert.
->>
->> Now what should still be difficult to do is given a file and a hash-to-use
->> that you can create fsverity content that leads to a hash that in turn leads
->> to a NIST-P256 signature that can be used for signature verification(s) of
->> the file and the totally different fsverity data. Is this a problem that is
->> as difficult to solve just as finding different input data for a hash that
->> leads to the same digest?
+Le 01/02/2026 à 14:59, Srish Srinivasan a écrit :
+> Power11 has introduced a feature called the PowerVM Key Wrapping Module
+> (PKWM), where PowerVM in combination with Power LPAR Platform KeyStore
+> (PLPKS) [1] supports a new feature called "Key Wrapping" [2] to protect
+> user secrets by wrapping them using a hypervisor generated wrapping key.
+> This wrapping key is an AES-GCM-256 symmetric key that is stored as an
+> object in the PLPKS. It has policy based protections that prevents it from
+> being read out or exposed to the user. This wrapping key can then be used
+> by the OS to wrap or unwrap secrets via hypervisor calls.
 > 
-> There's no differentiation between a 'struct ima_file_id' that
-> *represents* the contents of some file, and a file whose contents are
-> *equal to* that 'struct ima_file_id' and that uses a full-file hash.  In
-> both cases the same key and message are used for signing and verifying.
+> This patchset intends to add the PKWM, which is a combination of IBM
+> PowerVM and PLPKS, as a new trust source for trusted keys. The wrapping key
+> does not exist by default and its generation is requested by the kernel at
+> the time of PKWM initialization. This key is then persisted by the PKWM and
+> is used for wrapping any kernel provided key, and is never exposed to the
+> user. The kernel is aware of only the label to this wrapping key.
+> 
+> Along with the PKWM implementation, this patchset includes two preparatory
+> patches: one fixing the kernel-doc inconsistencies in the PLPKS code and
+> another reorganizing PLPKS config variables in the sysfs.
+> 
+> Changelog:
+> 
+> v6:
 
-I hadn't been thinking of this... It's a side-effect of starting to sign 
-ima_file_id for v3 that a file *content* could now hold the ima_file_id 
-structure (as signed with v3) and the signature would validate when used 
-with the v2 signature verification scheme. So, the content of the file 
-would presumably be odd/useless (2 bytes + hash) but it would verify 
-with the signature created for v3. We will have to offer the possibility 
-to move to v3 signatures for all signing schemes and offer the 
-possibility to deactivate older versions (<v3).
+Seems like v5 was applied, if needed can you send followup patch ?
+
+Christophe
 
 > 
-> This means that every time a file is signed using the ima_file_id
-> scheme, it also implicitly signs some other file contents, which an
-> attacker can freely replace the file with.  Similarly, every time a file
-> that happens to be a valid ima_file_id is signed using the older scheme,
-> it also implicitly signs the contents that the ima_file_id correspond
-> to, which the attacker can freely replace the file with.  In either
-> case, no collision in the cryptographic hash function is required.
+> * Patch 1 to Patch 3:
+>    - Add Nayna's Tested-by tag
+> * Patch 4
+>    - Fix build error reported by kernel test robot <lkp@intel.com>
+>    - Add Nayna's Tested-by tag
+> * Patch 5
+>    - Add Nayna's Tested-by tag
 > 
-> It's simply a broken protocol.  To fix this, IMA must only support
-> signatures that use the ima_file_id scheme.
+> v5:
 > 
-> Of course, that will require making them support full-file hashes and
-> not just fsverity hashes.  If I recall correctly, this was actually part
-> of the original design of the ima_file_id-based signatures.  It's
-> unclear why the implementation is still incomplete.
+> * Patch 1 to Patch 3:
+>    - Add Nayna's Reviewed-by tag
+> * Patch 4:
+>    - Fix build error identified by chleroy@kernel.org
+>    - Add Nayna's Reviewed-by tag
+> * Patch 5:
+>    - Add Reviewed-by tags from Nayna and Jarkko
 > 
-> - Eric
+> v4:
+> 
+> * Patch 5:
+>    - Add a per-backend private data pointer in trusted_key_options
+>      to store a pointer to the backend-specific options structure
+>    - Minor clean-up
+> 
+> v3:
+> 
+> * Patch 2:
+>    - Add Mimi's Reviewed-by tag
+> * Patch 4:
+>    - Minor tweaks to some print statements
+>    - Fix typos
+> * Patch 5:
+>    - Fix typos
+>    - Add Mimi's Reviewed-by tag
+> * Patch 6:
+>    - Add Mimi's Reviewed-by tag
+> 
+> v2:
+> 
+> * Patch 2:
+>    - Fix build warning detected by the kernel test bot
+> * Patch 5:
+>    - Use pr_debug inside dump_options
+>    - Replace policyhande with wrap_flags inside dump_options
+>    - Provide meaningful error messages with error codes
+> 
+> Nayna Jain (1):
+>    docs: trusted-encryped: add PKWM as a new trust source
+> 
+> Srish Srinivasan (5):
+>    pseries/plpks: fix kernel-doc comment inconsistencies
+>    powerpc/pseries: move the PLPKS config inside its own sysfs directory
+>    pseries/plpks: expose PowerVM wrapping features via the sysfs
+>    pseries/plpks: add HCALLs for PowerVM Key Wrapping Module
+>    keys/trusted_keys: establish PKWM as a trusted source
+> 
+>   .../ABI/testing/sysfs-firmware-plpks          |  58 ++
+>   Documentation/ABI/testing/sysfs-secvar        |  65 --
+>   .../admin-guide/kernel-parameters.txt         |   1 +
+>   Documentation/arch/powerpc/papr_hcalls.rst    |  43 ++
+>   .../security/keys/trusted-encrypted.rst       |  50 ++
+>   MAINTAINERS                                   |   9 +
+>   arch/powerpc/include/asm/hvcall.h             |   4 +-
+>   arch/powerpc/include/asm/plpks.h              |  95 +--
+>   arch/powerpc/include/asm/secvar.h             |   1 -
+>   arch/powerpc/kernel/secvar-sysfs.c            |  21 +-
+>   arch/powerpc/platforms/pseries/Makefile       |   2 +-
+>   arch/powerpc/platforms/pseries/plpks-secvar.c |  29 -
+>   arch/powerpc/platforms/pseries/plpks-sysfs.c  |  96 +++
+>   arch/powerpc/platforms/pseries/plpks.c        | 688 +++++++++++++++++-
+>   include/keys/trusted-type.h                   |   7 +-
+>   include/keys/trusted_pkwm.h                   |  33 +
+>   security/keys/trusted-keys/Kconfig            |   8 +
+>   security/keys/trusted-keys/Makefile           |   2 +
+>   security/keys/trusted-keys/trusted_core.c     |   6 +-
+>   security/keys/trusted-keys/trusted_pkwm.c     | 190 +++++
+>   20 files changed, 1207 insertions(+), 201 deletions(-)
+>   create mode 100644 Documentation/ABI/testing/sysfs-firmware-plpks
+>   create mode 100644 arch/powerpc/platforms/pseries/plpks-sysfs.c
+>   create mode 100644 include/keys/trusted_pkwm.h
+>   create mode 100644 security/keys/trusted-keys/trusted_pkwm.c
+> 
 
 
