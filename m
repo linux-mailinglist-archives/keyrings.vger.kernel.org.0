@@ -1,80 +1,68 @@
-Return-Path: <keyrings+bounces-4107-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-4108-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MOAUEuyYpWnxEgYAu9opvQ
-	(envelope-from <keyrings+bounces-4107-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Mon, 02 Mar 2026 15:04:28 +0100
+	id wGgTAG1Tp2lsgwAAu9opvQ
+	(envelope-from <keyrings+bounces-4108-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Tue, 03 Mar 2026 22:32:29 +0100
 X-Original-To: lists+keyrings@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11F31DA517
-	for <lists+keyrings@lfdr.de>; Mon, 02 Mar 2026 15:04:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD991F7916
+	for <lists+keyrings@lfdr.de>; Tue, 03 Mar 2026 22:32:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 42263300463C
-	for <lists+keyrings@lfdr.de>; Mon,  2 Mar 2026 14:04:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F21A313EFBF
+	for <lists+keyrings@lfdr.de>; Tue,  3 Mar 2026 21:30:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303F13FB075;
-	Mon,  2 Mar 2026 14:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA0E13EFD1A;
+	Tue,  3 Mar 2026 21:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="U2nbza5U";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="O0XwKXPg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tdPm33CT"
 X-Original-To: keyrings@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A8D3FB057;
-	Mon,  2 Mar 2026 14:04:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96410314A64;
+	Tue,  3 Mar 2026 21:30:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772460266; cv=none; b=E3yIbQK5XuarsrA6ZNijPhC8FkJQD6EZu/g+HffgsIDtnFoQ5kZcowy8T52vTuVpXeNCVGMtqAxzXL5UCsfN9xX6LJ4MIm2PjGH22LTi8HgLpckJ48ValcqN4Q2EgjsLG1B27Ayb0Lnjz5Vrzr78mJJH4HbVNXW3QCXYNP0nQVk=
+	t=1772573448; cv=none; b=pSCRFlvoobNUxNGctx/xDJEV7io1kM3ZW7dqf2OHBKeeyD5uARfPHI2C42ZxT7BTeQ0T0MRZHIcJ3gOnGPMdvq05j0HDOZHF18O8nQlN76hC6FFuMXBNfTtGd5nOY6JRex5jKVgYmkJ8Sj3tVWCiv9v0it0fEzSdaAMIRv4OR8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772460266; c=relaxed/simple;
-	bh=w7DXo3mXh6DNkAzYU9MYWlzqO/9Orncv55I/eELK7uc=;
+	s=arc-20240116; t=1772573448; c=relaxed/simple;
+	bh=4c0TFwH2b+pC4Fu9mQ0jIAlqb8vgIoFBsfbu1qKF5Ho=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QwR8AroBJOpiW9/Z+zWIDIFKttQYkJZ85xuqNreYzxrKHEJkaZuniPMiWPmrp6m4rIYYi8MOS0z8f7RjNyh9TZ9QEuLU2oAePyTprKdht7LGqiYIXU5FXRbPgevK8VWuge67UyFyKSDfpw3VPJ3s5aocW5M+gGDbYiKJLRP8wgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=U2nbza5U; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=O0XwKXPg; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 2 Mar 2026 15:04:16 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772460261;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cRM2t72DmiN8sur4KC7kJvFl2g3W9LFFAmvpwZMN6BE=;
-	b=U2nbza5Uj3+v1Yz/7NFP1KJEEu3qCsr7TJmPGA7AG/w/PFx5cPc1n3W7rsEmErqOZ4KQnZ
-	UdxuiGENc2+EFgj42FJbMNjUVtRFJ/eqn7lvz517o7RfxxeptrK+1E7IhWU8U/EfnqWPhj
-	5k+iAJ6aEN/kHFgi/PlYX7z3ixlVOLPpEisZdOuJIO9RpmyRAIZKSDNWru3XIgnQN5iT/Z
-	oKatqMsKb6BNZZjY/bI/qPDPcoJj0X3J3HKrah6dzSwk6l79vbv6MGKSCaUPcHXpgwPtoB
-	ng9u0ZkYA1egSpy0969/In5pa2B+//+adSoG0dZEnKVEternS8rsoVnVtPTNkw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772460261;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cRM2t72DmiN8sur4KC7kJvFl2g3W9LFFAmvpwZMN6BE=;
-	b=O0XwKXPgKku1Br1+V/ezQXVmlbM/8IP4wwnZCgIuF89yo0/6aQDXPujJ+tjFwyLvfgYCyq
-	HND4ATOem2K4dHCQ==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: bot+bpf-ci@kernel.org
-Cc: dhowells@redhat.com, dwmw2@infradead.org, mcgrof@kernel.org, 
-	petr.pavlu@suse.com, da.gomez@kernel.org, samitolvanen@google.com, 
-	atomlin@atomlin.com, hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com, 
-	borntraeger@linux.ibm.com, svens@linux.ibm.com, zohar@linux.ibm.com, 
-	roberto.sassu@huawei.com, dmitry.kasatkin@gmail.com, eric.snowberg@oracle.com, 
-	paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com, nathan@kernel.org, 
-	nsc@kernel.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
-	john.fastabend@gmail.com, kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com, 
-	jolsa@kernel.org, shuah@kernel.org, keyrings@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, linux-s390@vger.kernel.org, 
-	linux-integrity@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, bpf@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	martin.lau@kernel.org, clm@meta.com, ihor.solodrai@linux.dev
-Subject: Re: [PATCH 6/8] tools uapi headers: add linux/module_signature.h
-Message-ID: <20260302150248-3bf0b0e6-ab1f-4808-905b-70c6ae1060e4@linutronix.de>
-References: <20260302-module-signature-uapi-v1-6-207d955e0d69@linutronix.de>
- <b6c00e7ecc633ab02ee8689f5647ce9090cf72d75f5bf9f2cc2c09983d963b58@mail.kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ma4pvVIarc46eOr+6amrPcOGZ0Nnk1WmTJVhThj6HKyO1X/A57NT7SiSaaEaUZ2vNAFweuntXQRa906t8FyIsEJR7bVNDHEwaAmCoIZQ8AgxzKQ9CpBkol/EEi3T/gr9CotaNx1jAzdizLw41ZLpVyguZ/WvR1T2SReBqTCDTo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tdPm33CT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A827C116C6;
+	Tue,  3 Mar 2026 21:30:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772573448;
+	bh=4c0TFwH2b+pC4Fu9mQ0jIAlqb8vgIoFBsfbu1qKF5Ho=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tdPm33CT9vKuaJdE08c73fl9+Ivp84fXqk9CB4KIxnEWBRibooUEe5ecWwnDvIbpf
+	 cph3GW5+3KlfuIeVn7KOel/x9D9EBKlWkPi5Z2mmWX1xwOPvesx1I9anh9sY8fRIC1
+	 3gIMU5bR3ENXKHjeoFsY9q7FSGc5xgAEX35C+m3t1m+UORHn7zrySlnIx/HaIZAwqx
+	 XhQxj3pke+Hpam0NBTJBelZfWdCWpnFr+sj/Ik4hciMX/b0DltBElCEKC2S3mNbLZ0
+	 Hcl2DARBS6X6SdtT764dgWurtfm/HXVKZdjFHYYhdnz7UXw+pfoHqxqrRfFu7JDLli
+	 vaxlpmCtXDsXA==
+Date: Tue, 3 Mar 2026 23:30:43 +0200
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Mimi Zohar <zohar@linux.ibm.com>
+Cc: linux-integrity@vger.kernel.org, Chris Fenner <cfenn@google.com>,
+	Jonathan McDowell <noodles@earth.li>,
+	Eric Biggers <ebiggers@kernel.org>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	"open list:KEYS-TRUSTED" <keyrings@vger.kernel.org>,
+	"open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	Roberto Sassu <roberto.sassu@huaweicloud.com>
+Subject: Re: [PATCH v9 01/11] KEYS: trusted: Use get_random-fallback for TPM
+Message-ID: <aadTA3paHqNBlvSY@kernel.org>
+References: <20260125192526.782202-1-jarkko@kernel.org>
+ <20260125192526.782202-2-jarkko@kernel.org>
+ <06a08cbbe47111a1795e5dcd42fb8cc4be643a72.camel@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
@@ -83,77 +71,60 @@ List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b6c00e7ecc633ab02ee8689f5647ce9090cf72d75f5bf9f2cc2c09983d963b58@mail.kernel.org>
+In-Reply-To: <06a08cbbe47111a1795e5dcd42fb8cc4be643a72.camel@linux.ibm.com>
+X-Rspamd-Queue-Id: 4AD991F7916
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linutronix.de,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linutronix.de:s=2020,linutronix.de:s=2020e];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[redhat.com,infradead.org,kernel.org,suse.com,google.com,atomlin.com,linux.ibm.com,huawei.com,gmail.com,oracle.com,paul-moore.com,namei.org,hallyn.com,iogearbox.net,linux.dev,fomichev.me,vger.kernel.org,meta.com];
-	TAGGED_FROM(0.00)[bounces-4107-lists,keyrings=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-4108-lists,keyrings=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linutronix.de:+];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[47];
-	TO_DN_NONE(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thomas.weissschuh@linutronix.de,keyrings@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[jarkko@kernel.org,keyrings@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[keyrings,bpf-ci];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linutronix.de:mid,linutronix.de:dkim]
-X-Rspamd-Queue-Id: E11F31DA517
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[keyrings];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:rdns,sea.lore.kernel.org:helo]
 X-Rspamd-Action: no action
 
-On Mon, Mar 02, 2026 at 01:32:34PM +0000, bot+bpf-ci@kernel.org wrote:
-> > diff --git a/tools/include/uapi/linux/module_signature.h b/tools/include/uapi/linux/module_signature.h
-> > --- /dev/null
-> > +++ b/tools/include/uapi/linux/module_signature.h
+On Fri, Feb 20, 2026 at 01:04:30PM -0500, Mimi Zohar wrote:
+> [Cc: Chris Fenner, Jonathan McDowell, Roberto]
 > 
-> [ ... ]
+> On Sun, 2026-01-25 at 21:25 +0200, Jarkko Sakkinen wrote:
+> > 1. tpm2_get_random() is costly when TCG_TPM2_HMAC is enabled and thus its
+> >    use should be pooled rather than directly used. This both reduces
+> >    latency and improves its predictability.
 > 
-> > +enum module_signature_type {
-> > +	MODULE_SIGNATURE_TYPE_PKCS7 = 2,	/* Signature in PKCS#7 message */
-> > +	MODULE_SIGNATURE_TYPE_MERKLE = 3,	/* Merkle proof for modules */
-> > +};
+> If the concern is the latency of encrypting the bus session, please remember
+> that:
 > 
-> The source UAPI header at include/uapi/linux/module_signature.h does not
-> define MODULE_SIGNATURE_TYPE_MERKLE:
+> - Not all environments expose the TPM bus to sniffing.
+> - The current TPM trusted keys design is based on TPM RNG, but already allows it
+> to be replaced with the kernel RNG via the "trusted_rng=kernel" boot command
+> line option.
+> - The proposed patch removes that possibility for no reason.
 > 
-> include/uapi/linux/module_signature.h:
->     enum module_signature_type {
->         MODULE_SIGNATURE_TYPE_PKCS7 = 2,
->     };
-> 
-> Was this value intentionally added here ahead of the kernel header?  It
-> appears to come from the CONFIG_MODULE_HASHES series referenced in the
-> cover letter, but no commit in this series adds it to the kernel UAPI
-> header, so the tools copy diverges from its source at creation time.
+> Mimi & Elaine
 
-Indeed, this should only appear in the follow-up CONFIG_MODULE_HASHES series.
-I'll fix it for v2.
+I'm keeping this patch set in queue branch, possibly picking patches to
+some other patch set or they are available for picking to other patch
+sets.
 
-> ---
-> AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-> 
-> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/22577240517
-> 
-> AI-authorship-score: low
-> AI-authorship-explanation: Straightforward mechanical UAPI header copy with terse commit message, consistent with experienced kernel developer style from a known Linutronix contributor.
-> issues-found: 1
-> issue-severity-score: low
-> issue-severity-explanation: The tools UAPI copy contains an enum value (MODULE_SIGNATURE_TYPE_MERKLE) not present in the kernel source header, creating a content mismatch that does not affect runtime behavior but violates the convention that tools copies mirror kernel UAPI headers.
-
+BR, Jarkko
 
