@@ -1,138 +1,131 @@
-Return-Path: <keyrings+bounces-4135-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-4137-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OH/WCPJ9qWkg8gAAu9opvQ
-	(envelope-from <keyrings+bounces-4135-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Thu, 05 Mar 2026 13:58:26 +0100
+	id mI7kK3CkqWl5BQEAu9opvQ
+	(envelope-from <keyrings+bounces-4137-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Thu, 05 Mar 2026 16:42:40 +0100
 X-Original-To: lists+keyrings@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7132821238C
-	for <lists+keyrings@lfdr.de>; Thu, 05 Mar 2026 13:58:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3CC214B9F
+	for <lists+keyrings@lfdr.de>; Thu, 05 Mar 2026 16:42:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D72593008740
-	for <lists+keyrings@lfdr.de>; Thu,  5 Mar 2026 12:56:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3A583307CCCA
+	for <lists+keyrings@lfdr.de>; Thu,  5 Mar 2026 15:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBC8394782;
-	Thu,  5 Mar 2026 12:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1293CA4AE;
+	Thu,  5 Mar 2026 15:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Go259zIj"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FqL5Py8Q"
 X-Original-To: keyrings@vger.kernel.org
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7482F2989B0;
-	Thu,  5 Mar 2026 12:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1233CA485;
+	Thu,  5 Mar 2026 15:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772715362; cv=none; b=simAn024MslzQ91yoxwIRNOm2bpzDpUbmlMWkc4++7abgaB2F9xSI9FmMqOD7gD2A9MsCyafWattb4EmBS+ISjQyoh1uj8qBH+KF3rZOZBVGTXge4iuiPcSfeVbGv2mvPwS5rAycsJ/pZw2mF3blRrEG0wV77JDJ1XHxVznlmO4=
+	t=1772725059; cv=none; b=qCZsA4XYkWVMzGbq0i8LpMTsV28XV1eR8q12jSlrwJIfTaNTxfnW9uVGt+Th8NJm+Tc5W3C1HDhHay5NGHujnT1y6q0AmLTpcF3VzzLdAOIviNA1iQT+q7o+yA9GmoiO6LhBjjHmOd9q5RLY0zlYpCKzCwByI3UAVsCzT3hTB40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772715362; c=relaxed/simple;
-	bh=B7EMvc3myE97Jkf7cH5kQkeIoARk8LOW3DPlHDFB3OM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mZGUFq07EBC7Kmr1r3MsiVMSj9FXP+7qX6xBsKzIGdzbZSI6Zh5VelQ6PS4o6e6wUtzoByywdGoC+LLdcTvrsBnTIJaGviK0cmqiNVv5FnGHwisn/XMYWmTmcURndoni52HOJlOc/hm0DQDhO2o2gHr3HtoR0fhOsGQItCm6ufs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Go259zIj; arc=none smtp.client-ip=148.163.156.1
+	s=arc-20240116; t=1772725059; c=relaxed/simple;
+	bh=jK1nSuevZdf0RKkYstE3VQvVjnthz0rex+B4wX8/qiE=;
+	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=nwLqKXicgTssbGnR92/qGVaSABPUt+A0cxcSgkV2U0qDAPEyKrDPIIxuqzGxqjEMZjL4yxq/yrcSDOF2T0uVVEYBqjv0OAoflX0VBVPrF3vcv0YzDRqIpr5ak2GesSKq/TdxqBDLsY58C8l5B2AV+lnoayMKXdxsSF+NsH0oCpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=FqL5Py8Q; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 624LUFuQ2339714;
-	Thu, 5 Mar 2026 12:55:18 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6259YA8T674109;
+	Thu, 5 Mar 2026 15:37:12 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=j46n/C
-	l/uiusceyLFOPeUtqO6xM+QOc9rxRmh/YsaFw=; b=Go259zIjpiUsEZ2/VSp1+C
-	ajKQN/kmWvrD0WAn+M79WyyoB6eOAjm9paqjImI05Yg622mR0mwRGhjnXuimibrj
-	imWAt59vofH6aAXQmFuz70TaypdqlBR1ZzA6Q5Z5HE8VzRH1/+Y0FyFZ11MP2xg/
-	djIhFxbFZxz7DOBJRaJdWke1zUk+0N1OmXQDfXEf2VNEd46D1UE09yiJ1eusG9k0
-	TpQSWdUgSf/SkopozJf/rEgUa0cx+Cr0vmZQFa/YYWdSqG4hPqJtlcLM9LOt4m4v
-	GQPiWRGYBa+47ir2Dyv3nQxU1LEyXbjQ7/2wgwFTH/D8FD4SmraXknK5jBRt0EGA
+	:message-id:mime-version:references:subject:to; s=pp1; bh=n0HweB
+	/9FvorYvScvAYglLgAWuWNSf0Q2i8umhzaLaw=; b=FqL5Py8QYKpqdjLJLcM6In
+	ahlPSpvqGhiZ87Gzg0gr8f/0O46x1C7zm9IXyV8Jo3eMFzsXf9AtuhbIGFagJLNI
+	dxVXI4XJkJzQn3PWZiH50zSXe88XglFBXWku/8TGtLzlhc8hGFaFzoKoKxHkT+DE
+	BRQEesV53xlohQGiiohbP7j/5fQitffoDpeqtJQMBNONBXn4K0DBsErgvjuUiuIT
+	ma0zmaMjNMVFt27jBxKzKxFSlzGlC/K2oIhGW47G3AEw4fq16+90DZB6++SCE7W8
+	mtVJ0ZQMlVu+xtCUdQBgxxTZMxluyCBFv/GeiVej5PQJosAZsEnqf7MEZOQ/G9Vg
 	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cksrjbrkg-1
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cksrjcdmh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Mar 2026 12:55:17 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6259TYY3016397;
-	Thu, 5 Mar 2026 12:55:16 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4cmbpnbb4u-1
+	Thu, 05 Mar 2026 15:37:11 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 625DbExd029016;
+	Thu, 5 Mar 2026 15:37:10 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cmapsc0vh-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Mar 2026 12:55:16 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 625CtCPS24380116
+	Thu, 05 Mar 2026 15:37:10 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 625FbAEL28312202
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 5 Mar 2026 12:55:12 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 85D2E20043;
-	Thu,  5 Mar 2026 12:55:12 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AAC6C20040;
-	Thu,  5 Mar 2026 12:55:10 +0000 (GMT)
-Received: from localhost (unknown [9.111.42.248])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  5 Mar 2026 12:55:10 +0000 (GMT)
-Date: Thu, 5 Mar 2026 13:55:09 +0100
-From: Vasily Gorbik <gor@linux.ibm.com>
-To: Mimi Zohar <zohar@linux.ibm.com>
-Cc: linux-integrity@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
-        Alexander Egorenkov <egorenar@linux.ibm.com>,
-        Ard Biesheuvel <ardb@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
-        Coiby Xu <coxu@redhat.com>, Roberto Sassu <roberto.sassu@huawei.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Thomas Gleixner <tglx@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        Eric Snowberg <eric.snowberg@oracle.com>,
-        Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	Thu, 5 Mar 2026 15:37:10 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 187D75805A;
+	Thu,  5 Mar 2026 15:37:10 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9E32A5805D;
+	Thu,  5 Mar 2026 15:37:08 +0000 (GMT)
+Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.185.249])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  5 Mar 2026 15:37:08 +0000 (GMT)
+Message-ID: <dca994cd0ed11a262d4022c4984984460ba06a78.camel@linux.ibm.com>
+Subject: Re: [PATCH v9 01/11] KEYS: trusted: Use get_random-fallback for TPM
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Jarkko Sakkinen <jarkko@kernel.org>, Chris Fenner <cfenn@google.com>
+Cc: linux-integrity@vger.kernel.org, Jonathan McDowell <noodles@earth.li>,
+        Eric Biggers <ebiggers@kernel.org>,
+        James Bottomley
+ <James.Bottomley@hansenpartnership.com>,
+        David Howells	
+ <dhowells@redhat.com>,
+        Paul Moore <paul@paul-moore.com>, James Morris	
+ <jmorris@namei.org>,
         "Serge E. Hallyn" <serge@hallyn.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" <linuxppc-dev@lists.ozlabs.org>,
-        "open list:S390 ARCHITECTURE" <linux-s390@vger.kernel.org>,
-        "open list:EXTENSIBLE FIRMWARE INTERFACE (EFI)" <linux-efi@vger.kernel.org>,
-        "open list:SECURITY SUBSYSTEM" <linux-security-module@vger.kernel.org>,
-        "open list:KEYS/KEYRINGS_INTEGRITY" <keyrings@vger.kernel.org>
-Subject: [PATCH 1/1] s390/ipl: Fix missing arch_get_secureboot() prototype
- warning
-Message-ID: <p01-01.g9ec0a81d34d1.ttbfdx5@ub.hpns>
-References: <20260213012851.2532722-2-coxu@redhat.com>
- <c00-01.ttbfdx5@ub.hpns>
+        "open
+ list:KEYS-TRUSTED" <keyrings@vger.kernel.org>,
+        "open list:SECURITY
+ SUBSYSTEM" <linux-security-module@vger.kernel.org>,
+        open list
+ <linux-kernel@vger.kernel.org>,
+        Roberto Sassu
+ <roberto.sassu@huaweicloud.com>
+In-Reply-To: <aadTgsbzDDkCg1Pr@kernel.org>
+References: <20260125192526.782202-1-jarkko@kernel.org>
+	 <20260125192526.782202-2-jarkko@kernel.org>
+	 <06a08cbbe47111a1795e5dcd42fb8cc4be643a72.camel@linux.ibm.com>
+	 <CAMigqh1H1NKP9gddjhf4M1v-aM=+EpW9O4KJmu=UysOWhn4ryA@mail.gmail.com>
+	 <aadTgsbzDDkCg1Pr@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 05 Mar 2026 10:37:08 -0500
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c00-01.ttbfdx5@ub.hpns>
-X-Patchwork-Bot: notify
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=Rp/I7SmK c=1 sm=1 tr=0 ts=69a97d36 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+X-Authority-Analysis: v=2.4 cv=Rp/I7SmK c=1 sm=1 tr=0 ts=69a9a328 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
  a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=xVpku4ZQUFglSi1p0tMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA1MDEwMyBTYWx0ZWRfX+RUQn6BMd6jT
- SH21bGK5IhuRS3+4aQfGKCoOdauWr6O8JO/otto6IL/mxask6aIaBTJKuK/BfMWXbWSVe7hJqMS
- IclNLXFmKCZ6YKMVqlWCSzEpHzITp8/HIx8PMJjdO2RzdiROBdj2xXW/ydOeq/9toaBoUxpzllk
- 1aMqO/wmDBfEDrpAEQaCC4q39mStv0Ds3eBLOiGR0LCffXuc30hXi1plumFympjJRXPfrmVi6Vc
- ey1yJs4AgDFoEi4HVj+fU3G50EgNmoeslm5M/Y+8PZDtx+khYV+Lyt7KSJ9iaGPANH1DcvJ14ZB
- X1YdAuHhY3EuO47eqGxtmP32mRip1+IQQxDlFcKiQf4ba8UHtCjjqayW+Wx0WmNOeGbExaBTXOQ
- pRdskS0tqYVg+SufInrncQzxcQ+rSORmJLb+dGRtryi+DMoXnxzhFrzxjlhLPrEd9Qu/UUOrA1B
- aoUYVM+cJv650sOf6xQ==
-X-Proofpoint-GUID: 18tUCaDZUazDvapJ0KrrVhGhLVF5GXbk
-X-Proofpoint-ORIG-GUID: ySm98qxoHM4Lds6ch4Hca4o4NZD8yC-P
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=KxeoQpAgAAAA:8
+ a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=VnNF1IyMAAAA:8 a=oeA2Qd-FWMGMNsobgtoA:9
+ a=QEXdDO2ut3YA:10 a=dJtPqE9Y5jwXgJ6xlkAX:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA1MDEyMSBTYWx0ZWRfX7JxhQknPyZhF
+ p4wRSHH6i0Hl5NmaLQWXsO3k/0fyiH51/sj8KhsK3Cw5yUDEC9vCWLmZF5nFT1uJZgARd5zpBoX
+ O2Zjf9xVPWasIyT1/R97J/w3q1MpwvDDj9PE/jCCmHCWVbz0vX30MFOMGl1U5FtjwkH3srTmaZU
+ dB7g1zjWcAZQxoHZqt/YQj3y9YFuvUXJtK/TsopeT0pxisPkQhBYJSsEsKYCQKg+Ymygn0+oia5
+ gkPhvottKNL/wvd39Nj37E79FcvuCvx1GDKXInrqDkABxPqTPE0jfwIjxUmXi1k7C2G8OiF1aJi
+ i+VYbBU6jS+6BE2eLRGJ8QpthPsXzL9KWaCuamZ5yajk+noZsLdIfwzo/DcOyLNiySOKDZuT8IF
+ eQYFl/PfFar5hvSFtMleRupQELVWsArr2Z/7A/r2PApsCVvOyoOg7dVZwhRS7zGFc6u7xBxJEOH
+ V6uxqamcUy85SlaYvsQ==
+X-Proofpoint-GUID: _C-N74wG_CIJsefjIirPc9Hfg-6Ra2uZ
+X-Proofpoint-ORIG-GUID: 5kKQxuakx7GGh-cnWs7XsBKZx4ecLpXD
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-05_04,2026-03-04_01,2025-10-01_01
@@ -140,64 +133,116 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  suspectscore=0 priorityscore=1501 spamscore=0 phishscore=0 adultscore=0
  bulkscore=0 clxscore=1015 impostorscore=0 malwarescore=0 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603050103
-X-Rspamd-Queue-Id: 7132821238C
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603050121
+X-Rspamd-Queue-Id: 5F3CC214B9F
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-4135-lists,keyrings=lfdr.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linux.ibm.com,kernel.org,intel.com,redhat.com,huawei.com,ellerman.id.au,gmail.com,alien8.de,linux.intel.com,zytor.com,oracle.com,paul-moore.com,namei.org,hallyn.com,lists.ozlabs.org];
-	RCPT_COUNT_TWELVE(0.00)[33];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[ub.hpns:mid];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gor@linux.ibm.com,keyrings@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	TAGGED_FROM(0.00)[bounces-4137-lists,keyrings=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[ibm.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,dlp.rip:url];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[zohar@linux.ibm.com,keyrings@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TAGGED_RCPT(0.00)[keyrings];
-	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_SEVEN(0.00)[11]
 X-Rspamd-Action: no action
 
-Include <linux/secure_boot.h> so arch_get_secureboot() has a visible
-prototype and -Wmissing-prototypes no longer triggers.
+On Tue, 2026-03-03 at 23:32 +0200, Jarkko Sakkinen wrote:
+> On Fri, Feb 20, 2026 at 10:30:26AM -0800, Chris Fenner wrote:
+> > My conclusion about TCG_TPM2_HMAC after [1] and [2] was that
+> > TPM2_TCG_HMAC doesn't (or didn't at the time) actually solve the
+> > threat model it claims to (active interposer adversaries), while
+> > dramatically increasing the cost of many kernel TPM activities beyond
+> > the amount that would have been required to just solve for
+> > passive/bus-sniffer interposer adversaries. The added symmetric crypto
+> > required to secure a TPM transaction is almost not noticeable; the big
+> > performance problem is the re-bootstrapping of the session with ECDH
+> > for every command.
+> >=20
+> > My primary concern at that time was, essentially, that TCG_TPM2_HMAC
+> > punts on checking that the key that was used to secure the session was
+> > actually resident in a real TPM and not just an interposer adversary.
+> > I wrote up my understanding at
+> > https://www.dlp.rip/decorative-cryptography, for anyone who wants a
+> > long-form opinionated take :).
+> >=20
+> > Unless I'm wrong, or TCG_TPM2_HMAC has changed dramatically since
+> > August, I don't think "TPM2_TCG_HMAC makes this too costly" is a
+> > compelling reason to make a security decision. (There could be other
+> > reasons to make choices about whether to use the TPM as a source of
+> > randomness in the kernel! This just isn't one IMHO.)
+> >=20
+> > The version of TCG_TPM2_HMAC that I'd like to see someday would be one
+> > that fully admits that its threat model is only passive interposers,
+> > and sets up one session upon startup and ContextSaves/ContextLoads it
+> > back into the TPM as needed in order to secure parameter encryption
+> > for e.g., GetRandom() and Unseal() calls.
+>=20
+> Neither agreeing nor disagreeing but this patch set clearly does not
+> move forward and I spent already enough energy for this. For better
+> ideas the patches are available in queue branch.
 
-arch/s390/kernel/ipl.c:2507:6: warning: no previous prototype for ‘arch_get_secureboot’ [-Wmissing-prototypes]
- 2507 | bool arch_get_secureboot(void)
-      |      ^~~~~~~~~~~~~~~~~~~
+Jarkko, you totally ignored my comments below.  I object to your removing t=
+he
+TPM trusted-keys RNG support.
 
-Fixes: 63e8a44395a4 ("integrity: Make arch_ima_get_secureboot integrity-wide")
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
----
- arch/s390/kernel/ipl.c | 1 +
- 1 file changed, 1 insertion(+)
+Mimi
 
-diff --git a/arch/s390/kernel/ipl.c b/arch/s390/kernel/ipl.c
-index bdbbedf52580..2d01a1713938 100644
---- a/arch/s390/kernel/ipl.c
-+++ b/arch/s390/kernel/ipl.c
-@@ -21,6 +21,7 @@
- #include <linux/crash_dump.h>
- #include <linux/debug_locks.h>
- #include <linux/vmalloc.h>
-+#include <linux/secure_boot.h>
- #include <asm/asm-extable.h>
- #include <asm/machine.h>
- #include <asm/diag.h>
--- 
-2.53.0
+>=20
+> High-level takes don't move anything forward (or backward), sorry.
+>=20
+> >=20
+> > [1]: https://lore.kernel.org/linux-integrity/CAMigqh2nwuRRxaLyOJ+QaTJ+X=
+GmkQj=3DrMj5K9GP1bCcXp2OsBQ@mail.gmail.com/
+> > [2]: https://lore.kernel.org/linux-integrity/20250825203223.629515-1-ja=
+rkko@kernel.org/
+> >=20
+> > Thanks
+> > Chris
+> >=20
+> > On Fri, Feb 20, 2026 at 10:04=E2=80=AFAM Mimi Zohar <zohar@linux.ibm.co=
+m> wrote:
+> > >=20
+> > > [Cc: Chris Fenner, Jonathan McDowell, Roberto]
+> > >=20
+> > > On Sun, 2026-01-25 at 21:25 +0200, Jarkko Sakkinen wrote:
+> > > > 1. tpm2_get_random() is costly when TCG_TPM2_HMAC is enabled and th=
+us its
+> > > >    use should be pooled rather than directly used. This both reduce=
+s
+> > > >    latency and improves its predictability.
+> > >=20
+> > > If the concern is the latency of encrypting the bus session, please r=
+emember
+> > > that:
+> > >=20
+> > > - Not all environments expose the TPM bus to sniffing.
+> > > - The current TPM trusted keys design is based on TPM RNG, but alread=
+y allows it
+> > > to be replaced with the kernel RNG via the "trusted_rng=3Dkernel" boo=
+t command
+> > > line option.
+> > > - The proposed patch removes that possibility for no reason.
+> > >=20
+> > > Mimi & Elaine
+> > >=20
+> > >=20
+>=20
+> BR, Jarkko
 
