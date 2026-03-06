@@ -1,238 +1,336 @@
-Return-Path: <keyrings+bounces-4138-lists+keyrings=lfdr.de@vger.kernel.org>
+Return-Path: <keyrings+bounces-4139-lists+keyrings=lfdr.de@vger.kernel.org>
 Delivered-To: lists+keyrings@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gM5HBfi8qWnNDQEAu9opvQ
-	(envelope-from <keyrings+bounces-4138-lists+keyrings=lfdr.de@vger.kernel.org>)
-	for <lists+keyrings@lfdr.de>; Thu, 05 Mar 2026 18:27:20 +0100
+	id sDxjGQntqmlxYwEAu9opvQ
+	(envelope-from <keyrings+bounces-4139-lists+keyrings=lfdr.de@vger.kernel.org>)
+	for <lists+keyrings@lfdr.de>; Fri, 06 Mar 2026 16:04:41 +0100
 X-Original-To: lists+keyrings@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6CA42162DE
-	for <lists+keyrings@lfdr.de>; Thu, 05 Mar 2026 18:27:19 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF69223649
+	for <lists+keyrings@lfdr.de>; Fri, 06 Mar 2026 16:04:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 35D6D300D360
-	for <lists+keyrings@lfdr.de>; Thu,  5 Mar 2026 17:26:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 778A43016BB4
+	for <lists+keyrings@lfdr.de>; Fri,  6 Mar 2026 15:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5703D3CF66B;
-	Thu,  5 Mar 2026 17:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3EF33AE70A;
+	Fri,  6 Mar 2026 15:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="f5HhaZL2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l00mYyAe"
 X-Original-To: keyrings@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24931FBCA7;
-	Thu,  5 Mar 2026 17:26:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8F33AE1A5;
+	Fri,  6 Mar 2026 15:04:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772731597; cv=none; b=dVpHcTHtl7sNzMHmv5R4We3lHKKRgdyJCTIUeeH6S/qfIv1/pOhDD6xf20bam8SwjDLWdm4Bp56kDJa1MT8Ao79CgtuDBQa4Agy6u0kjOE5rjWZQ0kcq1SrbouE6bp7THLUDZqAB1gziNrXlutcSt5AUHnBM4W1FpEbgu38ySEQ=
+	t=1772809471; cv=none; b=Op0oCCLsF8Z8ctny1vV0/kqo+fHO74t4T08x3eq1YQ8RTzJTOt255/FkmPzr/qTKnogMaKWF8s/B4P4qFelqMY/6JdzqSZuMbuVj4MU0W1ucvxb3rN36WybN29cKmSjAiJ5qcQZC+gpBBACnaloC+upZhmOODf9HrnShcXMf5zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772731597; c=relaxed/simple;
-	bh=+MuY8pawrgi2FwNb6rRlOW9g7zPesgMFXQ7H4DyrZcQ=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=bMOU+admFMdY47ynBatHaKybIYLOtltslRB0XrWwUJkLTcgEINA9A0JFQP1PHx2uCrUw7wTQ/LVczo0Pmbm11vrDhXd/I2IV/lhmOzDxI9R83sPmz7lMuwNCWOvlVgsgkhUV4swXcSl6cpaBJoYO4WwvBPwbUxnhKPTGmDp8jas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=f5HhaZL2; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6256XhaF2358989;
-	Thu, 5 Mar 2026 17:25:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=pKEoPg
-	CndWCLrBzB+ANvkugEGsbEG9dKmNVe+ux6b/I=; b=f5HhaZL2YLiPpyCKTkbu9J
-	IGDq/HdnHKBMZigcHjg/Cd8VlwblJsE5+TR6lvbkI5Itkm2FCCPoXMXxxGzkVVvN
-	bkMVpn/KPZJI92/LSPO0lr5t3nk74fy+h6B7QHwtK66PgaHvIhzoBAIVFUVNx7es
-	hquql/vPTH9LvLzyoPvW3uKrBwLMuJiaoyB4zSQFiKMgm+Z214WiMZhbLKDnsQB9
-	U5nt7kT7cFoq0J8dv4iysXNG/Lx8rndllpDctzwLpxo/qsWhw/+udsiCIS98ggBq
-	yb3XfU9eksHCf7WGOG0KxVZb3P+eJYk7eIXLSYGp91e+yU344EWER5UygGXcPBww
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cksk44ce4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Mar 2026 17:25:46 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 625FQouo027658;
-	Thu, 5 Mar 2026 17:25:45 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cmcwjm17q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Mar 2026 17:25:45 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 625HPips8979076
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 5 Mar 2026 17:25:44 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5A49858056;
-	Thu,  5 Mar 2026 17:25:44 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6FC9F5805D;
-	Thu,  5 Mar 2026 17:25:42 +0000 (GMT)
-Received: from li-43857255-d5e6-4659-90f1-fc5cee4750ad.ibm.com (unknown [9.61.185.249])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  5 Mar 2026 17:25:42 +0000 (GMT)
-Message-ID: <b33086b5f20a635a86d935fef3f4c429c723f6ac.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 1/3] integrity: Make arch_ima_get_secureboot
- integrity-wide
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Vasily Gorbik <gor@linux.ibm.com>
-Cc: linux-integrity@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
-        Alexander Egorenkov <egorenar@linux.ibm.com>,
-        Ard Biesheuvel
- <ardb@kernel.org>, Dave Hansen <dave.hansen@intel.com>,
-        Coiby Xu
- <coxu@redhat.com>, Roberto Sassu <roberto.sassu@huawei.com>,
-        Madhavan
- Srinivasan	 <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin	 <npiggin@gmail.com>,
-        "Christophe Leroy (CS GROUP)"
- <chleroy@kernel.org>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle	
- <svens@linux.ibm.com>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar	
- <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen	
- <dave.hansen@linux.intel.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND
- 64-BIT)" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Dmitry
- Kasatkin	 <dmitry.kasatkin@gmail.com>,
-        Eric Snowberg
- <eric.snowberg@oracle.com>,
-        Paul Moore <paul@paul-moore.com>, James Morris
- <jmorris@namei.org>,
-        "Serge E. Hallyn"	 <serge@hallyn.com>,
-        Jarkko Sakkinen
- <jarkko@kernel.org>,
-        open list	 <linux-kernel@vger.kernel.org>,
-        "open
- list:LINUX FOR POWERPC (32-BIT AND 64-BIT)"
- <linuxppc-dev@lists.ozlabs.org>,
-        "open list:S390 ARCHITECTURE"
- <linux-s390@vger.kernel.org>,
-        "open list:EXTENSIBLE FIRMWARE INTERFACE
- (EFI)"	 <linux-efi@vger.kernel.org>,
-        "open list:SECURITY SUBSYSTEM"	
- <linux-security-module@vger.kernel.org>,
-        "open
- list:KEYS/KEYRINGS_INTEGRITY"	 <keyrings@vger.kernel.org>
-In-Reply-To: <c00-01.ttbfdx5@ub.hpns>
-References: <20260213012851.2532722-2-coxu@redhat.com>
-	 <c00-01.ttbfdx5@ub.hpns>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Mar 2026 12:25:42 -0500
+	s=arc-20240116; t=1772809471; c=relaxed/simple;
+	bh=25CPe4EGSUbqlSDNHofrLGG8PR/WzU7sNEADToXqfos=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QbkRlYC9YA5e/aZwWrJSIW3Enogz5yBcpzz5yTIgtq4bKxafm9YwK9akO0pZcVBUs5oioZEdwZlnvcxmyY0nVQF16QLlDQwjxPqHo5cZTr9pHxwo45K1xgLvkfFnOhq3K4lR5I7VXoy6B4d2Nv2WnUxwgomEE+emADQN0LfVuOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l00mYyAe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF2D7C4CEF7;
+	Fri,  6 Mar 2026 15:04:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772809471;
+	bh=25CPe4EGSUbqlSDNHofrLGG8PR/WzU7sNEADToXqfos=;
+	h=From:To:Cc:Subject:Date:From;
+	b=l00mYyAeVzZNhOkHGoBqNdxgrGLiNdHhVl3kHwWYeL1Y9cFWXVlXooc68wEuF7L0Q
+	 OF2NVmz98U+4tMbNLueBvXb1fQq7cXDImpDKIGf4tKnWW++vZxu/EY+wexkETnxwFD
+	 MWqyCam4Ic8JyGq5WqejMJe9U3A1XlNrnepTU7jea0jQaiV8DaUy+MCEWae68Risxu
+	 qkBXP3twWnqgmthNNhGJ5AZYReddCWjdC3dgnUrpIrec7ooGju9tx+THX/KeuImLH8
+	 yhx06aMwr48pfMFdKNoEE3NgYZYj6wC+11wNOWM+t5CSAxsd0lxY8gLOiIilbMEZIm
+	 dZ/eso6rn5L2w==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Coiby Xu <coxu@redhat.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Andrew Donnellan <ajd@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-integrity@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	keyrings@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH] integrity: avoid using __weak functions
+Date: Fri,  6 Mar 2026 16:03:24 +0100
+Message-Id: <20260306150421.270124-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: keyrings@vger.kernel.org
 List-Id: <keyrings.vger.kernel.org>
 List-Subscribe: <mailto:keyrings+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:keyrings+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: n5u3KvkqHsHSG1MPOf93GcHhdfPo5Ydn
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA1MDE0MCBTYWx0ZWRfX2GwyKh4RC1hO
- 8e835PXQ73sAhRTjc5hcUXNuRa16LUmjeYrKhRTH8uumRPD6u6AHpv+R1U4wbUNUKtaVD4BCTwU
- Gs+8eec+4MXi+5GADfbifXChrow3C7bOocLltn0fEKw6L/ghXKT3D9c7AQEND5Uxazf8QO/as6O
- J5n+fKJXv/TUTDvqUiyiZIgw51FJfJVs8F857zTKeHXbBMmRDNcvSlDk8Xig0Ffwjxv6t2OSjLR
- H1mzlFXc6/oBzQqofGITH/P1rzOap9r9zEpCq7G6PvzEKhDJtotff/HlT1iz6uiuttTQhZblak4
- 7lPagrK2S28ATugKW7HODfQ1dDd7pFes418ioZ7o7ZU73J8mwDENhGclmBn91xk0SlzKfvnVbi7
- 5YqF7xT68eY0VP3tD7JPON8zHDmEngH2dZZrq5VbC3H+w0alPrWtihSo4X35W0+8XOvAzN7Lv2h
- Ah50ca8+F56uPHOCZ7w==
-X-Authority-Analysis: v=2.4 cv=csCWUl4i c=1 sm=1 tr=0 ts=69a9bc9a cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
- a=i0EeH86SAAAA:8 a=20KFwNOVAAAA:8 a=FlYQV3jgbqAUZRz1eTYA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 1tcHdgBiVXli_g0ESprzx_tD6GHaaEJp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-05_05,2026-03-04_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 suspectscore=0 malwarescore=0 adultscore=0
- clxscore=1015 bulkscore=0 phishscore=0 spamscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603050140
-X-Rspamd-Queue-Id: B6CA42162DE
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1EF69223649
 X-Rspamd-Server: lfdr
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-4139-lists,keyrings=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[33];
-	FREEMAIL_CC(0.00)[vger.kernel.org,linux.ibm.com,kernel.org,intel.com,redhat.com,huawei.com,ellerman.id.au,gmail.com,alien8.de,linux.intel.com,zytor.com,oracle.com,paul-moore.com,namei.org,hallyn.com,lists.ozlabs.org];
-	TAGGED_FROM(0.00)[bounces-4138-lists,keyrings=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[linux.ibm.com,ellerman.id.au,arndb.de,huawei.com,gmail.com,paul-moore.com,namei.org,hallyn.com,kernel.org,redhat.com];
+	RCPT_COUNT_TWELVE(0.00)[33];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,kernel.org,linux.ibm.com,oracle.com,google.com,lists.ozlabs.org,vger.kernel.org,lists.linux.dev];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zohar@linux.ibm.com,keyrings@vger.kernel.org];
-	DKIM_TRACE(0.00)[ibm.com:+];
+	FROM_NEQ_ENVFROM(0.00)[arnd@kernel.org,keyrings@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[keyrings];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[11]
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[keyrings,lkml];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:rdns,sto.lore.kernel.org:helo,arndb.de:email]
 X-Rspamd-Action: no action
 
-On Thu, 2026-03-05 at 13:55 +0100, Vasily Gorbik wrote:
-> On Fri, Feb 13, 2026 at 09:28:46AM +0800, Coiby Xu wrote:
-> > EVM and other LSMs need the ability to query the secure boot status of
-> > the system, without directly calling the IMA arch_ima_get_secureboot
-> > function. Refactor the secure boot status check into a general function
-> > named arch_get_secureboot.
-> >=20
-> > Reported-and-suggested-by: Mimi Zohar <zohar@linux.ibm.com>
-> > Suggested-by: Roberto Sassu <roberto.sassu@huawei.com>
-> > Signed-off-by: Coiby Xu <coxu@redhat.com>
-> > ---
-> >  MAINTAINERS                                   |  1 +
-> >  arch/powerpc/kernel/ima_arch.c                |  5 --
-> >  arch/powerpc/kernel/secure_boot.c             |  6 ++
-> >  arch/s390/kernel/ima_arch.c                   |  6 --
-> >  arch/s390/kernel/ipl.c                        |  5 ++
-> >  arch/x86/include/asm/efi.h                    |  4 +-
-> >  arch/x86/platform/efi/efi.c                   |  2 +-
-> >  include/linux/ima.h                           |  7 +--
-> >  include/linux/secure_boot.h                   | 19 +++++++
-> >  security/integrity/Makefile                   |  3 +-
-> >  security/integrity/efi_secureboot.c           | 56 +++++++++++++++++++
-> >  security/integrity/ima/ima_appraise.c         |  2 +-
-> >  security/integrity/ima/ima_efi.c              | 47 +---------------
-> >  security/integrity/ima/ima_main.c             |  3 +-
-> >  security/integrity/integrity.h                |  1 +
-> >  security/integrity/platform_certs/load_uefi.c |  2 +-
-> >  security/integrity/secure_boot.c              | 16 ++++++
-> >  17 files changed, 115 insertions(+), 70 deletions(-)
-> >  create mode 100644 include/linux/secure_boot.h
-> >  create mode 100644 security/integrity/efi_secureboot.c
-> >  create mode 100644 security/integrity/secure_boot.c
->=20
-> This triggers a warning on s390:
->=20
-> arch/s390/kernel/ipl.c:2507:6: warning: no previous prototype for =E2=80=
-=98arch_get_secureboot=E2=80=99 [-Wmissing-prototypes]
->  2507 | bool arch_get_secureboot(void)
->       |      ^~~~~~~~~~~~~~~~~~~
->=20
-> @Mimi: could you please squash this fixup into the offending commit,
-> or pick it up separately?
+From: Arnd Bergmann <arnd@arndb.de>
 
-Thanks, Vasily.  It's now squashed.
+The security/integrity/secure_boot.c file containing only a __weak function
+leads to a build failure with clang:
 
-Mimi
+Cannot find symbol for section 2: .text.
+security/integrity/secure_boot.o: failed
+
+Moving the function into another file that has at least one non-__weak
+symbol would solve this, but this is always fragile.
+
+Avoid __weak definitions entirely and instead move the stub helper into
+an asm-generic header that gets used by default on architectures that
+do not provide their own version. This is consistent with how a lot
+of other architecture specific functionality works, and is more reliable.
+
+Fixes: a0f87ede3bf4 ("integrity: Make arch_ima_get_secureboot integrity-wide")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+This is a larger change than I had hoped for.
+
+If you prefer a different way to address the build failure, please
+treat this as a Reported-by when you apply your own fix
+---
+ arch/powerpc/include/asm/secure_boot.h        |  6 +++
+ arch/powerpc/kernel/secure_boot.c             |  1 -
+ arch/s390/include/asm/secure_boot.h           |  9 +++++
+ include/asm-generic/Kbuild                    |  1 +
+ include/asm-generic/secure_boot.h             | 37 +++++++++++++++++++
+ include/linux/secure_boot.h                   |  8 +---
+ security/integrity/Makefile                   |  2 +-
+ .../integrity/platform_certs/load_powerpc.c   |  2 +-
+ security/integrity/secure_boot.c              | 16 --------
+ 9 files changed, 56 insertions(+), 26 deletions(-)
+ create mode 100644 arch/s390/include/asm/secure_boot.h
+ create mode 100644 include/asm-generic/secure_boot.h
+ delete mode 100644 security/integrity/secure_boot.c
+
+diff --git a/arch/powerpc/include/asm/secure_boot.h b/arch/powerpc/include/asm/secure_boot.h
+index a2ff556916c6..db72dcdf5bb3 100644
+--- a/arch/powerpc/include/asm/secure_boot.h
++++ b/arch/powerpc/include/asm/secure_boot.h
+@@ -10,11 +10,17 @@
+ 
+ #ifdef CONFIG_PPC_SECURE_BOOT
+ 
++bool arch_get_secureboot(void);
+ bool is_ppc_secureboot_enabled(void);
+ bool is_ppc_trustedboot_enabled(void);
+ 
+ #else
+ 
++static inline bool arch_get_secureboot(void)
++{
++	return false;
++}
++
+ static inline bool is_ppc_secureboot_enabled(void)
+ {
+ 	return false;
+diff --git a/arch/powerpc/kernel/secure_boot.c b/arch/powerpc/kernel/secure_boot.c
+index 28436c1599e0..e3ea46124180 100644
+--- a/arch/powerpc/kernel/secure_boot.c
++++ b/arch/powerpc/kernel/secure_boot.c
+@@ -7,7 +7,6 @@
+ #include <linux/of.h>
+ #include <linux/secure_boot.h>
+ #include <linux/string_choices.h>
+-#include <asm/secure_boot.h>
+ 
+ static struct device_node *get_ppc_fw_sb_node(void)
+ {
+diff --git a/arch/s390/include/asm/secure_boot.h b/arch/s390/include/asm/secure_boot.h
+new file mode 100644
+index 000000000000..4086fdfb9e5c
+--- /dev/null
++++ b/arch/s390/include/asm/secure_boot.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_S390_SECURE_BOOT_H
++#define _ASM_S390_SECURE_BOOT_H
++
++#include <linux/types.h
++
++bool arch_get_secureboot(void);
++
++#endif
+diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+index 0f97f7b594c3..8c0a499141fb 100644
+--- a/include/asm-generic/Kbuild
++++ b/include/asm-generic/Kbuild
+@@ -51,6 +51,7 @@ mandatory-y += rqspinlock.h
+ mandatory-y += runtime-const.h
+ mandatory-y += rwonce.h
+ mandatory-y += sections.h
++mandatory-y += secure_boot.h
+ mandatory-y += serial.h
+ mandatory-y += shmparam.h
+ mandatory-y += simd.h
+diff --git a/include/asm-generic/secure_boot.h b/include/asm-generic/secure_boot.h
+new file mode 100644
+index 000000000000..08d8e294576c
+--- /dev/null
++++ b/include/asm-generic/secure_boot.h
+@@ -0,0 +1,37 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2026 Red Hat, Inc. All Rights Reserved.
++ *
++ * Author: Coiby Xu <coxu@redhat.com>
++ */
++#ifndef _ASM_SECURE_BOOT_H
++#define _ASM_SECURE_BOOT_H
++
++
++#include <linux/types.h>
++
++#ifdef CONFIG_EFI
++
++/*
++ * Default implementation.
++ * Architectures that support secure boot must override this.
++ *
++ * Returns true if the platform secure boot is enabled.
++ * Returns false if disabled or not supported.
++ */
++bool arch_get_secureboot(void);
++
++#else
++
++/*
++ * Default implementation.
++ * Architectures that support secure boot must override this.
++ */
++static inline bool arch_get_secureboot(void)
++{
++	return false;
++}
++
++#endif
++
++#endif
+diff --git a/include/linux/secure_boot.h b/include/linux/secure_boot.h
+index 3ded3f03655c..9ddfbe109b1d 100644
+--- a/include/linux/secure_boot.h
++++ b/include/linux/secure_boot.h
+@@ -8,12 +8,6 @@
+ #ifndef _LINUX_SECURE_BOOT_H
+ #define _LINUX_SECURE_BOOT_H
+ 
+-#include <linux/types.h>
+-
+-/*
+- * Returns true if the platform secure boot is enabled.
+- * Returns false if disabled or not supported.
+- */
+-bool arch_get_secureboot(void);
++#include <asm/secure_boot.h>
+ 
+ #endif /* _LINUX_SECURE_BOOT_H */
+diff --git a/security/integrity/Makefile b/security/integrity/Makefile
+index 548665e2b702..45dfdedbdad4 100644
+--- a/security/integrity/Makefile
++++ b/security/integrity/Makefile
+@@ -5,7 +5,7 @@
+ 
+ obj-$(CONFIG_INTEGRITY) += integrity.o
+ 
+-integrity-y := iint.o secure_boot.o
++integrity-y := iint.o
+ integrity-$(CONFIG_INTEGRITY_AUDIT) += integrity_audit.o
+ integrity-$(CONFIG_INTEGRITY_SIGNATURE) += digsig.o
+ integrity-$(CONFIG_INTEGRITY_ASYMMETRIC_KEYS) += digsig_asymmetric.o
+diff --git a/security/integrity/platform_certs/load_powerpc.c b/security/integrity/platform_certs/load_powerpc.c
+index 714c961a00f5..ab74e947a8bc 100644
+--- a/security/integrity/platform_certs/load_powerpc.c
++++ b/security/integrity/platform_certs/load_powerpc.c
+@@ -10,7 +10,7 @@
+ #include <linux/cred.h>
+ #include <linux/err.h>
+ #include <linux/slab.h>
+-#include <asm/secure_boot.h>
++#include <linux/secure_boot.h>
+ #include <asm/secvar.h>
+ #include "keyring_handler.h"
+ #include "../integrity.h"
+diff --git a/security/integrity/secure_boot.c b/security/integrity/secure_boot.c
+deleted file mode 100644
+index fc2693c286f8..000000000000
+--- a/security/integrity/secure_boot.c
++++ /dev/null
+@@ -1,16 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * Copyright (C) 2026 Red Hat, Inc. All Rights Reserved.
+- *
+- * Author: Coiby Xu <coxu@redhat.com>
+- */
+-#include <linux/secure_boot.h>
+-
+-/*
+- * Default weak implementation.
+- * Architectures that support secure boot must override this.
+- */
+-__weak bool arch_get_secureboot(void)
+-{
+-	return false;
+-}
+-- 
+2.39.5
+
 
